@@ -1,0 +1,15 @@
+.grid {
+  display: grid;
+
+  grid-template-columns: 2fr 0.5fr 0.3fr;
+  column-gap: 1rem;
+}
+
+.app {
+  margin: 0rem 0.7rem;
+}
+
+.btn {
+
+  align-self: center;
+}
