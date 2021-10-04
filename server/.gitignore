@@ -5,6 +5,7 @@ package-lock.json
 /security/cert.key
 /security/cert.pem
 #/public
+/build
 
 /.vscode
 
