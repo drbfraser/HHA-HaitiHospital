@@ -1,24 +1,42 @@
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
 
-import HHALogo from './HHALogo'
-import Btn from './Btn'
-import {IProps, getClassesFromProps} 
-  from './IProps';
+import HHALogo from './HHALogo';
+import Btn from './Btn';
+import {IProps} from './IProps';
+import { MyCustomCSS } from './MyCustomCSS';
 
 interface IHeader extends IProps{
 }
 
+
 const Header = (props: IHeader) => {
   const location = useLocation();
-  const classes = getClassesFromProps(props);
 
   return (  
-    <div className={classes}>
+    <div className={props.classes} 
+    style={props.style}>
       {location.pathname === '/home' && (
         <>
-          <HHALogo width='30%'/>
-          <Btn classes='btn' value='ADMIN PANEL'/>
-          <Btn classes='btn' value='SIGN OUT'/>
+          <HHALogo 
+            classes='logo grid-item' 
+            style={
+              {'--griditem-alignself': 'center',
+              '--griditem-justifyself': 'center',
+              'width' : '40%',
+              } as MyCustomCSS
+            }
+          />
+          <Btn classes='btn grid-item goto-admin-btn'
+            style= {
+              {'--griditem-alignself':'center'} as MyCustomCSS
+            }
+            value='ADMIN PANEL'
+          />
+          <Btn classes='btn grid-item signout-btn'
+            style = {
+              {'--griditem-alignself':'center'} as MyCustomCSS
+            } 
+            value='SIGN OUT'/>
         </>
       )}
     </div>
