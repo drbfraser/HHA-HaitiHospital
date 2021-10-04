@@ -8,6 +8,19 @@ body {
     font-size: 20px;
 }
 
+.depart {
+    font-weight: bold;
+    font-size: 30px;
+    color: #D1D2A5;
+    padding-top: 30px;
+}
+.depart p {
+    padding-right: 800px;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    opacity: 0.5;
+}
 button {
     /*position: relative;*/
     /*position: center;*/
@@ -121,10 +134,11 @@ button:hover {
     margin-right: 720px;
     margin-top: 100px;
     font-weight: bold;
-    color: #D1D2A5;
+    /*color: #D1D2A5;*/
+    color: #04181F;
 }
 .caseStudy-image img {
-    border: 5px solid #D1D2A5;
+    border: 5px solid #04181F;
     border-radius: 5px;
     margin-left: 10px;
     margin-top: 10px;

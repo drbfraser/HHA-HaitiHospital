@@ -27,8 +27,7 @@ const HomePage: React.FC<Props> = ({ history, location, match }) => {
       <MessageBoard classes='message-board'/>
 
       <div className="depart">
-            <div>This is the second half of the home page</div>
-            <p>-------------------------------- my part starts here --------------------------------</p>
+          <p>Departments</p>
             {/*<Link to="/department">toDepart</Link>*/}
             <button className="button1"
                 onClick={() => {
