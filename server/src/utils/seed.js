@@ -75,4 +75,5 @@ export const seedDb = async () => {
       },
     );
   });
+  console.log('Database seeded');
 };
