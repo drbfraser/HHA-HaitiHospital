@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 
-require("../style/HomeStyle.css");
-
-import case1 from "./img/case1.jpg"
-import case2 from "./img/case2.jpg"
+import case1 from "../img/case1.jpg"
+import case2 from "../img/case2.jpg"
 
 import Header from '../components/Header'
 import LeaderBar from '../components/LeaderBar'
 import MessageBoard from '../components/MessageBoard';
 import { MyCustomCSS } from '../components/MyCustomCSS';
+
+require("../style/HomeStyle.css");
 
 interface Props extends RouteComponentProps {}
 
