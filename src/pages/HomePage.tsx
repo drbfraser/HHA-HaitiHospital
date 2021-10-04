@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 
-require("./HomeStyle.css");
+require("../style/HomeStyle.css");
 
 import case1 from "./img/case1.jpg"
 import case2 from "./img/case2.jpg"
