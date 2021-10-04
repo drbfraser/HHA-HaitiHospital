@@ -5,9 +5,9 @@ package-lock.json
 /security/cert.key
 /security/cert.pem
 #/public
+/build
 
 /.vscode
-.env
 
 !public/images
 public/images/*
