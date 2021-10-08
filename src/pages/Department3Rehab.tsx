@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
-// import Navbar from "./Components/Navbar/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 require("./DepartmentPageDeptButtons.css");
 
 interface Props extends RouteComponentProps{}
