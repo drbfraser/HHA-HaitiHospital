@@ -33,14 +33,18 @@ const HomePage: React.FC<Props> = ({ history, location, match }) => {
                 onClick={() => {
                     // api call
                     // change to the about page
-                    history.push("/departmentOne");
+                    history.push("/Department1NICU");
                 }}>NICU / PAED</button>
             <button className="button2"
                     onClick={() => {
-                        history.push("/departmentTwo");
+                        history.push("/Department2Maternity");
                     }}>MATERNITY</button>
-            <button className="button3">REHAB</button>
-            <button className="button4">COM-HEALTH</button>
+            <button className="button3"onClick={() => {
+                        history.push("/Department3Rehab");
+                    }}>REHAB</button>
+            <button className="button4"onClick={() => {
+                        history.push("/Department4ComHealth");
+                    }}>COM-HEALTH</button>
             <button className="button5">MORE</button>
 
             <div>
