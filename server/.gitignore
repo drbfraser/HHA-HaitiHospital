@@ -14,3 +14,7 @@ public/images/*
 !public/images/avatar0.jpg
 !public/images/avatar1.jpg
 !public/images/avatar2.jpg
+
+# random generated files on MacOS
+.DS_Store
+**/.DS_Store
