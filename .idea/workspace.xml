@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="72b61551-7fed-4d89-bce2-e0a1c83b441f" name="Changes" comment="initial idea files created by intellij">
+    <list default="true" id="72b61551-7fed-4d89-bce2-e0a1c83b441f" name="Changes" comment="Moved branch 'fronted-departmentpage' code into this branch">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hha-frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/hha-frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hha-frontend/src/DepartmentOne.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hha-frontend/src/DepartmentTwo.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hha-frontend/src/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/hha-frontend/src/Home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hha-frontend/src/Department1NICU.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/hha-frontend/src/Department1NICU.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hha-frontend/src/DepartmentPageDeptButtons.css" beforeDir="false" afterPath="$PROJECT_DIR$/hha-frontend/src/DepartmentPageDeptButtons.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hha-frontend/src/HomeStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/hha-frontend/src/HomeStyle.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +31,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2021.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -41,7 +41,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1633675376463</updated>
-      <workItem from="1633675378085" duration="1051000" />
+      <workItem from="1633675378085" duration="2541000" />
     </task>
     <task id="LOCAL-00001" summary="initial idea files created by intellij">
       <created>1633675712456</created>
@@ -50,7 +50,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633675712456</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Moved branch 'fronted-departmentpage' code into this branch">
+      <created>1633676883055</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1633676883055</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -69,6 +76,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial idea files created by intellij" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial idea files created by intellij" />
+    <MESSAGE value="Moved branch 'fronted-departmentpage' code into this branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moved branch 'fronted-departmentpage' code into this branch" />
   </component>
 </project>
