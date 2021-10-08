@@ -45,6 +45,7 @@ mongoose
 app.use('/', routes);
 app.use('/public', express.static(join(__dirname, '../public')));
 
+
 // Serve static assets if in production
 if (isProduction) {
   // Set static folder
@@ -63,6 +64,8 @@ if (isProduction) {
     key: readFileSync(resolve(__dirname, '../security/cert.key')),
     cert: readFileSync(resolve(__dirname, '../security/cert.pem')),
   };
+
+  
 
   const server = https.createServer(httpsOptions, app).listen(port, () => {
     console.log('https server running at ' + port);
