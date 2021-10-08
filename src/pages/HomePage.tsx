@@ -19,10 +19,10 @@ const HomePage: React.FC<Props> = ({ history, location, match }) => {
     return (
     <>
       <Header classes='header grid'
-        style={{'grid-template-columns': '2fr 1fr 1fr'} as MyCustomCSS}
+        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as MyCustomCSS}
       />
       <LeaderBar classes='leader-bar grid'
-        style={{'grid-template-columns': '2fr 1fr 1fr'} as MyCustomCSS}
+        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as MyCustomCSS}
       />
       <MessageBoard classes='message-board'/>
 
