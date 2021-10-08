@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
+import Navbar from "./Components/Navbar/Navbar";
 require("./DepartmentPageDeptButtons.css");
 
 interface Props extends RouteComponentProps{}
@@ -8,6 +9,7 @@ export const DepartmentThree: React.FC<Props> = ({history}) => {
     // const postId = 5;
     return (
         <div>
+            <Navbar />
             {/* <button className="Departmentbutton0"
                 onClick={() => {
                     history.push("../");

@@ -1,6 +1,8 @@
 import * as React from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link, NavLink, RouteComponentProps } from "react-router-dom";
 import Logo from "./img/logo.png";
+import Navbar from "./Components/Navbar/Navbar";
+
 require("./DepartmentPageDeptButtons.css");
 
 interface Props extends RouteComponentProps{}
@@ -10,7 +12,8 @@ interface Props extends RouteComponentProps{}
 export const DepartmentOne: React.FC<Props> = ({history}) => {
     return (
         <div>
-            {/* <button className="Departmentbutton0"
+            <Navbar />
+            {/* <button className="homePageButton"
                 onClick={() => {
                     history.push("../");
                 }}></button> */}
