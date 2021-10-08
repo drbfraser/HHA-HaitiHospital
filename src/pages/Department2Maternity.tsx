@@ -9,7 +9,7 @@ export const DepartmentTwo: React.FC<Props> = ({history}) => {
     // const postId = 5;
     return (
         <div>
-            {/* <Navbar /> */}
+            <Navbar />
                 {/* <button className="Departmentbutton0"
                 onClick={() => {
                     history.push("../");
