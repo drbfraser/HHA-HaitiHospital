@@ -85,6 +85,7 @@ const nicuPaedsSchema = new Schema({
       alteredMentalStatus: Number,
       gastroenteritis: Number,
       hemorrhage: Number,
+      hypothermia: Number,
       cardiacCongenitalAnomaly: Number,
       otherCongenitalAnomaly: Number,
       malnutrition: Number,
@@ -92,6 +93,7 @@ const nicuPaedsSchema = new Schema({
       communityAcquiredPneumonia: Number,
       aspirationPneumonia: Number,
       moderatePrematurity: Number,
+      severePrematurity: Number,
       otherMedical:[{
           nameOfCondition: String,
           numberOfPatients: Number,
@@ -128,6 +130,7 @@ const nicuPaedsSchema = new Schema({
       alteredMentalStatus: Number,
       gastroenteritis: Number,
       hemorrhage: Number,
+      hypothermia: Number,
       cardiacCongenitalAnomaly: Number,
       otherCongenitalAnomaly: Number,
       malnutrition: Number,
@@ -135,6 +138,7 @@ const nicuPaedsSchema = new Schema({
       communityAcquiredPneumonia: Number,
       aspirationPneumonia: Number,
       moderatePrematurity: Number,
+      severePrematurity: Number,
       otherMedical:[{
           nameOfCondition: String,
           numberOfPatients: Number,
@@ -143,13 +147,12 @@ const nicuPaedsSchema = new Schema({
   },
 });
 
-
 // TODO : validate data before inserting into schema
 // export const validateData = (data) => {
   
 // };
 
-
 const NicuPaeds = mongoose.model('NicuPaeds', nicuPaedsSchema);
+module.exports = NicuPaeds;
 
-export default NicuPaeds;
+
