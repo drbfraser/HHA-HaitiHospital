@@ -14,8 +14,8 @@ function App() {
     <Router>
       <div className="app">
         <Route exact path='/home' component={HomePage}/>
-        <Route path="/departmentOne" exact component={DepartmentOne} />
-        <Route path="/departmentTwo" exact component={DepartmentTwo} />
+        <Route path="/Department1NICU" exact component={DepartmentOne} />
+        <Route path="/Department2Maternity" exact component={DepartmentTwo} />
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
         {/*<Route path="/posts/:id" exact component={Post} />*/}
         {/*<Route path="/" render={() => <div>404</div>} />*/}

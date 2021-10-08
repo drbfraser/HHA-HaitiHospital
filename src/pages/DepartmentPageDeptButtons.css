@@ -20,7 +20,7 @@ button:hover {
     height: 80px;
     margin-top:   100px;
     margin-left: -1200px;
-    background:  url("./img/logo.png");
+    background:  url("../img/logo/LogoWText.svg");
     background-size: 100%;
     background-position: 5px;
     /*margin-top: -50px;*/
@@ -35,7 +35,7 @@ button:hover {
     /* margin-left: 20px;
     margin-top: 30px; */
     border: 5px solid #87EDF3;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("./img/NICUPEAD.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/NICUPEAD.jpg");
     background-size: 140%;
     background-position: -35px;
     /*margin-top: -50px;*/
@@ -53,7 +53,7 @@ button:hover {
     left: 240px;
     /* margin-left: 20px; */
     border: 5px solid #87EDF3;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("./img/MATERNITY.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/MATERNITY.jpg");
     background-size: 300%;
     background-position: -240px;
     /*padding-top: 180px;*/
@@ -71,7 +71,7 @@ button:hover {
     left: 20px;
     top: 380px;
     border: 5px solid #87EDF3;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("./img/REHAB.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/REHAB.jpg");
     background-size: 150%;
     background-position: -40px -20px;
     /*margin-top: -50px;*/
@@ -89,7 +89,7 @@ button:hover {
     left: 240px;
     top: 380px;
     border: 5px solid #87EDF3;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("./img/COMMUNITYHEALTH.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/COMMUNITYHEALTH.jpg");
     background-size: 300%;
     background-position: -240px;
     /*padding-top: 180px;*/
