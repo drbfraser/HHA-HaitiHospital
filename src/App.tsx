@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 import './style/App.css';
 
 import HomePage from './pages/HomePage'
-import { DepartmentOne } from "./pages/DepartmentOne";
-import { DepartmentTwo } from "./pages/DepartmentTwo";
+import { DepartmentOne } from "./pages/Department1NICU";
+import { DepartmentTwo } from "./pages/Department2Maternity";
 import { CaseStudyMain} from "./pages/CaseStudyMain";
 import { Post } from "./components/Post";
 
