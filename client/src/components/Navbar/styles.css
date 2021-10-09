@@ -1,4 +1,43 @@
-nav {
+.navbar {
+  background-color: white;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: auto;
+}
+
+a {
+  position: relative;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  color:wheat;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+}
+
+/* a:after {
+  content: "";
+  position: absolute;
+  background-color:khaki;
+  height: 3px;
+  width: 100%;
+  left: 0;
+  bottom: -6px;
+} */
+
+a:hover {
+  /* color: tomato; */
+  color:gainsboro;
+}
+
+a:hover:after {
+  width: 100%;
+}
+
+
+/* To merge with frontend, for future reference*/
+/* nav {
   background-color: darkblue;
   padding-left: 30px;
   padding-right: 10px;
@@ -53,4 +92,4 @@ nav {
   align-self: center;
   margin-right: 20px;
   object-fit: cover;
-}
+} */
