@@ -12,10 +12,10 @@ const Navbar = () => {
                 <img src={logo}
                 alt="logo"  height="100px" width="320px"/> 
             </NavLink>
-            <NavLink className="toLeadersBoard" to="/" exact>
+            <NavLink className="toLeadersBoard" to="/leadersBaord" exact>
                 LeadersBoard
             </NavLink>
-            <NavLink className="toMessageBoard" to="/" exact>
+            <NavLink className="toMessageBoard" to="/messgeBoard" exact>
                 MessageBoard
             </NavLink>
             <NavLink className="toDepartments" to="/" exact>
