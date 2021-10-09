@@ -1,19 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 
-import './style/App.css';
+import 'App.css';
 
-import HomePage from './pages/HomePage'
-import { DepartmentOne } from "./pages/Department1NICU";
-import { DepartmentTwo } from "./pages/Department2Maternity";
-import { CaseStudyMain} from "./pages/CaseStudyMain";
-import { Post } from "./components/Post";
+import Home from './pages/Home/Home'
+import { DepartmentOne } from "./pages/Department/Department1NICU";
+import { DepartmentTwo } from "./pages/Department/Department2Maternity";
+import { CaseStudyMain} from "./pages/CaseStudyMain/CaseStudyMain";
+import { Post } from "./components/Post/Post";
 
 function App() {
   return (
     <Router>
       <div className="app">
-        <Route exact path='/home' component={HomePage}/>
+        <Route exact path='/home' component={Home}/>
         <Route path="/Department1NICU" exact component={DepartmentOne} />
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
