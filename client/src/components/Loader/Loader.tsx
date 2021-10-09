@@ -6,7 +6,7 @@ type Props = {
 
 };
 
-const Loader = ({} : Props) => {
+const Loader = (props : Props) => {
   return (
     <div className="loader-container loader" {...props}>
       <h3 className="loader-content">Loading..</h3>

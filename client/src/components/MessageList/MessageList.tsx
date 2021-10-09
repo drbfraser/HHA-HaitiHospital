@@ -11,7 +11,7 @@ type Props = {
 
 };
 
-const MessageList = ({} : Props) {
+const MessageList = ({} : Props) => {
   return (
     <div></div>
   );

@@ -2,7 +2,10 @@ import React from 'react';
 
 import './styles.css';
 
-const Footer = () => {
+type Props = {
+};
+
+const Footer = (props : Props) => {
   return (
     <div className="footer">
       <div className="footer-content">
