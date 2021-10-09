@@ -12,6 +12,7 @@ const MessageForm = ({}: Props) {
   );
 }
 
+export default MessageForm;
 
 // Comment out during JS to TS for future reference
 // import React from 'react';

@@ -17,6 +17,8 @@ const MessageList = ({} : Props) {
   );
 };
 
+export default MessageList;
+
 // const MessageList = ({ getMessages, message: { messages, isLoading, error } }) => {
 //   useEffect(() => {
 //     getMessages();

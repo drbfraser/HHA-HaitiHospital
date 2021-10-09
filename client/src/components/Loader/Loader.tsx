@@ -1,8 +1,12 @@
 import React from 'react';
 
-import './styles.css';
+import 'components/Loader/styles.css';
 
-const Loader = (props) => {
+type Props = {
+
+};
+
+const Loader = ({} : Props) => {
   return (
     <div className="loader-container loader" {...props}>
       <h3 className="loader-content">Loading..</h3>
