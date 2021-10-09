@@ -45,7 +45,9 @@ const HomePage: React.FC<Props> = ({ history, location, match }) => {
             <button className="button4"onClick={() => {
                         history.push("/Department4ComHealth");
                     }}>COM-HEALTH</button>
-            <button className="button5">MORE</button>
+          <button className="button5"onClick={() => {
+              history.push("/DepartmentMain");
+          }}>MORE</button>
 
             <div>
                 <button className="caseStudyButton"
