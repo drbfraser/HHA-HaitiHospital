@@ -8,6 +8,9 @@ const Users = ({}: Props) => {
   return (<div></div>);
 }
 
+export default Users;
+
+// Commented out during JS to TS for future reference
 // import React, { useEffect } from 'react';
 // import { compose } from 'redux';
 // import { connect } from 'react-redux';

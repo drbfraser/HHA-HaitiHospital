@@ -10,6 +10,8 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+
+// Commented out during converting JS to TS
 // import React from 'react';
 // import ReactDOM from 'react-dom';
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';

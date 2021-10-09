@@ -8,6 +8,9 @@ const Register = ({} : Props) {
   return(<div></div>);
 }
 
+export default Register;
+
+// comment out during JS to TS for future reference
 // import React from 'react';
 // import { Link, withRouter, Redirect } from 'react-router-dom';
 

@@ -8,6 +8,9 @@ const Profile = ({} : Props) => {
   return (<div></div>);
 }
 
+export default Profile;
+
+// Commented out during JS to TS for future reference
 // import React, { useEffect, useState, useRef } from 'react';
 // import { compose } from 'redux';
 // import { connect } from 'react-redux';

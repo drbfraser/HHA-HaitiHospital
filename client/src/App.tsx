@@ -26,6 +26,7 @@ function App() {
 
 export default App;
 
+// Commented out during JS to TS for future reference
 // import React, { useEffect } from 'react';
 // import { Route, Switch } from 'react-router-dom';
 // import { compose } from 'redux';
