@@ -9,27 +9,19 @@ body {
     font-size: 20px;
 }
 
-.depart {
+.homePage-department {
     font-weight: bold;
     font-size: 30px;
     color: #D1D2A5;
     padding-top: 30px;
+    justify-content: center;
+    margin-top: 30px;
 }
-.depart p {
+.homePage-department h1 {
     padding-right: 800px;
     font-size: 40px;
     font-weight: bold;
     color: white;
-    opacity: 0.5;
-}
-button {
-    /*position: relative;*/
-    /*position: center;*/
-    /*padding-top: 250px;*/
-}
-button:hover {
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-    transform: scale(0.95);
     opacity: 0.5;
 }
 .button1 {
@@ -153,4 +145,9 @@ button:hover {
 .caseTwo {
     width: 700px;
     height: 500px;
+}
+button:hover {
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: scale(0.95);
+    opacity: 0.5;
 }

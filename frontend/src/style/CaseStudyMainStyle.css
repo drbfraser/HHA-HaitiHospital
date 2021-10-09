@@ -4,9 +4,9 @@ body {
     /*width: 1920px;*/
     /*height: 800px;*/
 }
-p {
+body p {
     position: absolute;
-    left: 70px;
+    left: 80px;
     /*padding-right: 800px;*/
     font-size: 40px;
     font-weight: bold;
@@ -47,7 +47,7 @@ p {
 .case-study-more-button {
     height: 450px;
     width: 250px;
-    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("../img/moreicon.png");
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/moreicon.png");
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;

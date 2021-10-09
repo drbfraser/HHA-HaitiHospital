@@ -10,8 +10,8 @@ export const DepartmentMain: React.FC<Props> = ({history}) => {
         <body>
             <div>
                 <Navbar />
+                <p>All Departments</p>
                 <div className="allDepartemnts">
-                    <p>All Departments</p>
                     <button className="DepartmentButton1"
                             onClick={() => {
                                 history.push("/Department1NICU");
