@@ -69,7 +69,7 @@
 }
 
 .message-board {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
     url('../img/background/messageBoardBackground.png');
   /*opacity: 0.5;*/
   max-width:100%;
@@ -82,7 +82,14 @@
   font-size: 30px;
   color: #D1D2A5;
 }
-
+.msgboard-title {
+  padding-right: 700px;
+  padding-top: 30px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  opacity: 0.5;
+}
 .msg {
   margin: 1rem 0;
 }
