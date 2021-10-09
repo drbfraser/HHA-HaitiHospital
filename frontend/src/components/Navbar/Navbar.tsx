@@ -18,13 +18,12 @@ const Navbar = () => {
             <NavLink className="toMessageBoard" to="/messgeBoard" exact>
                 MessageBoard
             </NavLink>
-            <NavLink className="toDepartments" to="/" exact>
+            <NavLink className="toDepartments" to="/DepartmentMain" exact>
                 Departments
             </NavLink>
             <NavLink className="toCaseStudy" to="/caseStudyMain" exact>
                 CaseStudy
             </NavLink>
-
         </nav>
     )
 }

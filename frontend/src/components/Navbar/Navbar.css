@@ -16,15 +16,15 @@ a {
     letter-spacing: 0.5px;
 }
 
-/* a:after {
-    content: "";
-    position: absolute;
-    background-color:khaki;
-    height: 3px;
-    width: 100%;
-    left: 0;
-    bottom: -6px;
-} */
+/*a:after {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    background-color:khaki;*/
+/*    height: 3px;*/
+/*    width: 100%;*/
+/*    left: 0;*/
+/*    bottom: -6px;*/
+/*}*/
 
 a:hover {
     /* color: tomato; */
