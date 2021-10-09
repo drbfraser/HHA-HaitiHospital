@@ -5,7 +5,11 @@ import requireAdmin from '../../hoc/requireAdmin';
 import Layout from '../../layout/Layout';
 import './styles.css';
 
-const Admin = () => {
+type Props = {
+
+}
+
+const Admin = ({}: Props) => {
   return (
     <Layout>
       <div className="admin-page">
