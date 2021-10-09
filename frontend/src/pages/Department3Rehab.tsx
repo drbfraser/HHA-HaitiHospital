@@ -8,33 +8,34 @@ interface Props extends RouteComponentProps{}
 export const DepartmentThree: React.FC<Props> = ({history}) => {
     // const postId = 5;
     return (
-        <div>
-            <Navbar />
-            {/* <button className="Departmentbutton0"
-                onClick={() => {
-                    history.push("../");
-                }}></button> */}
+        <body>
             <div>
+                <Navbar />
+                {/* <button className="Departmentbutton0"
+                    onClick={() => {
+                        history.push("../");
+                    }}></button> */}
+                <div>
                     <>
                         <h1 style={{color:"white",backgroundColor: '#87EDF3', fontFamily:'sans-serif'}}>Department of Rehab</h1>
-                    </>  
-            </div>
+                    </>
+                </div>
 
-            <button className="Departmentbutton1"
-                onClick={() => {
-                    history.push("/Department1NICU");
-                }}>NICU / PAED</button>
-            <button className="Departmentbutton2"
-                onClick={() => {
-                    history.push("/Department2Maternity");
-                }}>MATERNITY</button>
-            <button className="Departmentbutton3"
+                <button className="Departmentbutton1"
+                        onClick={() => {
+                            history.push("/Department1NICU");
+                        }}>NICU / PAED</button>
+                <button className="Departmentbutton2"
+                        onClick={() => {
+                            history.push("/Department2Maternity");
+                        }}>MATERNITY</button>
+                <button className="Departmentbutton3"
                 >REHAB</button>
-            <button className="Departmentbutton4"
-                onClick={() => {
-                    history.push("/Department4ComHealth");
-                }}>COM-HEALTH</button>
-
-        </div>
+                <button className="Departmentbutton4"
+                        onClick={() => {
+                            history.push("/Department4ComHealth");
+                        }}>COM-HEALTH</button>
+            </div>
+        </body>
     );
 };

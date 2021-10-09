@@ -7,14 +7,16 @@ body {
     color: white;
     font-size: 20px; */
 }
-
+body h1 {
+    height: 50px;
+    position: relative;
+    margin-top: 10px;
+}
 button:hover {
     box-shadow: 0 30px 60px rgba(0,0,0,0.5);
     transform: scale(0.95);
     opacity: 0.5;
 }
-
-
 .homePageButton {
     width: 180px;
     height: 80px;
@@ -69,7 +71,7 @@ button:hover {
     width: 200px;
     height: 150px;
     left: 20px;
-    top: 380px;
+    top: 360px;
     border: 5px solid #87EDF3;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/REHAB.jpg");
     background-size: 150%;
@@ -87,7 +89,7 @@ button:hover {
     width: 200px;
     height: 150px;
     left: 240px;
-    top: 380px;
+    top: 360px;
     border: 5px solid #87EDF3;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/COMMUNITYHEALTH.jpg");
     background-size: 300%;

@@ -21,7 +21,7 @@ const Navbar = () => {
             <NavLink className="toDepartments" to="/" exact>
                 Departments
             </NavLink>
-            <NavLink className="toCaseStudy" to="/" exact>
+            <NavLink className="toCaseStudy" to="/caseStudyMain" exact>
                 CaseStudy
             </NavLink>
 
