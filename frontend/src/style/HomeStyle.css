@@ -137,6 +137,7 @@ button:hover {
     font-weight: bold;
     /*color: #D1D2A5;*/
     color: #04181F;
+    border-radius: 20px;
 }
 .caseStudy-image img {
     border: 5px solid #04181F;

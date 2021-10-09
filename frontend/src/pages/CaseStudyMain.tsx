@@ -1,14 +1,29 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { RouteComponentProps} from "react-router-dom";
+import Navbar from "../components/Navbar/Navbar";
 
-interface Props {}
+require("../style/CaseStudyMainStyle.css");
 
-export const CaseStudyMain: React.FC<Props> = () => {
-    // const postId = 5;
+interface Props extends RouteComponentProps {}
+
+export const CaseStudyMain: React.FC<Props> = ({ history, location, match }) => {
     return (
-        <div>
-            <div>this is a Case Study main page</div>
-            {/*<Link to={`/posts/${postId}`}>go to post 1</Link>*/}
-        </div>
+        <body>
+            <Navbar />
+            <p> Previous Case Studies</p>
+
+            <div className="case-study-main-content">
+                <button className="caseTwo-button"onClick={() => {
+                    history.push("/");
+                }}></button>
+                <button className="caseOne-button"onClick={() => {
+                    history.push("/");
+                }}></button>
+                <button className="case-study-more-button"onClick={() => {
+                    history.push("/");
+                }}></button>
+            </div>
+        </body>
+
     );
 };
