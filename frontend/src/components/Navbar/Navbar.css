@@ -1,20 +1,17 @@
 .navbar {
     background-color: white;
     height: 105px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: auto;
+    /*border-radius: 10px;*/
+    /*justify-content: space-around;*/
 }
-
-a {
-    position: relative;
-    text-decoration: none;
-    font-family: 'Poppins', sans-serif;
-    color:wheat;
-    font-size: 24px;
-    letter-spacing: 0.5px;
-}
+/*a {*/
+/*    position: relative;*/
+/*    text-decoration: none;*/
+/*    font-family: 'Poppins', sans-serif;*/
+/*    color:wheat;*/
+/*    font-size: 24px;*/
+/*    letter-spacing: 0.5px;*/
+/*}*/
 
 /*a:after {*/
 /*    content: "";*/
@@ -28,9 +25,31 @@ a {
 
 a:hover {
     /* color: tomato; */
-    color:gainsboro;
+    color: wheat;
 }
 
 a:hover:after {
     width: 100%;
+}
+.navbar-home-button {
+    position: absolute;
+    left: 0px;
+}
+
+.navbar-other-button {
+    position: absolute;
+    right: 5px;
+    /*left: 250px;*/
+    margin-right: 20px;
+    margin-top: 55px;
+}
+.navbar-other-button * {
+    position: relative;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    color: dodgerblue;
+    font-size: 20px;
+    font-weight: bolder;
+    letter-spacing: 0.5px;
+    margin-left: 15px;
 }
