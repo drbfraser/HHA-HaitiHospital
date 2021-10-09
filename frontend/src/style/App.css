@@ -60,10 +60,11 @@
 .goto-leaderboard-btn {
   font-style: normal;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 30px;
   line-height: 50px;
-  color: #309DCB;
-
+  /*color: #309DCB;*/
+  color: white;
+  opacity: 0.5;
   border: 0;
   background-color: transparent;
 }
@@ -83,22 +84,26 @@
   color: #D1D2A5;
 }
 .msgboard-title {
-  padding-right: 700px;
+  padding-right: 680px;
   padding-top: 30px;
-  font-size: 40px;
+  font-size: 38px;
   font-weight: bold;
   color: white;
   opacity: 0.5;
 }
 .msg {
+  /*padding-right: 420px;*/
   margin: 1rem 0;
+  font-size: 20px;
 }
-
+.msg-seemore {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+}
 .leader-bar {
   padding: 1rem 0.5rem;
   margin: 1rem 0;
-
   background: rgba(208, 246, 249, 0.25);
-
   border-radius: 10px;
 }
