@@ -4,6 +4,7 @@ interface IBtn extends IProps {
   value: string;  
 }
 
+import '/components/Button/styles.ccs'
 const Btn = (props: IBtn) => {
   
   return (
