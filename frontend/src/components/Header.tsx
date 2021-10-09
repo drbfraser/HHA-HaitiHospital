@@ -22,7 +22,7 @@ const Header = (props: IHeader) => {
             style={
               {'--griditem-alignself': 'center',
               '--griditem-justifyself': 'center',
-              'width' : '40%',
+              'width' : '300px',
               } as MyCustomCSS
             }
           />

@@ -18,17 +18,17 @@ const LeaderBar = (props: ILeaderBar) => {
         } as MyCustomCSS} 
         value='LEADERS BOARD'
       />
-      <TextHolder classes='grid-item'
+      <TextHolder classes='grid-item department-leader'
         style={{'--griditem-alignself':'center',
           '--griditem-justifyself': ' center',
         } as MyCustomCSS}
         text='NICU/PAED'
       />
-      <TextHolder classes='grid-item'
+      <TextHolder classes='grid-item department-leader-point'
         style={{'--griditem-alignself':'center',
           '--griditem-justifyself' : 'center',
         } as MyCustomCSS}
-        text='position 1 score 99'/>
+        text='Position 1 Score 99'/>
     </div>
   )
 }
