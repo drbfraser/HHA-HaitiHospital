@@ -1,0 +1,46 @@
+.profile .profile-info {
+  display: flex;
+  padding-bottom: 20px;
+}
+
+.profile .avatar {
+  width: 220px;
+  height: 220px;
+  align-self: center;
+  margin-right: 20px;
+  object-fit: cover;
+}
+
+.profile .label,
+.profile label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.profile .info {
+  font-size: 18px;
+}
+
+.profile .info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.profile .btn {
+  width: auto;
+  margin-right: 10px;
+}
+
+.profile input {
+  width: 40%;
+  display: block;
+}
+
+.profile .input-div {
+  /* white-space: nowrap; */
+}
+.profile .form {
+  margin-bottom: 30px;
+}

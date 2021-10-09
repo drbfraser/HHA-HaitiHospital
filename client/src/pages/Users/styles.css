@@ -1,0 +1,43 @@
+.users {
+  min-height: 100%;
+}
+.users .profile {
+  display: flex;
+  padding: 20px 0;
+  border-bottom: 1px solid black;
+}
+.users .profile:last-child {
+  border-bottom: 0;
+}
+
+.users .avatar {
+  width: 150px;
+  height: 150px;
+  align-self: center;
+  margin-right: 20px;
+  object-fit: cover;
+}
+
+.users .label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.users .info {
+  font-size: 18px;
+}
+
+.users .info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.users .list {
+  min-height: 100%;
+}
+
+.users .profile-link {
+  color: rgb(0, 0, 238);
+}
