@@ -5,7 +5,7 @@ import IProps from "components/IProps/IProps";
 import NavBar from "components/NavBar/NavBar";
 
 import Logo from "img/logo/LogoWText.svg";
-import "./DepartmentPageDeptButton.css";
+import "./DepartmentPageDeptButtons.css";
 
 interface IDepartment extends IProps {
 

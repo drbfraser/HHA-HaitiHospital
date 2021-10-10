@@ -2,7 +2,7 @@ import React from 'react';
 
 import IProps from 'components/IProps/IProps';
 
-import './styles.ccs';
+import './styles.css';
 
 interface IButton extends IProps {
   value: string;  

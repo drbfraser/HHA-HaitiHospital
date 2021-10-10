@@ -36,7 +36,7 @@
     "extends": "react-app"
   },
   "proxy": "https://server:5000",
-  "browserslist": {
+  "bro  serslist": {
     "production": [
       ">0.2%",
       "not dead",

@@ -70,7 +70,7 @@
 
 .message-board {
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url('../img/background/messageBoardBackground.png');
+    url('./img/background/messageBoardBackground.png');
   /*opacity: 0.5;*/
   max-width:100%;
   height: 500px;

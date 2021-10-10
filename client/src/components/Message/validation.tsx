@@ -1,3 +1,4 @@
+export {};
 
 // Commented out during Ts to Js for future reference
 // import * as Yup from 'yup';
@@ -8,3 +9,4 @@
 //     .max(300, 'Must be 300 characters or less')
 //     .required('Required'),
 // });
+
