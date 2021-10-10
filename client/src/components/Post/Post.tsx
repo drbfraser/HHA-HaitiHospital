@@ -12,7 +12,11 @@ interface IPost extends RouteComponentProps {
   id: string;
 };
 
-export default {};
+const Post = (props: IPost) => {
+
+};
+
+export default Post;
 
 // Comment out during merging with boilerplate, need fix on argument type
 
