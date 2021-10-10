@@ -9,7 +9,7 @@ interface ICaseStudyMain extends IProps {
 
 };
 
-export const CaseStudyMain: React.FC<ICaseStudyMain> = () => {
+export const CaseStudyMain = (props: ICaseStudyMain) => {
     // const postId = 5;
     return (
         <div>

@@ -16,7 +16,7 @@ interface IDepartment extends RouteComponentProps {
 };
 
 
-export const DepartmentOne: React.FC<IDepartment> = ({history}) => {
+export const DepartmentOne = ({history} : IDepartment) => {
     return (
         <div>
             <NavBar />

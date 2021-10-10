@@ -17,7 +17,7 @@ interface IHome extends IProps {
 interface IHome extends RouteComponentProps {
 };
 
-const Home: React.FC<IHome> = ({ history, location, match }) => {
+const Home = ({ history, location, match } : IHome) => {
     console.log(match, location);
     
     return (
