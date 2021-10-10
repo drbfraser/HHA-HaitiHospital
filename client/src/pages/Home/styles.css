@@ -29,7 +29,7 @@ body {
   height: 350px;
   margin-left: 20px;
   border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/NICUPEAD.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/NICUPEAD.jpg");
   background-size: 140%;
   background-position: -35px;
   /*margin-top: -50px;*/
@@ -45,7 +45,7 @@ body {
   height: 350px;
   margin-left: 20px;
   border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/MATERNITY.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/MATERNITY.jpg");
   background-size: 300%;
   background-position: -240px;
   /*padding-top: 180px;*/
@@ -61,7 +61,7 @@ body {
   height: 350px;
   margin-left: 20px;
   border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/REHAB.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/REHAB.jpg");
   background-size: 150%;
   background-position: -40px -20px;
   /*margin-top: -50px;*/
@@ -77,7 +77,7 @@ body {
   height: 350px;
   margin-left: 20px;
   border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/COMMUNITYHEALTH.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/COMMUNITYHEALTH.jpg");
   background-size: 300%;
   background-position: -240px;
   /*padding-top: 180px;*/
@@ -95,7 +95,7 @@ body {
   border: 5px solid #D1D2A5;
   /*width: 200px;*/
   /*height: 400px;*/
-  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("../img/moreicon.png");
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("../../img/moreicon.png");
   /*background-color: #B4B4A8;*/
   background-size: 100%;
   /*background-position: 0px 50px;*/
@@ -114,7 +114,7 @@ body {
 
 .caseStudyButton {
   border: none;
-  background: transparent url("../img/rightArrow.png");
+  background: transparent url("../../img/rightArrow.png");
   background-size: 15%;
   background-repeat: no-repeat;
   /*background-position: right;*/

@@ -31,13 +31,8 @@ const LeaderBar = (props: ILeaderBar) => {
       <TextHolder classes='grid-item department-leader-point'
         style={{'--griditem-alignself':'center',
           '--griditem-justifyself' : 'center',
-<<<<<<< HEAD:client/src/components/LeaderBar/LeaderBar.tsx
         } as ICustomCSS}
-        text='position 1 score 99'/>
-=======
-        } as MyCustomCSS}
         text='Position 1 Score 99'/>
->>>>>>> 8d9f73d2a79f93bfc40b54db3967b8bc7a38af59:frontend/src/components/LeaderBar.tsx
     </div>
   )
 }
