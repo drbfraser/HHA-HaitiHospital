@@ -1,28 +1,32 @@
 import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 
-import case1 from "../img/case1.jpg"
-import case2 from "../img/case2.jpg"
+import Header from 'components/Header/Header';
+import LeaderBar from 'components/LeaderBar/LeaderBar';
+import MessageBoard from 'components/MessageBoard/MessageBoard';
+import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
+import IProps from 'components/IProps/IProps';
 
-import Header from '../components/Header'
-import LeaderBar from '../components/LeaderBar'
-import MessageBoard from '../components/MessageBoard';
-import { MyCustomCSS } from '../components/MyCustomCSS';
+import case1 from "img/case1.jpg";
+import case2 from "img/case2.jpg";
+import "pages/Home/style.css";
 
-require("../style/HomeStyle.css");
+interface IHome extends IProps {
+};
 
-interface Props extends RouteComponentProps {}
+interface IHome extends RouteComponentProps {
+};
 
-const Home: React.FC<Props> = ({ history, location, match }) => {
+const Home: React.FC<IHome> = ({ history, location, match }) => {
     console.log(match, location);
     
     return (
     <>
       <Header classes='header grid'
-        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as MyCustomCSS}
+        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as ICustomCSS}
       />
       <LeaderBar classes='leader-bar grid'
-        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as MyCustomCSS}
+        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as ICustomCSS}
       />
       <MessageBoard classes='message-board'/>
 

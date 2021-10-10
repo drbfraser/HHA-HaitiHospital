@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Layout from '../../layout/Layout';
-import './styles.css';
+import IProps from 'components/IProps/IProps';
+import Layout from 'layout/Layout';
 
-const NotFound = () => {
+import '/pages/NotFound/styles.css';
+
+interface INotFound extends IProps {
+
+};
+
+const NotFound: React.FC<INotFound> = () => {
   return (
     <Layout>
       <div className="not-found-page">

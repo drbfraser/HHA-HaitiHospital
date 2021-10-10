@@ -1,13 +1,15 @@
 import React from 'react';
 
-import Layout from 'layout'
+import IProps from 'components/IProps/IProps';
+import Layout from 'layout/Layout'
 
-import './styles.css';
+import 'pages/Login/styles.css';
 
-type Props = {
-}
+interface ILogin extends IProps {
 
-const Login = ({} : Props) => {
+};
+
+const Login: React.FC<ILogin> = ({}) => {
   return(
     <Layout>
       <div></div>
