@@ -1,13 +1,14 @@
 import React from 'react';
 
-import 'layout/styles.css';
+import IProps from 'components/IProps/IProps';
 
-type Props = {
+import 'components/layout/styles.css';
+
+interface ILayout extends IProps {
   children: any,
-
 };
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children }: ILayout) => {
   return (
     <div></div>
   );

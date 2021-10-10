@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import Message from 'components/Message';
-import Loader from 'components/Loader';
 
+import Message from 'components/Message/Message';
+import Loader from 'components/Loader/Loader';
 // import { getMessages } from '../../store/actions/messageActions';
+import IProps from 'components/IProps/IProps';
+
 import 'components/MessageList/styles.css';
 
-type Props = {
+interface IMessageList extends IProps {
 
 };
 
-const MessageList = ({} : Props) => {
+const MessageList = (props : IMessageList) => {
   return (
     <div></div>
   );

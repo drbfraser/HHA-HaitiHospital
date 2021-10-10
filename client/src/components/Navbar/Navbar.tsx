@@ -1,10 +1,16 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
-import 'components/Navbar/styles.css';
-import logo from '../../img/logo/LogoWText.svg'
+import IProps from 'components/IProps/IProps';
 
-const Navbar = () => {
+import 'components/Navbar/styles.css';
+import logo from 'img/logo/LogoWText.svg'
+
+interface INavBar extends IProps {
+
+};
+
+const NavBar = (props:INavBar) => {
     return (
         <nav className="navbar">
             {/* <NavLink to="/" className="home-button" ><a href="" className="logo"><img className="logo" src={logo} alt="" /></a></NavLink> */}
@@ -30,7 +36,7 @@ const Navbar = () => {
     )
 }
 
-export default Navbar;
+export default NavBar;
 
 // Commented out during Js to Ts for future reference
 // import React from 'react';

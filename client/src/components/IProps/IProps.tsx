@@ -1,7 +1,10 @@
-import { CSSProperties } from 'react';
+// import { CSSProperties } from 'react';
+import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
 
-export interface IProps {
+interface IProps {
   classes?: string;
-  style?: CSSProperties;
+  style?: ICustomCSS;
 }
+
+export default IProps;
 

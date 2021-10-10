@@ -1,11 +1,13 @@
 import React from 'react';
+import IProps from 'components/IProps/Iprops';
 
-import './styles.css';
+import 'components/styles.css';
 
-type Props = {
-};
+interface IFooter extends IProps {
 
-const Footer = (props : Props) => {
+}
+
+const Footer = (props : IFooter) => {
   return (
     <div className="footer">
       <div className="footer-content">

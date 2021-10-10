@@ -1,5 +1,7 @@
-import HHALogoSvg from '../img/logo/LogoWText.svg';
-import {IProps} from './IProps'
+import HHALogoSvg from "img/logo/LogoWText.svg";
+import IProps from "components/IProps/IProps";
+
+import "components/HHALogo/styles.css";
 
 interface IHHALogo extends IProps{
 }

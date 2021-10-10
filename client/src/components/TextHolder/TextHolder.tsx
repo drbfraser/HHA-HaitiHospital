@@ -1,4 +1,6 @@
-import {IProps} from './IProps'
+import IProps from 'components/IProps/IProps';
+
+import 'components/TextHolder/TextHolder';
 
 interface ITextHolder extends IProps {
   text: string;

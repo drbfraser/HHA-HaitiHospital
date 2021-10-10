@@ -1,33 +1,35 @@
-import {IProps} from './IProps';
-import Btn from './Btn';
-import TextHolder from './TextHolder';
-import { MyCustomCSS } from './MyCustomCSS';
+import IProps from 'components/IProps/IProps';
+import Button from 'components/Button/Button';
+import TextHolder from 'components/TextHolder/TextHolder';
+import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
+
+import 'components/LeaderBar/styles.css'
 
 interface ILeaderBar extends IProps {
 }
 
 const LeaderBar = (props: ILeaderBar) => {
-
+  
   return(
     <div className={props.classes}
       style={props.style}
     >
-      <Btn classes='btn grid-item goto-leaderboard-btn'
+      <Button classes='btn grid-item goto-leaderboard-btn'
         style={{'--griditem-alignself':'center',
           '--griditem-justifyself':'center',
-        } as MyCustomCSS} 
+        } as ICustomCSS} 
         value='LEADERS BOARD'
       />
       <TextHolder classes='grid-item'
         style={{'--griditem-alignself':'center',
           '--griditem-justifyself': ' center',
-        } as MyCustomCSS}
+        } as ICustomCSS}
         text='NICU/PAED'
       />
       <TextHolder classes='grid-item'
         style={{'--griditem-alignself':'center',
           '--griditem-justifyself' : 'center',
-        } as MyCustomCSS}
+        } as ICustomCSS}
         text='position 1 score 99'/>
     </div>
   )

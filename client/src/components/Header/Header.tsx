@@ -1,13 +1,14 @@
 import { useLocation } from 'react-router-dom';
 
-import HHALogo from './HHALogo';
-import Btn from './Btn';
-import {IProps} from './IProps';
-import { MyCustomCSS } from './MyCustomCSS';
+import HHALogo from 'components/HHALogo/HHALogo';
+import Button from 'components/Button/Button';
+import IProps from 'components/IProps/IProps';
+import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
+
+import 'components/styless.css';
 
 interface IHeader extends IProps{
 }
-
 
 const Header = (props: IHeader) => {
   const location = useLocation();
@@ -23,18 +24,18 @@ const Header = (props: IHeader) => {
               {'--griditem-alignself': 'center',
               '--griditem-justifyself': 'center',
               'width' : '40%',
-              } as MyCustomCSS
+              } as ICustomCSS
             }
           />
-          <Btn classes='btn grid-item goto-admin-btn'
+          <Button classes='btn grid-item goto-admin-btn'
             style= {
-              {'--griditem-alignself':'center'} as MyCustomCSS
+              {'--griditem-alignself':'center'} as ICustomCSS
             }
             value='ADMIN PANEL'
           />
-          <Btn classes='btn grid-item signout-btn'
+          <Button classes='btn grid-item signout-btn'
             style = {
-              {'--griditem-alignself':'center'} as MyCustomCSS
+              {'--griditem-alignself':'center'} as ICustomCSS
             } 
             value='SIGN OUT'/>
         </>

@@ -1,12 +1,14 @@
 import React from 'react';
 
+import IProps from 'components/IProps/IProps';
+
 import 'components/Message/styles.css';
 
-type Props {
+interface IMessage extends IProps {
 
 };
 
-const Message = ({}: Props) {
+const Message = (props: IMessage) => {
   return (<div></div>);
 }
 

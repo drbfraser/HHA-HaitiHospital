@@ -1,11 +1,12 @@
-import {IProps} from './IProps';
+import IProps from 'components/IProps/IProps';
 
-interface IBtn extends IProps {
+import 'components/Button/styles.ccs';
+
+interface IButton extends IProps {
   value: string;  
 }
 
-import '/components/Button/styles.ccs'
-const Btn = (props: IBtn) => {
+const Btn = (props: IButton) => {
   
   return (
     <button className={props.classes}

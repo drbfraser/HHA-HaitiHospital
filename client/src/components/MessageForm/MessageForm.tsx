@@ -1,12 +1,14 @@
 import React from 'react';
 
+import IProps from 'components/IProps/IProps';
+
 import 'components/MessageForm/styles.css';
 
-type Props = {
+interface IMessageForm extends IProps {
 
 };
 
-const MessageForm = ({}: Props) {
+const MessageForm = (props: IMessageForm) => {
   return(
     <div></div>
   );
