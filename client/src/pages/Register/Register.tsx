@@ -1,10 +1,14 @@
 import React from 'react';
 
-type Props = {
+import IProps from 'components/IProps/IProps';
+
+import 'pages/Register/styles.css';
+
+interface IRegister extends IProps {
 
 };
 
-const Register = ({} : Props) {
+const Register = ({} : IRegister) => {
   return(<div></div>);
 }
 

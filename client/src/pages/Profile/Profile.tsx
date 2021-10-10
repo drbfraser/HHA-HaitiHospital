@@ -1,10 +1,13 @@
-import './styles.css';
 
-type Props = {
+import IProps from 'components/IProps/IProps';
 
-}
+import 'pages/Profile/styles.css';
 
-const Profile = ({} : Props) => {
+interface IProfile extends IProps {
+
+};
+
+const Profile = (props : IProfile) => {
   return (<div></div>);
 }
 

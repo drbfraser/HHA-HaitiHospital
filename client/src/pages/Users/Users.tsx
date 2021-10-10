@@ -1,10 +1,12 @@
 import React from 'react';
 
+import IProps from 'components/IProps/IProps';
+
 import 'pages/Users/styles.css';
 
-type Props = {};
+interface IUsers extends IProps {};
 
-const Users = ({}: Props) => {
+const Users = (props: IUsers) => {
   return (<div></div>);
 }
 
