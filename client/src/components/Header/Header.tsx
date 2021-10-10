@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import React from 'react';
 
 import HHALogo from 'components/HHALogo/HHALogo';
 import Button from 'components/Button/Button';

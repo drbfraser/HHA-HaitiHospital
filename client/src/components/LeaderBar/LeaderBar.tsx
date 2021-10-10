@@ -1,3 +1,5 @@
+import React from 'react';
+
 import IProps from 'components/IProps/IProps';
 import Button from 'components/Button/Button';
 import TextHolder from 'components/TextHolder/TextHolder';
