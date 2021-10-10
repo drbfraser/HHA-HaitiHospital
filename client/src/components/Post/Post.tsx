@@ -12,11 +12,15 @@ interface IPost extends RouteComponentProps {
   id: string;
 };
 
-const Post = ({ match } : IPost) => {
-    // React.useEffect(() => {
-    //   fetch(`api.example.com/posts/${match.params.id}`)
-    // }, [match.params.id])
-    return <div>rendering post {match.params.id}</div>;
-};
+export default {};
 
-export default Post;
+// Comment out during merging with boilerplate, need fix on argument type
+
+// const Post = ({ match } : IPost) => {
+//     // React.useEffect(() => {
+//     //   fetch(`api.example.com/posts/${match.params.id}`)
+//     // }, [match.params.id])
+//     return <div>rendering post {match.params.id}</div>;
+// };
+
+// export default Post;
