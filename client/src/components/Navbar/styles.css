@@ -1,95 +1,55 @@
 .navbar {
   background-color: white;
   height: 105px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: auto;
+  /*border-radius: 10px;*/
+  /*justify-content: space-around;*/
 }
+/*a {*/
+/*    position: relative;*/
+/*    text-decoration: none;*/
+/*    font-family: 'Poppins', sans-serif;*/
+/*    color:wheat;*/
+/*    font-size: 24px;*/
+/*    letter-spacing: 0.5px;*/
+/*}*/
 
-a {
-  position: relative;
-  text-decoration: none;
-  font-family: 'Poppins', sans-serif;
-  color:wheat;
-  font-size: 24px;
-  letter-spacing: 0.5px;
-}
-
-/* a:after {
-  content: "";
-  position: absolute;
-  background-color:khaki;
-  height: 3px;
-  width: 100%;
-  left: 0;
-  bottom: -6px;
-} */
+/*a:after {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    background-color:khaki;*/
+/*    height: 3px;*/
+/*    width: 100%;*/
+/*    left: 0;*/
+/*    bottom: -6px;*/
+/*}*/
 
 a:hover {
   /* color: tomato; */
-  color:gainsboro;
+  color: wheat;
 }
 
 a:hover:after {
   width: 100%;
 }
-
-
-/* To merge with frontend, for future reference*/
-/* nav {
-  background-color: darkblue;
-  padding-left: 30px;
-  padding-right: 10px;
-  height: 60px;
+.navbar-home-button {
+  position: absolute;
+  left: 0px;
 }
 
-.navbar {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  display: inline-block;
-  color: white;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.nav-links {
-  list-style: none;
-  font-size: 20px;
-  display: flex;
-  margin: 5px 0;
-}
-
-.nav-item {
-  display: inline-flex;
-}
-
-.nav-item a {
-  display: inline-block;
-  padding: 10px 20px;
-  text-decoration: none;
-  color: white;
-  white-space: nowrap;
-}
-
-.nav-item:hover {
-  background-color: white;
-}
-
-.nav-item:hover a {
-  color: darkblue;
-}
-
-.flex-1 {
-  flex: 1;
-}
-.navbar .avatar {
-  width: 30px;
-  height: 30px;
-  align-self: center;
+.navbar-other-button {
+  position: absolute;
+  right: 5px;
+  /*left: 250px;*/
   margin-right: 20px;
-  object-fit: cover;
-} */
+  margin-top: 55px;
+}
+.navbar-other-button * {
+  position: relative;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  color: dodgerblue;
+  font-size: 20px;
+  font-weight: bolder;
+  letter-spacing: 0.5px;
+  margin-left: 15px;
+}

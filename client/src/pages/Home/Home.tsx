@@ -18,9 +18,8 @@ interface IHome extends RouteComponentProps {
 };
 
 const Home = ({ history, location, match } : IHome) => {
-    console.log(match, location);
-    
-    return (
+  console.log(match, location);
+  return (
     <>
       <Header classes='header grid'
         style={{'gridTemplateColumns': '2fr 1fr 1fr'} as ICustomCSS}
@@ -30,8 +29,8 @@ const Home = ({ history, location, match } : IHome) => {
       />
       <MessageBoard classes='message-board'/>
 
-      <div className="depart">
-          <p>Departments</p>
+      <div className="homePage-department">
+          <h1>Departments</h1>
             {/*<Link to="/department">toDepart</Link>*/}
             <button className="button1"
                 onClick={() => {
@@ -49,7 +48,9 @@ const Home = ({ history, location, match } : IHome) => {
             <button className="button4"onClick={() => {
                         history.push("/Department4ComHealth");
                     }}>COM-HEALTH</button>
-            <button className="button5">MORE</button>
+          <button className="button5"onClick={() => {
+              history.push("/DepartmentMain");
+          }}>MORE</button>
 
             <div>
                 <button className="caseStudyButton"

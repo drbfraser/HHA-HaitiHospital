@@ -1,0 +1,54 @@
+body {
+    background: #097F99;
+    background-repeat: no-repeat;
+    /*width: 1920px;*/
+    /*height: 800px;*/
+}
+body p {
+    position: absolute;
+    left: 80px;
+    /*padding-right: 800px;*/
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    opacity: 0.5;
+}
+.case-study-main-content {
+    justify-content: center;
+    margin-top: 100px;
+}
+.case-study-main-content button {
+    border: 5px solid wheat;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-top: 10px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+.caseTwo-button {
+    height: 450px;
+    width: 600px;
+    background: url("../img/case2.jpg");
+    background-size: 120%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.caseOne-button {
+    height: 450px;
+    width: 300px;
+    background: url("../img/case1.jpg");
+    background-size: 120%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.case-study-more-button {
+    height: 450px;
+    width: 250px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/moreicon.png");
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}

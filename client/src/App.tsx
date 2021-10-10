@@ -4,10 +4,17 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 import './App.css';
 
 import Home from './pages/Home/Home'
-import { DepartmentOne } from "./pages/Department/Department1NICU";
-import { DepartmentTwo } from "./pages/Department/Department2Maternity";
-import { CaseStudyMain} from "./pages/CaseStudyMain/CaseStudyMain";
-import Post from "./components/Post/Post";
+import { DepartmentOne } from "pages/Department/Department1NICU";
+import { DepartmentTwo } from "pages/Department/Department2Maternity";
+import { DepartmentThree} from "pages/Department/Department3Rehab";
+import { DepartmentFour} from "pages/Department/Department4ComHealth";
+import { CaseStudyMain} from "pages/CaseStudyMain/CaseStudyMain";
+import { DepartmentMain} from "pages/Department/DepartmentMain";
+import { LeaderBoardMain } from "pages/LeaderBoardMain/LeaderBoardMain"
+import { MessageBoardMain } from "pages/MessageBoardMain/MessageBoardMain";
+// import Post from "./components/Post/Post";
+
+
 
 const App = () => {
   return (
@@ -16,7 +23,14 @@ const App = () => {
         <Route exact path='/home' component={Home}/>
         <Route path="/Department1NICU" exact component={DepartmentOne} />
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />
+        <Route path="/Department3Rehab" exact component={DepartmentThree} />
+        <Route path="/Department4ComHealth" exact component={DepartmentFour} />
+        <Route path="/departmentMain" exact component={DepartmentMain} />
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
+        <Route path="/leaderBoard" exact component={LeaderBoardMain} />
+        <Route path="/messageBoard" exact component={MessageBoardMain} />
+
+   
         {/*<Route path="/posts/:id" exact component={Post} />*/}
         {/*<Route path="/" render={() => <div>404</div>} />*/}
       </div>

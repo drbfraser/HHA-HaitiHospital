@@ -1,0 +1,102 @@
+body {
+    background: #097F99;
+    background-repeat: no-repeat;
+    /*width: 1920px;*/
+    /*height: 800px;*/
+    /* text-align: center;
+    color: white;
+    font-size: 20px; */
+}
+
+.allDepartemnts {
+    font-weight: bold;
+    font-size: 30px;
+    color: #D1D2A5;
+    padding-top: 30px;
+}
+.allDepartemnts p {
+    padding-right: 800px;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    opacity: 0.5;
+}
+.allDepartemnts button {
+    /*position: relative;*/
+    /*position: center;*/
+    width: 200px;
+    height: 350px;
+    margin-left: 20px;
+    margin-top: 20px;
+
+    border: 5px solid white;
+    border-radius: 10px;
+    transition-duration: .50s;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+.allDepartemnts button:hover {
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transform: scale(0.95);
+    opacity: 0.5;
+}
+.DepartmentButton1 {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/NICUPEAD.jpg");
+    background-size: 140%;
+    background-position: -35px;
+    /*margin-top: -50px;*/
+    transition-duration: .50s;
+}
+.DepartmentButton2 {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/MATERNITY.jpg");
+    background-size: 300%;
+    background-position: -240px;
+    /*padding-top: 180px;*/
+    transition-duration: .50s;
+}
+.DepartmentButton3 {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/REHAB.jpg");
+    background-size: 150%;
+    background-position: -40px -20px;
+    /*margin-top: -50px;*/
+    transition-duration: .50s;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+.DepartmentButton4 {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/COMMUNITYHEALTH.jpg");
+    background-size: 300%;
+    background-position: -240px;
+    /*padding-top: 180px;*/
+    transition-duration: .50s;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+.DepartmentButton5 {
+    /*background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));*/
+    background-color: #B4B4A8;
+    background-size: 100%;
+    /*background-position: 0px 50px;*/
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    /*color: #87EDF3;*/
+    /*font-size: 30px;*/
+    /*vertical-align: bottom;*/
+    /*padding-top: 250px;*/
+    transition-duration: .50s;
+}
+.DepartmentButton6 {
+    background-color: #B4B4A8;
+    background-size: 100%;
+    transition-duration: .50s;
+}
+.DepartmentButton7 {
+    background-color: #B4B4A8;
+    background-size: 100%;
+    transition-duration: .50s;
+}
+.DepartmentButton8 {
+    background-color: #B4B4A8;
+    background-size: 100%;
+    transition-duration: .50s;
+}

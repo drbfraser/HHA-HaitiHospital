@@ -24,8 +24,13 @@ const Header = (props: IHeader) => {
             style={
               {'--griditem-alignself': 'center',
               '--griditem-justifyself': 'center',
+<<<<<<< HEAD:client/src/components/Header/Header.tsx
               'width' : '40%',
               } as ICustomCSS
+=======
+              'width' : '300px',
+              } as MyCustomCSS
+>>>>>>> 8d9f73d2a79f93bfc40b54db3967b8bc7a38af59:frontend/src/components/Header.tsx
             }
           />
           <Button classes='btn grid-item goto-admin-btn'
