@@ -1,15 +1,25 @@
 import * as React from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
-require("./DepartmentPageDeptButtons.css");
+import { Link, NavLink, RouteComponentProps } from "react-router-dom";
 
-interface Props extends RouteComponentProps{}
+import IProps from "components/IProps/IProps";
+import NavBar from "components/NavBar/NavBar";
 
-export const DepartmentFour: React.FC<Props> = ({history}) => {
+import Logo from "img/logo/LogoWText.svg";
+import "pages/Department/DepartmentPageDeptButton.css";
+
+interface IDepartment extends IProps {
+
+};
+
+interface IDepartment extends RouteComponentProps {
+
+};
+
+export const DepartmentFour: React.FC<IDepartment> = ({history}) => {
     // const postId = 5;
     return (
         <div>
-            {/* <Navbar /> */}
+            {/* <NavBar /> */}
             {/* <button className="Departmentbutton0"
                 onClick={() => {
                     history.push("../");

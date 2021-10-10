@@ -1,9 +1,15 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-interface Props {}
+import IProps from "components/IProps/IProps";
 
-export const CaseStudyMain: React.FC<Props> = () => {
+import "pages/CaseStudyMain/styles.css";
+
+interface ICaseStudyMain extends IProps {
+
+};
+
+export const CaseStudyMain: React.FC<ICaseStudyMain> = () => {
     // const postId = 5;
     return (
         <div>
