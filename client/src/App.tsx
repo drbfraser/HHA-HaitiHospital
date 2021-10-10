@@ -7,9 +7,9 @@ import Home from './pages/Home/Home'
 import { DepartmentOne } from "./pages/Department/Department1NICU";
 import { DepartmentTwo } from "./pages/Department/Department2Maternity";
 import { CaseStudyMain} from "./pages/CaseStudyMain/CaseStudyMain";
-import { Post } from "./components/Post/Post";
+import Post from "./components/Post/Post";
 
-function App() {
+const App = () => {
   return (
     <Router>
       <div className="app">

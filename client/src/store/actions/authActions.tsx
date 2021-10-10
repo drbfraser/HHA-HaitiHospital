@@ -1,5 +1,5 @@
 
-// Commented out during JS to TS for future reference;
+// Commented out during JS to TS for future reference
 // import axios from 'axios';
 
 // import { getMessages } from './messageActions';
