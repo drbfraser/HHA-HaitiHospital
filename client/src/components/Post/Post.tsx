@@ -12,7 +12,7 @@ interface IPost extends RouteComponentProps {
   id: string;
 };
 
-const Post: React.FC<IPost> = ({ match } : IPost) => {
+const Post = ({ match } : IPost) => {
     // React.useEffect(() => {
     //   fetch(`api.example.com/posts/${match.params.id}`)
     // }, [match.params.id])

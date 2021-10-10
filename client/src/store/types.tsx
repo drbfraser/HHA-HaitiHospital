@@ -1,3 +1,6 @@
+// Export empty to make it module
+export {};
+
 // Commented out during JS to TS for future reference
 // export const LOGIN_WITH_OAUTH_LOADING = 'LOGIN_WITH_OAUTH_LOADING';
 // export const LOGIN_WITH_OAUTH_SUCCESS = 'LOGIN_WITH_OAUTH_SUCCESS';

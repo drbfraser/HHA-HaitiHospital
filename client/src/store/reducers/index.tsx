@@ -1,3 +1,6 @@
+// Export empty to make it module
+export {};
+
 // Commented out during JS to TS for future reference
 // import { combineReducers } from 'redux';
 

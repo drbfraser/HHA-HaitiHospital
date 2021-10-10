@@ -1,3 +1,4 @@
+// Export empty to make it module
 export {};
 
 // Commented out during Ts to Js for future reference

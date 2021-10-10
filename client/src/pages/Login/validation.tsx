@@ -1,3 +1,5 @@
+// Export empty to make it module
+export {};
 // Comment out during JS to TS for future reference
 // import * as Yup from 'yup';
 

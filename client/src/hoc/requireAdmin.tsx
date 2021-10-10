@@ -1,7 +1,8 @@
-import React from 'react';
-
+// Export empty to make it module
+export {};
 
 // Comment out during JS to TS for future reference
+// import React from 'react';
 // import React, { Component } from 'react';
 // import { connect } from 'react-redux';
 
