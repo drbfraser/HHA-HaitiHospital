@@ -3,7 +3,7 @@ import React from 'react';
 import HHALogoSvg from "img/logo/LogoWText.svg";
 import IProps from "components/IProps/IProps";
 
-import "components/HHALogo/styles.css";
+import "./styles.css";
 
 interface IHHALogo extends IProps{
 }

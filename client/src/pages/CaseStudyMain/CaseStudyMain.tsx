@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import IProps from "components/IProps/IProps";
 
-import "pages/CaseStudyMain/styles.css";
+import "./styles.css";
 
 interface ICaseStudyMain extends IProps {
 

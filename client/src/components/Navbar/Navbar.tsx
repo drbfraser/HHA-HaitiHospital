@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 
 import IProps from 'components/IProps/IProps';
 
-import 'components/Navbar/styles.css';
+import './styles.css';
 import logo from 'img/logo/LogoWText.svg'
 
 interface INavBar extends IProps {

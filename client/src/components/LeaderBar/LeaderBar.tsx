@@ -5,7 +5,7 @@ import Button from 'components/Button/Button';
 import TextHolder from 'components/TextHolder/TextHolder';
 import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
 
-import 'components/LeaderBar/styles.css'
+import './styles.css'
 
 interface ILeaderBar extends IProps {
 }

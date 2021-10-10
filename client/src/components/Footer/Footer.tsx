@@ -1,7 +1,7 @@
 import React from 'react';
 import IProps from 'components/IProps/Iprops';
 
-import 'components/styles.css';
+import './styles.css';
 
 interface IFooter extends IProps {
 

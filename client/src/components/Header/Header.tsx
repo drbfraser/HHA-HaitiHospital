@@ -6,7 +6,7 @@ import Button from 'components/Button/Button';
 import IProps from 'components/IProps/IProps';
 import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
 
-import 'components/styless.css';
+import './styles.css';
 
 interface IHeader extends IProps{
 }

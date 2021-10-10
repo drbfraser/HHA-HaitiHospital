@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 
 import IProps from 'components/IProps/IProps';
 
-import 'components/Post/styles.css';
+import './styles.css';
 
 interface IPost extends IProps {
 };

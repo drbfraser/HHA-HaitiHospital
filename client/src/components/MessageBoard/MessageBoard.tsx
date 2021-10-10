@@ -4,7 +4,7 @@ import IProps from 'components/IProps/IProps';
 import TextHolder from 'components/TextHolder/TextHolder';
 import Button from 'components/Button/Button';
 
-import 'components/MessageBoard/styles.css';
+import './styles.css';
 
 interface IMessageBoard extends IProps {
 }

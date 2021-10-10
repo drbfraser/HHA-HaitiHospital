@@ -2,7 +2,7 @@ import React from 'react';
 
 import IProps from 'components/IProps/IProps';
 
-import 'components/Loader/styles.css';
+import './styles.css';
 
 interface ILoader extends IProps {
 

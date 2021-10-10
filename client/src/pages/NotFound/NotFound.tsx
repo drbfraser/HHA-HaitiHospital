@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import IProps from 'components/IProps/IProps';
 import Layout from 'layout/Layout';
 
-import '/pages/NotFound/styles.css';
+import './styles.css';
 
 interface INotFound extends IProps {
 

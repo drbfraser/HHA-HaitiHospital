@@ -3,7 +3,7 @@ import React from 'react';
 import IProps from 'components/IProps/IProps';
 import Layout from 'layout/Layout'
 
-import 'pages/Login/styles.css';
+import './styles.css';
 
 interface ILogin extends IProps {
 

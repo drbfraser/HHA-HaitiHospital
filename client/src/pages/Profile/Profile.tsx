@@ -1,7 +1,7 @@
 
 import IProps from 'components/IProps/IProps';
 
-import 'pages/Profile/styles.css';
+import './styles.css';
 
 interface IProfile extends IProps {
 

@@ -7,7 +7,7 @@ import Loader from 'components/Loader/Loader';
 // import { getMessages } from '../../store/actions/messageActions';
 import IProps from 'components/IProps/IProps';
 
-import 'components/MessageList/styles.css';
+import './styles.css';
 
 interface IMessageList extends IProps {
 

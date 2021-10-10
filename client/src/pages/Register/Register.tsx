@@ -2,7 +2,7 @@ import React from 'react';
 
 import IProps from 'components/IProps/IProps';
 
-import 'pages/Register/styles.css';
+import './styles.css';
 
 interface IRegister extends IProps {
 

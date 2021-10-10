@@ -9,7 +9,7 @@ import IProps from 'components/IProps/IProps';
 
 import case1 from "img/case1.jpg";
 import case2 from "img/case2.jpg";
-import "pages/Home/style.css";
+import "./styles.css";
 
 interface IHome extends IProps {
 };

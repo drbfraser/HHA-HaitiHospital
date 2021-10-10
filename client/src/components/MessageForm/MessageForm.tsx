@@ -2,7 +2,7 @@ import React from 'react';
 
 import IProps from 'components/IProps/IProps';
 
-import 'components/MessageForm/styles.css';
+import './styles.css';
 
 interface IMessageForm extends IProps {
 
