@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
-import * as mongoose from 'mongoose';
+// import * as mongoose from 'mongoose';
+import mongoose from "mongoose";
 import * as https from 'https';
 import { readFileSync } from 'fs';
 import { resolve, join } from 'path';

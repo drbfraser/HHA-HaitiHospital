@@ -12,6 +12,7 @@
       "strictNullChecks": false
   },
       "include": [
-      "./src/**/*"
+      "./src/**/*",
+      "./security/*"
   ]
 }

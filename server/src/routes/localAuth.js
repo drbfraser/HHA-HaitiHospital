@@ -9,13 +9,13 @@ import { Schema } from 'mongoose';
 
 const router = Router();
 
-router.post('/login', requireLocalAuth, (req: any, res: any) => {
+router.post('/login', requireLocalAuth, (req, res) => {
   const token = req.user.generateJWT();
   const me = req.user.toJSON();
   res.json({ token, me });
 });
 
-router.post('/register', async (req: any, res: any, next: any) => {
+router.post('/register', async (req, res, next) => {
   const { error } = Joi.validate(req.body, registerSchema);
   if (error) {
     return res.status(422).send({ message: error.details[0].message });
