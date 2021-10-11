@@ -1,9 +1,5 @@
 // Export empty to make it module
-export type Report = {
-  id: number,
-  monthYear : Date,
-};
-  
+
 export {}
 
 
