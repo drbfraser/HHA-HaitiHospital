@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps} from "react-router-dom";
-import NavBar from "components/NavBar/NavBar";
+import NavBar from "components/NavBar/Navbar";
 
 import IProps from "components/IProps/IProps";
 
