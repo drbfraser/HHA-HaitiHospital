@@ -1,7 +1,6 @@
 
 export const TEST_NICU_REPORT_1_JSON = 
 {
-    "reportId": 1,
     "departmentId": 123,
     "createdOn": "2021-10-07T23:23:35.732Z",
     "createdByUserId": 123482,

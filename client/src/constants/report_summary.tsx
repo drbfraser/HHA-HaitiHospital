@@ -1,5 +1,6 @@
-export type ReportSummary = {
+export interface ReportSummary {
     id: number,
-    monthYear : Date,
+    lastUpdatedOn: Date,
+    lastUpdatedByUserId: number,
 };
     
