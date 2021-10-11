@@ -46,11 +46,15 @@
       "capHaitian": 1,
       "departmentNord": 2,
       "otherDepartments": [
-        {
-          "nameOfDepartment": "SFU",
-          "numberOfPatients": 1
-        }
-      ]
+				{
+					"nameOfDepartment" : "Haiti Central",
+					"numberOfPatients" : 123
+				},
+				{
+					"nameOfDepartment" : "Canada",
+					"numberOfPatients" : 1236
+				}
+			]
     },
     "age": {
       "extremelyPreterm": 1,
@@ -89,6 +93,14 @@
         {
           "nameOfCondition": "COVID",
           "numberOfPatients": 1
+        },
+        {
+          "nameOfCondition": "Intense Diarrhea",
+          "numberOfPatients": 123
+        },
+				        {
+          "nameOfCondition": "Vomiting",
+          "numberOfPatients": 15
         }
       ]
     }
@@ -132,6 +144,10 @@
         {
           "nameOfCondition": "COVID",
           "numberOfPatients": 1
+        },
+        {
+          "nameOfCondition": "cardiac arrhythmia",
+          "numberOfPatients": 154
         }
       ]
     }
