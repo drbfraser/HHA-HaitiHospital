@@ -3,9 +3,27 @@ const { number } = require('joi');
 let NicuPaeds = require('../../models/NicuPaeds')
 
 router.route('/').get((req,res)=>{
-    NicuPaeds.find()
+    NicuPaeds.find({})
         .then(NicuPaeds=> res.json(NicuPaeds))
         .catch(err => res.status(400).json('Reports could not be found: ' + err));
+});
+
+router.route('/').delete((req,res)=>{
+    NicuPaeds.remove({})
+        .then(()=>res.json('Collection Cleared.'))
+        .catch(err => res.status(400).json('Collection could not be cleared: ' + err));
+});
+
+router.route('/:id').get((req,res)=>{
+    NicuPaeds.find({"_id": req.params.id})
+        .then(result=>res.json(result))
+        .catch(err => res.status(400).json('Report Could not be found: ' + err));
+});
+
+router.route('/:id/:sub_id').get((req,res)=>{
+    NicuPaeds.find({"_id.oid": req.params.sub_id})
+        .then(result=>res.json(result))
+        .catch(err => res.status(400).json('Report Could not be found: ' + err));
 });
 
 router.route('/:id').delete((req,res) => {
@@ -57,6 +75,25 @@ router.route('/add').post((req,res)=>{ //adding NICUPaeds Form into the Database
         other : Number(req.body.selfDischarge.other), 
     };
     const stayedInWard = Number(req.body.stayedInWard);
+    
+    var admissions_otherDepartments = [];
+    for(var i = 0; i < req.body.admissions.comeFrom.otherDepartments.length ; i++){
+        var admissionotherDepartmentsEntry = {};
+        const key = String(req.body.admissions.comeFrom.otherDepartments[i].nameOfDepartment);
+        const value = Number(req.body.admissions.comeFrom.otherDepartments[i].numberOfPatients)
+        admissionotherDepartmentsEntry[key] = value;
+        admissions_otherDepartments.push(admissionotherDepartmentsEntry);
+    }
+
+    var admissions_otherMedical = [];
+    for(var i = 0; i < req.body.admissions.mainCondition.otherMedical.length ; i++){
+        var admissionotherMedicalEntry = {};
+        const key = String(req.body.admissions.mainCondition.otherMedical[i].nameOfCondition);
+        const value = Number(req.body.admissions.mainCondition.otherMedical[i].numberOfPatients)
+        admissionotherMedicalEntry[key] = value;
+        admissions_otherMedical.push(admissionotherMedicalEntry);
+    }
+
     const admissions = {
         total : Number(req.body.admissions.total),
 
@@ -64,12 +101,7 @@ router.route('/add').post((req,res)=>{ //adding NICUPaeds Form into the Database
             quarterMorin : Number(req.body.admissions.comeFrom.quarterMorin),
             capHaitian : Number(req.body.admissions.comeFrom.capHaitian),
             departmentNord : Number(req.body.admissions.comeFrom.departmentNord),
-            otherDepartments : [
-                {
-                    nameOfDepartment : req.body.admissions.comeFrom.otherDepartments[0].nameOfDepartment,
-                    numberOfPatients: Number(req.body.admissions.comeFrom.otherDepartments[0].numberOfPatients)
-                },
-            ],
+            otherDepartments : admissions_otherDepartments,
         },
 
         age : {
@@ -107,12 +139,18 @@ router.route('/add').post((req,res)=>{ //adding NICUPaeds Form into the Database
             aspirationPneumonia: Number(req.body.admissions.mainCondition.aspirationPneumonia),
             moderatePrematurity: Number(req.body.admissions.mainCondition.moderatePrematurity),
             severePrematuriy: Number(req.body.admissions.mainCondition.severePrematurity),
-            otherMedical:[{
-                nameOfCondition: req.body.admissions.mainCondition.otherMedical[0].nameOfCondition,
-                numberOfPatients: Number(req.body.admissions.mainCondition.otherMedical[0].numberOfPatients),
-            }],  
+            otherMedical: admissions_otherMedical,  
         },
     };
+
+    var numberOfOutPatients_otherMedical = [];
+    for(var i = 0; i < req.body.numberOfOutPatients.mainCondition.otherMedical.length ; i++){
+        var numberOfOutPatientsotherMedicalEntry = {};
+        const key = String(req.body.numberOfOutPatients.mainCondition.otherMedical[i].nameOfCondition);
+        const value = Number(req.body.numberOfOutPatients.mainCondition.otherMedical[i].numberOfPatients)
+        numberOfOutPatientsotherMedicalEntry[key] = value;
+        numberOfOutPatients_otherMedical.push(numberOfOutPatientsotherMedicalEntry);
+    }
 
     const numberOfOutPatients = {
         total : Number(req.body.numberOfOutPatients.total),
@@ -152,10 +190,7 @@ router.route('/add').post((req,res)=>{ //adding NICUPaeds Form into the Database
             aspirationPneumonia: Number(req.body.numberOfOutPatients.mainCondition.aspirationPneumonia),
             moderatePrematurity: Number(req.body.numberOfOutPatients.mainCondition.moderatePrematurity),
             severePrematurity: Number(req.body.numberOfOutPatients.mainCondition.severePrematurity), 
-            otherMedical:[{
-                nameOfCondition: req.body.numberOfOutPatients.mainCondition.otherMedical[0].nameOfCondition,
-                numberOfPatients: Number(req.body.numberOfOutPatients.mainCondition.otherMedical[0].numberOfPatients),
-            }],  
+            otherMedical: numberOfOutPatients_otherMedical,  
         },
     };
 
