@@ -11,31 +11,30 @@ interface INavBar extends IProps {
 };
 
 const NavBar = (props:INavBar) => {
-    return (
-        <nav className="navbar">
-            {/* <NavLink to="/" className="home-button" ><a href="" className="logo"><img className="logo" src={logo} alt="" /></a></NavLink> */}
-            
-            <NavLink className="navbar-home-button" to="/home">
-                <img src={logo}
-                alt="logo"  height="100px" width="320px"/> 
-            </NavLink>
-            <div className='navbar-other-button'>
-                <NavLink className="toLeadersBoard" to="/leaderBoard" exact>
-                    LeadersBoard
-                </NavLink>
-                <NavLink className="toMessageBoard" to="/messageBoard" exact>
-                    MessageBoard
-                </NavLink>
-                <NavLink className="toDepartments" to="/DepartmentMain" exact>
-                    Departments
-                </NavLink>
-                <NavLink className="toCaseStudy" to="/caseStudyMain" exact>
-                    CaseStudy
-                </NavLink>
-            </div>
-
-        </nav>
-    )
+  return (
+    <nav className="navbar">
+      {/* <NavLink to="/" className="home-button" ><a href="" className="logo"><img className="logo" src={logo} alt="" /></a></NavLink> */}
+    
+      <NavLink className="navbar-home-button" to="/home">
+        <img src={logo}
+        alt="logo"  height="100px" width="320px"/> 
+      </NavLink>
+      <div className='navbar-other-button'>
+        <NavLink className="toLeadersBoard" to="/leaderBoard" exact>
+            LeadersBoard
+        </NavLink>
+        <NavLink className="toMessageBoard" to="/messageBoard" exact>
+            MessageBoard
+        </NavLink>
+        <NavLink className="toDepartments" to="/DepartmentMain" exact>
+            Departments
+        </NavLink>
+        <NavLink className="toCaseStudy" to="/caseStudyMain" exact>
+            CaseStudy
+        </NavLink>
+      </div>
+    </nav>
+  )
 }
 
 export default NavBar;

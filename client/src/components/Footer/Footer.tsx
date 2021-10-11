@@ -1,5 +1,5 @@
 import React from 'react';
-import IProps from 'components/IProps/Iprops';
+import IProps from 'components/IProps/IProps';
 
 import './styles.css';
 
