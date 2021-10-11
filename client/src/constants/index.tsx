@@ -147,7 +147,7 @@ export const TEST_NICU_REPORT_1_JSON =
     }
   }
   
-export const TEST_NICU_REPORTS = [TEST_NICU_REPORT_1];
+export const TEST_NICU_REPORTS = [TEST_NICU_REPORT_1_JSON];
 
 
 // export const FACEBOOK_AUTH_LINK = 'https://localhost:5000/auth/facebook';
