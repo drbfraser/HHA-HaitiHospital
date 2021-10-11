@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 
 import IProps from "components/IProps/IProps";
-import NavBar from "components/NavBar/NavBar";
+import NavBar from "components/NavBar/Navbar";
 
 // import Logo from "img/logo/LogoWText.svg";
 // import "./DepartmentPageDeptButtons.css";
