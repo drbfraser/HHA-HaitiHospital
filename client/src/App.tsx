@@ -15,7 +15,6 @@ import { MessageBoardMain } from "pages/MessageBoardMain/MessageBoardMain";
 // import Post from "./components/Post/Post";
 
 
-
 const App = () => {
   return (
     <Router>
