@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 
 import IProps from 'components/IProps/IProps';
-import NavBar from 'components/NavBar/Navbar';
+import NavBar from 'components/Navbar/Navbar';
 import TextHolder from 'components/TextHolder/TextHolder';
 import ReportTable from 'components/ReportTable/ReportTable';
 import {Report} from 'constants/index';

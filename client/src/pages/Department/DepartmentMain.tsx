@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, NavLink, RouteComponentProps } from "react-router-dom";
 
 import IProps from "components/IProps/IProps";
-import NavBar from "components/NavBar/Navbar";
+import NavBar from "components/Navbar/Navbar";
 
 import "./DepartmentMainStyle.css";
 
