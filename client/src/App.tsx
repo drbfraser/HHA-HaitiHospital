@@ -14,6 +14,7 @@ import { LeaderBoardMain } from "pages/LeaderBoardMain/LeaderBoardMain"
 import { MessageBoardMain } from "pages/MessageBoardMain/MessageBoardMain";
 import DepartmentReports from 'pages/department_reports/DepartmentReports';
 import  DetailedReport from 'pages/department_detailed_report/DetailedReport';
+import NICUForm from 'pages/Form/NICUForm';
 
 // import Post from "./components/Post/Post";
 
@@ -33,6 +34,8 @@ const App = () => {
         <Route path="/messageBoard" exact component={MessageBoardMain} />
         <Route path='/Department1NICU/summary_reports' exact component = {DepartmentReports} />
         <Route path='/Department1NICU/detailed_reports/:id' exact component = {DetailedReport} />
+        <Route path="/NICUForm" component={NICUForm} />
+   
         {/*<Route path="/posts/:id" exact component={Post} />*/}
         {/*<Route path="/" render={() => <div>404</div>} />*/}
       </div>

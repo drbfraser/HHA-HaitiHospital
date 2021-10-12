@@ -9,7 +9,8 @@
       "esModuleInterop": true,
       "strict": false,
       "noImplicitAny": false,
-      "strictNullChecks": false
+      "strictNullChecks": false,
+      "downlevelIteration": true
   },
       "include": [
       "./src/**/*",
