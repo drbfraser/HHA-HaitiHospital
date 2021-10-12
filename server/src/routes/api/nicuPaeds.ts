@@ -4,6 +4,11 @@ let NicuPaeds = require('../../models/NicuPaeds')
 
 
 router.route('/').get((req,res)=>{
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
     NicuPaeds.find()
         .then(NicuPaeds=> res.json(NicuPaeds))
         .catch(err => res.status(400).json('Reports could not be found: ' + err));
@@ -16,7 +21,12 @@ router.route('/:id').delete((req,res) => {
 });
 
 router.route('/add').post((req: any, res)=>{ //adding NICUPaeds Form into the Database
-
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
+    console.log("test");
     const departmentId = Number(req.body.departmentId);
     const createdOn = req.body.createdOn;
     const createdByUserId = Number(req.body.createdByUserId);
