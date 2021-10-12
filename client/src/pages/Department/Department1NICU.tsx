@@ -32,6 +32,10 @@ export const DepartmentOne = ({history} : IDepartment) => {
          </>
         </div>
 
+        <div>
+          <Link to={"/NICUForm"} >Submit Form</Link>
+        </div>
+
         <button className="Departmentbutton1">NICU / PAED</button>
         <button className="Departmentbutton2"
             onClick={() => {
