@@ -54,10 +54,7 @@ const nicuPaedsSchema = new Schema<NICUPaedsModel>({
       quarterMorin: Number,
       capHaitian: Number,
       departmentNord: Number,
-      otherDepartments: [{
-        nameOfDepartment: String,
-        numberOfPatients: Number,
-      }],
+      otherDepartments: [Schema.Types.Mixed],
     },
 
     age: {
@@ -95,10 +92,7 @@ const nicuPaedsSchema = new Schema<NICUPaedsModel>({
       aspirationPneumonia: Number,
       moderatePrematurity: Number,
       severePrematurity: Number,
-      otherMedical:[{
-          nameOfCondition: String,
-          numberOfPatients: Number,
-      }],
+      otherMedical:[Schema.Types.Mixed],
     },
   },
     
@@ -140,10 +134,7 @@ const nicuPaedsSchema = new Schema<NICUPaedsModel>({
       aspirationPneumonia: Number,
       moderatePrematurity: Number,
       severePrematurity: Number,
-      otherMedical:[{
-          nameOfCondition: String,
-          numberOfPatients: Number,
-      }],
+      otherMedical:[Schema.Types.Mixed],
     },
   },
 });

@@ -6,6 +6,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.10.3",
+    "@types/react": "^17.0.27",
+    "@types/react-dom": "^17.0.9",
     "axios": "^0.19.2",
     "formik": "^2.1.4",
     "js-cookie": "^2.2.1",
@@ -19,6 +23,7 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "typescript": "^4.4.3",
     "yup": "^0.28.3"
   },
   "scripts": {
@@ -42,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-redux": "^7.1.19",
+    "@types/react-router-dom": "^5.3.1"
   }
 }
