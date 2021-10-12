@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
+import { NICUPaedsModel } from './NICUPaedsModel';
 
 const { Schema } = mongoose;
 
-const nicuPaedsSchema = new Schema({
+const nicuPaedsSchema = new Schema<NICUPaedsModel>({
   // entry data
   departmentId: { type: Number, required: true, min: 0, },
   createdOn: { type: Date, required: true, },
@@ -143,7 +144,7 @@ const nicuPaedsSchema = new Schema({
   
 // };
 
-const NicuPaeds = mongoose.model('NicuPaeds', nicuPaedsSchema);
+const NicuPaeds = mongoose.model<NICUPaedsModel>('NicuPaeds', nicuPaedsSchema);
 module.exports = NicuPaeds;
 
 

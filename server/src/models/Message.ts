@@ -1,8 +1,17 @@
 import mongoose from 'mongoose';
 import Joi from 'joi';
+import { User } from './User';
+import { anyTypeAnnotation } from '@babel/types';
 const { Schema } = mongoose;
 
-const messageSchema = new Schema(
+export interface Message extends Document {
+  text: string;
+  createdAt: Date;
+  updatedAt: Date;
+  user: User;
+}
+
+const messageSchema = new Schema<Message>(
   {
     text: {
       type: String,
@@ -14,20 +23,23 @@ const messageSchema = new Schema(
 );
 
 messageSchema.methods.toJSON = function () {
+  const someUser: any = this.user;
   return {
     id: this._id,
     text: this.text,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
-    user: this.user.toJSON(),
+    user: someUser.toJSON(),
   };
 };
 
-export const validateMessage = (message) => {
+export const validateMessage = (message: Message) => {
+  const someJoi: any = Joi;
+
   const schema = {
     text: Joi.string().min(5).max(300).required(),
   };
-  return Joi.validate(message, schema);
+  return someJoi.validate(message, schema);
 };
 
 const Message = mongoose.model('Message', messageSchema);

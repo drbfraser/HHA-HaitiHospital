@@ -5,6 +5,7 @@ import faker from 'faker';
 import User from '../models/User';
 import requireLocalAuth from '../middleware/requireLocalAuth';
 import { registerSchema } from '../services/validators';
+import { Schema } from 'mongoose';
 
 const router = Router();
 

@@ -8,6 +8,9 @@ package-lock.json
 /build
 
 /.vscode
+.DS_Store
+../.DS_Store
+dist/*
 
 !public/images
 public/images/*
