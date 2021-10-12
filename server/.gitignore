@@ -10,7 +10,8 @@ package-lock.json
 /.vscode
 .DS_Store
 ../.DS_Store
-dist/*
+./dist/*
+/dist
 
 !public/images
 public/images/*

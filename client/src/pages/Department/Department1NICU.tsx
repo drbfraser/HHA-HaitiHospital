@@ -49,7 +49,13 @@ export const DepartmentOne = ({history} : IDepartment) => {
             }}>COM-HEALTH</button>
       </div>
 
-      
+      <div>
+        <button className="GOTOSUMMARYPLZ"
+            onClick={() => {
+                history.push("/Department1NICU/summary_reports");
+            }}>Report Summary
+        </button>
+      </div>
     </body>
   );
 };
