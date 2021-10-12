@@ -29,9 +29,32 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   });
 
   const fetchReports = async () => {
-    const res = await fetch(dbUrlForNICUReports);
-    const data = await res.json();
-    return data;
+    // const res1 = await fetch(dbUrlForNICUReports);
+    // const data1 = await res1.json();
+    // return data1;
+    try {
+    const res = await Axios.get(dbUrlForNICUReports)
+   
+    return res.data;
+    }
+    catch (err) {
+      console.log(err);
+    }
+
+
+      // .then((response) => {
+      //   console.log(response.data);
+      //   console.log(response.status);
+      //   console.log(response.statusText);
+      //   console.log(response.headers);
+      //   console.log(response.config);
+      // })
+      // .catch((abc) => {console.log(abc)});
+    
+    // console.log(res.data);
+
+    // console.log(data);
+    // return [];   
   }
 
   return (
@@ -42,9 +65,9 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
         <div> Search Bar Here</div>
         <div className='report-board'>
           {
-            submittedReports.length > 0 ? 
-              <ReportTable reports={submittedReports as Report[]}/>: 
-              <div>No submitted reports</div>
+            (submittedReports === undefined || submittedReports.length == 0) ? 
+              <div>No submitted reports</div> : 
+              <ReportTable reports={submittedReports as Report[]}/>
           }
         </div>
       </div> 
