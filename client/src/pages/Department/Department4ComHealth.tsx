@@ -19,7 +19,7 @@ interface IDepartment extends RouteComponentProps {
 export const DepartmentFour = ({history} : IDepartment) => {
     // const postId = 5;
     return (
-        <body>
+        <div>
             <div>
                 <NavBar />
                 {/* <button className="Departmentbutton0"
@@ -47,7 +47,7 @@ export const DepartmentFour = ({history} : IDepartment) => {
                 <button className="Departmentbutton4"
                 >COM-HEALTH</button>
             </div>
-        </body>
+        </div>
 
     );
 };

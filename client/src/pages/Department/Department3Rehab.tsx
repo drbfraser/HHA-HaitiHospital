@@ -19,7 +19,7 @@ interface IDepartment extends RouteComponentProps {
 export const DepartmentThree = ({history} : IDepartment) => {
     // const postId = 5;
     return (
-        <body>
+        <div>
             <div>
                 <NavBar />
                 {/* <button className="Departmentbutton0"
@@ -47,6 +47,6 @@ export const DepartmentThree = ({history} : IDepartment) => {
                             history.push("/Department4ComHealth");
                         }}>COM-HEALTH</button>
             </div>
-        </body>
+        </div>
     );
 };

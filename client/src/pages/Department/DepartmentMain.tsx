@@ -11,7 +11,7 @@ interface IDepartmentMain extends RouteComponentProps{}
 
 export const DepartmentMain = ({history} : IDepartmentMain) => {
     return (
-        <body>
+        <div>
             <div>
                 <NavBar />
                 <p>All Departments</p>
@@ -37,6 +37,6 @@ export const DepartmentMain = ({history} : IDepartmentMain) => {
                     <button className="DepartmentButton8">Other</button>
                 </div>
             </div>
-        </body>
+        </div>
     );
 };

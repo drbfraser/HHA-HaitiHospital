@@ -19,7 +19,7 @@ interface IDepartment extends RouteComponentProps {
 
 export const DepartmentOne = ({history} : IDepartment) => {
   return (
-    <body>
+    <div>
       <div>
         <NavBar />
           {/* <button className="homePageButton"
@@ -56,6 +56,6 @@ export const DepartmentOne = ({history} : IDepartment) => {
             }}>Report Summary
         </button>
       </div>
-    </body>
+    </div>
   );
 };

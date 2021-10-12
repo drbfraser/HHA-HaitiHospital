@@ -15,7 +15,7 @@ interface ICaseStudyMain extends RouteComponentProps {};
 export const CaseStudyMain = ({history, location, match}: ICaseStudyMain) => {
     // const postId = 5;
     return (
-        <body>
+        <div>
             <NavBar />
             <p> Previous Case Studies</p>
 
@@ -30,7 +30,7 @@ export const CaseStudyMain = ({history, location, match}: ICaseStudyMain) => {
                     history.push("/");
                 }}></button>
             </div>
-        </body>
+        </div>
 
     );
 };
