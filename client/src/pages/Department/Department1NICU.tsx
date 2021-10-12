@@ -46,6 +46,14 @@ export const DepartmentOne = ({history} : IDepartment) => {
                 history.push("/Department4ComHealth");
             }}>COM-HEALTH</button>
       </div>
+
+      <div>
+        <button className="GOTOSUMMARYPLZ"
+            onClick={() => {
+                history.push("/summary_reports");
+            }}>Report Summary
+        </button>
+      </div>
     </body>
   );
 };
