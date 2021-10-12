@@ -6,6 +6,8 @@ import NavBar from 'components/Navbar/Navbar';
 import TextHolder from 'components/TextHolder/TextHolder';
 import ReportTable from 'components/ReportTable/ReportTable';
 
+import {Report} from 'constants/report';
+
 import './styles.css';
 
 interface DepartmentReportsProps extends IProps {
@@ -41,7 +43,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
         <div className='report-board'>
           {
             submittedReports.length > 0 ? 
-              <ReportTable reports={submittedReports}/>: 
+              <ReportTable reports={submittedReports as Report[]}/>: 
               <div>No submitted reports</div>
           }
         </div>
@@ -49,3 +51,5 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     </>
   );
 }
+
+export default DepartmentReports;

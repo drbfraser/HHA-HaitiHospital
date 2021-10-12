@@ -1,8 +1,18 @@
+// export interface ReportEntry {
+//   key: string,
+//   value: number | string | ReportEntry[],
+
+// };
+
+// export interface Report {
+//   entries : ReportEntry[],
+// }
+
 export interface ReportEntry {
-  key: string,
-  value: number | string | ReportEntry[],
-};
+  (x : string) : string | number | boolean | Date | Report | Report[],
+}
 
 export interface Report {
-  entries : ReportEntry[],
+  [x : string] :  ReportEntry,
 }
+

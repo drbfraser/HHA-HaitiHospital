@@ -6,19 +6,29 @@ import {DB_GET_ID_REPORT_URL} from 'constants/index';
 import { Json, JsonArray } from 'constants/json';
 import { Report, ReportEntry } from 'constants/report';
 import TextHolder from 'components/TextHolder/TextHolder';
+import ReportTable from 'components/ReportTable/ReportTable';
+import ReportDisplay from 'components/Report/Report';
 
 import IProps from 'components/IProps/IProps';
 import './styles.css';
-import ReportTable from 'components/ReportTable/ReportTable';
+
 
 interface DetailedReportProps extends IProps {
-  id: number;
+  id : number;
+};
+
+interface UrlParams {
+  id: string;
 };
 
 const DetailedReport = (props : DetailedReportProps) => {
+  const location = useLocation();
+  
+  const { id } = useParams<UrlParams>();
+
   const detailedReportUrl = DB_GET_ID_REPORT_URL + props.id;
 
-  const [ report, setReport] = useState<Json | undefined>();
+  const [ report, setReport] = useState<object>({});
   useEffect(() => {
     const getReport = async() => {
       const reportFromServer = await fetchReport();
@@ -38,10 +48,12 @@ const DetailedReport = (props : DetailedReportProps) => {
   return (
     <div className='container'>
       {
-        (report === undefined) ?
+        (Object.keys(report).length===0 ) ?
           <TextHolder text = 'No report found'/>:
-          <ReportDisplay report = {report}/>
+          <ReportDisplay report = {report as {[key : string] : ReportEntry}}/>
       }  
     </div>
   )
 }
+
+export default DetailedReport;

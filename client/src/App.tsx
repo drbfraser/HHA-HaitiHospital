@@ -12,6 +12,9 @@ import { CaseStudyMain} from "pages/CaseStudyMain/CaseStudyMain";
 import { DepartmentMain} from "pages/Department/DepartmentMain";
 import { LeaderBoardMain } from "pages/LeaderBoardMain/LeaderBoardMain"
 import { MessageBoardMain } from "pages/MessageBoardMain/MessageBoardMain";
+import DepartmentReports from 'pages/department_reports/DepartmentReports';
+import  DetailedReport from 'pages/department_detailed_report/DetailedReport';
+
 // import Post from "./components/Post/Post";
 
 
@@ -28,8 +31,8 @@ const App = () => {
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
-
-   
+        <Route path='/Department1NICU/summary_reports' exact component = {DepartmentReports} />
+        <Route path='/Department1NICU/detailed_reports/:id' exact component = {DetailedReport} />
         {/*<Route path="/posts/:id" exact component={Post} />*/}
         {/*<Route path="/" render={() => <div>404</div>} />*/}
       </div>
