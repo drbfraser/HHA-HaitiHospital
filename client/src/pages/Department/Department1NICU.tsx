@@ -50,7 +50,7 @@ export const DepartmentOne = ({history} : IDepartment) => {
       <div>
         <button className="GOTOSUMMARYPLZ"
             onClick={() => {
-                history.push("/summary_reports");
+                history.push("/Department1NICU/summary_reports");
             }}>Report Summary
         </button>
       </div>
