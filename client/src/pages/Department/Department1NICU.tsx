@@ -31,10 +31,8 @@ export const DepartmentOne = ({history} : IDepartment) => {
             <h1 style={{color:"white",backgroundColor: '#87EDF3', fontFamily:'sans-serif'}}>Department of NICU/PAED</h1>
          </>
         </div>
-
-        <div>
-          <Link to={"/NICUForm"} >Submit Form</Link>
-        </div>
+        
+        <Link to={"/NICUForm"} >Submit Data</Link>
 
         <button className="Departmentbutton1">NICU / PAED</button>
         <button className="Departmentbutton2"
@@ -50,6 +48,8 @@ export const DepartmentOne = ({history} : IDepartment) => {
                 history.push("/Department4ComHealth");
             }}>COM-HEALTH</button>
       </div>
+
+      
     </body>
   );
 };
