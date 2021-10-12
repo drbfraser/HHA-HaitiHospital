@@ -10,13 +10,15 @@ import { Schema } from 'mongoose';
 const router = Router();
 
 router.post('/login', requireLocalAuth, (req, res) => {
-  const token = req.user.generateJWT();
-  const me = req.user.toJSON();
+  const reqUser : any = req.user;
+  const token = reqUser.generateJWT();
+  const me = reqUser.toJSON();
   res.json({ token, me });
 });
 
 router.post('/register', async (req, res, next) => {
-  const { error } = Joi.validate(req.body, registerSchema);
+  const someJoi : any = Joi;
+  const { error } = someJoi.validate(req.body, registerSchema);
   if (error) {
     return res.status(422).send({ message: error.details[0].message });
   }

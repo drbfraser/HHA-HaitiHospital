@@ -7,7 +7,9 @@ services:
       dockerfile: Dockerfile
     image: myapp-server
     container_name: myapp-server
-    command: npm run server
+    command: 
+      - npm run build
+      - npm run start-dev
     volumes:
       - ./server/:/usr/src/app
       - /usr/src/app/node_modules

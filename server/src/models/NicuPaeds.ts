@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
+import { NICUPaedsModel } from './NICUPaedsModel';
 
 const { Schema } = mongoose;
 
-const nicuPaedsSchema = new Schema({
+const nicuPaedsSchema = new Schema<NICUPaedsModel>({
   // entry data
   departmentId: { type: Number, required: true, min: 0, },
   createdOn: { type: Date, required: true, },
@@ -53,10 +54,7 @@ const nicuPaedsSchema = new Schema({
       quarterMorin: Number,
       capHaitian: Number,
       departmentNord: Number,
-      otherDepartments: [{
-        nameOfDepartment: String,
-        numberOfPatients: Number,
-      }],
+      otherDepartments: [Schema.Types.Mixed],
     },
 
     age: {
@@ -94,10 +92,7 @@ const nicuPaedsSchema = new Schema({
       aspirationPneumonia: Number,
       moderatePrematurity: Number,
       severePrematurity: Number,
-      otherMedical:[{
-          nameOfCondition: String,
-          numberOfPatients: Number,
-      }],
+      otherMedical:[Schema.Types.Mixed],
     },
   },
     
@@ -139,10 +134,7 @@ const nicuPaedsSchema = new Schema({
       aspirationPneumonia: Number,
       moderatePrematurity: Number,
       severePrematurity: Number,
-      otherMedical:[{
-          nameOfCondition: String,
-          numberOfPatients: Number,
-      }],
+      otherMedical:[Schema.Types.Mixed],
     },
   },
 });
@@ -152,7 +144,7 @@ const nicuPaedsSchema = new Schema({
   
 // };
 
-const NicuPaeds = mongoose.model('NicuPaeds', nicuPaedsSchema);
+const NicuPaeds = mongoose.model<NICUPaedsModel>('NicuPaeds', nicuPaedsSchema);
 module.exports = NicuPaeds;
 
 

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import usersRoutes from './users';
 import messagesRoutes from './messages';
-import NICUPaedsRouter from './NicuPaeds'
+import NICUPaedsRouter from './nicuPaeds';
 const router = Router();
 
 router.use('/users', usersRoutes);
