@@ -34,7 +34,6 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     // return data1;
     try {
     const res = await Axios.get(dbUrlForNICUReports)
-   
     return res.data;
     }
     catch (err) {
