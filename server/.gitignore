@@ -11,6 +11,7 @@ package-lock.json
 .DS_Store
 ../.DS_Store
 ./dist/*
+/dist
 
 !public/images
 public/images/*
