@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
-import mongoose from 'mongoose';
-import https from 'https';
+// import * as mongoose from 'mongoose';
+import mongoose from "mongoose";
+import * as https from 'https';
 import { readFileSync } from 'fs';
 import { resolve, join } from 'path';
 import passport from 'passport';
@@ -26,14 +27,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 require('./services/jwtStrategy');
-//require('./services/facebookStrategy');
-//require('./services/googleStrategy');
 require('./services/localStrategy');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 // DB Config
-const dbConnection = isProduction ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV;
+const dbConnection: string = isProduction ? process.env.MONGO_URI_PROD! : process.env.MONGO_URI_DEV!;
 
 // Connect to Mongo
 mongoose

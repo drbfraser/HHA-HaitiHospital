@@ -13,9 +13,10 @@ const passportLogin = new PassportLocalStrategy(
     passReqToCallback: true,
   },
   async (req, email, password, done) => {
-    const { error } = Joi.validate(req.body, loginSchema);
+    // const { error } = Joi.validate(req.body, loginSchema);
+    const error = loginSchema.validate({ email, password });
     if (error) {
-      return done(null, false, { message: error.details[0].message });
+      return done(null, false, { message: error.value.message });
     }
 
     try {
@@ -23,8 +24,8 @@ const passportLogin = new PassportLocalStrategy(
       if (!user) {
         return done(null, false, { message: 'Email does not exists.' });
       }
-
-      user.comparePassword(password, function (err, isMatch) {
+      
+      user.comparePassword(password, function (err: any, isMatch: any) {
         if (err) {
           return done(err);
         }
