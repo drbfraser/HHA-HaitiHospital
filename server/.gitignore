@@ -8,7 +8,6 @@ package-lock.json
 /build
 
 /.vscode
-.env
 .DS_Store
 ../.DS_Store
 dist/*
