@@ -14,13 +14,15 @@ import { seedDb } from './utils/seed';
 const app = express();
 
 const cors = require('cors');
-const corsOptions ={
-    origin:'http://localhost:3000', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
+const corsOptions = {
+	origin: 'https://localhost:3000',
+	credentials: true,            //access-control-allow-credentials:true
+	optionSuccessStatus: 200,
+	methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
+    allowedHeaders: ['Content-Type'],
+    exposedHeaders: ['Content-Type']
 }
 app.use(cors(corsOptions));
-app.use(cors());
 
 // Bodyparser Middleware
 app.use(express.json());
@@ -37,46 +39,23 @@ const dbConnection: string = isProduction ? process.env.MONGO_URI_PROD! : proces
 
 // Connect to Mongo
 mongoose
-  .connect(dbConnection, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
-    console.log('MongoDB Connected...');
-    seedDb();
-  })
-  .catch((err) => console.log(err));
+	.connect(dbConnection, {
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		useUnifiedTopology: true,
+		useFindAndModify: false,
+	})
+	.then(() => {
+		console.log('MongoDB Connected...');
+		//seedDb();
+	})
+	.catch((err) => console.log(err));
 
 // Use Routes
 app.use('/', routes);
 app.use('/public', express.static(join(__dirname, '../public')));
 
+// Start listening to PORT
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log(`Server started on port ${port}`));
 
-// Serve static assets if in production
-if (isProduction) {
-  // Set static folder
-  app.use(express.static(join(__dirname, '../../client/build')));
-
-  app.get('*', (req, res) => {
-    res.sendFile(resolve(__dirname, '../..', 'client', 'build', 'index.html')); // index is in /server/src so 2 folders up
-  });
-
-  const port = process.env.PORT || 80;
-  app.listen(port, () => console.log(`Server started on port ${port}`));
-} else {
-  const port = process.env.PORT || 5000;
-
-  const httpsOptions = {
-    key: readFileSync(resolve(__dirname, '../security/cert.key')),
-    cert: readFileSync(resolve(__dirname, '../security/cert.pem')),
-  };
-
-  
-
-  const server = https.createServer(httpsOptions, app).listen(port, () => {
-    console.log('https server running at ' + port);
-    // console.log(all_routes(app));
-  });
-}
