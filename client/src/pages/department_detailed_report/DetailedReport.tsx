@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 
 import {DB_GET_ID_REPORT_URL} from 'constants/index';
-import { Json, JsonArray } from 'constants/json';
-import { Report, ReportEntry } from 'constants/report';
+// import { Json, JsonArray } from 'constants/json';
+import { ReportEntry } from 'constants/report';
 import TextHolder from 'components/TextHolder/TextHolder';
-import ReportTable from 'components/ReportTable/ReportTable';
+// import ReportTable from 'components/ReportTable/ReportTable';
 import ReportDisplay from 'components/Report/Report';
 
 import IProps from 'components/IProps/IProps';
@@ -22,11 +22,9 @@ interface UrlParams {
 };
 
 const DetailedReport = (props : DetailedReportProps) => {
-  const location = useLocation();
-  
   const { id } = useParams<UrlParams>();
 
-  const detailedReportUrl = DB_GET_ID_REPORT_URL + props.id;
+  const detailedReportUrl = DB_GET_ID_REPORT_URL + id;
 
   const [ report, setReport] = useState<object>({});
   useEffect(() => {

@@ -5,7 +5,7 @@ import IProps from 'components/IProps/IProps';
 
 interface ILeaderBoardMain extends IProps {};
 
-export const LeaderBoardMain = ({}:ILeaderBoardMain) => {
+export const LeaderBoardMain = ( props :ILeaderBoardMain) => {
     return (
         <div>
             <div>this is a Case leader board page</div>

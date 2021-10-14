@@ -64,7 +64,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
         <div> Search Bar Here</div>
         <div className='report-board'>
           {
-            (submittedReports === undefined || submittedReports.length == 0) ? 
+            (submittedReports === undefined || submittedReports.length === 0) ? 
               <div>No submitted reports</div> : 
               <ReportTable reports={submittedReports as Report[]}/>
           }

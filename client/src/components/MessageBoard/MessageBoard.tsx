@@ -1,15 +1,15 @@
 import React from 'react';
-import { Link, NavLink, RouteComponentProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import IProps from 'components/IProps/IProps';
 import TextHolder from 'components/TextHolder/TextHolder';
-import Button from 'components/Button/Button';
+// import Button from 'components/Button/Button';
 
 import './styles.css';
 
 interface IMessageBoard extends IProps {}
 
-const MessageBoard: React.FC<IProps> = (props: IMessageBoard,) => {
+const MessageBoard = (props: IMessageBoard,) => {
   return (
     <div className={props.classes}>
       <TextHolder classes='msgboard-title' text='MESSAGE BOARD'/>

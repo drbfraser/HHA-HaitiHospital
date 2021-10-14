@@ -5,7 +5,7 @@ import IProps from 'components/IProps/IProps';
 
 interface IMessageBoardMain extends IProps {};
 
-export const MessageBoardMain = ({}:IProps) => {
+export const MessageBoardMain = ( props : IMessageBoardMain) => {
     return (
         <div>
             <div>this is a Case message board page</div>
