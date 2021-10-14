@@ -15,10 +15,10 @@ const app = express();
 
 const cors = require('cors');
 const corsOptions = {
-	origin: 'https://localhost:3000',
-	credentials: true,            //access-control-allow-credentials:true
-	optionSuccessStatus: 200,
-	methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
+    origin: 'https://localhost:3000',
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+    methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
     allowedHeaders: ['Content-Type'],
     exposedHeaders: ['Content-Type']
 }
@@ -39,17 +39,17 @@ const dbConnection: string = isProduction ? process.env.MONGO_URI_PROD! : proces
 
 // Connect to Mongo
 mongoose
-	.connect(dbConnection, {
-		useNewUrlParser: true,
-		useCreateIndex: true,
-		useUnifiedTopology: true,
-		useFindAndModify: false,
-	})
-	.then(() => {
-		console.log('MongoDB Connected...');
-		//seedDb();
-	})
-	.catch((err) => console.log(err));
+    .connect(dbConnection, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    })
+    .then(() => {
+        console.log('MongoDB Connected...');
+        //seedDb();
+    })
+    .catch((err) => console.log(err));
 
 // Use Routes
 app.use('/', routes);
