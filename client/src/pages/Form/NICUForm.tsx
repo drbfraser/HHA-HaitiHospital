@@ -57,7 +57,7 @@ function NICUForm() {
 
 
         console.log(data);
-        axios.post('https://localhost:5000/api/NicuPaeds/add', data).then(res => {
+        axios.post('http://localhost:5000/api/NicuPaeds/add', data).then(res => {
             console.log(res.data);
         }).catch(error =>{
             console.error('Something went wrong!', error.response);
