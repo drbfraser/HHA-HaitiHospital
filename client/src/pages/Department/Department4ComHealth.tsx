@@ -1,14 +1,14 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 
-import IProps from "components/IProps/IProps";
+import ElementStyleProps from "components/IProps/IProps";
 import NavBar from "components/Navbar/Navbar";
 
 // import Logo from "img/logo/LogoWText.svg";
 // import "./DepartmentPageDeptButtons.css";
 import "./departmentStyle.css"
 
-interface IDepartment extends IProps {
+interface IDepartment extends ElementStyleProps {
 
 };
 

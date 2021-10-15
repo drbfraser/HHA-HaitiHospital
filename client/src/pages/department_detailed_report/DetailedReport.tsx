@@ -9,11 +9,11 @@ import TextHolder from 'components/TextHolder/TextHolder';
 // import ReportTable from 'components/ReportTable/ReportTable';
 import ReportDisplay from 'components/Report/Report';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 import './styles.css';
 
 
-interface DetailedReportProps extends IProps {
+interface DetailedReportProps extends ElementStyleProps {
   id : number;
 };
 

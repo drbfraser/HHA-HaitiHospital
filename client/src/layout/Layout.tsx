@@ -1,10 +1,10 @@
 import React from 'react';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import 'components/layout/styles.css';
 
-interface ILayout extends IProps {
+interface ILayout extends ElementStyleProps {
   children: any,
 };
 

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 
-import IProps from "components/IProps/IProps";
+import ElementStyleProps from "components/IProps/IProps";
 import NavBar from "components/Navbar/Navbar";
 
 import "./DepartmentMainStyle.css";
 
-interface IDepartmentMain extends IProps {};
+interface IDepartmentMain extends ElementStyleProps {};
 interface IDepartmentMain extends RouteComponentProps{}
 
 export const DepartmentMain = ({history} : IDepartmentMain) => {

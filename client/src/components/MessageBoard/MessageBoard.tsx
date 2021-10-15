@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 import TextHolder from 'components/TextHolder/TextHolder';
 // import Button from 'components/Button/Button';
 
 import './styles.css';
 
-interface IMessageBoard extends IProps {}
+interface IMessageBoard extends ElementStyleProps {}
 
 const MessageBoard = (props: IMessageBoard,) => {
   return (

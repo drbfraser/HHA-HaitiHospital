@@ -2,11 +2,11 @@ import * as React from "react";
 import { RouteComponentProps} from "react-router-dom";
 import NavBar from "components/Navbar/Navbar";
 
-import IProps from "components/IProps/IProps";
+import ElementStyleProps from "components/IProps/IProps";
 
 import "./styles.css";
 
-interface ICaseStudyMain extends IProps {
+interface ICaseStudyMain extends ElementStyleProps {
 
 };
 

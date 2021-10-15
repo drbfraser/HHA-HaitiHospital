@@ -1,11 +1,11 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import './styles.css';
 
-interface IPost extends IProps {
+interface IPost extends ElementStyleProps {
 };
 
 interface IPost extends RouteComponentProps {

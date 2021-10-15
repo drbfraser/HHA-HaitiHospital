@@ -1,9 +1,9 @@
 import * as React from "react";
 // import { Link } from "react-router-dom";
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
-interface IMessageBoardMain extends IProps {};
+interface IMessageBoardMain extends ElementStyleProps {};
 
 export const MessageBoardMain = ( props : IMessageBoardMain) => {
     return (

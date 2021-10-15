@@ -1,9 +1,9 @@
 import React from 'react';
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import './styles.css';
 
-interface IFooter extends IProps {
+interface IFooter extends ElementStyleProps {
 
 }
 

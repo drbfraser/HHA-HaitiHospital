@@ -1,10 +1,10 @@
 import React from 'react';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import './styles.css';
 
-interface IUsers extends IProps {};
+interface IUsers extends ElementStyleProps {};
 
 const Users = (props: IUsers) => {
   return (<div></div>);

@@ -1,12 +1,12 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import './styles.css';
 import logo from '../../img/logo/LogoWText.svg'
 
-interface INavBar extends IProps {
+interface INavBar extends ElementStyleProps {
 
 };
 

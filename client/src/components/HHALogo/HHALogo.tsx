@@ -1,11 +1,11 @@
 import React from 'react';
 
 import HHALogoSvg from "img/logo/LogoWText.svg";
-import IProps from "components/IProps/IProps";
+import ElementStyleProps from "components/IProps/IProps";
 
 import "./styles.css";
 
-interface IHHALogo extends IProps{
+interface IHHALogo extends ElementStyleProps{
 }
 
 const HHALogo = (props: IHHALogo) => {

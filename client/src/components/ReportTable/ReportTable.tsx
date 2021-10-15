@@ -1,11 +1,11 @@
 import React from 'react';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 // import {ReportSummary} from 'constants/report_summary';
 import ReportRow from 'components/ReportRow/ReportRow';
 import {Report} from 'constants/report';
 
-interface ReportTableProps extends IProps {
+interface ReportTableProps extends ElementStyleProps {
   reports :Report[], 
 };
 

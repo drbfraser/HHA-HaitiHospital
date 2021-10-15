@@ -4,14 +4,14 @@ import { RouteComponentProps } from "react-router-dom";
 import Header from 'components/Header/Header';
 import LeaderBar from 'components/LeaderBar/LeaderBar';
 import MessageBoard from 'components/MessageBoard/MessageBoard';
-import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
-import IProps from 'components/IProps/IProps';
+import CustomCssProps from 'components/ICustomCSS/ICustomCSS';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import case1 from "img/case1.jpg";
 import case2 from "img/case2.jpg";
 import "./styles.css";
 
-interface IHome extends IProps {
+interface IHome extends ElementStyleProps {
 };
 
 interface IHome extends RouteComponentProps {
@@ -22,10 +22,10 @@ const Home = ({ history, location, match } : IHome) => {
   return (
     <>
       <Header classes='header grid'
-        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as ICustomCSS}
+        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}
       />
       <LeaderBar classes='leader-bar grid'
-        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as ICustomCSS}
+        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}
       />
       <MessageBoard classes='message-board'/>
 

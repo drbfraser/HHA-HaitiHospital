@@ -6,11 +6,11 @@ import TextHolder from 'components/TextHolder/TextHolder';
 // import {ReportSummary} from 'constants/report_summary';
 import {Report} from 'constants/report';
 
-import {PATH_TO_DETAILED_REPORT} from 'constants/routing';
+import {DETAILED_REPORT_ROUTE} from 'constants/routing';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
-interface ReportRowProps extends IProps {
+interface ReportRowProps extends ElementStyleProps {
   report: Report;
 }
 
@@ -19,7 +19,7 @@ const ReportRow = (props: ReportRowProps) => {
   return (
     <tr>
       <td>
-        <Link to={PATH_TO_DETAILED_REPORT + props.report.id}>
+        <Link to={DETAILED_REPORT_ROUTE + props.report.id}>
           {props.report.id}
         </Link>
       </td>

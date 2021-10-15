@@ -3,12 +3,12 @@ import React from 'react';
 
 import HHALogo from 'components/HHALogo/HHALogo';
 import Button from 'components/Button/Button';
-import IProps from 'components/IProps/IProps';
-import ICustomCSS from 'components/ICustomCSS/ICustomCSS';
+import ElementStyleProps from 'components/IProps/IProps';
+import CustomCssProps from 'components/ICustomCSS/ICustomCSS';
 
 import './styles.css';
 
-interface IHeader extends IProps{
+interface IHeader extends ElementStyleProps{
 }
 
 const Header = (props: IHeader) => {
@@ -25,18 +25,18 @@ const Header = (props: IHeader) => {
               {'--griditem-alignself': 'center',
               '--griditem-justifyself': 'center',
               'width' : '300px',
-              } as ICustomCSS
+              } as CustomCssProps
             }
           />
           <Button classes='btn grid-item goto-admin-btn'
             style= {
-              {'--griditem-alignself':'center'} as ICustomCSS
+              {'--griditem-alignself':'center'} as CustomCssProps
             }
             value='ADMIN PANEL'
           />
           <Button classes='btn grid-item signout-btn'
             style = {
-              {'--griditem-alignself':'center'} as ICustomCSS
+              {'--griditem-alignself':'center'} as CustomCssProps
             } 
             value='SIGN OUT'/>
         </>

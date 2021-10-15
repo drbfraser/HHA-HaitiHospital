@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import Message from 'components/Message/Message';
 import Loader from 'components/Loader/Loader';
 // import { getMessages } from '../../store/actions/messageActions';
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import './styles.css';
 
-interface IMessageList extends IProps {
+interface IMessageList extends ElementStyleProps {
 
 };
 

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 import Layout from 'layout/Layout'
 
 import './styles.css';
 
-interface ILogin extends IProps {
+interface ILogin extends ElementStyleProps {
 
 };
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 import Layout from 'layout/Layout';
 
 import './styles.css';
 
-interface INotFound extends IProps {
+interface INotFound extends ElementStyleProps {
 
 };
 

@@ -1,10 +1,10 @@
 import React from 'react';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 
 import './styles.css';
 
-interface IButton extends IProps {
+interface IButton extends ElementStyleProps {
   value: string;  
 }
 

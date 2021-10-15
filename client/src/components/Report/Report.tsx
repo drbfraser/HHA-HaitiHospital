@@ -1,12 +1,12 @@
 import React from 'react';
 
-import IProps from 'components/IProps/IProps';
+import ElementStyleProps from 'components/IProps/IProps';
 // import {Json, JsonArray} from 'constants/json';
 import {Report, ReportEntry} from 'constants/report';
 // import { report } from 'process';
 
 
-interface ReportProps extends IProps {
+interface ReportProps extends ElementStyleProps {
   report : {[key : string ] : ReportEntry};
 };
 

@@ -1,5 +1,4 @@
-const PATH_TO_DETAILED_REPORT = './detailedreport';
+export const DB_GET_REPORTS_URL = 'https://localhost:5000/api/NicuPaeds/';
+export const DB_GET_ID_REPORT_URL = `https://localhost:5000/api/NicuPaeds/`;
 
-export {
-  PATH_TO_DETAILED_REPORT,
-}
+export const DETAILED_REPORT_ROUTE = './detailedreport';
