@@ -8,6 +8,7 @@
     },
     "scripts": {
         "start-prod": "npm run build && node ./build/index.js",
+        "tsc": "tsc -p tsconfig.json",
         "build": "tsc -p tsconfig.json && npm run clean && npm run build-babel && npm run start-dev",
         "clean": "rm -rf build && mkdir build",
         "build-babel": "babel -d ./build ./src -s",

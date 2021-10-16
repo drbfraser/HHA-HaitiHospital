@@ -17,7 +17,7 @@ interface DepartmentReportsProps extends IProps {
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
   const [submittedReports, setSubbmitedReports] = useState<[]>([]);
-  const dbUrlForNICUReports = "https://localhost:5000/api/NicuPaeds/";
+  const dbUrlForNICUReports = "/api/NicuPaeds/";
 
 //   // Fetch submitted reports when page loaded
   useEffect(() => {

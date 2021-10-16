@@ -2,58 +2,40 @@ version: '3.7'
 
 services:
   server:
+    network_mode: host
     build:
       context: ./server
       dockerfile: Dockerfile
     image: myapp-server
     container_name: myapp-server
-    command: 
-      - npm run build
-      - npm run start-dev
     volumes:
       - ./server/:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - "5000:5000"
     depends_on:
       - mongodb
     env_file: ./server/.env
     environment:
       - NODE_ENV=development
-    networks:
-      - backend
-      - frontend
   mongodb:
+    network_mode: host
     container_name: myapp-mongodb
     image: mongo
     volumes:
       - data-volume:/data/db
-    ports:
-      - "27017:27017"
-    networks:
-      - backend
   client:
+    network_mode: host
     build:
       context: ./client
       dockerfile: Dockerfile
     image: myapp-client
     container_name: myapp-client
-    command: npm start
     volumes:
       - ./client/:/usr/app
       - /usr/app/node_modules
     depends_on:
       - server
-    ports:
-      - "3000:3000"
-    networks:
-      - frontend
     stdin_open: true # docker run -i
     tty: true        # docker run -t
-
-networks:
-  backend:
-  frontend:
 
 volumes:
   data-volume:
