@@ -1,20 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 
-import './App.css';
+import './app.css';
 
-import Home from './pages/Home/Home'
-import { DepartmentOne } from "pages/Department/Department1NICU";
-import { DepartmentTwo } from "pages/Department/Department2Maternity";
-import { DepartmentThree} from "pages/Department/Department3Rehab";
-import { DepartmentFour} from "pages/Department/Department4ComHealth";
-import { CaseStudyMain} from "pages/CaseStudyMain/CaseStudyMain";
-import { DepartmentMain} from "pages/Department/DepartmentMain";
-import { LeaderBoardMain } from "pages/LeaderBoardMain/LeaderBoardMain"
-import { MessageBoardMain } from "pages/MessageBoardMain/MessageBoardMain";
-import DepartmentReports from 'pages/department_reports/DepartmentReports';
-import  DetailedReport from 'pages/department_detailed_report/DetailedReport';
-import NICUForm from 'pages/Form/NICUForm';
+import Home from './pages/home/home'
+import { DepartmentOne } from "pages/department/department_1_nicu";
+import { DepartmentTwo } from "pages/department/department_2_maternity";
+import { DepartmentThree} from "pages/department/department_3_rehab";
+import { DepartmentFour} from "pages/department/department_4_comhealth";
+import { CaseStudyMain} from "pages/case_study_main/case_study_main";
+import { DepartmentMain} from "pages/department/department_main";
+import { LeaderBoardMain } from "pages/leader_board_main/;eader_board_main"
+import { MessageBoardMain } from "pages/message_board_main/message_board_main";
+import DepartmentReports from 'pages/department_reports/department_reports';
+import  DetailedReport from 'pages/department_detailed_report/detailed_report';
+import NICUForm from 'pages/form/nicu_form';
 
 // import Post from "./components/Post/Post";
 

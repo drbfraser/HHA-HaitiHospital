@@ -1,11 +1,10 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 
-import Header from 'components/Header/Header';
-import LeaderBar from 'components/LeaderBar/LeaderBar';
-import MessageBoard from 'components/MessageBoard/MessageBoard';
-import CustomCssProps from 'components/ICustomCSS/ICustomCSS';
-import ElementStyleProps from 'components/IProps/IProps';
+import Header from 'components/header/header';
+import LeaderBar from 'components/leader_bar/leader_bar';
+import MessageBoard from 'components/message_board/message_board';
+import {CustomCssProps, ElementStyleProps} from 'constants/interfaces'
 
 import case1 from "img/case1.jpg";
 import case2 from "img/case2.jpg";

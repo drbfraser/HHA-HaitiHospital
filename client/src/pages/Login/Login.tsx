@@ -1,15 +1,15 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 import Layout from 'layout/Layout'
 
 import './styles.css';
 
-interface ILogin extends ElementStyleProps {
+interface LoginProps extends ElementStyleProps {
 
 };
 
-const Login: React.FC<ILogin> = ({}) => {
+const Login: React.FC<LoginProps> = ({}) => {
   return(
     <Layout>
       <div></div>

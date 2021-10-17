@@ -1,14 +1,14 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IProfile extends ElementStyleProps {
+interface ProfileProps extends ElementStyleProps {
 
 };
 
-const Profile = (props : IProfile) => {
+const Profile = (props : ProfileProps) => {
   return (<div></div>);
 }
 

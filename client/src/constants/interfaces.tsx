@@ -26,8 +26,8 @@ export interface JsonArray extends Array<string|number|boolean|Date|Json|JsonArr
 // export interface ReportEntry {
 //   (x : string) : string | number | boolean | Date | Report | Report[],
 // }
-type Entry = string | number | boolean | Date | ReportProps | ReportProps[];
+type ReportEntry = string | number | boolean | Date | ReportProps | ReportProps[];
 export interface ReportProps {
-  [index : string] :  Entry,
+  [index : string] :  ReportEntry,
 }
 

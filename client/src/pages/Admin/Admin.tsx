@@ -1,14 +1,14 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IAdmin extends ElementStyleProps {
+interface AdminProps extends ElementStyleProps {
 
 };
 
-const Admin = (props:IAdmin) => {
+const Admin = (props : AdminProps) => {
   return(
     <div></div>
   );

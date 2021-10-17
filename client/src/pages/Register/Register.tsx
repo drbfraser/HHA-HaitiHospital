@@ -1,14 +1,14 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IRegister extends ElementStyleProps {
+interface RegisterProps extends ElementStyleProps {
 
 };
 
-const Register = ({} : IRegister) => {
+const Register = ({} : RegisterProps) => {
   return(<div></div>);
 }
 

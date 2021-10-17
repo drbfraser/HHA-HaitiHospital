@@ -1,14 +1,14 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IMessage extends ElementStyleProps {
+interface MessageProps extends ElementStyleProps {
 
 };
 
-const Message = (props: IMessage) => {
+const Message = (props: MessageProps) => {
   return (<div></div>);
 }
 

@@ -1,10 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import React from 'react';
 
-import HHALogo from 'components/HHALogo/HHALogo';
-import Button from 'components/Button/Button';
-import ElementStyleProps from 'components/IProps/IProps';
-import CustomCssProps from 'components/ICustomCSS/ICustomCSS';
+import HhaLogo from 'components/hha_logo/hha_logo';
+import Button from 'components/button/button';
+import { ElementStyleProps, CustomCssProps } from 'constants/interfaces';
 
 import './styles.css';
 
@@ -19,7 +18,7 @@ const Header = (props: IHeader) => {
     style={props.style}>
       {location.pathname === '/home' && (
         <>
-          <HHALogo 
+          <HhaLogo 
             classes='logo grid-item' 
             style={
               {'--griditem-alignself': 'center',

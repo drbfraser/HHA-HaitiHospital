@@ -1,14 +1,14 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IButton extends ElementStyleProps {
+interface ButtonProps extends ElementStyleProps {
   value: string;  
 }
 
-const Btn = (props: IButton) => {
+const Button = (props: ButtonProps) => {
   
   return (
     <button className={props.classes}
@@ -19,4 +19,4 @@ const Btn = (props: IButton) => {
   )
 }
 
-export default Btn;
+export default Button;

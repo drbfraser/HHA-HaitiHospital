@@ -1,12 +1,12 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IUsers extends ElementStyleProps {};
+interface UsersProps extends ElementStyleProps {};
 
-const Users = (props: IUsers) => {
+const Users = (props: UsersProps) => {
   return (<div></div>);
 }
 

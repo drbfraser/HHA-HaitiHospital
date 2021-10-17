@@ -1,16 +1,16 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface ILoader extends ElementStyleProps {
+interface LoaderProps extends ElementStyleProps {
 
 };
 
-const Loader = (props : ILoader) => {
+const Loader = (props : LoaderProps) => {
   return (
-    <div className="loader-container loader" {...props}>
+    <div className="loader-container loader" {...props.classes}>
       <h3 className="loader-content">Loading..</h3>
     </div>
   );

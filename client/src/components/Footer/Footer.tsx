@@ -1,13 +1,13 @@
 import React from 'react';
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IFooter extends ElementStyleProps {
+interface FooterProps extends ElementStyleProps {
 
 }
 
-const Footer = (props : IFooter) => {
+const Footer = (props : FooterProps) => {
   return (
     <div className="footer">
       <div className="footer-content">
