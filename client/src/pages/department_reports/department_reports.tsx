@@ -5,7 +5,7 @@ import { ElementStyleProps } from 'constants/interfaces';
 import { ReportProps } from 'constants/interfaces';
 import NavBar from 'components/nav_bar/nav_bar';
 import TextHolder from 'components/text-holder/text_holder';
-import ReportSummaries from 'components/report_summaries/report_summaries';
+import ReportSummariesTable from 'components/report_summaries_table/report_summaries_table';
 
 
 import './styles.css';
@@ -42,20 +42,18 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   }
 
   return (
-    <>
+    <div className={'department-reports '+props.classes}>
       <NavBar/>
-      <div className='container'>
-        <TextHolder text={props.department}></TextHolder>
-        <div> Search Bar Here</div>
-        <div className='report-board'>
-          {
-            (submittedReports === undefined || submittedReports.length === 0) ? 
-              <div>No submitted reports</div> : 
-              <ReportSummaries reports={submittedReports}/>
-          }
-        </div>
-      </div> 
-    </>
+      <TextHolder text={props.department}></TextHolder>
+      <div> Search Bar Here</div>
+      <div className='report-board'>
+        {
+          (submittedReports === undefined || submittedReports.length === 0) ? 
+            <div>No submitted reports</div> : 
+            <ReportSummariesTable reports={submittedReports}/>
+        }
+      </div>
+    </div>
   );
 }
 

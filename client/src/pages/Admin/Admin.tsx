@@ -10,7 +10,7 @@ interface AdminProps extends ElementStyleProps {
 
 const Admin = (props : AdminProps) => {
   return(
-    <div></div>
+    <div className={'admin '+props.classes}></div>
   );
 }
 

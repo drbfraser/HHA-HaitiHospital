@@ -3,11 +3,11 @@ import * as React from "react";
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-interface ILeaderBoardMain extends ElementStyleProps {};
+interface LeaderBoardMainProps extends ElementStyleProps {};
 
-export const LeaderBoardMain = ( props :ILeaderBoardMain) => {
+export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
     return (
-        <div>
+        <div className={'leader-board-main '+props.classes}>
             <div>this is a Case leader board page</div>
             {/*<Link to={`/posts/${postId}`}>go to post 1</Link>*/}
         </div>

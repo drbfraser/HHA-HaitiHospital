@@ -7,7 +7,7 @@ import './styles.css';
 interface UsersProps extends ElementStyleProps {};
 
 const Users = (props: UsersProps) => {
-  return (<div></div>);
+  return (<div className={'users' + props.classes}></div>);
 }
 
 export default Users;

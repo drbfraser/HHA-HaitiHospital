@@ -9,25 +9,25 @@ import "./department_main_style.css";
 interface DepartmentMainProps extends ElementStyleProps {};
 interface DepartmentMainProps extends RouteComponentProps{}
 
-export const DepartmentMain = ({history} : DepartmentMainProps) => {
+export const DepartmentMain = (props : DepartmentMainProps) => {
   return (
-    <div>
+    <div className={'department-main '+props.classes}>
       <NavBar />
       <p>All Departments</p>
       <div className="allDepartemnts">
         <button className="DepartmentButton1"
                 onClick={() => {
-                    history.push("/Department1NICU");
+                    props.history.push("/Department1NICU");
                 }}>NICU / PAED</button>
         <button className="DepartmentButton2"
                 onClick={() => {
-                    history.push("/Department2Maternity");
+                    props.history.push("/Department2Maternity");
                 }}>MATERNITY</button>
         <button className="DepartmentButton3"onClick={() => {
-            history.push("/Department3Rehab");
+            props.history.push("/Department3Rehab");
         }}>REHAB</button>
         <button className="DepartmentButton4"onClick={() => {
-            history.push("/Department4ComHealth");
+            props.history.push("/Department4ComHealth");
         }}>COM-HEALTH</button>
 
         <button className="DepartmentButton5">Other</button>

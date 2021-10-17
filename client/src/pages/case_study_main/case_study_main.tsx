@@ -5,6 +5,7 @@ import NavBar from "components/nav_bar/nav_bar";
 import { ElementStyleProps } from "constants/interfaces";
 
 import "./styles.css";
+import { isPropertySignature } from "typescript";
 
 interface CaseStudyMainProps extends ElementStyleProps {
 
@@ -12,22 +13,22 @@ interface CaseStudyMainProps extends ElementStyleProps {
 
 interface CaseStudyMainProps extends RouteComponentProps {};
 
-export const CaseStudyMain = ({history, location, match}: CaseStudyMainProps) => {
+export const CaseStudyMain = (props: CaseStudyMainProps) => {
   // const postId = 5;
   return (
-    <div>
+    <div className={'case-study-main '+ props.classes}>
       <NavBar />
       <p> Previous Case Studies</p>
 
       <div className="case-study-main-content">
         <button className="caseTwo-button"
-            onClick={() => {history.push("/");}}>
+            onClick={() => {props.history.push("/");}}>
         </button>
         <button className="caseOne-button"
-            onClick={() => {history.push("/");}}>
+            onClick={() => {props.history.push("/");}}>
         </button>
         <button className="case-study-more-button"
-            onClick={() => {history.push("/");}}>
+            onClick={() => {props.history.push("/");}}>
         </button>
       </div>
       

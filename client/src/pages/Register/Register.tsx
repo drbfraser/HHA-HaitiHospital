@@ -8,8 +8,8 @@ interface RegisterProps extends ElementStyleProps {
 
 };
 
-const Register = ({} : RegisterProps) => {
-  return(<div></div>);
+const Register = (props : RegisterProps) => {
+  return(<div className={'register '+props.classes}></div>);
 }
 
 export default Register;

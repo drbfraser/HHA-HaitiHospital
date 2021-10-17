@@ -9,7 +9,7 @@ interface ProfileProps extends ElementStyleProps {
 };
 
 const Profile = (props : ProfileProps) => {
-  return (<div></div>);
+  return (<div className={'profile '+props.classes}></div>);
 }
 
 export default Profile;

@@ -41,7 +41,7 @@ const DetailedReport = (props : DetailedReportProps) => {
   }
 
   return (
-    <div className='page-container'>
+    <div className='detailed-report'>
       {
         (Object.keys(report).length===0 ) ?
           <TextHolder text = 'No report found'/>:

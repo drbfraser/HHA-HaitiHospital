@@ -9,10 +9,10 @@ interface LoginProps extends ElementStyleProps {
 
 };
 
-const Login: React.FC<LoginProps> = ({}) => {
+const Login = (props : LoginProps) => {
   return(
     <Layout>
-      <div></div>
+      <div className={'login '+props.classes}></div>
     </Layout>
   );
 }

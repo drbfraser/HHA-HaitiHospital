@@ -10,23 +10,23 @@ import case1 from "img/case1.jpg";
 import case2 from "img/case2.jpg";
 import "./styles.css";
 
-interface IHome extends ElementStyleProps {
+interface HomeProps extends ElementStyleProps {
 };
 
-interface IHome extends RouteComponentProps {
+interface HomeProps extends RouteComponentProps {
 };
 
-const Home = ({ history, location, match } : IHome) => {
-  console.log(match, location);
+const Home = (props : HomeProps) => {
+  console.log(props.match, props.location);
   return (
-    <>
-      <Header classes='header grid'
+    <div className={'home '+props.classes}>
+      <Header classes='grid'
         style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}
       />
-      <LeaderBar classes='leader-bar grid'
+      <LeaderBar classes='grid'
         style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}
       />
-      <MessageBoard classes='message-board'/>
+      <MessageBoard/>
 
       <div className="homePage-department">
           <h1>Departments</h1>
@@ -35,26 +35,26 @@ const Home = ({ history, location, match } : IHome) => {
                 onClick={() => {
                     // api call
                     // change to the about page
-                    history.push("/Department1NICU");
+                    props.history.push("/Department1NICU");
                 }}>NICU / PAED</button>
             <button className="button2"
                     onClick={() => {
-                        history.push("/Department2Maternity");
+                        props.history.push("/Department2Maternity");
                     }}>MATERNITY</button>
             <button className="button3"onClick={() => {
-                        history.push("/Department3Rehab");
+                        props.history.push("/Department3Rehab");
                     }}>REHAB</button>
             <button className="button4"onClick={() => {
-                        history.push("/Department4ComHealth");
+                        props.history.push("/Department4ComHealth");
                     }}>COM-HEALTH</button>
           <button className="button5"onClick={() => {
-              history.push("/DepartmentMain");
+              props.history.push("/DepartmentMain");
           }}>MORE</button>
 
             <div>
                 <button className="caseStudyButton"
                 onClick={() => {
-                    history.push("./caseStudyMain");
+                    props.history.push("./caseStudyMain");
                 }}>Case Study</button>
             </div>
             <div className="caseStudy-image">
