@@ -27,7 +27,7 @@ export const ReportDisplay = (props : ReportDisplayProps) => {
   }
 
   return (
-    <div className={'report-display' + (props.classes || '')}>
+    <div className={'report-display ' + (props.classes || '')}>
       {
         Object.keys(props.report).map(mapKeyToJsx)
       }
