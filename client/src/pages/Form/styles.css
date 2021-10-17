@@ -54,6 +54,10 @@
   .inputChange label{
     display: inline-block;
   }
+
+  .formSubmit{
+    border: none;
+  }
   
   .inputChange input{
     margin-bottom: 0;
