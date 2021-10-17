@@ -11,7 +11,7 @@ interface ButtonProps extends ElementStyleProps {
 const Button = (props: ButtonProps) => {
   
   return (
-    <button className={'button '+props.classes}
+    <button className={'button '+ (props.classes || '')}
       style={props.style}
     >
       {props.value}

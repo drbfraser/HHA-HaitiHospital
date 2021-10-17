@@ -6,7 +6,6 @@ import NavBar from "components/nav_bar/nav_bar";
 
 // import Logo from "img/logo/LogoWText.svg";
 import "./department_style.css"
-import { isPropertySignature } from "typescript";
 
 interface DepartmentProps extends ElementStyleProps {
 

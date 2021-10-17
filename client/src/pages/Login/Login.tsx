@@ -12,7 +12,7 @@ interface LoginProps extends ElementStyleProps {
 const Login = (props : LoginProps) => {
   return(
     <Layout>
-      <div className={'login '+props.classes}></div>
+      <div className={'login '+ (props.classes||'')}></div>
     </Layout>
   );
 }

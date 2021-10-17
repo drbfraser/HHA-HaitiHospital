@@ -15,7 +15,7 @@ interface PostProps extends RouteComponentProps {
 
 const Post = (props: PostProps) => {
   return (
-    <div className={'post '+props.classes}>
+    <div className={'post '+ (props.classes || '')}>
 
     </div>
   )

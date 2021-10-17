@@ -9,7 +9,7 @@ interface ArrayEntryProps extends ElementStyleProps {
 };
 
 export const ArrayEntry = (props : ArrayEntryProps) => {
-  return (<div className = {'array-entry ' + props.classes}>
+  return (<div className = {'entry array-entry ' + (props.classes || '')}>
     <TextHolder text={props.key + ': ['}/>
     {props.entries.forEach((entry) => (<>{'\t'}<ReportDisplay report={entry as ReportProps} /></>))}
     <TextHolder text={']'}/>

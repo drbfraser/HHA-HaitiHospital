@@ -3,13 +3,16 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
+import Header from 'components/header/header';
 
 interface RegisterProps extends ElementStyleProps {
 
 };
 
 const Register = (props : RegisterProps) => {
-  return(<div className={'register '+props.classes}></div>);
+  return(<div className={'register '+(props.classes ||'')}>
+    <Header/>
+  </div>);
 }
 
 export default Register;

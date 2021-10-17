@@ -15,7 +15,7 @@ interface MessageListProps extends ElementStyleProps {
 
 const MessageList = (props : MessageListProps) => {
   return (
-    <div className={'message-list '+props.classes}></div>
+    <div className={'message-list '+ (props.classes||'')}></div>
   );
 };
 

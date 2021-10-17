@@ -17,7 +17,7 @@ interface ReportSummaryProps extends ElementStyleProps {
 const ReportSummaryRow = (props: ReportSummaryProps) => {
 
   return (
-    <tr className={'report-summary-row '+props.classes}>
+    <tr className={'report-summary-row '+ (props.classes || '')}>
       <td>
         <Link to={DETAILED_REPORT_ROUTE +props.reportId}>
           {props.reportId}

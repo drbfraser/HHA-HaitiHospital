@@ -23,7 +23,7 @@ const App = () => {
   return (
     <Router>
       <div className="app">
-        <Route exact path='/home' component={Home}/>
+        <Route path='/home' exact component={Home}/>
         <Route path="/Department1NICU" exact component={DepartmentOne} />
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />
         <Route path="/Department3Rehab" exact component={DepartmentThree} />

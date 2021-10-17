@@ -9,7 +9,7 @@ interface ReportSummariesProps extends ElementStyleProps {
 
 const ReportSummariesTable = (props : ReportSummariesProps) => {
   return (
-    <table className={'report-summaries-tables '+props.classes}>
+    <table className={'report-summaries-tables '+ (props.classes || '')}>
       <tr>
         <th>reportId</th>
         <th>lastUpdatedOn</th>

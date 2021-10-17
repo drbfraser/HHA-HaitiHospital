@@ -9,7 +9,7 @@ interface SimpleEntryProps extends ElementStyleProps {
 
 export const SimpleEntry = (props: SimpleEntryProps) => {
   return (
-    <div className={props.classes}>
+    <div className={'entry simple-entry '+ (props.classes||'')}>
       <TextHolder text={props.key}/>
       <TextHolder text={props.value as string}/>
     </div>

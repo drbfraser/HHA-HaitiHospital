@@ -13,7 +13,7 @@ interface NotFoundProps extends ElementStyleProps {
 const NotFound = (props: NotFoundProps) => {
   return (
     <Layout>
-      <div className="not-found">
+      <div className={"not-found "+(props.classes ||'')}>
         <h1>Not Found 404</h1>
         <p>
           Go back to{' '}

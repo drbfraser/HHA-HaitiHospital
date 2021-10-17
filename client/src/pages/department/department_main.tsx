@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 
 import { ElementStyleProps } from "constants/interfaces";
-import NavBar from "components/nav_bar/nav_bar";
+import Header from "components/header/header";
 
 import "./department_main_style.css";
 
@@ -11,8 +11,8 @@ interface DepartmentMainProps extends RouteComponentProps{}
 
 export const DepartmentMain = (props : DepartmentMainProps) => {
   return (
-    <div className={'department-main '+props.classes}>
-      <NavBar />
+    <div className={'department-main '+ (props.classes || '')}>
+      <Header/>
       <p>All Departments</p>
       <div className="allDepartemnts">
         <button className="DepartmentButton1"

@@ -3,13 +3,17 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
+import Header from 'components/header/header';
 
 interface ProfileProps extends ElementStyleProps {
 
 };
 
 const Profile = (props : ProfileProps) => {
-  return (<div className={'profile '+props.classes}></div>);
+  return (
+    <div className={'profile '+(props.classes||'')}>
+      <Header/>
+    </div>);
 }
 
 export default Profile;

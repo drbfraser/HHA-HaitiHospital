@@ -9,7 +9,7 @@ interface FooterProps extends ElementStyleProps {
 
 const Footer = (props : FooterProps) => {
   return (
-    <div className={"footer "+props.classes}>
+    <div className={"footer "+ (props.classes || '')}>
       <div className="footer-content">
         <span className="username">@nemanjam 2020</span>
         <iframe

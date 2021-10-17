@@ -2,8 +2,8 @@ import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 
 import { ElementStyleProps } from "constants/interfaces";
-
-import NavBar from "components/nav_bar/nav_bar";
+import Header from "components/header/header";
+// import NavBar from "components/nav_bar/nav_bar";
 
 // import Logo from "img/logo/LogoWText.svg";
 import "./department_style.css"
@@ -20,7 +20,7 @@ interface DeparmentProps extends RouteComponentProps {
 export const DepartmentOne = (props : DeparmentProps) => {
   return (
     <div className={'department-one '+ props.classes}>
-      <NavBar />
+      <Header />
         {/* <button className="homePageButton"
             onClick={() => {
               props.history.push("../");

@@ -3,12 +3,12 @@ import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
 import { ReportProps } from 'constants/interfaces';
-import NavBar from 'components/nav_bar/nav_bar';
 import TextHolder from 'components/text-holder/text_holder';
 import ReportSummariesTable from 'components/report_summaries_table/report_summaries_table';
 
 
 import './styles.css';
+import Header from 'components/header/header';
 
 interface DepartmentReportsProps extends ElementStyleProps {
   department: string;
@@ -42,8 +42,8 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   }
 
   return (
-    <div className={'department-reports '+props.classes}>
-      <NavBar/>
+    <div className={'department-reports '+(props.classes || '')}>
+      <Header/>
       <TextHolder text={props.department}></TextHolder>
       <div> Search Bar Here</div>
       <div className='report-board'>

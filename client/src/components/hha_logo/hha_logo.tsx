@@ -12,7 +12,7 @@ interface HhaLogoProps extends ElementStyleProps{
 const HhaLogo = (props: HhaLogoProps) => {
 
   return (<Link to='/home'>
-    <img className={'hha-logo '+props.classes} src={HHALogoSvg} 
+    <img className={'hha-logo '+ (props.classes||'')} src={HHALogoSvg} 
       alt='HHA Logo' 
       style={props.style}></img>
   </Link>)

@@ -12,7 +12,7 @@ interface LeaderBarProps extends ElementStyleProps {
 const LeaderBar = (props: LeaderBarProps) => {
   
   return(
-    <div className={'leader-bar '+props.classes}
+    <div className={'leader-bar ' + (props.classes || '')}
       style={props.style}
     >
       <Button classes='btn grid-item goto-leaderboard-btn'

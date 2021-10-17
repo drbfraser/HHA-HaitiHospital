@@ -50,19 +50,20 @@ const Home = (props : HomeProps) => {
           <button className="button5"onClick={() => {
               props.history.push("/DepartmentMain");
           }}>MORE</button>
-
-            <div>
-                <button className="caseStudyButton"
-                onClick={() => {
-                    props.history.push("./caseStudyMain");
-                }}>Case Study</button>
-            </div>
-            <div className="caseStudy-image">
-                <img src={case1} className="caseOne" alt="case1"/>
-                <img src={case2} className="caseTwo" alt="case2" />
-            </div>
-        </div>
-    </>
+      </div>
+      <div className='home-case-study'>
+          <div>
+              <button className="caseStudyButton"
+              onClick={() => {
+                  props.history.push("./caseStudyMain");
+              }}>Case Study</button>
+          </div>
+          <div className="caseStudy-image">
+              <img src={case1} className="caseOne" alt="case1"/>
+              <img src={case2} className="caseTwo" alt="case2" />
+          </div>
+      </div>
+    </div>
   );
 }
 

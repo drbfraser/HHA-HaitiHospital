@@ -3,6 +3,7 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
+import Header from 'components/header/header';
 
 interface AdminProps extends ElementStyleProps {
 
@@ -10,7 +11,9 @@ interface AdminProps extends ElementStyleProps {
 
 const Admin = (props : AdminProps) => {
   return(
-    <div className={'admin '+props.classes}></div>
+    <div className={'admin '+ (props.classes||'')}>
+      <Header/>
+    </div>
   );
 }
 

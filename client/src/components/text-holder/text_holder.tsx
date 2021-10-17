@@ -12,7 +12,7 @@ interface TextHolderProps extends ElementStyleProps {
 const TextHolder = (props: TextHolderProps) => {
 
   return(
-    <div className={'text-holder '+props.classes}
+    <div className={'text-holder '+ (props.classes||'')}
       style={props.style}
     >
       {props.text}

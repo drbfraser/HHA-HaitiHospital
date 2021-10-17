@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 // import { compose } from 'redux';
 import { NICUPaedsModel } from 'pages/form/nicu_paeds_model';
+import Header from 'components/header/header';
 
 // import Layout from '../../layout/Layout';
 // import './styles.css';
@@ -85,8 +86,8 @@ function NICUForm() {
     }    
 
     return (
-        // <Layout>
             <div className="wrapper">
+            <Header/>
             <h1>HHA Form</h1>
             <div>
                 <h2>MSPP DATA (NICU)</h2>

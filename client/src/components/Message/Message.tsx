@@ -9,7 +9,7 @@ interface MessageProps extends ElementStyleProps {
 };
 
 const Message = (props: MessageProps) => {
-  return (<div className={'message '+props.classes}></div>);
+  return (<div className={'message '+ (props.classes||'')}></div>);
 }
 
 export default Message;

@@ -11,7 +11,7 @@ interface MessageBoardProps extends ElementStyleProps {}
 
 const MessageBoard = (props: MessageBoardProps,) => {
   return (
-    <div className={'message-board '+props.classes}>
+    <div className={'message-board '+ (props.classes ||'')}>
       <TextHolder classes='msgboard-title' text='MESSAGE BOARD'/>
         {/*<Btn classes='msg-seemore' value='See more'/>*/}
       <TextHolder classes='msg' text='Message 1 Message 1 Message 1 Message 1 Message 1 Message 1 '/>

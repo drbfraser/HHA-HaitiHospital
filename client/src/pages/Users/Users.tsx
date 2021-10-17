@@ -3,11 +3,14 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
+import Header from 'components/header/header';
 
 interface UsersProps extends ElementStyleProps {};
 
 const Users = (props: UsersProps) => {
-  return (<div className={'users' + props.classes}></div>);
+  return (<div className={'users' + (props.classes||'')}>
+    <Header/>
+  </div>);
 }
 
 export default Users;

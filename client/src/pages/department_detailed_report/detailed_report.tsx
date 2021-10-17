@@ -9,6 +9,7 @@ import ReportDisplay from 'components/report/report';
 
 import { ElementStyleProps } from 'constants/interfaces';
 import './styles.css';
+import Header from 'components/header/header';
 
 
 interface DetailedReportProps extends ElementStyleProps {
@@ -41,7 +42,8 @@ const DetailedReport = (props : DetailedReportProps) => {
   }
 
   return (
-    <div className='detailed-report'>
+    <div className={'detailed-report '+(props.classes||'')}>
+      <Header/>
       {
         (Object.keys(report).length===0 ) ?
           <TextHolder text = 'No report found'/>:
