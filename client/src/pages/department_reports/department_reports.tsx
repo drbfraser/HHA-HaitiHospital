@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
+import { ReportProps } from 'constants/interfaces';
 import NavBar from 'components/nav_bar/nav_bar';
 import TextHolder from 'components/text-holder/text_holder';
-import ReportTable from 'components/report_table/report_table';
+import ReportSummaries from 'components/report_summaries/report_summaries';
 
-import {ReportProps} from 'constants/interfaces';
 
 import './styles.css';
 
@@ -16,7 +16,7 @@ interface DepartmentReportsProps extends ElementStyleProps {
 
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
-  const [submittedReports, setSubbmitedReports] = useState<[]>([]);
+  const [submittedReports, setSubbmitedReports] = useState<ReportProps[]>([]);
   const dbUrlForNICUReports = "https://localhost:5000/api/NicuPaeds/";
 
 //   // Fetch submitted reports when page loaded
@@ -39,21 +39,6 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     catch (err) {
       console.log(err);
     }
-
-
-      // .then((response) => {
-      //   console.log(response.data);
-      //   console.log(response.status);
-      //   console.log(response.statusText);
-      //   console.log(response.headers);
-      //   console.log(response.config);
-      // })
-      // .catch((abc) => {console.log(abc)});
-    
-    // console.log(res.data);
-
-    // console.log(data);
-    // return [];   
   }
 
   return (
@@ -66,7 +51,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
           {
             (submittedReports === undefined || submittedReports.length === 0) ? 
               <div>No submitted reports</div> : 
-              <ReportTable reports={submittedReports as ReportProps[]}/>
+              <ReportSummaries reports={submittedReports}/>
           }
         </div>
       </div> 

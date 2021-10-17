@@ -1,14 +1,14 @@
 import React from 'react';
 
-import ElementStyleProps from 'components/IProps/IProps';
+import { ElementStyleProps } from 'constants/interfaces';
 
 import 'components/layout/styles.css';
 
-interface ILayout extends ElementStyleProps {
+interface LayoutProps extends ElementStyleProps {
   children: any,
 };
 
-const Layout = ({ children }: ILayout) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <div></div>
   );

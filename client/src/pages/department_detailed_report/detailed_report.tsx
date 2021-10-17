@@ -3,10 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 
 import {DB_GET_ID_REPORT_URL} from 'constants/routing';
-// import { Json, JsonArray } from 'constants/json';
 import { ReportProps } from 'constants/interfaces';
 import TextHolder from 'components/text-holder/text_holder';
-// import ReportTable from 'components/ReportTable/ReportTable';
 import ReportDisplay from 'components/report/report';
 
 import { ElementStyleProps } from 'constants/interfaces';
@@ -14,7 +12,6 @@ import './styles.css';
 
 
 interface DetailedReportProps extends ElementStyleProps {
-  id : number;
 };
 
 interface UrlParams {
@@ -26,7 +23,7 @@ const DetailedReport = (props : DetailedReportProps) => {
 
   const detailedReportUrl = DB_GET_ID_REPORT_URL + id;
 
-  const [ report, setReport] = useState<object>({});
+  const [ report, setReport] = useState<ReportProps>({});
   useEffect(() => {
     const getReport = async() => {
       const reportFromServer = await fetchReport();
@@ -44,7 +41,7 @@ const DetailedReport = (props : DetailedReportProps) => {
   }
 
   return (
-    <div className='container'>
+    <div className='page-container'>
       {
         (Object.keys(report).length===0 ) ?
           <TextHolder text = 'No report found'/>:

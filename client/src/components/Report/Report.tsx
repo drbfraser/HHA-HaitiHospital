@@ -1,45 +1,34 @@
 import React from 'react';
 
-import { ElementStyleProps, Report, ReportEntry } from 'constants/interfaces';
+import { ElementStyleProps, ReportProps } from 'constants/interfaces';
+import { SimpleEntry } from 'components/simple_report_entry/simple_report_entry';
+import { ArrayEntry } from 'components/array_report_entry/array_report_entry';
+import { ObjectEntry } from 'components/object_report_entry/object_report_entry';
 
-interface ReportProps extends ElementStyleProps {
-  report : {[key : string ] : ReportEntry};
+interface ReportDisplayProps extends ElementStyleProps {
+  report : ReportProps;
 };
 
-const ReportDisplay = (props : ReportProps) => {
-//   type SimpleType = string | number | boolean | Date;
-//   type ComplexType = Json | JsonArray;
+export const ReportDisplay = (props : ReportDisplayProps) => {
+
+  function mapKeyToJsx (key: string, index: number, array: string[]) : React.ReactNode{
+      let entry = props.report[key];
+      let entryType = typeof(entry);
+
+      if (entryType === 'number' || entryType === 'string' || entryType === 'boolean')
+        return (<SimpleEntry key={key} value={entry as boolean | string | number}/>);
+      else if (Array.isArray(entry)) {
+        return (<ArrayEntry key={key} entries={entry as ReportProps[]}/>);
+      }
+      else {
+        return (<ObjectEntry key={key} value={entry as ReportProps}/>);
+      }
+  }
 
   return (
     <div className='container'>
       {
-
-        Object.keys(props.report).map(
-          (key) => {
-            let value = props.report[key];
-            let valueType = typeof(value);
-            // value is simple type
-            if (valueType === 'number' || valueType === 'string' || valueType === 'boolean')
-              return (<div><span>{key}</span> : <span>{value}</span></div>);
-            else if (Array.isArray(value)) {
-              // value is a list of objects (list of sub-reports)
-              return (<>
-                <div><span>{key}</span> <span>{' : {'}</span></div>
-                {value.forEach((element) => (<div>{'\t'}<span><ReportDisplay report={element as Report}/></span></div>))}
-                <div>{'}'}</div>
-              </>);
-            }
-            else {
-              // value is a sub-report
-              return (<>
-                <div><span>{key}</span><span>{' : {'}</span></div>
-                <div>{'\t'}<ReportDisplay report={value as unknown as Report}/></div>
-                <div>{'}'}</div>
-              </>);
-            }
-              
-          }
-        )
+        Object.keys(props.report).map(mapKeyToJsx)
       }
     </div>
   );
