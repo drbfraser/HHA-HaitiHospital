@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 // import { compose } from 'redux';
 import { NICUPaedsModel } from './NICUPaedsModel';
+import NavBar from 'components/Navbar/Navbar';
 
 // import Layout from '../../layout/Layout';
-// import './styles.css';
+import './styles.css';
 
 
 function NICUForm() {
@@ -29,32 +30,6 @@ function NICUForm() {
     // })
 
     const onSubmit = (data: any) => {
-        
-        // var hospitalizedTotal = document.getElementById("hospitalizedTotal") as HTMLInputElement;
-        // data.hospitalized.total = hospitalizedTotal.value;
-
-        // var dischargedAliveTotal = document.getElementById("dischargedAliveTotal") as HTMLInputElement;
-        // data.dischargedAlive.total = dischargedAliveTotal.value;
-
-        // var diedBefore48hrTotal = document.getElementById("diedBefore48hrTotal") as HTMLInputElement;
-        // data.diedBefore48hr.total = diedBefore48hrTotal.value;
-
-        // var diedAfter48hrTotal = document.getElementById("diedAfter48hrTotal") as HTMLInputElement;
-        // data.diedAfter48hr.total = diedAfter48hrTotal.value;
-
-        // var selfDischargeTotal = document.getElementById("selfDischargeTotal") as HTMLInputElement;
-        // data.selfDischarge.total = selfDischargeTotal.value;
-
-        // var selfDischargeTotal = document.getElementById("selfDischargeTotal") as HTMLInputElement;
-        // data.selfDischarge.total = selfDischargeTotal.value;
-
-        // var admissionsTotal = document.getElementById("admissionsTotal") as HTMLInputElement;
-        // // data.admissions = {};
-        // data.admissions.total = admissionsTotal.value;
-
-        // var numberOfOutPatientsTotal = document.getElementById("numberOfOutPatientsTotal") as HTMLInputElement;
-        // data.numberOfOutPatients.total = numberOfOutPatientsTotal.value;
-
 
         console.log(data);
         axios.post('/api/NicuPaeds/add', data).then(res => {
@@ -85,10 +60,11 @@ function NICUForm() {
     }    
 
     return (
-        // <Layout>
-            <div className="wrapper">
-            <h1>HHA Form</h1>
-            <div>
+        <div className="wrapper">
+            <NavBar />
+            
+            <div className="wrapForm">
+                <h1>HHA Form</h1>
                 <h2>MSPP DATA (NICU)</h2>
                 <form onSubmit={handleSubmit(onSubmit)} >
 
@@ -194,13 +170,13 @@ function NICUForm() {
                         <div className="inputChange">
 
                             <div>
-                                <label>hospitalizedNICU</label>
+                                <label>Hospitalized NICU</label>
                                 <input type="number" {...register("hospitalized.nicu", {required: true, min: 0})}/>
                                 {/* {errors.hospitalized?.hospitalizedNICU && ( <span>This input is required</span>)} */}
                             </div>
 
                             <div>
-                                <label>hospitalizedPaeds</label>
+                                <label>Hospitalized Paeds</label>
                                 <input type="number" {...register("hospitalized.paeds", {required: true, min: 0})}/>
                                 {/* {errors.hospitalized?.hospitalizedPaeds && ( <span>This input is required</span>)} */}
                             </div>
@@ -349,7 +325,7 @@ function NICUForm() {
                                 <label>Finance: Left to avoid paying</label>
                                 <input type="number" {...register("selfDischarge.avoidedPaying", {required: true, min: 0})}/>
                             </div>
-<div></div>
+
                             <div>
                                 <label>Religious/Cultural</label>
                                 <input type="number" {...register("selfDischarge.religiousCultural", {required: true, min: 0})}/>
@@ -773,7 +749,6 @@ function NICUForm() {
                 </form>
             </div>
         </div>
-    // </Layout>
     )
 
 }
