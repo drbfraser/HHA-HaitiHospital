@@ -10,7 +10,7 @@ interface ObjectEntryProps extends ElementStyleProps {
 }
 ;
 export const ObjectEntry = (props: ObjectEntryProps) => {
-  return (<div className={props.classes}>
+  return (<div className={'entry object-entry '+props.classes}>
     <TextHolder text={props.key + ': {'}/>
     <>{'\t'}<ReportDisplay report={props.value} /></>
     <TextHolder text={'}'}/>

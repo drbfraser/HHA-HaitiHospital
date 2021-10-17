@@ -12,7 +12,7 @@ interface INavBar extends ElementStyleProps {
 
 const NavBar = (props:INavBar) => {
   return (
-    <nav className="navbar">
+    <nav className={"navbar "+props.classes}>
       {/* <NavLink to="/" className="home-button" ><a href="" className="logo"><img className="logo" src={logo} alt="" /></a></NavLink> */}
     
       <NavLink className="navbar-home-button" to="/home">

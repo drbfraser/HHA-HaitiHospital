@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { ElementStyleProps, ReportProps } from 'constants/interfaces';
-import ReportSummary from 'components/report_summary/report_summary';
+import ReportSummaryRow from 'components/report_summary_row/report_summary_row';
 
 interface ReportSummariesProps extends ElementStyleProps {
   reports :ReportProps[], 
 };
 
-const ReportSummaries = (props : ReportSummariesProps) => {
+const ReportSummariesTable = (props : ReportSummariesProps) => {
   return (
-    <table>
+    <table className={'report-summaries-tables '+props.classes}>
       <tr>
         <th>reportId</th>
         <th>lastUpdatedOn</th>
@@ -19,7 +19,7 @@ const ReportSummaries = (props : ReportSummariesProps) => {
         <th></th>
       </tr>
       { props.reports.map(
-          (report)=> (<ReportSummary reportId={report.reportId as number} 
+          (report)=> (<ReportSummaryRow reportId={report.reportId as number} 
                                     lastUpdatedOn={report.lastUpdatedOn as string}
                                     lastUpdatedBy={report.lastUpdatedBy as number}/>)
       )}
@@ -27,4 +27,4 @@ const ReportSummaries = (props : ReportSummariesProps) => {
   )
 }
 
-export default ReportSummaries;
+export default ReportSummariesTable;

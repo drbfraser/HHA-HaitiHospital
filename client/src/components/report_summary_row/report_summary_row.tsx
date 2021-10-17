@@ -14,10 +14,10 @@ interface ReportSummaryProps extends ElementStyleProps {
   lastUpdatedBy: number;
 }
 
-const ReportSummary = (props: ReportSummaryProps) => {
+const ReportSummaryRow = (props: ReportSummaryProps) => {
 
   return (
-    <tr>
+    <tr className={'report-summary-row '+props.classes}>
       <td>
         <Link to={DETAILED_REPORT_ROUTE +props.reportId}>
           {props.reportId}
@@ -32,4 +32,4 @@ const ReportSummary = (props: ReportSummaryProps) => {
   );
 };
 
-export default ReportSummary;
+export default ReportSummaryRow;

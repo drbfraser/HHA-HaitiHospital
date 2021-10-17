@@ -4,6 +4,7 @@ import { RouteComponentProps } from "react-router";
 import { ElementStyleProps } from 'constants/interfaces';
 
 import './styles.css';
+import { isPropertySignature } from "typescript";
 
 interface PostProps extends ElementStyleProps {
 };
@@ -13,7 +14,11 @@ interface PostProps extends RouteComponentProps {
 };
 
 const Post = (props: PostProps) => {
+  return (
+    <div className={'post '+props.classes}>
 
+    </div>
+  )
 };
 
 export default Post;

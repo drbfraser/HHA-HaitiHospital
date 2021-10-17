@@ -10,7 +10,7 @@ interface MessageFormProps extends ElementStyleProps {
 
 const MessageForm = (props: MessageFormProps) => {
   return(
-    <div></div>
+    <div className={'message-form '+props.classes}></div>
   );
 }
 

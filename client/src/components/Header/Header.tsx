@@ -7,14 +7,14 @@ import { ElementStyleProps, CustomCssProps } from 'constants/interfaces';
 
 import './styles.css';
 
-interface IHeader extends ElementStyleProps{
+interface HeaderProps extends ElementStyleProps{
 }
 
-const Header = (props: IHeader) => {
+const Header = (props: HeaderProps) => {
   const location = useLocation();
 
   return (  
-    <div className={props.classes} 
+    <div className={'header '+props.classes} 
     style={props.style}>
       {location.pathname === '/home' && (
         <>
