@@ -9,23 +9,11 @@ export interface ElementStyleProps {
     style?: CustomCssProps;
 };
 
-
-export interface ReportSummary {
-    id: number,
-    lastUpdatedOn: Date,
-    lastUpdatedByUserId: number,
-};
-
-
 export interface Json {
     [x: string]: string|number|boolean|Date|Json|JsonArray,
 }
 export interface JsonArray extends Array<string|number|boolean|Date|Json|JsonArray> { }
 
-
-// export interface ReportEntry {
-//   (x : string) : string | number | boolean | Date | Report | Report[],
-// }
 type ReportEntry = string | number | boolean | ReportProps | ReportProps[];
 export interface ReportProps {
   [index : string] :  ReportEntry,

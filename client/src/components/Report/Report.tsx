@@ -21,12 +21,13 @@ export const ReportDisplay = (props : ReportDisplayProps) => {
         return (<ArrayEntry key={key} entries={entry as ReportProps[]}/>);
       }
       else {
+        // see an object entry as a sub-report
         return (<ObjectEntry key={key} value={entry as ReportProps}/>);
       }
   }
 
   return (
-    <div className='container'>
+    <div className={'report-display' + props.classes}>
       {
         Object.keys(props.report).map(mapKeyToJsx)
       }
