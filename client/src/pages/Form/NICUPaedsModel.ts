@@ -2,7 +2,6 @@ export interface NICUPaedsModel {
     departmentId: number;
     createdOn:Date;
     createdByUserId:number; //user Last Edited, or user created?
-    userId: number;
     lastUpdatedOn: Date;
     lastUpdatedByUserId: number;
 

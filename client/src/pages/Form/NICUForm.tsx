@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import { compose } from 'redux';
 import { NICUPaedsModel } from './NICUPaedsModel';
@@ -13,7 +13,7 @@ function NICUForm() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<NICUPaedsModel>({});
     // const onSubmit: SubmitHandler<NICU> = data => console.log(data);
 
-    // const [state, setState] = useState(NICUPaedsModel);
+    const [formData, setFormData] = useState(null);
 
     const [state, setState] = useState({
         hospitalized: false,
@@ -24,12 +24,23 @@ function NICUForm() {
         admissions: false,
         numberOfOutPatients: false,
     });
-
-    // const [state, setState] = useState<NICUPaedsModel>({
-    //     hospitalized: 0
-    // })
+    
 
     const onSubmit = (data: any) => {
+        
+        //Testing implicit values
+        //FIX after form refactor
+        data.departmentId = 1; //Hardcoded
+        if(data.createdOn === undefined){
+            data.createdOn = Date();
+        }
+
+        if(data.createdByUserId === undefined){
+            data.createdByUserId = 123;
+        }
+        
+        data.lastUpdatedOn = Date();
+        data.lastUpdatedByUserId = 123; //Hardcoded
 
         console.log(data);
         axios.post('/api/NicuPaeds/add', data).then(res => {
@@ -68,7 +79,7 @@ function NICUForm() {
                 <h2>MSPP DATA (NICU)</h2>
                 <form onSubmit={handleSubmit(onSubmit)} >
 
-                <div className = "input">
+                {/* <div className = "input">
                     <label>Department ID</label>
                     <input type="number" {...register("departmentId", {required: true, min: 0})}/>
                     {errors.departmentId && errors.departmentId.type === "required" && (
@@ -120,7 +131,7 @@ function NICUForm() {
                     <span>This input is required</span>
                     )}
                     
-                </div>
+                </div> */}
 
                 <div className = "input">
                     <label>Beds available</label>
