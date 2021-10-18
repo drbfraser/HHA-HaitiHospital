@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 
 import './app.css';
 
-import Home from './pages/home/home'
+import Home from 'pages/home/home'
 import { DepartmentOne } from "pages/department/department_1_nicu";
 import { DepartmentTwo } from "pages/department/department_2_maternity";
 import { DepartmentThree} from "pages/department/department_3_rehab";
