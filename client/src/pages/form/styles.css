@@ -1,0 +1,74 @@
+/* body{
+    height: 100%;
+    margin: auto;
+  } */
+
+  .wrapForm{
+    margin: auto;
+    width: 50%;
+    text-align: left;
+    padding-left: 10px;
+  }
+  
+  input {
+    display: block;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 2px solid red;
+    padding: 10px 15px;
+    margin-top: 10px;
+    font-size: 14px;
+    width: 6rem;
+  }
+
+
+  
+  .date{
+    width: 10rem;
+  }
+  
+  .optionalText{
+    width: 10rem;
+  }
+  
+  .input{
+    margin-top: 30px;
+  }
+  
+  .formSubmit{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+  }
+  
+  span{
+    color: red;
+  }
+  
+  .inputChange{
+    margin-top: 30px; 
+    padding-left: 3rem;
+    font-size: medium;
+  }
+  
+  .inputChange label{
+    display: inline-block;
+  }
+
+  .formSubmit{
+    border: none;
+  }
+  
+  .inputChange input{
+    margin-bottom: 0;
+    border: none;
+  }
+
+  .inputChange div{
+    margin-top: 20px;
+  }
+  
+  .admissionsOutpatients{
+    padding-left: 2rem;
+  }
+  
