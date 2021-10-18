@@ -6,21 +6,21 @@ import Axios from 'axios';
 import {DB_GET_ID_REPORT_URL} from 'constants/routing';
 import { ReportProps } from 'constants/interfaces';
 import TextHolder from 'components/text-holder/text_holder';
-import ReportDisplay from 'components/report/report';
+import ReportDisplay from 'components/report_display/report_display';
 
 import { ElementStyleProps } from 'constants/interfaces';
 import './styles.css';
 import Header from 'components/header/header';
 
 
-interface DetailedReportProps extends ElementStyleProps {
+interface DepartmentReportProps extends ElementStyleProps {
 };
 
 interface UrlParams {
   id: string;
 };
 
-const DetailedReport = (props : DetailedReportProps) => {
+const DepartmentReport = (props : DepartmentReportProps) => {
   const { id } = useParams<UrlParams>();
 
   const detailedReportUrl = DB_GET_ID_REPORT_URL + id;
@@ -46,7 +46,7 @@ const DetailedReport = (props : DetailedReportProps) => {
   }
 
   return (
-    <div className={'detailed-report '+(props.classes||'')}>
+    <div className={'department-report '+(props.classes||'')}>
       <Header/>
       {
         (Object.keys(report).length===0 ) ?
@@ -57,4 +57,4 @@ const DetailedReport = (props : DetailedReportProps) => {
   )
 }
 
-export default DetailedReport;
+export default DepartmentReport;
