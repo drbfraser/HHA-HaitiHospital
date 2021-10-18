@@ -1,0 +1,348 @@
+{
+"departmentId": 2,
+"deparmentName": "community",
+"deliveries": {
+    "lessThan15": 3,
+    "from15To19": 3,
+    "from20To24": 3,
+    "from25To29": 3,
+    "overThirty": 3,
+    "ageUnknown": 3
+},
+
+"births": {
+    "weightLow": 3, 
+    "weightMedium": 3, 
+    "weightHigh": 3, 
+    "notWeighed": 3,
+    "immediatelyBreastfed": 3,
+    "skinToSkinTherapy": 3
+},
+
+"postNatal": {
+    "breastfeedingVitaminA": 3, 
+    "breastfeedingMUAC": 3, 
+    "breastfeedingMalnutrition": 3, 
+    "domesticVisitsInThreeDays": 3
+},
+
+"birthControl": {
+    "ocp": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3,
+        "cycleNum": 3,
+        "cycleDaysOutOfStock": 3
+    },
+    "patch": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3,
+        "cycleNum": 3,
+        "cycleDaysOutOfStock": 3
+    },
+    "depoInjection": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3,
+        "vialNum": 3,
+        "vialDaysOutOfStock": 3
+    },
+    "implant": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3,
+        "packNum": 3,
+        "packDaysOutOfStock": 3
+    },
+    "interUterineDevices": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3,
+        "pieceNum": 3,
+        "pieceDaysOutOfStock": 3
+    },
+    "vaginalRing": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3,
+        "pieceNum": 3,
+        "pieceDaysOutOfStock": 3
+    },
+    "breastfeedingAsBirthControl": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3
+    },
+    "femaleCondom": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3,
+        "pieceNum": 3,
+        "pieceDaysOutOfStock": 3
+    },
+    "sterlisation": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3
+    },
+    "maleCondom": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3
+    },
+    "vasectomy": {
+        "acceptantsUnder25": 3,
+        "acceptants25AndPlus": 3,
+        "totalUsersUnder25": 3,
+        "totalUsers25AndPlus": 3
+    },
+    "ccvSterlisation": 3,
+    "ccvVasectomy": 3
+},
+
+"vaccineManagement": {
+    "bcg": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "vpo": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "penta": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "rota": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "rr": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "dt": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "vpi": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "flu": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "dtp": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "covid19": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    }
+},
+
+"consumables": {
+    "sab005ml": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "sab05ml": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "sdil2ml": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "sdil5ml": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "boitesSec": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    },
+    "coton": {
+        "quantityAvailableDuringMonth": 3,
+        "balanceAtEndOfMonth": 3,
+        "daysOutOfStock": 3
+    }
+},
+
+"vaccination": {
+    "bcg": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "vpo": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "vpo1": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "vpo2": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "rappelVpo": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "vpi": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "penta1": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "penta2": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "penta3": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "rota1": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "rota2": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "rr1": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "rr2": {
+        "girlsInst12To32Months": 3,
+        "girlsComm12To32Months": 3,
+        "boysInst12To32Months": 3,
+        "boysComm12To32Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "pneumo1": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "pneumo2": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "pneumo3": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "dtpRappel": {
+        "girlsInst12To32Months": 3,
+        "girlsComm12To32Months": 3,
+        "boysInst12To32Months": 3,
+        "boysComm12To32Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "ecv": {
+        "girlsInstUnder11Months": 3,
+        "girlsCommUnder11Months": 3,
+        "boysInstUnder11Months": 3,
+        "boysCommUnder11Months": 3,
+        "dosesUsed": 3,
+        "dosesAdministered": 3
+    },
+    "dt1Inst": 3,
+    "dt2Inst": 3
+}
+    }
