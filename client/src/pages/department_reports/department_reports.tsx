@@ -3,7 +3,7 @@ import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
 import { ReportProps } from 'constants/interfaces';
-import TextHolder from 'components/text-holder/text_holder';
+import TextHolder from 'components/text_holder/text_holder';
 import ReportSummariesTable from 'components/report_summaries_table/report_summaries_table';
 
 

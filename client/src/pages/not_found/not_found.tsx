@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { ElementStyleProps } from 'constants/interfaces';
-import Layout from 'layout/Layout';
+import Layout from 'layout/layout';
 
 import './styles.css';
 

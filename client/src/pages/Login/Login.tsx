@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
-import Layout from 'layout/Layout'
+import Layout from 'layout/layout'
 
 import './styles.css';
 

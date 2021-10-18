@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 
 import { ElementStyleProps } from 'constants/interfaces';
-import TextHolder from 'components/text-holder/text_holder';
+import TextHolder from 'components/text_holder/text_holder';
 // import Button from 'components/Button/Button';
 
 import './styles.css';

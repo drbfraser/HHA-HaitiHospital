@@ -5,7 +5,7 @@ import Axios from 'axios';
 
 import {DB_GET_ID_REPORT_URL} from 'constants/routing';
 import { ReportProps } from 'constants/interfaces';
-import TextHolder from 'components/text-holder/text_holder';
+import TextHolder from 'components/text_holder/text_holder';
 import ReportDisplay from 'components/report_display/report_display';
 
 import { ElementStyleProps } from 'constants/interfaces';
