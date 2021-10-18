@@ -5,11 +5,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: myapp-server
-    container_name: myapp-server
-    command: 
-      - npm run build
-      - npm run start-dev
+    image: hha-app-server
+    container_name: hha-app-server
     volumes:
       - ./server/:/usr/src/app
       - /usr/src/app/node_modules
@@ -17,17 +14,16 @@ services:
       - "5000:5000"
     depends_on:
       - mongodb
-    env_file: ./server/.env
-    environment:
-      - NODE_ENV=development
+    env_file: 
+      - ./server/.env.prod
     networks:
       - backend
       - frontend
   mongodb:
-    container_name: myapp-mongodb
+    container_name: hha-app-mongo
     image: mongo
     volumes:
-      - data-volume:/data/db
+      - db:/data/db
     ports:
       - "27017:27017"
     networks:
@@ -36,8 +32,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    image: myapp-client
-    container_name: myapp-client
+    image: hha-app-client
+    container_name: hha-app-client
     command: npm start
     volumes:
       - ./client/:/usr/app
@@ -56,7 +52,5 @@ networks:
   frontend:
 
 volumes:
-  data-volume:
-  node_modules:
-  web-root:
+  db:
     driver: local
