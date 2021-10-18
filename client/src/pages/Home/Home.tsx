@@ -19,7 +19,7 @@ interface HomeProps extends RouteComponentProps {
 const Home = (props : HomeProps) => {
   console.log(props.match, props.location);
   return (
-    <div className={'home '+props.classes}>
+    <div className={'home '+ (props.classes||'')}>
       <Header classes='grid'
         style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}
       />

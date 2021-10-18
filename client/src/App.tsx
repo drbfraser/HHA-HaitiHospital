@@ -13,7 +13,7 @@ import { DepartmentMain} from "pages/department/department_main";
 import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import DepartmentReports from 'pages/department_reports/department_reports';
-import  DetailedReport from 'pages/department_detailed_report/detailed_report';
+import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 
 // import Post from "./components/Post/Post";
@@ -33,7 +33,7 @@ const App = () => {
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
         <Route path='/Department1NICU/summary_reports' exact component = {DepartmentReports} />
-        <Route path='/Department1NICU/detailed_reports/:id' exact component = {DetailedReport} />
+        <Route path='/Department1NICU/detailed_reports/:id' exact component = {DepartmentReport} />
         <Route path="/NICUForm" component={NICUForm} />
    
         {/*<Route path="/posts/:id" exact component={Post} />*/}

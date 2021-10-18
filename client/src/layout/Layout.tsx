@@ -3,7 +3,6 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 
 import 'components/layout/styles.css';
-import { isPropertySignature } from 'typescript';
 
 interface LayoutProps extends ElementStyleProps {
   children: any,
