@@ -1,9 +1,6 @@
 {
-  "departmentId": 123,
-  "createdOn": "2021-10-07T23:23:35.732Z",
-  "createdByUserId": 123482,
-  "lastUpdatedOn": "2021-10-07T23:23:35.732Z",
-  "lastUpdatedByUserId": 123767,
+  "departmentId": 1,
+	"departmentName": "nicupaeds",
   "bedsAvailable": 2,
   "bedDays": 2,
   "patientDays": 1,
@@ -80,7 +77,7 @@
       "alteredMentalStatus": 0,
       "gastroenteritis": 1,
       "hemorrhage": 0,
-      "hypothermia": 2,
+      "hypothermia": 0,
       "cardiacCongenitalAnomaly": 0,
       "otherCongenitalAnomaly": 0,
       "malnutrition": 1,
@@ -98,7 +95,7 @@
           "nameOfCondition": "Intense Diarrhea",
           "numberOfPatients": 123
         },
-				        {
+				{
           "nameOfCondition": "Vomiting",
           "numberOfPatients": 15
         }
