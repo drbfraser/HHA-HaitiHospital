@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import Axios from 'axios';
 
 import {DB_GET_ID_REPORT_URL} from 'constants/routing';
 import { ReportProps } from 'constants/interfaces';
@@ -35,10 +36,13 @@ const DetailedReport = (props : DetailedReportProps) => {
   });
 
   const fetchReport = async () => {
-    const res = await fetch(detailedReportUrl);
-    const report = await res.json();
-    
-    return report;
+    try {
+      const res = await Axios.get(detailedReportUrl)
+      return res.data;
+      }
+      catch (err) {
+        console.log(err);
+      }
   }
 
   return (
