@@ -29,11 +29,6 @@ export const DepartmentMain = (props : DepartmentMainProps) => {
         <button className="DepartmentButton4"onClick={() => {
             props.history.push("/Department4ComHealth");
         }}>COM-HEALTH</button>
-
-        <button className="DepartmentButton5">Other</button>
-        <button className="DepartmentButton6">Other</button>
-        <button className="DepartmentButton7">Other</button>
-        <button className="DepartmentButton8">Other</button>
       </div>
     </div>
   );
