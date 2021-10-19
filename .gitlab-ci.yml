@@ -37,7 +37,7 @@ start-app:
     - cd
   script:
     - sudo docker-compose -f docker-compose.yml up -d
-    - sudo docker image prune -af
+    # - sudo docker image prune -af
     - sleep 60
 
 test-mongo:
@@ -77,7 +77,7 @@ log-server:
     - cd
   script:
     - sudo docker-compose logs server
-  when: on_failure
+  when: always
 
 log-client:
   stage: log
@@ -86,7 +86,7 @@ log-client:
     - cd
   script:
     - sudo docker-compose logs client
-  when: on_failure
+  when: always
 
 # deploy-job:
 #   stage: deploy
