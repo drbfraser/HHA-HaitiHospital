@@ -5,7 +5,7 @@ deploy-to-linux-vm:
     - cont-deploy
   script:
     - echo setting up env
-    - apt-get install -y python-pip
+    - sudo apt-get install -y python-pip
     - sudo pip install docker-compose
     - sudo docker image prune -f
     - sudo docker-compose -f docker-compose.yml build --no-cache
