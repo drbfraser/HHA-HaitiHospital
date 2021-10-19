@@ -2,7 +2,7 @@ stages:
   - build
   - run-app
   - test
-  - debug
+  - log
 
 build-job:
   stage: build
@@ -15,7 +15,9 @@ build-job:
     # - sudo apt-get install -y python-pip
     # - sudo pip install docker-compose
     - sudo docker system prune --volumes -f
-    - sudo docker-compose -f docker-compose.yml build --no-cache --parallel
+    # - sudo docker-compose -f docker-compose.yml build --no-cache --parallel
+    - sudo docker-compose -f docker-compose.yml build --parallel
+    - sudo docker system prune --volumes -f
 
 run-app-job:
   stage: run-app
@@ -54,14 +56,37 @@ test-client:
   script:
     - sudo docker ps | grep hha-app-client
 
-check-errors:
-  stage: debug
+log-mongo:
+  stage: log
+  needs: ["test-mongo"]
   only:
     - master
   tags: 
     - cd
   script:
-    - sudo docker-compose logs
+    - sudo docker-compose logs mongodb
+  when: on_failure
+
+log-server:
+  stage: log
+  needs: ["test-server"]
+  only:
+    - master
+  tags: 
+    - cd
+  script:
+    - sudo docker-compose logs server
+  when: on_failure
+
+log-client:
+  stage: log
+  needs: ["test-client"]
+  only:
+    - master
+  tags: 
+    - cd
+  script:
+    - sudo docker-compose logs client
   when: on_failure
 
 # deploy-job:
