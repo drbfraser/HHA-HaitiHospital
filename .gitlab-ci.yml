@@ -25,6 +25,7 @@ run-app-job:
     - cd
   script:
     - sudo docker-compose -f docker-compose.yml up -d
+    - sleep 60
 
 test-mongo:
   stage: test
@@ -33,8 +34,7 @@ test-mongo:
   tags: 
     - cd
   script:
-    - sleep 60
-    - sudo docker container inspect hha-app-mongo
+    - sudo docker ps | grep hha-app-mongo
 
 test-server:
   stage: test
@@ -43,8 +43,7 @@ test-server:
   tags: 
     - cd
   script:
-    - sleep 60
-    - sudo docker container inspect hha-app-server
+    - sudo docker ps | grep hha-app-server
 
 test-client:
   stage: test
@@ -53,10 +52,9 @@ test-client:
   tags: 
     - cd
   script:
-    - sleep 60
-    - sudo docker container inspect hha-app-client
+    - sudo docker ps | grep hha-app-client
 
-check-errors-job:
+check-errors:
   stage: debug
   only:
     - master
