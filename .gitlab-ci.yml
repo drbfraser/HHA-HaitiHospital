@@ -1,3 +1,9 @@
+stages:
+  - build
+  - run-app
+  - test
+  - debug
+
 build-job:
   stage: build
   only:
@@ -11,8 +17,8 @@ build-job:
     - sudo docker system prune --volumes -f
     - sudo docker-compose -f docker-compose.yml build --no-cache --parallel
 
-run-app:
-  stage: test
+run-app-job:
+  stage: run-app
   only:
     - master
   tags:
@@ -20,16 +26,42 @@ run-app:
   script:
     - sudo docker-compose -f docker-compose.yml up -d
 
-test-containers:
+test-mongo:
   stage: test
+  only:
+    - master
+  tags: 
+    - cd
   script:
     - sleep 60
     - sudo docker container inspect hha-app-mongo
+
+test-server:
+  stage: test
+  only:
+    - master
+  tags: 
+    - cd
+  script:
+    - sleep 60
     - sudo docker container inspect hha-app-server
+
+test-client:
+  stage: test
+  only:
+    - master
+  tags: 
+    - cd
+  script:
+    - sleep 60
     - sudo docker container inspect hha-app-client
 
-check-logs:
-  stage: test
+check-errors-job:
+  stage: debug
+  only:
+    - master
+  tags: 
+    - cd
   script:
     - sudo docker-compose logs
   when: on_failure
