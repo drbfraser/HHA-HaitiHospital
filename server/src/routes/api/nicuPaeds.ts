@@ -17,8 +17,6 @@ router.route('/:id').delete((req,res) => {
 
 // adding NICUPaeds Form into the Database
 router.route('/add').post((req: any, res)=>{
-    console.log("test");
-
     let newNicuPaedsDocument = new NicuPaeds(req.body);
 
     newNicuPaedsDocument.save()
