@@ -2,7 +2,7 @@ deploy-to-linux-vm:
   only:
     - master
   tags: 
-    - cont-deploy
+    - cd
   script:
     - echo setting up env
     - sudo apt-get install -y python-pip
