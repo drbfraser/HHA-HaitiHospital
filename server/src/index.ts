@@ -13,14 +13,15 @@ import { seedDb } from './utils/seed';
 
 const app = express();
 
+// Cross-Origin 
 const cors = require('cors');
 const corsOptions = {
-    origin: 'https://localhost:3000',
-    credentials: true,            //access-control-allow-credentials:true
-    optionSuccessStatus: 200,
-    methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
-    allowedHeaders: ['Content-Type'],
-    exposedHeaders: ['Content-Type']
+  origin: process.env.CLIENT_URL,
+  credentials: true,            //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+  methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+  exposedHeaders: ['Content-Type']
 }
 app.use(cors(corsOptions));
 
@@ -32,24 +33,21 @@ app.use(passport.initialize());
 require('./services/jwtStrategy');
 require('./services/localStrategy');
 
-const isProduction = process.env.NODE_ENV === 'production';
-
-// DB Config
-const dbConnection: string = isProduction ? process.env.MONGO_URI_PROD! : process.env.MONGO_URI_DEV!;
+//console.log(JSON.stringify(process.env, null, '\t'));
 
 // Connect to Mongo
 mongoose
-    .connect(dbConnection, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-    })
-    .then(() => {
-        console.log('MongoDB Connected...');
-        //seedDb();
-    })
-    .catch((err) => console.log(err));
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log('MongoDB Connected...');
+    //seedDb();
+  })
+  .catch((err) => console.log(err));
 
 // Use Routes
 app.use('/', routes);
