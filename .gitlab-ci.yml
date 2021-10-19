@@ -1,5 +1,5 @@
-deploy-to-linux-vm:
-  stage: deploy
+build-job:
+  stage: build
   only:
     - master
   tags: 
@@ -10,6 +10,36 @@ deploy-to-linux-vm:
     # - sudo pip install docker-compose
     - sudo docker system prune --volumes -f
     - sudo docker-compose -f docker-compose.yml build --no-cache --parallel
-    - sudo docker-compose -f docker-compose.yml up
-    - echo complete
-# test
+
+run-app:
+  stage: test
+  only:
+    - master
+  tags:
+    - cd
+  script:
+    - sudo docker-compose -f docker-compose.yml up -d
+
+test-containers:
+  stage: test
+  script:
+    - sleep 60
+    - sudo docker container inspect hha-app-mongo
+    - sudo docker container inspect hha-app-server
+    - sudo docker container inspect hha-app-client
+
+check-logs:
+  stage: test
+  script:
+    - sudo docker-compose logs
+  when: on_failure
+
+# deploy-job:
+#   stage: deploy
+#   only:
+#     - master
+#   tags: 
+#     - cd
+#   script:
+#     - sudo docker-compose -f docker-compose.yml up -d
+#     - echo complete
