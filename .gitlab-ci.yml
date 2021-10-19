@@ -1,4 +1,5 @@
 deploy-to-linux-vm:
+  stage: deploy
   only:
     - master
   tags: 
@@ -8,7 +9,7 @@ deploy-to-linux-vm:
     # - sudo apt-get install -y python-pip
     # - sudo pip install docker-compose
     - sudo docker system prune --volumes -f
-    - sudo docker-compose -f docker-compose.yml build --no-cache
-    - sudo docker-compose -f docker-compose.yml up -d
+    - sudo docker-compose -f docker-compose.yml build --no-cache --parallel
+    - sudo docker-compose -f docker-compose.yml up
     - echo complete
 # test
