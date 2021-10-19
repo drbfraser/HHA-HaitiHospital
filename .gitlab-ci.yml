@@ -11,3 +11,4 @@ deploy-to-linux-vm:
     - sudo docker-compose -f docker-compose.yml build --no-cache
     - sudo docker-compose -f docker-compose.yml up -d
     - echo complete
+# test
