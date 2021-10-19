@@ -1,6 +1,6 @@
 stages:
   - build
-  - run-app
+  - start
   - test
   - log
 
@@ -15,14 +15,22 @@ build-job:
     # - sudo apt-get install -y python-pip
     # - sudo pip install docker-compose
     - sudo docker system prune --volumes -f
-    # - sudo docker-compose -f docker-compose.yml build --no-cache --parallel
+    - sudo docker-compose -f docker-compose.yml build --no-cache --parallel
+    - sudo docker system prune --volumes -f
+
+build-cache:
+  stage: build
+  except:
+    - master
+  tags: 
+    - cd
+  script:
+    - sudo docker system prune --volumes -f
     - sudo docker-compose -f docker-compose.yml build --parallel
     - sudo docker system prune --volumes -f
 
-run-app-job:
-  stage: run-app
-  only:
-    - master
+start-app:
+  stage: start
   tags:
     - cd
   script:
@@ -31,8 +39,6 @@ run-app-job:
 
 test-mongo:
   stage: test
-  only:
-    - master
   tags: 
     - cd
   script:
@@ -40,8 +46,6 @@ test-mongo:
 
 test-server:
   stage: test
-  only:
-    - master
   tags: 
     - cd
   script:
@@ -49,8 +53,6 @@ test-server:
 
 test-client:
   stage: test
-  only:
-    - master
   tags: 
     - cd
   script:
@@ -59,8 +61,6 @@ test-client:
 log-mongo:
   stage: log
   needs: ["test-mongo"]
-  only:
-    - master
   tags: 
     - cd
   script:
@@ -70,8 +70,6 @@ log-mongo:
 log-server:
   stage: log
   needs: ["test-server"]
-  only:
-    - master
   tags: 
     - cd
   script:
@@ -81,8 +79,6 @@ log-server:
 log-client:
   stage: log
   needs: ["test-client"]
-  only:
-    - master
   tags: 
     - cd
   script:
