@@ -12,6 +12,8 @@ RUN npm install --silent
 # Copy app source code
 COPY . .
 
+RUN npm run tsc
+
 # Exports
 EXPOSE 5000
 

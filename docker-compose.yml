@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   server:
+    network_mode: host
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -10,46 +11,30 @@ services:
     volumes:
       - ./server/:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - "5000:5000"
     depends_on:
       - mongodb
     env_file: 
-      - ./server/.env.prod
-    networks:
-      - backend
-      - frontend
+      - ./server/.env
   mongodb:
+    network_mode: host
     container_name: hha-app-mongo
     image: mongo
     volumes:
       - db:/data/db
-    ports:
-      - "27017:27017"
-    networks:
-      - backend
   client:
+    network_mode: host
     build:
       context: ./client
       dockerfile: Dockerfile
     image: hha-app-client
     container_name: hha-app-client
-    command: npm start
     volumes:
       - ./client/:/usr/app
       - /usr/app/node_modules
     depends_on:
       - server
-    ports:
-      - "3000:3000"
-    networks:
-      - frontend
     stdin_open: true # docker run -i
     tty: true        # docker run -t
-
-networks:
-  backend:
-  frontend:
 
 volumes:
   db:
