@@ -139,12 +139,15 @@ const nicuPaedsSchema = new Schema({
   },
 });
 
+
+
+
 // TODO : validate data before inserting into schema
 // export const validateData = (data) => {
   
 // };
 
 const NicuPaeds = mongoose.model('NicuPaeds', nicuPaedsSchema, 'Departments');
-module.exports = NicuPaeds;
+export default NicuPaeds;
 
 
