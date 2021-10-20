@@ -4,8 +4,11 @@ const { Schema } = mongoose;
 
 const communitySchema = new Schema({
   // entry data
+  month: { type: Number, required: true, min: 0},
+  year: { type: Number, required: true, min: 0},
   departmentId: { type: Number, required: true, min: 0},
   departmentName: {type: String, required: true},
+  
   deliveries: {
     lessThan15: { type: Number, default: 0},
     from15To19: { type: Number, default: 0},
@@ -358,6 +361,6 @@ vaccination: {
 // };
 
 const Community = mongoose.model('Community', communitySchema, 'Departments');
-module.exports = Community;
+export default Community;
 
 

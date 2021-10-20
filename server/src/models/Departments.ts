@@ -7,4 +7,4 @@ const departmentsSchema = new Schema({
 });
 
 const Departments = mongoose.model('Departments', departmentsSchema, 'Departments');
-module.exports = Departments;
+export default Departments;
