@@ -114,20 +114,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+// delete user, currently working without req.user 
 // router.delete('/:id', requireJwtAuth, async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const tempUser = await User.findById(req.params.id);
+    console.log(tempUser);
     const reqUser : any = req.user;
+    console.log(reqUser);
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
-    if (!(tempUser.id === reqUser.id || reqUser.role === 'ADMIN'))
-      return res.status(400).json({ message: 'You do not have privilegies to delete that user.' });
+    // if (!(tempUser.id === reqUser.id || reqUser.role === 'ADMIN'))
+    //   return res.status(400).json({ message: 'You do not have privilegies to delete that user.' });
 
-    // if (['email0@email.com', 'email1@email.com'].includes(tempUser.email))
-    //   return res.status(400).json({ message: 'You can not delete seeded user.' });
-
-    //delete all messages from that user
-    await Message.deleteMany({ user: tempUser.id });
+    // //delete all messages from that user
+    // await Message.deleteMany({ user: tempUser.id });
     //delete user
     const user = await User.findByIdAndRemove(tempUser.id);
     res.status(200).json({ user });
@@ -136,6 +136,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// add user, currently working
 // router.post('/', requireJwtAuth, async (req, res) => {
 router.post('/', async (req, res) => {
   try {
