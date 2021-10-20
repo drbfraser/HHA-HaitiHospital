@@ -5,11 +5,9 @@ import Button from 'components/button/button';
 import TextHolder from 'components/text_holder/text_holder';
 import { ElementStyleProps} from 'constants/interfaces';
 
-import {DETAILED_REPORT_ROUTE} from 'constants/routing';
-
 interface ReportSummaryProps extends ElementStyleProps {
   // report: ReportProps;
-  reportId: number;
+  reportId: string;
   lastUpdatedOn: string;
   lastUpdatedBy: number;
 }
@@ -19,7 +17,7 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
   return (
     <tr className={'report-summary-row '+ (props.classes || '')}>
       <td>
-        <Link to={DETAILED_REPORT_ROUTE +props.reportId}>
+        <Link to={`/Department1NICU/detailed_reports/${props.reportId}`}>
           {props.reportId}
         </Link>
       </td>

@@ -4,7 +4,7 @@ import Axios from 'axios';
 import { ElementStyleProps } from 'constants/interfaces';
 import { ReportProps } from 'constants/interfaces';
 import TextHolder from 'components/text_holder/text_holder';
-import ReportSummariesTable from 'components/report_summaries_table/report_summaries_table';
+import ReportSummaryTable from 'components/report_summary_table/report_summary_table';
 
 
 import './styles.css';
@@ -16,28 +16,38 @@ interface DepartmentReportsProps extends ElementStyleProps {
 
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
-  const [submittedReports, setSubbmitedReports] = useState<ReportProps[]>([]);
-  const dbUrlForNICUReports = "/api/NicuPaeds/";
+  const [reports, setReports] = useState<ReportProps[]>([]);
+  const dbUrlForNICUReports = "/api/report/view";
 
-//   // Fetch submitted reports when page loaded
+  // Fetch submitted reports when page loaded once
+
+  const apiSource = Axios.CancelToken.source();
   useEffect(() => {
+    let isMounted = true;
     const getReports = async() => {
       const reportsFromServer = await fetchReports();
-      setSubbmitedReports(reportsFromServer);
+      if (isMounted)
+        setReports(reportsFromServer);
     }
     getReports();
+    return function cleanup() {
+      apiSource.cancel();
+      isMounted = false;
+    }
   });
 
   const fetchReports = async () => {
-    // const res1 = await fetch(dbUrlForNICUReports);
-    // const data1 = await res1.json();
-    // return data1;
     try {
-    const res = await Axios.get(dbUrlForNICUReports)
-    return res.data;
-    }
-    catch (err) {
-      console.log(err);
+      const res = await Axios.get(dbUrlForNICUReports,
+        {cancelToken: apiSource.token})
+      return res.data;
+    } catch (err) {
+      if (Axios.isCancel(err)) {
+        console.log(`Info: Subscription to ${dbUrlForNICUReports} is canceled`,err)
+      }
+      else 
+        console.log(err);
+      return [];
     }
   }
 
@@ -48,9 +58,9 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
       <div> Search Bar Here</div>
       <div className='report-board'>
         {
-          (submittedReports === undefined || submittedReports.length === 0) ? 
+          (reports === undefined || reports.length === 0) ? 
             <div>No submitted reports</div> : 
-            <ReportSummariesTable reports={submittedReports}/>
+            <ReportSummaryTable reports={reports}/>
         }
       </div>
     </div>

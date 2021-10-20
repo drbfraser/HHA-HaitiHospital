@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
 
-import {DB_GET_ID_REPORT_URL} from 'constants/routing';
 import { ReportProps } from 'constants/interfaces';
 import TextHolder from 'components/text_holder/text_holder';
 import ReportDisplay from 'components/report_display/report_display';
@@ -22,27 +21,39 @@ interface UrlParams {
 
 const DepartmentReport = (props : DepartmentReportProps) => {
   const { id } = useParams<UrlParams>();
-
-  const detailedReportUrl = DB_GET_ID_REPORT_URL + id;
-
+  const getReportApi = `/api/report/viewreport/${id}`;
   const [ report, setReport] = useState<ReportProps>({});
+  const apiSource = Axios.CancelToken.source();
+  // Get Report Id when Loaded
   useEffect(() => {
-    const getReport = async() => {
+    let isMounted = true;
+    async function getReport() {
       const reportFromServer = await fetchReport();
-      setReport(reportFromServer);
-    }
-
+      if (isMounted)
+        setReport(reportFromServer);
+    };
+    
     getReport();
+
+    return function cleanUp() {
+      isMounted = false;
+      apiSource.cancel();
+    }
   });
 
-  const fetchReport = async () => {
+  async function fetchReport() {
     try {
-      const res = await Axios.get(detailedReportUrl)
+      const res = await Axios.get(getReportApi, {
+        cancelToken: apiSource.token
+      });
       return res.data;
+    } catch (err) {
+      if (Axios.isCancel(err)) {
+        console.log(`Info: Cancel subsciption to ${getReportApi} API`, err);
       }
-      catch (err) {
-        console.log(err);
-      }
+      else { console.log(err); }
+    }
+    return {};
   }
 
   return (
@@ -51,7 +62,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       {
         (Object.keys(report).length===0 ) ?
           <TextHolder text = 'No report found'/>:
-          <ReportDisplay report = {report as ReportProps}/>
+          <ReportDisplay report = {report.formData as ReportProps}/>
       }  
     </div>
   )
