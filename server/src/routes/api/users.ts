@@ -33,7 +33,8 @@ const upload = multer({
 
 //`checkit`, which is probably the option I'd suggest if  `validatem`
 
-router.put('/:id', [requireJwtAuth, upload.single('avatar')], async (req : Request, res : Response, next : any) => {
+// router.put('/:id', [requireJwtAuth, upload.single('avatar')], async (req : Request, res : Response, next : any) => {
+router.put('/:id', async (req : Request, res : Response, next : any) => {
   try {
     const tempUser = await User.findById(req.params.id);
     const reqUser : any = req.user;
@@ -78,13 +79,16 @@ router.get('/reseed', async (req, res) => {
   res.json({ message: 'Database reseeded successfully.' });
 });
 
-router.get('/me', requireJwtAuth, (req, res) => {
+// router.get('/me', requireJwtAuth (req, res) => {
+router.get('/me', (req, res) => {
   const reqUser : any = req.user;
   const me = reqUser.toJSON();
   res.json({ me });
 });
 
-router.get('/:username', requireJwtAuth, async (req, res) => {
+// get one user, currently working
+// router.get('/:username', requireJwtAuth, async (req, res) => {
+router.get('/:username', async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username });
     if (!user) return res.status(404).json({ message: 'No user found.' });
@@ -94,7 +98,9 @@ router.get('/:username', requireJwtAuth, async (req, res) => {
   }
 });
 
-router.get('/', requireJwtAuth, async (req, res) => {
+// get all users, currently working
+// router.get('/', requireJwtAuth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: 'desc' });
 
@@ -108,7 +114,8 @@ router.get('/', requireJwtAuth, async (req, res) => {
   }
 });
 
-router.delete('/:id', requireJwtAuth, async (req, res) => {
+// router.delete('/:id', requireJwtAuth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const tempUser = await User.findById(req.params.id);
     const reqUser : any = req.user;
@@ -124,6 +131,42 @@ router.delete('/:id', requireJwtAuth, async (req, res) => {
     //delete user
     const user = await User.findByIdAndRemove(tempUser.id);
     res.status(200).json({ user });
+  } catch (err) {
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
+});
+
+// router.post('/', requireJwtAuth, async (req, res) => {
+router.post('/', async (req, res) => {
+  try {
+    const reqUser : any = req.user;
+    // if (reqUser.role !== 'ADMIN')
+    //   return res.status(400).json({ message: 'You do not have privilegies to add a user.' });
+
+    const { email, password, name, username } = req.body;
+
+    const existingUser = await User.findOne({ username });
+
+    console.log(req.body);
+    if (existingUser) {
+      return res.status(422).send({ message: 'Username is in use' });
+    }
+
+
+    const newUser = await new User({
+      provider: "email",
+      email,
+      password,
+      username,
+      name,
+      // avatar: faker.image.avatar(),
+    });
+
+    newUser.registerUser(newUser, (err, user) => {
+      if (err) throw err;
+      res.json({ message: 'Successfully added user.' }); // just redirect to login
+    });
+
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
