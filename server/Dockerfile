@@ -10,9 +10,11 @@ COPY package.json ./
 RUN npm install --silent
 
 # Copy app source code
-COPY . .
+COPY src/ .
+RUN npm run build
 
-RUN ./node_modules/.bin/tsc
+# copy everything
+COPY . .
 
 # Exports
 EXPOSE 5000
