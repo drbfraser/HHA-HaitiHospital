@@ -9,8 +9,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "clean": "rm -rf ./dist",
-    "start-dev": "npm run build && nodemon dist/src/index.js",
-    "start": "node dist/src/index.js"
+    "start": "npm run build && nodemon dist/src/index.js",
+    "start-prod": "node dist/src/index.js"
   },
   "license": "ISC",
   "dependencies": {
