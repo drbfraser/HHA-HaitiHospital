@@ -6,15 +6,13 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Install Dependencies
-COPY package.json ./
+COPY package*.json ./
 RUN npm install --silent
 
 # Copy app source code
-COPY src/ .
-RUN npm run build
-
-# copy everything
 COPY . .
+
+RUN npm run build
 
 # Exports
 EXPOSE 5000
