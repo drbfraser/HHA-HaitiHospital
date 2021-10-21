@@ -11,6 +11,7 @@ services:
     volumes:
       - ./server/:/usr/src/app
       - /usr/src/app/node_modules
+      - /usr/src/app/dist
     depends_on:
       - mongodb
     env_file: 
@@ -29,8 +30,8 @@ services:
     image: hha-app-client
     container_name: hha-app-client
     volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
+      - ./client/:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - server
     stdin_open: true # docker run -i
