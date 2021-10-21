@@ -35,6 +35,8 @@ build-cache:
 
 start-app:
   stage: start
+  only:
+    - merge_requests
   tags:
     - cd
   script:
@@ -44,6 +46,8 @@ start-app:
 
 test-mongo:
   stage: test
+  only:
+    - merge_requests
   tags: 
     - cd
   script:
@@ -52,6 +56,8 @@ test-mongo:
 
 test-server:
   stage: test
+  only:
+    - merge_requests
   tags: 
     - cd
   script:
@@ -60,6 +66,8 @@ test-server:
 
 test-client:
   stage: test
+  only:
+    - merge_requests
   tags: 
     - cd
   script:
