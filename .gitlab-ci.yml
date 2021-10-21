@@ -2,12 +2,13 @@ stages:
   - build
   - start
   - test
-  - log
+  # - log
 
 build-job:
   stage: build
   only:
     - master
+    - merge_requests
   tags: 
     - cd
   script:
@@ -23,6 +24,7 @@ build-cache:
   stage: build
   except:
     - master
+    - merge_requests
   tags: 
     - cd
   script:
@@ -45,6 +47,7 @@ test-mongo:
   tags: 
     - cd
   script:
+    - sudo docker-compose logs mongodb
     - sudo docker ps | grep hha-app-mongo
 
 test-server:
@@ -52,6 +55,7 @@ test-server:
   tags: 
     - cd
   script:
+    - sudo docker-compose logs server
     - sudo docker ps | grep hha-app-server
 
 test-client:
@@ -59,34 +63,35 @@ test-client:
   tags: 
     - cd
   script:
+    - sudo docker-compose logs client
     - sudo docker ps | grep hha-app-client
 
-log-mongo:
-  stage: log
-  needs: ["test-mongo"]
-  tags: 
-    - cd
-  script:
-    - sudo docker-compose logs mongodb
-  when: on_failure
+# log-mongo:
+#   stage: log
+#   needs: ["test-mongo"]
+#   tags: 
+#     - cd
+#   script:
+#     - sudo docker-compose logs mongodb
+#   when: on_failure
 
-log-server:
-  stage: log
-  needs: ["test-server"]
-  tags: 
-    - cd
-  script:
-    - sudo docker-compose logs server
-  when: always
+# log-server:
+#   stage: log
+#   needs: ["test-server"]
+#   tags: 
+#     - cd
+#   script:
+#     - sudo docker-compose logs server
+#   when: always
 
-log-client:
-  stage: log
-  needs: ["test-client"]
-  tags: 
-    - cd
-  script:
-    - sudo docker-compose logs client
-  when: always
+# log-client:
+#   stage: log
+#   needs: ["test-client"]
+#   tags: 
+#     - cd
+#   script:
+#     - sudo docker-compose logs client
+#   when: always
 
 # deploy-job:
 #   stage: deploy
