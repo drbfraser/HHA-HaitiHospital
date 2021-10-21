@@ -8,6 +8,7 @@ build-job:
   stage: build
   only:
     - master
+    - merge_requests
   tags: 
     - cd
   script:
@@ -23,6 +24,7 @@ build-cache:
   stage: build
   except:
     - master
+    - merge_requests
   tags: 
     - cd
   script:
