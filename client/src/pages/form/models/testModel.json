@@ -1,0 +1,145 @@
+[
+    {
+        "fields": [
+                   
+            {
+                "field_id" : "",
+                "field_label": "MSPP Required",
+                "field_type": "section",
+                "field_value": 9,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "bedsAvailable",
+                "field_label": "Total number of beds available in department",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "bedDays",
+                "field_label": "Total number of bed days of patients",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "bedDays",
+                "field_label": "Total number of patients days",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "hospitalized.total",
+                "field_label": "Total number of hospitalized patients",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "hospitalized.nicu",
+                "field_label": "Number of hospitalized in NICU",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+
+            {
+                "field_id" : "hospitalized.paeds",
+                "field_label": "Number of hospitalized in Paediatrics",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            
+            {
+                "field_id" : "dischargedAlive.total",
+                "field_label": "Total number discharged alive:",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "dischargedAlive.nicu",
+                "field_label": "Discharged Alive NICU",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+
+            {
+                "field_id" : "dischargedAlive.paeds",
+                "field_label": "Discharged Alive Paeds",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+                
+            {
+                "field_id" : "",
+                "field_label": "Admissions",
+                "field_type": "section",
+                "field_level": 0,
+                "field_value": 3
+            },
+
+            {
+                "field_id" : "admissions.total",
+                "field_label": "Total Admissions",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "",
+                "field_label": "Where do patients come from?",
+                "field_type": "subsection",
+                "field_level": 1
+            },
+
+            {
+                "field_id" : "admissions.comeFrom.quarterMorin",
+                "field_label": "Quarter Morin",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+
+            {
+                "field_id" : "admissions.comeFrom.capHaitian",
+                "field_label": "Cap Haitian",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+
+            {
+                "field_id" : "admissions.comeFrom.otherDepartments",
+                "field_label": "If other, specify",
+                "field_type": "array",
+                "field_level": 1
+            },
+
+
+
+
+            {
+                "field_id" : "",
+                "field_label": "Outpatients",
+                "field_type": "section",
+                "field_level": 0,
+                "field_value": 0
+            }
+
+
+        ]
+    }
+]
