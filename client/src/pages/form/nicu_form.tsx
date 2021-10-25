@@ -12,6 +12,8 @@ function DynamicForm() {
     const { register, handleSubmit } = useForm({});
     const [formModel, setformModel] = useState({});
     const [formValues, setFormValues] = useState<{ name: any; value: any; }[]>([])
+    const [formValues2, setFormValues2] = useState<{ name: any; value: any; }[]>([])
+    const [formValues3, setFormValues3] = useState<{ name: any; value: any; }[]>([])
 
     console.log(formValues);
 
@@ -158,8 +160,8 @@ function DynamicForm() {
                                             return (
                                                 <>
                                                     <div id={"input" + fieldCount} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                            <span className="align-middle">{fieldCount}. {field.field_label}</span>
-                                                        </div>
+                                                        <span className="align-middle">{fieldCount}. {field.field_label}</span>
+                                                    </div>
                                                     <div id={"inputs" + fieldCount} className="col-sm-2">
                                                         <input type="number" className="form-control" id="lastName" placeholder=""
                                                             {...register(field.field_id)}
@@ -202,13 +204,25 @@ function DynamicForm() {
                                             return null;
                                     }
                                 }) : null}
-                                <input type="submit" />
+
+                                <hr className="my-4"></hr>
+
+                                <button className="w-100 btn btn-primary btn-lg" type="submit">Submit</button>
                             </div>
                         </form>
 
                     </div>
                 </div>
             </main>
+
+            <footer className="my-5 pt-5 text-muted text-center text-small">
+                <p className="mb-1">&copy; 2017–2021 Company Name</p>
+                <ul className="list-inline">
+                    <li className="list-inline-item"><a href="#">Privacy</a></li>
+                    <li className="list-inline-item"><a href="#">Terms</a></li>
+                    <li className="list-inline-item"><a href="#">Support</a></li>
+                </ul>
+            </footer>
         </div>
 
     )
