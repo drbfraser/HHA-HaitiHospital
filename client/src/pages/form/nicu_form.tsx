@@ -11,7 +11,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function DynamicForm() {
     const { register, handleSubmit } = useForm({});
     const [formModel, setformModel] = useState({});
-    const [formValues, setFormValues] = useState([{ name: "", value: null }])
+    const [formValues, setFormValues] = useState<{ name: any; value: any; }[]>([])
+
+    console.log(formValues);
 
     useEffect(() => {
         setformModel(testJSON[0]);
