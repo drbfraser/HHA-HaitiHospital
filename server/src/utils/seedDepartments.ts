@@ -30,11 +30,6 @@ export const seedDepartments = async() => {
 
     //TODO Case Studies
 
-
-    //Alim test for loop
-    for (const key in originalNicuPaedsDocument) {
-        console.log(key);
-    }
     console.log("seeding default Department successful");
 }
 
