@@ -125,8 +125,11 @@ userSchema.methods.registerUser = (newUser, callback) => {
 };
 
 userSchema.methods.comparePassword = function (candidatePassword, callback) {
-  // @ts-ignore
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+  const hashedPassword = hashPassword(this.password);
+  bcrypt.compare(candidatePassword, hashPassword(this.password), (err, isMatch) => {
+    console.log("======================================");
+    console.log(candidatePassword);
+    console.log(this.password);
     if (err) return callback(err);
     callback(null, isMatch);
   });

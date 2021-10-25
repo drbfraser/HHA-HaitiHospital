@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import { resolve } from 'path';
 
@@ -34,7 +34,7 @@ const upload = multer({
 //`checkit`, which is probably the option I'd suggest if  `validatem`
 
 // router.put('/:id', [requireJwtAuth, upload.single('avatar')], async (req : Request, res : Response, next : any) => {
-router.put('/:id', async (req : Request, res : Response, next : any) => {
+router.put('/:id', async (req : Request, res : Response, next : NextFunction) => {
   try {
     const tempUser = await User.findById(req.params.id);
     const reqUser : any = req.user;
@@ -46,10 +46,10 @@ router.put('/:id', async (req : Request, res : Response, next : any) => {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
-    let avatarPath = null;
-    if (req.file) {
-      avatarPath = req.file.filename;
-    }
+    // let avatarPath = null;
+    // if (req.file) {
+    //   avatarPath = req.file.filename;
+    // }
 
     // if fb or google user provider dont update password
     let password = null;
@@ -62,7 +62,7 @@ router.put('/:id', async (req : Request, res : Response, next : any) => {
       return res.status(400).json({ message: 'Username alredy taken.' });
     }
 
-    const updatedUser = { avatar: avatarPath, name: req.body.name, username: req.body.username, password };
+    const updatedUser = { name: req.body.name, username: req.body.username, password };
     // remove '', null, undefined
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     // console.log(req.body, updatedUser);
