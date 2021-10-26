@@ -35,7 +35,11 @@ function DynamicForm() {
 
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
+<<<<<<< HEAD
         switch (ID) {
+=======
+        switch(ID) {
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
             case 'admissions.comeFrom.otherDepartments':
                 let newFormValuesComeFrom = [...formValuesComeFrom];
                 if (j === 0) {
@@ -53,6 +57,7 @@ function DynamicForm() {
                 } else {
                     newFormValuesAdCond[i].value = e.target.value;
                 }
+<<<<<<< HEAD
 
                 setFormValuesAdCondition(newFormValuesAdCond);
                 break;
@@ -75,6 +80,30 @@ function DynamicForm() {
 
     const addFormFields = (ID: any) => {
         switch (ID) {
+=======
+
+                setFormValuesAdCondition(newFormValuesAdCond);
+                break;
+            case 'numberOfOutPatients.mainCondition.otherMedical':
+                let newFormValuesOutCond = [...formValuesOutCondition];
+                if (j === 0) {
+                    newFormValuesOutCond[i].name = e.target.value;
+                } else {
+                    newFormValuesOutCond[i].value = e.target.value;
+                }
+
+                setFormValuesOutCondition(newFormValuesOutCond);
+                break;
+
+            default:
+                
+        }
+        
+    }
+
+    const addFormFields = (ID: any) => {
+        switch(ID) {
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
             case 'admissions.comeFrom.otherDepartments':
                 console.log(ID);
                 setFormValuesComeFrom([...formValuesComeFrom, { name: "", value: null }])
@@ -88,12 +117,20 @@ function DynamicForm() {
                 setFormValuesOutCondition([...formValuesOutCondition, { name: "", value: null }])
                 break;
             default:
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
         }
     }
 
     const removeFormFields = (ID: any, i: number) => {
+<<<<<<< HEAD
         switch (ID) {
+=======
+        switch(ID) {
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
             case 'admissions.comeFrom.otherDepartments':
                 let newFormValuesComeFrom = [...formValuesComeFrom];
                 newFormValuesComeFrom.splice(i, 1);
@@ -143,11 +180,19 @@ function DynamicForm() {
         console.log("index:" + num);
 
         //Hospitalized
+<<<<<<< HEAD
         if (num === 4 || num === 5 || num === 6) {
             var total = Number((document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).value);
             var a = Number((document.getElementById("inputs5")?.childNodes[0] as HTMLInputElement).value);
             var b = Number((document.getElementById("inputs6")?.childNodes[0] as HTMLInputElement).value);
             if (total !== (a + b)) {
+=======
+        if(num===4 || num===5 || num===6) {
+            var total = Number((document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).value);
+            var a = Number((document.getElementById("inputs5")?.childNodes[0] as HTMLInputElement).value);
+            var b = Number((document.getElementById("inputs6")?.childNodes[0] as HTMLInputElement).value);
+            if(total !== (a + b)){
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
                 console.log("total error");
 
             }
@@ -218,7 +263,11 @@ function DynamicForm() {
         //     }
         // }
 
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
 
 
     }
@@ -295,8 +344,14 @@ function DynamicForm() {
                                                     <div id={"input" + index} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
                                                         <span className="align-middle">{fieldCount}. {field.field_label}</span>
                                                     </div>
+<<<<<<< HEAD
                                                     <div id={"inputs" + index} className="col-sm-2">
                                                         <input type="text" className="form-control is-invalid" placeholder=""
+=======
+                                                    <div id={"inputs" + fieldCount} className="col-sm-2">
+                                                        <input type="number" className="form-control" id="lastName" placeholder=""
+                                                            defaultValue={0}
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
                                                             {...register(field.field_id)}
                                                             // required 
                                                             onChange={() => totalValidation(index)}
@@ -310,6 +365,7 @@ function DynamicForm() {
 
                                         case 'array':
                                             fieldCount += 1;
+<<<<<<< HEAD
                                             switch (field.field_id) {
                                                 case 'admissions.comeFrom.otherDepartments':
                                                     return (
@@ -322,6 +378,20 @@ function DynamicForm() {
                                                                 {formValuesComeFrom.map((element, index) => (
                                                                     <div className="row g-3 mb-1" key={index}>
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+=======
+                                            switch(field.field_id){
+                                                case 'admissions.comeFrom.otherDepartments':
+                                                    return (
+                                                        <>
+                                                            <div id={"input" + fieldCount} className={field.field_level === 1 ? "ps-5" : ""}>
+                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                                            </div>
+                                                            <div id={"inputs" + fieldCount} >
+                                                                {formValuesComeFrom.map((element, index) => (
+                                                                    <div className="row g-3 mb-1" key={index}>
+                                                                        <div id={"input" + fieldCount} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
                                                                             <div className="input-group">
                                                                                 <span className="input-group-text" id="">Name and value</span>
                                                                                 <input className="form-control" type="text" name="departmentName" value={element.name || ""} onChange={e => handleChange(field.field_id, index, e, 0)} />
@@ -340,6 +410,7 @@ function DynamicForm() {
                                                 case 'admissions.mainCondition.otherMedical':
                                                     return (
                                                         <>
+<<<<<<< HEAD
                                                             <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
                                                                 <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
                                                                 <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
@@ -348,6 +419,16 @@ function DynamicForm() {
                                                                 {formValuesAdCondition.map((element, index) => (
                                                                     <div className="row g-3 mb-1" key={index}>
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+=======
+                                                            <div id={"input" + fieldCount} className={field.field_level === 1 ? "ps-5" : ""}>
+                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                                            </div>
+                                                            <div id={"inputs" + fieldCount} >
+                                                                {formValuesAdCondition.map((element, index) => (
+                                                                    <div className="row g-3 mb-1" key={index}>
+                                                                        <div id={"input" + fieldCount} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
                                                                             <div className="input-group">
                                                                                 <span className="input-group-text" id="">Name and value</span>
                                                                                 <input className="form-control" type="text" name="nameOfCondition" value={element.name || ""} onChange={e => handleChange(field.field_id, index, e, 0)} />
@@ -362,6 +443,7 @@ function DynamicForm() {
                                                             </div>
                                                         </>
                                                     )
+<<<<<<< HEAD
 
                                                 case 'numberOfOutPatients.mainCondition.otherMedical':
                                                     return (
@@ -374,6 +456,20 @@ function DynamicForm() {
                                                                 {formValuesOutCondition.map((element, index) => (
                                                                     <div className="row g-3 mb-1" key={index}>
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+=======
+                                                
+                                                case 'numberOfOutPatients.mainCondition.otherMedical':
+                                                    return (
+                                                        <>
+                                                            <div id={"input" + fieldCount} className={field.field_level === 1 ? "ps-5" : ""}>
+                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                                            </div>
+                                                            <div id={"inputs" + fieldCount} >
+                                                                {formValuesOutCondition.map((element, index) => (
+                                                                    <div className="row g-3 mb-1" key={index}>
+                                                                        <div id={"input" + fieldCount} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
                                                                             <div className="input-group">
                                                                                 <span className="input-group-text" id="">Name and value</span>
                                                                                 <input className="form-control" type="text" name="nameOfCondition" value={element.name || ""} onChange={e => handleChange(field.field_id, index, e, 0)} />
@@ -423,3 +519,8 @@ function DynamicForm() {
 }
 
 export default DynamicForm;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 1b7ca02dd9c9685ff6b373389c288617c13de231
