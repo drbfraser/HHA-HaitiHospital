@@ -1,5 +1,6 @@
 :root {
-  --main-bg-color: linear-gradient(#04181F 50%, #D1D2A5, transparent);
+  /*--main-bg-color: linear-gradient(#04181F 50%, #D1D2A5, transparent);*/
+  --main-bg-color: #f5f5f5;
 }
 
 .app {

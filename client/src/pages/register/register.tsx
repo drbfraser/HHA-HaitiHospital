@@ -29,7 +29,7 @@ export default Register;
 
 // import { registerUserWithEmail } from '../../store/actions/registerActions';
 // import { registerSchema } from './validation';
-// import './styles.css';
+// import './homeStyles.css';
 
 // const Register = ({ auth, register: { isLoading, error }, history, registerUserWithEmail }) => {
 //   const formik = useFormik({

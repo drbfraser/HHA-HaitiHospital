@@ -27,7 +27,7 @@ export default Users;
 // import Loader from '../../components/Loader/Loader';
 // import requireAuth from '../../hoc/requireAuth';
 
-// import './styles.css';
+// import './homeStyles.css';
 
 // const Users = ({ getUsers, users: { users, isLoading } }) => {
 //   useEffect(() => {

@@ -25,7 +25,7 @@ export default Admin;
 
 // import requireAdmin from 'hoc/requireAdmin';
 // import Layout from 'layout/Layout';
-// import 'pages/Admin/styles.css';
+// import 'pages/Admin/homeStyles.css';
 
 // type Props = {
 
