@@ -3,7 +3,7 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 
 // import 'components/layout/home_styles.css';
-import './layoutStyles.css';
+import './layout_styles.css';
 
 interface LayoutProps extends ElementStyleProps {
   children: any,

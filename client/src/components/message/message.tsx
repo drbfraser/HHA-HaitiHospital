@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './message_styles.css';
 
 interface MessageProps extends ElementStyleProps {
 

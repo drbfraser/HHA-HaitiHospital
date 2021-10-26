@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import HHALogoSvg from "img/logo/LogoWText.svg";
 import { ElementStyleProps } from "constants/interfaces";
 
-import "./styles.css";
+import "./hha_logo_styles.css";
 
 interface HhaLogoProps extends ElementStyleProps{
 }
