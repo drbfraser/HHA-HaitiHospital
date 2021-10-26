@@ -481,7 +481,7 @@ function DynamicForm() {
 
                                 <hr className="my-4"></hr>
 
-                                <button className="w-100 btn btn-primary btn-lg" type="submit">Submit</button>
+                                <button className="w-100 btn btn-primary btn-lg" type="submit" style={{display: sectionState === 2 ? '' : 'none'}}>Submit</button>
                             </div>
                         </form>
 
