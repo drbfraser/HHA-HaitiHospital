@@ -21,11 +21,11 @@ const Login = (props : LoginProps) => {
       <div className={'login '+ (props.classes||'')}>
           <form>
               <img className="login-logo" src={logo} />
-              <label className="h3 mb-3 fw-normal">Please sign in</label>
+              <h4 className="text-center">Please sign in </h4>
 
-              <div className="form-floating">
-                  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com"/>
-                  <label htmlFor="floatingInput">Email address</label>
+              <div className="form-floating" >
+                  <input type="text" className="form-control" id="floatingInput" placeholder="Username"/>
+                  <label htmlFor="floatingInput">Username</label>
               </div>
 
               <div className="form-floating">
@@ -33,11 +33,11 @@ const Login = (props : LoginProps) => {
                   <label htmlFor="floatingPassword">Password</label>
               </div>
 
-              <div className="checkbox mb-3">
-                  <label>
-                      <input type="checkbox" value="remember-me" />
-                      Remember me
-                  </label>
+              <div className="form-check form-switch">
+                  <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+                      <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                          Remember me
+                      </label>
               </div>
 
               {/*Temporarily link the sign in button directly to the homepage*/}

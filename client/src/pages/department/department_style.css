@@ -2,7 +2,7 @@ body {
     /*background: #097F99;*/
     /*background-repeat: no-repeat;*/
     /*width: 1920px;*/
-    height: 800px;
+    /*height: 800px;*/
     /* text-align: center;
     color: white;
     font-size: 20px; */
@@ -25,7 +25,18 @@ button:hover {
     transform: scale(0.95);
     opacity: 0.5;
 }
-
+.submit_data_button {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+.GOTOSUMMARYPLZ {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 60%;
+}
 .Departmentbutton1 {
     position:absolute;
     width: 200px;

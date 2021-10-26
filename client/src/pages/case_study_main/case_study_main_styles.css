@@ -4,15 +4,16 @@ body {
     /*width: 1920px;*/
     /*height: 800px;*/
 }
-body p {
-    position: absolute;
-    left: 80px;
-    /*padding-right: 800px;*/
-    font-size: 40px;
-    font-weight: bold;
-    color: white;
-    opacity: 0.5;
-}
+/*body p {*/
+/*    position: absolute;*/
+/*    left: 80px;*/
+/*    !*padding-right: 800px;*!*/
+/*    font-size: 40px;*/
+/*    font-weight: bold;*/
+/*    color: white;*/
+/*    opacity: 0.5;*/
+/*}*/
+
 .case-study-main-content {
     justify-content: center;
     margin-top: 100px;
