@@ -8,7 +8,7 @@ import {CustomCssProps, ElementStyleProps} from 'constants/interfaces'
 
 import case1 from "img/case1.jpg";
 import case2 from "img/case2.jpg";
-import "./homeStyles.css";
+import "./home_styles.css";
 
 interface HomeProps extends ElementStyleProps {
 };
@@ -83,7 +83,7 @@ export default Home;
 // import MessageForm from '../../components/MessageForm/MessageForm';
 // import { reseedDatabase } from '../../store/actions/authActions';
 
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const Home = ({ auth, reseedDatabase }) => {
 //   const handleReseed = () => {

@@ -24,7 +24,7 @@ export default MessageForm;
 // import { addMessage } from '../../store/actions/messageActions';
 // import { messageFormSchema } from './validation';
 
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const MessageForm = ({ addMessage, message: { messages } }) => {
 //   const formik = useFormik({

@@ -23,7 +23,7 @@ export default Message;
 // import { deleteMessage, editMessage, clearMessageError } from '../../store/actions/messageActions';
 // import { messageFormSchema } from './validation';
 
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const Message = ({ message, auth, deleteMessage, editMessage, clearMessageError }) => {
 //   const [isEdit, setIsEdit] = useState(false);

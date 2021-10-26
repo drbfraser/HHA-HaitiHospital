@@ -1,13 +1,13 @@
 :root {
   /*--main-bg-color: linear-gradient(#04181F 50%, #D1D2A5, transparent);*/
-  --main-bg-color: #f5f5f5;
+  /*--main-bg-color: #f5f5f5;*/
 }
 
 .app {
   margin: 0rem;
   padding: 0rem 0rem;
 
-  background: var(--main-bg-color);
+  /*background: var(--main-bg-color);*/
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -24,7 +24,7 @@
 }
 
 .grid-item {
-  align-self: var(--griditem-alignself);
+  /*align-self: var(--griditem-alignself);*/
   /*justify-self: var(--griditem-justifyself);*/
 }
 

@@ -2,8 +2,8 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-// import 'components/layout/homeStyles.css';
-import './styles.css';
+// import 'components/layout/home_styles.css';
+import './layoutStyles.css';
 
 interface LayoutProps extends ElementStyleProps {
   children: any,
@@ -23,7 +23,7 @@ export default Layout;
 
 // import Navbar from '../components/Navbar/Navbar';
 // import Footer from '../components/Footer/Footer';
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const Layout = ({ children }) => {
 //   return (

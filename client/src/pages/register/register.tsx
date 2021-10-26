@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './register_styles.css';
 import Header from 'components/header/header';
 
 interface RegisterProps extends ElementStyleProps {
@@ -29,7 +29,7 @@ export default Register;
 
 // import { registerUserWithEmail } from '../../store/actions/registerActions';
 // import { registerSchema } from './validation';
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const Register = ({ auth, register: { isLoading, error }, history, registerUserWithEmail }) => {
 //   const formik = useFormik({

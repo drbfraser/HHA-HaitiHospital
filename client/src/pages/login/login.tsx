@@ -4,7 +4,7 @@ import { ElementStyleProps } from 'constants/interfaces';
 import Layout from 'layout/layout'
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
-import './login.css';
+import './login_styles.css';
 
 interface LoginProps extends ElementStyleProps {
 
@@ -70,7 +70,7 @@ export default Login;
 // import { loginUserWithEmail } from '../../store/actions/authActions';
 // import { FACEBOOK_AUTH_LINK, GOOGLE_AUTH_LINK } from '../../constants';
 // import { loginSchema } from './validation';
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const Login = ({ auth, history, loginUserWithEmail }) => {
 //   const formik = useFormik({

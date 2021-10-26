@@ -9,7 +9,7 @@ import TextHolder from 'components/text_holder/text_holder';
 import ReportDisplay from 'components/report_display/report_display';
 
 import { ElementStyleProps } from 'constants/interfaces';
-import './styles.css';
+
 import Header from 'components/header/header';
 
 

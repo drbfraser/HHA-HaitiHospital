@@ -46,7 +46,7 @@ export default NavBar;
 // import { Link, withRouter } from 'react-router-dom';
 
 // import { logOutUser } from '../../store/actions/authActions';
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const Navbar = ({ auth, logOutUser, history }) => {
 //   const onLogOut = (event) => {

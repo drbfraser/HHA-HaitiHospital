@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './users_styles.css';
 import Header from 'components/header/header';
 
 interface UsersProps extends ElementStyleProps {};
@@ -27,7 +27,7 @@ export default Users;
 // import Loader from '../../components/Loader/Loader';
 // import requireAuth from '../../hoc/requireAuth';
 
-// import './homeStyles.css';
+// import './home_styles.css';
 
 // const Users = ({ getUsers, users: { users, isLoading } }) => {
 //   useEffect(() => {

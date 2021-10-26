@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './admin-styles.css';
 import Header from 'components/header/header';
 
 interface AdminProps extends ElementStyleProps {
@@ -25,7 +25,7 @@ export default Admin;
 
 // import requireAdmin from 'hoc/requireAdmin';
 // import Layout from 'layout/Layout';
-// import 'pages/Admin/homeStyles.css';
+// import 'pages/Admin/home_styles.css';
 
 // type Props = {
 
