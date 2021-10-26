@@ -15,8 +15,6 @@ function DynamicForm() {
     const [formValues2, setFormValues2] = useState<{ name: any; value: any; }[]>([])
     const [formValues3, setFormValues3] = useState<{ name: any; value: any; }[]>([])
 
-    console.log(formValues);
-
     useEffect(() => {
         setformModel(testJSON[0]);
     }, [])
@@ -65,7 +63,6 @@ function DynamicForm() {
             if (i === index) {
                 currentClass[index].classList.add("active");
                 for (let j = 0; j < sections[i].field_value; j++, startj++) {
-                    console.log(startj)
                     document.getElementById("section" + (i + 1))!.style.display = "";
                     document.getElementById("input" + startj)!.style.display = "";
                     document.getElementById("inputs" + startj)!.style.display = "";
@@ -83,6 +80,16 @@ function DynamicForm() {
                     }
                 }
             }
+        }
+    }
+
+    function totalValidation(num: Number) {
+        console.log(num);
+        if(num===4 || num===5 || num===6) {
+            var a = (document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).value;
+            var b = (document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).value;
+            var c = (document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).value;
+            console.log(a);
         }
     }
 
@@ -144,7 +151,7 @@ function DynamicForm() {
                     <div className="col-md-7 col-lg-8">
 
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="row g-3">
+                            <div className="row g-2">
                                 {fields ? fields.map((field: any, index: any) => {
                                     switch (field.field_type) {
                                         case 'section':
@@ -165,7 +172,9 @@ function DynamicForm() {
                                                     <div id={"inputs" + fieldCount} className="col-sm-2">
                                                         <input type="number" className="form-control" id="lastName" placeholder=""
                                                             {...register(field.field_id)}
-                                                            required />
+                                                            required 
+                                                            onChange={() => totalValidation(index)}
+                                                            />
                                                         <div className="invalid-feedback">
                                                             Requires a valid number
                                                         </div>
@@ -192,7 +201,7 @@ function DynamicForm() {
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-sm-2">
-                                                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => removeFormFields(index)}>Remove</button>
+                                                                    <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(index)}>Remove</button>
                                                                 </div>
                                                             </div>
                                                         ))}
