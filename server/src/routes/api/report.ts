@@ -1,8 +1,8 @@
 import { seedDepartments } from '../../utils/seedDepartments';
 const router = require('express').Router();
 const { number } = require('joi');
-let Departments = require('../../models/Departments');
-let FormEntry = require('../../models/FormEntry');
+import Departments from '../../models/Departments';
+import FormEntry from '../../models/FormEntry';
 
 
 //---RESEED DATABASE---//
