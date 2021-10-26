@@ -10,15 +10,21 @@ import './nicu_form.css';
 
 
 function DynamicForm() {
-    const { register, handleSubmit, getValues } = useForm({});
+    const { register, handleSubmit } = useForm({});
     const [formModel, setformModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
     const [formValuesAdCondition, setFormValuesAdCondition] = useState<{ name: any; value: any; }[]>([])
     const [formValuesOutCondition, setFormValuesOutCondition] = useState<{ name: any; value: any; }[]>([])
+    const [sectionState, setSectionState] = useState(0);
 
     useEffect(() => {
         setformModel(testJSON[0]);
+        setSectionState(0);
     }, [])
+
+    useEffect(() => {
+        sidePanelClick(sectionState);
+    },)
 
     const elements = Object.values(formModel);
     const fields: any = elements[0];
@@ -32,7 +38,13 @@ function DynamicForm() {
         console.log(data);
     }
 
+    const clickPrevious = () => {
+        sidePanelClick(sectionState - 1);
+    }
 
+    const clickNext = () => {
+        sidePanelClick(sectionState + 1);
+    }
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
         switch (ID) {
@@ -76,15 +88,12 @@ function DynamicForm() {
     const addFormFields = (ID: any) => {
         switch (ID) {
             case 'admissions.comeFrom.otherDepartments':
-                console.log(ID);
                 setFormValuesComeFrom([...formValuesComeFrom, { name: "", value: null }])
                 break;
             case 'admissions.mainCondition.otherMedical':
-                console.log(ID);
                 setFormValuesAdCondition([...formValuesAdCondition, { name: "", value: null }])
                 break;
             case 'numberOfOutPatients.mainCondition.otherMedical':
-                console.log(ID);
                 setFormValuesOutCondition([...formValuesOutCondition, { name: "", value: null }])
                 break;
             default:
@@ -125,6 +134,7 @@ function DynamicForm() {
 
             var show = "none"
             if (i === index) {
+                setSectionState(index);
                 currentClass[index].classList.add("active");
                 show = "";
             }
@@ -157,7 +167,7 @@ function DynamicForm() {
 
         if(b % 1 != 0) {
             (document.getElementById("inputs"+num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs"+num)?.childNodes[1] as HTMLElement).innerHTML = "Intergers only";
+            (document.getElementById("inputs"+num)?.childNodes[1] as HTMLElement).innerHTML = "Integers only";
             return;
         }
 
@@ -300,10 +310,8 @@ function DynamicForm() {
     }
 
     let sections = getSections();
-    // sidePanelClick(0);
 
-
-
+    
 
     let fieldCount = 0;
     let sectionCount = 0;
@@ -339,6 +347,12 @@ function DynamicForm() {
                                 )
                             }) : null}
                         </ul>
+                        <div className="btn-group d-flex">
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                        </div>
+                        
+                        <button className="w-100 btn btn-primary btn-lg" type="submit">Submit</button>
                     </div>
                     <div className="col-md-7 col-lg-8">
 
