@@ -184,8 +184,22 @@ function DynamicForm() {
                 return;
             }
 
-            if(num === 32) {
-                if (!arrayTotalValidation(27,29,32)) {
+            if (num === 32) {
+                if (!arrayTotalValidation(27, 29, 32)) {
+                    return;
+                }
+            }
+
+            //Main Condition
+            if (num === 64) {
+                if (!arrayTotalValidation(27, 46, 64)) {
+                    return;
+                }
+            }
+
+            //Main Condition
+            if (num === 98) {
+                if (!arrayTotalValidation(66, 80, 98)) {
                     return;
                 }
             }
@@ -196,20 +210,23 @@ function DynamicForm() {
         }
     }
 
-    function totalValidation(start: number, end: number) {
+    function totalValidation(start: number, a: number, b: number) {
         var total = Number((document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).value);
         var total2 = 0;
-        for (var i = start + 1; i <= end; i++) {
+        for (var i = a; i <= b; i++) {
             total2 += Number((document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).value)
         }
         if (total !== total2) {
-            for (var i = start; i <= end; i++) {
+            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
+            (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
+            for (var i = a; i <= b; i++) {
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                var errorMsg = i == start ? "Does not add up to total" : "";
-                (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = errorMsg;
+                (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = "";
             }
         } else {
-            for (var i = start; i <= end; i++) {
+            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
+            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
+            for (var i = a; i <= b; i++) {
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
             }
@@ -288,36 +305,68 @@ function DynamicForm() {
 
         //Hospitalized
         if (num === 4 || num === 5 || num === 6) {
-            totalValidation(4, 6);
+            totalValidation(4,5,6);
             return;
         }
 
         //discharged alive
         if (num === 7 || num === 8 || num === 9) {
-            totalValidation(7, 9);
+            totalValidation(7,8,9);
             return;
         }
 
         //died before 48h
         if (num === 10 || num === 11 || num === 12) {
-            totalValidation(10, 12);
+            totalValidation(10,11,12);
             return;
         }
 
         //died after 48h
         if (num === 13 || num === 14 || num === 15) {
-            totalValidation(13, 15);
+            totalValidation(13,14,15);
             return;
         }
 
         //self-discharged
         if (num >= 19 && num <= 24) {
-            totalValidation(19, 24);
+            totalValidation(19,20,24);
             return;
         }
 
-        if (num >= 27 && num <= 31) {
+        //Where do patients come from?
+        if (num === 27 || num >= 29 && num <= 31) {
             arrayTotalValidation(27, 29, 32);
+            return;
+        }
+        //Age
+        if (num === 27 || num >= 34 && num <= 41) {
+            totalValidation(27, 34, 41);
+            return;
+        }
+        //Gender
+        if (num === 27 || num >= 43 && num <= 44) {
+            totalValidation(27, 43, 44);
+            return;
+        }
+        //Main Condition
+        if (num === 27 || num >= 46 && num <= 64) {
+            arrayTotalValidation(27, 46, 64);
+            return;
+        }
+
+        //Age
+        if (num === 66 || num >= 68 && num <= 75) {
+            totalValidation(66, 68, 75);
+            return;
+        }
+        //Gender
+        if (num === 66 || num >= 77 && num <= 78) {
+            totalValidation(66, 77, 78);
+            return;
+        }
+        //Main Condition
+        if (num === 66 || num >= 80 && num <= 98) {
+            arrayTotalValidation(66, 80, 98);
             return;
         }
 
@@ -465,19 +514,19 @@ function DynamicForm() {
                                                                 {formValuesAdCondition.map((element, index2) => (
                                                                     <div className="row g-3 mb-1" key={index}>
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group">
+                                                                            <div className="input-group" id={"ac" + index + index2}>
                                                                                 <span className="input-group-text" id="">Name and value</span>
-                                                                                <input id={"arrTextACInput" + index} className="form-control" type="text" name="nameOfDepartment"
+                                                                                <input className="form-control" type="text" name="nameOfDepartment"
                                                                                     value={element.name || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index, e, 0)}
-                                                                                    onBlur={() => arrayInputValidation("cf", index, index2, "text")}
+                                                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                                    onBlur={() => arrayInputValidation("ac", index, index2, "text")}
                                                                                 />
-                                                                                <input id={"arrNumACInput" + index} className="form-control" type="number" name="numberOfPatients"
+                                                                                <input className="form-control" type="text" name="numberOfPatients"
                                                                                     value={element.value || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index, e, 1)}
-                                                                                    onBlur={() => arrayInputValidation("cf", index, index2, "text")}
+                                                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                                    onBlur={() => arrayInputValidation("ac", index, index2, "number")}
                                                                                 />
-                                                                                <div id={"arrACInputError" + index} className="invalid-feedback">
+                                                                                <div className="invalid-feedback text-end">
                                                                                     Requires a valid number
                                                                                 </div>
                                                                             </div>
@@ -500,21 +549,21 @@ function DynamicForm() {
                                                             </div>
                                                             <div id={"inputs" + index} >
                                                                 {formValuesOutCondition.map((element, index2) => (
-                                                                    <div className="row g-3 mb-1" key={index}>
+                                                                    <div className="row g-3 mb-1">
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group">
-                                                                                <span className="input-group-text" id="">Name and value</span>
-                                                                                <input id={"arrTextOCInput" + index} className="form-control" type="text" name="nameOfDepartment"
+                                                                            <div className="input-group" id={"oc" + index + index2}>
+                                                                                <span className="input-group-text">Name and value</span>
+                                                                                <input className="form-control" type="text" name="nameOfDepartment"
                                                                                     value={element.name || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index, e, 0)}
-                                                                                    onBlur={() => arrayInputValidation("cf", index, index2, "text")}
+                                                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                                    onBlur={() => arrayInputValidation("oc", index, index2, "text")}
                                                                                 />
-                                                                                <input id={"arrNumOCInput" + index} className="form-control" type="number" name="numberOfPatients"
+                                                                                <input className="form-control" type="text" name="numberOfPatients"
                                                                                     value={element.value || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index, e, 1)}
-                                                                                    onBlur={() => arrayInputValidation("cf", index, index2, "text")}
+                                                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                                    onBlur={() => arrayInputValidation("oc", index, index2, "number")}
                                                                                 />
-                                                                                <div id={"arrOCInputError" + index} className="invalid-feedback">
+                                                                                <div className="invalid-feedback text-end">
                                                                                     Requires a valid number
                                                                                 </div>
                                                                             </div>
