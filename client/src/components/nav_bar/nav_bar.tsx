@@ -1,10 +1,11 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
-import { ElementStyleProps } from 'constants/interfaces';
+import {CustomCssProps, ElementStyleProps} from 'constants/interfaces';
 
-import './styles.css';
-import logo from '../../img/logo/LogoWText.svg'
+import './nav_bar_styles.css';
+// import logo from '../../img/logo/LogoWText.svg'
+import HhaLogo from 'components/hha_logo/hha_logo';
 
 interface INavBar extends ElementStyleProps {
 
@@ -16,8 +17,17 @@ const NavBar = (props:INavBar) => {
       {/* <NavLink to="/" className="home-button" ><a href="" className="logo"><img className="logo" src={logo} alt="" /></a></NavLink> */}
     
       <NavLink className="navbar-home-button" to="/home">
-        <img src={logo}
-        alt="logo"  height="100px" width="320px"/> 
+        {/*<img src={logo}*/}
+        {/*alt="logo"  height="100px" width="320px"/> */}
+          <HhaLogo
+              classes='logo grid-item'
+              style={
+                  {'--griditem-alignself': 'center',
+                      '--griditem-justifyself': 'center',
+                      'width' : '300px',
+                  } as CustomCssProps
+              }
+          />
       </NavLink>
       <div className='navbar-other-button'>
         <NavLink className="toLeadersBoard" to="/leaderBoard" exact>
@@ -46,7 +56,7 @@ export default NavBar;
 // import { Link, withRouter } from 'react-router-dom';
 
 // import { logOutUser } from '../../store/actions/authActions';
-// import './styles.css';
+// import './home_styles.css';
 
 // const Navbar = ({ auth, logOutUser, history }) => {
 //   const onLogOut = (event) => {

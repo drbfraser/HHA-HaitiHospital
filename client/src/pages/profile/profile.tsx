@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './profile_styles.css';
 import Header from 'components/header/header';
 
 interface ProfileProps extends ElementStyleProps {

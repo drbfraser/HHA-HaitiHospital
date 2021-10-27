@@ -7,7 +7,7 @@ import NavBar from 'components/nav_bar/nav_bar';
 import { ElementStyleProps, CustomCssProps } from 'constants/interfaces';
 import * as Routing from 'constants/routing';
 
-import './styles.css';
+import './header_styles.css';
 
 interface HeaderProps extends ElementStyleProps{
 }
@@ -19,8 +19,8 @@ const Header = (props: HeaderProps) => {
     return (  
       <div className={'header '+ (props.classes || '')} 
           style={props.style}>
-        <HhaLogo 
-          classes='logo grid-item' 
+        <HhaLogo
+          classes='logo grid-item'
           style={
             {'--griditem-alignself': 'center',
             '--griditem-justifyself': 'center',

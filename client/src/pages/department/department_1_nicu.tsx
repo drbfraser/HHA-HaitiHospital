@@ -31,7 +31,7 @@ export const DepartmentOne = (props : DeparmentProps) => {
         </>
       </div>
       
-      <Link to={"/NICUForm"} >Submit Data</Link>
+      <Link className="submit_data_button" to={"/NICUForm"} >Submit Data</Link>
 
       <button className="Departmentbutton1">NICU / PAED</button>
       <button className="Departmentbutton2"

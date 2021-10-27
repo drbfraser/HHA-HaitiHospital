@@ -6,8 +6,6 @@ import { ReportProps } from 'constants/interfaces';
 import TextHolder from 'components/text_holder/text_holder';
 import ReportSummariesTable from 'components/report_summaries_table/report_summaries_table';
 
-
-import './styles.css';
 import Header from 'components/header/header';
 
 interface DepartmentReportsProps extends ElementStyleProps {

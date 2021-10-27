@@ -1,7 +1,7 @@
 import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './footer_styles.css';
 
 interface FooterProps extends ElementStyleProps {
 

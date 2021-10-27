@@ -6,7 +6,7 @@ import { NICUPaedsModel } from 'pages/form/nicu_paeds_model';
 import Header from 'components/header/header';
 
 // import Layout from '../../layout/Layout';
-import './styles.css';
+import './nicu_form_styles.css';
 
 
 function NICUForm() {
