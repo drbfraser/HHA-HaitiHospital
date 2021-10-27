@@ -146,52 +146,89 @@ function DynamicForm() {
         }
     }
 
-    function inputValidation(num: number, type: string) {
-        console.log("input: " + num);
+    function arrayInputValidation(id: string) {
+        var inputGroup = (document.getElementById(id) as HTMLElement);
+        var text = (inputGroup.childNodes[1] as HTMLInputElement).value;
+        if (text == "") {
+            (inputGroup.childNodes[1] as HTMLInputElement).classList.add("is-invalid");
+            (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+            return;
+        }
 
-        if (type === "number") {
-            var a = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value;
-            if (a == "") {
-                (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Must enter a value";
-                return;
+        (inputGroup.childNodes[1] as HTMLInputElement).classList.remove("is-invalid");
+        (inputGroup.childNodes[1] as HTMLInputElement).classList.add("is-valid");
+
+        var numberAsText = (inputGroup.childNodes[2] as HTMLInputElement).value;
+        if (numberAsText == "") {
+            (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
+            (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+            return;
+        }
+
+        var number = Number((inputGroup.childNodes[2] as HTMLInputElement).value);
+        if (number < 0) {
+            (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
+            (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Positive numbers only for this field";
+            return;
+        }
+
+        if (number % 1 != 0) {
+            (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
+            (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Integers only for this field";
+            return;
+        }
+
+        (inputGroup.childNodes[2] as HTMLInputElement).classList.remove("is-invalid");
+        (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-valid");
+    }
+
+    function totalValidation(start: number, end: number) {
+        var total = Number((document.getElementById("inputs"+start)?.childNodes[0] as HTMLInputElement).value);
+        var total2 = 0;
+        for (var i=start+1; i<=end; i++) {
+            total2 += Number((document.getElementById("inputs"+i)?.childNodes[0] as HTMLInputElement).value)
+        }
+        if (total !== total2) {
+            for (var i=start; i<=end; i++) {
+                (document.getElementById("inputs"+i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
+                var errorMsg = i==start ? "Does not add up to total" : "";
+                (document.getElementById("inputs"+i)?.childNodes[1] as HTMLElement).innerHTML = errorMsg;
             }
-
-            var b = Number((document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value);
-            if (b < 0) {
-                (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Positive numbers only";
-                return;
-            }
-
-            if (b % 1 != 0) {
-                (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Integers only";
-                return;
+        } else {
+            for (var i=start; i<=end; i++) {
+                (document.getElementById("inputs"+i)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
+                (document.getElementById("inputs"+i)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
             }
         }
+    }
+
+    function inputValidation(num: number) {
+        console.log("input: " + num);
+
+        var a = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value;
+        if (a == "") {
+            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
+            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Must enter a value";
+            return;
+        }
+
+        var b = Number((document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value);
+        if (b < 0) {
+            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
+            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Positive numbers only";
+            return;
+        }
+
+        if (b % 1 != 0) {
+            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
+            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Integers only";
+            return;
+        }
+
 
         //Hospitalized
         if (num === 4 || num === 5 || num === 6) {
-            console.log("TOTAL ERROR");
-            var total = Number((document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).value);
-            var x = Number((document.getElementById("inputs5")?.childNodes[0] as HTMLInputElement).value);
-            var y = Number((document.getElementById("inputs6")?.childNodes[0] as HTMLInputElement).value);
-            if (total !== (x + y)) {
-                (document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs5")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs6")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs4")?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-                (document.getElementById("inputs5")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs6")?.childNodes[1] as HTMLElement).innerHTML = "";
-            } else {
-                (document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs5")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs6")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs4")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                (document.getElementById("inputs5")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                (document.getElementById("inputs6")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-            }
+            totalValidation(4,6);
             return;
         }
 
@@ -306,323 +343,12 @@ function DynamicForm() {
             return;
         }
 
-        //----------ADMISSIONS----------
-        if ((num >= 27 && num <= 63) || (type === "arrNumCF" || type === "arrNumAC")) {
-            var total = Number((document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).value);
-
-            //come from
-            if ((num === 27 || num >= 29 && num <= 31) || (type === "arrNumCF")) {
-                console.log("TOTAL ERROR");
-                var total = Number((document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).value);
-
-                //Check if array input is valid
-                if (type === "arrNumCF") {
-                    console.log('invalid arr');
-                    if (formValuesComeFrom[num].value === null) {
-                        console.log('null val');
-                        (document.getElementById("arrNumCFInput" + num) as HTMLElement).classList.add("is-invalid");
-                        (document.getElementById("arrCFInputError" + num) as HTMLElement).innerHTML = "Must enter a value";
-                    }
-                    if (formValuesComeFrom[num].value < 0) {
-                        (document.getElementById("arrNumCFInput" + num) as HTMLElement).classList.add("is-invalid");
-                        (document.getElementById("arrCFInputError" + num) as HTMLElement).innerHTML = "Positive numbers only";
-                    }
-                }
-                var comeFrom1 = Number((document.getElementById("inputs29")?.childNodes[0] as HTMLInputElement).value);
-                var comeFrom2 = Number((document.getElementById("inputs30")?.childNodes[0] as HTMLInputElement).value);
-                var comeFrom3 = Number((document.getElementById("inputs31")?.childNodes[0] as HTMLInputElement).value);
-                var arrTotal = 0;
-                if (formValuesComeFrom.length > 0) {
-                    for (let i = 0; i < formValuesComeFrom.length; i++) {
-                        arrTotal += Number(formValuesComeFrom[i].value);
-                    }
-                }
-
-                if (total !== (comeFrom1 + comeFrom2 + comeFrom3 + arrTotal)) {
-                    console.log("total error array");
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs29")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs30")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs31")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs27")?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-                    (document.getElementById("inputs29")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs30")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs31")?.childNodes[1] as HTMLElement).innerHTML = "";
-
-                    //Array Loop
-                    if (formValuesComeFrom.length > 0) {
-                        for (let i = 0; i < formValuesComeFrom.length; i++) {
-                            (document.getElementById("arrNumCFInput" + i) as HTMLElement).classList.add("is-invalid");
-                            (document.getElementById("arrCFInputError" + i) as HTMLElement).innerHTML = "";
-                        }
-                    }
-                } else {
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs29")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs30")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs31")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs29")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs30")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs31")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-
-                    //Array Loop
-                    if (formValuesComeFrom.length > 0) {
-                        for (let i = 0; i < formValuesComeFrom.length; i++) {
-                            (document.getElementById("arrNumCFInput" + i) as HTMLElement).classList.remove("is-invalid");
-                            (document.getElementById("arrNumCFInput" + i) as HTMLElement).classList.add("is-valid");
-                        }
-                    }
-                }
-
-            }
-
-            //age
-            if (num === 27 || num >= 34 && num <= 41) {
-                // var total = Number((document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).value);
-
-                var age1 = Number((document.getElementById("inputs34")?.childNodes[0] as HTMLInputElement).value);
-                var age2 = Number((document.getElementById("inputs35")?.childNodes[0] as HTMLInputElement).value);
-                var age3 = Number((document.getElementById("inputs36")?.childNodes[0] as HTMLInputElement).value);
-                var age4 = Number((document.getElementById("inputs37")?.childNodes[0] as HTMLInputElement).value);
-                var age5 = Number((document.getElementById("inputs38")?.childNodes[0] as HTMLInputElement).value);
-                var age6 = Number((document.getElementById("inputs39")?.childNodes[0] as HTMLInputElement).value);
-                var age7 = Number((document.getElementById("inputs40")?.childNodes[0] as HTMLInputElement).value);
-                var age8 = Number((document.getElementById("inputs41")?.childNodes[0] as HTMLInputElement).value);
-                if (total !== (age1 + age2 + age3 + age4 + age5 + age6 + age7 + age8)) {
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs34")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs35")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs36")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs37")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs38")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs39")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs40")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs41")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs27")?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-                    (document.getElementById("inputs34")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs35")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs36")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs37")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs38")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs39")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs40")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs41")?.childNodes[1] as HTMLElement).innerHTML = "";
-                } else {
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs34")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs35")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs36")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs37")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs38")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs39")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs40")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs41")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs34")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs35")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs36")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs37")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs38")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs39")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs40")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs41")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                }
-            }
-
-            //gender
-            if (num === 27 || num >= 43 && num <= 44) {
-                // var total = Number((document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).value);
-
-                var male = Number((document.getElementById("inputs43")?.childNodes[0] as HTMLInputElement).value);
-                var female = Number((document.getElementById("inputs44")?.childNodes[0] as HTMLInputElement).value);
-                if (total !== (male + female)) {
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs43")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs44")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    (document.getElementById("inputs27")?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-                    (document.getElementById("inputs43")?.childNodes[1] as HTMLElement).innerHTML = "";
-                    (document.getElementById("inputs44")?.childNodes[1] as HTMLElement).innerHTML = "";
-                } else {
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs43")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs44")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs43")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    (document.getElementById("inputs44")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                }
-            }
-
-            //main condition
-            if ((num === 27 || num >= 46 && num <= 63) || (type === "arrNumAC")) {
-                // var total = Number((document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).value);
-
-                if (type === "arrNumAC") {
-                    if (formValuesAdCondition[num].value === null) {
-                        (document.getElementById("arrNumACInput" + num) as HTMLElement).classList.add("is-invalid");
-                        (document.getElementById("arrACInputError" + num) as HTMLElement).innerHTML = "Must enter a value";
-                        return;
-                    }
-                    if (formValuesAdCondition[num].value < 0) {
-                        (document.getElementById("arrNumACInput" + num) as HTMLElement).classList.add("is-invalid");
-                        (document.getElementById("arrACInputError" + num) as HTMLElement).innerHTML = "Positive numbers only";
-                        return;
-                    }
-                }
-                var cond1 = Number((document.getElementById("inputs46")?.childNodes[0] as HTMLInputElement).value);
-                var cond2 = Number((document.getElementById("inputs47")?.childNodes[0] as HTMLInputElement).value);
-                var cond3 = Number((document.getElementById("inputs48")?.childNodes[0] as HTMLInputElement).value);
-                var cond4 = Number((document.getElementById("inputs49")?.childNodes[0] as HTMLInputElement).value);
-                var cond5 = Number((document.getElementById("inputs50")?.childNodes[0] as HTMLInputElement).value);
-                var cond6 = Number((document.getElementById("inputs51")?.childNodes[0] as HTMLInputElement).value);
-                var cond7 = Number((document.getElementById("inputs52")?.childNodes[0] as HTMLInputElement).value);
-                var cond8 = Number((document.getElementById("inputs53")?.childNodes[0] as HTMLInputElement).value);
-                var cond9 = Number((document.getElementById("inputs54")?.childNodes[0] as HTMLInputElement).value);
-                var cond10 = Number((document.getElementById("inputs55")?.childNodes[0] as HTMLInputElement).value);
-                var cond11 = Number((document.getElementById("inputs56")?.childNodes[0] as HTMLInputElement).value);
-                var cond12 = Number((document.getElementById("inputs57")?.childNodes[0] as HTMLInputElement).value);
-                var cond13 = Number((document.getElementById("inputs58")?.childNodes[0] as HTMLInputElement).value);
-                var cond14 = Number((document.getElementById("inputs59")?.childNodes[0] as HTMLInputElement).value);
-                var cond15 = Number((document.getElementById("inputs60")?.childNodes[0] as HTMLInputElement).value);
-                var cond16 = Number((document.getElementById("inputs61")?.childNodes[0] as HTMLInputElement).value);
-                var cond17 = Number((document.getElementById("inputs62")?.childNodes[0] as HTMLInputElement).value);
-                var cond18 = Number((document.getElementById("inputs63")?.childNodes[0] as HTMLInputElement).value);
-                var arrTotal = 0;
-                if (formValuesAdCondition.length > 0) {
-                    for (let i = 0; i < formValuesAdCondition.length; i++) {
-                        arrTotal += Number(formValuesAdCondition[i].value);
-                    }
-                }
-                if (total !== (arrTotal + cond1 + cond2 + cond3 + cond4 + cond5 + cond6 + cond7 + cond8 + cond9 + cond10 + cond11 + cond12 + cond13 + cond14 + cond15 + cond16 + cond17 + cond18)) {
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    //Loop for less code
-                    for (let i = 46; i <= 63; i++) {
-                        (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                    }
-
-                    (document.getElementById("inputs27")?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-                    //Loop for less code
-                    for (let i = 46; i <= 63; i++) {
-                        (document.getElementById("inputs" + i)?.childNodes[1] as HTMLInputElement).innerHTML = "";
-                    }
-
-                    //Array Loop
-                    if (formValuesAdCondition.length > 0) {
-                        for (let i = 0; i < formValuesAdCondition.length; i++) {
-                            (document.getElementById("arrNumACInput" + i) as HTMLElement).classList.add("is-invalid");
-                            (document.getElementById("arrACInputError" + i) as HTMLElement).innerHTML = "";
-                        }
-                    }
-
-                } else {
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    //Loop for less code
-                    for (let i = 46; i <= 63; i++) {
-                        (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                    }
-
-                    (document.getElementById("inputs27")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    //Loop for less code
-                    for (let i = 46; i <= 63; i++) {
-                        (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                    }
-
-                    //Array Loop
-                    if (formValuesAdCondition.length > 0) {
-                        for (let i = 0; i < formValuesAdCondition.length; i++) {
-                            (document.getElementById("arrNumACInput" + i) as HTMLElement).classList.remove("is-invalid");
-                            (document.getElementById("arrACInputError" + i) as HTMLElement).classList.add("is-valid");
-                        }
-                    }
-                }
-            }
+        if(num == 27) {
+            console.log(document.getElementById("inputs" + 32)?.childNodes);
         }
 
-
-        //----------OUTPATIENTS----------
-        if (num >= 66 && num <= 97) {
-            console.log("TOTAL ERROR");
-            var total = Number((document.getElementById("inputs66")?.childNodes[0] as HTMLInputElement).value);
-
-            //age
-            var age1 = Number((document.getElementById("inputs68")?.childNodes[0] as HTMLInputElement).value);
-            var age2 = Number((document.getElementById("inputs69")?.childNodes[0] as HTMLInputElement).value);
-            var age3 = Number((document.getElementById("inputs70")?.childNodes[0] as HTMLInputElement).value);
-            var age4 = Number((document.getElementById("inputs71")?.childNodes[0] as HTMLInputElement).value);
-            var age5 = Number((document.getElementById("inputs72")?.childNodes[0] as HTMLInputElement).value);
-            var age6 = Number((document.getElementById("inputs72")?.childNodes[0] as HTMLInputElement).value);
-            var age7 = Number((document.getElementById("inputs74")?.childNodes[0] as HTMLInputElement).value);
-            var age8 = Number((document.getElementById("inputs75")?.childNodes[0] as HTMLInputElement).value);
-            if (total !== (age1 + age2 + age3 + age4 + age5 + age6 + age7 + age8)) {
-                (document.getElementById("inputs66")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs68")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs69")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs70")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs71")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs72")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs73")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs74")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs75")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs66")?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-                (document.getElementById("inputs68")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs69")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs70")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs71")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs72")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs73")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs74")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs75")?.childNodes[1] as HTMLElement).innerHTML = "";
-            } else {
-                (document.getElementById("inputs66")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs68")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs69")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs70")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs71")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs72")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs73")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs74")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs75")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs66")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs68")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs69")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs70")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs71")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs72")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs73")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs74")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-                (document.getElementById("inputs75")?.childNodes[0] as HTMLElement).classList.add("is-valid");
-            }
-            //gender
-            var male = Number((document.getElementById("inputs77")?.childNodes[0] as HTMLInputElement).value);
-            var female = Number((document.getElementById("inputs78")?.childNodes[0] as HTMLInputElement).value);
-            if (total !== (male + female)) {
-                (document.getElementById("inputs66")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs77")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs78")?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs66")?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-                (document.getElementById("inputs77")?.childNodes[1] as HTMLElement).innerHTML = "";
-                (document.getElementById("inputs78")?.childNodes[1] as HTMLElement).innerHTML = "";
-            } else {
-                (document.getElementById("inputs66")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs77")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs78")?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs66")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                (document.getElementById("inputs77")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-                (document.getElementById("inputs78")?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-            }
-
-            //main condition
-
-            return;
-        }
-
-        if (type === "number") {
-            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-        }
-
-
-
+        (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
+        (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
     }
 
     function getSections() {
@@ -705,7 +431,7 @@ function DynamicForm() {
                                                             {...register(field.field_id)}
                                                             // required 
                                                             //onChange={() => totalValidation(index)}
-                                                            onBlur={() => inputValidation(index, "number")}
+                                                            onBlur={() => inputValidation(index)}
                                                         />
                                                         <div className="invalid-feedback">
                                                             Requires a valid number
@@ -725,28 +451,28 @@ function DynamicForm() {
                                                                 <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
                                                             </div>
                                                             <div id={"inputs" + index} >
-                                                                {formValuesComeFrom.map((element, index) => (
+                                                                {formValuesComeFrom.map((element, index2) => (
                                                                     <div className="row g-3 mb-1" key={index}>
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group">
+                                                                            <div className="input-group" id={"cf" + index + index2}>
                                                                                 <span className="input-group-text" id="">Name and value</span>
-                                                                                <input id={"arrTextCFInput" + index} className="form-control" type="text" name="nameOfDepartment"
+                                                                                <input className="form-control" type="text" name="nameOfDepartment"
                                                                                     value={element.name || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index, e, 0)}
-                                                                                    onBlur={() => inputValidation(index, "arrTextCF")}
+                                                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                                    onBlur={() => arrayInputValidation("cf" + index + index2)}
                                                                                 />
-                                                                                <input id={"arrNumCFInput" + index} className="form-control" type="number" name="numberOfPatients"
+                                                                                <input className="form-control" type="text" name="numberOfPatients"
                                                                                     value={element.value || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index, e, 1)}
-                                                                                    onBlur={() => inputValidation(index, "arrNumCF")}
+                                                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                                    onBlur={() => arrayInputValidation("cf" + index + index2)}
                                                                                 />
-                                                                                <div id={"arrCFInputError" + index} className="invalid-feedback">
+                                                                                <div className="invalid-feedback text-end">
                                                                                     Requires a valid number
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
+                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -770,12 +496,12 @@ function DynamicForm() {
                                                                                 <input id={"arrTextACInput" + index} className="form-control" type="text" name="nameOfDepartment"
                                                                                     value={element.name || ""}
                                                                                     onChange={e => handleChange(field.field_id, index, e, 0)}
-                                                                                    onBlur={() => inputValidation(index, "arrTextAC")}
+                                                                                    onBlur={() => arrayInputValidation("arrTextAC")}
                                                                                 />
                                                                                 <input id={"arrNumACInput" + index} className="form-control" type="number" name="numberOfPatients"
                                                                                     value={element.value || ""}
                                                                                     onChange={e => handleChange(field.field_id, index, e, 1)}
-                                                                                    onBlur={() => inputValidation(index, "arrNumAC")}
+                                                                                    onBlur={() => arrayInputValidation("arrNumAC")}
                                                                                 />
                                                                                 <div id={"arrACInputError" + index} className="invalid-feedback">
                                                                                     Requires a valid number
@@ -807,12 +533,12 @@ function DynamicForm() {
                                                                                 <input id={"arrTextOCInput" + index} className="form-control" type="text" name="nameOfDepartment"
                                                                                     value={element.name || ""}
                                                                                     onChange={e => handleChange(field.field_id, index, e, 0)}
-                                                                                    onBlur={() => inputValidation(index, "arrTextOC")}
+                                                                                    onBlur={() => arrayInputValidation("arrTextOC")}
                                                                                 />
                                                                                 <input id={"arrNumOCInput" + index} className="form-control" type="number" name="numberOfPatients"
                                                                                     value={element.value || ""}
                                                                                     onChange={e => handleChange(field.field_id, index, e, 1)}
-                                                                                    onBlur={() => inputValidation(index, "arrNumOC")}
+                                                                                    onBlur={() => arrayInputValidation("arrNumOC")}
                                                                                 />
                                                                                 <div id={"arrOCInputError" + index} className="invalid-feedback">
                                                                                     Requires a valid number
