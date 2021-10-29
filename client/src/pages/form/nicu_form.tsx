@@ -10,7 +10,7 @@ import './nicu_form.css';
 
 
 function DynamicForm() {
-    const { register, handleSubmit } = useForm({});
+    const { register, handleSubmit, reset, formState: { isSubmitSuccessful } } = useForm({});
     const [formModel, setformModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
     const [formValuesAdCondition, setFormValuesAdCondition] = useState<{ name: any; value: any; }[]>([])
@@ -29,19 +29,35 @@ function DynamicForm() {
     const elements = Object.values(formModel);
     const fields: any = elements[0];
 
+    function refreshPage() {
+        window.location.reload();
+    }
+
     const onSubmit = (data: any) => {
-        data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-        data.admissions.mainCondition.otherMedical = formValuesAdCondition;
-        data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-        console.log(data);
+        var valid = submitValidation();
+
+        if(valid === true) {
+            data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            data.admissions.mainCondition.otherMedical = formValuesAdCondition;
+            data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
+            console.log(data);
+            refreshPage();
+        } else {
+            console.log(valid);
+            alert("Some fields contain invalid values");
+            window.scrollTo(0, 0);
+        }
+        
     }
 
     const clickPrevious = () => {
         sidePanelClick(sectionState - 1);
+        window.scrollTo(0, 0);
     }
 
     const clickNext = () => {
         sidePanelClick(sectionState + 1);
+        window.scrollTo(0, 0);
     }
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
@@ -144,6 +160,52 @@ function DynamicForm() {
                 if (document.getElementById("subsection" + (startj))) document.getElementById("subsection" + (startj))!.style.display = show;
             }
         }
+    }
+    
+    function submitValidation() {
+        for(let i = 1; i < 99; i++){
+            if(i === 26 || i === 28 || i === 33 || i === 42 || i === 45 || i === 65 || i === 67 || i === 76 || i === 79){
+                continue;
+            }
+            
+            if(i === 32){
+                for(let j = 0; j < formValuesComeFrom.length; j++){
+                    if((document.getElementById("cf" + 32 + j)?.childNodes[1] as HTMLInputElement).classList.contains('is-invalid')){
+                        return false;
+                    }
+
+                    if((document.getElementById("cf" + 32 + j)?.childNodes[2] as HTMLInputElement).classList.contains('is-invalid')){
+                        return false;
+                    }
+                }  
+            }else if(i === 64){
+                for(let j = 0; j < formValuesAdCondition.length; j++){
+                    if((document.getElementById("ac" + 64 + j)?.childNodes[1] as HTMLInputElement).classList.contains('is-invalid')){
+                        return false;
+                    }
+
+                    if((document.getElementById("ac" + 64 + j)?.childNodes[2] as HTMLInputElement).classList.contains('is-invalid')){
+                        return false;
+                    }
+                }  
+            }else if(i === 98){
+                for(let j = 0; j < formValuesOutCondition.length; j++){
+                    if((document.getElementById("oc" + 98 + j)?.childNodes[1] as HTMLInputElement).classList.contains('is-invalid')){
+                        return false;
+                    }
+
+                    if((document.getElementById("oc" + 98 + j)?.childNodes[2] as HTMLInputElement).classList.contains('is-invalid')){
+                        return false;
+                    }
+                }  
+            }else{
+                if((document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.contains('is-invalid')){
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     function arrayInputValidation(id: string, num: number, num2: number, type: string) {
@@ -305,31 +367,31 @@ function DynamicForm() {
 
         //Hospitalized
         if (num === 4 || num === 5 || num === 6) {
-            totalValidation(4,5,6);
+            totalValidation(4, 5, 6);
             return;
         }
 
         //discharged alive
         if (num === 7 || num === 8 || num === 9) {
-            totalValidation(7,8,9);
+            totalValidation(7, 8, 9);
             return;
         }
 
         //died before 48h
         if (num === 10 || num === 11 || num === 12) {
-            totalValidation(10,11,12);
+            totalValidation(10, 11, 12);
             return;
         }
 
         //died after 48h
         if (num === 13 || num === 14 || num === 15) {
-            totalValidation(13,14,15);
+            totalValidation(13, 14, 15);
             return;
         }
 
         //self-discharged
         if (num >= 19 && num <= 24) {
-            totalValidation(19,20,24);
+            totalValidation(19, 20, 24);
             return;
         }
 
@@ -426,7 +488,7 @@ function DynamicForm() {
                             <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
                         </div>
 
-                        <button className="w-100 btn btn-primary btn-lg" type="submit">Submit</button>
+                        <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
                     </div>
                     <div className="col-md-7 col-lg-8">
 
@@ -587,6 +649,10 @@ function DynamicForm() {
                                 }) : null}
 
                                 <hr className="my-4"></hr>
+                                <div className="btn-group d-flex">
+                                    <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
+                                    <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                                </div>
 
                                 <button className="w-100 btn btn-primary btn-lg" type="submit" style={{ display: sectionState === 2 ? '' : 'none' }}>Submit</button>
                             </div>
