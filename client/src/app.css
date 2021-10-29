@@ -4,8 +4,11 @@
 }
 
 .app {
-  margin: 0rem;
-  padding: 0rem 0rem;
+  /*width: 100vw;*/
+  /*height: 100vw;*/
+
+  /*margin: 0rem;*/
+  /*padding: 0rem 0rem;*/
 
   /*background: var(--main-bg-color);*/
   background-repeat: no-repeat;
