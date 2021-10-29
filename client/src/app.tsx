@@ -5,6 +5,7 @@ import './app.css';
 
 import login from 'pages/login/login'
 import Home from 'pages/home/home'
+import Admin from 'pages/admin/admin'
 import { DepartmentOne } from "pages/department/department_1_nicu";
 import { DepartmentTwo } from "pages/department/department_2_maternity";
 import { DepartmentThree} from "pages/department/department_3_rehab";
@@ -14,7 +15,7 @@ import { DepartmentMain} from "pages/department/department_main";
 import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import DepartmentReports from 'pages/department_reports/department_reports';
-import  DepartmentReport from 'pages/department_report/department_report';
+import DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 
 // import Post from "./components/Post/Post";
@@ -26,6 +27,7 @@ const App = () => {
       <div className="app">
         <Route path='/login' exact component={login}/>
         <Route path='/home' exact component={Home}/>
+        <Route path='/admin' exact component={Admin}/>
         <Route path="/Department1NICU" exact component={DepartmentOne} />
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />
         <Route path="/Department3Rehab" exact component={DepartmentThree} />

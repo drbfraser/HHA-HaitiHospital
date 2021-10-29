@@ -1,10 +1,11 @@
-import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import React from "react";
+// import { RouteComponentProps } from "react-router-dom";
 
 import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
-import LeaderBar from 'components/leader_bar/leader_bar';
-import MessageBoard from 'components/message_board/message_board';
+// import Header from "../../components/header/header";
+// import Header from 'components/header/header';
+// import LeaderBar from 'components/leader_bar/leader_bar';
+// import MessageBoard from 'components/message_board/message_board';
 import {CustomCssProps, ElementStyleProps} from 'constants/interfaces'
 
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
@@ -14,14 +15,17 @@ import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 interface HomeProps extends ElementStyleProps {
 };
 
-interface HomeProps extends RouteComponentProps {
-};
+// interface HomeProps extends RouteComponentProps {
+// };
 
 const Home = (props : HomeProps) => {
   // console.log(props.match, props.location);
-  return (
+    return (
     <div className={'home '+ (props.classes||'')}>
         <SideBar/>
+        {/*<Header/>*/}
+
+        <h1>this is the home page</h1>
 
 
 
