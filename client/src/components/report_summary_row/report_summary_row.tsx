@@ -12,25 +12,6 @@ interface ReportSummaryProps extends ElementStyleProps {
   lastUpdatedBy: number;
 }
 
-// const ReportSummaryRow = (props: ReportSummaryProps) => {
-
-//   return (
-//     <tr className={'report-summary-row '+ (props.classes || '')}>
-//       <td>
-//         <Link to={`/Department1NICU/detailed_reports/${props.reportId}`}>
-//           {props.reportId}
-//         </Link>
-//       </td>
-//       <td> { props.lastUpdatedOn } </td>
-//       <td>{props.lastUpdatedBy}</td>
-//       <td><Button value='edit'/></td>
-//       <td><Button value='del'/></td>
-//       <td><TextHolder text='tick'/></td>
-//     </tr>
-//   );
-// };
-
-
 const ReportSummaryRow = (props: ReportSummaryProps) => {
 
   return (
