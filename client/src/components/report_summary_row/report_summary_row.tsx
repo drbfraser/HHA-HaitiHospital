@@ -12,22 +12,47 @@ interface ReportSummaryProps extends ElementStyleProps {
   lastUpdatedBy: number;
 }
 
+// const ReportSummaryRow = (props: ReportSummaryProps) => {
+
+//   return (
+//     <tr className={'report-summary-row '+ (props.classes || '')}>
+//       <td>
+//         <Link to={`/Department1NICU/detailed_reports/${props.reportId}`}>
+//           {props.reportId}
+//         </Link>
+//       </td>
+//       <td> { props.lastUpdatedOn } </td>
+//       <td>{props.lastUpdatedBy}</td>
+//       <td><Button value='edit'/></td>
+//       <td><Button value='del'/></td>
+//       <td><TextHolder text='tick'/></td>
+//     </tr>
+//   );
+// };
+
+
 const ReportSummaryRow = (props: ReportSummaryProps) => {
 
   return (
-    <tr className={'report-summary-row '+ (props.classes || '')}>
-      <td>
+    <tr>
+      <th scope='row'>
         <Link to={`/Department1NICU/detailed_reports/${props.reportId}`}>
-          {props.reportId}
+          { props.reportId }
         </Link>
+      </th>
+      <td>{ props.lastUpdatedOn }</td>
+      <td>{ props.lastUpdatedBy }</td>
+      <td><button className="btn btn-small btn-primary">Edit</button></td>
+      <td><button className="btn btn-small btn-primary">Delete</button></td>
+      <td>
+        <div className="form-check">
+          <input className="form-check-input" type="checkbox" value="" id="accumulateTick"/>
+          <label className="form-check-label" htmlFor="accumulateTick">
+          </label>
+        </div>
       </td>
-      <td> { props.lastUpdatedOn } </td>
-      <td>{props.lastUpdatedBy}</td>
-      <td><Button value='edit'/></td>
-      <td><Button value='del'/></td>
-      <td><TextHolder text='tick'/></td>
     </tr>
-  );
-};
+  )
+}
 
 export default ReportSummaryRow;

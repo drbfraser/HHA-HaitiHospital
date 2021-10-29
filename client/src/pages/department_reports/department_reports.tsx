@@ -56,11 +56,13 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
       <Header/>
       <TextHolder text={props.department}></TextHolder>
       <div> Search Bar Here</div>
-      <div className='report-board'>
+      <div className='container my-4'>
         {
           (reports === undefined || reports.length === 0) ? 
             <div>No submitted reports</div> : 
-            <ReportSummaryTable reports={reports}/>
+            <ReportSummaryTable 
+              reports={reports}
+              classes='text-dark bg-light'/>
         }
       </div>
     </div>
