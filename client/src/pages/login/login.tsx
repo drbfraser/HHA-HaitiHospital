@@ -5,6 +5,7 @@ import Layout from 'layout/layout'
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
+import { login } from "../../actions/authActions";
 
 interface LoginProps extends ElementStyleProps {
 
@@ -14,41 +15,41 @@ interface LoginProps extends RouteComponentProps {
 };
 
 const Login = (props : LoginProps) => {
-  return(
+    return(
     // <Layout>
     //   <div className={'login '+ (props.classes||'')}></div>
     // </Layout>
-      <div className={'login '+ (props.classes||'')}>
-          <form>
-              <img className="login-logo" src={logo} />
-              <h4 className="text-center">Please sign in </h4>
+        <div className={'login '+ (props.classes||'')}>
+            <form>
+                <img className="login-logo" src={logo} alt="logo logo"/>
+                <h4 className="text-center">Please sign in </h4>
 
-              <div className="form-floating" >
-                  <input type="text" className="form-control" id="floatingInput" placeholder="Username"/>
-                  <label htmlFor="floatingInput">Username</label>
-              </div>
+                <div className="form-floating" >
+                    <input type="text" className="form-control" id="floatingInput" placeholder="Username"/>
+                    <label htmlFor="floatingInput">Username</label>
+                </div>
 
-              <div className="form-floating">
-                  <input type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
-                  <label htmlFor="floatingPassword">Password</label>
-              </div>
+                <div className="form-floating">
+                    <input type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
+                    <label htmlFor="floatingPassword">Password</label>
+                </div>
 
-              <div className="form-check form-switch">
-                  <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-                      <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                          Remember me
-                      </label>
-              </div>
+                <div className="form-check form-switch">
+                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                            Remember me
+                        </label>
+                </div>
 
-              {/*Temporarily link the sign in button directly to the homepage*/}
-              <button className="w-100 btn btn-lg btn-primary" type="submit"
-                      onClick={() => {
-                          props.history.push("./home");
-                      }}>Sign In</button>
-              <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
-          </form>
-      </div>
-  );
+                {/*Temporarily link the sign in button directly to the homepage*/}
+                <button className="w-100 btn btn-lg btn-primary" type="submit"
+                        onClick={() => {
+                            props.history.push("./home");
+                        }}>Sign In</button>
+                <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
+            </form>
+        </div>
+    );
 }
 
 export default Login;
