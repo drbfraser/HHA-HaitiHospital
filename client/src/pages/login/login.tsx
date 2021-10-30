@@ -19,7 +19,7 @@ const Login = (props : LoginProps) => {
     //   <div className={'login '+ (props.classes||'')}></div>
     // </Layout>
       <div className={'login '+ (props.classes||'')}>
-          <form>
+          <form className="container-fluid">
               <img className="login-logo" src={logo} />
               <h4 className="text-center">Please sign in </h4>
 

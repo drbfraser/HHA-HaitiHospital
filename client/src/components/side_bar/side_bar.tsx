@@ -2,16 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css'
+import { ElementStyleProps } from "../../constants/interfaces";
 
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 // import { SidebarData } from './side_bar_data';
 
+interface SidebarProps extends ElementStyleProps {};
 
-function Sidebar() {
+const Sidebar = (props: SidebarProps) => {
     return (
-        <div className='Sidebar'>
+        <div className={'Sidebar '+ (props.classes||'')}>
             <div className="SidebarList">
             {/*<div className='position-fixed d-flex flex-column flex-shrink-0 p-3 bg-dark' style={{width: 220}}>*/}
 
