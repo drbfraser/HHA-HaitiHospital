@@ -2,13 +2,12 @@ import React from "react";
 // import { RouteComponentProps } from "react-router-dom";
 
 import SideBar from 'components/side_bar/side_bar';
-// import Header from "../../components/header/header";
-// import Header from 'components/header/header';
 // import LeaderBar from 'components/leader_bar/leader_bar';
 // import MessageBoard from 'components/message_board/message_board';
 import {CustomCssProps, ElementStyleProps} from 'constants/interfaces'
 
-import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+// import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+import { NavLink } from "react-router-dom";
 
 // import './home_styles.css'
 
@@ -23,9 +22,23 @@ const Home = (props : HomeProps) => {
     return (
     <div className={'home '+ (props.classes||'')}>
         <SideBar/>
-        {/*<Header/>*/}
 
-        <h1>this is the home page</h1>
+        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h4>Overview</h4>
+                {/*<div className="btn-toolbar mb-2 mb-md-0">*/}
+                <div>
+                    {/*<div>user name</div>*/}
+                    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact>
+                        <i className="bi bi-door-open-fill me-2"/>
+                        Sign Out
+                    </NavLink>
+                </div>
+            </div>
+
+            {/*<canvas className="my-4 w-100" id="myChart" width="900" height="380"/>*/}
+
+        </main>
 
 
 

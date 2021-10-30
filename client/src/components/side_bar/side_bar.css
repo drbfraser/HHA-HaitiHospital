@@ -1,11 +1,26 @@
 .Sidebar {
+    width: 200px;
     height: 100vh;
     display: flex;
     /*justify-content: center;*/
-    /*position: fixed;*/
-    /*top: 0;*/
+    position: fixed;
+    /*background-color: black;*/
+    top: 0;
+    left: 0;
     /*transition: 850ms;*/
+}
 
+.SidebarList {
+    height: 100%;
+    width: 100%;
+    background-color: #202020;
+    /*padding-left: 1rem;*/
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+    /*background-color: #EF92A5;*/
+    background-color: #2F4050;
+    text-decoration: none;
 }
 
 /*.Sidebar.active {*/
@@ -13,11 +28,12 @@
 /*    transition: 350ms;*/
 /*}*/
 
-
-/*.SidebarList {*/
-/*    height: 100%;*/
-/*    width: 100%;*/
-/*    background-color: #309DCB;*/
+/*.navbar-nav > .active > a {*/
+/*    background-color: red ;*/
+/*}*/
+/*.currentLink {*/
+/*    color: #640200;*/
+/*    background-color: #000000;*/
 /*}*/
 
 /*.nav-text {*/
