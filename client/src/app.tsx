@@ -33,7 +33,8 @@ const App = () => {
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
         <Route path='/Department1NICU/summary_reports' exact component = {DepartmentReports} />
-        <Route path='/Department1NICU/detailed_reports/:id' exact component = {DepartmentReport} />
+        <Route path='/Department1NICU/detailed_report/view/:id' exact component = {() => (<DepartmentReport edit={false}/>)} />
+        <Route path='/Department1NICU/detailed_report/edit/:id' exact component = {() => (<DepartmentReport edit={true}/>)} />
         <Route path="/NICUForm" component={NICUForm} />
    
         {/*<Route path="/posts/:id" exact component={Post} />*/}

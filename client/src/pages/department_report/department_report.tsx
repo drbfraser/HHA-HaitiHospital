@@ -13,6 +13,7 @@ import Header from 'components/header/header';
 
 
 interface DepartmentReportProps extends ElementStyleProps {
+  edit: boolean;
 };
 
 interface UrlParams {
@@ -56,14 +57,26 @@ const DepartmentReport = (props : DepartmentReportProps) => {
     return {};
   }
 
+  function getClassName() {
+    if (props.classes === undefined)
+      return 'department-report';
+    else
+      return `department-report ${props.classes}`;
+  }
+
   return (
-    <div className={'department-report '+(props.classes||'')}>
+    <div className={getClassName()}>
       <Header/>
-      {
-        (Object.keys(report).length===0 ) ?
-          <TextHolder text = 'No report found'/>:
-          <ReportDisplay report = {report.formData as ReportProps}/>
-      }  
+      <div className='container'>
+        {
+          (Object.keys(report).length===0 ) ?
+            <TextHolder text = 'No report found'/>:
+            <ReportDisplay 
+              report = {report.formData as ReportProps}
+              edit = {props.edit}
+            />
+        }
+      </div>  
     </div>
   )
 }

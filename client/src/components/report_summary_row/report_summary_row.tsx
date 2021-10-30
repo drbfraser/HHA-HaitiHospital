@@ -17,13 +17,17 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
   return (
     <tr>
       <th scope='row'>
-        <Link to={`/Department1NICU/detailed_reports/${props.reportId}`}>
+        <Link to={`/Department1NICU/detailed_report/view/${props.reportId}`}>
           { props.reportId }
         </Link>
       </th>
       <td>{ props.lastUpdatedOn }</td>
       <td>{ props.lastUpdatedBy }</td>
-      <td><button className="btn btn-small btn-primary">Edit</button></td>
+      <td>
+        <Link to={`/Department1NICU/detailed_report/edit/${props.reportId}`}>
+          <button className="btn btn-small btn-primary">Edit</button>
+        </Link>
+      </td>
       <td><button className="btn btn-small btn-primary">Delete</button></td>
       <td>
         <div className="form-check">
