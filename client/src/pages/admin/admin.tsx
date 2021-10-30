@@ -1,18 +1,20 @@
 import React from 'react';
-
 import { ElementStyleProps } from 'constants/interfaces';
-
 import SideBar from 'components/side_bar/side_bar';
+import Header from 'components/header/header'
 
 interface AdminProps extends ElementStyleProps {
-
 };
 
 const Admin = (props : AdminProps) => {
   return(
     <div className={'admin '+ (props.classes||'')}>
-      <SideBar/>
-        <h1>this is admin page</h1>
+        <SideBar/>
+        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <Header/>
+            <div>This is the admin page</div>
+        </main>
+
     </div>
   );
 }
