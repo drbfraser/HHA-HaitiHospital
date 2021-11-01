@@ -136,8 +136,8 @@ router.delete('/:id', requireJwtAuth, async (req, res) => {
 router.post('/', requireJwtAuth, async (req, res) => {
   try {
     const reqUser : any = req.user;
-    if (reqUser.role !== 'ADMIN')
-      return res.status(400).json({ message: 'You do not have privilegies to add a user.' });
+    // if (reqUser.role !== 'ADMIN')
+    //   return res.status(400).json({ message: 'You do not have privilegies to add a user.' });
 
     const { username, password, name } = req.body;
 
