@@ -9,24 +9,6 @@ interface SimpleEntryProps extends ElementStyleProps {
   edit: boolean;
 };
 
-// Read only report
-// export const SimpleEntry = (props: SimpleEntryProps) => {
-  // function getClassName() {
-  //   if (props.classes === undefined)
-  //     return 'entry simple-entry';
-  //   else
-  //     return `entry simple-entry ${props.classes}`
-  // }
-
-//   return (
-//     <div className={`${getClassName()} row my-2`}>
-//       <TextHolder classes="col-sm" text={`${props.name}`}/> 
-//       <TextHolder classes="col-sm" text={`${props.value as string}`}/>
-//    </div>
-//   )  
-// };
-
-// Editable report
 export const SimpleEntry = (props: SimpleEntryProps) => {
 
   function getClassName() {
@@ -39,16 +21,16 @@ export const SimpleEntry = (props: SimpleEntryProps) => {
   if (props.edit == true)
     return (
       <div className={`${getClassName()} row my-2 input-group`}>
-        <div className='col-sm input-group-text'>{props.name}</div>    
+        <div className='col-sm input-group-text'><strong>{props.name}</strong></div>    
         <input type="text" className="col-sm form-control" 
           placeholder={`${props.value as string}`}/>
       </div>
     );
   else 
     return (
-      <div className={`${getClassName()} row my-2`}>
-        <TextHolder classes="col-sm" text={`${props.name}`}/> 
-        <TextHolder classes="col-sm" text={`${props.value as string}`}/>
+      <div className={`${getClassName()} row my-2 text-dark`}>
+        <div className="col-sm strong"> {`${props.name}`}</div> 
+        <div className="col-sm"> {`${props.value as string}`}</div>
       </div>
     );
   

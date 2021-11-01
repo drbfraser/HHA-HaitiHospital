@@ -12,7 +12,7 @@ import { CaseStudyMain} from "pages/case_study_main/case_study_main";
 import { DepartmentMain} from "pages/department/department_main";
 import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
-import DepartmentReports from 'pages/department_reports/department_reports';
+import DepartmentReports from 'components/department_reports/department_reports';
 import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 

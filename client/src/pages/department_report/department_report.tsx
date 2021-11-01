@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Axios from 'axios';
 
 import { ReportProps } from 'constants/interfaces';
-import TextHolder from 'components/text_holder/text_holder';
 import ReportDisplay from 'components/report_display/report_display';
 
 import { ElementStyleProps } from 'constants/interfaces';
@@ -67,15 +66,43 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   return (
     <div className={getClassName()}>
       <Header/>
-      <div className='container'>
-        {
-          (Object.keys(report).length===0 ) ?
-            <TextHolder text = 'No report found'/>:
-            <ReportDisplay 
-              report = {report.formData as ReportProps}
-              edit = {props.edit}
-            />
-        }
+      <div className='mt-2'>
+        {/* Dept Title */}
+        <section className='mt-3'>
+          <h1 className="lead">Department of NICU/PEAD</h1>
+        </section>
+
+        <div className="row">
+
+          {/* Report Details */}
+          <section className='mt-3 col-11'>
+            <div className="container w-75">
+              {
+                (Object.keys(report).length===0 ) ?
+                  <h3 className="lead">'No report found'</h3>:
+                  <ReportDisplay 
+                    report = {report.formData as ReportProps}
+                    edit = {props.edit}
+                  />
+              }
+            </div>
+          </section>
+          
+          {/* Utility side buttons */}
+          <section className='mt-3 col-1'>
+            <div id="button-sidebar">
+              <div className="sticky">
+                <ul>
+                  <li><button className="">Save</button></li>
+                  <li><button className="">Discard</button></li>
+                  <li><button className="">Submit</button></li>
+                </ul>
+              </div>
+            </div>
+          
+          </section>
+
+        </div>
       </div>  
     </div>
   )
