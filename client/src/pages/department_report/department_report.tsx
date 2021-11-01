@@ -9,6 +9,7 @@ import ReportDisplay from 'components/report_display/report_display';
 import { ElementStyleProps } from 'constants/interfaces';
 
 import Header from 'components/header/header';
+import './styles.css';
 
 
 interface DepartmentReportProps extends ElementStyleProps {
@@ -70,7 +71,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       <div className='mt-2'>
         {/* Dept Title */}
         <section className='mt-3'>
-          <h1 className="lead">Department of NICU/PEAD</h1>
+          <h1 className="lead text-center">Department of NICU/PEAD</h1>
         </section>
 
 
@@ -106,7 +107,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
             </section>
           :
             <section className="mt-3">
-              <div className="container w-50">
+              <div className="container w-50 text-center">
                 <Link to={'/Department1NICU'}>
                   <button className="">Back</button>
                 </Link>
