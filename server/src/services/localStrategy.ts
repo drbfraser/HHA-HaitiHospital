@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { Strategy as PassportLocalStrategy } from 'passport-local';
 import Joi from 'joi';
+// import { Request, Response, NextFunction } from "express";
 
 import User from '../models/User';
 import { loginSchema } from './validators';
@@ -13,26 +14,24 @@ const passportLogin = new PassportLocalStrategy(
     passReqToCallback: true,
   },
   async (req, email, password, done) => {
-    // const { error } = Joi.validate(req.body, loginSchema);
-    const error = loginSchema.validate({ email, password });
-    if (error) {
-      return done(null, false, { message: error.value.message });
-    }
+    loginSchema.validateAsync({ email, password }).then(val => {
+      req.body = val;
+    }).catch(err => {
+      throw new Error('Failed to validate input ' + err.details[0].message);
+    })
 
     try {
       const user = await User.findOne({ email: email.trim() });
       if (!user) {
         return done(null, false, { message: 'Email does not exists.' });
       }
-      
-      user.comparePassword(password, function (err: any, isMatch: any) {
+      user.comparePassword(password, function (err: any, isMatch: boolean) {
         if (err) {
           return done(err);
         }
         if (!isMatch) {
           return done(null, false, { message: 'Incorrect password.' });
         }
-
         return done(null, user);
       });
     } catch (err) {

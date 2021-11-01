@@ -3,7 +3,7 @@ import { RouteComponentProps} from "react-router-dom";
 
 import { ElementStyleProps } from "constants/interfaces";
 
-import "./styles.css";
+import "./case_study_main_styles.css";
 import Header from "components/header/header";
 
 interface CaseStudyMainProps extends ElementStyleProps {
@@ -30,8 +30,6 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             onClick={() => {props.history.push("/");}}>
         </button>
       </div>
-      
     </div>
-
   );
 };

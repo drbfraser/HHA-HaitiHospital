@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ElementStyleProps } from 'constants/interfaces';
 import Layout from 'layout/layout';
 
-import './styles.css';
+import './not_found_styles.css';
 
 interface NotFoundProps extends ElementStyleProps {
 

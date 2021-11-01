@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 
 import './app.css';
 
+import login from 'pages/login/login'
 import Home from 'pages/home/home'
 import { DepartmentOne } from "pages/department/department_1_nicu";
 import { DepartmentTwo } from "pages/department/department_2_maternity";
@@ -22,6 +23,7 @@ const App = () => {
   return (
     <Router>
       <div className="app">
+        <Route path='/login' exact component={login}/>
         <Route path='/home' exact component={Home}/>
         <Route path="/Department1NICU" exact component={DepartmentOne} />
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />

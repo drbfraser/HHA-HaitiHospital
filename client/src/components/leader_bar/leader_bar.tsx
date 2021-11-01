@@ -4,7 +4,6 @@ import { ElementStyleProps, CustomCssProps } from 'constants/interfaces';
 import Button from 'components/button/button';
 import TextHolder from 'components/text_holder/text_holder';
 
-import './styles.css'
 
 interface LeaderBarProps extends ElementStyleProps {
 }

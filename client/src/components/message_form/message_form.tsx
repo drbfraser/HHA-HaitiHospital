@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './message_form_styles.css';
 
 interface MessageFormProps extends ElementStyleProps {
 
@@ -24,7 +24,7 @@ export default MessageForm;
 // import { addMessage } from '../../store/actions/messageActions';
 // import { messageFormSchema } from './validation';
 
-// import './styles.css';
+// import './home_styles.css';
 
 // const MessageForm = ({ addMessage, message: { messages } }) => {
 //   const formik = useFormik({

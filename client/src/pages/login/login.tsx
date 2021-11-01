@@ -1,19 +1,53 @@
 import React from 'react';
-
+import { RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from 'constants/interfaces';
 import Layout from 'layout/layout'
-
-import './styles.css';
+import logo from 'img/logo/LogoWText.svg'
+import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+import './login_styles.css';
 
 interface LoginProps extends ElementStyleProps {
 
 };
 
+interface LoginProps extends RouteComponentProps {
+};
+
 const Login = (props : LoginProps) => {
   return(
-    <Layout>
-      <div className={'login '+ (props.classes||'')}></div>
-    </Layout>
+    // <Layout>
+    //   <div className={'login '+ (props.classes||'')}></div>
+    // </Layout>
+      <div className={'login '+ (props.classes||'')}>
+          <form>
+              <img className="login-logo" src={logo} />
+              <h4 className="text-center">Please sign in </h4>
+
+              <div className="form-floating" >
+                  <input type="text" className="form-control" id="floatingInput" placeholder="Username"/>
+                  <label htmlFor="floatingInput">Username</label>
+              </div>
+
+              <div className="form-floating">
+                  <input type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
+                  <label htmlFor="floatingPassword">Password</label>
+              </div>
+
+              <div className="form-check form-switch">
+                  <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+                      <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                          Remember me
+                      </label>
+              </div>
+
+              {/*Temporarily link the sign in button directly to the homepage*/}
+              <button className="w-100 btn btn-lg btn-primary" type="submit"
+                      onClick={() => {
+                          props.history.push("./home");
+                      }}>Sign In</button>
+              <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
+          </form>
+      </div>
   );
 }
 
@@ -36,7 +70,7 @@ export default Login;
 // import { loginUserWithEmail } from '../../store/actions/authActions';
 // import { FACEBOOK_AUTH_LINK, GOOGLE_AUTH_LINK } from '../../constants';
 // import { loginSchema } from './validation';
-// import './styles.css';
+// import './home_styles.css';
 
 // const Login = ({ auth, history, loginUserWithEmail }) => {
 //   const formik = useFormik({

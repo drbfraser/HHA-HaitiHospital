@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './message_styles.css';
 
 interface MessageProps extends ElementStyleProps {
 
@@ -23,7 +23,7 @@ export default Message;
 // import { deleteMessage, editMessage, clearMessageError } from '../../store/actions/messageActions';
 // import { messageFormSchema } from './validation';
 
-// import './styles.css';
+// import './home_styles.css';
 
 // const Message = ({ message, auth, deleteMessage, editMessage, clearMessageError }) => {
 //   const [isEdit, setIsEdit] = useState(false);

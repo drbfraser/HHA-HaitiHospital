@@ -2,8 +2,6 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
-
 interface ButtonProps extends ElementStyleProps {
   value: string;  
 }

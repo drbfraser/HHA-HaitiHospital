@@ -4,12 +4,10 @@ const { Schema } = mongoose;
 
 const nicuPaedsSchema = new Schema({
   // entry data
+  month: { type: Number, required: true, min: 0},
+  year: { type: Number, required: true, min: 0},
   departmentId: { type: Number, required: true, min: 0, },
   departmentName: {type: String, required: true},
-  // createdOn: { type: Date, required: true, },
-  // createdByUserId: { type: Number, required: true, min: 0, },
-  // lastUpdatedOn: { type: Date, required: true, },
-  // lastUpdatedByUserId: { type: Number, required: true, min: 0, },
   
   //patient data
   bedsAvailable: { type: Number, required: true, min: 0, default: 0}, // MSPP required

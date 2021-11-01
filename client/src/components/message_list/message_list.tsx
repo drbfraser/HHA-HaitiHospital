@@ -7,7 +7,7 @@ import Loader from 'components/loader/loader';
 // import { getMessages } from '../../store/actions/messageActions';
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './message_list_styles.css';
 
 interface MessageListProps extends ElementStyleProps {
 

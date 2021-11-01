@@ -5,7 +5,6 @@ import { ElementStyleProps } from 'constants/interfaces';
 import TextHolder from 'components/text_holder/text_holder';
 // import Button from 'components/Button/Button';
 
-import './styles.css';
 
 interface MessageBoardProps extends ElementStyleProps {}
 

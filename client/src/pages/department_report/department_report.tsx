@@ -7,7 +7,7 @@ import { ReportProps } from 'constants/interfaces';
 import ReportDisplay from 'components/report_display/report_display';
 
 import { ElementStyleProps } from 'constants/interfaces';
-import './styles.css';
+
 import Header from 'components/header/header';
 
 

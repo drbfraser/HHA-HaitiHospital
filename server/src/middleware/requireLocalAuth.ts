@@ -1,8 +1,13 @@
-// import passport from 'passport';
-import * as passport from 'passport';
+import passport from 'passport';
+import { Request, Response, NextFunction } from "express";
+// import * as passport from 'passport';
 
-const requireLocalAuth = (req: any, res: any, next: any) => {
+// const somePassport : passport = passport;
+
+const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate('local', (err, user, info) => {
+    // console.log(user);
+    // console.log(req);
     if (err) {
       return next(err);
     }

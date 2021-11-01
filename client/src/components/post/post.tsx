@@ -3,7 +3,6 @@ import { RouteComponentProps } from "react-router";
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
 import { isPropertySignature } from "typescript";
 
 interface PostProps extends ElementStyleProps {

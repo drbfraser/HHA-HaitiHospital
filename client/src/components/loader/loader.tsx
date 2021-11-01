@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import './styles.css';
+import './loader_styles.css';
 
 interface LoaderProps extends ElementStyleProps {
 
