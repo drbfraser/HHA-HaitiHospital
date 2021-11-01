@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 import Header from 'components/header/header';
-import testJSON from './models/testModel.json';
+import nicuJSON from './models/nicuModel.json';
 // import './styles.css'
 
 
@@ -14,7 +14,7 @@ function DynamicForm() {
     const [formValues, setFormValues] = useState([{ name: "", value: null }])
 
     useEffect(() => {
-        setformModel(testJSON[0]);
+        setformModel(nicuJSON[0]);
     }, [])
 
     const elements = Object.values(formModel);

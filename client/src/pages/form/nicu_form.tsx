@@ -4,22 +4,26 @@ import axios from 'axios';
 
 
 import Header from 'components/header/header';
-import testJSON from './models/testModel.json';
+import nicuJSON from './models/nicuModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './nicu_form.css';
 
 
 function DynamicForm() {
-    const { register, handleSubmit, reset, formState: { isSubmitSuccessful } } = useForm({});
-    const [formModel, setformModel] = useState({});
+    const { register, handleSubmit, reset, } = useForm({});
+    const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
     const [formValuesAdCondition, setFormValuesAdCondition] = useState<{ name: any; value: any; }[]>([])
     const [formValuesOutCondition, setFormValuesOutCondition] = useState<{ name: any; value: any; }[]>([])
     const [sectionState, setSectionState] = useState(0);
 
-    useEffect(() => {
-        setformModel(testJSON[0]);
-        setSectionState(0);
+    useEffect(()=> {
+        const getData = async () =>{
+            await setFormModel(nicuJSON[0]);
+            setSectionState(0);
+        }
+        
+        getData();
     }, [])
 
     useEffect(() => {
@@ -33,14 +37,18 @@ function DynamicForm() {
         window.location.reload();
     }
 
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
         var valid = submitValidation();
 
         if(valid === true) {
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
             data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            console.log(data);
+            await axios.post('/api/NicuPaeds/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error =>{
+                console.error('Something went wrong!', error.response);
+            });
             refreshPage();
         } else {
             console.log(valid);
