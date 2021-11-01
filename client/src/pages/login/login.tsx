@@ -1,14 +1,21 @@
 import React from 'react';
 import { RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from 'constants/interfaces';
-// import Layout from 'layout/layout'
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
+// import Layout from 'layout/layout'
 
 interface LoginProps extends ElementStyleProps {}
 
 interface LoginProps extends RouteComponentProps {}
+
+function setUsername() {
+    // may change after auth
+    let username = (document as any).getElementById("floatingInput").value
+    localStorage.setItem('username', JSON.stringify(username))
+}
+
 
 const Login = (props : LoginProps) => {
   return(
@@ -40,6 +47,7 @@ const Login = (props : LoginProps) => {
               {/*Temporarily link the sign in button directly to the homepage*/}
               <button className="w-100 btn btn-lg btn-primary" type="submit"
                       onClick={() => {
+                          setUsername()
                           props.history.push("./home");
                       }}>Sign In</button>
               <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
