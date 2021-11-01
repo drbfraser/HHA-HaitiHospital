@@ -53,7 +53,7 @@ export const seedDb = async () => {
   //   }),
   // );
 
-  const users = await User.find();
+  // const users = await User.find();
   // const messages = await Message.find();
 
   // every user 3 messages
