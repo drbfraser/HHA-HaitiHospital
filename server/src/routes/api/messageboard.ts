@@ -2,7 +2,6 @@ const router = require('express').Router();
 const { number } = require('joi');
 import MessageBody from '../../models/MessageBody';
 
-//gets all the messages and orders then from the top down
 router.get('/', async (req: any, res: any) => {
     MessageBody.find({}).sort({date : 'desc'})
         .then(Reports => res.json(Reports))
@@ -22,7 +21,6 @@ router.get('/message/:messageId', async (req: any, res: any) => {
 });
 
 router.route('/').post((req: any, res: any) => {
-    
     let dateTime: Date = new Date();
     const departmentId: Number = <Number>req.body.departmentId;
     const departmentName: String = req.body.departmentName;

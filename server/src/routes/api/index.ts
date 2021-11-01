@@ -3,7 +3,7 @@ import usersRoutes from './users';
 import messagesRoutes from './messages';
 import nicuPaedsRoutes from './nicuPaeds';
 import reportRouter from './report';
-import messageBoardRoutes from './messageBoard';
+import messageBoardRoutes from './messageboard';
 const router = Router();
 
 router.use('/users', usersRoutes);
