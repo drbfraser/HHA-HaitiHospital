@@ -1,17 +1,14 @@
 import React from 'react';
 import { RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from 'constants/interfaces';
-import Layout from 'layout/layout'
+// import Layout from 'layout/layout'
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
 
-interface LoginProps extends ElementStyleProps {
+interface LoginProps extends ElementStyleProps {}
 
-};
-
-interface LoginProps extends RouteComponentProps {
-};
+interface LoginProps extends RouteComponentProps {}
 
 const Login = (props : LoginProps) => {
   return(
@@ -20,7 +17,7 @@ const Login = (props : LoginProps) => {
     // </Layout>
       <div className={'login '+ (props.classes||'')}>
           <form className="container-fluid">
-              <img className="login-logo" src={logo} />
+              <img className="login-logo" src={logo}  alt="width=100"/>
               <h4 className="text-center">Please sign in </h4>
 
               <div className="form-floating" >

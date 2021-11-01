@@ -1,16 +1,14 @@
-import React from "react";
+import React from "react"
 import { ElementStyleProps } from 'constants/interfaces'
-import SideBar from 'components/side_bar/side_bar';
+import SideBar from 'components/side_bar/side_bar'
 import Header from 'components/header/header'
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 // import { RouteComponentProps } from "react-router-dom";
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-// import './home_styles.css'
-import { useLocation } from 'react-router-dom'
 
 interface HomeProps extends ElementStyleProps {
-};
+}
 
 // interface HomeProps extends RouteComponentProps {
 // };
@@ -87,7 +85,7 @@ const Home = (props : HomeProps) => {
                 </div>
 
                 <small className="d-block text-end mt-3">
-                    <a href="#">All suggestions</a>
+                    <a href="#">a link</a>
                 </small>
             </div>
 

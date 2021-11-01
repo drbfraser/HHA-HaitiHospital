@@ -30,7 +30,7 @@ const Sidebar = (props: SidebarProps) => {
                 {/*    <span className="fs-4 text-white">HHA</span>*/}
                 {/*</Link>*/}
 
-                <ul className="nav nav-pills flex-column mb-auto">
+                <ul className="nav nav-pills flex-column mb-auto p-2">
                     <li>
                         <Link to="/home" className="nav-link link-light">
                             <i className="bi bi-house-door-fill me-2"/>
@@ -56,34 +56,34 @@ const Sidebar = (props: SidebarProps) => {
                         </Link>
                     </li>
 
-                    <li className="border-top my-3"/>
+                    <li className="border-top my-2"/>
 
                     <li className="nav-item">
                         <Link to="/Department1NICU" className="nav-link link-light">
-                            <i className="bi bi-dice-1-fill me-2"/>
+                            <i className="bi bi-stack me-2"/>
                             NICU
                         </Link>
                     </li>
                     <li>
                         <Link to="/Department2Maternity" className="nav-link link-light">
-                            <i className="bi bi-dice-2-fill me-2"/>
+                            <i className="bi bi-stack me-2"/>
                             Maternity
                         </Link>
                     </li>
                     <li>
                         <Link to="/Department3Rehab" className="nav-link link-light">
-                            <i className="bi bi-dice-3-fill me-2"/>
+                            <i className="bi bi-stack me-2"/>
                             Rehab
                         </Link>
                     </li>
                     <li>
                         <Link to="/Department4ComHealth" className="nav-link link-light">
-                            <i className="bi bi-dice-4-fill me-2"/>
+                            <i className="bi bi-stack me-2"/>
                             Com & Health
                         </Link>
                     </li>
 
-                    <li className="border-top my-3"/>
+                    <li className="border-top my-2"/>
 
                     <li>
                         <Link to="/admin" className="nav-link link-light">
@@ -92,9 +92,9 @@ const Sidebar = (props: SidebarProps) => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/login" className="nav-link link-light">
-                            <i className="bi bi-door-open-fill me-2"/>
-                            Sign Out
+                        <Link to="/home" className="nav-link link-light">
+                            <i className="bi bi-gear-fill me-2"/>
+                            Setting
                         </Link>
                     </li>
                 </ul>
