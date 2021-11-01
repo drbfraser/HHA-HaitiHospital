@@ -119,8 +119,8 @@ router.delete('/:id', requireJwtAuth, async (req, res) => {
     const reqUser : any = req.user;
     console.log(reqUser);
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
-    // if (!(tempUser.id === reqUser.id || reqUser.role === 'ADMIN'))
-    //   return res.status(400).json({ message: 'You do not have privilegies to delete that user.' });
+    if (!(tempUser.id === reqUser.id || reqUser.role === 'ADMIN'))
+      return res.status(400).json({ message: 'You do not have privilegies to delete that user.' });
 
     // //delete all messages from that user
     // await Message.deleteMany({ user: tempUser.id });
@@ -136,10 +136,10 @@ router.delete('/:id', requireJwtAuth, async (req, res) => {
 router.post('/', requireJwtAuth, async (req, res) => {
   try {
     const reqUser : any = req.user;
-    // if (reqUser.role !== 'ADMIN')
-    //   return res.status(400).json({ message: 'You do not have privilegies to add a user.' });
+    if (reqUser.role !== 'ADMIN')
+      return res.status(400).json({ message: 'You do not have privilegies to add a user.' });
 
-    const { username, password, name } = req.body;
+    const { username, password, name, role } = req.body;
 
     const existingUser = await User.findOne({ username });
 
@@ -155,6 +155,7 @@ router.post('/', requireJwtAuth, async (req, res) => {
       username,
       password,
       name,
+      role,
       // avatar: faker.image.avatar(),
     });
 
