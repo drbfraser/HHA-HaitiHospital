@@ -1,4 +1,3 @@
-import { seedDepartments } from '../../utils/seedDepartments';
 const router = require('express').Router();
 const { number } = require('joi');
 import MessageBody from '../../models/MessageBody';
