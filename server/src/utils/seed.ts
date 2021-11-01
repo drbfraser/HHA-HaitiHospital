@@ -56,7 +56,7 @@ export const seedDb = async () => {
   // const users = await User.find();
   // const messages = await Message.find();
 
-  // every user 3 messages
+  // // every user 3 messages
   // users.map(async (user, index) => {
   //   const threeMessagesIds = messages.slice(index * 3, index * 3 + 3).map((m) => m.id);
   //   await User.updateOne({ _id: user.id }, { $push: { messages: threeMessagesIds } });

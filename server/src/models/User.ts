@@ -66,8 +66,8 @@ const userSchema = new Schema<User>(
     //   unique: true,
     //   sparse: true,
     // },
-    forms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Form' }],
-    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
+    // forms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Form' }],
+    // messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
   },
   { timestamps: true },
 );
