@@ -10,7 +10,7 @@ import Header from 'components/header/header';
 
 interface DepartmentReportsProps extends ElementStyleProps {
   department: string;
-};
+}
 
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
@@ -42,7 +42,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   return (
     <div className={'department-reports '+(props.classes || '')}>
       <Header/>
-      <TextHolder text={props.department}></TextHolder>
+      <TextHolder text={props.department}/>
       <div> Search Bar Here</div>
       <div className='report-board'>
         {

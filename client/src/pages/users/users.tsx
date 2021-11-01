@@ -1,11 +1,9 @@
 import React from 'react';
-
 import { ElementStyleProps } from 'constants/interfaces';
-
-import './users_styles.css';
 import Header from 'components/header/header';
+import './users_styles.css';
 
-interface UsersProps extends ElementStyleProps {};
+interface UsersProps extends ElementStyleProps {}
 
 const Users = (props: UsersProps) => {
   return (<div className={'users' + (props.classes||'')}>
