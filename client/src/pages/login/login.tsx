@@ -11,7 +11,7 @@ interface LoginProps extends ElementStyleProps {}
 interface LoginProps extends RouteComponentProps {}
 
 function setUsername() {
-    // may change after auth
+    // may change after authenticate
     let username = (document as any).getElementById("floatingInput").value
     localStorage.setItem('username', JSON.stringify(username))
 }

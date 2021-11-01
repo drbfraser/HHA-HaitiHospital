@@ -38,6 +38,7 @@ function GetUsername() {
     let username = localStorage.getItem('username')
     let name = (username as any).replace(/['"]+/g, '')
     return <h6> { name }</h6>
+    // return <h6> Bonjour, { name }</h6>
 }
 
 const Header = (props: HeaderProps) => {
