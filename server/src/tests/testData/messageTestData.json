@@ -1,0 +1,7 @@
+{
+    "departmentId" : 1,
+    "departmentName" : "NICU/Paeds",
+    "authorId" : 223123,
+    "messageBody" : "hello this is a test\n this is a test newline.",
+    "messageHeader" : "testing"
+}
