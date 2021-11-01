@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
 
@@ -63,6 +63,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       return `department-report ${props.classes}`;
   }
 
+
   return (
     <div className={getClassName()}>
       <Header/>
@@ -72,37 +73,47 @@ const DepartmentReport = (props : DepartmentReportProps) => {
           <h1 className="lead">Department of NICU/PEAD</h1>
         </section>
 
-        <div className="row">
 
-          {/* Report Details */}
-          <section className='mt-3 col-11'>
-            <div className="container w-75">
-              {
-                (Object.keys(report).length===0 ) ?
-                  <h3 className="lead">'No report found'</h3>:
-                  <ReportDisplay 
-                    report = {report.formData as ReportProps}
-                    edit = {props.edit}
-                  />
-              }
-            </div>
-          </section>
-          
-          {/* Utility side buttons */}
-          <section className='mt-3 col-1'>
-            <div id="button-sidebar">
-              <div className="sticky">
-                <ul>
-                  <li><button className="">Save</button></li>
-                  <li><button className="">Discard</button></li>
-                  <li><button className="">Submit</button></li>
+        {/* Report Details */}
+        <section className='mt-3'>
+          <div className="container w-50">
+            {
+              (Object.keys(report).length===0 ) ?
+                <h3 className="lead">'No report found'</h3>:
+                <ReportDisplay 
+                  report = {report.formData as ReportProps}
+                  edit = {props.edit}
+                />
+            }
+          </div>
+        </section>
+        
+        {/* Utility buttons */}
+        {
+          (props.edit === true) ?
+            <section className='mt-3'>
+              <div className='container w-50'>
+                <ul className='row justify-content-md-center'>
+                  <li className='col-sm-auto'><button className="">Save</button></li>
+                  <li className='col-sm-auto'>
+                    <Link to={'/Department1NICU'}>
+                      <button className="">Discard</button>
+                    </Link>
+                  </li>
+                  <li className='col-sm-auto'><button className="">Submit</button></li>
                 </ul>
               </div>
-            </div>
-          
-          </section>
-
-        </div>
+            </section>
+          :
+            <section className="mt-3">
+              <div className="container w-50">
+                <Link to={'/Department1NICU'}>
+                  <button className="">Back</button>
+                </Link>
+              </div>
+            </section>
+        }
+       
       </div>  
     </div>
   )

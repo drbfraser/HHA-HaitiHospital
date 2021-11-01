@@ -1,7 +1,5 @@
 import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
-import TextHolder from 'components/text_holder/text_holder';
-import { isGetAccessor } from 'typescript';
 
 interface SimpleEntryProps extends ElementStyleProps {
   name: string;
