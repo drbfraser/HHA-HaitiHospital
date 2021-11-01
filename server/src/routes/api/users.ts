@@ -119,7 +119,7 @@ router.delete('/:id', requireJwtAuth, async (req, res) => {
     const reqUser : any = req.user;
     console.log(reqUser);
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
-    if (!(tempUser.id === reqUser.id || reqUser.role === 'ADMIN'))
+    if (reqUser.role !== 'ADMIN')
       return res.status(400).json({ message: 'You do not have privilegies to delete that user.' });
 
     // //delete all messages from that user
