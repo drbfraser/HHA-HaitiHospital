@@ -14,7 +14,7 @@ const messageBodySchema = new Schema({
 });
 
 
-const MessageBody = mongoose.model('MessageBody', messageBodySchema, 'messageBody');
+const MessageBody = mongoose.model('MessageBody', messageBodySchema, 'Message Board');
 export default MessageBody;
 
 
