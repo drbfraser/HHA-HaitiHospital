@@ -15,7 +15,7 @@ interface DepartmentReportsProps extends ElementStyleProps {
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
   const [reports, setReports] = useState<ReportProps[]>([]);
-  const dbUrlForNICUReports = "api/report/view";
+  const dbUrlForNICUReports = "/api/report/view";
 
   // Fetch submitted reports when page loaded once
 
