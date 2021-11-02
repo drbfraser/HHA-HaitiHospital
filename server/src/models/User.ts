@@ -125,12 +125,10 @@ userSchema.methods.registerUser = (newUser, callback) => {
 };
 
 userSchema.methods.comparePassword = function (candidatePassword, callback) {
-  hashPassword(this.password).then(hashedPassword => {
-    bcrypt.compare(candidatePassword, hashedPassword, (err, isMatch) => {
-      if (err) return callback(err);
-      callback(null, isMatch);
-    });
-  })
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) return callback(err);
+    callback(null, isMatch);
+  });
 };
 
 export async function hashPassword(password) {
