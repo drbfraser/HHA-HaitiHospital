@@ -14,6 +14,8 @@ router.post('/login', requireLocalAuth, (req, res) => {
   const token = req.user.generateJWT();
   // @ts-ignore
   const me = req.user.toJSON();
+  // httpOnly means cookie can't be read using JS saving us from XSS attack
+  res.cookie('token', token, { httpOnly: true });
   res.json({ token, me });
 });
 
