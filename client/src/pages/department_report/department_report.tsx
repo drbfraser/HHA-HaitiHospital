@@ -36,7 +36,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
     
     getReport();
 
-    return function cleanUp() {
+    return function cancelReqWhenUnmounted() {
       isMounted = false;
       apiSource.cancel();
     }
