@@ -4,14 +4,13 @@
     display: flex;
     /*justify-content: center;*/
     position: fixed;
-    /*background-color: black;*/
     top: 0;
     left: 0;
     /*transition: 850ms;*/
 }
 
 .SidebarList {
-    height: 100%;
+    /*height: 100%;*/
     width: 100%;
     background-color: #202020;
     /*padding-left: 1rem;*/
@@ -19,7 +18,7 @@
 
 .nav > li > a:hover, .nav > li > a:focus {
     /*background-color: #EF92A5;*/
-    background-color: #2F4050;
+    background-color: #687d8f;
     text-decoration: none;
 }
 

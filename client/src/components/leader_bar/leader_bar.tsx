@@ -1,12 +1,10 @@
 import React from 'react';
-
 import { ElementStyleProps, CustomCssProps } from 'constants/interfaces';
 import Button from 'components/button/button';
 import TextHolder from 'components/text_holder/text_holder';
 
 
-interface LeaderBarProps extends ElementStyleProps {
-}
+interface LeaderBarProps extends ElementStyleProps {}
 
 const LeaderBar = (props: LeaderBarProps) => {
   

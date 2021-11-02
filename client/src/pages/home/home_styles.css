@@ -1,23 +1,23 @@
-.home {
-  width: 100vw;
-  height: 100vw;
-  background-color: lime;
-}
+/*.home {*/
+  /*width: 100vw;*/
+  /*height: 100vw;*/
+  /*background-color: lime;*/
+/*}*/
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #2F4050;
+/*body {*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*  background-color: #2F4050;*/
 
-  /*background: linear-gradient(#04181F 50%, #D1D2A5, transparent);*/
-  /*background-repeat: no-repeat;*/
-  /*background-size: cover;*/
-  /*width: 1920px;*/
-  /* height: 1000px;*/
-  /*text-align: center;*/
-  /*color: white;*/
-  /*font-size: 20px;*/
-}
+/*  !*background: linear-gradient(#04181F 50%, #D1D2A5, transparent);*!*/
+/*  !*background-repeat: no-repeat;*!*/
+/*  !*background-size: cover;*!*/
+/*  !*width: 1920px;*!*/
+/*  !* height: 1000px;*!*/
+/*  !*text-align: center;*!*/
+/*  !*color: white;*!*/
+/*  !*font-size: 20px;*!*/
+/*}*/
 
 /*.homePage-department {*/
 /*  font-weight: bold;*/
