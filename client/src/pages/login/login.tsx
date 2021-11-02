@@ -23,7 +23,7 @@ function setUsername() {
 const Login = (props : LoginProps) => {
     const formik = useFormik({
         initialValues: {
-            email: '',
+            username: '',
             password: '',
         },
         validationSchema: loginSchema,
@@ -36,8 +36,8 @@ const Login = (props : LoginProps) => {
         <div className={'login '+ (props.classes||'')}>
             <form onSubmit={formik.handleSubmit}>
                 <img className="login-logo" src={logo} alt="logo logo"/>
-                {formik.touched.email && formik.errors.email ? (
-                        <p className="error">{formik.errors.email}</p>
+                {formik.touched.username && formik.errors.username ? (
+                        <p className="error">{formik.errors.username}</p>
                     ) : null}
                 {formik.touched.password && formik.errors.password ? (
                     <p className="error">{formik.errors.password}</p>
@@ -47,11 +47,11 @@ const Login = (props : LoginProps) => {
                     <input
                         id="username"
                         placeholder="Username"
-                        name="email"
+                        name="username"
                         type="text"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.email}
+                        value={formik.values.username}
                     />
                 </div>
 
