@@ -1,68 +1,77 @@
-import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import React from "react"
+import { ElementStyleProps } from 'constants/interfaces'
+import SideBar from 'components/side_bar/side_bar'
+import Header from 'components/header/header'
+import DashboardMessageOverview from "components/dashboard_message_overview/dashboard_message_overview"
 
-import Header from 'components/header/header';
-import LeaderBar from 'components/leader_bar/leader_bar';
-import MessageBoard from 'components/message_board/message_board';
-import {CustomCssProps, ElementStyleProps} from 'constants/interfaces'
-
-import case1 from "img/case1.jpg";
-import case2 from "img/case2.jpg";
-import "./home_styles.css";
+// import messages from "../../../../server/src/routes/api/messages";
+// import { RouteComponentProps } from "react-router-dom";
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface HomeProps extends ElementStyleProps {
-};
+}
 
-interface HomeProps extends RouteComponentProps {
-};
+// interface HomeProps extends RouteComponentProps {
+// };
+
 
 const Home = (props : HomeProps) => {
-  console.log(props.match, props.location);
-  return (
+    return (
     <div className={'home '+ (props.classes||'')}>
-      <Header classes='grid'
-        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}
-      />
-      <LeaderBar classes='grid'
-        style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}
-      />
-      <MessageBoard/>
+        <SideBar/>
 
-      <div className="homePage-department">
-          <h1>Departments</h1>
-            {/*<Link to="/department">toDepart</Link>*/}
-            <button className="button1"
-                onClick={() => {
-                    // api call
-                    // change to the about page
-                    props.history.push("/Department1NICU");
-                }}>NICU / PAED</button>
-            <button className="button2"
-                    onClick={() => {
-                        props.history.push("/Department2Maternity");
-                    }}>MATERNITY</button>
-            <button className="button3"onClick={() => {
-                        props.history.push("/Department3Rehab");
-                    }}>REHAB</button>
-            <button className="button4"onClick={() => {
-                        props.history.push("/Department4ComHealth");
-                    }}>COM-HEALTH</button>
-          <button className="button5"onClick={() => {
-              props.history.push("/DepartmentMain");
-          }}>MORE</button>
-      </div>
-      <div className='home-case-study'>
-          <div>
-              <button className="caseStudyButton"
-              onClick={() => {
-                  props.history.push("./caseStudyMain");
-              }}>Case Study</button>
-          </div>
-          <div className="caseStudy-image">
-              <img src={case1} className="caseOne" alt="case1"/>
-              <img src={case2} className="caseTwo" alt="case2" />
-          </div>
-      </div>
+        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <Header/>
+            <DashboardMessageOverview messages = {[]}/>
+            {/*<DashboardMessageOverview/>*/}
+        </main>
+
+
+      {/*<Header classes='grid'*/}
+      {/*  style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}*/}
+      {/*/>*/}
+      {/*<LeaderBar classes='grid'*/}
+      {/*  style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}*/}
+      {/*/>*/}
+      {/*<MessageBoard/>*/}
+
+      {/*<div className="homePage-department">*/}
+      {/*    <h1>Departments</h1>*/}
+      {/*      /!*<Link to="/department">toDepart</Link>*!/*/}
+      {/*      <button className="button1"*/}
+      {/*          onClick={() => {*/}
+      {/*              // api call*/}
+      {/*              // change to the about page*/}
+      {/*              props.history.push("/Department1NICU");*/}
+      {/*          }}>NICU / PAED</button>*/}
+      {/*      <button className="button2"*/}
+      {/*              onClick={() => {*/}
+      {/*                  props.history.push("/Department2Maternity");*/}
+      {/*              }}>MATERNITY</button>*/}
+      {/*      <button className="button3"onClick={() => {*/}
+      {/*                  props.history.push("/Department3Rehab");*/}
+      {/*              }}>REHAB</button>*/}
+      {/*      <button className="button4"onClick={() => {*/}
+      {/*                  props.history.push("/Department4ComHealth");*/}
+      {/*              }}>COM-HEALTH</button>*/}
+      {/*    <button className="button5"onClick={() => {*/}
+      {/*        props.history.push("/DepartmentMain");*/}
+      {/*    }}>MORE</button>*/}
+      {/*</div>*/}
+      {/*<div className='home-case-study'>*/}
+      {/*    <div>*/}
+      {/*        <button className="caseStudyButton"*/}
+      {/*        onClick={() => {*/}
+      {/*            props.history.push("./caseStudyMain");*/}
+      {/*        }}>Case Study</button>*/}
+      {/*    </div>*/}
+      {/*    <div className="caseStudy-image">*/}
+      {/*        <img src={case1} className="caseOne" alt="case1"/>*/}
+      {/*        <img src={case2} className="caseTwo" alt="case2" />*/}
+      {/*    </div>*/}
+      {/*</div>*/}
+
     </div>
   );
 }

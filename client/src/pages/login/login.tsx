@@ -9,9 +9,16 @@ import { loginSchema } from './validation';
 
 interface LoginProps extends ElementStyleProps {
 };
+// import Layout from 'layout/layout'
 
-interface LoginProps extends RouteComponentProps {
-};
+interface LoginProps extends RouteComponentProps {}
+
+function setUsername() {
+    // may change after authenticate/validation
+    let username = (document as any).getElementById("username").value
+    localStorage.setItem('username', JSON.stringify(username))
+}
+
 
 const Login = (props : LoginProps) => {
     const formik = useFormik({
@@ -36,9 +43,9 @@ const Login = (props : LoginProps) => {
                     <p className="error">{formik.errors.password}</p>
                     ) : null}                    
                 <h4 className="text-center">Please sign in </h4>
-            
-                <div className="form-floating" >
+                <div className="form-floating">
                     <input
+                        id="username"
                         placeholder="Username"
                         name="email"
                         type="text"
@@ -50,15 +57,14 @@ const Login = (props : LoginProps) => {
 
                 <div className="form-floating">
                     <input
-                    placeholder="Password"
-                    name="password"
-                    type="password"
-                    className="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
+                        id="password"
+                        placeholder="Password"
+                        name="password"
+                        type="password"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.password}
                     />
-                    
                 </div>
 
                 <div className="form-check form-switch">
@@ -69,7 +75,13 @@ const Login = (props : LoginProps) => {
                 </div>
 
                 {/*Temporarily link the sign in button directly to the homepage*/}
-                <button className="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
+                <button 
+                    className="w-100 btn btn-lg btn-primary" 
+                    type="submit"
+                    onClick={() => {
+                        setUsername()
+                    }}
+                >Sign In</button>
                 <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
             </form>
         </div>
