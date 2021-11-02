@@ -23,23 +23,24 @@ router.post('/register', async (req, res, next) => {
     return res.status(422).send({ message: error.details[0].message });
   }
 
-  const { email, password, name, username } = req.body;
+  // const { email, password, name, username } = req.body;
+  const { username, password, name } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ username });
 
     if (existingUser) {
-      return res.status(422).send({ message: 'Email is in use' });
+      return res.status(422).send({ message: 'Username is in use' });
     }
 
     try {
       const newUser = await new User({
-        provider: 'email',
-        email,
-        password,
+        // provider: 'email',
+        // email,
         username,
+        password,
         name,
-        avatar: faker.image.avatar(),
+        // avatar: faker.image.avatar(),
       });
 
       newUser.registerUser(newUser, (err, user) => {
