@@ -6,7 +6,7 @@ import Message from '../models/Message';
 import { deleteAllAvatars } from './utils';
 
 export const seedDb = async () => {
-  console.log('Seeding database...');
+  console.log('Seeding users...');
 
   await User.deleteMany({});
   // await Message.deleteMany({});
@@ -75,5 +75,5 @@ export const seedDb = async () => {
   //     },
   //   );
   // });
-  console.log('Database seeded');
+  console.log('Users seeded');
 };
