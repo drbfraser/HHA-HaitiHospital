@@ -3,9 +3,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 
 import { ElementStyleProps } from "constants/interfaces";
 import Header from "components/header/header";
-// import NavBar from "components/nav_bar/nav_bar";
-
-// import Logo from "img/logo/LogoWText.svg";
+import DepartmentReports from 'components/department_reports/department_reports';
 import "./department_style.css"
 
 interface DeparmentProps extends ElementStyleProps {
@@ -21,37 +19,42 @@ export const DepartmentOne = (props : DeparmentProps) => {
   return (
     <div className={'department-one '+ props.classes}>
       <Header />
-        {/* <button className="homePageButton"
-            onClick={() => {
-              props.history.push("../");
-            }}></button> */}
-      <div>
-        <>
-          <h1 style={{color:"white",backgroundColor: '#87EDF3', fontFamily:'sans-serif'}}>Department of NICU/PAED</h1>
-        </>
+      <div className="container mt-3">
+
+        {/* Department Title */ }
+        <section>
+          <h1 className='text-start'>Department of NICU/PAED</h1>
+        </section>
+
+        {/* Nav buttons */}
+        <section>
+          <div className="row my-2 justify-items-center">
+
+            <div className='col-sm-3'>
+              <Link to={"/NICUForm"}>
+                <button className=" btn btn-dark btn-sm rounded-bill">
+                    <div className="lead">Submit Data</div>
+                </button>
+              </Link>
+            </div>
+
+            <div className='col-sm-3'>
+              <Link to={"#"}>
+                <button className="btn btn-dark btn-sm rounded-bill">
+                  <div className="lead">Biomechanic</div>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Department Report Summary */}
+        <section>
+          <DepartmentReports department={"NICU/PAED"}/>
+        </section>
       </div>
-      
-      <Link className="submit_data_button" to={"/NICUForm"} >Submit Data</Link>
 
-      <button className="Departmentbutton1">NICU / PAED</button>
-      <button className="Departmentbutton2"
-          onClick={() => {
-              props.history.push("/Department2Maternity");
-          }}>MATERNITY</button>
-      <button className="Departmentbutton3"
-          onClick={() => {
-              props.history.push("/Department3Rehab");
-          }}>REHAB</button>
-      <button className="Departmentbutton4"
-          onClick={() => {
-              props.history.push("/Department4ComHealth");
-          }}>COM-HEALTH</button>
 
-      <button className="GOTOSUMMARYPLZ"
-          onClick={() => {
-              props.history.push("/Department1NICU/summary_reports");
-          }}>Report Summary
-      </button>
     </div>
   );
 };
