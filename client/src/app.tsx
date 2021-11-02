@@ -14,8 +14,7 @@ import { CaseStudyMain} from "pages/case_study_main/case_study_main";
 import { DepartmentMain} from "pages/department/department_main";
 import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
-import DepartmentReports from 'pages/department_reports/department_reports';
-import DepartmentReport from 'pages/department_report/department_report';
+import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 
 // import Post from "./components/Post/Post";
@@ -36,8 +35,8 @@ const App = () => {
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
-        <Route path='/Department1NICU/summary_reports' exact component = {DepartmentReports} />
-        <Route path='/Department1NICU/detailed_reports/:id' exact component = {DepartmentReport} />
+        <Route path='/Department1NICU/detailed_report/view/:id' exact component = {() => (<DepartmentReport edit={false}/>)} />
+        <Route path='/Department1NICU/detailed_report/edit/:id' exact component = {() => (<DepartmentReport edit={true}/>)} />
         <Route path="/NICUForm" component={NICUForm} />
    
         {/*<Route path="/posts/:id" exact component={Post} />*/}
