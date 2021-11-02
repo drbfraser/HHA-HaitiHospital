@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from 'components/button/button';
-import TextHolder from 'components/text_holder/text_holder';
 import { ElementStyleProps} from 'constants/interfaces';
 
 interface ReportSummaryProps extends ElementStyleProps {
@@ -10,9 +8,15 @@ interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
   lastUpdatedOn: string;
   lastUpdatedBy: number;
+  notifyTick(data:{reportId: string, isChecked: boolean}): void;
 }
 
 const ReportSummaryRow = (props: ReportSummaryProps) => {
+
+  function notifyParentWhenTicked(event: React.SyntheticEvent): void {
+    let target = event.target as HTMLInputElement;
+    props.notifyTick({reportId: target.value, isChecked: target.checked});
+  }
 
   return (
     <tr>
@@ -28,11 +32,16 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
           <button className="btn btn-small btn-primary">Edit</button>
         </Link>
       </td>
-      <td><button className="btn btn-small btn-primary">Delete</button></td>
+      {/* <td><button className="btn btn-small btn-primary">Delete</button></td> */}
       <td>
         <div className="form-check">
-          <input className="form-check-input" type="checkbox" value="" id="accumulateTick"/>
-          <label className="form-check-label" htmlFor="accumulateTick">
+          <input className="form-check-input" 
+            type="checkbox" 
+            value={props.reportId} 
+            id={`tick-${props.reportId}`}
+            onClick = {notifyParentWhenTicked}
+          />
+          <label className="form-check-label" htmlFor={`tick-${props.reportId}`}>
           </label>
         </div>
       </td>
