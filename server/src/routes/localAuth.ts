@@ -10,9 +10,10 @@ import { Schema } from 'mongoose';
 const router = Router();
 
 router.post('/login', requireLocalAuth, (req, res) => {
-  const reqUser : any = req.user;
-  const token = reqUser.generateJWT();
-  const me = reqUser.toJSON();
+  // @ts-ignore
+  const token = req.user.generateJWT();
+  // @ts-ignore
+  const me = req.user.toJSON();
   res.json({ token, me });
 });
 
