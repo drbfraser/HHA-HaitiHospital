@@ -1,13 +1,10 @@
 import React from 'react';
-
 import { ElementStyleProps } from 'constants/interfaces';
-
-import './register_styles.css';
 import Header from 'components/header/header';
+import './register_styles.css';
 
 interface RegisterProps extends ElementStyleProps {
-
-};
+}
 
 const Register = (props : RegisterProps) => {
   return(<div className={'register '+(props.classes ||'')}>

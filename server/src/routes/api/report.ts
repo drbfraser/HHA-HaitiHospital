@@ -60,7 +60,7 @@ router.route('/add').post((req: any, res: any) => {
 //---VIEW DATABASE---//
 //view all Reports in the database
 router.route('/view').get((req: any, res: any) => {
-    FormEntry.find({})
+    FormEntry.find({}).sort({createdOn: 'desc'})
         .then(Reports => res.json(Reports))
         .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
