@@ -13,7 +13,7 @@ export const seedDb = async () => {
   await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
   // create 3 users
-  const usersPromises = [...Array(3).keys()].map((index, i) => {
+  const usersPromises = [...Array(5).keys()].map((index, i) => {
     const user = new User({
       // provider: 'email',
       username: `user${index}`,
@@ -27,17 +27,21 @@ export const seedDb = async () => {
 
     if (index === 0) {
       user.role = 'ADMIN';
+    } else if (index === 1) {
+      user.role = 'HEAD_OF_DEPARTMENT';
+    } else if (index === 2) {
+      user.role = 'HHA';
     }
     user.registerUser(user, () => {});
 
     return user;
   });
 
-  await Promise.all(
-    usersPromises.map(async (user) => {
-      await user.save();
-    }),
-  );
+  // await Promise.all(
+  //   usersPromises.map(async (user) => {
+  //    await user.save();
+  //   }),
+  // );
 
   // // create 9 messages
   // const messagePromises = [...Array(9).keys()].map((index, i) => {
