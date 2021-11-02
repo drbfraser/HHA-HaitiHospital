@@ -6,7 +6,7 @@ import Header from "components/header/header";
 
 import "./department_main_style.css";
 
-interface DepartmentMainProps extends ElementStyleProps {};
+interface DepartmentMainProps extends ElementStyleProps {}
 interface DepartmentMainProps extends RouteComponentProps{}
 
 export const DepartmentMain = (props : DepartmentMainProps) => {
@@ -23,10 +23,10 @@ export const DepartmentMain = (props : DepartmentMainProps) => {
                 onClick={() => {
                     props.history.push("/Department2Maternity");
                 }}>MATERNITY</button>
-        <button className="DepartmentButton3"onClick={() => {
+        <button className="DepartmentButton3" onClick={() => {
             props.history.push("/Department3Rehab");
         }}>REHAB</button>
-        <button className="DepartmentButton4"onClick={() => {
+        <button className="DepartmentButton4" onClick={() => {
             props.history.push("/Department4ComHealth");
         }}>COM-HEALTH</button>
       </div>

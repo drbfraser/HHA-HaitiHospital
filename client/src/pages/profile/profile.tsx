@@ -5,9 +5,7 @@ import { ElementStyleProps } from 'constants/interfaces';
 import './profile_styles.css';
 import Header from 'components/header/header';
 
-interface ProfileProps extends ElementStyleProps {
-
-};
+interface ProfileProps extends ElementStyleProps {}
 
 const Profile = (props : ProfileProps) => {
   return (

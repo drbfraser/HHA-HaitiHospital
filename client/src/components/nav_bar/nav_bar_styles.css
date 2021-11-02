@@ -4,6 +4,7 @@
   /*border-radius: 10px;*/
   /*justify-content: space-around;*/
 }
+
 /*a {*/
 /*    position: relative;*/
 /*    text-decoration: none;*/
@@ -25,7 +26,7 @@
 
 a:hover {
   /* color: tomato; */
-  color: wheat;
+  color: white;
 }
 
 a:hover:after {

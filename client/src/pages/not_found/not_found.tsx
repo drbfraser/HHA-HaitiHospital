@@ -6,9 +6,7 @@ import Layout from 'layout/layout';
 
 import './not_found_styles.css';
 
-interface NotFoundProps extends ElementStyleProps {
-
-};
+interface NotFoundProps extends ElementStyleProps {}
 
 const NotFound = (props: NotFoundProps) => {
   return (
