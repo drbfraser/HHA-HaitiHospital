@@ -21,7 +21,7 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": false,
-    "noImplicitAny": false,
+    "noImplicitAny": false
   },
   "include": [
     "src"
