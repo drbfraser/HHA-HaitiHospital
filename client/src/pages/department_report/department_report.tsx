@@ -22,7 +22,7 @@ interface UrlParams {
 
 const DepartmentReport = (props : DepartmentReportProps) => {
   const { id } = useParams<UrlParams>();
-  const getReportApi = `/api/report/viewreport/${id}`;
+  const getReportApi = `api/report/viewreport/${id}`;
   const [ report, setReport] = useState<ReportProps>({});
   const apiSource = Axios.CancelToken.source();
   // Get Report Id when Loaded
