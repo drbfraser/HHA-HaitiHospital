@@ -2,79 +2,9 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-enum CaseStudyOptions {
-  OtherStory,
-  PatientStory,
-  StaffRecognition,
-  TrainingSession,
-  EquipmentReceived,
-}
-
-enum DepartmentEnum {
-  Rehab = "REHAB",
-  NICU_PAED = "NICU_PAED",
-  Maternity = "MATERNITY",
-  CommunityHealth = "COMMUNITY_HEALTH"
-}
-
-enum PurchasedOrDonatedEnum {
-  Purchased = "PURCHASED",
-  Donated = "DONATED"
-}
-
-export interface PatientStory {
-  patientsName: string;
-  patientsAge: number;
-  whereIsThePatientFrom: string;
-  whyComeToHCBH: string;
-  howLongWereTheyAtHCBHinDays: number;
-  diagnosis: string;
-  caseStudyStory: string;
-}
-
-export interface StaffRecognition {
-  staffName: string;
-  jobTitle: string;
-  department: DepartmentEnum,
-  howManyMonthsWorkingAtHCBH: number,
-  mostEnjoy: string;
-  caseStudyStory: string;
-}
-
-export interface TrainingSession {
-  trainingDate: Date;
-  trainingOn: string;
-  whoConducted: string;
-  whoAttended: string;
-  benefitsFromTraining: string;
-  caseStudyStory: string;
-}
-
-export interface EquipmentReceived {
-  equipmentReceived: string;
-  departmentReceived: DepartmentEnum;
-  whoSentEquipment: string;
-  purchasedOrDonated: PurchasedOrDonatedEnum;
-  whatDoesEquipmentDo: string;
-  caseStudyStory: string;
-}
-
-export interface otherStory {
-  caseStudyStory: string;
-}
-
-
-
-// export interface CaseStudies extends Document {
-//   createdByUser: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-// }
-
-
-
 const patientStorySchema = new Schema(
   {
+    createdByUser: { type: String },
     patientsName: { type: String },
     patientsAge: { type: Number },
     whereIsThePatientFrom: { type: String },
@@ -88,6 +18,7 @@ const patientStorySchema = new Schema(
 
 const staffRecognitionSchema = new Schema(
   {
+    createdByUser: { type: String },
     staffName: { type: String },
     jobTitle: { type: String },
     department: { type: String },
@@ -98,10 +29,50 @@ const staffRecognitionSchema = new Schema(
   { timestamps: true },
 );
 
-const patientStory = mongoose.model('PatientStory', patientStorySchema, 'caseStudies');
-const staffRecognition = mongoose.model('StaffRecognition', staffRecognitionSchema, 'caseStudies');
+const trainingSessionSchema = new Schema(
+  {
+    createdByUser: { type: String },
+    trainingDate: { type: Date },
+    trainingOn: { type: String },
+    whoConducted: { type: String },
+    whoAttended: { type: String },
+    benefitsFromTraining: { type: String },
+    caseStudyStory: { type: String },
+  },
+  { timestamps: true },
+);
+
+const equipmentReceivedSchema = new Schema(
+  {
+    createdByUser: { type: String },
+    equipmentReceived: { type: String },
+    departmentIdReceived: { type: Number },
+    whoSentEquipment: { type: String },
+    purchasedOrDonated: { type: String },
+    whatDoesEquipmentDo: { type: String },
+    caseStudyStory: { type: String },
+  },
+  { timestamps: true },
+);
+
+const otherStorySchema = new Schema(
+  {
+    createdByUser: { type: String },
+    caseStudyStory: { type: String },
+  },
+  { timestamps: true },
+);
+
+const PatientStory = mongoose.model('PatientStory', patientStorySchema, 'caseStudies');
+const StaffRecognition = mongoose.model('StaffRecognition', staffRecognitionSchema, 'caseStudies');
+const TrainingSession = mongoose.model('TrainingSession', trainingSessionSchema, 'caseStudies');
+const EquipmentReceived = mongoose.model('EquipmentReceived', equipmentReceivedSchema, 'caseStudies');
+const OtherStory = mongoose.model('OtherStory', otherStorySchema, 'caseStudies');
 
 export {
-  patientStory,
-  staffRecognition,
+  PatientStory,
+  StaffRecognition,
+  TrainingSession,
+  EquipmentReceived,
+  OtherStory,
 }
