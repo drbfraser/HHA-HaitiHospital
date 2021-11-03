@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {SyntheticEvent, useEffect, useState} from 'react';
 
 import { ElementStyleProps, ReportProps } from 'constants/interfaces';
 import ReportSummaryRow from 'components/report_summary_row/report_summary_row';
-import { Ticks } from 'components/report_summary_table/ticks';
+import { TickList, TickListData, TickObserver } from 'components/report_summary_table/ticks';
 import UtilityButtons from 'components/report_summary_table/display_utility_buttons';
 
 interface ReportSummaryTableProps extends ElementStyleProps {
@@ -11,7 +11,14 @@ interface ReportSummaryTableProps extends ElementStyleProps {
 
 const ReportSummaryTable = (props : ReportSummaryTableProps) => {
   
-  const [isReportTicked, setIsReportTicked] = useState<Ticks>(new Ticks(props.reports.length));
+  function convertReportsToTickListData(reports: ReportProps[]): TickListData {
+    let tickListDataInPairs = props.reports.map((report)=>[report._id , false])
+    let tickListData = Object.fromEntries(tickListDataInPairs) as TickListData;
+    return tickListData;
+  }
+
+  const [isReportTicked, setIsReportTicked] = useState<TickList>(new TickList(props.reports.length, convertReportsToTickListData(props.reports)));
+  const [allTick, setAllTick] = useState<boolean>(false);
 
   function getIdxByReportId( rid : string) : number {
     let reportWithId: ReportProps | undefined = props.reports.find(report => report._id as string === rid);
@@ -22,7 +29,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     return idxToReport;
   }
 
-  function trackTicks(tickedRow : {reportId: string, isChecked: boolean}): void {
+  function trackRowTick(tickedRow : {reportId: string, isChecked: boolean}): void {
    
     let idxToReport: number = getIdxByReportId(tickedRow.reportId);
     if (idxToReport  < 0)
@@ -31,8 +38,13 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     setIsReportTicked(
       isReportTicked.setTickAtIndex(tickedRow.isChecked, idxToReport)
     );
-  }
 
+    if (isReportTicked.isAllTicked() === true)
+      setAllTick(true);
+    else 
+      setAllTick(false);
+
+  }
 
   function getClassName(): string {
     if (props.classes === undefined) 
@@ -41,6 +53,26 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
       return `table ${props.classes} `
   }
 
+  function setAllTickWhenTickListChange(tickList: TickList) {
+
+    let tickListState = tickList.isAllTicked();
+    if (tickListState !== allTick)
+      setAllTick(tickListState);
+
+  }
+
+  const tickListObserver : TickObserver = (tickList: TickList) => {
+    setAllTickWhenTickListChange(tickList);
+  }
+
+  useEffect(() => {
+    isReportTicked.registerObserver(tickListObserver);
+
+    return function unregObserver() {
+      isReportTicked.unregisterObserver(tickListObserver);
+    }
+  }, [isReportTicked, allTick])
+  
   return (
     <section>
       <div className="table-responsive-md">
@@ -51,16 +83,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
               <th scope='col'>Last Updated On</th>
               <th scope='col'>Last Updated By UserId</th>
               <th scope='col'></th>
-              {/* <th scope='col'></th> */}
               <th scope='col'>
-                <div className="form-check">
-                  <input className="form-check-input" 
-                    type="checkbox" 
-                    id='tick-all'
-                  />
-                  <label className="form-check-label" htmlFor="tick-all">
-                  </label>
-                </div>  
+                {AllTick()}  
               </th>
             </tr>
           </thead>
@@ -73,7 +97,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
                 reportId={report._id as string} 
                 lastUpdatedOn={report.lastUpdatedOn as string}
                 lastUpdatedBy={report.lastUpdatedByUserId as number}
-                notifyTick={trackTicks}/>)
+                notifyTable={trackRowTick}
+                tickList={isReportTicked}/>)
             )}
           </tbody>
         </table>
@@ -83,6 +108,34 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
     </section>
   )
+
+    function AllTick() {
+        return <div className="form-check">
+            <input className="form-check-input"
+                type="checkbox"
+                id='tick-all'
+                checked={allTick}
+
+                onClick={(e: SyntheticEvent) => {
+                    let target: HTMLInputElement = e.target as HTMLInputElement;
+                    if (target.checked === true)
+                        isReportTicked.tickAll();
+
+                    else
+                        isReportTicked.untickAll();
+                } }
+
+                onChange={(e: SyntheticEvent) => {
+                    let target: HTMLInputElement = e.target as HTMLInputElement;
+
+                    if (allTick !== target.checked)
+                        setAllTick(target.checked);
+                } } />
+
+            <label className="form-check-label" htmlFor="tick-all">
+            </label>
+        </div>;
+    }
 }
 
 export default ReportSummaryTable;

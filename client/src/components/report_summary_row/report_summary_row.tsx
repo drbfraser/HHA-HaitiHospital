@@ -1,21 +1,41 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
 import { ElementStyleProps} from 'constants/interfaces';
+import {TickList, TickObserver} from 'components/report_summary_table/ticks'
 
 interface ReportSummaryProps extends ElementStyleProps {
   // report: ReportProps;
   reportId: string;
   lastUpdatedOn: string;
   lastUpdatedBy: number;
-  notifyTick(data:{reportId: string, isChecked: boolean}): void;
+  notifyTable(data:{reportId: string, isChecked: boolean}): void;
+  tickList: TickList;
 }
 
 const ReportSummaryRow = (props: ReportSummaryProps) => {
+  
+  const [isTicked, setTick] = useState<boolean>(false);
 
-  function notifyParentWhenTicked(event: React.SyntheticEvent): void {
+  useEffect(() => {
+    props.tickList.registerObserver(tickListObserver);
+
+    return function unregObserver() {
+      props.tickList.unregisterObserver(tickListObserver);
+    }
+  }, [isTicked])
+
+  const tickListObserver: TickObserver = (tickList: TickList)=> {
+    let isReportTicked = tickList.isTickedRid(props.reportId);
+    console.log(`Row notified: ${isReportTicked}`);
+    if (isReportTicked != isTicked)
+      setTick(isReportTicked);
+  }
+
+  function notifyParent(event: React.SyntheticEvent): void {
     let target = event.target as HTMLInputElement;
-    props.notifyTick({reportId: target.value, isChecked: target.checked});
+    props.notifyTable({reportId: target.value, isChecked: target.checked});
+    setTick(target.checked);
   }
 
   return (
@@ -32,14 +52,20 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
           <button className="btn btn-small btn-primary">Edit</button>
         </Link>
       </td>
-      {/* <td><button className="btn btn-small btn-primary">Delete</button></td> */}
       <td>
         <div className="form-check">
           <input className="form-check-input" 
             type="checkbox" 
             value={props.reportId} 
             id={`tick-${props.reportId}`}
-            onClick = {notifyParentWhenTicked}
+            checked = {isTicked}
+            onClick = {notifyParent}
+            // onChange = {(e: React.SyntheticEvent) => {
+            //   let target: HTMLInputElement = e.target as HTMLInputElement;
+            //   if (target.checked !== isTicked) {
+            //     setTick(target.checked);
+            //   }
+            // }}
           />
           <label className="form-check-label" htmlFor={`tick-${props.reportId}`}>
           </label>

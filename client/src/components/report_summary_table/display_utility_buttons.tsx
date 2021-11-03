@@ -1,22 +1,22 @@
 import React, {useState, useEffect} from 'react';
 
-import { TickObserver, Ticks } from 'components/report_summary_table/ticks';
+import { TickObserver, TickList } from 'components/report_summary_table/ticks';
 
 import {ElementStyleProps} from 'constants/interfaces';
 
 interface UtilityButtonsProps extends ElementStyleProps {
-  ticks: Ticks;
+  ticks: TickList;
 }
 
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
   
   const [showButtons, setShowButtons] = useState<boolean>(false);
-  let tickObserver: TickObserver = (tickCount: number) => {
-    if (tickCount > 0)
-      setShowButtons(true);
+  let tickObserver: TickObserver = (tickList: TickList) => {
+    if (tickList.isNoTicked() === true)
+      setShowButtons(false);
     else
-      setShowButtons(false);  
+      setShowButtons(true);  
   };
 
   useEffect(() => {
