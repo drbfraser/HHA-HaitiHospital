@@ -1,3 +1,7 @@
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
+
 enum CaseStudyOptions {
   OtherStory,
   PatientStory,
@@ -18,7 +22,7 @@ enum PurchasedOrDonatedEnum {
   Donated = "DONATED"
 }
 
-export interface PatientStoryModel {
+export interface PatientStory {
   patientsName: string;
   patientsAge: number;
   whereIsThePatientFrom: string;
@@ -28,7 +32,7 @@ export interface PatientStoryModel {
   caseStudyStory: string;
 }
 
-export interface StaffRecognitionModel {
+export interface StaffRecognition {
   staffName: string;
   jobTitle: string;
   department: DepartmentEnum,
@@ -37,7 +41,7 @@ export interface StaffRecognitionModel {
   caseStudyStory: string;
 }
 
-export interface TrainingSessionModel {
+export interface TrainingSession {
   trainingDate: Date;
   trainingOn: string;
   whoConducted: string;
@@ -46,7 +50,7 @@ export interface TrainingSessionModel {
   caseStudyStory: string;
 }
 
-export interface EquipmentReceivedModel {
+export interface EquipmentReceived {
   equipmentReceived: string;
   departmentReceived: DepartmentEnum;
   whoSentEquipment: string;
@@ -57,4 +61,47 @@ export interface EquipmentReceivedModel {
 
 export interface otherStory {
   caseStudyStory: string;
+}
+
+
+
+// export interface CaseStudies extends Document {
+//   createdByUser: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
+
+
+
+const patientStorySchema = new Schema(
+  {
+    patientsName: { type: String },
+    patientsAge: { type: Number },
+    whereIsThePatientFrom: { type: String },
+    whyComeToHCBH: { type: String },
+    howLongWereTheyAtHCBHinDays: { type: Number },
+    diagnosis: { type: String },
+    caseStudyStory: { type: String },
+  },
+  { timestamps: true },
+);
+
+const staffRecognitionSchema = new Schema(
+  {
+    staffName: { type: String },
+    jobTitle: { type: String },
+    department: { type: String },
+    howManyMonthsWorkingAtHCBH: { type: Number },
+    mostEnjoy: { type: String },
+    caseStudyStory: { type: String },
+  },
+  { timestamps: true },
+);
+
+const patientStory = mongoose.model('PatientStory', patientStorySchema, 'caseStudies');
+const staffRecognition = mongoose.model('StaffRecognition', staffRecognitionSchema, 'caseStudies');
+
+export {
+  patientStory,
+  staffRecognition,
 }
