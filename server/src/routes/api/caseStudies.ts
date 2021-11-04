@@ -37,6 +37,14 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:caseStudyType', async (req, res) => {
+    try {
+        await CaseStudy.find({caseStudyType: req.params.caseStudyType}).then(data => res.json(data));
+    } catch (err) {
+        res.status(500).json({ message: 'Something went wrong.' });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = req.body;
