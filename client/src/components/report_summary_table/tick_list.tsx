@@ -1,7 +1,5 @@
-import { timeStamp } from "console";
-
 export interface TickObserver {
-  (tickList: TickList): void;
+  (tickList: TickList) : void;
 }
 
 export type TickListData = {
@@ -74,8 +72,6 @@ export class TickList {
   }
 
   tickAll(): void {
-    console.log("Ticking all .... \n");
-
     Object.keys(this.records).forEach((key) => {
       this.records[key] = true;
     })
@@ -84,8 +80,6 @@ export class TickList {
   }
 
   untickAll(): void {
-    console.log("Unticking all .... \n");
-    
     Object.keys(this.records).forEach((key) => {
       this.records[key] = false;
     })
