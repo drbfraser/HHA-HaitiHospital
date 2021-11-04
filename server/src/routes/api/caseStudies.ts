@@ -58,7 +58,6 @@ router.post('/', async (req, res) => {
             equipmentReceived,
             otherStory
         });
-
         newCaseStudy.save()
             .then(() => res.json("Case study submmitted successfully"))
     } catch (err) {
