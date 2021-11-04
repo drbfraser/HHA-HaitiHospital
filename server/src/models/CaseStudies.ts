@@ -2,6 +2,14 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
+enum CaseStudyOptions {
+  PatientStory,
+  StaffRecognition,
+  TrainingSession,
+  EquipmentReceived,
+  OtherStory,
+}
+
 const patientStorySchema = new Schema(
   {
     patientsName: { type: String },
@@ -55,7 +63,7 @@ const otherStorySchema = new Schema(
 
 const caseStudySchema = new Schema(
   {
-    caseStudyType: { type: String },
+    caseStudyType: { type: CaseStudyOptions },
     // TODO: add created by user. right now JWT is not yet applied
     // createdByUser: { type: String},
     patientStory: patientStorySchema,

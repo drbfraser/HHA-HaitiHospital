@@ -37,9 +37,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:caseStudyType', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        await CaseStudy.find({caseStudyType: req.params.caseStudyType}).then(data => res.json(data));
+        await CaseStudy.findById(req.params.id).then(data => res.json(data));
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }

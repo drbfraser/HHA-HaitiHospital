@@ -1,5 +1,5 @@
 {
-    "caseStudyType": "PatientStory",
+    "caseStudyType": 0,
     "patientStory":   {
         "patientsName": "John Doe",
         "patientsAge": 65,
