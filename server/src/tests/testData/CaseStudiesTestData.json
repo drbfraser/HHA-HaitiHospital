@@ -2,7 +2,7 @@
     "caseStudyType": "PatientStory",
     "patientStory":   {
         "patientsName": "John Doe",
-        "patientsAge": 69,
+        "patientsAge": 65,
         "whereIsThePatientFrom": "Haiti",
         "whyComeToHCBH": "They like the people here",
         "howLongWereTheyAtHCBHinDays": 365,
