@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 
 const patientStorySchema = new Schema(
   {
-    createdByUser: { type: String },
     patientsName: { type: String },
     patientsAge: { type: Number },
     whereIsThePatientFrom: { type: String },
@@ -18,7 +17,6 @@ const patientStorySchema = new Schema(
 
 const staffRecognitionSchema = new Schema(
   {
-    createdByUser: { type: String },
     staffName: { type: String },
     jobTitle: { type: String },
     department: { type: String },
@@ -31,7 +29,6 @@ const staffRecognitionSchema = new Schema(
 
 const trainingSessionSchema = new Schema(
   {
-    createdByUser: { type: String },
     trainingDate: { type: Date },
     trainingOn: { type: String },
     whoConducted: { type: String },
@@ -44,7 +41,6 @@ const trainingSessionSchema = new Schema(
 
 const equipmentReceivedSchema = new Schema(
   {
-    createdByUser: { type: String },
     equipmentReceived: { type: String },
     departmentIdReceived: { type: Number },
     whoSentEquipment: { type: String },
@@ -57,22 +53,36 @@ const equipmentReceivedSchema = new Schema(
 
 const otherStorySchema = new Schema(
   {
-    createdByUser: { type: String },
     caseStudyStory: { type: String },
   },
   { timestamps: true },
 );
 
-const PatientStory = mongoose.model('PatientStory', patientStorySchema, 'caseStudies');
-const StaffRecognition = mongoose.model('StaffRecognition', staffRecognitionSchema, 'caseStudies');
-const TrainingSession = mongoose.model('TrainingSession', trainingSessionSchema, 'caseStudies');
-const EquipmentReceived = mongoose.model('EquipmentReceived', equipmentReceivedSchema, 'caseStudies');
-const OtherStory = mongoose.model('OtherStory', otherStorySchema, 'caseStudies');
+const caseStudiesSchema = new Schema(
+  {
+    caseStudyType: { type: String },
+    patientStory: patientStorySchema,
+    staffRecognition: staffRecognitionSchema,
+    trainingSession: trainingSessionSchema,
+    equipmentReceived: equipmentReceivedSchema,
+    otherStory: otherStorySchema
+  },
+  { timestamps: true },
+);
 
-export {
-  PatientStory,
-  StaffRecognition,
-  TrainingSession,
-  EquipmentReceived,
-  OtherStory,
-}
+// const PatientStory = mongoose.model('PatientStory', patientStorySchema, 'caseStudies');
+// const StaffRecognition = mongoose.model('StaffRecognition', staffRecognitionSchema, 'caseStudies');
+// const TrainingSession = mongoose.model('TrainingSession', trainingSessionSchema, 'caseStudies');
+// const EquipmentReceived = mongoose.model('EquipmentReceived', equipmentReceivedSchema, 'caseStudies');
+// const OtherStory = mongoose.model('OtherStory', otherStorySchema, 'caseStudies');
+const CaseStudies = mongoose.model('CaseStudies', caseStudiesSchema, 'caseStudies');
+
+// export {
+//   PatientStory,
+//   StaffRecognition,
+//   TrainingSession,
+//   EquipmentReceived,
+//   OtherStory,
+//   CaseStudies,
+// }
+export default CaseStudies;
