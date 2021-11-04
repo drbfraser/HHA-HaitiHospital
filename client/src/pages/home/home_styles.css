@@ -1,153 +1,163 @@
-body {
-  /*background: linear-gradient(#04181F 50%, #D1D2A5, transparent);*/
-  /*background-repeat: no-repeat;*/
-  /*background-size: cover;*/
-  /*width: 1920px;*/
-  /* height: 1000px;*/
-  /*text-align: center;*/
-  /*color: white;*/
-  /*font-size: 20px;*/
-}
+/*.home {*/
+  /*width: 100vw;*/
+  /*height: 100vw;*/
+  /*background-color: lime;*/
+/*}*/
 
-.homePage-department {
-  font-weight: bold;
-  font-size: 30px;
-  color: #D1D2A5;
-  padding-top: 30px;
-  justify-content: center;
-  margin-top: 30px;
-}
-.homePage-department h1 {
-  padding-right: 800px;
-  font-size: 40px;
-  font-weight: bold;
-  color: white;
-  opacity: 0.5;
-}
-.button1 {
-  width: 200px;
-  height: 350px;
-  margin-left: 20px;
-  border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/NICUPEAD.jpg");
-  background-size: 140%;
-  background-position: -35px;
-  /*margin-top: -50px;*/
-  border-radius: 10px;
-  transition-duration: .50s;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-  font-size: 25px;
-  font-weight: bold;
-  color: #D1D2A5;
-}
-.button2 {
-  width: 200px;
-  height: 350px;
-  margin-left: 20px;
-  border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/MATERNITY.jpg");
-  background-size: 300%;
-  background-position: -240px;
-  /*padding-top: 180px;*/
-  border-radius: 10px;
-  transition-duration: .50s;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-  font-size: 25px;
-  font-weight: bold;
-  color: #D1D2A5;
-}
-.button3 {
-  width: 200px;
-  height: 350px;
-  margin-left: 20px;
-  border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/REHAB.jpg");
-  background-size: 150%;
-  background-position: -40px -20px;
-  /*margin-top: -50px;*/
-  border-radius: 10px;
-  transition-duration: .50s;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-  font-size: 25px;
-  font-weight: bold;
-  color: #D1D2A5;
-}
-.button4 {
-  width: 200px;
-  height: 350px;
-  margin-left: 20px;
-  border: 5px solid #87EDF3;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/COMMUNITYHEALTH.jpg");
-  background-size: 300%;
-  background-position: -240px;
-  /*padding-top: 180px;*/
-  border-radius: 10px;
-  transition-duration: .50s;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-  font-size: 25px;
-  font-weight: bold;
-  color: #D1D2A5;
-}
-.button5 {
-  width: 200px;
-  height: 350px;
-  margin-left: 20px;
-  border: 5px solid #D1D2A5;
-  /*width: 200px;*/
-  /*height: 400px;*/
-  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("../../img/moreicon.png");
-  /*background-color: #B4B4A8;*/
-  background-size: 100%;
-  /*background-position: 0px 50px;*/
-  background-position: center;
-  background-repeat: no-repeat;
-  color: #87EDF3;
-  /*font-size: 30px;*/
-  /*vertical-align: bottom;*/
-  /*padding-top: 250px;*/
-  border-radius: 10px;
-  transition-duration: .50s;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-  font-size: 25px;
-  font-weight: bold;
-}
+/*body {*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*  background-color: #2F4050;*/
 
-.caseStudyButton {
-  border: none;
-  background: transparent url("../../img/rightArrow.png");
-  background-size: 15%;
-  background-repeat: no-repeat;
-  /*background-position: right;*/
-  background-position: right 100%;
-  padding-right: 70px;
-  font-size: 50px;
-  /*position: absolute;*/
-  /*top: 180px;*/
-  /*right: 350px;*/
-  margin-right: 720px;
-  margin-top: 100px;
-  font-weight: bold;
-  /*color: #D1D2A5;*/
-  color: #04181F;
-  border-radius: 20px;
-}
-.caseStudy-image img {
-  border: 5px solid #04181F;
-  border-radius: 5px;
-  margin-left: 10px;
-  margin-top: 10px;
-  opacity: 0.8;
-}
-.caseOne {
-  width: 350px;
-  height: 500px;
-}
-.caseTwo {
-  width: 700px;
-  height: 500px;
-}
-button:hover {
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-  transform: scale(0.95);
-  opacity: 0.5;
-}
+/*  !*background: linear-gradient(#04181F 50%, #D1D2A5, transparent);*!*/
+/*  !*background-repeat: no-repeat;*!*/
+/*  !*background-size: cover;*!*/
+/*  !*width: 1920px;*!*/
+/*  !* height: 1000px;*!*/
+/*  !*text-align: center;*!*/
+/*  !*color: white;*!*/
+/*  !*font-size: 20px;*!*/
+/*}*/
+
+/*.homePage-department {*/
+/*  font-weight: bold;*/
+/*  font-size: 30px;*/
+/*  color: #D1D2A5;*/
+/*  padding-top: 30px;*/
+/*  justify-content: center;*/
+/*  margin-top: 30px;*/
+/*}*/
+/*.homePage-department h1 {*/
+/*  padding-right: 800px;*/
+/*  font-size: 40px;*/
+/*  font-weight: bold;*/
+/*  color: white;*/
+/*  opacity: 0.5;*/
+/*}*/
+/*.button1 {*/
+/*  width: 200px;*/
+/*  height: 350px;*/
+/*  margin-left: 20px;*/
+/*  border: 5px solid #87EDF3;*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/NICUPEAD.jpg");*/
+/*  background-size: 140%;*/
+/*  background-position: -35px;*/
+/*  !*margin-top: -50px;*!*/
+/*  border-radius: 10px;*/
+/*  transition-duration: .50s;*/
+/*  box-shadow: 0 30px 60px rgba(0,0,0,0.5);*/
+/*  font-size: 25px;*/
+/*  font-weight: bold;*/
+/*  color: #D1D2A5;*/
+/*}*/
+/*.button2 {*/
+/*  width: 200px;*/
+/*  height: 350px;*/
+/*  margin-left: 20px;*/
+/*  border: 5px solid #87EDF3;*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/MATERNITY.jpg");*/
+/*  background-size: 300%;*/
+/*  background-position: -240px;*/
+/*  !*padding-top: 180px;*!*/
+/*  border-radius: 10px;*/
+/*  transition-duration: .50s;*/
+/*  box-shadow: 0 30px 60px rgba(0,0,0,0.5);*/
+/*  font-size: 25px;*/
+/*  font-weight: bold;*/
+/*  color: #D1D2A5;*/
+/*}*/
+/*.button3 {*/
+/*  width: 200px;*/
+/*  height: 350px;*/
+/*  margin-left: 20px;*/
+/*  border: 5px solid #87EDF3;*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/REHAB.jpg");*/
+/*  background-size: 150%;*/
+/*  background-position: -40px -20px;*/
+/*  !*margin-top: -50px;*!*/
+/*  border-radius: 10px;*/
+/*  transition-duration: .50s;*/
+/*  box-shadow: 0 30px 60px rgba(0,0,0,0.5);*/
+/*  font-size: 25px;*/
+/*  font-weight: bold;*/
+/*  color: #D1D2A5;*/
+/*}*/
+/*.button4 {*/
+/*  width: 200px;*/
+/*  height: 350px;*/
+/*  margin-left: 20px;*/
+/*  border: 5px solid #87EDF3;*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../img/COMMUNITYHEALTH.jpg");*/
+/*  background-size: 300%;*/
+/*  background-position: -240px;*/
+/*  !*padding-top: 180px;*!*/
+/*  border-radius: 10px;*/
+/*  transition-duration: .50s;*/
+/*  box-shadow: 0 30px 60px rgba(0,0,0,0.5);*/
+/*  font-size: 25px;*/
+/*  font-weight: bold;*/
+/*  color: #D1D2A5;*/
+/*}*/
+/*.button5 {*/
+/*  width: 200px;*/
+/*  height: 350px;*/
+/*  margin-left: 20px;*/
+/*  border: 5px solid #D1D2A5;*/
+/*  !*width: 200px;*!*/
+/*  !*height: 400px;*!*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("../../img/moreicon.png");*/
+/*  !*background-color: #B4B4A8;*!*/
+/*  background-size: 100%;*/
+/*  !*background-position: 0px 50px;*!*/
+/*  background-position: center;*/
+/*  background-repeat: no-repeat;*/
+/*  color: #87EDF3;*/
+/*  !*font-size: 30px;*!*/
+/*  !*vertical-align: bottom;*!*/
+/*  !*padding-top: 250px;*!*/
+/*  border-radius: 10px;*/
+/*  transition-duration: .50s;*/
+/*  box-shadow: 0 30px 60px rgba(0,0,0,0.5);*/
+/*  font-size: 25px;*/
+/*  font-weight: bold;*/
+/*}*/
+
+/*.caseStudyButton {*/
+/*  border: none;*/
+/*  background: transparent url("../../img/rightArrow.png");*/
+/*  background-size: 15%;*/
+/*  background-repeat: no-repeat;*/
+/*  !*background-position: right;*!*/
+/*  background-position: right 100%;*/
+/*  padding-right: 70px;*/
+/*  font-size: 50px;*/
+/*  !*position: absolute;*!*/
+/*  !*top: 180px;*!*/
+/*  !*right: 350px;*!*/
+/*  margin-right: 720px;*/
+/*  margin-top: 100px;*/
+/*  font-weight: bold;*/
+/*  !*color: #D1D2A5;*!*/
+/*  color: #04181F;*/
+/*  border-radius: 20px;*/
+/*}*/
+/*.caseStudy-image img {*/
+/*  border: 5px solid #04181F;*/
+/*  border-radius: 5px;*/
+/*  margin-left: 10px;*/
+/*  margin-top: 10px;*/
+/*  opacity: 0.8;*/
+/*}*/
+/*.caseOne {*/
+/*  width: 350px;*/
+/*  height: 500px;*/
+/*}*/
+/*.caseTwo {*/
+/*  width: 700px;*/
+/*  height: 500px;*/
+/*}*/
+/*button:hover {*/
+/*  box-shadow: 0 30px 60px rgba(0,0,0,0.5);*/
+/*  transform: scale(0.95);*/
+/*  opacity: 0.5;*/
+/*}*/
