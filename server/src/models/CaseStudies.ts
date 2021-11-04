@@ -58,9 +58,11 @@ const otherStorySchema = new Schema(
   { timestamps: true },
 );
 
-const caseStudiesSchema = new Schema(
+const caseStudySchema = new Schema(
   {
     caseStudyType: { type: String },
+    // TODO: add created by user. right now JWT is not yet applied
+    // createdByUser: { type: String},
     patientStory: patientStorySchema,
     staffRecognition: staffRecognitionSchema,
     trainingSession: trainingSessionSchema,
@@ -70,19 +72,6 @@ const caseStudiesSchema = new Schema(
   { timestamps: true },
 );
 
-// const PatientStory = mongoose.model('PatientStory', patientStorySchema, 'caseStudies');
-// const StaffRecognition = mongoose.model('StaffRecognition', staffRecognitionSchema, 'caseStudies');
-// const TrainingSession = mongoose.model('TrainingSession', trainingSessionSchema, 'caseStudies');
-// const EquipmentReceived = mongoose.model('EquipmentReceived', equipmentReceivedSchema, 'caseStudies');
-// const OtherStory = mongoose.model('OtherStory', otherStorySchema, 'caseStudies');
-const CaseStudies = mongoose.model('CaseStudies', caseStudiesSchema, 'caseStudies');
+const CaseStudy = mongoose.model('CaseStudy', caseStudySchema);
 
-// export {
-//   PatientStory,
-//   StaffRecognition,
-//   TrainingSession,
-//   EquipmentReceived,
-//   OtherStory,
-//   CaseStudies,
-// }
-export default CaseStudies;
+export default CaseStudy;
