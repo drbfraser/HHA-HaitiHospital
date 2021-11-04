@@ -11,8 +11,7 @@ const patientStorySchema = new Schema(
     howLongWereTheyAtHCBHinDays: { type: Number },
     diagnosis: { type: String },
     caseStudyStory: { type: String },
-  },
-  { timestamps: true },
+  }
 );
 
 const staffRecognitionSchema = new Schema(
@@ -23,8 +22,7 @@ const staffRecognitionSchema = new Schema(
     howManyMonthsWorkingAtHCBH: { type: Number },
     mostEnjoy: { type: String },
     caseStudyStory: { type: String },
-  },
-  { timestamps: true },
+  }
 );
 
 const trainingSessionSchema = new Schema(
@@ -35,8 +33,7 @@ const trainingSessionSchema = new Schema(
     whoAttended: { type: String },
     benefitsFromTraining: { type: String },
     caseStudyStory: { type: String },
-  },
-  { timestamps: true },
+  }
 );
 
 const equipmentReceivedSchema = new Schema(
@@ -47,15 +44,13 @@ const equipmentReceivedSchema = new Schema(
     purchasedOrDonated: { type: String },
     whatDoesEquipmentDo: { type: String },
     caseStudyStory: { type: String },
-  },
-  { timestamps: true },
+  }
 );
 
 const otherStorySchema = new Schema(
   {
     caseStudyStory: { type: String },
-  },
-  { timestamps: true },
+  }
 );
 
 const caseStudySchema = new Schema(
