@@ -60,6 +60,7 @@ router.post('/', async (req, res) => {
         });
         newCaseStudy.save()
             .then(() => res.json("Case study submmitted successfully"))
+            .catch(err => res.status(400).json('Case study submission failed: ' + err));
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }
