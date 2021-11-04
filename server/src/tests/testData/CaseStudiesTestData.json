@@ -1,0 +1,16 @@
+{
+    "caseStudyType": "PatientStory",
+    "patientStory":   {
+        "patientsName": "John Doe",
+        "patientsAge": 69,
+        "whereIsThePatientFrom": "Haiti",
+        "whyComeToHCBH": "They like the people here",
+        "howLongWereTheyAtHCBHinDays": 365,
+        "diagnosis": "covid 19",
+        "caseStudyStory": "John Doe's story..."
+    },
+    "staffRecognition": null,
+    "trainingSession": null,
+    "equipmentReceived": null,
+    "otherStory": null
+}
