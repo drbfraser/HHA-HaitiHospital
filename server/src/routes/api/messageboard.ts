@@ -9,11 +9,11 @@ router.get('/', async (req: any, res: any) => {
 });
 
 //REMOVED FOR NOW - MIGHT BRING DEPARTMENT SPECIFIC MESSAGES FUNCTION BACK LATER
-// router.get('/department/:departmentId', async (req: any, res: any) => {
-//     MessageBody.find({departmentId: req.params.departmentId}).sort({date : 'desc'})
-//         .then(Reports => res.json(Reports))
-//         .catch(err => res.status(400).json('Could not find any results: ' + err));
-// });
+router.get('/department/:departmentId', async (req: any, res: any) => {
+    MessageBody.find({departmentId: req.params.departmentId}).sort({date : 'desc'})
+        .then(Reports => res.json(Reports))
+        .catch(err => res.status(400).json('Could not find any results: ' + err));
+});
 
 router.get('/message/:messageId', async (req: any, res: any) => {
     MessageBody.findById(req.params.messageId)
