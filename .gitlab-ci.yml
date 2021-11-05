@@ -62,6 +62,7 @@ test-client:
   script:
     - sudo docker-compose logs client
     - sudo docker ps | grep hha-app-client
+    - sudo docker logs hha-app-client | ( ! grep "Failed to compile")
 
 # deploy-job:
 #   stage: deploy
