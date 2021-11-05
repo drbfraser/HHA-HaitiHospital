@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Message from 'components/message/message';
 import Loader from 'components/loader/loader';
-// import { getMessages } from '../../store/actions/messageActions';
+import { getMessages } from '../../actions/messageActions';
 import { ElementStyleProps } from 'constants/interfaces';
 
 import './message_list_styles.css';
@@ -35,9 +35,9 @@ export default MessageList;
 //           <Loader />
 //         ) : (
 //           <>
-//             {messages.map((message, index) => {
-//               return <Message key={index} message={message} />;
-//             })}
+//             {/* {messages.map((message, index) => {
+//               // return <Message key={index} message={message} />;
+//             })} */}
 //           </>
 //         )}
 //       </div>
