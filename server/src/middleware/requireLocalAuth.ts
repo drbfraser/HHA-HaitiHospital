@@ -6,12 +6,11 @@ import { Request, Response, NextFunction } from "express";
 
 const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate('local', (err, user, info) => {
-    // console.log(user);
-    // console.log(req);
     if (err) {
       return next(err);
     }
     if (!user) {
+      console.log("Cannot authenticate request")
       return res.status(422).send(info);
     }
     req.user = user;

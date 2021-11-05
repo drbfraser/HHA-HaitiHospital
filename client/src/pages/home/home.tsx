@@ -2,7 +2,9 @@ import React from "react"
 import { ElementStyleProps } from 'constants/interfaces'
 import SideBar from 'components/side_bar/side_bar'
 import Header from 'components/header/header'
-// import { NavLink } from "react-router-dom";
+import DashboardMessageOverview from "components/dashboard_message_overview/dashboard_message_overview"
+
+// import messages from "../../../../server/src/routes/api/messages";
 // import { RouteComponentProps } from "react-router-dom";
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,7 +16,6 @@ interface HomeProps extends ElementStyleProps {
 // };
 
 
-
 const Home = (props : HomeProps) => {
     return (
     <div className={'home '+ (props.classes||'')}>
@@ -22,73 +23,8 @@ const Home = (props : HomeProps) => {
 
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <Header/>
-
-            <div className="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 className="pb-2 mb-3">Message Board</h5>
-
-                <div className="d-flex justify-content-between border-bottom pb-2 mb-0 row">
-                    <h6 className="text-secondary col">Message</h6>
-                    <h6 className="text-secondary col-md-3">Creator</h6>
-                    <h6 className="text-secondary col-md-3">Date</h6>
-                    <h6 className="text-secondary col-md-1">Priority</h6>
-                </div>
-
-                <div className="d-flex text-muted pt-3">
-                    <div className="pb-3 mb-0 small lh-sm border-bottom w-100">
-                        <div className="d-flex row">
-                            <span className="text-black col">A message is defined as information conveyed by words and/or other signs and symbols.</span>
-                            <span className="text-black col-md-3">Creator's full name</span>
-                            <span className="text-black col-md-3">May 26, 2021</span>
-                            <span className="text-black col-md-1">HIGH</span>
-                        </div>
-                        <div className="d-flex justify-content-between row">
-                            <span className="text-black-50 col">Updated 1 day ago</span>
-                            <span className="text-black-50 col-md-3">on 24-05-2021</span>
-                            <span className="text-black-50 col-md-3">8:00 AM</span>
-                            <span className="text-black-50 col-md-1"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="d-flex text-muted pt-3">
-                    <div className="pb-3 mb-0 small lh-sm border-bottom w-100">
-                        <div className="d-flex row">
-                            <span className="text-black col">A message is defined as ...</span>
-                            <span className="text-black col-md-3">Creator's full name</span>
-                            <span className="text-black col-md-3">May 26, 2021</span>
-                            <span className="text-black col-md-1">HIGH</span>
-                        </div>
-                        <div className="d-flex justify-content-between row">
-                            <span className="text-black-50 col">Updated 1 day ago</span>
-                            <span className="text-black-50 col-md-3">on 24-05-2021</span>
-                            <span className="text-black-50 col-md-3">8:00 AM</span>
-                            <span className="text-black-50 col-md-1"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="d-flex text-muted pt-3">
-                    <div className="pb-3 mb-0 small lh-sm border-bottom w-100">
-                        <div className="d-flex row">
-                            <span className="text-black col">A message is defined as ...</span>
-                            <span className="text-black col-md-3">Creator's full name</span>
-                            <span className="text-black col-md-3">May 26, 2021</span>
-                            <span className="text-black col-md-1">HIGH</span>
-                        </div>
-                        <div className="d-flex justify-content-between row">
-                            <span className="text-black-50 col">Updated 1 day ago</span>
-                            <span className="text-black-50 col-md-3">on 24-05-2021</span>
-                            <span className="text-black-50 col-md-3">8:00 AM</span>
-                            <span className="text-black-50 col-md-1"/>
-                        </div>
-                    </div>
-                </div>
-
-                <small className="d-block text-end mt-3">
-                    <a href="#">a link</a>
-                </small>
-            </div>
-
+            <DashboardMessageOverview messages = {[]}/>
+            {/*<DashboardMessageOverview/>*/}
         </main>
 
 
@@ -135,6 +71,7 @@ const Home = (props : HomeProps) => {
       {/*        <img src={case2} className="caseTwo" alt="case2" />*/}
       {/*    </div>*/}
       {/*</div>*/}
+
     </div>
   );
 }

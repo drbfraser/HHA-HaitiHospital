@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
 
-import {DB_GET_ID_REPORT_URL} from 'constants/routing';
 import { ReportProps } from 'constants/interfaces';
-import TextHolder from 'components/text_holder/text_holder';
 import ReportDisplay from 'components/report_display/report_display';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
 import Header from 'components/header/header';
+import './styles.css';
 
 
 interface DepartmentReportProps extends ElementStyleProps {
+  edit: boolean;
 };
 
 interface UrlParams {
@@ -22,37 +22,100 @@ interface UrlParams {
 
 const DepartmentReport = (props : DepartmentReportProps) => {
   const { id } = useParams<UrlParams>();
-
-  const detailedReportUrl = DB_GET_ID_REPORT_URL + id;
-
+  const getReportApi = `/api/report/viewreport/${id}`;
   const [ report, setReport] = useState<ReportProps>({});
+  const apiSource = Axios.CancelToken.source();
+  // Get Report Id when Loaded
   useEffect(() => {
-    const getReport = async() => {
+    let isMounted = true;
+    async function getReport() {
       const reportFromServer = await fetchReport();
-      setReport(reportFromServer);
-    }
-
+      if (isMounted)
+        setReport(reportFromServer);
+    };
+    
     getReport();
+
+    return function cancelReqWhenUnmounted() {
+      isMounted = false;
+      apiSource.cancel();
+    }
   });
 
-  const fetchReport = async () => {
+  async function fetchReport() {
     try {
-      const res = await Axios.get(detailedReportUrl)
+      const res = await Axios.get(getReportApi, {
+        cancelToken: apiSource.token
+      });
       return res.data;
+    } catch (err) {
+      if (Axios.isCancel(err)) {
+        console.log(`Info: Cancel subsciption to ${getReportApi} API`, err);
       }
-      catch (err) {
-        console.log(err);
-      }
+      else { console.log(err); }
+    }
+    return {};
   }
 
+  function getClassName() {
+    if (props.classes === undefined)
+      return 'department-report';
+    else
+      return `department-report ${props.classes}`;
+  }
+
+
   return (
-    <div className={'department-report '+(props.classes||'')}>
+    <div className={getClassName()}>
       <Header/>
-      {
-        (Object.keys(report).length===0 ) ?
-          <TextHolder text = 'No report found'/>:
-          <ReportDisplay report = {report as ReportProps}/>
-      }  
+      <div className='mt-2'>
+        {/* Dept Title */}
+        <section className='mt-3'>
+          <h1 className="lead text-center">Department of NICU/PEAD</h1>
+        </section>
+
+
+        {/* Report Details */}
+        <section className='mt-3'>
+          <div className="container w-50">
+            {
+              (Object.keys(report).length===0 ) ?
+                <h3 className="lead">'No report found'</h3>:
+                <ReportDisplay 
+                  report = {report.formData as ReportProps}
+                  edit = {props.edit}
+                />
+            }
+          </div>
+        </section>
+        
+        {/* Utility buttons */}
+        {
+          (props.edit === true) ?
+            <section className='mt-3'>
+              <div className='container w-50'>
+                <ul className='row justify-content-md-center'>
+                  <li className='col-sm-auto'><button className="">Save</button></li>
+                  <li className='col-sm-auto'>
+                    <Link to={'/Department1NICU'}>
+                      <button className="">Discard</button>
+                    </Link>
+                  </li>
+                  <li className='col-sm-auto'><button className="">Submit</button></li>
+                </ul>
+              </div>
+            </section>
+          :
+            <section className="mt-3">
+              <div className="container w-50 text-center">
+                <Link to={'/Department1NICU'}>
+                  <button className="">Back</button>
+                </Link>
+              </div>
+            </section>
+        }
+       
+      </div>  
     </div>
   )
 }

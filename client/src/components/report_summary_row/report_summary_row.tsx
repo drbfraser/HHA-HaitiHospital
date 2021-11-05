@@ -5,11 +5,9 @@ import Button from 'components/button/button';
 import TextHolder from 'components/text_holder/text_holder';
 import { ElementStyleProps} from 'constants/interfaces';
 
-import {DETAILED_REPORT_ROUTE} from 'constants/routing';
-
 interface ReportSummaryProps extends ElementStyleProps {
   // report: ReportProps;
-  reportId: number;
+  reportId: string;
   lastUpdatedOn: string;
   lastUpdatedBy: number;
 }
@@ -17,19 +15,29 @@ interface ReportSummaryProps extends ElementStyleProps {
 const ReportSummaryRow = (props: ReportSummaryProps) => {
 
   return (
-    <tr className={'report-summary-row '+ (props.classes || '')}>
+    <tr>
+      <th scope='row'>
+        <Link to={`/Department1NICU/detailed_report/view/${props.reportId}`}>
+          { props.reportId }
+        </Link>
+      </th>
+      <td>{ props.lastUpdatedOn }</td>
+      <td>{ props.lastUpdatedBy }</td>
       <td>
-        <Link to={DETAILED_REPORT_ROUTE +props.reportId}>
-          {props.reportId}
+        <Link to={`/Department1NICU/detailed_report/edit/${props.reportId}`}>
+          <button className="btn btn-small btn-primary">Edit</button>
         </Link>
       </td>
-      <td> { props.lastUpdatedOn } </td>
-      <td>{props.lastUpdatedBy}</td>
-      <td><Button value='edit'/></td>
-      <td><Button value='del'/></td>
-      <td><TextHolder text='tick'/></td>
+      <td><button className="btn btn-small btn-primary">Delete</button></td>
+      <td>
+        <div className="form-check">
+          <input className="form-check-input" type="checkbox" value="" id="accumulateTick"/>
+          <label className="form-check-label" htmlFor="accumulateTick">
+          </label>
+        </div>
+      </td>
     </tr>
-  );
-};
+  )
+}
 
 export default ReportSummaryRow;

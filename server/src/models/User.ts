@@ -10,23 +10,23 @@ const { Schema } = mongoose;
 
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
 export interface User extends Document {
-  provider: string;
+  // provider: string;
   username: string;
-  email: string;
+  // email: string;
   password: string;
   name: string;
   role: string;
-  bio: string;
+  // bio: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const userSchema = new Schema<User>(
   {
-    provider: {
-      type: String,
-      required: true,
-    },
+    // provider: {
+    //   type: String,
+    //   required: true,
+    // },
     username: {
       type: String,
       lowercase: true,
@@ -35,14 +35,14 @@ const userSchema = new Schema<User>(
       match: [/^[a-zA-Z0-9_]+$/, 'is invalid'],
       index: true,
     },
-    email: {
-      type: String,
-      lowercase: true,
-      unique: true,
-      required: [true, "can't be blank"],
-      match: [/\S+@\S+\.\S+/, 'is invalid'],
-      index: true,
-    },
+    // email: {
+    //   type: String,
+    //   lowercase: true,
+    //   unique: true,
+    //   required: [true, "can't be blank"],
+    //   match: [/\S+@\S+\.\S+/, 'is invalid'],
+    //   index: true,
+    // },
     password: {
       type: String,
       trim: true,
@@ -52,7 +52,7 @@ const userSchema = new Schema<User>(
     name: String,
     // avatar: String,
     role: { type: String, default: 'USER' },
-    bio: String,
+    // bio: String,
     // TODO: Remove the commented code when we confirm that this file works.
     // google
     // googleId: {
@@ -66,7 +66,8 @@ const userSchema = new Schema<User>(
     //   unique: true,
     //   sparse: true,
     // },
-    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
+    // forms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Form' }],
+    // messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
   },
   { timestamps: true },
 );
@@ -84,8 +85,8 @@ userSchema.methods.toJSON = function () {
 
   return {
     id: this._id,
-    provider: this.provider,
-    email: this.email,
+    // provider: this.provider,
+    // email: this.email,
     username: this.username,
     // avatar: avatar,
     name: this.name,
@@ -103,8 +104,9 @@ userSchema.methods.generateJWT = function () {
     {
       expiresIn: '12h',
       id: this._id,
-      provider: this.provider,
-      email: this.email,
+      // provider: this.provider,
+      // email: this.email,
+      username: this.username,
     },
     secretOrKey,
   );
@@ -125,12 +127,10 @@ userSchema.methods.registerUser = (newUser, callback) => {
 };
 
 userSchema.methods.comparePassword = function (candidatePassword, callback) {
-  hashPassword(this.password).then(hashedPassword => {
-    bcrypt.compare(candidatePassword, hashedPassword, (err, isMatch) => {
-      if (err) return callback(err);
-      callback(null, isMatch);
-    });
-  })
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) return callback(err);
+    callback(null, isMatch);
+  });
 };
 
 export async function hashPassword(password) {

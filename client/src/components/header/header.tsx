@@ -10,6 +10,7 @@ interface HeaderProps extends ElementStyleProps{
 function HeaderView() {
     const location = useLocation();
     console.log(location.pathname);
+    // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
 
     if (location.pathname.slice(1) === 'home') {
         return <h4 className="text-secondary">Overview</h4>

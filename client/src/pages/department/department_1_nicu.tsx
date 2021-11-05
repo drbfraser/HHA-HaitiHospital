@@ -2,7 +2,9 @@ import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header'
+import Header from "components/header/header";
+import DepartmentReports from 'components/department_reports/department_reports';
+import "./department_style.css"
 
 interface DepartmentProps extends ElementStyleProps {
 };
@@ -17,31 +19,40 @@ export const DepartmentOne = (props : DepartmentProps) => {
         <SideBar/>
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <Header/>
+            <div className="container mt-3">
 
-            {/*<h1 style={{color:"white",backgroundColor: '#87EDF3', fontFamily:'sans-serif'}}>Department of NICU/PAED</h1>*/}
+                {/* Department Title */ }
+                <section>
+                    <h1 className='text-start'>Department of NICU/PAED</h1>
+                </section>
 
-            <Link className="submit_data_button" to={"/NICUForm"} >Submit Data</Link>
+                {/* Nav buttons */}
+                <section>
+                    <div className="row my-2 justify-items-center">
 
-            <button className="GOTOSUMMARYPLZ"
-                    onClick={() => {
-                        props.history.push("/Department1NICU/summary_reports");
-                    }}>Report Summary
-            </button>
+                        <div className='col-sm-3'>
+                            <Link to={"/NICUForm"}>
+                                <button className=" btn btn-dark btn-sm rounded-bill">
+                                    <div className="lead">Submit Data</div>
+                                </button>
+                            </Link>
+                        </div>
 
+                        <div className='col-sm-3'>
+                            <Link to={"#"}>
+                                <button className="btn btn-dark btn-sm rounded-bill">
+                                    <div className="lead">Biomechanic</div>
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </section>
 
-            {/*<button className="Departmentbutton1">NICU / PAED</button>*/}
-            {/*<button className="Departmentbutton2"*/}
-            {/*        onClick={() => {*/}
-            {/*            props.history.push("/Department2Maternity");*/}
-            {/*        }}>MATERNITY</button>*/}
-            {/*<button className="Departmentbutton3"*/}
-            {/*        onClick={() => {*/}
-            {/*            props.history.push("/Department3Rehab");*/}
-            {/*        }}>REHAB</button>*/}
-            {/*<button className="Departmentbutton4"*/}
-            {/*        onClick={() => {*/}
-            {/*            props.history.push("/Department4ComHealth");*/}
-            {/*        }}>COM-HEALTH</button>*/}
+                {/* Department Report Summary */}
+                <section>
+                    <DepartmentReports department={"NICU/PAED"}/>
+                </section>
+            </div>
         </main>
 
     </div>

@@ -8,22 +8,22 @@ import { loginSchema } from './validators';
 
 const passportLogin = new PassportLocalStrategy(
   {
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     session: false,
     passReqToCallback: true,
   },
-  async (req, email, password, done) => {
-    loginSchema.validateAsync({ email, password }).then(val => {
+  async (req, username, password, done) => {
+    loginSchema.validateAsync({ username, password }).then(val => {
       req.body = val;
     }).catch(err => {
       throw new Error('Failed to validate input ' + err.details[0].message);
     })
 
     try {
-      const user = await User.findOne({ email: email.trim() });
+      const user = await User.findOne({ username: username.trim() });
       if (!user) {
-        return done(null, false, { message: 'Email does not exists.' });
+        return done(null, false, { message: 'Username does not exists.' });
       }
       user.comparePassword(password, function (err: any, isMatch: boolean) {
         if (err) {
