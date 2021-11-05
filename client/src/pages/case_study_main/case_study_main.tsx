@@ -12,10 +12,10 @@ interface CaseStudyMainProps extends ElementStyleProps {
 interface CaseStudyMainProps extends RouteComponentProps {};
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
-  const [showForm, setShowForm] = useState(0);
+  const [formOption, setformOption] = useState(-1);
 
   function refreshForm(formNum) {
-    setShowForm(formNum);
+    setformOption(formNum);
   }
 
   return (
@@ -45,14 +45,14 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                    </div>
                 </form>
              </div>
-             <div className={`form-group col-md-6 ${showForm === 1 ? "d-block" : "d-none"}`} id="Form1">
+             <div className={`form-group col-md-6 ${formOption === 1 ? "d-block" : "d-none"}`} id="Form1">
                <label className = "font-weight-bold">Patient Story Case Study</label>
                 <div className="form-row">
-                    <div className="col-md-6">
+                    <div className="col-md-8">
                         <label>Patient's Name</label>
                         <input className="form-control mb-2 mt-0" type="text"></input>
                     </div>
-                     <div className="col-md-2">
+                     <div className="col-md-4">
                         <label>Patient Age</label>
                         <input className="form-control mb-2 mt-0" type="number"></input>
                      </div>
@@ -68,7 +68,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                 <label>Case Study/Story</label>
                 <textarea className="form-control mb-2 mt-0"></textarea>
              </div>
-             <div className={`form-group col-md-6 ${showForm === 2 ? "d-block" : "d-none"}`} id="Form2">
+             <div className={`form-group col-md-6 ${formOption === 2 ? "d-block" : "d-none"}`} id="Form2">
                <label className = "font-weight-bold">Staff Recognition Case Study</label>
                 <div className="form-row">
                     <div className="col-md-6">
@@ -89,7 +89,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                 <label>Case Study/Story</label>
                 <textarea className="form-control mb-2 mt-0"></textarea>
              </div>
-             <div className={`form-group col-md-6 ${showForm === 3 ? "d-block" : "d-none"}`} id="Form3">
+             <div className={`form-group col-md-6 ${formOption === 3 ? "d-block" : "d-none"}`} id="Form3">
                <label className = "font-weight-bold">Training Session Case Study</label>
                 <div className="form-row">
                     <div className="col-md-6">
@@ -110,7 +110,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                 <label>Case Study/Story</label>
                 <textarea className="form-control"></textarea>
              </div>
-             <div className={`form-group col-md-6 ${showForm === 4 ? "d-block" : "d-none"}`} id="Form4">
+             <div className={`form-group col-md-6 ${formOption === 4 ? "d-block" : "d-none"}`} id="Form4">
                <label className = "font-weight-bold">Equipment Received Case Study</label>
                 <div className="form-row">
                     <div className="col-md-6">
@@ -137,7 +137,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                 <label>Case Study/Story</label>
                 <textarea className="form-control"></textarea>
              </div>
-             <div className={`form-group col-md-6 ${showForm === 5 ? "d-block" : "d-none"}`} id="Form5">
+             <div className={`form-group col-md-6 ${formOption === 5 ? "d-block" : "d-none"}`} id="Form5">
                  <label className = "font-weight-bold">Other Story Case Study</label>
                  <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story"></textarea>
              </div>
