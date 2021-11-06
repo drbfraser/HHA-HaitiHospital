@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import { TickObserver, TickList } from 'components/report_summary_table/tick_list';
+import { TickObserver, TickList } from 'components/department_reports/report_summary_table/tick_list';
 
 import {ElementStyleProps} from 'constants/interfaces';
 

@@ -1,10 +1,10 @@
 import React, {SyntheticEvent, useEffect, useState} from 'react';
 
 import { ElementStyleProps, ReportProps } from 'constants/interfaces';
-import ReportSummaryRow from 'components/report_summary_row/report_summary_row';
-import { TickList, TickListData, TickObserver } from 'components/report_summary_table/tick_list';
-import AllTick from 'components/report_summary_table/all_tick';
-import UtilityButtons from 'components/report_summary_table/utility_buttons';
+import ReportSummaryRow from 'components/department_reports/report_summary_table/report_summary_row';
+import { TickList, TickListData, TickObserver } from 'components/department_reports/report_summary_table/tick_list';
+import AllTick from 'components/department_reports/report_summary_table/all_tick';
+import UtilityButtons from 'components/department_reports/report_summary_table/utility_buttons';
 
 interface ReportSummaryTableProps extends ElementStyleProps {
   reports :ReportProps[], 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
 import { ElementStyleProps} from 'constants/interfaces';
-import {TickList, TickObserver} from 'components/report_summary_table/tick_list'
+import {TickList, TickObserver} from 'components/department_reports/report_summary_table/tick_list'
 
 interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
