@@ -6,8 +6,7 @@ FROM node:14.17.6
 # Working directory be app
 WORKDIR /usr/src/app
 
-COPY package.json ./
-RUN npm cache clean --force
+COPY package*.json ./
 
 ###  Installing dependencies
 

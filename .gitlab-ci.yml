@@ -35,7 +35,7 @@ start-app:
   tags:
     - cd
   script:
-    - sudo docker-compose -f docker-compose.yml up -d
+    - CI=false sudo docker-compose -f docker-compose.yml up -d
     # - sudo docker image prune -af
     - sleep 60
 
