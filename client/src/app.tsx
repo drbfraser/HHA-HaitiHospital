@@ -15,6 +15,7 @@ import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
+import AddMessage from 'components/message_form/message_form';
 
 const App = () => {
   return (
@@ -31,6 +32,8 @@ const App = () => {
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
+        {/* TODO: In the future nest addMessage route inside MessageBoard */}
+        <Route path="/addMessage" component={AddMessage} />
         {/* @ts-ignore */}
         <Route path='/Department1NICU/detailed_report/view/:id' exact component = {() => (<DepartmentReport edit={false}/>)} />
         {/* @ts-ignore */}

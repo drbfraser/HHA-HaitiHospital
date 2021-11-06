@@ -20,7 +20,7 @@ export default Message;
 // import moment from 'moment';
 // import { useFormik } from 'formik';
 
-// import { deleteMessage, editMessage, clearMessageError } from '../../store/actions/messageActions';
+// import { deleteMessage, editMessage, clearMessageError } from '../../actions/messageActions';
 // import { messageFormSchema } from './validation';
 
 // import './home_styles.css';
@@ -89,6 +89,7 @@ export default Message;
 //           <>
 //             <textarea
 //               name="text"
+//               /* @ts-ignore */
 //               rows="3"
 //               onChange={formik.handleChange}
 //               onBlur={formik.handleBlur}
