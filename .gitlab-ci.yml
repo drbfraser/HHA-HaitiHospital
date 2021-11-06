@@ -10,9 +10,6 @@ build-job:
   tags: 
     - cd
   script:
-    - echo setting up env
-    # - sudo apt-get install -y python-pip
-    # - sudo pip install docker-compose
     - sudo docker-compose down
     - sudo docker system prune --volumes -f
     - CI=false sudo docker-compose -f docker-compose.yml build --no-cache --parallel
