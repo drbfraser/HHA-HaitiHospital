@@ -1,4 +1,4 @@
-import { seedDepartments } from '../../utils/seedDepartments';
+import { seedDepartments } from '../../utils/seed';
 const router = require('express').Router();
 const { number } = require('joi');
 import Departments from '../../models/Departments';
@@ -104,5 +104,13 @@ router.route('/edit/:Reportid').put((req: any, res: any) => {
         .then(Report => res.json(Report))
         .catch(err => res.status(400).json('Could not successfully edit the report: ' + err));
 })
+
+//---DELETE REPORTS---//
+//delete a single report with Reportid
+router.route('/delete/:Reportid').delete((req: any, res: any) => {
+    FormEntry.deleteOne({_id: req.params.Reportid})
+        .then(() => res.json('Succesfully deleted report'))
+        .catch(err => res.status(400).json('Could not delete: ' + err));
+});
 
 export = router;

@@ -9,8 +9,7 @@ import passport from 'passport';
 import all_routes from 'express-list-endpoints';
 
 import routes from './routes';
-import { seedDb } from './utils/seed';
-import { seedDepartments } from './utils/seedDepartments';
+import { seedDb, seedDepartments } from './utils/seed';
 
 const app = express();
 
