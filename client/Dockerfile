@@ -6,12 +6,11 @@ FROM node:14.17.6
 # Working directory be app
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json ./
 
 ###  Installing dependencies
 
 RUN npm install --legacy-peer-deps
-
 # copy local files to app folder
 COPY . .
 
