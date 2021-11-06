@@ -10,6 +10,7 @@ import all_routes from 'express-list-endpoints';
 
 import routes from './routes';
 import { seedDb } from './utils/seed';
+import { seedDepartments } from './utils/seedDepartments';
 
 const app = express();
 
@@ -46,6 +47,7 @@ mongoose
   .then(() => {
     console.log('MongoDB Connected...');
     seedDb();
+    seedDepartments();
   })
   .catch((err) => console.log(err));
 
