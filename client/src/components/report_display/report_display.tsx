@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { ElementStyleProps, ReportProps} from 'constants/interfaces';
-import { SimpleEntry } from 'components/simple_report_entry/simple_report_entry';
-import { ArrayEntry } from 'components/array_report_entry/array_report_entry';
-import { ObjectEntry } from 'components/object_report_entry/object_report_entry';
+import { SimpleEntry } from 'components/report_display/simple_report_entry';
+import { ArrayEntry } from 'components/report_display/array_report_entry';
+import { ObjectEntry } from 'components/report_display/object_report_entry';
 
 interface ReportDisplayProps extends ElementStyleProps {
   report : ReportProps;
