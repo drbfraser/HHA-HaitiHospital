@@ -2,7 +2,9 @@ import React from "react"
 import { ElementStyleProps } from 'constants/interfaces'
 import SideBar from 'components/side_bar/side_bar'
 import Header from 'components/header/header'
+import DashboardLeaderOverview from "../../components/dashboard_leader_overview/dashboard_leader_overview";
 import DashboardMessageOverview from "components/dashboard_message_overview/dashboard_message_overview"
+
 
 // import messages from "../../../../server/src/routes/api/messages";
 // import { RouteComponentProps } from "react-router-dom";
@@ -23,8 +25,8 @@ const Home = (props : HomeProps) => {
 
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <Header/>
+            <DashboardLeaderOverview/>
             <DashboardMessageOverview messages = {[]}/>
-            {/*<DashboardMessageOverview/>*/}
         </main>
 
 

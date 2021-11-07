@@ -65,7 +65,7 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                      </div>
                  </tbody>
 
-                 <small className="d-block text-end mt-3">
+                 <small className="d-block text-end mt-1">
                     <NavLink to="/messageBoard">See More</NavLink>
                  </small>
              </div>
