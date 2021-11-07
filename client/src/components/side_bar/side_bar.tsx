@@ -17,7 +17,6 @@ const Sidebar = (props: SidebarProps) => {
 
     return (
         <div className={'Sidebar '+ (props.classes||'')}>
-            <div className="SidebarList">
             {/*<div className='position-fixed d-flex flex-column flex-shrink-0 p-3 bg-dark' style={{width: 220}}>*/}
                 <div className="sidebar_logo">
                     <div className="text-center">
@@ -128,7 +127,6 @@ const Sidebar = (props: SidebarProps) => {
                 {/*    )*/}
                 {/*})}*/}
 
-            </div>
         </div>
 
     );

@@ -1,25 +1,17 @@
 .wrapper { width: 100%}
 
 .Sidebar {
-    width: 200px;
+    /*width: 200px;*/
+    /*width: 100%;*/
     height: 100vh;
     display: flex;
-    /*justify-content: center;*/
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
+    /*justify-content: center;*/
     /*transition: 850ms;*/
+    margin-right: 90%;
 }
-
-.SidebarList {
-    /*height: 100%;*/
-    width: 100%;
-    background-color: #202020;
-    /*padding-left: 1rem;*/
-}
-
-
-
 
 .nav > li > a:hover, .nav > li > a:focus {
     /*background-color: #EF92A5;*/
@@ -27,7 +19,7 @@
     text-decoration: none;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 800px) {
     .text {
         display: none;
     }
