@@ -1,3 +1,5 @@
+.wrapper { width: 100%}
+
 .Sidebar {
     width: 200px;
     height: 100vh;
@@ -16,10 +18,25 @@
     /*padding-left: 1rem;*/
 }
 
+
+
+
 .nav > li > a:hover, .nav > li > a:focus {
     /*background-color: #EF92A5;*/
     background-color: #687d8f;
     text-decoration: none;
+}
+
+@media only screen and (max-width: 700px) {
+    .text {
+        display: none;
+    }
+    .sidebar_logo {
+        display: none;
+    }
+    .Sidebar {
+        width: 70px;
+    }
 }
 
 /*.Sidebar.active {*/

@@ -19,10 +19,12 @@ const Sidebar = (props: SidebarProps) => {
         <div className={'Sidebar '+ (props.classes||'')}>
             <div className="SidebarList">
             {/*<div className='position-fixed d-flex flex-column flex-shrink-0 p-3 bg-dark' style={{width: 220}}>*/}
-
-                <div className="text-center">
-                    <HhaLogo style={{width: 160}}/>
+                <div className="sidebar_logo">
+                    <div className="text-center">
+                        <HhaLogo style={{width: 160}}/>
+                    </div>
                 </div>
+
 
                 {/*<Link to="/home"*/}
                 {/*   className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">*/}
@@ -36,25 +38,25 @@ const Sidebar = (props: SidebarProps) => {
                     <li>
                         <NavLink to="/home" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-house-door-fill me-2"/>
-                            Home
+                            <span className="text text-light">Home</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/messageBoard" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-chat-right-text-fill me-2"/>
-                            Message Board
+                            <span className="text text-light">Message Board</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/leaderBoard" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-bar-chart-fill me-2"/>
-                            Leader Board
+                            <span className="text text-light">Leader Board</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/caseStudyMain" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-award-fill me-2"/>
-                            Case Study
+                            <span className="text text-light">Case Study</span>
                         </NavLink>
                     </li>
 
@@ -63,25 +65,25 @@ const Sidebar = (props: SidebarProps) => {
                     <li className="nav-item">
                         <NavLink to="/Department1NICU" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-stack me-2"/>
-                            NICU
+                            <span className="text text-light">NICU</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/Department2Maternity" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-stack me-2"/>
-                            Maternity
+                            <span className="text text-light">Maternity</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/Department3Rehab" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-stack me-2"/>
-                            Rehab
+                            <span className="text text-light">Rehab</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/Department4ComHealth" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-stack me-2"/>
-                            Com & Health
+                            <span className="text text-light">Com & Health</span>
                         </NavLink>
                     </li>
 
@@ -90,15 +92,15 @@ const Sidebar = (props: SidebarProps) => {
                     <li>
                         <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-person-badge-fill me-2"/>
-                            Admin
+                            <span className="text text-light">Admin</span>
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink to="/" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-gear-fill me-2"/>
-                            Setting
-                        </NavLink>
-                    </li>
+                    {/*<li>*/}
+                    {/*    <NavLink to="/" className="nav-link link-light" exact activeClassName="active">*/}
+                    {/*        <i className="bi bi-gear-fill me-2"/>*/}
+                    {/*        <span className="text text-light">Setting</span>*/}
+                    {/*    </NavLink>*/}
+                    {/*</li>*/}
                 </ul>
 
                 {/*<ul className='nav-menu-items'>*/}
