@@ -4,13 +4,19 @@ import { ElementStyleProps } from 'constants/interfaces';
 
 import './profile_styles.css';
 import Header from 'components/header/header';
+import SideBar from "../../components/side_bar/side_bar";
 
 interface ProfileProps extends ElementStyleProps {}
 
 const Profile = (props : ProfileProps) => {
   return (
     <div className={'profile '+(props.classes||'')}>
-      <Header/>
+        <SideBar/>
+
+        <main className='container'>
+            <Header/>
+            <h4>this is the profile page</h4>
+        </main>
     </div>);
 }
 

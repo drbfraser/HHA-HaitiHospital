@@ -1,0 +1,10 @@
+.leader-board-main .container {
+    margin-left: 200px;
+}
+
+/*Margin by pixel:*/
+@media screen and ( max-width: 700px ){
+    .leader-board-main .container{
+        margin-left: 70px;
+    }
+}

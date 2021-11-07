@@ -3,6 +3,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
+import './department_4_comhealth.css'
 
 interface DepartmentProps extends ElementStyleProps {
 };
@@ -13,9 +14,9 @@ interface DepartmentProps extends RouteComponentProps {
 
 export const DepartmentFour = (props : DepartmentProps) => {
     return (
-        <div className={'department-four' + props.classes}>
+        <div className={'department-four ' + props.classes}>
             <SideBar/>
-            <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <main className="container">
                 <Header/>
 
                 {/*<h1 style={{color:"white",backgroundColor: '#87EDF3', fontFamily:'sans-serif'}}>Department of NICU/PAED</h1>*/}

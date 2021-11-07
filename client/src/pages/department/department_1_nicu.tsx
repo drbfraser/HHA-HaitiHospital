@@ -4,7 +4,7 @@ import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from "components/header/header";
 import DepartmentReports from 'components/department_reports/department_reports';
-import "./department_style.css"
+import './department_1_nicu.css'
 
 interface DepartmentProps extends ElementStyleProps {
 };
@@ -17,9 +17,10 @@ export const DepartmentOne = (props : DepartmentProps) => {
   return (
     <div className={'department-one '+ props.classes}>
         <SideBar/>
-        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main className="container">
             <Header/>
-            <div className="container mt-3">
+
+            <div className="mt-3">
 
                 {/* Department Title */ }
                 <section>
