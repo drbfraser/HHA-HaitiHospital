@@ -3,7 +3,7 @@ const { number } = require('joi');
 import MessageBody from '../../models/MessageBody';
 import { Request, Response } from "express";
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { checkIsInRole, ROLES } from '../../utils/roleUtils'
+import { checkIsInRole, ROLES } from '../../utils/roleUtils';
 
 router.get('/', async (req: any, res: any) => {
     MessageBody.find({}).sort({date : 'desc'})

@@ -28,9 +28,9 @@ export const seedDb = async () => {
     if (index === 0) {
       user.role = 'ADMIN';
     } else if (index === 1) {
-      user.role = 'HEAD_OF_DEPARTMENT';
+      user.role = 'MED_DIR';
     } else if (index === 2) {
-      user.role = 'HHA';
+      user.role = 'DEPT_HEAD';
     }
     user.registerUser(user, () => {});
 
