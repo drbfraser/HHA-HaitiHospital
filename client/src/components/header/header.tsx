@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ElementStyleProps } from 'constants/interfaces';
-// import {stringify} from "querystring";
-// import * as Routing from 'constants/routing';
+import { logOutUser } from '../../actions/authActions'
 
 interface HeaderProps extends ElementStyleProps{
 }
@@ -39,10 +38,12 @@ function GetUsername() {
     let username = localStorage.getItem('username')
     let name = (username as any).replace(/['"]+/g, '')
     return <h6> { name }</h6>
-    // return <h6> Bonjour, { name }</h6>
 }
 
 const Header = (props: HeaderProps) => {
+    const onLogOut = (event) => {
+        logOutUser();
+    };
     return (
         <div className={'header '+ (props.classes || '')}>
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom row">
@@ -55,53 +56,14 @@ const Header = (props: HeaderProps) => {
                     <GetUsername/>
                 </div>
 
-                <NavLink className="btn btn-sm btn-outline-secondary col-md-2" to="/login" exact>
+                <NavLink className="btn btn-sm btn-outline-secondary col-md-2" to="/login" exact onClick={onLogOut}>
                     <i className="bi bi-door-open-fill me-2"/>
                     Sign Out
                 </NavLink>
 
-                {/*<div className="col col-lg-2">*/}
-                {/*    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact>*/}
-                {/*        <i className="bi bi-door-open-fill me-2"/>*/}
-                {/*        Sign Out*/}
-                {/*    </NavLink>*/}
-                {/*</div>*/}
             </div>
         </div>
         )
-
-  // const location = useLocation();
-  //
-  // if (location.pathname === Routing.HOME_ROUTE)
-  //   return (
-  //     <div className={'header '+ (props.classes || '')}
-  //         style={props.style}>
-  //       <HhaLogo
-  //         classes='logo grid-item'
-  //         style={
-  //           {'--griditem-alignself': 'center',
-  //           '--griditem-justifyself': 'center',
-  //           'width' : '300px',
-  //           } as CustomCssProps
-  //         }
-  //       />
-  //       <Button classes='btn grid-item goto-admin-btn'
-  //         style= {
-  //           {'--griditem-alignself':'center'} as CustomCssProps
-  //         }
-  //         value='ADMIN PANEL'
-  //       />
-  //       <Button classes='btn grid-item signout-btn'
-  //         style = {
-  //           {'--griditem-alignself':'center'} as CustomCssProps
-  //         }
-  //         value='SIGN OUT'/>
-  //     </div>
-  //   );
-  // else
-  //   return (
-  //     <NavBar/>
-  //   )
 }
 
 export default Header;
