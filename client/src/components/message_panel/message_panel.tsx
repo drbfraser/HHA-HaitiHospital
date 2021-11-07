@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import {Link} from 'react-router-dom'
 
 import {ElementStyleProps, Json} from 'constants/interfaces'
 import Axios from 'axios'
@@ -48,7 +49,19 @@ const MessagePanel = (props: MessagePanelProps) => {
     
     return (<>
         <div className="my-3 p-3 bg-body rounded shadow-sm">
-            <h6 className="border-bottom pb-2 mb-0">Recent updates</h6>
+            <div className="d-sm-flex align-items-center">
+                <h6 className="border-bottom pb-2 mb-0">Recent updates</h6>
+                <div className='ml-auto'>
+                    <Link to='/addMessage'>
+                        <button
+                            className='btn btn-md btn-outline-secondary'
+                        >
+                            Add Message
+                        </button>
+                    </Link>
+                </div>
+                
+            </div>
             {msgsJson.map((msgJson, index) => 
                 {
                     if (index < count)
@@ -56,20 +69,25 @@ const MessagePanel = (props: MessagePanelProps) => {
                 }
             )}
            
-           
-            {/* <small className="d-block text-end mt-3">
-            <a href="#">All updates</a>
-            </small> */}
-            <div className='d-md-flex flex-grow-1 justify-content-end'>
-                <button
-                onClick= {()=>(count <= msgsJson.length)&& setCount(count + 5)}>
-                    More
-                </button>
-                <button
-                onClick = {()=> (count > 0)&& setCount(count-5)}
-                >Less</button>
+            <div className='d-sm-flex jutify-content-end'>
+                <div className='ml-auto d-sm-flex'>
+                    <button
+                    className='btn btn-md btn-outline-secondary'
+                    onClick= {()=>(count <= msgsJson.length)&& setCount(count + 5)}>
+                        More
+                    </button>
+
+                    <button
+                    className='btn btn-md btn-outline-secondary'
+                    onClick = {()=> (count > 0)&& setCount(count-5)}
+                    >
+                        Less
+                    </button>
+                </div>
+                
             </div>
         </div>
+
     </>);
 }
 

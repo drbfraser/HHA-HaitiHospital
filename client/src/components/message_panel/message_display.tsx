@@ -23,6 +23,11 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </strong></p>
             </div>
 
+            <div className='text-gray-dark'>
+                <p><strong>Title: {props.msgJson.messageHeader}</strong></p>
+
+            </div>
+
             <div className="d-md-flex justify-content-between text-gray-dark">
                 <p className="lh-sm">
                     {props.msgJson.messageBody}
@@ -31,7 +36,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                     <Link className='align-self-center' to="#"><button type='button' className='btn btn-md btn-outline-secondary'>
                         <i className="bi bi-pencil"></i>
                     </button></Link>
-                    
+
                     <button type="button" className="btn btn-md btn-outline-secondary" >
                         <i className='bi bi-trash'></i>
                     </button>
