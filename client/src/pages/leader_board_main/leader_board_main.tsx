@@ -14,7 +14,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
 
             <main className="container">
                 <Header/>
-                <div>this is a Case leader board page</div>
+                <div>this is the leader board page</div>
             </main>
 
         </div>
