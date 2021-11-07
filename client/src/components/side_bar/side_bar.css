@@ -1,8 +1,7 @@
 .wrapper { width: 100%}
 
 .Sidebar {
-    /*width: 200px;*/
-    /*width: 100%;*/
+    width: 200px;
     height: 100vh;
     display: flex;
     position: absolute;
@@ -10,7 +9,7 @@
     left: 0;
     /*justify-content: center;*/
     /*transition: 850ms;*/
-    margin-right: 90%;
+    /* margin-right: 90%; */
 }
 
 .nav > li > a:hover, .nav > li > a:focus {
@@ -19,7 +18,7 @@
     text-decoration: none;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
     .text {
         display: none;
     }
