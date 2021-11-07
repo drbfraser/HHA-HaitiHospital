@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ElementStyleProps } from 'constants/interfaces';
+
 // import {stringify} from "querystring";
 // import * as Routing from 'constants/routing';
 
@@ -45,27 +46,22 @@ function GetUsername() {
 const Header = (props: HeaderProps) => {
     return (
         <div className={'header '+ (props.classes || '')}>
-            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom row">
+            <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
 
                 <div className="col">
                     <HeaderView/>
                 </div>
 
-                <div className="col-md-auto">
+                <div className="col-sm-auto col-md-auto col-lg-auto mt-2">
                     <GetUsername/>
                 </div>
 
-                <NavLink className="btn btn-sm btn-outline-secondary col-md-2" to="/login" exact>
-                    <i className="bi bi-door-open-fill me-2"/>
-                    Sign Out
-                </NavLink>
-
-                {/*<div className="col col-lg-2">*/}
-                {/*    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact>*/}
-                {/*        <i className="bi bi-door-open-fill me-2"/>*/}
-                {/*        Sign Out*/}
-                {/*    </NavLink>*/}
-                {/*</div>*/}
+                <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
+                    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact>
+                        <i className="bi bi-door-open-fill me-2"/>
+                        <span className="text text-secondary">Sign Out</span>
+                    </NavLink>
+                </div>
             </div>
         </div>
         )

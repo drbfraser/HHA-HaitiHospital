@@ -28,14 +28,14 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
 
     return(
          <div className={'dashboard-message-overview '+ (props.classes||'')}>
-             <div className="my-3 p-3 bg-body rounded shadow-sm">
+             <div className="my-3 p-3 bg-body rounded shadow-sm container-fluid">
                  <h5 className="pb-2 mb-3">Message Board</h5>
 
                  <div className="d-flex border-bottom pb-2 mb-0 row">
-                     <h6 className="text-secondary col-md-2">Title</h6>
-                     <h6 className="text-secondary col-md-2">User</h6>
-                     <h6 className="text-secondary col-md-2">Date</h6>
-                     <h6 className="text-secondary col">Message</h6>
+                     <h6 className="text-secondary col col-sm col-md col-lg">Title</h6>
+                     <h6 className="text-secondary col col-md col-sm col-lg">User</h6>
+                     <h6 className="text-secondary col col-md col-sm col-lg">Date</h6>
+                     <h6 className="text-secondary col-6 col-md-6 col-sm-6 col-lg-6">Message</h6>
                  </div>
 
                  <tbody className="d-flex text-muted">

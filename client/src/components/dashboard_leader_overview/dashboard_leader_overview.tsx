@@ -73,13 +73,13 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                 <h5 className="pb-1 mb-3">Department Leader</h5>
 
                 <div className="d-flex pb-1 mb-0 row">
-                    <i className="text-warning mx-1 col-md-1 bi bi-trophy-fill"/>
-                    <h6 className="text-secondary  col-md-2">Department</h6>
-                    <h6 className="text-warning col-md-4">NICU/PAED</h6>
-                    <h6 className="text-secondary  col-md-1">position</h6>
-                    <h6 className="text-warning px-4 col-md-1">1</h6>
-                    <h6 className="text-secondary col-md-1">score</h6>
-                    <h6 className="text-warning col-md-1">99</h6>
+                    <i className="text-warning mx-1 col-1 col-sm-1 col-md-1 col-lg-1 bi bi-trophy-fill"/>
+                    <h6 className="text-secondary col-3 col-sm-3 col-md-2 col-lg-2">Department</h6>
+                    <h6 className="text-warning col-3 col-sm-3 col-md-3 col-lg-4">NICU/PAED</h6>
+                    <h6 className="text-secondary col-2 col-sm-2 col-md-1 col-lg-1">position</h6>
+                    <h6 className="text-warning px-4 col-1 col-sm-1 col-md-1 col-lg-1">1</h6>
+                    <h6 className="text-secondary col-1 col-sm-1 col-md-1 col-lg-1">score</h6>
+                    <h6 className="text-warning col-1 col-sm-1 col-md-1 col-lg-1">99</h6>
                 </div>
 
                     {/*// this part is a Placeholder Components for leader overview in the further*/}

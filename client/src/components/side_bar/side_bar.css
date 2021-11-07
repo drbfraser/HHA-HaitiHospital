@@ -4,7 +4,7 @@
     width: 200px;
     height: 100vh;
     display: flex;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     /*justify-content: center;*/
@@ -30,6 +30,7 @@
         height: 100vh;
         display: flex;
         position: fixed;
+        justify-content: start;
     }
 }
 
