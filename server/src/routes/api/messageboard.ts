@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const { number } = require('joi');
 import MessageBody from '../../models/MessageBody';
+import { Request, Response } from "express";
+import requireJwtAuth from '../../middleware/requireJwtAuth';
+import { checkIsInRole, ROLES } from '../../utils/roleUtils'
 
 router.get('/', async (req: any, res: any) => {
     MessageBody.find({}).sort({date : 'desc'})
@@ -21,24 +24,23 @@ router.get('/message/:messageId', async (req: any, res: any) => {
         .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
 
-router.route('/').post((req: any, res: any) => {
+router.route('/').post(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: Request, res: Response) => {
     let dateTime: Date = new Date();
     const departmentId: Number = <Number>req.body.departmentId;
     const departmentName: String = req.body.departmentName;
     const authorId: Number = <Number>req.body.authorId;
-    const authorFirstName: String = req.body.authorFirstName;
-    const authorLastName: String = req.body.authorLastName;
     const date: Date = dateTime
     const messageBody: String = req.body.messageBody;
     //TODO: replace messageHeader with Document Type 
     const messageHeader: String = req.body.messageHeader;
+    // @ts-ignore
+    const name: String = req.user.name;
     
     const messageEntry = new MessageBody({
         departmentId,
         departmentName,
         authorId,
-        authorFirstName,
-        authorLastName,
+        name,
         date,
         messageBody,
         messageHeader

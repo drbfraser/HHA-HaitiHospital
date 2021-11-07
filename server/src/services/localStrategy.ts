@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as PassportLocalStrategy } from 'passport-local';
 import Joi from 'joi';
-// import { Request, Response, NextFunction } from "express";
+import { Request } from "express";
 
 import User from '../models/User';
 import { loginSchema } from './validators';
@@ -13,7 +13,7 @@ const passportLogin = new PassportLocalStrategy(
     session: false,
     passReqToCallback: true,
   },
-  async (req, username, password, done) => {
+  async (req: Request, username: string, password: string, done) => {
     loginSchema.validateAsync({ username, password }).then(val => {
       req.body = val;
     }).catch(err => {
@@ -39,5 +39,14 @@ const passportLogin = new PassportLocalStrategy(
     }
   },
 );
+
+// Serializing required for sessions
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 passport.use(passportLogin);
