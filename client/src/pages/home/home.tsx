@@ -4,7 +4,7 @@ import SideBar from 'components/side_bar/side_bar'
 import Header from 'components/header/header'
 import DashboardLeaderOverview from "../../components/dashboard_leader_overview/dashboard_leader_overview";
 import DashboardMessageOverview from "components/dashboard_message_overview/dashboard_message_overview"
-
+import './home.css'
 
 // import messages from "../../../../server/src/routes/api/messages";
 // import { RouteComponentProps } from "react-router-dom";
@@ -19,11 +19,20 @@ interface HomeProps extends ElementStyleProps {
 
 
 const Home = (props : HomeProps) => {
+
+    function getClassName() {
+        if (props.classes === undefined) 
+          return "home";
+        else 
+          return `home ${props.classes} `
+    }
+
     return (
-    <div className={'home '+ (props.classes||'')}>
+    <div className={getClassName()}>
         <SideBar/>
 
-        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {/* <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4"> */}
+        <main className='container'>
             <Header/>
             <DashboardLeaderOverview/>
             <DashboardMessageOverview messages = {[]}/>

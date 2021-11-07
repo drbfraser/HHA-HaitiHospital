@@ -36,6 +36,9 @@
     }
     .Sidebar {
         width: 70px;
+        height: 100vh;
+        display: flex;
+        position: fixed;
     }
 }
 

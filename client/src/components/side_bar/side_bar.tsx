@@ -14,9 +14,15 @@ const Sidebar = (props: SidebarProps) => {
     // const location = useLocation();
     // const { pathname } = location;
     // const splitLocation = pathname.split("/");
+    function getClassName() {
+        if (props.classes === undefined) 
+            return "Sidebar";
+        else 
+            return `Sidebar ${props.classes} `
+    }
 
     return (
-        <div className={'Sidebar '+ (props.classes||'')}>
+        <div className={getClassName()}>
             <div className="SidebarList">
             {/*<div className='position-fixed d-flex flex-column flex-shrink-0 p-3 bg-dark' style={{width: 220}}>*/}
                 <div className="sidebar_logo">
