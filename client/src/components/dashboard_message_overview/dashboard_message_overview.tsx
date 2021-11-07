@@ -17,33 +17,7 @@ const fetchMessages = (async () => {
 })
 
 const DashboardMessageOverview = (props : DashboardMessageProps) => {
-    const [ message, setMessage ] = useState([
-        {
-            "messageHeader": 1,
-            "authorId": "123",
-            "date": "11-02-2011",
-            "messageBody": "Becoming cloudy this afternoon with 40 percent chance of showers later this afternoon. Wind southwest 20 km/h gusting to 40 becoming southeast 20 this afternoon. Temperature steady near 10. UV index 1 or low.",
-        },
-        {
-            "messageHeader": 2222,
-            "authorId": "12345",
-            "date": "09-02-2011",
-            "messageBody": "Cloudy with 70 percent chance of showers. High 10.",
-        },
-        {
-            "messageHeader": 333333,
-            "authorId": "12345678",
-            "date": "08-02-2011",
-            "messageBody": "Mainly cloudy. 60 percent chance of showers in the morning. A few showers beginning in the morning. Wind southeast 20 km/h except gusting to 40 near the Strait of Georgia in the morning. Temperature steady near 7.",
-        },
-        {
-            "messageHeader": 2222,
-            "authorId": "34567",
-            "date": "11-11-1111",
-            "messageBody": "Mainly cloudy with 60 percent chance of showers. Wind southeast 20 km/h. Low 6.",
-        },
-
-    ]);
+    const [ message, setMessage ] = useState([]);
 
     useEffect(() => {
         const messagesFromServer = fetchMessages();
