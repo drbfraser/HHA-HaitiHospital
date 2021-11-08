@@ -22,6 +22,8 @@ function HeaderView() {
         return <h4 className="text-secondary">Leader Board</h4>
     } else if (location.pathname.slice(1) === 'caseStudyMain') {
         return <h4 className="text-secondary">Case Study</h4>
+    } else if (location.pathname.slice(1) === 'caseStudyForm') {
+        return <h4 className="text-secondary">Case Study Form</h4>
     } else if (location.pathname.slice(1) === 'Department1NICU') {
         return <h4 className="text-secondary">Department of NICU</h4>
     } else if (location.pathname.slice(1) === 'Department2Maternity') {
