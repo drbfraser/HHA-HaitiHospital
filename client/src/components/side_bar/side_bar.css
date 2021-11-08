@@ -1,25 +1,37 @@
+.wrapper { width: 100%}
+
 .Sidebar {
     width: 200px;
     height: 100vh;
     display: flex;
-    /*justify-content: center;*/
     position: fixed;
     top: 0;
     left: 0;
+    /*justify-content: center;*/
     /*transition: 850ms;*/
-}
-
-.SidebarList {
-    /*height: 100%;*/
-    width: 100%;
-    background-color: #202020;
-    /*padding-left: 1rem;*/
+    /* margin-right: 90%; */
 }
 
 .nav > li > a:hover, .nav > li > a:focus {
     /*background-color: #EF92A5;*/
     background-color: #687d8f;
     text-decoration: none;
+}
+
+@media only screen and (max-width: 700px) {
+    .text {
+        display: none;
+    }
+    .sidebar_logo {
+        display: none;
+    }
+    .Sidebar {
+        width: 70px;
+        height: 100vh;
+        display: flex;
+        position: fixed;
+        justify-content: start;
+    }
 }
 
 /*.Sidebar.active {*/

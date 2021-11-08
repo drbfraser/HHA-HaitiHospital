@@ -80,24 +80,24 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                <label className = "font-weight-bold">Patient Story Case Study</label>
                 <div className="form-row">
                     <div className="col-md-8">
-                        <label>Patient's Name</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.patientsName", {required: true})}></input>
+                        <label htmlFor="Patient Name">Patient's Name</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Patient Name" required {...register("patientStory.patientsName", {required: true})}></input>
                     </div>
                      <div className="col-md-4">
-                        <label>Patient Age</label>
-                        <input className="form-control mb-2 mt-0" type="number" required {...register("patientStory.patientsAge", {required: true})}></input>
+                        <label htmlFor="Patient Age">Patient Age</label>
+                        <input className="form-control mb-2 mt-0" type="number" id="Patient Age" required {...register("patientStory.patientsAge", {required: true})}></input>
                      </div>
                 </div>
-                <label>Where is the patient from?</label>
-                <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.whereIsThePatientFrom", {required: true})}></input>
-                <label>Why did the patient choose to come to HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.whyComeToHCBH", {required: true})}></input>
-                <label>How long were they at HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.howLongWereTheyAtHCBHinDays", {required: true})}></input>
-                <label>What was their diagnosis?</label>
-                <textarea className="form-control mb-2 mt-0" required {...register("patientStory.diagnosis", {required: true})}></textarea>
-                <label>Case Study/Story</label>
-                <textarea className="form-control mb-2 mt-0" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
+                <label htmlFor="Patient From">Where is the patient from?</label>
+                <input className="form-control mb-2 mt-0" type="text" id="Patient From" required {...register("patientStory.whereIsThePatientFrom", {required: true})}></input>
+                <label htmlFor="Patient Choose">Why did the patient choose to come to HCBH?</label>
+                <input className="form-control mb-2 mt-0" type="text" id="Patient Choose" required {...register("patientStory.whyComeToHCBH", {required: true})}></input>
+                <label htmlFor="How long">How long were they at HCBH?</label>
+                <input className="form-control mb-2 mt-0" type="text" id="How long" required {...register("patientStory.howLongWereTheyAtHCBHinDays", {required: true})}></input>
+                <label htmlFor="Diagnosis">What was their diagnosis?</label>
+                <textarea className="form-control mb-2 mt-0" id="Diagnosis" required {...register("patientStory.diagnosis", {required: true})}></textarea>
+                <label htmlFor="Case Study 1">Case Study/Story</label>
+                <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile"/>
                 <div className="form-check">
@@ -114,22 +114,22 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                <label className = "font-weight-bold">Staff Recognition Case Study</label>
                 <div className="form-row">
                     <div className="col-md-6">
-                        <label>Staff Name</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.staffName", {required: true})}></input>
+                        <label htmlFor="Staff Name">Staff Name</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Staff Name" required {...register2("staffRecognition.staffName", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label>Role/Job Title</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.jobTitle", {required: true})}></input>
+                        <label htmlFor="Role">Role/Job Title</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Role" required {...register2("staffRecognition.jobTitle", {required: true})}></input>
                     </div>
                 </div>
-                <label>Which department do they work in?</label>
-                <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.department", {required: true})}></input>
-                <label>How long have they been working at HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.howManyMonthsWorkingAtHCBH", {required: true})}></input>
-                <label>What do they enjoy the most about working at HCBH?</label>
-                <textarea className="form-control mb-2 mt-0" required {...register2("staffRecognition.mostEnjoy", {required: true})}></textarea>
-                <label>Case Study/Story</label>
-                <textarea className="form-control mb-2 mt-0" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
+                <label htmlFor="Which dept work">Which department do they work in?</label>
+                <input className="form-control mb-2 mt-0" type="text" id="Which dept work" required {...register2("staffRecognition.department", {required: true})}></input>
+                <label htmlFor="How long working">How long have they been working at HCBH?</label>
+                <input className="form-control mb-2 mt-0" type="text" id="How long working" required {...register2("staffRecognition.howManyMonthsWorkingAtHCBH", {required: true})}></input>
+                <label htmlFor="What enjoy">What do they enjoy the most about working at HCBH?</label>
+                <textarea className="form-control mb-2 mt-0" id="What enjoy" required {...register2("staffRecognition.mostEnjoy", {required: true})}></textarea>
+                <label htmlFor="Case Study 2">Case Study/Story</label>
+                <textarea className="form-control mb-2 mt-0" id="Case Study 2" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile" />
                 <div className="form-check">
@@ -146,22 +146,22 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                <label className = "font-weight-bold">Training Session Case Study</label>
                 <div className="form-row">
                     <div className="col-md-6">
-                        <label>Training Date</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register3("trainingSession.trainingDate", {required: true})}></input>
+                        <label htmlFor="Train Date">Training Date</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Train Date" required {...register3("trainingSession.trainingDate", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label>What was the training on?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register3("trainingSession.trainingOn", {required: true})}></input>
+                        <label htmlFor="Train On">What was the training on?</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Train On" required {...register3("trainingSession.trainingOn", {required: true})}></input>
                     </div>
                 </div>
-                <label>Who conducted training?</label>
-                <input className="form-control" type="text" required {...register3("trainingSession.whoConducted", {required: true})}></input>
-                <label>Who attended the training?</label>
-                <textarea className="form-control" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
-                <label>How will the training benefit HCBH and its staff?</label>
-                <textarea className="form-control" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
-                <label>Case Study/Story</label>
-                <textarea className="form-control" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
+                <label htmlFor="Train Who">Who conducted training?</label>
+                <input className="form-control" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}></input>
+                <label htmlFor="Who attended">Who attended the training?</label>
+                <textarea className="form-control" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
+                <label htmlFor="How train">How will the training benefit HCBH and its staff?</label>
+                <textarea className="form-control" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
+                <label htmlFor="Case Study 3">Case Study/Story</label>
+                <textarea className="form-control" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile" />
                 <div className="form-check">
@@ -178,28 +178,28 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                <label className = "font-weight-bold">Equipment Received Case Study</label>
                 <div className="form-row">
                     <div className="col-md-6">
-                        <label>What equipment was received?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.equipmentReceived", {required: true})}></input>
+                        <label htmlFor="What equipment">What equipment was received?</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="What equipment" required {...register4("equipmentReceived.equipmentReceived", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label>Which department received it?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.departmentIdReceived", {required: true})}></input>
+                        <label htmlFor="Which dept receive">Which department received it?</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Which dept receive" required {...register4("equipmentReceived.departmentIdReceived", {required: true})}></input>
                     </div>
                 </div>
                  <div className="form-row">
                     <div className="col-md-6">
-                        <label>Who was the equipment from?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.whoSentEquipment", {required: true})}></input>
+                        <label htmlFor="Equipment from">Who was the equipment from?</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Equipment from" required {...register4("equipmentReceived.whoSentEquipment", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label>Was it donated or purchased?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.purchasedOrDonated", {required: true})}></input>
+                        <label htmlFor="Donate/Purchase">Was it donated or purchased?</label>
+                        <input className="form-control mb-2 mt-0" type="text" id="Donate/Purchase" required {...register4("equipmentReceived.purchasedOrDonated", {required: true})}></input>
                     </div>
                 </div>
-                <label>What does this new equipment do?</label>
-                <textarea className="form-control" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
-                <label>Case Study/Story</label>
-                <textarea className="form-control" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
+                <label htmlFor="Equipment Purpose">What does this new equipment do?</label>
+                <textarea className="form-control" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
+                <label htmlFor="Case Study 4">Case Study/Story</label>
+                <textarea className="form-control" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile" />
                 <div className="form-check">
@@ -214,12 +214,15 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <form onSubmit={handleSubmit5(onSubmit)}>
             <div className={`form-group col-md-6 ${formOption === "5" ? "d-block" : "d-none"}`} id="Form5">
                 <label className = "font-weight-bold">Other Story Case Study</label>
-                <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
-                <label className="form-label">Upload Image</label>
-                <input type="file" accept="image/*" className="form-control" id="customFile" />
-                <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
-                    <label className="form-check-label" htmlFor="invalidCheck5"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
+                <div>
+                    <label htmlFor="Case Study 5">Case Study/Story</label>
+                    <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
+                    <label className="form-label">Upload Image</label>
+                    <input type="file" accept="image/*" className="form-control" id="customFile" />
+                    <div className="form-check">
+                        <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
+                        <label className="form-check-label" htmlFor="invalidCheck5"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
+                    </div>
                 </div>
                 <div>
                 <button className="btn btn-primary" type="submit">Submit form</button>

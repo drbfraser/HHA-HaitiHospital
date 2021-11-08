@@ -2,12 +2,19 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 import Header from 'components/header/header';
 import './users_styles.css';
+import SideBar from "../../components/side_bar/side_bar";
 
 interface UsersProps extends ElementStyleProps {}
 
 const Users = (props: UsersProps) => {
   return (<div className={'users' + (props.classes||'')}>
-    <Header/>
+    <div className={'profile '+(props.classes||'')}>
+      <SideBar/>
+      <main className='container'>
+        <Header/>
+        <h4>this is the user page</h4>
+      </main>
+    </div>);
   </div>);
 }
 

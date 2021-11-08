@@ -3,7 +3,7 @@ import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 
-// import "./case_study_main_styles.css";
+import "./case_study_main_styles.css";
 
 interface CaseStudyMainProps extends ElementStyleProps {
 };
@@ -18,7 +18,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     <div className={'case-study-main '+ props.classes}>
         <SideBar/>
 
-        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main className="container">
             <Header/>
 
 
