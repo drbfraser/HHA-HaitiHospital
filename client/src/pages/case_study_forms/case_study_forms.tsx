@@ -38,6 +38,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     });
 
     reset({});
+    reset2({});
+    reset3({});
+    reset4({});
+    reset5({});
   }
 
   return (
