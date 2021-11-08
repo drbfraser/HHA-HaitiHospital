@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { RouteComponentProps} from "react-router-dom";
+import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
+import { caseStudyModel } from "./CaseStudies"
+import axios from 'axios';
 
 // import "./case_study_main_styles.css";
 
@@ -16,6 +19,21 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
 
   function refreshForm(formNum) {
     setformOption(formNum);
+  }
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<caseStudyModel>({});
+
+  const onSubmit = (data: any) => {
+    data.caseStudyType = parseInt(formOption) - 1;
+
+    console.log(data);
+    axios.post('/api/casestudies', data).then(res => {
+        console.log(res.data);
+    }).catch(error =>{
+        console.error('Something went wrong!', error.response);
+    });
+
+    reset({});
   }
 
   return (
@@ -49,29 +67,29 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                    </div>
                 </form>
              </div>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "1" ? "d-block" : "d-none"}`} id="Form1">
                <label className = "font-weight-bold">Patient Story Case Study</label>
                 <div className="form-row">
                     <div className="col-md-8">
                         <label>Patient's Name</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.patientsName", {required: true})}></input>
                     </div>
                      <div className="col-md-4">
                         <label>Patient Age</label>
-                        <input className="form-control mb-2 mt-0" type="number" required></input>
+                        <input className="form-control mb-2 mt-0" type="number" required {...register("patientStory.patientsAge", {required: true})}></input>
                      </div>
                 </div>
                 <label>Where is the patient from?</label>
-                <input className="form-control mb-2 mt-0" type="text" required></input>
+                <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.whereIsThePatientFrom", {required: true})}></input>
                 <label>Why did the patient choose to come to HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" required></input>
+                <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.whyComeToHCBH", {required: true})}></input>
                 <label>How long were they at HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" required></input>
+                <input className="form-control mb-2 mt-0" type="text" required {...register("patientStory.howLongWereTheyAtHCBHinDays", {required: true})}></input>
                 <label>What was their diagnosis?</label>
-                <textarea className="form-control mb-2 mt-0" required></textarea>
+                <textarea className="form-control mb-2 mt-0" required {...register("patientStory.diagnosis", {required: true})}></textarea>
                 <label>Case Study/Story</label>
-                <textarea className="form-control mb-2 mt-0" required></textarea>
+                <textarea className="form-control mb-2 mt-0" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile"/>
                 <div className="form-check">
