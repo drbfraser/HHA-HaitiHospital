@@ -28,7 +28,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
 
             </div>
 
-            <div className="d-md-flex justify-content-between text-gray-dark">
+            <div className="d-md-flex justify-content-between text-gray-dark text-break">
                 <p className="lh-sm">
                     {props.msgJson.messageBody}
                 </p>

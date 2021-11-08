@@ -480,7 +480,7 @@ function DynamicForm() {
                 </div>
 
                 <div className="row g-3">
-                    <div className="col-md-5 col-lg-4">
+                    <div className="col-sm-4 col-md-4 col-lg-4">
 
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
                             <span className="text-primary">Steps</span>
@@ -507,7 +507,7 @@ function DynamicForm() {
 
                         <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
                     </div>
-                    <div className="col-md-7 col-lg-8">
+                    <div className="col-sm-7 col-md-7 col-lg-7">
 
                         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
                             <div className="row g-2">
