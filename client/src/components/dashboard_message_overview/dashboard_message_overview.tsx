@@ -35,10 +35,10 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                  <table className="container-fluid">
                      <tr>
                          <thead className="d-flex border-bottom pb-2 mb-0 row">
-                             <th className="text-secondary col col-sm col-md col-lg">Title</th>
-                             <th className="text-secondary col col-md col-sm col-lg">User</th>
-                             <th className="text-secondary col col-md col-sm col-lg">Date</th>
-                             <th className="text-secondary col-6 col-md-6 col-sm-6 col-lg-6">Message</th>
+                             <th className="text-secondary col col-sm col-md-2 col-lg-2">Title</th>
+                             <th className="text-secondary col col-sm col-md-2 col-lg-2">User</th>
+                             <th className="text-secondary col col-sm col-md-3 col-lg-3">Date</th>
+                             <th className="text-secondary col-6 col-sm-6 col-md col-lg">Message</th>
                          </thead>
                      </tr>
 
@@ -49,16 +49,16 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                                      if (index <= 2) {
                                          return(
                                              <td key={index} className="d-flex mt-3 row border-bottom">
-                                                 <td className="text-dark col-md-2">
+                                                 <td className="text-dark col-md-2 text-break">
                                                      {message.messageHeader}
                                                  </td>
                                                  <td className="text-dark col-md-2">
                                                      {message.authorId}
                                                  </td>
-                                                 <td className="text-dark col-md-2">
+                                                 <td className="text-dark col-md-3">
                                                      {message.date}
                                                  </td>
-                                                 <p className="flex-column text-dark small col break-text">
+                                                 <p className="flex-column text-dark small col text-break">
                                                      {/*show first 70 character of message only*/}
                                                      {message.messageBody.slice(0, 70)}...
                                                  </p>

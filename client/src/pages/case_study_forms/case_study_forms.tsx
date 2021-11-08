@@ -7,7 +7,7 @@ import Header from 'components/header/header'
 import { CaseStudyModel } from "./CaseStudies"
 import axios from 'axios';
 
-// import "./case_study_main_styles.css";
+import "./case_study_form.css";
 
 interface CaseStudyMainProps extends ElementStyleProps {
 };
@@ -45,10 +45,11 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
   }
 
   return (
-    <div className={'case-study-main '+ props.classes}>
+    <div className={'case-study-form '+ props.classes}>
         <SideBar/>
 
-        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main className="container">
+        {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
             <Header/>
 
             <div className="col-md-4">
