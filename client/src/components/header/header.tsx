@@ -60,11 +60,6 @@ const Header = (props: HeaderProps) => {
                     <GetUsername/>
                 </div>
 
-                <NavLink className="btn btn-sm btn-outline-secondary col-md-2" to="/login" exact onClick={onLogOut}>
-                    <i className="bi bi-door-open-fill me-2"/>
-                    Sign Out
-                </NavLink>
-
                 <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
                     <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact>
                         <i className="bi bi-door-open-fill me-2"/>
