@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-import {
-  LOGOUT_SUCCESS,
-} from './types';
 
 // export const loadMe = () => async (dispatch: any, getState: any) => {
 //   dispatch({ type: ME_LOADING });
@@ -31,24 +28,17 @@ interface FormData {
 export async function loginUser (formData: FormData, props) {
   axios.post('/auth/login', formData).then(res => {
       props.history.push("./home");
-  }).catch(error => {
-      console.error("Error with logging in", error)
+      return res;
   });
 }
 
-// TODO: Potential fix this function for logging out once merged with latest in master
-export const logOutUser = (history) => async (dispatch) => {
-  try {
+export async function logOutUser () {
+  axios.get('/auth/logout').then(() => {
     deleteAllCookies();
-    //just to log user logut on the server
-    await axios.get('/auth/logout');
-
-    dispatch({
-      type: LOGOUT_SUCCESS,
-    });
-    if (history) history.push('/');
-  } catch (err) {}
-};
+  }).catch(error => {
+      console.error("Error with logging out", error)
+  });
+}
 
 function deleteAllCookies() {
   var cookies = document.cookie.split(';');

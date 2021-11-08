@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 import faker from 'faker';
 
@@ -9,21 +9,22 @@ import { Schema } from 'mongoose';
 
 const router = Router();
 
-router.post('/login', requireLocalAuth, (req, res) => {
+router.post('/login', requireLocalAuth, (req: Request, res: Response) => {
   // @ts-ignore
   const token = req.user.generateJWT();
   // @ts-ignore
-  const me = req.user.toJSON();
-  // httpOnly means cookie can't be read using JS saving us from XSS attack
-  res.cookie('token', token, { httpOnly: true });
-  res.json({ token, me });
+  const user = req.user.toJSON();
+  // httpOnly means cookie can't be accessed via JS
+  res.cookie('jwt', token, { httpOnly: true });
+  res.status(200).json({ success: true, token, user });
 });
 
-router.post('/register', async (req, res, next) => {
+router.post('/register', async (req: Request, res: Response, next: NextFunction) => {
   const someJoi : any = Joi;
   const { error } = someJoi.validate(req.body, registerSchema);
   if (error) {
-    return res.status(422).send({ message: error.details[0].message });
+    console.error("Failed registration validation")
+    return res.status(422).send({ success: false, message: error.details[0].message });
   }
 
   // const { email, password, name, username } = req.body;
@@ -33,7 +34,7 @@ router.post('/register', async (req, res, next) => {
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
-      return res.status(422).send({ message: 'Username is in use' });
+      return res.status(422).send({ success: false, message: 'Username is in use' });
     }
 
     try {
@@ -48,7 +49,7 @@ router.post('/register', async (req, res, next) => {
 
       newUser.registerUser(newUser, (err, user) => {
         if (err) throw err;
-        res.json({ message: 'Register success.' }); // just redirect to login
+        res.status(200).json({ success: true, message: 'Register success.' }); // just redirect to login
       });
     } catch (err) {
       return next(err);
@@ -59,7 +60,9 @@ router.post('/register', async (req, res, next) => {
 });
 
 // logout
-router.get('/logout', (req, res) => {
+router.get('/logout', (req: Request, res: Response) => {
+  console.log('User successfully logged out');
+  res.cookie('jwt', 'invalidated-jwt-token');
   req.logout();
   res.send(false);
 });

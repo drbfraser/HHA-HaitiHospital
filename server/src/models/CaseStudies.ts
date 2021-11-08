@@ -1,60 +1,80 @@
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
+
 enum CaseStudyOptions {
-  OtherStory,
-  PatientStory,
-  StaffRecognition,
-  TrainingSession,
-  EquipmentReceived,
+    PatientStory,
+    StaffRecognition,
+    TrainingSession,
+    EquipmentReceived,
+    OtherStory,
 }
 
-enum DepartmentEnum {
-  Rehab = "REHAB",
-  NICU_PAED = "NICU_PAED",
-  Maternity = "MATERNITY",
-  CommunityHealth = "COMMUNITY_HEALTH"
-}
+const patientStorySchema = new Schema(
+    {
+        patientsName: { type: String, required: true },
+        patientsAge: { type: Number, required: true },
+        whereIsThePatientFrom: { type: String, required: true },
+        whyComeToHCBH: { type: String, required: true },
+        howLongWereTheyAtHCBHinDays: { type: Number, required: true },
+        diagnosis: { type: String, required: true },
+        caseStudyStory: { type: String, required: true },
+    }
+);
 
-enum PurchasedOrDonatedEnum {
-  Purchased = "PURCHASED",
-  Donated = "DONATED"
-}
+const staffRecognitionSchema = new Schema(
+    {
+        staffName: { type: String, required: true },
+        jobTitle: { type: String, required: true },
+        department: { type: String, required: true },
+        howManyMonthsWorkingAtHCBH: { type: Number, required: true },
+        mostEnjoy: { type: String, required: true },
+        caseStudyStory: { type: String, required: true },
+    }
+);
 
-export interface PatientStoryModel {
-  patientsName: string;
-  patientsAge: number;
-  whereIsThePatientFrom: string;
-  whyComeToHCBH: string;
-  howLongWereTheyAtHCBHinDays: number;
-  diagnosis: string;
-  caseStudyStory: string;
-}
+const trainingSessionSchema = new Schema(
+    {
+        trainingDate: { type: Date, required: true },
+        trainingOn: { type: String, required: true },
+        whoConducted: { type: String, required: true },
+        whoAttended: { type: String, required: true },
+        benefitsFromTraining: { type: String, required: true },
+        caseStudyStory: { type: String, required: true },
+    }
+);
 
-export interface StaffRecognitionModel {
-  staffName: string;
-  jobTitle: string;
-  department: DepartmentEnum,
-  howManyMonthsWorkingAtHCBH: number,
-  mostEnjoy: string;
-  caseStudyStory: string;
-}
+const equipmentReceivedSchema = new Schema(
+    {
+        equipmentReceived: { type: String, required: true },
+        departmentIdReceived: { type: Number, required: true },
+        whoSentEquipment: { type: String, required: true },
+        purchasedOrDonated: { type: String, required: true },
+        whatDoesEquipmentDo: { type: String, required: true },
+        caseStudyStory: { type: String, required: true },
+    }
+);
 
-export interface TrainingSessionModel {
-  trainingDate: Date;
-  trainingOn: string;
-  whoConducted: string;
-  whoAttended: string;
-  benefitsFromTraining: string;
-  caseStudyStory: string;
-}
+const otherStorySchema = new Schema(
+    {
+        caseStudyStory: { type: String, required: true },
+    }
+);
 
-export interface EquipmentReceivedModel {
-  equipmentReceived: string;
-  departmentReceived: DepartmentEnum;
-  whoSentEquipment: string;
-  purchasedOrDonated: PurchasedOrDonatedEnum;
-  whatDoesEquipmentDo: string;
-  caseStudyStory: string;
-}
+const caseStudySchema = new Schema(
+    {
+        caseStudyType: { type: CaseStudyOptions, required: true },
+        // TODO: add created by user. right now JWT is not yet applied
+        // createdByUser: { type: String},
+        patientStory: patientStorySchema,
+        staffRecognition: staffRecognitionSchema,
+        trainingSession: trainingSessionSchema,
+        equipmentReceived: equipmentReceivedSchema,
+        otherStory: otherStorySchema
+    },
+    { timestamps: true },
+);
 
-export interface otherStory {
-  caseStudyStory: string;
-}
+const CaseStudy = mongoose.model('CaseStudy', caseStudySchema);
+
+export default CaseStudy;

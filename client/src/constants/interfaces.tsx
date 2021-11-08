@@ -19,7 +19,7 @@ export interface ReportProps {
   [index : string] :  ReportEntry,
 }
 
-type MessageEntry = string | number | boolean | ReportProps | ReportProps[];
+type MessageEntry = string | number | boolean | MessageProps | MessageProps[];
 export interface MessageProps {
     [index : string] :  MessageEntry,
 }

@@ -3,7 +3,7 @@ import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
 import { ReportProps } from 'constants/interfaces';
-import ReportSummaryTable from 'components/report_summary_table/report_summary_table';
+import ReportSummaryTable from 'components/department_reports/report_summary_table/report_summary_table';
 
 
 import './styles.css';
