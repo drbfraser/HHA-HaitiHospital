@@ -48,3 +48,18 @@ $ npm run dev-start
 $ npm install
 $ npm start
 ```
+
+### Using the System
+- Seeded User Credentials:
+    - Role: Admin
+        - Username: user0
+        - Password: 123456789
+    - Role: Medical Director
+        - Username: user1
+        - Password: 123456789
+    - Role: Head of Department
+        - Username: user2
+        - Password: 123456789
+    - Role: User
+        - Username: user3
+        - Password: 123456789
