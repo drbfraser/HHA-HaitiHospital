@@ -8,33 +8,35 @@ interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
   lastUpdatedOn: string;
   lastUpdatedBy: number;
-  notifyTable(data:{reportId: string, isChecked: boolean}): void;
+  notifyTable(update: {[rid : string] : boolean}): void;
   tickList: TickList;
 }
 
 const ReportSummaryRow = (props: ReportSummaryProps) => {
   
-  const [isTicked, setTick] = useState<boolean>(false);
+  const [isTicked, setTick] = useState<boolean>(props.tickList.isTickedRid(props.reportId));
+
+  const tickListObserver: TickObserver = (tickList: TickList)=> {
+    let isReportTicked = tickList.isTickedRid(props.reportId);
+    console.log(`Row notified: ${isReportTicked}`);
+    if (isReportTicked != isTicked)
+      setTick(isReportTicked);
+  }
 
   useEffect(() => {
-    const tickListObserver: TickObserver = (tickList: TickList)=> {
-      let isReportTicked = tickList.isTickedRid(props.reportId);
-      console.log(`Row notified: ${isReportTicked}`);
-      if (isReportTicked != isTicked)
-        setTick(isReportTicked);
-    }
+    console.log("Register row");
 
     props.tickList.registerObserver(tickListObserver);
 
     return function unregObserver() {
       props.tickList.unregisterObserver(tickListObserver);
     }
-  }, [isTicked])
+  }, [])
 
 
 
   return (
-    <tr>
+    <tr id={`rp-sum-row-${props.reportId}`}>
       <th scope='row'>
         <Link to={`/Department1NICU/detailed_report/view/${props.reportId}`}>
           { props.reportId }
@@ -56,9 +58,13 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
             checked = {isTicked}
             onChange = {(e: React.SyntheticEvent) => {
               let target: HTMLInputElement = e.target as HTMLInputElement;
+
+              let update: {[rid: string]: boolean} = {}
+              update[target.value] = target.checked;
               if (target.checked !== isTicked) {
-                props.notifyTable({reportId: target.value, 
-                    isChecked: target.checked});
+                props.notifyTable(
+                   update
+                );
                 setTick(target.checked);
               }
             }}

@@ -18,18 +18,65 @@ export class TickList {
         throw new RangeError("Ticklist() has invalid data passed in");
 
     this.records = data;
+
     this.tickCount = 0;
+    for (let key of Object.keys(data)) {
+        data[key] === true && ++this.tickCount;
+    }
     this.observerList = new Array(0);
     this.observerCounter = 0;
     this.numRecords = numRecords;
   }
-
+  
   private idxToKey(idx: number): string {
     return Object.keys(this.records)[idx];
   }
 
   private idxToValue(idx: number): boolean {
     return this.records[this.idxToKey(idx)];
+  }
+
+  getRecords() : TickListData {
+    return this.records;
+  }
+
+  getTickedRids() : string[] {
+    
+    const tickedRids = Object.keys(this.records).filter((rid) => this.records[rid] === true)
+    return tickedRids;
+  }
+
+  getLength(): number {
+    return this.numRecords;
+  }
+
+  delTickedReportByRid(rid: string) {
+    if (rid in this.records && this.isTickedRid(rid) === true)
+    {
+
+        console.log("Before: ", this.records);
+
+        delete(this.records[`${rid}`])
+
+        console.log("After", this.records);
+
+        this.numRecords--;
+        this.tickCount--;
+    }
+    this.notifyAllObserver();
+  }
+
+  update(newData : {[rid: string]: boolean}) {
+    this.records = newData;
+    this.tickCount = 0;
+    this.numRecords = Object.keys(this.records).length;
+
+    for (let rid of Object.keys(this.records)) {
+        if (this.records[rid] === true)
+            ++this.tickCount;
+    }
+
+    this.notifyAllObserver();
   }
 
   setTickAtIndex(newValue: boolean, idx: number): TickList{
@@ -71,20 +118,23 @@ export class TickList {
     return this.records[Rid];
   }
 
-  tickAll(): void {
+  tickAll(): TickList {
     Object.keys(this.records).forEach((key) => {
       this.records[key] = true;
     })
+    
     this.tickCount = this.numRecords;
     this.notifyAllObserver();
+    return this;
   }
 
-  untickAll(): void {
+  untickAll(): TickList {
     Object.keys(this.records).forEach((key) => {
       this.records[key] = false;
     })
     this.tickCount = 0;
     this.notifyAllObserver();
+    return this;
   }
 
   registerObserver(observer: TickObserver): void {

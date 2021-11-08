@@ -4,7 +4,7 @@ import Axios from 'axios';
 import { ElementStyleProps } from 'constants/interfaces';
 import { ReportProps } from 'constants/interfaces';
 import ReportSummaryTable from 'components/department_reports/report_summary_table/report_summary_table';
-
+import {TickList, TickListData} from 'components/department_reports/report_summary_table/tick_list'
 
 import './styles.css';
 
@@ -14,13 +14,40 @@ interface DepartmentReportsProps extends ElementStyleProps {
 
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
-  const [reports, setReports] = useState<ReportProps[]>([]);
+  let [reports, setReports] = useState<ReportProps[]>([]);
+  let [ticks, setTicks] = useState<{[rid: string]: boolean}>({});
+
+  let [tickModel, setModel] = useState<TickList>(new TickList(0, {}));
+
+//   let [tickModel, setTickModel] = useState<TickList>(new TickList(0, {}));
+
+  function getTickModelData(reports: ReportProps[]): TickListData {
+    let tickListDataInPairs = reports.map((report)=>[report._id , false])
+    let tickListData = Object.fromEntries(tickListDataInPairs) as TickListData;
+    return tickListData;
+  }
+
+  function updateRowTicks(update :{[rid: string]: boolean}) {
+    //   setRowTicks(rowsTickList);
+    // let tickListData = tickModel.getRecords();
+    // for (const rid of Object.keys(update))
+    //     tickListData[rid] = update[rid];
+    // setTickModel(new TickList(reports.length, tickListData));
+    let newTicks = ticks;
+    // console.log("Current Ticks", newTicks);
+    for (let rid of Object.keys(update))
+        newTicks[rid] = update[rid];
+
+    setTicks(newTicks);
+    tickModel.update(newTicks);
+    // console.log("New TickModel", tickModel);
+  }
+
   const dbUrlForNICUReports = "/api/report/view";
-
-  // Fetch submitted reports when page loaded once
-
   const apiSource = Axios.CancelToken.source();
+
   useEffect(() => {
+    // To fetch data from db
     let isMounted = true;
     const getReports = async() => {
       const reportsFromServer = await fetchReports();
@@ -32,7 +59,18 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
       apiSource.cancel();
       isMounted = false;
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    // console.log(reports);
+    setTicks(getTickModelData(reports));
+  },[reports])
+
+//   useEffect(() => {
+//     console.log("ticks chagned ");
+//     tickModel.update(ticks);
+//   }, [ticks])
+
 
   const fetchReports = async () => {
     try {
@@ -57,6 +95,8 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
             <div className="lead">No submitted reports</div> : 
             <ReportSummaryTable 
               reports={reports}
+              tickModel = {tickModel}
+              updateTickList = {updateRowTicks}
               classes='text-dark bg-light'/>
         }
       </div>

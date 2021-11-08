@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 
 import './app.css';
 
@@ -16,11 +16,13 @@ import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
+import NotFound from 'pages/not_found/not_found';
 
 const App = () => {
   return (
-    <Router>
-      <div className="app">
+    <div className="app">
+        <Router>    
+        <Redirect exact from='/' to='/login'/>
         <Route path='/login' exact component={Login}/>
         <Route path='/home' exact component={Home}/>
         <Route path='/admin' exact component={Admin}/>
@@ -40,9 +42,9 @@ const App = () => {
         <Route path='/Department1NICU/detailed_report/edit/:id' exact component = {() => (<DepartmentReport edit={true}/>)} />
         <Route path="/NICUForm" component={NICUForm} />
         {/*<Route path="/posts/:id" exact component={Post} />*/}
-        {/*<Route path="/" render={() => <div>404</div>} />*/}
-      </div>
-    </Router>
+        <Route component={NotFound} />
+        </Router>
+    </div>
   );
 }
 export default App;
