@@ -1,3 +1,4 @@
+
 import React, {SyntheticEvent, useEffect, useState} from 'react';
 import Axios from 'axios';
 
@@ -13,9 +14,13 @@ interface ReportSummaryTableProps extends ElementStyleProps {
   updateTickList: (update : {[rid: string] : boolean}) => void, 
 };
 
+
+
 const ReportSummaryTable = (props : ReportSummaryTableProps) => {
-  
+
   function trackRowTick(tickedRow : {[rid: string] : boolean}): void {
+    console.log("trackRowTick()");
+
     props.updateTickList(tickedRow);
   }
 
@@ -26,6 +31,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
         props.reports.forEach((report) => updateData[report._id as string] = true)
     else
         props.reports.forEach((report) => updateData[report._id as string] = false)
+
+    console.log("All Tick Update: ", updateData);
 
     props.updateTickList(updateData);
   }
@@ -48,12 +55,13 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
         }
     })
 
-    props.tickModel.getTickedRids().forEach((rid) => {
-        props.tickModel.delTickedReportByRid(rid);
-    })
-
-    //update state
-    // props.updateTickList(props.rowsTickList);
+    // update react state
+    let newTicks = props.tickModel.getRecords();
+    let toDelRids = props.tickModel.getTickedRids();
+    for (let rid of toDelRids)
+        delete newTicks[rid];
+    
+    props.updateTickList(newTicks);
 
   }
 
@@ -89,7 +97,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
                 lastUpdatedOn={report.lastUpdatedOn as string}
                 lastUpdatedBy={report.lastUpdatedByUserId as number}
                 notifyTable={trackRowTick}
-                tickList={props.tickModel}/>)
+                isTicked={props.tickModel.isTickedRid(report._id as string)}
+                tickModel = {props.tickModel}/>)
             )}
           </tbody>
         </table>

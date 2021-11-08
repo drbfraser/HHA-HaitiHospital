@@ -19,8 +19,6 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
 
   let [tickModel, setModel] = useState<TickList>(new TickList(0, {}));
 
-//   let [tickModel, setTickModel] = useState<TickList>(new TickList(0, {}));
-
   function getTickModelData(reports: ReportProps[]): TickListData {
     let tickListDataInPairs = reports.map((report)=>[report._id , false])
     let tickListData = Object.fromEntries(tickListDataInPairs) as TickListData;
@@ -28,6 +26,8 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   }
 
   function updateRowTicks(update :{[rid: string]: boolean}) {
+    console.log("updateRowTicks()", update);
+
     //   setRowTicks(rowsTickList);
     // let tickListData = tickModel.getRecords();
     // for (const rid of Object.keys(update))
@@ -38,13 +38,20 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     for (let rid of Object.keys(update))
         newTicks[rid] = update[rid];
 
-    setTicks(newTicks);
     tickModel.update(newTicks);
+    console.log(newTicks);
+    setTicks(newTicks);
+    // ticks = newTicks;
     // console.log("New TickModel", tickModel);
   }
 
   const dbUrlForNICUReports = "/api/report/view";
   const apiSource = Axios.CancelToken.source();
+
+//   useEffect(() => {
+//     console.log("ticks changed ");
+//     tickModel.update(ticks);
+//   }, [ticks])
 
   useEffect(() => {
     // To fetch data from db
@@ -62,15 +69,11 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   }, []);
 
   useEffect(() => {
-    // console.log(reports);
+    console.log(reports);
     setTicks(getTickModelData(reports));
   },[reports])
 
-//   useEffect(() => {
-//     console.log("ticks chagned ");
-//     tickModel.update(ticks);
-//   }, [ticks])
-
+ 
 
   const fetchReports = async () => {
     try {

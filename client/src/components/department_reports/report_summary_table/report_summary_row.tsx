@@ -9,27 +9,31 @@ interface ReportSummaryProps extends ElementStyleProps {
   lastUpdatedOn: string;
   lastUpdatedBy: number;
   notifyTable(update: {[rid : string] : boolean}): void;
-  tickList: TickList;
+  tickModel: TickList;
+  isTicked: boolean;
 }
 
 const ReportSummaryRow = (props: ReportSummaryProps) => {
   
-  const [isTicked, setTick] = useState<boolean>(props.tickList.isTickedRid(props.reportId));
-
-  const tickListObserver: TickObserver = (tickList: TickList)=> {
-    let isReportTicked = tickList.isTickedRid(props.reportId);
-    console.log(`Row notified: ${isReportTicked}`);
-    if (isReportTicked != isTicked)
-      setTick(isReportTicked);
-  }
+//   const [isTicked, setTick] = useState<boolean>(props.tickList.isTickedRid(props.reportId));
 
   useEffect(() => {
-    console.log("Register row");
+    // console.log("Register row");
+    const tickListObserver: TickObserver = (tickList: TickList)=> {
+        let isReportTicked = tickList.isTickedRid(props.reportId);
+        // console.log(`Row notified: ${isReportTicked}`);
+        if (isReportTicked != props.isTicked) {
+            let update = {};
+            update[props.reportId] = isReportTicked;
+            props.notifyTable(update);
+            // setTick(isReportTicked);
+        }
+    }
 
-    props.tickList.registerObserver(tickListObserver);
+    props.tickModel.registerObserver(tickListObserver);
 
     return function unregObserver() {
-      props.tickList.unregisterObserver(tickListObserver);
+      props.tickModel.unregisterObserver(tickListObserver);
     }
   }, [])
 
@@ -55,17 +59,17 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
             type="checkbox" 
             value={props.reportId} 
             id={`tick-${props.reportId}`}
-            checked = {isTicked}
+            checked = {props.isTicked}
+            
             onChange = {(e: React.SyntheticEvent) => {
               let target: HTMLInputElement = e.target as HTMLInputElement;
 
               let update: {[rid: string]: boolean} = {}
               update[target.value] = target.checked;
-              if (target.checked !== isTicked) {
+              if (target.checked !== props.isTicked) {
                 props.notifyTable(
                    update
                 );
-                setTick(target.checked);
               }
             }}
           />
