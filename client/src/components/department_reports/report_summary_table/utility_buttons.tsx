@@ -44,7 +44,8 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
             <button 
             className=""
             onClick = {() => {
-                props.notifyTable()
+                props.notifyTable();
+                window.location.reload();
                 // console.log(props.ticks);
             }}
             >

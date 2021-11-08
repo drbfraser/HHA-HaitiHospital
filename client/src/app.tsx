@@ -36,15 +36,9 @@ const App = () => {
 
 
   return (
-<<<<<<< HEAD
     <div className="app">
-        <Router>    
-        <Redirect exact from='/' to='/login'/>
-=======
-    <Router>
-      <div className="app">
+        <Router>
         <Route path='/' exact component={Login}/>
->>>>>>> master
         <Route path='/login' exact component={Login}/>
         <Route path='/home' exact component={Home}/>
         <Route path='/admin' exact component={Admin}/>
