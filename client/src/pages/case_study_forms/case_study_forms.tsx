@@ -143,21 +143,21 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <div className="form-row">
                     <div className="col-md-6">
                         <label>Training Date</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register3("trainingSession.trainingDate", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
                         <label>What was the training on?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register3("trainingSession.trainingOn", {required: true})}></input>
                     </div>
                 </div>
                 <label>Who conducted training?</label>
-                <input className="form-control" type="text" required></input>
+                <input className="form-control" type="text" required {...register3("trainingSession.whoConducted", {required: true})}></input>
                 <label>Who attended the training?</label>
-                <textarea className="form-control" required></textarea>
+                <textarea className="form-control" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
                 <label>How will the training benefit HCBH and its staff?</label>
-                <textarea className="form-control" required></textarea>
+                <textarea className="form-control" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
                 <label>Case Study/Story</label>
-                <textarea className="form-control" required></textarea>
+                <textarea className="form-control" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile" />
                 <div className="form-check">
@@ -175,27 +175,27 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <div className="form-row">
                     <div className="col-md-6">
                         <label>What equipment was received?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.equipmentReceived", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
                         <label>Which department received it?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.departmentIdReceived", {required: true})}></input>
                     </div>
                 </div>
                  <div className="form-row">
                     <div className="col-md-6">
                         <label>Who was the equipment from?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.whoSentEquipment", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
                         <label>Was it donated or purchased?</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register4("equipmentReceived.purchasedOrDonated", {required: true})}></input>
                     </div>
                 </div>
                 <label>What does this new equipment do?</label>
-                <textarea className="form-control" required></textarea>
+                <textarea className="form-control" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
                 <label>Case Study/Story</label>
-                <textarea className="form-control" required></textarea>
+                <textarea className="form-control" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile" />
                 <div className="form-check">
@@ -210,7 +210,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <form onSubmit={handleSubmit5(onSubmit)}>
             <div className={`form-group col-md-6 ${formOption === "5" ? "d-block" : "d-none"}`} id="Form5">
                 <label className = "font-weight-bold">Other Story Case Study</label>
-                <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" required></textarea>
+                <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile" />
                 <div className="form-check">
