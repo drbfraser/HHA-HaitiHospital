@@ -3,10 +3,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import { ElementStyleProps } from 'constants/interfaces';
 import './leader_board_main.css'
-import Collapsible from "../../components/collapsible/collapsible";
 import EOM from '../../img/case1.jpg'
-
-// import { Link } from "react-router-dom";
 
 interface LeaderBoardMainProps extends ElementStyleProps {};
 
@@ -67,7 +64,6 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                 <div className="card mb-3">
                     <div className="row no-gutters">
 
-
                         <div className="col-md-8">
                             <div className="card-body">
                                 <h4 className="card-title pb-4">Employee of month</h4>
@@ -84,6 +80,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                 <img src={EOM} className="card-img-top p-3 m-2" alt="issa meme"/>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
