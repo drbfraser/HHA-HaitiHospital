@@ -2,13 +2,21 @@ import React from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 import Header from 'components/header/header';
 import './register_styles.css';
+import SideBar from "../../components/side_bar/side_bar";
 
 interface RegisterProps extends ElementStyleProps {
 }
 
 const Register = (props : RegisterProps) => {
-  return(<div className={'register '+(props.classes ||'')}>
-    <Header/>
+  return(
+      <div className={'register '+(props.classes ||'')}>
+        <SideBar/>
+
+        <main className='container'>
+          <Header/>
+          <h4>this is the register page</h4>
+        </main>
+
   </div>);
 }
 

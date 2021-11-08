@@ -2,11 +2,12 @@ import { useForm } from 'react-hook-form';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
-
+import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import nicuJSON from './models/nicuModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.css';
+import './nicu_form_styles.css'
+
 
 
 function DynamicForm() {
@@ -16,7 +17,7 @@ function DynamicForm() {
     const [formValuesAdCondition, setFormValuesAdCondition] = useState<{ name: any; value: any; }[]>([])
     const [formValuesOutCondition, setFormValuesOutCondition] = useState<{ name: any; value: any; }[]>([])
     const [sectionState, setSectionState] = useState(0);
-    
+
     const history = useHistory();
 
     useEffect(() => {
@@ -43,7 +44,7 @@ function DynamicForm() {
         var valid = submitValidation();
 
         if (valid === true) {
-            
+
             data.departmentId = 1;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
@@ -53,7 +54,7 @@ function DynamicForm() {
             }).catch(error => {
                 console.error('Something went wrong!', error.response);
             });
-            
+
             //console.log(data);
             history.push("/Department1NICU");
         } else {
@@ -465,10 +466,14 @@ function DynamicForm() {
     let fieldCount = 0;
     let sectionCount = 0;
     document.body.classList.add("bg-light");
-    return (
 
-        <div className="container">
-            <main>
+    return (
+        <div className="nicu_form">
+            <SideBar/>
+
+            <main className="container">
+                <Header/>
+
                 <div className="py-3 text-start">
                     <h2>NICU/Paediatrics Form</h2>
                     <p className="lead">For: September 2021</p>
@@ -525,10 +530,10 @@ function DynamicForm() {
                                                     </div>
                                                     <div id={"inputs" + index} className="col-sm-2">
                                                         <input type="text" className="form-control" placeholder=""
-                                                            {...register(field.field_id)}
-                                                            // required 
+                                                               {...register(field.field_id)}
+                                                            // required
                                                             //onChange={() => totalValidation(index)}
-                                                            onBlur={() => inputValidation(index)}
+                                                               onBlur={() => inputValidation(index)}
                                                         />
                                                         <div className="invalid-feedback">
                                                             Requires a valid number
@@ -554,14 +559,14 @@ function DynamicForm() {
                                                                             <div className="input-group" id={"cf" + index + index2}>
                                                                                 <span className="input-group-text" id="">Name and value</span>
                                                                                 <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                    value={element.name || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                    onBlur={() => arrayInputValidation("cf", index, index2, "text")}
+                                                                                       value={element.name || ""}
+                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                                       onBlur={() => arrayInputValidation("cf", index, index2, "text")}
                                                                                 />
                                                                                 <input className="form-control" type="text" name="numberOfPatients"
-                                                                                    value={element.value || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                    onBlur={() => arrayInputValidation("cf", index, index2, "number")}
+                                                                                       value={element.value || ""}
+                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                                       onBlur={() => arrayInputValidation("cf", index, index2, "number")}
                                                                                 />
                                                                                 <div className="invalid-feedback text-end">
                                                                                     Requires a valid number
@@ -591,14 +596,14 @@ function DynamicForm() {
                                                                             <div className="input-group" id={"ac" + index + index2}>
                                                                                 <span className="input-group-text" id="">Name and value</span>
                                                                                 <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                    value={element.name || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                    onBlur={() => arrayInputValidation("ac", index, index2, "text")}
+                                                                                       value={element.name || ""}
+                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                                       onBlur={() => arrayInputValidation("ac", index, index2, "text")}
                                                                                 />
                                                                                 <input className="form-control" type="text" name="numberOfPatients"
-                                                                                    value={element.value || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                    onBlur={() => arrayInputValidation("ac", index, index2, "number")}
+                                                                                       value={element.value || ""}
+                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                                       onBlur={() => arrayInputValidation("ac", index, index2, "number")}
                                                                                 />
                                                                                 <div className="invalid-feedback text-end">
                                                                                     Requires a valid number
@@ -628,14 +633,14 @@ function DynamicForm() {
                                                                             <div className="input-group" id={"oc" + index + index2}>
                                                                                 <span className="input-group-text">Name and value</span>
                                                                                 <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                    value={element.name || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                    onBlur={() => arrayInputValidation("oc", index, index2, "text")}
+                                                                                       value={element.name || ""}
+                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                                       onBlur={() => arrayInputValidation("oc", index, index2, "text")}
                                                                                 />
                                                                                 <input className="form-control" type="text" name="numberOfPatients"
-                                                                                    value={element.value || ""}
-                                                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                    onBlur={() => arrayInputValidation("oc", index, index2, "number")}
+                                                                                       value={element.value || ""}
+                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                                       onBlur={() => arrayInputValidation("oc", index, index2, "number")}
                                                                                 />
                                                                                 <div className="invalid-feedback text-end">
                                                                                     Requires a valid number

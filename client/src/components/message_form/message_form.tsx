@@ -81,6 +81,7 @@ import { useHistory } from 'react-router-dom';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 
+import './message_form_styles.css'
 
 
 
@@ -162,10 +163,12 @@ function AddMessage() {
   }
 
   return (
-    <div>
-      <SideBar />
-      <div>
+    <div className="add_message">
+      <SideBar/>
+
+      <main className="main_container">
         <Header/>
+
         <div className="container">
           <h1 className="h1">Add Message</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -206,7 +209,7 @@ function AddMessage() {
           </form>
 
         </div>
-      </div>
+      </main>
     </div>
   )
 
