@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route} from 'react-router-dom';
+import React, {useEffect} from 'react';
 
 // import './app.css';
 
@@ -18,6 +19,20 @@ import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
 
 const App = () => {
+    useEffect(() => {
+        const script = document.createElement('script');
+        
+        script.src = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css";
+        script.async = true;
+        
+        document.body.appendChild(script);
+        
+        return () => {
+            document.body.removeChild(script);
+        }
+    }, []);
+
+
   return (
     <Router>
       <div className="app">
