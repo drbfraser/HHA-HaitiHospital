@@ -92,7 +92,8 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
 
   return (
     <div className={'department-reports '+(props.classes || '')}>
-      <div className='container my-4'>
+      {/*<div className='container my-4'>*/}
+      <div className='my-4'>
         {
           (reports === undefined || reports.length === 0) ? 
             <div className="lead">No submitted reports</div> : 

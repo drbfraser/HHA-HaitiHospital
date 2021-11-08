@@ -31,20 +31,19 @@ export const seedDb = async () => {
     if (index === 0) {
       user.role = 'ADMIN';
     } else if (index === 1) {
-      user.role = 'HEAD_OF_DEPARTMENT';
+      user.role = 'MED_DIR';
     } else if (index === 2) {
-      user.role = 'HHA';
+      user.role = 'DEPT_HEAD';
     }
     user.registerUser(user, () => {});
-
     return user;
   });
 
-  // await Promise.all(
-  //   usersPromises.map(async (user) => {
-  //    await user.save();
-  //   }),
-  // );
+  await Promise.all(
+    usersPromises.map(async (user) => {
+      await user.save();
+    }),
+  );
 
   // // create 9 messages
   // const messagePromises = [...Array(9).keys()].map((index, i) => {
