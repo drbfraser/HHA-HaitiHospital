@@ -22,6 +22,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
   }
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<caseStudyModel>({});
+  const { register: register2, handleSubmit: handleSubmit2, formState: { errors: errors2 }, reset: reset2 } = useForm<caseStudyModel>({});
+  const { register: register3, handleSubmit: handleSubmit3, formState: { errors: errors3 }, reset: reset3 } = useForm<caseStudyModel>({});
+  const { register: register4, handleSubmit: handleSubmit4, formState: { errors: errors4 }, reset: reset4 } = useForm<caseStudyModel>({});
+  const { register: register5, handleSubmit: handleSubmit5, formState: { errors: errors5 }, reset: reset5 } = useForm<caseStudyModel>({});
 
   const onSubmit = (data: any) => {
     data.caseStudyType = parseInt(formOption) - 1;
@@ -101,27 +105,27 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 </div>
              </div>
             </form>
-            <form>
+            <form onSubmit={handleSubmit2(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "2" ? "d-block" : "d-none"}`} id="Form2">
                <label className = "font-weight-bold">Staff Recognition Case Study</label>
                 <div className="form-row">
                     <div className="col-md-6">
                         <label>Staff Name</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.staffName", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
                         <label>Role/Job Title</label>
-                        <input className="form-control mb-2 mt-0" type="text" required></input>
+                        <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.jobTitle", {required: true})}></input>
                     </div>
                 </div>
                 <label>Which department do they work in?</label>
-                <input className="form-control mb-2 mt-0" type="text" required></input>
+                <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.department", {required: true})}></input>
                 <label>How long have they been working at HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" required></input>
+                <input className="form-control mb-2 mt-0" type="text" required {...register2("staffRecognition.howManyMonthsWorkingAtHCBH", {required: true})}></input>
                 <label>What do they enjoy the most about working at HCBH?</label>
-                <textarea className="form-control mb-2 mt-0" required></textarea>
+                <textarea className="form-control mb-2 mt-0" required {...register2("staffRecognition.mostEnjoy", {required: true})}></textarea>
                 <label>Case Study/Story</label>
-                <textarea className="form-control mb-2 mt-0" required></textarea>
+                <textarea className="form-control mb-2 mt-0" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile" />
                 <div className="form-check">
@@ -133,7 +137,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 </div>
              </div>
             </form>
-            <form>
+            <form onSubmit={handleSubmit3(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "3" ? "d-block" : "d-none"}`} id="Form3">
                <label className = "font-weight-bold">Training Session Case Study</label>
                 <div className="form-row">
@@ -165,7 +169,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 </div>
              </div>
             </form>
-            <form>
+            <form onSubmit={handleSubmit4(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "4" ? "d-block" : "d-none"}`} id="Form4">
                <label className = "font-weight-bold">Equipment Received Case Study</label>
                 <div className="form-row">
@@ -203,7 +207,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 </div>             
             </div>
             </form>
-            <form>
+            <form onSubmit={handleSubmit5(onSubmit)}>
             <div className={`form-group col-md-6 ${formOption === "5" ? "d-block" : "d-none"}`} id="Form5">
                 <label className = "font-weight-bold">Other Story Case Study</label>
                 <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" required></textarea>
