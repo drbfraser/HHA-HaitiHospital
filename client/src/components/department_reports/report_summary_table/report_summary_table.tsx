@@ -1,50 +1,42 @@
+
 import React, {SyntheticEvent, useEffect, useState} from 'react';
+import Axios from 'axios';
 
 import { ElementStyleProps, ReportProps } from 'constants/interfaces';
 import ReportSummaryRow from 'components/department_reports/report_summary_table/report_summary_row';
 import { TickList, TickListData, TickObserver } from 'components/department_reports/report_summary_table/tick_list';
 import AllTick from 'components/department_reports/report_summary_table/all_tick';
 import UtilityButtons from 'components/department_reports/report_summary_table/utility_buttons';
+import temp_checklist from '../temp_checklist';
 
 interface ReportSummaryTableProps extends ElementStyleProps {
   reports :ReportProps[], 
+  tickModel: TickList,
+  updateTickList: (update : {[rid: string] : boolean}) => void, 
 };
 
+
+
 const ReportSummaryTable = (props : ReportSummaryTableProps) => {
-  
-  function convertReportsToTickListData(reports: ReportProps[]): TickListData {
-    let tickListDataInPairs = reports.map((report)=>[report._id , false])
-    let tickListData = Object.fromEntries(tickListDataInPairs) as TickListData;
-    return tickListData;
-  }
-  const [RowsTickList, setIsReportTicked] = useState<TickList>(new TickList(props.reports.length, convertReportsToTickListData(props.reports)));
 
-  function getIdxByReportId( rid : string) : number {
-    let reportWithId: ReportProps | undefined = props.reports.find(report => report._id as string === rid);
-    if (reportWithId === undefined) 
-      throw new ReferenceError("Invalid Ticked ReportId");
+//   function trackRowTick(tickedRow : {[rid: string] : boolean}): void {
+//     console.log("trackRowTick()");
 
-    let idxToReport: number = props.reports.indexOf(reportWithId, 0);
-    return idxToReport;
-  }
+//     props.updateTickList(tickedRow);
+//   }
 
-  function trackRowTick(tickedRow : {reportId: string, isChecked: boolean}): void {
-   
-    let idxToReport: number = getIdxByReportId(tickedRow.reportId);
-    if (idxToReport  < 0)
-      throw new RangeError("Invalid Index To Array");
+//   function trackAllTick(isTicked : boolean) {
+//     let updateData = {};
 
-    setIsReportTicked(
-      RowsTickList.setTickAtIndex(tickedRow.isChecked, idxToReport)
-    );
-  }
+//     if (isTicked === true)
+//         props.reports.forEach((report) => updateData[report._id as string] = true)
+//     else
+//         props.reports.forEach((report) => updateData[report._id as string] = false)
 
-  function trackAllTick(isTicked : boolean) {
-    if (isTicked === true)
-      RowsTickList.tickAll();
-    else
-      RowsTickList.untickAll();
-  }
+//     console.log("All Tick Update: ", updateData);
+
+//     props.updateTickList(updateData);
+//   }
 
   function getClassName(): string {
     if (props.classes === undefined) 
@@ -52,6 +44,40 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     else 
       return `table ${props.classes} `
   }
+
+  function delReports() {
+    // console.log("delReport() ", props.tickModel.getTickedRids());
+
+    // props.tickModel.getTickedRids().forEach((rid) => {
+    //     try {
+    //         console.log('Delete rid :', rid);
+    //         delTickedReportFromDb(rid);
+    //     }
+    //     catch (err) {
+    //         console.log(err);
+    //     }
+    // })
+
+//     // update react state
+//     let newTicks = props.tickModel.getRecords();
+//     let toDelRids = props.tickModel.getTickedRids();
+//     for (let rid of toDelRids)
+//         delete newTicks[rid];
+    
+//     props.updateTickList(newTicks);
+    try {
+        delTickedReportFromDb(temp_checklist[0]);
+    }
+    catch (err) {
+        console.log(err);
+    }
+  }
+
+  async function delTickedReportFromDb(rid: string) {
+    let dbApiToDelRid = `/api/report/delete/${rid}`;
+    const res = await Axios.delete(dbApiToDelRid);
+  }
+
   
   return (
     <section>
@@ -64,8 +90,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
               <th scope='col'>Last Updated By UserId</th>
               <th scope='col'></th>
               <th scope='col'>
-                {<AllTick tickList={RowsTickList}
-                    notifyTable={trackAllTick}/>}  
+                {/* {<AllTick tickList={props.tickModel}
+                    notifyTable={trackAllTick}/>}   */}
               </th>
             </tr>
           </thead>
@@ -74,18 +100,24 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
             {props.reports.map(
               (report, index)=> 
               (<ReportSummaryRow 
-                key={index}
+                key={report._id as string} 
                 reportId={report._id as string} 
                 lastUpdatedOn={report.lastUpdatedOn as string}
                 lastUpdatedBy={report.lastUpdatedByUserId as number}
-                notifyTable={trackRowTick}
-                tickList={RowsTickList}/>)
+                // notifyTable={trackRowTick}
+                // isTicked={props.tickModel.isTickedRid(report._id as string)}
+                tickModel = {props.tickModel}
+                />)
             )}
           </tbody>
         </table>
       </div>
       
-      <UtilityButtons ticks={RowsTickList}/>
+      <UtilityButtons 
+        ticks={props.tickModel} 
+        reports={props.reports}
+        notifyTable={delReports}
+     />
 
     </section>
   )

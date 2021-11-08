@@ -3,38 +3,45 @@ import { Link } from 'react-router-dom';
 
 import { ElementStyleProps} from 'constants/interfaces';
 import {TickList, TickObserver} from 'components/department_reports/report_summary_table/tick_list'
+import temp_checklist from '../temp_checklist';
 
 interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
   lastUpdatedOn: string;
   lastUpdatedBy: number;
-  notifyTable(data:{reportId: string, isChecked: boolean}): void;
-  tickList: TickList;
+//   notifyTable(update: {[rid : string] : boolean}): void;
+  tickModel: TickList;
+//   isTicked: boolean;
 }
 
 const ReportSummaryRow = (props: ReportSummaryProps) => {
   
-  const [isTicked, setTick] = useState<boolean>(false);
+//   const [isTicked, setTick] = useState<boolean>(props.tickList.isTickedRid(props.reportId));
 
-  useEffect(() => {
-    const tickListObserver: TickObserver = (tickList: TickList)=> {
-      let isReportTicked = tickList.isTickedRid(props.reportId);
-      console.log(`Row notified: ${isReportTicked}`);
-      if (isReportTicked != isTicked)
-        setTick(isReportTicked);
-    }
+//   useEffect(() => {
+//     // console.log("Register row");
+//     const tickListObserver: TickObserver = (tickList: TickList)=> {
+//         let isReportTicked = tickList.isTickedRid(props.reportId);
+//         // console.log(`Row notified: ${isReportTicked}`);
+//         if (isReportTicked != props.isTicked) {
+//             let update = {};
+//             update[props.reportId] = isReportTicked;
+//             props.notifyTable(update);
+//             // setTick(isReportTicked);
+//         }
+//     }
 
-    props.tickList.registerObserver(tickListObserver);
+//     props.tickModel.registerObserver(tickListObserver);
 
-    return function unregObserver() {
-      props.tickList.unregisterObserver(tickListObserver);
-    }
-  }, [isTicked])
+//     return function unregObserver() {
+//       props.tickModel.unregisterObserver(tickListObserver);
+//     }
+//   }, [])
 
 
 
   return (
-    <tr>
+    <tr id={`rp-sum-row-${props.reportId}`}>
       <th scope='row'>
         <Link to={`/Department1NICU/detailed_report/view/${props.reportId}`}>
           { props.reportId }
@@ -53,15 +60,21 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
             type="checkbox" 
             value={props.reportId} 
             id={`tick-${props.reportId}`}
-            checked = {isTicked}
-            onChange = {(e: React.SyntheticEvent) => {
-              let target: HTMLInputElement = e.target as HTMLInputElement;
-              if (target.checked !== isTicked) {
-                props.notifyTable({reportId: target.value, 
-                    isChecked: target.checked});
-                setTick(target.checked);
-              }
-            }}
+            // checked = {props.isTicked}
+            
+            // onChange = {(e: React.SyntheticEvent) => {
+            //   let target: HTMLInputElement = e.target as HTMLInputElement;
+
+            //   let update: {[rid: string]: boolean} = {}
+            //   update[target.value] = target.checked;
+            //   if (target.checked !== props.isTicked) {
+            //     props.notifyTable(
+            //        update
+            //     );
+            //   }
+              
+            // }}
+            onClick = {() => temp_checklist.push(props.reportId)}
           />
           <label className="form-check-label" htmlFor={`tick-${props.reportId}`}>
           </label>

@@ -2,17 +2,23 @@ import React, {useState, useEffect} from 'react';
 
 import { TickObserver, TickList } from 'components/department_reports/report_summary_table/tick_list';
 
-import {ElementStyleProps} from 'constants/interfaces';
+import {ElementStyleProps, ReportProps} from 'constants/interfaces';
 
 interface UtilityButtonsProps extends ElementStyleProps {
   ticks: TickList;
+  reports: ReportProps[];
+  notifyTable: () => void;
 }
+
 
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
   
   const [showButtons, setShowButtons] = useState<boolean>(false);
+
   let tickObserver: TickObserver = (tickList: TickList) => {
+    console.log("Del button notified ", tickList.isNoTicked());
+
     if (tickList.isNoTicked() === true)
       setShowButtons(false);
     else
@@ -21,6 +27,7 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
 
   useEffect(() => {
     props.ticks.registerObserver(tickObserver);
+    console.log("delete button registered");
 
     return function unregisterObserver() {
       props.ticks.unregisterObserver(tickObserver);
@@ -29,11 +36,21 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
   }, []) 
 
   return (
-    <section>
-      {(showButtons === true)?
+    <div>
+      {/* {(showButtons === true)? */}
+      {/* {(props.ticks.isNoTicked() === false) ? */}
         <div className="row justify-content-end">
             <div className="col-auto">
-            <button className="">Delete</button>
+            <button 
+            className=""
+            onClick = {() => {
+                props.notifyTable();
+                window.location.reload();
+                // console.log(props.ticks);
+            }}
+            >
+                Delete
+            </button>
             </div>
 
             <div className="col-auto">
@@ -44,9 +61,8 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
         <div>
 
         </div>
-      }
-
-    </section>
+      {/* } */}
+    </div>
   );
 }
 
