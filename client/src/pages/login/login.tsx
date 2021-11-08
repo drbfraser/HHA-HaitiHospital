@@ -1,22 +1,20 @@
 import { RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from 'constants/interfaces';
-import logo from 'img/logo/LogoWText.svg'
-import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
-import './login_styles.css';
 import { loginUser } from "../../actions/authActions";
 import { useFormik } from 'formik';
 import { loginSchema } from './validation';
 import React from 'react';
+import logo from 'img/logo/LogoWText.svg'
+import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+import './login_styles.css';
 
 interface LoginProps extends ElementStyleProps {
 };
 
 interface LoginProps extends RouteComponentProps {}
 
-function setUsername(username: string) {
-    // may change after authenticate/validation
-    const name = (document as any).getElementById("username").value
-    localStorage.setItem('username', JSON.stringify(name))
+function setUsername(name: string) {
+    localStorage.setItem('username', JSON.stringify(name));
 }
 
 const Login = (props : LoginProps) => {
@@ -29,13 +27,12 @@ const Login = (props : LoginProps) => {
         },
         validationSchema: loginSchema,
         onSubmit: (values) => {
-            setErrorMessage('Invalid login credentials');
-            loginUser(values, props).then((res: any) => {
-                // Problems with async to get res with username and set as name.
-                // setUsername(res.data.user.name);
-                // props.history.push("./home");
+            loginUser(values).then((res: any) => {
+                setUsername(res.data.user.name);
+                props.history.push("./home");
             }).catch(err => {
-                console.log("error catch")
+                setErrorMessage('Invalid login credentials');
+                console.log("error with logging in: ", err);
             });
         },
     });
@@ -86,9 +83,6 @@ const Login = (props : LoginProps) => {
                 <button 
                     className="w-100 btn btn-lg btn-primary" 
                     type="submit"
-                    onClick={() => {
-                        setUsername("")
-                    }}
                 >Sign In</button>
                 <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
 
