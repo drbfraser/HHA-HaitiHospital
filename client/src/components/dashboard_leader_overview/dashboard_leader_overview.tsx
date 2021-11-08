@@ -71,7 +71,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
             {/*option 2: show leader only but could show top four by collapsible*/}
 
             <div className="my-3 p-2 bg-body rounded shadow-sm">
-                <h5 className="pb-1 mb-3 rol">Department Leader</h5>
+                <h5 className="pb-2 mb-3">Department Leader</h5>
 
                 <div className="d-block text-end mt-1">
                     <div className="d-flex pb-1 mb-0 row">
