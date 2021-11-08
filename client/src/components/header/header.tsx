@@ -41,7 +41,6 @@ function GetUsername() {
     let username = localStorage.getItem('username')
     let name = (username as any).replace(/['"]+/g, '')
     return <h6> { name }</h6>
-    // return <h6> Bonjour, { name }</h6>
 }
 
 const Header = (props: HeaderProps) => {
@@ -61,7 +60,7 @@ const Header = (props: HeaderProps) => {
                 </div>
 
                 <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
-                    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact>
+                    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact onClick={onLogOut}>
                         <i className="bi bi-door-open-fill me-2"/>
                         <span className="text text-dark">Sign Out</span>
                     </NavLink>
@@ -69,39 +68,6 @@ const Header = (props: HeaderProps) => {
             </div>
         </div>
         )
-
-  // const location = useLocation();
-  //
-  // if (location.pathname === Routing.HOME_ROUTE)
-  //   return (
-  //     <div className={'header '+ (props.classes || '')}
-  //         style={props.style}>
-  //       <HhaLogo
-  //         classes='logo grid-item'
-  //         style={
-  //           {'--griditem-alignself': 'center',
-  //           '--griditem-justifyself': 'center',
-  //           'width' : '300px',
-  //           } as CustomCssProps
-  //         }
-  //       />
-  //       <Button classes='btn grid-item goto-admin-btn'
-  //         style= {
-  //           {'--griditem-alignself':'center'} as CustomCssProps
-  //         }
-  //         value='ADMIN PANEL'
-  //       />
-  //       <Button classes='btn grid-item signout-btn'
-  //         style = {
-  //           {'--griditem-alignself':'center'} as CustomCssProps
-  //         }
-  //         value='SIGN OUT'/>
-  //     </div>
-  //   );
-  // else
-  //   return (
-  //     <NavBar/>
-  //   )
 }
 
 export default Header;
