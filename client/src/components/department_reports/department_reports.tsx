@@ -35,11 +35,11 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     // setTickModel(new TickList(reports.length, tickListData));
     let newTicks = ticks;
     // console.log("Current Ticks", newTicks);
-    for (let rid of Object.keys(update))
+    for (let rid of Object.keys(newTicks))
         newTicks[rid] = update[rid];
 
     tickModel.update(newTicks);
-    console.log(newTicks);
+    console.log(tickModel);
     setTicks(newTicks);
     // ticks = newTicks;
     // console.log("New TickModel", tickModel);

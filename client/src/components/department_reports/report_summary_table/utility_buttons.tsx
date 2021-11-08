@@ -15,7 +15,7 @@ interface UtilityButtonsProps extends ElementStyleProps {
 const UtilityButtons = (props: UtilityButtonsProps) => {
   
   const [showButtons, setShowButtons] = useState<boolean>(false);
-  
+
   let tickObserver: TickObserver = (tickList: TickList) => {
     console.log("Del button notified ", tickList.isNoTicked());
 
@@ -38,13 +38,15 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
   return (
     <div>
       {/* {(showButtons === true)? */}
-      {(props.ticks.isNoTicked() === false) ?
+      {/* {(props.ticks.isNoTicked() === false) ? */}
         <div className="row justify-content-end">
             <div className="col-auto">
             <button 
             className=""
             onClick = {() => {
-                props.notifyTable()}}
+                props.notifyTable()
+                // console.log(props.ticks);
+            }}
             >
                 Delete
             </button>
@@ -58,7 +60,7 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
         <div>
 
         </div>
-      }
+      {/* } */}
     </div>
   );
 }

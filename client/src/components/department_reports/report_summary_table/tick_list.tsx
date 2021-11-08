@@ -41,7 +41,7 @@ export class TickList {
   }
 
   getTickedRids() : string[] {
-    
+
     const tickedRids = Object.keys(this.records).filter((rid) => this.records[rid] === true)
     return tickedRids;
   }
