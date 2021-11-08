@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
-import { caseStudyModel } from "./CaseStudies"
+import { CaseStudyModel } from "./CaseStudies"
 import axios from 'axios';
 
 // import "./case_study_main_styles.css";
@@ -21,11 +21,11 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     setformOption(formNum);
   }
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<caseStudyModel>({});
-  const { register: register2, handleSubmit: handleSubmit2, formState: { errors: errors2 }, reset: reset2 } = useForm<caseStudyModel>({});
-  const { register: register3, handleSubmit: handleSubmit3, formState: { errors: errors3 }, reset: reset3 } = useForm<caseStudyModel>({});
-  const { register: register4, handleSubmit: handleSubmit4, formState: { errors: errors4 }, reset: reset4 } = useForm<caseStudyModel>({});
-  const { register: register5, handleSubmit: handleSubmit5, formState: { errors: errors5 }, reset: reset5 } = useForm<caseStudyModel>({});
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<CaseStudyModel>({});
+  const { register: register2, handleSubmit: handleSubmit2, formState: { errors: errors2 }, reset: reset2 } = useForm<CaseStudyModel>({});
+  const { register: register3, handleSubmit: handleSubmit3, formState: { errors: errors3 }, reset: reset3 } = useForm<CaseStudyModel>({});
+  const { register: register4, handleSubmit: handleSubmit4, formState: { errors: errors4 }, reset: reset4 } = useForm<CaseStudyModel>({});
+  const { register: register5, handleSubmit: handleSubmit5, formState: { errors: errors5 }, reset: reset5 } = useForm<CaseStudyModel>({});
 
   const onSubmit = (data: any) => {
     data.caseStudyType = parseInt(formOption) - 1;

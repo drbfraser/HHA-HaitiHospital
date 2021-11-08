@@ -6,7 +6,7 @@ enum CaseStudyOptions {
     OtherStory,
 }
 
-interface patientStorySchema {
+interface PatientStory {
         patientsName: { type: String, required: true },
         patientsAge: { type: Number, required: true },
         whereIsThePatientFrom: { type: String, required: true },
@@ -16,7 +16,7 @@ interface patientStorySchema {
         caseStudyStory: { type: String, required: true },
 }
 
-interface staffRecognitionSchema {
+interface StaffRecognition {
         staffName: { type: String, required: true },
         jobTitle: { type: String, required: true },
         department: { type: String, required: true },
@@ -25,7 +25,7 @@ interface staffRecognitionSchema {
         caseStudyStory: { type: String, required: true },
 }
 
-interface trainingSessionSchema {
+interface TrainingSession {
         trainingDate: { type: Date, required: true },
         trainingOn: { type: String, required: true },
         whoConducted: { type: String, required: true },
@@ -34,7 +34,7 @@ interface trainingSessionSchema {
         caseStudyStory: { type: String, required: true },
 }
 
-interface equipmentReceivedSchema {
+interface EquipmentReceived {
         equipmentReceived: { type: String, required: true },
         departmentIdReceived: { type: Number, required: true },
         whoSentEquipment: { type: String, required: true },
@@ -43,17 +43,17 @@ interface equipmentReceivedSchema {
         caseStudyStory: { type: String, required: true },
 }
 
-interface otherStorySchema {
+interface OtherStory {
         caseStudyStory: { type: String, required: true },
 }
 
-export interface caseStudyModel{
+export interface CaseStudyModel{
         caseStudyType: { type: CaseStudyOptions, required: true },
         // TODO: add created by user. right now JWT is not yet applied
         // createdByUser: { type: String},
-        patientStory: patientStorySchema,
-        staffRecognition: staffRecognitionSchema,
-        trainingSession: trainingSessionSchema,
-        equipmentReceived: equipmentReceivedSchema,
-        otherStory: otherStorySchema
+        patientStory: PatientStory,
+        staffRecognition: StaffRecognition,
+        trainingSession: TrainingSession,
+        equipmentReceived: EquipmentReceived,
+        otherStory: OtherStory
 };
