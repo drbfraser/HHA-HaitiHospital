@@ -43,10 +43,12 @@ function DynamicForm() {
         var valid = submitValidation();
 
         if (valid === true) {
+            
+            data.departmentId = 1;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
             data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            await axios.post('/api/NicuPaeds/add', data).then(res => {
+            await axios.post('/api/report/add', data).then(res => {
                 console.log(res.data);
             }).catch(error => {
                 console.error('Something went wrong!', error.response);
