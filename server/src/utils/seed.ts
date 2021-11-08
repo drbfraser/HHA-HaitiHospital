@@ -36,15 +36,14 @@ export const seedDb = async () => {
       user.role = 'DEPT_HEAD';
     }
     user.registerUser(user, () => {});
-
     return user;
   });
 
-  // await Promise.all(
-  //   usersPromises.map(async (user) => {
-  //    await user.save();
-  //   }),
-  // );
+  await Promise.all(
+    usersPromises.map(async (user) => {
+      await user.save();
+    }),
+  );
 
   // // create 9 messages
   // const messagePromises = [...Array(9).keys()].map((index, i) => {
