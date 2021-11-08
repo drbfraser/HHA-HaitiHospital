@@ -14,7 +14,7 @@ router.post('/login', requireLocalAuth, (req: Request, res: Response) => {
   const token = req.user.generateJWT();
   // @ts-ignore
   const user = req.user.toJSON();
-  // httpOnly means cookie can't be read using JS saving us from XSS attack
+  // httpOnly means cookie can't be accessed via JS
   res.cookie('jwt', token, { httpOnly: true });
   res.status(200).json({ success: true, token, user });
 });
@@ -62,6 +62,7 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
 // logout
 router.get('/logout', (req: Request, res: Response) => {
   console.log('User successfully logged out');
+  res.cookie('jwt', 'invalidated-jwt-token');
   req.logout();
   res.send(false);
 });
