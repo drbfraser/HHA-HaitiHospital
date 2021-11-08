@@ -1,3 +1,15 @@
+.wrapper .container {
+  margin-left: 200px;
+}
+
+/*Margin by pixel:*/
+@media screen and ( max-width: 700px ){
+  .wrapper .container{
+    margin-left: 70px;
+  }
+}
+
+
 /* body{
     height: 100%;
     margin: auto;

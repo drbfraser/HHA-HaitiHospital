@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import { compose } from 'redux';
 import { NICUPaedsModel } from 'pages/form/nicu_paeds_model';
+import side_bar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 
 // import Layout from '../../layout/Layout';
 import './nicu_form_styles.css';
+import SideBar from "../../components/side_bar/side_bar";
 
 
 function NICUForm() {
@@ -68,13 +70,16 @@ function NICUForm() {
                 [e.target.value]: 0,
             });
         }
-    }    
+    }
 
     return (
         <div className="wrapper">
-            <Header />
-            
+            <SideBar/>
+
+            <main className='container'>
+                <Header/>
             <div className="wrapForm">
+
                 <h1>HHA Form</h1>
                 <h2>MSPP DATA (NICU)</h2>
                 <form onSubmit={handleSubmit(onSubmit)} >
@@ -759,6 +764,7 @@ function NICUForm() {
                 </div>
                 </form>
             </div>
+            </main>
         </div>
     )
 
