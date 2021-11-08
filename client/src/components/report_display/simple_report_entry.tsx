@@ -16,7 +16,7 @@ export const SimpleEntry = (props: SimpleEntryProps) => {
       return `entry simple-entry ${props.classes}`
   }
 
-  if (props.edit == true)
+  if (props.edit === true)
     return (
       <div className={`${getClassName()} row my-2 input-group`}>
         <div className='col-sm input-group-text'><strong>{props.name}</strong></div>    

@@ -6,31 +6,39 @@ import './login_styles.css';
 import { loginUser } from "../../actions/authActions";
 import { useFormik } from 'formik';
 import { loginSchema } from './validation';
+import React from 'react';
 
 interface LoginProps extends ElementStyleProps {
 };
-// import Layout from 'layout/layout'
 
 interface LoginProps extends RouteComponentProps {}
 
-function setUsername() {
+function setUsername(username: string) {
     // may change after authenticate/validation
-    let username = (document as any).getElementById("username").value
-    localStorage.setItem('username', JSON.stringify(username))
+    const name = (document as any).getElementById("username").value
+    localStorage.setItem('username', JSON.stringify(name))
 }
 
-
 const Login = (props : LoginProps) => {
+    const [errorMessage, setErrorMessage] = React.useState("");
+
     const formik = useFormik({
         initialValues: {
             username: '',
             password: '',
         },
         validationSchema: loginSchema,
-        onSubmit: async (values) => {
-            await loginUser(values, props);
+        onSubmit: (values) => {
+            setErrorMessage('Invalid login credentials');
+            loginUser(values, props).then((res: any) => {
+                // Problems with async to get res with username and set as name.
+                // setUsername(res.data.user.name);
+                // props.history.push("./home");
+            }).catch(err => {
+                console.log("error catch")
+            });
         },
-        });
+    });
 
     return(
         <div className={'login '+ (props.classes||'')}>
@@ -79,10 +87,12 @@ const Login = (props : LoginProps) => {
                     className="w-100 btn btn-lg btn-primary" 
                     type="submit"
                     onClick={() => {
-                        setUsername()
+                        setUsername("")
                     }}
                 >Sign In</button>
                 <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
+
+                {errorMessage && <div className="error"> {errorMessage} </div>}
             </form>
         </div>
     );

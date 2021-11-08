@@ -107,6 +107,8 @@ userSchema.methods.generateJWT = function () {
       // provider: this.provider,
       // email: this.email,
       username: this.username,
+      name: this.name,
+      role: this.role
     },
     secretOrKey,
   );

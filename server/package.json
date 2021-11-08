@@ -36,6 +36,8 @@
     "typescript": "^4.4.3"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express-session": "^1.17.4",
     "ts-node-dev": "^1.1.8"
   }
 }

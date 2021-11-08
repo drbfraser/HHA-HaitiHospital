@@ -6,8 +6,8 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Install Dependencies
-COPY package*.json ./
-RUN npm install
+COPY package.json ./
+RUN npm install --legacy-peer-deps
 
 # Copy app source code
 COPY . .
