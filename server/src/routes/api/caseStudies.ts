@@ -9,11 +9,11 @@ const router = Router();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, resolve(__dirname, '../../../public/images'));
+        cb(null, 'public');
     },
     filename: function (req, file, cb) {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
-        cb(null, `avatar-${Date.now()}-${fileName}`);
+        cb(null, `case-study-${Date.now()}-${fileName}`);
     },
 });
 
@@ -45,10 +45,14 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', upload.single("file"), async (req, res) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = req.body;
         // const createdByUser = req.user;
+        if (!req.file) {
+            return res.send("you must select a file.");
+        }
+        const img = req.file.filename;
         const newCaseStudy = new CaseStudy({
             caseStudyType,
             // createdByUser,
@@ -56,7 +60,8 @@ router.post('/', async (req, res) => {
             staffRecognition,
             trainingSession,
             equipmentReceived,
-            otherStory
+            otherStory,
+            img
         });
         newCaseStudy.save()
             .then(() => res.json("Case study submmitted successfully"))

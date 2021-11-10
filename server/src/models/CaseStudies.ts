@@ -70,7 +70,8 @@ const caseStudySchema = new Schema(
         staffRecognition: staffRecognitionSchema,
         trainingSession: trainingSessionSchema,
         equipmentReceived: equipmentReceivedSchema,
-        otherStory: otherStorySchema
+        otherStory: otherStorySchema,
+        img: { type: String, required: true }
     },
     { timestamps: true },
 );
