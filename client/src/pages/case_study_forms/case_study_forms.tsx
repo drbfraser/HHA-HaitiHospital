@@ -92,9 +92,9 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <label htmlFor="Patient From">Where is the patient from?</label>
                 <input className="form-control mb-2 mt-0" type="text" id="Patient From" required {...register("patientStory.whereIsThePatientFrom", {required: true})}></input>
                 <label htmlFor="Patient Choose">Why did the patient choose to come to HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" id="Patient Choose" required {...register("patientStory.whyComeToHCBH", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="Patient Choose" required {...register("patientStory.whyComeToHcbh", {required: true})}></input>
                 <label htmlFor="How long">How long were they at HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" id="How long" required {...register("patientStory.howLongWereTheyAtHCBHinDays", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="How long" required {...register("patientStory.howLongWereTheyAtHcbh", {required: true})}></input>
                 <label htmlFor="Diagnosis">What was their diagnosis?</label>
                 <textarea className="form-control mb-2 mt-0" id="Diagnosis" required {...register("patientStory.diagnosis", {required: true})}></textarea>
                 <label htmlFor="Case Study 1">Case Study/Story</label>
@@ -126,7 +126,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <label htmlFor="Which dept work">Which department do they work in?</label>
                 <input className="form-control mb-2 mt-0" type="text" id="Which dept work" required {...register2("staffRecognition.department", {required: true})}></input>
                 <label htmlFor="How long working">How long have they been working at HCBH?</label>
-                <input className="form-control mb-2 mt-0" type="text" id="How long working" required {...register2("staffRecognition.howManyMonthsWorkingAtHCBH", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="How long working" required {...register2("staffRecognition.howLongWorkingAtHcbh", {required: true})}></input>
                 <label htmlFor="What enjoy">What do they enjoy the most about working at HCBH?</label>
                 <textarea className="form-control mb-2 mt-0" id="What enjoy" required {...register2("staffRecognition.mostEnjoy", {required: true})}></textarea>
                 <label htmlFor="Case Study 2">Case Study/Story</label>
@@ -184,7 +184,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="Which dept receive">Which department received it?</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Which dept receive" required {...register4("equipmentReceived.departmentIdReceived", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Which dept receive" required {...register4("equipmentReceived.departmentReceived", {required: true})}></input>
                     </div>
                 </div>
                  <div className="form-row">
