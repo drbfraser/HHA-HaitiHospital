@@ -17,10 +17,6 @@ interface CaseStudyMainProps extends RouteComponentProps {};
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const [formOption, setformOption] = useState("");
 
-  function refreshForm(formNum) {
-    setformOption(formNum);
-  }
-
   const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
   const { register: register2, handleSubmit: handleSubmit2, reset: reset2 } = useForm<CaseStudyModel>({});
   const { register: register3, handleSubmit: handleSubmit3, reset: reset3 } = useForm<CaseStudyModel>({});
