@@ -7,8 +7,6 @@ import CaseStudy from '../../models/CaseStudies';
 
 const router = Router();
 
-
-
 router.get('/', async (req, res) => {
     try {
         await CaseStudy.find().then(data => res.json(data));
@@ -60,16 +58,21 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req : Request, res : Response, next : NextFunction) => {
+router.put('/:id', upload.single("file"), async (req : Request, res : Response, next : NextFunction) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = req.body;
+        let imgPath = null;
+        if (req.file) {
+            imgPath = req.file.path;
+        }
         const updatedCaseStudy = new CaseStudy({
             caseStudyType,
             patientStory,
             staffRecognition,
             trainingSession,
             equipmentReceived,
-            otherStory
+            otherStory,
+            imgPath
         }); 
         const caseStudy = await CaseStudy.findByIdAndUpdate(req.params.id, updatedCaseStudy, { new: true });
         res.status(200).json({ caseStudy });
