@@ -108,7 +108,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <label htmlFor="Case Study 1">Case Study/Story</label>
                 <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
-                <input type="file" accept="image/*" className="form-control" id="customFile" value={selectedFile} onChange={(e) => setSelectedFile(e.target.files[0])}/>
+                <input type="file" accept="image/*" className="form-control" id="customFile"/>
                 <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
                     <label className="form-check-label" htmlFor="invalidCheck1"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
@@ -227,7 +227,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                     <label htmlFor="Case Study 5">Case Study/Story</label>
                     <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
                     <label className="form-label">Upload Image</label>
-                    <input type="file" accept="image/*" className="form-control" id="customFile" />
+                    <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
                         <label className="form-check-label" htmlFor="invalidCheck5"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
