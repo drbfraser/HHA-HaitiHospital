@@ -25,9 +25,19 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
 
   const onSubmit = (data: any) => {
     data.caseStudyType = parseInt(formOption) - 1;
+    var formData = new FormData();
+    
+    var postData = JSON.stringify(data);
+    console.log()
+    formData.append("document", postData);
+    // for (var key in data){
+    //     formData.append(key, data[key]);
+    // }
+    console.log(formData);
+    formData.append("file", selectedFile);
 
-    console.log(data);
-    axios.post('/api/casestudies', data).then(res => {
+    console.log(formData);
+    axios.post('/api/casestudies', formData).then(res => {
         console.log(res.data);
     }).catch(error =>{
         console.error('Something went wrong!', error.response);
@@ -39,6 +49,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     reset4({});
     reset5({});
   }
+
+  const [selectedFile, setSelectedFile] = useState(null);
 
   return (
     <div className={'case-study-form '+ props.classes}>
@@ -96,7 +108,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <label htmlFor="Case Study 1">Case Study/Story</label>
                 <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">Upload Image</label>
-                <input type="file" accept="image/*" className="form-control" id="customFile"/>
+                <input type="file" accept="image/*" className="form-control" id="customFile" value={selectedFile} onChange={(e) => setSelectedFile(e.target.files[0])}/>
                 <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
                     <label className="form-check-label" htmlFor="invalidCheck1"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>

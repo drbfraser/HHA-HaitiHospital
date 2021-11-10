@@ -25,7 +25,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', upload.single("file"), async (req, res) => {
     try {
-        const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = req.body;
+        console.log(req.body);
+        const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
         // const createdByUser = req.user;
         let imgPath = null;
         if (req.file) {
