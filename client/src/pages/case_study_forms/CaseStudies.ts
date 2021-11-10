@@ -55,5 +55,6 @@ export interface CaseStudyModel{
     staffRecognition: StaffRecognition,
     trainingSession: TrainingSession,
     equipmentReceived: EquipmentReceived,
-    otherStory: OtherStory
+    otherStory: OtherStory,
+    imgPath: { type: string }
 };
