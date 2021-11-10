@@ -16,7 +16,7 @@ const patientStorySchema = new Schema(
         patientsAge: { type: Number, required: true },
         whereIsThePatientFrom: { type: String, required: true },
         whyComeToHCBH: { type: String, required: true },
-        howLongWereTheyAtHCBHinDays: { type: Number, required: true },
+        howLongWereTheyAtHCBHinDays: { type: String, required: true },
         diagnosis: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
     }
@@ -27,7 +27,7 @@ const staffRecognitionSchema = new Schema(
         staffName: { type: String, required: true },
         jobTitle: { type: String, required: true },
         department: { type: String, required: true },
-        howManyMonthsWorkingAtHCBH: { type: Number, required: true },
+        howManyMonthsWorkingAtHCBH: { type: String, required: true },
         mostEnjoy: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
     }
@@ -47,7 +47,7 @@ const trainingSessionSchema = new Schema(
 const equipmentReceivedSchema = new Schema(
     {
         equipmentReceived: { type: String, required: true },
-        departmentIdReceived: { type: Number, required: true },
+        departmentIdReceived: { type: String, required: true },
         whoSentEquipment: { type: String, required: true },
         purchasedOrDonated: { type: String, required: true },
         whatDoesEquipmentDo: { type: String, required: true },
