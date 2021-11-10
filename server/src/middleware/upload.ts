@@ -16,11 +16,12 @@ const upload = multer({
     storage: storage,
     limits: {fileSize: maxSize},
     fileFilter: (req, file, cb) => {
-        if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
-            cb(null, true);
-        } else {
+        const match = ["image/png", "image/jpeg", "image/jpg"];
+        if (match.indexOf(file.mimetype) === -1) {
             cb(null, false);
             return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        } else {
+            cb(null, true);
         }
     },
 });
