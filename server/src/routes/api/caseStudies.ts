@@ -49,10 +49,10 @@ router.post('/', upload.single("file"), async (req, res) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = req.body;
         // const createdByUser = req.user;
-        if (!req.file) {
-            return res.send("you must select a file.");
+        let imgPath = null;
+        if (req.file) {
+            imgPath = req.file.path;
         }
-        const img = req.file.filename;
         const newCaseStudy = new CaseStudy({
             caseStudyType,
             // createdByUser,
@@ -61,7 +61,7 @@ router.post('/', upload.single("file"), async (req, res) => {
             trainingSession,
             equipmentReceived,
             otherStory,
-            img
+            imgPath
         });
         newCaseStudy.save()
             .then(() => res.json("Case study submmitted successfully"))

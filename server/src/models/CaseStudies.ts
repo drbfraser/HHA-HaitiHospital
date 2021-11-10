@@ -71,7 +71,7 @@ const caseStudySchema = new Schema(
         trainingSession: trainingSessionSchema,
         equipmentReceived: equipmentReceivedSchema,
         otherStory: otherStorySchema,
-        img: { type: String, required: true }
+        imgPath: { type: String }
     },
     { timestamps: true },
 );
