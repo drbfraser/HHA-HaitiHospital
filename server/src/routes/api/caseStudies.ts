@@ -25,7 +25,6 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', upload.single("file"), async (req, res) => {
     try {
-        console.log(req.body);
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
         // const createdByUser = req.user;
         let imgPath = null;
@@ -61,22 +60,43 @@ router.delete('/:id', async (req, res) => {
 
 router.put('/:id', upload.single("file"), async (req : Request, res : Response, next : NextFunction) => {
     try {
-        const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = req.body;
-        let imgPath = null;
+        const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
+        const oldCaseStudy = await CaseStudy.findById(req.params.id);
+        let imgPath = oldCaseStudy.imgPath;
+        console.log(imgPath);
+        // console.log(imgPath.imgPath);
+        // let imgPath = null;
         if (req.file) {
             imgPath = req.file.path;
         }
-        const updatedCaseStudy = new CaseStudy({
-            caseStudyType,
-            patientStory,
-            staffRecognition,
-            trainingSession,
-            equipmentReceived,
-            otherStory,
-            imgPath
-        }); 
-        const caseStudy = await CaseStudy.findByIdAndUpdate(req.params.id, updatedCaseStudy, { new: true });
-        res.status(200).json({ caseStudy });
+
+        console.log('72');
+        const updatedCaseStudy = {
+            caseStudyType: caseStudyType, 
+            patientStory: patientStory, 
+            staffRecognition: staffRecognition, 
+            trainingSession: trainingSession, 
+            equipmentReceived: equipmentReceived, 
+            otherStory: otherStory,
+            imgPath: imgPath
+        };
+        Object.keys(updatedCaseStudy).forEach((k) => (!updatedCaseStudy[k] || updatedCaseStudy[k] === undefined) && delete updatedCaseStudy[k]);
+        // const updatedCaseStudy = new CaseStudy({
+        //     caseStudyType,
+        //     patientStory,
+        //     staffRecognition,
+        //     trainingSession,
+        //     equipmentReceived,
+        //     otherStory,
+        //     imgPath
+        // }); 
+        console.log('82');
+        // const caseStudy = await CaseStudy.findByIdAndUpdate(req.params.id, updatedCaseStudy, { new: true });
+        await CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
+            .then(data => res.json(data))
+            .catch(err => res.status(400).json('Failed to update: ' + err));
+        console.log('84');
+        // res.status(200).json({ caseStudy });
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }

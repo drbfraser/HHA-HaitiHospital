@@ -20,6 +20,7 @@ const patientStorySchema = new Schema(
         diagnosis: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
     }
+    , { _id : false }
 );
 
 const staffRecognitionSchema = new Schema(
@@ -31,6 +32,7 @@ const staffRecognitionSchema = new Schema(
         mostEnjoy: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
     }
+    , { _id : false }
 );
 
 const trainingSessionSchema = new Schema(
@@ -42,6 +44,7 @@ const trainingSessionSchema = new Schema(
         benefitsFromTraining: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
     }
+    , { _id : false }
 );
 
 const equipmentReceivedSchema = new Schema(
@@ -53,12 +56,14 @@ const equipmentReceivedSchema = new Schema(
         whatDoesEquipmentDo: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
     }
+    , { _id : false }
 );
 
 const otherStorySchema = new Schema(
     {
         caseStudyStory: { type: String, required: true },
     }
+    , { _id : false }
 );
 
 const caseStudySchema = new Schema(
