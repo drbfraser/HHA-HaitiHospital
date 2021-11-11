@@ -16,6 +16,7 @@ interface CaseStudyMainProps extends RouteComponentProps {};
 
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const [formOption, setformOption] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
   const { register: register2, handleSubmit: handleSubmit2, reset: reset2 } = useForm<CaseStudyModel>({});
@@ -28,15 +29,9 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     var formData = new FormData();
     
     var postData = JSON.stringify(data);
-    console.log()
     formData.append("document", postData);
-    // for (var key in data){
-    //     formData.append(key, data[key]);
-    // }
-    console.log(formData);
     formData.append("file", selectedFile);
 
-    console.log(formData);
     axios.post('/api/casestudies', formData).then(res => {
         console.log(res.data);
     }).catch(error =>{
@@ -49,8 +44,6 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     reset4({});
     reset5({});
   }
-
-  const [selectedFile, setSelectedFile] = useState(null);
 
   return (
     <div className={'case-study-form '+ props.classes}>
