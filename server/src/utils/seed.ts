@@ -13,7 +13,7 @@ export const seedDb = async () => {
 
   await User.deleteMany({});
   // await Message.deleteMany({});
-  await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
+  // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
   // create 3 users
   const usersPromises = [...Array(5).keys()].map((index, i) => {

@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        await CaseStudy.find()
+        CaseStudy.find()
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to get case studies: ' + err));
     } catch (err) {
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        await CaseStudy.findById(req.params.id)
+        CaseStudy.findById(req.params.id)
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to get case study: ' + err));
     } catch (err) {
@@ -55,7 +55,7 @@ router.post('/', upload.single("file"), async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        await CaseStudy.findByIdAndRemove(req.params.id)
+        CaseStudy.findByIdAndRemove(req.params.id)
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to delete: ' + err));
     } catch (err) {
@@ -83,7 +83,7 @@ router.put('/:id', upload.single("file"), async (req : Request, res : Response, 
         };
         Object.keys(updatedCaseStudy).forEach((k) => (!updatedCaseStudy[k] || updatedCaseStudy[k] === undefined) && delete updatedCaseStudy[k]);
 
-        await CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
+        CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to update: ' + err));
     } catch (err) {
