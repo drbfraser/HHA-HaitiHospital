@@ -9,7 +9,9 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        await CaseStudy.find().then(data => res.json(data));
+        await CaseStudy.find()
+            .then(data => res.json(data))
+            .catch(err => res.status(400).json('Failed to get case studies: ' + err));
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }
@@ -17,7 +19,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        await CaseStudy.findById(req.params.id).then(data => res.json(data));
+        await CaseStudy.findById(req.params.id)
+            .then(data => res.json(data))
+            .catch(err => res.status(400).json('Failed to get case study: ' + err));
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }
@@ -51,8 +55,9 @@ router.post('/', upload.single("file"), async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const caseStudy = await CaseStudy.findByIdAndRemove(req.params.id);
-        res.status(200).json({ caseStudy });
+        await CaseStudy.findByIdAndRemove(req.params.id)
+            .then(data => res.json(data))
+            .catch(err => res.status(400).json('Failed to delete: ' + err));
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }
@@ -63,14 +68,10 @@ router.put('/:id', upload.single("file"), async (req : Request, res : Response, 
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
         const oldCaseStudy = await CaseStudy.findById(req.params.id);
         let imgPath = oldCaseStudy.imgPath;
-        console.log(imgPath);
-        // console.log(imgPath.imgPath);
-        // let imgPath = null;
         if (req.file) {
             imgPath = req.file.path;
         }
 
-        console.log('72');
         const updatedCaseStudy = {
             caseStudyType: caseStudyType, 
             patientStory: patientStory, 
@@ -81,22 +82,10 @@ router.put('/:id', upload.single("file"), async (req : Request, res : Response, 
             imgPath: imgPath
         };
         Object.keys(updatedCaseStudy).forEach((k) => (!updatedCaseStudy[k] || updatedCaseStudy[k] === undefined) && delete updatedCaseStudy[k]);
-        // const updatedCaseStudy = new CaseStudy({
-        //     caseStudyType,
-        //     patientStory,
-        //     staffRecognition,
-        //     trainingSession,
-        //     equipmentReceived,
-        //     otherStory,
-        //     imgPath
-        // }); 
-        console.log('82');
-        // const caseStudy = await CaseStudy.findByIdAndUpdate(req.params.id, updatedCaseStudy, { new: true });
+
         await CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to update: ' + err));
-        console.log('84');
-        // res.status(200).json({ caseStudy });
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }
