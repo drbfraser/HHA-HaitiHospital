@@ -71,12 +71,12 @@ export const seedDepartments = async() => {
 
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...')
-  await MessageBoard.deleteMany({});
+  await MessageBody.deleteMany({});
 
   // add 3 messages
   const message1 = new MessageBody({
     departmentId: 0,
-    departmentName: 'NICU',
+    departmentName: 'Community Health',
     authorId: 1,
     name: faker.name.findName(),
     date: new Date(),
@@ -84,6 +84,17 @@ export const seedMessageBoard = async () => {
     messageHeader: 'Christmas',
   });
 
+  const message2 = new MessageBody({
+    departmentId: 1,
+    departmentName: 'NICU PAEDS',
+    authorId: 2,
+    name: faker.name.findName(),
+    date: new Date(),
+    messageBody: 'Welcome to the message board!',
+    messageHeader: 'Welcome',
+  });
+
   await message1.save();
+  await message2.save();
   console.log('Message board seeded');
 }
