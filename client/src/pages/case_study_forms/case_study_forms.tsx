@@ -10,9 +10,9 @@ import axios from 'axios';
 import "./case_study_form.css";
 
 interface CaseStudyMainProps extends ElementStyleProps {
-};
+}
 
-interface CaseStudyMainProps extends RouteComponentProps {};
+interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const [formOption, setformOption] = useState("");
