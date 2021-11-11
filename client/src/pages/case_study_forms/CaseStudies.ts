@@ -57,4 +57,4 @@ export interface CaseStudyModel{
     equipmentReceived: EquipmentReceived,
     otherStory: OtherStory,
     imgPath: { type: string }
-};
+}
