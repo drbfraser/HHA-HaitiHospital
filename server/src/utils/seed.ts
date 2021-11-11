@@ -1,9 +1,6 @@
 import faker from 'faker';
-import { join } from 'path';
 
 import User from '../models/User';
-import Message from '../models/Message';
-import { deleteAllAvatars } from './utils';
 
 import NicuPaeds from '../models/NicuPaeds';
 import Community from '../models/Community';
@@ -12,10 +9,8 @@ export const seedDb = async () => {
   console.log('Seeding users...');
 
   await User.deleteMany({});
-  // await Message.deleteMany({});
-  await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
-  // create 3 users
+  // create 5 users
   const usersPromises = [...Array(5).keys()].map((index, i) => {
     const user = new User({
       // provider: 'email',
@@ -35,13 +30,14 @@ export const seedDb = async () => {
     } else if (index === 2) {
       user.role = 'DEPT_HEAD';
     }
-    user.registerUser(user, () => {});
+    // user.registerUser(user, () => {});
     return user;
   });
 
   await Promise.all(
     usersPromises.map(async (user) => {
-      await user.save();
+      await user.registerUser(user, () => {});
+      // await user.save();
     }),
   );
 

@@ -72,8 +72,6 @@ const userSchema = new Schema<User>(
   { timestamps: true },
 );
 
-console.log(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
-
 userSchema.methods.toJSON = function () {
   // // if not exists avatar1 default
   // const absoluteAvatarFilePath = `${join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH)}${this.avatar}`;
