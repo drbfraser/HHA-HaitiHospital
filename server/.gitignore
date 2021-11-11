@@ -4,7 +4,7 @@ package-lock.json
 /config/dev.js
 /security/cert.key
 /security/cert.pem
-#/public
+/public
 /build
 
 /.vscode
@@ -13,11 +13,11 @@ package-lock.json
 ./dist/*
 /dist
 
-!public/images
-public/images/*
-!public/images/avatar0.jpg
-!public/images/avatar1.jpg
-!public/images/avatar2.jpg
+# !public/images
+# public/images/*
+# !public/images/avatar0.jpg
+# !public/images/avatar1.jpg
+# !public/images/avatar2.jpg
 
 # random generated files on MacOS
 .DS_Store
