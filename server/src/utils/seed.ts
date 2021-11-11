@@ -75,7 +75,7 @@ export const seedMessageBoard = async () => {
 
   // add 3 messages
   const message1 = new MessageBody({
-    departmentId: 0,
+    departmentId: 3,
     departmentName: 'Community Health',
     authorId: 1,
     name: faker.name.findName(),
@@ -85,7 +85,7 @@ export const seedMessageBoard = async () => {
   });
 
   const message2 = new MessageBody({
-    departmentId: 1,
+    departmentId: 0,
     departmentName: 'NICU PAEDS',
     authorId: 2,
     name: faker.name.findName(),
@@ -94,7 +94,18 @@ export const seedMessageBoard = async () => {
     messageHeader: 'Welcome',
   });
 
+  const message3 = new MessageBody({
+    departmentId: 1,
+    departmentName: 'Maternity',
+    authorId: 3,
+    name: faker.name.findName(),
+    date: new Date(),
+    messageBody: 'The case study is due this Friday. Please submit your case study information before the deadline',
+    messageHeader: 'Case study due',
+  });
+
   await message1.save();
   await message2.save();
+  await message3.save();
   console.log('Message board seeded');
 }
