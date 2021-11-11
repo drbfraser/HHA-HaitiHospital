@@ -5,6 +5,8 @@ import User from '../models/User';
 import NicuPaeds from '../models/NicuPaeds';
 import Community from '../models/Community';
 
+import MessageBody from '../models/MessageBody';
+
 export const seedDb = async () => {
   console.log('Seeding users...');
 
@@ -67,7 +69,21 @@ export const seedDepartments = async() => {
   console.log("seeding default Department successful");
 }
 
-export const seedCaseStudies = async () => {
-  // create 5 case studies
-  
+export const seedMessageBoard = async () => {
+  console.log('Seeding message board...')
+  await MessageBoard.deleteMany({});
+
+  // add 3 messages
+  const message1 = new MessageBody({
+    departmentId: 0,
+    departmentName: 'NICU',
+    authorId: 1,
+    name: faker.name.findName(),
+    date: new Date(),
+    messageBody: 'Everyone will get the day off on December 25th. Thank you.',
+    messageHeader: 'Christmas',
+  });
+
+  await message1.save();
+  console.log('Message board seeded');
 }
