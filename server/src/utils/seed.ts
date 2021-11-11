@@ -100,7 +100,7 @@ export const seedMessageBoard = async () => {
     authorId: 3,
     name: faker.name.findName(),
     date: new Date(),
-    messageBody: 'The case study is due this Friday. Please submit your case study information before the deadline',
+    messageBody: 'The case study is due this Friday. Please submit the case study form before the deadline',
     messageHeader: 'Case study due',
   });
 
