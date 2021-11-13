@@ -43,6 +43,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     reset3({});
     reset4({});
     reset5({});
+    setSelectedFile(null);
   }
 
   return (
