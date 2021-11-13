@@ -240,7 +240,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
           The form has been successfully submitted!
         </div>
         <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"}`} role="alert">
-          An error occurred during the Submission. Please try again.
+          An error occurred during the submission. Please try again.
         </div>
 
       </main>
