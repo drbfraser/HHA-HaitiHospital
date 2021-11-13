@@ -4,7 +4,7 @@ stages:
   - test
 
 variables:
-  GIT_CLEAN_FLAGS: -x -f -e server/public/** -e server/node_modules/** -e client/node_modules/** -e server/dist/**
+  GIT_CLEAN_FLAGS: -x -f -e client/node_modules/** -e server/node_modules/** -e server/dist/** -e server/public/** 
 
 build-job:
   stage: build
