@@ -31,7 +31,7 @@ router.post('/', upload.single("file"), async (req, res) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
         // const createdByUser = req.user;
-        let imgPath = null;
+        let imgPath : string;
         if (req.file) {
             imgPath = req.file.path;
         }
