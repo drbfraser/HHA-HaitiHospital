@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
-import { CaseStudyModel } from "./CaseStudies"
+import { CaseStudyModel, CaseStudyOptions } from "./CaseStudies"
 import axios from 'axios';
 
 import "./case_study_form.css";
@@ -25,7 +25,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const { register: register5, handleSubmit: handleSubmit5, reset: reset5 } = useForm<CaseStudyModel>({});
 
   const onSubmit = (data: any) => {
-    data.caseStudyType = parseInt(formOption) - 1;
+    data.caseStudyType = formOption;
     var formData = new FormData();
     
     var postData = JSON.stringify(data);
@@ -68,17 +68,17 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                                 setformOption(selectedForm);
                                 }}>
                 <option selected>Click to select a Case Study Type</option>
-                <option value = "1" >Patient Story</option>
-                <option value = "2" >Staff Recognition</option>
-                <option value = "3" >Training Session</option>
-                <option value = "4" >Equipment Received</option>
-                <option value = "5" >Other Story</option>
+                <option value = {CaseStudyOptions.PatientStory} >Patient Story</option>
+                <option value = {CaseStudyOptions.StaffRecognition} >Staff Recognition</option>
+                <option value = {CaseStudyOptions.TrainingSession} >Training Session</option>
+                <option value = {CaseStudyOptions.EquipmentReceived} >Equipment Received</option>
+                <option value = {CaseStudyOptions.OtherStory} >Other Story</option>
               </select>
             </div>
           </form>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={`form-group col-md-6 ${formOption === "1" ? "d-block" : "d-none"}`} id="Form1">
+          <div className={`form-group col-md-6 ${formOption === CaseStudyOptions.PatientStory ? "d-block" : "d-none"}`} id="Form1">
             <label className = "font-weight-bold">Patient Story Case Study</label>
             <div className="form-row">
               <div className="col-md-8">
@@ -112,7 +112,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
           </div>
         </form>
         <form onSubmit={handleSubmit2(onSubmit)}>
-          <div className={`form-group col-md-6 ${formOption === "2" ? "d-block" : "d-none"}`} id="Form2">
+          <div className={`form-group col-md-6 ${formOption === CaseStudyOptions.StaffRecognition ? "d-block" : "d-none"}`} id="Form2">
             <label className = "font-weight-bold">Staff Recognition Case Study</label>
             <div className="form-row">
               <div className="col-md-6">
@@ -144,7 +144,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
           </div>
         </form>
         <form onSubmit={handleSubmit3(onSubmit)}>
-          <div className={`form-group col-md-6 ${formOption === "3" ? "d-block" : "d-none"}`} id="Form3">
+          <div className={`form-group col-md-6 ${formOption === CaseStudyOptions.TrainingSession ? "d-block" : "d-none"}`} id="Form3">
             <label className = "font-weight-bold">Training Session Case Study</label>
             <div className="form-row">
               <div className="col-md-6">
@@ -176,7 +176,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
           </div>
         </form>
         <form onSubmit={handleSubmit4(onSubmit)}>
-          <div className={`form-group col-md-6 ${formOption === "4" ? "d-block" : "d-none"}`} id="Form4">
+          <div className={`form-group col-md-6 ${formOption === CaseStudyOptions.EquipmentReceived ? "d-block" : "d-none"}`} id="Form4">
             <label className = "font-weight-bold">Equipment Received Case Study</label>
             <div className="form-row">
               <div className="col-md-6">
@@ -214,7 +214,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
           </div>
         </form>
         <form onSubmit={handleSubmit5(onSubmit)}>
-        <div className={`form-group col-md-6 ${formOption === "5" ? "d-block" : "d-none"}`} id="Form5">
+        <div className={`form-group col-md-6 ${formOption === CaseStudyOptions.OtherStory ? "d-block" : "d-none"}`} id="Form5">
           <label className = "font-weight-bold">Other Story Case Study</label>
           <div>
             <label htmlFor="Case Study 5">Case Study/Story</label>
