@@ -6,7 +6,7 @@ import NicuPaeds from '../models/NicuPaeds';
 import Community from '../models/Community';
 
 import MessageBody from '../models/MessageBody';
-import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
+import CaseStudy from '../models/CaseStudies';
 
 export const seedDb = async () => {
   console.log('Seeding users...');
@@ -41,6 +41,8 @@ export const seedDb = async () => {
 };
 
 export const seedDepartments = async() => {
+  console.log("Seeding default departments...");
+
   let dateTime: Date = new Date();
   var month: number = dateTime.getUTCMonth() + 1;
   var year: number = dateTime.getUTCFullYear();
@@ -48,22 +50,20 @@ export const seedDepartments = async() => {
   await NicuPaeds.deleteMany({});
   await Community.deleteMany({});
 
-  console.log("Seeding default departments...");
-
   //TODO Rehab Department Default value creation:
 
   // NICU/Paeds Department Default value creation:
   var departmentId: number = 1;
   var departmentName: string = "nicupaeds";
   const originalNicuPaedsDocument = new NicuPaeds({departmentId,departmentName,month,year});
-  await originalNicuPaedsDocument.save();
+  originalNicuPaedsDocument.save();
 
 
   //TODO Community
   departmentId = 2;
   departmentName = "community";
   const originalCommunityDocument = new Community({departmentId,departmentName, month, year});
-  await originalCommunityDocument.save();
+  originalCommunityDocument.save();
 
   console.log("Default departments seeded");
 }
@@ -113,14 +113,26 @@ export const seedCaseStudies = async () => {
   console.log('Seeding case studies...')
   await CaseStudy.deleteMany({});
 
-  // add 3 messages
   const caseStudy1 = new CaseStudy({
-    caseStudyType: 0,
+    caseStudyType: 4,
     otherStory: {
       caseStudyStory: "This is a long story..."
     }
   });
 
+  const caseStudy2 = new CaseStudy({
+    caseStudyType: 2,
+    trainingSession: {
+      trainingDate: new Date(),
+      trainingOn: "How to be a Jedi 101",
+      whoConducted: "Master Yoda",
+      whoAttended: "Luke Skywalker",
+      benefitsFromTraining: "Learned how to be a Jedi",
+      caseStudyStory: "Jedi training was the action of teaching an apprentice the ways of the Force in the Jedi Order. Under the Galactic Republic, Force-sensitive beings were brought to the Jedi Temple on Coruscant from across the galaxy and trained as Jedi younglings by Grand Master Yoda.",
+    }
+  });
+
   caseStudy1.save();
+  caseStudy2.save();
   console.log('Case studies seeded');
 }
