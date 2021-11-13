@@ -6,6 +6,7 @@ import NicuPaeds from '../models/NicuPaeds';
 import Community from '../models/Community';
 
 import MessageBody from '../models/MessageBody';
+import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 
 export const seedDb = async () => {
   console.log('Seeding users...');
@@ -106,4 +107,20 @@ export const seedMessageBoard = async () => {
   message2.save();
   message3.save();
   console.log('Message board seeded');
+}
+
+export const seedCaseStudies = async () => {
+  console.log('Seeding case studies...')
+  await CaseStudy.deleteMany({});
+
+  // add 3 messages
+  const caseStudy1 = new CaseStudy({
+    caseStudyType: 0,
+    otherStory: {
+      caseStudyStory: "This is a long story..."
+    }
+  });
+
+  caseStudy1.save();
+  console.log('Case studies seeded');
 }

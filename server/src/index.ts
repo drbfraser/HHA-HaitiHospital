@@ -10,7 +10,7 @@ import all_routes from 'express-list-endpoints';
 import cookieParser from 'cookie-parser';
 
 import routes from './routes';
-import { seedDb, seedDepartments, seedMessageBoard } from './utils/seed';
+import { seedDb, seedDepartments, seedMessageBoard, seedCaseStudies } from './utils/seed';
 
 const app = express();
 
@@ -50,6 +50,7 @@ mongoose
     seedDb();
     seedDepartments();
     seedMessageBoard();
+    seedCaseStudies();
   })
   .catch((err) => console.log(err));
 
