@@ -2,12 +2,12 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-enum CaseStudyOptions {
-    PatientStory,
-    StaffRecognition,
-    TrainingSession,
-    EquipmentReceived,
-    OtherStory,
+export enum CaseStudyOptions {
+    PatientStory = "PATIENT_STORY",
+    StaffRecognition = "STAFF_RECOGNITION",
+    TrainingSession = "TRAINING_SESSION",
+    EquipmentReceived = "EQUIPMENT_RECEIVED",
+    OtherStory = "OTHER_STORY",
 }
 
 const patientStorySchema = new Schema(
