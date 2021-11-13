@@ -27,14 +27,12 @@ export const seedDb = async () => {
     } else if (index === 2) {
       user.role = 'DEPT_HEAD';
     }
-    // user.registerUser(user, () => {});
     return user;
   });
 
   await Promise.all(
     usersPromises.map(async (user) => {
-      await user.registerUser(user, () => {});
-      // await user.save();
+      user.registerUser(user, () => {});
     }),
   );
 
@@ -49,7 +47,7 @@ export const seedDepartments = async() => {
   await NicuPaeds.deleteMany({});
   await Community.deleteMany({});
 
-  console.log("seeding default Departments...");
+  console.log("Seeding default departments...");
 
   //TODO Rehab Department Default value creation:
 
@@ -66,7 +64,7 @@ export const seedDepartments = async() => {
   const originalCommunityDocument = new Community({departmentId,departmentName, month, year});
   await originalCommunityDocument.save();
 
-  console.log("seeding default Department successful");
+  console.log("Default departments seeded");
 }
 
 export const seedMessageBoard = async () => {
@@ -104,8 +102,8 @@ export const seedMessageBoard = async () => {
     messageHeader: 'Case study due',
   });
 
-  await message1.save();
-  await message2.save();
-  await message3.save();
+  message1.save();
+  message2.save();
+  message3.save();
   console.log('Message board seeded');
 }
