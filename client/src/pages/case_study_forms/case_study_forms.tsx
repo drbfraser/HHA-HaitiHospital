@@ -17,6 +17,7 @@ interface CaseStudyMainProps extends RouteComponentProps {}
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const [formOption, setformOption] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [submissionStatus, setSubmissionStatus] = useState("");
 
   const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
   const { register: register2, handleSubmit: handleSubmit2, reset: reset2 } = useForm<CaseStudyModel>({});
@@ -34,16 +35,18 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
 
     axios.post('/api/casestudies', formData).then(res => {
       console.log(res.data);
+      reset({});
+      reset2({});
+      reset3({});
+      reset4({});
+      reset5({});
+      setSelectedFile(null);
+      setSubmissionStatus("success");
     }).catch(error =>{
-      console.error('Something went wrong!', error.response);
+      console.error('Something went wrong!', error.message);
+      setSubmissionStatus("failure");
     });
 
-    reset({});
-    reset2({});
-    reset3({});
-    reset4({});
-    reset5({});
-    setSelectedFile(null);
   }
 
   return (
@@ -232,7 +235,13 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
           </div>
         </div>
         </form>
-
+        
+        <div className={`alert alert-success ${submissionStatus === "success" ? "d-block" : "d-none"}`} role="alert">
+          The form has been successfully submitted!
+        </div>
+        <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"}`} role="alert">
+          An error occurred during the Submission. Please try again.
+        </div>
 
       </main>
 
