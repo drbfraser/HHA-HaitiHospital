@@ -14,7 +14,7 @@ export const seedDb = async () => {
   await User.deleteMany({});
 
   // create 5 users
-  const usersPromises = [...Array(5).keys()].map((index, i) => {
+  const usersPromises = [...Array(5).keys()].map(async (index, i) => {
     const user = new User({
       username: `user${index}`,
       password: '123456789',
@@ -28,12 +28,13 @@ export const seedDb = async () => {
     } else if (index === 2) {
       user.role = 'DEPT_HEAD';
     }
+    await user.registerUser(user, () => {});
     return user;
   });
 
   await Promise.all(
     usersPromises.map(async (user) => {
-      user.registerUser(user, () => {});
+      // user.registerUser(user, () => {});
     }),
   );
 
