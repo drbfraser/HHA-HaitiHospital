@@ -63,7 +63,7 @@ export const seedDepartments = async() => {
   departmentId = 2;
   departmentName = "community";
   const originalCommunityDocument = new Community({departmentId,departmentName, month, year});
-  originalCommunityDocument.save();
+  await originalCommunityDocument.save();
 
   console.log("Default departments seeded");
 }
@@ -105,7 +105,7 @@ export const seedMessageBoard = async () => {
 
   message1.save();
   message2.save();
-  message3.save();
+  await message3.save();
   console.log('Message board seeded');
 }
 
@@ -133,6 +133,6 @@ export const seedCaseStudies = async () => {
   });
 
   caseStudy1.save();
-  caseStudy2.save();
+  await caseStudy2.save();
   console.log('Case studies seeded');
 }
