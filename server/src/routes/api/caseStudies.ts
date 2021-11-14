@@ -27,17 +27,19 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', upload.single("file"), async (req, res) => {
+router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
-        // const createdByUser = req.user;
+        const user = req.user.id;
+        const userDepartment = req.user.department;
         let imgPath : string;
         if (req.file) {
             imgPath = req.file.path;
         }
         const newCaseStudy = new CaseStudy({
             caseStudyType,
-            // createdByUser,
+            user,
+            userDepartment,
             patientStory,
             staffRecognition,
             trainingSession,
