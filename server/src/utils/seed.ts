@@ -2,6 +2,7 @@ import faker from 'faker';
 import { join } from 'path';
 
 import User from '../models/User';
+import Department, { DepartmentName } from '../models/Leaderboard';
 import Message from '../models/Message';
 import { deleteAllAvatars } from './utils';
 
@@ -34,14 +35,20 @@ export const seedDb = async () => {
       user.role = 'MED_DIR';
     } else if (index === 2) {
       user.role = 'DEPT_HEAD';
+      user.department = DepartmentName.NicuPaeds;
+    } else if (index === 3) {
+      user.department = DepartmentName.Maternity;
+    } else if (index === 4) {
+      user.department = DepartmentName.Rehab;
     }
-    user.registerUser(user, () => {});
+    // user.registerUser(user, () => {});
     return user;
   });
 
   await Promise.all(
     usersPromises.map(async (user) => {
-      await user.save();
+      user.registerUser(user, () => {});
+      // await user.save();
     }),
   );
 
@@ -114,4 +121,15 @@ export const seedDepartments = async() => {
   //TODO Case Studies
 
   console.log("seeding default Department successful");
+}
+
+export const seedLeaderboard = async() => {
+  await Department.deleteMany({});
+  for (let key in DepartmentName) {
+    let departmentName = DepartmentName[key];
+    const department = new Department({
+      name: departmentName,
+    });
+    department.save();
+  };
 }
