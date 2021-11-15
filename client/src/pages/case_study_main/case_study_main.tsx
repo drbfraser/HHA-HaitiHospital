@@ -4,6 +4,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 
 import "./case_study_main_styles.css";
+import {useTranslation} from "react-i18next";
 
 interface CaseStudyMainProps extends ElementStyleProps {
 };
@@ -12,31 +13,26 @@ interface CaseStudyMainProps extends RouteComponentProps {};
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
+    const {t, i18n} = useTranslation();
 
+    return (
+        <div className={'case-study-main '+ props.classes}>
+            <SideBar/>
 
-  return (
-    <div className={'case-study-main '+ props.classes}>
-        <SideBar/>
+            <main className="container">
+                <Header/>
 
-        <main className="container">
-            <Header/>
+                <div className="col-md-4">
+                    <button type="button" className="btn btn-primary btn-md" onClick={() => {
+                        props.history.push("/caseStudyForm");
+                    }}>{t("caseStudyMainAddCaseStudy")}</button>
+                </div>
 
+                <script></script>
+            </main>
 
-            <div className="col-md-4">
-                <button type="button" className="btn btn-primary btn-md" onClick={() => {
-                    props.history.push("/caseStudyForm");
-                }}>Add Case Study</button>
-            </div>
-
-
-
-        <script>
-        </script>
-
-        </main>
-
-    </div>
-  );
+        </div>
+    );
 };
 
 

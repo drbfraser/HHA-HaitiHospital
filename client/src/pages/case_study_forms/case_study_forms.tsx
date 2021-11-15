@@ -6,8 +6,8 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import { CaseStudyModel } from "./CaseStudies"
 import axios from 'axios';
-
 import "./case_study_form.css";
+import {useTranslation} from "react-i18next";
 
 interface CaseStudyMainProps extends ElementStyleProps {
 };
@@ -15,36 +15,38 @@ interface CaseStudyMainProps extends ElementStyleProps {
 interface CaseStudyMainProps extends RouteComponentProps {};
 
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
-  const [formOption, setformOption] = useState("");
+    const [formOption, setformOption] = useState("");
 
-  function refreshForm(formNum) {
-    setformOption(formNum);
-  }
+    function refreshForm(formNum) {
+        setformOption(formNum);
+    }
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CaseStudyModel>({});
-  const { register: register2, handleSubmit: handleSubmit2, formState: { errors: errors2 }, reset: reset2 } = useForm<CaseStudyModel>({});
-  const { register: register3, handleSubmit: handleSubmit3, formState: { errors: errors3 }, reset: reset3 } = useForm<CaseStudyModel>({});
-  const { register: register4, handleSubmit: handleSubmit4, formState: { errors: errors4 }, reset: reset4 } = useForm<CaseStudyModel>({});
-  const { register: register5, handleSubmit: handleSubmit5, formState: { errors: errors5 }, reset: reset5 } = useForm<CaseStudyModel>({});
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<CaseStudyModel>({});
+    const { register: register2, handleSubmit: handleSubmit2, formState: { errors: errors2 }, reset: reset2 } = useForm<CaseStudyModel>({});
+    const { register: register3, handleSubmit: handleSubmit3, formState: { errors: errors3 }, reset: reset3 } = useForm<CaseStudyModel>({});
+    const { register: register4, handleSubmit: handleSubmit4, formState: { errors: errors4 }, reset: reset4 } = useForm<CaseStudyModel>({});
+    const { register: register5, handleSubmit: handleSubmit5, formState: { errors: errors5 }, reset: reset5 } = useForm<CaseStudyModel>({});
 
-  const onSubmit = (data: any) => {
-    data.caseStudyType = parseInt(formOption) - 1;
+    const onSubmit = (data: any) => {
+        data.caseStudyType = parseInt(formOption) - 1;
 
-    console.log(data);
-    axios.post('/api/casestudies', data).then(res => {
-        console.log(res.data);
-    }).catch(error =>{
-        console.error('Something went wrong!', error.response);
-    });
+        console.log(data);
+        axios.post('/api/casestudies', data).then(res => {
+            console.log(res.data);
+        }).catch(error =>{
+            console.error('Something went wrong!', error.response);
+        });
 
-    reset({});
-    reset2({});
-    reset3({});
-    reset4({});
-    reset5({});
-  }
+        reset({});
+        reset2({});
+        reset3({});
+        reset4({});
+        reset5({});
+    }
 
-  return (
+    const {t, i18n} = useTranslation();
+
+    return (
     <div className={'case-study-form '+ props.classes}>
         <SideBar/>
 
@@ -55,58 +57,58 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <div className="col-md-4">
                 <button type="button" className="btn btn-primary btn-md" onClick={() => {
                     props.history.push("/caseStudyMain");
-                }}>Back</button>
+                }}>{t("caseStudyFormBack")}</button>
             </div>
 
              <div>
                  <form>
                    <div className="form-group col-md-6">
-                     <label className = "font-weight-bold">Case Study Options</label>
+                     <label className = "font-weight-bold">{t("caseStudyFormCaseStudyOptions")}</label>
                      <select className="form-control" id="CaseStudyType" onChange={(e)=> {
-                                        const selectedForm = e.target.value; 
+                                        const selectedForm = e.target.value;
                                         setformOption(selectedForm);
                                         }}>
-                       <option selected>Click to select a Case Study Type</option>
-                       <option value = "1" >Patient Story</option>
-                       <option value = "2" >Staff Recognition</option>
-                       <option value = "3" >Training Session</option>
-                       <option value = "4" >Equipment Received</option>
-                       <option value = "5" >Other Story</option>
+                       <option selected>{t("caseStudyFormClickToSelect")}</option>
+                       <option value = "1" >{t("caseStudyFormPatientStory")}</option>
+                       <option value = "2" >{t("caseStudyFormStaffRecognition")}</option>
+                       <option value = "3" >{t("caseStudyFormTrainingSession")}</option>
+                       <option value = "4" >{t("caseStudyFormEquipmentReceived")}</option>
+                       <option value = "5" >{t("caseStudyFormOtherStory")}</option>
                      </select>
                    </div>
                 </form>
              </div>
             <form onSubmit={handleSubmit(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "1" ? "d-block" : "d-none"}`} id="Form1">
-               <label className = "font-weight-bold">Patient Story Case Study</label>
+               <label className = "font-weight-bold">{t("caseStudyFormPatientStoryCaseStudy")}</label>
                 <div className="form-row">
                     <div className="col-md-8">
-                        <label htmlFor="Patient Name">Patient's Name</label>
+                        <label htmlFor="Patient Name">{t("caseStudyFormPatientName")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Patient Name" required {...register("patientStory.patientsName", {required: true})}></input>
                     </div>
                      <div className="col-md-4">
-                        <label htmlFor="Patient Age">Patient Age</label>
+                        <label htmlFor="Patient Age">{t("caseStudyFormPatientAge")}</label>
                         <input className="form-control mb-2 mt-0" type="number" id="Patient Age" required {...register("patientStory.patientsAge", {required: true})}></input>
                      </div>
                 </div>
-                <label htmlFor="Patient From">Where is the patient from?</label>
+                <label htmlFor="Patient From">{t("caseStudyFormWherePatientFrom")}</label>
                 <input className="form-control mb-2 mt-0" type="text" id="Patient From" required {...register("patientStory.whereIsThePatientFrom", {required: true})}></input>
-                <label htmlFor="Patient Choose">Why did the patient choose to come to HCBH?</label>
+                <label htmlFor="Patient Choose">{t("caseStudyFormWhyPatientChooseHCBH")}</label>
                 <input className="form-control mb-2 mt-0" type="text" id="Patient Choose" required {...register("patientStory.whyComeToHCBH", {required: true})}></input>
-                <label htmlFor="How long">How long were they at HCBH?</label>
+                <label htmlFor="How long">{t("caseStudyFormHowLongAtHCBH")}</label>
                 <input className="form-control mb-2 mt-0" type="text" id="How long" required {...register("patientStory.howLongWereTheyAtHCBHinDays", {required: true})}></input>
-                <label htmlFor="Diagnosis">What was their diagnosis?</label>
+                <label htmlFor="Diagnosis">{t("caseStudyFormWhatWasTheirDiagnosis")}</label>
                 <textarea className="form-control mb-2 mt-0" id="Diagnosis" required {...register("patientStory.diagnosis", {required: true})}></textarea>
-                <label htmlFor="Case Study 1">Case Study/Story</label>
+                <label htmlFor="Case Study 1">{t("caseStudyFormCaseStudy/Story")}</label>
                 <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
-                <label className="form-label">Upload Image</label>
+                <label className="form-label">{t("caseStudyFormUploadImage")}</label>
                 <input type="file" accept="image/*" className="form-control" id="customFile"/>
                 <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
-                    <label className="form-check-label" htmlFor="invalidCheck1"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
+                    <label className="form-check-label" htmlFor="invalidCheck1">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
-                <button className="btn btn-primary" type="submit">Submit form</button>
+                <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
                 </div>
              </div>
             </form>
@@ -209,7 +211,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 </div>
                 <div>
                 <button className="btn btn-primary" type="submit">Submit form</button>
-                </div>             
+                </div>
             </div>
             </form>
             <form onSubmit={handleSubmit5(onSubmit)}>
@@ -232,11 +234,11 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             </form>
 
 
-   
+
         </main>
 
     </div>
-  );
+    );
 };
 
 

@@ -55,5 +55,30 @@
   "leaderBoardPosition": "Position",
   "leaderBoardScore": "But",
   "leaderBoardEmployeeOfMonth": "Employé du mois",
-  "leaderBoardLastUpdate": "Dernière mise à jour il y a 3 jours"
+  "leaderBoardLastUpdate": "Dernière mise à jour il y a 3 jours",
+
+  "caseStudyMainAddCaseStudy": "Ajouter une étude de cas",
+
+  "caseStudyFormBack":"Arrière",
+  "caseStudyFormCaseStudyOptions":"Options d'étude de cas",
+  "caseStudyFormClickToSelect":"Cliquez pour sélectionner un type d'étude de cas",
+  "caseStudyFormPatientStory":"Témoignage de patients",
+  "caseStudyFormStaffRecognition":"Reconnaissance du personnel",
+  "caseStudyFormTrainingSession":"Session de formation",
+  "caseStudyFormEquipmentReceived":"Équipement reçu",
+  "caseStudyFormOtherStory":"Autre histoire",
+
+  "caseStudyFormPatientStoryCaseStudy":"Étude de cas sur l'histoire d'un patient",
+  "caseStudyFormPatientName":"Le nom du patient",
+  "caseStudyFormPatientAge":"Âge du patient",
+  "caseStudyFormWherePatientFrom":"D'où vient le patient ?",
+  "caseStudyFormWhyPatientChooseHCBH":"Pourquoi le patient a-t-il choisi de venir au HCBH ?",
+  "caseStudyFormHowLongAtHCBH":"Combien de temps sont-ils restés à la HCBH ?",
+  "caseStudyFormWhatWasTheirDiagnosis":"Quel a été leur diagnostic ?",
+  "caseStudyFormCaseStudy/Story":"Étude de cas / Histoire",
+  "caseStudyFormUploadImage":"Télécharger une image",
+  "caseStudyFormChooseFile":"Choisir le fichier",
+  "caseStudyFormNoFileChosen":"Aucun fichier choisi",
+  "caseStudyFormPermissionToShare":"Cette personne a donné la permission de partager son histoire et sa photo dans les communications HHA, y compris les plateformes en ligne",
+  "caseStudyFormSubmitForm":"Soumettre le formulaire"
 }
