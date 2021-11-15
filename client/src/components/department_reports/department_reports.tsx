@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
-import { Json, JsonArray } from 'constants/interfaces';
+import { JsonArray } from 'constants/interfaces';
 import ReportSummaryTable from 'components/department_reports/report_summary_table/report_summary_table';
 
 import './styles.css';
@@ -36,8 +36,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
 
   const fetchReports = async () => {
     try {
-      console.log("Fetch reports");
-
+    //   console.log("Fetch reports");
       const res = await Axios.get(dbUrlForNICUReports,
         {cancelToken: apiSource.token})
       return res.data;
@@ -52,7 +51,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   }
 
   function refetchReportsHandler() {
-    console.log("Refetch reports");
+    // console.log("Refetch reports");
     setRefetch(!refetch);
   }
 

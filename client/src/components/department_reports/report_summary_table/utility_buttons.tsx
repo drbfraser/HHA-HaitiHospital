@@ -23,10 +23,7 @@ async function delTickedReportFromDb(rid: string) {
 const UtilityButtons = (props: UtilityButtonsProps) => {
 
     function deleteReports(tickTracker: {[rid: string]: boolean}) {
-        console.log("Delete ", tickTracker);
-
-        // let newTickTracker = {...tickTracker}
-
+        // console.log("Delete ", tickTracker);
         Object.keys(tickTracker).forEach((rid) => {
             try {
                 if (tickTracker[rid] === true)

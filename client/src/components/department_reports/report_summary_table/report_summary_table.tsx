@@ -1,12 +1,10 @@
 
-import React, {SyntheticEvent, useEffect, useState} from 'react';
-import Axios from 'axios';
+import React, {useEffect, useState} from 'react';
 
 import { ElementStyleProps, JsonArray, Json} from 'constants/interfaces';
 import ReportSummaryRow from 'components/department_reports/report_summary_table/report_summary_row';
 import AllTick from 'components/department_reports/report_summary_table/all_tick';
 import UtilityButtons from 'components/department_reports/report_summary_table/utility_buttons';
-import temp_checklist from '../temp_checklist';
 
 interface ReportSummaryTableProps extends ElementStyleProps {
   reports :Json[], 
@@ -63,7 +61,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
   }
 
   function delReportsHandler() {
-      console.log("Table notified for delete");
+    //   console.log("Table notified for delete");
       props.refetchReports();
   }
 
