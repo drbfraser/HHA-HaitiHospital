@@ -80,5 +80,28 @@
   "caseStudyFormChooseFile":"Choose File",
   "caseStudyFormNoFileChosen":"No file chosen",
   "caseStudyFormPermissionToShare":"This person has given permission to share their story and photo in HHA communications, including online platforms",
-  "caseStudyFormSubmitForm":"Submit Form"
+  "caseStudyFormSubmitForm":"Submit Form",
+
+  "caseStudyFormStaffRecognitionCaseStudy":"Staff Recognition Case Study",
+  "caseStudyFormStaffName":"Staff Name",
+  "caseStudyFormRoleJobTitle":"Role / Job Title",
+  "caseStudyFormWhichDepartmentWorkIn":"Which department do they work in?",
+  "caseStudyFormHowLongHaveBeenWorkingHCBH":"How long have they been working at HCBH?",
+  "caseStudyFormWhatEnjoyTheMostAtHCBH":"What do they enjoy the most about working at HCBH?",
+
+  "caseStudyFormTrainingSessionCaseStudy":"Training Session Case Study",
+  "caseStudyFormTrainingDate":"Training Date",
+  "caseStudyFormWhatWasTrainingOn":"What was the training on?",
+  "caseStudyFormWhoConductedTraining":"Who conducted training?",
+  "caseStudyFormWhoAttendedTraining":"Who attended the training?",
+  "caseStudyFormHowWillTrainingBenefitHCBH":"How will the training benefit HCBH and its staff?",
+
+  "caseStudyFormEquipmentReceivedCaseStudy":"Equipment Received Case Study",
+  "caseStudyFormWhatEquipmentWasReceived":"What equipment was received?",
+  "caseStudyFormWhichDepartmentReceivedIt":"Which department received it?",
+  "caseStudyFormWhoWasEquipmentFrom":"Who was the equipment from?",
+  "caseStudyFormWasItDonatedOrPurchased":"Was it donated or purchased?",
+  "caseStudyFormWhatDoesThisNewEquipmentDo":"What does this new equipment do?",
+
+  "caseStudyFormOtherStoryCaseStudy":"Other Story Case Study"
 }

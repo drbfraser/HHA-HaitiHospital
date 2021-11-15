@@ -80,5 +80,28 @@
   "caseStudyFormChooseFile":"Choisir le fichier",
   "caseStudyFormNoFileChosen":"Aucun fichier choisi",
   "caseStudyFormPermissionToShare":"Cette personne a donné la permission de partager son histoire et sa photo dans les communications HHA, y compris les plateformes en ligne",
-  "caseStudyFormSubmitForm":"Soumettre le formulaire"
+  "caseStudyFormSubmitForm":"Soumettre le formulaire",
+
+  "caseStudyFormStaffRecognitionCaseStudy":"Étude de cas sur la reconnaissance du personnel",
+  "caseStudyFormStaffName":"Nom du personnel",
+  "caseStudyFormRoleJobTitle":"Rôle / Titre du poste",
+  "caseStudyFormWhichDepartmentWorkIn":"Dans quel département travaillent-ils ?",
+  "caseStudyFormHowLongHaveBeenWorkingHCBH":"Depuis combien de temps travaillent-ils chez HCBH ?",
+  "caseStudyFormWhatEnjoyTheMostAtHCBH":"Qu'est-ce qu'ils apprécient le plus dans leur travail chez HCBH ?",
+
+  "caseStudyFormTrainingSessionCaseStudy":"Étude de cas sur la session de formation",
+  "caseStudyFormTrainingDate":"Date de formation",
+  "caseStudyFormWhatWasTrainingOn":"Sur quoi s'est déroulée la formation ?",
+  "caseStudyFormWhoConductedTraining":"Qui a mené la formation ?",
+  "caseStudyFormWhoAttendedTraining":"Qui a suivi la formation ?",
+  "caseStudyFormHowWillTrainingBenefitHCBH":"Comment la formation profitera-t-elle à HCBH et à son personnel ?",
+
+  "caseStudyFormEquipmentReceivedCaseStudy":"Étude de cas sur l'équipement reçu",
+  "caseStudyFormWhatEquipmentWasReceived":"Quel équipement a été reçu ?",
+  "caseStudyFormWhichDepartmentReceivedIt":"Quel département l'a reçu ?",
+  "caseStudyFormWhoWasEquipmentFrom":"De qui provenait l'équipement ?",
+  "caseStudyFormWasItDonatedOrPurchased":"A-t-il été donné ou acheté ?",
+  "caseStudyFormWhatDoesThisNewEquipmentDo":"A quoi sert ce nouvel équipement ?",
+
+  "caseStudyFormOtherStoryCaseStudy":"Autre histoire Étude de cas"
 }

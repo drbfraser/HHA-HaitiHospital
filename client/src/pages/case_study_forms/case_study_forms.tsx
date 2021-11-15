@@ -78,6 +78,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                    </div>
                 </form>
              </div>
+
             <form onSubmit={handleSubmit(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "1" ? "d-block" : "d-none"}`} id="Form1">
                <label className = "font-weight-bold">{t("caseStudyFormPatientStoryCaseStudy")}</label>
@@ -102,8 +103,14 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <label htmlFor="Case Study 1">{t("caseStudyFormCaseStudy/Story")}</label>
                 <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
                 <label className="form-label">{t("caseStudyFormUploadImage")}</label>
-                <input type="file" accept="image/*" className="form-control" id="customFile"/>
-                <div className="form-check">
+
+                 <div>
+                     <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>
+                     <input id="files" style={{visibility:"hidden"}} type="file"/>
+                 </div>
+                {/*<input type="file" accept="image/*" className="form-control" id="customFile" style={{visibility:"hidden"}}/>*/}
+
+                 <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
                     <label className="form-check-label" htmlFor="invalidCheck1">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
@@ -112,123 +119,151 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 </div>
              </div>
             </form>
+
             <form onSubmit={handleSubmit2(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "2" ? "d-block" : "d-none"}`} id="Form2">
-               <label className = "font-weight-bold">Staff Recognition Case Study</label>
+               <label className = "font-weight-bold">{t("caseStudyFormStaffRecognitionCaseStudy")}</label>
                 <div className="form-row">
                     <div className="col-md-6">
-                        <label htmlFor="Staff Name">Staff Name</label>
+                        <label htmlFor="Staff Name">{t("caseStudyFormStaffName")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Staff Name" required {...register2("staffRecognition.staffName", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label htmlFor="Role">Role/Job Title</label>
+                        <label htmlFor="Role">{t("caseStudyFormRoleJobTitle")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Role" required {...register2("staffRecognition.jobTitle", {required: true})}></input>
                     </div>
                 </div>
-                <label htmlFor="Which dept work">Which department do they work in?</label>
+                <label htmlFor="Which dept work">{t("caseStudyFormWhichDepartmentWorkIn")}</label>
                 <input className="form-control mb-2 mt-0" type="text" id="Which dept work" required {...register2("staffRecognition.department", {required: true})}></input>
-                <label htmlFor="How long working">How long have they been working at HCBH?</label>
+                <label htmlFor="How long working">{t("caseStudyFormHowLongHaveBeenWorkingHCBH")}</label>
                 <input className="form-control mb-2 mt-0" type="text" id="How long working" required {...register2("staffRecognition.howManyMonthsWorkingAtHCBH", {required: true})}></input>
-                <label htmlFor="What enjoy">What do they enjoy the most about working at HCBH?</label>
+                <label htmlFor="What enjoy">{t("caseStudyFormWhatEnjoyTheMostAtHCBH")}</label>
                 <textarea className="form-control mb-2 mt-0" id="What enjoy" required {...register2("staffRecognition.mostEnjoy", {required: true})}></textarea>
-                <label htmlFor="Case Study 2">Case Study/Story</label>
+                <label htmlFor="Case Study 2">{t("caseStudyFormCaseStudy/Story")}</label>
                 <textarea className="form-control mb-2 mt-0" id="Case Study 2" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
-                <label className="form-label">Upload Image</label>
-                <input type="file" accept="image/*" className="form-control" id="customFile" />
+                <label className="form-label">{t("caseStudyFormUploadImage")}</label>
+
+                 <div>
+                     <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>
+                     <input id="files" style={{visibility:"hidden"}} type="file"/>
+                 </div>
+                {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
+
                 <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="invalidCheck2" required></input>
-                    <label className="form-check-label" htmlFor="invalidCheck2"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
+                    <label className="form-check-label" htmlFor="invalidCheck2">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
-                <button className="btn btn-primary" type="submit">Submit form</button>
+                <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
                 </div>
              </div>
             </form>
+
             <form onSubmit={handleSubmit3(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "3" ? "d-block" : "d-none"}`} id="Form3">
-               <label className = "font-weight-bold">Training Session Case Study</label>
+               <label className = "font-weight-bold">{t("caseStudyFormTrainingSessionCaseStudy")}</label>
                 <div className="form-row">
                     <div className="col-md-6">
-                        <label htmlFor="Train Date">Training Date</label>
+                        <label htmlFor="Train Date">{t("caseStudyFormTrainingDate")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Train Date" required {...register3("trainingSession.trainingDate", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label htmlFor="Train On">What was the training on?</label>
+                        <label htmlFor="Train On">{t("caseStudyFormWhatWasTrainingOn")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Train On" required {...register3("trainingSession.trainingOn", {required: true})}></input>
                     </div>
                 </div>
-                <label htmlFor="Train Who">Who conducted training?</label>
+                <label htmlFor="Train Who">{t("caseStudyFormWhoConductedTraining")}</label>
                 <input className="form-control" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}></input>
-                <label htmlFor="Who attended">Who attended the training?</label>
+                <label htmlFor="Who attended">{t("caseStudyFormWhoAttendedTraining")}</label>
                 <textarea className="form-control" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
-                <label htmlFor="How train">How will the training benefit HCBH and its staff?</label>
+                <label htmlFor="How train">{t("caseStudyFormHowWillTrainingBenefitHCBH")}</label>
                 <textarea className="form-control" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
-                <label htmlFor="Case Study 3">Case Study/Story</label>
+                <label htmlFor="Case Study 3">{t("caseStudyFormCaseStudy/Story")}</label>
                 <textarea className="form-control" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
-                <label className="form-label">Upload Image</label>
-                <input type="file" accept="image/*" className="form-control" id="customFile" />
+                <label className="form-label">{t("caseStudyFormUploadImage")}</label>
+
+                 <div>
+                     <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>
+                     <input id="files" style={{visibility:"hidden"}} type="file"/>
+                 </div>
+                {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
+
                 <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="invalidCheck3" required></input>
-                    <label className="form-check-label" htmlFor="invalidCheck3"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
+                    <label className="form-check-label" htmlFor="invalidCheck3">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
-                <button className="btn btn-primary" type="submit">Submit form</button>
+                <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
                 </div>
              </div>
             </form>
+
             <form onSubmit={handleSubmit4(onSubmit)}>
              <div className={`form-group col-md-6 ${formOption === "4" ? "d-block" : "d-none"}`} id="Form4">
-               <label className = "font-weight-bold">Equipment Received Case Study</label>
+               <label className = "font-weight-bold">{t("caseStudyFormEquipmentReceivedCaseStudy")}</label>
                 <div className="form-row">
                     <div className="col-md-6">
-                        <label htmlFor="What equipment">What equipment was received?</label>
+                        <label htmlFor="What equipment">{t("caseStudyFormWhatEquipmentWasReceived")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="What equipment" required {...register4("equipmentReceived.equipmentReceived", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label htmlFor="Which dept receive">Which department received it?</label>
+                        <label htmlFor="Which dept receive">{t("caseStudyFormWhichDepartmentReceivedIt")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Which dept receive" required {...register4("equipmentReceived.departmentIdReceived", {required: true})}></input>
                     </div>
                 </div>
                  <div className="form-row">
                     <div className="col-md-6">
-                        <label htmlFor="Equipment from">Who was the equipment from?</label>
+                        <label htmlFor="Equipment from">{t("caseStudyFormWhoWasEquipmentFrom")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Equipment from" required {...register4("equipmentReceived.whoSentEquipment", {required: true})}></input>
                     </div>
                     <div className="col-md-6">
-                        <label htmlFor="Donate/Purchase">Was it donated or purchased?</label>
+                        <label htmlFor="Donate/Purchase">{t("caseStudyFormWasItDonatedOrPurchased")}</label>
                         <input className="form-control mb-2 mt-0" type="text" id="Donate/Purchase" required {...register4("equipmentReceived.purchasedOrDonated", {required: true})}></input>
                     </div>
                 </div>
-                <label htmlFor="Equipment Purpose">What does this new equipment do?</label>
+                <label htmlFor="Equipment Purpose">{t("caseStudyFormWhatDoesThisNewEquipmentDo")}</label>
                 <textarea className="form-control" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
-                <label htmlFor="Case Study 4">Case Study/Story</label>
+                <label htmlFor="Case Study 4">{t("caseStudyFormCaseStudy/Story")}</label>
                 <textarea className="form-control" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
-                <label className="form-label">Upload Image</label>
-                <input type="file" accept="image/*" className="form-control" id="customFile" />
+                <label className="form-label">{t("caseStudyFormUploadImage")}</label>
+
+                 <div>
+                     <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>
+                     <input id="files" style={{visibility:"hidden"}} type="file"/>
+                 </div>
+                {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
+
                 <div className="form-check">
                     <input className="form-check-input" type="checkbox" value="" id="invalidCheck4" required></input>
-                    <label className="form-check-label" htmlFor="invalidCheck4"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
+                    <label className="form-check-label" htmlFor="invalidCheck4">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
-                <button className="btn btn-primary" type="submit">Submit form</button>
+                <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
                 </div>
             </div>
             </form>
+
             <form onSubmit={handleSubmit5(onSubmit)}>
             <div className={`form-group col-md-6 ${formOption === "5" ? "d-block" : "d-none"}`} id="Form5">
-                <label className = "font-weight-bold">Other Story Case Study</label>
+                <label className = "font-weight-bold">{t("caseStudyFormOtherStoryCaseStudy")}</label>
                 <div>
-                    <label htmlFor="Case Study 5">Case Study/Story</label>
-                    <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
-                    <label className="form-label">Upload Image</label>
-                    <input type="file" accept="image/*" className="form-control" id="customFile" />
+                    <label htmlFor="Case Study 5">{t("caseStudyFormCaseStudy/Story")}</label>
+                    <textarea className="form-control mb-2 mt-0" placeholder={t("caseStudyFormCaseStudy/Story")} id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
+                    <label className="form-label">{t("caseStudyFormUploadImage")}</label>
+
+                    <div>
+                        <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>
+                        <input id="files" style={{visibility:"hidden"}} type="file"/>
+                    </div>
+                    {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
+
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
-                        <label className="form-check-label" htmlFor="invalidCheck5"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
+                        <label className="form-check-label" htmlFor="invalidCheck5">{t("caseStudyFormPermissionToShare")}</label>
                     </div>
                 </div>
                 <div>
-                <button className="btn btn-primary" type="submit">Submit form</button>
+                <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
                 </div>
             </div>
             </form>
