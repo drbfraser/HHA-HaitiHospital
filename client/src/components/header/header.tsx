@@ -38,7 +38,8 @@ function HeaderView() {
     } else if (location.pathname.slice(1) === 'admin') {
         return <h4 className="text-secondary">{t("headerAdmin")}</h4>
     } else {
-        return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
+        // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
+        return <h4></h4>
     }
 }
 
@@ -52,6 +53,7 @@ const Header = (props: HeaderProps) => {
     const onLogOut = (event) => {
         logOutUser();
     };
+
     const {t, i18n} = useTranslation();
 
     return (

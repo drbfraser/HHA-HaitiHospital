@@ -35,5 +35,25 @@
   "dashboardMessageOverviewUser": "User",
   "dashboardMessageOverviewDate": "Date",
   "dashboardMessageOverviewMessage": "Message",
-  "dashboardMessageOverviewSeeMore": "See More"
+  "dashboardMessageOverviewSeeMore": "See More",
+
+  "messageBoardRecentUpdates": "Recent updates",
+  "messageBoardAddMessage": "Add Message",
+  "messageBoardMore": "More",
+  "messageBoardLess": "Less",
+
+  "addMessageAddMessage": "Add Message",
+  "addMessageUserID": "User ID",
+  "addMessageDepartment": "Department",
+  "addMessageSelect": "Select",
+  "addMessageTitle": "Title",
+  "addMessageBody": "Body",
+  "addMessageSubmit": "Submit",
+
+  "leaderBoardDepartmentLeader": "Department Leader",
+  "leaderBoardDepartment": "Department",
+  "leaderBoardPosition": "Position",
+  "leaderBoardScore": "Score",
+  "leaderBoardEmployeeOfMonth": "Employee of Month",
+  "leaderBoardLastUpdate": "Last updated 3 days ago"
 }

@@ -35,5 +35,25 @@
   "dashboardMessageOverviewUser": "Utilisateur",
   "dashboardMessageOverviewDate": "Date",
   "dashboardMessageOverviewMessage": "Un message",
-  "dashboardMessageOverviewSeeMore": "Voir plus"
+  "dashboardMessageOverviewSeeMore": "Voir plus",
+
+  "messageBoardRecentUpdates": "Mises à jour récentes",
+  "messageBoardAddMessage": "Ajouter un message",
+  "messageBoardMore": "Suite",
+  "messageBoardLess": "Moins",
+
+  "addMessageAddMessage": "Ajouter un message",
+  "addMessageUserID": "Identifiant d'utilisateur",
+  "addMessageDepartment": "département",
+  "addMessageSelect": "Sélectionner",
+  "addMessageTitle": "Titre",
+  "addMessageBody": "Corps",
+  "addMessageSubmit": "Soumettre",
+
+  "leaderBoardDepartmentLeader": "Chef de département",
+  "leaderBoardDepartment": "département",
+  "leaderBoardPosition": "Position",
+  "leaderBoardScore": "But",
+  "leaderBoardEmployeeOfMonth": "Employé du mois",
+  "leaderBoardLastUpdate": "Dernière mise à jour il y a 3 jours"
 }
