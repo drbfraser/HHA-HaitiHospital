@@ -1,11 +1,15 @@
 {
+  "signInPleaseSignIn": "Please sign in",
+  "signInRememberMe": "Remember me",
+  "signInSignIn": "Sign In",
+
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",
   "sidebarLeaderBoard": "LeaderBoard",
   "sidebarCaseStudy": "Case Study",
   "sidebarAdmin": "Admin",
   "sidebarEnglish": "English",
-  "sidebarFrench": "French",
+  "sidebarFrench": "français",
 
   "headerOverview": "Overview",
   "headerMessageBoard": "Message Board",
@@ -17,5 +21,19 @@
   "headerDepartmentRehab": "Department of Rehab",
   "headerDepartmentCom": "Department of Com&Health",
   "headerAdmin": "Admin Desk",
-  "headerSignOut": "Sign Out"
+  "headerSignOut": "Sign Out",
+
+  "leaderBoardOverviewDepartmentLeader": "Department Leader",
+  "leaderBoardOverviewDepartment": "Department",
+  "leaderBoardOverviewPosition": "Position",
+  "leaderBoardOverviewScore": "Score",
+  "leaderBoardOverviewShowLess": "Show Less",
+  "leaderBoardOverviewShowMore": "Show More",
+
+  "dashboardMessageOverviewMessages": "Messages",
+  "dashboardMessageOverviewTitle": "Title",
+  "dashboardMessageOverviewUser": "User",
+  "dashboardMessageOverviewDate": "Date",
+  "dashboardMessageOverviewMessage": "Message",
+  "dashboardMessageOverviewSeeMore": "See More"
 }

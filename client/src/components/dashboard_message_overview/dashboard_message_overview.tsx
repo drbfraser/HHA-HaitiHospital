@@ -6,6 +6,7 @@ import { MessageProps } from 'constants/interfaces';
 import Axios from 'axios';
 import { NavLink} from "react-router-dom";
 import './dashboard_message_overview.css'
+import {useTranslation} from "react-i18next";
 
 interface DashboardMessageProps extends ElementStyleProps {
     messages :MessageProps[],
@@ -26,19 +27,21 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
         })
     }, [])
 
+    const {t, i18n} = useTranslation();
+
     return(
          <div className={'dashboard-message-overview '+ (props.classes||'')}>
              <div className="my-3 p-3 bg-body rounded shadow-sm container-fluid">
 
-                 <h5 className="pb-2 mb-3">Message Board</h5>
+                 <h5 className="pb-2 mb-3">{t("dashboardMessageOverviewMessages")}</h5>
 
                  <table className="container-fluid">
                      <tr>
                          <thead className="d-flex border-bottom pb-2 mb-0 row">
-                             <th className="text-secondary col col-sm col-md-2 col-lg-2">Title</th>
-                             <th className="text-secondary col col-sm col-md-2 col-lg-2">User</th>
-                             <th className="text-secondary col col-sm col-md-3 col-lg-3">Date</th>
-                             <th className="text-secondary col-6 col-sm-6 col-md col-lg">Message</th>
+                             <th className="text-secondary col col-sm col-md-2 col-lg-2">{t("dashboardMessageOverviewTitle")}</th>
+                             <th className="text-secondary col col-sm col-md-2 col-lg-2">{t("dashboardMessageOverviewUser")}</th>
+                             <th className="text-secondary col col-sm col-md-3 col-lg-3">{t("dashboardMessageOverviewDate")}</th>
+                             <th className="text-secondary col-6 col-sm-6 col-md col-lg">{t("dashboardMessageOverviewMessage")}</th>
                          </thead>
                      </tr>
 
@@ -71,7 +74,7 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                      </tbody>
 
                      <small className="d-block text-end mt-1">
-                         <NavLink to="/messageBoard">See More</NavLink>
+                         <NavLink to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>
                      </small>
 
                  </table>

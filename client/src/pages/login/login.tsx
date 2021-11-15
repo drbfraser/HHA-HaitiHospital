@@ -7,6 +7,7 @@ import React from 'react';
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
+import {useTranslation} from "react-i18next";
 
 interface LoginProps extends ElementStyleProps {
 };
@@ -37,6 +38,8 @@ const Login = (props : LoginProps) => {
         },
     });
 
+    const {t, i18n} = useTranslation();
+
     return(
         <div className={'login '+ (props.classes||'')}>
             <form onSubmit={formik.handleSubmit}>
@@ -47,7 +50,7 @@ const Login = (props : LoginProps) => {
                 {formik.touched.password && formik.errors.password ? (
                     <p className="error">{formik.errors.password}</p>
                     ) : null}                    
-                <h4 className="text-center">Please sign in </h4>
+                <h4 className="text-center">{t("signInPleaseSignIn")}</h4>
                 <div className="form-floating">
                     <input
                         id="username"
@@ -75,7 +78,7 @@ const Login = (props : LoginProps) => {
                 <div className="form-check form-switch">
                     <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
                         <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                            Remember me
+                            {t("signInRememberMe")}
                         </label>
                 </div>
 
@@ -83,7 +86,7 @@ const Login = (props : LoginProps) => {
                 <button 
                     className="w-100 btn btn-lg btn-primary" 
                     type="submit"
-                >Sign In</button>
+                >{t("signInSignIn")}</button>
                 <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
 
                 {errorMessage && <div className="error"> {errorMessage} </div>}

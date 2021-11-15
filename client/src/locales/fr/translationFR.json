@@ -1,10 +1,14 @@
 {
+  "signInPleaseSignIn": "Veuillez vous connecter",
+  "signInRememberMe": "Souviens-toi de moi",
+  "signInSignIn": "S'identifier",
+
   "sidebarHome": "D'accueil",
   "sidebarMessageBoard": "Tableau de bord",
   "sidebarLeaderBoard": "Classement",
   "sidebarCaseStudy": "Étude de cas",
   "sidebarAdmin": "Administrateur",
-  "sidebarEnglish": "l' anglais",
+  "sidebarEnglish": "English",
   "sidebarFrench": "français",
 
   "headerOverview": "Aperçu",
@@ -17,5 +21,19 @@
   "headerDepartmentRehab": "Département de réadaptation",
   "headerDepartmentCom": "Département de la Com&Santé",
   "headerAdmin": "Bureau d'administration",
-  "headerSignOut": "Se déconnecter"
+  "headerSignOut": "Se déconnecter",
+
+  "leaderBoardOverviewDepartmentLeader": "Chef de département",
+  "leaderBoardOverviewDepartment": "département",
+  "leaderBoardOverviewPosition": "Position",
+  "leaderBoardOverviewScore": "But",
+  "leaderBoardOverviewShowLess": "Montrer moins",
+  "leaderBoardOverviewShowMore": "Montre plus",
+
+  "dashboardMessageOverviewMessages": "messages",
+  "dashboardMessageOverviewTitle": "Titre",
+  "dashboardMessageOverviewUser": "Utilisateur",
+  "dashboardMessageOverviewDate": "Date",
+  "dashboardMessageOverviewMessage": "Un message",
+  "dashboardMessageOverviewSeeMore": "Voir plus"
 }
