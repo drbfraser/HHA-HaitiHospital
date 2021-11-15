@@ -27,7 +27,7 @@ const AllTick = (props: AllTickProps) => {
             id='tick-all'
             checked={isTicked}
 
-            onClick = {(e: SyntheticEvent) => {
+            onChange = {(e: SyntheticEvent) => {
                 const target = e.target as HTMLInputElement;
                 props.notifyTable(target.checked);
             }}

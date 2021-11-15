@@ -30,10 +30,11 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
   },[props.reports])
 
   function getClassName() {
+    const ogClass="report-summary-table table"
         if (props.classes === undefined)
-            return 'report-summary-table';
+            return ogClass;
         else
-            return props.classes + ' report-summary-table';
+            return props.classes + ' ' +ogClass;
   }
 
   function tickRow(update : {[rid: string] : boolean}) {
@@ -68,15 +69,16 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
   return (
     <section>
+      {/* Table must be wrapped inside table-responsive to be responsive */}
       <div className="table-responsive-md">
         <table className={getClassName()}>
           <thead>
             <tr>
-              <th scope='col'>ReportId</th>
-              <th scope='col'>Last Updated On</th>
-              <th scope='col'>Last Updated By UserId</th>
-              <th scope='col'></th>
-              <th scope='col'>
+              <th className='mx-1' scope='col'>ReportId</th>
+              <th className='mx-1' scope='col'>Last Updated On</th>
+              <th className='mx-1' scope='col'>Last Updated By UserId</th>
+              <th className='mx-1' scope='col'></th>
+              <th className='mx-1' scope='col'>
                 <AllTick tickTracker={tickTracker}
                 notifyTable = {tickAll}/>
               </th>

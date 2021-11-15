@@ -41,7 +41,7 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
             id={`tick-${props.reportId}`}
             checked = {isTicked}
 
-            onClick = {(e: SyntheticEvent) => {
+            onChange = {(e: SyntheticEvent) => {
                 const target = e.target as HTMLInputElement;
                 let update = {};
                 update[props.reportId] = target.checked;

@@ -56,8 +56,17 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     setRefetch(!refetch);
   }
 
+  function getClassName(className: string|undefined) {
+    if (className === undefined) {
+        return "department-reports";
+    }
+    else {
+        return `department-reports ${className}`
+    }
+  }
+  
   return (
-    <div className={'department-reports '+(props.classes || '')}>
+    <div className={getClassName(props.classes)}>
       {/*<div className='container my-4'>*/}
       <div className='my-4'>
         {
