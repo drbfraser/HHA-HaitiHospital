@@ -1,0 +1,21 @@
+{
+  "sidebarHome": "Home",
+  "sidebarMessageBoard": "Message Board",
+  "sidebarLeaderBoard": "LeaderBoard",
+  "sidebarCaseStudy": "Case Study",
+  "sidebarAdmin": "Admin",
+  "sidebarEnglish": "English",
+  "sidebarFrench": "French",
+
+  "headerOverview": "Overview",
+  "headerMessageBoard": "Message Board",
+  "headerLeaderBoard": "LeaderBoard",
+  "headerCaseStudy": "Case Study",
+  "headerCaseStudyForm": "Case Study Form",
+  "headerDepartmentNICU": "Department of NICU",
+  "headerDepartmentMaternity": "Department of Maternity",
+  "headerDepartmentRehab": "Department of Rehab",
+  "headerDepartmentCom": "Department of Com&Health",
+  "headerAdmin": "Admin Desk",
+  "headerSignOut": "Sign Out"
+}

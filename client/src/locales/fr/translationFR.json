@@ -1,0 +1,21 @@
+{
+  "sidebarHome": "D'accueil",
+  "sidebarMessageBoard": "Tableau de bord",
+  "sidebarLeaderBoard": "Classement",
+  "sidebarCaseStudy": "Étude de cas",
+  "sidebarAdmin": "Administrateur",
+  "sidebarEnglish": "l' anglais",
+  "sidebarFrench": "français",
+
+  "headerOverview": "Aperçu",
+  "headerMessageBoard": "Tableau de bord",
+  "headerLeaderBoard": "Classement",
+  "headerCaseStudy": "Étude de cas",
+  "headerCaseStudyForm": "Formulaire d'étude de cas",
+  "headerDepartmentNICU": "Département de l'USIN",
+  "headerDepartmentMaternity": "Département de la maternité",
+  "headerDepartmentRehab": "Département de réadaptation",
+  "headerDepartmentCom": "Département de la Com&Santé",
+  "headerAdmin": "Bureau d'administration",
+  "headerSignOut": "Se déconnecter"
+}

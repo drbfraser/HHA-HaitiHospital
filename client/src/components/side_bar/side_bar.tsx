@@ -2,13 +2,24 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import { ElementStyleProps } from "../../constants/interfaces";
-import './side_bar.css'
+import './side_bar.css';
+
+import {useTranslation} from 'react-i18next';
+import i18n from "i18next";
+
 // import { SidebarData } from './side_bar_data';
 
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface SidebarProps extends ElementStyleProps {}
+
+const changeLanguage = (ln) => {
+    return ()=> {
+        console.log('Language changed to ${ln}');
+        i18n.changeLanguage(ln)
+    }
+}
 
 const Sidebar = (props: SidebarProps) => {
     // const location = useLocation();
@@ -21,12 +32,14 @@ const Sidebar = (props: SidebarProps) => {
             return `Sidebar ${props.classes} `
     }
 
+    const {t, i18n} = useTranslation();
+
     return (
         <div className={getClassName()}>
             <div className="bg-dark">
             {/*<div className='position-fixed d-flex flex-column flex-shrink-0 p-3 bg-dark' style={{width: 220}}>*/}
                 <div className="sidebar_logo">
-                    <div className="text-center">
+                    <div className="text-center" style={{width: 190}}>
                         <HhaLogo style={{width: 160}}/>
                     </div>
                 </div>
@@ -44,25 +57,25 @@ const Sidebar = (props: SidebarProps) => {
                     <li>
                         <NavLink to="/home" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-house-door-fill me-2"/>
-                            <span className="text text-light">Home</span>
+                            <span className="text text-light">{t("sidebarHome")}</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/messageBoard" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-chat-right-text-fill me-2"/>
-                            <span className="text text-light">Message Board</span>
+                            <span className="text text-light">{t("sidebarMessageBoard")}</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/leaderBoard" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-bar-chart-fill me-2"/>
-                            <span className="text text-light">Leader Board</span>
+                            <span className="text text-light">{t("sidebarLeaderBoard")}</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/caseStudyMain" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-award-fill me-2"/>
-                            <span className="text text-light">Case Study</span>
+                            <span className="text text-light">{t("sidebarCaseStudy")}</span>
                         </NavLink>
                     </li>
 
@@ -98,15 +111,26 @@ const Sidebar = (props: SidebarProps) => {
                     <li>
                         <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-person-badge-fill me-2"/>
-                            <span className="text text-light">Admin</span>
+                            <span className="text text-light">{t("sidebarAdmin")}</span>
                         </NavLink>
                     </li>
-                    {/*<li>*/}
-                    {/*    <NavLink to="/" className="nav-link link-light" exact activeClassName="active">*/}
-                    {/*        <i className="bi bi-gear-fill me-2"/>*/}
-                    {/*        <span className="text text-light">Setting</span>*/}
-                    {/*    </NavLink>*/}
-                    {/*</li>*/}
+
+                    <li className="border-top my-2"/>
+
+                    <li className="btn-group-toggle" data-toggle="buttons">
+                        <button className="nav-link link-light"
+                        onClick={changeLanguage("en")}>
+                            <i className="bi bi-gear-fill me-2"/>
+                            <span className="text text-light">{t("sidebarEnglish")}</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button className="nav-link link-light"
+                                onClick={changeLanguage("fr")}>
+                            <i className="bi bi-gear me-2"/>
+                            <span className="text text-light">{t("sidebarFrench")}</span>
+                        </button>
+                    </li>
                 </ul>
 
                 {/*<ul className='nav-menu-items'>*/}
