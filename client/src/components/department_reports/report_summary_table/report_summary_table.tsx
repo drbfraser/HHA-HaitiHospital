@@ -9,8 +9,8 @@ import UtilityButtons from 'components/department_reports/report_summary_table/u
 
 interface ReportSummaryTableProps extends ElementStyleProps {
   reports :Json[], 
+  refetchReports(): void,
 };
-
 
 
 const ReportSummaryTable = (props : ReportSummaryTableProps) => {
@@ -26,7 +26,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
     setTracker(trackerTemp);
 
-  },[])
+  },[props.reports])
 
   function getClassName() {
         if (props.classes === undefined)
@@ -44,7 +44,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
         if (rids.includes(rid))
             newTracker[rid] = update[rid];
         else
-            console.log("Something weird happened");
+            console.log("Tick non-existing report row");
     })
     setTracker(newTracker);
   }
@@ -60,7 +60,10 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     setTracker(newTracker);
   }
 
-  
+  function delReportsHandler() {
+      console.log("Table notified for delete");
+      props.refetchReports();
+  }
 
   return (
     <section>
@@ -97,6 +100,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
       
       <UtilityButtons 
         tickTracker={tickTracker}
+        notifyTable={delReportsHandler}
      />
 
     </section>

@@ -7,25 +7,27 @@ interface AllTickProps extends ElementStyleProps {
     notifyTable(ticked : boolean) : void,
 }
 
-function isTicked(tickTracker: {[rid: string] : boolean}) {
+function isAllTicked(tickTracker: {[rid: string] : boolean}) {
+    // console.log(tickTracker)
     const values = Object.values(tickTracker);
-    console.log("AllTick: ", !values.includes(false))
     return !(values.includes(false))
 }
 
 const AllTick = (props: AllTickProps) => {
+    const [isTicked, setTicked] = useState<boolean>(isAllTicked(props.tickTracker));
 
+    useEffect(() => {
+        setTicked(isAllTicked(props.tickTracker));
+    }, [props.tickTracker])
+    
     return (
     <div className="form-check">
         <input className="form-check-input"
             type="checkbox"
             id='tick-all'
-            checked={isTicked(props.tickTracker)}
-            // onClick= {(e: SyntheticEvent) => {
-            //     const target = e.target as HTMLInputElement;
-            //     props.notifyTable(target.checked);
-            // }}
-            onChange = {(e: SyntheticEvent) => {
+            checked={isTicked}
+
+            onClick = {(e: SyntheticEvent) => {
                 const target = e.target as HTMLInputElement;
                 props.notifyTable(target.checked);
             }}

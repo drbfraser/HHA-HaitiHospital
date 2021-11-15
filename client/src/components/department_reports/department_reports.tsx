@@ -14,6 +14,7 @@ interface DepartmentReportsProps extends ElementStyleProps {
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
+  let [refetch, setRefetch] = useState<boolean>(false);
 
   const dbUrlForNICUReports = "/api/report/view";
   const apiSource = Axios.CancelToken.source();
@@ -30,11 +31,13 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
       apiSource.cancel();
       isMounted = false;
     }
-  }, []);
+  }, [refetch]);
 
 
   const fetchReports = async () => {
     try {
+      console.log("Fetch reports");
+
       const res = await Axios.get(dbUrlForNICUReports,
         {cancelToken: apiSource.token})
       return res.data;
@@ -48,6 +51,11 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     }
   }
 
+  function refetchReportsHandler() {
+    console.log("Refetch reports");
+    setRefetch(!refetch);
+  }
+
   return (
     <div className={'department-reports '+(props.classes || '')}>
       <div className='container my-4'>
@@ -56,7 +64,8 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
             <div className="lead">No submitted reports</div> : 
             <ReportSummaryTable 
               reports={reports}
-              classes='text-dark bg-light'/>
+              classes='text-dark bg-light'
+              refetchReports={refetchReportsHandler}/>
         }
       </div>
     </div>

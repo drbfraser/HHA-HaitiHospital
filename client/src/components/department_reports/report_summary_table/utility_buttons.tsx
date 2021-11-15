@@ -1,9 +1,11 @@
 import React from 'react';
 
 import {ElementStyleProps, ReportProps} from 'constants/interfaces';
+import Axios from 'axios'
 
 interface UtilityButtonsProps extends ElementStyleProps {
     tickTracker : {[rid: string]: boolean},
+    notifyTable() : void,
 }
 
 function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
@@ -11,13 +13,32 @@ function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
     return values.includes(true);
 }
 
-function deleteReports(tickTracker: {[rid: string]: boolean}): void {
-    console.log("Delete ", tickTracker);
-    
+
+async function delTickedReportFromDb(rid: string) {
+    let dbApiToDelRid = `/api/report/delete/${rid}`;
+    const res = await Axios.delete(dbApiToDelRid);
 }
 
+
 const UtilityButtons = (props: UtilityButtonsProps) => {
-  
+
+    function deleteReports(tickTracker: {[rid: string]: boolean}) {
+        console.log("Delete ", tickTracker);
+
+        // let newTickTracker = {...tickTracker}
+
+        Object.keys(tickTracker).forEach((rid) => {
+            try {
+                if (tickTracker[rid] === true)
+                    delTickedReportFromDb(rid);
+            }
+            catch (err) {
+                console.log("Something wrong when delete report");
+            }
+        })
+        props.notifyTable();
+    }
+
   return (
     <div>
       {(isShown(props.tickTracker))?

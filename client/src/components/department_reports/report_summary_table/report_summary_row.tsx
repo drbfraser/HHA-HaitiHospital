@@ -13,6 +13,12 @@ interface ReportSummaryProps extends ElementStyleProps {
 
 const ReportSummaryRow = (props: ReportSummaryProps) => {
 
+  const [isTicked, setTicked] = useState<boolean>(props.isTicked);
+
+  useEffect(() => {
+    setTicked(props.isTicked);
+  }, [props.isTicked]);
+
   return (
     <tr id={`rp-sum-row-${props.reportId}`}>
       <th scope='row'>
@@ -33,8 +39,9 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
             type="checkbox" 
             value={props.reportId} 
             id={`tick-${props.reportId}`}
-            checked = {props.isTicked}
-            onChange = {(e: SyntheticEvent) => {
+            checked = {isTicked}
+
+            onClick = {(e: SyntheticEvent) => {
                 const target = e.target as HTMLInputElement;
                 let update = {};
                 update[props.reportId] = target.checked;
