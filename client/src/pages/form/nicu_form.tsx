@@ -22,16 +22,16 @@ function DynamicForm() {
 
     useEffect(() => {
         const getData = async () => {
-            await setFormModel(nicuJSON[0]);
+            await setFormModel(nicuJSON);
             setSectionState(0);
         }
 
         getData();
     }, [])
 
-    useEffect(() => {
-        sidePanelClick(sectionState);
-    })
+    // useEffect(() => {
+    //     sidePanelClick(sectionState);
+    // })
 
     const elements = Object.values(formModel);
     const fields: any = elements[0];
@@ -154,28 +154,28 @@ function DynamicForm() {
     }
 
     const sidePanelClick = (index: any) => {
-        const currentClass = document.getElementsByClassName("list-group-item");
-        let startj = 0
-        for (let i = 0; i < currentClass.length; i++) {
-            currentClass[i].classList.remove("active");
-            if (currentClass[i].childNodes.length > 1) {
-                currentClass[i].removeChild(currentClass[i].childNodes[1])
-            }
+        // const currentClass = document.getElementsByClassName("list-group-item");
+        // let startj = 0
+        // for (let i = 0; i < currentClass.length; i++) {
+        //     currentClass[i].classList.remove("active");
+        //     if (currentClass[i].childNodes.length > 1) {
+        //         currentClass[i].removeChild(currentClass[i].childNodes[1])
+        //     }
 
-            var show = "none"
-            if (i === index) {
-                setSectionState(index);
-                currentClass[index].classList.add("active");
-                show = "";
-            }
+        //     var show = "none"
+        //     if (i === index) {
+        //         setSectionState(index);
+        //         currentClass[index].classList.add("active");
+        //         show = "";
+        //     }
 
-            for (let j = 0; j < sections[i].field_value; j++, startj++) {
-                document.getElementById("section" + (i + 1))!.style.display = show;
-                if (document.getElementById("input" + startj)) document.getElementById("input" + startj)!.style.display = show;
-                if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
-                if (document.getElementById("subsection" + (startj))) document.getElementById("subsection" + (startj))!.style.display = show;
-            }
-        }
+        //     for (let j = 0; j < sections[i].field_value; j++, startj++) {
+        //         document.getElementById("section" + (i + 1))!.style.display = show;
+        //         if (document.getElementById("input" + startj)) document.getElementById("input" + startj)!.style.display = show;
+        //         if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
+        //         if (document.getElementById("subsection" + (startj))) document.getElementById("subsection" + (startj))!.style.display = show;
+        //     }
+        // }
     }
 
     function submitValidation() {
@@ -452,27 +452,16 @@ function DynamicForm() {
         (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
     }
 
-    function getSections() {
-        var a = [];
-        for (let i in fields) {
-            if (fields[i].field_type === 'section') {
-                a.push(fields[i]);
-            }
-        }
-        return a;
-    }
-
-    let sections = getSections();
     let fieldCount = 0;
     let sectionCount = 0;
     document.body.classList.add("bg-light");
 
     return (
         <div className="nicu_form">
-            <SideBar/>
+            <SideBar />
 
             <main className="container">
-                <Header/>
+                <Header />
 
                 <div className="py-3 text-start">
                     <h2>NICU/Paediatrics Form</h2>
@@ -487,182 +476,208 @@ function DynamicForm() {
                         </h4>
 
                         <ul className="list-group mb-3">
-                            {sections ? sections.map((section: any, index: any) => {
-                                var isActive = false;
-                                if (index === 0) {
-                                    isActive = true;
-                                }
+                            {elements ? elements.map((section: any, idx: any) => {
+                                var isActive = idx === 0 ? true : false;
                                 return (
                                     <>
-                                        <li key={index}
+                                        <li key={idx}
                                             className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                            onClick={() => sidePanelClick(index)}>
-                                            <span>{index + 1}. {section.field_label}</span>
+                                            onClick={() => sidePanelClick(idx)}>
+                                            <span>{idx + 1}. {section.section_label}</span>
                                         </li>
                                     </>
                                 )
                             }) : null}
                         </ul>
 
-
                         <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
                     </div>
-                    <div className="col-sm-7 col-md-7 col-lg-7">
 
+
+                    <div className="col-sm-7 col-md-7 col-lg-7">
                         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
                             <div className="row g-2">
-                                {fields ? fields.map((field: any, index: any) => {
-                                    switch (field.field_type) {
-                                        case 'section':
-                                            sectionCount += 1;
-                                            return (<h4 id={"section" + sectionCount} className="mb-3">{sectionCount}. {field.field_label}</h4>)
+                                {elements ? elements.map((section: any, idx: any) => {
+                                    var ret = [];
 
-                                        case 'subsection':
-                                            return (<h6 id={"subsection" + index} className={field.field_level === 1 ? "px-5 fw-bold" : "fw-bold"}>{field.field_label}</h6>)
+                                    var fields = section.section_fields;
+                                    for (let i = 0; i < fields.length; i++) {
+                                        var field = fields[i];
 
-                                        case 'number':
-                                            fieldCount += 1;
-
-                                            return (
-                                                <>
-                                                    <div id={"input" + index} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                        <span className="align-middle">{fieldCount}. {field.field_label}</span>
+                                        fieldCount += 1;
+                                        ret.push(
+                                            <>
+                                                <div id={"input" + i} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                                    <span className="align-middle">{fieldCount}. {field.field_label}</span>
+                                                </div>
+                                                <div id={"inputs" + i} className="col-sm-2">
+                                                    <input type="text" className="form-control" placeholder=""
+                                                        {...register(field.field_id)}
+                                                        // required
+                                                        //onChange={() => totalValidation(index)}
+                                                        onBlur={() => inputValidation(i)}
+                                                    />
+                                                    <div className="invalid-feedback">
+                                                        Requires a valid number
                                                     </div>
-                                                    <div id={"inputs" + index} className="col-sm-2">
-                                                        <input type="text" className="form-control" placeholder=""
-                                                               {...register(field.field_id)}
-                                                            // required
-                                                            //onChange={() => totalValidation(index)}
-                                                               onBlur={() => inputValidation(index)}
-                                                        />
-                                                        <div className="invalid-feedback">
-                                                            Requires a valid number
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )
-
-                                        case 'array':
-                                            fieldCount += 1;
-                                            switch (field.field_id) {
-                                                case 'admissions.comeFrom.otherDepartments':
-                                                    return (
-                                                        <>
-                                                            <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
-                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
-                                                            </div>
-                                                            <div id={"inputs" + index} >
-                                                                {formValuesComeFrom.map((element, index2) => (
-                                                                    <div className="row g-3 mb-1" key={index}>
-                                                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group" id={"cf" + index + index2}>
-                                                                                <span className="input-group-text" id="">Name and value</span>
-                                                                                <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                       value={element.name || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                       onBlur={() => arrayInputValidation("cf", index, index2, "text")}
-                                                                                />
-                                                                                <input className="form-control" type="text" name="numberOfPatients"
-                                                                                       value={element.value || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                       onBlur={() => arrayInputValidation("cf", index, index2, "number")}
-                                                                                />
-                                                                                <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </>
-                                                    )
-
-                                                case 'admissions.mainCondition.otherMedical':
-                                                    return (
-                                                        <>
-                                                            <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
-                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
-                                                            </div>
-                                                            <div id={"inputs" + index} >
-                                                                {formValuesAdCondition.map((element, index2) => (
-                                                                    <div className="row g-3 mb-1" key={index}>
-                                                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group" id={"ac" + index + index2}>
-                                                                                <span className="input-group-text" id="">Name and value</span>
-                                                                                <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                       value={element.name || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                       onBlur={() => arrayInputValidation("ac", index, index2, "text")}
-                                                                                />
-                                                                                <input className="form-control" type="text" name="numberOfPatients"
-                                                                                       value={element.value || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                       onBlur={() => arrayInputValidation("ac", index, index2, "number")}
-                                                                                />
-                                                                                <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </>
-                                                    )
-
-                                                case 'numberOfOutPatients.mainCondition.otherMedical':
-                                                    return (
-                                                        <>
-                                                            <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
-                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
-                                                            </div>
-                                                            <div id={"inputs" + index} >
-                                                                {formValuesOutCondition.map((element, index2) => (
-                                                                    <div className="row g-3 mb-1">
-                                                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group" id={"oc" + index + index2}>
-                                                                                <span className="input-group-text">Name and value</span>
-                                                                                <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                       value={element.name || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                       onBlur={() => arrayInputValidation("oc", index, index2, "text")}
-                                                                                />
-                                                                                <input className="form-control" type="text" name="numberOfPatients"
-                                                                                       value={element.value || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                       onBlur={() => arrayInputValidation("oc", index, index2, "number")}
-                                                                                />
-                                                                                <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </>
-                                                    )
-
-                                                default:
-                                                    return null
-                                            }
-
-                                        default:
-                                            return null;
+                                                </div>
+                                            </>
+                                        );
                                     }
+
+                                    return ret;
+
+                                    // switch (field.field_type) {
+                                    //     case 'section':
+                                    //         sectionCount += 1;
+                                    //         return (<h4 id={"section" + sectionCount} className="mb-3">{sectionCount}. {field.field_label}</h4>)
+
+                                    //     case 'subsection':
+                                    //         return (<h6 id={"subsection" + index} className={field.field_level === 1 ? "px-5 fw-bold" : "fw-bold"}>{field.field_label}</h6>)
+
+                                    //     case 'number':
+                                    //         
+
+                                    //         return (
+                                    //             <>
+                                    //                 <div id={"input" + index} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                    //                     <span className="align-middle">{fieldCount}. {field.field_label}</span>
+                                    //                 </div>
+                                    //                 <div id={"inputs" + index} className="col-sm-2">
+                                    //                     <input type="text" className="form-control" placeholder=""
+                                    //                            {...register(field.field_id)}
+                                    //                         // required
+                                    //                         //onChange={() => totalValidation(index)}
+                                    //                            onBlur={() => inputValidation(index)}
+                                    //                     />
+                                    //                     <div className="invalid-feedback">
+                                    //                         Requires a valid number
+                                    //                     </div>
+                                    //                 </div>
+                                    //             </>
+                                    //         )
+
+                                    //     case 'array':
+                                    //         fieldCount += 1;
+                                    //         switch (field.field_id) {
+                                    //             case 'admissions.comeFrom.otherDepartments':
+                                    //                 return (
+                                    //                     <>
+                                    //                         <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
+                                    //                             <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                    //                             <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                    //                         </div>
+                                    //                         <div id={"inputs" + index} >
+                                    //                             {formValuesComeFrom.map((element, index2) => (
+                                    //                                 <div className="row g-3 mb-1" key={index}>
+                                    //                                     <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                    //                                         <div className="input-group" id={"cf" + index + index2}>
+                                    //                                             <span className="input-group-text" id="">Name and value</span>
+                                    //                                             <input className="form-control" type="text" name="nameOfDepartment"
+                                    //                                                    value={element.name || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                    //                                                    onBlur={() => arrayInputValidation("cf", index, index2, "text")}
+                                    //                                             />
+                                    //                                             <input className="form-control" type="text" name="numberOfPatients"
+                                    //                                                    value={element.value || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                    //                                                    onBlur={() => arrayInputValidation("cf", index, index2, "number")}
+                                    //                                             />
+                                    //                                             <div className="invalid-feedback text-end">
+                                    //                                                 Requires a valid number
+                                    //                                             </div>
+                                    //                                         </div>
+                                    //                                     </div>
+                                    //                                     <div className="col-sm-2">
+                                    //                                         <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
+                                    //                                     </div>
+                                    //                                 </div>
+                                    //                             ))}
+                                    //                         </div>
+                                    //                     </>
+                                    //                 )
+
+                                    //             case 'admissions.mainCondition.otherMedical':
+                                    //                 return (
+                                    //                     <>
+                                    //                         <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
+                                    //                             <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                    //                             <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                    //                         </div>
+                                    //                         <div id={"inputs" + index} >
+                                    //                             {formValuesAdCondition.map((element, index2) => (
+                                    //                                 <div className="row g-3 mb-1" key={index}>
+                                    //                                     <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                    //                                         <div className="input-group" id={"ac" + index + index2}>
+                                    //                                             <span className="input-group-text" id="">Name and value</span>
+                                    //                                             <input className="form-control" type="text" name="nameOfDepartment"
+                                    //                                                    value={element.name || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                    //                                                    onBlur={() => arrayInputValidation("ac", index, index2, "text")}
+                                    //                                             />
+                                    //                                             <input className="form-control" type="text" name="numberOfPatients"
+                                    //                                                    value={element.value || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                    //                                                    onBlur={() => arrayInputValidation("ac", index, index2, "number")}
+                                    //                                             />
+                                    //                                             <div className="invalid-feedback text-end">
+                                    //                                                 Requires a valid number
+                                    //                                             </div>
+                                    //                                         </div>
+                                    //                                     </div>
+                                    //                                     <div className="col-sm-2">
+                                    //                                         <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
+                                    //                                     </div>
+                                    //                                 </div>
+                                    //                             ))}
+                                    //                         </div>
+                                    //                     </>
+                                    //                 )
+
+                                    //             case 'numberOfOutPatients.mainCondition.otherMedical':
+                                    //                 return (
+                                    //                     <>
+                                    //                         <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
+                                    //                             <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                    //                             <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                    //                         </div>
+                                    //                         <div id={"inputs" + index} >
+                                    //                             {formValuesOutCondition.map((element, index2) => (
+                                    //                                 <div className="row g-3 mb-1">
+                                    //                                     <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                    //                                         <div className="input-group" id={"oc" + index + index2}>
+                                    //                                             <span className="input-group-text">Name and value</span>
+                                    //                                             <input className="form-control" type="text" name="nameOfDepartment"
+                                    //                                                    value={element.name || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                    //                                                    onBlur={() => arrayInputValidation("oc", index, index2, "text")}
+                                    //                                             />
+                                    //                                             <input className="form-control" type="text" name="numberOfPatients"
+                                    //                                                    value={element.value || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                    //                                                    onBlur={() => arrayInputValidation("oc", index, index2, "number")}
+                                    //                                             />
+                                    //                                             <div className="invalid-feedback text-end">
+                                    //                                                 Requires a valid number
+                                    //                                             </div>
+                                    //                                         </div>
+                                    //                                     </div>
+                                    //                                     <div className="col-sm-2">
+                                    //                                         <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
+                                    //                                     </div>
+                                    //                                 </div>
+                                    //                             ))}
+                                    //                         </div>
+                                    //                     </>
+                                    //                 )
+
+                                    //             default:
+                                    //                 return null
+                                    //         }
+
+                                    //     default:
+                                    //         return null;
+                                    // }
                                 }) : null}
 
                                 <hr className="my-4"></hr>
