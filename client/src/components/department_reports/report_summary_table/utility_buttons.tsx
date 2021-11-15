@@ -1,53 +1,36 @@
-import React, {useState, useEffect} from 'react';
-
-import { TickObserver, TickList } from 'components/department_reports/report_summary_table/tick_list';
+import React from 'react';
 
 import {ElementStyleProps, ReportProps} from 'constants/interfaces';
 
 interface UtilityButtonsProps extends ElementStyleProps {
-  ticks: TickList;
-  reports: ReportProps[];
-  notifyTable: () => void;
+    tickTracker : {[rid: string]: boolean},
 }
 
+function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
+    const values = Object.values(tickTracker);
+    return values.includes(true);
+}
 
+function deleteReports(tickTracker: {[rid: string]: boolean}): void {
+    console.log("Delete ", tickTracker);
+    
+}
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
   
-  const [showButtons, setShowButtons] = useState<boolean>(false);
-  
-  let tickObserver: TickObserver = (tickList: TickList) => {
-    console.log("Del button notified ", tickList.isNoTicked());
-
-    if (tickList.isNoTicked() === true)
-      setShowButtons(false);
-    else
-      setShowButtons(true);  
-  };
-
-  useEffect(() => {
-    props.ticks.registerObserver(tickObserver);
-    console.log("delete button registered");
-
-    return function unregisterObserver() {
-      props.ticks.unregisterObserver(tickObserver);
-    }
-
-  }, []) 
-
   return (
     <div>
-      {/* {(showButtons === true)? */}
-      {(props.ticks.isNoTicked() === false) ?
+      {(isShown(props.tickTracker))?
         <div className="row justify-content-end">
             <div className="col-auto">
-            <button 
-            className=""
-            onClick = {() => {
-                props.notifyTable()}}
-            >
-                Delete
-            </button>
+                <button 
+                    className=""
+                    onClick = {() => {
+                        deleteReports(props.tickTracker);
+                    }}
+                >
+                    Delete
+                </button>
             </div>
 
             <div className="col-auto">
@@ -55,9 +38,7 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
             </div>
         </div>
         :
-        <div>
-
-        </div>
+        <div></div>
       }
     </div>
   );
