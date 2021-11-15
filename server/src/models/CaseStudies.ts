@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 enum CaseStudyOptions {
-    PatientStory,
-    StaffRecognition,
-    TrainingSession,
-    EquipmentReceived,
-    OtherStory,
+    PatientStory = "PATIENT_STORY",
+    StaffRecognition = "STAFF_RECOGNITION",
+    TrainingSession = "TRAINING_SESSION",
+    EquipmentReceived = "EQUIPMENT_RECEIVED",
+    OtherStory = "OTHER_STORY",
 }
 
 const patientStorySchema = new Schema(
@@ -15,11 +15,12 @@ const patientStorySchema = new Schema(
         patientsName: { type: String, required: true },
         patientsAge: { type: Number, required: true },
         whereIsThePatientFrom: { type: String, required: true },
-        whyComeToHCBH: { type: String, required: true },
-        howLongWereTheyAtHCBHinDays: { type: Number, required: true },
+        whyComeToHcbh: { type: String, required: true },
+        howLongWereTheyAtHcbh: { type: String, required: true },
         diagnosis: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
-    }
+    }, 
+    { _id : false }
 );
 
 const staffRecognitionSchema = new Schema(
@@ -27,10 +28,11 @@ const staffRecognitionSchema = new Schema(
         staffName: { type: String, required: true },
         jobTitle: { type: String, required: true },
         department: { type: String, required: true },
-        howManyMonthsWorkingAtHCBH: { type: Number, required: true },
+        howLongWorkingAtHcbh: { type: String, required: true },
         mostEnjoy: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
-    }
+    }, 
+    { _id : false }
 );
 
 const trainingSessionSchema = new Schema(
@@ -41,24 +43,27 @@ const trainingSessionSchema = new Schema(
         whoAttended: { type: String, required: true },
         benefitsFromTraining: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
-    }
+    }, 
+    { _id : false }
 );
 
 const equipmentReceivedSchema = new Schema(
     {
         equipmentReceived: { type: String, required: true },
-        departmentIdReceived: { type: Number, required: true },
+        departmentReceived: { type: String, required: true },
         whoSentEquipment: { type: String, required: true },
         purchasedOrDonated: { type: String, required: true },
         whatDoesEquipmentDo: { type: String, required: true },
         caseStudyStory: { type: String, required: true },
-    }
+    }, 
+    { _id : false }
 );
 
 const otherStorySchema = new Schema(
     {
         caseStudyStory: { type: String, required: true },
-    }
+    }, 
+    { _id : false }
 );
 
 const caseStudySchema = new Schema(
@@ -70,8 +75,9 @@ const caseStudySchema = new Schema(
         staffRecognition: staffRecognitionSchema,
         trainingSession: trainingSessionSchema,
         equipmentReceived: equipmentReceivedSchema,
-        otherStory: otherStorySchema
-    },
+        otherStory: otherStorySchema,
+        imgPath: { type: String }
+    }, 
     { timestamps: true },
 );
 

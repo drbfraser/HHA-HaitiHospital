@@ -1,39 +1,14 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import multer from 'multer';
-import { resolve } from 'path';
 
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import User, { hashPassword, validateUser } from '../../models/User';
 import Message from '../../models/Message';
 import { seedDb } from '../../utils/seed';
+import { checkIsInRole, ROLES } from '../../utils/roleUtils';
 
 const router = Router();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, resolve(__dirname, '../../../public/images'));
-  },
-  filename: function (req, file, cb) {
-    const fileName = file.originalname.toLowerCase().split(' ').join('-');
-    cb(null, `avatar-${Date.now()}-${fileName}`);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-    }
-  },
-});
-
-//`checkit`, which is probably the option I'd suggest if  `validatem`
-
-router.put('/:id', [requireJwtAuth, upload.single('avatar')], async (req : Request, res : Response, next : NextFunction) => {
+router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : NextFunction) => {
   try {
     const tempUser = await User.findById(req.params.id);
     const reqUser : any = req.user;
@@ -112,7 +87,7 @@ router.get('/', requireJwtAuth, async (req, res) => {
 });
 
 // delete user, currently working without req.user 
-router.delete('/:id', requireJwtAuth, async (req, res) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) => {
   try {
     const tempUser = await User.findById(req.params.id);
     console.log(tempUser);
@@ -133,7 +108,7 @@ router.delete('/:id', requireJwtAuth, async (req, res) => {
 });
 
 // add user, currently working
-router.post('/', requireJwtAuth, async (req, res) => {
+router.post('/', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) => {
   try {
     const reqUser : any = req.user;
     if (reqUser.role !== 'ADMIN')

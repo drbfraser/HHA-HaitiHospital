@@ -2,14 +2,13 @@ import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 import User from '../models/User';
-
-const secretOrKey = process.env.JWT_SECRET;
+import { expression } from 'joi';
 
 // JWT strategy
 const jwtLogin = new JwtStrategy(
   {
-    jwtFromRequest: ExtractJwt.fromHeader('x-auth-token'),
-    secretOrKey,
+    jwtFromRequest: req => req.cookies.jwt,
+    secretOrKey: process.env.JWT_SECRET,
   },
   async (payload, done) => {
     try {

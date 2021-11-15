@@ -7,6 +7,7 @@ import { readFileSync } from 'fs';
 import { resolve, join } from 'path';
 import passport from 'passport';
 import all_routes from 'express-list-endpoints';
+import cookieParser from 'cookie-parser';
 
 import routes from './routes';
 import { seedDb, seedDepartments } from './utils/seed';
@@ -29,6 +30,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cookieParser());
 app.use(passport.initialize());
 require('./services/jwtStrategy');
 require('./services/localStrategy');
@@ -52,7 +54,7 @@ mongoose
 
 // Use Routes
 app.use('/', routes);
-app.use('/public', express.static(join(__dirname, '../public')));
+app.use('/public', express.static('public'));
 
 // Start listening to PORT
 const port = process.env.PORT || 5000;

@@ -71,7 +71,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       <div className='mt-2'>
         {/* Dept Title */}
         <section className='mt-3'>
-          <h1 className="lead text-center">Department of NICU/PEAD</h1>
+          <h1 className="lead text-center">Department of NICU/Paediatrics</h1>
         </section>
 
 

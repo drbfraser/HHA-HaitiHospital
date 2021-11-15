@@ -10,7 +10,7 @@ const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
       return next(err);
     }
     if (!user) {
-      console.log("Cannot authenticate request")
+      console.error("Cannot authenticate request, user does not exist.");
       return res.status(422).send(info);
     }
     req.user = user;
