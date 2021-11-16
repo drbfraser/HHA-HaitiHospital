@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import React, {useEffect} from 'react';
 
 // import './app.css';
@@ -19,6 +19,8 @@ import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
 import NotFound from 'pages/not_found/not_found';
+// import  UserProvider  from './Context/UserProvider';
+import { AuthProvider, useAuthState } from 'Context';
 
 const App = () => {
     useEffect(() => {
@@ -33,14 +35,24 @@ const App = () => {
             document.body.removeChild(script);
         }
     }, []);
-
-
+  
+    const userDetails = useAuthState();
+    console.log("app.tsx user details isAuth:")
+    console.log(userDetails.isAuth)
+    const isPrivatePage = true;
   return (
+    
     <div className="app">
+      <AuthProvider>
         <Router>
-        <Route path='/' exact component={Login}/>
         <Route path='/login' exact component={Login}/>
-        <Route path='/home' exact component={Home}/>
+        <Route path='/home' exact render={props => 
+          isPrivatePage && !Boolean(userDetails.isAuth) ? 
+          (<Redirect to = {{ pathname: "/login"}} />) : (<Redirect to = {{ pathname: "/home"}} />)
+        } />
+        <Route path='/' exact component={Login} />
+
+        {/* <Route path='/home' exact component={Home}/> */}
         <Route path='/admin' exact component={Admin}/>
         <Route path="/Department1NICU" exact component={DepartmentOne} />
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />
@@ -61,7 +73,9 @@ const App = () => {
         {/*<Route path="/posts/:id" exact component={Post} />*/}
         <Route component={NotFound} />
         </Router>
+      </AuthProvider>
     </div>
+    
   );
 }
 export default App;

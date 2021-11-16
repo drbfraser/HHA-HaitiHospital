@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ElementStyleProps } from 'constants/interfaces';
-import { logOutUser } from '../../actions/authActions'
+// import { logOutUser } from '../../actions/authActions';
+import { useAuthDispatch, logOutUser, useAuthState } from '../../Context'
 
 // import {stringify} from "querystring";
 // import * as Routing from 'constants/routing';
@@ -41,13 +42,16 @@ function HeaderView() {
 
 function GetUsername() {
     let username = localStorage.getItem('username')
-    let name = (username as any).replace(/['"]+/g, '')
+    // let name = (username as any).replace(/['"]+/g, '')
+    let name = "default";
     return <h6> { name }</h6>
 }
 
 const Header = (props: HeaderProps) => {
+    const dispatch = useAuthDispatch() // read dispatch method from context
+    const userDetails = useAuthState() //read user details from context
     const onLogOut = (event) => {
-        logOutUser();
+        logOutUser(dispatch);
     };
     return (
         <div className={'header '+ (props.classes || '')}>

@@ -1,12 +1,13 @@
 import { RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from 'constants/interfaces';
-import { loginUser } from "../../actions/authActions";
+// import { loginUser } from "../../actions/authActions";
 import { useFormik } from 'formik';
 import { loginSchema } from './validation';
 import React from 'react';
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
+import { loginUser, useAuthState, useAuthDispatch } from '../../Context'
 
 interface LoginProps extends ElementStyleProps {
 };
@@ -18,7 +19,10 @@ function setUsername(name: string) {
 }
 
 const Login = (props : LoginProps) => {
-    const [errorMessage, setErrorMessage] = React.useState("");
+    // const [errorMessage] = React.useState("");
+    const dispatch = useAuthDispatch();
+    // @ts-ignore
+    const { loading, errorMessage } = useAuthState();
 
     const formik = useFormik({
         initialValues: {
@@ -27,13 +31,25 @@ const Login = (props : LoginProps) => {
         },
         validationSchema: loginSchema,
         onSubmit: (values) => {
-            loginUser(values).then((res: any) => {
-                setUsername(res.data.user.name);
-                props.history.push("./home");
-            }).catch(err => {
-                setErrorMessage('Invalid login credentials');
-                console.log("error with logging in: ", err);
-            });
+            // loginUser(values).then((res: any) => {
+            //     setUsername(res.data.user.name);
+            //     props.history.push("./home");
+            // }).catch(err => {
+            //     setErrorMessage('Invalid login credentials');
+            //     console.log("error with logging in: ", err);
+            // });
+            try {
+                loginUser(dispatch, values).then((res: any) => {
+                    if (!res.success) return;
+                    setUsername(res.user.name);
+                    props.history.push('/home');
+                }).catch(error => {
+                    console.log("Error with logging in: ", error);
+                });
+                
+            } catch (error) {
+
+            }
         },
     });
 
@@ -46,7 +62,8 @@ const Login = (props : LoginProps) => {
                     ) : null}
                 {formik.touched.password && formik.errors.password ? (
                     <p className="error">{formik.errors.password}</p>
-                    ) : null}                    
+                    ) : null}
+                {errorMessage ? <div className="error"> {errorMessage} </div> : null}
                 <h4 className="text-center">Please sign in </h4>
                 <div className="form-floating">
                     <input
@@ -83,10 +100,9 @@ const Login = (props : LoginProps) => {
                 <button 
                     className="w-100 btn btn-lg btn-primary" 
                     type="submit"
+                    disabled={loading}
                 >Sign In</button>
                 <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
-
-                {errorMessage && <div className="error"> {errorMessage} </div>}
             </form>
         </div>
     );
