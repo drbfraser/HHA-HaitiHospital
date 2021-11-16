@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import { ElementStyleProps } from 'constants/interfaces';
@@ -9,20 +9,20 @@ import axios from 'axios'
 interface LeaderBoardMainProps extends ElementStyleProps {};
 
 export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
+    const [leaderboard, setLeaderboard] = useState(null);
     const urlLeaderboard = '/api/leaderboard';
     const getLeaderboard = async () => {
-      try {
-        const res = await axios.get(urlLeaderboard);
-        const leaderboard = res.data;
-        console.log(leaderboard);
-        
-      } catch (err) {
-        console.log(err);
-      }
+        try {
+            const res = await axios.get(urlLeaderboard);
+            setLeaderboard(res.data)
+            console.log(leaderboard);            
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     useEffect(() => {
-      getLeaderboard();
+        getLeaderboard();
     })
 
     return (
