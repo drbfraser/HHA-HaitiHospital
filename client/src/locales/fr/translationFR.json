@@ -103,5 +103,27 @@
   "caseStudyFormWasItDonatedOrPurchased":"A-t-il été donné ou acheté ?",
   "caseStudyFormWhatDoesThisNewEquipmentDo":"A quoi sert ce nouvel équipement ?",
 
-  "caseStudyFormOtherStoryCaseStudy":"Autre histoire Étude de cas"
+  "caseStudyFormOtherStoryCaseStudy":"Autre histoire Étude de cas",
+
+  "departmentPageNICU/PAED": "Département de NICU/PAED",
+  "departmentPageSubmitDate": "Soumettre des données",
+  "departmentPageBiomechanic": "Biomécanique",
+  "departmentPageReportID": "ID de rapport",
+  "departmentPageLastUpdatedOn": "Dernière mise à jour le",
+  "departmentPageLastUpdatedUserID": "Dernière mise à jour par l'ID utilisateur",
+  "departmentPageEdit": "Éditer",
+  "departmentPageDelete": "Effacer",
+  "departmentPageAccumulate": "Accumuler",
+
+  "departmentFormNICUForm": "Formulaire USIN/Pédiatrie",
+  "departmentFormForDate": "Pour : septembre 2021",
+  "departmentFormSteps": "Pas",
+  "departmentFormSubmit": "Soumettret",
+  "departmentFormPrevious": "Précédent",
+  "departmentFormNext": "Prochain",
+
+  "departmentFormRequiresValidNumber": "Nécessite un numéro valide",
+  "departmentFormNameAndValue": "Nom et valeur",
+  "departmentFormAdd": "Ajouter",
+  "departmentFormRemove": "Supprimer"
 }

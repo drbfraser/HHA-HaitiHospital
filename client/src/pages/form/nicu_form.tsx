@@ -5,9 +5,10 @@ import { useHistory } from "react-router-dom";
 import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import nicuJSON from './models/nicuModel.json';
+import nicuJSONFr from './models/nicuModelFr.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './nicu_form_styles.css'
-
+import { useTranslation } from "react-i18next";
 
 
 function DynamicForm() {
@@ -20,9 +21,18 @@ function DynamicForm() {
 
     const history = useHistory();
 
+    const {t, i18n} = useTranslation();
+
+
     useEffect(() => {
         const getData = async () => {
-            await setFormModel(nicuJSON[0]);
+            // await setFormModel(nicuJSON[0]);
+            if (i18n.language === 'fr') {
+                setFormModel(nicuJSONFr[0]);
+            } else {
+                setFormModel(nicuJSON[0]);
+            }
+
             setSectionState(0);
         }
 
@@ -232,12 +242,20 @@ function DynamicForm() {
             var text = (inputGroup.childNodes[1] as HTMLInputElement).value;
             if (text == "") {
                 (inputGroup.childNodes[1] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+                if (i18n.language === 'fr') {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Doit entrer une valeur pour ce champ";
+                } else {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+                }
                 return;
             }
 
             (inputGroup.childNodes[1] as HTMLInputElement).classList.remove("is-invalid");
-            (inputGroup.childNodes[1] as HTMLInputElement).classList.add("is-valid");
+            if (i18n.language === 'fr') {
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Doit entrer une valeur pour ce champ";
+            } else {
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+            }
             return;
         }
 
@@ -245,20 +263,32 @@ function DynamicForm() {
             var numberAsText = (inputGroup.childNodes[2] as HTMLInputElement).value;
             if (numberAsText == "") {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+                if (i18n.language === 'fr') {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Doit entrer une valeur pour ce champ";
+                } else {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+                }
                 return;
             }
 
             var number = Number((inputGroup.childNodes[2] as HTMLInputElement).value);
             if (number < 0) {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Positive numbers only for this field";
+                if (i18n.language === 'fr') {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Nombres positifs uniquement pour ce champ";
+                } else {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Positive numbers only for this field";
+                }
                 return;
             }
 
             if (number % 1 != 0) {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Integers only for this field";
+                if (i18n.language === 'fr') {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Entiers uniquement pour ce champ";
+                } else {
+                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Integers only for this field";
+                }
                 return;
             }
 
@@ -296,7 +326,12 @@ function DynamicForm() {
         }
         if (total !== total2) {
             (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
+            if (i18n.language === 'fr') {
+                (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Ne correspond pas au total";
+            } else {
+                (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
+            }
+
             for (var i = a; i <= b; i++) {
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
                 (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = "";
@@ -330,7 +365,11 @@ function DynamicForm() {
 
             for (var i = a; i <= b - 1; i++) {
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                var errorMsg = i == a ? "Does not add up to total" : "";
+                if (i18n.language === 'fr') {
+                    var errorMsg = i == a ? "Ne correspond pas au total" : "";
+                } else {
+                    var errorMsg = i == a ? "Does not add up to total" : "";
+                }
                 (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = errorMsg;
             }
 
@@ -364,20 +403,32 @@ function DynamicForm() {
         var numberAsText = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value;
         if (numberAsText == "") {
             (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Must enter a value";
+            if (i18n.language === 'fr') {
+                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Doit entrer une valeur";
+            } else {
+                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Must enter a value";
+            }
             return;
         }
 
         var number = Number((document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value);
         if (number < 0) {
             (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Positive numbers only";
+            if (i18n.language === 'fr') {
+                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Nombres positifs uniquement";
+            } else {
+                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Positive numbers only";
+            }
             return;
         }
 
         if (number % 1 != 0) {
             (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Integers only";
+            if (i18n.language === 'fr') {
+                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Entiers uniquement";
+            } else {
+                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Integers only";
+            }
             return;
         }
 
@@ -467,6 +518,7 @@ function DynamicForm() {
     let sectionCount = 0;
     document.body.classList.add("bg-light");
 
+
     return (
         <div className="nicu_form">
             <SideBar/>
@@ -475,15 +527,15 @@ function DynamicForm() {
                 <Header/>
 
                 <div className="py-3 text-start">
-                    <h2>NICU/Paediatrics Form</h2>
-                    <p className="lead">For: September 2021</p>
+                    <h2>{t("departmentFormNICUForm")}</h2>
+                    <p className="lead">{t("departmentFormForDate")}</p>
                 </div>
 
                 <div className="row g-3">
                     <div className="col-sm-4 col-md-4 col-lg-4">
 
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
-                            <span className="text-primary">Steps</span>
+                            <span className="text-primary">{t("departmentFormSteps")}</span>
                         </h4>
 
                         <ul className="list-group mb-3">
@@ -505,8 +557,10 @@ function DynamicForm() {
                         </ul>
 
 
-                        <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
+                        <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>{t("departmentFormSubmit")}</button>
                     </div>
+
+
                     <div className="col-sm-7 col-md-7 col-lg-7">
 
                         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
@@ -536,7 +590,7 @@ function DynamicForm() {
                                                                onBlur={() => inputValidation(index)}
                                                         />
                                                         <div className="invalid-feedback">
-                                                            Requires a valid number
+                                                            {t("departmentFormRequiresValidNumber")}
                                                         </div>
                                                     </div>
                                                 </>
@@ -550,14 +604,14 @@ function DynamicForm() {
                                                         <>
                                                             <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
                                                                 <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>{t("departmentFormAdd")}</button>
                                                             </div>
                                                             <div id={"inputs" + index} >
                                                                 {formValuesComeFrom.map((element, index2) => (
                                                                     <div className="row g-3 mb-1" key={index}>
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
                                                                             <div className="input-group" id={"cf" + index + index2}>
-                                                                                <span className="input-group-text" id="">Name and value</span>
+                                                                                <span className="input-group-text" id="">{t("departmentFormNameAndValue")}</span>
                                                                                 <input className="form-control" type="text" name="nameOfDepartment"
                                                                                        value={element.name || ""}
                                                                                        onChange={e => handleChange(field.field_id, index2, e, 0)}
@@ -569,12 +623,12 @@ function DynamicForm() {
                                                                                        onBlur={() => arrayInputValidation("cf", index, index2, "number")}
                                                                                 />
                                                                                 <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
+                                                                                    {t("departmentFormRequiresValidNumber")}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
+                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>{t("departmentFormRemove")}</button>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -587,14 +641,14 @@ function DynamicForm() {
                                                         <>
                                                             <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
                                                                 <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>{t("departmentFormAdd")}</button>
                                                             </div>
                                                             <div id={"inputs" + index} >
                                                                 {formValuesAdCondition.map((element, index2) => (
                                                                     <div className="row g-3 mb-1" key={index}>
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
                                                                             <div className="input-group" id={"ac" + index + index2}>
-                                                                                <span className="input-group-text" id="">Name and value</span>
+                                                                                <span className="input-group-text" id="">{t("departmentFormNameAndValue")}</span>
                                                                                 <input className="form-control" type="text" name="nameOfDepartment"
                                                                                        value={element.name || ""}
                                                                                        onChange={e => handleChange(field.field_id, index2, e, 0)}
@@ -606,12 +660,12 @@ function DynamicForm() {
                                                                                        onBlur={() => arrayInputValidation("ac", index, index2, "number")}
                                                                                 />
                                                                                 <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
+                                                                                    {t("departmentFormRequiresValidNumber")}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
+                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>{t("departmentFormRemove")}</button>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -624,14 +678,14 @@ function DynamicForm() {
                                                         <>
                                                             <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
                                                                 <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>{t("departmentFormAdd")}</button>
                                                             </div>
                                                             <div id={"inputs" + index} >
                                                                 {formValuesOutCondition.map((element, index2) => (
                                                                     <div className="row g-3 mb-1">
                                                                         <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
                                                                             <div className="input-group" id={"oc" + index + index2}>
-                                                                                <span className="input-group-text">Name and value</span>
+                                                                                <span className="input-group-text">{t("departmentFormNameAndValue")}</span>
                                                                                 <input className="form-control" type="text" name="nameOfDepartment"
                                                                                        value={element.name || ""}
                                                                                        onChange={e => handleChange(field.field_id, index2, e, 0)}
@@ -643,12 +697,12 @@ function DynamicForm() {
                                                                                        onBlur={() => arrayInputValidation("oc", index, index2, "number")}
                                                                                 />
                                                                                 <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
+                                                                                    {t("departmentFormRequiresValidNumber")}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
+                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>{t("departmentFormRemove")}</button>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -673,8 +727,8 @@ function DynamicForm() {
                         </form>
 
                         <div className="btn-group d-flex">
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>{t("departmentFormPrevious")}</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>{t("departmentFormPrevious")}</button>
                         </div>
 
                         <button

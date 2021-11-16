@@ -10,9 +10,9 @@ import "./case_study_form.css";
 import {useTranslation} from "react-i18next";
 
 interface CaseStudyMainProps extends ElementStyleProps {
-};
+}
 
-interface CaseStudyMainProps extends RouteComponentProps {};
+interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
     const [formOption, setformOption] = useState("");
@@ -85,23 +85,23 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <div className="form-row">
                     <div className="col-md-8">
                         <label htmlFor="Patient Name">{t("caseStudyFormPatientName")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Patient Name" required {...register("patientStory.patientsName", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Patient Name" required {...register("patientStory.patientsName", {required: true})}/>
                     </div>
                      <div className="col-md-4">
                         <label htmlFor="Patient Age">{t("caseStudyFormPatientAge")}</label>
-                        <input className="form-control mb-2 mt-0" type="number" id="Patient Age" required {...register("patientStory.patientsAge", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="number" id="Patient Age" required {...register("patientStory.patientsAge", {required: true})}/>
                      </div>
                 </div>
                 <label htmlFor="Patient From">{t("caseStudyFormWherePatientFrom")}</label>
-                <input className="form-control mb-2 mt-0" type="text" id="Patient From" required {...register("patientStory.whereIsThePatientFrom", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="Patient From" required {...register("patientStory.whereIsThePatientFrom", {required: true})}/>
                 <label htmlFor="Patient Choose">{t("caseStudyFormWhyPatientChooseHCBH")}</label>
-                <input className="form-control mb-2 mt-0" type="text" id="Patient Choose" required {...register("patientStory.whyComeToHCBH", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="Patient Choose" required {...register("patientStory.whyComeToHCBH", {required: true})}/>
                 <label htmlFor="How long">{t("caseStudyFormHowLongAtHCBH")}</label>
-                <input className="form-control mb-2 mt-0" type="text" id="How long" required {...register("patientStory.howLongWereTheyAtHCBHinDays", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="How long" required {...register("patientStory.howLongWereTheyAtHCBHinDays", {required: true})}/>
                 <label htmlFor="Diagnosis">{t("caseStudyFormWhatWasTheirDiagnosis")}</label>
-                <textarea className="form-control mb-2 mt-0" id="Diagnosis" required {...register("patientStory.diagnosis", {required: true})}></textarea>
+                <textarea className="form-control mb-2 mt-0" id="Diagnosis" required {...register("patientStory.diagnosis", {required: true})}/>
                 <label htmlFor="Case Study 1">{t("caseStudyFormCaseStudy/Story")}</label>
-                <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
+                <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}/>
                 <label className="form-label">{t("caseStudyFormUploadImage")}</label>
 
                  <div>
@@ -111,7 +111,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 {/*<input type="file" accept="image/*" className="form-control" id="customFile" style={{visibility:"hidden"}}/>*/}
 
                  <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
+                <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required/>
                     <label className="form-check-label" htmlFor="invalidCheck1">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
@@ -126,21 +126,21 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <div className="form-row">
                     <div className="col-md-6">
                         <label htmlFor="Staff Name">{t("caseStudyFormStaffName")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Staff Name" required {...register2("staffRecognition.staffName", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Staff Name" required {...register2("staffRecognition.staffName", {required: true})}/>
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="Role">{t("caseStudyFormRoleJobTitle")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Role" required {...register2("staffRecognition.jobTitle", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Role" required {...register2("staffRecognition.jobTitle", {required: true})}/>
                     </div>
                 </div>
                 <label htmlFor="Which dept work">{t("caseStudyFormWhichDepartmentWorkIn")}</label>
-                <input className="form-control mb-2 mt-0" type="text" id="Which dept work" required {...register2("staffRecognition.department", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="Which dept work" required {...register2("staffRecognition.department", {required: true})}/>
                 <label htmlFor="How long working">{t("caseStudyFormHowLongHaveBeenWorkingHCBH")}</label>
-                <input className="form-control mb-2 mt-0" type="text" id="How long working" required {...register2("staffRecognition.howManyMonthsWorkingAtHCBH", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="How long working" required {...register2("staffRecognition.howManyMonthsWorkingAtHCBH", {required: true})}/>
                 <label htmlFor="What enjoy">{t("caseStudyFormWhatEnjoyTheMostAtHCBH")}</label>
-                <textarea className="form-control mb-2 mt-0" id="What enjoy" required {...register2("staffRecognition.mostEnjoy", {required: true})}></textarea>
+                <textarea className="form-control mb-2 mt-0" id="What enjoy" required {...register2("staffRecognition.mostEnjoy", {required: true})}/>
                 <label htmlFor="Case Study 2">{t("caseStudyFormCaseStudy/Story")}</label>
-                <textarea className="form-control mb-2 mt-0" id="Case Study 2" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
+                <textarea className="form-control mb-2 mt-0" id="Case Study 2" required {...register2("staffRecognition.caseStudyStory", {required: true})}/>
                 <label className="form-label">{t("caseStudyFormUploadImage")}</label>
 
                  <div>
@@ -150,7 +150,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
 
                 <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="invalidCheck2" required></input>
+                <input className="form-check-input" type="checkbox" value="" id="invalidCheck2" required/>
                     <label className="form-check-label" htmlFor="invalidCheck2">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
@@ -165,21 +165,21 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <div className="form-row">
                     <div className="col-md-6">
                         <label htmlFor="Train Date">{t("caseStudyFormTrainingDate")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Train Date" required {...register3("trainingSession.trainingDate", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Train Date" required {...register3("trainingSession.trainingDate", {required: true})}/>
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="Train On">{t("caseStudyFormWhatWasTrainingOn")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Train On" required {...register3("trainingSession.trainingOn", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Train On" required {...register3("trainingSession.trainingOn", {required: true})}/>
                     </div>
                 </div>
                 <label htmlFor="Train Who">{t("caseStudyFormWhoConductedTraining")}</label>
-                <input className="form-control" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}></input>
+                <input className="form-control" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}/>
                 <label htmlFor="Who attended">{t("caseStudyFormWhoAttendedTraining")}</label>
-                <textarea className="form-control" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
+                <textarea className="form-control" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}/>
                 <label htmlFor="How train">{t("caseStudyFormHowWillTrainingBenefitHCBH")}</label>
-                <textarea className="form-control" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
+                <textarea className="form-control" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}/>
                 <label htmlFor="Case Study 3">{t("caseStudyFormCaseStudy/Story")}</label>
-                <textarea className="form-control" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
+                <textarea className="form-control" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}/>
                 <label className="form-label">{t("caseStudyFormUploadImage")}</label>
 
                  <div>
@@ -189,7 +189,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
 
                 <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="invalidCheck3" required></input>
+                <input className="form-check-input" type="checkbox" value="" id="invalidCheck3" required/>
                     <label className="form-check-label" htmlFor="invalidCheck3">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
@@ -204,27 +204,27 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <div className="form-row">
                     <div className="col-md-6">
                         <label htmlFor="What equipment">{t("caseStudyFormWhatEquipmentWasReceived")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="What equipment" required {...register4("equipmentReceived.equipmentReceived", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="What equipment" required {...register4("equipmentReceived.equipmentReceived", {required: true})}/>
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="Which dept receive">{t("caseStudyFormWhichDepartmentReceivedIt")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Which dept receive" required {...register4("equipmentReceived.departmentIdReceived", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Which dept receive" required {...register4("equipmentReceived.departmentIdReceived", {required: true})}/>
                     </div>
                 </div>
                  <div className="form-row">
                     <div className="col-md-6">
                         <label htmlFor="Equipment from">{t("caseStudyFormWhoWasEquipmentFrom")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Equipment from" required {...register4("equipmentReceived.whoSentEquipment", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Equipment from" required {...register4("equipmentReceived.whoSentEquipment", {required: true})}/>
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="Donate/Purchase">{t("caseStudyFormWasItDonatedOrPurchased")}</label>
-                        <input className="form-control mb-2 mt-0" type="text" id="Donate/Purchase" required {...register4("equipmentReceived.purchasedOrDonated", {required: true})}></input>
+                        <input className="form-control mb-2 mt-0" type="text" id="Donate/Purchase" required {...register4("equipmentReceived.purchasedOrDonated", {required: true})}/>
                     </div>
                 </div>
                 <label htmlFor="Equipment Purpose">{t("caseStudyFormWhatDoesThisNewEquipmentDo")}</label>
-                <textarea className="form-control" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
+                <textarea className="form-control" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}/>
                 <label htmlFor="Case Study 4">{t("caseStudyFormCaseStudy/Story")}</label>
-                <textarea className="form-control" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
+                <textarea className="form-control" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}/>
                 <label className="form-label">{t("caseStudyFormUploadImage")}</label>
 
                  <div>
@@ -234,7 +234,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
 
                 <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="invalidCheck4" required></input>
+                    <input className="form-check-input" type="checkbox" value="" id="invalidCheck4" required/>
                     <label className="form-check-label" htmlFor="invalidCheck4">{t("caseStudyFormPermissionToShare")}</label>
                 </div>
                 <div>
@@ -248,7 +248,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 <label className = "font-weight-bold">{t("caseStudyFormOtherStoryCaseStudy")}</label>
                 <div>
                     <label htmlFor="Case Study 5">{t("caseStudyFormCaseStudy/Story")}</label>
-                    <textarea className="form-control mb-2 mt-0" placeholder={t("caseStudyFormCaseStudy/Story")} id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
+                    <textarea className="form-control mb-2 mt-0" placeholder={t("caseStudyFormCaseStudy/Story")} id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}/>
                     <label className="form-label">{t("caseStudyFormUploadImage")}</label>
 
                     <div>
@@ -258,7 +258,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                     {/*<input type="file" accept="image/*" className="form-control" id="customFile" />*/}
 
                     <div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
+                        <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required/>
                         <label className="form-check-label" htmlFor="invalidCheck5">{t("caseStudyFormPermissionToShare")}</label>
                     </div>
                 </div>

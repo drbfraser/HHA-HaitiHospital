@@ -5,6 +5,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from "components/header/header";
 import DepartmentReports from 'components/department_reports/department_reports';
 import './department_1_nicu.css'
+import {useTranslation} from "react-i18next";
 
 interface DepartmentProps extends ElementStyleProps {
 };
@@ -14,48 +15,51 @@ interface DepartmentProps extends RouteComponentProps {
 
 
 export const DepartmentOne = (props : DepartmentProps) => {
-  return (
-    <div className={'department-one '+ props.classes}>
-        <SideBar/>
-        <main className="container">
-            <Header/>
 
-            <div className="mt-3">
+    const {t, i18n} = useTranslation();
 
-                {/* Department Title */ }
-                <section>
-                    <h1 className='text-start'>Department of NICU/PAED</h1>
-                </section>
+    return (
+        <div className={'department-one '+ props.classes}>
+            <SideBar/>
+            <main className="container">
+                <Header/>
 
-                {/* Nav buttons */}
-                <section>
-                    <div className="row my-2 justify-items-center">
+                <div className="mt-3">
 
-                        <div className='col-sm-3'>
-                            <Link to={"/NICUForm"}>
-                                <button className=" btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">Submit Data</div>
-                                </button>
-                            </Link>
+                    {/* Department Title */ }
+                    <section>
+                        <h1 className='text-start'>{t("departmentPageNICU/PAED")}</h1>
+                    </section>
+
+                    {/* Nav buttons */}
+                    <section>
+                        <div className="row my-2 justify-items-center">
+
+                            <div className='col-sm-6 col-md-6 col-lg-6'>
+                                <Link to={"/NICUForm"}>
+                                    <button className=" btn btn-dark btn-sm rounded-bill">
+                                        <div className="lead">{t("departmentPageSubmitDate")}</div>
+                                    </button>
+                                </Link>
+                            </div>
+
+                            <div className='col-sm-6 col-md-6 col-lg-6'>
+                                <Link to={"#"}>
+                                    <button className="btn btn-dark btn-sm rounded-bill">
+                                        <div className="lead">{t("departmentPageBiomechanic")}</div>
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
+                    </section>
 
-                        <div className='col-sm-3'>
-                            <Link to={"#"}>
-                                <button className="btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">Biomechanic</div>
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
-                </section>
+                    {/* Department Report Summary */}
+                    <section>
+                        <DepartmentReports department={"NICU/PAED"}/>
+                    </section>
+                </div>
+            </main>
 
-                {/* Department Report Summary */}
-                <section>
-                    <DepartmentReports department={"NICU/PAED"}/>
-                </section>
-            </div>
-        </main>
-
-    </div>
-  );
+        </div>
+    );
 };

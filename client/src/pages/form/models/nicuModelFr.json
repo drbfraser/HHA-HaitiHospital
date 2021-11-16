@@ -1,0 +1,922 @@
+[
+  {
+    "fields": [
+
+      {
+        "field_id" : "",
+        "field_label": "MSPP requis",
+        "field_type": "section",
+        "field_value": 26,
+        "field_level": 0
+      },
+
+      {
+        "field_id" : "bedsAvailable",
+        "field_label": "Lits disponibles",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "bedDays",
+        "field_label": "Jours-lit",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "bedDays",
+        "field_label": "Jours-patient",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "hospitalized.total",
+        "field_label": "Hospitalisés",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "hospitalized.nicu",
+        "field_label": "Nombre d'hospitalisations en NICU",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "hospitalized.paeds",
+        "field_label": "Nombre d'hospitalisations en Pédiatrie",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "dischargedAlive.total",
+        "field_label": "Exéatés vivants:",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "dischargedAlive.nicu",
+        "field_label": "Nombre de sorties vivantes de l'NICU",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "dischargedAlive.paeds",
+        "field_label": "Nombre de sorties vivantes en pédiatrie",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "diedBefore48hr.total",
+        "field_label": "Décès avant 48 heures",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "diedBefore48hr.nicu",
+        "field_label": "Nombre de personnes décédées AVANT 48 heures à l'USIN",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "diedBefore48hr.paeds",
+        "field_label": "Nombre de personnes décédées AVANT 48h en pédiatrie",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "diedAfter48hr.total",
+        "field_label": "Décès après 48  heures",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "diedAfter48hr.nicu",
+        "field_label": "Nombre de personnes décédées APRÈS 48 heures à l'NICU",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "diedAfter48hr.paeds",
+        "field_label": "Nombre de personnes décédées APRÈS 48 heures dans NPaeds",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "daysHospitalized",
+        "field_label": "Jours d'hospitalisation",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "referrals",
+        "field_label": "Référés",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "transfers",
+        "field_label": "Transférés",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "selfDischarge.total",
+        "field_label": "PSA",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "selfDischarge.cannotAfford",
+        "field_label": "Finances : partez car vous ne pouvez pas vous permettre des soins",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "selfDischarge.avoidedPaying",
+        "field_label": "Finances : à gauche pour éviter de payer",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "selfDischarge.religiousCultural",
+        "field_label": "Religieux/culturel",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "selfDischarge.personalFamily",
+        "field_label": "Personnel/Famille",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "selfDischarge.other",
+        "field_label": "Autre raison",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "stayedInWard",
+        "field_label": "Restés en salle",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {
+        "field_id" : "",
+        "field_label": "Admissions",
+        "field_type": "section",
+        "field_level": 0,
+        "field_value": 39
+      },
+
+      {
+        "field_id" : "admissions.total",
+        "field_label": "Nombre total d'admissions",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 1
+      },
+
+      {
+        "field_id" : "",
+        "field_label": "D'où viennent les patients ?",
+        "field_type": "subsection",
+        "field_level": 1
+      },
+
+      {
+        "field_id" : "admissions.comeFrom.quarterMorin",
+        "field_label": "Quartier Morin",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.comeFrom.capHaitian",
+        "field_label": "Cap Haïtien",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.comeFrom.departmentNord",
+        "field_label": "Département du Nord",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.comeFrom.otherDepartments",
+        "field_label": "Si autre, précisez",
+        "field_type": "array",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "",
+        "field_label": "Âge",
+        "field_type": "subsection",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.extremelyPreterm",
+        "field_label": "Extrêmement prématuré (moins de 28 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.veryPreterm",
+        "field_label": "Très prématuré (28 à 32 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.moderateToLatePreterm",
+        "field_label": "Prématurité modérée à tardive (32 à 37 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.fullTerm",
+        "field_label": "Terme complet (37 semaines et plus)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.olderThanNeonate",
+        "field_label": "Plus âgé que le nouveau-né (> 4 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.age4To5Weeks",
+        "field_label": "Âge 4-5 semaines",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.age6To11Weeks",
+        "field_label": "Âge 6-11 semaines",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.age.age12To18Weeks",
+        "field_label": "Âge 12-18 semaines",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "",
+        "field_label": "Genre",
+        "field_type": "subsection",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.gender.male",
+        "field_label": "Mâle",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.gender.female",
+        "field_label": "Femelle",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "",
+        "field_label": "État principal",
+        "field_type": "subsection",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.respiratoryArrest",
+        "field_label": "Arrêt respiratoire",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.traumaticInjury",
+        "field_label": "Blessure traumatique",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.septicShock",
+        "field_label": "Choc septique",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.hypovolemicShock",
+        "field_label": "Choc hypovolémique",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.seizuresOrConvulsions",
+        "field_label": "Convulsions ou convulsions",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.poisoning",
+        "field_label": "Empoisonnement",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.alteredMentalStatus",
+        "field_label": "État mental altéré",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.gastroenteritis",
+        "field_label": "Gastro-entérite",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.hemorrhage",
+        "field_label": "Hémorragie",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.hypothermia",
+        "field_label": "Hypothermie",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.cardiacCongenitalAnomaly",
+        "field_label": "Anomalie cardiaque congénitale",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.otherCongenitalAnomaly",
+        "field_label": "Autre Anomalie Congénitale",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.malnutrition",
+        "field_label": "Malnutrition",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.meningitis",
+        "field_label": "Méningite",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.communityAcquiredPneumonia",
+        "field_label": "Pneumonie acquise dans la communauté",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.aspirationPneumonia",
+        "field_label": "Pneumonie par aspiration",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.moderatePrematurity",
+        "field_label": "Prématurité modérée",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.severePrematurity",
+        "field_label": "Prématurité sévère",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "admissions.mainCondition.otherMedical",
+        "field_label": "Autre Médical",
+        "field_type": "array",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {
+        "field_id" : "",
+        "field_label": "Patients externes",
+        "field_type": "section",
+        "field_level": 0,
+        "field_value": 34
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.total",
+        "field_label": "Nombre total de patients externes",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "",
+        "field_label": "Age",
+        "field_type": "sous-section",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.extremelyPreterm",
+        "field_label": "Extrêmement prématuré (moins de 28 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.veryPreterm",
+        "field_label": "Très prématuré (28 à 32 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.moderateToLatePreterm",
+        "field_label": "Prématurité modérée à tardive (32 à 37 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.fullTerm",
+        "field_label": "Terme complet (37 semaines et plus)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.olderThanNeonate",
+        "field_label": "Plus âgé que le nouveau-né (> 4 semaines)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.age4To5Weeks",
+        "field_label": "Âge 4-5 semaines",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.age6To11Weeks",
+        "field_label": "Âge 6-11 semaines",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.age.age12To18Weeks",
+        "field_label": "Âge 12-18 semainess",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "",
+        "field_label": "Genre",
+        "field_type": "subsection",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.gender.male",
+        "field_label": "Mâle",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.gender.female",
+        "field_label": "Femelle",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "",
+        "field_label": "État principal",
+        "field_type": "subsection",
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.respiratoryArrest",
+        "field_label": "Arrêt respiratoire",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.traumaticInjury",
+        "field_label": "Blessure traumatique",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.septicShock",
+        "field_label": "Choc septique",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.hypovolemicShock",
+        "field_label": "Choc hypovolémique",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.seizuresOrConvulsions",
+        "field_label": "Convulsions ou convulsions",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.poisoning",
+        "field_label": "Empoisonnement",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.alteredMentalStatus",
+        "field_label": "État mental altéré",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.gastroenteritis",
+        "field_label": "Gastro-entérite",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.hemorrhage",
+        "field_label": "Hémorragie",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.hypothermia",
+        "field_label": "Hypothermie",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.cardiacCongenitalAnomaly",
+        "field_label": "Anomalie cardiaque congénitale",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.otherCongenitalAnomaly",
+        "field_label": "Autre Anomalie Congénitale",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.malnutrition",
+        "field_label": "Malnutrition",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.meningitis",
+        "field_label": "Méningite",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.communityAcquiredPneumonia",
+        "field_label": "Pneumonie acquise dans la communauté",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.aspirationPneumonia",
+        "field_label": "Pneumonie par aspiration",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.moderatePrematurity",
+        "field_label": "Prématurité modérée",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.severePrematurity",
+        "field_label": "Prématurité sévère",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_required": 0
+      },
+
+      {
+        "field_id" : "numberOfOutPatients.mainCondition.otherMedical",
+        "field_label": "Autre Médical",
+        "field_type": "array",
+        "field_level": 1,
+        "field_required": 0
+      }
+
+
+    ]
+  }
+]

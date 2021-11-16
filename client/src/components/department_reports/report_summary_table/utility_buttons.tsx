@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { TickObserver, TickList } from 'components/department_reports/report_summary_table/tick_list';
 
 import {ElementStyleProps, ReportProps} from 'constants/interfaces';
+import {useTranslation} from "react-i18next";
 
 interface UtilityButtonsProps extends ElementStyleProps {
   ticks: TickList;
@@ -13,35 +14,35 @@ interface UtilityButtonsProps extends ElementStyleProps {
 
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
-  
-  const [showButtons, setShowButtons] = useState<boolean>(false);
+    const [showButtons, setShowButtons] = useState<boolean>(false);
 
-  let tickObserver: TickObserver = (tickList: TickList) => {
-    console.log("Del button notified ", tickList.isNoTicked());
+    let tickObserver: TickObserver = (tickList: TickList) => {
+        console.log("Del button notified ", tickList.isNoTicked());
 
     if (tickList.isNoTicked() === true)
-      setShowButtons(false);
+        setShowButtons(false);
     else
-      setShowButtons(true);  
-  };
+        setShowButtons(true);
+    };
 
-  useEffect(() => {
-    props.ticks.registerObserver(tickObserver);
-    console.log("delete button registered");
+    useEffect(() => {
+        props.ticks.registerObserver(tickObserver);
+        console.log("delete button registered");
 
-    return function unregisterObserver() {
-      props.ticks.unregisterObserver(tickObserver);
-    }
+        return function unregisterObserver() {
+            props.ticks.unregisterObserver(tickObserver);
+        }
+    }, [])
 
-  }, []) 
+    const {t, i18n} = useTranslation();
 
-  return (
+    return (
     <div>
-      {/* {(showButtons === true)? */}
-      {/* {(props.ticks.isNoTicked() === false) ? */}
+        {/* {(showButtons === true)? */}
+        {/* {(props.ticks.isNoTicked() === false) ? */}
         <div className="row justify-content-end">
             <div className="col-auto">
-            <button 
+            <button
             className=""
             onClick = {() => {
                 props.notifyTable();
@@ -49,21 +50,21 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
                 // console.log(props.ticks);
             }}
             >
-                Delete
+                {t("departmentPageDelete")}
             </button>
             </div>
 
             <div className="col-auto">
-            <button className="">Accumulate</button>
+            <button className="">{t("departmentPageAccumulate")}</button>
             </div>
         </div>
         :
         <div>
 
         </div>
-      {/* } */}
+        {/* } */}
     </div>
-  );
+    );
 }
 
 export default UtilityButtons;

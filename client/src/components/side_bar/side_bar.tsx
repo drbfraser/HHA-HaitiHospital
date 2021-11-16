@@ -4,7 +4,7 @@ import HhaLogo from 'components/hha_logo/hha_logo';
 import { ElementStyleProps } from "../../constants/interfaces";
 import './side_bar.css';
 
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import i18n from "i18next";
 
 // import { SidebarData } from './side_bar_data';
@@ -14,7 +14,7 @@ import i18n from "i18next";
 
 interface SidebarProps extends ElementStyleProps {}
 
-const changeLanguage = (ln) => {
+export const changeLanguage = (ln) => {
     return ()=> {
         console.log('Language changed to ${ln}');
         i18n.changeLanguage(ln)
@@ -125,7 +125,7 @@ const Sidebar = (props: SidebarProps) => {
                         </button>
                     </li>
                     <li>
-                        <button className="nav-link link-light"
+                        <button className="nav-link link-light" id="fc"
                                 onClick={changeLanguage("fr")}>
                             <i className="bi bi-gear me-2"/>
                             <span className="text text-light">{t("sidebarFrench")}</span>

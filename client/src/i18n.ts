@@ -4,13 +4,18 @@ import { initReactI18next } from 'react-i18next';
 import translationEN from './locales/en/translationEN.json';
 import translationFR from './locales/fr/translationFR.json';
 
+import nicuModelEn from './pages/form/models/nicuModel.json'
+import nicuModelFr from './pages/form/models/nicuModelFr.json'
+
 
 const resources = {
     en: {
-        translation: translationEN
+        translation: translationEN,
+        formTranslation: nicuModelEn
     },
     fr: {
-        translation: translationFR
+        translation: translationFR,
+        formTranslation: nicuModelFr
     }
 };
 
