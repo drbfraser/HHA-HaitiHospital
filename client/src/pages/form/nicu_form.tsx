@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import nicuJSON from './models/nicuModel.json';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './nicu_form_styles.css'
 
 
@@ -461,7 +460,7 @@ function DynamicForm() {
             total2 += Number(inputElement.value);
             isSeriesValid = isValid(i) && isSeriesValid;
         }
-        
+
         if (isSeriesValid) {
             if (total !== total2) {
                 (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
@@ -542,6 +541,8 @@ function DynamicForm() {
                                     for (let i = fieldCount + 1; i <= fieldCount + fields.length; i++) {
                                         var field = fields[i - fieldCount - 1];
 
+                                        var indentClass = field.field_level === 1 ? " ps-5" : "";
+
                                         // render the subsection title
                                         if (field.subsection_label) {
                                             ret.push(<h6 id={"subsection" + i} className={field.field_level === 1 ? "px-5 fw-bold" : "fw-bold"}>{field.subsection_label}</h6>)
@@ -578,33 +579,41 @@ function DynamicForm() {
                                             var formId = field.field_id;
                                             ret.push(
                                                 <>
-                                                    <div id={"input" + i} className={field.field_level === 1 ? "ps-5" : ""}>
-                                                        <span className="align-middle me-2">{i}. {field.field_label}</span>
+                                                    <div id={"input" + i} className={""+indentClass}>
+                                                        <span className="me-2">{i}. {field.field_label}</span>
                                                         <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>Add</button>
                                                     </div>
+
                                                     <div id={"inputs" + i} >
                                                         {formValues.map((element, index2) => (
-                                                            <div className="row g-3 mb-1">
-                                                                <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                    <div className="input-group" id={"cf" + i + index2}>
-                                                                        <span className="input-group-text" id="">Name and value</span>
-                                                                        <input className="form-control" type="text" name="nameOfDepartment"
-                                                                            value={element.name || ""}
-                                                                            onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                            onBlur={() => arrayInputValidation("cf", i, index2, "text")}
-                                                                        />
-                                                                        <input className="form-control" type="text" name="numberOfPatients"
-                                                                            value={element.value || ""}
-                                                                            onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                            onBlur={() => arrayInputValidation("cf", i, index2, "number")}
-                                                                        />
-                                                                        <div className="invalid-feedback text-end">
-                                                                            Requires a valid number
-                                                                        </div>
+                                                            <div className={"row g-2 mb-1 align-items-center"+indentClass}>
+                                                                <div className="col-sm-7">
+                                                                    <label className="visually-hidden" htmlFor="nameOfDepartment">Name</label>
+                                                                    <input className="form-control" type="text" id="nameOfDepartment"
+                                                                        value={element.name || ""}
+                                                                        placeholder="Name"
+                                                                        onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                        onBlur={() => arrayInputValidation("cf", i, index2, "text")}
+                                                                    />
+                                                                    <div className="invalid-feedback text-end">
+                                                                        Requires a valid number
                                                                     </div>
                                                                 </div>
-                                                                <div className="col-sm-2">
-                                                                    <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
+                                                                <div className="col-sm-3">
+                                                                    <label className="visually-hidden" htmlFor="numberOfPatients">#</label>
+                                                                    <input className="form-control" type="text" id="numberOfPatients"
+                                                                        value={element.value || ""}
+                                                                        placeholder="#"
+                                                                        onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                        onBlur={() => arrayInputValidation("cf", i, index2, "number")}
+                                                                    />
+                                                                    <div className="invalid-feedback text-end">
+                                                                        Requires a valid number
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="col-sm-2 d-grid">
+                                                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -760,6 +769,10 @@ function DynamicForm() {
                     </div>
                 </div>
             </main>
+
+            <footer className="my-5 pt-5 text-muted text-center text-small">
+
+            </footer>
         </div>
     )
 }
