@@ -1,13 +1,30 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import { ElementStyleProps } from 'constants/interfaces';
 import './leader_board_main.css'
 import EOM from '../../img/case1.jpg'
+import axios from 'axios'
 
 interface LeaderBoardMainProps extends ElementStyleProps {};
 
 export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
+    const urlLeaderboard = '/api/leaderboard';
+    const getLeaderboard = async () => {
+      try {
+        const res = await axios.get(urlLeaderboard);
+        const leaderboard = res.data;
+        console.log(leaderboard);
+        
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    useEffect(() => {
+      getLeaderboard();
+    })
+
     return (
         <div className={'leader-board-main '+(props.classes||'')}>
             <SideBar/>
