@@ -341,20 +341,17 @@ function DynamicForm() {
         makeValidity(inputElement, true, "");
     }
 
-    function isSeriesComplete(start: number, a: number, b: number) {
-        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
-        var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
-
-        for (var i = a; i <= b; i++) {
-            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
-            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid"))&& isSeriesComplete;
-        }
-
-        return isSeriesComplete;
-    }
+    
 
     function totalValidation(start: number, a: number, b: number) {
-        if (!isSeriesComplete(start, a, b)) return;
+        // check if the entire series in total is all filled out 
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
+        for (var i = a; i <= b; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
+        }
+        if (!isSeriesComplete) return;
 
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var total = Number(totalElement.value);
@@ -414,6 +411,20 @@ function DynamicForm() {
     }
 
     function arrayTotalValidation(start: number, a: number, b: number) {
+        // check if the entire series in total is all filled out 
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
+        for (var i = a; i <= b-1; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
+        }
+        var arrayElement = document.getElementById("inputs" + b)?.childNodes;
+        for (var i = 0; i < arrayElement!.length; i++) {
+            var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
+        }
+        if (!isSeriesComplete) return;
+
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var total = Number(totalElement.value);
         var isSeriesValid = isValid(totalElement);
