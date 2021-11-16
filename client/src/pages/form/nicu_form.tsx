@@ -141,8 +141,8 @@ function DynamicForm() {
             newFormValues.splice(i, 1);
             setFormValuesOutCondition(newFormValues)
         }
-        
-        if (i<newFormValues.length) {
+
+        if (i < newFormValues.length) {
             var textInput = (document.getElementById("inputs" + ID).childNodes[i].childNodes[0].childNodes[0] as HTMLInputElement);
             var valueInput = (document.getElementById("inputs" + ID).childNodes[i].childNodes[1].childNodes[0] as HTMLInputElement);
             removeValidity(textInput);
@@ -341,14 +341,27 @@ function DynamicForm() {
         makeValidity(inputElement, true, "");
     }
 
+    function isSeriesComplete(start: number, a: number, b: number) {
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
+
+        for (var i = a; i <= b; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid"))&& isSeriesComplete;
+        }
+
+        return isSeriesComplete;
+    }
+
     function totalValidation(start: number, a: number, b: number) {
+        if (!isSeriesComplete(start, a, b)) return;
+
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var total = Number(totalElement.value);
         var isSeriesValid = isValid(totalElement);
 
         var total2 = 0;
         for (var i = a; i <= b; i++) {
-            console.log("loop", i);
             var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
             total2 += Number(inputElement.value);
             isSeriesValid = isValid(inputElement) && isSeriesValid;
@@ -386,64 +399,65 @@ function DynamicForm() {
             var valueInput = (inputGroup.childNodes[idx].childNodes[1].childNodes[0] as HTMLInputElement);
             if (!isValid(valueInput)) return;
 
-            if (num === 30 && !arrayTotalValidation(27, 29, 32)) {
+            if (num === 30 && !arrayTotalValidation(26, 27, 30)) {
                 return;
             }
-            if (num === 59 && !arrayTotalValidation(27, 46, 64)) {
+            if (num === 59 && !arrayTotalValidation(26, 41, 59)) {
                 return;
             }
-            if (num === 89 && !arrayTotalValidation(66, 80, 98)) {
+            if (num === 89 && !arrayTotalValidation(60, 71, 89)) {
                 return;
             }
 
-            makeValidity(textInput, true, "");
+            makeValidity(valueInput, true, "");
         }
     }
 
     function arrayTotalValidation(start: number, a: number, b: number) {
-        var total = Number((document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).value);
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var total = Number(totalElement.value);
+        var isSeriesValid = isValid(totalElement);
+
         var total2 = 0;
         for (var i = a; i <= b - 1; i++) {
-            total2 += Number((document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).value)
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            total2 += Number(inputElement.value);
+            isSeriesValid = isValid(inputElement) && isSeriesValid;
         }
-        var elementList = document.getElementById("inputs" + b)?.childNodes;
-        for (var i = 0; i < elementList!.length; i++) {
-            var inputElement = elementList![i].childNodes[0].childNodes[0].childNodes[2];
-            total2 += Number((inputElement as HTMLInputElement).value);
+        var arrayElement = document.getElementById("inputs" + b)?.childNodes;
+        for (var i = 0; i < arrayElement!.length; i++) {
+            var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+            total2 += Number(inputElement.value);
+            isSeriesValid = isValid(inputElement) && isSeriesValid;
         }
-        console.log(total, total2);
 
-        if (total !== total2) {
-            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "";
+        if (isSeriesValid) {
+            if (total !== total2) {
+                makeValidity(totalElement, false, "");
+                for (var i = a; i <= b-1; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    var errorMsg = i == a ? "Does not add up to total" : "";
+                    makeValidity(inputElement, false, errorMsg);
+                }
+                for (var i = 0; i < arrayElement!.length; i++) {
+                    var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, false, "");
+                }
 
-            for (var i = a; i <= b - 1; i++) {
-                (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                var errorMsg = i == a ? "Does not add up to total" : "";
-                (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = errorMsg;
+                return false;
+            } else {
+                makeValidity(totalElement, true, "");
+                for (var i = a; i <= b-1; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, true, "");
+                }
+                for (var i = 0; i < arrayElement!.length; i++) {
+                    var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, true, "");
+                }
+
+                return true;
             }
-
-            for (var i = 0; i < elementList!.length; i++) {
-                (elementList![i].childNodes[0].childNodes[0].childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                (elementList![i].childNodes[0].childNodes[0].childNodes[3] as HTMLElement).innerHTML = "";
-            }
-
-            return false;
-        } else {
-            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-
-            for (var i = a; i <= b - 1; i++) {
-                (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-            }
-
-            for (var i = 0; i < elementList!.length; i++) {
-                (elementList![i].childNodes[0].childNodes[0].childNodes[2] as HTMLInputElement).classList.remove("is-invalid");
-                (elementList![i].childNodes[0].childNodes[0].childNodes[2] as HTMLInputElement).classList.add("is-valid");
-            }
-
-            return true;
         }
     }
 
@@ -537,11 +551,11 @@ function DynamicForm() {
 
                                         } else if (field.field_type === "array") {
                                             var formValues;
-                                            if (field.field_id === "admissions.comeFrom.otherDepartments") {
+                                            if (i === 30) {
                                                 formValues = formValuesComeFrom;
-                                            } else if (field.field_id === "admissions.mainCondition.otherMedical") {
+                                            } else if (i === 59) {
                                                 formValues = formValuesAdCondition;
-                                            } else if (field.field_id === "numberOfOutPatients.mainCondition.otherMedical") {
+                                            } else if (i === 89) {
                                                 formValues = formValuesOutCondition;
                                             }
 
