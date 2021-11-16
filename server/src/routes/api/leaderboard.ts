@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
     try {
         await updateDepartmentPoints();
         Department.find()
+            .sort({ points: 'desc', name: 'asc' })
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to get leaderboard: ' + err));
     } catch (err) {
