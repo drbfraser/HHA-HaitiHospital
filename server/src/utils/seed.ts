@@ -13,10 +13,11 @@ export const seedDb = async () => {
   console.log('Seeding users...');
 
   await User.deleteMany({});
+  await User.collection.dropIndexes().catch(err => console.log(err));
   // await Message.deleteMany({});
   // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
-  // create 3 users
+  // create users
   const usersPromises = [...Array(6).keys()].map((index, i) => {
     const user = new User({
       // provider: 'email',
@@ -43,16 +44,16 @@ export const seedDb = async () => {
     } else if (index === 5) {
       user.department = DepartmentName.CommunityHealth;
     }
-    // user.registerUser(user, () => {});
+    user.registerUser(user, () => {});
     return user;
   });
 
-  await Promise.all(
-    usersPromises.map(async (user) => {
-      user.registerUser(user, () => {});
-      // await user.save();
-    }),
-  );
+  // await Promise.all(
+  //   usersPromises.map(async (user) => {
+  //     user.registerUser(user, () => {});
+  //     // await user.save();
+  //   }),
+  // );
 
   // // create 9 messages
   // const messagePromises = [...Array(9).keys()].map((index, i) => {
