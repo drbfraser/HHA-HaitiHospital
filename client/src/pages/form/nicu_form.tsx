@@ -242,20 +242,12 @@ function DynamicForm() {
             var text = (inputGroup.childNodes[1] as HTMLInputElement).value;
             if (text == "") {
                 (inputGroup.childNodes[1] as HTMLInputElement).classList.add("is-invalid");
-                if (i18n.language === 'fr') {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Doit entrer une valeur pour ce champ";
-                } else {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
-                }
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationMustEnterValue")
                 return;
             }
 
             (inputGroup.childNodes[1] as HTMLInputElement).classList.remove("is-invalid");
-            if (i18n.language === 'fr') {
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Doit entrer une valeur pour ce champ";
-            } else {
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
-            }
+            (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationMustEnterValue")
             return;
         }
 
@@ -263,32 +255,20 @@ function DynamicForm() {
             var numberAsText = (inputGroup.childNodes[2] as HTMLInputElement).value;
             if (numberAsText == "") {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                if (i18n.language === 'fr') {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Doit entrer une valeur pour ce champ";
-                } else {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
-                }
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationMustEnterValue")
                 return;
             }
 
             var number = Number((inputGroup.childNodes[2] as HTMLInputElement).value);
             if (number < 0) {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                if (i18n.language === 'fr') {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Nombres positifs uniquement pour ce champ";
-                } else {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Positive numbers only for this field";
-                }
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationPositiveNumberOnly");
                 return;
             }
 
             if (number % 1 != 0) {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                if (i18n.language === 'fr') {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Entiers uniquement pour ce champ";
-                } else {
-                    (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Integers only for this field";
-                }
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationIntegersOnly");
                 return;
             }
 
@@ -326,11 +306,7 @@ function DynamicForm() {
         }
         if (total !== total2) {
             (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            if (i18n.language === 'fr') {
-                (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Ne correspond pas au total";
-            } else {
-                (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-            }
+            (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = i18n.t("departmentFormTotalValidationDoesNotAddUpToTotal");
 
             for (var i = a; i <= b; i++) {
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
@@ -365,11 +341,12 @@ function DynamicForm() {
 
             for (var i = a; i <= b - 1; i++) {
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                if (i18n.language === 'fr') {
-                    var errorMsg = i == a ? "Ne correspond pas au total" : "";
-                } else {
-                    var errorMsg = i == a ? "Does not add up to total" : "";
-                }
+                // if (i18n.language === 'fr') {
+                //     var errorMsg = i == a ? "Ne correspond pas au total" : "";
+                // } else {
+                //     var errorMsg = i == a ? "Does not add up to total" : "";
+                // }
+                var errorMsg = i == a ? i18n.t("departmentFormTotalValidationDoesNotAddUpToTotal") : "";
                 (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = errorMsg;
             }
 
@@ -403,32 +380,20 @@ function DynamicForm() {
         var numberAsText = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value;
         if (numberAsText == "") {
             (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            if (i18n.language === 'fr') {
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Doit entrer une valeur";
-            } else {
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Must enter a value";
-            }
+            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = i18n.t("departmentFormInputValidationMustEnterValue");
             return;
         }
 
         var number = Number((document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value);
         if (number < 0) {
             (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            if (i18n.language === 'fr') {
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Nombres positifs uniquement";
-            } else {
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Positive numbers only";
-            }
+            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = i18n.t("departmentFormInputValidationPositiveNumberOnly");
             return;
         }
 
         if (number % 1 != 0) {
             (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            if (i18n.language === 'fr') {
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Entiers uniquement";
-            } else {
-                (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Integers only";
-            }
+            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = i18n.t("departmentFormInputValidationIntegersOnly");
             return;
         }
 

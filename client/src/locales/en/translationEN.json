@@ -125,5 +125,25 @@
   "departmentFormRequiresValidNumber": "Requires a valid number",
   "departmentFormNameAndValue": "Name and value",
   "departmentFormAdd": "Add",
-  "departmentFormRemove": "Remove"
+  "departmentFormRemove": "Remove",
+
+  "departmentFormArrayInputValidationMustEnterValue" : "Must enter a value for this field",
+  "departmentFormArrayInputValidationPositiveNumberOnly" : "Positive numbers only for this field",
+  "departmentFormArrayInputValidationIntegersOnly" : "Integers only for this field",
+
+  "departmentFormTotalValidationDoesNotAddUpToTotal" : "Does not add up to total",
+
+  "departmentFormInputValidationMustEnterValue" : "Must enter a value",
+  "departmentFormInputValidationPositiveNumberOnly" : "Positive numbers only",
+  "departmentFormInputValidationIntegersOnly" : "Integers only",
+
+
+  "departmentReportDisplayDepartmentNICU": "Department of NICU/Paediatrics",
+  "departmentReportDisplayNoReportFound": "No report found",
+  "departmentReportDisplaySave": "Save",
+  "departmentReportDisplayDiscard": "Discard",
+  "departmentReportDisplaySubmit": "Submit",
+  "departmentReportDisplayBack": "Back"
+
+
 }
