@@ -53,7 +53,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                   <td>{item.caseStudyType}</td>
                   <td>{item.user ? item.user.name : null}</td>
                   <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                  <td><a href="#" className="link-primary" onClick={() => props.history.push('/caseStudyView/' + item._id)}>View Case Study</a></td>
+                  <td><a href="#" className="link-primary text-decoration-none" onClick={() => props.history.push('/caseStudyView/' + item._id)}>View Case Study</a></td>
                 </tr>
               ))
             }
