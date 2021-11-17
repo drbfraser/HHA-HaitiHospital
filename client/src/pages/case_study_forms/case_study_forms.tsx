@@ -107,7 +107,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
               <label className="form-check-label" htmlFor="invalidCheck1"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -139,7 +139,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <textarea className="form-control mb-2 mt-0" id="Case Study 2" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck2" required></input>
               <label className="form-check-label" htmlFor="invalidCheck2"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -162,16 +162,16 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               </div>
             </div>
             <label htmlFor="Train Who">Who conducted training?</label>
-            <input className="form-control" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}></input>
+            <input className="form-control mb-2" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}></input>
             <label htmlFor="Who attended">Who attended the training?</label>
-            <textarea className="form-control" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
             <label htmlFor="How train">How will the training benefit HCBH and its staff?</label>
-            <textarea className="form-control" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
             <label htmlFor="Case Study 3">Case Study/Story</label>
-            <textarea className="form-control" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck3" required></input>
               <label className="form-check-label" htmlFor="invalidCheck3"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -204,12 +204,12 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               </div>
             </div>
             <label htmlFor="Equipment Purpose">What does this new equipment do?</label>
-            <textarea className="form-control" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
             <label htmlFor="Case Study 4">Case Study/Story</label>
-            <textarea className="form-control" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck4" required></input>
               <label className="form-check-label" htmlFor="invalidCheck4"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -226,7 +226,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
               <label className="form-check-label" htmlFor="invalidCheck5"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
