@@ -14,20 +14,16 @@ interface CaseStudyViewProps extends RouteComponentProps {}
 export const CaseStudyView = (props: CaseStudyViewProps) => {
   const [caseStudy, setCaseStudy] = useState(null);
   const id = useLocation().pathname.split('/')[2];
-  // console.log(id);
   const caseStudyUrl = `/api/casestudies/${id}`;
-  // console.log(caseStudyUrl);
 
   const getCaseStudy = async () => {
     const res = await axios.get(caseStudyUrl);
     setCaseStudy(res.data);
-    // console.log(res.data);
   }
 
   useEffect(() => {
     getCaseStudy();
   });
-  // console.log(caseStudy);
 
   return (
     <div className={'case-study-main '+ props.classes}>
