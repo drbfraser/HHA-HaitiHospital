@@ -55,7 +55,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <tr key={item._id}>
                       <td>{item.caseStudyType}</td>
                       <td>{item.user}</td>
-                      <td>{item.updatedAt}</td>
+                      <td>{(new Date(item.updatedAt)).toLocaleString()}</td>
                     </tr>
                   ))
                 }
