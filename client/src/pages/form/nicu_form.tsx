@@ -126,27 +126,47 @@ function DynamicForm() {
         }
     }
 
-    const removeFormFields = (ID: any, i: number) => {
+    const removeFormFields = (ID: any, idx: number) => {
         let newFormValues;
         if (ID === 30) {
             newFormValues = [...formValuesComeFrom];
-            newFormValues.splice(i, 1);
+            newFormValues.splice(idx, 1);
             setFormValuesComeFrom(newFormValues)
         } else if (ID === 59) {
             newFormValues = [...formValuesAdCondition];
-            newFormValues.splice(i, 1);
+            newFormValues.splice(idx, 1);
             setFormValuesAdCondition(newFormValues)
         } else if (ID === 89) {
             newFormValues = [...formValuesOutCondition];
-            newFormValues.splice(i, 1);
+            newFormValues.splice(idx, 1);
             setFormValuesOutCondition(newFormValues)
         }
 
-        if (i < newFormValues.length) {
-            var textInput = (document.getElementById("inputs" + ID).childNodes[i].childNodes[0].childNodes[0] as HTMLInputElement);
-            var valueInput = (document.getElementById("inputs" + ID).childNodes[i].childNodes[1].childNodes[0] as HTMLInputElement);
-            removeValidity(textInput);
-            removeValidity(valueInput);
+        var inputGroup = document.getElementById("inputs" + ID).childNodes;
+        for (let i = idx; i < inputGroup.length - 1; i++) {
+            var textInput1 = (inputGroup[i].childNodes[0].childNodes[0] as HTMLInputElement);
+            var textInput2 = (inputGroup[i+1].childNodes[0].childNodes[0] as HTMLInputElement);
+            var valueInput1 = (inputGroup[i].childNodes[1].childNodes[0] as HTMLInputElement);
+            var valueInput2 = (inputGroup[i+1].childNodes[1].childNodes[0] as HTMLInputElement);
+
+            textInput1.value = textInput2.value;
+            valueInput1.value = valueInput2.value;
+
+            if (textInput2.classList.contains("is-valid")) {
+                makeValidity(textInput1, true, "");
+            } else if (textInput2.classList.contains("is-invalid")) {
+                makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerHTML);
+            } else {
+                removeValidity(textInput1);
+            }
+
+            if (valueInput2.classList.contains("is-valid")) {
+                makeValidity(valueInput1, true, "");
+            } else if (valueInput2.classList.contains("is-invalid")) {
+                makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerHTML);
+            } else {
+                removeValidity(valueInput1);
+            }
         }
     }
 
@@ -267,6 +287,17 @@ function DynamicForm() {
         return true;
     }
 
+    function isValidText(inputElement: HTMLInputElement) {
+        var numberAsText = inputElement.value;
+        if (numberAsText == "") {
+            makeValidity(inputElement, false, "Must enter a value");
+            return false;
+        }
+
+        makeValidity(inputElement, true, "");
+        return true;
+    }
+
     function inputValidation(num: number) {
         var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
         if (!isValid(inputElement)) return;
@@ -341,7 +372,7 @@ function DynamicForm() {
         makeValidity(inputElement, true, "");
     }
 
-    
+
 
     function totalValidation(start: number, a: number, b: number) {
         // check if the entire series in total is all filled out 
@@ -353,6 +384,7 @@ function DynamicForm() {
         }
         if (!isSeriesComplete) return;
 
+        // calculated total vs total2
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var total = Number(totalElement.value);
         var isSeriesValid = isValid(totalElement);
@@ -414,7 +446,7 @@ function DynamicForm() {
         // check if the entire series in total is all filled out 
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
-        for (var i = a; i <= b-1; i++) {
+        for (var i = a; i <= b - 1; i++) {
             var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
             isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
         }
@@ -423,8 +455,9 @@ function DynamicForm() {
             var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
             isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
         }
-        if (!isSeriesComplete) return;
+        if (!isSeriesComplete) return false;
 
+        // calculated total vs total2
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var total = Number(totalElement.value);
         var isSeriesValid = isValid(totalElement);
@@ -445,7 +478,7 @@ function DynamicForm() {
         if (isSeriesValid) {
             if (total !== total2) {
                 makeValidity(totalElement, false, "");
-                for (var i = a; i <= b-1; i++) {
+                for (var i = a; i <= b - 1; i++) {
                     var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
                     var errorMsg = i == a ? "Does not add up to total" : "";
                     makeValidity(inputElement, false, errorMsg);
@@ -458,7 +491,7 @@ function DynamicForm() {
                 return false;
             } else {
                 makeValidity(totalElement, true, "");
-                for (var i = a; i <= b-1; i++) {
+                for (var i = a; i <= b - 1; i++) {
                     var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
                     makeValidity(inputElement, true, "");
                 }
