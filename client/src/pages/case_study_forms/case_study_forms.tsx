@@ -57,8 +57,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
         <Header/>
 
-        <div className="col-md-4">
-          <button type="button" className="btn btn-primary btn-md" onClick={() => {
+        <div className="col-lg-2 col-md-3 col-sm-4 col-4">
+          <button type="button" className="btn btn-outline-dark" onClick={() => {
             props.history.push("/caseStudyMain");
           }}>Back</button>
         </div>

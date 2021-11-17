@@ -28,49 +28,39 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   return (
     <div className={'case-study-main '+ props.classes}>
-        <SideBar/>
-
-        <main className="container">
-            <Header/>
-
-
-            <div className="col-md-4">
-                <button type="button" className="btn btn-primary btn-md" onClick={() => {
-                    props.history.push("/caseStudyForm");
-                }}>Add Case Study</button>
-            </div>
-
-            
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Case Study Type</th>
-                  <th scope="col">Author</th>
-                  <th scope="col">Last Updated</th>
-                  <th scope="col"></th>
+      <SideBar/>
+      <main className="container">
+        <Header/>
+        <div className="col-lg-3 col-md-4 col-sm-6 col-8">
+          <button type="button" className="btn btn-outline-dark" onClick={() => {
+            props.history.push("/caseStudyForm");
+          }}>Add Case Study</button>
+        </div>
+        
+        <table className="table mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Case Study Type</th>
+              <th scope="col">Author</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              caseStudies.map((item) => (
+                <tr key={item._id}>
+                  <td>{item.caseStudyType}</td>
+                  <td>{item.user}</td>
+                  <td>{(new Date(item.updatedAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                  <td><a href="#" className="link-primary" onClick={() => props.history.push('/caseStudyView/' + item._id)}>View Case Study</a></td>
                 </tr>
-              </thead>
-              <tbody>
-                {
-                  caseStudies.map((item) => (
-                    <tr key={item._id}>
-                      <td>{item.caseStudyType}</td>
-                      <td>{item.user}</td>
-                      <td>{(new Date(item.updatedAt)).toLocaleString()}</td>
-                      <td><a href="#" className="text-decoration-none" onClick={() => props.history.push('/caseStudyView/' + item._id)}>View Case Study</a></td>
-                    </tr>
-                  ))
-                }
-              </tbody>
-            </table>
+              ))
+            }
+          </tbody>
+        </table>
 
-
-
-        <script>
-        </script>
-
-        </main>
-
+      </main>
     </div>
   );
 };
