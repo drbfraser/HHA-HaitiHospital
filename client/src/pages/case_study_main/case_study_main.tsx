@@ -14,18 +14,16 @@ interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
-  const [caseStudiesChanged, setCaseStudiesChanged] = useState(false);
 
   const caseStudiesUrl = '/api/casestudies';
   const getCaseStudies = async () => {
     const res = await axios.get(caseStudiesUrl);
     setCaseStudies(res.data);
-    setCaseStudiesChanged(true);
   }
 
   useEffect(() => {
     getCaseStudies();
-  }, [caseStudiesChanged])
+  }, [caseStudies.length])
 
 
   return (
