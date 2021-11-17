@@ -8,9 +8,9 @@ import axios from 'axios';
 import "./case_study_main_styles.css";
 
 interface CaseStudyMainProps extends ElementStyleProps {
-};
+}
 
-interface CaseStudyMainProps extends RouteComponentProps {};
+interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
@@ -64,26 +64,3 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     </div>
   );
 };
-
-
-
-//
-//                 <button className="caseTwo-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-// onChange={(val) => setForm(this.value)}
-//                 <button className="caseOne-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-//                 <button className="case-study-more-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-// function setForm(value: any) {
-
- //              if(value == "form1"){
-   //                    document.getElementById('form1')!.style.display = 'hidden';
-     //                  }
-       //        else if (value == "form2"){
-
-         //              }
-           //}
