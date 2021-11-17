@@ -4,7 +4,7 @@ import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import axios from 'axios';
-import { CaseStudyOptions } from '../case_study_forms/CaseStudies';
+import { CaseStudyOptions, CaseStudyModel } from '../case_study_forms/CaseStudies';
 
 interface CaseStudyViewProps extends ElementStyleProps {
 }
@@ -12,20 +12,18 @@ interface CaseStudyViewProps extends ElementStyleProps {
 interface CaseStudyViewProps extends RouteComponentProps {}
 
 export const CaseStudyView = (props: CaseStudyViewProps) => {
-  const [caseStudy, setCaseStudy] = useState(null);
-  const [caseStudyChanged, setCaseStudyChanged] = useState(false);
+  const [caseStudy, setCaseStudy] = useState({} as any);
   const id = useLocation().pathname.split('/')[2];
   const caseStudyUrl = `/api/casestudies/${id}`;
 
   const getCaseStudy = async () => {
     const res = await axios.get(caseStudyUrl);
     setCaseStudy(res.data);
-    setCaseStudyChanged(true);
   }
 
   useEffect(() => {
     getCaseStudy();
-  }, [caseStudyChanged]);
+  }, [Object.keys(caseStudy).length]);
 
   return (
     <div className={'case-study-main '+ props.classes}>
@@ -36,7 +34,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           <Link type="button" to="/caseStudyMain" className="btn btn-outline-dark">Back</Link>
         </div>
         <div className="ml-3 mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
-          {(caseStudy && caseStudy.caseStudyType === CaseStudyOptions.PatientStory) ? 
+          {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.PatientStory) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Patient Story Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
@@ -58,7 +56,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             </div>
           : null}
 
-          {(caseStudy && caseStudy.caseStudyType === CaseStudyOptions.StaffRecognition) ? 
+          {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.StaffRecognition) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Staff Recognition Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
@@ -78,7 +76,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             </div>
           : null}
 
-          {(caseStudy && caseStudy.caseStudyType === CaseStudyOptions.TrainingSession) ? 
+          {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.TrainingSession) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Training Session Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
@@ -98,7 +96,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             </div>
           : null}
 
-          {(caseStudy && caseStudy.caseStudyType === CaseStudyOptions.EquipmentReceived) ? 
+          {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.EquipmentReceived) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Equipment Received Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
@@ -118,7 +116,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             </div>
           : null}
 
-          {(caseStudy && caseStudy.caseStudyType === CaseStudyOptions.OtherStory) ? 
+          {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.OtherStory) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Other Story Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
