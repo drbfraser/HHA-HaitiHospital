@@ -11,7 +11,7 @@ import Community from '../models/Community';
 export const seedDb = async () => {
   console.log('Seeding users...');
 
-  await User.deleteMany({});
+  // await User.deleteMany({});
   // await Message.deleteMany({});
   // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
@@ -39,11 +39,11 @@ export const seedDb = async () => {
     return user;
   });
 
-  await Promise.all(
-    usersPromises.map(async (user) => {
-      await user.save();
-    }),
-  );
+  // await Promise.all(
+  //   usersPromises.map(async (user) => {
+  //     await user.save();
+  //   }),
+  // );
 
   // // create 9 messages
   // const messagePromises = [...Array(9).keys()].map((index, i) => {
