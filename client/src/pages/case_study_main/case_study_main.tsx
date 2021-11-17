@@ -23,7 +23,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   useEffect(() => {
     getCaseStudies();
-  })
+  }, [])
 
 
   return (

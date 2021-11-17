@@ -23,7 +23,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
 
   useEffect(() => {
     getCaseStudy();
-  });
+  }, []);
 
   return (
     <div className={'case-study-main '+ props.classes}>
