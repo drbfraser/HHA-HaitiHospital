@@ -47,6 +47,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                   <th scope="col">Case Study Type</th>
                   <th scope="col">Author</th>
                   <th scope="col">Last Updated</th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -56,6 +57,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                       <td>{item.caseStudyType}</td>
                       <td>{item.user}</td>
                       <td>{(new Date(item.updatedAt)).toLocaleString()}</td>
+                      <td><a href="#" className="text-decoration-none" onClick={() => props.history.push('/caseStudyView/' + item._id)}>View Case Study</a></td>
                     </tr>
                   ))
                 }
