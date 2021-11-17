@@ -35,9 +35,10 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           <Link type="button" to="/caseStudyForm" className="btn btn-outline-dark">Add Case Study</Link>
         </div>
         
-        <table className="table mt-3 ml-3">
+        <table className="table table-hover mt-3">
           <thead>
             <tr>
+              <th scope="col">#</th>
               <th scope="col">Case Study Type</th>
               <th scope="col">Author</th>
               <th scope="col">Created</th>
@@ -46,8 +47,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           </thead>
           <tbody>
             {
-              caseStudies.map((item) => (
+              caseStudies.map((item, index) => (
                 <tr key={item._id}>
+                  <th scope="row">{index}</th>
                   <td>{item.caseStudyType}</td>
                   <td>{item.user ? item.user.name : null}</td>
                   <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
