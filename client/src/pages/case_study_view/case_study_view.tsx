@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RouteComponentProps, useLocation } from "react-router-dom";
+import { RouteComponentProps, useLocation, Link } from "react-router-dom";
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
@@ -33,9 +33,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
       <main className="container">
         <Header/>
         <div className="ml-3 col-lg-2 col-md-3 col-sm-4 col-4">
-          <button type="button" className="btn btn-outline-dark" onClick={() => {
-            props.history.push("/caseStudyMain");
-          }}>Back</button>
+          <Link type="button" to="/caseStudyMain" className="btn btn-outline-dark">Back</Link>
         </div>
         <div className="ml-3 mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
           {(caseStudy && caseStudy.caseStudyType === CaseStudyOptions.PatientStory) ? 
@@ -131,9 +129,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           : null}
         </div>
         <div className="ml-3 mb-5 col-lg-2 col-md-3 col-sm-4 col-4">
-          <button type="button" className="btn btn-outline-dark" onClick={() => {
-            props.history.push("/caseStudyMain");
-          }}>Back</button>
+          <Link type="button" to="/caseStudyMain" className="btn btn-outline-dark">Back</Link>
         </div>
       </main>
     </div>

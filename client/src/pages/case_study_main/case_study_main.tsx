@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RouteComponentProps} from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
@@ -34,9 +34,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <main className="container">
         <Header/>
         <div className="col-lg-3 col-md-4 col-sm-6 col-8">
-          <button type="button" className="btn btn-outline-dark" onClick={() => {
-            props.history.push("/caseStudyForm");
-          }}>Add Case Study</button>
+          <Link type="button" to="/caseStudyForm" className="btn btn-outline-dark">Add Case Study</Link>
         </div>
         
         <table className="table mt-3 ml-3">
@@ -55,7 +53,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                   <td>{item.caseStudyType}</td>
                   <td>{item.user ? item.user.name : null}</td>
                   <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                  <td><a href="#" className="link-primary text-decoration-none" onClick={() => props.history.push('/caseStudyView/' + item._id)}>View Case Study</a></td>
+                  <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">View Case Study</Link></td>
                 </tr>
               ))
             }

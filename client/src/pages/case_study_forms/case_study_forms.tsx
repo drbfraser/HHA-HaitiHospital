@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RouteComponentProps} from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
@@ -59,9 +59,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <Header/>
 
         <div className="col-lg-2 col-md-3 col-sm-4 col-4">
-          <button type="button" className="btn btn-outline-dark" onClick={() => {
-            props.history.push("/caseStudyMain");
-          }}>Back</button>
+          <Link type="button" to="/caseStudyMain" className="btn btn-outline-dark">Back</Link>
         </div>
 
         <div>
