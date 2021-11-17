@@ -43,7 +43,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
               <th scope="col">Case Study Type</th>
               <th scope="col">Author</th>
               <th scope="col">Created</th>
-              <th scope="col"></th>
+              <th scope="col">Link</th>
             </tr>
           </thead>
           <tbody>
