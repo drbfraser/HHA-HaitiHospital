@@ -70,6 +70,7 @@ const caseStudySchema = new Schema(
     {
         caseStudyType: { type: CaseStudyOptions, required: true },
         // TODO: add created by user. right now JWT is not yet applied
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
         // createdByUser: { type: String},
         patientStory: patientStorySchema,
         staffRecognition: staffRecognitionSchema,

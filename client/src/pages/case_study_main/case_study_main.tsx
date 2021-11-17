@@ -42,7 +42,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             <tr>
               <th scope="col">Case Study Type</th>
               <th scope="col">Author</th>
-              <th scope="col">Last Updated</th>
+              <th scope="col">Created</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -51,8 +51,8 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
               caseStudies.map((item) => (
                 <tr key={item._id}>
                   <td>{item.caseStudyType}</td>
-                  <td>{item.user}</td>
-                  <td>{(new Date(item.updatedAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                  <td>{item.user.name}</td>
+                  <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                   <td><a href="#" className="link-primary" onClick={() => props.history.push('/caseStudyView/' + item._id)}>View Case Study</a></td>
                 </tr>
               ))
