@@ -128,6 +128,11 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             </div>
           : null}
         </div>
+        <div className="ml-3 mb-5 col-lg-2 col-md-3 col-sm-4 col-4">
+          <button type="button" className="btn btn-outline-dark" onClick={() => {
+            props.history.push("/caseStudyMain");
+          }}>Back</button>
+        </div>
       </main>
     </div>
   )
