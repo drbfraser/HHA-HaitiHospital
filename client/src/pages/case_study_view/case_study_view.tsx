@@ -62,7 +62,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Staff Recognition Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
-              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
+              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid w-75 mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">Staff name</h6>
               <p className='fs-6 lh-base'>{caseStudy.staffRecognition.staffName}</p>
               <h6 className="fs-6 fw-bold lh-base">Role / job title</h6>
@@ -82,7 +82,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Training Session Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
-              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
+              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid w-75 mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">Training date</h6>
               <p className='fs-6 lh-base'>{caseStudy.trainingSession.trainingDate}</p>
               <h6 className="fs-6 fw-bold lh-base">What was the training on?</h6>
@@ -102,7 +102,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Equipment Received Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
-              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
+              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid w-75 mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">What equipment was received?</h6>
               <p className='fs-6 lh-base'>{caseStudy.equipmentReceived.equipmentReceived}</p>
               <h6 className="fs-6 fw-bold lh-base">Which department received it?</h6>
@@ -122,7 +122,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Other Story Case Study</h4>
               <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
-              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} /> 
+              <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid w-75 mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} /> 
               <h6 className="fs-6 fw-bold lh-base">Case study/story</h6>
               <p className='fs-6 lh-base'>{caseStudy.otherStory.caseStudyStory}</p>
             </div>
