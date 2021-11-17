@@ -37,7 +37,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           }}>Add Case Study</button>
         </div>
         
-        <table className="table mt-3">
+        <table className="table mt-3 ml-3">
           <thead>
             <tr>
               <th scope="col">Case Study Type</th>
