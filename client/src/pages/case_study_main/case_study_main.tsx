@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { RouteComponentProps} from "react-router-dom";
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
+import axios from 'axios';
 
 import "./case_study_main_styles.css";
 
@@ -11,7 +13,17 @@ interface CaseStudyMainProps extends ElementStyleProps {
 interface CaseStudyMainProps extends RouteComponentProps {};
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
+  const [caseStudies, setCaseStudies] = useState([]);
 
+  const caseStudiesUrl = '/api/casestudies';
+  const getCaseStudies = async () => {
+    const res = await axios.get(caseStudiesUrl);
+    setCaseStudies(res.data);
+  }
+
+  useEffect(() => {
+    getCaseStudies();
+  })
 
 
   return (
@@ -27,6 +39,28 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     props.history.push("/caseStudyForm");
                 }}>Add Case Study</button>
             </div>
+
+            
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Case Study Type</th>
+                  <th scope="col">Author</th>
+                  <th scope="col">Last Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  caseStudies.map((item) => (
+                    <tr key={item._id}>
+                      <td>{item.caseStudyType}</td>
+                      <td>{item.user}</td>
+                      <td>{item.updatedAt}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
 
 
 
