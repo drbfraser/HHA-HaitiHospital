@@ -37,12 +37,12 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                         <table className="table">
                             <thead>
                                 <tr>
-                                <th scope="col" style={{width: '10%'}}>Pos</th>
-                                <th scope="col" style={{width: '10%'}}></th>
-                                <th scope="col">Department</th>
-                                <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th>
-                                <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell">Case Studies</th>
-                                <th scope="col">Points</th>
+                                    <th scope="col" style={{width: '10%'}}>Pos</th>
+                                    <th scope="col" style={{width: '10%'}}></th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th>
+                                    <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell">Case Studies</th>
+                                    <th scope="col">Points</th>
                                 </tr>
                             </thead>
                             <tbody>
