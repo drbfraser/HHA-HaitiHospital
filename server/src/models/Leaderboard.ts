@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export enum DepartmentName {
-    NicuPaeds = "NICU_PAEDS",
-    Maternity = "MATERNITY",
-    Rehab = "REHAB",
-    CommunityHealth = "COMMUNITY_HEALTH",
+    NicuPaeds = "NICU/Paeds",
+    Maternity = "Maternity",
+    Rehab = "Rehab",
+    CommunityHealth = "Community & Health",
 }
 
 const departmentSchema = new Schema(
