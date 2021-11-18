@@ -37,22 +37,17 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                         <table className="table">
                             <thead>
                                 <tr>
-                                <th scope="col" style={{width: '10%'}}>Position</th>
+                                <th scope="col" style={{width: '10%'}}>Pos</th>
                                 <th scope="col" style={{width: '10%'}}></th>
                                 <th scope="col">Department</th>
-                                <th scope="col">Score</th>
+                                <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th>
+                                <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell">Case Studies</th>
+                                <th scope="col">Points</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {leaderboard.map((item, index) => (
                                 <tr key={item._id}>
-                                {/* <tr key={item._id}
-                                    className={`
-                                        ${index === 0 ? 'table-warning' : ''}
-                                        ${index === 1 ? 'table-secondary' : ''}
-                                        ${index === 2 ? 'table-danger' : ''}
-                                    `}
-                                > */}
                                     <th scope="row">{index + 1}</th>
                                     <td>
                                         {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
@@ -60,7 +55,9 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                         {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null}
                                     </td>
                                     <td>{item.name}</td>
-                                    <td>{item.points}</td>
+                                    <td className="d-none d-sm-table-cell">0</td>
+                                    <td className="d-none d-sm-table-cell">0</td>
+                                    <td className="fw-bold">{item.points}</td>
                                 </tr>
                                 ))}
                             </tbody>
