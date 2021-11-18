@@ -5,6 +5,7 @@ import nicuPaedsRoutes from './nicuPaeds';
 import reportRouter from './report';
 import messageBoardRoutes from './messageboard';
 import caseStudiesRouter from './caseStudies';
+import leaderboardRouter from './leaderboard';
 const router = Router();
 
 router.use('/users', usersRoutes);
@@ -12,6 +13,7 @@ router.use('/messages', messagesRoutes);
 router.use('/nicupaeds', nicuPaedsRoutes);
 router.use('/report', reportRouter);
 router.use('/caseStudies', caseStudiesRouter);
+router.use('/leaderboard', leaderboardRouter);
 
 //TODO: Might have to change messageBoard routing based on dashboard and where it needs to go
 router.use('/messageBoard',messageBoardRoutes);

@@ -30,8 +30,8 @@ router.get('/:id', async (req, res) => {
 router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
-        // const createdByUser = req.user;
         const user = req.user.id;
+        const userDepartment = req.user.department;
         let imgPath : string;
         if (req.file) {
             imgPath = req.file.path;
@@ -39,6 +39,7 @@ router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
         const newCaseStudy = new CaseStudy({
             caseStudyType,
             user,
+            userDepartment,
             patientStory,
             staffRecognition,
             trainingSession,
@@ -70,6 +71,7 @@ router.put('/:id', [requireJwtAuth, upload.single("file")], async (req : Request
         const oldCaseStudy = await CaseStudy.findById(req.params.id);
         let imgPath = oldCaseStudy.imgPath;
         let user = oldCaseStudy.user;
+        let userDepartment = oldCaseStudy.userDepartment;
         if (req.file) {
             imgPath = req.file.path;
         }
@@ -77,6 +79,7 @@ router.put('/:id', [requireJwtAuth, upload.single("file")], async (req : Request
         const updatedCaseStudy = {
             caseStudyType: caseStudyType, 
             user: user,
+            userDepartment: userDepartment,
             patientStory: patientStory, 
             staffRecognition: staffRecognition, 
             trainingSession: trainingSession, 
@@ -90,6 +93,7 @@ router.put('/:id', [requireJwtAuth, upload.single("file")], async (req : Request
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to update: ' + err));
     } catch (err) {
+        console.log(err);
         res.status(500).json({ message: 'Something went wrong.' });
     }
 });
