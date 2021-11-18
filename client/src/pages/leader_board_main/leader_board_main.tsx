@@ -37,27 +37,27 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th scope="col" style={{width: '10%'}}>Pos</th>
-                                    <th scope="col" style={{width: '10%'}}></th>
-                                    <th scope="col">Department</th>
+                                    <th scope="col" style={{width: '5%'}} className="text-center">Position</th>
+                                    <th scope="col" style={{width: '10%'}} className="text-center"></th>
+                                    <th scope="col" className="text-center">Department</th>
                                     {/* <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th> */}
-                                    <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell">Case Studies</th>
-                                    <th scope="col">Points</th>
+                                    <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell text-center">Case Studies</th>
+                                    <th scope="col" className="text-center">Points</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {leaderboard.map((item, index) => (
                                 <tr key={item._id}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>
+                                    <th scope="row" className="text-center">{index + 1}</th>
+                                    <td className="text-center">
                                         {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
                                         {index === 1 ? <i className="text-secondary bi-trophy-fill"/> : null}
                                         {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null}
                                     </td>
-                                    <td>{item.name}</td>
+                                    <td className="text-center">{item.name}</td>
                                     {/* <td className="d-none d-sm-table-cell">0</td> */}
-                                    <td className="d-none d-sm-table-cell">0</td>
-                                    <td className="fw-bold">{item.points}</td>
+                                    <td className="d-none d-sm-table-cell text-center">0</td>
+                                    <td className="fw-bold text-center">{item.points}</td>
                                 </tr>
                                 ))}
                             </tbody>
