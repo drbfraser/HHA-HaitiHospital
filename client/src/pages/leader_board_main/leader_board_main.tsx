@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import { ElementStyleProps } from 'constants/interfaces';
@@ -32,7 +32,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
             <main className="container">
                 <Header/>
 
-                <div className="my-3 p-2 bg-light rounded shadow-sm">
+                <div className="my-3 p-2 bg-body rounded shadow-sm">
                     <h5 className="mb-3">Department Leaderboard</h5>
                         <table className="table">
                             <thead>
@@ -47,7 +47,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                             </thead>
                             <tbody>
                                 {leaderboard.map((item, index) => (
-                                <tr key={item._id}>
+                                <tr key={item._id} className={`${index === 0 ? "table-warning": ""}`}>
                                     <th scope="row" className="text-center">{index + 1}</th>
                                     <td className="text-center">
                                         {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
@@ -56,7 +56,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                     </td>
                                     <td className="text-center">{item.name}</td>
                                     {/* <td className="d-none d-sm-table-cell">0</td> */}
-                                    <td className="d-none d-sm-table-cell text-center">0</td>
+                                    <td className="d-none d-sm-table-cell text-center">{item.nCaseStudies}</td>
                                     <td className="fw-bold text-center">{item.points}</td>
                                 </tr>
                                 ))}
