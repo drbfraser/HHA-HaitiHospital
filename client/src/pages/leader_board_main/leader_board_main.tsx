@@ -9,13 +9,13 @@ import axios from 'axios'
 interface LeaderBoardMainProps extends ElementStyleProps {};
 
 export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
-    const [leaderboard, setLeaderboard] = useState(null);
+    const [leaderboard, setLeaderboard] = useState([]);
     const urlLeaderboard = '/api/leaderboard';
     const getLeaderboard = async () => {
         try {
             const res = await axios.get(urlLeaderboard);
-            setLeaderboard(res.data)
-            console.log(leaderboard);            
+            setLeaderboard(res.data);
+            console.log(leaderboard);
         } catch (err) {
             console.log(err);
         }
@@ -23,7 +23,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
 
     useEffect(() => {
         getLeaderboard();
-    })
+    }, [leaderboard.length]);
 
     return (
         <div className={'leader-board-main '+(props.classes||'')}>
@@ -34,8 +34,31 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
 
                 <div className="my-3 p-2 bg-body rounded shadow-sm">
                     <h5 className="pb-2 mb-3">Department Leader</h5>
-
-                    <div className="d-block text-end mt-1">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                <th scope="col" style={{width: '10%'}}>Position</th>
+                                <th scope="col" style={{width: '10%'}}></th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {leaderboard.map((item, index) => (
+                                <tr key={item._id}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>
+                                        {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
+                                        {index === 1 ? <i className="text-secondary bi-trophy-fill"/> : null}
+                                        {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null}
+                                    </td>
+                                    <td>{item.name}</td>
+                                    <td>{item.points}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    {/* <div className="d-block text-end mt-1">
                         <div className="d-flex pb-1 mb-0 row">
                             <i className="text-warning mx-1 col-1 col-sm-1 col-md-1 col-lg-1 bi bi-trophy-fill"/>
                             <h6 className="text-secondary col-3 col-sm-3 col-md-2 col-lg-2">Department</h6>
@@ -75,7 +98,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                             <h6 className="text-secondary col-1 col-sm-1 col-md-1 col-lg-1">score</h6>
                             <h6 className="text-info col-1 col-sm-1 col-md-1 col-lg-1">69</h6>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="card mb-3">
