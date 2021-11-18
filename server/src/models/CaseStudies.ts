@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+import { DepartmentName } from './Leaderboard';
+
 const { Schema } = mongoose;
 
 enum CaseStudyOptions {
@@ -70,7 +72,8 @@ const caseStudySchema = new Schema(
     {
         caseStudyType: { type: CaseStudyOptions, required: true },
         // TODO: add created by user. right now JWT is not yet applied
-        // createdByUser: { type: String},
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
+        userDepartment: { type: DepartmentName, required: true },
         patientStory: patientStorySchema,
         staffRecognition: staffRecognitionSchema,
         trainingSession: trainingSessionSchema,
