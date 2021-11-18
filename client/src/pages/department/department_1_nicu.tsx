@@ -12,10 +12,18 @@ interface DepartmentProps extends ElementStyleProps {
 interface DepartmentProps extends RouteComponentProps {
 };
 
+function getClassName(className: string|undefined) {
+    if (className === undefined) {
+        return "department-one";
+    }
+    else {
+        return `department-one ${className}`
+    }
+}
 
 export const DepartmentOne = (props : DepartmentProps) => {
   return (
-    <div className={'department-one '+ props.classes}>
+    <div className={getClassName(props.classes)}>
         <SideBar/>
         <main className="container">
             <Header/>
