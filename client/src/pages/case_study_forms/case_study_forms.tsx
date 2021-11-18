@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
@@ -25,6 +25,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const { register: register4, handleSubmit: handleSubmit4, reset: reset4 } = useForm<CaseStudyModel>({});
   const { register: register5, handleSubmit: handleSubmit5, reset: reset5 } = useForm<CaseStudyModel>({});
 
+  const failureMessageRef = useRef(null); 
+
   const onSubmit = (data: any) => {
     data.caseStudyType = formOption;
     var formData = new FormData();
@@ -41,11 +43,11 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       reset4({});
       reset5({});
       setSelectedFile(null);
-      setSubmissionStatus("success");
       props.history.push("/caseStudyMain");
     }).catch(error =>{
       console.error('Something went wrong!', error.message);
       setSubmissionStatus("failure");
+      failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     });
 
   }
@@ -235,10 +237,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         </div>
         </form>
         
-        <div className={`alert alert-success ${submissionStatus === "success" ? "d-block" : "d-none"}`} role="alert">
-          The form has been successfully submitted!
-        </div>
-        <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"}`} role="alert">
+        <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"} col-md-6`} role="alert" ref={failureMessageRef}>
           An error occurred during the submission. Please try again.
         </div>
 
@@ -247,26 +246,3 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     </div>
   );
 };
-
-
-
-//
-//                 <button className="caseTwo-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-// onChange={(val) => setForm(this.value)}
-//                 <button className="caseOne-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-//                 <button className="case-study-more-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-// function setForm(value: any) {
-
- //              if(value == "form1"){
-   //                    document.getElementById('form1')!.style.display = 'hidden';
-     //                  }
-       //        else if (value == "form2"){
-
-         //              }
-           //}
