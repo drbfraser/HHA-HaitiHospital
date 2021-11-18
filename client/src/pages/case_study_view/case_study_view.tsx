@@ -37,7 +37,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.PatientStory) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Patient Story Case Study</h4>
-              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
+              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : "[deleted]"}</h6>
               <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">Patient's name</h6>
               <p className='fs-6 lh-base text-break'>{caseStudy.patientStory.patientsName}</p>
@@ -59,7 +59,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.StaffRecognition) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Staff Recognition Case Study</h4>
-              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
+              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : "[deleted]"}</h6>
               <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">Staff name</h6>
               <p className='fs-6 lh-base text-break'>{caseStudy.staffRecognition.staffName}</p>
@@ -79,7 +79,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.TrainingSession) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Training Session Case Study</h4>
-              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
+              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : "[deleted]"}</h6>
               <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">Training date</h6>
               <p className='fs-6 lh-base text-break'>{caseStudy.trainingSession.trainingDate}</p>
@@ -99,7 +99,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.EquipmentReceived) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Equipment Received Case Study</h4>
-              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
+              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : "[deleted]"}</h6>
               <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">What equipment was received?</h6>
               <p className='fs-6 lh-base text-break'>{caseStudy.equipmentReceived.equipmentReceived}</p>
@@ -119,7 +119,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.OtherStory) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Other Story Case Study</h4>
-              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : null}</h6>
+              <h6 className="fs-6 mb-5 lh-base">Author: {caseStudy.user ? caseStudy.user.name : "[deleted]"}</h6>
               <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} /> 
               <h6 className="fs-6 fw-bold lh-base">Case study/story</h6>
               <p className='fs-6 lh-base text-break'>{caseStudy.otherStory.caseStudyStory}</p>
