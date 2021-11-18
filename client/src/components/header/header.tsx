@@ -68,10 +68,10 @@ const Header = (props: HeaderProps) => {
                     <GetUsername/>
                 </div>
 
-                <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
+                <div className="col-3 col-3 col-sm-3 col-md-3 col-lg-3">
                     <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact onClick={onLogOut}>
                         <i className="bi bi-door-open-fill me-2"/>
-                        <span className="text text-dark">{t("headerSignOut")}</span>
+                        <span className="text-dark">{t("headerSignOut")}</span>
                     </NavLink>
                 </div>
             </div>

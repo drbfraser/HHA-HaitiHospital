@@ -90,7 +90,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <div className="form-row">
               <div className="col-md-8">
                 <label htmlFor="Patient Name">{t("caseStudyFormPatientName")}</label>
-                <input className="form-control mb-2 mt-0" type="text" id="Patient Name" required {...register("patientStory.patientsName", {required: true})}></input>
+                <input className="form-control mb-2 mt-0" type="text" id="Patient Name" required {...register("patientStory.patientsName", {required: true })} ></input>
               </div>
               <div className="col-md-4">
                 <label htmlFor="Patient Age">{t("caseStudyFormPatientAge")}</label>
@@ -110,7 +110,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <label className="form-label">{t("caseStudyFormUploadImage")}</label>
               {/*<div>*/}
               {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-              {/*    <input id="files" style={{visibility:"hidden"}} type="file"/>*/}
+              {/*    <input id="files"  type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
               {/*</div>*/}
               <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
               <div className="form-check">

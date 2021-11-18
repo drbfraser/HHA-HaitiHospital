@@ -16,7 +16,7 @@ interface SidebarProps extends ElementStyleProps {}
 
 export const changeLanguage = (ln) => {
     return ()=> {
-        console.log('Language changed to ${ln}');
+        console.log(`Language changed to ${ln}`);
         i18n.changeLanguage(ln)
     }
 }

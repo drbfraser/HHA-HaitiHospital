@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 
 
 function DynamicForm() {
+    const [lang, setLang] = useState<string>('en')
     const { register, handleSubmit, reset, } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
@@ -37,7 +38,7 @@ function DynamicForm() {
         }
 
         getData();
-    }, [])
+    }, [i18n.language])
 
     useEffect(() => {
         sidePanelClick(sectionState);
@@ -46,9 +47,9 @@ function DynamicForm() {
     const elements = Object.values(formModel);
     const fields: any = elements[0];
 
-    function refreshPage() {
-        window.location.reload();
-    }
+    // function refreshPage() {
+    //     window.location.reload();
+    // }
 
     const onSubmit = async (data: any) => {
         var valid = submitValidation();
