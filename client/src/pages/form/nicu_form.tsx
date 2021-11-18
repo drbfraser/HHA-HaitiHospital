@@ -128,42 +128,43 @@ function DynamicForm() {
 
     const removeFormFields = (ID: any, idx: number) => {
         var inputGroup = document.getElementById("inputs" + ID).childNodes;
-        if (inputGroup.length > 1) {
-            for (let i = idx; i < inputGroup.length - 1; i++) {
-                var textInput1 = (inputGroup[i].childNodes[0].childNodes[0] as HTMLInputElement);
-                var textInput2 = (inputGroup[i + 1].childNodes[0].childNodes[0] as HTMLInputElement);
-                var valueInput1 = (inputGroup[i].childNodes[1].childNodes[0] as HTMLInputElement);
-                var valueInput2 = (inputGroup[i + 1].childNodes[1].childNodes[0] as HTMLInputElement);
 
-                textInput1.value = textInput2.value;
-                valueInput1.value = valueInput2.value;
-
-                textInput2.value = "";
-                valueInput2.value = "0";
-
-                if (textInput2.classList.contains("is-valid")) {
-                    makeValidity(textInput1, true, "");
-                } else if (textInput2.classList.contains("is-invalid")) {
-                    makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerHTML);
-                } else {
-                    removeValidity(textInput1);
-                }
-
-                if (valueInput2.classList.contains("is-valid")) {
-                    makeValidity(valueInput1, true, "");
-                } else if (valueInput2.classList.contains("is-invalid")) {
-                    makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerHTML);
-                } else {
-                    removeValidity(valueInput1);
-                }
+        for (let i = idx; i < inputGroup.length; i++) {
+            var textInput1 = (inputGroup[i].childNodes[0].childNodes[0] as HTMLInputElement);
+            var valueInput1 = (inputGroup[i].childNodes[1].childNodes[0] as HTMLInputElement);
+            
+            if (i == inputGroup.length - 1) {
+                textInput1.value = "";
+                valueInput1.value = "0";
+                continue;
             }
-        } else {
-            var textInput1 = (inputGroup[0].childNodes[0].childNodes[0] as HTMLInputElement);
-            var valueInput1 = (inputGroup[0].childNodes[1].childNodes[0] as HTMLInputElement);
 
-            textInput1.value = "";
-            valueInput1.value = "0";
+            var textInput2 = (inputGroup[i + 1].childNodes[0].childNodes[0] as HTMLInputElement);
+            var valueInput2 = (inputGroup[i + 1].childNodes[1].childNodes[0] as HTMLInputElement);
+
+            textInput1.value = textInput2.value;
+            valueInput1.value = valueInput2.value;
+
+            textInput2.value = "";
+            valueInput2.value = "0";
+
+            if (textInput2.classList.contains("is-valid")) {
+                makeValidity(textInput1, true, "");
+            } else if (textInput2.classList.contains("is-invalid")) {
+                makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerHTML);
+            } else {
+                removeValidity(textInput1);
+            }
+
+            if (valueInput2.classList.contains("is-valid")) {
+                makeValidity(valueInput1, true, "");
+            } else if (valueInput2.classList.contains("is-invalid")) {
+                makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerHTML);
+            } else {
+                removeValidity(valueInput1);
+            }
         }
+
 
         let newFormValues;
         if (ID === 30) {
