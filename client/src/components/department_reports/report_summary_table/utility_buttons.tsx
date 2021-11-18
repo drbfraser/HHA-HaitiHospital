@@ -1,57 +1,57 @@
-import React, {useState, useEffect} from 'react';
-
-import { TickObserver, TickList } from 'components/department_reports/report_summary_table/tick_list';
+import React from 'react';
 
 import {ElementStyleProps, ReportProps} from 'constants/interfaces';
+import Axios from 'axios'
 import {useTranslation} from "react-i18next";
 
 interface UtilityButtonsProps extends ElementStyleProps {
-  ticks: TickList;
-  reports: ReportProps[];
-  notifyTable: () => void;
+    tickTracker : {[rid: string]: boolean},
+    notifyTable() : void,
+}
+
+function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
+    const values = Object.values(tickTracker);
+    return values.includes(true);
 }
 
 
+async function delTickedReportFromDb(rid: string) {
+    let dbApiToDelRid = `/api/report/delete/${rid}`;
+    const res = await Axios.delete(dbApiToDelRid);
+}
+
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
-    const [showButtons, setShowButtons] = useState<boolean>(false);
 
-    let tickObserver: TickObserver = (tickList: TickList) => {
-        console.log("Del button notified ", tickList.isNoTicked());
-
-    if (tickList.isNoTicked() === true)
-        setShowButtons(false);
-    else
-        setShowButtons(true);
-    };
-
-    useEffect(() => {
-        props.ticks.registerObserver(tickObserver);
-        console.log("delete button registered");
-
-        return function unregisterObserver() {
-            props.ticks.unregisterObserver(tickObserver);
-        }
-    }, [])
+    function deleteReports(tickTracker: {[rid: string]: boolean}) {
+        // console.log("Delete ", tickTracker);
+        Object.keys(tickTracker).forEach((rid) => {
+            try {
+                if (tickTracker[rid] === true)
+                    delTickedReportFromDb(rid);
+            }
+            catch (err) {
+                console.log("Something wrong when delete report");
+            }
+        })
+        props.notifyTable();
+    }
 
     const {t, i18n} = useTranslation();
 
     return (
     <div>
-        {/* {(showButtons === true)? */}
-        {/* {(props.ticks.isNoTicked() === false) ? */}
+      {(isShown(props.tickTracker))?
         <div className="row justify-content-end">
             <div className="col-auto">
-            <button
-            className=""
-            onClick = {() => {
-                props.notifyTable();
-                window.location.reload();
-                // console.log(props.ticks);
-            }}
-            >
-                {t("departmentPageDelete")}
-            </button>
+                <button
+                    className=""
+                    onClick = {() => {
+                        deleteReports(props.tickTracker);
+                    }}
+                >
+                    Delete
+                </button>
             </div>
 
             <div className="col-auto">
@@ -59,12 +59,10 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
             </div>
         </div>
         :
-        <div>
-
-        </div>
-        {/* } */}
+        <div></div>
+      }
     </div>
-    );
+  );
 }
 
 export default UtilityButtons;

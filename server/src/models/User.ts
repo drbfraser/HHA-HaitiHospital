@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import { isValidUrl } from '../utils/utils';
+import { DepartmentName } from './Leaderboard';
 
 const { Schema } = mongoose;
 
@@ -16,6 +17,7 @@ export interface User extends Document {
   password: string;
   name: string;
   role: string;
+  department: DepartmentName;
   // bio: string;
   createdAt: Date;
   updatedAt: Date;
@@ -52,6 +54,7 @@ const userSchema = new Schema<User>(
     name: String,
     // avatar: String,
     role: { type: String, default: 'USER' },
+    department: { type: DepartmentName }
     // bio: String,
     // TODO: Remove the commented code when we confirm that this file works.
     // google
@@ -91,6 +94,7 @@ userSchema.methods.toJSON = function () {
     // avatar: avatar,
     name: this.name,
     role: this.role,
+    department: this.department,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
   };
