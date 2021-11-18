@@ -32,8 +32,8 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
             <main className="container">
                 <Header/>
 
-                <div className="my-3 p-2 bg-body rounded shadow-sm">
-                    <h5 className="pb-2 mb-3">Department Leader</h5>
+                <div className="my-3 p-2 bg-light rounded shadow-sm">
+                    <h5 className="pb-2 mb-3">Department Leaderboard</h5>
                         <table className="table">
                             <thead>
                                 <tr>
@@ -46,6 +46,13 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                             <tbody>
                                 {leaderboard.map((item, index) => (
                                 <tr key={item._id}>
+                                {/* <tr key={item._id}
+                                    className={`
+                                        ${index === 0 ? 'table-warning' : ''}
+                                        ${index === 1 ? 'table-secondary' : ''}
+                                        ${index === 2 ? 'table-danger' : ''}
+                                    `}
+                                > */}
                                     <th scope="row">{index + 1}</th>
                                     <td>
                                         {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
