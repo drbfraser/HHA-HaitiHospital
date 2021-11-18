@@ -32,7 +32,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <main className="container">
         <Header/>
         <div className="col-lg-3 col-md-4 col-sm-6 col-8">
-          <Link type="button" to="/caseStudyForm" className="btn btn-outline-dark">Add Case Study</Link>
+          <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">Add Case Study</button></Link>
         </div>
         
         <table className="table table-hover mt-3">
