@@ -19,6 +19,7 @@ import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
 import NotFound from 'pages/not_found/not_found';
+import MaternityForm from 'pages/form/maternity_form';
 
 const App = () => {
     useEffect(() => {
@@ -58,6 +59,7 @@ const App = () => {
         {/* @ts-ignore */}
         <Route path='/Department1NICU/detailed_report/edit/:id' exact component = {() => (<DepartmentReport edit={true}/>)} />
         <Route path="/NICUForm" component={NICUForm} />
+        <Route path="/maternityForm" component={MaternityForm} />
         {/*<Route path="/posts/:id" exact component={Post} />*/}
         <Route component={NotFound} />
         </Router>
