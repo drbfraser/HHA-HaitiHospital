@@ -33,14 +33,14 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                 <Header/>
 
                 <div className="my-3 p-2 bg-light rounded shadow-sm">
-                    <h5 className="pb-2 mb-3">Department Leaderboard</h5>
+                    <h5 className="mb-3">Department Leaderboard</h5>
                         <table className="table">
                             <thead>
                                 <tr>
                                     <th scope="col" style={{width: '10%'}}>Pos</th>
                                     <th scope="col" style={{width: '10%'}}></th>
                                     <th scope="col">Department</th>
-                                    <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th>
+                                    {/* <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th> */}
                                     <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell">Case Studies</th>
                                     <th scope="col">Points</th>
                                 </tr>
@@ -55,7 +55,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                         {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null}
                                     </td>
                                     <td>{item.name}</td>
-                                    <td className="d-none d-sm-table-cell">0</td>
+                                    {/* <td className="d-none d-sm-table-cell">0</td> */}
                                     <td className="d-none d-sm-table-cell">0</td>
                                     <td className="fw-bold">{item.points}</td>
                                 </tr>
