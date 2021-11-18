@@ -12,7 +12,8 @@ export enum DepartmentName {
 const departmentSchema = new Schema(
     {
         name: { type: DepartmentName, required: true },
-        points: { type: Number, required: true, default: 0 }
+        points: { type: Number, required: true, default: 0 },
+        nCaseStudies : { type: Number, require: true, default: 0 }
     },
     { timestamps: true },
 );
