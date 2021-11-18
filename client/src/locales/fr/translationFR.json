@@ -2,6 +2,7 @@
   "signInPleaseSignIn": "Veuillez vous connecter",
   "signInRememberMe": "Souviens-toi de moi",
   "signInSignIn": "S'identifier",
+  "signInInvalidLoginCredentials": "Authentification invalide",
 
   "sidebarHome": "D'accueil",
   "sidebarMessageBoard": "Tableau de bord",

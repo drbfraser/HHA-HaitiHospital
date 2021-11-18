@@ -2,6 +2,7 @@
   "signInPleaseSignIn": "Please sign in",
   "signInRememberMe": "Remember me",
   "signInSignIn": "Sign In",
+  "signInInvalidLoginCredentials": "Invalid login credentials",
 
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",

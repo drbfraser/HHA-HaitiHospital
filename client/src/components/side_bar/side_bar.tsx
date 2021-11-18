@@ -83,25 +83,25 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="nav-item">
                         <NavLink to="/Department1NICU" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-stack me-2"/>
+                            <i className="bi bi-brightness-high-fill me-2"/>
                             <span className="text text-light">NICU</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/Department2Maternity" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-stack me-2"/>
+                            <i className="bi bi-heart-fill me-2"/>
                             <span className="text text-light">Maternity</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/Department3Rehab" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-stack me-2"/>
+                            <i className="bi bi-bootstrap-reboot me-2"/>
                             <span className="text text-light">Rehab</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/Department4ComHealth" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-stack me-2"/>
+                            <i className="bi bi-headset me-2"/>
                             <span className="text text-light">Com & Health</span>
                         </NavLink>
                     </li>
@@ -117,7 +117,7 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="border-top my-2"/>
 
-                    <li className="btn-group-toggle" data-toggle="buttons">
+                    <li className="btn-group-toggle mt-5" data-toggle="buttons">
                         <button className="nav-link link-light"
                         onClick={changeLanguage("en")}>
                             <i className="bi bi-gear-fill me-2"/>
