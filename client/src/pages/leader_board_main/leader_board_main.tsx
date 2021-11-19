@@ -29,7 +29,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
         <div className={'leader-board-main '+(props.classes||'')}>
             <SideBar/>
 
-            <main className="container">
+            <main className="container-fluid">
                 <Header/>
 
                 <div className="my-3 p-2 bg-body rounded shadow-sm">

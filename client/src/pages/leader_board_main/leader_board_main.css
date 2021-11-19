@@ -1,4 +1,4 @@
-.leader-board-main .container {
+.leader-board-main .container-fluid {
     /* margin-left: 200px; */
     position: absolute;
     left: 200px;
@@ -7,7 +7,7 @@
 
 /*Margin by pixel:*/
 @media screen and ( max-width: 700px ){
-    .leader-board-main .container{
+    .leader-board-main .container-fluid {
         /* margin-left: 70px; */
         position: absolute;
         left: 70px;
