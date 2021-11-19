@@ -31,7 +31,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
       <main className="container">
         <Header/>
         <div className="ml-3 col-lg-2 col-md-3 col-sm-4 col-4">
-          <Link type="button" to="/caseStudyMain" className="btn btn-outline-dark">Back</Link>
+          <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
         </div>
         <div className="ml-3 mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.PatientStory) ? 
@@ -126,9 +126,11 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             </div>
           : null}
         </div>
-        <div className="ml-3 mb-5 col-lg-2 col-md-3 col-sm-4 col-4">
-          <Link type="button" to="/caseStudyMain" className="btn btn-outline-dark">Back</Link>
-        </div>
+        {caseStudy !== {} ?
+          <div className="ml-3 mb-5 col-lg-2 col-md-3 col-sm-4 col-4">
+            <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
+          </div>
+        : null}
       </main>
     </div>
   )

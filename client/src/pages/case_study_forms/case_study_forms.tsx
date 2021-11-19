@@ -61,7 +61,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <Header/>
 
         <div className="col-lg-2 col-md-3 col-sm-4 col-4">
-          <Link type="button" to="/caseStudyMain" className="btn btn-outline-dark">Back</Link>
+          <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
         </div>
 
         <div>
