@@ -4,13 +4,6 @@ import { useHistory } from 'react-router';
 import Axios from 'axios';
 import { ElementStyleProps, Message, emptyMessage } from 'constants/interfaces';
 
-const postMessage = (async (data) => {
-    await Axios.post('/api/messageboard/', data).then(res => {
-      console.log(res.data);
-    }).catch(error => {
-      console.error('Something went wrong!', error.response);
-    });
-})
 
 const getDepartmentId = (department: any) => {
     switch (department) {
@@ -33,6 +26,7 @@ const getDepartmentId = (department: any) => {
 
 interface MessageFormProps extends ElementStyleProps{
     optionalMsg? : Message, 
+    edit? : boolean,
 }
 
 function MessageForm(props: MessageFormProps) {
@@ -44,6 +38,22 @@ function MessageForm(props: MessageFormProps) {
     if (props.optionalMsg === undefined) {
         prefilledMsg = emptyMessage;
     }
+
+    const postMessage = (async (data) => {
+        let api ='';
+        if (props.edit === true) {
+            api = '/api/messageboard/';
+        }
+        else {
+            api = '/api/messageboard/';
+        }
+
+        await Axios.post(api, data).then(res => {
+          console.log(res.data);
+        }).catch(error => {
+          console.error('Something went wrong!', error.response);
+        });
+    })
 
     const history = useHistory();
 
