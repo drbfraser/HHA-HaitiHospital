@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link, useHistory } from 'react-router-dom';
 import { ElementStyleProps } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
@@ -49,13 +49,21 @@ function GetUsername() {
 const Header = (props: HeaderProps) => {
     const onLogOut = (event) => {
         logOutUser();
+        history.push("/login");
     };
+
+    const history = useHistory();
 
     const [userInfo, setUserInfo] = useState({} as any);
     const userUrl = '/api/users/me';
     const getUserInfo = async () => {
-        const res = await axios.get(userUrl);
-        setUserInfo(res.data);
+        try {
+            const res = await axios.get(userUrl);
+            setUserInfo(res.data);
+        } catch (err) {
+            console.log(err);
+            // history.push("/login");
+        }
     }
     
     useEffect(() => {
@@ -71,26 +79,33 @@ const Header = (props: HeaderProps) => {
                     <HeaderView/>
                 </div>
 
-                <div className="col-sm-auto col-md-auto col-lg-auto">
+                <div className="col-auto">
                     {/* <GetUsername/> */}
                     <div className="dropdown">
                         <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {userInfo.name}
+                            <span className="d-none d-sm-inline">{userInfo.name}</span>
                         </button>
-                        <ul className="dropdown-menu">
-                            <li><button className="dropdown-item" type="button">Action</button></li>
-                            <li><button className="dropdown-item" type="button">Another action</button></li>
-                            <li><button className="dropdown-item" type="button">Something else here</button></li>
+                        <ul className="dropdown-menu dropdown-menu-end">
+                            {/* <li><button className="dropdown-item disabled text-dark ">{userInfo.name}</button></li> */}
+                            <li><button className="dropdown-item disabled text-dark fw-bold">{'@' + userInfo.username}</button></li>
+                            <li><button className="dropdown-item disabled text-dark">{userInfo.role}</button></li>
+                            <li><button className="dropdown-item disabled text-dark">{userInfo.department}</button></li>
+                            <li><hr className="dropdown-divider"/></li>
+                            <li>
+                                {/* <Link to="/login" onClick={onLogOut} className="text-decoration-none"> */}
+                                    <button className="dropdown-item" type="button" onClick={onLogOut}>Log out</button>
+                                {/* </Link> */}
+                            </li>
                         </ul>
                     </div>
                 </div>
 
-                <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
+                {/* <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
                     <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact onClick={onLogOut}>
                         <i className="bi bi-door-open-fill me-2"/>
                         <span className="text text-dark">Sign Out</span>
                     </NavLink>
-                </div>
+                </div> */}
             </div>
         </div>
         )
