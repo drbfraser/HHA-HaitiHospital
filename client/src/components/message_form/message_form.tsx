@@ -11,51 +11,50 @@ const postMessage = (async (data) => {
     });
 })
 
+const getDepartmentId = (department: any) => {
+    switch (department) {
+    case 'NICUPaeds':
+        return 1;
+
+    case 'CommunityHealth':
+        return 2;
+
+    case 'Rehab':
+        return 3;
+
+    case 'Maternity':
+        return 4;
+
+    default:
+        return 0;
+    }
+}
+
+const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    // resolver: yupResolver(messageFormSchema)
+});
+
+const history = useHistory();
+
+const onSubmit = (data: any) => {
+    if (data.departmentName === "") {
+        alert("Must select a department");
+        return;
+    }
+
+    if (getDepartmentId(data.departmentName) !== 0) {
+        data.departmentId = getDepartmentId(data.departmentName);
+    }
+
+    data.date = Date();
+
+    postMessage(data);
+    // console.log(data);
+    reset();
+    history.push('/messageBoard')
+}
+
 function MessageForm() {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        // resolver: yupResolver(messageFormSchema)
-    });
-
-    const history = useHistory();
-
-    const getDepartmentId = (department: any) => {
-        switch (department) {
-        case 'NICUPaeds':
-            return 1;
-
-        case 'CommunityHealth':
-            return 2;
-
-        case 'Rehab':
-            return 3;
-
-        case 'Maternity':
-            return 4;
-
-        default:
-            return 0;
-        }
-    }
-
-    const onSubmit = (data: any) => {
-        if (data.departmentName === "") {
-            alert("Must select a department");
-            return;
-        }
-
-        if (getDepartmentId(data.departmentName) !== 0) {
-            data.departmentId = getDepartmentId(data.departmentName);
-        }
-
-        data.date = Date();
-
-        postMessage(data);
-        // console.log(data);
-        reset();
-        history.push('/messageBoard')
-    }
-
-
     return (
     <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
