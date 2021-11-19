@@ -54,10 +54,9 @@ router.get('/reseed', async (req, res) => {
 });
 
 router.get('/me', requireJwtAuth, async (req, res) => {
-  // const reqUser : any = req.user;
-  // const me : any = req.user.toJSON();
-  const me : any = JSON.parse(JSON.stringify(req.user));
-  res.json({ me });
+  // const me : any = JSON.parse(JSON.stringify(req.user));
+  // res.json({ me });
+  res.json(req.user);
 });
 
 // get one user, currently working
