@@ -8,7 +8,7 @@ import Sidebar from '../../components/side_bar/side_bar';
 import Header from 'components/header/header';
 
 import './add_message_styles.css'
-import MessageForm  from './message_form';
+import MessageForm  from '../../components/message_form/message_form';
 
 // Not sure what these are for
 

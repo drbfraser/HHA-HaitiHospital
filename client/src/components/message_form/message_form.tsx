@@ -30,32 +30,35 @@ const getDepartmentId = (department: any) => {
     }
 }
 
-const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    // resolver: yupResolver(messageFormSchema)
-});
-
-const history = useHistory();
-
-const onSubmit = (data: any) => {
-    if (data.departmentName === "") {
-        alert("Must select a department");
-        return;
-    }
-
-    if (getDepartmentId(data.departmentName) !== 0) {
-        data.departmentId = getDepartmentId(data.departmentName);
-    }
-
-    data.date = Date();
-
-    postMessage(data);
-    // console.log(data);
-    reset();
-    history.push('/messageBoard')
-}
 
 function MessageForm() {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        // resolver: yupResolver(messageFormSchema)
+    });
+
+    const history = useHistory();
+
+
+    const onSubmit = (data: any) => {
+        if (data.departmentName === "") {
+            alert("Must select a department");
+            return;
+        }
+    
+        if (getDepartmentId(data.departmentName) !== 0) {
+            data.departmentId = getDepartmentId(data.departmentName);
+        }
+    
+        data.date = Date();
+    
+        postMessage(data);
+        // console.log(data);
+        reset();
+        history.push('/messageBoard')
+    }
+
     return (
+
     <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
 
