@@ -23,3 +23,12 @@ type MessageEntry = string | number | boolean | MessageProps | MessageProps[];
 export interface MessageProps {
     [index : string] :  MessageEntry,
 }
+
+export interface Message {
+  deparmentId: Number;
+  departmentName: String;
+  authorId: Number;
+  date: Date;
+  messageBody: String;
+  messageHeader: String;
+}

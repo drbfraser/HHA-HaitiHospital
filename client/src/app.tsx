@@ -17,7 +17,7 @@ import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
-import AddMessage from 'components/message_form/message_form';
+import AddMessage from 'pages/add_message/add_message';
 import NotFound from 'pages/not_found/not_found';
 
 const App = () => {

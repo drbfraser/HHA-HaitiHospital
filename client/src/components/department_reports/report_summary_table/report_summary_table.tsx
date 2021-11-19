@@ -89,7 +89,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
                     key={index}
                     reportId = {report["_id"] as string}
                     lastUpdatedOn = {report["lastUpdatedOn"] as string}
-                    lastUpdatedBy = {report["lastUpdatedBy"] as number}
+                    lastUpdatedBy = {report["lastUpdatedByUserId"] as number}
                     isTicked = {tickTracker[report["_id"] as string]}
                     notifyTable = {tickRow}
                 />))
