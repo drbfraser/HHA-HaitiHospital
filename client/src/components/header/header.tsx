@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ElementStyleProps } from 'constants/interfaces';
-import { logOutUser } from '../../actions/authActions'
+import { logOutUser } from '../../actions/authActions';
+import axios from 'axios';
 
 // import {stringify} from "querystring";
 // import * as Routing from 'constants/routing';
@@ -49,6 +50,19 @@ const Header = (props: HeaderProps) => {
     const onLogOut = (event) => {
         logOutUser();
     };
+
+    const [userInfo, setUserInfo] = useState({} as any);
+    const userUrl = '/api/users/me';
+    const getUserInfo = async () => {
+        const res = await axios.get(userUrl);
+        setUserInfo(res.data);
+    }
+    
+    useEffect(() => {
+        getUserInfo();
+        console.log(userInfo);
+    }, [Object.keys(userInfo).length]);
+
     return (
         <div className={'header '+ (props.classes || '')}>
             <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
@@ -57,8 +71,18 @@ const Header = (props: HeaderProps) => {
                     <HeaderView/>
                 </div>
 
-                <div className="col-sm-auto col-md-auto col-lg-auto mt-2">
-                    <GetUsername/>
+                <div className="col-sm-auto col-md-auto col-lg-auto">
+                    {/* <GetUsername/> */}
+                    <div className="dropdown">
+                        <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {userInfo.name}
+                        </button>
+                        <ul className="dropdown-menu">
+                            <li><button className="dropdown-item" type="button">Action</button></li>
+                            <li><button className="dropdown-item" type="button">Another action</button></li>
+                            <li><button className="dropdown-item" type="button">Something else here</button></li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
