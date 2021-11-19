@@ -12,7 +12,7 @@ import Community from '../models/Community';
 export const seedDb = async () => {
   console.log('Seeding users...');
 
-  // await User.deleteMany({});
+  await User.deleteMany({});
   await User.collection.dropIndexes().catch(err => console.log(err));
   // await Message.deleteMany({});
   // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
