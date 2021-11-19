@@ -83,13 +83,25 @@ const Header = (props: HeaderProps) => {
                     {/* <GetUsername/> */}
                     <div className="dropdown">
                         <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span className="d-none d-sm-inline">{userInfo.name}</span>
+                            <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
                         </button>
                         <ul className="dropdown-menu dropdown-menu-end">
                             {/* <li><button className="dropdown-item disabled text-dark ">{userInfo.name}</button></li> */}
-                            <li><button className="dropdown-item disabled text-dark fw-bold">{'@' + userInfo.username}</button></li>
-                            <li><button className="dropdown-item disabled text-dark">{userInfo.role}</button></li>
-                            <li><button className="dropdown-item disabled text-dark">{userInfo.department}</button></li>
+                            <li>
+                                <button className="dropdown-item disabled text-dark">
+                                <i className="bi bi-person-fill"></i>{' @' + userInfo.username}
+                                </button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item disabled text-muted">
+                                <i className="bi bi-person-badge-fill"></i>{' ' + userInfo.role}
+                                </button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item disabled text-muted">
+                                <i className="bi bi-people-fill"></i>{' ' + userInfo.department}
+                                </button>
+                            </li>
                             <li><hr className="dropdown-divider"/></li>
                             <li>
                                 {/* <Link to="/login" onClick={onLogOut} className="text-decoration-none"> */}
