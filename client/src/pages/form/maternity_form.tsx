@@ -42,6 +42,8 @@ function MaternityForm() {
     }
 
     const onSubmit = async (data: any) => {
+        data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+        console.log(data);
         // var valid = submitValidation();
 
         // if (valid === true) {
@@ -88,27 +90,7 @@ function MaternityForm() {
 
                 setFormValuesComeFrom(newFormValuesComeFrom);
                 break;
-            case 'admissions.mainCondition.otherMedical':
-                let newFormValuesAdCond = [...formValuesAdCondition];
-                if (j === 0) {
-                    newFormValuesAdCond[i].name = e.target.value;
-                } else {
-                    newFormValuesAdCond[i].value = e.target.value;
-                }
-
-                setFormValuesAdCondition(newFormValuesAdCond);
-                break;
-            case 'numberOfOutPatients.mainCondition.otherMedical':
-                let newFormValuesOutCond = [...formValuesOutCondition];
-                if (j === 0) {
-                    newFormValuesOutCond[i].name = e.target.value;
-                } else {
-                    newFormValuesOutCond[i].value = e.target.value;
-                }
-
-                setFormValuesOutCondition(newFormValuesOutCond);
-                break;
-
+            
             default:
 
         }
@@ -274,6 +256,7 @@ function MaternityForm() {
                                         } else if (field.field_type === "table") {
                                             var count = [];
                                             var k = [];
+                                            var inputCount = 0;
                                             for (let i = 0; i < field.row_labels.length; i++) {
                                                 count.push(0);
                                                 k.push(0);
@@ -281,6 +264,8 @@ function MaternityForm() {
                                             ret.push(
                                                 <>
                                                     <table>
+                                                        <caption style={{captionSide:"top"}}><strong>{field.table_name}</strong></caption>
+                                                        
                                                         <tbody>
                                                             {/* COLUMNS */}
 
@@ -323,7 +308,29 @@ function MaternityForm() {
                                                                     })}
 
                                                                     {[...Array(field.total_cols)].map((e, j) => {
-                                                                        return <td><input type="number" /></td>
+                                                                        var rowLength = field.row_labels.length - 1;
+                                                                        var colLength = field.col_labels.length - 1;
+                                                                        if(field.invalid_inputs[inputCount][j] === 1){
+                                                                            if((j+1) % field.total_cols === 0){
+                                                                                inputCount++;
+                                                                            }
+                                                                            return <td></td>
+                                                                        }else{
+                                                                            const dataInput = (
+                                                                                <td>
+                                                                                    <input type="number" 
+                                                                                        {...register(field.subsection_label + "." + 
+                                                                                            inputCount + "." + j
+                                                                                        )}
+                                                                                    />
+                                                                                </td>
+                                                                            );
+                                                                            if((j+1) % field.total_cols === 0){
+                                                                                inputCount++;
+                                                                            }
+                                                                            return dataInput;
+                                                                        }
+
                                                                     })}
                                                                 </tr>
 
