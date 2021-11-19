@@ -62,7 +62,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </p>
 
                 <p className='d-md-flex lh-sm'>
-                    <Link className='align-self-center' to="#">
+                    <Link className='align-self-center' to={`messageBoard/edit/${props.msgJson["_id"]}`}>
                         <button 
                         type='button' 
                         className='btn btn-md btn-outline-secondary'>

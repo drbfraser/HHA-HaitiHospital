@@ -25,10 +25,19 @@ export interface MessageProps {
 }
 
 export interface Message {
-  deparmentId: Number;
-  departmentName: String;
-  authorId: Number;
+  departmentId: number;
+  departmentName: string;
+  authorId: number;
   date: Date;
-  messageBody: String;
-  messageHeader: String;
+  messageBody: string;
+  messageHeader: string;
+}
+
+export const emptyMessage : Message = {
+    messageBody: '',
+    messageHeader: '',
+    departmentId: 0,
+    departmentName: '',
+    authorId: 0,
+    date: new Date(),
 }

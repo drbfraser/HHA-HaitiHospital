@@ -19,6 +19,7 @@ import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'pages/add_message/add_message';
 import NotFound from 'pages/not_found/not_found';
+import EditMessage from 'pages/edit_message/edit_message';
 
 const App = () => {
     useEffect(() => {
@@ -51,6 +52,8 @@ const App = () => {
         <Route path='/caseStudyForm' exact component={CaseStudyForm} />
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
+        <Route path='/messageBoard/edit/:id' exact component = {EditMessage}/>
+
         {/* TODO: In the future nest addMessage route inside MessageBoard */}
         <Route path="/addMessage" component={AddMessage} />
         {/* @ts-ignore */}

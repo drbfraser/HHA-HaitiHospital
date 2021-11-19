@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import Axios from 'axios';
+import { ElementStyleProps, Message, emptyMessage } from 'constants/interfaces';
 
 const postMessage = (async (data) => {
     await Axios.post('/api/messageboard/', data).then(res => {
@@ -30,11 +31,19 @@ const getDepartmentId = (department: any) => {
     }
 }
 
+interface MessageFormProps extends ElementStyleProps{
+    optionalMsg? : Message, 
+}
 
-function MessageForm() {
+function MessageForm(props: MessageFormProps) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         // resolver: yupResolver(messageFormSchema)
     });
+
+    let prefilledMsg = props.optionalMsg;
+    if (props.optionalMsg === undefined) {
+        prefilledMsg = emptyMessage;
+    }
 
     const history = useHistory();
 
@@ -52,7 +61,6 @@ function MessageForm() {
         data.date = Date();
     
         postMessage(data);
-        // console.log(data);
         reset();
         history.push('/messageBoard')
     }
@@ -64,7 +72,9 @@ function MessageForm() {
 
             <div className="col-md-2 mb-3">
                 <label htmlFor="" className="form-label">User ID</label>
-                <input className="form-control" type="number" {...register("authorId")} />
+                <input className="form-control" 
+                type="number" 
+                {...register("authorId")} />
             </div>
 
             <div className="col-md-3 mb-3">
@@ -84,12 +94,18 @@ function MessageForm() {
 
         <div className="mb-3">
             <label htmlFor="" className="form-label">Title</label>
-            <input className="form-control" type="text" {...register("messageHeader")} />
+            <input className="form-control" type="text" {...register("messageHeader")} 
+            defaultValue = {prefilledMsg["messageHeader"]}/>
         </div>
 
         <div className="mb-3">
             <label htmlFor="" className="form-label">Body</label>
-            <textarea className="form-control" {...register("messageBody")} cols={30} rows={10}></textarea>
+            <textarea 
+                className="form-control" 
+                {...register("messageBody")} 
+                cols={30} rows={10}
+                defaultValue = {prefilledMsg["messageBody"]}>
+            </textarea>
         </div>
 
         <button className="btn btn-primary">Submit</button>

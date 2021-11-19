@@ -1,33 +1,21 @@
-import Axios from "axios";
+import Axios, { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router";
 
-import {Message} from 'constants/interfaces'
+import {emptyMessage, Message} from 'constants/interfaces'
 import Sidebar from "components/side_bar/side_bar";
 import Header from "components/header/header";
+import MessageForm from "components/message_form/message_form";
 
-function fetchMsg(id: string) : Message {
-    const response = fetchMsgFromDb(id);
-
-    const msg : Message = {
-        messageBody: response["messageBody"],
-        messageHeader: response["messageHeader"],
-        deparmentId: response["departmentId"],
-        departmentName: response['deparmentName'],
-        authorId: response['authorId'],
-        date: response['date'],
-    }
-
-    return msg;
-}
+import './edit_message_styles.css'
 
 async function fetchMsgFromDb(id: string) {
 
-    const api = `/message/${id}`;
+    const api = `/api/messageBoard/message/${id}`;
     try {
         const response = await Axios.get(api);
-        return response;
+        return response.data;
     }
     catch (err){
         console.log("Fetch msg from db failed: ",err);
@@ -41,20 +29,34 @@ const EditMessage = () => {
     const { id } = useParams<{id? : string}>();
     const [msg, setMsg] = useState<Message>({} as Message)
 
+    async function fetchMsg(id: string) {
+        const msgData = await fetchMsgFromDb(id);
+
+        const msg : Message = {
+            messageBody: msgData["messageBody"],
+            messageHeader: msgData["messageHeader"],
+            departmentId: msgData["departmentId"],
+            departmentName: msgData['deparmentName'],
+            authorId: msgData['authorId'],
+            date: msgData['date'],
+        }
+    
+        setMsg(msg);
+    }
+
     useEffect(() => {
-        const msg : Message = fetchMsg(id);
-        setMsg(msg)
+        fetchMsg(id);
     }, [])
 
     return (<>
-        <div className='edit_message'>
+        <div className='edit-message'>
             <Sidebar/>
 
             <main>
                 <Header/>
                 <div className="container">
                     <h1 className="">Edit Message</h1>
-                    
+                    <MessageForm optionalMsg = {msg}/>
                 </div>
             </main>
 
@@ -63,3 +65,5 @@ const EditMessage = () => {
     </>
     )
 }
+
+export default EditMessage;
