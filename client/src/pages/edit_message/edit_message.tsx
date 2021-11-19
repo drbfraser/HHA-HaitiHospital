@@ -56,7 +56,10 @@ const EditMessage = () => {
                 <Header/>
                 <div className="container">
                     <h1 className="">Edit Message</h1>
-                    <MessageForm optionalMsg = {msg}/>
+                    <MessageForm 
+                        optionalMsg = {msg}
+                        edit = {true}
+                    />
                 </div>
             </main>
 
