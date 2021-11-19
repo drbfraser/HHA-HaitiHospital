@@ -40,7 +40,7 @@ const Sidebar = (props: SidebarProps) => {
             {/*<div className='position-fixed d-flex flex-column flex-shrink-0 p-3 bg-dark' style={{width: 220}}>*/}
                 <div className="sidebar_logo">
                     <div className="text-center" style={{width: 190}}>
-                        <HhaLogo style={{width: 160}}/>
+                        <HhaLogo style={{width: 150}}/>
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="border-top my-2"/>
 
-                    <li className="btn-group-toggle mt-5" data-toggle="buttons">
+                    <li className="btn-group-toggle" data-toggle="buttons">
                         <button className="nav-link link-light"
                         onClick={changeLanguage("en")}>
                             <i className="bi bi-gear-fill me-2"/>

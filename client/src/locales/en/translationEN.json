@@ -1,8 +1,14 @@
 {
   "signInPleaseSignIn": "Please sign in",
+  "signInPleasePlaceHolderEmail": "Username",
+  "signInPleasePlaceHolderPassword": "Password",
   "signInRememberMe": "Remember me",
   "signInSignIn": "Sign In",
   "signInInvalidLoginCredentials": "Invalid login credentials",
+  "signInValidationMustBe2CharMini": "Must be 2 characters at minimum",
+  "signInValidationMustBe6CharMini": "Must be 6 characters at minimum",
+  "signInValidationMustBe20CharLess": "Must be 20 characters or less",
+  "signInValidationRequired": "Required",
 
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",

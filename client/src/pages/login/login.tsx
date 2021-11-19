@@ -2,13 +2,15 @@ import { RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from 'constants/interfaces';
 import { loginUser } from "../../actions/authActions";
 import { useFormik } from 'formik';
-import { loginSchema } from './validation';
+// import { loginSchema } from './validation';
+import * as Yup from "yup";
 import React from 'react';
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
 import {useTranslation} from "react-i18next";
 import {changeLanguage} from "../../components/side_bar/side_bar";
+
 
 interface LoginProps extends ElementStyleProps {
 };
@@ -21,6 +23,21 @@ function setUsername(name: string) {
 
 const Login = (props : LoginProps) => {
     const [errorMessage, setErrorMessage] = React.useState("");
+
+    const {t, i18n} = useTranslation();
+
+    // Moved the validation here to support the language translation feature
+    const loginSchema = Yup.object({
+        username: Yup.string()
+            // .email('Invalid email address')
+            .min(2, t("signInValidationMustBe2CharMini"))
+            .max(20, t("signInValidationMustBe20CharLess"))
+            .required(t("signInValidationRequired")),
+        password: Yup.string()
+            .min(6, t("signInValidationMustBe6CharMini"))
+            .max(20, t("signInValidationRequired"))
+            .required(t("signInValidationRequired")),
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -39,8 +56,6 @@ const Login = (props : LoginProps) => {
         },
     });
 
-    const {t, i18n} = useTranslation();
-
     return(
         <div className={'login '+ (props.classes||'')}>
             <form onSubmit={formik.handleSubmit}>
@@ -50,7 +65,7 @@ const Login = (props : LoginProps) => {
                 <div className="form-floating">
                     <input
                         id="username"
-                        placeholder="Username"
+                        placeholder={t("signInPleasePlaceHolderEmail")}
                         name="username"
                         type="text"
                         onChange={formik.handleChange}
@@ -62,10 +77,10 @@ const Login = (props : LoginProps) => {
                     <p className="error">{formik.errors.username}</p>
                 ) : null}
 
-                <div className="form-floating">
+                <div className="form-floating mt-2">
                     <input
                         id="password"
-                        placeholder="Password"
+                        placeholder={t("signInPleasePlaceHolderPassword")}
                         name="password"
                         type="password"
                         onChange={formik.handleChange}
@@ -77,16 +92,16 @@ const Login = (props : LoginProps) => {
                     <p className="error">{formik.errors.password}</p>
                 ) : null}
 
-                <div className="form-check form-switch">
+                <div className="form-check form-switch mt-1">
                     <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
                         <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
                             {t("signInRememberMe")}
                         </label>
                 </div>
 
-                {/*Temporarily link the sign in button directly to the homepage*/}
+
                 <button 
-                    className="w-100 btn btn-lg btn-primary"
+                    className="w-100 btn btn-lg btn-primary mt-3"
                     type="submit"
                 >{t("signInSignIn")}</button>
 
