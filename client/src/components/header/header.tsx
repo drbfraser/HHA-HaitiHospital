@@ -88,7 +88,7 @@ const Header = (props: HeaderProps) => {
                         <ul className="dropdown-menu dropdown-menu-end">
                             {/* <li><button className="dropdown-item disabled text-dark ">{userInfo.name}</button></li> */}
                             <li>
-                                <button className="dropdown-item disabled text-dark">
+                                <button className="dropdown-item disabled text-muted">
                                 <i className="bi bi-person-fill"></i>{' @' + userInfo.username}
                                 </button>
                             </li>
