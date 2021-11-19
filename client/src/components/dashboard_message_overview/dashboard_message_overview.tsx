@@ -31,55 +31,51 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
 
     return(
          <div className={'dashboard-message-overview '+ (props.classes||'')}>
-             <div className="my-3 p-3 bg-body rounded shadow-sm container-fluid">
 
-                 <h5 className="pb-2 mb-3">{t("dashboardMessageOverviewMessages")}</h5>
+             <h5 className="pb-2 mt-5 mb-1">{t("dashboardMessageOverviewMessages")}</h5>
 
-                 <table className="container-fluid">
+             <table className="table caption-top">
+                 {/*<caption className="pb-2 mb-3">{t("dashboardMessageOverviewMessages")}</caption>*/}
+
+                 <thead>
                      <tr>
-                         <thead className="d-flex border-bottom pb-2 mb-0 row">
-                             <th className="text-secondary col col-sm col-md-2 col-lg-2">{t("dashboardMessageOverviewTitle")}</th>
-                             <th className="text-secondary col col-sm col-md-2 col-lg-2">{t("dashboardMessageOverviewUser")}</th>
-                             <th className="text-secondary col col-sm col-md-3 col-lg-3">{t("dashboardMessageOverviewDate")}</th>
-                             <th className="text-secondary col-6 col-sm-6 col-md col-lg">{t("dashboardMessageOverviewMessage")}</th>
-                         </thead>
+                         <th scope="col">{t("dashboardMessageOverviewTitle")}</th>
+                         <th scope="col">{t("dashboardMessageOverviewUser")}</th>
+                         <th scope="col">{t("dashboardMessageOverviewDate")}</th>
+                         <th scope="col">{t("dashboardMessageOverviewMessage")}</th>
                      </tr>
+                 </thead>
 
-                     <tbody className="d-flex text-muted">
-                         <tr className="pb-3 mb-0 lh-sm w-100">{
-                             (message.map((message, index) => {
-                                     // Displaying top 3 messages
-                                     if (index <= 2) {
-                                         return(
-                                             <td key={index} className="d-flex mt-3 row border-bottom">
-                                                 <td className="text-dark col-md-2 text-break">
-                                                     {message.messageHeader}
-                                                 </td>
-                                                 <td className="text-dark col-md-2">
-                                                     {message.authorId}
-                                                 </td>
-                                                 <td className="text-dark col-md-3">
-                                                     {message.date}
-                                                 </td>
-                                                 <p className="flex-column text-dark small col text-break">
-                                                     {/*show first 70 character of message only*/}
-                                                     {message.messageBody.slice(0, 70)}...
-                                                 </p>
-                                             </td>
-                                         )
-                                     }
-                                 })
-                             )}
-                         </tr>
-                     </tbody>
+                 <tbody className="text-muted">
+                     {(message.map((message, index) => {
+                         // Displaying top 3 messages
+                         if (index <= 2) {
+                             return(
+                                 <tr>
+                                     <th scope="row" className="text-secondary text-break" key={index}>{message.messageHeader}</th>
+                                     <td className="text-secondary">
+                                         {message.authorId}
+                                     </td>
+                                     <td className="text-secondary">
+                                         {message.date}
+                                     </td>
+                                     <td className="text-secondary text-break">
+                                         {/*show first 70 character of message only*/}
+                                         {message.messageBody.slice(0, 70)}...
+                                     </td>
+                                 </tr>
+                                )
+                            }
+                         })
+                     )}
+                 </tbody>
+             </table>
 
-                     <small className="d-block text-end mt-1">
-                         <NavLink to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>
-                     </small>
-
-                 </table>
+             <NavLink className="btn btn-outline-secondary" to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>
+             {/*<small className="justify-content-end">*/}
+             {/*    <NavLink to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>*/}
+             {/*</small>*/}
              </div>
-         </div>
      )
 }
 
