@@ -126,8 +126,8 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
             </div>
           : null}
         </div>
-        {caseStudy !== {} ?
-          <div className="ml-3 mb-5 col-lg-2 col-md-3 col-sm-4 col-4">
+        {(caseStudy !== {} && document.documentElement.scrollHeight > window.innerHeight) ?
+          <div className="mb-5 col-lg-2 col-md-3 col-sm-4 col-4">
             <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
           </div>
         : null}
