@@ -53,10 +53,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
   }
 
   return (
-    <div className={'case-study-form '+ props.classes}>
+    <div className={"case-study-form "+ props.classes}>
       <SideBar/>
 
-      <main className="container">
+      <main className="container-fluid">
       {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
         <Header/>
 

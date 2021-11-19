@@ -27,9 +27,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
 
   return (
-    <div className={'case-study-main '+ props.classes}>
+    <div className={"case-study-main "+ props.classes}>
       <SideBar/>
-      <main className="container">
+      <main className="container-fluid">
         <Header/>
         <div className="col-lg-3 col-md-4 col-sm-6 col-8">
           <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">Add Case Study</button></Link>

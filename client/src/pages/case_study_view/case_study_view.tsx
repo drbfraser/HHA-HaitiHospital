@@ -26,14 +26,14 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
   }, [Object.keys(caseStudy).length]);
 
   return (
-    <div className={'case-study-main '+ props.classes}>
+    <div className={"case-study-main "+ props.classes}>
       <SideBar/>
-      <main className="container">
+      <main className="container-fluid">
         <Header/>
-        <div className="ml-3 col-lg-2 col-md-3 col-sm-4 col-4">
+        <div className="col-lg-2 col-md-3 col-sm-4 col-4">
           <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
         </div>
-        <div className="ml-3 mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
+        <div className="mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.PatientStory) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">Patient Story Case Study</h4>

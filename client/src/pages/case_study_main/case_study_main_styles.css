@@ -1,4 +1,4 @@
-.case-study-main .container {
+.case-study-main .container-fluid {
     position: absolute;
     left: 200px;
     width: calc(100% - 200px)
@@ -7,7 +7,7 @@
 
 /*Margin by pixel:*/
 @media screen and ( max-width: 700px ){
-    .case-study-main .container{
+    .case-study-main .container-fluid {
         /* margin-left: 70px; */
         position: absolute;
         left: 70px;
