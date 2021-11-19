@@ -60,16 +60,16 @@ const Header = (props: HeaderProps) => {
         <div className={'header '+ (props.classes || '')}>
             <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
 
-                <div className="col">
+                <div className="col-6">
                     <HeaderView/>
                 </div>
 
-                <div className="col-sm-auto col-md-auto col-lg-auto mt-2">
+                <div className="col text-end">
                     <GetUsername/>
                 </div>
 
-                <div className="col-3 col-3 col-sm-3 col-md-3 col-lg-3">
-                    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact onClick={onLogOut}>
+                <div className="col">
+                    <NavLink className="btn btn-outline-secondary mb-2" to="/login" exact onClick={onLogOut}>
                         <i className="bi bi-door-open-fill me-2"/>
                         <span className="text-dark">{t("headerSignOut")}</span>
                     </NavLink>

@@ -108,11 +108,12 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <label htmlFor="Case Study 1">{t("caseStudyFormCaseStudy/Story")}</label>
             <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">{t("caseStudyFormUploadImage")}</label>
-              {/*<div>*/}
-              {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-              {/*    <input id="files"  type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
-              {/*</div>*/}
-              <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
+            <div>
+                <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>
+                <input id="files" style={{visibility:"hidden"}} type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>
+            </div>
+            {/* we cannot change the default labels on buttons, they are hard-coded in browsers*/}
+              {/*<input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
               <div className="form-check">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
               <label className="form-check-label" htmlFor="invalidCheck1">{t("caseStudyFormPermissionToShare")}</label>
@@ -145,10 +146,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <label htmlFor="Case Study 2">{t("caseStudyFormCaseStudy/Story")}</label>
             <textarea className="form-control mb-2 mt-0" id="Case Study 2" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">{t("caseStudyFormUploadImage")}</label>
-              {/*<div>*/}
-              {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-              {/*    <input id="files" style={{visibility:"hidden"}} type="file"/>*/}
-              {/*</div>*/}
+            {/*<div>*/}
+            {/*  <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
+            {/*  <input id="files" style={{visibility:"hidden"}} type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
+            {/*</div>*/}
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
             <div className="form-check">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck2" required></input>
@@ -182,10 +183,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <label htmlFor="Case Study 3">{t("caseStudyFormCaseStudy/Story")}</label>
             <textarea className="form-control" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">{t("caseStudyFormUploadImage")}</label>
-              {/*<div>*/}
-              {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-              {/*    <input id="files" style={{visibility:"hidden"}} type="file"/>*/}
-              {/*</div>*/}
+            {/*<div>*/}
+            {/*  <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
+            {/*  <input id="files" style={{visibility:"hidden"}} type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
+            {/*</div>*/}
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
             <div className="form-check">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck3" required></input>
@@ -224,10 +225,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <label htmlFor="Case Study 4">{t("caseStudyFormCaseStudy/Story")}</label>
             <textarea className="form-control" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">{t("caseStudyFormUploadImage")}</label>
-              {/*<div>*/}
-              {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-              {/*    <input id="files" style={{visibility:"hidden"}} type="file"/>*/}
-              {/*</div>*/}
+            {/*<div>*/}
+            {/*  <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
+            {/*  <input id="files" style={{visibility:"hidden"}} type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
+            {/*</div>*/}
               <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
             <div className="form-check">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck4" required></input>
@@ -245,10 +246,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <label htmlFor="Case Study 5">{t("caseStudyFormCaseStudy/Story")}</label>
             <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">{t("caseStudyFormUploadImage")}</label>
-              {/*<div>*/}
-              {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-              {/*    <input id="files" style={{visibility:"hidden"}} type="file"/>*/}
-              {/*</div>*/}
+            {/*<div>*/}
+            {/*  <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
+            {/*  <input id="files" style={{visibility:"hidden"}} type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
+            {/*</div>*/}
               <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
             <div className="form-check">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
