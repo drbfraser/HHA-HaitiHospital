@@ -8,6 +8,7 @@ import maternityModel from './models/maternityModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './nicu_form_styles.css'
 import { spawn } from 'child_process';
+import { render } from '@testing-library/react';
 
 
 
@@ -15,9 +16,11 @@ function MaternityForm() {
     const { register, handleSubmit, reset, } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
-    const [formValuesAdCondition, setFormValuesAdCondition] = useState<{ name: any; value: any; }[]>([])
-    const [formValuesOutCondition, setFormValuesOutCondition] = useState<{ name: any; value: any; }[]>([])
     const [sectionState, setSectionState] = useState(0);
+    const [patientStateBefore, setPatientStateBefore] = useState(0);
+    const [patientStateAfter, setPatientStateAfter] = useState(0);
+    const [listState, setListState] = useState(1);
+
 
     const history = useHistory();
 
@@ -68,6 +71,66 @@ function MaternityForm() {
 
     }
 
+    const handleListInput = (ID: any, event: any) => {
+        console.log(ID);
+        switch (event.target.name) {
+            case "diedBefore48hr.patientList":
+                setPatientStateBefore(event.target.value);
+                console.log(event.target.value);
+                break;
+            case "diedAfter48hr.patientList":
+                break;
+            default:
+        }
+
+    }
+
+    const renderList = (state: any) => {
+        if (state > 0) {
+            return (
+                <>
+                    <div>
+                        <p>Patient# <input type="text" /> /{state}</p>
+                    </div>
+                    {[...Array(Number(state))].map((e, i) => (
+                        <div id={"patient" + (i + 1)}>
+                            <div>
+                                <label htmlFor="">Age</label>
+                                <input type="text" />
+                            </div>
+
+                            <div>
+                                <label htmlFor="">Cause of Death</label>
+                                <input type="text" />
+                            </div>
+                        </div>
+                    ))}
+
+
+                </>
+            )
+        }
+
+    }
+
+    const searchList = (event: any, state: any) => {
+        for (let i = 1; i < state; i++) {
+            if (i === event.target.value) {
+                continue;
+            }
+
+            document.getElementById("patient" + i)!.style.display = "none";
+        }
+    }
+
+    const clickPreviousList = () => {
+
+    }
+
+    const clickNextList = () => {
+
+    }
+
     const clickPrevious = () => {
         sidePanelClick(sectionState - 1);
         window.scrollTo(0, 0);
@@ -79,6 +142,7 @@ function MaternityForm() {
     }
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
+        console.log(ID);
         switch (ID) {
             case 'admissions.comeFrom.otherDepartments':
                 let newFormValuesComeFrom = [...formValuesComeFrom];
@@ -90,7 +154,7 @@ function MaternityForm() {
 
                 setFormValuesComeFrom(newFormValuesComeFrom);
                 break;
-            
+
             default:
 
         }
@@ -264,8 +328,8 @@ function MaternityForm() {
                                             ret.push(
                                                 <>
                                                     <table>
-                                                        <caption style={{captionSide:"top"}}><strong>{field.table_name}</strong></caption>
-                                                        
+                                                        <caption style={{ captionSide: "top" }}><strong>{field.table_name}</strong></caption>
+
                                                         <tbody>
                                                             {/* COLUMNS */}
 
@@ -296,7 +360,7 @@ function MaternityForm() {
                                                                             }
 
                                                                             return header;
-                                                                        }else{
+                                                                        } else {
                                                                             count[j]++;
 
                                                                             if (count[j] === field.row_spans[j][k[j]]) {
@@ -310,22 +374,22 @@ function MaternityForm() {
                                                                     {[...Array(field.total_cols)].map((e, j) => {
                                                                         var rowLength = field.row_labels.length - 1;
                                                                         var colLength = field.col_labels.length - 1;
-                                                                        if(field.invalid_inputs[inputCount][j] === 1){
-                                                                            if((j+1) % field.total_cols === 0){
+                                                                        if (field.invalid_inputs[inputCount][j] === 1) {
+                                                                            if ((j + 1) % field.total_cols === 0) {
                                                                                 inputCount++;
                                                                             }
                                                                             return <td></td>
-                                                                        }else{
+                                                                        } else {
                                                                             const dataInput = (
                                                                                 <td>
-                                                                                    <input type="number" 
-                                                                                        {...register(field.subsection_label + "." + 
+                                                                                    <input type="number"
+                                                                                        {...register(field.subsection_label + "." +
                                                                                             inputCount + "." + j
                                                                                         )}
                                                                                     />
                                                                                 </td>
                                                                             );
-                                                                            if((j+1) % field.total_cols === 0){
+                                                                            if ((j + 1) % field.total_cols === 0) {
                                                                                 inputCount++;
                                                                             }
                                                                             return dataInput;
@@ -340,6 +404,60 @@ function MaternityForm() {
 
                                                 </>
                                             )
+                                        } else if (field.field_type === "list") {
+                                            var patientState;
+                                            if (field.field_id === "diedBefore48hr.patientList") {
+                                                patientState = patientStateBefore;
+                                            } else if (field.field_id === "diedAfter48hr.patientList") {
+                                                patientState = patientStateAfter;
+                                            }
+
+                                            ret.push(
+                                                <>
+                                                    <div id={"input" + i} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                                        <span className="align-middle">{i}. {field.field_label}</span>
+                                                    </div>
+                                                    <div id={"inputs" + i} className="col-sm-2">
+                                                        <input type="text" className="form-control" placeholder=""
+                                                            {...register(field.field_id)}
+                                                            // onBlur={() => inputValidation(i)}
+                                                            onChange={(event) => handleListInput(field.field_id, event)}
+                                                        />
+                                                        <div className="invalid-feedback">
+                                                            Requires a valid number
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    {renderList(patientState)}
+
+                                                </>
+                                            )
+                                            // if (field.field_id === "diedBefore48hr.patientList") {
+                                            //     ret.push(
+                                            //         <>
+                                            //             <div id={"input" + i} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                            //                 <span className="align-middle">{i}. {field.field_label}</span>
+                                            //             </div>
+                                            //             <div id={"inputs" + i} className="col-sm-2">
+                                            //                 <input type="text" className="form-control" placeholder=""
+                                            //                     {...register(field.field_id)}
+                                            //                     // onBlur={() => inputValidation(i)}
+                                            //                     onChange={(event) => handleListInput(field.field_id, event)}
+                                            //                 />
+                                            //                 <div className="invalid-feedback">
+                                            //                     Requires a valid number
+                                            //                 </div>
+                                            //             </div>
+
+                                            //             {renderList(patientStateBefore)}
+
+                                            //         </>
+                                            //     )
+                                            // }
+
+
                                         }
 
                                     }

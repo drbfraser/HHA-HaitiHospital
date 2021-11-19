@@ -41,7 +41,7 @@ function DynamicForm() {
     }
 
     const onSubmit = async (data: any) => {
-        var valid = submitValidation();
+        var valid = true; //submitValidation();
 
         if (valid === true) {
 
@@ -55,7 +55,7 @@ function DynamicForm() {
                 console.error('Something went wrong!', error.response);
             });
 
-            //console.log(data);
+            console.log(data);
             history.push("/Department1NICU");
         } else {
             console.log(valid);
