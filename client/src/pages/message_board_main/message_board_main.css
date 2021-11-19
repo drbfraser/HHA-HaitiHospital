@@ -1,4 +1,4 @@
-.message-board-main .container {
+.message-board-main .container-fluid {
     /* margin-left: 200px; */
     position: absolute;
     left: 200px;
@@ -7,10 +7,10 @@
 
 /*Margin by pixel:*/
 @media screen and ( max-width: 700px ){
-    .message-board-main .container{
+    .message-board-main .container-fluid {
         /* margin-left: 70px; */
         position: absolute;
-        left: 200px;
-        width: calc(100% - 200px)
+        left: 70px;
+        width: calc(100% - 70px)
     }
 }
