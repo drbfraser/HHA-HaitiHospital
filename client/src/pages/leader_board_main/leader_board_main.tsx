@@ -34,6 +34,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
 
                 <div className="my-3 p-2 bg-body rounded shadow-sm">
                     <h5 className="mb-3">Department Leaderboard</h5>
+                    <div className="table-responsive">
                         <table className="table">
                             <thead>
                                 <tr>
@@ -62,6 +63,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
                     {/* <div className="d-block text-end mt-1">
                         <div className="d-flex pb-1 mb-0 row">
                             <i className="text-warning mx-1 col-1 col-sm-1 col-md-1 col-lg-1 bi bi-trophy-fill"/>
