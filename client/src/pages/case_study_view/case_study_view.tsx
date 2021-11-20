@@ -30,7 +30,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
       <SideBar/>
       <main className="container-fluid">
         <Header/>
-        <div className="col-lg-2 col-md-3 col-sm-4 col-4">
+        <div className="ml-3 d-flex justify-content-start">
           <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
         </div>
         <div className="mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
@@ -127,7 +127,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           : null}
         </div>
         {(caseStudy !== {} && document.documentElement.scrollHeight > window.innerHeight) ?
-          <div className="mb-5 col-lg-2 col-md-3 col-sm-4 col-4">
+          <div className="ml-3 mb-5 d-flex justify-content-start">
             <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
           </div>
         : null}

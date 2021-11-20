@@ -31,7 +31,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <SideBar/>
       <main className="container-fluid">
         <Header/>
-        <div className="col-lg-3 col-md-4 col-sm-6 col-8">
+        <div className="d-flex justify-content-start">
           <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">Add Case Study</button></Link>
         </div>
         
