@@ -25,7 +25,7 @@ export const DepartmentOne = (props : DepartmentProps) => {
   return (
     <div className={getClassName(props.classes)}>
         <SideBar/>
-        <main className="container">
+        <main className="container-fluid main-region">
             <Header/>
 
             <div className="mt-3">

@@ -24,7 +24,7 @@ export const MessageBoardMain = ( props : MessageBoardMainProps) => {
         <div className={getClassName(props.classes)}>
             <SideBar/>
 
-            <main className='container-fluid'>
+            <main className='container-fluid main-region'>
                 <Header/>
 
                 <MessagePanel/>
