@@ -70,7 +70,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                     </tbody>
                 </table>
                 <div className="d-flex justify-content-end">
-                    <Link to="leaderboard"><button type="button" className="btn btn-success btn-block col-auto">See full leaderboard</button></Link>
+                    <Link to="leaderboard"><button type="button" className="btn btn-warning btn-block col-auto">See full leaderboard</button></Link>
                 </div>
             </div>
 
