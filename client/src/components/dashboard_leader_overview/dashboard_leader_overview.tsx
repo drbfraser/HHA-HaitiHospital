@@ -37,7 +37,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
     return(
         <div className={'dashboard-leader-overview '+ (props.classes||'')}>
             <div className="my-3 p-2 bg-body rounded shadow-sm">
-                <h5 className="mb-3">Department Leaderboard</h5>
+                <h5 className="mb-3">Top Department on Leaderboard</h5>
                 <table className="table">
                     <thead>
                         <tr>
@@ -70,7 +70,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                     </tbody>
                 </table>
                 <div className="d-flex justify-content-end">
-                    <Link to="leaderboard"><button type="button" className="btn btn-outline-dark btn-block col-auto btn-sm">See full leaderboard</button></Link>
+                    <Link to="leaderboard"><button type="button" className="btn btn-outline-dark btn-block col-auto">See full leaderboard</button></Link>
                 </div>
             </div>
 
