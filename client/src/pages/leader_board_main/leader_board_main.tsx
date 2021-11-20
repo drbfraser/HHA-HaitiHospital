@@ -37,7 +37,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                 <Header/>
 
                 <div className="my-3 p-2 bg-body rounded shadow-sm">
-                    <h5 className="mb-3">Department Leaderboard</h5>
+                    <h5 className="mb-3">{t("leaderBoardDepartmentLeaderboard")}</h5>
                     <div className="table-responsive">
                         <table className="table">
                             <thead>
@@ -46,8 +46,8 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                     <th scope="col" style={{width: '10%'}} className="text-center"></th>
                                     <th scope="col" className="text-center">{t("leaderBoardDepartment")}</th>
                                     {/* <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th> */}
-                                    <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell text-center">Case Studies</th>
-                                    <th scope="col" className="text-center">Points</th>
+                                    <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell text-center">{t("leaderBoardCase Studies")}</th>
+                                    <th scope="col" className="text-center">{t("leaderBoardPoints")}</th>
                                 </tr>
                             </thead>
                             <tbody>
