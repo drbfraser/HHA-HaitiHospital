@@ -35,31 +35,32 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">Add Case Study</button></Link>
         </div>
         
-        <table className="table table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Case Study Type</th>
-              <th scope="col">Author</th>
-              <th scope="col">Created</th>
-              <th scope="col">Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              caseStudies.map((item, index) => (
-                <tr key={item._id}>
-                  <th scope="row">{index}</th>
-                  <td>{item.caseStudyType}</td>
-                  <td>{item.user ? item.user.name : "[deleted]"}</td>
-                  <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                  <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">View Case Study</Link></td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-
+        <div className="table-responsive">
+          <table className="table table-hover mt-3">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Case Study Type</th>
+                <th scope="col">Author</th>
+                <th scope="col">Created</th>
+                <th scope="col">Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                caseStudies.map((item, index) => (
+                  <tr key={item._id}>
+                    <th scope="row">{index}</th>
+                    <td>{item.caseStudyType}</td>
+                    <td>{item.user ? item.user.name : "[deleted]"}</td>
+                    <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                    <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">View Case Study</Link></td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
       </main>
     </div>
   );
