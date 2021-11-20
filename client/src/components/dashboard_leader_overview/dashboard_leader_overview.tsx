@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 // import { useState, useEffect } from 'react';
 // import { LeaderProps } from 'constants/interfaces';
-// import Axios from 'axios';
+import axios from 'axios';
 import Collapsible from "../collapsible/collapsible";
+import { Link } from 'react-router-dom';
 
 interface DashboardLeaderProps extends ElementStyleProps {
     // leader :LeaderProps[],
@@ -15,18 +16,64 @@ interface DashboardLeaderProps extends ElementStyleProps {
 // })
 
 const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
-    // const [ leader, setLeader ] = useState([]);
-    //
-    // useEffect(() => {
-    //     const leaderFromServer = fetchLeader();
-    //     leaderFromServer.then(val => {
-    //         setLeader(val.data);
-    //     })
-    // }, [])
+    
+    const [leaderboard, setLeaderboard] = useState([]);
+    const urlLeaderboard = '/api/leaderboard';
+    const getLeaderboard = async () => {
+        try {
+            const res = await axios.get(urlLeaderboard);
+            setLeaderboard(res.data);
+            console.log(leaderboard);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        getLeaderboard();
+    }, [leaderboard.length]);
 
 
     return(
         <div className={'dashboard-leader-overview '+ (props.classes||'')}>
+            <div className="my-3 p-2 bg-body rounded shadow-sm">
+                <h5 className="mb-3">Department Leaderboard</h5>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style={{width: '5%'}} className="text-center">Position</th>
+                            <th scope="col" style={{width: '10%'}} className="text-center"></th>
+                            <th scope="col" className="text-center">Department</th>
+                            {/* <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th> */}
+                            <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell text-center">Case Studies</th>
+                            <th scope="col" className="text-center">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {leaderboard.map((item, index) => (
+                        index === 0 ?
+                            <tr key={item._id} className={`${index === 0 ? "table-warning": ""}`}>
+                                <th scope="row" className="text-center">{index + 1}</th>
+                                <td className="text-center">
+                                    {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
+                                    {/* {index === 1 ? <i className="text-secondary bi-trophy-fill"/> : null} */}
+                                    {/* {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null} */}
+                                </td>
+                                <td className="text-center">{item.name}</td>
+                                {/* <td className="d-none d-sm-table-cell">0</td> */}
+                                <td className="d-none d-sm-table-cell text-center">{item.nCaseStudies}</td>
+                                <td className="fw-bold text-center">{item.points}</td>
+                            </tr>
+                        : null
+                        ))
+                        }
+                    </tbody>
+                </table>
+                <div className="d-flex justify-content-end">
+                    <Link to="leaderboard"><button type="button" className="btn btn-outline-dark btn-block col-auto btn-sm">See full leaderboard</button></Link>
+                </div>
+            </div>
+
             {/*option 1: show four departments */}
 
             {/*<div className="my-3 p-2 bg-body rounded shadow-sm">*/}
@@ -70,7 +117,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
 
             {/*option 2: show leader only but could show top four by collapsible*/}
 
-            <div className="my-3 p-2 bg-body rounded shadow-sm">
+            {/* <div className="my-3 p-2 bg-body rounded shadow-sm">
                 <h5 className="pb-2 mb-3">Department Leader</h5>
 
                 <div className="d-block text-end mt-1">
@@ -113,7 +160,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                             <h6 className="text-info col-1 col-sm-1 col-md-1 col-lg-1">69</h6>
                         </div>
                     </Collapsible>
-                </div>
+                </div> */}
 
 
                 {/*// this part is a Placeholder Components for leader overview in the further*/}
@@ -140,7 +187,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                 {/*        })*/}
                 {/*    )}*/}
                 {/*</div>*/}
-            </div>
+            {/* </div> */}
         </div>
     )
 }
