@@ -71,7 +71,12 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                  </tbody>
              </table>
 
-             <NavLink className="btn btn-outline-secondary" to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>
+             <div className="d-flex justify-content-end">
+                 <NavLink to="/messageBoard"><button type="button" className="btn btn-secondary btn-block col-auto">See more messages</button></NavLink>
+             </div>
+
+             {/*<NavLink className="btn btn-outline-secondary" to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>*/}
+
              {/*<small className="justify-content-end">*/}
              {/*    <NavLink to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>*/}
              {/*</small>*/}
