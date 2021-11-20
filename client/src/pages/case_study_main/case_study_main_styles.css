@@ -1,8 +1,8 @@
 .case-study-main .container {
+    /* margin-left: 200px; */
     position: absolute;
     left: 200px;
     width: calc(100% - 200px)
-    /* margin-left: 200px; */
 }
 
 /*Margin by pixel:*/

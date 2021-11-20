@@ -16,7 +16,7 @@ export const DepartmentFour = (props : DepartmentProps) => {
     return (
         <div className={'department-four ' + props.classes}>
             <SideBar/>
-            <main className="container">
+            <main className="container-fluid main-region">
                 <Header/>
 
                 {/*<h1 style={{color:"white",backgroundColor: '#87EDF3', fontFamily:'sans-serif'}}>Department of NICU/PAED</h1>*/}
