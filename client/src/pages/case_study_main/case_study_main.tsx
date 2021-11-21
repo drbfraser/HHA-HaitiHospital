@@ -43,10 +43,10 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Case Study Type</th>
-                <th scope="col">Author</th>
-                <th scope="col">Created</th>
-                <th scope="col">Link</th>
+                <th scope="col">{t("caseStudyMainCaseStudyType")}</th>
+                <th scope="col">{t("caseStudyMainAuthor")}</th>
+                <th scope="col">{t("caseStudyMainCreated")}</th>
+                <th scope="col">{t("caseStudyMainLink")}</th>
               </tr>
             </thead>
             <tbody>

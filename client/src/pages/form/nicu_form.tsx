@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 
 
 function DynamicForm() {
-    const [lang, setLang] = useState<string>('en')
     const { register, handleSubmit, reset, } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
@@ -24,14 +23,13 @@ function DynamicForm() {
 
     const {t, i18n} = useTranslation();
 
-
     useEffect(() => {
         const getData = async () => {
             // await setFormModel(nicuJSON[0]);
             if (i18n.language === 'fr') {
-                setFormModel(nicuJSONFr[0]);
+                await setFormModel(nicuJSONFr[0]);
             } else {
-                setFormModel(nicuJSON[0]);
+                await setFormModel(nicuJSON[0]);
             }
 
             setSectionState(0);

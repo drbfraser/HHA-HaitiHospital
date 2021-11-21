@@ -68,6 +68,11 @@
   "leaderBoardLastUpdate": "Dernière mise à jour il y a 3 jours",
 
   "caseStudyMainAddCaseStudy": "Ajouter une étude de cas",
+  "caseStudyMainCaseStudyType": "Type d'étude de cas",
+  "caseStudyMainAuthor": "Auteur",
+  "caseStudyMainCreated": "Créé",
+  "caseStudyMainLink": "Relier",
+  "caseStudyMainViewCaseStudy": "Voir l'étude de cas",
 
   "caseStudyFormBack":"Arrière",
   "caseStudyFormCaseStudyOptions":"Options d'étude de cas",

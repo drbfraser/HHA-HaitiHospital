@@ -68,6 +68,11 @@
   "leaderBoardLastUpdate": "Last updated 3 days ago",
 
   "caseStudyMainAddCaseStudy": "Add Case Study",
+  "caseStudyMainCaseStudyType": "Case Study Type",
+  "caseStudyMainAuthor": "Author",
+  "caseStudyMainCreated": "Created",
+  "caseStudyMainLink": "Link",
+  "caseStudyMainViewCaseStudy": "View Case Study",
 
   "caseStudyFormBack":"Back",
   "caseStudyFormCaseStudyOptions":"Case Study Options",
