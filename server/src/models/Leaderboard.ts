@@ -3,16 +3,17 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export enum DepartmentName {
-    NicuPaeds = "NICU_PAEDS",
-    Maternity = "MATERNITY",
-    Rehab = "REHAB",
-    CommunityHealth = "COMMUNITY_HEALTH",
+    NicuPaeds = "NICU/Paeds",
+    Maternity = "Maternity",
+    Rehab = "Rehab",
+    CommunityHealth = "Community & Health",
 }
 
 const departmentSchema = new Schema(
     {
         name: { type: DepartmentName, required: true },
-        points: { type: Number, required: true, default: 0 }
+        points: { type: Number, required: true, default: 0 },
+        nCaseStudies : { type: Number, require: true, default: 0 }
     },
     { timestamps: true },
 );

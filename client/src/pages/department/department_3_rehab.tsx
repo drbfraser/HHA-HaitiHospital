@@ -16,7 +16,7 @@ export const DepartmentThree = (props : DepartmentProps) => {
     return (
         <div className={'department-three ' + props.classes}>
             <SideBar/>
-            <main className="container">
+            <main className="container-fluid main-region">
                 <Header/>
 
                 {/*<Link className="submit_data_button" to={"/NICUForm"} >Submit Data</Link>*/}
