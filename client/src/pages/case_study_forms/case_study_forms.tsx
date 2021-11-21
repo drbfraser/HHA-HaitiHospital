@@ -63,8 +63,9 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <Header/>
 
         <div className="ml-3 mb-3 d-flex justify-content-start">
-          <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark"></button>{t("caseStudyFormBack")}</Link>
+          <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">{t("caseStudyFormBack")}</button></Link>
         </div>
+
 
         <div>
           <form>
@@ -251,7 +252,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         </form>
         
         <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"} col-md-6`} role="alert" ref={failureMessageRef}>
-          An error occurred during the submission. Please try again.
+          {t("caseStudyFormAnErrorOccurred")}
         </div>
 
       </main>

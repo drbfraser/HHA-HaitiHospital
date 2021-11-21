@@ -119,6 +119,7 @@
   "caseStudyFormWhatDoesThisNewEquipmentDo":"What does this new equipment do?",
 
   "caseStudyFormOtherStoryCaseStudy":"Other Story Case Study",
+  "caseStudyFormAnErrorOccurred":"An error occurred during the submission. Please try again.",
 
   "departmentPageNICU/PAED": "Department of NICU/PAED",
   "departmentPageSubmitDate": "Submit Data",
@@ -152,13 +153,10 @@
   "departmentFormInputValidationPositiveNumberOnly" : "Positive numbers only",
   "departmentFormInputValidationIntegersOnly" : "Integers only",
 
-
   "departmentReportDisplayDepartmentNICU": "Department of NICU/Paediatrics",
   "departmentReportDisplayNoReportFound": "No report found",
   "departmentReportDisplaySave": "Save",
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
   "departmentReportDisplayBack": "Back"
-
-
 }

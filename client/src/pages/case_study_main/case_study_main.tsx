@@ -57,7 +57,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{item.caseStudyType}</td>
                     <td>{item.user ? item.user.name : "[deleted]"}</td>
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                    <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">View Case Study</Link></td>
+                    <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy")}</Link></td>
                   </tr>
                 ))
               }
