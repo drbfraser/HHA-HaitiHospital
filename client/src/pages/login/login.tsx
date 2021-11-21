@@ -99,40 +99,33 @@ const Login = (props : LoginProps) => {
                         </label>
                 </div>
 
-
                 <button 
                     className="w-100 btn btn-lg btn-primary mt-3"
                     type="submit"
                 >{t("signInSignIn")}</button>
 
                 {errorMessage && <div className="error"> {errorMessage} </div>}
-
-                <div className="row mt-5">
-                    <div className="col">
-                        <button className="w-100 btn btn-lg btn-danger"
-                                onClick={changeLanguage("en")}>
-                            <i className="bi bi-gear-fill me-2"/>
-                            <span className="text text-light">{t("sidebarEnglish")}</span>
-                        </button>
-                    </div>
-
-                    <div className="col">
-                        <button className="w-100 btn btn-lg btn-danger" id="fc"
-                                onClick={changeLanguage("fr")}>
-                            <i className="bi bi-gear me-2"/>
-                            <span className="text text-light">{t("sidebarFrench")}</span>
-                        </button>
-                    </div>
-                </div>
-
-
-                <label className="mt-3 mb-3 text-muted">&copy; 2021-2022</label>
-
-
             </form>
 
+            <div className="row mt-5">
+                <div className="col">
+                    <button className="w-100 btn btn-lg btn-danger"
+                            onClick={changeLanguage("en")}>
+                        <i className="bi bi-gear-fill me-2"/>
+                        <span className="text text-light">{t("sidebarEnglish")}</span>
+                    </button>
+                </div>
 
+                <div className="col">
+                    <button className="w-100 btn btn-lg btn-danger" id="fc"
+                            onClick={changeLanguage("fr")}>
+                        <i className="bi bi-gear me-2"/>
+                        <span className="text text-light">{t("sidebarFrench")}</span>
+                    </button>
+                </div>
+            </div>
 
+            <label className="mt-3 mb-3 text-muted d-flex justify-content-center">&copy; 2021-2022</label>
         </div>
     );
 }

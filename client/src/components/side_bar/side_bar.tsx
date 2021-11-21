@@ -6,6 +6,7 @@ import './side_bar.css';
 
 import { useTranslation } from 'react-i18next';
 import i18n from "i18next";
+import Button from "../button/button";
 
 // import { SidebarData } from './side_bar_data';
 
@@ -20,6 +21,7 @@ export const changeLanguage = (ln) => {
         i18n.changeLanguage(ln)
     }
 }
+
 
 const Sidebar = (props: SidebarProps) => {
     // const location = useLocation();
@@ -131,6 +133,7 @@ const Sidebar = (props: SidebarProps) => {
                             <span className="text text-light">{t("sidebarFrench")}</span>
                         </button>
                     </li>
+
                 </ul>
 
                 {/*<ul className='nav-menu-items'>*/}
