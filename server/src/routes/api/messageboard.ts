@@ -82,4 +82,15 @@ router.route('/:messageId').put((req: any, res: any) => {
         .catch(err => res.status(400).json('Edit message failed: ' + err));
 })
 
+// delete message id
+router.delete('/:id', async (req, res) => {
+    try {
+        MessageBody.findByIdAndRemove(req.params.id)
+            .then(data => res.json(data))
+            .catch(err => res.status(400).json('Failed to delete: ' + err));
+    } catch (err) {
+        res.status(500).json({ message: 'Something went wrong.' });
+    }
+});
+
 export = router;

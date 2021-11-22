@@ -20,9 +20,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     }
 
     async function deleteMessageFromDb(msgId: string) : Promise<boolean> {
-        const deleteMsgApi = '';
+        const deleteMsgApi = `/api/messageboard/${msgId}`;
         try {
-            // const response = await Axios.get(deleteMsgApi);
+            const response = await Axios.delete(deleteMsgApi);
             return true; 
         }
         catch (err: any) {
