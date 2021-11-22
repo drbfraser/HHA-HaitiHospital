@@ -30,6 +30,7 @@ const App = () => {
 							path={route.path}
 							component={route.component}
 							isPrivate={route.isPrivate}
+              rolesRequired={route.rolesRequired}
 						/>
 					))}
 				</Switch>

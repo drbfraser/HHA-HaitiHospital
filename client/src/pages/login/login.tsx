@@ -19,11 +19,9 @@ function setUsername(name: string) {
 }
 
 const Login = (props : LoginProps) => {
-    // const [errorMessage] = React.useState("");
     const dispatch = useAuthDispatch();
     // @ts-ignore
     const { loading, errorMessage } = useAuthState();
-
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -31,13 +29,6 @@ const Login = (props : LoginProps) => {
         },
         validationSchema: loginSchema,
         onSubmit: (values) => {
-            // loginUser(values).then((res: any) => {
-            //     setUsername(res.data.user.name);
-            //     props.history.push("./home");
-            // }).catch(err => {
-            //     setErrorMessage('Invalid login credentials');
-            //     console.log("error with logging in: ", err);
-            // });
             try {
                 loginUser(dispatch, values).then((res: any) => {
                     if (!res.success) return;

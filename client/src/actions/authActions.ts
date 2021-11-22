@@ -17,11 +17,10 @@ export async function loginUser (dispatch, formData: FormData) {
         }
 
         dispatch({ type: 'LOGIN_ERROR', error: data.errors[0] });
-        console.log(data.errors[0]);
         return;
     } catch (error) {
         dispatch({ type: 'LOGIN_ERROR', error: error });
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -31,6 +30,7 @@ export async function logOutUser (dispatch) {
         deleteAllCookies();
         localStorage.removeItem('currentUser');
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
     }).catch(error => {
         console.error("Error with logging out", error)
     });
