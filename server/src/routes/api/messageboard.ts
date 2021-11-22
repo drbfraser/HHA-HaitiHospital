@@ -34,13 +34,13 @@ router.route('/').post(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: Request,
     //TODO: replace messageHeader with Document Type 
     const messageHeader: String = req.body.messageHeader;
     // @ts-ignore
-    // const name: String = req.user.name;
+    const name: String = req.user.name;
     
     const messageEntry = new MessageBody({
         departmentId,
         departmentName,
         authorId,
-        // name,
+        name,
         date, 
         messageBody,
         messageHeader
@@ -52,7 +52,7 @@ router.route('/').post(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: Request,
 });
 
 //make the changes to message of id reportID
-router.route('/:messageId').put((req: any, res: any) => {
+router.route('/:messageId').put(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: any, res: any) => {
 
     let dateTime: Date = new Date();
     const departmentId: Number = <Number>req.body.departmentId;
@@ -63,13 +63,13 @@ router.route('/:messageId').put((req: any, res: any) => {
     //TODO: replace messageHeader with Document Type 
     const messageHeader: String = req.body.messageHeader;
     // @ts-ignore
-    // const name: String = req.user.name;
+    const name: String = req.user.name;
 
     const updatedMessage = {
         departmentId,
         departmentName,
         authorId,
-        // name,
+        name,
         date,
         messageBody,
         messageHeader   
@@ -83,7 +83,7 @@ router.route('/:messageId').put((req: any, res: any) => {
 })
 
 // delete message id
-router.delete('/:id', async (req, res) => {
+router.route('/:id').delete(requireJwtAuth, checkIsInRole(ROLES.Admin), (req:Request, res: Response) => {
     try {
         MessageBody.findByIdAndRemove(req.params.id)
             .then(data => res.json(data))

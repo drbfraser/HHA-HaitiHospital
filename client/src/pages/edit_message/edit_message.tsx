@@ -48,6 +48,21 @@ const EditMessage = () => {
         fetchMsg(id);
     }, [])
 
+    const updateMessage = async (data) => {
+        const api = `api/messageboard/${id}`;
+        try {
+            let response = await Axios.put(api, data);
+            alert('success');
+        }
+        catch (e) {
+            if (e.response.status === 401)
+                alert("update message failed: unauthorized");
+            else 
+                alert("update message failed");
+            console.log("update message failed ", e.response.status);
+        }
+    }
+
     return (<>
         <div className='edit-message'>
             <Sidebar/>
@@ -59,6 +74,7 @@ const EditMessage = () => {
                     <MessageForm 
                         optionalMsg = {msg}
                         edit = {true}
+                        submitAction = {updateMessage}
                     />
                 </div>
             </main>

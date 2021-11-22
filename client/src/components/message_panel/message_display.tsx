@@ -43,7 +43,8 @@ const MessageDisplay = (props: MessageDisplayProps) => {
 
             {/* Author Id, Deparment, Date */}
             <div className="d-md-flex justify-content-between text-gray-dark">
-                <p><strong className="text-gray-dark">@{props.msgJson.authorId}</strong></p>
+                <p><strong className="text-gray-dark">@{
+                (props.msgJson as Json).name}</strong></p>
                 <p><strong className="lh-sm">
                    {props.msgJson.departmentName}
                 </strong></p>

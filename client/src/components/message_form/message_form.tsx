@@ -41,12 +41,18 @@ function MessageForm(props: MessageFormProps) {
 
     const postMessage = (async (data) => {
         const api = '/api/messageboard/';
+    try {
+        let response = await Axios.post(api, data);
+        alert('success');
 
-        await Axios.post(api, data).then(res => {
-          console.log(res.data);
-        }).catch(error => {
-          console.error('Something went wrong!', error.response);
-        });
+    }
+    catch (e) {
+        if (e.response.status === 401)
+            alert("update message failed: unauthorized");
+        else 
+            alert("update message failed");
+        console.log("update message failed ", e.response.status);
+    }
     })
 
     const {id} = useParams<{id? : string}>();
@@ -54,9 +60,14 @@ function MessageForm(props: MessageFormProps) {
         const api = `api/messageboard/${id}`;
         try {
             let response = await Axios.put(api, data);
+            alert('success');
         }
         catch (e) {
-            console.log('update message went wrong ', e.response);
+            if (e.response.status === 401)
+                alert("update message failed: unauthorized");
+            else 
+                alert("update message failed");
+            console.log("update message failed ", e.response.status);
         }
     }
 
@@ -74,10 +85,10 @@ function MessageForm(props: MessageFormProps) {
         }
     
         data.date = Date();
-        if (props.edit === false)
-            postMessage(data);
-        else
+        if (props.edit === true)
             updateMessage(data);
+        else
+            postMessage(data);
         reset();
         history.push('/messageBoard')
     }
