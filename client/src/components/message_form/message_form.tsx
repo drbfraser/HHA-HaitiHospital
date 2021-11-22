@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import Axios from 'axios';
 import { ElementStyleProps, Message, emptyMessage } from 'constants/interfaces';
 
@@ -40,13 +40,7 @@ function MessageForm(props: MessageFormProps) {
     }
 
     const postMessage = (async (data) => {
-        let api ='';
-        if (props.edit === true) {
-            api = '/api/messageboard/';
-        }
-        else {
-            api = '/api/messageboard/';
-        }
+        const api = '/api/messageboard/';
 
         await Axios.post(api, data).then(res => {
           console.log(res.data);
@@ -54,6 +48,17 @@ function MessageForm(props: MessageFormProps) {
           console.error('Something went wrong!', error.response);
         });
     })
+
+    const {id} = useParams<{id? : string}>();
+    const updateMessage = async (data) => {
+        const api = `api/messageboard/${id}`;
+        try {
+            let response = await Axios.put(api, data);
+        }
+        catch (e) {
+            console.log('update message went wrong ', e.response);
+        }
+    }
 
     const history = useHistory();
 
@@ -69,8 +74,10 @@ function MessageForm(props: MessageFormProps) {
         }
     
         data.date = Date();
-    
-        postMessage(data);
+        if (props.edit === false)
+            postMessage(data);
+        else
+            updateMessage(data);
         reset();
         history.push('/messageBoard')
     }

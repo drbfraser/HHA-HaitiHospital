@@ -29,26 +29,57 @@ router.route('/').post(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: Request,
     const departmentId: Number = <Number>req.body.departmentId;
     const departmentName: String = req.body.departmentName;
     const authorId: Number = <Number>req.body.authorId;
-    const date: Date = dateTime
+    const date: Date = dateTime;
     const messageBody: String = req.body.messageBody;
     //TODO: replace messageHeader with Document Type 
     const messageHeader: String = req.body.messageHeader;
     // @ts-ignore
-    const name: String = req.user.name;
+    // const name: String = req.user.name;
     
     const messageEntry = new MessageBody({
         departmentId,
         departmentName,
         authorId,
-        name,
-        date,
+        // name,
+        date, 
         messageBody,
         messageHeader
     });
     
     messageEntry.save()
         .then(() => res.json("Message has been successfully posted"))
-        .catch(err => res.status(400).json('Message did not successfully post: ' + err));
+        .catch(err => res.status(400).json('Message did not successfully post: ' + err));  
 });
+
+//make the changes to message of id reportID
+router.route('/:messageId').put((req: any, res: any) => {
+
+    let dateTime: Date = new Date();
+    const departmentId: Number = <Number>req.body.departmentId;
+    const departmentName: String = req.body.departmentName;
+    const authorId: Number = <Number>req.body.authorId;
+    const date: Date = dateTime;
+    const messageBody: String = req.body.messageBody;
+    //TODO: replace messageHeader with Document Type 
+    const messageHeader: String = req.body.messageHeader;
+    // @ts-ignore
+    // const name: String = req.user.name;
+
+    const updatedMessage = {
+        departmentId,
+        departmentName,
+        authorId,
+        // name,
+        date,
+        messageBody,
+        messageHeader   
+    }
+
+    Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
+    
+    return MessageBody.findByIdAndUpdate({_id: req.params.messageId}, updatedMessage, {new:true})
+        .then(message => res.json(message))
+        .catch(err => res.status(400).json('Edit message failed: ' + err));
+})
 
 export = router;

@@ -31,6 +31,8 @@ const MessageDisplay = (props: MessageDisplayProps) => {
         }
     }  
 
+    let readableDate = new Date(props.msgJson.date as string).toDateString();
+
     return (
     <div className="d-flex text-muted pt-2">
         {/* Profile pic */}
@@ -46,7 +48,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                    {props.msgJson.departmentName}
                 </strong></p>
                 <p><strong className="lh-sm">
-                    {props.msgJson.date}
+                    {readableDate}
                 </strong></p>
             </div>
 
