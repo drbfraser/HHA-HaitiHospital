@@ -312,48 +312,56 @@
 
             {
                 "subsection_label" : "Main Condition of Patient",
-                "field_id" : "admissions.mainCondition.uncomplicatedLabourCSection",
-                "field_label": "Uncomplicated labour / C-section",
+                "field_id" : "admissions.mainCondition.",
+                "field_label": "",
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 1
             },
 
             {
-                "field_id" : "admissions.mainCondition.heartFailure",
-                "field_label": "Heart failure",
+                "field_id" : "admissions.mainCondition.",
+                "field_label": "",
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 1
             },
 
             {
-                "field_id" : "admissions.mainCondition.preEclampsia",
-                "field_label": "Pre-eclampsia",
+                "field_id" : "admissions.mainCondition.",
+                "field_label": "",
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 1
             },
 
             {
-                "field_id" : "admissions.mainCondition.respiratoryProblems",
-                "field_label": "Respiratory problems",
+                "field_id" : "admissions.mainCondition.",
+                "field_label": "",
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 1
             },
 
             {
-                "field_id" : "admissions.mainCondition.cSectionSiteInfection",
-                "field_label": "C-section site infection",
+                "field_id" : "admissions.mainCondition.",
+                "field_label": "",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+            
+            {
+                "field_id" : "admissions.mainCondition.",
+                "field_label": "",
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 1
             },
 
             {
-                "field_id" : "admissions.mainCondition.trauma",
-                "field_label": "Trauma",
+                "field_id" : "admissions.mainCondition.otherTrauma",
+                "field_label": "Other trauma",
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 1
