@@ -42,8 +42,12 @@ function HeaderView() {
 
 function GetUsername() {
     let username = localStorage.getItem('username')
-    // let name = (username as any).replace(/['"]+/g, '')
-    let name = "default";
+    let name = '';
+    if (username) {
+        name = (username as any).replace(/['"]+/g, '')
+    } else {
+        name = 'default';
+    }
     return <h6> { name }</h6>
 }
 

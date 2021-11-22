@@ -15,6 +15,7 @@ interface LoginProps extends ElementStyleProps {
 interface LoginProps extends RouteComponentProps {}
 
 function setUsername(name: string) {
+    console.log(name)
     localStorage.setItem('username', JSON.stringify(name));
 }
 
