@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { RouteComponentProps} from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { RouteComponentProps, Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
@@ -25,6 +25,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const { register: register4, handleSubmit: handleSubmit4, reset: reset4 } = useForm<CaseStudyModel>({});
   const { register: register5, handleSubmit: handleSubmit5, reset: reset5 } = useForm<CaseStudyModel>({});
 
+  const failureMessageRef = useRef(null); 
+
   const onSubmit = (data: any) => {
     data.caseStudyType = formOption;
     var formData = new FormData();
@@ -41,26 +43,25 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       reset4({});
       reset5({});
       setSelectedFile(null);
-      setSubmissionStatus("success");
+      props.history.push("/caseStudyMain");
     }).catch(error =>{
       console.error('Something went wrong!', error.message);
       setSubmissionStatus("failure");
+      failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     });
 
   }
 
   return (
-    <div className={'case-study-form '+ props.classes}>
+    <div className={"case-study-form "+ props.classes}>
       <SideBar/>
 
-      <main className="container">
+      <main className="container-fluid">
       {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
         <Header/>
 
-        <div className="col-md-4">
-          <button type="button" className="btn btn-primary btn-md" onClick={() => {
-            props.history.push("/caseStudyMain");
-          }}>Back</button>
+        <div className="ml-3 mb-3 d-flex justify-content-start">
+          <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">Back</button></Link>
         </div>
 
         <div>
@@ -106,7 +107,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <textarea className="form-control mb-2 mt-0" id="Case Study 1" required {...register("patientStory.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
               <label className="form-check-label" htmlFor="invalidCheck1"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -138,7 +139,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <textarea className="form-control mb-2 mt-0" id="Case Study 2" required {...register2("staffRecognition.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck2" required></input>
               <label className="form-check-label" htmlFor="invalidCheck2"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -161,16 +162,16 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               </div>
             </div>
             <label htmlFor="Train Who">Who conducted training?</label>
-            <input className="form-control" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}></input>
+            <input className="form-control mb-2" type="text" id="Train Who" required {...register3("trainingSession.whoConducted", {required: true})}></input>
             <label htmlFor="Who attended">Who attended the training?</label>
-            <textarea className="form-control" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Who attended" required {...register3("trainingSession.whoAttended", {required: true})}></textarea>
             <label htmlFor="How train">How will the training benefit HCBH and its staff?</label>
-            <textarea className="form-control" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="How train" required {...register3("trainingSession.benefitsFromTraining", {required: true})}></textarea>
             <label htmlFor="Case Study 3">Case Study/Story</label>
-            <textarea className="form-control" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Case Study 3" required {...register3("trainingSession.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck3" required></input>
               <label className="form-check-label" htmlFor="invalidCheck3"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -203,12 +204,12 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               </div>
             </div>
             <label htmlFor="Equipment Purpose">What does this new equipment do?</label>
-            <textarea className="form-control" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Equipment Purpose" required {...register4("equipmentReceived.whatDoesEquipmentDo", {required: true})}></textarea>
             <label htmlFor="Case Study 4">Case Study/Story</label>
-            <textarea className="form-control" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
+            <textarea className="form-control mb-2" id="Case Study 4" required {...register4("equipmentReceived.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck4" required></input>
               <label className="form-check-label" htmlFor="invalidCheck4"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -225,7 +226,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             <textarea className="form-control mb-2 mt-0" placeholder="Case Study/Story" id="Case Study 5" required {...register5("otherStory.caseStudyStory", {required: true})}></textarea>
             <label className="form-label">Upload Image</label>
             <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
-            <div className="form-check">
+            <div className="form-check mt-2 mb-2">
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck5" required></input>
               <label className="form-check-label" htmlFor="invalidCheck5"> This person has given permission to share their story and photo in HHA communications, including online platforms</label>
             </div>
@@ -236,10 +237,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         </div>
         </form>
         
-        <div className={`alert alert-success ${submissionStatus === "success" ? "d-block" : "d-none"}`} role="alert">
-          The form has been successfully submitted!
-        </div>
-        <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"}`} role="alert">
+        <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"} col-md-6`} role="alert" ref={failureMessageRef}>
           An error occurred during the submission. Please try again.
         </div>
 
@@ -248,26 +246,3 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     </div>
   );
 };
-
-
-
-//
-//                 <button className="caseTwo-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-// onChange={(val) => setForm(this.value)}
-//                 <button className="caseOne-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-//                 <button className="case-study-more-button"
-//                         onClick={() => {props.history.push("/caseStudyMain");}}>
-//                 </button>
-// function setForm(value: any) {
-
- //              if(value == "form1"){
-   //                    document.getElementById('form1')!.style.display = 'hidden';
-     //                  }
-       //        else if (value == "form2"){
-
-         //              }
-           //}

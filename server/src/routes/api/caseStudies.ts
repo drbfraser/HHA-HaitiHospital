@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        CaseStudy.find()
+        CaseStudy.find().populate('user')
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to get case studies: ' + err));
     } catch (err) {
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        CaseStudy.findById(req.params.id)
+        CaseStudy.findById(req.params.id).populate('user')
             .then(data => res.json(data))
             .catch(err => res.status(400).json('Failed to get case study: ' + err));
     } catch (err) {
@@ -65,7 +65,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', upload.single("file"), async (req : Request, res : Response, next : NextFunction) => {
+router.put('/:id', [requireJwtAuth, upload.single("file")], async (req : Request, res : Response, next : NextFunction) => {
     try {
         const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
         const oldCaseStudy = await CaseStudy.findById(req.params.id);
