@@ -33,6 +33,20 @@ The Directory can be split into client and serverside. Here are a few important 
 
 ## Build/Dependencies Initialization and Run Instructions
 
+### Prequisites
+- We assume Node has already been installed
+    - If not, download and install here: https://nodejs.org/en/download/
+
+### Database Setup
+- Assuming you do not have MongoDB set up on your computer, follow the instructions to set it up
+    - For MacOS, follow the instructions from this link:
+        - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/
+    - For Windows:
+        - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+- (Recommended)
+    - Download MongoDB Compass to view database records:
+        - https://www.mongodb.com/try/download/compass
+
 ### Server Setup
 - navigate into into /server folder from the root directory
 - run the following:
@@ -63,3 +77,28 @@ $ npm start
     - Role: User
         - Username: user3
         - Password: 123456789
+
+
+### FAQ
+- Question: I'm getting the following error when I first set run the server:
+    ```
+    MongoError: ns not found test.users
+        at MessageStream.messageHandler (/Users/felixlin/workspace/prj/server/node_modules/mongodb/lib/cmap/connection.js:299:20)
+        at MessageStream.emit (node:events:390:28)
+        at processIncomingData (/Users/felixlin/workspace/prj/server/node_modules/mongodb/lib/cmap/message_stream.js:144:12)
+        at MessageStream._write (/Users/felixlin/workspace/prj/server/node_modules/mongodb/lib/cmap/message_stream.js:42:5)
+        at writeOrBuffer (node:internal/streams/writable:390:12)
+        at _write (node:internal/streams/writable:331:10)
+        at MessageStream.Writable.write (node:internal/streams/writable:335:10)
+        at Socket.ondata (node:internal/streams/readable:777:22)
+        at Socket.emit (node:events:390:28)
+        at addChunk (node:internal/streams/readable:324:12)
+        at readableAddChunk (node:internal/streams/readable:297:9)
+        at Socket.Readable.push (node:internal/streams/readable:234:10)
+        at TCP.onStreamRead (node:internal/stream_base_commons:199:23) {
+            ok: 0,
+            code: 26,
+            codeName: 'NamespaceNotFound'
+        }
+    ```
+    Answer: Don't worry, just ignore it and run 'npm run dev-start' again and it will go away.
