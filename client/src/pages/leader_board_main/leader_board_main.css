@@ -1,11 +1,17 @@
-.leader-board-main .container {
-    margin-left: 200px;
+.leader-board-main .main-region {
+    /* margin-left: 200px; */
+    position: absolute;
+    left: 200px;
+    width: calc(100% - 200px)
 }
 
 /*Margin by pixel:*/
 @media screen and ( max-width: 700px ){
-    .leader-board-main .container{
-        margin-left: 70px;
+    .leader-board-main .main-region {
+        /* margin-left: 70px; */
+        position: absolute;
+        left: 70px;
+        width: calc(100% - 70px)
     }
 }
 

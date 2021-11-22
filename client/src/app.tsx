@@ -12,6 +12,7 @@ import { DepartmentThree} from "pages/department/department_3_rehab";
 import { DepartmentFour} from "pages/department/department_4_comhealth";
 import { CaseStudyMain} from "pages/case_study_main/case_study_main";
 import { CaseStudyForm } from 'pages/case_study_forms/case_study_forms';
+import { CaseStudyView } from 'pages/case_study_view/case_study_view';
 import { DepartmentMain} from "pages/department/department_main";
 import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/departmentMain" exact component={DepartmentMain} />
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
         <Route path='/caseStudyForm' exact component={CaseStudyForm} />
+        <Route path='/caseStudyView/:id' exact component={CaseStudyView} />
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
         {/* TODO: In the future nest addMessage route inside MessageBoard */}
