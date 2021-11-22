@@ -42,6 +42,7 @@ const Login = (props : LoginProps) => {
                 loginUser(dispatch, values).then((res: any) => {
                     if (!res.success) return;
                     setUsername(res.user.name);
+                    console.log(res.user.name)
                     props.history.push('/home');
                 }).catch(error => {
                     console.log("Error with logging in: ", error);
