@@ -15,7 +15,6 @@ interface LoginProps extends ElementStyleProps {
 interface LoginProps extends RouteComponentProps {}
 
 function setUsername(name: string) {
-    console.log(name)
     localStorage.setItem('username', JSON.stringify(name));
 }
 
@@ -43,7 +42,6 @@ const Login = (props : LoginProps) => {
                 loginUser(dispatch, values).then((res: any) => {
                     if (!res.success) return;
                     setUsername(res.user.name);
-                    console.log(res.user.name)
                     props.history.push('/home');
                 }).catch(error => {
                     console.log("Error with logging in: ", error);

@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import { ElementStyleProps } from "../../constants/interfaces";
-import './side_bar.css'
+import './side_bar.css';
+import { useAuthState } from 'Context';
 // import { SidebarData } from './side_bar_data';
 
 // import 'bootstrap/dist/css/bootstrap.css';
@@ -14,6 +15,12 @@ const Sidebar = (props: SidebarProps) => {
     // const location = useLocation();
     // const { pathname } = location;
     // const splitLocation = pathname.split("/");
+    const userDetails = useAuthState();
+    let isAdmin = false;
+    if (userDetails.userDetails.role === 'ADMIN') {
+        isAdmin = true;
+    }
+
     function getClassName() {
         if (props.classes === undefined) 
             return "Sidebar";
@@ -94,13 +101,22 @@ const Sidebar = (props: SidebarProps) => {
                     </li>
 
                     <li className="border-top my-2"/>
-
-                    <li>
+                    {
+                        isAdmin ? (                 
+                                <li>
+                                <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-person-badge-fill me-2"/>
+                                    <span className="text text-light">Admin</span>
+                                </NavLink>
+                                </li>
+                            ) : (<div></div>)
+                    }
+                    {/* <li>
                         <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-person-badge-fill me-2"/>
                             <span className="text text-light">Admin</span>
                         </NavLink>
-                    </li>
+                    </li> */}
                     {/*<li>*/}
                     {/*    <NavLink to="/" className="nav-link link-light" exact activeClassName="active">*/}
                     {/*        <i className="bi bi-gear-fill me-2"/>*/}

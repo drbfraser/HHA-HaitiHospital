@@ -101,12 +101,12 @@ const routes = [
         path: '/*',
         component: NotFound,
         isPrivate: false,
-        },
+    },
     {
         path: '/',
         component: Login,
         isPrivate: false,
-        },
+    },
 ];
 
 export default routes;
