@@ -56,7 +56,7 @@ const Sidebar = (props: SidebarProps) => {
                     <li>
                         <NavLink to="/leaderBoard" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-bar-chart-fill me-2"/>
-                            <span className="text text-light">Leader Board</span>
+                            <span className="text text-light">Leaderboard</span>
                         </NavLink>
                     </li>
                     <li>
