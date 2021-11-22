@@ -1,9 +1,9 @@
 export enum CaseStudyOptions {
-    PatientStory = "PATIENT_STORY",
-    StaffRecognition = "STAFF_RECOGNITION",
-    TrainingSession = "TRAINING_SESSION",
-    EquipmentReceived = "EQUIPMENT_RECEIVED",
-    OtherStory = "OTHER_STORY",
+    PatientStory = "Patient Story",
+    StaffRecognition = "Staff Recognition",
+    TrainingSession = "Training Session",
+    EquipmentReceived = "Equipment Received",
+    OtherStory = "Other Story",
 }
 
 interface PatientStory {
