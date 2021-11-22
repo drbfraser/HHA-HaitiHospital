@@ -33,14 +33,14 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                  <h5 className="pb-2 mb-3">Message Board</h5>
 
                  <table className="container-fluid">
-                     <tr>
-                         <thead className="d-flex border-bottom pb-2 mb-0 row">
+                     <thead>
+                         <tr className="d-flex border-bottom pb-2 mb-0 row">
                              <th className="text-secondary col col-sm col-md-2 col-lg-2">Title</th>
                              <th className="text-secondary col col-sm col-md-2 col-lg-2">User</th>
                              <th className="text-secondary col col-sm col-md-3 col-lg-3">Date</th>
                              <th className="text-secondary col-6 col-sm-6 col-md col-lg">Message</th>
-                         </thead>
-                     </tr>
+                         </tr>
+                     </thead>
 
                      <tbody className="d-flex text-muted">
                          <tr className="pb-3 mb-0 lh-sm w-100">{
@@ -49,15 +49,15 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                                      if (index <= 2) {
                                          return(
                                              <td key={index} className="d-flex mt-3 row border-bottom">
-                                                 <td className="text-dark col-md-2 text-break">
+                                                 <p className="text-dark col-md-2 text-break">
                                                      {message.messageHeader}
-                                                 </td>
-                                                 <td className="text-dark col-md-2">
+                                                 </p>
+                                                 <p className="text-dark col-md-2">
                                                      {message.authorId}
-                                                 </td>
-                                                 <td className="text-dark col-md-3">
+                                                 </p>
+                                                 <p className="text-dark col-md-3">
                                                      {message.date}
-                                                 </td>
+                                                 </p>
                                                  <p className="flex-column text-dark small col text-break">
                                                      {/*show first 70 character of message only*/}
                                                      {message.messageBody.slice(0, 70)}...
@@ -70,11 +70,10 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                          </tr>
                      </tbody>
 
-                     <small className="d-block text-end mt-1">
+                 </table>
+                 <small className="d-block text-end mt-1">
                          <NavLink to="/messageBoard">See More</NavLink>
                      </small>
-
-                 </table>
              </div>
          </div>
      )
