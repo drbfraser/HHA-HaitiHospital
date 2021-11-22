@@ -38,7 +38,8 @@ export const AuthReducer = (initialState, action) => {
       return {
         ...initialState,
         loading: false,
-        errorMessage: action.error
+        // TODO: Potentially change the message sent back from the backend to be more user friendly than dev friendly
+        errorMessage: action.error.toJSON().message + " Invalid login"
       };
 
     default:
