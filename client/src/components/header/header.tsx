@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, Link, useHistory } from 'react-router-dom';
-import { ElementStyleProps } from 'constants/interfaces';
+import { ElementStyleProps, User } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
 
@@ -56,7 +56,7 @@ const Header = (props: HeaderProps) => {
 
     const history = useHistory();
 
-    const [userInfo, setUserInfo] = useState({} as any);
+    const [userInfo, setUserInfo] = useState({} as User);
     const userUrl = '/api/users/me';
     const getUserInfo = async () => {
         try {
@@ -64,13 +64,11 @@ const Header = (props: HeaderProps) => {
             setUserInfo(res.data);
         } catch (err) {
             console.log(err);
-            // history.push("/login");
         }
     }
     
     useEffect(() => {
         getUserInfo();
-        console.log(userInfo);
     }, [Object.keys(userInfo).length]);
 
     return (
