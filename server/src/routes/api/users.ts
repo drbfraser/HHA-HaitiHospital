@@ -54,8 +54,6 @@ router.get('/reseed', async (req, res) => {
 });
 
 router.get('/me', requireJwtAuth, async (req, res) => {
-  // const me : any = JSON.parse(JSON.stringify(req.user));
-  // res.json({ me });
   res.json(req.user);
 });
 
