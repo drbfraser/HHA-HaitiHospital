@@ -75,12 +75,7 @@ router.get('/:username', requireJwtAuth, async (req, res) => {
 router.get('/', requireJwtAuth, async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: 'desc' });
-
-    res.json({
-      users: users.map((m) => {
-        return m.toJSON();
-      }),
-    });
+    res.json(users);
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
