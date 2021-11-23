@@ -87,28 +87,32 @@ const Header = (props: HeaderProps) => {
                         <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
                         </button>
-                        <ul className="dropdown-menu dropdown-menu-end">
-                            {/* <li><button className="dropdown-item disabled text-dark ">{userInfo.name}</button></li> */}
-                            <li>
-                                <button className="dropdown-item disabled text-muted mb-2">
-                                <i className="bi bi-person-fill"></i>{' @' + userInfo.username}
+                        <ul className="dropdown-menu dropdown-menu-end rounded shadow">
+                            <li className="d-block d-sm-none">
+                                <button className="dropdown-item disabled fw-bold text-muted mb-2">
+                                    {userInfo.name}
                                 </button>
                             </li>
                             <li>
                                 <button className="dropdown-item disabled text-muted mb-2">
-                                <i className="bi bi-person-badge-fill"></i>{' ' + userInfo.role}
+                                    <i className="bi bi-person-fill"></i>{' @' + userInfo.username}
                                 </button>
                             </li>
                             <li>
+                                <button className="dropdown-item disabled text-muted mb-2">
+                                    <i className="bi bi-person-badge-fill"></i>{' ' + userInfo.role}
+                                </button>
+                            </li>
+                            <li className={`${userInfo.department ? "d-block" : "d-none"}`}>
                                 <button className="dropdown-item disabled text-muted">
-                                <i className="bi bi-people-fill"></i>{' ' + userInfo.department}
+                                    <i className="bi bi-people-fill"></i>{' ' + userInfo.department}
                                 </button>
                             </li>
                             <li><hr className="dropdown-divider"/></li>
                             <li>
-                                {/* <Link to="/login" onClick={onLogOut} className="text-decoration-none"> */}
-                                    <button className="dropdown-item" type="button" onClick={onLogOut}>Log out</button>
-                                {/* </Link> */}
+                                <button className="dropdown-item" type="button" onClick={onLogOut}>
+                                    <i className="fa fa-sign-out" aria-hidden="true"></i> Log out
+                                </button>
                             </li>
                         </ul>
                     </div>
