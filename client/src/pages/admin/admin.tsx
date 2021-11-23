@@ -1,52 +1,67 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
 import './admin.css'
 
 interface AdminProps extends ElementStyleProps {
 };
 
 const Admin = (props : AdminProps) => {
+  const [users, setUsers] = useState([]);
+
+  const usersUrl = '/api/users';
+  const getUsers = async () => {
+    const res = await axios.get(usersUrl);
+    setUsers(res.data);
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, [users.length])
+
   return(
     <div className={'admin '+ (props.classes||'')}>
-        <SideBar/>
-        <main className='container-fluid main-region'>
-            <Header/>
-            <h4>this is the admin page</h4>
-        </main>
+      <SideBar/>
+      <main className='container-fluid main-region'>
+          <Header/>
+          <div className="d-flex justify-content-start">
+            <Link to="/admin-add-user"><button type="button" className="btn btn-outline-dark">Add Case Study</button></Link>
+          </div>
+          
+          <div className="table-responsive">
+            <table className="table table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Department</th>
+                  <th scope="col">Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  users.map((item, index) => (
+                    <tr key={item._id}>
+                      <th scope="row">{index}</th>
+                      <td>{item.username}</td>
+                      <td>{item.name}</td>
+                      <td>{item.role}</td>
+                      <td>{item.department}</td>
+                      <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+      </main>
     </div>
   );
 }
 
 export default Admin;
-
-// Comment out during Js to Ts for future reference
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-
-// import requireAdmin from 'hoc/requireAdmin';
-// import Layout from 'layout/Layout';
-// import 'pages/Admin/home_styles.css';
-
-// type Props = {
-
-// }
-
-// const Admin = ({}: Props) => {
-//   return (
-//     <Layout>
-//       <div className="admin-page">
-//         <h1>Admin dashboard</h1>
-//         <p>
-//           This is the Admin page. Only the Admin can access this page. Return back to{' '}
-//           <Link className="bold" to="/">
-//             Home
-//           </Link>
-//         </p>
-//       </div>
-//     </Layout>
-//   );
-// };
-
-// export default requireAdmin(Admin);
