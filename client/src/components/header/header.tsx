@@ -80,7 +80,6 @@ const Header = (props: HeaderProps) => {
                 </div>
 
                 <div className="col-auto">
-                    {/* <GetUsername/> */}
                     <div className="dropdown">
                         <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
@@ -115,13 +114,6 @@ const Header = (props: HeaderProps) => {
                         </ul>
                     </div>
                 </div>
-
-                {/* <div className="col col-2 col-sm-3 col-md-3 col-lg-3">
-                    <NavLink className="btn btn-sm btn-outline-secondary" to="/login" exact onClick={onLogOut}>
-                        <i className="bi bi-door-open-fill me-2"/>
-                        <span className="text text-dark">Sign Out</span>
-                    </NavLink>
-                </div> */}
             </div>
         </div>
         )
