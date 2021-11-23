@@ -122,7 +122,7 @@ const routes = [
     {
         path: '/notFound',
         component: NotFound,
-        isPrivate: false,
+        isPrivate: true,
         rolesRequired: [],
     },
 ];

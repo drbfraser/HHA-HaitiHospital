@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import { ElementStyleProps } from "../../constants/interfaces";
@@ -12,14 +12,17 @@ import { useAuthState } from 'Context';
 interface SidebarProps extends ElementStyleProps {}
 
 const Sidebar = (props: SidebarProps) => {
-    // const location = useLocation();
-    // const { pathname } = location;
-    // const splitLocation = pathname.split("/");
     const userDetails = useAuthState();
-    let isAdmin = false;
+    const [ role, setRole ] = useState([]);
+    let isAdmin = false
     if (userDetails.userDetails.role === 'ADMIN') {
         isAdmin = true;
     }
+
+    useEffect(() => {
+        // window.location.reload();
+        setRole(userDetails.userDetails.role)
+    })
 
     function getClassName() {
         if (props.classes === undefined) 
@@ -111,12 +114,6 @@ const Sidebar = (props: SidebarProps) => {
                                 </li>
                             ) : (<div></div>)
                     }
-                    {/* <li>
-                        <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-person-badge-fill me-2"/>
-                            <span className="text text-light">Admin</span>
-                        </NavLink>
-                    </li> */}
                     {/*<li>*/}
                     {/*    <NavLink to="/" className="nav-link link-light" exact activeClassName="active">*/}
                     {/*        <i className="bi bi-gear-fill me-2"/>*/}
