@@ -28,7 +28,7 @@ const Admin = (props : AdminProps) => {
       <main className='container-fluid main-region'>
           <Header/>
           <div className="d-flex justify-content-start">
-            <Link to="/admin-add-user"><button type="button" className="btn btn-outline-dark">Add Case Study</button></Link>
+            <Link to="/admin-add-user"><button type="button" className="btn btn-outline-dark">Add User</button></Link>
           </div>
           
           <div className="table-responsive">
@@ -47,7 +47,7 @@ const Admin = (props : AdminProps) => {
                 {
                   users.map((item, index) => (
                     <tr key={item._id}>
-                      <th scope="row">{index}</th>
+                      <th scope="row">{index + 1}</th>
                       <td>{item.username}</td>
                       <td>{item.name}</td>
                       <td>{item.role}</td>

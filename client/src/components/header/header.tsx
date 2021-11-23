@@ -36,6 +36,8 @@ function HeaderView() {
         return <h4 className="text-secondary">Department of Com&Health</h4>
     } else if (location.pathname.slice(1) === 'admin') {
         return <h4 className="text-secondary">Admin Desk</h4>
+    } else if (location.pathname.split('/')[1] === 'admin-add-user') {
+        return <h4 className="text-secondary">Add User</h4>
     } else {
         return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
     }

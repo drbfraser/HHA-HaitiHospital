@@ -109,7 +109,7 @@ router.post('/', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) =>
     if (reqUser.role !== 'ADMIN')
       return res.status(400).json({ message: 'You do not have privilegies to add a user.' });
 
-    const { username, password, name, role } = req.body;
+    const { username, password, name, role, department } = req.body;
 
     const existingUser = await User.findOne({ username });
 
@@ -118,15 +118,12 @@ router.post('/', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) =>
       return res.status(422).send({ message: 'Username is in use' });
     }
 
-
     const newUser = await new User({
-      // provider: "email",
-      // email,
       username,
       password,
       name,
       role,
-      // avatar: faker.image.avatar(),
+      department,
     });
 
     newUser.registerUser(newUser, (err, user) => {

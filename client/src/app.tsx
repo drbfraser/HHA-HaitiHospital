@@ -6,6 +6,7 @@ import React, {useEffect} from 'react';
 import Login from 'pages/login/login'
 import Home from 'pages/home/home'
 import Admin from 'pages/admin/admin'
+import { AddUserForm } from 'pages/admin/admin-add-user';
 import { DepartmentOne } from "pages/department/department_1_nicu";
 import { DepartmentTwo } from "pages/department/department_2_maternity";
 import { DepartmentThree} from "pages/department/department_3_rehab";
@@ -43,6 +44,7 @@ const App = () => {
         <Route path='/login' exact component={Login}/>
         <Route path='/home' exact component={Home}/>
         <Route path='/admin' exact component={Admin}/>
+        <Route path='/admin-add-user' exact component={AddUserForm}/>
         <Route path="/Department1NICU" exact component={DepartmentOne} />
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />
         <Route path="/Department3Rehab" exact component={DepartmentThree} />
