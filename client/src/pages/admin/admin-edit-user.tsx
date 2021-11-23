@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { RouteComponentProps, Link, useHistory } from "react-router-dom";
+import { RouteComponentProps, Link, useHistory, useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps, User, Role, DepartmentName } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
@@ -11,7 +11,8 @@ import "./admin.css";
 interface AdminProps extends ElementStyleProps {
 }
 
-export const AddUserForm = (props: AdminProps) => {
+export const EditUserForm = (props: AdminProps) => {
+  const [user, setUser] = useState({} as User);
   const [submissionStatus, setSubmissionStatus] = useState("");
   const [role, setRole] = useState(Role.User as string);
 
@@ -20,8 +21,21 @@ export const AddUserForm = (props: AdminProps) => {
   const failureMessageRef = useRef(null); 
   const history = useHistory();
 
+  const id = useLocation().pathname.split('/')[2];
+  const userUrl = `/api/users/${id}`;
+
+  const getUser = async () => {
+    const res = await axios.get(userUrl);
+    console.log(res);
+    setUser(res.data);
+  }
+
+  useEffect(() => {
+    getUser();
+  }, [Object.keys(user).length])
+
   const onSubmit = (data: any) => {
-    axios.post('/api/users', data).then(res => {
+    axios.put(userUrl, data).then(res => {
       console.log(res.data);
       reset({});
       history.push("/admin");
@@ -47,7 +61,7 @@ export const AddUserForm = (props: AdminProps) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-3">
               <label htmlFor="username" className="form-label">Username</label>
-              <input type="text" className="form-control" id="username" autoComplete="new-password" required {...register("username", {required: true})}></input>
+              <input type="text" className="form-control" id="username" autoComplete="new-password" defaultValue={user.username} required {...register("username")}></input>
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
@@ -55,11 +69,12 @@ export const AddUserForm = (props: AdminProps) => {
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Name</label>
-              <input type="text" className="form-control" id="name" required {...register("name", {required: true})}></input>
+              <input type="text" className="form-control" id="name" defaultValue={user.name} required {...register("name")}></input>
             </div>
             <div className="mb-3">
               <label htmlFor="role" className="form-label">Role</label>
-              <select className="form-select" id="role" required {...register("role", {required: true})} onChange={(e)=>{setRole(e.target.value);unregister("department")}}>
+              <select className="form-select" id="role" defaultValue={user.role} required {...register("role", {required: true})} onChange={(e)=>{setRole(e.target.value);unregister("department")}}>
+                <option value="" selected disabled hidden>Select User's Role</option>
                 <option value={Role.User}>{Role.User}</option>
                 <option value={Role.Admin}>{Role.Admin}</option>
                 <option value={Role.MedicalDirector}>{Role.MedicalDirector}</option>
@@ -69,7 +84,8 @@ export const AddUserForm = (props: AdminProps) => {
             {role === Role.User || role === Role.HeadOfDepartment ? 
               <div className="mb-3">
                 <label htmlFor="department" className="form-label">Department</label>
-                <select className="form-select" id="department" required {...register("department", {required: true})}>
+                <select className="form-select" id="department" defaultValue={user.department} required {...register("department", {required: true})}>
+                  <option value="" selected disabled hidden>Select User's Department</option>
                   <option value={DepartmentName.NicuPaeds}>{DepartmentName.NicuPaeds}</option>
                   <option value={DepartmentName.Maternity}>{DepartmentName.Maternity}</option>
                   <option value={DepartmentName.Rehab}>{DepartmentName.Rehab}</option>

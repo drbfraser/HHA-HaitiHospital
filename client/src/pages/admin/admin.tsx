@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import './admin.css'
 
@@ -11,6 +11,7 @@ interface AdminProps extends ElementStyleProps {
 
 const Admin = (props : AdminProps) => {
   const [users, setUsers] = useState([]);
+  const history = useHistory();
 
   const usersUrl = '/api/users';
   const getUsers = async () => {
@@ -58,9 +59,14 @@ const Admin = (props : AdminProps) => {
                       <td>{item.username}</td>
                       <td>{item.name}</td>
                       <td>{item.role}</td>
-                      <td>{item.department}</td>
+                      <td>{item.department ? item.department : "N/A"}</td>
                       <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                      <td><button className="btn btn-link p-0 m-0 text-center text-decoration-none" onClick={() => deleteUser(item.id)}>Delete</button></td>
+                      <td>
+                        <div className="text-center">
+                          <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`admin-edit-user/${item.id}`)}>Edit </a>
+                          <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>Delete</a>
+                        </div>
+                      </td>
                     </tr>
                   ))
                 }
