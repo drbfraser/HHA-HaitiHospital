@@ -15,7 +15,7 @@ export const AddUserForm = (props: AdminProps) => {
   const [submissionStatus, setSubmissionStatus] = useState("");
   const [role, setRole] = useState(Role.User as string);
 
-  const { register, handleSubmit, reset } = useForm<User>({});
+  const { register, handleSubmit, reset, unregister } = useForm<User>({});
 
   const failureMessageRef = useRef(null); 
   const history = useHistory();
@@ -61,7 +61,7 @@ export const AddUserForm = (props: AdminProps) => {
             </div>
             <div className="mb-3">
               <label htmlFor="role" className="form-label">Role</label>
-              <select className="form-select" id="role" required {...register("role", {required: true})} onChange={(e)=>{setRole(e.target.value)}}>
+              <select className="form-select" id="role" required {...register("role", {required: true})} onChange={(e)=>{setRole(e.target.value);unregister("department")}}>
                 {/* <option selected>Select user's role</option> */}
                 <option value={Role.User}>{Role.User}</option>
                 <option value={Role.Admin}>{Role.Admin}</option>
@@ -86,8 +86,8 @@ export const AddUserForm = (props: AdminProps) => {
                 </select>
               </div>
             : null}
-            <div className="mt-5 mb-5">
-              <button type="submit" className="btn btn-outline-dark">Submit</button>
+            <div className="mt-5 mb-5 d-flex justify-content-center">
+              <button type="submit" className="btn btn-dark col-6">Submit</button>
             </div>
           </form>
           
