@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
 
+import { DepartmentName } from './Leaderboard';
+
 const { Schema } = mongoose;
 
 enum CaseStudyOptions {
-    PatientStory = "PATIENT_STORY",
-    StaffRecognition = "STAFF_RECOGNITION",
-    TrainingSession = "TRAINING_SESSION",
-    EquipmentReceived = "EQUIPMENT_RECEIVED",
-    OtherStory = "OTHER_STORY",
+    PatientStory = "Patient Story",
+    StaffRecognition = "Staff Recognition",
+    TrainingSession = "Training Session",
+    EquipmentReceived = "Equipment Received",
+    OtherStory = "Other Story",
 }
 
 const patientStorySchema = new Schema(
@@ -70,7 +72,8 @@ const caseStudySchema = new Schema(
     {
         caseStudyType: { type: CaseStudyOptions, required: true },
         // TODO: add created by user. right now JWT is not yet applied
-        // createdByUser: { type: String},
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
+        userDepartment: { type: DepartmentName },
         patientStory: patientStorySchema,
         staffRecognition: staffRecognitionSchema,
         trainingSession: trainingSessionSchema,
