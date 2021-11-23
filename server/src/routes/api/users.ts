@@ -72,8 +72,7 @@ router.get('/:username', requireJwtAuth, async (req, res) => {
 });
 
 // get all users, currently working
-// router.get('/', requireJwtAuth, async (req, res) => {
-router.get('/', async (req, res) => {
+router.get('/', requireJwtAuth, async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: 'desc' });
 

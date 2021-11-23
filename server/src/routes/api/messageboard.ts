@@ -6,9 +6,17 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { checkIsInRole, ROLES } from '../../utils/roleUtils';
 
 router.get('/', async (req: any, res: any) => {
+
+    // non-populated version
     MessageBody.find({}).sort({date : 'desc'})
         .then(Reports => res.json(Reports))
         .catch(err => res.status(400).json('Could not find any results: ' + err));
+
+    // populated version
+    // MessageBody.find({}).sort({date : 'desc'}).populate('userId')
+    //     .then(Reports => res.json(Reports))
+    //     .catch(err => res.status(400).json('Could not find any results: ' + err));
+    
 });
 
 //REMOVED FOR NOW - MIGHT BRING DEPARTMENT SPECIFIC MESSAGES FUNCTION BACK LATER
@@ -19,32 +27,38 @@ router.get('/department/:departmentId', async (req: any, res: any) => {
 });
 
 router.get('/message/:messageId', async (req: any, res: any) => {
+    // non-populated version
     MessageBody.findById(req.params.messageId)
         .then(Reports => res.json(Reports))
         .catch(err => res.status(400).json('Could not find any results: ' + err));
+    
+    // populated version
+    // MessageBody.findById(req.params.messageId).populate('userId')
+    //     .then(Reports => res.json(Reports))
+    //     .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
 
 router.route('/').post(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: Request, res: Response) => {
     let dateTime: Date = new Date();
     const departmentId: Number = <Number>req.body.departmentId;
     const departmentName: String = req.body.departmentName;
-    const authorId: Number = <Number>req.body.authorId;
+    // const authorId: Number = <Number>req.body.authorId;
     const date: Date = dateTime;
     const messageBody: String = req.body.messageBody;
     //TODO: replace messageHeader with Document Type 
     const messageHeader: String = req.body.messageHeader;
     // @ts-ignore
-    const name: String = req.user.name;
+    const userId: String = req.user.id;
     console.log(req);
     
     const messageEntry = new MessageBody({
-        departmentId,
-        departmentName,
-        authorId,
-        name,
-        date, 
-        messageBody,
-        messageHeader
+        "departmentId": departmentId,
+        "departmentName": departmentName,
+        // authorId,
+        "userId": userId,
+        "date": date, 
+        "messageBody": messageBody,
+        "messageHeader": messageHeader
     });
     
     messageEntry.save()
@@ -58,29 +72,34 @@ router.route('/:messageId').put(requireJwtAuth, checkIsInRole(ROLES.Admin),(req:
     let dateTime: Date = new Date();
     const departmentId: Number = <Number>req.body.departmentId;
     const departmentName: String = req.body.departmentName;
-    const authorId: Number = <Number>req.body.authorId;
+    // const authorId: Number = <Number>req.body.authorId;
     const date: Date = dateTime;
     const messageBody: String = req.body.messageBody;
     //TODO: replace messageHeader with Document Type 
     const messageHeader: String = req.body.messageHeader;
     // @ts-ignore
-    const name: String = req.user.name;
+    const userId: String = req.user.id;
 
     const updatedMessage = {
-        departmentId,
-        departmentName,
-        authorId,
-        name,
-        date,
-        messageBody,
-        messageHeader   
+        "departmentId": departmentId,
+        "departmentName": departmentName,
+        // authorId,
+        "userId": userId,
+        "date": date, 
+        "messageBody": messageBody,
+        "messageHeader": messageHeader 
     }
 
     Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
     
+    // Non-populated version
     return MessageBody.findByIdAndUpdate({_id: req.params.messageId}, updatedMessage, {new:true})
         .then(message => res.json(message))
         .catch(err => res.status(400).json('Edit message failed: ' + err));
+
+    // return MessageBody.findByIdAndUpdate({_id: req.params.messageId}, updatedMessage, {new:true}).populate("userId")
+    //     .then(message => res.json(message))
+    //     .catch(err => res.status(400).json('Edit message failed: ' + err));
 })
 
 // delete message id
