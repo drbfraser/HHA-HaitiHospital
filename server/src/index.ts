@@ -49,7 +49,7 @@ mongoose
     console.log('MongoDB Connected...');
     seedDb();
     seedDepartments();
-    // seedMessageBoard();
+    seedMessageBoard();
     // seedCaseStudies();
     seedLeaderboard();
   })

@@ -82,7 +82,7 @@ export const seedDb = async () => {
 
   await Promise.all(
     usersPromises.map(async (user) => {
-      console.log(user)
+      // console.log(user.username)
       // user.registerUser(user, () => {});
       // await user.save();
     }),
@@ -126,7 +126,7 @@ export const seedMessageBoard = async () => {
   // add 3 messages
   const message1 = new MessageBody({
     departmentId: 3,
-    departmentName: 'Community Health',
+    departmentName: DepartmentName.CommunityHealth,
     authorId: 1,
     name: faker.name.findName(),
     date: new Date(),
@@ -136,7 +136,7 @@ export const seedMessageBoard = async () => {
 
   const message2 = new MessageBody({
     departmentId: 0,
-    departmentName: 'NICU PAEDS',
+    departmentName: DepartmentName.NicuPaeds,
     authorId: 2,
     name: faker.name.findName(),
     date: new Date(),
@@ -146,7 +146,7 @@ export const seedMessageBoard = async () => {
 
   const message3 = new MessageBody({
     departmentId: 1,
-    departmentName: 'Maternity',
+    departmentName: DepartmentName.Maternity,
     authorId: 3,
     name: faker.name.findName(),
     date: new Date(),
@@ -154,8 +154,8 @@ export const seedMessageBoard = async () => {
     messageHeader: 'Case study due',
   });
 
-  message1.save();
-  message2.save();
+  await message1.save();
+  await message2.save();
   await message3.save();
   console.log('Message board seeded');
 }
