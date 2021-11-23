@@ -6,6 +6,7 @@ import Header from 'components/header/header'
 import axios from 'axios';
 
 import "./case_study_main_styles.css";
+import {useTranslation} from "react-i18next";
 
 interface CaseStudyMainProps extends ElementStyleProps {
 }
@@ -14,6 +15,7 @@ interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
+
 
   const caseStudiesUrl = '/api/casestudies';
   const getCaseStudies = async () => {
@@ -25,6 +27,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     getCaseStudies();
   }, [caseStudies.length])
 
+    const {t, i18n} = useTranslation();
 
   return (
     <div className={"case-study-main "+ props.classes}>
@@ -32,18 +35,18 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <main className="container-fluid">
         <Header/>
         <div className="d-flex justify-content-start">
-          <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">Add Case Study</button></Link>
+          <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">{t("caseStudyMainAddCaseStudy")}</button></Link>
         </div>
-        
+
         <div className="table-responsive">
           <table className="table table-hover mt-3">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Case Study Type</th>
-                <th scope="col">Author</th>
-                <th scope="col">Created</th>
-                <th scope="col">Link</th>
+                <th scope="col">{t("caseStudyMainCaseStudyType")}</th>
+                <th scope="col">{t("caseStudyMainAuthor")}</th>
+                <th scope="col">{t("caseStudyMainCreated")}</th>
+                <th scope="col">{t("caseStudyMainLink")}</th>
               </tr>
             </thead>
             <tbody>
@@ -54,7 +57,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{item.caseStudyType}</td>
                     <td>{item.user ? item.user.name : "[deleted]"}</td>
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                    <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">View Case Study</Link></td>
+                    <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy")}</Link></td>
                   </tr>
                 ))
               }

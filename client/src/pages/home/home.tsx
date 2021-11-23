@@ -5,6 +5,7 @@ import Header from 'components/header/header'
 import DashboardLeaderOverview from "../../components/dashboard_leader_overview/dashboard_leader_overview";
 import DashboardMessageOverview from "components/dashboard_message_overview/dashboard_message_overview"
 import './home.css'
+import {useTranslation} from "react-i18next";
 
 // import messages from "../../../../server/src/routes/api/messages";
 // import { RouteComponentProps } from "react-router-dom";
@@ -37,51 +38,6 @@ const Home = (props : HomeProps) => {
             <DashboardLeaderOverview/>
             <DashboardMessageOverview messages = {[]}/>
         </main>
-
-
-      {/*<Header classes='grid'*/}
-      {/*  style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}*/}
-      {/*/>*/}
-      {/*<LeaderBar classes='grid'*/}
-      {/*  style={{'gridTemplateColumns': '2fr 1fr 1fr'} as CustomCssProps}*/}
-      {/*/>*/}
-      {/*<MessageBoard/>*/}
-
-      {/*<div className="homePage-department">*/}
-      {/*    <h1>Departments</h1>*/}
-      {/*      /!*<Link to="/department">toDepart</Link>*!/*/}
-      {/*      <button className="button1"*/}
-      {/*          onClick={() => {*/}
-      {/*              // api call*/}
-      {/*              // change to the about page*/}
-      {/*              props.history.push("/Department1NICU");*/}
-      {/*          }}>NICU / PAED</button>*/}
-      {/*      <button className="button2"*/}
-      {/*              onClick={() => {*/}
-      {/*                  props.history.push("/Department2Maternity");*/}
-      {/*              }}>MATERNITY</button>*/}
-      {/*      <button className="button3"onClick={() => {*/}
-      {/*                  props.history.push("/Department3Rehab");*/}
-      {/*              }}>REHAB</button>*/}
-      {/*      <button className="button4"onClick={() => {*/}
-      {/*                  props.history.push("/Department4ComHealth");*/}
-      {/*              }}>COM-HEALTH</button>*/}
-      {/*    <button className="button5"onClick={() => {*/}
-      {/*        props.history.push("/DepartmentMain");*/}
-      {/*    }}>MORE</button>*/}
-      {/*</div>*/}
-      {/*<div className='home-case-study'>*/}
-      {/*    <div>*/}
-      {/*        <button className="caseStudyButton"*/}
-      {/*        onClick={() => {*/}
-      {/*            props.history.push("./caseStudyMain");*/}
-      {/*        }}>Case Study</button>*/}
-      {/*    </div>*/}
-      {/*    <div className="caseStudy-image">*/}
-      {/*        <img src={case1} className="caseOne" alt="case1"/>*/}
-      {/*        <img src={case2} className="caseTwo" alt="case2" />*/}
-      {/*    </div>*/}
-      {/*</div>*/}
 
     </div>
   );
