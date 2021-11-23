@@ -26,7 +26,7 @@ const getDepartmentId = (department: any) => {
 
 interface MessageFormProps extends ElementStyleProps{
     optionalMsg? : Message, 
-    edit? : boolean,
+    submitAction: (data) => void,
 }
 
 function MessageForm(props: MessageFormProps) {
@@ -39,41 +39,7 @@ function MessageForm(props: MessageFormProps) {
         prefilledMsg = emptyMessage;
     }
 
-    const postMessage = (async (data) => {
-        const api = '/api/messageboard/';
-    try {
-        let response = await Axios.post(api, data);
-        alert('success');
-
-    }
-    catch (e) {
-        if (e.response.status === 401)
-            alert("update message failed: unauthorized");
-        else 
-            alert("update message failed");
-        console.log("update message failed ", e.response.status);
-    }
-    })
-
-    const {id} = useParams<{id? : string}>();
-    const updateMessage = async (data) => {
-        const api = `api/messageboard/${id}`;
-        try {
-            let response = await Axios.put(api, data);
-            alert('success');
-        }
-        catch (e) {
-            if (e.response.status === 401)
-                alert("update message failed: unauthorized");
-            else 
-                alert("update message failed");
-            console.log("update message failed ", e.response.status);
-        }
-    }
-
     const history = useHistory();
-
-
     const onSubmit = (data: any) => {
         if (data.departmentName === "") {
             alert("Must select a department");
@@ -84,11 +50,8 @@ function MessageForm(props: MessageFormProps) {
             data.departmentId = getDepartmentId(data.departmentName);
         }
     
-        data.date = Date();
-        if (props.edit === true)
-            updateMessage(data);
-        else
-            postMessage(data);
+        props.submitAction(data);
+
         reset();
         history.push('/messageBoard')
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -39,6 +40,23 @@ import MessageForm  from '../../components/message_form/message_form';
 
 
 function AddMessage() {
+    
+    const postMessage = (async (data) => {
+        const api = '/api/messageboard/';
+    try {
+        let response = await Axios.post(api, data);
+        alert('success');
+
+    }
+    catch (e) {
+        if (e.response.status === 401)
+            alert("update message failed: unauthorized");
+        else 
+            alert("update message failed");
+        console.log("update message failed ", e.response.status);
+    }
+    })
+
 
   return (
     <div className="add_message">
@@ -49,7 +67,9 @@ function AddMessage() {
 
         <div className="container">
           <h1 className="h1">Add Message</h1>
-          <MessageForm/>
+          <MessageForm
+            submitAction={postMessage}
+          />
 
         </div>
       </main>

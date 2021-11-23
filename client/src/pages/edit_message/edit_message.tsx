@@ -73,7 +73,6 @@ const EditMessage = () => {
                     <h1 className="">Edit Message</h1>
                     <MessageForm 
                         optionalMsg = {msg}
-                        edit = {true}
                         submitAction = {updateMessage}
                     />
                 </div>

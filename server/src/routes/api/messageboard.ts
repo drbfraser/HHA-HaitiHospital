@@ -35,6 +35,7 @@ router.route('/').post(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: Request,
     const messageHeader: String = req.body.messageHeader;
     // @ts-ignore
     const name: String = req.user.name;
+    console.log(req);
     
     const messageEntry = new MessageBody({
         departmentId,
