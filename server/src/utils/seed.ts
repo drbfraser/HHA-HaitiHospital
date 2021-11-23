@@ -1,9 +1,7 @@
 import faker from 'faker';
 
-import User from '../models/User';
+import User, { hashPassword } from '../models/User';
 import Department, { DepartmentName } from '../models/Leaderboard';
-import Message from '../models/Message';
-import { deleteAllAvatars } from './utils';
 
 import NicuPaeds from '../models/NicuPaeds';
 import Community from '../models/Community';
@@ -14,13 +12,84 @@ import CaseStudy from '../models/CaseStudies';
 export const seedDb = async () => {
   console.log('Seeding users...');
 
-  await User.deleteMany({});
+  // await User.deleteMany({});
   await User.collection.dropIndexes().catch(err => console.log(err));
-  // await Message.deleteMany({});
-  // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
-  // create users
-  const usersPromises = [...Array(6).keys()].map((index, i) => {
+  let usersPromises;
+  await User.countDocuments({}, function(err, count) {
+    if (count === 0) {
+      usersPromises = createUsersPromises();
+    } else {
+      usersPromises = updateUsersPromises();
+    }
+  })
+
+  // // create users
+  // const usersPromises = [...Array(6).keys()].map((index, i) => {
+  //   const user = new User({
+  //     username: `user${index}`,
+  //     password: '123456789',
+  //     name: faker.name.findName(),
+  //   });
+
+  //   if (index === 0) {
+  //     user.role = 'ADMIN';
+  //   } else if (index === 1) {
+  //     user.role = 'MED_DIR';
+  //   } else if (index === 2) {
+  //     user.role = 'DEPT_HEAD';
+  //     user.department = DepartmentName.NicuPaeds;
+  //   } else if (index === 3) {
+  //     user.department = DepartmentName.Maternity;
+  //   } else if (index === 4) {
+  //     user.department = DepartmentName.Rehab;
+  //   } else if (index === 5) {
+  //     user.department = DepartmentName.CommunityHealth;
+  //   }
+  //   user.registerUser(user, () => {});
+  //   return user;
+  // });
+
+  // await Promise.all(
+  //   usersPromises.map(async (user) => {
+  //     // user.registerUser(user, () => {});
+  //     // await user.save();
+  //   }),
+  // );
+
+  // const usersPromises = [...Array(6).keys()].map(async (index, i) => {
+  //   try {
+  //     let password = await hashPassword("123456789");
+  //     let role = null;
+  //     let department = null;
+  //     if (index === 0) {
+  //       role = 'ADMIN';
+  //     } else if (index === 1) {
+  //       role = 'MED_DIR';
+  //     } else if (index === 2) {
+  //       role = 'DEPT_HEAD';
+  //       department = DepartmentName.NicuPaeds;
+  //     } else if (index === 3) {
+  //       department = DepartmentName.Maternity;
+  //     } else if (index === 4) {
+  //       department = DepartmentName.Rehab;
+  //     } else if (index === 5) {
+  //       department = DepartmentName.CommunityHealth;
+  //     }
+
+  //     const updatedUser = { name: faker.name.findName(), password, role, department };
+  //     const user = await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
+  //     return user;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // })
+
+  console.log('Users seeded');
+};
+
+const createUsersPromises = async() => {
+  return [...Array(6).keys()].map((index, i) => {
     const user = new User({
       username: `user${index}`,
       password: '123456789',
@@ -44,16 +113,48 @@ export const seedDb = async () => {
     user.registerUser(user, () => {});
     return user;
   });
+}
 
-  // await Promise.all(
-  //   usersPromises.map(async (user) => {
-  //     user.registerUser(user, () => {});
-  //     // await user.save();
-  //   }),
-  // );
+const updateUsersPromises = async() => {
+  return [...Array(6).keys()].map(async (index, i) => {
+    try {
+      let password = await hashPassword("123456789");
+      let role = null;
+      let department = null;
+      switch (index) {
+        case 0: 
+          role = 'ADMIN';
+          break;
+        case 1:
+          role = 'MED_DIR';
+          break;
+        case 2:
+          role = 'DEPT_HEAD';
+          department = DepartmentName.NicuPaeds;
+          break;
+        case 3:
+          role = 'USER';
+          department = DepartmentName.Maternity;
+          break;
+        case 4:
+          role = 'USER';
+          department = DepartmentName.Rehab;
+          break;
+        case 5:
+          role = 'USER';
+          department = DepartmentName.CommunityHealth;
+          break;
+        default:
+          break;
+      }
 
-  console.log('Users seeded');
-};
+      const updatedUser = { name: faker.name.findName(), password, role, department };
+      return await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
+    } catch (err) {
+      console.log(err);
+    }
+  })
+}
 
 export const seedDepartments = async() => {
   console.log("Seeding default departments...");
@@ -124,7 +225,7 @@ export const seedMessageBoard = async () => {
   console.log('Message board seeded');
 }
 
-export const seedCaseStudies = async () => {
+export const seedCaseStudies = async (user) => {
   console.log('Seeding case studies...')
   await CaseStudy.deleteMany({});
 
@@ -160,5 +261,5 @@ export const seedLeaderboard = async() => {
       name: departmentName,
     });
     department.save();
-  };
+  }
 }
