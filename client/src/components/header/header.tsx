@@ -69,7 +69,7 @@ const Header = (props: HeaderProps) => {
     
     useEffect(() => {
         getUserInfo();
-    }, [Object.keys(userInfo).length]);
+    }, [userInfo.username]);
 
     return (
         <div className={'header '+ (props.classes || '')}>
