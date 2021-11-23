@@ -68,9 +68,6 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, re
     console.log(reqUser);
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
 
-    // //delete all messages from that user
-    // await Message.deleteMany({ user: tempUser.id });
-    //delete user
     const user = await User.findByIdAndRemove(tempUser.id);
     res.status(200).json({ user });
   } catch (err) {
