@@ -16,14 +16,6 @@ router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : 
     if (!(tempUser.id === reqUser.id || reqUser.role === 'ADMIN'))
       return res.status(400).json({ message: 'You do not have privilegies to edit this user.' });
 
-    //validate name, username and password
-    const { error } = validateUser(req.body);
-    if (error) return res.status(400).json({ message: error.details[0].message });
-
-    // let avatarPath = null;
-    // if (req.file) {
-    //   avatarPath = req.file.filename;
-    // }
 
     // if fb or google user provider dont update password
     let password = null;
@@ -31,12 +23,12 @@ router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : 
       password = await hashPassword(req.body.password);
     }
 
-    const existingUser = await User.findOne({ username: req.body.username });
-    if (existingUser && existingUser.id !== tempUser.id) {
-      return res.status(400).json({ message: 'Username alredy taken.' });
-    }
+    // const existingUser = await User.findOne({ username: req.body.username });
+    // if (existingUser && existingUser.id !== tempUser.id) {
+    //   return res.status(400).json({ message: 'Username alredy taken.' });
+    // }
 
-    const updatedUser = { name: req.body.name, username: req.body.username, password };
+    const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
     // remove '', null, undefined
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     // console.log(req.body, updatedUser);
@@ -61,14 +53,10 @@ router.get('/me', requireJwtAuth, async (req, res) => {
 });
 
 // get one user, currently working
-router.get('/:username', requireJwtAuth, async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.params.username });
-    if (!user) return res.status(404).json({ message: 'No user found.' });
-    res.json({ user: user.toJSON() });
-  } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
-  }
+router.get('/:id', requireJwtAuth, async (req, res) => {
+  User.findById(req.params.id)
+      .then(data => res.json(data))
+      .catch(err => res.status(400).json('Failed to get user: ' + err));
 });
 
 // get all users, currently working

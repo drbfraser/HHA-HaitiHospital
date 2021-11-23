@@ -60,6 +60,7 @@ export const AddUserForm = (props: AdminProps) => {
             <div className="mb-3">
               <label htmlFor="role" className="form-label">Role</label>
               <select className="form-select" id="role" required {...register("role", {required: true})} onChange={(e)=>{setRole(e.target.value);unregister("department")}}>
+                <option value="" selected disabled hidden>Select User's Role</option>
                 <option value={Role.User}>{Role.User}</option>
                 <option value={Role.Admin}>{Role.Admin}</option>
                 <option value={Role.MedicalDirector}>{Role.MedicalDirector}</option>
@@ -70,6 +71,7 @@ export const AddUserForm = (props: AdminProps) => {
               <div className="mb-3">
                 <label htmlFor="department" className="form-label">Department</label>
                 <select className="form-select" id="department" required {...register("department", {required: true})}>
+                  <option value="" selected disabled hidden>Select User's Department</option>
                   <option value={DepartmentName.NicuPaeds}>{DepartmentName.NicuPaeds}</option>
                   <option value={DepartmentName.Maternity}>{DepartmentName.Maternity}</option>
                   <option value={DepartmentName.Rehab}>{DepartmentName.Rehab}</option>
