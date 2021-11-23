@@ -13,28 +13,18 @@ router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : 
     const tempUser = await User.findById(req.params.id);
     const reqUser : any = req.user;
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
-    if (!(tempUser.id === reqUser.id || reqUser.role === 'ADMIN'))
-      return res.status(400).json({ message: 'You do not have privilegies to edit this user.' });
 
-
-    // if fb or google user provider dont update password
     let password = null;
     if (req.body.password && req.body.password !== '') {
       password = await hashPassword(req.body.password);
     }
 
-    // const existingUser = await User.findOne({ username: req.body.username });
-    // if (existingUser && existingUser.id !== tempUser.id) {
-    //   return res.status(400).json({ message: 'Username alredy taken.' });
-    // }
-
     const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
     // remove '', null, undefined
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
-    // console.log(req.body, updatedUser);
     const user = await User.findByIdAndUpdate(tempUser.id, { $set: updatedUser }, { new: true });
 
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
@@ -77,8 +67,6 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, re
     const reqUser : any = req.user;
     console.log(reqUser);
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
-    if (reqUser.role !== 'ADMIN')
-      return res.status(400).json({ message: 'You do not have privilegies to delete that user.' });
 
     // //delete all messages from that user
     // await Message.deleteMany({ user: tempUser.id });
@@ -94,8 +82,6 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, re
 router.post('/', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) => {
   try {
     const reqUser : any = req.user;
-    if (reqUser.role !== 'ADMIN')
-      return res.status(400).json({ message: 'You do not have privilegies to add a user.' });
 
     const { username, password, name, role, department } = req.body;
 
