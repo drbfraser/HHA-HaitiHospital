@@ -5,8 +5,8 @@ import { ElementStyleProps} from 'constants/interfaces';
 
 interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
-  lastUpdatedOn: string;
-  lastUpdatedBy: number;
+  lastUpdatedOn: Date;
+  lastUpdatedBy: string;
   isTicked: boolean;
   notifyTable (update : {[rid : string] : boolean}): void;
 }
@@ -26,7 +26,7 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
           { props.reportId }
         </Link>
       </th>
-      <td>{ props.lastUpdatedOn }</td>
+      <td>{ props.lastUpdatedOn.toDateString() }</td>
       <td>{ props.lastUpdatedBy }</td>
       <td>
         <Link to={`/Department1NICU/detailed_report/edit/${props.reportId}`}>

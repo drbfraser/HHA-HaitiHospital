@@ -25,6 +25,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
     setTracker(trackerTemp);
 
+    console.log(props.reports);
+
   },[props.reports])
 
   function getClassName() {
@@ -74,7 +76,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
             <tr>
               <th className='mx-1' scope='col'>ReportId</th>
               <th className='mx-1' scope='col'>Last Updated On</th>
-              <th className='mx-1' scope='col'>Last Updated By UserId</th>
+              <th className='mx-1' scope='col'>Last Updated By User</th>
               <th className='mx-1' scope='col'></th>
               <th className='mx-1' scope='col'>
                 <AllTick tickTracker={tickTracker}
@@ -88,8 +90,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
                 <ReportSummaryRow
                     key={index}
                     reportId = {report["_id"] as string}
-                    lastUpdatedOn = {report["lastUpdatedOn"] as string}
-                    lastUpdatedBy = {report["lastUpdatedByUserId"] as number}
+                    lastUpdatedOn = { new Date(report["lastUpdatedOn"]as string)}
+                    lastUpdatedBy = {report["lastUpdatedByUserId"] as string}
                     isTicked = {tickTracker[report["_id"] as string]}
                     notifyTable = {tickRow}
                 />))
