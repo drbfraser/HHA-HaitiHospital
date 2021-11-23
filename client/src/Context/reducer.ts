@@ -21,16 +21,18 @@ export const AuthReducer = (initialState, action) => {
         loading: true
       };
     case 'LOGIN_SUCCESS':
+      console.log('inside auth redducer with');
+      console.log(action.payload.user);
       return {
         ...initialState,
-        user: action.payload.user,
+        userDetails: action.payload.user,
         isAuth: action.payload.isAuth,
         loading: false
       };
     case 'LOGOUT':
       return {
         ...initialState,
-        user: '',
+        userDetails: '',
         isAuth: ''
       };
 

@@ -12,16 +12,10 @@ import { useAuthState } from 'Context';
 interface SidebarProps extends ElementStyleProps {}
 
 const Sidebar = (props: SidebarProps) => {
-
-    useEffect(() => {
-        // window.location.reload();
-    })
+    const userDetails = useAuthState();
 
     const renderAdminButton = () => {
-        const currentUserJSONstring = localStorage.getItem('currentUser');
-        const currentUser = JSON.parse(currentUserJSONstring);
-        const role = currentUser.user.role;
-        if (role === 'ADMIN') {
+        if (userDetails.userDetails.role === 'ADMIN') {
             return true;
         }
         return false;
