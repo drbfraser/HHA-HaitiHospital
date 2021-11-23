@@ -3,6 +3,7 @@ import { NavLink, useLocation, Link, useHistory } from 'react-router-dom';
 import { ElementStyleProps, User } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
+import {useTranslation} from "react-i18next";
 
 // import {stringify} from "querystring";
 // import * as Routing from 'constants/routing';
@@ -15,30 +16,33 @@ function HeaderView() {
     console.log(location.pathname);
     // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
 
+    const {t, i18n} = useTranslation();
+
     if (location.pathname.slice(1) === 'home') {
-        return <h4 className="text-secondary">Overview</h4>
+        return <h4 className="text-secondary">{t("headerOverview")}</h4>
     } else if (location.pathname.slice(1) === 'messageBoard') {
-        return <h4 className="text-secondary">Message Board</h4>
+        return <h4 className="text-secondary">{t("headerMessageBoard")}</h4>
     } else if (location.pathname.slice(1) === 'leaderBoard') {
-        return <h4 className="text-secondary">Leaderboard</h4>
+        return <h4 className="text-secondary">{t("headerLeaderBoard")}</h4>
     } else if (location.pathname.slice(1) === 'caseStudyMain') {
-        return <h4 className="text-secondary">Case Study</h4>
+        return <h4 className="text-secondary">{t("headerCaseStudy")}</h4>
     } else if (location.pathname.slice(1) === 'caseStudyForm') {
         return <h4 className="text-secondary">Case Study Form</h4>
     } else if (location.pathname.split('/')[1] === 'caseStudyView') {
-        return <h4 className="text-secondary">Case Study</h4>
+        return <h4 className="text-secondary">{t("headerCaseStudyForm")}</h4>
     } else if (location.pathname.slice(1) === 'Department1NICU') {
-        return <h4 className="text-secondary">Department of NICU</h4>
+        return <h4 className="text-secondary">{t("headerDepartmentNICU")}</h4>
     } else if (location.pathname.slice(1) === 'Department2Maternity') {
-        return <h4 className="text-secondary">Department of Maternity</h4>
+        return <h4 className="text-secondary">{t("headerDepartmentMaternity")}</h4>
     } else if (location.pathname.slice(1) === 'Department3Rehab') {
-        return <h4 className="text-secondary">Department of Rehab</h4>
+        return <h4 className="text-secondary">{t("headerDepartmentRehab")}</h4>
     } else if (location.pathname.slice(1) === 'Department4ComHealth') {
-        return <h4 className="text-secondary">Department of Com&Health</h4>
+        return <h4 className="text-secondary">{t("headerDepartmentCom")}</h4>
     } else if (location.pathname.slice(1) === 'admin') {
-        return <h4 className="text-secondary">Admin Desk</h4>
+        return <h4 className="text-secondary">{t("headerAdmin")}</h4>
     } else {
-        return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
+        // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
+        return <h4></h4>
     }
 }
 
@@ -70,6 +74,7 @@ const Header = (props: HeaderProps) => {
     useEffect(() => {
         getUserInfo();
     }, [userInfo.username]);
+    const {t, i18n} = useTranslation();
 
     return (
         <div className={'header '+ (props.classes || '')}>
@@ -108,7 +113,7 @@ const Header = (props: HeaderProps) => {
                             <li><hr className="dropdown-divider"/></li>
                             <li>
                                 <button className="dropdown-item" type="button" onClick={onLogOut}>
-                                    <i className="fa fa-sign-out" aria-hidden="true"></i> Log out
+                                    <i className="fa fa-sign-out" aria-hidden="true"></i>{" " + t("headerSignOut")}
                                 </button>
                             </li>
                         </ul>
@@ -116,7 +121,7 @@ const Header = (props: HeaderProps) => {
                 </div>
             </div>
         </div>
-        )
+    )
 }
 
 export default Header;

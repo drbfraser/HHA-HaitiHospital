@@ -82,6 +82,7 @@ import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 
 import './message_form_styles.css'
+import {useTranslation} from "react-i18next";
 
 
 
@@ -162,6 +163,8 @@ function AddMessage() {
     history.push('/messageBoard')
   }
 
+  const {t, i18n} = useTranslation();
+
   return (
     <div className="add_message">
       <SideBar/>
@@ -170,19 +173,19 @@ function AddMessage() {
         <Header/>
 
         <div className="container">
-          <h1 className="h1">Add Message</h1>
+          <h1 className="h1">{t("addMessageAddMessage")}</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
 
-              <div className="col-md-2 mb-3">
-                <label htmlFor="" className="form-label">User ID</label>
+              <div className="col-md-4 mb-4">
+                <label htmlFor="" className="form-label">{t("addMessageUserID")}</label>
                 <input className="form-control" type="number" {...register("authorId")} />
               </div>
 
-              <div className="col-md-3 mb-3">
-                <label htmlFor="" className="form-label">Department</label>
+              <div className="col-md-4 mb-4">
+                <label htmlFor="" className="form-label">{t("addMessageDepartment")}</label>
                 <select className="form-select" {...register("departmentName")}>
-                  <option value=""> Select </option>
+                  <option value="">{t("addMessageSelect")}</option>
                   <option value="NICUPaeds">NICU/Paeds</option>
                   <option value="Maternity">Maternity</option>
                   <option value="Rehab">Rehabilitation</option>
@@ -195,16 +198,16 @@ function AddMessage() {
 
 
             <div className="mb-3">
-              <label htmlFor="" className="form-label">Title</label>
+              <label htmlFor="" className="form-label">{t("addMessageTitle")}</label>
               <input className="form-control" type="text" {...register("messageHeader")} />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="" className="form-label">Body</label>
+              <label htmlFor="" className="form-label">{t("addMessageBody")}</label>
               <textarea className="form-control" {...register("messageBody")} cols={30} rows={10}></textarea>
             </div>
 
-            <button className="btn btn-primary">Submit</button>
+            <button className="btn btn-primary">{t("addMessageSubmit")}</button>
 
           </form>
 
