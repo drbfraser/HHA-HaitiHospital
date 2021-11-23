@@ -12,17 +12,20 @@ import { useAuthState } from 'Context';
 interface SidebarProps extends ElementStyleProps {}
 
 const Sidebar = (props: SidebarProps) => {
-    const userDetails = useAuthState();
-    const [ role, setRole ] = useState([]);
-    let isAdmin = false
-    if (userDetails.userDetails.role === 'ADMIN') {
-        isAdmin = true;
-    }
 
     useEffect(() => {
         // window.location.reload();
-        setRole(userDetails.userDetails.role)
     })
+
+    const renderAdminButton = () => {
+        const currentUserJSONstring = localStorage.getItem('currentUser');
+        const currentUser = JSON.parse(currentUserJSONstring);
+        const role = currentUser.user.role;
+        if (role === 'ADMIN') {
+            return true;
+        }
+        return false;
+    }
 
     function getClassName() {
         if (props.classes === undefined) 
@@ -105,7 +108,7 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="border-top my-2"/>
                     {
-                        isAdmin ? (                 
+                        renderAdminButton() ? (                 
                                 <li>
                                 <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                                     <i className="bi bi-person-badge-fill me-2"/>
