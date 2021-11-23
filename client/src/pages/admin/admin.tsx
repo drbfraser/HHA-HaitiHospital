@@ -18,6 +18,12 @@ const Admin = (props : AdminProps) => {
     setUsers(res.data);
   }
 
+  const deleteUser = async (id) => {
+    console.log(id);
+    const res = await axios.delete(usersUrl + '/' + id);
+    getUsers();
+  }
+
   useEffect(() => {
     getUsers();
   }, [users.length])
@@ -41,18 +47,20 @@ const Admin = (props : AdminProps) => {
                   <th scope="col">Role</th>
                   <th scope="col">Department</th>
                   <th scope="col">Created</th>
+                  <th scope="col" className="text-center">Options</th>
                 </tr>
               </thead>
               <tbody>
                 {
                   users.map((item, index) => (
-                    <tr key={item._id}>
+                    <tr key={item.id}>
                       <th scope="row">{index + 1}</th>
                       <td>{item.username}</td>
                       <td>{item.name}</td>
                       <td>{item.role}</td>
                       <td>{item.department}</td>
                       <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                      <td><button className="btn btn-link p-0 m-0 text-center text-decoration-none" onClick={() => deleteUser(item.id)}>Delete</button></td>
                     </tr>
                   ))
                 }
