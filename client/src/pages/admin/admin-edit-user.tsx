@@ -25,9 +25,13 @@ export const EditUserForm = (props: AdminProps) => {
   const userUrl = `/api/users/${id}`;
 
   const getUser = async () => {
-    const res = await axios.get(userUrl);
-    console.log(res);
-    setUser(res.data);
+    try {
+      const res = await axios.get(userUrl);
+      console.log(res);
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   useEffect(() => {

@@ -15,14 +15,21 @@ const Admin = (props : AdminProps) => {
 
   const usersUrl = '/api/users';
   const getUsers = async () => {
-    const res = await axios.get(usersUrl);
-    setUsers(res.data);
+    try {
+      const res = await axios.get(usersUrl);
+      setUsers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const deleteUser = async (id) => {
-    console.log(id);
-    const res = await axios.delete(usersUrl + '/' + id);
-    getUsers();
+    try {
+      const res = await axios.delete(usersUrl + '/' + id);
+      getUsers();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   useEffect(() => {
