@@ -48,32 +48,29 @@ function DynamicForm() {
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
             data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            await axios.post('/api/report/add', data).then(res => {
-                console.log(res.data);
-            }).catch(error => {
-                console.error('Something went wrong!', error.response);
-            });
+            // await axios.post('/api/report/add', data).then(res => {
+            //     console.log(res.data);
+            // }).catch(error => {
+            //     console.error('Something went wrong!', error.response);
+            // });
 
-            //console.log(data);
+            console.log(data);
             history.push("/Department1NICU");
         } else {
-            console.log(valid);
-            alert("Some fields contain invalid values");
             window.scrollTo(0, 0);
+            alert("Some fields contain invalid values");
         }
 
     }
 
     const clickPrevious = () => {
-        //window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
         sidePanelClick(sectionState - 1);
-        console.log("clicked prev");
     }
 
     const clickNext = () => {
+        window.scrollTo(0, 0);
         sidePanelClick(sectionState + 1);
-        //window.scrollTo(0, 0);
-        console.log("clicked next");
     }
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
@@ -133,7 +130,7 @@ function DynamicForm() {
         for (let i = idx; i < inputGroup.length; i++) {
             var textInput1 = (inputGroup[i].childNodes[0].childNodes[0] as HTMLInputElement);
             var valueInput1 = (inputGroup[i].childNodes[1].childNodes[0] as HTMLInputElement);
-            
+
             if (i == inputGroup.length - 1) {
                 textInput1.value = "";
                 valueInput1.value = "0";
@@ -185,7 +182,6 @@ function DynamicForm() {
     }
 
     const sidePanelClick = (index: any) => {
-        window.scrollTo(0, 0);
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
@@ -208,53 +204,34 @@ function DynamicForm() {
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
             }
         }
-        
+
     }
 
     function submitValidation() {
-        for (let i = 1; i < 99; i++) {
-            if (i === 26 || i === 28 || i === 33 || i === 42 || i === 45 || i === 65 || i === 67 || i === 76 || i === 79) {
-                continue;
+        var isFormValid = true;
+
+        for (let i = 1; i <= 89; i++) {
+            var formValues;
+            if (i === 30) {
+                formValues = formValuesComeFrom;
+            } else if (i === 59) {
+                formValues = formValuesAdCondition;
+            } else if (i === 89) {
+                formValues = formValuesOutCondition;
             }
 
-            if (i === 32) {
-                for (let j = 0; j < formValuesComeFrom.length; j++) {
-                    if ((document.getElementById("cf" + 32 + j)?.childNodes[1] as HTMLInputElement).classList.contains('is-invalid')) {
-                        return false;
-                    }
-
-                    if ((document.getElementById("cf" + 32 + j)?.childNodes[2] as HTMLInputElement).classList.contains('is-invalid')) {
-                        return false;
-                    }
-                }
-            } else if (i === 64) {
-                for (let j = 0; j < formValuesAdCondition.length; j++) {
-                    if ((document.getElementById("ac" + 64 + j)?.childNodes[1] as HTMLInputElement).classList.contains('is-invalid')) {
-                        return false;
-                    }
-
-                    if ((document.getElementById("ac" + 64 + j)?.childNodes[2] as HTMLInputElement).classList.contains('is-invalid')) {
-                        return false;
-                    }
-                }
-            } else if (i === 98) {
-                for (let j = 0; j < formValuesOutCondition.length; j++) {
-                    if ((document.getElementById("oc" + 98 + j)?.childNodes[1] as HTMLInputElement).classList.contains('is-invalid')) {
-                        return false;
-                    }
-
-                    if ((document.getElementById("oc" + 98 + j)?.childNodes[2] as HTMLInputElement).classList.contains('is-invalid')) {
-                        return false;
-                    }
+            if (i === 30 || i === 59 || i === 89) {
+                for (let j = 0; j < formValues.length; j++) {
+                    isFormValid = arrayInputValidation(i, j, "text") && isFormValid;
+                    isFormValid = arrayInputValidation(i, j, "number") && isFormValid;
                 }
             } else {
-                if ((document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.contains('is-invalid')) {
-                    return false;
-                }
+                var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                isFormValid = isValid(inputElement) && isFormValid;
             }
         }
 
-        return true;
+        return isFormValid;
     }
 
     //
@@ -425,25 +402,28 @@ function DynamicForm() {
             var textInput = (inputGroup.childNodes[idx].childNodes[0].childNodes[0] as HTMLInputElement);
             if (textInput.value == "") {
                 makeValidity(textInput, false, "Must enter a name");
+                return false;
             } else {
                 makeValidity(textInput, true, "");
+                return true;
             }
 
         } else if (type == "number") {
             var valueInput = (inputGroup.childNodes[idx].childNodes[1].childNodes[0] as HTMLInputElement);
-            if (!isValid(valueInput)) return;
+            if (!isValid(valueInput)) return false;
 
             if (num === 30 && !arrayTotalValidation(26, 27, 30)) {
-                return;
+                return false;
             }
             if (num === 59 && !arrayTotalValidation(26, 41, 59)) {
-                return;
+                return false;
             }
             if (num === 89 && !arrayTotalValidation(60, 71, 89)) {
-                return;
+                return false;
             }
 
             makeValidity(valueInput, true, "");
+            return true;
         }
     }
 
@@ -662,7 +642,7 @@ function DynamicForm() {
                         </form>
 
                         <div className="btn-group d-flex mb-2">
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={()=>{window.scrollTo(0, 0);clickPrevious();}} disabled={sectionState === 0 ? true : false}>Previous</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={() => { window.scrollTo(0, 0); clickPrevious(); }} disabled={sectionState === 0 ? true : false}>Previous</button>
                             <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
                         </div>
 
