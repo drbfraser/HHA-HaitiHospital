@@ -1,7 +1,8 @@
 import faker from 'faker';
 import { join } from 'path';
 
-import User from '../models/User';
+import User, { Role } from '../models/User';
+import Department, { DepartmentName } from '../models/Leaderboard';
 import Message from '../models/Message';
 import { deleteAllAvatars } from './utils';
 
@@ -12,11 +13,12 @@ export const seedDb = async () => {
   console.log('Seeding users...');
 
   await User.deleteMany({});
+  await User.collection.dropIndexes().catch(err => console.log(err));
   // await Message.deleteMany({});
-  await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
+  // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
-  // create 3 users
-  const usersPromises = [...Array(5).keys()].map((index, i) => {
+  // create users
+  const usersPromises = [...Array(6).keys()].map((index, i) => {
     const user = new User({
       // provider: 'email',
       username: `user${index}`,
@@ -29,21 +31,29 @@ export const seedDb = async () => {
     });
 
     if (index === 0) {
-      user.role = 'ADMIN';
+      user.role = Role.Admin;
     } else if (index === 1) {
-      user.role = 'MED_DIR';
+      user.role = Role.MedicalDirector;
     } else if (index === 2) {
-      user.role = 'DEPT_HEAD';
+      user.role = Role.HeadOfDepartment;
+      user.department = DepartmentName.NicuPaeds;
+    } else if (index === 3) {
+      user.department = DepartmentName.Maternity;
+    } else if (index === 4) {
+      user.department = DepartmentName.Rehab;
+    } else if (index === 5) {
+      user.department = DepartmentName.CommunityHealth;
     }
     user.registerUser(user, () => {});
     return user;
   });
 
-  await Promise.all(
-    usersPromises.map(async (user) => {
-      await user.save();
-    }),
-  );
+  // await Promise.all(
+  //   usersPromises.map(async (user) => {
+  //     user.registerUser(user, () => {});
+  //     // await user.save();
+  //   }),
+  // );
 
   // // create 9 messages
   // const messagePromises = [...Array(9).keys()].map((index, i) => {
@@ -114,4 +124,15 @@ export const seedDepartments = async() => {
   //TODO Case Studies
 
   console.log("seeding default Department successful");
+}
+
+export const seedLeaderboard = async() => {
+  await Department.deleteMany({});
+  for (let key in DepartmentName) {
+    let departmentName = DepartmentName[key];
+    const department = new Department({
+      name: departmentName,
+    });
+    department.save();
+  };
 }

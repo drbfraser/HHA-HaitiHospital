@@ -12,7 +12,7 @@ export interface ElementStyleProps {
 export interface Json {
     [x: string]: string|number|boolean|Date|Json|JsonArray,
 }
-export interface JsonArray extends Array<string|number|boolean|Date|Json|JsonArray> { }
+export interface JsonArray extends Array<Json> { }
 
 type ReportEntry = string | number | boolean | ReportProps | ReportProps[];
 export interface ReportProps {
@@ -22,4 +22,25 @@ export interface ReportProps {
 type MessageEntry = string | number | boolean | MessageProps | MessageProps[];
 export interface MessageProps {
     [index : string] :  MessageEntry,
+}
+
+export enum Role {
+  Admin = "Admin",
+  MedicalDirector = "Medical Director",
+  HeadOfDepartment = "Head of Department",
+  User = "User",
+}
+
+export enum DepartmentName {
+  NicuPaeds = "NICU/Paeds",
+  Maternity = "Maternity",
+  Rehab = "Rehab",
+  CommunityHealth = "Community & Health",
+}
+
+export interface User {
+  username: string;
+  name: string;
+  role: Role;
+  department: DepartmentName; 
 }

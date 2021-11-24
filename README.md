@@ -63,3 +63,6 @@ $ npm start
     - Role: User
         - Username: user3
         - Password: 123456789
+
+### License
+GNU GPL 

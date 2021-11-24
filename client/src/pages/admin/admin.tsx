@@ -11,7 +11,7 @@ const Admin = (props : AdminProps) => {
   return(
     <div className={'admin '+ (props.classes||'')}>
         <SideBar/>
-        <main className='container'>
+        <main className='container-fluid main-region'>
             <Header/>
             <h4>this is the admin page</h4>
         </main>

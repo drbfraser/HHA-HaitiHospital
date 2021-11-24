@@ -15,6 +15,7 @@ import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
+import MaternityForm from 'pages/form/maternity_form';
 
 const routes = [
     {
@@ -27,7 +28,7 @@ const routes = [
         path: '/admin',
         component: Admin,
         isPrivate: true,
-        rolesRequired: ['ADMIN'],
+        rolesRequired: ['Admin'],
     },
     {
         path: '/home',
@@ -38,6 +39,12 @@ const routes = [
     {
         path: '/Department1NICU',
         component: DepartmentOne,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: '/NICUForm',
+        component: NICUForm,
         isPrivate: true,
         rolesRequired: [],
     },
@@ -56,6 +63,12 @@ const routes = [
     {
         path: '/Department2Maternity',
         component: DepartmentTwo,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: 'maternityForm',
+        component: MaternityForm,
         isPrivate: true,
         rolesRequired: [],
     },
@@ -104,12 +117,6 @@ const routes = [
     {
         path: '/addMessage',
         component: AddMessage,
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/NICUForm',
-        component: NICUForm,
         isPrivate: true,
         rolesRequired: [],
     },

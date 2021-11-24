@@ -5,9 +5,10 @@ import { useHistory } from "react-router-dom";
 import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import nicuJSON from './models/nicuModel.json';
+import nicuJSONFr from './models/nicuModelFr.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './nicu_form_styles.css'
-
+import { useTranslation } from "react-i18next";
 
 
 function DynamicForm() {
@@ -20,28 +21,30 @@ function DynamicForm() {
 
     const history = useHistory();
 
+    const {t, i18n} = useTranslation();
+
     useEffect(() => {
         const getData = async () => {
-            await setFormModel(nicuJSON[0]);
+            await setFormModel(nicuJSON);
             setSectionState(0);
         }
 
         getData();
-    }, [])
+    }, [i18n.language])
 
     useEffect(() => {
         sidePanelClick(sectionState);
     })
 
-    const elements = Object.values(formModel);
+    const elements: any = Object.values(formModel);
     const fields: any = elements[0];
 
-    function refreshPage() {
-        window.location.reload();
-    }
+    // function refreshPage() {
+    //     window.location.reload();
+    // }
 
     const onSubmit = async (data: any) => {
-        var valid = submitValidation();
+        var valid = true; //submitValidation();
 
         if (valid === true) {
 
@@ -55,7 +58,7 @@ function DynamicForm() {
                 console.error('Something went wrong!', error.response);
             });
 
-            //console.log(data);
+            console.log(data);
             history.push("/Department1NICU");
         } else {
             console.log(valid);
@@ -114,19 +117,18 @@ function DynamicForm() {
 
     }
 
-    const addFormFields = (ID: any) => {
+    const addFormFields = (ID: number) => {
         switch (ID) {
-            case 'admissions.comeFrom.otherDepartments':
+            case 30:
                 setFormValuesComeFrom([...formValuesComeFrom, { name: "", value: null }])
                 break;
-            case 'admissions.mainCondition.otherMedical':
+            case 59:
                 setFormValuesAdCondition([...formValuesAdCondition, { name: "", value: null }])
                 break;
-            case 'numberOfOutPatients.mainCondition.otherMedical':
+            case 89:
                 setFormValuesOutCondition([...formValuesOutCondition, { name: "", value: null }])
                 break;
             default:
-
         }
     }
 
@@ -155,7 +157,7 @@ function DynamicForm() {
 
     const sidePanelClick = (index: any) => {
         const currentClass = document.getElementsByClassName("list-group-item");
-        let startj = 0
+        let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
             currentClass[i].classList.remove("active");
             if (currentClass[i].childNodes.length > 1) {
@@ -169,11 +171,11 @@ function DynamicForm() {
                 show = "";
             }
 
-            for (let j = 0; j < sections[i].field_value; j++, startj++) {
-                document.getElementById("section" + (i + 1))!.style.display = show;
+            document.getElementById("section" + i)!.style.display = show;
+            for (let j = 1; j <= elements[i].section_fields.length; j++, startj++) {
+                if (document.getElementById("subsection" + startj)) document.getElementById("subsection" + startj)!.style.display = show;
                 if (document.getElementById("input" + startj)) document.getElementById("input" + startj)!.style.display = show;
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
-                if (document.getElementById("subsection" + (startj))) document.getElementById("subsection" + (startj))!.style.display = show;
             }
         }
     }
@@ -232,12 +234,12 @@ function DynamicForm() {
             var text = (inputGroup.childNodes[1] as HTMLInputElement).value;
             if (text == "") {
                 (inputGroup.childNodes[1] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationMustEnterValue")
                 return;
             }
 
             (inputGroup.childNodes[1] as HTMLInputElement).classList.remove("is-invalid");
-            (inputGroup.childNodes[1] as HTMLInputElement).classList.add("is-valid");
+            (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationMustEnterValue")
             return;
         }
 
@@ -245,20 +247,20 @@ function DynamicForm() {
             var numberAsText = (inputGroup.childNodes[2] as HTMLInputElement).value;
             if (numberAsText == "") {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Must enter a value for this field";
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationMustEnterValue")
                 return;
             }
 
             var number = Number((inputGroup.childNodes[2] as HTMLInputElement).value);
             if (number < 0) {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Positive numbers only for this field";
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationPositiveNumberOnly");
                 return;
             }
 
             if (number % 1 != 0) {
                 (inputGroup.childNodes[2] as HTMLInputElement).classList.add("is-invalid");
-                (inputGroup.childNodes[3] as HTMLElement).innerHTML = "Integers only for this field";
+                (inputGroup.childNodes[3] as HTMLElement).innerHTML = i18n.t("departmentFormArrayInputValidationIntegersOnly");
                 return;
             }
 
@@ -288,28 +290,7 @@ function DynamicForm() {
         }
     }
 
-    function totalValidation(start: number, a: number, b: number) {
-        var total = Number((document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).value);
-        var total2 = 0;
-        for (var i = a; i <= b; i++) {
-            total2 += Number((document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).value)
-        }
-        if (total !== total2) {
-            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
-            for (var i = a; i <= b; i++) {
-                (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = "";
-            }
-        } else {
-            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-            (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-            for (var i = a; i <= b; i++) {
-                (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-                (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
-            }
-        }
-    }
+
 
     function arrayTotalValidation(start: number, a: number, b: number) {
         var total = Number((document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).value);
@@ -330,7 +311,12 @@ function DynamicForm() {
 
             for (var i = a; i <= b - 1; i++) {
                 (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-                var errorMsg = i == a ? "Does not add up to total" : "";
+                // if (i18n.language === 'fr') {
+                //     var errorMsg = i == a ? "Ne correspond pas au total" : "";
+                // } else {
+                //     var errorMsg = i == a ? "Does not add up to total" : "";
+                // }
+                var errorMsg = i == a ? i18n.t("departmentFormTotalValidationDoesNotAddUpToTotal") : "";
                 (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = errorMsg;
             }
 
@@ -358,28 +344,48 @@ function DynamicForm() {
         }
     }
 
-    function inputValidation(num: number) {
-        console.log("input: " + num);
+    function makeValidity(num: number, isVal: boolean, msg: string) {
+        var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+        var errorMessage = (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement);
 
-        var numberAsText = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value;
+        if (isVal) {
+            inputElement.classList.remove("is-invalid");
+            inputElement.classList.add("is-valid");
+            errorMessage.innerHTML = "";
+        } else {
+            inputElement.classList.remove("is-valid");
+            inputElement.classList.add("is-invalid");
+            errorMessage.innerHTML = msg;
+        }
+    }
+
+    function isValid(num: number) {
+        console.log("input: " + num);
+        var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+
+        var numberAsText = inputElement.value;
         if (numberAsText == "") {
-            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Must enter a value";
-            return;
+            makeValidity(num, false, "Must enter a value");
+            return false;
         }
 
-        var number = Number((document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).value);
+        var number = Number(numberAsText);
         if (number < 0) {
-            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Positive numbers only";
-            return;
+            makeValidity(num, false, "Positive numbers only");
+            return false;
         }
 
         if (number % 1 != 0) {
-            (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
-            (document.getElementById("inputs" + num)?.childNodes[1] as HTMLElement).innerHTML = "Integers only";
-            return;
+            makeValidity(num, false, "Integers only");
+            return false;
         }
+
+        makeValidity(num, true, "");
+        return true;
+    }
+
+    function inputValidation(num: number) {
+        if (!isValid(num)) return;
 
         //Hospitalized
         if (num === 4 || num === 5 || num === 6) {
@@ -412,269 +418,345 @@ function DynamicForm() {
         }
 
         //Where do patients come from?
-        if (num === 27 || num >= 29 && num <= 31) {
-            arrayTotalValidation(27, 29, 32);
+        if (num === 26 || num >= 27 && num <= 30) {
+            arrayTotalValidation(26, 27, 30);
             return;
         }
         //Age
-        if (num === 27 || num >= 34 && num <= 41) {
-            totalValidation(27, 34, 41);
+        if (num === 26 || num >= 31 && num <= 38) {
+            totalValidation(26, 31, 38);
             return;
         }
         //Gender
-        if (num === 27 || num >= 43 && num <= 44) {
-            totalValidation(27, 43, 44);
+        if (num === 26 || num >= 39 && num <= 40) {
+            totalValidation(26, 39, 40);
             return;
         }
         //Main Condition
-        if (num === 27 || num >= 46 && num <= 64) {
-            arrayTotalValidation(27, 46, 64);
+        if (num === 26 || num >= 41 && num <= 59) {
+            arrayTotalValidation(26, 41, 59);
             return;
         }
 
         //Age
-        if (num === 66 || num >= 68 && num <= 75) {
-            totalValidation(66, 68, 75);
+        if (num === 60 || num >= 61 && num <= 68) {
+            totalValidation(60, 61, 68);
             return;
         }
         //Gender
-        if (num === 66 || num >= 77 && num <= 78) {
-            totalValidation(66, 77, 78);
+        if (num === 60 || num >= 69 && num <= 70) {
+            totalValidation(60, 69, 70);
             return;
         }
         //Main Condition
-        if (num === 66 || num >= 80 && num <= 98) {
-            arrayTotalValidation(66, 80, 98);
+        if (num === 60 || num >= 71 && num <= 89) {
+            arrayTotalValidation(60, 71, 89);
             return;
         }
 
-        (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
-        (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
+        makeValidity(num, true, "");
     }
 
-    function getSections() {
-        var a = [];
-        for (let i in fields) {
-            if (fields[i].field_type === 'section') {
-                a.push(fields[i]);
+    function totalValidation(start: number, a: number, b: number) {
+        var inputElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var total = Number(inputElement.value);
+        var isSeriesValid = isValid(start);
+
+        var total2 = 0;
+        for (var i = a; i <= b; i++) {
+            console.log("loop", i);
+            inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            total2 += Number(inputElement.value);
+            isSeriesValid = isValid(i) && isSeriesValid;
+        }
+        
+        if (isSeriesValid) {
+            if (total !== total2) {
+                (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
+                (document.getElementById("inputs" + start)?.childNodes[1] as HTMLElement).innerHTML = "Does not add up to total";
+                for (var i = a; i <= b; i++) {
+                    (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-invalid");
+                    (document.getElementById("inputs" + i)?.childNodes[1] as HTMLElement).innerHTML = "";
+                }
+            } else {
+                (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
+                (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
+                for (var i = a; i <= b; i++) {
+                    (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.remove("is-invalid");
+                    (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement).classList.add("is-valid");
+                }
             }
         }
-        return a;
     }
 
-    let sections = getSections();
+
+
+
+
+
     let fieldCount = 0;
-    let sectionCount = 0;
+
     document.body.classList.add("bg-light");
+
 
     return (
         <div className="nicu_form">
-            <SideBar/>
+            <SideBar />
 
             <main className="container">
-                <Header/>
+                <Header />
 
                 <div className="py-3 text-start">
-                    <h2>NICU/Paediatrics Form</h2>
-                    <p className="lead">For: September 2021</p>
+                    <h2>{t("departmentFormNICUForm")}</h2>
+                    <p className="lead">{t("departmentFormForDate")}</p>
                 </div>
 
                 <div className="row g-3">
                     <div className="col-sm-4 col-md-4 col-lg-4">
 
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
-                            <span className="text-primary">Steps</span>
+                            <span className="text-primary">{t("departmentFormSteps")}</span>
                         </h4>
 
                         <ul className="list-group mb-3">
-                            {sections ? sections.map((section: any, index: any) => {
-                                var isActive = false;
-                                if (index === 0) {
-                                    isActive = true;
-                                }
+                            {elements ? elements.map((section: any, idx: any) => {
+                                var isActive = idx === 0 ? true : false;
                                 return (
                                     <>
-                                        <li key={index}
-                                            className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                            onClick={() => sidePanelClick(index)}>
-                                            <span>{index + 1}. {section.field_label}</span>
+                                        <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
+                                            onClick={() => sidePanelClick(idx)}>
+                                            <span>{idx + 1}. {section.section_label}</span>
                                         </li>
                                     </>
                                 )
                             }) : null}
                         </ul>
 
-
                         <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
                     </div>
-                    <div className="col-sm-7 col-md-7 col-lg-7">
 
+
+                    <div className="col-sm-7 col-md-7 col-lg-7">
                         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
                             <div className="row g-2">
-                                {fields ? fields.map((field: any, index: any) => {
-                                    switch (field.field_type) {
-                                        case 'section':
-                                            sectionCount += 1;
-                                            return (<h4 id={"section" + sectionCount} className="mb-3">{sectionCount}. {field.field_label}</h4>)
+                                {elements ? elements.map((section: any, idx: any) => {
+                                    var ret = [];
 
-                                        case 'subsection':
-                                            return (<h6 id={"subsection" + index} className={field.field_level === 1 ? "px-5 fw-bold" : "fw-bold"}>{field.field_label}</h6>)
+                                    // render the section title
+                                    ret.push(<h4 id={"section" + idx} className="mb-3">{idx + 1}. {section.section_label}</h4>);
 
-                                        case 'number':
-                                            fieldCount += 1;
+                                    var fields = section.section_fields;
 
-                                            return (
+                                    // i is the question number
+                                    for (let i = fieldCount + 1; i <= fieldCount + fields.length; i++) {
+                                        var field = fields[i - fieldCount - 1];
+
+                                        // render the subsection title
+                                        if (field.subsection_label) {
+                                            ret.push(<h6 id={"subsection" + i} className={field.field_level === 1 ? "px-5 fw-bold" : "fw-bold"}>{field.subsection_label}</h6>)
+                                        }
+
+                                        // render each entry
+                                        if (field.field_type === "number") {
+                                            ret.push(
                                                 <>
-                                                    <div id={"input" + index} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                        <span className="align-middle">{fieldCount}. {field.field_label}</span>
+                                                    <div id={"input" + i} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                                        <span className="align-middle">{i}. {field.field_label}</span>
                                                     </div>
-                                                    <div id={"inputs" + index} className="col-sm-2">
+                                                    <div id={"inputs" + i} className="col-sm-2">
                                                         <input type="text" className="form-control" placeholder=""
-                                                               {...register(field.field_id)}
-                                                            // required
-                                                            //onChange={() => totalValidation(index)}
-                                                               onBlur={() => inputValidation(index)}
+                                                            {...register(field.field_id)}
+                                                            onBlur={() => inputValidation(i)}
                                                         />
                                                         <div className="invalid-feedback">
-                                                            Requires a valid number
+                                                            {t("departmentFormRequiresValidNumber")}
                                                         </div>
                                                     </div>
                                                 </>
-                                            )
+                                            );
 
-                                        case 'array':
-                                            fieldCount += 1;
-                                            switch (field.field_id) {
-                                                case 'admissions.comeFrom.otherDepartments':
-                                                    return (
-                                                        <>
-                                                            <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
-                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
-                                                            </div>
-                                                            <div id={"inputs" + index} >
-                                                                {formValuesComeFrom.map((element, index2) => (
-                                                                    <div className="row g-3 mb-1" key={index}>
-                                                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group" id={"cf" + index + index2}>
-                                                                                <span className="input-group-text" id="">Name and value</span>
-                                                                                <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                       value={element.name || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                       onBlur={() => arrayInputValidation("cf", index, index2, "text")}
-                                                                                />
-                                                                                <input className="form-control" type="text" name="numberOfPatients"
-                                                                                       value={element.value || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                       onBlur={() => arrayInputValidation("cf", index, index2, "number")}
-                                                                                />
-                                                                                <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </>
-                                                    )
-
-                                                case 'admissions.mainCondition.otherMedical':
-                                                    return (
-                                                        <>
-                                                            <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
-                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
-                                                            </div>
-                                                            <div id={"inputs" + index} >
-                                                                {formValuesAdCondition.map((element, index2) => (
-                                                                    <div className="row g-3 mb-1" key={index}>
-                                                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group" id={"ac" + index + index2}>
-                                                                                <span className="input-group-text" id="">Name and value</span>
-                                                                                <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                       value={element.name || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                       onBlur={() => arrayInputValidation("ac", index, index2, "text")}
-                                                                                />
-                                                                                <input className="form-control" type="text" name="numberOfPatients"
-                                                                                       value={element.value || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                       onBlur={() => arrayInputValidation("ac", index, index2, "number")}
-                                                                                />
-                                                                                <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </>
-                                                    )
-
-                                                case 'numberOfOutPatients.mainCondition.otherMedical':
-                                                    return (
-                                                        <>
-                                                            <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
-                                                                <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
-                                                                <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
-                                                            </div>
-                                                            <div id={"inputs" + index} >
-                                                                {formValuesOutCondition.map((element, index2) => (
-                                                                    <div className="row g-3 mb-1">
-                                                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                            <div className="input-group" id={"oc" + index + index2}>
-                                                                                <span className="input-group-text">Name and value</span>
-                                                                                <input className="form-control" type="text" name="nameOfDepartment"
-                                                                                       value={element.name || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                                       onBlur={() => arrayInputValidation("oc", index, index2, "text")}
-                                                                                />
-                                                                                <input className="form-control" type="text" name="numberOfPatients"
-                                                                                       value={element.value || ""}
-                                                                                       onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                                       onBlur={() => arrayInputValidation("oc", index, index2, "number")}
-                                                                                />
-                                                                                <div className="invalid-feedback text-end">
-                                                                                    Requires a valid number
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-sm-2">
-                                                                            <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </>
-                                                    )
-
-                                                default:
-                                                    return null
+                                        } else if (field.field_type === "array") {
+                                            var formValues;
+                                            if (field.field_id === "admissions.comeFrom.otherDepartments") {
+                                                formValues = formValuesComeFrom;
+                                            } else if (field.field_id === "admissions.mainCondition.otherMedical") {
+                                                formValues = formValuesAdCondition;
+                                            } else if (field.field_id === "numberOfOutPatients.mainCondition.otherMedical") {
+                                                formValues = formValuesOutCondition;
                                             }
+                                            var formId = field.field_id;
+                                            ret.push(
+                                                <>
+                                                    <div id={"input" + i} className={field.field_level === 1 ? "ps-5" : ""}>
+                                                        <span className="align-middle me-2">{i}. {field.field_label}</span>
+                                                        <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>Add</button>
+                                                    </div>
+                                                    <div id={"inputs" + i} >
+                                                        {formValues.map((element, index2) => (
+                                                            <div className="row g-3 mb-1">
+                                                                <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                                                    <div className="input-group" id={"cf" + i + index2}>
+                                                                        <span className="input-group-text" id="">Name and value</span>
+                                                                        <input className="form-control" type="text" name="nameOfDepartment"
+                                                                            value={element.name || ""}
+                                                                            onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                                                            onBlur={() => arrayInputValidation("cf", i, index2, "text")}
+                                                                        />
+                                                                        <input className="form-control" type="text" name="numberOfPatients"
+                                                                            value={element.value || ""}
+                                                                            onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                                                            onBlur={() => arrayInputValidation("cf", i, index2, "number")}
+                                                                        />
+                                                                        <div className="invalid-feedback text-end">
+                                                                            Requires a valid number
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-sm-2">
+                                                                    <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </>
+                                            )
+                                        }
 
-                                        default:
-                                            return null;
                                     }
+
+                                    fieldCount += fields.length;
+                                    return ret;
+
+                                    //     case 'array':
+                                    //         fieldCount += 1;
+                                    //         switch (field.field_id) {
+                                    //             case 'admissions.comeFrom.otherDepartments':
+                                    //                 return (
+                                    //                     <>
+                                    //                         <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
+                                    //                             <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                    //                             <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                    //                         </div>
+                                    //                         <div id={"inputs" + index} >
+                                    //                             {formValuesComeFrom.map((element, index2) => (
+                                    //                                 <div className="row g-3 mb-1" key={index}>
+                                    //                                     <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                    //                                         <div className="input-group" id={"cf" + index + index2}>
+                                    //                                             <span className="input-group-text" id="">Name and value</span>
+                                    //                                             <input className="form-control" type="text" name="nameOfDepartment"
+                                    //                                                    value={element.name || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                    //                                                    onBlur={() => arrayInputValidation("cf", index, index2, "text")}
+                                    //                                             />
+                                    //                                             <input className="form-control" type="text" name="numberOfPatients"
+                                    //                                                    value={element.value || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                    //                                                    onBlur={() => arrayInputValidation("cf", index, index2, "number")}
+                                    //                                             />
+                                    //                                             <div className="invalid-feedback text-end">
+                                    //                                                 Requires a valid number
+                                    //                                             </div>
+                                    //                                         </div>
+                                    //                                     </div>
+                                    //                                     <div className="col-sm-2">
+                                    //                                         <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
+                                    //                                     </div>
+                                    //                                 </div>
+                                    //                             ))}
+                                    //                         </div>
+                                    //                     </>
+                                    //                 )
+
+                                    //             case 'admissions.mainCondition.otherMedical':
+                                    //                 return (
+                                    //                     <>
+                                    //                         <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
+                                    //                             <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                    //                             <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                    //                         </div>
+                                    //                         <div id={"inputs" + index} >
+                                    //                             {formValuesAdCondition.map((element, index2) => (
+                                    //                                 <div className="row g-3 mb-1" key={index}>
+                                    //                                     <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                    //                                         <div className="input-group" id={"ac" + index + index2}>
+                                    //                                             <span className="input-group-text" id="">Name and value</span>
+                                    //                                             <input className="form-control" type="text" name="nameOfDepartment"
+                                    //                                                    value={element.name || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                    //                                                    onBlur={() => arrayInputValidation("ac", index, index2, "text")}
+                                    //                                             />
+                                    //                                             <input className="form-control" type="text" name="numberOfPatients"
+                                    //                                                    value={element.value || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                    //                                                    onBlur={() => arrayInputValidation("ac", index, index2, "number")}
+                                    //                                             />
+                                    //                                             <div className="invalid-feedback text-end">
+                                    //                                                 Requires a valid number
+                                    //                                             </div>
+                                    //                                         </div>
+                                    //                                     </div>
+                                    //                                     <div className="col-sm-2">
+                                    //                                         <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
+                                    //                                     </div>
+                                    //                                 </div>
+                                    //                             ))}
+                                    //                         </div>
+                                    //                     </>
+                                    //                 )
+
+                                    //             case 'numberOfOutPatients.mainCondition.otherMedical':
+                                    //                 return (
+                                    //                     <>
+                                    //                         <div id={"input" + index} className={field.field_level === 1 ? "ps-5" : ""}>
+                                    //                             <span className="align-middle me-2">{fieldCount}. {field.field_label}</span>
+                                    //                             <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(field.field_id)}>Add</button>
+                                    //                         </div>
+                                    //                         <div id={"inputs" + index} >
+                                    //                             {formValuesOutCondition.map((element, index2) => (
+                                    //                                 <div className="row g-3 mb-1">
+                                    //                                     <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                    //                                         <div className="input-group" id={"oc" + index + index2}>
+                                    //                                             <span className="input-group-text">Name and value</span>
+                                    //                                             <input className="form-control" type="text" name="nameOfDepartment"
+                                    //                                                    value={element.name || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 0)}
+                                    //                                                    onBlur={() => arrayInputValidation("oc", index, index2, "text")}
+                                    //                                             />
+                                    //                                             <input className="form-control" type="text" name="numberOfPatients"
+                                    //                                                    value={element.value || ""}
+                                    //                                                    onChange={e => handleChange(field.field_id, index2, e, 1)}
+                                    //                                                    onBlur={() => arrayInputValidation("oc", index, index2, "number")}
+                                    //                                             />
+                                    //                                             <div className="invalid-feedback text-end">
+                                    //                                                 Requires a valid number
+                                    //                                             </div>
+                                    //                                         </div>
+                                    //                                     </div>
+                                    //                                     <div className="col-sm-2">
+                                    //                                         <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index)}>Remove</button>
+                                    //                                     </div>
+                                    //                                 </div>
+                                    //                             ))}
+                                    //                         </div>
+                                    //                     </>
+                                    //                 )
+
+                                    //             default:
+                                    //                 return null
+                                    //         }
+
+                                    //     default:
+                                    //         return null;
+                                    // }
                                 }) : null}
 
                                 <hr className="my-4"></hr>
-
-
-
                             </div>
                         </form>
 
                         <div className="btn-group d-flex">
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>{t("departmentFormPrevious")}</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>{t("departmentFormPrevious")}</button>
                         </div>
 
                         <button
@@ -684,23 +766,11 @@ function DynamicForm() {
                             onClick={handleSubmit(onSubmit)}>
                             Submit
                         </button>
-
                     </div>
                 </div>
             </main>
-
-            <footer className="my-5 pt-5 text-muted text-center text-small">
-                <p className="mb-1">&copy; 2017–2021 Company Name</p>
-                <ul className="list-inline">
-                    <li className="list-inline-item"><a href="#">Privacy</a></li>
-                    <li className="list-inline-item"><a href="#">Terms</a></li>
-                    <li className="list-inline-item"><a href="#">Support</a></li>
-                </ul>
-            </footer>
         </div>
-
     )
-
 }
 
 export default DynamicForm;

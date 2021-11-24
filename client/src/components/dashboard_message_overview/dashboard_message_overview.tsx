@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 import { useState } from 'react';
 
@@ -6,6 +6,7 @@ import { MessageProps } from 'constants/interfaces';
 import Axios from 'axios';
 import { NavLink} from "react-router-dom";
 import './dashboard_message_overview.css'
+import {useTranslation} from "react-i18next";
 
 interface DashboardMessageProps extends ElementStyleProps {
     messages :MessageProps[],
@@ -26,54 +27,56 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
         })
     }, [])
 
+    const {t, i18n} = useTranslation();
+
     return(
          <div className={'dashboard-message-overview '+ (props.classes||'')}>
-             <div className="my-3 p-3 bg-body rounded shadow-sm container-fluid">
+             <div className="my-3 p-2 bg-body rounded shadow-sm">
+                 <h5 className="mb-3">{t("dashboardMessageOverviewMessages")}</h5>
 
-                 <h5 className="pb-2 mb-3">Message Board</h5>
+                 <div className="table-responsive">
+                     <table className="table">
+                         <thead>
+                             <tr>
+                                 <th scope="col">{t("dashboardMessageOverviewTitle")}</th>
+                                 <th scope="col">{t("dashboardMessageOverviewUser")}</th>
+                                 <th scope="col">{t("dashboardMessageOverviewDate")}</th>
+                                 <th scope="col">{t("dashboardMessageOverviewMessage")}</th>
+                             </tr>
+                         </thead>
 
-                 <table className="container-fluid">
-                     <thead>
-                         <tr className="d-flex border-bottom pb-2 mb-0 row">
-                             <th className="text-secondary col col-sm col-md-2 col-lg-2">Title</th>
-                             <th className="text-secondary col col-sm col-md-2 col-lg-2">User</th>
-                             <th className="text-secondary col col-sm col-md-3 col-lg-3">Date</th>
-                             <th className="text-secondary col-6 col-sm-6 col-md col-lg">Message</th>
-                         </tr>
-                     </thead>
-
-                     <tbody className="d-flex text-muted">
-                         <tr className="pb-3 mb-0 lh-sm w-100">{
-                             (message.map((message, index) => {
-                                     // Displaying top 3 messages
-                                     if (index <= 2) {
-                                         return(
-                                             <td key={index} className="d-flex mt-3 row border-bottom">
-                                                 <p className="text-dark col-md-2 text-break">
-                                                     {message.messageHeader}
-                                                 </p>
-                                                 <p className="text-dark col-md-2">
-                                                     {message.authorId}
-                                                 </p>
-                                                 <p className="text-dark col-md-3">
-                                                     {message.date}
-                                                 </p>
-                                                 <p className="flex-column text-dark small col text-break">
-                                                     {/*show first 70 character of message only*/}
-                                                     {message.messageBody.slice(0, 70)}...
-                                                 </p>
+                         <tbody className="text-muted">
+                             {(message.map((message, index) => {
+                                 // Displaying top 3 messages
+                                 if (index <= 2) {
+                                     return(
+                                         <tr>
+                                             <th scope="row" className="text-secondary text-break" key={index}>{message.messageHeader}</th>
+                                             <td className="text-secondary">
+                                                 {message.authorId}
                                              </td>
-                                         )
-                                     }
+                                             <td className="text-secondary">
+                                                 {message.date}
+                                             </td>
+                                             <td className="text-secondary text-break">
+                                                 {/*show first 70 character of message only*/}
+                                                 {message.messageBody.slice(0, 70)}...
+                                             </td>
+                                         </tr>
+                                        )
+                                    }
                                  })
                              )}
-                         </tr>
-                     </tbody>
+                         </tbody>
+                     </table>
+                 </div>
 
-                 </table>
-                 <small className="d-block text-end mt-1">
-                         <NavLink to="/messageBoard">See More</NavLink>
-                     </small>
+                 <div className="d-flex justify-content-end">
+                     <NavLink to="/messageBoard"><button type="button" className="btn btn-secondary btn-block col-auto">{t("dashboardMessageOverviewSeeMore")}</button></NavLink>
+                 </div>
+                 {/*<small className="justify-content-end">*/}
+                 {/*    <NavLink to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>*/}
+                 {/*</small>*/}
              </div>
          </div>
      )
