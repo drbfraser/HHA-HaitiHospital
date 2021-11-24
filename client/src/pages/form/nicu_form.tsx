@@ -34,7 +34,6 @@ function DynamicForm() {
     })
 
     const elements: any = Object.values(formModel);
-    const fields: any = elements[0];
 
     function refreshPage() {
         window.location.reload();
@@ -66,13 +65,15 @@ function DynamicForm() {
     }
 
     const clickPrevious = () => {
+        //window.scrollTo(0, 0);
         sidePanelClick(sectionState - 1);
-        window.scrollTo(0, 0);
+        console.log("clicked prev");
     }
 
     const clickNext = () => {
         sidePanelClick(sectionState + 1);
-        window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
+        console.log("clicked next");
     }
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
@@ -184,6 +185,7 @@ function DynamicForm() {
     }
 
     const sidePanelClick = (index: any) => {
+        window.scrollTo(0, 0);
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
@@ -206,6 +208,7 @@ function DynamicForm() {
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
             }
         }
+        
     }
 
     function submitValidation() {
@@ -293,17 +296,6 @@ function DynamicForm() {
 
         if (number % 1 != 0) {
             makeValidity(inputElement, false, "Integers only");
-            return false;
-        }
-
-        makeValidity(inputElement, true, "");
-        return true;
-    }
-
-    function isValidText(inputElement: HTMLInputElement) {
-        var numberAsText = inputElement.value;
-        if (numberAsText == "") {
-            makeValidity(inputElement, false, "Must enter a value");
             return false;
         }
 
@@ -670,7 +662,7 @@ function DynamicForm() {
                         </form>
 
                         <div className="btn-group d-flex mb-2">
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={()=>{window.scrollTo(0, 0);clickPrevious();}} disabled={sectionState === 0 ? true : false}>Previous</button>
                             <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
                         </div>
 
