@@ -186,9 +186,6 @@ function DynamicForm() {
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
             currentClass[i].classList.remove("active");
-            if (currentClass[i].childNodes.length > 1) {
-                currentClass[i].removeChild(currentClass[i].childNodes[1])
-            }
 
             var show = "none"
             if (i === index) {
@@ -204,8 +201,16 @@ function DynamicForm() {
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
             }
         }
-
     }
+
+
+
+
+
+
+    //
+    // VALIDATION FUNCTIONS
+    // 
 
     function submitValidation() {
         var isFormValid = true;
@@ -234,9 +239,57 @@ function DynamicForm() {
         return isFormValid;
     }
 
-    //
-    // VALIDATION FUNCTIONS
-    // 
+    function checkSideBar() {
+        const listGroup = document.getElementsByClassName("list-group-item");
+        let num = 1;
+        for (let i = 0; i < listGroup.length; i++) {
+            var section = elements[i];
+
+            var isSectionValid = true;
+            for (let j = 1; j <= section.section_fields.length; j++, num++) {
+                var formValues;
+                if (num === 30) {
+                    formValues = formValuesComeFrom;
+                } else if (num === 59) {
+                    formValues = formValuesAdCondition;
+                } else if (num === 89) {
+                    formValues = formValuesOutCondition;
+                }
+
+                if (num === 30 || num === 59 || num === 89) {
+                    var inputGroup = (document.getElementById("inputs" + num) as HTMLElement);
+                    for (let k = 0; k < formValues.length; k++) {
+                        var textInput = (inputGroup.childNodes[k].childNodes[0].childNodes[0] as HTMLInputElement);
+                        var valueInput = (inputGroup.childNodes[k].childNodes[1].childNodes[0] as HTMLInputElement);
+                        if (textInput.classList.contains("is-invalid") || valueInput.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
+                } else {
+                    var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+                    if (inputElement.classList.contains("is-invalid")) {
+                        isSectionValid = false;
+                    }
+                }
+            }
+            
+            var listElement = listGroup[i];
+            if (isSectionValid) {
+                if(listElement.childElementCount > 1) {
+                    listElement.removeChild(listElement.childNodes[1]);
+                }
+                console.log("remed");
+            } else {
+                if(listElement.childElementCount > 1) {
+                    listElement.removeChild(listElement.childNodes[1]);
+                }
+                var alertIcon = document.createElement("div")
+                alertIcon.classList.add("bi", "bi-exclamation-circle-fill", "flex-shrink-0");
+                listElement.appendChild(alertIcon);
+            }
+        }
+    }
+
     function removeValidity(inputElement: HTMLInputElement) {
         var errorMessage = (inputElement.nextSibling as HTMLElement);
         inputElement.classList.remove("is-invalid");
@@ -256,6 +309,8 @@ function DynamicForm() {
             inputElement.classList.add("is-invalid");
             errorMessage.innerHTML = msg;
         }
+
+        checkSideBar();
     }
 
     function isValid(inputElement: HTMLInputElement) {
@@ -353,8 +408,6 @@ function DynamicForm() {
 
         makeValidity(inputElement, true, "");
     }
-
-
 
     function totalValidation(start: number, a: number, b: number) {
         // check if the entire series in total is all filled out 
@@ -489,6 +542,12 @@ function DynamicForm() {
             }
         }
     }
+
+
+
+
+
+
 
 
 
