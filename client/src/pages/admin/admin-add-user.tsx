@@ -13,6 +13,7 @@ interface AdminProps extends ElementStyleProps {
 
 export const AddUserForm = (props: AdminProps) => {
   const [submissionStatus, setSubmissionStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [role, setRole] = useState(Role.User as string);
 
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
@@ -26,7 +27,10 @@ export const AddUserForm = (props: AdminProps) => {
       reset({});
       history.push("/admin");
     }).catch(error =>{
-      console.error('Something went wrong!', error.message);
+      if (error.response.data.message) {
+        setErrorMessage(error.response.data.message);
+      }
+      console.error('Something went wrong!', error.response.data.message);
       setSubmissionStatus("failure");
       failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     });
@@ -85,7 +89,7 @@ export const AddUserForm = (props: AdminProps) => {
           </form>
           
           <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"}`} role="alert" ref={failureMessageRef}>
-            An error occurred during the submission. Please try again.
+            An error occurred during the submission: {errorMessage}
           </div>
         </div>
       </main>

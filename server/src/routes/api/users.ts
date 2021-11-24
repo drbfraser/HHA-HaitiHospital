@@ -11,8 +11,12 @@ const router = Router();
 router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : NextFunction) => {
   try {
     const tempUser = await User.findById(req.params.id);
-    const reqUser : any = req.user;
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
+
+    const existingUser = await User.findOne({ username: req.body.username });
+    if (existingUser) {
+      return res.status(422).send({ message: 'Username is in use' });
+    }
 
     let password = null;
     if (req.body.password && req.body.password !== '') {
@@ -26,7 +30,7 @@ router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : 
 
     res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json({ message: err });
   }
 });
 
@@ -46,7 +50,7 @@ router.get('/me', requireJwtAuth, async (req, res) => {
 router.get('/:id', requireJwtAuth, async (req, res) => {
   User.findById(req.params.id)
       .then(data => res.json(data))
-      .catch(err => res.status(400).json('Failed to get user: ' + err));
+      .catch(err => res.status(400).json({ message: 'Failed to get user: ' + err}));
 });
 
 // get all users, currently working
@@ -55,7 +59,7 @@ router.get('/', requireJwtAuth, async (req, res) => {
     const users = await User.find().sort({ createdAt: 'desc' });
     res.json(users);
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json({ message: err });
   }
 });
 
@@ -71,20 +75,17 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, re
     const user = await User.findByIdAndRemove(tempUser.id);
     res.status(200).json({ user });
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json({ message: err });
   }
 });
 
 // add user, currently working
 router.post('/', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) => {
   try {
-    const reqUser : any = req.user;
-
     const { username, password, name, role, department } = req.body;
 
     const existingUser = await User.findOne({ username });
 
-    console.log(req.body);
     if (existingUser) {
       return res.status(422).send({ message: 'Username is in use' });
     }
@@ -103,7 +104,7 @@ router.post('/', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) =>
     });
 
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json({ message: err });
   }
 });
 
