@@ -118,7 +118,7 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="border-top my-2"/>
                         {
-                            renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (                 
+                            renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (                 
                                     <li>
                                         <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                                             <i className="bi bi-person-badge-fill me-2"/>
