@@ -1,4 +1,3 @@
-import React, {useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import { ElementStyleProps } from "../../constants/interfaces";
@@ -6,12 +5,8 @@ import './side_bar.css';
 import { useAuthState } from 'Context';
 import { useTranslation } from 'react-i18next';
 import i18n from "i18next";
-import Button from "../button/button";
-
-// import { SidebarData } from './side_bar_data';
-
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import { isUserInDepartment } from "../../actions/utility";
+import { Role, DepartmentName } from "../../constants/interfaces";
 
 interface SidebarProps extends ElementStyleProps {}
 
@@ -24,10 +19,17 @@ export const changeLanguage = (ln) => {
 
 
 const Sidebar = (props: SidebarProps) => {
-    const userDetails = useAuthState();
+    const authState = useAuthState();
+
+    const renderDepartmentIfUser = (departmentName) => {
+        if (authState.userDetails.role === Role.User) {
+            return isUserInDepartment(authState.userDetails.department, departmentName);
+        }
+        return true;
+    }
 
     const renderAdminButton = () => {
-        if (userDetails.userDetails.role === 'Admin') {
+        if (authState.userDetails.role === Role.Admin) {
             return true;
         }
         return false;
@@ -45,21 +47,11 @@ const Sidebar = (props: SidebarProps) => {
     return (
         <div className={getClassName()}>
             <div className="bg-dark">
-            {/*<div className='position-fixed d-flex flex-column flex-shrink-0 p-3 bg-dark' style={{width: 220}}>*/}
                 <div className="sidebar_logo">
                     <div className="text-center" style={{width: 190}}>
                         <HhaLogo style={{width: 150}}/>
                     </div>
                 </div>
-
-
-                {/*<Link to="/home"*/}
-                {/*   className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">*/}
-                {/*    <a>*/}
-                {/*        <HhaLogo style={{width: 160}}/>*/}
-                {/*    </a>*/}
-                {/*    <span className="fs-4 text-white">HHA</span>*/}
-                {/*</Link>*/}
 
                 <ul className="nav nav-pills flex-column mb-auto p-2">
                     <li>
@@ -90,43 +82,61 @@ const Sidebar = (props: SidebarProps) => {
                     <li className="border-top my-2"/>
 
                     <li className="nav-item">
-                        <NavLink to="/Department1NICU" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-brightness-high-fill me-2"/>
-                            <span className="text text-light">NICU / PAED</span>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/Department2Maternity" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-heart-fill me-2"/>
-                            <span className="text text-light">Maternity</span>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/Department3Rehab" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-bootstrap-reboot me-2"/>
-                            <span className="text text-light">Rehab</span>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/Department4ComHealth" className="nav-link link-light" exact activeClassName="active">
-                            <i className="bi bi-headset me-2"/>
-                            <span className="text text-light">Com & Health</span>
-                        </NavLink>
-                    </li>
-
-                    <li className="border-top my-2"/>
-                    {
-                        renderAdminButton() ? (                 
-                                <li>
-                                <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
-                                    <i className="bi bi-person-badge-fill me-2"/>
-                                    <span className="text text-light">Admin</span>
+                        {
+                            renderDepartmentIfUser(DepartmentName.NicuPaeds) ? (
+                                <NavLink to="/Department1NICU" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-brightness-high-fill me-2"/>
+                                    <span className="text text-light">{DepartmentName.NicuPaeds}</span>
                                 </NavLink>
-                                </li>
                             ) : (<div></div>)
-                    }
+                        }
+                    </li>
+                    <li>
+                        {
+                            renderDepartmentIfUser(DepartmentName.Maternity) ? (
+                                <NavLink to="/Department2Maternity" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-heart-fill me-2"/>
+                                    <span className="text text-light">{DepartmentName.Maternity}</span>
+                                </NavLink>
+                            ) : (<div></div>)
+                        }
+                    </li>
+                    <li>
+                        {
+                            renderDepartmentIfUser(DepartmentName.Rehab) ? (
+                                <NavLink to="/Department3Rehab" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-bootstrap-reboot me-2"/>
+                                    <span className="text text-light">{DepartmentName.Rehab}</span>
+                                </NavLink>
+                            ) : (<div></div>)
+                        }
+                    </li>
+                    <li>
+                        {
+                            renderDepartmentIfUser(DepartmentName.CommunityHealth) ? (
+                                <NavLink to="/Department4ComHealth" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-headset me-2"/>
+                                    {/* TODO: Use DepartmentName.CommunityHealth enum for the text in the sidebar.
+                                    Problem: Text is too long */}
+                                    <span className="text text-light">Com & Health</span>
+                                </NavLink>
+                            ) : (<div></div>)
+                        }
+                    </li>
 
                     <li className="border-top my-2"/>
+                        {
+                            renderAdminButton() ? (                 
+                                    <li>
+                                        <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
+                                            <i className="bi bi-person-badge-fill me-2"/>
+                                            <span className="text text-light">Admin</span>
+                                        </NavLink>
+
+                                        <li className="border-top my-2"/>
+                                    </li>
+                                ) : (<div></div>)
+                        }
 
                     <li className="btn-group-toggle" data-toggle="buttons">
                         <button className="nav-link link-light"
@@ -135,6 +145,7 @@ const Sidebar = (props: SidebarProps) => {
                             <span className="text text-light">{t("sidebarEnglish")}</span>
                         </button>
                     </li>
+                    
                     <li>
                         <button className="nav-link link-light" id="fc"
                                 onClick={changeLanguage("fr")}>
@@ -144,32 +155,6 @@ const Sidebar = (props: SidebarProps) => {
                     </li>
 
                 </ul>
-
-                {/*<ul className='nav-menu-items'>*/}
-                {/*<ul className="nav nav-pills flex-column mb-auto">*/}
-
-                {/*{SidebarData.map((item, index) => {*/}
-                {/*    return (*/}
-                {/*        <li key={index} className={item.cName}>*/}
-                {/*            <Link to={item.path}>*/}
-                {/*                {item.icon}*/}
-                {/*                    <span>{item.title}</span>*/}
-                {/*            </Link>*/}
-                {/*        </li>*/}
-                {/*    )*/}
-                {/*})}*/}
-
-                {/*{SidebarOther.map((item, index) => {*/}
-                {/*    return (*/}
-                {/*        <li key={index} className={item.cName}>*/}
-                {/*            <Link to={item.path}>*/}
-                {/*                {item.icon}*/}
-                {/*                <span>{item.title}</span>*/}
-                {/*            </Link>*/}
-                {/*        </li>*/}
-                {/*    )*/}
-                {/*})}*/}
-
             </div>
         </div>
 
