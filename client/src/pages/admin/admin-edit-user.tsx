@@ -76,7 +76,8 @@ export const EditUserForm = (props: AdminProps) => {
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" className="form-control" id="password" autoComplete="new-password" required {...register("password", {required: true})}></input>
+              <input type="password" className="form-control" id="password" autoComplete="new-password" {...register("password")}></input>
+              <div id="passwordHelp" className="form-text">Leave blank to keep it unchanged</div>
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Name</label>
