@@ -61,12 +61,12 @@ function DynamicForm() {
 
     }
 
-    const clickPrevious = () => {
+    const clickedPrev = () => {
         window.scrollTo(0, 0);
         sidePanelClick(sectionState - 1);
     }
 
-    const clickNext = () => {
+    const clickedNext = () => {
         window.scrollTo(0, 0);
         sidePanelClick(sectionState + 1);
     }
@@ -735,8 +735,8 @@ function DynamicForm() {
                         </form>
 
                         <div className="btn-group d-flex mb-2">
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={() => { window.scrollTo(0, 0); clickPrevious(); }} disabled={sectionState === 0 ? true : false}>Previous</button>
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickedPrev} disabled={sectionState === 0 ? true : false}>Previous</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickedNext} disabled={sectionState === 2 ? true : false}>Next</button>
                         </div>
 
                         <button
