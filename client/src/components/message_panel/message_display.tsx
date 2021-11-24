@@ -39,7 +39,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </p>
                 <p className='d-md-flex lh-sm'>
 
-                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.HeadOfDepartment]) ? (
+                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
                         <Link className='align-self-center' to="#">
                             <button type='button' className='btn btn-md btn-outline-secondary'>
                                 <i className="bi bi-pencil"></i>
@@ -48,7 +48,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                         ): (<div></div>)
                     }
 
-                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.HeadOfDepartment]) ? (
+                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
                         <button type="button" className="btn btn-md btn-outline-secondary" >
                             <i className='bi bi-trash'></i>
                         </button>

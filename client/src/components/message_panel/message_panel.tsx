@@ -59,7 +59,7 @@ const MessagePanel = (props: MessagePanelProps) => {
                 <h6 className="border-bottom pb-2 mb-0">{t("messageBoardRecentUpdates")}</h6>
                 <div className='ml-auto'>
 
-                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.HeadOfDepartment]) ? (
+                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
                         <Link to='/addMessage'>
                             <button
                                 className='btn btn-md btn-outline-secondary'
