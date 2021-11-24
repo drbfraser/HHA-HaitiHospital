@@ -15,6 +15,7 @@ export const AddUserForm = (props: AdminProps) => {
   const [submissionStatus, setSubmissionStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [role, setRole] = useState(Role.User as string);
+  const [passwordShown, setPasswordShwon] = useState(false);
 
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
 
@@ -53,10 +54,21 @@ export const AddUserForm = (props: AdminProps) => {
               <label htmlFor="username" className="form-label">Username</label>
               <input type="text" className="form-control" id="username" autoComplete="new-password" required {...register("username", {required: true})}></input>
             </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" className="form-control" id="password" autoComplete="new-password" required {...register("password", {required: true})}></input>
+            <div className="mb-3 form-group">
+              <label htmlFor="password1" className="form-label">Password</label>
+              <div className="input-group" id="show_hide_password">
+                <input type={passwordShown ? "text" : "password"} className="form-control" id="password1" autoComplete="new-password" required {...register("password", {required: true})}></input>
+                <div className="input-group-text">
+                  <a href="javascript:void(0)" onClick={() => setPasswordShwon(true)} className={`${passwordShown ? "d-none" : "d-block"}`}><i className="fa fa-eye-slash text-dark"></i></a>
+                  <a href="javascript:void(0)" onClick={() => setPasswordShwon(false)} className={`${passwordShown ? "d-block" : "d-none"}`}><i className="fa fa-eye text-dark"></i></a>
+                </div>
+              </div>
+              {/* <input type="password" className="form-control" id="password1" autoComplete="new-password" required {...register("password", {required: true})}></input> */}
             </div>
+            {/* <div className="mb-3">
+              <label htmlFor="password2" className="form-label">ConfirmPassword</label>
+              <input type="password" className="form-control" id="password2" autoComplete="new-password" required {...register("password", {required: true})}></input>
+            </div> */}
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Name</label>
               <input type="text" className="form-control" id="name" required {...register("name", {required: true})}></input>
