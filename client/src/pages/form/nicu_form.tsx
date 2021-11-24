@@ -40,25 +40,23 @@ function DynamicForm() {
     }
 
     const onSubmit = async (data: any) => {
-        var valid = submitValidation();
-
-        if (valid === true) {
-
+        if (submitValidation()) {
             data.departmentId = 1;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
             data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            // await axios.post('/api/report/add', data).then(res => {
-            //     console.log(res.data);
-            // }).catch(error => {
-            //     console.error('Something went wrong!', error.response);
-            // });
+            await axios.post('/api/report/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                console.error('Something went wrong!', error.response);
+            });
 
-            console.log(data);
             history.push("/Department1NICU");
+
         } else {
             window.scrollTo(0, 0);
             alert("Some fields contain invalid values");
+
         }
 
     }
@@ -272,15 +270,15 @@ function DynamicForm() {
                     }
                 }
             }
-            
+
             var listElement = listGroup[i];
             if (isSectionValid) {
-                if(listElement.childElementCount > 1) {
+                if (listElement.childElementCount > 1) {
                     listElement.removeChild(listElement.childNodes[1]);
                 }
                 console.log("remed");
             } else {
-                if(listElement.childElementCount > 1) {
+                if (listElement.childElementCount > 1) {
                     listElement.removeChild(listElement.childNodes[1]);
                 }
                 var alertIcon = document.createElement("div")
@@ -563,8 +561,14 @@ function DynamicForm() {
             <main className="container">
                 <Header />
 
+                <div className="d-flex justify-content-start">
+                        <button type="button" className="btn btn-primary btn-sm" onClick={() => {
+                            history.push("/Department1NICU");
+                        }}>Back</button>
+                </div>
+
                 <div className="py-3 text-start">
-                    <h2>NICU/Paediatrics Form</h2>
+                    {/* <h2>NICU/Paediatrics Form</h2> */}
                     <p className="lead">For: September 2021</p>
                 </div>
 
