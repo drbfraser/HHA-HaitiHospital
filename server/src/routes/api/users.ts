@@ -1,10 +1,10 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import User, { hashPassword, validateUser } from '../../models/User';
+import User, { hashPassword, validateUser, Role } from '../../models/User';
 import Message from '../../models/Message';
 import { seedDb } from '../../utils/seed';
-import { checkIsInRole, ROLES } from '../../utils/roleUtils';
+import { checkIsInRole } from '../../utils/roleUtils';
 
 const router = Router();
 
@@ -40,10 +40,7 @@ router.get('/reseed', async (req, res) => {
 });
 
 router.get('/me', requireJwtAuth, async (req, res) => {
-  // const reqUser : any = req.user;
-  // const me : any = req.user.toJSON();
-  const me : any = JSON.parse(JSON.stringify(req.user));
-  res.json({ me });
+  res.json(req.user);
 });
 
 // get one user, currently working
@@ -64,7 +61,7 @@ router.get('/', requireJwtAuth, async (req, res) => {
 });
 
 // delete user, currently working without req.user 
-router.delete('/:id', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
   try {
     const tempUser = await User.findById(req.params.id);
     console.log(tempUser);
@@ -80,7 +77,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, re
 });
 
 // add user, currently working
-router.post('/', requireJwtAuth, checkIsInRole(ROLES.Admin), async (req, res) => {
+router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
   try {
     const { username, password, name, role, department } = req.body;
 
