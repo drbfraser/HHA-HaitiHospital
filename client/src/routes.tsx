@@ -16,6 +16,7 @@ import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
 import MaternityForm from 'pages/form/maternity_form';
+import { Role } from 'constants/interfaces';
 
 const routes = [
     {
@@ -28,7 +29,7 @@ const routes = [
         path: '/admin',
         component: Admin,
         isPrivate: true,
-        rolesRequired: ['Admin'],
+        rolesRequired: [Role.Admin],
     },
     {
         path: '/home',
