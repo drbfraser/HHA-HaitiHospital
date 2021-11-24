@@ -66,7 +66,7 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
         let objectReportArray: Array<Object> = [];
         Promise.all(aggregateReportArray).then((values)=>{
             objectReportArray = values;
-            console.log(objectReportArray[0])
+            console.log(objectReportArray)
 
         }).catch(err => "Aggregation Error: " + err);
         props.notifyTable()
