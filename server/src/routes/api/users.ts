@@ -34,11 +34,6 @@ router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : 
   }
 });
 
-router.get('/reseed', async (req, res) => {
-  await seedDb();
-  res.json({ message: 'Database reseeded successfully.' });
-});
-
 router.get('/me', requireJwtAuth, async (req, res) => {
   res.json(req.user);
 });
