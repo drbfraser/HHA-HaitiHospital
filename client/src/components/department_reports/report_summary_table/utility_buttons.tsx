@@ -13,12 +13,22 @@ function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
     return values.includes(true);
 }
 
+function aggregateReport(reportArray: Array<Object>) : Object{
+    return reportArray;
+}
 
 async function delTickedReportFromDb(rid: string) {
     let dbApiToDelRid = `/api/report/delete/${rid}`;
     const res = await Axios.delete(dbApiToDelRid);
 }
 
+async function aggTickedReportFromDb(rid: string) {
+    let dbApiToAggSingleRid = `/api/report/viewreport/${rid}`;
+    const res = await Axios.get(dbApiToAggSingleRid);
+    // reportArray.push(res)
+    // console.log(report);
+    return res;
+}
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
 
@@ -34,6 +44,32 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
             }
         })
         props.notifyTable();
+    }
+
+    function aggregateReports(tickTracker: {[rid: string]: boolean}) {
+        let aggregateReportArray: Array<Object> = []
+        Object.keys(tickTracker).forEach((rid) => {
+            try{
+                if(tickTracker[rid] === true){
+                    //aggregate ticked reports from db
+                    let singleReport: Object = aggTickedReportFromDb(rid);
+                    // let aggTickedReportFromDb(rid).then(()=>{console.log("test")});   
+                    
+                    // console.log(singleReport)
+                    aggregateReportArray.push(singleReport);
+                }
+            }
+            catch(err){
+                console.log("Aggregation Error: " + err);
+            }
+        })
+        let objectReportArray: Array<Object> = [];
+        Promise.all(aggregateReportArray).then((values)=>{
+            objectReportArray = values;
+            console.log(objectReportArray[0])
+
+        }).catch(err => "Aggregation Error: " + err);
+        props.notifyTable()
     }
 
   return (
@@ -52,7 +88,7 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
             </div>
 
             <div className="col-auto">
-            <button className="">Accumulate</button>
+            <button className="" onClick = {() => { aggregateReports(props.tickTracker);}}>Accumulate</button>
             </div>
         </div>
         :
