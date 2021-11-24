@@ -35,8 +35,6 @@ app.use(passport.initialize());
 require('./services/jwtStrategy');
 require('./services/localStrategy');
 
-//console.log(JSON.stringify(process.env, null, '\t'));
-
 // Connect to Mongo
 mongoose
   .connect(process.env.MONGO_URI, {

@@ -24,7 +24,6 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
         try {
             const res = await axios.get(urlLeaderboard);
             setLeaderboard(res.data);
-            console.log(leaderboard);
         } catch (err) {
             console.log(err);
         }

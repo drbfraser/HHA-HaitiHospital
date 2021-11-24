@@ -1,6 +1,6 @@
 import { useAuthDispatch, useAuthState } from '../../Context'
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation, Link, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { ElementStyleProps, User } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
@@ -14,10 +14,9 @@ interface HeaderProps extends ElementStyleProps{
 
 function HeaderView() {
     const location = useLocation();
-    console.log(location.pathname);
     // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
 
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
 
     if (location.pathname.slice(1) === 'home') {
         return <h4 className="text-secondary">{t("headerOverview")}</h4>

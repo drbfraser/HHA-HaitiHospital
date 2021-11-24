@@ -57,7 +57,7 @@ const Login = (props : LoginProps) => {
                     props.history.push('/home');
                 }).catch(error => {
                     setErrorMessage(i18n.t("signInInvalidLoginCredentials"));
-                    console.log("Error with logging in: ", error);
+                    console.error("Error with logging in: ", error);
                 });
             } catch (error) {
                 console.error('error with logging in: ', error);

@@ -5,7 +5,7 @@ import './side_bar.css';
 import { useAuthState } from 'Context';
 import { useTranslation } from 'react-i18next';
 import i18n from "i18next";
-import { isUserInDepartment } from "../../actions/utility";
+import { isUserInDepartment, renderBasedOnRole } from "../../actions/utility";
 import { Role, DepartmentName } from "../../constants/interfaces";
 
 interface SidebarProps extends ElementStyleProps {}
@@ -17,22 +17,14 @@ export const changeLanguage = (ln) => {
     }
 }
 
-
 const Sidebar = (props: SidebarProps) => {
     const authState = useAuthState();
 
-    const renderDepartmentIfUser = (departmentName) => {
+    const renderDepartmentIfUser = (departmentName: string): boolean => {
         if (authState.userDetails.role === Role.User) {
             return isUserInDepartment(authState.userDetails.department, departmentName);
         }
         return true;
-    }
-
-    const renderAdminButton = () => {
-        if (authState.userDetails.role === Role.Admin) {
-            return true;
-        }
-        return false;
     }
 
     function getClassName() {
@@ -126,7 +118,7 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="border-top my-2"/>
                         {
-                            renderAdminButton() ? (                 
+                            renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (                 
                                     <li>
                                         <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                                             <i className="bi bi-person-badge-fill me-2"/>
