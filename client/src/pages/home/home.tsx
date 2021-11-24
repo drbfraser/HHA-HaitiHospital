@@ -20,10 +20,6 @@ interface HomeProps extends ElementStyleProps {
 
 
 const Home = (props : HomeProps) => {
-    useEffect(() => {
-      // TODO: Potential fix for hiding componnet by force refreshing. Problem: infinite loop refresh
-      // window.location.reload();
-    }, []);
     function getClassName() {
         if (props.classes === undefined) 
           return "home";

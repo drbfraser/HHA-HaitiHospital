@@ -1,6 +1,6 @@
 import { RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from 'constants/interfaces';
-// import { loginUser } from "../../actions/authActions";
+import { loginUser } from "../../actions/authActions";
 import { useFormik } from 'formik';
 // import { loginSchema } from './validation';
 import * as Yup from "yup";
@@ -8,7 +8,7 @@ import React from 'react';
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
-import { loginUser, useAuthState, useAuthDispatch } from '../../Context'
+import { useAuthState, useAuthDispatch } from '../../Context'
 import {useTranslation} from "react-i18next";
 import {changeLanguage} from "../../components/side_bar/side_bar";
 
@@ -25,7 +25,7 @@ function setUsername(name: string) {
 const Login = (props : LoginProps) => {
     const dispatch = useAuthDispatch();
     // @ts-ignore
-    const { loading, x } = useAuthState();
+    const { loading, eMessage } = useAuthState();
     const [errorMessage, setErrorMessage] = React.useState("");
 
     const {t, i18n} = useTranslation();
