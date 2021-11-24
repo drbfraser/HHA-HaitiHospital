@@ -8,7 +8,7 @@ import { checkIsInRole } from '../../utils/roleUtils';
 
 const router = Router();
 
-router.put('/:id', requireJwtAuth, async (req : Request, res : Response, next : NextFunction) => {
+router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Request, res : Response, next : NextFunction) => {
   try {
     const tempUser = await User.findById(req.params.id);
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
@@ -39,14 +39,14 @@ router.get('/me', requireJwtAuth, async (req, res) => {
 });
 
 // get one user, currently working
-router.get('/:id', requireJwtAuth, async (req, res) => {
+router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
   User.findById(req.params.id)
       .then(data => res.json(data))
       .catch(err => res.status(400).json({ message: 'Failed to get user: ' + err}));
 });
 
 // get all users, currently working
-router.get('/', requireJwtAuth, async (req, res) => {
+router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: 'desc' });
     res.json(users);
