@@ -15,7 +15,7 @@ export const AddUserForm = (props: AdminProps) => {
   const [submissionStatus, setSubmissionStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [role, setRole] = useState(Role.User as string);
-  const [passwordShown, setPasswordShwon] = useState<boolean>(false);
+  const [passwordShown, setPasswordShown] = useState<boolean>(false);
 
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
 
@@ -59,8 +59,8 @@ export const AddUserForm = (props: AdminProps) => {
               <div className="input-group">
                 <input type={passwordShown ? "text" : "password"} className="form-control" id="password" autoComplete="new-password" required {...register("password", {required: true})}></input>
                 <div className="input-group-text">
-                  <a href="javascript:void(0)" onClick={() => setPasswordShwon(true)} className={`${passwordShown ? "d-none" : "d-block"}`}><i className="fa fa-eye-slash text-dark"></i></a>
-                  <a href="javascript:void(0)" onClick={() => setPasswordShwon(false)} className={`${passwordShown ? "d-block" : "d-none"}`}><i className="fa fa-eye text-dark"></i></a>
+                  <a href="javascript:void(0)" onClick={() => setPasswordShown(true)} className={`${passwordShown ? "d-none" : "d-block"}`}><i className="fa fa-eye-slash text-dark"></i></a>
+                  <a href="javascript:void(0)" onClick={() => setPasswordShown(false)} className={`${passwordShown ? "d-block" : "d-none"}`}><i className="fa fa-eye text-dark"></i></a>
                 </div>
               </div>
             </div>
