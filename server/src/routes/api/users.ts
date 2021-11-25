@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import User, { hashPassword, validateUser, Role } from '../../models/User';
+import User, { hashPassword, validateUser, Role, validateUserSchema } from '../../models/User';
 import Message from '../../models/Message';
 import { seedDb } from '../../utils/seed';
 import { checkIsInRole } from '../../utils/roleUtils';
@@ -90,13 +90,21 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
       department,
     });
 
+    await validateUserSchema.validateAsync({
+      username,
+      password,
+      name,
+      role,
+      department,
+    });
+
     newUser.registerUser(newUser, (err, user) => {
       if (err) throw err;
       res.json({ message: 'Successfully added user.' }); // just redirect to login
     });
 
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json(err);
   }
 });
 

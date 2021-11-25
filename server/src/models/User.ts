@@ -160,13 +160,24 @@ export async function hashPassword(password) {
 }
 
 export const validateUserSchema = Joi.object().keys({
-  name: Joi.string().min(2).max(30).required(),
   username: Joi.string()
+    .alphanum()
     .min(2)
     .max(20)
-    .regex(/^[a-zA-Z0-9_]+$/)
+    // .regex(/^\w+$/)
     .required(),
-  password: Joi.string().min(6).max(20).allow('').allow(null),
+  password: Joi.string()
+    .min(6)
+    .max(20)
+    // .allow('')
+    // .allow(null)
+    .required(),
+  name: Joi.string()
+    .min(2)
+    .max(30)
+    .required(),
+  role: Joi.string(),
+  department: Joi.string(),
 })
 
 export const validateUser = (user) => {
