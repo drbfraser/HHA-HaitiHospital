@@ -13,8 +13,8 @@ interface AdminProps extends ElementStyleProps {
 
 export const EditUserForm = (props: AdminProps) => {
   const [user, setUser] = useState({} as User);
-  const [submissionStatus, setSubmissionStatus] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [submissionStatus, setSubmissionStatus] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [role, setRole] = useState(null);
   const [department, setDepartment] = useState(null);
