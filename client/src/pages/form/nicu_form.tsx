@@ -287,7 +287,7 @@ function DynamicForm() {
                     listElement.removeChild(listElement.childNodes[1]);
                 }
                 var alertIcon = document.createElement("div")
-                alertIcon.classList.add("bi", "bi-exclamation-circle-fill", "flex-shrink-0");
+                alertIcon.classList.add("bi", "bi-exclamation-circle-fill", "flex-shrink-0", "ms-2");
                 listElement.appendChild(alertIcon);
             }
         }
@@ -644,7 +644,7 @@ function DynamicForm() {
                                     var ret = [];
 
                                     // render the section title
-                                    ret.push(<h4 id={"section" + idx} className="mb-3">{idx + 1}. {section.section_label}</h4>);
+                                    ret.push(<h4 id={"section" + idx} className="mb-3 text-primary">{idx + 1}. {section.section_label}</h4>);
 
                                     var fields = section.section_fields;
 
