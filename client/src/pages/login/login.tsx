@@ -36,11 +36,11 @@ const Login = (props : LoginProps) => {
             // .email('Invalid email address')
             .min(2, t("signInValidationMustBe2CharMini"))
             .max(20, t("signInValidationMustBe20CharLess"))
-            .required(t("signInValidationRequired")),
+            .required(t("signInUsernameValidationRequired")),
         password: Yup.string()
             .min(6, t("signInValidationMustBe6CharMini"))
             .max(20, t("signInValidationRequired"))
-            .required(t("signInValidationRequired")),
+            .required(t("signInPasswordValidationRequired")),
     });
 
     const formik = useFormik({
@@ -69,13 +69,6 @@ const Login = (props : LoginProps) => {
         <div className={'login '+ (props.classes||'')}>
             <form onSubmit={formik.handleSubmit}>
                 <img className="login-logo" src={logo} alt="logo logo"/>
-                {formik.touched.username && formik.errors.username ? (
-                        <p className="error">{formik.errors.username}</p>
-                    ) : null}
-                {formik.touched.password && formik.errors.password ? (
-                    <p className="error">{formik.errors.password}</p>
-                    ) : null}
-                {errorMessage ? <div className="error"> {errorMessage} </div> : null}
                 <h4 className="text-center">{t("signInPleaseSignIn")}</h4>
                 <div className="form-floating">
                     <input
@@ -119,6 +112,9 @@ const Login = (props : LoginProps) => {
                     type="submit"
                     disabled={loading}
                 >{t("signInSignIn")}</button>
+
+                {errorMessage ? <div className="error"> {errorMessage} </div> : null}
+
                 <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
             </form>
 

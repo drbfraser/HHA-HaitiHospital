@@ -8,7 +8,8 @@
   "signInValidationMustBe2CharMini": "Doit comporter au moins 2 caractères",
   "signInValidationMustBe6CharMini": "Doit comporter au moins 6 caractères",
   "signInValidationMustBe20CharLess": "Doit comporter 20 caractères ou moins",
-  "signInValidationRequired": "Obligatoire",
+  "signInUsernameValidationRequired": "Le nom d'utilisateur est requis pour se connecter",
+  "signInPasswordValidationRequired": "Le mot de passe est requis pour se connecter",
 
   "sidebarHome": "D'accueil",
   "sidebarMessageBoard": "Tableau de bord",
