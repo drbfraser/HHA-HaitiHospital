@@ -14,7 +14,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Reque
     if (!tempUser) return res.status(404).json({ message: 'No such user.' });
 
     const existingUser = await User.findOne({ username: req.body.username });
-    if (existingUser) {
+    if (existingUser && existingUser.username !== tempUser.username) {
       return res.status(422).send({ message: 'Username is in use' });
     }
 
