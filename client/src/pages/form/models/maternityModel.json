@@ -256,8 +256,15 @@
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 1
-            },
+            }
 
+        ]
+
+    },
+
+    {
+        "section_label" : "Births",
+        "section_fields": [
             {
                 "subsection_label" : "Births",
                 "field_type" : "table",
@@ -319,8 +326,13 @@
                 "row_labels" : [["Post Natal Consultations"]],
                 "row_spans" : [1],
                 "invalid_inputs" : [[0 ,0 ,0]]
-            },
+            }
+        ]
+    },
 
+    {
+        "section_label" : "Complications",
+        "section_fields": [
             {
                 "subsection_label" : "Complications",
                 "field_id" : "complications.numOfObstetricRecorded",
@@ -387,8 +399,13 @@
                                     [0 ,0 ,0 ,0 ,0, 0],
                                     [0 ,0 ,0 ,0 ,0, 0]]
                     
-            },
+            }
+        ]
+    },
 
+    {
+        "section_label" : "Support for Women",
+        "section_fields": [
             {
                 "subsection_label" : "Support for Women Hospital",
                 "field_id" : "supportWomenHospital.numOfPregnanciesRisk",
@@ -501,8 +518,13 @@
                 "field_type" : "number",
                 "field_value" : 0,
                 "field_level" : 0
-            },
+            }
+        ]
+    },
 
+    {
+        "section_label" : "Deliveries",
+        "section_fields" : [
             {
                 "subsection_label" : "Deliveries",
                 "field_type" : "table",
@@ -534,7 +556,6 @@
                 "invalid_inputs" : [[0, 0, 0],
                                     [0, 1, 0]]
             }
-
         ]
     }
 

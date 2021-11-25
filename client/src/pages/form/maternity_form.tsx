@@ -6,7 +6,6 @@ import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import maternityModel from './models/maternityModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './nicu_form_styles.css'
 import { spawn } from 'child_process';
 import { render } from '@testing-library/react';
 
@@ -207,38 +206,68 @@ function MaternityForm() {
             <main className="container">
                 <Header />
 
-                <div className="py-3 text-start">
-                    <h2>Maternity Form</h2>
-                    <p className="lead">For: September 2021</p>
+                <div className="d-flex justify-content-start">
+                    <button type="button" className="btn btn-primary btn-sm" onClick={() => {
+                        history.push("/Department1NICU");
+                    }}>Back</button>
                 </div>
 
+                <div className="py-3 text-start">
+                    {/* <h2>NICU/Paediatrics Form</h2> */}
+                    <span className="lead">Date: </span>
+                    <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
+                        <option selected>Month</option>
+                        <option value="1">January</option>
+                        <option value="2">Feburary</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
+                        <option selected>Year</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                    </select>
+                </div>
+
+                <div className="mb-3 text-start sticky-top bg-light">
+                    <h4 className="text-primary">Steps: </h4>
+                    <ul className="list-group list-group-horizontal">
+                        {elements ? elements.map((section: any, idx: any) => {
+                            var isActive = idx === 0 ? true : false;
+                            return (
+                                <>
+                                    <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
+                                        onClick={() => sidePanelClick(idx)}>
+                                        <span>{idx + 1}. {section.section_label}</span>
+                                    </li>
+                                </>
+                            )
+                        }) : null}
+                    </ul>
+                </div>
+
+
                 <div className="row g-3">
-                    <div className="col-sm-4 col-md-4 col-lg-4">
-
-                        <h4 className="d-flex justify-content-between align-items-center mb-3">
-                            <span className="text-primary">Steps</span>
-                        </h4>
-
-                        <ul className="list-group mb-3">
-                            {elements ? elements.map((section: any, idx: any) => {
-                                var isActive = idx === 0 ? true : false;
-                                return (
-                                    <>
-                                        <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                            onClick={() => sidePanelClick(idx)}>
-                                            <span>{idx + 1}. {section.section_label}</span>
-                                        </li>
-                                    </>
-                                )
-                            }) : null}
-                        </ul>
-
-                        <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
-                    </div>
-
-
-                    <div className="col-sm-7 col-md-7 col-lg-7">
-                        <form className="needs-validation">
+                    <div className="col-sm-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
+                        <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
                             <div className="row g-2">
                                 {elements ? elements.map((section: any, idx: any) => {
                                     var ret = [];
@@ -327,79 +356,80 @@ function MaternityForm() {
                                             }
                                             ret.push(
                                                 <>
-                                                    <table>
-                                                        <caption style={{ captionSide: "top" }}><strong>{field.table_name}</strong></caption>
+                                                    <div id={"inputs" + i}>
+                                                        <table className="table table-bordered table-sm">
+                                                            <tbody>
+                                                                {/* COLUMNS */}
 
-                                                        <tbody>
-                                                            {/* COLUMNS */}
+                                                                {field.col_labels.map((row, coli) => (
+                                                                    <tr>
+                                                                        {field.row_labels.map((x, y) => (
+                                                                            <td></td>
+                                                                        ))}
 
-                                                            {field.col_labels.map((row, coli) => (
-                                                                <tr>
-                                                                    {field.row_labels.map((x, y) => (
-                                                                        <td></td>
-                                                                    ))}
-
-                                                                    {row.map((col, colj) => (
-                                                                        <th colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
-                                                                    ))}
-                                                                </tr>
-                                                            ))}
+                                                                        {row.map((col, colj) => (
+                                                                            <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
+                                                                        ))}
+                                                                    </tr>
+                                                                ))}
 
 
-                                                            {/* ROWS */}
-                                                            {[...Array(field.total_rows)].map((e, i) => (
-                                                                <tr>
-                                                                    {[...Array(field.row_labels.length)].map((e, j) => {
-                                                                        if (count[j] === 0) {
-                                                                            const header = <th rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
-                                                                            count[j]++;
+                                                                {/* ROWS */}
+                                                                {[...Array(field.total_rows)].map((e, i) => (
+                                                                    <tr>
+                                                                        {[...Array(field.row_labels.length)].map((e, j) => {
+                                                                            if (count[j] === 0) {
+                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
+                                                                                count[j]++;
 
-                                                                            if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                k[j]++;
-                                                                                count[j] = 0;
+                                                                                if (count[j] === field.row_spans[j][k[j]]) {
+                                                                                    k[j]++;
+                                                                                    count[j] = 0;
+                                                                                }
+
+                                                                                return header;
+                                                                            } else {
+                                                                                count[j]++;
+
+                                                                                if (count[j] === field.row_spans[j][k[j]]) {
+                                                                                    k[j]++;
+                                                                                    count[j] = 0;
+                                                                                }
+                                                                                return;
+                                                                            }
+                                                                        })}
+
+                                                                        {[...Array(field.total_cols)].map((e, j) => {
+                                                                            var rowLength = field.row_labels.length - 1;
+                                                                            var colLength = field.col_labels.length - 1;
+                                                                            if (field.invalid_inputs[inputCount][j] === 1) {
+                                                                                if ((j + 1) % field.total_cols === 0) {
+                                                                                    inputCount++;
+                                                                                }
+                                                                                return <td></td>
+                                                                            } else {
+                                                                                const dataInput = (
+                                                                                    <td className="align-middle">
+                                                                                        <input className="form-control" type="number"
+                                                                                            {...register(field.subsection_label + "." + inputCount + "." + j
+                                                                                            )}
+                                                                                        />
+                                                                                    </td>
+                                                                                );
+                                                                                if ((j + 1) % field.total_cols === 0) {
+                                                                                    inputCount++;
+                                                                                }
+                                                                                return dataInput;
                                                                             }
 
-                                                                            return header;
-                                                                        } else {
-                                                                            count[j]++;
+                                                                        })}
+                                                                    </tr>
 
-                                                                            if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                k[j]++;
-                                                                                count[j] = 0;
-                                                                            }
-                                                                            return;
-                                                                        }
-                                                                    })}
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
 
-                                                                    {[...Array(field.total_cols)].map((e, j) => {
-                                                                        var rowLength = field.row_labels.length - 1;
-                                                                        var colLength = field.col_labels.length - 1;
-                                                                        if (field.invalid_inputs[inputCount][j] === 1) {
-                                                                            if ((j + 1) % field.total_cols === 0) {
-                                                                                inputCount++;
-                                                                            }
-                                                                            return <td></td>
-                                                                        } else {
-                                                                            const dataInput = (
-                                                                                <td>
-                                                                                    <input type="number"
-                                                                                        {...register(field.subsection_label + "." + inputCount + "." + j
-                                                                                        )}
-                                                                                    />
-                                                                                </td>
-                                                                            );
-                                                                            if ((j + 1) % field.total_cols === 0) {
-                                                                                inputCount++;
-                                                                            }
-                                                                            return dataInput;
-                                                                        }
-
-                                                                    })}
-                                                                </tr>
-
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
 
                                                 </>
                                             )
@@ -444,19 +474,24 @@ function MaternityForm() {
 
                         <div className="btn-group d-flex">
                             <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 4 ? true : false}>Next</button>
                         </div>
 
                         <button
                             className="w-100 btn btn-primary btn-lg"
                             type="submit"
-                            style={{ display: sectionState === 2 ? '' : 'none' }}
+                            style={{ display: sectionState === 4 ? '' : 'none' }}
                             onClick={handleSubmit(onSubmit)}>
                             Submit
                         </button>
                     </div>
                 </div>
             </main>
+
+            <footer className="my-5 pt-5 text-muted text-center text-small">
+
+            </footer>
+
         </div>
     )
 }
