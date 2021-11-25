@@ -25,3 +25,20 @@ export const renderBasedOnUserRoleAndDepartment = (currentUserRole: string, requ
 export const getAllUserRoles = (): Role[] => {
     return [Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector, Role.User]
 }
+
+export const isRoleRequired = (rolesRequired: Role[]): boolean => {
+    if (rolesRequired.length > 0) {
+        return true;
+    }
+    return false;
+    }
+
+export const isRoleAuthenticated = (rolesRequired: Role[], currentUserRole: string): boolean => {
+    if (rolesRequired.length > 0) {
+        const userRoleAuthenticated = rolesRequired.find(role => currentUserRole === role);
+        if (userRoleAuthenticated) {
+        return true;
+        }
+    }
+    return false;
+}

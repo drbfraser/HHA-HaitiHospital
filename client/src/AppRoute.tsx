@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { isRoleRequired, isRoleAuthenticated } from 'actions/roleActions';
 
 import { useAuthState } from 'Context';
 
@@ -28,22 +29,5 @@ const AppRoutes = ({ component: Component, path, isPrivate, rolesRequired, ...re
 		/>
 	);
 };
-
-const isRoleRequired = (rolesRequired) => {
-  if (rolesRequired.length > 0) {
-    return true;
-  }
-  return false;
-}
-
-const isRoleAuthenticated = (rolesRequired, currentUserRole) => {
-  if (rolesRequired.length > 0) {
-    const userRoleAuthenticated = rolesRequired.find(role => currentUserRole === role);
-    if (userRoleAuthenticated) {
-      return true;
-    }
-  }
-  return false;
-}
 
 export default AppRoutes;

@@ -108,7 +108,7 @@ const routes = [
         path: '/caseStudyView/:id',
         component: CaseStudyView,
         isPrivate: true,
-        rolesRequires: [],
+        rolesRequired: [],
     },
     {
         path: '/leaderBoard',

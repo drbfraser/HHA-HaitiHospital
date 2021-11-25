@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
-import { renderBasedOnRole } from "../../actions/utility";
+import { renderBasedOnRole } from "../../actions/roleActions";
 import { useAuthState } from 'Context';
 import { Role } from "../../constants/interfaces"
 

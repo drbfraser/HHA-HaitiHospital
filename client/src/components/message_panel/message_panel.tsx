@@ -5,7 +5,7 @@ import {ElementStyleProps, Json} from 'constants/interfaces'
 import Axios from 'axios'
 import MessageDisplay  from './message_display';
 import {useTranslation} from "react-i18next";
-import { renderBasedOnRole } from "../../actions/utility";
+import { renderBasedOnRole } from "../../actions/roleActions";
 import { useAuthState } from 'Context';
 import { Role } from "../../constants/interfaces"
 interface MessagePanelProps extends ElementStyleProps {

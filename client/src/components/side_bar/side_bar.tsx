@@ -5,7 +5,7 @@ import './side_bar.css';
 import { useAuthState } from 'Context';
 import { useTranslation } from 'react-i18next';
 import i18n from "i18next";
-import { isUserInDepartment, renderBasedOnRole } from "../../actions/utility";
+import { isUserInDepartment, renderBasedOnRole } from "../../actions/roleActions";
 import { Role, DepartmentName } from "../../constants/interfaces";
 
 interface SidebarProps extends ElementStyleProps {}
