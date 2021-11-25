@@ -39,19 +39,10 @@
                 "field_value": 0,
                 "field_level": 0
             },
-            
-            
-            {
-                "field_id" : "diedBefore48hr.total",
-                "field_label": "Total number of patients that died BEFORE 48hrs",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
 
             {
                 "field_id" : "diedBefore48hr.patientList",
-                "field_label": "Patient List",
+                "field_label": "Total number of patients that died BEFORE 48hrs",
                 "field_type": "list",
                 "field_level": 0,
                 "field_template" : [
@@ -76,18 +67,29 @@
             },
             
             {
-                "field_id" : "diedAfter48hr.total",
-                "field_label": "Total number of patients that died AFTER 48hrs",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-
-            {
                 "field_id" : "diedAfter48hr.patientList",
-                "field_label": "Patients",
+                "field_label": "Total number of patients that died AFTER 48hrs",
                 "field_type": "list",
-                "field_level": 0
+                "field_level": 0,
+                "field_template" : [
+                    {
+                        "field_id" : "diedAfter48hr.patientList.age",
+                        "field_label": "Age",
+                        "field_type": "number",
+                        "field_value": 0,
+                        "field_level": 0
+                    },
+
+                    {
+                        "field_id" : "diedAfter48hr.patientList.causeOfDeath",
+                        "field_label": "Cause of Death",
+                        "field_type": "text",
+                        "field_value": 0,
+                        "field_level": 0
+                    }
+
+                ]
+                
             },
            
             {
@@ -119,6 +121,7 @@
                 "field_level": 0
             },
             {
+                "subsection_label" : "Reason for self-discharge",
                 "field_id" : "selfDischarge.cannotAfford",
                 "field_label": "Finance: Leave as cannot afford care",
                 "field_type": "number",
@@ -263,7 +266,7 @@
                 "total_rows" : 6,
                 "col_labels" : [["Institutional", "Community"], ["Normal", "Cesarean", "Instrumentalized", "Trained Matrons", "Others"]],
                 "col_spans" : [[3,2], [1, 1, 1, 1, 1]],
-                "row_labels" : [["Weight"], ["Weight <1.5kg", "1.5kg ≤ Weight <2.5kg", "2.5kg and over", "Not weighed", "Immediately breastfed", "Skin to skin therapy"]],
+                "row_labels" : [["Weight"], ["Weight < 1.5kg", "1.5kg ≤ Weight <2.5kg", "2.5kg and over", "Not weighed", "Immediately breastfed", "Skin to skin therapy"]],
                 "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
                 "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
                                     [0 ,0 ,0 ,0 ,0],
