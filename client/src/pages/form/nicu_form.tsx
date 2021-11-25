@@ -40,6 +40,10 @@ function DynamicForm() {
     }
 
     const onSubmit = async (data: any) => {
+        if (!window.confirm("Press OK to finalize submission.")) {
+            return;
+        }
+
         if (submitValidation()) {
             data.departmentId = 1;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
@@ -56,7 +60,6 @@ function DynamicForm() {
         } else {
             window.scrollTo(0, 0);
             alert("Some fields contain invalid values");
-
         }
 
     }
