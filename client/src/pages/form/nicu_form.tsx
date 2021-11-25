@@ -180,6 +180,7 @@ function DynamicForm() {
     }
 
     const sidePanelClick = (index: any) => {
+        
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
@@ -199,6 +200,7 @@ function DynamicForm() {
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
             }
         }
+        window.scrollTo(0, 0);
     }
 
 
@@ -602,29 +604,34 @@ function DynamicForm() {
                     </select>
                 </div>
 
+                <div className="mb-3 text-start sticky-top bg-light">
+                    <h4 className="text-primary">Steps: </h4>
+                    <ul className="list-group list-group-horizontal mb-3">
+                        {elements ? elements.map((section: any, idx: any) => {
+                            var isActive = idx === 0 ? true : false;
+                            return (
+                                <>
+                                    <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
+                                        onClick={() => sidePanelClick(idx)}>
+                                        <span>{idx + 1}. {section.section_label}</span>
+                                    </li>
+                                </>
+                            )
+                        }) : null}
+                    </ul>
+                </div>
+
                 <div className="row g-3">
-                    <div className="col-sm-4 col-md-4 col-lg-4">
+                    {/* <div className="col-sm-4 col-md-4 col-lg-4">
 
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
                             <span className="text-primary">Steps</span>
                         </h4>
 
-                        <ul className="list-group mb-3">
-                            {elements ? elements.map((section: any, idx: any) => {
-                                var isActive = idx === 0 ? true : false;
-                                return (
-                                    <>
-                                        <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                            onClick={() => sidePanelClick(idx)}>
-                                            <span>{idx + 1}. {section.section_label}</span>
-                                        </li>
-                                    </>
-                                )
-                            }) : null}
-                        </ul>
+
 
                         <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
-                    </div>
+                    </div> */}
 
 
                     <div className="col-sm-7 col-md-7 col-lg-7">
