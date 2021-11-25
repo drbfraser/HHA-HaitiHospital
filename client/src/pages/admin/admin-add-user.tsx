@@ -68,8 +68,8 @@ export const AddUserForm = (props: AdminProps) => {
               <div className="input-group">
                 <input type={passwordShown ? "text" : "password"} className="form-control" id="password" autoComplete="new-password" required {...register("password", {required: true})}></input>
                 <div className="input-group-text">
-                  <a href="javascript:void(0)" onClick={() => setPasswordShown(true)} className={`${passwordShown ? "d-none" : "d-block"}`}><i className="fa fa-eye-slash text-dark"></i></a>
-                  <a href="javascript:void(0)" onClick={() => setPasswordShown(false)} className={`${passwordShown ? "d-block" : "d-none"}`}><i className="fa fa-eye text-dark"></i></a>
+                  <i onClick={() => setPasswordShown(true)} className={`${passwordShown ? "d-none" : "d-block"} btn btn-sm p-0 m-0 fa fa-eye-slash text-dark`}></i>
+                  <i onClick={() => setPasswordShown(false)} className={`${passwordShown ? "d-block" : "d-none"} btn btn-sm p-0 m-0 fa fa-eye text-dark`}></i>
                 </div>
               </div>
             </div>
