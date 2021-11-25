@@ -15,7 +15,7 @@ export const AddUserForm = (props: AdminProps) => {
   const [submissionStatus, setSubmissionStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [role, setRole] = useState(Role.User as string);
-  const [passwordShown, setPasswordShwon] = useState(false);
+  const [passwordShown, setPasswordShwon] = useState<boolean>(false);
 
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
 

@@ -15,6 +15,7 @@ export const EditUserForm = (props: AdminProps) => {
   const [user, setUser] = useState({} as User);
   const [submissionStatus, setSubmissionStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [passwordShown, setPasswordShwon] = useState<boolean>(false);
   const [role, setRole] = useState(null);
   const [department, setDepartment] = useState(null);
 
@@ -76,7 +77,13 @@ export const EditUserForm = (props: AdminProps) => {
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" className="form-control" id="password" autoComplete="new-password" {...register("password")}></input>
+              <div className="input-group">
+                <input type={passwordShown ? "text" : "password"} className="form-control" id="password" autoComplete="new-password" {...register("password")}></input>
+                <div className="input-group-text">
+                  <a href="javascript:void(0)" onClick={() => setPasswordShwon(true)} className={`${passwordShown ? "d-none" : "d-block"}`}><i className="fa fa-eye-slash text-dark"></i></a>
+                  <a href="javascript:void(0)" onClick={() => setPasswordShwon(false)} className={`${passwordShown ? "d-block" : "d-none"}`}><i className="fa fa-eye text-dark"></i></a>
+                </div>
+              </div>
               <div id="passwordHelp" className="form-text">Leave blank to keep it unchanged</div>
             </div>
             <div className="mb-3">
@@ -105,7 +112,7 @@ export const EditUserForm = (props: AdminProps) => {
                 </select>
               </div>
             : null}
-            <div className="mt-5 mb-5 d-flex justify-content-center">
+            <div className="mt-5 mb-3 d-flex justify-content-center">
               <button type="submit" className="btn btn-dark col-6">Submit</button>
             </div>
           </form>
