@@ -114,8 +114,6 @@ const Login = (props : LoginProps) => {
                 >{t("signInSignIn")}</button>
 
                 {errorMessage ? <div className="error"> {errorMessage} </div> : null}
-
-                <label className="mt-5 mb-3 text-muted">&copy; 2021-2022</label>
             </form>
 
             <div className="row mt-5">
