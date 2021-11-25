@@ -23,3 +23,24 @@ type MessageEntry = string | number | boolean | MessageProps | MessageProps[];
 export interface MessageProps {
     [index : string] :  MessageEntry,
 }
+
+export enum Role {
+  Admin = "Admin",
+  MedicalDirector = "Medical Director",
+  HeadOfDepartment = "Head of Department",
+  User = "User",
+}
+
+export enum DepartmentName {
+  NicuPaeds = "NICU/Paeds",
+  Maternity = "Maternity",
+  Rehab = "Rehab",
+  CommunityHealth = "Community & Health",
+}
+
+export interface User {
+  username: string;
+  name: string;
+  role: Role;
+  department: DepartmentName; 
+}
