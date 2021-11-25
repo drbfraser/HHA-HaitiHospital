@@ -48,14 +48,23 @@ export const EditUserForm = (props: AdminProps) => {
       console.log(res.data);
       reset({});
       history.push("/admin");
-    }).catch(error =>{
+    }).catch(error => {
+      handleSubmitFailure(error);
+    });
+  }
+
+  const handleSubmitFailure = (error) => {
+    try {
       if (error.response.data.message) {
         setErrorMessage(error.response.data.message);
+      } else if (error.response.data.details) {
+        setErrorMessage(error.response.data.details[0].message);
       }
-      console.error('Something went wrong!', error);
       setSubmissionStatus("failure");
       failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-    });
+    } catch (err) {
+      console.error('Something went wrong!', err);
+    }
   }
 
   return (

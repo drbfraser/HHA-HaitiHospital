@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import User, { hashPassword, validateUser, Role, validateUserSchema } from '../../models/User';
+import User, { hashPassword, validateUser, Role, validateUserSchema, validateUpdatedUserSchema } from '../../models/User';
 import Message from '../../models/Message';
 import { seedDb } from '../../utils/seed';
 import { checkIsInRole } from '../../utils/roleUtils';
@@ -18,6 +18,14 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Reque
       return res.status(422).send({ message: 'Username is in use' });
     }
 
+    await validateUpdatedUserSchema.validateAsync({
+      username: req.body.username,
+      password: req.body.password,
+      name: req.body.name,
+      role: req.body.role,
+      department: req.body.department,
+    });
+
     let password = null;
     if (req.body.password && req.body.password !== '') {
       password = await hashPassword(req.body.password);
@@ -30,7 +38,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Reque
 
     res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json(err);
   }
 });
 

@@ -164,20 +164,38 @@ export const validateUserSchema = Joi.object().keys({
     .alphanum()
     .min(2)
     .max(20)
-    // .regex(/^\w+$/)
     .required(),
   password: Joi.string()
     .min(6)
     .max(20)
-    // .allow('')
-    // .allow(null)
     .required(),
   name: Joi.string()
     .min(2)
     .max(30)
     .required(),
-  role: Joi.string(),
-  department: Joi.string(),
+  role: Joi.string()
+    .required(),
+  department: Joi.string()
+})
+
+export const validateUpdatedUserSchema = Joi.object().keys({
+  username: Joi.string()
+    .alphanum()
+    .min(2)
+    .max(20)
+    .allow(''),
+  password: Joi.string()
+    .min(6)
+    .max(20)
+    .allow(''),
+  name: Joi.string()
+    .min(2)
+    .max(30)
+    .allow(''),
+  role: Joi.string()
+    .allow(''),
+  department: Joi.string()
+    .allow(''),
 })
 
 export const validateUser = (user) => {
