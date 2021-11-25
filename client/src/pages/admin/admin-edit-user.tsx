@@ -63,7 +63,7 @@ export const EditUserForm = (props: AdminProps) => {
       setSubmissionStatus("failure");
       failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
-      console.error('Something went wrong!', err);
+      console.log('Something went wrong!', err);
     }
   }
 
