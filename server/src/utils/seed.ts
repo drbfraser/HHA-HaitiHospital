@@ -7,87 +7,94 @@ import NicuPaeds from '../models/NicuPaeds';
 import Community from '../models/Community';
 
 import MessageBody from '../models/MessageBody';
-import CaseStudy from '../models/CaseStudies';
+import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 
 export const seedDb = async () => {
   console.log('Seeding users...');
 
-  await User.collection.dropIndexes().catch(err => console.log(err));
+  try {
+    await User.collection.dropIndexes();
 
-  [...Array(6).keys()].forEach(async (index, i) => {
-    var foundUser = await User.findOne({ username: `user${index}` });
-    if (foundUser) {
-      let role = undefined;
-      let department = undefined;
-      switch (index) {
-        case 0: 
-          role = Role.Admin;
-          break;
-        case 1:
-          role = Role.MedicalDirector;
-          break;
-        case 2:
-          role = Role.HeadOfDepartment;
-          department = DepartmentName.NicuPaeds;
-          break;
-        case 3:
-          role = Role.User;
-          department = DepartmentName.Maternity;
-          break;
-        case 4:
-          role = Role.User;
-          department = DepartmentName.Rehab;
-          break;
-        case 5:
-          role = Role.User;
-          department = DepartmentName.CommunityHealth;
-          break;
-        default:
-          break;
+    [...Array(6).keys()].forEach(async (index, i) => {
+      var foundUser = await User.findOne({ username: `user${index}` });
+      if (foundUser) {
+        let role = undefined;
+        let department = undefined;
+        switch (index) {
+          case 0: 
+            role = Role.Admin;
+            break;
+          case 1:
+            role = Role.MedicalDirector;
+            break;
+          case 2:
+            role = Role.HeadOfDepartment;
+            department = DepartmentName.NicuPaeds;
+            break;
+          case 3:
+            role = Role.User;
+            department = DepartmentName.Maternity;
+            break;
+          case 4:
+            role = Role.User;
+            department = DepartmentName.Rehab;
+            break;
+          case 5:
+            role = Role.User;
+            department = DepartmentName.CommunityHealth;
+            break;
+          default:
+            break;
+        }
+        const updatedUser = { name: faker.name.findName(), role, department };
+        await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
+
+      } else {
+
+        const user = new User({
+          username: `user${index}`,
+          password: '123456789',
+          name: faker.name.findName(),
+        });
+
+        switch (index) {
+          case 0:
+            user.role = Role.Admin;
+            break;
+          case 1:
+            user.role = Role.MedicalDirector;
+            break;
+          case 2:
+            user.role = Role.HeadOfDepartment;
+            user.department = DepartmentName.NicuPaeds;
+            break;
+          case 3:
+            user.role = Role.User;
+            user.department = DepartmentName.Maternity;
+            break;
+          case 4:
+            user.role = Role.User;
+            user.department = DepartmentName.Rehab;
+            break;
+          case 5:
+            user.role = Role.User;
+            user.department = DepartmentName.CommunityHealth;
+            break;
+          default:
+            break;
+        }
+
+        await user.registerUser(user, () => {});
       }
-      const updatedUser = { name: faker.name.findName(), role, department };
-      await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
+    });
 
-    } else {
+    console.log('Users seeded');
 
-      const user = new User({
-        username: `user${index}`,
-        password: '123456789',
-        name: faker.name.findName(),
-      });
+  } catch (err) {
+    console.log(err);
+  }
 
-      switch (index) {
-        case 0:
-          user.role = Role.Admin;
-          break;
-        case 1:
-          user.role = Role.MedicalDirector;
-          break;
-        case 2:
-          user.role = Role.HeadOfDepartment;
-          user.department = DepartmentName.NicuPaeds;
-          break;
-        case 3:
-          user.role = Role.User;
-          user.department = DepartmentName.Maternity;
-          break;
-        case 4:
-          user.role = Role.User;
-          user.department = DepartmentName.Rehab;
-          break;
-        case 5:
-          user.role = Role.User;
-          user.department = DepartmentName.CommunityHealth;
-          break;
-        default:
-          break;
-      }
-
-      user.registerUser(user, () => {});
-    }
-  });
-
-  console.log('Users seeded');
+  seedCaseStudies();
 };
 
 export const seedDepartments = async() => {
@@ -106,7 +113,7 @@ export const seedDepartments = async() => {
   var departmentId: number = 1;
   var departmentName: string = "nicupaeds";
   const originalNicuPaedsDocument = new NicuPaeds({departmentId,departmentName,month,year});
-  originalNicuPaedsDocument.save();
+  await originalNicuPaedsDocument.save();
 
 
   //TODO Community
@@ -159,41 +166,94 @@ export const seedMessageBoard = async () => {
   console.log('Message board seeded');
 }
 
-export const seedCaseStudies = async (user) => {
+export const seedCaseStudies = async () => {
   console.log('Seeding case studies...')
   await CaseStudy.deleteMany({});
 
-  const caseStudy1 = new CaseStudy({
-    caseStudyType: 4,
-    otherStory: {
-      caseStudyStory: "This is a long story..."
+  const users = await User.find();
+  users.map(async (user, index) => {
+     if (user.username === "user2"){
+      const caseStudy = new CaseStudy({
+        caseStudyType: CaseStudyOptions.PatientStory,
+        user: user.id,
+        userDepartment: user.department,
+        imgPath: "public/images/case1.jpg",
+        patientStory: {
+          patientsName: faker.name.findName(),
+          patientsAge: faker.random.number({ 'min': 10, 'max': 50 }),
+          whereIsThePatientFrom: faker.lorem.words(),
+          whyComeToHcbh: faker.lorem.sentences(),
+          howLongWereTheyAtHcbh: faker.lorem.words(),
+          diagnosis: faker.lorem.sentences(),
+          caseStudyStory: faker.lorem.paragraph(10),
+        }
+      });
+      await caseStudy.save();
+    } else if (user.username === "user3"){
+      const caseStudy = new CaseStudy({
+        caseStudyType: CaseStudyOptions.StaffRecognition,
+        user: user.id,
+        userDepartment: user.department,
+        imgPath: "public/images/case2.jpg",
+        staffRecognition: {
+          staffName: faker.name.findName(),
+          jobTitle: faker.lorem.words(),
+          department: faker.lorem.words(),
+          howLongWorkingAtHcbh: faker.lorem.words(),
+          mostEnjoy: faker.lorem.sentences(),
+          caseStudyStory: faker.lorem.paragraph(10),
+        }
+      });
+      await caseStudy.save();
+    } else if (user.username === "user4"){
+      const caseStudy = new CaseStudy({
+        caseStudyType: CaseStudyOptions.TrainingSession,
+        user: user.id,
+        userDepartment: user.department,
+        trainingSession: {
+          trainingDate: faker.date.recent(),
+          trainingOn: faker.lorem.sentences(),
+          whoConducted: faker.name.findName(),
+          whoAttended: faker.name.findName(),
+          benefitsFromTraining: faker.lorem.sentences(),
+          caseStudyStory: faker.lorem.paragraph(10),
+        }
+      });
+      await caseStudy.save();
+    } else if (user.username === "user5"){
+      const caseStudy = new CaseStudy({
+        caseStudyType: CaseStudyOptions.EquipmentReceived,
+        user: user.id,
+        userDepartment: user.department,
+        equipmentReceived: {
+          equipmentReceived: faker.lorem.words(),
+          departmentReceived: faker.lorem.words(),
+          whoSentEquipment: faker.name.findName(),
+          purchasedOrDonated: faker.lorem.words(),
+          whatDoesEquipmentDo: faker.lorem.sentences(),
+          caseStudyStory: faker.lorem.paragraph(10),
+        }
+      });
+      await caseStudy.save();
     }
   });
 
-  const caseStudy2 = new CaseStudy({
-    caseStudyType: 2,
-    trainingSession: {
-      trainingDate: new Date(),
-      trainingOn: "How to be a Jedi 101",
-      whoConducted: "Master Yoda",
-      whoAttended: "Luke Skywalker",
-      benefitsFromTraining: "Learned how to be a Jedi",
-      caseStudyStory: "Jedi training was the action of teaching an apprentice the ways of the Force in the Jedi Order. Under the Galactic Republic, Force-sensitive beings were brought to the Jedi Temple on Coruscant from across the galaxy and trained as Jedi younglings by Grand Master Yoda.",
-    }
-  });
-
-  caseStudy1.save();
-  await caseStudy2.save();
   console.log('Case studies seeded');
 }
 
 export const seedLeaderboard = async() => {
-  await Department.deleteMany({});
-  for (let key in DepartmentName) {
-    let departmentName = DepartmentName[key];
-    const department = new Department({
-      name: departmentName,
-    });
-    department.save();
+  console.log('Seeding leaderboard...');
+  try {
+    await Department.deleteMany({});
+    for (let key in DepartmentName) {
+      let departmentName = DepartmentName[key];
+      const department = new Department({
+        name: departmentName,
+      });
+      await department.save();
+    }
+    console.log('Leaderboard seeded');
+  } catch (err) {
+    console.log(err);
   }
 }
