@@ -10,6 +10,15 @@ import MessageBody from '../models/MessageBody';
 import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 
 export const seedDb = async () => {
+  await seedUsers();
+
+  seedCaseStudies();
+  seedDepartments();
+  seedMessageBoard();
+  seedLeaderboard();
+};
+
+const seedUsers = async() => {
   console.log('Seeding users...');
 
   try {
@@ -89,15 +98,12 @@ export const seedDb = async () => {
     });
 
     console.log('Users seeded');
-
   } catch (err) {
     console.log(err);
   }
+}
 
-  seedCaseStudies();
-};
-
-export const seedDepartments = async() => {
+const seedDepartments = async() => {
   console.log("Seeding default departments...");
 
   let dateTime: Date = new Date();
@@ -125,7 +131,7 @@ export const seedDepartments = async() => {
   console.log("Default departments seeded");
 }
 
-export const seedMessageBoard = async () => {
+const seedMessageBoard = async () => {
   console.log('Seeding message board...')
   await MessageBody.deleteMany({});
 
@@ -166,82 +172,87 @@ export const seedMessageBoard = async () => {
   console.log('Message board seeded');
 }
 
-export const seedCaseStudies = async () => {
+const seedCaseStudies = async () => {
   console.log('Seeding case studies...')
-  await CaseStudy.deleteMany({});
 
-  const users = await User.find();
-  users.map(async (user, index) => {
-     if (user.username === "user2"){
-      const caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.PatientStory,
-        user: user.id,
-        userDepartment: user.department,
-        imgPath: "public/images/case1.jpg",
-        patientStory: {
-          patientsName: faker.name.findName(),
-          patientsAge: faker.random.number({ 'min': 10, 'max': 50 }),
-          whereIsThePatientFrom: faker.lorem.words(),
-          whyComeToHcbh: faker.lorem.sentences(),
-          howLongWereTheyAtHcbh: faker.lorem.words(),
-          diagnosis: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10),
-        }
-      });
-      caseStudy.save();
-    } else if (user.username === "user3"){
-      const caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.StaffRecognition,
-        user: user.id,
-        userDepartment: user.department,
-        imgPath: "public/images/case2.jpg",
-        staffRecognition: {
-          staffName: faker.name.findName(),
-          jobTitle: faker.lorem.words(),
-          department: faker.lorem.words(),
-          howLongWorkingAtHcbh: faker.lorem.words(),
-          mostEnjoy: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10),
-        }
-      });
-      caseStudy.save();
-    } else if (user.username === "user4"){
-      const caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.TrainingSession,
-        user: user.id,
-        userDepartment: user.department,
-        trainingSession: {
-          trainingDate: faker.date.recent(),
-          trainingOn: faker.lorem.sentences(),
-          whoConducted: faker.name.findName(),
-          whoAttended: faker.name.findName(),
-          benefitsFromTraining: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10),
-        }
-      });
-      caseStudy.save();
-    } else if (user.username === "user5"){
-      const caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.EquipmentReceived,
-        user: user.id,
-        userDepartment: user.department,
-        equipmentReceived: {
-          equipmentReceived: faker.lorem.words(),
-          departmentReceived: faker.lorem.words(),
-          whoSentEquipment: faker.name.findName(),
-          purchasedOrDonated: faker.lorem.words(),
-          whatDoesEquipmentDo: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10),
-        }
-      });
-      caseStudy.save();
-    }
-  });
-
-  console.log('Case studies seeded');
+  try {
+    await CaseStudy.deleteMany({});
+  
+    const users = await User.find();
+    users.map(async (user, index) => {
+       if (user.username === "user2"){
+        const caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.PatientStory,
+          user: user.id,
+          userDepartment: user.department,
+          imgPath: "public/images/case1.jpg",
+          patientStory: {
+            patientsName: faker.name.findName(),
+            patientsAge: faker.random.number({ 'min': 10, 'max': 50 }),
+            whereIsThePatientFrom: faker.lorem.words(),
+            whyComeToHcbh: faker.lorem.sentences(),
+            howLongWereTheyAtHcbh: faker.lorem.words(),
+            diagnosis: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10),
+          }
+        });
+        caseStudy.save();
+      } else if (user.username === "user3"){
+        const caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.StaffRecognition,
+          user: user.id,
+          userDepartment: user.department,
+          imgPath: "public/images/case2.jpg",
+          staffRecognition: {
+            staffName: faker.name.findName(),
+            jobTitle: faker.lorem.words(),
+            department: faker.lorem.words(),
+            howLongWorkingAtHcbh: faker.lorem.words(),
+            mostEnjoy: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10),
+          }
+        });
+        caseStudy.save();
+      } else if (user.username === "user4"){
+        const caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.TrainingSession,
+          user: user.id,
+          userDepartment: user.department,
+          trainingSession: {
+            trainingDate: faker.date.recent(),
+            trainingOn: faker.lorem.sentences(),
+            whoConducted: faker.name.findName(),
+            whoAttended: faker.name.findName(),
+            benefitsFromTraining: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10),
+          }
+        });
+        caseStudy.save();
+      } else if (user.username === "user5"){
+        const caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.EquipmentReceived,
+          user: user.id,
+          userDepartment: user.department,
+          equipmentReceived: {
+            equipmentReceived: faker.lorem.words(),
+            departmentReceived: faker.lorem.words(),
+            whoSentEquipment: faker.name.findName(),
+            purchasedOrDonated: faker.lorem.words(),
+            whatDoesEquipmentDo: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10),
+          }
+        });
+        caseStudy.save();
+      }
+    });
+  
+    console.log('Case studies seeded');
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-export const seedLeaderboard = async() => {
+const seedLeaderboard = async() => {
   console.log('Seeding leaderboard...');
   try {
     await Department.deleteMany({});
