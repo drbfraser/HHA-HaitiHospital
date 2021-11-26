@@ -27,41 +27,44 @@ export const seedUsers = async() => {
     [...Array(6).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
       if (foundUser) {
-        let role = undefined;
-        let department = undefined;
+        // let role = undefined;
+        // let department = undefined;
         switch (index) {
           case 0: 
-            role = Role.Admin;
+            foundUser.role = Role.Admin;
+            foundUser.department = undefined;
             break;
           case 1:
-            role = Role.MedicalDirector;
+            foundUser.role = Role.MedicalDirector;
+            foundUser.department = undefined;
             break;
           case 2:
-            role = Role.HeadOfDepartment;
-            department = DepartmentName.NicuPaeds;
+            foundUser.role = Role.HeadOfDepartment;
+            foundUser.department = DepartmentName.NicuPaeds;
             break;
           case 3:
-            role = Role.User;
-            department = DepartmentName.Maternity;
+            foundUser.role = Role.User;
+            foundUser.department = DepartmentName.Maternity;
             break;
           case 4:
-            role = Role.User;
-            department = DepartmentName.Rehab;
+            foundUser.role = Role.User;
+            foundUser.department = DepartmentName.Rehab;
             break;
           case 5:
-            role = Role.User;
-            department = DepartmentName.CommunityHealth;
+            foundUser.role = Role.User;
+            foundUser.department = DepartmentName.CommunityHealth;
             break;
           default:
             break;
         }
-        const updatedUser = { name: faker.name.findName(), role, department };
-        Object.keys(updatedUser).forEach((k) => {
-          if (!updatedUser[k]) {
-            delete updatedUser[k];
-          }
-        });
-        await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
+        foundUser.save();
+        // const updatedUser = { name: faker.name.findName(), role, department };
+        // Object.keys(updatedUser).forEach((k) => {
+        //   if (!updatedUser[k]) {
+        //     delete updatedUser[k];
+        //   }
+        // });
+        // await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
 
       } else {
 
