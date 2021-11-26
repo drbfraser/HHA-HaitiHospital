@@ -7,8 +7,7 @@ import Sidebar from 'components/side_bar/side_bar';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import DatePicker, {DayRange} from 'react-modern-calendar-datepicker';
 
-import React, { useEffect } from 'react';
-
+import React, { useState } from 'react';
 
 import "./general_reports_styles.css";
 

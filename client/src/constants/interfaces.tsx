@@ -38,6 +38,33 @@ export enum DepartmentName {
   CommunityHealth = "Community & Health",
 }
 
+export enum DepartmentId{
+    NicuPaeds = 1,
+    Maternity = 2,
+    Rehab = 3,
+    CommunityHealth = 4,
+}
+
+export function getDepartmentId(dept: DepartmentName): DepartmentId {
+    switch (dept) {
+        case DepartmentName.NicuPaeds:
+            return DepartmentId.NicuPaeds;
+
+        case DepartmentName.Maternity:
+            return DepartmentId.Maternity;
+        
+        case DepartmentName.Rehab:
+            return DepartmentId.Rehab;
+
+        case DepartmentName.CommunityHealth:
+            return DepartmentId.CommunityHealth;
+
+        default:
+            return DepartmentId.NicuPaeds;
+    }  
+}
+
+
 export interface User {
   username: string;
   name: string;

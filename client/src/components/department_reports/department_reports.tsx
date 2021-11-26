@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
-import { JsonArray } from 'constants/interfaces';
+import { JsonArray, DepartmentName, getDepartmentId } from 'constants/interfaces';
 import ReportSummaryTable from 'components/department_reports/report_summary_table/report_summary_table';
 
 import './styles.css';
 
 interface DepartmentReportsProps extends ElementStyleProps {
-  department?: string;
+  department?: DepartmentName;
   dateRange?: {from: {}, to: {}};
 };
 
@@ -40,12 +40,18 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     try {
         let res;
         let dateRange = props.dateRange;
-        if (props.dateRange.from === null || props.dateRange.to === null)
+        if (props.dateRange === undefined || props.dateRange.from === null || props.dateRange.to === null)
             dateRange = undefined;
+
+        let deptId: Number;
+        if (props.department !== undefined) {
+            deptId = getDepartmentId(props.department);
+            console.log("deparment id", deptId);
+        }
 
         apiForReports = 'api/report';
         let postData = {
-            departmentId: props.department,
+            departmentId: deptId,
             dateRange: dateRange,
         }
 

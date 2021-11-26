@@ -6,6 +6,7 @@ import Header from "components/header/header";
 import DepartmentReports from 'components/department_reports/department_reports';
 import './department_1_nicu.css'
 import {useTranslation} from "react-i18next";
+import {DepartmentName} from 'constants/interfaces'
 
 interface DepartmentProps extends ElementStyleProps {
 };
@@ -62,7 +63,8 @@ export const DepartmentOne = (props : DepartmentProps) => {
 
                 {/* Department Report Summary */}
                 <section>
-                    <DepartmentReports department={"NICU/PAED"}/>
+                    {/* <DepartmentReports department={"NICU/PAED"}/> */}
+                    <DepartmentReports department={DepartmentName.NicuPaeds}/>
                 </section>
             </div>
         </main>

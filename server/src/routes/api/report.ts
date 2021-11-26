@@ -140,9 +140,9 @@ try {
         })
     }
 
-    if (data.deparmentId !== undefined) {
+    if (data.departmentId !== undefined) {
         filterQuery = filterQuery.find({
-            deparmentId: data.departmentId
+            departmentId: data.departmentId as Number
         })
     }
 
