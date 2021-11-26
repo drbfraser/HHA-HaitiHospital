@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { RouteComponentProps, Link, useHistory } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps, User, Role, DepartmentName } from "constants/interfaces";
@@ -40,7 +40,7 @@ export const AddUserForm = (props: AdminProps) => {
       setSubmissionStatus("failure");
       failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
-      console.log('Something went wrong!', err);
+      console.log(err);
     }
   }
 

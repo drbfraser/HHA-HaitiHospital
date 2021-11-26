@@ -41,7 +41,7 @@ export const EditUserForm = (props: AdminProps) => {
 
   useEffect(() => {
     getUser();
-  }, [Object.keys(user).length])
+  }, [user.username])
 
   const onSubmit = (data: any) => {
     axios.put(userUrl, data).then(res => {
@@ -61,7 +61,7 @@ export const EditUserForm = (props: AdminProps) => {
       setSubmissionStatus("failure");
       failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
-      console.log('Something went wrong!', err);
+      console.log(err);
     }
   }
 
