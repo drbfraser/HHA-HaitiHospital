@@ -18,8 +18,6 @@ function MaternityForm() {
     const [sectionState, setSectionState] = useState(0);
     const [patientStateBefore, setPatientStateBefore] = useState(0);
     const [patientStateAfter, setPatientStateAfter] = useState(0);
-    const [diedBeforeList, setDiedBeforeList] = useState<{ age: any; cause: any; }[]>([])
-    const [diedAfterList, setDiedAfterList] = useState<{ age: any; cause: any; }[]>([])
 
 
     const history = useHistory();
@@ -74,16 +72,6 @@ function MaternityForm() {
         switch (index) {
             case 6:
                 setPatientStateBefore(event.target.value);
-                // var tempArray = [];
-                // for (let i = 0; i < event.target.value; i++) {
-                //     const getData = {
-                //         age : "",
-                //         cause : ""
-                //     }
-                //     tempArray.push(getData);
-                // }
-                // setDiedBeforeList(tempArray)
-                // console.log(diedBeforeList);
                 break;
             case 7:
                 setPatientStateAfter(event.target.value);
