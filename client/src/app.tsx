@@ -17,6 +17,7 @@ import { DepartmentMain} from "pages/department/department_main";
 import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
+import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
 import NotFound from 'pages/not_found/not_found';
@@ -54,6 +55,7 @@ const App = () => {
         <Route path='/caseStudyView/:id' exact component={CaseStudyView} />
         <Route path="/leaderBoard" exact component={LeaderBoardMain} />
         <Route path="/messageBoard" exact component={MessageBoardMain} />
+        <Route path="/biomechanic" exact component={BiomechanicalPage} />
         {/* TODO: In the future nest addMessage route inside MessageBoard */}
         <Route path="/addMessage" component={AddMessage} />
         {/* @ts-ignore */}
