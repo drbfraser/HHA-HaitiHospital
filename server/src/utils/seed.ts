@@ -166,9 +166,9 @@ const seedMessageBoard = async () => {
     messageHeader: 'Case study due',
   });
 
-  await message1.save();
-  await message2.save();
-  await message3.save();
+  message1.save();
+  message2.save();
+  message3.save();
   console.log('Message board seeded');
 }
 
@@ -261,7 +261,7 @@ const seedLeaderboard = async() => {
       const department = new Department({
         name: departmentName,
       });
-      await department.save();
+      department.save();
     }
     console.log('Leaderboard seeded');
   } catch (err) {
