@@ -14,79 +14,78 @@ export const seedDb = async () => {
 
   await User.collection.dropIndexes().catch(err => console.log(err));
 
-  let usersPromises;
-  await User.countDocuments({}, function(err, count) {
-    if (count === 0) {
-      usersPromises = [...Array(6).keys()].map((index, i) => {
-        const user = new User({
-          username: `user${index}`,
-          password: '123456789',
-          name: faker.name.findName(),
-        });
-    
-        if (index === 0) {
-          user.role = Role.Admin;
-        } else if (index === 1) {
-          user.role = Role.MedicalDirector;
-        } else if (index === 2) {
-          user.role = Role.HeadOfDepartment;
-          user.department = DepartmentName.NicuPaeds;
-        } else if (index === 3) {
-          user.department = DepartmentName.Maternity;
-        } else if (index === 4) {
-          user.department = DepartmentName.Rehab;
-        } else if (index === 5) {
-          user.department = DepartmentName.CommunityHealth;
-        }
-        user.registerUser(user, () => {});
-        return user;
-      });
+  [...Array(6).keys()].forEach(async (index, i) => {
+    var foundUser = await User.findOne({ username: `user${index}` });
+    if (foundUser) {
+      let role = undefined;
+      let department = undefined;
+      switch (index) {
+        case 0: 
+          role = Role.Admin;
+          break;
+        case 1:
+          role = Role.MedicalDirector;
+          break;
+        case 2:
+          role = Role.HeadOfDepartment;
+          department = DepartmentName.NicuPaeds;
+          break;
+        case 3:
+          role = Role.User;
+          department = DepartmentName.Maternity;
+          break;
+        case 4:
+          role = Role.User;
+          department = DepartmentName.Rehab;
+          break;
+        case 5:
+          role = Role.User;
+          department = DepartmentName.CommunityHealth;
+          break;
+        default:
+          break;
+      }
+      const updatedUser = { name: faker.name.findName(), role, department };
+      await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
 
     } else {
-      usersPromises = [...Array(6).keys()].map(async (index, i) => {
-        let password = await hashPassword("123456789");
-        let role;
-        let department;
-        switch (index) {
-          case 0: 
-            role = Role.Admin;
-            break;
-          case 1:
-            role = Role.MedicalDirector;
-            break;
-          case 2:
-            role = Role.HeadOfDepartment;
-            department = DepartmentName.NicuPaeds;
-            break;
-          case 3:
-            role = Role.User;
-            department = DepartmentName.Maternity;
-            break;
-          case 4:
-            role = Role.User;
-            department = DepartmentName.Rehab;
-            break;
-          case 5:
-            role = Role.User;
-            department = DepartmentName.CommunityHealth;
-            break;
-          default:
-            break;
-        }
-  
-        const updatedUser = { name: faker.name.findName(), password, role, department };
-        return User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
-      })
-    }
-  })
 
-  await Promise.all(
-    usersPromises.map(async (user) => {
-      // console.log(user.username)
-      // user.registerUser(user, () => {});
-      // await user.save();
-    }),
-  );
+      const user = new User({
+        username: `user${index}`,
+        password: '123456789',
+        name: faker.name.findName(),
+      });
+
+      switch (index) {
+        case 0:
+          user.role = Role.Admin;
+          break;
+        case 1:
+          user.role = Role.MedicalDirector;
+          break;
+        case 2:
+          user.role = Role.HeadOfDepartment;
+          user.department = DepartmentName.NicuPaeds;
+          break;
+        case 3:
+          user.role = Role.User;
+          user.department = DepartmentName.Maternity;
+          break;
+        case 4:
+          user.role = Role.User;
+          user.department = DepartmentName.Rehab;
+          break;
+        case 5:
+          user.role = Role.User;
+          user.department = DepartmentName.CommunityHealth;
+          break;
+        default:
+          break;
+      }
+
+      user.registerUser(user, () => {});
+    }
+  });
 
   console.log('Users seeded');
 };
