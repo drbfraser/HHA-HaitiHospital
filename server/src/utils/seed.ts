@@ -188,7 +188,7 @@ export const seedCaseStudies = async () => {
           caseStudyStory: faker.lorem.paragraph(10),
         }
       });
-      await caseStudy.save();
+      caseStudy.save();
     } else if (user.username === "user3"){
       const caseStudy = new CaseStudy({
         caseStudyType: CaseStudyOptions.StaffRecognition,
@@ -204,7 +204,7 @@ export const seedCaseStudies = async () => {
           caseStudyStory: faker.lorem.paragraph(10),
         }
       });
-      await caseStudy.save();
+      caseStudy.save();
     } else if (user.username === "user4"){
       const caseStudy = new CaseStudy({
         caseStudyType: CaseStudyOptions.TrainingSession,
@@ -219,7 +219,7 @@ export const seedCaseStudies = async () => {
           caseStudyStory: faker.lorem.paragraph(10),
         }
       });
-      await caseStudy.save();
+      caseStudy.save();
     } else if (user.username === "user5"){
       const caseStudy = new CaseStudy({
         caseStudyType: CaseStudyOptions.EquipmentReceived,
@@ -234,7 +234,7 @@ export const seedCaseStudies = async () => {
           caseStudyStory: faker.lorem.paragraph(10),
         }
       });
-      await caseStudy.save();
+      caseStudy.save();
     }
   });
 
