@@ -33,8 +33,14 @@ function CommunityForm() {
         sidePanelClick(sectionState);
     })
 
-    const elements: any = Object.values(formModel);
-    const fields: any = elements[0];
+    const sections: any = Object.values(formModel);
+    const fields = [];
+    for (var i = 0; i < sections.length; i++) {
+        for (var j = 0; j < sections[i].section_fields.length; j++) {
+            fields.push(sections[i].section_fields[j]);
+        }
+    }
+
 
     function refreshPage() {
         window.location.reload();
@@ -101,7 +107,7 @@ function CommunityForm() {
             }
 
             document.getElementById("section" + i)!.style.display = show;
-            for (let j = 1; j <= elements[i].section_fields.length; j++, startj++) {
+            for (let j = 1; j <= sections[i].section_fields.length; j++, startj++) {
                 if (document.getElementById("subsection" + startj)) document.getElementById("subsection" + startj)!.style.display = show;
                 if (document.getElementById("input" + startj)) document.getElementById("input" + startj)!.style.display = show;
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
@@ -122,40 +128,70 @@ function CommunityForm() {
             <main className="container">
                 <Header />
 
-                <div className="py-3 text-start">
-                    <h2>Community Form</h2>
-                    <p className="lead">For: September 2021</p>
+                <div className="d-flex justify-content-start">
+                    <button type="button" className="btn btn-primary btn-sm" onClick={() => {
+                        history.push("/Department4ComHealth");
+                    }}>Back</button>
                 </div>
 
+                <div className="py-3 text-start">
+                    {/* <h2>NICU/Paediatrics Form</h2> */}
+                    <span className="lead">Date: </span>
+                    <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
+                        <option selected>Month</option>
+                        <option value="1">January</option>
+                        <option value="2">Feburary</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
+                        <option selected>Year</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                    </select>
+                </div>
+
+                <div className="mb-3 text-start sticky-top bg-light">
+                    <h4 className="text-primary">Steps: </h4>
+                    <ul className="list-group list-group-horizontal">
+                        {sections ? sections.map((section: any, idx: any) => {
+                            var isActive = idx === 0 ? true : false;
+                            return (
+                                <>
+                                    <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
+                                        onClick={() => { window.scrollTo(0, 0); sidePanelClick(idx); }}>
+                                        <span>{idx + 1}. {section.section_label}</span>
+                                    </li>
+                                </>
+                            )
+                        }) : null}
+                    </ul>
+                </div>
+
+
                 <div className="row g-3">
-                    <div className="col-sm-4 col-md-4 col-lg-4">
-
-                        <h4 className="d-flex justify-content-between align-items-center mb-3">
-                            <span className="text-primary">Steps</span>
-                        </h4>
-
-                        <ul className="list-group mb-3">
-                            {elements ? elements.map((section: any, idx: any) => {
-                                var isActive = idx === 0 ? true : false;
-                                return (
-                                    <>
-                                        <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                            onClick={() => sidePanelClick(idx)}>
-                                            <span>{idx + 1}. {section.section_label}</span>
-                                        </li>
-                                    </>
-                                )
-                            }) : null}
-                        </ul>
-
-                        <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
-                    </div>
-
-
                     <div className="col-sm-7 col-md-7 col-lg-7">
                         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
                             <div className="row g-2">
-                                {elements ? elements.map((section: any, idx: any) => {
+                                {sections ? sections.map((section: any, idx: any) => {
                                     var ret = [];
 
                                     // render the section title
@@ -202,9 +238,7 @@ function CommunityForm() {
                                                 }
                                                 ret.push(
                                                     <>
-                                                        <table>
-                                                            <caption style={{ captionSide: "top" }}><strong>{field.table_name}</strong></caption>
-
+                                                        <table className="table table-bordered table-sm">
                                                             <tbody>
                                                                 {/* COLUMNS */}
 
@@ -215,7 +249,7 @@ function CommunityForm() {
                                                                         ))}
 
                                                                         {row.map((col, colj) => (
-                                                                            <th colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
+                                                                            <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
                                                                         ))}
                                                                     </tr>
                                                                 ))}
@@ -225,7 +259,7 @@ function CommunityForm() {
                                                                     <tr>
                                                                         {[...Array(field.row_labels.length)].map((e, j) => {
                                                                             if (count[j] === 0) {
-                                                                                const header = <th rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
+                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
                                                                                 count[j]++;
 
                                                                                 if (count[j] === field.row_spans[j][k[j]]) {
@@ -256,9 +290,8 @@ function CommunityForm() {
                                                                             } else {
                                                                                 const dataInput = (
                                                                                     <td>
-                                                                                        <input type="number"
-                                                                                            {...register(field.subsection_label + "." +
-                                                                                                inputCount + "." + j
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
                                                                                             )}
                                                                                         />
                                                                                     </td>
@@ -287,9 +320,7 @@ function CommunityForm() {
                                                 }
                                                 ret.push(
                                                     <>
-                                                        <table>
-                                                            <caption style={{ captionSide: "top" }}><strong>{field.table_name}</strong></caption>
-
+                                                        <table className="table table-bordered table-sm">
                                                             <tbody>
                                                                 {/* COLUMNS */}
 
@@ -300,7 +331,7 @@ function CommunityForm() {
                                                                         ))}
 
                                                                         {row.map((col, colj) => (
-                                                                            <th colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
+                                                                            <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
                                                                         ))}
                                                                     </tr>
                                                                 ))}
@@ -311,7 +342,7 @@ function CommunityForm() {
                                                                     <tr>
                                                                         {[...Array(field.row_labels.length)].map((e, j) => {
                                                                             if (count[j] === 0) {
-                                                                                const header = <th rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
+                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
                                                                                 count[j]++;
 
                                                                                 if (count[j] === field.row_spans[j][k[j]]) {
@@ -342,9 +373,8 @@ function CommunityForm() {
                                                                             } else {
                                                                                 const dataInput = (
                                                                                     <td>
-                                                                                        <input type="number"
-                                                                                            {...register(field.subsection_label + "." +
-                                                                                                inputCount + "." + j
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
                                                                                             )}
                                                                                         />
                                                                                     </td>
