@@ -8,6 +8,7 @@ import maternityModel from './models/maternityModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { spawn } from 'child_process';
 import { render } from '@testing-library/react';
+import { text } from 'node:stream/consumers';
 
 
 
@@ -204,7 +205,15 @@ function MaternityForm() {
         }
     }
 
-
+    const getRowLabel = (label: String) => {
+        if(label === undefined){
+            return;
+        }else{
+            var newLabel = label.replaceAll("(DOT)", ".");
+            return newLabel;
+        }
+        
+    }
 
     let fieldCount = 0;
 
@@ -390,7 +399,8 @@ function MaternityForm() {
                                                                     <tr>
                                                                         {[...Array(field.row_labels.length)].map((e, j) => {
                                                                             if (count[j] === 0) {
-                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
+                                                                                const rowLabel = getRowLabel(field.row_labels[j][k[j]]);
+                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{rowLabel}</th>
                                                                                 count[j]++;
 
                                                                                 if (count[j] === field.row_spans[j][k[j]]) {
@@ -422,7 +432,7 @@ function MaternityForm() {
                                                                                 const dataInput = (
                                                                                     <td className="align-middle">
                                                                                         <input className="form-control" type="number"
-                                                                                            {...register(field.subsection_label + "." + inputCount + "." + j
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
                                                                                             )}
                                                                                         />
                                                                                     </td>

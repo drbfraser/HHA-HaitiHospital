@@ -277,7 +277,7 @@
                 "total_rows" : 6,
                 "col_labels" : [["Institutional", "Community"], ["Normal", "Cesarean", "Instrumentalized", "Trained Matrons", "Others"]],
                 "col_spans" : [[3,2], [1, 1, 1, 1, 1]],
-                "row_labels" : [["Weight"], ["Weight < 1.5kg", "1.5kg ≤ Weight <2.5kg", "2.5kg and over", "Not weighed", "Immediately breastfed", "Skin to skin therapy"]],
+                "row_labels" : [["Weight"], ["Weight < 1(DOT)5kg", "1(DOT)kg ≤ Weight <2(DOT)5kg", "2(DOT)5kg and over", "Not weighed", "Immediately breastfed", "Skin to skin therapy"]],
                 "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
                 "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
                                     [0 ,0 ,0 ,0 ,0],
