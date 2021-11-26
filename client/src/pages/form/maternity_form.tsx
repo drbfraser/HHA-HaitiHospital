@@ -49,6 +49,10 @@ function MaternityForm() {
     }
 
     const onSubmit = async (data: any) => {
+        if (!window.confirm("Press OK to finalize submission.")) {
+            return;
+        }
+        
         data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
         console.log(data);
         var valid = submitValidation();
@@ -66,7 +70,7 @@ function MaternityForm() {
         //     });
 
         //     //console.log(data);
-        //     history.push("/Department1NICU");
+        //     history.push("/Department2Maternity");
         } else {
             alert("Some fields contain invalid values");
             window.scrollTo(0, 0);
