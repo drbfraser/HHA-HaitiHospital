@@ -69,13 +69,13 @@ function MaternityForm() {
 
     }
 
-    const handleListInput = (fields: any, event: any) => {
-        switch (event.target.name) {
-            case "diedBefore48hr.patientList":
+    const handleListInput = (fields: any, event: any, index: any) => {
+        switch (index) {
+            case 6:
                 console.log('test');
                 setPatientStateBefore(event.target.value);
                 break;
-            case "diedAfter48hr.patientList":
+            case 7:
                 setPatientStateAfter(event.target.value);
                 break;
             default:
@@ -83,49 +83,59 @@ function MaternityForm() {
 
     }
 
-    const renderList = (state: any, fields: any) => {
+    const renderList = (state: any, field: any) => {
         if (state > 0) {
             return (
-                <div>
-                    <div className="row">
-                        <span className="col-auto">Patient#</span>
-                        <input type="number" className="form-control col-sm" min={1} max={state} onChange={(e) => searchList(e.target.value, state)} />
-                        <span className="col-sm-9">/{state}</span>
-                    </div>
-                    {[...Array(Number(state))].map((e, i) => (
-                        <div className="row g-2" id={"patient" + (i + 1)} style={{ display: "none" }}>
-                            {fields.map((field) => (
-                                <>
-                                    <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                        <span className="align-middle">{field.field_label}</span>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <input type={field.field_type} className="form-control" placeholder=""
-                                            {...register(field.field_id)}
-                                        />
-                                        <div className="invalid-feedback">
-                                            Requires a valid number
-                                        </div>
-                                    </div>
-                                </>
-                            ))}
+                <div className="form-group">
+                    <div className="row g-2 pb-2">
+                        <div className="col-sm-10 ps-5">
+                            <span className="pe-2">Patient</span>
+                            <select className="form-select-sm" aria-label=".form-select-sm" onChange={(e) => selectList(e.target.value, state, field)}>
+                                <option selected>Select Patient</option>
+
+                                {[...Array(Number(state))].map((e, i) => (
+                                    <option>{i + 1}</option>
+                                ))}
+                            </select>
                         </div>
-                    ))}
+                    </div>
 
+                    <div>
+                        {[...Array(Number(state))].map((e, i) => (
+                            <div className="row g-2" id={field.field_id + "patient" + (i + 1)} style={{ display: "none" }}>
+                                {field.field_template.map((field: any) => (
+                                    <>
+                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                            <span className="align-middle">{field.field_label}</span>
+                                        </div>
+                                        <div id={"ListInputs" + i} className="col-sm-2">
+                                            <input type={field.field_type} className="form-control" placeholder=""
+                                                {...register(field.field_id)}
+                                            // onBlur={() => inputValidation(i)}
+                                            />
+                                            <div className="invalid-feedback">
+                                                Requires a valid number
+                                            </div>
+                                        </div>
+                                    </>
+                                ))}
 
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )
         }
 
     }
 
-    const searchList = (value: any, state: any) => {
+    const selectList = (value: any, state: any, field: any) => {
         for (let i = 1; i <= state; i++) {
             console.log(value);
             if (Number(i) === Number(value)) {
-                document.getElementById("patient" + i).style.display = "";
+                document.getElementById(field.field_id + "patient" + i).style.display = "";
             } else {
-                document.getElementById("patient" + i).style.display = "none";
+                document.getElementById(field.field_id + "patient" + i).style.display = "none";
             }
         }
     }
@@ -435,10 +445,10 @@ function MaternityForm() {
                                             )
                                         } else if (field.field_type === "list") {
                                             var patientState;
-                                            var template = field.field_template
-                                            if (field.field_id === "diedBefore48hr.patientList") {
+
+                                            if (i === 6) {
                                                 patientState = patientStateBefore;
-                                            } else if (field.field_id === "diedAfter48hr.patientList") {
+                                            } else if (i === 7) {
                                                 patientState = patientStateAfter;
                                             }
 
@@ -451,13 +461,14 @@ function MaternityForm() {
                                                         <input type="text" className="form-control" placeholder=""
                                                             {...register(field.field_id)}
                                                             // onBlur={() => inputValidation(i)}
-                                                            onChange={(event) => handleListInput(template, event)}
+                                                            onChange={(event) => handleListInput(field, event, i)}
                                                         />
                                                         <div className="invalid-feedback">
                                                             Requires a valid number
                                                         </div>
                                                     </div>
-                                                    {renderList(patientState, template)}
+
+                                                    {renderList(patientState, field)}
                                                 </>
                                             )
                                         }
