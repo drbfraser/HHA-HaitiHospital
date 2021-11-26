@@ -18,7 +18,7 @@ export const seedDb = async () => {
   seedLeaderboard();
 };
 
-const seedUsers = async() => {
+export const seedUsers = async() => {
   console.log('Seeding users...');
 
   try {
@@ -103,7 +103,7 @@ const seedUsers = async() => {
   }
 }
 
-const seedDepartments = async() => {
+export const seedDepartments = async() => {
   console.log("Seeding default departments...");
 
   let dateTime: Date = new Date();
@@ -131,7 +131,7 @@ const seedDepartments = async() => {
   console.log("Default departments seeded");
 }
 
-const seedMessageBoard = async () => {
+export const seedMessageBoard = async () => {
   console.log('Seeding message board...')
   await MessageBody.deleteMany({});
 
@@ -172,7 +172,7 @@ const seedMessageBoard = async () => {
   console.log('Message board seeded');
 }
 
-const seedCaseStudies = async () => {
+export const seedCaseStudies = async () => {
   console.log('Seeding case studies...')
 
   try {
@@ -252,7 +252,7 @@ const seedCaseStudies = async () => {
   }
 }
 
-const seedLeaderboard = async() => {
+export const seedLeaderboard = async() => {
   console.log('Seeding leaderboard...');
   try {
     await Department.deleteMany({});
