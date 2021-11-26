@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { number } = require('joi');
 import Departments from '../../models/Departments';
 import FormEntry from '../../models/FormEntry';
+import { date } from 'joi';
 
 
 //---RESEED DATABASE---//
@@ -111,6 +112,51 @@ router.route('/delete/:Reportid').delete((req: any, res: any) => {
     FormEntry.deleteOne({_id: req.params.Reportid})
         .then(() => res.json('Succesfully deleted report'))
         .catch(err => res.status(400).json('Could not delete: ' + err));
+});
+
+
+router.route('/').post( async (req, res) => {
+try {
+    const data = Object.assign({}, req.body);
+
+    let filterQuery = FormEntry.find({});
+
+    if (data.dateRange !== undefined) {
+        let from = data.dateRange.from;
+        let to = data.dateRange.to;
+
+        // month in Date() is 0 based indexed
+        let fromDate = new Date(from.year, from.month-1, from.day);
+        fromDate.setHours(0, 0, 0);
+
+        let toDate = new Date(to.year, to.month-1, to.day);
+        toDate.setHours(23, 59, 59);
+
+        filterQuery = filterQuery.find({
+            lastUpdatedOn: {
+                $gte: fromDate,
+                $lte: toDate
+            }
+        })
+    }
+
+    if (data.deparmentId !== undefined) {
+        filterQuery = filterQuery.find({
+            deparmentId: data.departmentId
+        })
+    }
+
+    let result = await filterQuery.exec();
+    res.status(200).json(result)
+}
+catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+        status:'failure',
+        error: error.messages
+    })
+}
 });
 
 export = router;

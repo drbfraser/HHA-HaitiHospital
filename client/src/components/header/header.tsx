@@ -40,7 +40,11 @@ function HeaderView() {
         return <h4 className="text-secondary">{t("headerDepartmentCom")}</h4>
     } else if (location.pathname.slice(1) === 'admin') {
         return <h4 className="text-secondary">{t("headerAdmin")}</h4>
-    } else {
+    } else if (location.pathname.slice(1) === 'general_reports') {
+        // Need translation
+        return (<h4 className='text-secondary'>General</h4>)
+    }
+    else {
         // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
         return <h4></h4>
     }

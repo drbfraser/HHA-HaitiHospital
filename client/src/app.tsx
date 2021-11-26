@@ -21,6 +21,7 @@ import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
 import NotFound from 'pages/not_found/not_found';
 import MaternityForm from 'pages/form/maternity_form';
+import GeneralReports from 'pages/general_reports/general_reports';
 
 const App = () => {
     useEffect(() => {
@@ -63,6 +64,7 @@ const App = () => {
         <Route path="/NICUForm" component={NICUForm} />
         <Route path="/maternityForm" component={MaternityForm} />
         {/*<Route path="/posts/:id" exact component={Post} />*/}
+        <Route path='/general_reports' exact component={GeneralReports}/>
         <Route component={NotFound} />
         </Router>
     </div>

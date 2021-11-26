@@ -8,7 +8,8 @@ import ReportSummaryTable from 'components/department_reports/report_summary_tab
 import './styles.css';
 
 interface DepartmentReportsProps extends ElementStyleProps {
-  department: string;
+  department?: string;
+  dateRange?: {from: {}, to: {}};
 };
 
 
@@ -16,7 +17,6 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
 
-  const dbUrlForNICUReports = "/api/report/view";
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
     // To fetch data from db
@@ -31,18 +31,34 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
       apiSource.cancel();
       isMounted = false;
     }
-  }, [refetch]);
+  }, [refetch, props.dateRange]);
 
 
   const fetchReports = async () => {
+    let apiForReports = '';
+    
     try {
-    //   console.log("Fetch reports");
-      const res = await Axios.get(dbUrlForNICUReports,
-        {cancelToken: apiSource.token})
-      return res.data;
+        let res;
+        let dateRange = props.dateRange;
+        if (props.dateRange.from === null || props.dateRange.to === null)
+            dateRange = undefined;
+
+        apiForReports = 'api/report';
+        let postData = {
+            departmentId: props.department,
+            dateRange: dateRange,
+        }
+
+        res = await Axios.post(apiForReports, postData, {
+            cancelToken: apiSource.token
+        });
+        if (res.status != 200)
+            return [];
+
+        return res.data;
     } catch (err) {
       if (Axios.isCancel(err)) {
-        console.log(`Info: Subscription to ${dbUrlForNICUReports} is canceled`,err)
+        console.log(`Info: Subscription to ${apiForReports} is canceled`,err)
       }
       else 
         console.log(err);
