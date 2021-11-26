@@ -57,8 +57,6 @@ export const EditUserForm = (props: AdminProps) => {
     try {
       if (error.response.data.message) {
         setErrorMessage(error.response.data.message);
-      } else if (error.response.data.details) {
-        setErrorMessage(error.response.data.details[0].message);
       }
       setSubmissionStatus("failure");
       failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });

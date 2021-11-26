@@ -15,16 +15,20 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Reque
 
     const existingUser = await User.findOne({ username: req.body.username });
     if (existingUser && existingUser.username !== tempUser.username) {
-      return res.status(422).send({ message: 'Username is in use' });
+      return res.status(422).json({ message: 'Username is in use' });
     }
 
-    await validateUpdatedUserSchema.validateAsync({
+    const validationResult = validateUpdatedUserSchema.validate({
       username: req.body.username,
       password: req.body.password,
       name: req.body.name,
       role: req.body.role,
       department: req.body.department,
     });
+
+    if (validationResult.error){
+      return res.status(403).json({ message: validationResult.error.details[0].message });
+    }
 
     let password = null;
     if (req.body.password && req.body.password !== '') {
@@ -38,7 +42,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Reque
 
     res.status(200).json(user);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
@@ -98,13 +102,17 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
       department,
     });
 
-    await validateUserSchema.validateAsync({
+    const validationResult = validateUserSchema.validate({
       username,
       password,
       name,
       role,
       department,
     });
+    
+    if (validationResult.error){
+      return res.status(403).json({ message: validationResult.error.details[0].message });
+    }
 
     newUser.registerUser(newUser, (err, user) => {
       if (err) throw err;
@@ -112,7 +120,7 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
     });
 
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
