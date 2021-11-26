@@ -1,7 +1,8 @@
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { ElementStyleProps } from 'constants/interfaces';
-import { logOutUser } from '../../actions/authActions'
+import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation, Link, useHistory } from 'react-router-dom';
+import { ElementStyleProps, User } from 'constants/interfaces';
+import { logOutUser } from '../../actions/authActions';
+import axios from 'axios';
 import {useTranslation} from "react-i18next";
 
 // import {stringify} from "querystring";
@@ -54,31 +55,73 @@ function GetUsername() {
 const Header = (props: HeaderProps) => {
     const onLogOut = (event) => {
         logOutUser();
+        history.push("/login");
     };
 
+    const history = useHistory();
+
+    const [userInfo, setUserInfo] = useState({} as User);
+    const userUrl = '/api/users/me';
+    const getUserInfo = async () => {
+        try {
+            const res = await axios.get(userUrl);
+            setUserInfo(res.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    
+    useEffect(() => {
+        getUserInfo();
+    }, [userInfo.username]);
     const {t, i18n} = useTranslation();
 
     return (
         <div className={'header '+ (props.classes || '')}>
             <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
 
-                <div className="col-6">
+                <div className="col">
                     <HeaderView/>
                 </div>
 
-                <div className="col text-end">
-                    <GetUsername/>
-                </div>
-
-                <div className="col">
-                    <NavLink className="btn btn-outline-secondary mb-2" to="/login" exact onClick={onLogOut}>
-                        <i className="bi bi-door-open-fill me-2"/>
-                        <span className="text-dark">{t("headerSignOut")}</span>
-                    </NavLink>
+                <div className="col-auto">
+                    <div className="dropdown">
+                        <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
+                        </button>
+                        <ul className="dropdown-menu dropdown-menu-end rounded shadow">
+                            <li className="d-block d-sm-none">
+                                <button className="dropdown-item disabled fw-bold text-muted mb-2">
+                                    {userInfo.name}
+                                </button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item disabled text-muted mb-2">
+                                    <i className="bi bi-person-fill"></i>{' @' + userInfo.username}
+                                </button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item disabled text-muted mb-2">
+                                    <i className="bi bi-person-badge-fill"></i>{' ' + userInfo.role}
+                                </button>
+                            </li>
+                            <li className={`${userInfo.department ? "d-block" : "d-none"}`}>
+                                <button className="dropdown-item disabled text-muted">
+                                    <i className="bi bi-people-fill"></i>{' ' + userInfo.department}
+                                </button>
+                            </li>
+                            <li><hr className="dropdown-divider"/></li>
+                            <li>
+                                <button className="dropdown-item" type="button" onClick={onLogOut}>
+                                    <i className="fa fa-sign-out" aria-hidden="true"></i>{" " + t("headerSignOut")}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-        )
+    )
 }
 
 export default Header;

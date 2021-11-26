@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import User, { hashPassword } from '../models/User';
+import User, { hashPassword, Role } from '../models/User';
 import Department, { DepartmentName } from '../models/Leaderboard';
 
 import NicuPaeds from '../models/NicuPaeds';
@@ -25,11 +25,11 @@ export const seedDb = async () => {
         });
     
         if (index === 0) {
-          user.role = 'ADMIN';
+          user.role = Role.Admin;
         } else if (index === 1) {
-          user.role = 'MED_DIR';
+          user.role = Role.MedicalDirector;
         } else if (index === 2) {
-          user.role = 'DEPT_HEAD';
+          user.role = Role.HeadOfDepartment;
           user.department = DepartmentName.NicuPaeds;
         } else if (index === 3) {
           user.department = DepartmentName.Maternity;
@@ -43,31 +43,31 @@ export const seedDb = async () => {
       });
 
     } else {
-      usersPromises = [...Array(6).keys()].map((index, i) => {
-        let password = hashPassword("123456789");
+      usersPromises = [...Array(6).keys()].map(async (index, i) => {
+        let password = await hashPassword("123456789");
         let role;
         let department;
         switch (index) {
           case 0: 
-            role = 'ADMIN';
+            role = Role.Admin;
             break;
           case 1:
-            role = 'MED_DIR';
+            role = Role.MedicalDirector;
             break;
           case 2:
-            role = 'DEPT_HEAD';
+            role = Role.HeadOfDepartment;
             department = DepartmentName.NicuPaeds;
             break;
           case 3:
-            role = 'USER';
+            role = Role.User;
             department = DepartmentName.Maternity;
             break;
           case 4:
-            role = 'USER';
+            role = Role.User;
             department = DepartmentName.Rehab;
             break;
           case 5:
-            role = 'USER';
+            role = Role.User;
             department = DepartmentName.CommunityHealth;
             break;
           default:
