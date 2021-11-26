@@ -36,7 +36,13 @@ function MaternityForm() {
         sidePanelClick(sectionState);
     })
 
-    const elements: any = Object.values(formModel);
+    const sections: any = Object.values(formModel);
+    const fields = [];
+    for(var i=0; i<sections.length; i++) {
+        for(var j=0; j<sections[i].section_fields.length; j++) {
+            fields.push(sections[i].section_fields[j]);
+        }
+    }
 
     function refreshPage() {
         window.location.reload();
@@ -45,9 +51,9 @@ function MaternityForm() {
     const onSubmit = async (data: any) => {
         data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
         console.log(data);
-        // var valid = submitValidation();
+        var valid = submitValidation();
 
-        // if (valid === true) {
+        if (valid === true) {
 
         //     data.departmentId = 1;
         //     data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
@@ -61,11 +67,10 @@ function MaternityForm() {
 
         //     //console.log(data);
         //     history.push("/Department1NICU");
-        // } else {
-        //     console.log(valid);
-        //     alert("Some fields contain invalid values");
-        //     window.scrollTo(0, 0);
-        // }
+        } else {
+            alert("Some fields contain invalid values");
+            window.scrollTo(0, 0);
+        }
 
     }
 
@@ -153,31 +158,64 @@ function MaternityForm() {
     }
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
-        console.log(ID);
-        switch (ID) {
-            case 'admissions.comeFrom.otherDepartments':
-                let newFormValuesComeFrom = [...formValuesComeFrom];
-                if (j === 0) {
-                    newFormValuesComeFrom[i].name = e.target.value;
-                } else {
-                    newFormValuesComeFrom[i].value = e.target.value;
-                }
-
-                setFormValuesComeFrom(newFormValuesComeFrom);
-                break;
-
-            default:
-
+        let newFormValuesComeFrom = [...formValuesComeFrom];
+        if (j === 0) {
+            newFormValuesComeFrom[i].name = e.target.value;
+        } else {
+            newFormValuesComeFrom[i].value = e.target.value;
         }
-
+        setFormValuesComeFrom(newFormValuesComeFrom);
     }
 
     const addFormFields = (ID: number) => {
         setFormValuesComeFrom([...formValuesComeFrom, { name: "", value: null }])
     }
 
-    const removeFormFields = (ID: any, i: number) => {
+    const removeFormFields = (ID: any, idx: number) => {
+        var inputGroup = document.getElementById("inputs" + ID).childNodes;
 
+        for (let i = idx; i < inputGroup.length; i++) {
+            var textInput1 = (inputGroup[i].childNodes[0].childNodes[0] as HTMLInputElement);
+            var valueInput1 = (inputGroup[i].childNodes[1].childNodes[0] as HTMLInputElement);
+
+            if (i == inputGroup.length - 1) {
+                textInput1.value = "";
+                valueInput1.value = "0";
+                continue;
+            }
+
+            var textInput2 = (inputGroup[i + 1].childNodes[0].childNodes[0] as HTMLInputElement);
+            var valueInput2 = (inputGroup[i + 1].childNodes[1].childNodes[0] as HTMLInputElement);
+
+            textInput1.value = textInput2.value;
+            valueInput1.value = valueInput2.value;
+
+            textInput2.value = "";
+            valueInput2.value = "0";
+
+            if (textInput2.classList.contains("is-valid")) {
+                makeValidity(textInput1, true, "");
+            } else if (textInput2.classList.contains("is-invalid")) {
+                makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerHTML);
+            } else {
+                removeValidity(textInput1);
+            }
+
+            if (valueInput2.classList.contains("is-valid")) {
+                makeValidity(valueInput1, true, "");
+            } else if (valueInput2.classList.contains("is-invalid")) {
+                makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerHTML);
+            } else {
+                removeValidity(valueInput1);
+            }
+        }
+
+
+        let newFormValues;
+        newFormValues = [...formValuesComeFrom];
+        newFormValues.splice(idx, 1);
+        setFormValuesComeFrom(newFormValues)
+        arrayTotalValidation(18, 19, 22);
     }
 
     const sidePanelClick = (index: any) => {
@@ -185,9 +223,6 @@ function MaternityForm() {
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
             currentClass[i].classList.remove("active");
-            if (currentClass[i].childNodes.length > 1) {
-                currentClass[i].removeChild(currentClass[i].childNodes[1])
-            }
 
             var show = "none"
             if (i === index) {
@@ -197,7 +232,7 @@ function MaternityForm() {
             }
 
             document.getElementById("section" + i)!.style.display = show;
-            for (let j = 1; j <= elements[i].section_fields.length; j++, startj++) {
+            for (let j = 1; j <= sections[i].section_fields.length; j++, startj++) {
                 if (document.getElementById("subsection" + startj)) document.getElementById("subsection" + startj)!.style.display = show;
                 if (document.getElementById("input" + startj)) document.getElementById("input" + startj)!.style.display = show;
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
@@ -215,10 +250,339 @@ function MaternityForm() {
         
     }
 
+
+
+
+    //
+    // VALIDATION FUNCTIONS
+    // 
+
+    function submitValidation() {
+        var isFormValid = true;
+
+        for (let i = 1; i <= fields.length; i++) {
+            
+            var field = fields[i-1];
+            console.log(i, field.field_type);
+            if (field.field_type === "array") {
+                var formValues = formValuesComeFrom;
+                for (let j = 0; j < formValues.length; j++) {
+                    isFormValid = arrayInputValidation(i, j, "text") && isFormValid;
+                    isFormValid = arrayInputValidation(i, j, "number") && isFormValid;
+                }
+
+            } else if (field.field_type === "number") {
+                var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                isFormValid = isValid(inputElement) && isFormValid;
+
+            } else if (field.field_type === "table") {
+                for (var idx=0; idx<field.total_rows; idx++) {
+                    for (var jdx=0; jdx<field.total_cols; jdx++) {
+                        if (field.invalid_inputs[idx][jdx] == 0) {
+                            var inputElement = (document.getElementById("tables" + i + idx + jdx)?.childNodes[0] as HTMLInputElement);
+                            isFormValid = isValid(inputElement) && isFormValid;
+                        }
+                    }
+                }
+
+            } 
+        }
+
+        return isFormValid;
+    }
+
+    function checkSideBar() {
+        const listGroup = document.getElementsByClassName("list-group-item");
+        let num = 1;
+        for (let i = 0; i < listGroup.length; i++) {
+            var section = sections[i];
+
+            var isSectionValid = true;
+            for (let j = 1; j <= section.section_fields.length; j++, num++) {
+                var formValues = formValuesComeFrom;
+
+                if (num === 22) {
+                    var inputGroup = (document.getElementById("inputs" + num) as HTMLElement);
+                    for (let k = 0; k < formValues.length; k++) {
+                        var textInput = (inputGroup.childNodes[k].childNodes[0].childNodes[0] as HTMLInputElement);
+                        var valueInput = (inputGroup.childNodes[k].childNodes[1].childNodes[0] as HTMLInputElement);
+                        if (textInput.classList.contains("is-invalid") || valueInput.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
+                } else {
+                    var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+                    if (inputElement.classList.contains("is-invalid")) {
+                        isSectionValid = false;
+                    }
+                }
+            }
+
+            var listElement = listGroup[i];
+            if (isSectionValid) {
+                if (listElement.childElementCount > 1) {
+                    listElement.removeChild(listElement.childNodes[1]);
+                }
+            } else {
+                if (listElement.childElementCount > 1) {
+                    listElement.removeChild(listElement.childNodes[1]);
+                }
+                var alertIcon = document.createElement("div")
+                alertIcon.classList.add("bi", "bi-exclamation-circle-fill", "flex-shrink-0", "ms-2");
+                listElement.appendChild(alertIcon);
+            }
+        }
+    }
+
+    function removeValidity(inputElement: HTMLInputElement) {
+        var errorMessage = (inputElement.nextSibling as HTMLElement);
+        inputElement.classList.remove("is-invalid");
+        inputElement.classList.remove("is-valid");
+        errorMessage.innerHTML = "";
+    }
+
+    function makeValidity(inputElement: HTMLInputElement, isVal: boolean, msg: string) {
+        var errorMessage = (inputElement.nextSibling as HTMLElement);
+
+        if (isVal) {
+            inputElement.classList.remove("is-invalid");
+            inputElement.classList.add("is-valid");
+            errorMessage.innerHTML = "";
+        } else {
+            inputElement.classList.remove("is-valid");
+            inputElement.classList.add("is-invalid");
+            errorMessage.innerHTML = msg;
+        }
+
+        checkSideBar();
+    }
+
+    function isValid(inputElement: HTMLInputElement) {
+        var numberAsText = inputElement.value;
+        if (numberAsText == "") {
+            makeValidity(inputElement, false, "Must enter a value");
+            return false;
+        }
+
+        var number = Number(numberAsText);
+        if (number < 0) {
+            makeValidity(inputElement, false, "Positive numbers only");
+            return false;
+        }
+
+        if (number % 1 != 0) {
+            makeValidity(inputElement, false, "Integers only");
+            return false;
+        }
+
+        makeValidity(inputElement, true, "");
+        return true;
+    }
+
+    function inputValidation(num: number) {
+        var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+        if (!isValid(inputElement)) return;
+
+        // Total number of self-discharged patients
+        if (num === 11 || num >= 12 && num <= 16) {
+            totalValidation(11, 12, 16);
+            return;
+        }
+
+        // Total Admissions
+        if (num === 18 || num >= 19 && num <= 22) {
+            arrayTotalValidation(18, 19, 22);
+            return;
+        }
+        if (num === 18 || num >= 23 && num <= 29) {
+            totalValidation(18, 23, 29);
+            return;
+        }
+
+        makeValidity(inputElement, true, "");
+    }
+
+    function totalValidation(start: number, a: number, b: number) {
+        // check if the entire series in total is all filled out 
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
+        for (var i = a; i <= b; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
+        }
+        if (!isSeriesComplete) return;
+
+        // calculated total vs total2
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var total = Number(totalElement.value);
+        var isSeriesValid = isValid(totalElement);
+
+        var total2 = 0;
+        for (var i = a; i <= b; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            total2 += Number(inputElement.value);
+            isSeriesValid = isValid(inputElement) && isSeriesValid;
+        }
+
+        if (isSeriesValid) {
+            if (total !== total2) {
+                makeValidity(totalElement, false, "Does not add up to total");
+                for (var i = a; i <= b; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, false, "");
+                }
+            } else {
+                makeValidity(totalElement, true, "");
+                for (var i = a; i <= b; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, true, "");
+                }
+            }
+        }
+    }
+
+    function arrayInputValidation(num: number, idx: number, type: string) {
+        var inputGroup = (document.getElementById("inputs" + num) as HTMLElement);
+
+        if (type == "text") {
+            var textInput = (inputGroup.childNodes[idx].childNodes[0].childNodes[0] as HTMLInputElement);
+            if (textInput.value == "") {
+                makeValidity(textInput, false, "Must enter a name");
+                return false;
+            } else {
+                makeValidity(textInput, true, "");
+                return true;
+            }
+
+        } else if (type == "number") {
+            var valueInput = (inputGroup.childNodes[idx].childNodes[1].childNodes[0] as HTMLInputElement);
+            if (!isValid(valueInput)) return false;
+
+            if (num === 22 && !arrayTotalValidation(18, 19, 22)) {
+                return false;
+            }
+
+            makeValidity(valueInput, true, "");
+            return true;
+        }
+    }
+
+    function arrayTotalValidation(start: number, a: number, b: number) {
+        // check if the entire series in total is all filled out 
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
+        for (var i = a; i <= b - 1; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
+        }
+        var arrayElement = document.getElementById("inputs" + b)?.childNodes;
+        for (var i = 0; i < arrayElement!.length; i++) {
+            var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
+        }
+        if (!isSeriesComplete) return false;
+
+        // calculated total vs total2
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var total = Number(totalElement.value);
+        var isSeriesValid = isValid(totalElement);
+
+        var total2 = 0;
+        for (var i = a; i <= b - 1; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            total2 += Number(inputElement.value);
+            isSeriesValid = isValid(inputElement) && isSeriesValid;
+        }
+        var arrayElement = document.getElementById("inputs" + b)?.childNodes;
+        for (var i = 0; i < arrayElement!.length; i++) {
+            var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+            total2 += Number(inputElement.value);
+            isSeriesValid = isValid(inputElement) && isSeriesValid;
+        }
+
+        if (isSeriesValid) {
+            if (total !== total2) {
+                makeValidity(totalElement, false, "");
+                for (var i = a; i <= b - 1; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    var errorMsg = i == a ? "Does not add up to total" : "";
+                    makeValidity(inputElement, false, errorMsg);
+                }
+                for (var i = 0; i < arrayElement!.length; i++) {
+                    var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, false, "");
+                }
+
+                return false;
+            } else {
+                makeValidity(totalElement, true, "");
+                for (var i = a; i <= b - 1; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, true, "");
+                }
+                for (var i = 0; i < arrayElement!.length; i++) {
+                    var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, true, "");
+                }
+
+                return true;
+            }
+        }
+    }
+
+    function tableInputValidation(num: number, idx: number, jdx: number) {
+        //console.log(num, idx, jdx);
+        var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
+        if (!isValid(inputElement)) return;
+
+        // Support for wife and mother
+        if (num === 42) {
+            for (var i=0; i<3; i++) {
+                var rowTotal = 0;
+                for (var j=0; j<5; j++) {
+                    inputElement = (document.getElementById("tables" + num + i + j)?.childNodes[0] as HTMLInputElement);
+                    rowTotal += Number(inputElement.value);
+                }
+
+                var totalElement = document.getElementById("tables" + num + i + 5);
+                totalElement.innerHTML = String(rowTotal);
+            }
+
+            for (var j=0; j<5; j++) {
+                var colTotal = 0;
+                for (var i=0; i<3; i++) {
+                    inputElement = (document.getElementById("tables" + num + i + j)?.childNodes[0] as HTMLInputElement);
+                    colTotal += Number(inputElement.value);
+                }
+
+                var totalElement = document.getElementById("tables" + num + 3 + j);
+                totalElement.innerHTML = String(colTotal);
+            }
+
+            var rowTotal = 0;
+            for (var j=0; j<5; j++) {
+                var element = document.getElementById("tables" + num + 3 + j);
+                rowTotal += Number(element.innerHTML);
+            }
+
+            var totalElement = document.getElementById("tables" + num + 3 + 5);
+            totalElement.innerHTML = String(rowTotal);
+
+            return;
+        }
+
+        makeValidity(inputElement, true, "");
+    }
+
+
+
+
+
+    //
+    // RENDERING BODY
+    //
     let fieldCount = 0;
-
     document.body.classList.add("bg-light");
-
     return (
         <div className="nicu_form">
             <SideBar />
@@ -270,12 +634,12 @@ function MaternityForm() {
                 <div className="mb-3 text-start sticky-top bg-light">
                     <h4 className="text-primary">Steps: </h4>
                     <ul className="list-group list-group-horizontal">
-                        {elements ? elements.map((section: any, idx: any) => {
+                        {sections ? sections.map((section: any, idx: any) => {
                             var isActive = idx === 0 ? true : false;
                             return (
                                 <>
                                     <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                        onClick={() => sidePanelClick(idx)}>
+                                        onClick={() => { window.scrollTo(0, 0); sidePanelClick(idx); }}>
                                         <span>{idx + 1}. {section.section_label}</span>
                                     </li>
                                 </>
@@ -289,7 +653,7 @@ function MaternityForm() {
                     <div className="col-sm-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
                         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
                             <div className="row g-2">
-                                {elements ? elements.map((section: any, idx: any) => {
+                                {sections ? sections.map((section: any, idx: any) => {
                                     var ret = [];
 
                                     // render the section title
@@ -301,22 +665,24 @@ function MaternityForm() {
                                     for (let i = fieldCount + 1; i <= fieldCount + fields.length; i++) {
                                         var field = fields[i - fieldCount - 1];
 
+                                        var indentClass = field.field_level === 1 ? " ps-5" : "";
+
                                         // render the subsection title
                                         if (field.subsection_label) {
-                                            ret.push(<h6 id={"subsection" + i} className={field.field_level === 1 ? "px-5 fw-bold" : "fw-bold"}>{field.subsection_label}</h6>)
+                                            ret.push(<h6 id={"subsection" + i} className={"fw-bold" + indentClass}>{field.subsection_label}</h6>)
                                         }
 
                                         // render each entry
                                         if (field.field_type === "number") {
                                             ret.push(
                                                 <>
-                                                    <div id={"input" + i} className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                                    <div id={"input" + i} className={"col-sm-10" + indentClass}>
                                                         <span className="align-middle">{i}. {field.field_label}</span>
                                                     </div>
                                                     <div id={"inputs" + i} className="col-sm-2">
                                                         <input type="text" className="form-control" placeholder=""
                                                             {...register(field.field_id)}
-                                                        // onBlur={() => inputValidation(i)}
+                                                            onBlur={() => inputValidation(i)}
                                                         />
                                                         <div className="invalid-feedback">
                                                             Requires a valid number
@@ -333,39 +699,46 @@ function MaternityForm() {
                                             var formId = field.field_id;
                                             ret.push(
                                                 <>
-                                                    <div id={"input" + i} className={field.field_level === 1 ? "ps-5" : ""}>
+                                                    <div id={"input" + i} className={"" + indentClass}>
                                                         <span className="align-middle me-2">{i}. {field.field_label}</span>
                                                         <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>Add</button>
                                                     </div>
-                                                    <div id={"inputs" + i} >
-                                                        {formValues.map((element, index2) => (
-                                                            <div className="row g-3 mb-1">
-                                                                <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                                                    <div className="input-group" id={"cf" + i + index2}>
-                                                                        <span className="input-group-text" id="">Name and value</span>
-                                                                        <input className="form-control" type="text" name="nameOfDepartment"
-                                                                            value={element.name || ""}
-                                                                            onChange={e => handleChange(field.field_id, index2, e, 0)}
-                                                                        // onBlur={() => arrayInputValidation("cf", i, index2, "text")}
-                                                                        />
-                                                                        <input className="form-control" type="text" name="numberOfPatients"
-                                                                            value={element.value || ""}
-                                                                            onChange={e => handleChange(field.field_id, index2, e, 1)}
-                                                                        // onBlur={() => arrayInputValidation("cf", i, index2, "number")}
-                                                                        />
-                                                                        <div className="invalid-feedback text-end">
-                                                                            Requires a valid number
-                                                                        </div>
+                                                    <div id={"inputs" + i}>
+                                                        {formValues.map((element, j) => (
+                                                            <div className={"row g-2 mb-1 align-items-center" + indentClass}>
+                                                                <div className="col-sm-7">
+                                                                    <input className="form-control" type="text"
+                                                                        value={element.name || ""}
+                                                                        placeholder="Name"
+                                                                        onChange={e => handleChange(i, j, e, 0)}
+                                                                        onBlur={() => arrayInputValidation(i, j, "text")}
+                                                                    />
+                                                                    <div className="invalid-feedback text-end">
+                                                                        Requires a valid number
                                                                     </div>
                                                                 </div>
-                                                                <div className="col-sm-2">
-                                                                    <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => removeFormFields(field.field_id, index2)}>Remove</button>
+                                                                <div className="col-sm-3">
+                                                                    <input className="form-control" type="text"
+                                                                        value={element.value || ""}
+                                                                        placeholder="#"
+                                                                        onChange={e => handleChange(i, j, e, 1)}
+                                                                        onBlur={() => arrayInputValidation(i, j, "number")}
+                                                                    />
+                                                                    <div className="invalid-feedback text-end">
+                                                                        Requires a valid number
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="col-sm-2 d-grid">
+                                                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => removeFormFields(i, j)}>Remove</button>
                                                                 </div>
                                                             </div>
                                                         ))}
                                                     </div>
+
                                                 </>
                                             )
+
                                         } else if (field.field_type === "table") {
                                             var count = [];
                                             var k = [];
@@ -395,7 +768,7 @@ function MaternityForm() {
 
 
                                                                 {/* ROWS */}
-                                                                {[...Array(field.total_rows)].map((e, i) => (
+                                                                {[...Array(field.total_rows)].map((e, idx) => (
                                                                     <tr>
                                                                         {[...Array(field.row_labels.length)].map((e, j) => {
                                                                             if (count[j] === 0) {
@@ -420,6 +793,8 @@ function MaternityForm() {
                                                                             }
                                                                         })}
 
+                                                                        {/* ENTRIES */}
+
                                                                         {[...Array(field.total_cols)].map((e, j) => {
                                                                             var rowLength = field.row_labels.length - 1;
                                                                             var colLength = field.col_labels.length - 1;
@@ -427,14 +802,17 @@ function MaternityForm() {
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return <td></td>
+                                                                                return <td id={"tables" + i + idx + j} className="text-center"></td>
                                                                             } else {
                                                                                 const dataInput = (
-                                                                                    <td className="align-middle">
-                                                                                        <input className="form-control" type="number"
-                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
-                                                                                            )}
+                                                                                    <td id={"tables" + i + idx + j} className="align-middle">
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
+                                                                                            onBlur={() => tableInputValidation(i, idx, j)}
                                                                                         />
+                                                                                        <div className="invalid-feedback text-end">
+                                                                                            Requires a valid number
+                                                                                        </div>
                                                                                     </td>
                                                                                 );
                                                                                 if ((j + 1) % field.total_cols === 0) {

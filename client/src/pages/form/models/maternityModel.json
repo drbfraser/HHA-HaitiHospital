@@ -398,10 +398,10 @@
                 "col_spans" : [[1, 1, 1, 1, 1, 1]],
                 "row_labels" : [["Period of pregnancy"], ["0-3 months", "4-6 months", "7-9 months", "Total visits"]],
                 "row_spans" : [[3], [1, 1, 1, 1]],
-                "invalid_inputs" : [[0 ,0 ,0 ,0 ,0, 0],
-                                    [0 ,0 ,0 ,0 ,0, 0],
-                                    [0 ,0 ,0 ,0 ,0, 0],
-                                    [0 ,0 ,0 ,0 ,0, 0]]
+                "invalid_inputs" : [[0 ,0 ,0 ,0 ,0, 1],
+                                    [0 ,0 ,0 ,0 ,0, 1],
+                                    [0 ,0 ,0 ,0 ,0, 1],
+                                    [1 ,1 ,1 ,1 ,1, 1]]
                     
             }
         ]
