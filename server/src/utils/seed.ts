@@ -56,6 +56,11 @@ export const seedUsers = async() => {
             break;
         }
         const updatedUser = { name: faker.name.findName(), role, department };
+        Object.keys(updatedUser).forEach((k) => {
+          if (!updatedUser[k]) {
+            delete updatedUser[k];
+          }
+        });
         await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
 
       } else {

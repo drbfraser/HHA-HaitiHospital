@@ -20,6 +20,7 @@ export async function updateDepartmentPoints() {
 
             await Department.updateOne({ "name": departmentName }, { $set: { "points": departmentPoints, "nCaseStudies": nCaseStudies } })
         }
+        
     } catch (err) {
         console.log(err);
     }
