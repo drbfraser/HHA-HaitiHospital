@@ -32,14 +32,7 @@
             },
             {
                 "field_id": "dischargedAlive.total",
-                "field_label": "Total number of patients discharged alive:",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "dischargedAlive.total",
-                "field_label": "Patient List",
+                "field_label": "Total number of patients discharged alive",
                 "field_type": "list",
                 "field_level": 0,
                 "field_template": [
@@ -67,7 +60,7 @@
                     {
                         "field_id": "dischargeReason",
                         "field_parent": "dischargedAlive",
-                        "field_label": "Diagnosis",
+                        "field_label": "Discharge Reason",
                         "field_type": "select",
                         "field_value": 0,
                         "field_level": 1,
