@@ -41,13 +41,14 @@
             },
 
             {
-                "field_id" : "diedBefore48hr.patientList",
+                "field_id" : "diedBefore48hr.total",
                 "field_label": "Total number of patients that died BEFORE 48hrs",
                 "field_type": "list",
                 "field_level": 0,
                 "field_template" : [
                     {
-                        "field_id" : "diedBefore48hr.patientList.age",
+                        "field_id" : "age",
+                        "field_parent" : "diedBefore48hr",
                         "field_label": "Age",
                         "field_type": "number",
                         "field_value": 0,
@@ -55,7 +56,8 @@
                     },
 
                     {
-                        "field_id" : "diedBefore48hr.patientList.causeOfDeath",
+                        "field_id" : "causeOfDeath",
+                        "field_parent" : "diedBefore48hr",
                         "field_label": "Cause of Death",
                         "field_type": "text",
                         "field_value": 0,
@@ -67,13 +69,14 @@
             },
             
             {
-                "field_id" : "diedAfter48hr.patientList",
+                "field_id" : "diedAfter48hr.total",
                 "field_label": "Total number of patients that died AFTER 48hrs",
                 "field_type": "list",
                 "field_level": 0,
                 "field_template" : [
                     {
-                        "field_id" : "diedAfter48hr.patientList.age",
+                        "field_id" : "age",
+                        "field_parent" : "diedAfter48hr",
                         "field_label": "Age",
                         "field_type": "number",
                         "field_value": 0,
@@ -81,7 +84,8 @@
                     },
 
                     {
-                        "field_id" : "diedAfter48hr.patientList.causeOfDeath",
+                        "field_id" : "causeOfDeath",
+                        "field_parent" : "diedAfter48hr",
                         "field_label": "Cause of Death",
                         "field_type": "text",
                         "field_value": 0,

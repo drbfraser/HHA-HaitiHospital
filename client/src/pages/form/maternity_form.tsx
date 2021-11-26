@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
@@ -12,12 +12,14 @@ import { render } from '@testing-library/react';
 
 
 function MaternityForm() {
-    const { register, handleSubmit, reset, unregister } = useForm({});
+    const { register, handleSubmit } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
     const [sectionState, setSectionState] = useState(0);
     const [patientStateBefore, setPatientStateBefore] = useState(0);
     const [patientStateAfter, setPatientStateAfter] = useState(0);
+    const [diedBeforeList, setDiedBeforeList] = useState<{ age: any; cause: any; }[]>([])
+    const [diedAfterList, setDiedAfterList] = useState<{ age: any; cause: any; }[]>([])
 
 
     const history = useHistory();
@@ -36,7 +38,6 @@ function MaternityForm() {
     })
 
     const elements: any = Object.values(formModel);
-    const fields: any = elements[0];
 
     function refreshPage() {
         window.location.reload();
@@ -69,11 +70,20 @@ function MaternityForm() {
 
     }
 
-    const handleListInput = (fields: any, event: any, index: any) => {
+    const handleListInput = (field: any, event: any, index: any) => {
         switch (index) {
             case 6:
-                console.log('test');
                 setPatientStateBefore(event.target.value);
+                // var tempArray = [];
+                // for (let i = 0; i < event.target.value; i++) {
+                //     const getData = {
+                //         age : "",
+                //         cause : ""
+                //     }
+                //     tempArray.push(getData);
+                // }
+                // setDiedBeforeList(tempArray)
+                // console.log(diedBeforeList);
                 break;
             case 7:
                 setPatientStateAfter(event.target.value);
@@ -82,6 +92,7 @@ function MaternityForm() {
         }
 
     }
+
 
     const renderList = (state: any, field: any) => {
         if (state > 0) {
@@ -103,14 +114,15 @@ function MaternityForm() {
                     <div>
                         {[...Array(Number(state))].map((e, i) => (
                             <div className="row g-2" id={field.field_id + "patient" + (i + 1)} style={{ display: "none" }}>
-                                {field.field_template.map((field: any) => (
+
+                                {field.field_template.map((item: any) => (
                                     <>
-                                        <div className={field.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
-                                            <span className="align-middle">{field.field_label}</span>
+                                        <div className={item.field_level === 1 ? "col-sm-10 ps-5" : "col-sm-10"}>
+                                            <span className="align-middle">{item.field_label}</span>
                                         </div>
                                         <div id={"ListInputs" + i} className="col-sm-2">
-                                            <input type={field.field_type} className="form-control" placeholder=""
-                                                {...register(field.field_id)}
+                                            <input type="text" className="form-control"
+                                                {...register(item.field_parent + ".patient" + (i+1) + "." + item.field_id)}
                                             // onBlur={() => inputValidation(i)}
                                             />
                                             <div className="invalid-feedback">
@@ -122,6 +134,7 @@ function MaternityForm() {
 
                             </div>
                         ))}
+
                     </div>
                 </div>
             )
@@ -445,7 +458,6 @@ function MaternityForm() {
                                             )
                                         } else if (field.field_type === "list") {
                                             var patientState;
-
                                             if (i === 6) {
                                                 patientState = patientStateBefore;
                                             } else if (i === 7) {
