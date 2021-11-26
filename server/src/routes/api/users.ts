@@ -25,7 +25,9 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Reque
     });
 
     if (validationResult.error) {
-      return res.status(403).json({ message: validationResult.error.details[0].message });
+      let errorMessage = validationResult.error.details[0].message.replace(/["]+/g, '');
+      errorMessage = errorMessage[0].toUpperCase() + errorMessage.slice(1);
+      return res.status(403).json({ message: errorMessage });
     }
 
     let password = null;
@@ -110,7 +112,9 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
     });
 
     if (validationResult.error) {
-      return res.status(403).json({ message: validationResult.error.details[0].message });
+      let errorMessage = validationResult.error.details[0].message.replace(/["]+/g, '');
+      errorMessage = errorMessage[0].toUpperCase() + errorMessage.slice(1);
+      return res.status(403).json({ message: errorMessage });
     }
 
     newUser.registerUser(newUser, (err, user) => {
