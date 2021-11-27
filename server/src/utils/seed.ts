@@ -22,7 +22,7 @@ export const seedUsers = async() => {
   console.log('Seeding users...');
 
   try {
-    await User.collection.dropIndexes();
+    // await User.collection.dropIndexes();
 
     [...Array(6).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
