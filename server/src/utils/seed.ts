@@ -181,7 +181,7 @@ export const seedCaseStudies = async () => {
     // const users = await User.find().exec();
     // console.log(User.find());
     // console.log(users);
-    await User.find().exec(function (err, users) {
+    await User.find({}, function (err, users) {
       console.log(users);
       users.map(async (user, index) => {
         // console.log(user);
