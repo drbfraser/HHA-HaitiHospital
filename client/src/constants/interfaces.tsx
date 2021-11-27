@@ -68,6 +68,7 @@ export function getDepartmentId(dept: DepartmentName): DepartmentId {
 export interface User {
   username: string;
   name: string;
+  password: string;
   role: Role;
-  department: DepartmentName; 
+  department: DepartmentName;
 }
