@@ -29,6 +29,7 @@ export interface User extends Document {
 
 const userSchema = new Schema<User>(
   {
+    _id: { type: mongoose.Schema.Types.ObjectId },
     username: {
       type: String,
       lowercase: true,

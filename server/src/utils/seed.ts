@@ -178,17 +178,16 @@ export const seedCaseStudies = async () => {
   try {
     await CaseStudy.deleteMany({});
 
-    // const users = await User.find().exec();
+    // const users = await User.find().lean().exec();
     // console.log(User.find());
-    // console.log(users);
     await User.find({}, function (err, users) {
       console.log(users);
-      users.map(async (user, index) => {
+      users.forEach(async (user, index) => {
         // console.log(user);
         if (user.username === "user2") {
           const caseStudy = new CaseStudy({
             caseStudyType: CaseStudyOptions.PatientStory,
-            user: user.id,
+            user: user._id,
             userDepartment: user.department,
             imgPath: "public/images/case1.jpg",
             patientStory: {
@@ -252,7 +251,7 @@ export const seedCaseStudies = async () => {
         }
       });
 
-    });
+    })
   
     console.log('Case studies seeded');
   } catch (err) {
