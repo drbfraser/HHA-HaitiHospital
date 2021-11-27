@@ -27,8 +27,6 @@ export const seedUsers = async() => {
     [...Array(6).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
       if (foundUser) {
-        // let role = undefined;
-        // let department = undefined;
         switch (index) {
           case 0: 
             foundUser.role = Role.Admin;
@@ -58,13 +56,6 @@ export const seedUsers = async() => {
             break;
         }
         foundUser.save();
-        // const updatedUser = { name: faker.name.findName(), role, department };
-        // Object.keys(updatedUser).forEach((k) => {
-        //   if (!updatedUser[k]) {
-        //     delete updatedUser[k];
-        //   }
-        // });
-        // await User.findOneAndUpdate({ username: `user${index}` }, { $set: updatedUser }, { new: true });
 
       } else {
 
