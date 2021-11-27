@@ -1,7 +1,7 @@
 import faker from 'faker';
 import { join } from 'path';
 
-import User from '../models/User';
+import User, { Role } from '../models/User';
 import Department, { DepartmentName } from '../models/Leaderboard';
 import Message from '../models/Message';
 import { deleteAllAvatars } from './utils';
@@ -18,7 +18,7 @@ export const seedDb = async () => {
   // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
   // create users
-  const usersPromises = [...Array(6).keys()].map((index, i) => {
+  const usersPromises = [...Array(7).keys()].map((index, i) => {
     const user = new User({
       // provider: 'email',
       username: `user${index}`,
@@ -31,11 +31,11 @@ export const seedDb = async () => {
     });
 
     if (index === 0) {
-      user.role = 'ADMIN';
+      user.role = Role.Admin;
     } else if (index === 1) {
-      user.role = 'MED_DIR';
+      user.role = Role.MedicalDirector;
     } else if (index === 2) {
-      user.role = 'DEPT_HEAD';
+      user.role = Role.HeadOfDepartment;
       user.department = DepartmentName.NicuPaeds;
     } else if (index === 3) {
       user.department = DepartmentName.Maternity;
@@ -43,6 +43,8 @@ export const seedDb = async () => {
       user.department = DepartmentName.Rehab;
     } else if (index === 5) {
       user.department = DepartmentName.CommunityHealth;
+    } else if (index === 6) {
+      user.department = DepartmentName.NicuPaeds;
     }
     user.registerUser(user, () => {});
     return user;
