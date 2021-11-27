@@ -10,6 +10,7 @@ import { DepartmentOne } from "pages/department/department_1_nicu";
 import { DepartmentTwo } from "pages/department/department_2_maternity";
 import { DepartmentThree} from "pages/department/department_3_rehab";
 import { DepartmentFour} from "pages/department/department_4_comhealth";
+import { Department } from 'pages/department/department';
 import { CaseStudyMain} from "pages/case_study_main/case_study_main";
 import { CaseStudyForm } from 'pages/case_study_forms/case_study_forms';
 import { CaseStudyView } from 'pages/case_study_view/case_study_view';
@@ -49,6 +50,9 @@ const App = () => {
         <Route path="/Department2Maternity" exact component={DepartmentTwo} />
         <Route path="/Department3Rehab" exact component={DepartmentThree} />
         <Route path="/Department4ComHealth" exact component={DepartmentFour} />
+
+        <Route path='/department/:name' exact component={Department}/>
+
         <Route path="/departmentMain" exact component={DepartmentMain} />
         <Route path='/caseStudyMain' exact component={CaseStudyMain} />
         <Route path='/caseStudyForm' exact component={CaseStudyForm} />
