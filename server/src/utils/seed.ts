@@ -12,6 +12,7 @@ import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 export const seedDb = async () => {
   await seedUsers();
 
+  console.log(User.find());
   seedCaseStudies();
   seedDepartments();
   seedMessageBoard();
