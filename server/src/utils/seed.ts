@@ -12,7 +12,7 @@ import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 export const seedDb = async () => {
   await seedUsers();
 
-  console.log(User.find());
+  // console.log(User.find());
   seedCaseStudies();
   seedDepartments();
   seedMessageBoard();
@@ -179,9 +179,9 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
 
     const users = await User.find();
-    console.log(users);
+    console.log(User.find());
     await users.map(async (user, index) => {
-      console.log(user);
+      // console.log(user);
       if (user.username === "user2") {
         const caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.PatientStory,
@@ -198,7 +198,7 @@ export const seedCaseStudies = async () => {
             caseStudyStory: faker.lorem.paragraph(10),
           }
         });
-        console.log(caseStudy);
+        // console.log(caseStudy);
         await caseStudy.save();
       } else if (user.username === "user3") {
         const caseStudy = new CaseStudy({
