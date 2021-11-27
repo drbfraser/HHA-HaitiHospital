@@ -55,7 +55,7 @@ export const seedUsers = async() => {
           default:
             break;
         }
-        foundUser.save();
+        await foundUser.save();
 
       } else {
 
@@ -197,7 +197,7 @@ export const seedCaseStudies = async () => {
               caseStudyStory: faker.lorem.paragraph(10),
             }
           });
-          caseStudy.save();
+          await caseStudy.save();
           break;
         case "user3":
           caseStudy = new CaseStudy({
@@ -214,7 +214,7 @@ export const seedCaseStudies = async () => {
               caseStudyStory: faker.lorem.paragraph(10),
             }
           });
-          caseStudy.save();
+          await caseStudy.save();
           break;
         case "user4":
           caseStudy = new CaseStudy({
@@ -230,7 +230,7 @@ export const seedCaseStudies = async () => {
               caseStudyStory: faker.lorem.paragraph(10),
             }
           });
-          caseStudy.save();
+          await caseStudy.save();
           break;
         case "user5":
           caseStudy = new CaseStudy({
@@ -246,7 +246,7 @@ export const seedCaseStudies = async () => {
               caseStudyStory: faker.lorem.paragraph(10),
             }
           });
-          caseStudy.save();
+          await caseStudy.save();
           break;
         default:
           break;
