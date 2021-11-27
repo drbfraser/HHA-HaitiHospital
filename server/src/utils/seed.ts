@@ -18,7 +18,7 @@ export const seedDb = async () => {
   // await deleteAllAvatars(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
 
   // create users
-  const usersPromises = [...Array(6).keys()].map((index, i) => {
+  const usersPromises = [...Array(7).keys()].map((index, i) => {
     const user = new User({
       // provider: 'email',
       username: `user${index}`,
@@ -43,6 +43,8 @@ export const seedDb = async () => {
       user.department = DepartmentName.Rehab;
     } else if (index === 5) {
       user.department = DepartmentName.CommunityHealth;
+    } else if (index === 6) {
+      user.department = DepartmentName.NicuPaeds;
     }
     user.registerUser(user, () => {});
     return user;

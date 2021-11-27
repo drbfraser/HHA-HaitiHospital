@@ -8,6 +8,7 @@ import React from 'react';
 import logo from 'img/logo/LogoWText.svg'
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 import './login_styles.css';
+import { useAuthState, useAuthDispatch } from '../../Context'
 import {useTranslation} from "react-i18next";
 import {changeLanguage} from "../../components/side_bar/side_bar";
 
@@ -22,6 +23,9 @@ function setUsername(name: string) {
 }
 
 const Login = (props : LoginProps) => {
+    const dispatch = useAuthDispatch();
+    // @ts-ignore
+    const { loading, eMessage } = useAuthState();
     const [errorMessage, setErrorMessage] = React.useState("");
 
     const {t, i18n} = useTranslation();
@@ -32,11 +36,11 @@ const Login = (props : LoginProps) => {
             // .email('Invalid email address')
             .min(2, t("signInValidationMustBe2CharMini"))
             .max(20, t("signInValidationMustBe20CharLess"))
-            .required(t("signInValidationRequired")),
+            .required(t("signInUsernameValidationRequired")),
         password: Yup.string()
             .min(6, t("signInValidationMustBe6CharMini"))
             .max(20, t("signInValidationRequired"))
-            .required(t("signInValidationRequired")),
+            .required(t("signInPasswordValidationRequired")),
     });
 
     const formik = useFormik({
@@ -46,13 +50,18 @@ const Login = (props : LoginProps) => {
         },
         validationSchema: loginSchema,
         onSubmit: (values) => {
-            loginUser(values).then((res: any) => {
-                setUsername(res.data.user.name);
-                props.history.push("./home");
-            }).catch(err => {
-                setErrorMessage(i18n.t("signInInvalidLoginCredentials"));
-                console.log("error with logging in: ", err);
-            });
+            try {
+                loginUser(dispatch, values).then((res: any) => {
+                    if (!res.success) return;
+                    setUsername(res.user.name);
+                    props.history.push('/home');
+                }).catch(error => {
+                    setErrorMessage(i18n.t("signInInvalidLoginCredentials"));
+                    console.error("Error with logging in: ", error);
+                });
+            } catch (error) {
+                console.error('error with logging in: ', error);
+            }
         },
     });
 
@@ -60,7 +69,6 @@ const Login = (props : LoginProps) => {
         <div className={'login '+ (props.classes||'')}>
             <form onSubmit={formik.handleSubmit}>
                 <img className="login-logo" src={logo} alt="logo logo"/>
-
                 <h4 className="text-center">{t("signInPleaseSignIn")}</h4>
                 <div className="form-floating">
                     <input
@@ -102,9 +110,10 @@ const Login = (props : LoginProps) => {
                 <button 
                     className="w-100 btn btn-lg btn-primary mt-3"
                     type="submit"
+                    disabled={loading}
                 >{t("signInSignIn")}</button>
 
-                {errorMessage && <div className="error"> {errorMessage} </div>}
+                {errorMessage ? <div className="error"> {errorMessage} </div> : null}
             </form>
 
             <div className="row mt-5">
