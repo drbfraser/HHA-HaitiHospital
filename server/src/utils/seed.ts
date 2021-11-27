@@ -24,7 +24,7 @@ export const seedUsers = async() => {
   try {
     // await User.collection.dropIndexes();
 
-    [...Array(6).keys()].forEach(async (index, i) => {
+    [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
       if (foundUser) {
         switch (index) {
@@ -51,6 +51,10 @@ export const seedUsers = async() => {
           case 5:
             foundUser.role = Role.User;
             foundUser.department = DepartmentName.CommunityHealth;
+            break;
+          case 6:
+            foundUser.role = Role.User;
+            foundUser.department = DepartmentName.NicuPaeds;
             break;
           default:
             break;
@@ -87,6 +91,10 @@ export const seedUsers = async() => {
           case 5:
             user.role = Role.User;
             user.department = DepartmentName.CommunityHealth;
+            break;
+          case 6:
+            user.role = Role.User;
+            user.department = DepartmentName.NicuPaeds;
             break;
           default:
             break;

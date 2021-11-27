@@ -16,7 +16,6 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
         try {
             const res = await axios.get(urlLeaderboard);
             setLeaderboard(res.data);
-            console.log(leaderboard);
         } catch (err) {
             console.log(err);
         }
