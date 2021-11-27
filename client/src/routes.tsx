@@ -18,6 +18,8 @@ import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
 import MaternityForm from 'pages/form/maternity_form';
 import { Role } from 'constants/interfaces';
+import { AddUserForm } from 'pages/admin/admin-add-user';
+import { EditUserForm } from 'pages/admin/admin-edit-user';
 
 const routes = [
     {
@@ -31,6 +33,18 @@ const routes = [
         component: Admin,
         isPrivate: true,
         rolesRequired: [Role.Admin],
+    },
+    {
+        path: '/admin-add-user',
+        component: AddUserForm,
+        isPrivate: true,
+        rolesRequired: [Role.Admin],
+    },
+    {
+        path: '/admin-edit-user/:id',
+        component: EditUserForm,
+        isPrivate: true,
+        rolesRequired: [Role.Admin]
     },
     {
         path: '/home',

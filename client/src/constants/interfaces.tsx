@@ -41,6 +41,7 @@ export enum DepartmentName {
 export interface User {
   username: string;
   name: string;
+  password: string;
   role: Role;
-  department: DepartmentName; 
+  department: DepartmentName;
 }
