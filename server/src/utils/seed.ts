@@ -176,11 +176,12 @@ export const seedCaseStudies = async () => {
 
   try {
     await CaseStudy.deleteMany({});
-  
+
     const users = await User.find();
     await users.map(async (user, index) => {
+      console.log(user);
       if (user.username === "user2") {
-        const caseStudy = await new CaseStudy({
+        const caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.PatientStory,
           user: user.id,
           userDepartment: user.department,
@@ -195,9 +196,10 @@ export const seedCaseStudies = async () => {
             caseStudyStory: faker.lorem.paragraph(10),
           }
         });
+        console.log(caseStudy);
         await caseStudy.save();
       } else if (user.username === "user3") {
-        const caseStudy = await new CaseStudy({
+        const caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.StaffRecognition,
           user: user.id,
           userDepartment: user.department,
@@ -213,7 +215,7 @@ export const seedCaseStudies = async () => {
         });
         await caseStudy.save();
       } else if (user.username === "user4") {
-        const caseStudy = await new CaseStudy({
+        const caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.TrainingSession,
           user: user.id,
           userDepartment: user.department,
@@ -228,7 +230,7 @@ export const seedCaseStudies = async () => {
         });
         await caseStudy.save();
       } else if (user.username === "user5") {
-        const caseStudy = await new CaseStudy({
+        const caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.EquipmentReceived,
           user: user.id,
           userDepartment: user.department,
