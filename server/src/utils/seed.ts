@@ -178,7 +178,7 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
   
     const users = await User.find();
-    users.map(async (user, index) => {
+    await users.map(async (user, index) => {
       if (user.username === "user2") {
         const caseStudy = await new CaseStudy({
           caseStudyType: CaseStudyOptions.PatientStory,
