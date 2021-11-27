@@ -178,8 +178,10 @@ export const seedCaseStudies = async () => {
   try {
     await CaseStudy.deleteMany({});
 
-    const users = await User.find();
-    console.log(User.find());
+    const users = await User.find().exec();
+    // console.log(User.find());
+    console.log(users);
+    // User.find().exec()
     await users.map(async (user, index) => {
       // console.log(user);
       if (user.username === "user2") {
