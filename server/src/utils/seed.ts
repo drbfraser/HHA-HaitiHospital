@@ -180,7 +180,7 @@ export const seedCaseStudies = async () => {
     const users = await User.find();
     users.map(async (user, index) => {
       if (user.username === "user2") {
-        const caseStudy = new CaseStudy({
+        const caseStudy = await new CaseStudy({
           caseStudyType: CaseStudyOptions.PatientStory,
           user: user.id,
           userDepartment: user.department,
@@ -197,7 +197,7 @@ export const seedCaseStudies = async () => {
         });
         await caseStudy.save();
       } else if (user.username === "user3") {
-        const caseStudy = new CaseStudy({
+        const caseStudy = await new CaseStudy({
           caseStudyType: CaseStudyOptions.StaffRecognition,
           user: user.id,
           userDepartment: user.department,
@@ -213,7 +213,7 @@ export const seedCaseStudies = async () => {
         });
         await caseStudy.save();
       } else if (user.username === "user4") {
-        const caseStudy = new CaseStudy({
+        const caseStudy = await new CaseStudy({
           caseStudyType: CaseStudyOptions.TrainingSession,
           user: user.id,
           userDepartment: user.department,
@@ -228,7 +228,7 @@ export const seedCaseStudies = async () => {
         });
         await caseStudy.save();
       } else if (user.username === "user5") {
-        var caseStudy = new CaseStudy({
+        const caseStudy = await new CaseStudy({
           caseStudyType: CaseStudyOptions.EquipmentReceived,
           user: user.id,
           userDepartment: user.department,
