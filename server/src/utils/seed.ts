@@ -178,6 +178,7 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
 
     const users = await User.find();
+    console.log(users);
     await users.map(async (user, index) => {
       console.log(user);
       if (user.username === "user2") {
