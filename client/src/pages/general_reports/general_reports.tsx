@@ -24,12 +24,12 @@ const GeneralReports = () => {
                 <Header/>
 
                 <section>
-                    <DepartmentReports
-                        dateRange={dayRange}
-                    />
                     <DatePicker
                         value = {dayRange}
                         onChange={setDayRange}
+                    />
+                    <DepartmentReports
+                        dateRange={dayRange}
                     />
                 </section>
             </main>
