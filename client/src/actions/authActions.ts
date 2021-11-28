@@ -5,20 +5,39 @@ interface FormData {
     password: string
 }
 
-export async function loginUser (formData: FormData) {
-  return await axios.post('/auth/login', formData);
+export async function loginUser (dispatch, formData: FormData) {
+    try {
+        dispatch({ type: 'REQUEST_LOGIN' });
+        const response = await axios.post('/auth/login', formData);
+        const data = await response.data;
+        if (data.success) {
+            dispatch({ type: 'LOGIN_SUCCESS', payload: data });
+            localStorage.setItem('currentUser', JSON.stringify(data));
+            return data
+        }
+
+        dispatch({ type: 'LOGIN_ERROR', error: data.errors[0] });
+        return;
+    } catch (error) {
+        dispatch({ type: 'LOGIN_ERROR', error: error });
+        console.error(error);
+    }
 }
 
-export async function logOutUser () {
+export async function logOutUser (dispatch) {
+    dispatch({ type: 'LOGOUT' });
     axios.get('/auth/logout').then(() => {
         deleteAllCookies();
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
     }).catch(error => {
         console.error("Error with logging out", error)
     });
 }
 
 function deleteAllCookies() {
-  var cookies = document.cookie.split(';');
+    var cookies = document.cookie.split(';');
 
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];

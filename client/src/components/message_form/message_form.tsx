@@ -112,7 +112,6 @@ const messageFormSchema = Yup.object({
 
 const postMessage = (async (data) => {
   await Axios.post('/api/messageboard/', data).then(res => {
-    console.log(res.data);
   }).catch(error => {
     console.error('Something went wrong!', error.response);
   });

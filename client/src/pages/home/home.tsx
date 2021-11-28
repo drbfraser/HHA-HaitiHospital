@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { ElementStyleProps } from 'constants/interfaces'
 import SideBar from 'components/side_bar/side_bar'
 import Header from 'components/header/header'
@@ -20,7 +20,6 @@ interface HomeProps extends ElementStyleProps {
 
 
 const Home = (props : HomeProps) => {
-
     function getClassName() {
         if (props.classes === undefined) 
           return "home";
