@@ -10,7 +10,7 @@ import all_routes from 'express-list-endpoints';
 import cookieParser from 'cookie-parser';
 
 import routes from './routes';
-import { seedDb, seedDepartments, seedLeaderboard } from './utils/seed';
+import { seedDb } from './utils/seed';
 
 const app = express();
 
@@ -46,8 +46,6 @@ mongoose
   .then(() => {
     console.log('MongoDB Connected...');
     seedDb();
-    seedDepartments();
-    seedLeaderboard();
   })
   .catch((err) => console.log(err));
 
