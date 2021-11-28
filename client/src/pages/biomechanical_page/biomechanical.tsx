@@ -16,21 +16,32 @@ interface BiomechanicalPageProps extends RouteComponentProps {}
 export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   return (
-    <div>
-    <SideBar/>
+      
+<div>
+ <SideBar/>
     <main className="container-fluid main-region">
         <Header/>
 
         <div className="mt-3">
-
             <section>
-                <div className="row my-2 justify-items-center">
-                    <div className='col-sm-6 col-md-6 col-lg-6'>
-                            <button className="btn btn-dark btn-sm rounded-bill">
-                                Support Form
-                            </button>
+                    <div className="row my-2 justify-items-center">
+
+                        <div className='col-sm-6 col-md-6 col-lg-6'>
+                                <button className=" btn btn-dark btn-sm rounded-bill">
+                                    Report Broken Kit
+                                    <div className="lead"></div>
+                                </button>
+                        </div>
+
+                        <div className='col-sm-6 col-md-6 col-lg-6'>
+                            <Link to={"#"}>
+                                <button className="btn btn-dark btn-sm rounded-bill">
+                                    Support Form
+                                    <div className="lead"></div>
+                                </button>
+                            </Link>
+                        </div>
                     </div>
-                </div>
             </section>
         </div>
     </main>
