@@ -67,10 +67,10 @@ const Login = (props : LoginProps) => {
 
     return(
         <div className={'login '+ (props.classes||'')}>
-            <form onSubmit={formik.handleSubmit}>
-                <img className="login-logo user-select-none" src={logo} alt="logo logo"/>
-                <h4 className="text-center mt-4 mb-4 user-select-none fw-bold">{t("signInPleaseSignIn")}</h4>
-                <div className="">
+            <img className="login-logo user-select-none" src={logo} alt="logo logo"/>
+            <h4 className="text-center mt-4 mb-4 user-select-none fw-bold">{t("signInPleaseSignIn")}</h4>
+            <form className="mb-5" onSubmit={formik.handleSubmit}>
+                <div>
                     <input
                         id="username"
                         placeholder={t("signInPleasePlaceHolderEmail")}
@@ -86,7 +86,7 @@ const Login = (props : LoginProps) => {
                     ) : <p/>}
                 </div>
 
-                <div className="">
+                <div>
                     <input
                         id="password"
                         placeholder={t("signInPleasePlaceHolderPassword")}
@@ -109,9 +109,9 @@ const Login = (props : LoginProps) => {
                         </label>
                 </div> */}
 
-                <div className="text-center">
+                <div className="text-center mb-5">
                     <button 
-                        className="w-100 btn btn-lg btn-success mb-5 mt-3"
+                        className="w-100 btn btn-success mb-5"
                         type="submit"
                         disabled={loading}
                     >{t("signInSignIn")}</button>

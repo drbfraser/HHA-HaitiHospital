@@ -122,7 +122,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck1" required></input>
               <label className="form-check-label" htmlFor="invalidCheck1">{t("caseStudyFormPermissionToShare")}</label>
             </div>
-            <div>
+            <div className="mt-3 mb-5">
               <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
             </div>
           </div>
@@ -155,7 +155,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck2" required></input>
               <label className="form-check-label" htmlFor="invalidCheck2">{t("caseStudyFormPermissionToShare")}</label>
             </div>
-            <div>
+            <div className="mt-3 mb-5">
               <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
             </div>
           </div>
@@ -188,7 +188,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck3" required></input>
               <label className="form-check-label" htmlFor="invalidCheck3">{t("caseStudyFormPermissionToShare")}</label>
             </div>
-            <div>
+            <div className="mt-3 mb-5">
               <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
             </div>
           </div>
@@ -226,7 +226,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               <input className="form-check-input" type="checkbox" value="" id="invalidCheck4" required></input>
               <label className="form-check-label" htmlFor="invalidCheck4">{t("caseStudyFormPermissionToShare")}</label>
             </div>
-            <div>
+            <div className="mt-3 mb-5">
               <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
             </div>
           </div>
@@ -244,7 +244,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               <label className="form-check-label" htmlFor="invalidCheck5">{t("caseStudyFormPermissionToShare")}</label>
             </div>
           </div>
-          <div>
+          <div className="mt-3 mb-5">
             <button className="btn btn-primary" type="submit">{t("caseStudyFormSubmitForm")}</button>
           </div>
         </div>
