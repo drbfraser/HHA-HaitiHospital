@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {ElementStyleProps, Json} from 'constants/interfaces'
 import Axios from 'axios'
 import MessageDisplay  from './message_display';
+import {useTranslation} from "react-i18next";
 
 interface MessagePanelProps extends ElementStyleProps {
 
@@ -46,17 +47,18 @@ const MessagePanel = (props: MessagePanelProps) => {
         }
     }
 
-    
+    const {t, i18n} = useTranslation();
+
     return (<>
         <div className="my-3 p-3 bg-body rounded shadow-sm">
             <div className="d-sm-flex align-items-center">
-                <h6 className="border-bottom pb-2 mb-0">Recent updates</h6>
+                <h6 className="border-bottom pb-2 mb-0">{t("messageBoardRecentUpdates")}</h6>
                 <div className='ml-auto'>
                     <Link to='/addMessage'>
                         <button
                             className='btn btn-md btn-outline-secondary'
                         >
-                            Add Message
+                            {t("messageBoardAddMessage")}
                         </button>
                     </Link>
                 </div>
@@ -74,14 +76,14 @@ const MessagePanel = (props: MessagePanelProps) => {
                     <button
                     className='btn btn-md btn-outline-secondary'
                     onClick= {()=>(count <= msgsJson.length)&& setCount(count + 5)}>
-                        More
+                        {t("messageBoardMore")}
                     </button>
 
                     <button
                     className='btn btn-md btn-outline-secondary'
                     onClick = {()=> (count > 0)&& setCount(count-5)}
                     >
-                        Less
+                        {t("messageBoardLess")}
                     </button>
                 </div>
                 

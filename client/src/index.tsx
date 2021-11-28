@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, { Suspense } from 'react';
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import { Provider } from 'react-redux';
 // import { createStore, applyMiddleware, compose } from 'redux';
@@ -8,11 +8,15 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
+import './i18n'
+
 import App from 'app';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <Suspense fallback={<div>Loading...</div>}>
+          <App />
+      </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -5,16 +5,18 @@ import { ElementStyleProps, JsonArray, Json} from 'constants/interfaces';
 import ReportSummaryRow from 'components/department_reports/report_summary_table/report_summary_row';
 import AllTick from 'components/department_reports/report_summary_table/all_tick';
 import UtilityButtons from 'components/department_reports/report_summary_table/utility_buttons';
+import temp_checklist from '../temp_checklist';
+import {useTranslation} from "react-i18next";
 
 interface ReportSummaryTableProps extends ElementStyleProps {
-  reports :Json[], 
+  reports :Json[],
   refetchReports(): void,
 };
 
 
 const ReportSummaryTable = (props : ReportSummaryTableProps) => {
   const [tickTracker, setTracker] = useState<{[rid : string] : boolean}>({})
-  
+
   useEffect(()=>{
 
     let trackerTemp : {[rid: string]: boolean} = {};
@@ -65,6 +67,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
       props.refetchReports();
   }
 
+  const {t, i18n} = useTranslation();
+
   return (
     <section>
       {/* Table must be wrapped inside table-responsive to be responsive */}
@@ -72,9 +76,9 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
         <table className={getClassName()}>
           <thead>
             <tr>
-              <th className='mx-1' scope='col'>ReportId</th>
-              <th className='mx-1' scope='col'>Last Updated On</th>
-              <th className='mx-1' scope='col'>Last Updated By UserId</th>
+              <th className='mx-1' scope='col'>{t("departmentPageReportID")}</th>
+              <th className='mx-1' scope='col'>{t("departmentPageLastUpdatedOn")}</th>
+              <th className='mx-1' scope='col'>{t("departmentPageLastUpdatedUserID")}</th>
               <th className='mx-1' scope='col'></th>
               <th className='mx-1' scope='col'>
                 <AllTick tickTracker={tickTracker}
@@ -93,7 +97,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
                     isTicked = {tickTracker[report["_id"] as string]}
                     notifyTable = {tickRow}
                 />))
-            }   
+            }
 
           </tbody>
         </table>

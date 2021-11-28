@@ -9,6 +9,13 @@ import { DepartmentName } from './Leaderboard';
 
 const { Schema } = mongoose;
 
+export enum Role {
+  Admin = "Admin",
+  MedicalDirector = "Medical Director",
+  HeadOfDepartment = "Head of Department",
+  User = "User",
+}
+
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
 export interface User extends Document {
   // provider: string;
@@ -53,7 +60,7 @@ const userSchema = new Schema<User>(
     },
     name: String,
     // avatar: String,
-    role: { type: String, default: 'USER' },
+    role: { type: String, default: Role.User },
     department: { type: DepartmentName }
     // bio: String,
     // TODO: Remove the commented code when we confirm that this file works.
@@ -153,13 +160,42 @@ export async function hashPassword(password) {
 }
 
 export const validateUserSchema = Joi.object().keys({
-  name: Joi.string().min(2).max(30).required(),
   username: Joi.string()
+    .alphanum()
     .min(2)
     .max(20)
-    .regex(/^[a-zA-Z0-9_]+$/)
     .required(),
-  password: Joi.string().min(6).max(20).allow('').allow(null),
+  password: Joi.string()
+    .min(6)
+    .max(20)
+    .required(),
+  name: Joi.string()
+    .min(2)
+    .max(30)
+    .required(),
+  role: Joi.string()
+    .required(),
+  department: Joi.string()
+})
+
+export const validateUpdatedUserSchema = Joi.object().keys({
+  username: Joi.string()
+    .alphanum()
+    .min(2)
+    .max(20)
+    .allow(''),
+  password: Joi.string()
+    .min(6)
+    .max(20)
+    .allow(''),
+  name: Joi.string()
+    .min(2)
+    .max(30)
+    .allow(''),
+  role: Joi.string()
+    .allow(''),
+  department: Joi.string()
+    .allow(''),
 })
 
 export const validateUser = (user) => {

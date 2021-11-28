@@ -78,7 +78,6 @@ $ npm start
         - Username: user3
         - Password: 123456789
 
-
 ### FAQ
 - Question: I'm getting the following error when I first set run the server:
     ```
@@ -102,3 +101,6 @@ $ npm start
         }
     ```
     Answer: Don't worry, just ignore it and run 'npm run dev-start' again and it will go away.
+    
+### License
+GNU GPL 
