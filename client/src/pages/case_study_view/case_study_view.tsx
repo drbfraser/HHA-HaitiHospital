@@ -24,7 +24,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
 
   useEffect(() => {
     getCaseStudy();
-  }, [Object.keys(caseStudy).length]);
+  }, []);
 
   const {t, i18n} = useTranslation();
 

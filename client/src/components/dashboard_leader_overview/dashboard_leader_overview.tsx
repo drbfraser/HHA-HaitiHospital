@@ -31,7 +31,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
 
     useEffect(() => {
         getLeaderboard();
-    }, [leaderboard.length]);
+    }, []);
 
     const {t, i18n} = useTranslation();
 

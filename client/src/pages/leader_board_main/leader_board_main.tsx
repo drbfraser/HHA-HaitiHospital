@@ -23,7 +23,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
 
     useEffect(() => {
         getLeaderboard();
-    }, [leaderboard.length]);
+    }, []);
 
 
     const {t, i18n} = useTranslation();

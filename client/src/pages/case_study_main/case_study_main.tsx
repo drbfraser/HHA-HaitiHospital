@@ -25,7 +25,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   useEffect(() => {
     getCaseStudies();
-  }, [caseStudies.length])
+  }, [])
 
     const {t, i18n} = useTranslation();
 
