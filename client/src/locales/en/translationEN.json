@@ -1,5 +1,5 @@
 {
-  "signInPleaseSignIn": "Please sign in",
+  "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
   "signInPleasePlaceHolderPassword": "Password",
   "signInRememberMe": "Remember me",
@@ -17,7 +17,7 @@
   "sidebarCaseStudy": "Case Study",
   "sidebarAdmin": "Admin",
   "sidebarEnglish": "English",
-  "sidebarFrench": "français",
+  "sidebarFrench": "Français",
 
   "headerOverview": "Overview",
   "headerMessageBoard": "Message Board",
