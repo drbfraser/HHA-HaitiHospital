@@ -9,10 +9,8 @@ const router = Router();
 router.get('/', async (req, res) => {
     try {
         await updateDepartmentPoints();
-        Department.find()
-            .sort({ points: 'desc', name: 'asc' })
-            .then(data => res.json(data))
-            .catch(err => res.status(400).json('Failed to get leaderboard: ' + err));
+        const leaders = await Department.find().sort({ points: 'desc', name: 'asc' });
+        res.json(leaders);
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }

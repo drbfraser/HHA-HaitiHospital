@@ -5,6 +5,9 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from "components/header/header";
 import DepartmentReports from 'components/department_reports/department_reports';
 import './department_1_nicu.css'
+import {useTranslation} from "react-i18next";
+import {DepartmentName} from 'constants/interfaces'
+import DatePicker, {DayRange} from "react-modern-calendar-datepicker";
 
 interface DepartmentProps extends ElementStyleProps {
 };
@@ -12,18 +15,16 @@ interface DepartmentProps extends ElementStyleProps {
 interface DepartmentProps extends RouteComponentProps {
 };
 
-function getClassName(className: string|undefined) {
-    if (className === undefined) {
-        return "department-one";
-    }
-    else {
-        return `department-one ${className}`
-    }
-}
 
 export const DepartmentOne = (props : DepartmentProps) => {
+    const {t, i18n} = useTranslation();
+    const [dayRange, setDayRange] = React.useState<DayRange>({
+        from: null,
+        to: null
+    })
+
   return (
-    <div className={getClassName(props.classes)}>
+    <div className={"department-one"}>
         <SideBar/>
         <main className="container-fluid main-region">
             <Header/>
@@ -32,34 +33,45 @@ export const DepartmentOne = (props : DepartmentProps) => {
 
                 {/* Department Title */ }
                 <section>
-                    <h1 className='text-start'>Department of NICU/PAED</h1>
+                    <h1 className='text-start'>{t("departmentPageNICU/PAED")}</h1>
                 </section>
 
-                {/* Nav buttons */}
+                {/* Functional buttons */}
                 <section>
                     <div className="row my-2 justify-items-center">
 
-                        <div className='col-sm-3'>
+                        <div className='col-md-4'>
                             <Link to={"/NICUForm"}>
                                 <button className=" btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">Submit Data</div>
+                                    <div className="lead">{t("departmentPageSubmitDate")}</div>
                                 </button>
                             </Link>
                         </div>
 
-                        <div className='col-sm-3'>
+                        <div className='col-md-4'>
                             <Link to={"#"}>
                                 <button className="btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">Biomechanic</div>
+                                    <div className="lead">{t("departmentPageBiomechanic")}</div>
                                 </button>
                             </Link>
+                        </div>
+
+                        <div className="col-md-4">
+                            <DatePicker
+                                value = {dayRange}
+                                onChange= {setDayRange}
+                            />
                         </div>
                     </div>
                 </section>
 
                 {/* Department Report Summary */}
                 <section>
-                    <DepartmentReports department={"NICU/PAED"}/>
+                    {/* <DepartmentReports department={"NICU/PAED"}/> */}
+                    <DepartmentReports 
+                        department={DepartmentName.NicuPaeds}
+                        dateRange={dayRange}
+                    />
                 </section>
             </div>
         </main>

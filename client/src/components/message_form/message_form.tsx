@@ -4,6 +4,12 @@ import { useHistory, useParams } from 'react-router';
 import Axios from 'axios';
 import { ElementStyleProps, Message, emptyMessage } from 'constants/interfaces';
 
+import SideBar from '../side_bar/side_bar';
+import Header from 'components/header/header';
+
+import './message_form_styles.css'
+import {useTranslation} from "react-i18next";
+
 
 const getDepartmentId = (department: any) => {
     switch (department) {
@@ -55,7 +61,8 @@ function MessageForm(props: MessageFormProps) {
         reset();
         history.push('/messageBoard')
     }
-
+    const {t, i18n} = useTranslation();
+    
     return (
 
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,7 +76,7 @@ function MessageForm(props: MessageFormProps) {
             </div>
 
             <div className="col-md-3 mb-3">
-                <label htmlFor="" className="form-label">Department</label>
+                <label htmlFor="" className="form-label">{t("addMessageDepartment")}</label>
                 <select className="form-select" {...register("departmentName")}>
                     <option value=""> Select </option>
                     <option value="NICUPaeds">NICU/Paeds</option>
@@ -84,13 +91,13 @@ function MessageForm(props: MessageFormProps) {
 
 
         <div className="mb-3">
-            <label htmlFor="" className="form-label">Title</label>
+            <label htmlFor="" className="form-label">{t("addMessageTitle")}</label>
             <input className="form-control" type="text" {...register("messageHeader")} 
             defaultValue = {prefilledMsg["messageHeader"]}/>
         </div>
 
         <div className="mb-3">
-            <label htmlFor="" className="form-label">Body</label>
+            <label htmlFor="" className="form-label">{t("addMessageBody")}</label>
             <textarea 
                 className="form-control" 
                 {...register("messageBody")} 
@@ -99,7 +106,7 @@ function MessageForm(props: MessageFormProps) {
             </textarea>
         </div>
 
-        <button className="btn btn-primary">Submit</button>
+        <button className="btn btn-primary">{t("addMessageSubmit")}</button>
 
     </form>
     );

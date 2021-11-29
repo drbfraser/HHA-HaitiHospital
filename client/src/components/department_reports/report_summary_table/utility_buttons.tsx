@@ -2,6 +2,7 @@ import React from 'react';
 
 import {ElementStyleProps, ReportProps} from 'constants/interfaces';
 import Axios from 'axios'
+import {useTranslation} from "react-i18next";
 
 interface UtilityButtonsProps extends ElementStyleProps {
     tickTracker : {[rid: string]: boolean},
@@ -36,29 +37,38 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
         props.notifyTable();
     }
 
-  return (
-    <div>
+    const {t, i18n} = useTranslation();
+
+    return (
+    <>
       {(isShown(props.tickTracker))?
         <div className="row justify-content-end">
-            <div className="col-auto">
-                <button 
-                    className=""
-                    onClick = {() => {
-                        deleteReports(props.tickTracker);
-                    }}
-                >
-                    Delete
+            <div className="btn-group col-auto">
+                <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                    Action
                 </button>
-            </div>
 
-            <div className="col-auto">
-            <button className="">Accumulate</button>
+                <ul className="dropdown-menu">
+                    <li>
+                        <span className="dropdown-item" 
+                    onClick= {()=> {
+                        deleteReports(props.tickTracker);
+                    }}> 
+                            Delete
+                        </span>
+                    </li>
+                    <li>
+                        <span className="dropdown-item" onClick={() => {}}>
+                            {t("departmentPageAccumulate")}
+                        </span>
+                    </li>
+                </ul>
             </div>
         </div>
         :
-        <div></div>
+        <></>
       }
-    </div>
+    </>
   );
 }
 

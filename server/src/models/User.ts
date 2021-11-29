@@ -9,26 +9,26 @@ import { DepartmentName } from './Leaderboard';
 
 const { Schema } = mongoose;
 
+export enum Role {
+  Admin = "Admin",
+  MedicalDirector = "Medical Director",
+  HeadOfDepartment = "Head of Department",
+  User = "User",
+}
+
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
 export interface User extends Document {
-  // provider: string;
   username: string;
-  // email: string;
   password: string;
   name: string;
   role: string;
   department: DepartmentName;
-  // bio: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const userSchema = new Schema<User>(
   {
-    // provider: {
-    //   type: String,
-    //   required: true,
-    // },
     username: {
       type: String,
       lowercase: true,
@@ -37,14 +37,6 @@ const userSchema = new Schema<User>(
       match: [/^[a-zA-Z0-9_]+$/, 'is invalid'],
       index: true,
     },
-    // email: {
-    //   type: String,
-    //   lowercase: true,
-    //   unique: true,
-    //   required: [true, "can't be blank"],
-    //   match: [/\S+@\S+\.\S+/, 'is invalid'],
-    //   index: true,
-    // },
     password: {
       type: String,
       trim: true,
@@ -52,46 +44,16 @@ const userSchema = new Schema<User>(
       maxlength: 60,
     },
     name: String,
-    // avatar: String,
-    role: { type: String, default: 'USER' },
+    role: { type: String, default: Role.User },
     department: { type: DepartmentName }
-    // bio: String,
-    // TODO: Remove the commented code when we confirm that this file works.
-    // google
-    // googleId: {
-    //   type: String,
-    //   unique: true,
-    //   sparse: true,
-    // },
-    // // fb
-    // facebookId: {
-    //   type: String,
-    //   unique: true,
-    //   sparse: true,
-    // },
-    // forms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Form' }],
-    // messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
   },
   { timestamps: true },
 );
 
-console.log(join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH));
-
 userSchema.methods.toJSON = function () {
-  // // if not exists avatar1 default
-  // const absoluteAvatarFilePath = `${join(__dirname, '../..', process.env.IMAGES_FOLDER_PATH)}${this.avatar}`;
-  // const avatar = isValidUrl(this.avatar)
-  //   ? this.avatar
-  //   : fs.existsSync(absoluteAvatarFilePath)
-  //   ? `${process.env.IMAGES_FOLDER_PATH}${this.avatar}`
-  //   : `${process.env.IMAGES_FOLDER_PATH}avatar2.jpg`;
-
   return {
     id: this._id,
-    // provider: this.provider,
-    // email: this.email,
     username: this.username,
-    // avatar: avatar,
     name: this.name,
     role: this.role,
     department: this.department,
@@ -108,8 +70,6 @@ userSchema.methods.generateJWT = function () {
     {
       expiresIn: '12h',
       id: this._id,
-      // provider: this.provider,
-      // email: this.email,
       username: this.username,
       name: this.name,
       role: this.role
@@ -153,13 +113,42 @@ export async function hashPassword(password) {
 }
 
 export const validateUserSchema = Joi.object().keys({
-  name: Joi.string().min(2).max(30).required(),
   username: Joi.string()
+    .alphanum()
     .min(2)
     .max(20)
-    .regex(/^[a-zA-Z0-9_]+$/)
     .required(),
-  password: Joi.string().min(6).max(20).allow('').allow(null),
+  password: Joi.string()
+    .min(6)
+    .max(20)
+    .required(),
+  name: Joi.string()
+    .min(2)
+    .max(30)
+    .required(),
+  role: Joi.string()
+    .required(),
+  department: Joi.string()
+})
+
+export const validateUpdatedUserSchema = Joi.object().keys({
+  username: Joi.string()
+    .alphanum()
+    .min(2)
+    .max(20)
+    .allow(''),
+  password: Joi.string()
+    .min(6)
+    .max(20)
+    .allow(''),
+  name: Joi.string()
+    .min(2)
+    .max(30)
+    .allow(''),
+  role: Joi.string()
+    .allow(''),
+  department: Joi.string()
+    .allow(''),
 })
 
 export const validateUser = (user) => {

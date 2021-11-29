@@ -41,3 +41,52 @@ export const emptyMessage : Message = {
     authorId: 0,
     date: new Date(),
 }
+
+export enum Role {
+  Admin = "Admin",
+  MedicalDirector = "Medical Director",
+  HeadOfDepartment = "Head of Department",
+  User = "User",
+}
+
+export enum DepartmentName {
+  NicuPaeds = "NICU/Paeds",
+  Maternity = "Maternity",
+  Rehab = "Rehab",
+  CommunityHealth = "Community & Health",
+}
+
+export enum DepartmentId{
+    NicuPaeds = 1,
+    Maternity = 2,
+    Rehab = 3,
+    CommunityHealth = 4,
+}
+
+export function getDepartmentId(dept: DepartmentName): DepartmentId {
+    switch (dept) {
+        case DepartmentName.NicuPaeds:
+            return DepartmentId.NicuPaeds;
+
+        case DepartmentName.Maternity:
+            return DepartmentId.Maternity;
+        
+        case DepartmentName.Rehab:
+            return DepartmentId.Rehab;
+
+        case DepartmentName.CommunityHealth:
+            return DepartmentId.CommunityHealth;
+
+        default:
+            return DepartmentId.NicuPaeds;
+    }  
+}
+
+
+export interface User {
+  username: string;
+  name: string;
+  password: string;
+  role: Role;
+  department: DepartmentName;
+}

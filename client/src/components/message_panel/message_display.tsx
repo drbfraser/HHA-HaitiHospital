@@ -1,5 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import { renderBasedOnRole } from "../../actions/roleActions";
+import { useAuthState } from 'Context';
+import { Role } from "../../constants/interfaces"
 
 import { Json, ElementStyleProps } from 'constants/interfaces';
 import { deleteMessage } from 'actions/messageActions';
@@ -11,6 +14,7 @@ interface MessageDisplayProps extends ElementStyleProps  {
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
+    const authState = useAuthState();
 
     async function deleteMessage(msgId: string) {
         const success = await deleteMessageFromDb(msgId);
@@ -46,7 +50,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 <p><strong className="text-gray-dark">@{
                 (props.msgJson as Json).userId}</strong></p>
                 <p><strong className="lh-sm">
-                   {props.msgJson.departmentName}
+                    {props.msgJson.departmentName}
                 </strong></p>
                 <p><strong className="lh-sm">
                     {readableDate}
@@ -65,20 +69,23 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </p>
 
                 <p className='d-md-flex lh-sm'>
-                    <Link className='align-self-center' to={`messageBoard/edit/${props.msgJson["_id"]}`}>
-                        <button 
-                        type='button' 
-                        className='btn btn-md btn-outline-secondary'>
-                            <i className="bi bi-pencil"></i>
-                        </button>
-                    </Link>
 
-                    <button 
-                    type="button" 
-                    className="btn btn-md btn-outline-secondary"
-                    onClick = {() => deleteMessage(props.msgJson["_id"] as string)} >
-                        <i className='bi bi-trash'></i>
-                    </button>
+                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+                        <Link className='align-self-center' to={`messageBoard/edit/${props.msgJson["_id"]}`}>
+                            <button type='button' className='btn btn-md btn-outline-secondary'>
+                                <i className="bi bi-pencil"></i>
+                            </button>
+                        </Link>
+                        ): (<div></div>)
+                    }
+
+                    { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+                        <button type="button" className="btn btn-md btn-outline-secondary" 
+                        onClick = {() => deleteMessage(props.msgJson["_id"] as string)} >
+                            <i className='bi bi-trash'></i>
+                        </button>
+                        ): (<div></div>)
+                    }
                 </p>
             </div>
         </div>

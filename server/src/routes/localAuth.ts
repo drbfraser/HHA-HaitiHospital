@@ -16,7 +16,7 @@ router.post('/login', requireLocalAuth, (req: Request, res: Response) => {
   const user = req.user.toJSON();
   // httpOnly means cookie can't be accessed via JS
   res.cookie('jwt', token, { httpOnly: true });
-  res.status(200).json({ success: true, token, user });
+  res.status(200).json({ success: true, isAuth: true, user });
 });
 
 router.post('/register', async (req: Request, res: Response, next: NextFunction) => {

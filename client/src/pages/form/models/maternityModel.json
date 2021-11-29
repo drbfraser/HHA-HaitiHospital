@@ -1,0 +1,539 @@
+[
+    {
+        "section_label" : "MSPP Required",
+        "section_fields": [
+            {
+                "field_id" : "bedsAvailable",
+                "field_label": "Total number of beds available in department",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            {
+                "field_id" : "bedDays",
+                "field_label": "Total number of bed days of patients",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            {
+                "field_id" : "bedDays",
+                "field_label": "Total number of patients days",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            {
+                "field_id" : "hospitalized.total",
+                "field_label": "Total number of hospitalized patients",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            
+            
+            {
+                "field_id" : "dischargedAlive.total",
+                "field_label": "Total number of patients discharged alive:",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            
+            
+            {
+                "field_id" : "diedBefore48hr.total",
+                "field_label": "Total number of patients that died BEFORE 48hrs",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "diedBefore48hr.patientList",
+                "field_label": "Patient List",
+                "field_type": "list",
+                "field_level": 0,
+                "field_template" : [
+                    {
+                        "field_id" : "diedBefore48hr.patientList.age",
+                        "field_label": "Age",
+                        "field_type": "number",
+                        "field_value": 0,
+                        "field_level": 0
+                    },
+
+                    {
+                        "field_id" : "diedBefore48hr.patientList.causeOfDeath",
+                        "field_label": "Cause of Death",
+                        "field_type": "text",
+                        "field_value": 0,
+                        "field_level": 0
+                    }
+
+                ]
+                
+            },
+            
+            {
+                "field_id" : "diedAfter48hr.total",
+                "field_label": "Total number of patients that died AFTER 48hrs",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "diedAfter48hr.patientList",
+                "field_label": "Patients",
+                "field_type": "list",
+                "field_level": 0
+            },
+           
+            {
+                "field_id" : "daysHospitalized",
+                "field_label": "Total number of days hospitalized between all patients",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            {
+                "field_id" : "referrals",
+                "field_label": "Total number of referrals",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            {
+                "field_id" : "transfers",
+                "field_label": "Total number of transfers",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            {
+                "field_id" : "selfDischarge.total",
+                "field_label": "Total number of self-discharged patients",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+            {
+                "field_id" : "selfDischarge.cannotAfford",
+                "field_label": "Finance: Leave as cannot afford care",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "selfDischarge.avoidedPaying",
+                "field_label": "Finance: Left to avoid paying",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "selfDischarge.religiousCultural",
+                "field_label": "Religious/Cultural",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "selfDischarge.personalFamily",
+                "field_label": "Personal/Family",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "selfDischarge.other",
+                "field_label": "Other reason",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "stayedInWard",
+                "field_label": "Number of patients that stayed in ward",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "field_id" : "admissions.total",
+                "field_label": "Total Admissions",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 0
+            },
+
+            {
+                "subsection_label" : "Where do patients come from?",
+                "field_id" : "admissions.comeFrom.quarterMorin",
+                "field_label": "Quarter Morin",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "admissions.comeFrom.capHaitian",
+                "field_label": "Cap Haitian",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "admissions.comeFrom.departmentNord",
+                "field_label": "Department Nord",
+                "field_type": "number",
+                "field_value": 0,
+                "field_level": 1
+            },
+            {
+                "field_id" : "admissions.comeFrom.otherDepartments",
+                "field_label": "If other, specify",
+                "field_type": "array",
+                "field_level": 1
+            },
+
+            {
+                "subsection_label" : "Main Condition of Patient",
+                "field_id" : "admissions.mainCondition.uncomplicatedLabourCSection",
+                "field_label": "Uncomplicated labour / C-section",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+
+            {
+                "field_id" : "admissions.mainCondition.heartFailure",
+                "field_label": "Heart failure",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+
+            {
+                "field_id" : "admissions.mainCondition.preEclampsia",
+                "field_label": "Pre-eclampsia",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+
+            {
+                "field_id" : "admissions.mainCondition.respiratoryProblems",
+                "field_label": "Respiratory problems",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+
+            {
+                "field_id" : "admissions.mainCondition.cSectionSiteInfection",
+                "field_label": "C-section site infection",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+
+            {
+                "field_id" : "admissions.mainCondition.trauma",
+                "field_label": "Trauma",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+
+            {
+                "field_id" : "admissions.mainCondition.otherMedical",
+                "field_label": "Other medical",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 1
+            },
+
+            {
+                "subsection_label" : "Births",
+                "field_type" : "table",
+                "field_level" : 0,
+                "total_cols" : 5,
+                "total_rows" : 6,
+                "col_labels" : [["Institutional", "Community"], ["Normal", "Cesarean", "Instrumentalized", "Trained Matrons", "Others"]],
+                "col_spans" : [[3,2], [1, 1, 1, 1, 1]],
+                "row_labels" : [["Weight"], ["Weight <1.5kg", "1.5kg ≤ Weight <2.5kg", "2.5kg and over", "Not weighed", "Immediately breastfed", "Skin to skin therapy"]],
+                "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
+                "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0]]
+            },
+
+            {
+                "subsection_label" : "Post Natal",
+                "field_id" : "postNatal.breastfeedVitaminA",
+                "field_label": "Breastfeeding women receiving vitamin A",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "postNatal.breastfeedMUAC210mm",
+                "field_label": "Breastfeeding women with MUAC <210mm",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "postNatal.breastfeedMalnutrition",
+                "field_label": "Breastfeeding women with malnutrition support",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "postNatal.domesticVisits0to3Days",
+                "field_label": "Domestic visits in 0-3 days",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_type" : "table",
+                "field_level" : 0,
+                "total_cols" : 3,
+                "total_rows" : 1,
+                "col_labels" : [["0-6 hours", "7 hours to 6 days", "7-42 days"]],
+                "col_spans" : [[1, 1, 1]],
+                "row_labels" : [["Post Natal Consultations"]],
+                "row_spans" : [1],
+                "invalid_inputs" : [[0 ,0 ,0]]
+            },
+
+            {
+                "subsection_label" : "Complications",
+                "field_id" : "complications.numOfObstetricRecorded",
+                "field_label": "Number of obstetric complications recorded",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "complications.numOfObstetricReferred",
+                "field_label": "Number of obstetric complications referred",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "subsection_label" : "Number of Stillborns",
+                "field_id" : "numOfStillborns.macerated",
+                "field_label": "Macerated",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "numOfStillborns.notMacerated",
+                "field_label": "Not Macerated",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "subsection_label" : "Maternal death in the hospital",
+                "field_id" : "maternalDeath.inHospital",
+                "field_label": "In hospital",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "maternalDeath.inCommunity",
+                "field_label": "In the community",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "subsection_label" : "Support for wife and mother",
+                "field_type" : "table",
+                "field_level" : 0,
+                "total_cols" : 6,
+                "total_rows" : 4,
+                "col_labels" : [["1st Visit", "2nd Visit", "3rd Visit", "4th Visit", "5th Visit", "Total"]],
+                "col_spans" : [[1, 1, 1, 1, 1, 1]],
+                "row_labels" : [["Period of pregnancy"], ["0-3 months", "4-6 months", "7-9 months", "Total visits"]],
+                "row_spans" : [[3], [1, 1, 1, 1]],
+                "invalid_inputs" : [[0 ,0 ,0 ,0 ,0, 0],
+                                    [0 ,0 ,0 ,0 ,0, 0],
+                                    [0 ,0 ,0 ,0 ,0, 0],
+                                    [0 ,0 ,0 ,0 ,0, 0]]
+                    
+            },
+
+            {
+                "subsection_label" : "Support for Women Hospital",
+                "field_id" : "supportWomenHospital.numOfPregnanciesRisk",
+                "field_label": "Number of pregnancies at risk",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.anemiaPregnantWomen",
+                "field_label": "Case of anemia in pregnant women",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.pregnantWomenIronFolate",
+                "field_label": "Pregnant women receiving iron folate",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.pregnantWomenIronDeficiencyAnemia",
+                "field_label": "Pregnant women being treated for iron deficiency anemia",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.pregnantWomenBirthPlan",
+                "field_label": "Pregnant women with a birth plan",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.pregnantWomenMalariaTreatedChloroquine",
+                "field_label": "Pregnant women with confirmed malaria treated with chloroquine",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.pregnantWomenMosquitoNet",
+                "field_label": "Pregnant women who received an impregnated mosquito net",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.pregnantWomenMUAC<210mm",
+                "field_label": "Pregnant women MUAC<210mm",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "supportWomenHospital.MAM/MASSupported",
+                "field_label": "MAM / MAS supported",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "subsection_label" : "Other Services",
+                "field_id" : "otherServices.otherWomenIronFolate",
+                "field_label": "Other women receiving iron folate",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "otherServices.womenAceticAcidInspection",
+                "field_label": "Women receiving acetic acid inspection",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "otherServices.positiveWomenSmearTest",
+                "field_label": "Positive women after smear test",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "field_id" : "otherServices.positiveWomenSmearTestTakenCareOf",
+                "field_label": "Women positive smear test taken care of",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+            
+            {
+                "field_id" : "otherServices.womenPostabortionCare",
+                "field_label": "Women receiving postabortion care",
+                "field_type" : "number",
+                "field_value" : 0,
+                "field_level" : 0
+            },
+
+            {
+                "subsection_label" : "Deliveries",
+                "field_type" : "table",
+                "field_level" : 0,
+                "total_cols" : 5,
+                "total_rows" : 6,
+                "col_labels" : [["Institutional", "Community"], ["Normal", "Cesarean", "Instrumentalized", "Trained Matrons", "Others"]],
+                "col_spans" : [[3,2], [1, 1, 1, 1, 1]],
+                "row_labels" : [["Age of mothers"], ["<15 years", "15-19 years", "20-24 years", "25-29 years", "30+ years", "Unknown"]],
+                "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
+                "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0],
+                                    [0 ,0 ,0 ,0 ,0]]
+            },
+
+            {
+                "subsection_label" : "Labor Management",
+                "field_type" : "table",
+                "field_level" : 0,
+                "total_cols" : 3,
+                "total_rows" : 2,
+                "col_labels" : [["Institutional"], ["Normal", "Cesarean", "Instrumentalized"]],
+                "col_spans" : [[3], [1, 1, 1]],
+                "row_labels" : [["Use of partograph", "Active management of the 3rd phase of labor"]],
+                "row_spans" : [[1, 1]],
+                "invalid_inputs" : [[0, 0, 0],
+                                    [0, 1, 0]]
+            }
+
+        ]
+    }
+
+
+]
