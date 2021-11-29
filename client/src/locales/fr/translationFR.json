@@ -29,6 +29,8 @@
   "headerDepartmentRehab": "Département de réadaptation",
   "headerDepartmentCom": "Département de la Com&Santé",
   "headerAdmin": "Bureau d'administration",
+  "headerAddUser": "Ajouter un utilisateur",
+  "headerEditUser": "Modifier l'utilisateur",
   "headerSignOut": "Se déconnecter",
   "leaderBoardOverviewSeeFullLeaderboard": "Voir le classement complet",
 
@@ -169,6 +171,20 @@
   "adminRole": "Rôle",
   "adminDepartment": "département",
   "adminCreated": "Créé",
-  "adminOptions": "Options"
+  "adminOptions": "Options",
 
+  "adminAddUserBack": "Arrière",
+  "adminAddUserUsername": "Nom d'utilisateur",
+  "adminAddUserPassword": "Mot de passe",
+  "adminAddUserName": "Nom",
+  "adminAddUserRole": "Rôle",
+  "adminAddUserSelectRole": "Select User's Role",
+  "adminAddUserUser": "User",
+  "adminAddUserAdmin": "Admin",
+  "adminAddUserMedicalDirector": "Medical Director",
+  "adminAddUserHeadOfDepartment": "Head of Department",
+  "adminAddUserDepartment": "département",
+  "adminAddUserSelectDepartment": "Sélectionnez le service de l'utilisateur",
+  "adminAddUserSubmit": "Soumettre",
+  "adminEditUserLeaveBlank": "Leave blank to keep it unchanged"
 }

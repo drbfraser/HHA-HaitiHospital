@@ -29,6 +29,8 @@
   "headerDepartmentRehab": "Department of Rehab",
   "headerDepartmentCom": "Department of Com&Health",
   "headerAdmin": "Admin Desk",
+  "headerAddUser": "Add User",
+  "headerEditUser": "Edit User",
   "headerSignOut": "Log out",
 
   "leaderBoardOverviewDepartmentLeader": "Top Department on Leaderboard",
@@ -169,7 +171,20 @@
   "adminRole": "Role",
   "adminDepartment": "Department",
   "adminCreated": "Created",
-  "adminOptions": "Options"
+  "adminOptions": "Options",
 
-
+  "adminAddUserBack": "Back",
+  "adminAddUserUsername": "Username",
+  "adminAddUserPassword": "Password",
+  "adminAddUserName": "Name",
+  "adminAddUserRole": "Role",
+  "adminAddUserSelectRole": "Select User's Role",
+  "adminAddUserUser": "User",
+  "adminAddUserAdmin": "Admin",
+  "adminAddUserMedicalDirector": "Medical Director",
+  "adminAddUserHeadOfDepartment": "Head of Department",
+  "adminAddUserDepartment": "Department",
+  "adminAddUserSelectDepartment": "Select User's Department",
+  "adminAddUserSubmit": "Submit",
+  "adminEditUserLeaveBlank": "Laissez vide pour le garder inchangé"
 }
