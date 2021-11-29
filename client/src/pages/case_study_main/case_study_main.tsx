@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
-import { ElementStyleProps } from "constants/interfaces";
+import { ElementStyleProps, Role } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import axios from 'axios';
 
 import "./case_study_main_styles.css";
 import {useTranslation} from "react-i18next";
+import { useAuthState } from "Context";
+import { renderBasedOnRole } from "actions/roleActions"
 
 interface CaseStudyMainProps extends ElementStyleProps {
 }
@@ -15,6 +17,7 @@ interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
+  const authState = useAuthState();
 
 
   const caseStudiesUrl = '/api/casestudies';
@@ -71,7 +74,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
                       <Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy") + " "}</Link>
+                      {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? 
                       <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>Delete</a>
+                      : null}
                     </td>
                   </tr>
                 ))
