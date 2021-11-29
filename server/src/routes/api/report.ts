@@ -114,49 +114,63 @@ router.route('/delete/:Reportid').delete((req: any, res: any) => {
         .catch(err => res.status(400).json('Could not delete: ' + err));
 });
 
+// retrieve reports with deparmentId param and/or dateRange param
+// ?departmentId?from=YYYY-MM-DD?to=YYYY-MM-DD
+router.route('/').get( async (req, res) => {
+    try {
+        const departmentId = req.query.departmentId;
 
-router.route('/').post( async (req, res) => {
-try {
-    const data = Object.assign({}, req.body);
+        const strFrom = req.query.from;
+        const strTo = req.query.to;
 
-    let filterQuery = FormEntry.find({});
-
-    if (data.dateRange !== undefined) {
-        let from = data.dateRange.from;
-        let to = data.dateRange.to;
-
-        // month in Date() is 0 based indexed
-        let fromDate = new Date(from.year, from.month-1, from.day);
-        fromDate.setHours(0, 0, 0);
-
-        let toDate = new Date(to.year, to.month-1, to.day);
-        toDate.setHours(23, 59, 59);
-
-        filterQuery = filterQuery.find({
-            lastUpdatedOn: {
-                $gte: fromDate,
-                $lte: toDate
-            }
+        let filterQuery = FormEntry.find({});
+    
+        if (strFrom !== undefined && strTo != undefined) {;
+            let fromDate = strToDate(strFrom);
+            let toDate = strToDate(strTo);
+            fromDate.setHours(0, 0, 0);
+            toDate.setHours(23, 59, 59);
+    
+            filterQuery = filterQuery.find({
+                lastUpdatedOn: {
+                    $gte: fromDate,
+                    $lte: toDate
+                }
+            })
+        }
+    
+        if (departmentId !== undefined) {
+            filterQuery = filterQuery.find({
+                departmentId: departmentId as Number
+            })
+        }
+    
+        let result = await filterQuery.exec();
+        res.status(200).json(result)
+    }
+    catch (error) {
+        console.log(error);
+    
+        return res.status(500).json({
+            status:'failure',
+            error: error.messages
         })
     }
-
-    if (data.departmentId !== undefined) {
-        filterQuery = filterQuery.find({
-            departmentId: data.departmentId as Number
-        })
-    }
-
-    let result = await filterQuery.exec();
-    res.status(200).json(result)
-}
-catch (error) {
-    console.log(error);
-
-    return res.status(500).json({
-        status:'failure',
-        error: error.messages
-    })
-}
-});
+    });
 
 export = router;
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. HELPERS >>>>>>>>>>>>>>>>>>>>>>>>
+// string in format YYYY-MM-DD
+function strToDate (strDate: string): Date {
+    const substrs = strDate.split('-');
+
+    // month is 0 based
+    const year = Number(substrs[0]);
+    const month = Number(substrs[1]);
+    const day = Number(substrs[2]);
+
+    return new Date(year, month - 1, day);
+}
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
