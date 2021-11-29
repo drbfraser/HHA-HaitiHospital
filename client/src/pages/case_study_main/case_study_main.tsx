@@ -23,6 +23,18 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     setCaseStudies(res.data);
   }
 
+  const deleteCaseStudy = async (id) => {
+    try {
+      if (!window.confirm('Are you sure you want to delete this case study?')) {
+        throw new Error("Deletion cancelled")
+      }
+      const res = await axios.delete(caseStudiesUrl + '/' + id);
+      getCaseStudies();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     getCaseStudies();
   }, [])
@@ -57,7 +69,10 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{item.caseStudyType}</td>
                     <td>{item.user ? item.user.name : "[deleted]"}</td>
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                    <td><Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy")}</Link></td>
+                    <td>
+                      <Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy") + " "}</Link>
+                      <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>Delete</a>
+                    </td>
                   </tr>
                 ))
               }
