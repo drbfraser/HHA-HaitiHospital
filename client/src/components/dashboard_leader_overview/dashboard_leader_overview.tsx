@@ -8,13 +8,8 @@ import {useTranslation} from "react-i18next";
 import { Link } from 'react-router-dom';
 
 interface DashboardLeaderProps extends ElementStyleProps {
-    // leader :LeaderProps[],
-}
 
-// const fetchLeader = (async () => {
-//     let leaders = await Axios.get("/api/leaderboard");
-//     return leaders;
-// })
+}
 
 const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
 
@@ -53,7 +48,6 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                         </thead>
                         <tbody>
                             {leaderboard.map((item, index) => (
-                            index === 0 ?
                                 <tr key={item._id} className={`${index === 0 ? "table-warning": ""}`}>
                                     <th scope="row" className="text-center">{index + 1}</th>
                                     <td className="text-center">
@@ -66,7 +60,6 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                                     <td className="d-none d-sm-table-cell text-center">{item.nCaseStudies}</td>
                                     <td className="fw-bold text-center">{item.points}</td>
                                 </tr>
-                            : null
                             ))
                             }
                         </tbody>

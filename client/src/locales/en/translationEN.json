@@ -31,14 +31,14 @@
   "headerAdmin": "Admin Desk",
   "headerSignOut": "Log out",
 
-  "leaderBoardOverviewDepartmentLeader": "Top Department on Leaderboard",
+  "leaderBoardOverviewDepartmentLeader": "Department Leaderboard",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "Department",
   "leaderBoardOverviewCaseStudies": "Case Studies",
   "leaderBoardOverviewPoints": "Points",
   "leaderBoardOverviewShowLess": "Show Less",
   "leaderBoardOverviewShowMore": "Show More",
-  "leaderBoardOverviewSeeFullLeaderboard": "See full leaderboard",
+  "leaderBoardOverviewSeeFullLeaderboard": "Go to leaderboard page",
 
   "dashboardMessageOverviewMessages": "Messages",
   "dashboardMessageOverviewTitle": "Title",
