@@ -159,5 +159,16 @@
   "departmentReportDisplaySave": "sauvegarder",
   "departmentReportDisplayDiscard": "Jeter",
   "departmentReportDisplaySubmit": "Soumettre",
-  "departmentReportDisplayBack": "Arrière"
+  "departmentReportDisplayBack": "Arrière",
+
+  "adminAddUser": "Ajouter un utilisateur",
+  "adminEdit": "Éditer",
+  "adminDelete": "Effacer",
+  "adminUsername": "Nom d'utilisateur",
+  "adminName": "Nom",
+  "adminRole": "Rôle",
+  "adminDepartment": "département",
+  "adminCreated": "Créé",
+  "adminOptions": "Options"
+
 }

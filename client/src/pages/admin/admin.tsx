@@ -5,6 +5,7 @@ import Header from 'components/header/header'
 import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import './admin.css'
+import {useTranslation} from "react-i18next";
 
 interface AdminProps extends ElementStyleProps {
 };
@@ -39,13 +40,15 @@ const Admin = (props : AdminProps) => {
     getUsers();
   }, [users.length])
 
+  const {t} = useTranslation();
+
   return(
     <div className={'admin '+ (props.classes||'')}>
       <SideBar/>
       <main className='container-fluid main-region'>
         <Header/>
         <div className="d-flex justify-content-start">
-          <Link to="/admin-add-user"><button type="button" className="btn btn-outline-dark">Add User</button></Link>
+          <Link to="/admin-add-user"><button type="button" className="btn btn-outline-dark">{t("adminAddUser")}</button></Link>
         </div>
         
         <div className="table-responsive">
@@ -53,12 +56,12 @@ const Admin = (props : AdminProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col">Name</th>
-                <th scope="col">Role</th>
-                <th scope="col">Department</th>
-                <th scope="col">Created</th>
-                <th scope="col" className="text-center">Options</th>
+                <th scope="col">{t("adminUsername")}</th>
+                <th scope="col">{t("adminName")}</th>
+                <th scope="col">{t("adminRole")}</th>
+                <th scope="col">{t("adminDepartment")}</th>
+                <th scope="col">{t("adminCreated")}</th>
+                <th scope="col" className="text-center">{t("adminOptions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -73,8 +76,8 @@ const Admin = (props : AdminProps) => {
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
                       <div className="text-center">
-                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`admin-edit-user/${item.id}`)}>Edit </a>
-                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>Delete</a>
+                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`admin-edit-user/${item.id}`)}>{t("adminEdit")}</a>
+                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>{t("adminDelete")}</a>
                       </div>
                     </td>
                   </tr>

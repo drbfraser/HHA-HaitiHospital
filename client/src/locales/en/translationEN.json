@@ -159,5 +159,17 @@
   "departmentReportDisplaySave": "Save",
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
-  "departmentReportDisplayBack": "Back"
+  "departmentReportDisplayBack": "Back",
+
+  "adminAddUser": "Add User",
+  "adminEdit": "Edit",
+  "adminDelete": "Delete",
+  "adminUsername": "Username",
+  "adminName": "Name",
+  "adminRole": "Role",
+  "adminDepartment": "Department",
+  "adminCreated": "Created",
+  "adminOptions": "Options"
+
+
 }
