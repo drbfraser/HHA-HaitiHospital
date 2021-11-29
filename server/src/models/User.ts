@@ -9,6 +9,13 @@ import { DepartmentName } from './Leaderboard';
 
 const { Schema } = mongoose;
 
+export enum Role {
+  Admin = "Admin",
+  MedicalDirector = "Medical Director",
+  HeadOfDepartment = "Head of Department",
+  User = "User",
+}
+
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
 export interface User extends Document {
   // provider: string;
@@ -53,7 +60,7 @@ const userSchema = new Schema<User>(
     },
     name: String,
     // avatar: String,
-    role: { type: String, default: 'USER' },
+    role: { type: String, default: Role.User },
     department: { type: DepartmentName }
     // bio: String,
     // TODO: Remove the commented code when we confirm that this file works.

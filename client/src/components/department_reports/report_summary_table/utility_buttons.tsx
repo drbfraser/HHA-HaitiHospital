@@ -3,6 +3,7 @@ import React from 'react';
 import {ElementStyleProps, ReportProps} from 'constants/interfaces';
 import Axios from 'axios'
 // import FormEntry from '../../../../../server/src/models/FormEntry';
+import {useTranslation} from "react-i18next";
 
 interface UtilityButtonsProps extends ElementStyleProps {
     tickTracker : {[rid: string]: boolean},
@@ -22,21 +23,29 @@ function reportIterator(report: Object, mergedObject: Object) : Object {
             if(key !== 'departmentId' && typeof(report[key]) !== 'string'){
                 mergedObject[key] += value;
             }
-            if(typeof(mergedObject[key]) === 'object'){
+            if(typeof(report[key]) === 'object'){
+                console.log('old object');
+                mergedObject[key] = reportIterator(report[key],mergedObject[key]);
                 // mergedObject[key] += reportIterator(report[key],mergedObject[key]);
             }
         }
         else{
-            // if(typeof(report[key]) === 'object'){
-            //     console.log(report[key]);
-            //     console.log('test');
-            //     // mergedObject[key] = reportIterator(report[key],mergedObject[key]);
-            // }
-            // else{
-            //     mergedObject[key] = value;
-            // }
-            mergedObject[key] = value;
+            if(typeof(report[key]) === 'object'){
+                console.log(key);
+                console.log(report[key]);
+                console.log('new object');
+                mergedObject[key] = {};
+                // mergedObject[key] = reportIterator(report[key],mergedObject[key]);
+            }
+            else{
+                mergedObject[key] = value;
+            }
+            // mergedObject[key] = value;
         }
+
+        // if(typeof(report[key]) !== 'object'){
+
+        // }
     }
     return report;
 }
@@ -51,27 +60,6 @@ function aggregateReport(reportArray: Array<Object>) : Object{
         // console.log(reportSingle);
     });
 
-    // merged = reportArray.reduce((merged,report) => {
-    //     console.log(report);
-    //     console.log(merged);
-    //     for(const[key,value] of Object.entries(report['data']['formData'])){
-    //         console.log(`${key}: ${value}`);
-    //         if(!merged[key]){
-    //             merged[key] = value;
-    //         }
-    //         else{
-    //             if(typeof value == "number"){
-    //                 merged[key] += value;
-    //             }
-    //         }
-    //     }
-    //     return merged;
-    // });
-
-    
-    // const mergedForm = new FormEntry({
-    //     mergedData
-    // });
     return mergedData;
 }
 
@@ -144,12 +132,14 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
         props.notifyTable()
     }
 
-  return (
+    const {t, i18n} = useTranslation();
+
+    return (
     <div>
       {(isShown(props.tickTracker))?
         <div className="row justify-content-end">
             <div className="col-auto">
-                <button 
+                <button
                     className=""
                     onClick = {() => {
                         deleteReports(props.tickTracker);
@@ -160,7 +150,7 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
             </div>
 
             <div className="col-auto">
-            <button className="" onClick = {() => { aggregateReports(props.tickTracker);}}>Accumulate</button>
+            <button className="" onClick = {() => { aggregateReports(props.tickTracker);}}>{t("departmentPageAccumulate")}</button>
             </div>
         </div>
         :

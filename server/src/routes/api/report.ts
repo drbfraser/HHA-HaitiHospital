@@ -35,6 +35,7 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
 router.route('/add').post((req: any, res: any) => {
     
     let dateTime: Date = new Date();
+    // const userData = useAuthState();
     const createdByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
     const createdOn = dateTime;
     const lastUpdatedByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
