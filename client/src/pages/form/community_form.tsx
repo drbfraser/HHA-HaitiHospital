@@ -115,6 +115,233 @@ function CommunityForm() {
         }
     }
 
+    const getRowLabel = (label: String) => {
+        if (label === undefined) {
+            return;
+        } else {
+            var newLabel = label.replaceAll("(DOT)", ".");
+            return newLabel;
+        }
+
+    }
+
+    //
+    // VALIDATION FUNCTIONS
+    // 
+
+    function submitValidation() {
+        var isFormValid = true;
+
+        for (let i = 1; i <= fields.length; i++) {
+
+            var field = fields[i - 1];
+            console.log(i, field.field_type);
+            if (field.field_type === "number") {
+                var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                isFormValid = isValid(inputElement) && isFormValid;
+
+            } else if (field.field_type === "table") {
+                for (var idx = 0; idx < field.total_rows; idx++) {
+                    for (var jdx = 0; jdx < field.total_cols; jdx++) {
+                        if (field.invalid_inputs[idx][jdx] == 0) {
+                            var inputElement = (document.getElementById("tables" + i + idx + jdx)?.childNodes[0] as HTMLInputElement);
+                            isFormValid = isValid(inputElement) && isFormValid;
+                        }
+                    }
+                }
+            }
+        }
+
+        return isFormValid;
+    }
+
+    function checkSideBar() {
+        // const listGroup = document.getElementsByClassName("list-group-item");
+        // let num = 1;
+        // for (let i = 0; i < listGroup.length; i++) {
+        //     var section = sections[i];
+
+        //     var isSectionValid = true;
+        //     for (let j = 1; j <= section.section_fields.length; j++, num++) {
+        //         var formValues = formValuesComeFrom;
+
+        //         if (num === 22) {
+        //             var inputGroup = (document.getElementById("inputs" + num) as HTMLElement);
+        //             for (let k = 0; k < formValues.length; k++) {
+        //                 var textInput = (inputGroup.childNodes[k].childNodes[0].childNodes[0] as HTMLInputElement);
+        //                 var valueInput = (inputGroup.childNodes[k].childNodes[1].childNodes[0] as HTMLInputElement);
+        //                 if (textInput.classList.contains("is-invalid") || valueInput.classList.contains("is-invalid")) {
+        //                     isSectionValid = false;
+        //                 }
+        //             }
+        //         } else {
+        //             var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+        //             if (inputElement.classList.contains("is-invalid")) {
+        //                 isSectionValid = false;
+        //             }
+        //         }
+        //     }
+
+        //     var listElement = listGroup[i];
+        //     if (isSectionValid) {
+        //         if (listElement.childElementCount > 1) {
+        //             listElement.removeChild(listElement.childNodes[1]);
+        //         }
+        //     } else {
+        //         if (listElement.childElementCount > 1) {
+        //             listElement.removeChild(listElement.childNodes[1]);
+        //         }
+        //         var alertIcon = document.createElement("div")
+        //         alertIcon.classList.add("bi", "bi-exclamation-circle-fill", "flex-shrink-0", "ms-2");
+        //         listElement.appendChild(alertIcon);
+        //     }
+        // }
+    }
+
+
+    function removeValidity(inputElement: HTMLInputElement) {
+        var errorMessage = (inputElement.nextSibling as HTMLElement);
+        inputElement.classList.remove("is-invalid");
+        inputElement.classList.remove("is-valid");
+        errorMessage.innerHTML = "";
+    }
+
+    function makeValidity(inputElement: HTMLInputElement, isVal: boolean, msg: string) {
+        var errorMessage = (inputElement.nextSibling as HTMLElement);
+
+        if (isVal) {
+            inputElement.classList.remove("is-invalid");
+            inputElement.classList.add("is-valid");
+            errorMessage.innerHTML = "";
+        } else {
+            inputElement.classList.remove("is-valid");
+            inputElement.classList.add("is-invalid");
+            errorMessage.innerHTML = msg;
+        }
+
+        checkSideBar();
+    }
+
+    function isValid(inputElement: HTMLInputElement) {
+        var numberAsText = inputElement.value;
+        if (numberAsText == "") {
+            makeValidity(inputElement, false, "Must enter a value");
+            return false;
+        }
+
+        var number = Number(numberAsText);
+        if (number < 0) {
+            makeValidity(inputElement, false, "Positive numbers only");
+            return false;
+        }
+
+        if (number % 1 != 0) {
+            makeValidity(inputElement, false, "Integers only");
+            return false;
+        }
+
+        makeValidity(inputElement, true, "");
+        return true;
+    }
+
+    function inputValidation(num: number) {
+        var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+        if (!isValid(inputElement)) return;
+
+        // Total number of self-discharged patients
+        if (num === 11 || num >= 12 && num <= 16) {
+            totalValidation(11, 12, 16);
+            return;
+        }
+
+        makeValidity(inputElement, true, "");
+    }
+
+    function totalValidation(start: number, a: number, b: number) {
+        // check if the entire series in total is all filled out 
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
+        for (var i = a; i <= b; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
+        }
+        if (!isSeriesComplete) return;
+
+        // calculated total vs total2
+        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        var total = Number(totalElement.value);
+        var isSeriesValid = isValid(totalElement);
+
+        var total2 = 0;
+        for (var i = a; i <= b; i++) {
+            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+            total2 += Number(inputElement.value);
+            isSeriesValid = isValid(inputElement) && isSeriesValid;
+        }
+
+        if (isSeriesValid) {
+            if (total !== total2) {
+                makeValidity(totalElement, false, "Does not add up to total");
+                for (var i = a; i <= b; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, false, "");
+                }
+            } else {
+                makeValidity(totalElement, true, "");
+                for (var i = a; i <= b; i++) {
+                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    makeValidity(inputElement, true, "");
+                }
+            }
+        }
+    }
+
+    function tableInputValidation(num: number, idx: number, jdx: number) {
+        //console.log(num, idx, jdx);
+        var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
+        if (!isValid(inputElement)) return;
+
+        // Support for wife and mother
+        if (num === 42) {
+            for (var i = 0; i < 3; i++) {
+                var rowTotal = 0;
+                for (var j = 0; j < 5; j++) {
+                    inputElement = (document.getElementById("tables" + num + i + j)?.childNodes[0] as HTMLInputElement);
+                    rowTotal += Number(inputElement.value);
+                }
+
+                var totalElement = document.getElementById("tables" + num + i + 5);
+                totalElement.innerHTML = String(rowTotal);
+            }
+
+            for (var j = 0; j < 5; j++) {
+                var colTotal = 0;
+                for (var i = 0; i < 3; i++) {
+                    inputElement = (document.getElementById("tables" + num + i + j)?.childNodes[0] as HTMLInputElement);
+                    colTotal += Number(inputElement.value);
+                }
+
+                var totalElement = document.getElementById("tables" + num + 3 + j);
+                totalElement.innerHTML = String(colTotal);
+            }
+
+            var rowTotal = 0;
+            for (var j = 0; j < 5; j++) {
+                var element = document.getElementById("tables" + num + 3 + j);
+                rowTotal += Number(element.innerHTML);
+            }
+
+            var totalElement = document.getElementById("tables" + num + 3 + 5);
+            totalElement.innerHTML = String(rowTotal);
+
+            return;
+        }
+
+        makeValidity(inputElement, true, "");
+    }
+
+
+
 
 
     let fieldCount = 0;
@@ -293,6 +520,7 @@ function CommunityForm() {
                                                                                         <input className="form-control" type="text"
                                                                                             {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
                                                                                             )}
+                                                                                            onBlur={() => tableInputValidation(i, idx, j)}
                                                                                         />
                                                                                     </td>
                                                                                 );
@@ -338,11 +566,12 @@ function CommunityForm() {
 
 
                                                                 {/* ROWS */}
-                                                                {[...Array(field.total_rows)].map((e, i) => (
+                                                                {[...Array(field.total_rows)].map((e, idx) => (
                                                                     <tr>
                                                                         {[...Array(field.row_labels.length)].map((e, j) => {
                                                                             if (count[j] === 0) {
-                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
+                                                                                const rowLabel = getRowLabel(field.row_labels[j][k[j]]);
+                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{rowLabel}</th>
                                                                                 count[j]++;
 
                                                                                 if (count[j] === field.row_spans[j][k[j]]) {
@@ -362,6 +591,8 @@ function CommunityForm() {
                                                                             }
                                                                         })}
 
+                                                                        {/* ENTRIES */}
+
                                                                         {[...Array(field.total_cols)].map((e, j) => {
                                                                             var rowLength = field.row_labels.length - 1;
                                                                             var colLength = field.col_labels.length - 1;
@@ -369,14 +600,17 @@ function CommunityForm() {
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return <td></td>
+                                                                                return <td id={"tables" + i + idx + j} className="text-center"></td>
                                                                             } else {
                                                                                 const dataInput = (
-                                                                                    <td>
+                                                                                    <td id={"tables" + i + idx + j} className="align-middle">
                                                                                         <input className="form-control" type="text"
-                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
-                                                                                            )}
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
+                                                                                            onBlur={() => tableInputValidation(i, idx, j)}
                                                                                         />
+                                                                                        <div className="invalid-feedback text-end">
+                                                                                            Requires a valid number
+                                                                                        </div>
                                                                                     </td>
                                                                                 );
                                                                                 if ((j + 1) % field.total_cols === 0) {
@@ -391,7 +625,6 @@ function CommunityForm() {
                                                                 ))}
                                                             </tbody>
                                                         </table>
-
                                                     </>
                                                 )
                                             }
