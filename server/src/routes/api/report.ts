@@ -41,7 +41,7 @@ router.route('/add').post((req: any, res: any) => {
     const lastUpdatedOn = dateTime;
     const departmentId = req.body.departmentId;
     const formData = req.body;
-    
+
     const formEntry = new FormEntry({
         departmentId,
         createdByUserId,
