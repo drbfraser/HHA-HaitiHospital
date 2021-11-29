@@ -31,7 +31,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
   return (
     <div className={"case-study-main "+ props.classes}>
       <SideBar/>
-      <main className="container-fluid">
+      <main className="container-fluid main-region">
         <Header/>
         <div className="ml-3 d-flex justify-content-start">
           <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">{t("caseStudyFormBack")}</button></Link>
