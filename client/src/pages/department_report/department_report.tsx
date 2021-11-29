@@ -7,9 +7,10 @@ import { ReportProps } from 'constants/interfaces';
 import ReportDisplay from 'components/report_display/report_display';
 
 import { ElementStyleProps } from 'constants/interfaces';
-
+import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import './styles.css';
+import './department_report.css'
+import {useTranslation} from "react-i18next";
 
 
 interface DepartmentReportProps extends ElementStyleProps {
@@ -64,58 +65,63 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       return `department-report ${props.classes}`;
   }
 
+  const {t, i18n} = useTranslation();
 
   return (
     <div className={getClassName()}>
-      <Header/>
-      <div className='mt-2'>
-        {/* Dept Title */}
-        <section className='mt-3'>
-          <h1 className="lead text-center">Department of NICU/Paediatrics</h1>
-        </section>
+      <SideBar/>
+
+      <main className="container-fluid">
+        <Header/>
+        <div className='mt-2'>
+          {/* Dept Title */}
+          <section className='mt-3'>
+            <h1 className="lead text-center">{t("departmentReportDisplayDepartmentNICU")}</h1>
+          </section>
 
 
-        {/* Report Details */}
-        <section className='mt-3'>
-          <div className="container w-50">
-            {
-              (Object.keys(report).length===0 ) ?
-                <h3 className="lead">'No report found'</h3>:
-                <ReportDisplay 
-                  report = {report.formData as ReportProps}
-                  edit = {props.edit}
-                />
-            }
-          </div>
-        </section>
-        
-        {/* Utility buttons */}
-        {
-          (props.edit === true) ?
-            <section className='mt-3'>
-              <div className='container w-50'>
-                <ul className='row justify-content-md-center'>
-                  <li className='col-sm-auto'><button className="">Save</button></li>
-                  <li className='col-sm-auto'>
-                    <Link to={'/Department1NICU'}>
-                      <button className="">Discard</button>
-                    </Link>
-                  </li>
-                  <li className='col-sm-auto'><button className="">Submit</button></li>
-                </ul>
-              </div>
-            </section>
-          :
-            <section className="mt-3">
-              <div className="container w-50 text-center">
-                <Link to={'/Department1NICU'}>
-                  <button className="">Back</button>
-                </Link>
-              </div>
-            </section>
-        }
-       
-      </div>  
+          {/* Report Details */}
+          <section className='mt-3'>
+            <div className="container w-50">
+              {
+                (Object.keys(report).length===0 ) ?
+                  <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
+                  <ReportDisplay
+                    report = {report.formData as ReportProps}
+                    edit = {props.edit}
+                  />
+              }
+            </div>
+          </section>
+
+          {/* Utility buttons */}
+          {
+            (props.edit === true) ?
+              <section className='mt-3'>
+                <div className='container w-50'>
+                  <ul className='row justify-content-md-center'>
+                    <li className='col-sm-auto'><button className="">{t("departmentReportDisplaySave")}</button></li>
+                    <li className='col-sm-auto'>
+                      <Link to={'/Department1NICU'}>
+                        <button className="">{t("Discard")}</button>
+                      </Link>
+                    </li>
+                    <li className='col-sm-auto'><button className="">{t("departmentReportDisplaySubmit")}</button></li>
+                  </ul>
+                </div>
+              </section>
+            :
+              <section className="mt-3">
+                <div className="container w-50 text-center">
+                  <Link to={'/Department1NICU'}>
+                    <button className="">{t("departmentReportDisplayBack")}</button>
+                  </Link>
+                </div>
+              </section>
+          }
+
+        </div>
+      </main>
     </div>
   )
 }
