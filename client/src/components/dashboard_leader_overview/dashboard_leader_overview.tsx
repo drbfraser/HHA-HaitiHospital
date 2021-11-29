@@ -52,8 +52,8 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                                     <th scope="row" className="text-center">{index + 1}</th>
                                     <td className="text-center">
                                         {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
-                                        {/* {index === 1 ? <i className="text-secondary bi-trophy-fill"/> : null} */}
-                                        {/* {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null} */}
+                                        {index === 1 ? <i className="text-secondary bi-trophy-fill"/> : null}
+                                        {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null}
                                     </td>
                                     <td className="text-center">{item.name}</td>
                                     {/* <td className="d-none d-sm-table-cell">0</td> */}
