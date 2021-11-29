@@ -36,6 +36,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     formData.append("file", selectedFile);
 
     axios.post('/api/casestudies', formData).then(res => {
+      window.alert("Case study successfully submitted!");
       reset({});
       reset2({});
       reset3({});
