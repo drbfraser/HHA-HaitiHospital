@@ -8,7 +8,8 @@
   "signInValidationMustBe2CharMini": "Must be 2 characters at minimum",
   "signInValidationMustBe6CharMini": "Must be 6 characters at minimum",
   "signInValidationMustBe20CharLess": "Must be 20 characters or less",
-  "signInValidationRequired": "Required",
+  "signInUsernameValidationRequired": "Username is required to login",
+  "signInPasswordValidationRequired": "Password is required to login",
 
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",
