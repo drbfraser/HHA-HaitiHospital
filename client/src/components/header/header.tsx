@@ -1,5 +1,6 @@
+import { useAuthDispatch, useAuthState } from '../../Context'
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation, Link, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { ElementStyleProps, User } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
@@ -13,10 +14,9 @@ interface HeaderProps extends ElementStyleProps{
 
 function HeaderView() {
     const location = useLocation();
-    console.log(location.pathname);
     // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
 
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
 
     if (location.pathname.slice(1) === 'home') {
         return <h4 className="text-secondary">{t("headerOverview")}</h4>
@@ -40,6 +40,13 @@ function HeaderView() {
         return <h4 className="text-secondary">{t("headerDepartmentCom")}</h4>
     } else if (location.pathname.slice(1) === 'admin') {
         return <h4 className="text-secondary">{t("headerAdmin")}</h4>
+<<<<<<< HEAD
+=======
+    } else if (location.pathname.split('/')[1] === 'admin-add-user') {
+        return <h4 className="text-secondary">Add User</h4>
+    } else if (location.pathname.split('/')[1] === 'admin-edit-user') {
+        return <h4 className="text-secondary">Edit User</h4>
+>>>>>>> master
     } else {
         // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
         return <h4></h4>
@@ -48,13 +55,24 @@ function HeaderView() {
 
 function GetUsername() {
     let username = localStorage.getItem('username')
-    let name = (username as any).replace(/['"]+/g, '')
+    let name = '';
+    if (username) {
+        name = (username as any).replace(/['"]+/g, '')
+    } else {
+        name = 'default';
+    }
     return <h6> { name }</h6>
 }
 
 const Header = (props: HeaderProps) => {
+    const dispatch = useAuthDispatch() // read dispatch method from context
+    const userDetails = useAuthState() //read user details from context
     const onLogOut = (event) => {
+<<<<<<< HEAD
         logOutUser();
+=======
+        logOutUser(dispatch);
+>>>>>>> master
         history.push("/login");
     };
 
