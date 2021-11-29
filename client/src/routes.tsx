@@ -54,10 +54,30 @@ const routes = [
         rolesRequired: [],
     },
     {
+        path: '/general_reports',
+        component: GeneralReports,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    
+    {
         path: '/Department1NICU',
         component: DepartmentOne,
         isPrivate: true,
         rolesRequired: [],
+    },
+    {
+        path: '/Department1NICU/detailed_report/view/:id',
+        component: () => <DepartmentReport edit = {false}/>,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: '/Department1NICU/detailed_report/edit/:id',
+        component: () => <DepartmentReport edit={true} />,
+        isPrivate: true,
+        rolesRequired: [],
+
     },
     {
         path: '/NICUForm',
@@ -65,18 +85,7 @@ const routes = [
         isPrivate: true,
         rolesRequired: [],
     },
-    {
-        path: '/Department1NICU/detailed_report/view/:id',
-        component: () => (<DepartmentReport edit={false}/>),
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/Department1NICU/detailed_report/view/:id',
-        component: () => (<DepartmentReport edit={true}/>),
-        isPrivate: true,
-        rolesRequired: [],
-    },
+   
     {
         path: '/Department2Maternity',
         component: DepartmentTwo,
@@ -155,12 +164,6 @@ const routes = [
         isPrivate: true,
         rolesRequired: [],
     },
-    {
-        path: '/general_reports',
-        component: GeneralReports,
-        isPrivate: true,
-        rolesRequired: [Role.Admin],
-    }
 ];
 
 export default routes;
