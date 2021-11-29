@@ -22,6 +22,9 @@ import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
 import GeneralReports from 'pages/general_reports/general_reports';
 
+// Remember to keep the low level urls before high level urls
+// Because Switch is picking the first matching url
+
 const routes = [
     {
         path: '/login',
@@ -59,13 +62,6 @@ const routes = [
         isPrivate: true,
         rolesRequired: [],
     },
-    
-    {
-        path: '/Department1NICU',
-        component: DepartmentOne,
-        isPrivate: true,
-        rolesRequired: [],
-    },
     {
         path: '/Department1NICU/detailed_report/view/:id',
         component: () => <DepartmentReport edit = {false}/>,
@@ -79,6 +75,13 @@ const routes = [
         rolesRequired: [],
 
     },
+    {
+        path: '/Department1NICU',
+        component: DepartmentOne,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    
     {
         path: '/NICUForm',
         component: NICUForm,

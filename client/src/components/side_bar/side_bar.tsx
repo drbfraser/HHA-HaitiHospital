@@ -75,7 +75,7 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li>
                         <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
-                            <i className="bi bi-brightness-high-fill me-2"/>
+                            <i className="bi bi-folder-fill me-2"/>
                             <span className='text text-light'>General</span>
                         </NavLink>
                     </li>

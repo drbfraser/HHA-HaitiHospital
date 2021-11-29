@@ -23,7 +23,7 @@ const App = () => {
   return (
 		<AuthProvider>
 			<Router>
-				{/* <Switch> */}
+				<Switch>
 					{routes.map((route) => (
 						<AppRoute
 							key={route.path}
@@ -33,7 +33,7 @@ const App = () => {
               rolesRequired={route.rolesRequired}
 						/>
 					))}
-				{/* </Switch> */}
+				</Switch>
 			</Router>
 		</AuthProvider>
 	);
