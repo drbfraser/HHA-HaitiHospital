@@ -48,12 +48,34 @@ function MaternityForm() {
         window.location.reload();
     }
 
+    const addFormDescriptions = (formFields) => {
+        var descriptions = [];
+        fields.forEach(field => {
+            if(field.field_type === "number"){
+                descriptions.push({ [field.field_id] : field.field_label});
+            }else if(field.field_type === "array"){
+                descriptions.push({ [field.field_id] : field.field_label});
+            }else if(field.field_type === "list"){
+                descriptions.push({ [field.field_id] : field.field_label});
+                field.field_template.forEach(listField => {
+                    var listID = field.field_id + "." + listField.field_id;
+                    descriptions.push(
+                        { [listID] : listField.field_label }
+                    );
+                })
+            }
+        });
+        return descriptions;
+    }
+
     const onSubmit = async (data: any) => {
         if (!window.confirm("Press OK to finalize submission.")) {
             return;
         }
         
+        
         data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+        data.decriptions = addFormDescriptions(fields);
         console.log(data);
         var valid = submitValidation();
 
