@@ -20,6 +20,7 @@ import MaternityForm from 'pages/form/maternity_form';
 import { Role } from 'constants/interfaces';
 import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
+import RehabForm from 'pages/form/rehab_form';
 
 const routes = [
     {
@@ -83,7 +84,7 @@ const routes = [
         rolesRequired: [],
     },
     {
-        path: 'maternityForm',
+        path: '/maternityForm',
         component: MaternityForm,
         isPrivate: true,
         rolesRequired: [],
@@ -91,6 +92,12 @@ const routes = [
     {
         path: '/Department3Rehab',
         component: DepartmentThree,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: '/rehabForm',
+        component: RehabForm,
         isPrivate: true,
         rolesRequired: [],
     },
