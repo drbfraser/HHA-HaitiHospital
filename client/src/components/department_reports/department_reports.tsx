@@ -36,7 +36,6 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
 
   const fetchReports = async () => {
     try {
-    //   console.log("Fetch reports");
       const res = await Axios.get(dbUrlForNICUReports,
         {cancelToken: apiSource.token})
       return res.data;
