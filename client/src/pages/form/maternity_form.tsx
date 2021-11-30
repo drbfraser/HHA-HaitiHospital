@@ -367,15 +367,26 @@ function MaternityForm() {
 
             var isSectionValid = true;
             for (let j = 1; j <= section.section_fields.length; j++, num++) {
-                var formValues = formValuesComeFrom;
+                var field = fields[num-1];
 
-                if (num === 22) {
+                if (field.field_type === "array") {
+                    var formValues = formValuesComeFrom;
                     var inputGroup = (document.getElementById("inputs" + num) as HTMLElement);
                     for (let k = 0; k < formValues.length; k++) {
                         var textInput = (inputGroup.childNodes[k].childNodes[0].childNodes[0] as HTMLInputElement);
                         var valueInput = (inputGroup.childNodes[k].childNodes[1].childNodes[0] as HTMLInputElement);
                         if (textInput.classList.contains("is-invalid") || valueInput.classList.contains("is-invalid")) {
                             isSectionValid = false;
+                        }
+                    }
+                } else if (field.field_type === "table") {
+                    
+                    for (var idx = 0; idx < field.total_rows; idx++) {
+                        for (var jdx=0; jdx<field.total_cols; jdx++) {
+                            var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
+                            if (field.invalid_inputs[idx][jdx] === 0 && inputElement.classList.contains("is-invalid")) {
+                                isSectionValid = false;
+                            }
                         }
                     }
                 } else {
