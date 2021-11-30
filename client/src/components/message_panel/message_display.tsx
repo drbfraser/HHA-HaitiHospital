@@ -5,7 +5,6 @@ import { useAuthState } from 'Context';
 import { Role } from "../../constants/interfaces"
 
 import { Json, ElementStyleProps } from 'constants/interfaces';
-import { deleteMessage } from 'actions/messageActions';
 import Axios from 'axios';
 
 interface MessageDisplayProps extends ElementStyleProps  {
@@ -35,7 +34,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
         }
     }  
 
-    let readableDate = new Date(props.msgJson.date as string).toDateString();
+    let readableDate = new Date(props.msgJson.date as string).toLocaleString();
 
     return (
     <div className="d-flex text-muted pt-2">
@@ -48,7 +47,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             {/* Author Id, Deparment, Date */}
             <div className="d-md-flex justify-content-between text-gray-dark">
                 <p><strong className="text-gray-dark">@{
-                (props.msgJson as Json).userId}</strong></p>
+                ((props.msgJson as Json).userId as Json).name}</strong></p>
                 <p><strong className="lh-sm">
                     {props.msgJson.departmentName}
                 </strong></p>

@@ -9,14 +9,14 @@ import { Role } from "../../models/User"
 router.get('/', async (req: any, res: any) => {
 
     // non-populated version
-    MessageBody.find({}).sort({date : 'desc'})
-        .then(Reports => res.json(Reports))
-        .catch(err => res.status(400).json('Could not find any results: ' + err));
-
-    // populated version
-    // MessageBody.find({}).sort({date : 'desc'}).populate('userId')
+    // MessageBody.find({}).sort({date : 'desc'})
     //     .then(Reports => res.json(Reports))
     //     .catch(err => res.status(400).json('Could not find any results: ' + err));
+
+    // populated version
+    MessageBody.find({}).sort({date : 'desc'}).populate('userId')
+        .then(Reports => res.json(Reports))
+        .catch(err => res.status(400).json('Could not find any results: ' + err));
     
 });
 
@@ -29,14 +29,14 @@ router.get('/department/:departmentId', async (req: any, res: any) => {
 
 router.get('/message/:messageId', async (req: any, res: any) => {
     // non-populated version
-    MessageBody.findById(req.params.messageId)
-        .then(Reports => res.json(Reports))
-        .catch(err => res.status(400).json('Could not find any results: ' + err));
-    
-    // populated version
-    // MessageBody.findById(req.params.messageId).populate('userId')
+    // MessageBody.findById(req.params.messageId)
     //     .then(Reports => res.json(Reports))
     //     .catch(err => res.status(400).json('Could not find any results: ' + err));
+    
+    // populated version
+    MessageBody.findById(req.params.messageId).populate('userId')
+        .then(Reports => res.json(Reports))
+        .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
 
 router.route('/').post(requireJwtAuth, checkIsInRole(Role.Admin),(req: Request, res: Response) => {
@@ -94,13 +94,13 @@ router.route('/:messageId').put(requireJwtAuth, checkIsInRole(Role.Admin),(req: 
     Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
     
     // Non-populated version
-    return MessageBody.findByIdAndUpdate({_id: req.params.messageId}, updatedMessage, {new:true})
-        .then(message => res.json(message))
-        .catch(err => res.status(400).json('Edit message failed: ' + err));
-
-    // return MessageBody.findByIdAndUpdate({_id: req.params.messageId}, updatedMessage, {new:true}).populate("userId")
+    // return MessageBody.findByIdAndUpdate({_id: req.params.messageId}, updatedMessage, {new:true})
     //     .then(message => res.json(message))
     //     .catch(err => res.status(400).json('Edit message failed: ' + err));
+
+    return MessageBody.findByIdAndUpdate({_id: req.params.messageId}, updatedMessage, {new:true}).populate("userId")
+        .then(message => res.json(message))
+        .catch(err => res.status(400).json('Edit message failed: ' + err));
 })
 
 // delete message id

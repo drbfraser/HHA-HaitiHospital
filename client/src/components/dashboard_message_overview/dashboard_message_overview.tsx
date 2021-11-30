@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ElementStyleProps } from 'constants/interfaces';
+import { ElementStyleProps, Json } from 'constants/interfaces';
 import { useState } from 'react';
 
 import { MessageProps } from 'constants/interfaces';
@@ -9,7 +9,7 @@ import './dashboard_message_overview.css'
 import {useTranslation} from "react-i18next";
 
 interface DashboardMessageProps extends ElementStyleProps {
-    messages :MessageProps[],
+    messages :Json[],
 }
 
 const fetchMessages = (async () => {
@@ -48,15 +48,19 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                         <tbody className="text-muted">
                             {(message.map((message, index) => {
                                 // Displaying top 3 messages
+                                let readableDate = new Date(message.date).toLocaleString();
+
+                                let fullName = (message.userId as Json).name;
+
                                 if (index <= 2) {
                                     return(
                                         <tr>
                                             <th scope="row" className="text-secondary text-break" key={index}>{message.messageHeader}</th>
                                             <td className="text-secondary">
-                                                {message.authorId}
+                                                {fullName}
                                             </td>
                                             <td className="text-secondary">
-                                                {message.date}
+                                                {readableDate}
                                             </td>
                                             <td className="text-secondary text-break">
                                                 {/*show first 70 character of message only*/}
