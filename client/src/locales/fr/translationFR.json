@@ -1,5 +1,5 @@
 {
-  "signInPleaseSignIn": "Veuillez vous connecter",
+  "signInPleaseSignIn": "S'identifier",
   "signInPleasePlaceHolderEmail": "Nom d'utilisateur",
   "signInPleasePlaceHolderPassword": "Mot de passe",
   "signInRememberMe": "Souviens-toi de moi",
@@ -10,6 +10,7 @@
   "signInValidationMustBe20CharLess": "Doit comporter 20 caractères ou moins",
   "signInUsernameValidationRequired": "Le nom d'utilisateur est requis pour se connecter",
   "signInPasswordValidationRequired": "Le mot de passe est requis pour se connecter",
+  "signInContactAdmin": "Contacter l'administrateur",
 
   "sidebarHome": "D'accueil",
   "sidebarMessageBoard": "Tableau de bord",
@@ -74,6 +75,7 @@
   "caseStudyMainCreated": "Créé",
   "caseStudyMainLink": "Options",
   "caseStudyMainViewCaseStudy": "Voir",
+  "caseStudyMainDelete": "Effacer",
 
   "caseStudyFormBack":"Arrière",
   "caseStudyFormCaseStudyOptions":"Options d'étude de cas",

@@ -75,7 +75,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>
                       <Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy") + " "}</Link>
                       {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? 
-                      <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>Delete</a>
+                      <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>{t("caseStudyMainDelete")}</a>
                       : null}
                     </td>
                   </tr>

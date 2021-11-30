@@ -10,6 +10,7 @@
   "signInValidationMustBe20CharLess": "Must be 20 characters or less",
   "signInUsernameValidationRequired": "Username is required to login",
   "signInPasswordValidationRequired": "Password is required to login",
+  "signInContactAdmin": "Contact Admin",
 
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",
@@ -74,6 +75,7 @@
   "caseStudyMainCreated": "Created",
   "caseStudyMainLink": "Options",
   "caseStudyMainViewCaseStudy": "View",
+  "caseStudyMainDelete": "Delete",
 
   "caseStudyFormBack":"Back",
   "caseStudyFormCaseStudyOptions":"Case Study Options",

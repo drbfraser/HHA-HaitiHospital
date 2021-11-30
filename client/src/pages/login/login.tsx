@@ -137,7 +137,7 @@ const Login = (props : LoginProps) => {
             </div>
 
             <div className="mt-4 mb-3 text-muted d-flex justify-content-center user-select-none">
-                <a href="mailto:hcbhadmin@example.org" className="link-secondary">Contact Admin</a>
+                <a href="mailto:hcbhadmin@example.org" className="link-secondary">{t("signInContactAdmin")}</a>
             </div>
             <div className="text-muted d-flex justify-content-center user-select-none">
                 <p>&copy; 2021-2022</p>
