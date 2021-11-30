@@ -13,7 +13,7 @@ interface DepartmentReportsProps extends ElementStyleProps {
   dateRange?: DayRange;
 };
 
-const DepartmentReports = (props: DepartmentReportsProps) => {
+const ReportSummary = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
 
@@ -79,7 +79,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   );
 }
 
-export default DepartmentReports;
+export default ReportSummary;
 
 //  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 

@@ -38,11 +38,11 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
 router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
 
     let dateTime: Date = new Date();
-    const createdByUserId = req.user.id;
+    const createdByUserId = req.user.id as String;
     const createdOn = dateTime;
     const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = dateTime;
-    const departmentId = req.body.departmentId;
+    const departmentId = req.body.departmentId as String;
     const formData = req.body;
     
     const formEntry = new FormEntry({
@@ -63,14 +63,10 @@ router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
 //---VIEW DATABASE---//
 //view all Reports in the database
 router.route('/view').get((req: any, res: any) => {
-    // Not populating user id version
-    // Because uid is changed with new server session
-    FormEntry.find({}).sort({createdOn: 'desc'}).then(Reports => res.json(Reports))
-    .catch(err => res.status(400).json("Failed:" + err))
     
-    // FormEntry.find({}).populate('createdByUserId').populate('lastUpdatedByUserId').sort({createdOn: 'desc'})
-    //     .then(Reports => res.json(Reports))
-    //     .catch(err => res.status(400).json('Could not find any results: ' + err));
+    FormEntry.find({}).populate('createdByUserId').populate('lastUpdatedByUserId').sort({createdOn: 'desc'})
+        .then(Reports => res.json(Reports))
+        .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
 
 //view all forms from a specific department
@@ -154,7 +150,7 @@ router.route('/').get( async (req, res) => {
             })
         }
     
-        let result = await filterQuery.exec();
+        let result = await filterQuery.sort({createdOn: 'desc'}).populate("lastUpdatedByUserId").exec();
         res.status(200).json(result)
     }
     catch (error) {

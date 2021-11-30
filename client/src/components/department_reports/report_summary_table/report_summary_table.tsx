@@ -7,6 +7,7 @@ import AllTick from 'components/department_reports/report_summary_table/all_tick
 import UtilityButtons from 'components/department_reports/report_summary_table/utility_buttons';
 import temp_checklist from '../temp_checklist';
 import {useTranslation} from "react-i18next";
+import { TriggerConfig } from 'react-hook-form';
 
 interface ReportSummaryTableProps extends ElementStyleProps {
   reports :Json[],
@@ -90,15 +91,20 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
           </thead>
 
           <tbody>
-            {props.reports.map((report, index) => (
+            {props.reports.map((report, index) => {
+                let username = (report["lastUpdatedByUserId"] as Json)["username"] as string;
+                let fullName = (report["lastUpdatedByUserId"] as Json)["name"] as string;
+                
+                return (
                 <ReportSummaryRow
                     key={index}
                     reportId = {report["_id"] as string}
                     lastUpdatedOn = { new Date(report["lastUpdatedOn"]as string)}
-                    lastUpdatedBy = {report["lastUpdatedByUserId"] as string}
+                    lastUpdatedBy = {`${username} / ${fullName}`}
                     isTicked = {tickTracker[report["_id"] as string]}
                     notifyTable = {tickRow}
-                />))
+                />)
+            })
             }
 
           </tbody>
