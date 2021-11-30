@@ -28,7 +28,7 @@ export interface Message {
   departmentId: number;
   departmentName: string;
   date: Date;
-  userId: Object;
+  user: Object;
   messageBody: string;
   messageHeader: string;
 }
@@ -37,7 +37,7 @@ export const emptyMessage : Message = {
     messageBody: '',
     messageHeader: '',
     departmentId: 0,
-    userId: {},
+    user: {},
     departmentName: '',
     date: new Date(),
 }

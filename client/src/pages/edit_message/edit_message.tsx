@@ -37,7 +37,7 @@ const EditMessage = () => {
             messageHeader: msgData["messageHeader"],
             departmentId: msgData["departmentId"],
             departmentName: msgData['deparmentName'],
-            authorId: msgData['authorId'],
+            user: msgData['userId'],
             date: msgData['date'],
         }
     
