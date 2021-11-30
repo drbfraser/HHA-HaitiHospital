@@ -14,7 +14,7 @@ export const seedDb = async () => {
 
   seedCaseStudies();
   seedDepartments();
-  seedMessageBoard();
+//   seedMessageBoard();
   seedLeaderboard();
 };
 
