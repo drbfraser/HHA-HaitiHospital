@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { number } = require('joi');
 import Departments from '../../models/Departments';
 import FormEntry from '../../models/FormEntry';
+import requireJwtAuth from '../../middleware/requireJwtAuth';
 
 
 //---RESEED DATABASE---//
@@ -32,13 +33,13 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
 });
 
 //POST - sends user submitted form to the server as a JSON
-router.route('/add').post((req: any, res: any) => {
+router.route('/add').post(requireJwtAuth,(req: any, res: any) => {
     
     let dateTime: Date = new Date();
-    // const userData = useAuthState();
-    const createdByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
+    
+    const createdByUserId = req.user.id; //GET VALUE FROM FRONTEND USER SESSION
     const createdOn = dateTime;
-    const lastUpdatedByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
+    const lastUpdatedByUserId = req.user.id; //GET VALUE FROM FRONTEND USER SESSION
     const lastUpdatedOn = dateTime;
     const departmentId = req.body.departmentId;
     const formData = req.body;
@@ -91,7 +92,7 @@ router.route('/edit/:Reportid').get((req: any, res: any) => {
 //make the changes to report of id reportID
 router.route('/edit/:Reportid').put((req: any, res: any) => {
     let updatedDateTime: Date = new Date();
-    const lastUpdatedByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
+    const lastUpdatedByUserId = req.user; //GET VALUE FROM FRONTEND USER SESSION
     const lastUpdatedOn = updatedDateTime;
     const formData = req.body;
     

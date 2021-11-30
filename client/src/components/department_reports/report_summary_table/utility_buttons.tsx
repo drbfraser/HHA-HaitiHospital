@@ -17,37 +17,43 @@ function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
 
 function reportIterator(report: Object, mergedObject: Object) : Object {
     for(const [key,value] of Object.entries(report)){
-        // console.log(`${key}: ${value}`);
+        console.log(`${key}: ${value}`);
         // console.log(typeof(value));
         if(mergedObject[key]){
-            if(key !== 'departmentId' && typeof(report[key]) !== 'string'){
+            console.log("EXISTS");
+            if(key !== 'departmentId' && typeof(report[key]) !== 'string' && typeof(report[key]) !== 'object'){
                 mergedObject[key] += value;
+                console.log(`ADD: ${mergedObject[key]}`);
             }
-            if(typeof(report[key]) === 'object'){
-                console.log('old object');
+            else if(typeof(report[key]) === 'object'){
+                console.log("ITERATE");
+                console.log(`-OLD OBJECT: ${key}: ${JSON.stringify(report[key])} +  ${JSON.stringify(mergedObject[key])}`);
                 mergedObject[key] = reportIterator(report[key],mergedObject[key]);
+                console.log(`-TOTAL: ${JSON.stringify(mergedObject[key])}`);
+
                 // mergedObject[key] += reportIterator(report[key],mergedObject[key]);
             }
         }
         else{
+            console.log("DOESNT EXIST")
             if(typeof(report[key]) === 'object'){
-                console.log(key);
-                console.log(report[key]);
-                console.log('new object');
+                // console.log(key);
+                // console.log(report[key]);
+                // console.log('new object');
+                console.log("CREATE OBJ");
                 mergedObject[key] = {};
-                // mergedObject[key] = reportIterator(report[key],mergedObject[key]);
+                mergedObject[key] = report[key];
+                console.log(`-NEW OBJECT: ${key}: ${JSON.stringify(mergedObject[key])}`);
             }
             else{
+                console.log("CREATE VAR");
                 mergedObject[key] = value;
             }
             // mergedObject[key] = value;
         }
 
-        // if(typeof(report[key]) !== 'object'){
-
-        // }
     }
-    return report;
+    return mergedObject;
 }
 
 function aggregateReport(reportArray: Array<Object>) : Object{
