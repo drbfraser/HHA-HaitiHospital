@@ -63,13 +63,6 @@ function MessageForm(props: MessageFormProps) {
     <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
 
-            <div className="col-md-2 mb-3">
-                <label htmlFor="" className="form-label">User ID</label>
-                <input className="form-control" 
-                type="number" 
-                {...register("authorId")} />
-            </div>
-
             <div className="col-md-3 mb-3">
                 <label htmlFor="" className="form-label">{t("addMessageDepartment")}</label>
                 <select className="form-select" {...register("departmentName")}>
@@ -82,8 +75,6 @@ function MessageForm(props: MessageFormProps) {
             </div>
 
         </div>
-
-
 
         <div className="mb-3">
             <label htmlFor="" className="form-label">{t("addMessageTitle")}</label>
