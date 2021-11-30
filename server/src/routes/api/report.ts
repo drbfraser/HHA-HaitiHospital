@@ -4,7 +4,7 @@ const { number } = require('joi');
 import Departments from '../../models/Departments';
 import FormEntry from '../../models/FormEntry';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { checkIsInRole, ROLES } from '../../utils/roleUtils';
+import { checkIsInRole} from '../../utils/roleUtils';
 import { date } from 'joi';
 
 
@@ -35,7 +35,7 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
 });
 
 //POST - sends user submitted form to the server as a JSON
-router.route('/add').post(requireJwtAuth, checkIsInRole(ROLES.Admin), (req: any, res: any) => {
+router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
 
     let dateTime: Date = new Date();
     const createdByUserId = req.user.id;
@@ -98,7 +98,7 @@ router.route('/edit/:Reportid').get((req: any, res: any) => {
 });
 
 //make the changes to report of id reportID
-router.route('/edit/:Reportid').put(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: any, res: any) => {
+router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
     let updatedDateTime: Date = new Date();
     const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = updatedDateTime;
@@ -117,7 +117,7 @@ router.route('/edit/:Reportid').put(requireJwtAuth, checkIsInRole(ROLES.Admin),(
 
 //---DELETE REPORTS---//
 //delete a single report with Reportid
-router.route('/delete/:Reportid').delete(requireJwtAuth, checkIsInRole(ROLES.Admin), (req: any, res: any) => {
+router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) => {
     FormEntry.deleteOne({_id: req.params.Reportid})
         .then(() => res.json('Succesfully deleted report'))
         .catch(err => res.status(400).json('Could not delete: ' + err));
