@@ -68,7 +68,7 @@ router.route('/').post(requireJwtAuth, checkIsInRole(Role.Admin),(req: Request, 
 });
 
 //make the changes to message of id reportID
-router.route('/:messageId').put(requireJwtAuth, checkIsInRole(ROLES.Admin),(req: any, res: any) => {
+router.route('/:messageId').put(requireJwtAuth, checkIsInRole(Role.Admin),(req: any, res: any) => {
 
     let dateTime: Date = new Date();
     const departmentId: Number = <Number>req.body.departmentId;
@@ -104,7 +104,7 @@ router.route('/:messageId').put(requireJwtAuth, checkIsInRole(ROLES.Admin),(req:
 })
 
 // delete message id
-router.route('/:id').delete(requireJwtAuth, checkIsInRole(ROLES.Admin), (req:Request, res: Response) => {
+router.route('/:id').delete(requireJwtAuth, checkIsInRole(Role.Admin), (req:Request, res: Response) => {
     try {
         MessageBody.findByIdAndRemove(req.params.id)
             .then(data => res.json(data))
