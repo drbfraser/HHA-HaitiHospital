@@ -745,7 +745,7 @@ function MaternityForm() {
                             return (
                                 <>
                                     <li className={isActive ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                        onClick={() => { window.scrollTo(0, 0); sidePanelClick(idx); }}>
+                                        onClick={() => { sidePanelClick(idx); }}>
                                         <span>{idx + 1}. {section.section_label}</span>
                                     </li>
                                 </>
