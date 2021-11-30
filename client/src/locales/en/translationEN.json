@@ -65,7 +65,7 @@
   "leaderBoardDepartment": "Department",
   "leaderBoardCase Studies": "Case Studies",
   "leaderBoardPoints": "Points",
-  "leaderBoardEmployeeOfMonth": "Employee of Month",
+  "leaderBoardEmployeeOfMonth": "Employee of the Month",
   "leaderBoardLastUpdate": "Last updated 3 days ago",
 
   "caseStudyMainAddCaseStudy": "Add Case Study",
@@ -106,7 +106,7 @@
   "caseStudyFormWhatEnjoyTheMostAtHCBH":"What do they enjoy the most about working at HCBH?",
 
   "caseStudyFormTrainingSessionCaseStudy":"Training Session Case Study",
-  "caseStudyFormTrainingDate":"Training Date",
+  "caseStudyFormTrainingDate":"Training Date (MM-DD-YYYY)",
   "caseStudyFormWhatWasTrainingOn":"What was the training on?",
   "caseStudyFormWhoConductedTraining":"Who conducted training?",
   "caseStudyFormWhoAttendedTraining":"Who attended the training?",

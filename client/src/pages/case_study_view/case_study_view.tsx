@@ -88,7 +88,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
               <h6 className="fs-6 mb-5 lh-base">Date: {(new Date(caseStudy.createdAt)).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })}</h6>
               <img src={`../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">{t("caseStudyFormTrainingDate")}</h6>
-              <p className='fs-6 lh-base text-break'>{caseStudy.trainingSession.trainingDate}</p>
+              <p className='fs-6 lh-base text-break'>{(new Date(caseStudy.trainingSession.trainingDate)).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })}</p>
               <h6 className="fs-6 fw-bold lh-base">{t("caseStudyFormWhatWasTrainingOn")}</h6>
               <p className='fs-6 lh-base text-break'>{caseStudy.trainingSession.trainingOn}</p>
               <h6 className="fs-6 fw-bold lh-base">{t("caseStudyFormWhoConductedTraining")}</h6>
