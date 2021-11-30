@@ -73,6 +73,30 @@ function MaternityForm() {
             return;
         }
 
+        var object = data["Support for wife and mother"];
+        
+        var index = 0;
+        for(var key in object){
+            var totalElement = document.getElementById("tables" + 42 + index + 5);
+            object[key].total = totalElement.innerHTML;
+            index++;
+        }
+        
+        object.totalVisits = {
+            "1st Visit" : 0,
+            "2nd Visit" : 0,
+            "3rd Visit" : 0,
+            "4th Visit" : 0,
+            "5th Visit" : 0,
+            "total" : 0 
+        };
+
+        index = 0;
+        for(var key in object.totalVisits){
+            var totalElement = document.getElementById("tables" + 42 + 3 + index);
+            object.totalVisits[key] = totalElement.innerHTML;
+            index++;
+        }
 
         data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
         data.decriptions = addFormDescriptions(fields);
