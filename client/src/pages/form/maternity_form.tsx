@@ -6,9 +6,6 @@ import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import maternityModel from './models/maternityModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { spawn } from 'child_process';
-import { render } from '@testing-library/react';
-import { text } from 'node:stream/consumers';
 
 
 
@@ -42,10 +39,6 @@ function MaternityForm() {
         for (var j = 0; j < sections[i].section_fields.length; j++) {
             fields.push(sections[i].section_fields[j]);
         }
-    }
-
-    function refreshPage() {
-        window.location.reload();
     }
 
     const addFormDescriptions = (formFields) => {
