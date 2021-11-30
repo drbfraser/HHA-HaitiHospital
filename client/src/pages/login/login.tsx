@@ -102,6 +102,8 @@ const Login = (props : LoginProps) => {
                     ) : <p/>}
                 </div>
 
+                {errorMessage ? <div><p className="form-text text-danger user-select-none"> {errorMessage} </p></div> : null}
+
                 {/* <div className="form-check form-switch mb-4">
                     <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
                         <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
@@ -117,7 +119,6 @@ const Login = (props : LoginProps) => {
                     >{t("signInSignIn")}</button>
                 </div>
 
-                {errorMessage ? <div className="error"> {errorMessage} </div> : null}
             </form>
 
             <div className="row mt-5">
@@ -137,7 +138,7 @@ const Login = (props : LoginProps) => {
             </div>
 
             <div className="mt-4 mb-3 text-muted d-flex justify-content-center user-select-none">
-                <a href="mailto:hcbhadmin@example.org" className="link-secondary">{t("signInContactAdmin")}</a>
+                <a href="mailto:hcbh_admin@example.org" className="link-secondary">{t("signInContactAdmin")}</a>
             </div>
             <div className="text-muted d-flex justify-content-center user-select-none">
                 <p>&copy; 2021-2022</p>
