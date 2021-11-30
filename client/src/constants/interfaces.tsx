@@ -27,8 +27,8 @@ export interface MessageProps {
 export interface Message {
   departmentId: number;
   departmentName: string;
-  authorId: number;
   date: Date;
+  userId: Object;
   messageBody: string;
   messageHeader: string;
 }
@@ -37,8 +37,8 @@ export const emptyMessage : Message = {
     messageBody: '',
     messageHeader: '',
     departmentId: 0,
+    userId: {},
     departmentName: '',
-    authorId: 0,
     date: new Date(),
 }
 
@@ -58,9 +58,9 @@ export enum DepartmentName {
 
 export enum DepartmentId{
     NicuPaeds = 1,
-    Maternity = 2,
-    Rehab = 3,
-    CommunityHealth = 4,
+    Maternity = 3,
+    Rehab = 0,
+    CommunityHealth = 2,
 }
 
 export function getDepartmentId(dept: DepartmentName): DepartmentId {
@@ -78,7 +78,7 @@ export function getDepartmentId(dept: DepartmentName): DepartmentId {
             return DepartmentId.CommunityHealth;
 
         default:
-            return DepartmentId.NicuPaeds;
+            return -1;
     }  
 }
 

@@ -1,29 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router';
-import { ElementStyleProps, Message, emptyMessage } from 'constants/interfaces';
+import { ElementStyleProps, Message, emptyMessage, DepartmentName, DepartmentId, getDepartmentId } from 'constants/interfaces';
 
 import {useTranslation} from "react-i18next";
-
-
-const getDepartmentId = (department: any) => {
-    switch (department) {
-    case 'NICUPaeds':
-        return 1;
-
-    case 'CommunityHealth':
-        return 2;
-
-    case 'Rehab':
-        return 3;
-
-    case 'Maternity':
-        return 4;
-
-    default:
-        return 0;
-    }
-}
 
 interface MessageFormProps extends ElementStyleProps{
     optionalMsg? : Message, 
@@ -47,9 +27,7 @@ function MessageForm(props: MessageFormProps) {
             return;
         }
     
-        if (getDepartmentId(data.departmentName) !== 0) {
-            data.departmentId = getDepartmentId(data.departmentName);
-        }
+        data.departmentId = getDepartmentId(data.departmentName);
     
         props.submitAction(data);
 
@@ -67,10 +45,18 @@ function MessageForm(props: MessageFormProps) {
                 <label htmlFor="" className="form-label">{t("addMessageDepartment")}</label>
                 <select className="form-select" {...register("departmentName")}>
                     <option value=""> Select </option>
-                    <option value="NICUPaeds">NICU/Paeds</option>
-                    <option value="Maternity">Maternity</option>
-                    <option value="Rehab">Rehabilitation</option>
-                    <option value="CommunityHealth">Community Health</option>
+                    <option value={DepartmentName.NicuPaeds}>
+                        {DepartmentName.NicuPaeds}
+                    </option>
+                    <option value={DepartmentName.Maternity}>
+                        {DepartmentName.Maternity}
+                    </option>
+                    <option value={DepartmentName.Rehab}>
+                        {DepartmentName.Rehab}
+                    </option>
+                    <option value={DepartmentName.CommunityHealth}>
+                        {DepartmentName.CommunityHealth}
+                    </option>
                 </select>
             </div>
 

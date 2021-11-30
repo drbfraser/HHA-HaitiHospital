@@ -9,7 +9,6 @@ import './dashboard_message_overview.css'
 import {useTranslation} from "react-i18next";
 
 interface DashboardMessageProps extends ElementStyleProps {
-    messages :Json[],
 }
 
 const fetchMessages = (async () => {
@@ -18,7 +17,7 @@ const fetchMessages = (async () => {
 })
 
 const DashboardMessageOverview = (props : DashboardMessageProps) => {
-    const [ message, setMessage ] = useState([]);
+    const [ messages, setMessage ] = useState([]);
 
     useEffect(() => {
         const messagesFromServer = fetchMessages();
@@ -46,7 +45,7 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                         </thead>
 
                         <tbody className="text-muted">
-                            {(message.map((message, index) => {
+                            {(messages.map((message, index) => {
                                 // Displaying top 3 messages
                                 let readableDate = new Date(message.date).toLocaleString();
 
