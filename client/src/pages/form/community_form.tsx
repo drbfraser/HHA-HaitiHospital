@@ -136,11 +136,7 @@ function CommunityForm() {
 
             var field = fields[i - 1];
             console.log(i, field.field_type);
-            if (field.field_type === "number") {
-                var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
-                isFormValid = isValid(inputElement) && isFormValid;
-
-            } else if (field.field_type === "table") {
+            if (field.field_type === "table") {
                 for (var idx = 0; idx < field.total_rows; idx++) {
                     for (var jdx = 0; jdx < field.total_cols; jdx++) {
                         if (field.invalid_inputs[idx][jdx] == 0) {
@@ -244,18 +240,18 @@ function CommunityForm() {
         return true;
     }
 
-    function inputValidation(num: number) {
-        var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
-        if (!isValid(inputElement)) return;
+    // function inputValidation(num: number) {
+    //     var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+    //     if (!isValid(inputElement)) return;
 
-        // Total number of self-discharged patients
-        if (num === 11 || num >= 12 && num <= 16) {
-            totalValidation(11, 12, 16);
-            return;
-        }
+    //     // Total number of self-discharged patients
+    //     if (num === 11 || num >= 12 && num <= 16) {
+    //         totalValidation(11, 12, 16);
+    //         return;
+    //     }
 
-        makeValidity(inputElement, true, "");
-    }
+    //     makeValidity(inputElement, true, "");
+    // }
 
     function totalValidation(start: number, a: number, b: number) {
         // check if the entire series in total is all filled out 
