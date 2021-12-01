@@ -60,8 +60,12 @@
                                     [0 ,0 ,0 ,0],
                                     [0 ,0 ,0 ,0],
                                     [0 ,0 ,0 ,0]]
-            },
-
+            }
+        ]
+    },
+    {
+        "section_label" : "Contraceptives",
+        "section_fields": [
             {
                 "field_type" : "table",
                 "field_level" : 0,
@@ -132,8 +136,12 @@
                                     [0 ,0 ,0],
                                     [0 ,0 ,0],
                                     [0 ,0 ,0]]
-            },
-
+            }
+        ]
+    },
+    {
+        "section_label" : "Vaccination",
+        "section_fields": [
             {
                 "subsection_label" : "Vaccination",
                 "field_type" : "table",
