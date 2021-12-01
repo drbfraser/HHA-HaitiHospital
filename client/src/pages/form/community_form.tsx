@@ -118,77 +118,77 @@ function CommunityForm() {
     }
 
     function fixVaccination() {
-        var tdElement = document.getElementById("tables" + "8" + "1" + "13") as HTMLTableCellElement;
+        var tdElement = document.getElementById("tables" + "8" + "-" + "1" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             tdElement.rowSpan = 4;
             (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 4;
         }
-        tdElement = document.getElementById("tables" + "8" + "2" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "2" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
-        tdElement = document.getElementById("tables" + "8" + "3" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "3" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
-        tdElement = document.getElementById("tables" + "8" + "4" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "4" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
 
 
-        tdElement = document.getElementById("tables" + "8" + "6" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "6" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             tdElement.rowSpan = 3;
             (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 3;
         }
-        tdElement = document.getElementById("tables" + "8" + "7" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "7" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
-        tdElement = document.getElementById("tables" + "8" + "8" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "8" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
 
-        tdElement = document.getElementById("tables" + "8" + "10" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "10" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             tdElement.rowSpan = 2;
             (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 2;
         }
-        tdElement = document.getElementById("tables" + "8" + "11" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "11" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
 
-        tdElement = document.getElementById("tables" + "8" + "13" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "13" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             tdElement.rowSpan = 3;
             (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 3;
         }
-        tdElement = document.getElementById("tables" + "8" + "14" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "14" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
-        tdElement = document.getElementById("tables" + "8" + "15" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "15" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
 
-        tdElement = document.getElementById("tables" + "9" + "0" + "3") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "9" + "-" + "0" + "-" + "3") as HTMLTableCellElement;
         if (tdElement) {
             tdElement.rowSpan = 2;
             (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 2;
         }
-        tdElement = document.getElementById("tables" + "9" + "1" + "3") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "9" + "-" + "1" + "-" + "3") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
@@ -320,42 +320,33 @@ function CommunityForm() {
     }
 
     function tableInputValidation(num: number, idx: number, jdx: number) {
-        //console.log(num, idx, jdx);
-        var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
+        // console.log(num, idx, jdx);
+        // console.log("tables" + num + idx + jdx);
+        var inputElement = (document.getElementById("tables" + num + "-" + idx + "-" + jdx)?.childNodes[0] as HTMLInputElement);
         if (!isValid(inputElement)) return;
 
-        // Support for wife and mother
+        // Vaccination
         if (num === 8) {
-            for (var i = 0; i < 3; i++) {
-                var rowTotal = 0;
-                for (var j = 0; j < 5; j++) {
-                    inputElement = (document.getElementById("tables" + num + i + j)?.childNodes[0] as HTMLInputElement);
-                    rowTotal += Number(inputElement.value);
+            for (var i = 0; i < 18; i++) {
+                
+                for (var j = 0; j < 12; j+=3) {
+                    var rowTotal = 0;
+                    var inputElement1 = (document.getElementById("tables" + num + "-" + i + "-" + j)?.childNodes[0] as HTMLInputElement);
+                    if (inputElement1) {
+                        rowTotal += Number(inputElement1.value);
+                    }
+                    var inputElement2 = (document.getElementById("tables" + num + "-" + i + "-" + (j + 1))?.childNodes[0] as HTMLInputElement);
+                    if (inputElement2) {
+                        rowTotal += Number(inputElement2.value);
+                    }
+
+                    if (inputElement1 || inputElement2) {
+                        var totalElement = document.getElementById("tables" + num + "-" + i + "-" + (j + 2));
+                        totalElement.innerHTML = String(rowTotal);
+                        //console.log(rowTotal);
+                    }
                 }
-
-                var totalElement = document.getElementById("tables" + num + i + 5);
-                totalElement.innerHTML = String(rowTotal);
             }
-
-            for (var j = 0; j < 5; j++) {
-                var colTotal = 0;
-                for (var i = 0; i < 3; i++) {
-                    inputElement = (document.getElementById("tables" + num + i + j)?.childNodes[0] as HTMLInputElement);
-                    colTotal += Number(inputElement.value);
-                }
-
-                var totalElement = document.getElementById("tables" + num + 3 + j);
-                totalElement.innerHTML = String(colTotal);
-            }
-
-            var rowTotal = 0;
-            for (var j = 0; j < 5; j++) {
-                var element = document.getElementById("tables" + num + 3 + j);
-                rowTotal += Number(element.innerHTML);
-            }
-
-            var totalElement = document.getElementById("tables" + num + 3 + 5);
-            totalElement.innerHTML = String(rowTotal);
 
             return;
         }
@@ -543,10 +534,10 @@ function CommunityForm() {
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return <td id={"tables" + i + idx + j} className="text-center"></td>
+                                                                                return <td id={"tables" + i + "-" + idx + "-" + j} className="text-center"></td>
                                                                             } else {
                                                                                 const dataInput = (
-                                                                                    <td id={"tables" + i + idx + j} className="align-middle">
+                                                                                    <td id={"tables" + i + "-" + idx + "-" + j} className="align-middle">
                                                                                         <input className="form-control" type="text"
                                                                                             {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
                                                                                             onBlur={() => tableInputValidation(i, idx, j)}
