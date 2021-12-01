@@ -33,14 +33,16 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   }, [csvData])
 
   useEffect(() => {
-    let data: ReportProps[] = [];
+    // let data: ReportProps[] = [];
+    let data: ReportProps = {};
     if (report.formData !== undefined && report.formData !== null) {
       Object.keys(report.formData).forEach((key) => {
         let tempObj: ReportProps = {};
         let reportType = typeof (report.formData[key]);
         if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
-          tempObj[key] = report.formData[key];
-          data.push(tempObj)
+          // tempObj[key] = report.formData[key];
+          // data.push(tempObj)
+          data[key] = report.formData[key];
         } else {
           let objReport: ReportProps = report.formData[key];
           if (objReport !== undefined && objReport !== null) {
@@ -49,16 +51,18 @@ const DepartmentReport = (props : DepartmentReportProps) => {
               if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
                 let tempObj1: ReportProps = {};
                 let tempKey = key + "_" + key1;
-                tempObj1[tempKey] = objReport[key1];
-                data.push(tempObj1);
+                // tempObj1[tempKey] = objReport[key1];
+                // data.push(tempObj1);
+                data[tempKey] = objReport[key1];
               } else {
                 let innerReport = objReport[key1];
                 if (innerReport !== undefined && innerReport !== null) {
                   Object.keys(innerReport).forEach((key2) => {
                     let tempObj1: ReportProps = {};
                     let tempKey = key + "_" + key1 + "_" + key2;
-                    tempObj1[tempKey] = innerReport[key2];
-                    data.push(tempObj1);
+                    // tempObj1[tempKey] = innerReport[key2];
+                    // data.push(tempObj1);
+                    data[tempKey] = innerReport[key2];
                   })
                 }
               }
@@ -67,8 +71,10 @@ const DepartmentReport = (props : DepartmentReportProps) => {
         }
       })
     }
-    setCsvData(data);
-
+    let arrayOfData: Object[] = [];
+    arrayOfData.push(data);
+    console.log(arrayOfData);
+    setCsvData(arrayOfData);
   }, [report])
 
 
@@ -167,7 +173,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                     </li>
                     <li className='col-sm-auto'>
                       <CSVLink
-                          data={csvData}>
+                          data={csvData} >
                         <button
                             className=""
                             color="primary">
