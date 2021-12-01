@@ -81,6 +81,8 @@ function CommunityForm() {
 
 
     const sidePanelClick = (index: any) => {
+        fixVaccination();
+
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
@@ -112,6 +114,9 @@ function CommunityForm() {
             var newLabel = label.replaceAll("(DOT)", ".");
             return newLabel;
         }
+    }
+
+    const fixVaccination = () => {
 
     }
 
@@ -430,7 +435,7 @@ function CommunityForm() {
                                                                     ))}
 
                                                                     {/* ROWS */}
-                                                                    {[...Array(field.total_rows)].map((e, i) => (
+                                                                    {[...Array(field.total_rows)].map((e, idx) => (
                                                                         <tr>
                                                                             {[...Array(field.row_labels.length)].map((e, j) => {
                                                                                 if (count[j] === 0) {
@@ -461,10 +466,10 @@ function CommunityForm() {
                                                                                     if ((j + 1) % field.total_cols === 0) {
                                                                                         inputCount++;
                                                                                     }
-                                                                                    return <td></td>
+                                                                                    return <td id={"tables" + i + idx + j} className="text-center"></td>
                                                                                 } else {
                                                                                     const dataInput = (
-                                                                                        <td>
+                                                                                        <td id={"tables" + i + idx + j} className="align-middle">
                                                                                             <input className="form-control" type="text"
                                                                                                 {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
                                                                                                 )}
