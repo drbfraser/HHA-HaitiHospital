@@ -17,36 +17,33 @@ function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
 
 function reportIterator(report: Object, mergedObject: Object) : Object {
     for(const [key,value] of Object.entries(report)){
-        console.log(`${key}: ${value}`);
+        // console.log(`${key}: ${value}`);
         // console.log(typeof(value));
         if(mergedObject[key]){
-            console.log("EXISTS");
+            // console.log("EXISTS");
             if(key !== 'departmentId' && typeof(report[key]) !== 'string' && typeof(report[key]) !== 'object'){
                 mergedObject[key] += value;
-                console.log(`ADD: ${mergedObject[key]}`);
+                // console.log(`ADD: ${mergedObject[key]}`);
             }
             else if(typeof(report[key]) === 'object'){
-                console.log("ITERATE");
-                console.log(`-OLD OBJECT: ${key}: ${JSON.stringify(report[key])} +  ${JSON.stringify(mergedObject[key])}`);
+                // console.log("ITERATE");
+                // console.log(`-OLD OBJECT: ${key}: ${JSON.stringify(report[key])} +  ${JSON.stringify(mergedObject[key])}`);
                 mergedObject[key] = reportIterator(report[key],mergedObject[key]);
-                console.log(`-TOTAL: ${JSON.stringify(mergedObject[key])}`);
+                // console.log(`-TOTAL: ${JSON.stringify(mergedObject[key])}`);
 
                 // mergedObject[key] += reportIterator(report[key],mergedObject[key]);
             }
         }
         else{
-            console.log("DOESNT EXIST")
+            // console.log("DOESNT EXIST")
             if(typeof(report[key]) === 'object'){
-                // console.log(key);
-                // console.log(report[key]);
-                // console.log('new object');
-                console.log("CREATE OBJ");
+                // console.log("CREATE OBJ");
                 mergedObject[key] = {};
                 mergedObject[key] = report[key];
-                console.log(`-NEW OBJECT: ${key}: ${JSON.stringify(mergedObject[key])}`);
+                // console.log(`-NEW OBJECT: ${key}: ${JSON.stringify(mergedObject[key])}`);
             }
             else{
-                console.log("CREATE VAR");
+                // console.log("CREATE VAR");
                 mergedObject[key] = value;
             }
             // mergedObject[key] = value;
@@ -59,14 +56,45 @@ function reportIterator(report: Object, mergedObject: Object) : Object {
 function aggregateReport(reportArray: Array<Object>) : Object{
     let merged: Object = {};
     let mergedData: Object = {};
+    const lastUpdatedOnRange: Array<number> = [];
+    const lastUpdatedByUserIdRange: Array<String> = [];
 
+    //assuming that all departments are the same
+    const departmentId = reportArray[0]['data']['departmentId'];
+    
+
+    //aggregating all form data together
     reportArray.forEach((reportSingle) => {
+        // console.log(reportSingle['data']['lastUpdatedOn'].getTime());
+        // console.log(typeof(Date.parse(reportSingle['data']['lastUpdatedOn'])))
+        lastUpdatedOnRange.push(Date.parse(reportSingle['data']['lastUpdatedOn']));
+        lastUpdatedByUserIdRange.push(reportSingle['data']['lastUpdatedByUserId']);
+
         reportSingle = reportSingle['data']['formData'];
         reportIterator(reportSingle, mergedData);
         // console.log(reportSingle);
     });
 
-    return mergedData;
+    
+    
+    let max: Date = new Date(Math.max(...lastUpdatedOnRange));
+    let min: Date = new Date(Math.min(...lastUpdatedOnRange));
+
+    // console.log(max,min);
+    const dateRange: Object = {
+        start: min,
+        end: max
+    }
+    // console.log(max,min);
+    // const dateRange: Array<Date> = lastUpdatedOnRange.filter(date => date === min || date === max)
+    merged = ({
+        departmentId,
+        dateRange,
+        lastUpdatedByUserIdRange,
+        mergedData
+    });
+
+    return merged;
 }
 
 async function delTickedReportFromDb(rid: string) {
@@ -129,11 +157,12 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
         //Once all the JSON objects are collected and returned by the promise: 
         Promise.all(aggregateReportArray).then((values)=>{
             objectReportArray = values;
-            console.log(objectReportArray);
+            // console.log(objectReportArray);
             //TODO: add MSPP general combined model
             let combinedReport = aggregateReport(objectReportArray);
-            console.log("Final Merge:");
+            // console.log("Final Merge:");
             console.log(combinedReport);
+            return combinedReport;
         }).catch(err => "Aggregation Error: " + err);
         props.notifyTable()
     }
