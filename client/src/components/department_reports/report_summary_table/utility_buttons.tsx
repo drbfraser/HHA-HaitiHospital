@@ -40,28 +40,35 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
     const {t, i18n} = useTranslation();
 
     return (
-    <div>
+    <>
       {(isShown(props.tickTracker))?
         <div className="row justify-content-end">
-            <div className="col-auto">
-                <button
-                    className=""
-                    onClick = {() => {
-                        deleteReports(props.tickTracker);
-                    }}
-                >
-                    Delete
+            <div className="btn-group col-auto">
+                <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                    Action
                 </button>
-            </div>
 
-            <div className="col-auto">
-            <button className="">{t("departmentPageAccumulate")}</button>
+                <ul className="dropdown-menu">
+                    <li>
+                        <span className="dropdown-item" 
+                    onClick= {()=> {
+                        deleteReports(props.tickTracker);
+                    }}> 
+                            Delete
+                        </span>
+                    </li>
+                    <li>
+                        <span className="dropdown-item" onClick={() => {}}>
+                            {t("departmentPageAccumulate")}
+                        </span>
+                    </li>
+                </ul>
             </div>
         </div>
         :
-        <div></div>
+        <></>
       }
-    </div>
+    </>
   );
 }
 
