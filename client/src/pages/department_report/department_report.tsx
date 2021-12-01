@@ -11,7 +11,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import './department_report.css'
 import {useTranslation} from "react-i18next";
-
+import { CSVLink } from "react-csv";
 
 interface DepartmentReportProps extends ElementStyleProps {
   edit: boolean;
@@ -33,18 +33,41 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   }, [csvData])
 
   useEffect(() => {
-    let data :Object[] = [];
+    // let data :Object[] = [];
+    let data: ReportProps[] = [];
     if (report.formData !== undefined && report.formData !== null) {
-        Object.keys(report.formData).forEach((key) => {
-            let tempObj: Object = {};
-            tempObj[key] = report.formData[key];
-            data.push(tempObj)
-        })
-    }
+      Object.keys(report.formData).forEach((key) => {
+        let tempObj: ReportProps = {};
+        let reportType = typeof (report.formData[key]);
+        if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
+          tempObj[key] = report.formData[key];
+          data.push(tempObj)
+          // console.log(tempObj[key])
+        } else if (Array.isArray(report.formData[key])) {
 
+        } else {
+          let tempReport: ReportProps = report.formData[key];
+          if (tempReport !== undefined && tempReport !== null) {
+            Object.keys(tempReport).forEach((key1) => {
+              let tempObj1: ReportProps = {};
+              let tempReportType = typeof (tempReport[key1]);
+              if (tempReportType === 'number' ||
+                  tempReportType === 'string' ||
+                  tempReportType === 'boolean') {
+                let tempKey = key + " - " + key1;
+                tempObj1[tempKey] = tempReport[key1];
+                data.push(tempObj1);
+              }
+            })
+          }
+        }
+      })
+    }
     setCsvData(data);
 
   }, [report])
+
+
   // Get Report Id when Loaded
   useEffect(() => {
     let isMounted = true;
@@ -135,6 +158,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                   <Link to={'/Department1NICU'}>
                     <button className="">{t("departmentReportDisplayBack")}</button>
                   </Link>
+                  <CSVLink data={csvData}>Download me</CSVLink>
                 </div>
               </section>
           }
