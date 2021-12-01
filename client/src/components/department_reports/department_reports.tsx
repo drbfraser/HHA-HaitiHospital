@@ -2,21 +2,21 @@ import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
-import { JsonArray } from 'constants/interfaces';
+import { JsonArray, DepartmentName, getDepartmentId } from 'constants/interfaces';
 import ReportSummaryTable from 'components/department_reports/report_summary_table/report_summary_table';
 
+import {DayRange} from 'react-modern-calendar-datepicker';
 import './styles.css';
 
 interface DepartmentReportsProps extends ElementStyleProps {
-  department: string;
+  department?: DepartmentName;
+  dateRange?: DayRange;
 };
-
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
 
-  const dbUrlForNICUReports = "/api/report/view";
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
     // To fetch data from db
@@ -31,17 +31,25 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
       apiSource.cancel();
       isMounted = false;
     }
-  }, [refetch]);
+  }, [refetch, props.dateRange]);
 
 
   const fetchReports = async () => {
+    let apiForReports = '';
+    
     try {
-      const res = await Axios.get(dbUrlForNICUReports,
-        {cancelToken: apiSource.token})
-      return res.data;
+        apiForReports = buildApiRoute(props.dateRange, props.department);
+       
+        let res = await Axios.get(apiForReports, {
+            cancelToken: apiSource.token
+        });
+        if (res.status != 200)
+            return [];
+
+        return res.data;
     } catch (err) {
       if (Axios.isCancel(err)) {
-        console.log(`Info: Subscription to ${dbUrlForNICUReports} is canceled`,err)
+        console.log(`Info: Subscription to ${apiForReports} is canceled`,err)
       }
       else 
         console.log(err);
@@ -54,17 +62,8 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     setRefetch(!refetch);
   }
 
-  function getClassName(className: string|undefined) {
-    if (className === undefined) {
-        return "department-reports";
-    }
-    else {
-        return `department-reports ${className}`
-    }
-  }
-  
   return (
-    <div className={getClassName(props.classes)}>
+    <div className={"deparment-reports"}>
       {/*<div className='container my-4'>*/}
       <div className='my-4'>
         {
@@ -81,3 +80,60 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
 }
 
 export default DepartmentReports;
+
+//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
+
+function buildApiRoute(dateRange: DayRange, department: DepartmentName): string {
+    const prefix = 'api/report';
+    const fromParam = 'from';
+    const toParam = 'to';
+    const departmentParam = 'departmentId';
+
+    let returnApi = prefix;
+
+    let params = {};
+    if (isDateRangeValid(dateRange) === true) {
+        const fromValue= formatDateToStr(dateRange.from);
+        const toValue= formatDateToStr(dateRange.to);
+
+        params[fromParam] = fromValue;
+        params[toParam] = toValue;
+    }
+
+    if (department !== undefined) {
+        const deptId = getDepartmentId(department);
+        params[departmentParam] = deptId;
+    }
+
+    returnApi = concatParamsToRoute(prefix, params);
+
+    console.log("api : ", returnApi);
+    return returnApi;
+}
+
+function isDateRangeValid(dateRange: DayRange): boolean {
+    return (dateRange !== undefined && dateRange.from !== null && dateRange.to !== null);
+}
+
+function formatDateToStr(date: {year: Number, month: Number, day: Number}) : String {
+    return `${date.year}-${date.month}-${date.day}`;
+}
+
+function concatParamsToRoute(prefix: string, params: {[paramName : string]: string}) : string {
+    let returnRoute = prefix;
+    let nParams = Object.keys(params).length;
+
+    if (nParams > 0) {
+        returnRoute += '?'
+    }
+
+    Object.keys(params).forEach((paramName, idx) => {
+        returnRoute += `${paramName}=${params[paramName]}`;
+        
+        if (idx < nParams - 1)
+            returnRoute += '&';
+    })
+    return returnRoute;
+}
+
+//  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<
