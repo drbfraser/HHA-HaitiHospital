@@ -182,6 +182,17 @@ function CommunityForm() {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
         }
+
+        tdElement = document.getElementById("tables" + "9" + "0" + "3") as HTMLTableCellElement;
+        if (tdElement) {
+            tdElement.rowSpan = 2;
+            (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 2;
+        }
+        tdElement = document.getElementById("tables" + "9" + "1" + "3") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
     }
 
 
