@@ -159,10 +159,24 @@ const DepartmentReport = (props : DepartmentReportProps) => {
             :
               <section className="mt-3">
                 <div className="container w-50 text-center">
-                  <Link to={'/Department1NICU'}>
-                    <button className="">{t("departmentReportDisplayBack")}</button>
-                  </Link>
-                  <CSVLink data={csvData}>Download me</CSVLink>
+                  <ul className='row justify-content-md-center'>
+                    <li className='col-sm-auto'>
+                      <Link to={'/Department1NICU'}>
+                        <button className="">{t("departmentReportDisplayBack")}</button>
+                      </Link>
+                    </li>
+                    <li className='col-sm-auto'>
+                      <CSVLink
+                          data={csvData}>
+                        <button
+                            className=""
+                            color="primary">
+                          Download CSV
+                        </button>
+                      </CSVLink>
+                    </li>
+                  </ul>
+
                 </div>
               </section>
           }
