@@ -81,10 +81,12 @@ function CommunityForm() {
 
 
     const sidePanelClick = (index: any) => {
+        fixVaccination();
+
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
-            fixVaccination();
+            
             currentClass[i].classList.remove("active");
             if (currentClass[i].childNodes.length > 1) {
                 currentClass[i].removeChild(currentClass[i].childNodes[1])
@@ -117,13 +119,69 @@ function CommunityForm() {
 
     function fixVaccination() {
         var tdElement = document.getElementById("tables" + "8" + "1" + "13") as HTMLTableCellElement;
-        tdElement.rowSpan = 4;
+        if (tdElement) {
+            tdElement.rowSpan = 4;
+            (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 4;
+        }
+        tdElement = document.getElementById("tables" + "8" + "2" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+        tdElement = document.getElementById("tables" + "8" + "3" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+        tdElement = document.getElementById("tables" + "8" + "4" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+
+
         tdElement = document.getElementById("tables" + "8" + "6" + "13") as HTMLTableCellElement;
-        tdElement.rowSpan = 3;
+        if (tdElement) {
+            tdElement.rowSpan = 3;
+            (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 3;
+        }
+        tdElement = document.getElementById("tables" + "8" + "7" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+        tdElement = document.getElementById("tables" + "8" + "8" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+
         tdElement = document.getElementById("tables" + "8" + "10" + "13") as HTMLTableCellElement;
-        tdElement.rowSpan = 2;
+        if (tdElement) {
+            tdElement.rowSpan = 2;
+            (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 2;
+        }
+        tdElement = document.getElementById("tables" + "8" + "11" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+
         tdElement = document.getElementById("tables" + "8" + "13" + "13") as HTMLTableCellElement;
-        tdElement.rowSpan = 3;
+        if (tdElement) {
+            tdElement.rowSpan = 3;
+            (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 3;
+        }
+        tdElement = document.getElementById("tables" + "8" + "14" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+        tdElement = document.getElementById("tables" + "8" + "15" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
     }
 
 
