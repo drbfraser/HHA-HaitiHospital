@@ -42,32 +42,58 @@ function CommunityForm() {
         }
     }
 
+    const addFormDescriptions = (formFields) => {
+        var descriptions = [];
+        fields.forEach(field => {
+            if (field.field_type === "number") {
+                descriptions.push({ [field.field_id]: field.field_label });
+            } else if (field.field_type === "array") {
+                descriptions.push({ [field.field_id]: field.field_label });
+            } else if (field.field_type === "list") {
+                descriptions.push({ [field.field_id]: field.field_label });
+                field.field_template.forEach(listField => {
+                    var listID = field.field_id + "." + listField.field_id;
+                    descriptions.push(
+                        { [listID]: listField.field_label }
+                    );
+                })
+            }
+        });
+        return descriptions;
+    }
 
     const onSubmit = async (data: any) => {
+        if (!window.confirm("Press OK to finalize submission.")) {
+            return;
+        }
+
+        
+
+        data.decriptions = addFormDescriptions(fields);
         console.log(data);
-        // var valid = submitValidation();
+        var valid = true;//submitValidation();
 
-        // if (valid === true) {
+        if (valid === true) {
 
-        //     data.departmentId = 1;
-        //     data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-        //     data.admissions.mainCondition.otherMedical = formValuesAdCondition;
-        //     data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-        //     await axios.post('/api/report/add', data).then(res => {
-        //         console.log(res.data);
-        //     }).catch(error => {
-        //         console.error('Something went wrong!', error.response);
-        //     });
+            //     data.departmentId = 1;
+            //     data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            //     data.admissions.mainCondition.otherMedical = formValuesAdCondition;
+            //     data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
+            //     await axios.post('/api/report/add', data).then(res => {
+            //         console.log(res.data);
+            //     }).catch(error => {
+            //         console.error('Something went wrong!', error.response);
+            //     });
 
-        //     //console.log(data);
-        //     history.push("/Department1NICU");
-        // } else {
-        //     console.log(valid);
-        //     alert("Some fields contain invalid values");
-        //     window.scrollTo(0, 0);
-        // }
+            //     //console.log(data);
+            //     history.push("/Department2Maternity");
+        } else {
+            alert("Some fields contain invalid values");
+            window.scrollTo(0, 0);
+        }
 
     }
+
 
     const clickPrevious = () => {
         sidePanelClick(sectionState - 1);
@@ -85,11 +111,7 @@ function CommunityForm() {
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
-
             currentClass[i].classList.remove("active");
-            if (currentClass[i].childNodes.length > 1) {
-                currentClass[i].removeChild(currentClass[i].childNodes[1])
-            }
 
             var show = "none"
             if (i === index) {
