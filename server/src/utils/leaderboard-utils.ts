@@ -15,7 +15,7 @@ export async function updateDepartmentPoints() {
             })()
         ]);
         caseStudies.forEach(async (item) => {
-            Department.findOneAndUpdate({ "name": item.user.department }, { $inc : { "points" : pointsPerCaseStudy, "nCaseStudies" : 1 } }).exec();
+            await Department.findOneAndUpdate({ "name": item.user.department }, { $inc : { "points" : pointsPerCaseStudy, "nCaseStudies" : 1 } }).exec();
         })
     } catch (err) {
         console.log(err);
