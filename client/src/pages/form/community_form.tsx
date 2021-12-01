@@ -81,11 +81,10 @@ function CommunityForm() {
 
 
     const sidePanelClick = (index: any) => {
-        fixVaccination();
-
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
+            fixVaccination();
             currentClass[i].classList.remove("active");
             if (currentClass[i].childNodes.length > 1) {
                 currentClass[i].removeChild(currentClass[i].childNodes[1])
@@ -116,8 +115,15 @@ function CommunityForm() {
         }
     }
 
-    const fixVaccination = () => {
-
+    function fixVaccination() {
+        var tdElement = document.getElementById("tables" + "8" + "1" + "13") as HTMLTableCellElement;
+        tdElement.rowSpan = 4;
+        tdElement = document.getElementById("tables" + "8" + "6" + "13") as HTMLTableCellElement;
+        tdElement.rowSpan = 3;
+        tdElement = document.getElementById("tables" + "8" + "10" + "13") as HTMLTableCellElement;
+        tdElement.rowSpan = 2;
+        tdElement = document.getElementById("tables" + "8" + "13" + "13") as HTMLTableCellElement;
+        tdElement.rowSpan = 3;
     }
 
 
@@ -405,186 +411,97 @@ function CommunityForm() {
                                             );
 
                                         } else if (field.field_type === "table") {
-                                            if (field.subsection_label === "Vaccination") {
-                                                var count = [];
-                                                var k = [];
-                                                var inputCount = 0;
-                                                for (let i = 0; i < field.row_labels.length; i++) {
-                                                    count.push(0);
-                                                    k.push(0);
-                                                }
-                                                console.log("inputs" + i);
 
-                                                ret.push(
-                                                    <>
-                                                        <div id={"inputs" + i}>
-                                                            <table className="table table-bordered table-sm">
-                                                                <tbody>
-                                                                    {/* COLUMNS */}
-
-                                                                    {field.col_labels.map((row, coli) => (
-                                                                        <tr>
-                                                                            {field.row_labels.map((x, y) => (
-                                                                                <td></td>
-                                                                            ))}
-
-                                                                            {row.map((col, colj) => (
-                                                                                <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
-                                                                            ))}
-                                                                        </tr>
-                                                                    ))}
-
-                                                                    {/* ROWS */}
-                                                                    {[...Array(field.total_rows)].map((e, idx) => (
-                                                                        <tr>
-                                                                            {[...Array(field.row_labels.length)].map((e, j) => {
-                                                                                if (count[j] === 0) {
-                                                                                    const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{field.row_labels[j][k[j]]}</th>
-                                                                                    count[j]++;
-
-                                                                                    if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                        k[j]++;
-                                                                                        count[j] = 0;
-                                                                                    }
-
-                                                                                    return header;
-                                                                                } else {
-                                                                                    count[j]++;
-
-                                                                                    if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                        k[j]++;
-                                                                                        count[j] = 0;
-                                                                                    }
-                                                                                    return;
-                                                                                }
-                                                                            })}
-
-                                                                            {[...Array(field.total_cols)].map((e, j) => {
-                                                                                var rowLength = field.row_labels.length - 1;
-                                                                                var colLength = field.col_labels.length - 1;
-                                                                                if (field.invalid_inputs[inputCount][j] === 1) {
-                                                                                    if ((j + 1) % field.total_cols === 0) {
-                                                                                        inputCount++;
-                                                                                    }
-                                                                                    return <td id={"tables" + i + idx + j} className="text-center"></td>
-                                                                                } else {
-                                                                                    const dataInput = (
-                                                                                        <td id={"tables" + i + idx + j} className="align-middle">
-                                                                                            <input className="form-control" type="text"
-                                                                                                {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j]
-                                                                                                )}
-                                                                                                onBlur={() => tableInputValidation(i, idx, j)}
-                                                                                            />
-                                                                                        </td>
-                                                                                    );
-                                                                                    if ((j + 1) % field.total_cols === 0) {
-                                                                                        inputCount++;
-                                                                                    }
-                                                                                    return dataInput;
-                                                                                }
-
-                                                                            })}
-                                                                        </tr>
-
-                                                                    ))}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </>
-                                                )
-                                            } else {
-                                                var count = [];
-                                                var k = [];
-                                                var inputCount = 0;
-                                                for (let i = 0; i < field.row_labels.length; i++) {
-                                                    count.push(0);
-                                                    k.push(0);
-                                                }
-                                                ret.push(
-                                                    <>
-                                                        <div id={"inputs" + i}>
-                                                            <table className="table table-bordered table-sm">
-                                                                <tbody>
-                                                                    {/* COLUMNS */}
-
-                                                                    {field.col_labels.map((row, coli) => (
-                                                                        <tr>
-                                                                            {field.row_labels.map((x, y) => (
-                                                                                <td></td>
-                                                                            ))}
-
-                                                                            {row.map((col, colj) => (
-                                                                                <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
-                                                                            ))}
-                                                                        </tr>
-                                                                    ))}
-
-
-                                                                    {/* ROWS */}
-                                                                    {[...Array(field.total_rows)].map((e, idx) => (
-                                                                        <tr>
-                                                                            {[...Array(field.row_labels.length)].map((e, j) => {
-                                                                                if (count[j] === 0) {
-                                                                                    const rowLabel = getRowLabel(field.row_labels[j][k[j]]);
-                                                                                    const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{rowLabel}</th>
-                                                                                    count[j]++;
-
-                                                                                    if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                        k[j]++;
-                                                                                        count[j] = 0;
-                                                                                    }
-
-                                                                                    return header;
-                                                                                } else {
-                                                                                    count[j]++;
-
-                                                                                    if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                        k[j]++;
-                                                                                        count[j] = 0;
-                                                                                    }
-                                                                                    return;
-                                                                                }
-                                                                            })}
-
-                                                                            {/* ENTRIES */}
-
-                                                                            {[...Array(field.total_cols)].map((e, j) => {
-                                                                                var rowLength = field.row_labels.length - 1;
-                                                                                var colLength = field.col_labels.length - 1;
-                                                                                if (field.invalid_inputs[inputCount][j] === 1) {
-                                                                                    if ((j + 1) % field.total_cols === 0) {
-                                                                                        inputCount++;
-                                                                                    }
-                                                                                    return <td id={"tables" + i + idx + j} className="text-center"></td>
-                                                                                } else {
-                                                                                    const dataInput = (
-                                                                                        <td id={"tables" + i + idx + j} className="align-middle">
-                                                                                            <input className="form-control" type="text"
-                                                                                                {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
-                                                                                                onBlur={() => tableInputValidation(i, idx, j)}
-                                                                                            />
-                                                                                            <div className="invalid-feedback text-end">
-                                                                                                Requires a valid number
-                                                                                            </div>
-                                                                                        </td>
-                                                                                    );
-                                                                                    if ((j + 1) % field.total_cols === 0) {
-                                                                                        inputCount++;
-                                                                                    }
-                                                                                    return dataInput;
-                                                                                }
-
-                                                                            })}
-                                                                        </tr>
-
-                                                                    ))}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </>
-                                                )
+                                            var count = [];
+                                            var k = [];
+                                            var inputCount = 0;
+                                            for (let i = 0; i < field.row_labels.length; i++) {
+                                                count.push(0);
+                                                k.push(0);
                                             }
+                                            ret.push(
+                                                <>
+                                                    <div id={"inputs" + i}>
+                                                        <table className="table table-bordered table-sm">
+                                                            <tbody>
+                                                                {/* COLUMNS */}
 
+                                                                {field.col_labels.map((row, coli) => (
+                                                                    <tr>
+                                                                        {field.row_labels.map((x, y) => (
+                                                                            <td></td>
+                                                                        ))}
+
+                                                                        {row.map((col, colj) => (
+                                                                            <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
+                                                                        ))}
+                                                                    </tr>
+                                                                ))}
+
+
+                                                                {/* ROWS */}
+                                                                {[...Array(field.total_rows)].map((e, idx) => (
+                                                                    <tr>
+                                                                        {[...Array(field.row_labels.length)].map((e, j) => {
+                                                                            if (count[j] === 0) {
+                                                                                const rowLabel = getRowLabel(field.row_labels[j][k[j]]);
+                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{rowLabel}</th>
+                                                                                count[j]++;
+
+                                                                                if (count[j] === field.row_spans[j][k[j]]) {
+                                                                                    k[j]++;
+                                                                                    count[j] = 0;
+                                                                                }
+
+                                                                                return header;
+                                                                            } else {
+                                                                                count[j]++;
+
+                                                                                if (count[j] === field.row_spans[j][k[j]]) {
+                                                                                    k[j]++;
+                                                                                    count[j] = 0;
+                                                                                }
+                                                                                return;
+                                                                            }
+                                                                        })}
+
+                                                                        {/* ENTRIES */}
+
+                                                                        {[...Array(field.total_cols)].map((e, j) => {
+                                                                            var rowLength = field.row_labels.length - 1;
+                                                                            var colLength = field.col_labels.length - 1;
+                                                                            if (field.invalid_inputs[inputCount][j] === 1) {
+                                                                                if ((j + 1) % field.total_cols === 0) {
+                                                                                    inputCount++;
+                                                                                }
+                                                                                return <td id={"tables" + i + idx + j} className="text-center"></td>
+                                                                            } else {
+                                                                                const dataInput = (
+                                                                                    <td id={"tables" + i + idx + j} className="align-middle">
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
+                                                                                            onBlur={() => tableInputValidation(i, idx, j)}
+                                                                                        />
+                                                                                        <div className="invalid-feedback text-end">
+                                                                                            Requires a valid number
+                                                                                        </div>
+                                                                                    </td>
+                                                                                );
+                                                                                if ((j + 1) % field.total_cols === 0) {
+                                                                                    inputCount++;
+                                                                                }
+                                                                                return dataInput;
+                                                                            }
+
+                                                                        })}
+                                                                    </tr>
+
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </>
+                                            )
                                         }
                                     }
 
