@@ -206,7 +206,6 @@ function CommunityForm() {
     //
     // VALIDATION FUNCTIONS
     // 
-
     function submitValidation() {
         var isFormValid = true;
 
@@ -223,6 +222,7 @@ function CommunityForm() {
                         }
                     }
                 }
+
             }
         }
 
@@ -230,47 +230,48 @@ function CommunityForm() {
     }
 
     function checkSideBar() {
-        // const listGroup = document.getElementsByClassName("list-group-item");
-        // let num = 1;
-        // for (let i = 0; i < listGroup.length; i++) {
-        //     var section = sections[i];
+        const listGroup = document.getElementsByClassName("list-group-item");
+        let num = 1;
+        for (let i = 0; i < listGroup.length; i++) {
+            var section = sections[i];
 
-        //     var isSectionValid = true;
-        //     for (let j = 1; j <= section.section_fields.length; j++, num++) {
-        //         var formValues = formValuesComeFrom;
+            var isSectionValid = true;
+            for (let j = 1; j <= section.section_fields.length; j++, num++) {
+                var field = fields[num-1];
 
-        //         if (num === 22) {
-        //             var inputGroup = (document.getElementById("inputs" + num) as HTMLElement);
-        //             for (let k = 0; k < formValues.length; k++) {
-        //                 var textInput = (inputGroup.childNodes[k].childNodes[0].childNodes[0] as HTMLInputElement);
-        //                 var valueInput = (inputGroup.childNodes[k].childNodes[1].childNodes[0] as HTMLInputElement);
-        //                 if (textInput.classList.contains("is-invalid") || valueInput.classList.contains("is-invalid")) {
-        //                     isSectionValid = false;
-        //                 }
-        //             }
-        //         } else {
-        //             var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
-        //             if (inputElement.classList.contains("is-invalid")) {
-        //                 isSectionValid = false;
-        //             }
-        //         }
-        //     }
+                if (field.field_type === "table") {
+                    for (var idx = 0; idx < field.total_rows; idx++) {
+                        for (var jdx=0; jdx<field.total_cols; jdx++) {
+                            var inputElement = (document.getElementById("tables" + num + "-" + idx + "-" + jdx)?.childNodes[0] as HTMLInputElement);
+                            if (field.invalid_inputs[idx][jdx] === 0 && inputElement.classList.contains("is-invalid")) {
+                                isSectionValid = false;
+                            }
+                        }
+                    }
+                } else {
+                    var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
+                    if (inputElement.classList.contains("is-invalid")) {
+                        isSectionValid = false;
+                    }
+                }
+            }
 
-        //     var listElement = listGroup[i];
-        //     if (isSectionValid) {
-        //         if (listElement.childElementCount > 1) {
-        //             listElement.removeChild(listElement.childNodes[1]);
-        //         }
-        //     } else {
-        //         if (listElement.childElementCount > 1) {
-        //             listElement.removeChild(listElement.childNodes[1]);
-        //         }
-        //         var alertIcon = document.createElement("div")
-        //         alertIcon.classList.add("bi", "bi-exclamation-circle-fill", "flex-shrink-0", "ms-2");
-        //         listElement.appendChild(alertIcon);
-        //     }
-        // }
+            var listElement = listGroup[i];
+            if (isSectionValid) {
+                if (listElement.childElementCount > 1) {
+                    listElement.removeChild(listElement.childNodes[1]);
+                }
+            } else {
+                if (listElement.childElementCount > 1) {
+                    listElement.removeChild(listElement.childNodes[1]);
+                }
+                var alertIcon = document.createElement("div")
+                alertIcon.classList.add("bi", "bi-exclamation-circle-fill", "flex-shrink-0", "ms-2");
+                listElement.appendChild(alertIcon);
+            }
+        }
     }
+
 
 
     function removeValidity(inputElement: HTMLInputElement) {
