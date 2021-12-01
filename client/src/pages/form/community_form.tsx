@@ -31,6 +31,7 @@ function CommunityForm() {
 
     useEffect(() => {
         sidePanelClick(sectionState);
+        fixVaccination();
     })
 
     const sections: any = Object.values(formModel);
@@ -81,12 +82,10 @@ function CommunityForm() {
 
 
     const sidePanelClick = (index: any) => {
-        fixVaccination();
-
         const currentClass = document.getElementsByClassName("list-group-item");
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
-            
+
             currentClass[i].classList.remove("active");
             if (currentClass[i].childNodes.length > 1) {
                 currentClass[i].removeChild(currentClass[i].childNodes[1])
@@ -219,7 +218,7 @@ function CommunityForm() {
                 for (var idx = 0; idx < field.total_rows; idx++) {
                     for (var jdx = 0; jdx < field.total_cols; jdx++) {
                         if (field.invalid_inputs[idx][jdx] == 0) {
-                            var inputElement = (document.getElementById("tables" + i + idx + jdx)?.childNodes[0] as HTMLInputElement);
+                            var inputElement = (document.getElementById("tables" + i + "-" + idx + "-" + jdx)?.childNodes[0] as HTMLInputElement);
                             isFormValid = isValid(inputElement) && isFormValid;
                         }
                     }
@@ -327,26 +326,86 @@ function CommunityForm() {
 
         // Vaccination
         if (num === 8) {
+            var grandTotals = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
             for (var i = 0; i < 18; i++) {
-                
-                for (var j = 0; j < 12; j+=3) {
-                    var rowTotal = 0;
+                var rowTotal = 0;
+                for (var j = 0; j < 12; j += 3) {
+                    var total = 0;
                     var inputElement1 = (document.getElementById("tables" + num + "-" + i + "-" + j)?.childNodes[0] as HTMLInputElement);
                     if (inputElement1) {
-                        rowTotal += Number(inputElement1.value);
+                        total += Number(inputElement1.value);
                     }
                     var inputElement2 = (document.getElementById("tables" + num + "-" + i + "-" + (j + 1))?.childNodes[0] as HTMLInputElement);
                     if (inputElement2) {
-                        rowTotal += Number(inputElement2.value);
+                        total += Number(inputElement2.value);
                     }
 
                     if (inputElement1 || inputElement2) {
                         var totalElement = document.getElementById("tables" + num + "-" + i + "-" + (j + 2));
-                        totalElement.innerHTML = String(rowTotal);
-                        //console.log(rowTotal);
+                        totalElement.innerHTML = String(total);
+                        rowTotal += total;
                     }
                 }
+
+                var totalElement = document.getElementById("tables" + num + "-" + i + "-" + 12);
+                totalElement.innerHTML = String(rowTotal);
+                grandTotals[i] = rowTotal;
             }
+
+            var totalElement = document.getElementById("tables" + num + "-" + 0 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[0]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 1 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[1] + grandTotals[2] + grandTotals[3] + grandTotals[4]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 5 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[5]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 6 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[6] + grandTotals[7] + grandTotals[8]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 9 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[9]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 10 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[10] + grandTotals[11]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 12 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[12]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 13 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[13] + grandTotals[14] + grandTotals[15]);
+            
+            totalElement = document.getElementById("tables" + num + "-" + 16 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[16]);
+
+            totalElement = document.getElementById("tables" + num + "-" + 17 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[17]);
+
+            return;
+        } else if (num === 9) {
+            var grandTotals = [0,0];
+            for (var i = 0; i < 2; i++) {
+                var rowTotal = 0;
+                var inputElement1 = (document.getElementById("tables" + num + "-" + i + "-" + 0)?.childNodes[0] as HTMLInputElement);
+                if (inputElement1) {
+                    rowTotal += Number(inputElement1.value);
+                }
+                var inputElement2 = (document.getElementById("tables" + num + "-" + i + "-" + 1)?.childNodes[0] as HTMLInputElement);
+                if (inputElement2) {
+                    rowTotal += Number(inputElement2.value);
+                }
+
+                if (inputElement1 || inputElement2) {
+                    var totalElement = document.getElementById("tables" + num + "-" + i + "-" + 2);
+                    totalElement.innerHTML = String(rowTotal);
+                }
+
+                grandTotals[i] = rowTotal;
+            }
+
+            var totalElement = document.getElementById("tables" + num + "-" + 0 + "-" + 4);
+            totalElement.innerHTML = String(grandTotals[0] + grandTotals[1]);
 
             return;
         }
@@ -534,7 +593,7 @@ function CommunityForm() {
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return <td id={"tables" + i + "-" + idx + "-" + j} className="text-center"></td>
+                                                                                return <td id={"tables" + i + "-" + idx + "-" + j} className="text-center align-middle"></td>
                                                                             } else {
                                                                                 const dataInput = (
                                                                                     <td id={"tables" + i + "-" + idx + "-" + j} className="align-middle">
