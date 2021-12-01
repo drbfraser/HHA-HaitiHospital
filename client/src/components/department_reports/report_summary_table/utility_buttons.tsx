@@ -164,7 +164,6 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
             console.log(combinedReport);
             return combinedReport;
         }).catch(err => "Aggregation Error: " + err);
-        props.notifyTable()
     }
 
     const {t, i18n} = useTranslation();
