@@ -25,7 +25,26 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   const { id } = useParams<UrlParams>();
   const getReportApi = `/api/report/viewreport/${id}`;
   const [ report, setReport] = useState<ReportProps>({});
+  const [ csvData, setCsvData ] = useState<Object[]> ([]);
+
   const apiSource = Axios.CancelToken.source();
+  useEffect(() => {
+    console.log(csvData);
+  }, [csvData])
+
+  useEffect(() => {
+    let data :Object[] = [];
+    if (report.formData !== undefined && report.formData !== null) {
+        Object.keys(report.formData).forEach((key) => {
+            let tempObj: Object = {};
+            tempObj[key] = report.formData[key];
+            data.push(tempObj)
+        })
+    }
+
+    setCsvData(data);
+
+  }, [report])
   // Get Report Id when Loaded
   useEffect(() => {
     let isMounted = true;
@@ -41,7 +60,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       isMounted = false;
       apiSource.cancel();
     }
-  });
+  }, []);
 
   async function fetchReport() {
     try {

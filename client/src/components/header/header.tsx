@@ -40,7 +40,11 @@ function HeaderView() {
         return <h4 className="text-secondary">{t("headerDepartmentCom")}</h4>
     } else if (location.pathname.slice(1) === 'admin') {
         return <h4 className="text-secondary">{t("headerAdmin")}</h4>
-    } else if (location.pathname.split('/')[1] === 'admin-add-user') {
+    } else if (location.pathname.slice(1) === 'general_reports') {
+        // Need translation
+        return (<h4 className='text-secondary'>General</h4>)
+    }
+    else if (location.pathname.split('/')[1] === 'admin-add-user') {
         return <h4 className="text-secondary">Add User</h4>
     } else if (location.pathname.split('/')[1] === 'admin-edit-user') {
         return <h4 className="text-secondary">Edit User</h4>
@@ -84,7 +88,7 @@ const Header = (props: HeaderProps) => {
     
     useEffect(() => {
         getUserInfo();
-    }, [userInfo.username]);
+    }, []);
     const {t, i18n} = useTranslation();
 
     return (
