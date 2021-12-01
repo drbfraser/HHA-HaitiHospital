@@ -33,7 +33,6 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   }, [csvData])
 
   useEffect(() => {
-    // let data :Object[] = [];
     let data: ReportProps[] = [];
     if (report.formData !== undefined && report.formData !== null) {
       Object.keys(report.formData).forEach((key) => {
@@ -42,21 +41,26 @@ const DepartmentReport = (props : DepartmentReportProps) => {
         if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
           tempObj[key] = report.formData[key];
           data.push(tempObj)
-          // console.log(tempObj[key])
-        } else if (Array.isArray(report.formData[key])) {
-
         } else {
-          let tempReport: ReportProps = report.formData[key];
-          if (tempReport !== undefined && tempReport !== null) {
-            Object.keys(tempReport).forEach((key1) => {
-              let tempObj1: ReportProps = {};
-              let tempReportType = typeof (tempReport[key1]);
-              if (tempReportType === 'number' ||
-                  tempReportType === 'string' ||
-                  tempReportType === 'boolean') {
-                let tempKey = key + " - " + key1;
-                tempObj1[tempKey] = tempReport[key1];
+          let objReport: ReportProps = report.formData[key];
+          if (objReport !== undefined && objReport !== null) {
+            Object.keys(objReport).forEach((key1) => {
+              let innerReportType = typeof (objReport[key1]);
+              if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
+                let tempObj1: ReportProps = {};
+                let tempKey = key + "_" + key1;
+                tempObj1[tempKey] = objReport[key1];
                 data.push(tempObj1);
+              } else {
+                let innerReport = objReport[key1];
+                if (innerReport !== undefined && innerReport !== null) {
+                  Object.keys(innerReport).forEach((key2) => {
+                    let tempObj1: ReportProps = {};
+                    let tempKey = key + "_" + key1 + "_" + key2;
+                    tempObj1[tempKey] = innerReport[key2];
+                    data.push(tempObj1);
+                  })
+                }
               }
             })
           }
