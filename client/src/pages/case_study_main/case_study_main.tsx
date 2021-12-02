@@ -18,8 +18,6 @@ interface CaseStudyMainProps extends RouteComponentProps {}
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
-
-
   const caseStudiesUrl = '/api/casestudies';
   const getCaseStudies = async () => {
     const res = await axios.get(caseStudiesUrl);
@@ -69,7 +67,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                 caseStudies.map((item, index) => (
                   <tr key={item._id}>
                     <th scope="row">{index + 1}</th>
-                    <td>{item.caseStudyType}</td>
+                    <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{item.user ? item.user.name : "[deleted]"}</td>
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
