@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import "./admin.css";
 import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 interface AdminProps extends ElementStyleProps {
 }
@@ -82,10 +83,10 @@ export const AddUserForm = (props: AdminProps) => {
               <label htmlFor="role" className="form-label">{t("adminAddUserRole")}</label>
               <select className="form-select" id="role" required {...register("role", {required: true})} onChange={(e)=>{setRole(e.target.value);unregister("department")}}>
                 <option value="" selected disabled hidden>{t("adminAddUserSelectRole")}</option>
-                <option value={Role.User}>{Role.User}</option>
-                <option value={Role.Admin}>{Role.Admin}</option>
-                <option value={Role.MedicalDirector}>{Role.MedicalDirector}</option>
-                <option value={Role.HeadOfDepartment}>{Role.HeadOfDepartment}</option>
+                <option value={Role.User}>{i18n.t(Role.User)}</option>
+                <option value={Role.Admin}>{i18n.t(Role.Admin)}</option>
+                <option value={Role.MedicalDirector}>{i18n.t(Role.MedicalDirector)}</option>
+                <option value={Role.HeadOfDepartment}>{i18n.t(Role.HeadOfDepartment)}</option>
               </select>
             </div>
             {role === Role.User || role === Role.HeadOfDepartment ? 
