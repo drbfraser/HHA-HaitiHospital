@@ -34,14 +34,6 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                 </button>
                             </Link>
                         </div>
-
-                        <div className='col-sm-6 col-md-6 col-lg-6'>
-                            <Link to={"#"}>
-                                <button className="btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">Support Page</div>
-                                </button>
-                            </Link>
-                        </div>
                     </div>
                 </section>
 
