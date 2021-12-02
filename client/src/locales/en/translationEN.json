@@ -1,5 +1,5 @@
 {
-  "signInPleaseSignIn": "Please sign in",
+  "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
   "signInPleasePlaceHolderPassword": "Password",
   "signInRememberMe": "Remember me",
@@ -10,6 +10,7 @@
   "signInValidationMustBe20CharLess": "Must be 20 characters or less",
   "signInUsernameValidationRequired": "Username is required to login",
   "signInPasswordValidationRequired": "Password is required to login",
+  "signInContactAdmin": "Contact Admin",
 
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",
@@ -17,7 +18,7 @@
   "sidebarCaseStudy": "Case Study",
   "sidebarAdmin": "Admin",
   "sidebarEnglish": "English",
-  "sidebarFrench": "français",
+  "sidebarFrench": "Français",
 
   "headerOverview": "Overview",
   "headerMessageBoard": "Message Board",
@@ -33,14 +34,14 @@
   "headerEditUser": "Edit User",
   "headerSignOut": "Log out",
 
-  "leaderBoardOverviewDepartmentLeader": "Top Department on Leaderboard",
+  "leaderBoardOverviewDepartmentLeader": "Department Leaderboard",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "Department",
   "leaderBoardOverviewCaseStudies": "Case Studies",
   "leaderBoardOverviewPoints": "Points",
   "leaderBoardOverviewShowLess": "Show Less",
   "leaderBoardOverviewShowMore": "Show More",
-  "leaderBoardOverviewSeeFullLeaderboard": "See full leaderboard",
+  "leaderBoardOverviewSeeFullLeaderboard": "Go to leaderboard page",
 
   "dashboardMessageOverviewMessages": "Messages",
   "dashboardMessageOverviewTitle": "Title",
@@ -67,15 +68,16 @@
   "leaderBoardDepartment": "Department",
   "leaderBoardCase Studies": "Case Studies",
   "leaderBoardPoints": "Points",
-  "leaderBoardEmployeeOfMonth": "Employee of Month",
+  "leaderBoardEmployeeOfMonth": "Employee of the Month",
   "leaderBoardLastUpdate": "Last updated 3 days ago",
 
   "caseStudyMainAddCaseStudy": "Add Case Study",
   "caseStudyMainCaseStudyType": "Case Study Type",
   "caseStudyMainAuthor": "Author",
   "caseStudyMainCreated": "Created",
-  "caseStudyMainLink": "Link",
-  "caseStudyMainViewCaseStudy": "View Case Study",
+  "caseStudyMainLink": "Options",
+  "caseStudyMainViewCaseStudy": "View",
+  "caseStudyMainDelete": "Delete",
 
   "caseStudyFormBack":"Back",
   "caseStudyFormCaseStudyOptions":"Case Study Options",
@@ -108,7 +110,7 @@
   "caseStudyFormWhatEnjoyTheMostAtHCBH":"What do they enjoy the most about working at HCBH?",
 
   "caseStudyFormTrainingSessionCaseStudy":"Training Session Case Study",
-  "caseStudyFormTrainingDate":"Training Date",
+  "caseStudyFormTrainingDate":"Training Date (MM-DD-YYYY)",
   "caseStudyFormWhatWasTrainingOn":"What was the training on?",
   "caseStudyFormWhoConductedTraining":"Who conducted training?",
   "caseStudyFormWhoAttendedTraining":"Who attended the training?",
@@ -125,7 +127,7 @@
   "caseStudyFormAnErrorOccurred":"An error occurred during the submission. Please try again.",
 
   "departmentPageNICU/PAED": "Department of NICU/PAED",
-  "departmentPageSubmitDate": "Submit Data",
+  "departmentPageSubmitDate": "Add Report",
   "departmentPageBiomechanic": "Biomechanic",
   "departmentPageReportID": "ReportID",
   "departmentPageLastUpdatedOn": "Last Updated On",

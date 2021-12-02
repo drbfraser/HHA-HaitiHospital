@@ -42,7 +42,7 @@ export const EditUserForm = (props: AdminProps) => {
 
   useEffect(() => {
     getUser();
-  }, [user.username])
+  }, [])
 
   const onSubmit = (data: any) => {
     axios.put(userUrl, data).then(res => {

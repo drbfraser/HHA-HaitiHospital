@@ -1,4 +1,5 @@
-.case-study-main .main-region {
+.general-reports main {
+    /* margin-left: 200px; */
     position: absolute;
     left: 200px;
     width: calc(100% - 200px)
@@ -6,7 +7,8 @@
 
 /*Margin by pixel:*/
 @media screen and ( max-width: 700px ){
-    .case-study-main .main-region {
+    .general-reports main {
+        /* margin-left: 70px; */
         position: absolute;
         left: 70px;
         width: calc(100% - 70px)

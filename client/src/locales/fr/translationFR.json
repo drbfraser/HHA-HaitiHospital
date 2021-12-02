@@ -1,5 +1,5 @@
 {
-  "signInPleaseSignIn": "Veuillez vous connecter",
+  "signInPleaseSignIn": "S'identifier",
   "signInPleasePlaceHolderEmail": "Nom d'utilisateur",
   "signInPleasePlaceHolderPassword": "Mot de passe",
   "signInRememberMe": "Souviens-toi de moi",
@@ -10,6 +10,7 @@
   "signInValidationMustBe20CharLess": "Doit comporter 20 caractères ou moins",
   "signInUsernameValidationRequired": "Le nom d'utilisateur est requis pour se connecter",
   "signInPasswordValidationRequired": "Le mot de passe est requis pour se connecter",
+  "signInContactAdmin": "Contacter l'administrateur",
 
   "sidebarHome": "D'accueil",
   "sidebarMessageBoard": "Tableau de bord",
@@ -17,7 +18,7 @@
   "sidebarCaseStudy": "Étude de cas",
   "sidebarAdmin": "Administrateur",
   "sidebarEnglish": "English",
-  "sidebarFrench": "français",
+  "sidebarFrench": "Français",
 
   "headerOverview": "Aperçu",
   "headerMessageBoard": "Tableau de bord",
@@ -32,9 +33,9 @@
   "headerAddUser": "Ajouter un utilisateur",
   "headerEditUser": "Modifier l'utilisateur",
   "headerSignOut": "Se déconnecter",
-  "leaderBoardOverviewSeeFullLeaderboard": "Voir le classement complet",
+  "leaderBoardOverviewSeeFullLeaderboard": "Aller à la page du classement ",
 
-  "leaderBoardOverviewDepartmentLeader": "Meilleur département du classement",
+  "leaderBoardOverviewDepartmentLeader": "Classement du département",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "département",
   "leaderBoardOverviewCaseStudies": "Études de cas",
@@ -74,8 +75,9 @@
   "caseStudyMainCaseStudyType": "Type d'étude de cas",
   "caseStudyMainAuthor": "Auteur",
   "caseStudyMainCreated": "Créé",
-  "caseStudyMainLink": "Relier",
-  "caseStudyMainViewCaseStudy": "Voir l'étude de cas",
+  "caseStudyMainLink": "Options",
+  "caseStudyMainViewCaseStudy": "Voir",
+  "caseStudyMainDelete": "Effacer",
 
   "caseStudyFormBack":"Arrière",
   "caseStudyFormCaseStudyOptions":"Options d'étude de cas",
@@ -108,7 +110,7 @@
   "caseStudyFormWhatEnjoyTheMostAtHCBH":"Qu'est-ce qu'ils apprécient le plus dans leur travail chez HCBH ?",
 
   "caseStudyFormTrainingSessionCaseStudy":"Étude de cas sur la session de formation",
-  "caseStudyFormTrainingDate":"Date de formation",
+  "caseStudyFormTrainingDate":"Date de formation (MM-DD-YYYY)",
   "caseStudyFormWhatWasTrainingOn":"Sur quoi s'est déroulée la formation ?",
   "caseStudyFormWhoConductedTraining":"Qui a mené la formation ?",
   "caseStudyFormWhoAttendedTraining":"Qui a suivi la formation ?",
@@ -125,7 +127,7 @@
   "caseStudyFormAnErrorOccurred":"Une erreur s'est produite lors de la soumission. Veuillez réessayer.",
 
   "departmentPageNICU/PAED": "Département de NICU/PAED",
-  "departmentPageSubmitDate": "Soumettre des données",
+  "departmentPageSubmitDate": "Ajouter un rapport",
   "departmentPageBiomechanic": "Biomécanique",
   "departmentPageReportID": "ID de rapport",
   "departmentPageLastUpdatedOn": "Dernière mise à jour le",

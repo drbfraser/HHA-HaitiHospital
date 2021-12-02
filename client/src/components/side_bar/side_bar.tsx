@@ -73,7 +73,14 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="border-top my-2"/>
 
-                    <li className="nav-item">
+                    <li>
+                        <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
+                            <i className="bi bi-folder-fill me-2"/>
+                            <span className='text text-light'>General</span>
+                        </NavLink>
+                    </li>
+
+                    <li>
                         {
                             renderDepartmentIfUser(DepartmentName.NicuPaeds) ? (
                                 <NavLink to="/Department1NICU" className="nav-link link-light" exact activeClassName="active">

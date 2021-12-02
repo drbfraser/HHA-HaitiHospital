@@ -38,7 +38,7 @@ const Admin = (props : AdminProps) => {
 
   useEffect(() => {
     getUsers();
-  }, [users.length])
+  }, [])
 
   const {t} = useTranslation();
 

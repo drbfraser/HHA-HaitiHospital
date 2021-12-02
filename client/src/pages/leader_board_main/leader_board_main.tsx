@@ -23,7 +23,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
 
     useEffect(() => {
         getLeaderboard();
-    }, [leaderboard.length]);
+    }, []);
 
 
     const {t, i18n} = useTranslation();
@@ -119,7 +119,7 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                 <p className="card-text">There was once a queen who had no children, and it grieved her sorely. One winter's afternoon she was sitting by the window sewing when she pricked her finger, and three drops of blood fell on the snow. Then she thought to herself:</p>
                                 <p className="card-text">"Ah, what would I give to have a daughter with skin as white as snow and cheeks as red as blood."</p>
                                 <p className="card-text pb-5">After a while a little daughter came to her with skin as white as snow and cheeks as red as blood. So they called her Snow White.</p>
-                                <p className="card-text"><small className="text-muted">{t("leaderBoardLasteUpdate")}</small>
+                                <p className="card-text"><small className="text-muted">{t("leaderBoardLastUpdate")}</small>
                                 </p>
                             </div>
                         </div>
