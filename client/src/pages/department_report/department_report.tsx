@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
@@ -12,6 +12,8 @@ import Header from 'components/header/header';
 import './department_report.css'
 import {useTranslation} from "react-i18next";
 import { CSVLink } from "react-csv";
+import {PDFExport, savePDF} from '@progress/kendo-react-pdf';
+
 
 interface DepartmentReportProps extends ElementStyleProps {
   edit: boolean;
@@ -26,8 +28,12 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   const getReportApi = `/api/report/viewreport/${id}`;
   const [ report, setReport] = useState<ReportProps>({});
   const [ csvData, setCsvData ] = useState<Object[]> ([]);
-
   const apiSource = Axios.CancelToken.source();
+  const pdfExportComponent = useRef(null);
+  const handleExportWinthComponent = (event) => {
+    pdfExportComponent.current.save();
+  };
+
   useEffect(() => {
     console.log(csvData);
   }, [csvData])
@@ -173,6 +179,11 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                     </li>
                   </ul>
 
+                    <PDFExport ref={pdfExportComponent} paperSize="A4">
+                      <div>
+                        <button onClick={handleExportWinthComponent}> PDF </button>
+                      </div>
+                    </PDFExport>
                 </div>
               </section>
           }
