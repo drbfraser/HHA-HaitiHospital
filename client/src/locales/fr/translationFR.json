@@ -35,6 +35,11 @@
   "headerSignOut": "Se déconnecter",
   "leaderBoardOverviewSeeFullLeaderboard": "Aller à la page du classement ",
 
+  "Admin": "Administrateur",
+  "Medical Director": "Directeur médical",
+  "Head of Department": "Chef de département",
+  "User": "Utilisateur",
+
   "leaderBoardOverviewDepartmentLeader": "Classement du département",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "département",

@@ -34,6 +34,11 @@
   "headerEditUser": "Edit User",
   "headerSignOut": "Log out",
 
+  "Admin": "Admin",
+  "MedicalDirector": "Medical Director",
+  "HeadOfDepartment": "Head of Department",
+  "User": "User",
+
   "leaderBoardOverviewDepartmentLeader": "Department Leaderboard",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "Department",
