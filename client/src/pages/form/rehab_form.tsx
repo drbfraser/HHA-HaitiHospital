@@ -1,4 +1,4 @@
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
@@ -6,13 +6,11 @@ import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import rehabModel from './models/rehabModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { spawn } from 'child_process';
-import { render } from '@testing-library/react';
 
 
 
 function RehabForm() {
-    const { register, handleSubmit } = useForm({});
+    const { register, handleSubmit, reset } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
     const [sectionState, setSectionState] = useState(0);
@@ -44,24 +42,21 @@ function RehabForm() {
         }
     }
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const addFormDescriptions = (formFields) => {
-        var descriptions = [];
+        var descriptions = {};
         fields.forEach(field => {
             if (field.field_type === "number") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "array") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "list") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
                 field.field_template.forEach(listField => {
-                    var listID = field.field_id + "." + listField.field_id;
-                    descriptions.push(
-                        { [listID]: listField.field_label }
-                    );
+                    var listID = key + "_" + listField.field_id;
+                    descriptions[listID] = listField.field_label;
                 })
             }
         });
@@ -74,30 +69,20 @@ function RehabForm() {
             return;
         }
 
+        if (submitValidation()) {
 
-        data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-        data.decriptions = addFormDescriptions(fields);
-        console.log(data);
+            data.departmentId = 0; //Rehab ID
+            data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            data.descriptions = addFormDescriptions(fields);
+            await axios.post('/api/report/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                console.error('Something went wrong!', error.response);
+            });
 
-
-        var valid = submitValidation();
-
-        if (valid === true) {
-
-            // data.departmentId = 1;
-            // data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-            // data.admissions.mainCondition.otherMedical = formValuesAdCondition;
-            // data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            // await axios.post('/api/report/add', data).then(res => {
-            //     console.log(res.data);
-            // }).catch(error => {
-            //     console.error('Something went wrong!', error.response);
-            // });
-
-            // //console.log(data);
-            // history.push("/Department1NICU");
+            reset({});
+            history.push("/Department3Rehab");
         } else {
-            console.log(valid);
             alert("Some fields contain invalid values");
             window.scrollTo(0, 0);
         }
@@ -247,7 +232,7 @@ function RehabForm() {
             var textInput1 = (inputGroup[i].childNodes[0].childNodes[0] as HTMLInputElement);
             var valueInput1 = (inputGroup[i].childNodes[1].childNodes[0] as HTMLInputElement);
 
-            if (i == inputGroup.length - 1) {
+            if (i === inputGroup.length - 1) {
                 textInput1.value = "";
                 valueInput1.value = "0";
                 continue;
@@ -314,17 +299,6 @@ function RehabForm() {
         }
     }
 
-    const getRowLabel = (label: String) => {
-        if (label === undefined) {
-            return;
-        } else {
-            var newLabel = label.replaceAll("(DOT)", ".");
-            return newLabel;
-        }
-
-    }
-
-
 
 
     //
@@ -352,8 +326,8 @@ function RehabForm() {
             } else if (field.field_type === "table") {
                 for (var idx = 0; idx < field.total_rows; idx++) {
                     for (var jdx = 0; jdx < field.total_cols; jdx++) {
-                        if (field.invalid_inputs[idx][jdx] == 0) {
-                            var inputElement = (document.getElementById("tables" + i + idx + jdx)?.childNodes[0] as HTMLInputElement);
+                        if (field.invalid_inputs[idx][jdx] === 0) {
+                            inputElement = (document.getElementById("tables" + i + idx + jdx)?.childNodes[0] as HTMLInputElement);
                             isFormValid = isValid(inputElement) && isFormValid;
                         }
                     }
@@ -368,7 +342,7 @@ function RehabForm() {
                 } else if (i === 7) {
                     patientState = patientStateAfter;
                 }
-                var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
                 isFormValid = isValid(inputElement) && isFormValid;
                 for (let idx = 0; idx < patientState; idx++) {
                     for (let jdx = 0; jdx < field.field_template.length; jdx++) {
@@ -450,7 +424,7 @@ function RehabForm() {
 
     function isValid(inputElement: HTMLInputElement) {
         var numberAsText = inputElement.value;
-        if (numberAsText == "") {
+        if (numberAsText === "") {
             makeValidity(inputElement, false, "Must enter a value");
             return false;
         }
@@ -461,7 +435,7 @@ function RehabForm() {
             return false;
         }
 
-        if (number % 1 != 0) {
+        if (number % 1 !== 0) {
             makeValidity(inputElement, false, "Integers only");
             return false;
         }
@@ -479,13 +453,13 @@ function RehabForm() {
                 return;
             }
         } else if (type === "text") {
-            if (inputElement.value == "") {
+            if (inputElement.value === "") {
                 makeValidity(inputElement, false, "Must enter field");
                 makeValidity(selectList, false, "One or more fields are invalid");
                 return false;
             }
         } else if (type === "select") {
-            if (inputElement.value == "Select option") {
+            if (inputElement.value === "Select option") {
                 makeValidity(inputElement, false, "Must select option");
                 makeValidity(selectList, false, "One or more fields are invalid");
                 console.log('select');
@@ -511,17 +485,17 @@ function RehabForm() {
         if (!isValid(inputElement)) return;
 
         // Total number of self-discharged patients
-        if (num === 11 || num >= 12 && num <= 16) {
+        if (num === 11 || (num >= 12 && num <= 16)) {
             totalValidation(11, 12, 16);
             return;
         }
 
         // Total Admissions
-        if (num === 18 || num >= 19 && num <= 22) {
+        if (num === 18 || (num >= 19 && num <= 22)) {
             arrayTotalValidation(18, 19, 22);
             return;
         }
-        if (num === 18 || num >= 23 && num <= 29) {
+        if (num === 18 || (num >= 23 && num <= 29)) {
             totalValidation(18, 23, 29);
             return;
         }
@@ -533,20 +507,20 @@ function RehabForm() {
         // check if the entire series in total is all filled out 
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
-        for (var i = a; i <= b; i++) {
+        for (let i = a; i <= b; i++) {
             var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
             isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
         }
         if (!isSeriesComplete) return;
 
         // calculated total vs total2
-        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var total = Number(totalElement.value);
         var isSeriesValid = isValid(totalElement);
 
         var total2 = 0;
-        for (var i = a; i <= b; i++) {
-            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+        for (let i = a; i <= b; i++) {
+            inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
             total2 += Number(inputElement.value);
             isSeriesValid = isValid(inputElement) && isSeriesValid;
         }
@@ -554,14 +528,14 @@ function RehabForm() {
         if (isSeriesValid) {
             if (total !== total2) {
                 makeValidity(totalElement, false, "Does not add up to total");
-                for (var i = a; i <= b; i++) {
-                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                for (let i = a; i <= b; i++) {
+                    inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
                     makeValidity(inputElement, false, "");
                 }
             } else {
                 makeValidity(totalElement, true, "");
-                for (var i = a; i <= b; i++) {
-                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                for (let i = a; i <= b; i++) {
+                    inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
                     makeValidity(inputElement, true, "");
                 }
             }
@@ -571,9 +545,9 @@ function RehabForm() {
     function arrayInputValidation(num: number, idx: number, type: string) {
         var inputGroup = (document.getElementById("inputs" + num) as HTMLElement);
 
-        if (type == "text") {
+        if (type === "text") {
             var textInput = (inputGroup.childNodes[idx].childNodes[0].childNodes[0] as HTMLInputElement);
-            if (textInput.value == "") {
+            if (textInput.value === "") {
                 makeValidity(textInput, false, "Must enter a name");
                 return false;
             } else {
@@ -581,7 +555,7 @@ function RehabForm() {
                 return true;
             }
 
-        } else if (type == "number") {
+        } else if (type === "number") {
             var valueInput = (inputGroup.childNodes[idx].childNodes[1].childNodes[0] as HTMLInputElement);
             if (!isValid(valueInput)) return false;
 
@@ -598,31 +572,31 @@ function RehabForm() {
         // check if the entire series in total is all filled out 
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
-        for (var i = a; i <= b - 1; i++) {
+        for (let i = a; i <= b - 1; i++) {
             var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
             isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
         }
         var arrayElement = document.getElementById("inputs" + b)?.childNodes;
-        for (var i = 0; i < arrayElement!.length; i++) {
-            var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+        for (let i = 0; i < arrayElement!.length; i++) {
+            inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
             isSeriesComplete = (inputElement.classList.contains("is-valid") || inputElement.classList.contains("is-invalid")) && isSeriesComplete;
         }
         if (!isSeriesComplete) return false;
 
         // calculated total vs total2
-        var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
+        totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var total = Number(totalElement.value);
         var isSeriesValid = isValid(totalElement);
 
         var total2 = 0;
-        for (var i = a; i <= b - 1; i++) {
-            var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+        for (let i = a; i <= b - 1; i++) {
+            inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
             total2 += Number(inputElement.value);
             isSeriesValid = isValid(inputElement) && isSeriesValid;
         }
-        var arrayElement = document.getElementById("inputs" + b)?.childNodes;
-        for (var i = 0; i < arrayElement!.length; i++) {
-            var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+        arrayElement = document.getElementById("inputs" + b)?.childNodes;
+        for (let i = 0; i < arrayElement!.length; i++) {
+            inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
             total2 += Number(inputElement.value);
             isSeriesValid = isValid(inputElement) && isSeriesValid;
         }
@@ -630,25 +604,25 @@ function RehabForm() {
         if (isSeriesValid) {
             if (total !== total2) {
                 makeValidity(totalElement, false, "");
-                for (var i = a; i <= b - 1; i++) {
-                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
-                    var errorMsg = i == a ? "Does not add up to total" : "";
+                for (let i = a; i <= b - 1; i++) {
+                    inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                    var errorMsg = i === a ? "Does not add up to total" : "";
                     makeValidity(inputElement, false, errorMsg);
                 }
-                for (var i = 0; i < arrayElement!.length; i++) {
-                    var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+                for (let i = 0; i < arrayElement!.length; i++) {
+                    inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
                     makeValidity(inputElement, false, "");
                 }
 
                 return false;
             } else {
                 makeValidity(totalElement, true, "");
-                for (var i = a; i <= b - 1; i++) {
-                    var inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
+                for (let i = a; i <= b - 1; i++) {
+                    inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
                     makeValidity(inputElement, true, "");
                 }
-                for (var i = 0; i < arrayElement!.length; i++) {
-                    var inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
+                for (let i = 0; i < arrayElement!.length; i++) {
+                    inputElement = (arrayElement![i].childNodes[1].childNodes[0] as HTMLInputElement);
                     makeValidity(inputElement, true, "");
                 }
 
@@ -741,9 +715,9 @@ function RehabForm() {
 
                                     // i is the question number
                                     for (let i = fieldCount + 1; i <= fieldCount + fields.length; i++) {
-                                        var field = fields[i - fieldCount - 1];
+                                        let field = fields[i - fieldCount - 1];
 
-                                        var indentClass = field.field_level === 1 ? " ps-5" : "";
+                                        let indentClass = field.field_level === 1 ? " ps-5" : "";
 
                                         // render the subsection title
                                         if (field.subsection_label) {
@@ -774,7 +748,6 @@ function RehabForm() {
                                             if (field.field_id === "admissions.comeFrom.otherDepartments") {
                                                 formValues = formValuesComeFrom;
                                             }
-                                            var formId = field.field_id;
                                             ret.push(
                                                 <>
                                                     <div id={"input" + i} className={"" + indentClass}>

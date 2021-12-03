@@ -16,7 +16,6 @@ import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'components/message_form/message_form';
-import MaternityForm from 'pages/form/maternity_form';
 import { Role } from 'constants/interfaces';
 import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
@@ -80,12 +79,6 @@ const routes = [
     {
         path: '/Department2Maternity',
         component: DepartmentTwo,
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/maternityForm',
-        component: MaternityForm,
         isPrivate: true,
         rolesRequired: [],
     },
