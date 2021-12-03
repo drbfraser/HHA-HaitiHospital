@@ -15,11 +15,16 @@ import { LeaderBoardMain } from "pages/leader_board_main/leader_board_main"
 import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
 import NICUForm from 'pages/form/nicu_form';
+import MaternityForm from 'pages/form/maternity_form';
 import AddMessage from 'components/message_form/message_form';
 import { Role } from 'constants/interfaces';
 import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
 import RehabForm from 'pages/form/rehab_form';
+import GeneralReports from 'pages/general_reports/general_reports';
+
+// Remember to keep the low level urls before high level urls
+// Because Switch is picking the first matching url
 
 const routes = [
     {
@@ -53,32 +58,47 @@ const routes = [
         rolesRequired: [],
     },
     {
+        path: '/general_reports',
+        component: GeneralReports,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: '/Department1NICU/detailed_report/view/:id',
+        component: () => <DepartmentReport edit = {false}/>,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: '/Department1NICU/detailed_report/edit/:id',
+        component: () => <DepartmentReport edit={true} />,
+        isPrivate: true,
+        rolesRequired: [],
+
+    },
+    {
         path: '/Department1NICU',
         component: DepartmentOne,
         isPrivate: true,
         rolesRequired: [],
     },
+    
     {
         path: '/NICUForm',
         component: NICUForm,
         isPrivate: true,
         rolesRequired: [],
     },
-    {
-        path: '/Department1NICU/detailed_report/view/:id',
-        component: () => (<DepartmentReport edit={false}/>),
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/Department1NICU/detailed_report/view/:id',
-        component: () => (<DepartmentReport edit={true}/>),
-        isPrivate: true,
-        rolesRequired: [],
-    },
+   
     {
         path: '/Department2Maternity',
         component: DepartmentTwo,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: '/maternityForm',
+        component: MaternityForm,
         isPrivate: true,
         rolesRequired: [],
     },

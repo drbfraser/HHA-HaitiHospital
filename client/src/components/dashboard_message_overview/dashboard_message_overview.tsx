@@ -56,11 +56,11 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                                                 {message.authorId}
                                             </td>
                                             <td className="text-secondary">
-                                                {message.date}
+                                                {(new Date(message.date)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
                                             </td>
                                             <td className="text-secondary text-break">
                                                 {/*show first 70 character of message only*/}
-                                                {message.messageBody.slice(0, 70)}...
+                                                {message.messageBody.length > 70 ? message.messageBody.slice(0, 70) + "..." : message.messageBody}
                                             </td>
                                         </tr>
                                     )
