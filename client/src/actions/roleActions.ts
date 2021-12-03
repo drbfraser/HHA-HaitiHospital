@@ -1,5 +1,5 @@
 // Common utility functions used throughout the client
-import { Role } from "constants/interfaces";
+import { Role, DepartmentName } from "constants/interfaces";
 
 export const isUserInDepartment = (userDepartment: string, wantedDepartment: string): boolean => {
     if (userDepartment === wantedDepartment) {
@@ -31,11 +31,28 @@ export const isRoleRequired = (rolesAllowed: Role[]): boolean => {
         return true;
     }
     return false;
-    }
+}
 
 export const isRoleAuthenticated = (rolesAllowed: Role[], currentUserRole: string): boolean => {
     if (rolesAllowed.length > 0) {
         const userRoleAuthenticated = rolesAllowed.find(role => currentUserRole === role);
+        if (userRoleAuthenticated) {
+        return true;
+        }
+    }
+    return false;
+}
+
+export const isDepartmentRequired = (departmentsAllowed: DepartmentName[]): boolean => {
+    if (departmentsAllowed.length > 0) {
+        return true;
+    }
+    return false;
+}
+
+export const isDepartmentAllowed = (departmentsAllowed: Role[], currentUserDepartment: string): boolean => {
+    if (departmentsAllowed.length > 0) {
+        const userRoleAuthenticated = departmentsAllowed.find(role => currentUserDepartment === role);
         if (userRoleAuthenticated) {
         return true;
         }
