@@ -38,20 +38,20 @@ export const DepartmentOne = (props : DepartmentProps) => {
 
                 {/* Functional buttons */}
                 <section>
-                    <div className="row my-2 justify-items-center">
+                    <div className="row">
 
-                        <div className='col-md-4'>
+                        <div className='col-auto'>
                             <Link to={"/NICUForm"}>
-                                <button className=" btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">{t("departmentPageSubmitDate")}</div>
+                                <button className="btn btn-dark btn-lg">
+                                    <div className="">{t("departmentPageSubmitDate")}</div>
                                 </button>
                             </Link>
                         </div>
 
-                        <div className='col-md-4'>
+                        <div className='col-auto'>
                             <Link to={"#"}>
-                                <button className="btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">{t("departmentPageBiomechanic")}</div>
+                                <button className="btn btn-dark btn-lg">
+                                    <div className="">{t("departmentPageBiomechanic")}</div>
                                 </button>
                             </Link>
                         </div>

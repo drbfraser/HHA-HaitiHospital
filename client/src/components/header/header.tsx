@@ -88,7 +88,7 @@ const Header = (props: HeaderProps) => {
     
     useEffect(() => {
         getUserInfo();
-    }, [userInfo.username]);
+    }, []);
     const {t, i18n} = useTranslation();
 
     return (

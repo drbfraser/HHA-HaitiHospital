@@ -97,7 +97,7 @@ const routes = [
         rolesRequired: [],
     },
     {
-        path: 'maternityForm',
+        path: '/maternityForm',
         component: MaternityForm,
         isPrivate: true,
         rolesRequired: [],

@@ -47,7 +47,6 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                         <tbody className="text-muted">
                             {(messages.map((message, index) => {
                                 // Displaying top 3 messages
-                                let readableDate = new Date(message.date).toLocaleString();
 
                                 let fullName = (message.userId as Json).name;
 
@@ -59,11 +58,11 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                                                 {fullName}
                                             </td>
                                             <td className="text-secondary">
-                                                {readableDate}
+                                                {(new Date(message.date)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
                                             </td>
                                             <td className="text-secondary text-break">
                                                 {/*show first 70 character of message only*/}
-                                                {message.messageBody.slice(0, 70)}...
+                                                {message.messageBody.length > 70 ? message.messageBody.slice(0, 70) + "..." : message.messageBody}
                                             </td>
                                         </tr>
                                     )

@@ -1,5 +1,6 @@
 import Axios, { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
+import {useHistory} from 'react-router-dom';
 
 import { useParams } from "react-router";
 
@@ -28,6 +29,7 @@ async function fetchMsgFromDb(id: string) {
 const EditMessage = () => {
     const { id } = useParams<{id? : string}>();
     const [msg, setMsg] = useState<Message>({} as Message)
+    const history = useHistory();
 
     async function fetchMsg(id: string) {
         const msgData = await fetchMsgFromDb(id);
@@ -75,6 +77,11 @@ const EditMessage = () => {
                         optionalMsg = {msg}
                         submitAction = {updateMessage}
                     />
+
+                    <button 
+                    className="btn btn-md btn-outline-secondary"
+                    onClick={history.goBack}
+                    > Back </button>
                 </div>
             </main>
 
