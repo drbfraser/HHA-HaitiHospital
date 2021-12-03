@@ -17,6 +17,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
 
+  const dbUrlForNICUReports = "/api/report/viewdepartment/1";
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
     // To fetch data from db
