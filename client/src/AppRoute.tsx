@@ -4,13 +4,13 @@ import { isRoleRequired, isRoleAuthenticated } from 'actions/roleActions';
 
 import { useAuthState } from 'Context';
 
-const AppRoutes = ({ component: Component, path, isPrivate, rolesRequired, ...rest }) => {
+const AppRoutes = ({ component: Component, path, loginRequired, rolesAllowed, departmentsAllowed, ...rest }) => {
 	const userDetails = useAuthState();
   const currentUserRole = userDetails.userDetails.role;
   let roleAccess = true;
-  if (isRoleRequired(rolesRequired)) {
+  if (isRoleRequired(rolesAllowed)) {
     roleAccess = false;
-    if (isRoleAuthenticated(rolesRequired, currentUserRole)) {
+    if (isRoleAuthenticated(rolesAllowed, currentUserRole)) {
       roleAccess = true;
     }
   }
@@ -19,7 +19,7 @@ const AppRoutes = ({ component: Component, path, isPrivate, rolesRequired, ...re
 		<Route
 			path={path} exact
 			render={(props) =>
-				isPrivate && !Boolean(userDetails.isAuth && roleAccess) ? (
+				loginRequired && !Boolean(userDetails.isAuth && roleAccess) ? (
           <Redirect to={{ pathname: '/login' }} />
 				) : (
           <Component {...props} />

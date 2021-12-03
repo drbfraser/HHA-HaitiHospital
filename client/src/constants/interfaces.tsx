@@ -38,7 +38,7 @@ export enum DepartmentName {
   CommunityHealth = "Community & Health",
 }
 
-export enum DepartmentId{
+export enum DepartmentId {
     NicuPaeds = 1,
     Maternity = 2,
     Rehab = 3,
@@ -63,7 +63,6 @@ export function getDepartmentId(dept: DepartmentName): DepartmentId {
             return DepartmentId.NicuPaeds;
     }  
 }
-
 
 export interface User {
   username: string;
