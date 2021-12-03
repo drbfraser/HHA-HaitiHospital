@@ -17,7 +17,7 @@ const AppRoutes = ({ component: Component, path, isPrivate, rolesRequired, ...re
 
 	return (
 		<Route
-			path={path}
+			path={path} exact
 			render={(props) =>
 				isPrivate && !Boolean(userDetails.isAuth && roleAccess) ? (
           <Redirect to={{ pathname: '/login' }} />
