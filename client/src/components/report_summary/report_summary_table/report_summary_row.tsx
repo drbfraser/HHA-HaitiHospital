@@ -2,8 +2,7 @@ import React, {SyntheticEvent, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
 import { ElementStyleProps} from 'constants/interfaces';
-import {TickList, TickObserver} from 'components/department_reports/report_summary_table/tick_list'
-import temp_checklist from '../temp_checklist';
+import {TickList, TickObserver} from 'components/report_summary/report_summary_table/tick_list'
 import {useTranslation} from "react-i18next";
 
 interface ReportSummaryProps extends ElementStyleProps {

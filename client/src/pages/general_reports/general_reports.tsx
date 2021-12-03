@@ -1,4 +1,4 @@
-import ReportSummary from 'components/department_reports/report_summary';
+import ReportSummary from 'components/report_summary/report_summary';
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 

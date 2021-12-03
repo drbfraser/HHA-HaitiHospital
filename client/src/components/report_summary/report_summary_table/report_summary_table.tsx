@@ -2,10 +2,9 @@
 import React, {useEffect, useState} from 'react';
 
 import { ElementStyleProps, JsonArray, Json} from 'constants/interfaces';
-import ReportSummaryRow from 'components/department_reports/report_summary_table/report_summary_row';
-import AllTick from 'components/department_reports/report_summary_table/all_tick';
-import UtilityButtons from 'components/department_reports/report_summary_table/utility_buttons';
-import temp_checklist from '../temp_checklist';
+import ReportSummaryRow from 'components/report_summary/report_summary_table/report_summary_row';
+import AllTick from 'components/report_summary/report_summary_table/all_tick';
+import UtilityButtons from 'components/report_summary/report_summary_table/utility_buttons';
 import {useTranslation} from "react-i18next";
 import { TriggerConfig } from 'react-hook-form';
 
