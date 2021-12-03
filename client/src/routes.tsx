@@ -65,7 +65,7 @@ const routes = [
         path: '/general_reports',
         component: GeneralReports,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [],
     },
     {
@@ -79,7 +79,7 @@ const routes = [
         path: '/Department1NICU/detailed_report/edit/:id',
         component: () => <DepartmentReport edit={true} />,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.User],
         departmentsAllowed: [DepartmentName.NicuPaeds],
     },
     {
@@ -125,6 +125,7 @@ const routes = [
         rolesAllowed: [],
         departmentsAllowed: [DepartmentName.CommunityHealth],
     },
+    // TODO: DepartmentMain can be deleted?
     {
         path: '/departmentMain',
         component: DepartmentMain,
@@ -143,7 +144,7 @@ const routes = [
         path: '/caseStudyForm',
         component: CaseStudyForm,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [],
     },
     {
@@ -171,7 +172,7 @@ const routes = [
         path: '/addMessage',
         component: AddMessage,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector],
         departmentsAllowed: [],
     },
     {
@@ -181,13 +182,15 @@ const routes = [
         rolesAllowed: [],
         departmentsAllowed: [],
     },
+    // WARNING: If adding new routes, do not add anything below the '/' route. 
+    // Have new routes above otherwise routing may not work properly.
     {
         path: '/',
         component: Login,
         loginRequired: false,
         rolesAllowed: [],
         departmentsAllowed: [],
-    },
+    }
 ];
 
 export default routes;

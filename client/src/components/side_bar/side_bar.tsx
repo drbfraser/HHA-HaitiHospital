@@ -74,10 +74,14 @@ const Sidebar = (props: SidebarProps) => {
                     <li className="border-top my-2"/>
 
                     <li>
-                        <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
-                            <i className="bi bi-folder-fill me-2"/>
-                            <span className='text text-light'>General</span>
-                        </NavLink>
+                        {
+                            renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment]) ? (                 
+                                <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
+                                    <i className="bi bi-folder-fill me-2"/>
+                                    <span className='text text-light'>General</span>
+                                </NavLink>
+                                ) : (<div></div>)
+                        }
                     </li>
 
                     <li>
@@ -126,14 +130,10 @@ const Sidebar = (props: SidebarProps) => {
                     <li className="border-top my-2"/>
                         {
                             renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (                 
-                                    <li>
-                                        <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
-                                            <i className="bi bi-person-badge-fill me-2"/>
-                                            <span className="text text-light">Admin</span>
-                                        </NavLink>
-
-                                        <li className="border-top my-2"/>
-                                    </li>
+                                <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-person-badge-fill me-2"/>
+                                    <span className="text text-light">Admin</span>
+                                </NavLink>
                                 ) : (<div></div>)
                         }
 
