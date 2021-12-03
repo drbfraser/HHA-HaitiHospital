@@ -14,12 +14,10 @@ function isShown(tickTracker: {[rid: string]: boolean}) : boolean{
     return values.includes(true);
 }
 
-
 async function delTickedReportFromDb(rid: string) {
     let dbApiToDelRid = `/api/report/delete/${rid}`;
     const res = await Axios.delete(dbApiToDelRid);
 }
-
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
 
