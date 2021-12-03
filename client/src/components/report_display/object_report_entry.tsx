@@ -5,12 +5,15 @@ import TextHolder from 'components/text_holder/text_holder';
 
 interface ObjectEntryProps extends ElementStyleProps {
   name: string;
+  parentKey: string;
   value: ReportProps;
   edit: boolean;
 }
 ;
 
 export const ObjectEntry = (props: ObjectEntryProps) => {
+
+ 
 
   return (
     <div className={`entry object-entry accordion my-2 ${props.classes || ''}`}
@@ -34,6 +37,7 @@ export const ObjectEntry = (props: ObjectEntryProps) => {
             <>{
               <>{'\t'}
               <ReportDisplay report={props.value}
+                parentKey={props.parentKey}
                 edit={props.edit}/>
               </>
             }</>

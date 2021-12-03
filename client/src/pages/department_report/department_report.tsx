@@ -107,6 +107,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                   <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
                   <ReportDisplay
                     report = {report.formData as ReportProps}
+                    parentKey= ""
                     edit = {props.edit}
                   />
               }

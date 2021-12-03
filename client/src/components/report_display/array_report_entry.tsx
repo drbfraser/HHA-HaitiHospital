@@ -5,11 +5,14 @@ import TextHolder from 'components/text_holder/text_holder';
 
 interface ArrayEntryProps extends ElementStyleProps {
   name: string;
+  parentKey: string;
   entries: ReportProps[];
   edit: boolean;
 };
 
 export const ArrayEntry = (props : ArrayEntryProps) => {
+
+
   return (
     <div className = {'entry array-entry accordion my-2' + (props.classes || '')}
       id={`array_entry_${props.name}`}
@@ -37,6 +40,7 @@ export const ArrayEntry = (props : ArrayEntryProps) => {
                   {<div>
                     {'\t'}<ReportDisplay 
                       report={entry as ReportProps}
+                      parentKey={props.parentKey}
                       edit={props.edit} />
                   </div>}
                 )

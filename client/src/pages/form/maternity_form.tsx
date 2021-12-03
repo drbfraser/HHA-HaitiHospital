@@ -42,19 +42,17 @@ function MaternityForm() {
     }
 
     const addFormDescriptions = (formFields) => {
-        var descriptions = [];
+        var descriptions = {};
         fields.forEach(field => {
             if (field.field_type === "number") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                descriptions[field.field_id] = field.field_label;
             } else if (field.field_type === "array") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                descriptions[field.field_id] = field.field_label;
             } else if (field.field_type === "list") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                descriptions[field.field_id] = field.field_label;
                 field.field_template.forEach(listField => {
                     var listID = field.field_id + "." + listField.field_id;
-                    descriptions.push(
-                        { [listID]: listField.field_label }
-                    );
+                    descriptions[listID] = listField.field_label;
                 })
             }
         });
@@ -92,9 +90,9 @@ function MaternityForm() {
         }
 
         data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-        data.decriptions = addFormDescriptions(fields);
+        data.descriptions = addFormDescriptions(fields);
         console.log(data);
-        var valid = submitValidation();
+        var valid = true//submitValidation();
 
         if (valid === true) {
 

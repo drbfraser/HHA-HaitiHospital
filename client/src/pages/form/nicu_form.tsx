@@ -37,10 +37,37 @@ function DynamicForm() {
     })
 
     const elements: any = Object.values(formModel);
+    const fields = [];
+    for (var i = 0; i < elements.length; i++) {
+        for (var j = 0; j < elements[i].section_fields.length; j++) {
+            fields.push(elements[i].section_fields[j]);
+        }
+    }
 
     // function refreshPage() {
     //     window.location.reload();
     // }
+
+    const addFormDescriptions = (formFields) => {
+        var descriptions = {};
+        fields.forEach(field => {
+            if (field.field_type === "number") {
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
+            } else if (field.field_type === "array") {
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
+            } else if (field.field_type === "list") {
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
+                field.field_template.forEach(listField => {
+                    var listID = key + "_" + listField.field_id;
+                    descriptions[listID] = listField.field_label;
+                })
+            }
+        });
+        return descriptions;
+    }
 
     const onSubmit = async (data: any) => {
 
@@ -48,18 +75,20 @@ function DynamicForm() {
             return;
         }
 
-        if (submitValidation()) {
+        if (true) {
             data.departmentId = 1;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
             data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            await axios.post('/api/report/add', data).then(res => {
-                console.log(res.data);
-            }).catch(error => {
-                console.error('Something went wrong!', error.response);
-            });
+            data.descriptions = addFormDescriptions(fields);
+            console.log(data);
+            // await axios.post('/api/report/add', data).then(res => {
+            //     console.log(res.data);
+            // }).catch(error => {
+            //     console.error('Something went wrong!', error.response);
+            // });
 
-            history.push("/Department1NICU");
+            // history.push("/Department1NICU");
 
         } else {
             window.scrollTo(0, 0);
