@@ -28,7 +28,7 @@ async function fetchMsgFromDb(id: string) {
 // sample url /messageBoard/edit/{id}
 const EditMessage = () => {
     const { id } = useParams<{id? : string}>();
-    const [msg, setMsg] = useState<Message>({} as Message)
+    const [msg, setMsg] = useState<Message>(emptyMessage)
     const history = useHistory();
 
     async function fetchMsg(id: string) {
@@ -38,7 +38,7 @@ const EditMessage = () => {
             messageBody: msgData["messageBody"],
             messageHeader: msgData["messageHeader"],
             departmentId: msgData["departmentId"],
-            departmentName: msgData['deparmentName'],
+            departmentName: msgData['departmentName'],
             user: msgData['userId'],
             date: msgData['date'],
         }
@@ -77,6 +77,8 @@ const EditMessage = () => {
                         optionalMsg = {msg}
                         submitAction = {updateMessage}
                     />
+
+                    <br/>
 
                     <button 
                     className="btn btn-md btn-outline-secondary"

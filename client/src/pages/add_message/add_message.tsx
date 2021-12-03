@@ -1,7 +1,7 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 
-import { ElementStyleProps } from 'constants/interfaces';
 // import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
@@ -40,6 +40,7 @@ import MessageForm  from '../../components/message_form/message_form';
 
 
 function AddMessage() {
+    const history = useHistory();
     
     const postMessage = (async (data) => {
         const api = '/api/messageboard/';
@@ -66,10 +67,17 @@ function AddMessage() {
         <Header/>
 
         <div className="container">
-          <h1 className="h1">Add Message</h1>
-          <MessageForm
+            <h1 className="h1">Add Message</h1>
+            <MessageForm
             submitAction={postMessage}
-          />
+            />
+
+            <br/>
+
+            <button 
+            className="btn btn-md btn-outline-secondary"
+            onClick={history.goBack}
+            > Back </button>
 
         </div>
       </main>

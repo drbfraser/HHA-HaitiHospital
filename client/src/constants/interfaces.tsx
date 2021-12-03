@@ -1,3 +1,4 @@
+import { throws } from 'assert/strict';
 import {CSSProperties} from 'react';
 export interface CustomCssProps extends CSSProperties {
   '--grid-cols'? : string,
@@ -36,7 +37,7 @@ export interface Message {
 export const emptyMessage : Message = {
     messageBody: '',
     messageHeader: '',
-    departmentId: 0,
+    departmentId: -1,
     user: {},
     departmentName: '',
     date: new Date(),
@@ -63,6 +64,26 @@ export enum DepartmentId{
     CommunityHealth = 2,
 }
 
+
+export function getDepartmentName(deptId: number): DepartmentName {
+    switch (deptId) {
+        case 0:
+            return DepartmentName.Rehab;
+
+        case 1:
+            return DepartmentName.NicuPaeds;
+        
+        case 2:
+            return DepartmentName.CommunityHealth;
+
+        case 3:
+            return DepartmentName.Maternity;
+
+        default:
+            throw new Error("Invalid department id");
+    }  
+}
+
 export function getDepartmentId(dept: DepartmentName): DepartmentId {
     switch (dept) {
         case DepartmentName.NicuPaeds:
@@ -78,7 +99,7 @@ export function getDepartmentId(dept: DepartmentName): DepartmentId {
             return DepartmentId.CommunityHealth;
 
         default:
-            return -1;
+            throw new Error("Invalid department name");
     }  
 }
 
