@@ -86,7 +86,7 @@ const routes = [
         path: '/Department1NICU',
         component: DepartmentOne,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [DepartmentName.NicuPaeds],
     },
     
@@ -101,7 +101,7 @@ const routes = [
         path: '/Department2Maternity',
         component: DepartmentTwo,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [DepartmentName.Maternity],
     },
     {
@@ -115,14 +115,14 @@ const routes = [
         path: '/Department3Rehab',
         component: DepartmentThree,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [DepartmentName.Rehab],
     },
     {
         path: '/Department4ComHealth',
         component: DepartmentFour,
         loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [DepartmentName.CommunityHealth],
     },
     // TODO: DepartmentMain can be deleted?
