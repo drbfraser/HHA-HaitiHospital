@@ -78,7 +78,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
                       <Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy") + " "}</Link>
-                      {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? 
+                      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? 
                       <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>{t("caseStudyMainDelete")}</a>
                       : null}
                     </td>
