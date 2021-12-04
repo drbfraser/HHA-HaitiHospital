@@ -17,35 +17,36 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   return (
       
-<div>
- <SideBar/>
-    <main className="container-fluid main-region">
-        <Header/>
+<div className = 'biomechanical_page'>
+<SideBar/>
+<main className="container-fluid main-region">
+            <Header/>
 
-        <div className="mt-3">
-            <section>
+            <div className="mt-3">
+
+                <section>
                     <div className="row my-2 justify-items-center">
 
                         <div className='col-sm-6 col-md-6 col-lg-6'>
+                            <Link to={"/brokenkit"}>
                                 <button className=" btn btn-dark btn-sm rounded-bill">
-                                    Report Broken Kit
-                                    <div className="lead"></div>
+                                    <div className="lead">Report Broken Kit</div>
                                 </button>
+                            </Link>
                         </div>
 
                         <div className='col-sm-6 col-md-6 col-lg-6'>
                             <Link to={"#"}>
                                 <button className="btn btn-dark btn-sm rounded-bill">
-                                    Support Form
-                                    <div className="lead"></div>
+                                    <div className="lead">Support Page</div>
                                 </button>
                             </Link>
                         </div>
                     </div>
-            </section>
-        </div>
-    </main>
+                </section>
 
+            </div>
+        </main>
 </div>
   );
 };
