@@ -48,7 +48,7 @@ export const Department = (props : DepartmentProps) => {
                     <div className="row my-2 justify-items-center">
 
                         <div className='col-sm-6 col-md-6 col-lg-6'>
-                            <Link to={"/NICUForm"}>
+                            <Link to={`/department/${deptId}/add`}>
                                 <button className=" btn btn-dark btn-sm rounded-bill">
                                     <div className="lead">{t("departmentPageSubmitDate")}</div>
                                 </button>

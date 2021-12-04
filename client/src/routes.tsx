@@ -23,6 +23,7 @@ import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
+import AddReport from 'pages/add_report/add_report';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -64,7 +65,12 @@ const routes = [
         isPrivate: true,
         rolesRequired: [],
     },
-    
+    {
+        path: '/department/:deptId/add',
+        component: AddReport,
+        isPrivate: true,
+        rolesRequired: [],
+    },
     {
         path: '/NICUForm',
         component: NICUForm,

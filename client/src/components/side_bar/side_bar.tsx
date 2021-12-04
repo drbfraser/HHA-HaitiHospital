@@ -27,17 +27,10 @@ const Sidebar = (props: SidebarProps) => {
         return true;
     }
 
-    function getClassName() {
-        if (props.classes === undefined) 
-            return "Sidebar";
-        else 
-            return `Sidebar ${props.classes} `
-    }
-
     const {t, i18n} = useTranslation();
 
     return (
-        <div className={getClassName()}>
+        <div className={"Sidebar"}>
             <div className="bg-dark">
                 <div className="sidebar_logo">
                     <div className="text-center" style={{width: 190}}>
