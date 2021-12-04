@@ -41,11 +41,12 @@ import MessageForm  from '../../components/message_form/message_form';
 
 function AddMessage() {
     const history = useHistory();
-    
+
     const postMessage = (async (data) => {
         const api = '/api/messageboard/';
     try {
         let response = await Axios.post(api, data);
+        history.push('/messageBoard')
         alert('success');
 
     }

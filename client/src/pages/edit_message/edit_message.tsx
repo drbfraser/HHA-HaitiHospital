@@ -54,6 +54,7 @@ const EditMessage = () => {
         const api = `api/messageboard/${id}`;
         try {
             let response = await Axios.put(api, data);
+            history.push('/messageBoard')
             alert('success');
         }
         catch (e) {
