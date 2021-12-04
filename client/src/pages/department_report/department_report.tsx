@@ -14,7 +14,6 @@ import {useTranslation} from "react-i18next";
 import { CSVLink } from "react-csv";
 import {PDFExport, savePDF} from '@progress/kendo-react-pdf';
 import {PDFViewer} from '@react-pdf/renderer'
-import Table from "../../components/PDFexport/table";
 import { Document, Page } from 'react-pdf';
 
 interface DepartmentReportProps extends ElementStyleProps {
@@ -64,12 +63,18 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   }, [csvData])
 
   useEffect(() => {
-    let data: ReportProps = {};
+    // let data: ReportProps = {};
+    let data: Object[] = [];
     if (report.formData !== undefined && report.formData !== null) {
       Object.keys(report.formData).forEach((key) => {
         let reportType = typeof (report.formData[key]);
         if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
-          data[key] = report.formData[key];
+          // data[key] = report.formData[key];
+          let item: Object = {};
+          item['name'] = key;
+          item['content'] = report.formData[key];
+          data.push(item);
+
         } else {
           let objReport: ReportProps = report.formData[key];
           if (objReport !== undefined && objReport !== null) {
@@ -77,13 +82,21 @@ const DepartmentReport = (props : DepartmentReportProps) => {
               let innerReportType = typeof (objReport[key1]);
               if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
                 let tempKey = key + "_" + key1;
-                data[tempKey] = objReport[key1];
+                // data[tempKey] = objReport[key1];
+                let item: Object = {};
+                item['name'] = tempKey;
+                item['content'] = objReport[key1];
+                data.push(item);
               } else {
                 let innerReport = objReport[key1];
                 if (innerReport !== undefined && innerReport !== null) {
                   Object.keys(innerReport).forEach((key2) => {
                     let tempKey = key + "_" + key1 + "_" + key2;
-                    data[tempKey] = innerReport[key2];
+                    // data[tempKey] = innerReport[key2];
+                    let item: Object = {};
+                    item['name'] = tempKey;
+                    item['content'] = innerReport[key2];
+                    data.push(item);
                   })
                 }
               }
@@ -92,10 +105,11 @@ const DepartmentReport = (props : DepartmentReportProps) => {
         }
       })
     }
-    let arrayOfData: Object[] = [];
-    arrayOfData.push(data);
-    console.log(arrayOfData);
-    setCsvData(arrayOfData);
+    // let arrayOfData: Object[] = [];
+    // arrayOfData.push(data);
+    // console.log(arrayOfData);
+    // setCsvData(arrayOfData);
+    setCsvData(data);
   }, [report])
 
 
@@ -181,7 +195,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                     </li>
                     <li className='col-sm-auto'>
                       <CSVLink
-                          data={csvData} filename={id}>
+                          data={csvData} filename={id} >
                         <button
                             className=""
                             color="primary">
