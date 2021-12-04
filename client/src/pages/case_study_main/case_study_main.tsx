@@ -49,13 +49,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <SideBar/>
       <main className="container-fluid main-region">
         <Header/>
-        {
-          renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector]) ? (
-            <div className="d-flex justify-content-start">
-              <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">{t("caseStudyMainAddCaseStudy")}</button></Link>
-            </div>
-          ) : (<div></div>)
-        }
+        <div className="d-flex justify-content-start">
+          <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">{t("caseStudyMainAddCaseStudy")}</button></Link>
+        </div>
 
         <div className="table-responsive">
           <table className="table table-hover mt-3">

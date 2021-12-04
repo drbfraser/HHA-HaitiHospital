@@ -144,7 +144,7 @@ const routes = [
         path: '/caseStudyForm',
         component: CaseStudyForm,
         loginRequired: true,
-        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+        rolesAllowed: [],
         departmentsAllowed: [],
     },
     {
