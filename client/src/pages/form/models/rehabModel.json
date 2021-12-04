@@ -764,7 +764,7 @@
             },
             {
                 "field_id": "newOutpatients.total",
-                "field_label": "New outpatiens initial evaluation",
+                "field_label": "New outpatients initial evaluation",
                 "field_type": "number",
                 "field_value": 0,
                 "field_level": 0
