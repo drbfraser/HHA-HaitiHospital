@@ -64,25 +64,6 @@ const routes = [
         isPrivate: true,
         rolesRequired: [],
     },
-    // {
-    //     path: '/Department1NICU/detailed_report/view/:id',
-    //     component: () => <DepartmentReport edit = {false}/>,
-    //     isPrivate: true,
-    //     rolesRequired: [],
-    // },
-    // {
-    //     path: '/Department1NICU/detailed_report/edit/:id',
-    //     component: () => <DepartmentReport edit={true} />,
-    //     isPrivate: true,
-    //     rolesRequired: [],
-
-    // },
-    // {
-    //     path: '/Department1NICU',
-    //     component: DepartmentOne,
-    //     isPrivate: true,
-    //     rolesRequired: [],
-    // },
     
     {
         path: '/NICUForm',
@@ -91,30 +72,12 @@ const routes = [
         rolesRequired: [],
     },
    
-    // {
-    //     path: '/Department2Maternity',
-    //     component: DepartmentTwo,
-    //     isPrivate: true,
-    //     rolesRequired: [],
-    // },
     {
         path: '/maternityForm',
         component: MaternityForm,
         isPrivate: true,
         rolesRequired: [],
     },
-    // {
-    //     path: '/Department3Rehab',
-    //     component: DepartmentThree,
-    //     isPrivate: true,
-    //     rolesRequired: [],
-    // },
-    // {
-    //     path: '/Department4ComHealth',
-    //     component: DepartmentFour,
-    //     isPrivate: true,
-    //     rolesRequired: [],
-    // },
     {
         path: '/department/:deptId/view/:id',
         component: () => <DepartmentReport edit={false}/>,
