@@ -5,18 +5,19 @@ import { ElementStyleProps } from 'constants/interfaces';
 import { JsonArray, DepartmentName, getDepartmentId } from 'constants/interfaces';
 import ReportSummaryTable from 'components/department_reports/report_summary_table/report_summary_table';
 
+import {DayRange} from 'react-modern-calendar-datepicker';
 import './styles.css';
 
 interface DepartmentReportsProps extends ElementStyleProps {
   department?: DepartmentName;
-  dateRange?: {from: {}, to: {}};
+  dateRange?: DayRange;
 };
-
 
 const DepartmentReports = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
 
+  const dbUrlForNICUReports = "/api/report/viewdepartment/1";
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
     // To fetch data from db
@@ -38,24 +39,9 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     let apiForReports = '';
     
     try {
-        let res;
-        let dateRange = props.dateRange;
-        if (props.dateRange === undefined || props.dateRange.from === null || props.dateRange.to === null)
-            dateRange = undefined;
-
-        let deptId: Number;
-        if (props.department !== undefined) {
-            deptId = getDepartmentId(props.department);
-            console.log("deparment id", deptId);
-        }
-
-        apiForReports = 'api/report';
-        let postData = {
-            departmentId: deptId,
-            dateRange: dateRange,
-        }
-
-        res = await Axios.post(apiForReports, postData, {
+        apiForReports = buildApiRoute(props.dateRange, props.department);
+       
+        let res = await Axios.get(apiForReports, {
             cancelToken: apiSource.token
         });
         if (res.status != 200)
@@ -77,17 +63,8 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
     setRefetch(!refetch);
   }
 
-  function getClassName(className: string|undefined) {
-    if (className === undefined) {
-        return "department-reports";
-    }
-    else {
-        return `department-reports ${className}`
-    }
-  }
-  
   return (
-    <div className={getClassName(props.classes)}>
+    <div className={"deparment-reports"}>
       {/*<div className='container my-4'>*/}
       <div className='my-4'>
         {
@@ -104,3 +81,60 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
 }
 
 export default DepartmentReports;
+
+//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
+
+function buildApiRoute(dateRange: DayRange, department: DepartmentName): string {
+    const prefix = 'api/report';
+    const fromParam = 'from';
+    const toParam = 'to';
+    const departmentParam = 'departmentId';
+
+    let returnApi = prefix;
+
+    let params = {};
+    if (isDateRangeValid(dateRange) === true) {
+        const fromValue= formatDateToStr(dateRange.from);
+        const toValue= formatDateToStr(dateRange.to);
+
+        params[fromParam] = fromValue;
+        params[toParam] = toValue;
+    }
+
+    if (department !== undefined) {
+        const deptId = getDepartmentId(department);
+        params[departmentParam] = deptId;
+    }
+
+    returnApi = concatParamsToRoute(prefix, params);
+
+    console.log("api : ", returnApi);
+    return returnApi;
+}
+
+function isDateRangeValid(dateRange: DayRange): boolean {
+    return (dateRange !== undefined && dateRange.from !== null && dateRange.to !== null);
+}
+
+function formatDateToStr(date: {year: Number, month: Number, day: Number}) : String {
+    return `${date.year}-${date.month}-${date.day}`;
+}
+
+function concatParamsToRoute(prefix: string, params: {[paramName : string]: string}) : string {
+    let returnRoute = prefix;
+    let nParams = Object.keys(params).length;
+
+    if (nParams > 0) {
+        returnRoute += '?'
+    }
+
+    Object.keys(params).forEach((paramName, idx) => {
+        returnRoute += `${paramName}=${params[paramName]}`;
+        
+        if (idx < nParams - 1)
+            returnRoute += '&';
+    })
+    return returnRoute;
+}
+
+//  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<

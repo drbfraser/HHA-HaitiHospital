@@ -4,7 +4,7 @@ import { DepartmentName } from './Leaderboard';
 
 const { Schema } = mongoose;
 
-enum CaseStudyOptions {
+export enum CaseStudyOptions {
     PatientStory = "Patient Story",
     StaffRecognition = "Staff Recognition",
     TrainingSession = "Training Session",

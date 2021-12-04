@@ -1,4 +1,4 @@
-.bd-placeholder-img {
+/* .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
   -webkit-user-select: none;
@@ -14,5 +14,9 @@
 
 .container {
   max-width: 960px;
+} */
+
+table{
+  width: 100%;
 }
 

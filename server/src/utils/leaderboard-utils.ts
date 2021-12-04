@@ -1,21 +1,23 @@
 import CaseStudy from '../models/CaseStudies';
-import Department from '../models/Leaderboard';
-import { DepartmentName } from '../models/Leaderboard'
+import Department, { DepartmentName } from '../models/Leaderboard';
 
 const pointsPerCaseStudy = 10;
 
 export async function updateDepartmentPoints() {
-    
-    for (let key in DepartmentName) {
-        let departmentName = DepartmentName[key];
-        let departmentPoints = 0;
-        let nCaseStudies = 0;
-        await CaseStudy.countDocuments({ userDepartment: departmentName }, function(err, count) {
-            nCaseStudies += count;
-            departmentPoints += count * pointsPerCaseStudy;
+    try {
+        var caseStudies;
+        await Promise.all([
+            (async() => {
+                await Department.updateMany({}, { $set: { "points": 0, "nCaseStudies": 0 } });
+            })(),
+            (async() => {
+                caseStudies = await CaseStudy.find().populate('user');
+            })()
+        ]);
+        caseStudies.forEach(async (item) => {
+            await Department.findOneAndUpdate({ "name": item.user.department }, { $inc : { "points" : pointsPerCaseStudy, "nCaseStudies" : 1 } }).exec();
         })
-        Department.updateOne({ "name": departmentName }, { $set: { "points": departmentPoints, "nCaseStudies": nCaseStudies } })
-            .catch((err) => {console.log(err)});
+    } catch (err) {
+        console.log(err);
     }
-
 }

@@ -33,6 +33,20 @@ The Directory can be split into client and serverside. Here are a few important 
 
 ## Build/Dependencies Initialization and Run Instructions
 
+### Prequisites
+- We assume Node has already been installed
+    - If not, download and install here: https://nodejs.org/en/download/
+
+### Database Setup
+- Assuming you do not have MongoDB set up on your computer, follow the instructions to set it up
+    - For MacOS, follow the instructions from this link:
+        - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/
+    - For Windows:
+        - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+- (Recommended)
+    - Download MongoDB Compass to view database records:
+        - https://www.mongodb.com/try/download/compass
+
 ### Server Setup
 - navigate into into /server folder from the root directory
 - run the following:
@@ -63,6 +77,6 @@ $ npm start
     - Role: User
         - Username: user3
         - Password: 123456789
-
+    
 ### License
 GNU GPL 

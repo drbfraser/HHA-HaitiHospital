@@ -8,13 +8,8 @@ import {useTranslation} from "react-i18next";
 import { Link } from 'react-router-dom';
 
 interface DashboardLeaderProps extends ElementStyleProps {
-    // leader :LeaderProps[],
-}
 
-// const fetchLeader = (async () => {
-//     let leaders = await Axios.get("/api/leaderboard");
-//     return leaders;
-// })
+}
 
 const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
 
@@ -24,7 +19,6 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
         try {
             const res = await axios.get(urlLeaderboard);
             setLeaderboard(res.data);
-            console.log(leaderboard);
         } catch (err) {
             console.log(err);
         }
@@ -32,7 +26,7 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
 
     useEffect(() => {
         getLeaderboard();
-    }, [leaderboard.length]);
+    }, []);
 
     const {t, i18n} = useTranslation();
 
@@ -54,27 +48,25 @@ const DashboardLeaderOverview = (props : DashboardLeaderProps) => {
                         </thead>
                         <tbody>
                             {leaderboard.map((item, index) => (
-                            index === 0 ?
                                 <tr key={item._id} className={`${index === 0 ? "table-warning": ""}`}>
                                     <th scope="row" className="text-center">{index + 1}</th>
                                     <td className="text-center">
                                         {index === 0 ? <i className="text-warning bi-trophy-fill"/> : null}
-                                        {/* {index === 1 ? <i className="text-secondary bi-trophy-fill"/> : null} */}
-                                        {/* {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null} */}
+                                        {index === 1 ? <i className="text-secondary bi-trophy-fill"/> : null}
+                                        {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null}
                                     </td>
                                     <td className="text-center">{item.name}</td>
                                     {/* <td className="d-none d-sm-table-cell">0</td> */}
                                     <td className="d-none d-sm-table-cell text-center">{item.nCaseStudies}</td>
                                     <td className="fw-bold text-center">{item.points}</td>
                                 </tr>
-                            : null
                             ))
                             }
                         </tbody>
                     </table>
                 </div>
                 <div className="d-flex justify-content-end">
-                    <Link to="leaderboard"><button type="button" className="btn btn-warning btn-block col-auto">{t("leaderBoardOverviewSeeFullLeaderboard")}</button></Link>
+                    <Link to="leaderBoard"><button type="button" className="btn btn-warning btn-block col-auto">{t("leaderBoardOverviewSeeFullLeaderboard")}</button></Link>
                 </div>
             </div>
 

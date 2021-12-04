@@ -30,56 +30,53 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
     const {t, i18n} = useTranslation();
 
     return(
-         <div className={'dashboard-message-overview '+ (props.classes||'')}>
-             <div className="my-3 p-2 bg-body rounded shadow-sm">
-                 <h5 className="mb-3">{t("dashboardMessageOverviewMessages")}</h5>
+        <div className={'dashboard-message-overview '+ (props.classes||'')}>
+            <div className="my-3 p-2 bg-body rounded shadow-sm">
+                <h5 className="mb-3">{t("dashboardMessageOverviewMessages")}</h5>
 
-                 <div className="table-responsive">
-                     <table className="table">
-                         <thead>
-                             <tr>
-                                 <th scope="col">{t("dashboardMessageOverviewTitle")}</th>
-                                 <th scope="col">{t("dashboardMessageOverviewUser")}</th>
-                                 <th scope="col">{t("dashboardMessageOverviewDate")}</th>
-                                 <th scope="col">{t("dashboardMessageOverviewMessage")}</th>
-                             </tr>
-                         </thead>
+                <div className="table-responsive">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">{t("dashboardMessageOverviewTitle")}</th>
+                                <th scope="col">{t("dashboardMessageOverviewUser")}</th>
+                                <th scope="col">{t("dashboardMessageOverviewDate")}</th>
+                                <th scope="col">{t("dashboardMessageOverviewMessage")}</th>
+                            </tr>
+                        </thead>
 
-                         <tbody className="text-muted">
-                             {(message.map((message, index) => {
-                                 // Displaying top 3 messages
-                                 if (index <= 2) {
-                                     return(
-                                         <tr>
-                                             <th scope="row" className="text-secondary text-break" key={index}>{message.messageHeader}</th>
-                                             <td className="text-secondary">
-                                                 {message.authorId}
-                                             </td>
-                                             <td className="text-secondary">
-                                                 {message.date}
-                                             </td>
-                                             <td className="text-secondary text-break">
-                                                 {/*show first 70 character of message only*/}
-                                                 {message.messageBody.slice(0, 70)}...
-                                             </td>
-                                         </tr>
-                                        )
-                                    }
-                                 })
-                             )}
-                         </tbody>
-                     </table>
-                 </div>
+                        <tbody className="text-muted">
+                            {(message.map((message, index) => {
+                                // Displaying top 3 messages
+                                if (index <= 2) {
+                                    return(
+                                        <tr>
+                                            <th scope="row" className="text-secondary text-break" key={index}>{message.messageHeader}</th>
+                                            <td className="text-secondary">
+                                                {message.authorId}
+                                            </td>
+                                            <td className="text-secondary">
+                                                {(new Date(message.date)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
+                                            </td>
+                                            <td className="text-secondary text-break">
+                                                {/*show first 70 character of message only*/}
+                                                {message.messageBody.length > 70 ? message.messageBody.slice(0, 70) + "..." : message.messageBody}
+                                            </td>
+                                        </tr>
+                                    )
+                                }
+                                })
+                            )}
+                        </tbody>
+                    </table>
+                </div>
 
-                 <div className="d-flex justify-content-end">
-                     <NavLink to="/messageBoard"><button type="button" className="btn btn-secondary btn-block col-auto">{t("dashboardMessageOverviewSeeMore")}</button></NavLink>
-                 </div>
-                 {/*<small className="justify-content-end">*/}
-                 {/*    <NavLink to="/messageBoard">{t("dashboardMessageOverviewSeeMore")}</NavLink>*/}
-                 {/*</small>*/}
-             </div>
-         </div>
-     )
+                <div className="d-flex justify-content-end">
+                    <NavLink to="/messageBoard"><button type="button" className="btn btn-secondary btn-block col-auto">{t("dashboardMessageOverviewSeeMore")}</button></NavLink>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default DashboardMessageOverview;
