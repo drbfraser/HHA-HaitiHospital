@@ -476,55 +476,37 @@ function RehabForm() {
         }
 
         // Number of patients that stayed in ward
-        if (num === 17 || (num >= 18 && num <= 21)) {
+        if (num >= 17 && num <= 27) {
             totalValidation(17, 18, 21);
-            return;
-        }
-        if (num === 17 || (num >= 22 && num <= 27)) {
             totalValidation(17, 22, 27);
             return;
         }
 
         // Total Admissions
-        if (num === 28 || (num >= 29 && num <= 32)) {
+        if (num >= 28 && num <= 48) {
             arrayTotalValidation(28, 29, 32);
-            return;
-        }
-        if (num === 28 || (num >= 33 && num <= 41)) {
             totalValidation(28, 33, 41);
-            return;
-        }
-        if (num === 28 || (num >= 42 && num <= 48)) {
             totalValidation(28, 42, 48);
             return;
         }
 
         // Number of Outpatients
-        if (num === 49 || (num >= 50 && num <= 56)) {
+        if (num >= 49 && num <= 58) {
             totalValidation(49, 50, 56);
-            return;
-        }
-        if (num === 49 || (num >= 57 && num <= 58)) {
             totalValidation(49, 57, 58);
             return;
         }
 
         // Returning outpatients
-        if (num === 59 || (num >= 60 && num <= 66)) {
+        if (num >= 59 && num <= 66) {
             totalValidation(59, 60, 66);
             return;
         }
 
         // New outpatiens initial evaluation
-        if (num === 67 || (num >= 68 && num <= 78)) {
+        if (num >= 67 && num <= 87) {
             totalValidation(67, 68, 78);
-            return;
-        }
-        if (num === 67 || (num >= 79 && num <= 85)) {
             totalValidation(67, 79, 85);
-            return;
-        }
-        if (num === 67 || (num >= 86 && num <= 87)) {
             totalValidation(67, 86, 87);
             return;
         }
