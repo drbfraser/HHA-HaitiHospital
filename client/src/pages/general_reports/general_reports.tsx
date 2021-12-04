@@ -28,12 +28,7 @@ const GeneralReports = () => {
                         value = {dayRange}
                         onChange={setDayRange}
                     />
-<<<<<<< HEAD
-                    
-                    <DepartmentReports
-=======
                     <ReportSummary
->>>>>>> master
                         dateRange={dayRange}
                     />
                    
