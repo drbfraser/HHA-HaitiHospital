@@ -860,15 +860,15 @@ function RehabForm() {
                             </div>
                         </form>
 
-                        <div className="btn-group d-flex">
+                        <div className="btn-group d-flex mb-2">
                             <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 0 ? true : false}>Next</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
                         </div>
 
                         <button
                             className="w-100 btn btn-primary btn-lg"
                             type="submit"
-                            style={{ display: sectionState === 0 ? '' : 'none' }}
+                            style={{ display: sectionState === 2 ? '' : 'none' }}
                             onClick={handleSubmit(onSubmit)}>
                             Submit
                         </button>
