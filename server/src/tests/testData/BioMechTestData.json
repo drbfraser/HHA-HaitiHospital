@@ -1,0 +1,6 @@
+{
+    "equipmentName" : "Microscope",
+    "equipmentFault" : "The Lens was cracked",
+    "equipmentPriority" : "Urgent",
+    "imgPath" : "home/path/api.jpg"
+}

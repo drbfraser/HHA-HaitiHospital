@@ -50,7 +50,7 @@ router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
             imgPath
         });
         newCaseStudy.save()
-            .then(() => res.json("Case study submmitted successfully"))
+            .then(() => res.json("Case Study Submitted successfully"))
             .catch(err => res.status(400).json('Case study submission failed: ' + err));
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
