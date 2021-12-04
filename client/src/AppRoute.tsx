@@ -34,7 +34,13 @@ const AppRoutes = ({ component: Component, path, loginRequired, rolesAllowed, de
 		// The reason we have role access or departmentAccess is because we will always allow someone with RoleAccess to enter
 		// Thus, will short circuit even if they don't have departmentAccess (e.g. DepartmentHeads) 
 		// however user's with role User won't be able to enter unless they have departmentAccess
-		if (loginRequired && !Boolean(currentUserInfo.isAuth && (roleAccess || departmentAccess))) {
+		// If login is required to access the page and the user is not authenticated nor do they have role access
+		if (loginRequired && !Boolean(currentUserInfo.isAuth && (roleAccess))) {
+			// If the user is logged in, and trying to access a department page
+			if (isDepartmentRequired(departmentsAllowed) && isDepartmentAllowed(departmentsAllowed, currentUserDepartment)) {
+				return <Component {...props} />
+			}
+
 			// If the user is logged in, and does not have role or department access redirect them to not found page
 			if (!Boolean(roleAccess && departmentAccess)) {
 				return <Redirect to={{ pathname: '/notFound' }} />
