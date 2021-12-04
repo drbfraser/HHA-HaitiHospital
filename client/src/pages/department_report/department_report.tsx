@@ -13,7 +13,9 @@ import './department_report.css'
 import {useTranslation} from "react-i18next";
 import { CSVLink } from "react-csv";
 import {PDFExport, savePDF} from '@progress/kendo-react-pdf';
-
+import {PDFViewer} from '@react-pdf/renderer'
+import Table from "../../components/PDFexport/table";
+import { Document, Page } from 'react-pdf';
 
 interface DepartmentReportProps extends ElementStyleProps {
   edit: boolean;
@@ -24,9 +26,32 @@ interface UrlParams {
 };
 
 const DepartmentReport = (props : DepartmentReportProps) => {
+  // const ref = React.createRef();
+  // const options = {
+  //   orientation: 'landscape',
+  //   unit: 'in',
+  //   format: [4,2]
+  // };
+
+
+  // const [numPages, setNumPages] = useState(null);
+  // const [pageNumber, setPageNumber] = useState(1);
+  //
+  // function onDocumentLoadSuccess({ numPages }) {
+  //   setNumPages(numPages);
+  // }
+
+  const  handleExportWithComponent  = (event) => {
+    pdfExportComponent.current.save();
+  }
+
   const { id } = useParams<UrlParams>();
   const getReportApi = `/api/report/viewreport/${id}`;
   const [ report, setReport] = useState<ReportProps>({});
+
+  // const [show, setShow] = useState(false);
+  // const toggleShow = () => setShow(!show);
+
   const [ csvData, setCsvData ] = useState<Object[]> ([]);
   const apiSource = Axios.CancelToken.source();
   const pdfExportComponent = useRef(null);
@@ -115,6 +140,8 @@ const DepartmentReport = (props : DepartmentReportProps) => {
 
   const {t, i18n} = useTranslation();
 
+  // var renderedOutput = csvData.map(item => <div> {item} </div>)
+
   return (
     <div className={getClassName()}>
       <SideBar/>
@@ -125,21 +152,6 @@ const DepartmentReport = (props : DepartmentReportProps) => {
           {/* Dept Title */}
           <section className='mt-3'>
             <h1 className="lead text-center">{t("departmentReportDisplayDepartmentNICU")}</h1>
-          </section>
-
-
-          {/* Report Details */}
-          <section className='mt-3'>
-            <div className="container w-50">
-              {
-                (Object.keys(report).length===0 ) ?
-                  <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
-                  <ReportDisplay
-                    report = {report.formData as ReportProps}
-                    edit = {props.edit}
-                  />
-              }
-            </div>
           </section>
 
           {/* Utility buttons */}
@@ -177,16 +189,46 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                         </button>
                       </CSVLink>
                     </li>
+                    <li className='col-sm-auto'>
+                      <div  className="button-area">
+                        {/*<button onClick={toggleShow}>show</button>*/}
+                        <button onClick={handleExportWithComponent}>Generate PDF</button>
+                      </div>
+                    </li>
                   </ul>
 
-                    <PDFExport ref={pdfExportComponent} paperSize="A4">
-                      <div>
-                        <button onClick={handleExportWinthComponent}> PDF </button>
-                      </div>
-                    </PDFExport>
                 </div>
               </section>
           }
+
+          {/* Report Details */}
+          <section className='mt-3' id="report">
+            <PDFExport  ref={pdfExportComponent}  paperSize="A4">
+              {/*<div>*/}
+              {/*  {*/}
+              {/*    Object.keys(csvData).map((key, index) => (*/}
+              {/*        <p key={index}>{csvData[key]}</p>*/}
+              {/*    ))*/}
+              {/*  }*/}
+              {/*</div>*/}
+              {/*<div>*/}
+              {/*  {Object.entries(csvData).map(([key, value]) => (*/}
+              {/*      <button key={key}>{value}</button>*/}
+              {/*  ))}*/}
+              {/*</div>*/}
+
+              <div className="container w-50">
+                {
+                  (Object.keys(report).length===0 ) ?
+                      <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
+                      <ReportDisplay
+                          report = {report.formData as ReportProps}
+                          edit = {props.edit}
+                      />
+                }
+              </div>
+            </PDFExport>
+          </section>
 
         </div>
       </main>
