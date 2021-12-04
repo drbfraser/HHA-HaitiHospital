@@ -1,4 +1,4 @@
-import DepartmentReports from 'components/department_reports/department_reports';
+import ReportSummary from 'components/report_summary/report_summary';
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 
@@ -28,8 +28,12 @@ const GeneralReports = () => {
                         value = {dayRange}
                         onChange={setDayRange}
                     />
+<<<<<<< HEAD
                     
                     <DepartmentReports
+=======
+                    <ReportSummary
+>>>>>>> master
                         dateRange={dayRange}
                     />
                    
