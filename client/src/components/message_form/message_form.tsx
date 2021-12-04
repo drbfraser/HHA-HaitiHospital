@@ -19,14 +19,13 @@ function MessageForm(props: MessageFormProps) {
     });
     // const [ departmentSelect, setDepartmentSelect] = useState<string>("");
     const [ prefilledMsg, setPrefilledMsg ] = useState<Message>(props.optionalMsg || emptyMessage);
-    const [ department, setDepartment ] = useState<string>(props.optionalMsg.departmentName || emptyMessage.departmentName)
+    const [ department, setDepartment ] = useState<string>('')
 
     useEffect(() => {
         let isMounted = true;
         if (isMounted == true) {
             if (props.optionalMsg !== undefined) {
                 setPrefilledMsg(props.optionalMsg);
-                setDepartment(props.optionalMsg.departmentName);
             }
         } 
 
@@ -36,8 +35,8 @@ function MessageForm(props: MessageFormProps) {
     }, [props.optionalMsg])
 
     useEffect(() => {
-        console.log(prefilledMsg);
-        console.log(prefilledMsg.departmentName);
+        setDepartment(prefilledMsg.departmentName);
+        reset(prefilledMsg);
     }, [prefilledMsg])
 
 

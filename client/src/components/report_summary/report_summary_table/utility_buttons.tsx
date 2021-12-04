@@ -24,17 +24,21 @@ async function delTickedReportFromDb(rid: string) {
 const UtilityButtons = (props: UtilityButtonsProps) => {
 
     function deleteReports(tickTracker: {[rid: string]: boolean}) {
-        // console.log("Delete ", tickTracker);
-        Object.keys(tickTracker).forEach((rid) => {
-            try {
-                if (tickTracker[rid] === true)
-                    delTickedReportFromDb(rid);
-            }
-            catch (err) {
-                console.log("Something wrong when delete report");
-            }
-        })
-        props.notifyTable();
+        if (window.confirm("Delete report(s) ?"))
+        {
+            Object.keys(tickTracker).forEach((rid) => {
+                try {
+                    if (tickTracker[rid] === true)
+                        delTickedReportFromDb(rid);
+                }
+                catch (err) {
+                    console.log("Something wrong when delete report");
+                    window.alert("Delete report(s) failed");
+                }
+            })
+            props.notifyTable();
+            window.alert("Report(s) deleted");
+        }
     }
 
     const {t, i18n} = useTranslation();

@@ -64,7 +64,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     setTracker(newTracker);
   }
 
-  function delReportsHandler() {
+  function tableStateChange() {
     //   console.log("Table notified for delete");
       props.refetchReports();
   }
@@ -112,7 +112,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
       
       <UtilityButtons 
         tickTracker={tickTracker}
-        notifyTable={delReportsHandler}
+        notifyTable={tableStateChange}
      />
 
     </section>

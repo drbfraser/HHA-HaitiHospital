@@ -16,25 +16,25 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     const authState = useAuthState();
 
     async function deleteMessage(msgId: string) {
-        const success = await deleteMessageFromDb(msgId);
+        if (window.confirm("Delete message?")) {
 
-        if (success === true)
-            props.notifyChange();
+            const success = await deleteMessageFromDb(msgId);
+
+            if (success === true)
+                props.notifyChange();
+        }
     }
 
     async function deleteMessageFromDb(msgId: string) : Promise<boolean> {
         const deleteMsgApi = `/api/messageboard/${msgId}`;
-        if (window.confirm("Delete message?")) {
-            try {
-                const response = await Axios.delete(deleteMsgApi);
-                return true; 
-            }
-            catch (err: any) {
-                console.log("Delete message failed");
-                return false;
-            }
+        try {
+            const response = await Axios.delete(deleteMsgApi);
+            return true; 
         }
-        return false;
+        catch (err: any) {
+            console.log("Delete message failed");
+            return false;
+        }
     }  
 
     let readableDate = new Date(props.msgJson.date as string).toLocaleString();
