@@ -64,19 +64,19 @@ const routes = [
         isPrivate: true,
         rolesRequired: [],
     },
-    {
-        path: '/Department1NICU/detailed_report/view/:id',
-        component: () => <DepartmentReport edit = {false}/>,
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/Department1NICU/detailed_report/edit/:id',
-        component: () => <DepartmentReport edit={true} />,
-        isPrivate: true,
-        rolesRequired: [],
+    // {
+    //     path: '/Department1NICU/detailed_report/view/:id',
+    //     component: () => <DepartmentReport edit = {false}/>,
+    //     isPrivate: true,
+    //     rolesRequired: [],
+    // },
+    // {
+    //     path: '/Department1NICU/detailed_report/edit/:id',
+    //     component: () => <DepartmentReport edit={true} />,
+    //     isPrivate: true,
+    //     rolesRequired: [],
 
-    },
+    // },
     // {
     //     path: '/Department1NICU',
     //     component: DepartmentOne,
@@ -115,6 +115,18 @@ const routes = [
     //     isPrivate: true,
     //     rolesRequired: [],
     // },
+    {
+        path: '/department/:deptId/view/:id',
+        component: () => <DepartmentReport edit={false}/>,
+        isPrivate: true,
+        rolesRequired: [],
+    },
+    {
+        path: '/department/:deptId/edit/:id',
+        component: () => <DepartmentReport edit={true}/>,
+        isPrivate: true,
+        rolesRequired: [],
+    },
     {
         path: '/department/:deptId',
         component: Department,

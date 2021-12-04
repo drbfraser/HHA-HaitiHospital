@@ -118,18 +118,22 @@ router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) =>
         .catch(err => res.status(400).json('Could not delete: ' + err));
 });
 
-// retrieve reports with deparmentId param and/or dateRange param
-// ?departmentId?from=YYYY-MM-DD?to=YYYY-MM-DD
+// retrieve reports with deparmentId, dateRange, reportId params
+// ?departmentId&from=YYYY-MM-DD&to=YYYY-MM-DD&reportId=
 router.route('/').get( async (req, res) => {
     try {
         const departmentId = req.query.departmentId;
-
         const strFrom = req.query.from;
         const strTo = req.query.to;
+        const reportId = req.query.reportId;
 
         let filterQuery = FormEntry.find({});
+
+        if (reportId !== undefined) {
+            filterQuery.find({_id : reportId});
+        }
     
-        if (strFrom !== undefined && strTo != undefined) {;
+        if (strFrom !== undefined && strTo != undefined) {
             let fromDate = strToDate(strFrom);
             let toDate = strToDate(strTo);
             fromDate.setHours(0, 0, 0);

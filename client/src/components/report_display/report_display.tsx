@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { ElementStyleProps, ReportProps} from 'constants/interfaces';
+import { ReportProps} from 'constants/interfaces';
 import { SimpleEntry } from 'components/report_display/simple_report_entry';
 import { ArrayEntry } from 'components/report_display/array_report_entry';
 import { ObjectEntry } from 'components/report_display/object_report_entry';
 
-interface ReportDisplayProps extends ElementStyleProps {
+interface ReportDisplayProps {
   report : ReportProps;
   edit: boolean;
 };
@@ -37,9 +37,7 @@ export const ReportDisplay = (props : ReportDisplayProps) => {
   }
 
   return (
-    <div className={'report-display ' + (props.classes || '')}
-      id='report_display'
-    >
+    <div className={'report-display'} id='report_display'>
       {
         Object.keys(props.report).map(mapKeyToJsx)
       }

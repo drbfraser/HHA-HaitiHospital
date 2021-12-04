@@ -1,31 +1,31 @@
 import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
 
-import { ReportProps } from 'constants/interfaces';
+import { getDepartmentName, ReportProps } from 'constants/interfaces';
 import ReportDisplay from 'components/report_display/report_display';
 
-import { ElementStyleProps } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import './department_report.css'
 import {useTranslation} from "react-i18next";
 
 
-interface DepartmentReportProps extends ElementStyleProps {
+interface DepartmentReportProps {
   edit: boolean;
 };
 
 interface UrlParams {
-  id: string;
+    deptId: string;
+    id: string;
 };
 
 const DepartmentReport = (props : DepartmentReportProps) => {
-  const { id } = useParams<UrlParams>();
-  const getReportApi = `/api/report/viewreport/${id}`;
+  const { deptId, id } = useParams<UrlParams>();
   const [ report, setReport] = useState<ReportProps>({});
   const [ csvData, setCsvData ] = useState<Object[]> ([]);
+  const history = useHistory();
 
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
@@ -49,9 +49,9 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   useEffect(() => {
     let isMounted = true;
     async function getReport() {
-      const reportFromServer = await fetchReport();
+      const reportsFromServer = await fetchReport();
       if (isMounted)
-        setReport(reportFromServer);
+        setReport(reportsFromServer[0]);
     };
     
     getReport();
@@ -63,6 +63,14 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   }, []);
 
   async function fetchReport() {
+    const qs = new URLSearchParams("");
+    qs.append("departmentId", deptId);
+    qs.append("reportId", id);
+    let getReportApi = `/api/report/`;
+    if (qs.toString().length > 0) {
+        getReportApi += `?${qs.toString()}`;
+    }
+
     try {
       const res = await Axios.get(getReportApi, {
         cancelToken: apiSource.token
@@ -77,17 +85,10 @@ const DepartmentReport = (props : DepartmentReportProps) => {
     return {};
   }
 
-  function getClassName() {
-    if (props.classes === undefined)
-      return 'department-report';
-    else
-      return `department-report ${props.classes}`;
-  }
-
   const {t, i18n} = useTranslation();
 
   return (
-    <div className={getClassName()}>
+    <div className={"department-report"}>
       <SideBar/>
 
       <main className="container-fluid">
@@ -95,7 +96,8 @@ const DepartmentReport = (props : DepartmentReportProps) => {
         <div className='mt-2'>
           {/* Dept Title */}
           <section className='mt-3'>
-            <h1 className="lead text-center">{t("departmentReportDisplayDepartmentNICU")}</h1>
+            <h1 className="lead text-center">{`Department of ${getDepartmentName(parseInt(deptId))}`}</h1>
+
           </section>
 
 
@@ -106,7 +108,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                 (Object.keys(report).length===0 ) ?
                   <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
                   <ReportDisplay
-                    report = {report.formData as ReportProps}
+                    report = {report.formData as ReportProps || {}}
                     edit = {props.edit}
                   />
               }
@@ -121,9 +123,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                   <ul className='row justify-content-md-center'>
                     <li className='col-sm-auto'><button className="">{t("departmentReportDisplaySave")}</button></li>
                     <li className='col-sm-auto'>
-                      <Link to={'/Department1NICU'}>
-                        <button className="">{t("Discard")}</button>
-                      </Link>
+                        <button onClick={()=>history.goBack()}>{t("Discard")}</button>
                     </li>
                     <li className='col-sm-auto'><button className="">{t("departmentReportDisplaySubmit")}</button></li>
                   </ul>
@@ -132,9 +132,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
             :
               <section className="mt-3">
                 <div className="container w-50 text-center">
-                  <Link to={'/Department1NICU'}>
-                    <button className="">{t("departmentReportDisplayBack")}</button>
-                  </Link>
+                    <button onClick={()=>history.goBack()}>{t("departmentReportDisplayBack")}</button>
                 </div>
               </section>
           }

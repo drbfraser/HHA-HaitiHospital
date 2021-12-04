@@ -29,14 +29,6 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
   },[props.reports])
 
-  function getClassName() {
-    const ogClass="report-summary-table table"
-        if (props.classes === undefined)
-            return ogClass;
-        else
-            return props.classes + ' ' +ogClass;
-  }
-
   function tickRow(update : {[rid: string] : boolean}) {
     // console.log("Row ticked", update)
     const rids = Object.keys(tickTracker);
@@ -73,10 +65,11 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     <section>
       {/* Table must be wrapped inside table-responsive to be responsive */}
       <div className="table-responsive-md">
-        <table className={getClassName()}>
+        <table className={"report-summary-table table"}>
           <thead>
             <tr>
               <th className='mx-1' scope='col'>{t("departmentPageReportID")}</th>
+              <th className='mx-1' scope='col'>Department</th>
               <th className='mx-1' scope='col'>{t("departmentPageLastUpdatedOn")}</th>
               <th className='mx-1' scope='col'>{t("departmentPageLastUpdatedUserID")}</th>
               <th className='mx-1' scope='col'></th>
@@ -96,6 +89,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
                 <ReportSummaryRow
                     key={index}
                     reportId = {report["_id"] as string}
+                    deptId = {parseInt(report["departmentId"] as string)}
                     lastUpdatedOn = { new Date(report["lastUpdatedOn"]as string)}
                     lastUpdatedBy = {`${username} / ${fullName}`}
                     isTicked = {tickTracker[report["_id"] as string]}

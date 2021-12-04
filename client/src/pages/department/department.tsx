@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useTranslation} from "react-i18next";
-import { Link, RouteComponentProps, useParams, useHistory } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 
 import SideBar from 'components/side_bar/side_bar';
 import Header from "components/header/header";
