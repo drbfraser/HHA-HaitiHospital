@@ -4,7 +4,6 @@ const { number } = require('joi');
 import Departments from '../../models/Departments';
 import FormEntry from '../../models/FormEntry';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { checkIsInRole} from '../../utils/roleUtils';
 import { date } from 'joi';
 
 
@@ -44,7 +43,7 @@ router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
     const lastUpdatedOn = dateTime;
     const departmentId = req.body.departmentId as String;
     const formData = req.body;
-    
+
     const formEntry = new FormEntry({
         "departmentId" : departmentId,
         "createdByUserId": createdByUserId,
