@@ -2,14 +2,13 @@ import React, {SyntheticEvent, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
 import { ElementStyleProps} from 'constants/interfaces';
-import {TickList, TickObserver} from 'components/department_reports/report_summary_table/tick_list'
-import temp_checklist from '../temp_checklist';
+import {TickList, TickObserver} from 'components/report_summary/report_summary_table/tick_list'
 import {useTranslation} from "react-i18next";
 
 interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
-  lastUpdatedOn: string;
-  lastUpdatedBy: number;
+  lastUpdatedOn: Date;
+  lastUpdatedBy: string;
   isTicked: boolean;
   notifyTable (update : {[rid : string] : boolean}): void;
 }
@@ -31,7 +30,7 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
           { props.reportId }
         </Link>
       </th>
-      <td>{ props.lastUpdatedOn }</td>
+      <td>{ props.lastUpdatedOn.toDateString() }</td>
       <td>{ props.lastUpdatedBy }</td>
       <td>
         <Link to={`/Department1NICU/detailed_report/edit/${props.reportId}`}>

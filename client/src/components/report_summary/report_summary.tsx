@@ -3,7 +3,7 @@ import Axios from 'axios';
 
 import { ElementStyleProps } from 'constants/interfaces';
 import { JsonArray, DepartmentName, getDepartmentId } from 'constants/interfaces';
-import ReportSummaryTable from 'components/department_reports/report_summary_table/report_summary_table';
+import ReportSummaryTable from 'components/report_summary/report_summary_table/report_summary_table';
 
 import {DayRange} from 'react-modern-calendar-datepicker';
 import './styles.css';
@@ -13,7 +13,7 @@ interface DepartmentReportsProps extends ElementStyleProps {
   dateRange?: DayRange;
 };
 
-const DepartmentReports = (props: DepartmentReportsProps) => {
+const ReportSummary = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
 
@@ -80,7 +80,7 @@ const DepartmentReports = (props: DepartmentReportsProps) => {
   );
 }
 
-export default DepartmentReports;
+export default ReportSummary;
 
 //  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 
