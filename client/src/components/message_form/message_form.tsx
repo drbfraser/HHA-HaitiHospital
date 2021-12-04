@@ -27,9 +27,9 @@ function MessageForm(props: MessageFormProps) {
             if (props.optionalMsg !== undefined) {
                 setPrefilledMsg(props.optionalMsg);
                 // setDepartmentSelect(props.optionalMsg.departmentName);
+                setDepartment(props.optionalMsg.departmentName);
             }
         } 
-        setDepartment(props.optionalMsg.departmentName);
 
         return function leaveSite() {
             isMounted = false
