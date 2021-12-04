@@ -66,7 +66,7 @@ function MessageForm(props: MessageFormProps) {
                 <select className="form-select" id="select-menu"
                 value={department}
                 {...register("departmentName")}
-                onChange={(e) => {setDepartment(e.target.value)}}
+                onChange={(e) => setDepartment(e.target.value)}
                 >
                     <option value=""> Select </option>
                     {/* <option value={DepartmentName.NicuPaeds}>
