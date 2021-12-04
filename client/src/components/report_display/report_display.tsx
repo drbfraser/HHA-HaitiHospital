@@ -29,9 +29,7 @@ export const ReportDisplay = (props : ReportDisplayProps) => {
       let entryValue = props.report[entryKey];
       let valueType = typeof(entryValue);
 
-      console.log(props.parentKey);
-      console.log(props.descriptions);
-      // console.log(props.report["descriptions"]);
+      
 
       if (valueType === 'number' || valueType === 'string' || valueType === 'boolean')
         return (<SimpleEntry key={index as React.Key}
@@ -63,7 +61,7 @@ export const ReportDisplay = (props : ReportDisplayProps) => {
   }
 
   return (
-    <div className={'report-display ' + (props.classes || '')}
+    <div className={'report-display my-4' + (props.classes || '')}
       id='report_display'
     >
       {

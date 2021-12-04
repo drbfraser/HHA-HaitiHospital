@@ -69,39 +69,26 @@ function DynamicForm() {
         return descriptions;
     }
 
-    const addDescriptions = (data) => {
-        for(var field in data){
-            if(typeof data[field] === 'object'){
-                console.log(field);
-                data[field] = addDescriptions(data[field]);
-            }
-            // console.log(data[field]);
-        }
-
-        return data;
-    }
-
     const onSubmit = async (data: any) => {
 
         if (!window.confirm("Press OK to finalize submission.")) {
             return;
         }
 
-        if (true || submitValidation()) {
+        if (submitValidation()) {
             data.departmentId = 1;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
             data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            // data.descriptions = addFormDescriptions(fields);
-            data = addDescriptions(data);
+            data.descriptions = addFormDescriptions(fields);
             console.log(data);
-            // await axios.post('/api/report/add', data).then(res => {
-            //     console.log(res.data);
-            // }).catch(error => {
-            //     console.error('Something went wrong!', error.response);
-            // });
+            await axios.post('/api/report/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                console.error('Something went wrong!', error.response);
+            });
 
-            // history.push("/Department1NICU");
+            history.push("/Department1NICU");
 
         } else {
             window.scrollTo(0, 0);

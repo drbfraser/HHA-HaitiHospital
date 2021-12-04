@@ -46,7 +46,7 @@
             },
             {
                 "field_id" : "dischargedAlive.total",
-                "field_label": "Total number of patients discharged alive:",
+                "field_label": "Total number of patients discharged alive",
                 "field_type": "number",
                 "field_value": 0,
                 "field_level": 0
@@ -102,7 +102,7 @@
             },
             {
                 "field_id" : "diedAfter48hr.paeds",
-                "field_label": "Number that died AFTER 48hrs in NPaeds",
+                "field_label": "Number that died AFTER 48hrs in Paeds",
                 "field_type": "number",
                 "field_value": 0,
                 "field_level": 1

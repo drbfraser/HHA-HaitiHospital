@@ -22,17 +22,32 @@ export const SimpleEntry = (props: SimpleEntryProps) => {
   if (props.edit === true)
     return (
       <div className={`${getClassName()} row my-2 input-group`}>
-        <div className='col-sm input-group-text'><strong>{props.name}</strong></div>    
-        <input type="text" className="col-sm form-control" 
-          placeholder={`${props.value as string}`}/>
+        <div className='col-sm input-group-text'><strong>{props.name}</strong></div>
+        <input type="text" className="col-sm form-control"
+          placeholder={`${props.value as string}`} />
       </div>
     );
-  else 
+  else
     return (
-      <div className={`${getClassName()} row my-2 text-dark`}>
-        <div className="col-sm strong"> {`${props.name}`}</div> 
-        <div className="col-sm"> {`${props.value as string}`}</div>
+      <div>
+        {props.parentKey === "" || props.entryKey.includes("total") ?
+          <div className={`${getClassName()} row my-2 text-dark`}>
+            <div className="col-sm-10 strong font-weight-bold">
+              {`${props.name}`}
+            </div>
+            <div className="col-sm-2"> {`${props.value as string}`}</div>
+          </div>
+          :
+          <div className={`${getClassName()} row my-2 text-dark`}>
+            <div className="col-sm-10 strong ps-5">
+              {`${props.name}`}
+            </div>
+            <div className="col-sm-2"> {`${props.value as string}`}</div>
+          </div>
+        }
       </div>
+
+
     );
-  
+
 }
