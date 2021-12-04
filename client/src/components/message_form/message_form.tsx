@@ -19,6 +19,7 @@ function MessageForm(props: MessageFormProps) {
     });
     // const [ departmentSelect, setDepartmentSelect] = useState<string>("");
     const [ prefilledMsg, setPrefilledMsg ] = useState<Message>(props.optionalMsg || emptyMessage);
+    const [department, setDepartment] = useState(null);
 
     useEffect(() => {
         let isMounted = true;
@@ -28,6 +29,7 @@ function MessageForm(props: MessageFormProps) {
                 // setDepartmentSelect(props.optionalMsg.departmentName);
             }
         } 
+        setDepartment(props.optionalMsg.departmentName);
 
         return function leaveSite() {
             isMounted = false
@@ -63,8 +65,9 @@ function MessageForm(props: MessageFormProps) {
             <div className="col-md-3 mb-3">
                 <label htmlFor="select-menu" className="form-label">{t("addMessageDepartment")}</label>
                 <select className="form-select" id="select-menu"
-                defaultValue={prefilledMsg.departmentName}
+                value={department}
                 {...register("departmentName")}
+                onChange={(e) => setDepartment(e.target.value)}
                 >
                     <option value=""> Select </option>
                     {/* <option value={DepartmentName.NicuPaeds}>
