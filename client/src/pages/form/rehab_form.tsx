@@ -298,7 +298,6 @@ function RehabForm() {
         for (let i = 1; i <= fields.length; i++) {
 
             var field = fields[i - 1];
-            console.log(i, field.field_type);
             if (field.field_type === "array") {
                 var formValues = formValuesComeFrom;
                 for (let j = 0; j < formValues.length; j++) {
@@ -449,7 +448,6 @@ function RehabForm() {
             if (inputElement.value === "Select option") {
                 makeValidity(inputElement, false, "Must select option");
                 makeValidity(selectList, false, "One or more fields are invalid");
-                console.log('select');
                 return false;
             }
 
