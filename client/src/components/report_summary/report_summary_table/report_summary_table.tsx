@@ -27,8 +27,6 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
     setTracker(trackerTemp);
 
-    console.log(props.reports);
-
   },[props.reports])
 
   function getClassName() {

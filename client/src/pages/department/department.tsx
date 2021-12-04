@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Link, RouteComponentProps, useParams } from "react-router-dom";
-import { ElementStyleProps } from "constants/interfaces";
+import {useTranslation} from "react-i18next";
+import { Link, RouteComponentProps, useParams, useHistory } from "react-router-dom";
+
 import SideBar from 'components/side_bar/side_bar';
 import Header from "components/header/header";
-import DepartmentReports from 'components/department_reports/department_reports';
-import {useTranslation} from "react-i18next";
-import {DepartmentName} from 'constants/interfaces'
+import ReportSummary from 'components/report_summary/report_summary';
+import {DepartmentName, getDepartmentName} from 'constants/interfaces';
 import './department_style.css'
 
 interface DepartmentProps {
@@ -13,8 +13,22 @@ interface DepartmentProps {
 
 export const Department = (props : DepartmentProps) => {
     const {t, i18n} = useTranslation();
-    const name = useParams<{name:string}>();
+    const {deptId} = useParams<{deptId:string}>();
+    const [ deptName, setDeptName ] = React.useState<DepartmentName>();
+    const history = useHistory();
 
+    React.useEffect(() => {
+        try {
+            const numberId: number = parseInt(deptId);
+            const name: DepartmentName = getDepartmentName(numberId);
+            setDeptName(name);
+        }
+        catch (e) {
+            console.log("Not found");
+            history.push("/notFound");
+        }
+
+    },[deptId])
 
   return (
     <div className='department'>
@@ -26,7 +40,7 @@ export const Department = (props : DepartmentProps) => {
 
                 {/* Department Title */ }
                 <section>
-                    <h1 className='text-start'>{`Department of ${props.name}`}</h1>
+                    <h1 className='text-start'>{`Department of ${deptName}`}</h1>
                 </section>
 
                 {/* Nav buttons */}
@@ -53,8 +67,7 @@ export const Department = (props : DepartmentProps) => {
 
                 {/* Department Report Summary */}
                 <section>
-                    {/* <DepartmentReports department={"NICU/PAED"}/> */}
-                    <DepartmentReports department={props.name}/>
+                    <ReportSummary department={deptName}/>
                 </section>
             </div>
         </main>

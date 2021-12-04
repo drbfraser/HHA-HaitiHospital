@@ -30,14 +30,14 @@ router.get('/message/:messageId', async (req: any, res: any) => {
 
 router.route('/').post(requireJwtAuth, checkIsInRole(Role.Admin),(req: Request, res: Response) => {
     let dateTime: Date = new Date();
-    const departmentId: Number = <Number>req.body.departmentId;
-    const departmentName: String = req.body.departmentName;
+    const departmentId: number = req.body.departmentId;
+    const departmentName: string = req.body.departmentName;
     const date: Date = dateTime;
-    const messageBody: String = req.body.messageBody;
+    const messageBody: string = req.body.messageBody;
     //TODO: replace messageHeader with Document Type 
-    const messageHeader: String = req.body.messageHeader;
+    const messageHeader: string = req.body.messageHeader;
     // @ts-ignore
-    const userId: String = req.user.id;
+    const userId: string = req.user.id;
     console.log(req);
     
     const messageEntry = new MessageBody({

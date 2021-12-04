@@ -17,7 +17,6 @@ const ReportSummary = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
 
-  const dbUrlForNICUReports = "/api/report/viewdepartment/1";
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
     // To fetch data from db
@@ -32,7 +31,7 @@ const ReportSummary = (props: DepartmentReportsProps) => {
       apiSource.cancel();
       isMounted = false;
     }
-  }, [refetch, props.dateRange]);
+  }, [refetch, props.department, props.dateRange]);
 
 
   const fetchReports = async () => {
@@ -40,7 +39,8 @@ const ReportSummary = (props: DepartmentReportsProps) => {
     
     try {
         apiForReports = buildApiRoute(props.dateRange, props.department);
-       
+        console.log(apiForReports);
+
         let res = await Axios.get(apiForReports, {
             cancelToken: apiSource.token
         });
@@ -85,7 +85,7 @@ export default ReportSummary;
 //  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 
 function buildApiRoute(dateRange: DayRange, department: DepartmentName): string {
-    const prefix = 'api/report';
+    const prefix = '/api/report';
     const fromParam = 'from';
     const toParam = 'to';
     const departmentParam = 'departmentId';

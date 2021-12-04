@@ -22,6 +22,7 @@ import { Role } from 'constants/interfaces';
 import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
 import GeneralReports from 'pages/general_reports/general_reports';
+import { Department } from 'pages/department/department';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -76,12 +77,12 @@ const routes = [
         rolesRequired: [],
 
     },
-    {
-        path: '/Department1NICU',
-        component: DepartmentOne,
-        isPrivate: true,
-        rolesRequired: [],
-    },
+    // {
+    //     path: '/Department1NICU',
+    //     component: DepartmentOne,
+    //     isPrivate: true,
+    //     rolesRequired: [],
+    // },
     
     {
         path: '/NICUForm',
@@ -90,27 +91,33 @@ const routes = [
         rolesRequired: [],
     },
    
-    {
-        path: '/Department2Maternity',
-        component: DepartmentTwo,
-        isPrivate: true,
-        rolesRequired: [],
-    },
+    // {
+    //     path: '/Department2Maternity',
+    //     component: DepartmentTwo,
+    //     isPrivate: true,
+    //     rolesRequired: [],
+    // },
     {
         path: '/maternityForm',
         component: MaternityForm,
         isPrivate: true,
         rolesRequired: [],
     },
+    // {
+    //     path: '/Department3Rehab',
+    //     component: DepartmentThree,
+    //     isPrivate: true,
+    //     rolesRequired: [],
+    // },
+    // {
+    //     path: '/Department4ComHealth',
+    //     component: DepartmentFour,
+    //     isPrivate: true,
+    //     rolesRequired: [],
+    // },
     {
-        path: '/Department3Rehab',
-        component: DepartmentThree,
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/Department4ComHealth',
-        component: DepartmentFour,
+        path: '/department/:deptId',
+        component: Department,
         isPrivate: true,
         rolesRequired: [],
     },

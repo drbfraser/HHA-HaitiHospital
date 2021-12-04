@@ -37,11 +37,11 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
 router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
 
     let dateTime: Date = new Date();
-    const createdByUserId = req.user.id as String;
+    const createdByUserId = req.user.id as string;
     const createdOn = dateTime;
     const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = dateTime;
-    const departmentId = req.body.departmentId as String;
+    const departmentId = req.body.departmentId as string;
     const formData = req.body;
 
     const formEntry = new FormEntry({
@@ -145,7 +145,7 @@ router.route('/').get( async (req, res) => {
     
         if (departmentId !== undefined) {
             filterQuery = filterQuery.find({
-                departmentId: departmentId as Number
+                departmentId: departmentId as number
             })
         }
     
@@ -170,9 +170,9 @@ function strToDate (strDate: string): Date {
     const substrs = strDate.split('-');
 
     // month is 0 based
-    const year = Number(substrs[0]);
-    const month = Number(substrs[1]);
-    const day = Number(substrs[2]);
+    const year = parseInt(substrs[0]);
+    const month = parseInt(substrs[1]);
+    const day = parseInt(substrs[2]);
 
     return new Date(year, month - 1, day);
 }
