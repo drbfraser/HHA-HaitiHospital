@@ -51,7 +51,7 @@ const EditMessage = () => {
     }, [])
 
     const updateMessage = async (data) => {
-        const api = `api/messageboard/${id}`;
+        const api = `/api/messageboard/${id}`;
         try {
             let response = await Axios.put(api, data);
             history.push('/messageBoard')

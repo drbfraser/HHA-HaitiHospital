@@ -1,8 +1,8 @@
 .general-reports main {
     /* margin-left: 200px; */
     position: absolute;
-    left: 200px;
-    width: calc(100% - 200px)
+    left: 220px;
+    width: calc(100% - 220px)
 }
 
 /*Margin by pixel:*/
@@ -10,7 +10,7 @@
     .general-reports main {
         /* margin-left: 70px; */
         position: absolute;
-        left: 70px;
-        width: calc(100% - 70px)
+        left: 80px;
+        width: calc(100% - 80px)
     }
 }
