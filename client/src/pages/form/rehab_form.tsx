@@ -202,23 +202,14 @@ function RehabForm() {
     }
 
     const handleChange = (ID: any, i: any, e: { target: { name: any; value: any; }; }, j: number) => {
-        console.log(ID);
-        switch (ID) {
-            case 'admissions.comeFrom.otherDepartments':
-                let newFormValuesComeFrom = [...formValuesComeFrom];
-                if (j === 0) {
-                    newFormValuesComeFrom[i].name = e.target.value;
-                } else {
-                    newFormValuesComeFrom[i].value = e.target.value;
-                }
-
-                setFormValuesComeFrom(newFormValuesComeFrom);
-                break;
-
-            default:
-
+        let newFormValuesComeFrom = [...formValuesComeFrom];
+        if (j === 0) {
+            newFormValuesComeFrom[i].name = e.target.value;
+        } else {
+            newFormValuesComeFrom[i].value = e.target.value;
         }
 
+        setFormValuesComeFrom(newFormValuesComeFrom);
     }
 
     const addFormFields = (ID: number) => {
@@ -461,7 +452,7 @@ function RehabForm() {
                 console.log('select');
                 return false;
             }
-            
+
         } else {
             makeValidity(inputElement, true, "");
             return true;
@@ -486,13 +477,27 @@ function RehabForm() {
             return;
         }
 
-        // Total Admissions
-        if (num === 18 || (num >= 19 && num <= 22)) {
-            arrayTotalValidation(18, 19, 22);
+        // Number of patients that stayed in ward
+        if (num === 17 || (num >= 18 && num <= 21)) {
+            totalValidation(17, 18, 21);
             return;
         }
-        if (num === 18 || (num >= 23 && num <= 29)) {
-            totalValidation(18, 23, 29);
+        if (num === 17 || (num >= 22 && num <= 27)) {
+            totalValidation(17, 22, 27);
+            return;
+        }
+
+        // Total Admissions
+        if (num === 28 || (num >= 29 && num <= 32)) {
+            arrayTotalValidation(28, 29, 32);
+            return;
+        }
+        if (num === 28 || (num >= 33 && num <= 41)) {
+            totalValidation(28, 33, 41);
+            return;
+        }
+        if (num === 28 || (num >= 42 && num <= 48)) {
+            totalValidation(28, 42, 48);
             return;
         }
 
@@ -555,7 +560,7 @@ function RehabForm() {
             var valueInput = (inputGroup.childNodes[idx].childNodes[1].childNodes[0] as HTMLInputElement);
             if (!isValid(valueInput)) return false;
 
-            if (num === 22 && !arrayTotalValidation(18, 19, 22)) {
+            if (num === 32 && !arrayTotalValidation(28, 29, 32)) {
                 return false;
             }
 
