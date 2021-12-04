@@ -284,7 +284,13 @@
                 "field_type": "number",
                 "field_value": 0,
                 "field_level": 1
-            },
+            }
+        ]
+    },
+
+    {
+        "section_label": "Stayed in Ward",
+        "section_fields": [
             {
                 "field_id": "stayedInWard.total",
                 "field_label": "Number of patients that stayed in ward",
@@ -620,7 +626,13 @@
                 "field_type": "number",
                 "field_value": 0,
                 "field_level": 1
-            },
+            }
+        ]
+    },
+
+    {
+        "section_label": "Outpatients",
+        "section_fields": [
             {
                 "field_id": "outpatients.total",
                 "field_label": "Number of Outpatients",

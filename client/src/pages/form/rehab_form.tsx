@@ -270,7 +270,6 @@ function RehabForm() {
         newFormValues.splice(idx, 1);
         setFormValuesComeFrom(newFormValues)
         arrayTotalValidation(28, 29, 32);
-
     }
 
     const sidePanelClick = (index: any) => {
@@ -278,9 +277,6 @@ function RehabForm() {
         let startj = 1;
         for (let i = 0; i < currentClass.length; i++) {
             currentClass[i].classList.remove("active");
-            if (currentClass[i].childNodes.length > 1) {
-                currentClass[i].removeChild(currentClass[i].childNodes[1])
-            }
 
             var show = "none"
             if (i === index) {
