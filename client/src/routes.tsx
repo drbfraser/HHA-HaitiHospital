@@ -72,19 +72,6 @@ const routes = [
         rolesRequired: [],
     },
     {
-        path: '/NICUForm',
-        component: NICUForm,
-        isPrivate: true,
-        rolesRequired: [],
-    },
-   
-    {
-        path: '/maternityForm',
-        component: MaternityForm,
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
         path: '/department/:deptId/view/:id',
         component: () => <DepartmentReport edit={false}/>,
         isPrivate: true,
