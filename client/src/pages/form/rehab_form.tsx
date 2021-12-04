@@ -499,6 +499,36 @@ function RehabForm() {
             return;
         }
 
+        // Number of Outpatients
+        if (num === 49 || (num >= 50 && num <= 56)) {
+            totalValidation(49, 50, 56);
+            return;
+        }
+        if (num === 49 || (num >= 57 && num <= 58)) {
+            totalValidation(49, 57, 58);
+            return;
+        }
+
+        // Returning outpatients
+        if (num === 59 || (num >= 60 && num <= 66)) {
+            totalValidation(59, 60, 66);
+            return;
+        }
+
+        // New outpatiens initial evaluation
+        if (num === 67 || (num >= 68 && num <= 78)) {
+            totalValidation(67, 68, 78);
+            return;
+        }
+        if (num === 67 || (num >= 79 && num <= 85)) {
+            totalValidation(67, 79, 85);
+            return;
+        }
+        if (num === 67 || (num >= 86 && num <= 87)) {
+            totalValidation(67, 86, 87);
+            return;
+        }
+
         makeValidity(inputElement, true, "");
     }
 
