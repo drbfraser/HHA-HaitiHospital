@@ -7,6 +7,7 @@ import Header from "components/header/header";
 import ReportSummary from 'components/report_summary/report_summary';
 import {DepartmentName, getDepartmentName} from 'constants/interfaces';
 import './department_style.css'
+import DatePicker, { DayRange } from "react-modern-calendar-datepicker";
 
 interface DepartmentProps {
 }
@@ -16,6 +17,11 @@ export const Department = (props : DepartmentProps) => {
     const {deptId} = useParams<{deptId:string}>();
     const [ deptName, setDeptName ] = React.useState<DepartmentName>();
     const history = useHistory();
+    const [dateRange, setDayRange] = React.useState<DayRange>({
+        from: null,
+        to: null
+    })
+
 
     React.useEffect(() => {
         try {
@@ -45,9 +51,9 @@ export const Department = (props : DepartmentProps) => {
 
                 {/* Nav buttons */}
                 <section>
-                    <div className="row my-2 justify-items-center">
+                    <div className="row">
 
-                        <div className='col-sm-6 col-md-6 col-lg-6'>
+                        <div className='col-auto'>
                             <Link to={`/department/${deptId}/add`}>
                                 <button className=" btn btn-dark btn-sm rounded-bill">
                                     <div className="lead">{t("departmentPageSubmitDate")}</div>
@@ -55,19 +61,27 @@ export const Department = (props : DepartmentProps) => {
                             </Link>
                         </div>
 
-                        <div className='col-sm-6 col-md-6 col-lg-6'>
+                        <div className='col-auto'>
                             <Link to={"#"}>
                                 <button className="btn btn-dark btn-sm rounded-bill">
                                     <div className="lead">{t("departmentPageBiomechanic")}</div>
                                 </button>
                             </Link>
                         </div>
+
+                        <div className='col-auto'>
+                            <DatePicker
+                                value = {dateRange}
+                                onChange= {setDayRange}
+                            />
+
+                        </div>
                     </div>
                 </section>
 
                 {/* Department Report Summary */}
                 <section>
-                    <ReportSummary department={deptName}/>
+                    <ReportSummary department={deptName} dateRange={dateRange}/>
                 </section>
             </div>
         </main>
