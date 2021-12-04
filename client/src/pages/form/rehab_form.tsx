@@ -109,7 +109,7 @@ function RehabForm() {
     const renderList = (state: any, field: any, fieldIndex) => {
         if (state > 0) {
             return (
-                <div className="form-group">
+                <div className="form-group" id={"list" + fieldIndex}>
                     <div className="row g-2 pb-2">
                         <div className="col-sm-10 ps-5" id={"selectList" + fieldIndex}>
                             <span className="pe-2">Patient</span>
