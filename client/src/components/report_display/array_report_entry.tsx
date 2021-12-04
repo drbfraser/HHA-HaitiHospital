@@ -5,13 +5,22 @@ import TextHolder from 'components/text_holder/text_holder';
 
 interface ArrayEntryProps extends ElementStyleProps {
   name: string;
+  entryKey: string;
   parentKey: string;
+  descriptions : Object;
   entries: ReportProps[];
   edit: boolean;
 };
 
 export const ArrayEntry = (props : ArrayEntryProps) => {
 
+  function concatParent(entryKey: string){
+    if(props.parentKey === ""){
+      return entryKey;
+    }else{
+      return props.parentKey + "_" + entryKey;
+    }
+  }
 
   return (
     <div className = {'entry array-entry accordion my-2' + (props.classes || '')}
@@ -40,7 +49,8 @@ export const ArrayEntry = (props : ArrayEntryProps) => {
                   {<div>
                     {'\t'}<ReportDisplay 
                       report={entry as ReportProps}
-                      parentKey={props.parentKey}
+                      parentKey={concatParent(props.entryKey)}
+                      descriptions = {props.descriptions}
                       edit={props.edit} />
                   </div>}
                 )

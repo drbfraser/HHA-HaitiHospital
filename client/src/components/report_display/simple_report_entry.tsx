@@ -3,7 +3,9 @@ import { ElementStyleProps } from 'constants/interfaces';
 
 interface SimpleEntryProps extends ElementStyleProps {
   name: string;
+  entryKey: string;
   parentKey: string;
+  descriptions: Object;
   value: boolean | string | number;
   edit: boolean;
 };

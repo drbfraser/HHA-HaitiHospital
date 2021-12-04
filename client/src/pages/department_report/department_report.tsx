@@ -108,6 +108,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                   <ReportDisplay
                     report = {report.formData as ReportProps}
                     parentKey= ""
+                    descriptions = {(report.formData as ReportProps)["descriptions"]}
                     edit = {props.edit}
                   />
               }

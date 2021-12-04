@@ -8,6 +8,7 @@ import { ObjectEntry } from 'components/report_display/object_report_entry';
 interface ReportDisplayProps extends ElementStyleProps {
   report : ReportProps;
   parentKey : string;
+  descriptions : Object;
   edit: boolean;
 };
 
@@ -28,33 +29,34 @@ export const ReportDisplay = (props : ReportDisplayProps) => {
       let entryValue = props.report[entryKey];
       let valueType = typeof(entryValue);
 
-      // console.log(concatParent(entryKey));
-      // if(props.report["descriptions"][concatParent(entryKey)] === undefined){
-      //   console.log(concatParent(entryKey));
-      // }
-      let key: string = concatParent(entryKey);
-
-      // console.log(props.report["descriptions"]["diedBefore48hr_total"]);
-      console.log(props.report["descriptions"]);
+      console.log(props.parentKey);
+      console.log(props.descriptions);
+      // console.log(props.report["descriptions"]);
 
       if (valueType === 'number' || valueType === 'string' || valueType === 'boolean')
         return (<SimpleEntry key={index as React.Key}
-                  name={entryKey}
-                  parentKey={concatParent(entryKey)}
+                  name={props.descriptions[concatParent(entryKey)] === undefined ? entryKey : props.descriptions[concatParent(entryKey)]}
+                  entryKey={entryKey}
+                  parentKey={props.parentKey}
+                  descriptions={props.descriptions}
                   value={entryValue as boolean | string | number}
                   edit={props.edit}/>);
       else if (Array.isArray(entryValue)) {
         return (<ArrayEntry key={index}
-                  name={entryKey} 
-                  parentKey={concatParent(entryKey)}
+                  name={props.descriptions[concatParent(entryKey)] === undefined ? entryKey : props.descriptions[concatParent(entryKey)]} 
+                  entryKey={entryKey}
+                  parentKey={props.parentKey}
+                  descriptions={props.descriptions}
                   entries={entryValue as ReportProps[]}
                   edit={props.edit}/>);
       }
       else {
         // see an object entry as a sub-report
         return (<ObjectEntry key={index}
-                name={entryKey} 
-                parentKey={concatParent(entryKey)}
+                name={props.descriptions[concatParent(entryKey)] === undefined ? entryKey : props.descriptions[concatParent(entryKey)]} 
+                entryKey={entryKey}
+                parentKey={props.parentKey}
+                descriptions={props.descriptions}
                 value={entryValue as ReportProps}
                 edit={props.edit}/>);
       }
