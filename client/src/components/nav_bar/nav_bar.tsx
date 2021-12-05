@@ -30,7 +30,7 @@ const NavBar = (props:INavBar) => {
           />
       </NavLink>
       <div className='navbar-other-button'>
-        <NavLink className="toLeadersBoard" to="/leaderBoard" exact>
+        <NavLink className="toLeadersBoard" to="/leaderboard" exact>
             LeadersBoard
         </NavLink>
         <NavLink className="toMessageBoard" to="/messageBoard" exact>
