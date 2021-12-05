@@ -89,14 +89,15 @@ const routes = [
         path: '/biomechanic',
         component: BiomechanicalPage,
         isPrivate: true,
-        rolesRequired: [],
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/brokenkit',
         component: BrokenKitReport,
         isPrivate: true,
-        rolesRequired: [],
-
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/Department1NICU',
