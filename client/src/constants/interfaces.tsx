@@ -57,7 +57,7 @@ export enum DepartmentName {
   CommunityHealth = "Community & Health",
 }
 
-export enum DepartmentId{
+export enum DepartmentId {
     NicuPaeds = 1,
     Maternity = 3,
     Rehab = 0,
@@ -102,7 +102,6 @@ export function getDepartmentId(dept: DepartmentName): DepartmentId {
             throw new Error("Invalid department name");
     }  
 }
-
 
 export interface User {
   username: string;

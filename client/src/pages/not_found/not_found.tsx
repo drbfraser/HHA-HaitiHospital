@@ -14,7 +14,7 @@ const NotFound = (props: NotFoundProps) => {
         <h1>Not Found 404</h1>
         <p>
           Go back to{' '}
-          <Link className="bold" to="/">
+          <Link className="bold" to="/home">
             Home
           </Link>
         </p>
