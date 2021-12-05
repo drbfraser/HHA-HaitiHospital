@@ -43,31 +43,33 @@ function CommunityForm() {
     }
 
     const addFormDescriptions = (formFields) => {
-        var descriptions = [];
+        var descriptions = {};
         fields.forEach(field => {
             if (field.field_type === "number") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "array") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "list") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
                 field.field_template.forEach(listField => {
-                    var listID = field.field_id + "." + listField.field_id;
-                    descriptions.push(
-                        { [listID]: listField.field_label }
-                    );
+                    var listID = key + "_" + listField.field_id;
+                    descriptions[listID] = listField.field_label;
                 })
             }
         });
         return descriptions;
     }
 
+
     const onSubmit = async (data: any) => {
         if (!window.confirm("Press OK to finalize submission.")) {
             return;
         }
 
-        
+
 
         data.decriptions = addFormDescriptions(fields);
         console.log(data);
@@ -259,11 +261,11 @@ function CommunityForm() {
 
             var isSectionValid = true;
             for (let j = 1; j <= section.section_fields.length; j++, num++) {
-                var field = fields[num-1];
+                var field = fields[num - 1];
 
                 if (field.field_type === "table") {
                     for (var idx = 0; idx < field.total_rows; idx++) {
-                        for (var jdx=0; jdx<field.total_cols; jdx++) {
+                        for (var jdx = 0; jdx < field.total_cols; jdx++) {
                             var inputElement = (document.getElementById("tables" + num + "-" + idx + "-" + jdx)?.childNodes[0] as HTMLInputElement);
                             if (field.invalid_inputs[idx][jdx] === 0 && inputElement.classList.contains("is-invalid")) {
                                 isSectionValid = false;
@@ -349,7 +351,7 @@ function CommunityForm() {
 
         // Vaccination
         if (num === 8) {
-            var grandTotals = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+            var grandTotals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             for (var i = 0; i < 18; i++) {
                 var rowTotal = 0;
                 for (var j = 0; j < 12; j += 3) {
@@ -398,7 +400,7 @@ function CommunityForm() {
 
             totalElement = document.getElementById("tables" + num + "-" + 13 + "-" + 14);
             totalElement.innerHTML = String(grandTotals[13] + grandTotals[14] + grandTotals[15]);
-            
+
             totalElement = document.getElementById("tables" + num + "-" + 16 + "-" + 14);
             totalElement.innerHTML = String(grandTotals[16]);
 
@@ -407,7 +409,7 @@ function CommunityForm() {
 
             return;
         } else if (num === 9) {
-            var grandTotals = [0,0];
+            var grandTotals = [0, 0];
             for (var i = 0; i < 2; i++) {
                 var rowTotal = 0;
                 var inputElement1 = (document.getElementById("tables" + num + "-" + i + "-" + 0)?.childNodes[0] as HTMLInputElement);
@@ -563,8 +565,10 @@ function CommunityForm() {
                                             }
                                             ret.push(
                                                 <>
-                                                    <div id={"inputs" + i}>
-                                                        <table className="table table-bordered table-sm">
+                                                    <div id={"inputs" + i} style={{
+                                                        
+                                                    }}>
+                                                        <table className="table table-bordered table-sm table table-responsive">
                                                             <tbody>
                                                                 {/* COLUMNS */}
 
@@ -575,7 +579,7 @@ function CommunityForm() {
                                                                         ))}
 
                                                                         {row.map((col, colj) => (
-                                                                            <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
+                                                                            <th style={{minWidth: '100px'}} className="text-center " colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
                                                                         ))}
                                                                     </tr>
                                                                 ))}
@@ -616,7 +620,11 @@ function CommunityForm() {
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return <td id={"tables" + i + "-" + idx + "-" + j} className="text-center align-middle"></td>
+                                                                                return (
+                                                                                    <td id={"tables" + i + "-" + idx + "-" + j} className="text-center align-middle">
+                                                                                        <input type="text" {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])} disabled/>
+                                                                                    </td>
+                                                                                );
                                                                             } else {
                                                                                 const dataInput = (
                                                                                     <td id={"tables" + i + "-" + idx + "-" + j} className="align-middle">
