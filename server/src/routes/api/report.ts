@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { number } = require('joi');
 import Departments from '../../models/Departments';
 import FormEntry from '../../models/FormEntry';
+import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { date } from 'joi';
 
 
@@ -27,29 +28,29 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
     }
     
     //TODO: VALIDATE THAT THE :ID DOES NOT RETURN AN EMPTY ARRAY
-    Departments.find({departmentId : departmentArg})
+    Departments.find({departmentId : departmentArg}).populate('createdByUserId').populate('lastUpdatedByUserId')
     .then(Departments => res.json(Departments))
     .catch(err => res.status(400).json('Could not find the Department: ' + err));
 });
 
 //POST - sends user submitted form to the server as a JSON
-router.route('/add').post((req: any, res: any) => {
-    
+router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
+
     let dateTime: Date = new Date();
-    const createdByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
+    const createdByUserId = req.user.id as String;
     const createdOn = dateTime;
-    const lastUpdatedByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
+    const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = dateTime;
-    const departmentId = req.body.departmentId;
+    const departmentId = req.body.departmentId as String;
     const formData = req.body;
-    
+
     const formEntry = new FormEntry({
-        departmentId,
-        createdByUserId,
-        createdOn,
-        lastUpdatedByUserId,
-        lastUpdatedOn,
-        formData,
+        "departmentId" : departmentId,
+        "createdByUserId": createdByUserId,
+        "createdOn" : createdOn,
+        "lastUpdatedByUserId": lastUpdatedByUserId,
+        "lastUpdatedOn" : lastUpdatedOn,
+        "formData" : formData
     });
     
     formEntry.save()
@@ -61,21 +62,24 @@ router.route('/add').post((req: any, res: any) => {
 //---VIEW DATABASE---//
 //view all Reports in the database
 router.route('/view').get((req: any, res: any) => {
-    FormEntry.find({}).sort({createdOn: 'desc'})
+    
+    FormEntry.find({}).populate('createdByUserId').populate('lastUpdatedByUserId').sort({createdOn: 'desc'})
         .then(Reports => res.json(Reports))
         .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
 
 //view all forms from a specific department
 router.route('/viewdepartment/:Departmentid').get((req: any, res: any) => {
-    FormEntry.find({departmentId : req.params.Departmentid})
+
+    FormEntry.find({departmentId : req.params.Departmentid}).populate('createdByUserId').populate('lastUpdatedByUserId')
         .then(Reports => res.json(Reports))
         .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
 
 //view specific Report by id
 router.route('/viewreport/:Reportid').get((req: any, res: any) => {
-    FormEntry.findById(req.params.Reportid)
+
+    FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
         .then(Report => res.json(Report))
         .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
@@ -83,15 +87,15 @@ router.route('/viewreport/:Reportid').get((req: any, res: any) => {
 //---EDIT REPORTS---//
 //get specific report to display results before edit 
 router.route('/edit/:Reportid').get((req: any, res: any) => {
-    FormEntry.findById(req.params.Reportid)
+    FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
         .then(Report => res.json(Report))
         .catch(err => res.status(400).json('Could not find any results: ' + err));
 });
 
 //make the changes to report of id reportID
-router.route('/edit/:Reportid').put((req: any, res: any) => {
+router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
     let updatedDateTime: Date = new Date();
-    const lastUpdatedByUserId = 0; //GET VALUE FROM FRONTEND USER SESSION
+    const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = updatedDateTime;
     const formData = req.body;
     
@@ -101,14 +105,14 @@ router.route('/edit/:Reportid').put((req: any, res: any) => {
         formData,
     });
     
-    return FormEntry.findByIdAndUpdate({_id: req.params.Reportid}, updatedFormEntry , { new : true })
+    return FormEntry.findByIdAndUpdate({_id: req.params.Reportid}, updatedFormEntry , { new : true }).populate('createdByUserId').populate('lastUpdatedByUserId')
         .then(Report => res.json(Report))
         .catch(err => res.status(400).json('Could not successfully edit the report: ' + err));
 })
 
 //---DELETE REPORTS---//
 //delete a single report with Reportid
-router.route('/delete/:Reportid').delete((req: any, res: any) => {
+router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) => {
     FormEntry.deleteOne({_id: req.params.Reportid})
         .then(() => res.json('Succesfully deleted report'))
         .catch(err => res.status(400).json('Could not delete: ' + err));
@@ -145,7 +149,7 @@ router.route('/').get( async (req, res) => {
             })
         }
     
-        let result = await filterQuery.exec();
+        let result = await filterQuery.sort({createdOn: 'desc'}).populate("lastUpdatedByUserId").exec();
         res.status(200).json(result)
     }
     catch (error) {

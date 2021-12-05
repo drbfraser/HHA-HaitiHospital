@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ElementStyleProps } from 'constants/interfaces';
+import { ElementStyleProps, Json } from 'constants/interfaces';
 import { useState } from 'react';
 
 import { MessageProps } from 'constants/interfaces';
@@ -9,7 +9,6 @@ import './dashboard_message_overview.css'
 import {useTranslation} from "react-i18next";
 
 interface DashboardMessageProps extends ElementStyleProps {
-    messages :MessageProps[],
 }
 
 const fetchMessages = (async () => {
@@ -18,7 +17,7 @@ const fetchMessages = (async () => {
 })
 
 const DashboardMessageOverview = (props : DashboardMessageProps) => {
-    const [ message, setMessage ] = useState([]);
+    const [ messages, setMessage ] = useState([]);
 
     useEffect(() => {
         const messagesFromServer = fetchMessages();
@@ -46,14 +45,17 @@ const DashboardMessageOverview = (props : DashboardMessageProps) => {
                         </thead>
 
                         <tbody className="text-muted">
-                            {(message.map((message, index) => {
+                            {(messages.map((message, index) => {
                                 // Displaying top 3 messages
+
+                                let fullName = (message.userId as Json).name;
+
                                 if (index <= 2) {
                                     return(
                                         <tr>
                                             <th scope="row" className="text-secondary text-break" key={index}>{message.messageHeader}</th>
                                             <td className="text-secondary">
-                                                {message.authorId}
+                                                {fullName}
                                             </td>
                                             <td className="text-secondary">
                                                 {(new Date(message.date)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
