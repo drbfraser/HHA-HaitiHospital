@@ -1,14 +1,11 @@
-import * as mongoose from 'mongoose';
-
-const { Schema } = mongoose;
-
-enum bioMechEnum {
+export enum bioMechEnum {
     Urgent = "Urgent",
     Important = "Important",
     NonUrgent = "Non-Urgent",
 }
 
-const bioMechSchema = new Schema({
+
+export interface BiomechModel{
     //all BioMech Data
     userId: {type: Date, required: true},
     createdOn: {type: Date, required: true},
@@ -22,7 +19,6 @@ const bioMechSchema = new Schema({
         imgPath: {type: String, required: true},
         //contentType: {type: String, required: true},
     },
-});
+};
 
-const BioMech = mongoose.model('BioMech', bioMechSchema, 'BioMechReports');
-export default BioMech;
+export default BiomechModel;
