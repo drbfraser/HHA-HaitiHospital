@@ -34,6 +34,33 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                 </button>
                             </Link>
                         </div>
+                        <div className="table-responsive">
+                            <table className="table table-hover mt-3">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Author</th>
+                                    <th scope="col">Created</th>
+                                    <th scope="col">Options</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    // caseStudies.map((item, index) => (
+                                    // <tr key={item._id}>
+                                    //     <th scope="row">{index + 1}</th>
+                                    //     {/* <td>{item.caseStudyType}</td> */}
+                                    //     <td>{item.user ? item.user.name : "[deleted]"}</td>
+                                    //     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                                    //     <td>
+                                    //     <Link to={'/bioMechView/' + item._id} className="link-primary text-decoration-none">View </Link>
+                                    //     </td>
+                                    // </tr>
+                                    // ))
+                                }
+                                </tbody>
+                            </table>
+        </div>
                     </div>
                 </section>
 
