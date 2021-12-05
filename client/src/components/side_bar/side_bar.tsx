@@ -128,6 +128,14 @@ const Sidebar = (props: SidebarProps) => {
                             ) : (<div></div>)
                         }
                     </li>
+                    <li>
+                        {
+                                <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-wrench me-2"/>
+                                    <span className="text text-light">Bio Support</span>
+                                </NavLink>
+                        }
+                    </li>
 
                     <li className="border-top my-2"/>
                         {
