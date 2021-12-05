@@ -74,6 +74,7 @@ function RehabForm() {
             data.departmentId = 0; //Rehab ID
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.descriptions = addFormDescriptions(fields);
+            console.log(data);
             await axios.post('/api/report/add', data).then(res => {
                 console.log(res.data);
             }).catch(error => {
@@ -114,7 +115,7 @@ function RehabForm() {
                         <div className="col-sm-10 ps-5" id={"selectList" + fieldIndex}>
                             <span className="pe-2">Patient</span>
                             <select className="form-select-sm" aria-label=".form-select-sm" onChange={(e) => selectList(e.target.value, state, field)}>
-                                <option selected disabled>Select Patient</option>
+                                <option selected>Select Patient</option>
 
                                 {[...Array(Number(state))].map((e, i) => (
                                     <option>{i + 1}</option>
@@ -142,7 +143,7 @@ function RehabForm() {
                                                     {...register(item.field_parent + ".patients.patient" + (i + 1) + "." + item.field_id)}
                                                     onBlur={() => listInputValidation(i, j, item.field_type, fieldIndex)}
                                                 >
-                                                    <option selected disabled>Select option</option>
+                                                    <option selected>Select option</option>
                                                     {item.field_options.map((opt) => (
                                                         <option>{opt}</option>
                                                     ))}
@@ -333,12 +334,11 @@ function RehabForm() {
                 for (let idx = 0; idx < patientState; idx++) {
                     for (let jdx = 0; jdx < field.field_template.length; jdx++) {
                         inputElement = (document.getElementById("ListInputs" + i + idx + jdx)?.childNodes[0] as HTMLInputElement);
-                        isFormValid = listInputValidation(idx, jdx, field.field_template[jdx].field_type, i) && isFormValid;
+                        isFormValid = listInputValidation(idx, jdx, field.field_template[jdx].field_type, i);
                     }
                 }
             }
         }
-
         return isFormValid;
     }
 
@@ -358,6 +358,27 @@ function RehabForm() {
                         var textInput = (inputGroup.childNodes[k].childNodes[0].childNodes[0] as HTMLInputElement);
                         var valueInput = (inputGroup.childNodes[k].childNodes[1].childNodes[0] as HTMLInputElement);
                         if (textInput.classList.contains("is-invalid") || valueInput.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
+                } else if (num === 5) {
+                    if (document.getElementById("selectList" + num) !== null) {
+                        var selectList = document.getElementById("selectList" + num)?.childNodes[1] as HTMLInputElement
+                        if (selectList.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
+                } else if(num === 6){
+                    if (document.getElementById("selectList" + num) !== null) {
+                        var selectList = document.getElementById("selectList" + num)?.childNodes[1] as HTMLInputElement
+                        if (selectList.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
+                } else if(num === 7){
+                    if (document.getElementById("selectList" + num) !== null) {
+                        var selectList = document.getElementById("selectList" + num)?.childNodes[1] as HTMLInputElement
+                        if (selectList.classList.contains("is-invalid")) {
                             isSectionValid = false;
                         }
                     }
@@ -430,13 +451,13 @@ function RehabForm() {
         return true;
     }
 
-    const listInputValidation = (i, j, type, fieldIndex) => {
+    function listInputValidation(i, j, type, fieldIndex) {
         var inputElement = (document.getElementById("ListInputs" + fieldIndex + i + j)?.childNodes[0] as HTMLInputElement);
         var selectList = document.getElementById("selectList" + fieldIndex)?.childNodes[1] as HTMLInputElement
         if (type === "number") {
             if (!isValid(inputElement)) {
                 makeValidity(selectList, false, "One or more fields are invalid");
-                return;
+                return false;
             }
         } else if (type === "text") {
             if (inputElement.value === "") {
@@ -451,18 +472,15 @@ function RehabForm() {
                 return false;
             }
 
-        } else {
-            makeValidity(inputElement, true, "");
-            return true;
-        }
-
-
-
-        makeValidity(inputElement, true, "");
+        } 
+       
         makeValidity(selectList, true, "");
+        makeValidity(inputElement, true, "");
+        
+        return true;
 
 
-    }
+    }  
 
 
     function inputValidation(num: number) {

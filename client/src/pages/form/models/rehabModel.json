@@ -53,7 +53,7 @@
                         "field_id": "numOfDaysInRehab",
                         "field_parent": "dischargedAlive",
                         "field_label": "Number of days in rehab unit from admission to discharge",
-                        "field_type": "text",
+                        "field_type": "number",
                         "field_value": 0,
                         "field_level": 1
                     },
