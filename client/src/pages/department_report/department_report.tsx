@@ -30,7 +30,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
   const [ csvData, setCsvData ] = useState<Object[]> ([]);
   const apiSource = Axios.CancelToken.source();
   const pdfExportComponent = useRef(null);
-  const handleExportWithComponent  = (event) => {
+  const handleExportWithComponent  = () => {
     pdfExportComponent.current.save();
   }
 
@@ -45,8 +45,8 @@ const DepartmentReport = (props : DepartmentReportProps) => {
         let reportType = typeof (report.formData[key]);
         if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
           let item: Object = {};
-          item['name'] = key;
-          item['content'] = report.formData[key];
+          item['Heading'] = key;
+          item['Detail'] = report.formData[key];
           data.push(item);
         } else {
           let objReport: ReportProps = report.formData[key];
@@ -56,8 +56,8 @@ const DepartmentReport = (props : DepartmentReportProps) => {
               if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
                 let tempKey = key + "_" + key1;
                 let item: Object = {};
-                item['name'] = tempKey;
-                item['content'] = objReport[key1];
+                item['Heading'] = tempKey;
+                item['Detail'] = objReport[key1];
                 data.push(item);
               } else {
                 let innerReport = objReport[key1];
@@ -65,8 +65,8 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                   Object.keys(innerReport).forEach((key2) => {
                     let tempKey = key + "_" + key1 + "_" + key2;
                     let item: Object = {};
-                    item['name'] = tempKey;
-                    item['content'] = innerReport[key2];
+                    item['Heading'] = tempKey;
+                    item['Detail'] = innerReport[key2];
                     data.push(item);
                   })
                 }
@@ -87,7 +87,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       const reportFromServer = await fetchReport();
       if (isMounted)
         setReport(reportFromServer);
-    };
+    }
     
     getReport();
 
@@ -105,7 +105,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       return res.data;
     } catch (err) {
       if (Axios.isCancel(err)) {
-        console.log(`Info: Cancel subsciption to ${getReportApi} API`, err);
+        console.log(`Info: Cancel subscription to ${getReportApi} API`, err);
       }
       else { console.log(err); }
     }
@@ -126,6 +126,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       <main className="container-fluid">
         <Header/>
         <div className='mt-2'>
+
           {/* Dept Title */}
           <section className='mt-3'>
             <h1 className="lead text-center">{t("departmentReportDisplayDepartmentNICU")}</h1>
