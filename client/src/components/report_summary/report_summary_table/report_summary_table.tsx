@@ -2,11 +2,11 @@
 import React, {useEffect, useState} from 'react';
 
 import { ElementStyleProps, JsonArray, Json} from 'constants/interfaces';
-import ReportSummaryRow from 'components/department_reports/report_summary_table/report_summary_row';
-import AllTick from 'components/department_reports/report_summary_table/all_tick';
-import UtilityButtons from 'components/department_reports/report_summary_table/utility_buttons';
-import temp_checklist from '../temp_checklist';
+import ReportSummaryRow from 'components/report_summary/report_summary_table/report_summary_row';
+import AllTick from 'components/report_summary/report_summary_table/all_tick';
+import UtilityButtons from 'components/report_summary/report_summary_table/utility_buttons';
 import {useTranslation} from "react-i18next";
+import { TriggerConfig } from 'react-hook-form';
 
 interface ReportSummaryTableProps extends ElementStyleProps {
   reports :Json[],
@@ -26,6 +26,8 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     })
 
     setTracker(trackerTemp);
+
+    console.log(props.reports);
 
   },[props.reports])
 
@@ -62,7 +64,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     setTracker(newTracker);
   }
 
-  function delReportsHandler() {
+  function tableStateChange() {
     //   console.log("Table notified for delete");
       props.refetchReports();
   }
@@ -88,15 +90,20 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
           </thead>
 
           <tbody>
-            {props.reports.map((report, index) => (
+            {props.reports.map((report, index) => {
+                let username = (report["lastUpdatedByUserId"] as Json)["username"] as string;
+                let fullName = (report["lastUpdatedByUserId"] as Json)["name"] as string;
+                
+                return (
                 <ReportSummaryRow
                     key={index}
                     reportId = {report["_id"] as string}
-                    lastUpdatedOn = {report["lastUpdatedOn"] as string}
-                    lastUpdatedBy = {report["lastUpdatedBy"] as number}
+                    lastUpdatedOn = { new Date(report["lastUpdatedOn"]as string)}
+                    lastUpdatedBy = {`${username} / ${fullName}`}
                     isTicked = {tickTracker[report["_id"] as string]}
                     notifyTable = {tickRow}
-                />))
+                />)
+            })
             }
 
           </tbody>
@@ -105,7 +112,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
       
       <UtilityButtons 
         tickTracker={tickTracker}
-        notifyTable={delReportsHandler}
+        notifyTable={tableStateChange}
      />
 
     </section>
