@@ -13,10 +13,9 @@ interface HeaderProps extends ElementStyleProps{
 }
 
 function HeaderView() {
+    const {t} = useTranslation();
     const location = useLocation();
     // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
-
-    const {t} = useTranslation();
 
     if (location.pathname.slice(1) === 'home') {
         return <h4 className="text-secondary">{t("headerOverview")}</h4>

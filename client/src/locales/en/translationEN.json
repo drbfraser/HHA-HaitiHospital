@@ -38,7 +38,6 @@
   "headerAddUser": "Add User",
   "headerEditUser": "Edit User",
   "headerSignOut": "Log out",
-
   "Admin": "Admin",
   "MedicalDirector": "Medical Director",
   "HeadOfDepartment": "Head of Department",
@@ -186,6 +185,18 @@
   "departmentReportDisplayBack": "Back",
 
   "bioSupportReportBrokenKit" : "Report Broken Kit",
+
+  "brokenKitReportBack": "Back",
+  "brokenKitReportBrokenKitReport": "Broken Kit Report",
+  "brokenKitReportNameOfEquipment": "Name of Equipment",
+  "brokenKitReportFaultWithEquipment": "Fault with equipment",
+  "brokenKitReportPriorityOfEquipment": "Priority of Equipment",
+  "brokenKitReportClickToSelectPriority": "Click to select Priority",
+  "brokenKitReportUrgent": "Urgent",
+  "brokenKitReportImportant": "Important",
+  "brokenKitReportNon-Urgent": "Non-Urgent",
+  "brokenKitReportUploadImage": "Upload Image",
+  "brokenKitReportSubmitForm": "Submit Form",
 
   "adminAddUser": "Add User",
   "adminEdit": "Edit",

@@ -39,7 +39,6 @@
   "headerEditUser": "Modifier l'utilisateur",
   "headerSignOut": "Se déconnecter",
   "leaderBoardOverviewSeeFullLeaderboard": "Aller à la page du classement ",
-
   "Admin": "Administrateur",
   "Medical Director": "Directeur médical",
   "Head of Department": "Chef de département",
@@ -186,6 +185,18 @@
   "departmentReportDisplayBack": "Arrière",
 
   "bioSupportReportBrokenKit" : "Signaler un kit cassé",
+
+  "brokenKitReportBack": "Arrière",
+  "brokenKitReportBrokenKitReport": "Rapport de kit cassé",
+  "brokenKitReportNameOfEquipment": "Nom de l'équipement",
+  "brokenKitReportFaultWithEquipment": "Défaut avec l'équipement",
+  "brokenKitReportPriorityOfEquipment": "Priorité de l'équipement",
+  "brokenKitReportClickToSelectPriority": "Cliquez pour sélectionner Priorité",
+  "brokenKitReportUrgent": "Urgente",
+  "brokenKitReportImportant": "Importante",
+  "brokenKitReportNon-Urgent": "Non urgent",
+  "brokenKitReportUploadImage": "Télécharger une image",
+  "brokenKitReportSubmitForm": "Soumettre le formulaire",
 
   "adminAddUser": "Ajouter un utilisateur",
   "adminEdit": "Éditer",
