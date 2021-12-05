@@ -37,7 +37,7 @@ const Admin = (props : AdminProps) => {
 
   useEffect(() => {
     getUsers();
-  }, [users.length])
+  }, [])
 
   return(
     <div className={'admin '+ (props.classes||'')}>

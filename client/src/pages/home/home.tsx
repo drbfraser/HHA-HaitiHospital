@@ -35,7 +35,7 @@ const Home = (props : HomeProps) => {
         <main className='container-fluid main-region'>
             <Header/>
             <DashboardLeaderOverview/>
-            <DashboardMessageOverview messages = {[]}/>
+            <DashboardMessageOverview/>
         </main>
 
     </div>

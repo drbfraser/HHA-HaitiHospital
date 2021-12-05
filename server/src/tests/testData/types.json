@@ -1,0 +1,27 @@
+{
+    "EntryTypes" : [
+        "Categories",
+        "Questionnaire",
+        "Table"
+    ],
+    
+    "Metadata" : {
+        "Description" : "String",
+        "InputType" : ["Number","String","Dropdown"],
+        "Default" : [0,""]
+    },
+
+    "Categories" : {
+        "Type" : "Categories",
+        "Metadata" : {},
+        "Children" : []
+    },
+
+    "Questionnaire" : {
+        "Type" : "Questionnaire"
+    },
+
+    "Table" : {
+        "Type" : "Table"
+    }
+}

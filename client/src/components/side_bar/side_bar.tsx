@@ -20,7 +20,7 @@ export const changeLanguage = (ln) => {
 const Sidebar = (props: SidebarProps) => {
     const authState = useAuthState();
 
-    const renderDepartmentIfUser = (departmentName: string): boolean => {
+    const renderDeptIfUserInDept = (departmentName: string): boolean => {
         if (authState.userDetails.role === Role.User) {
             return isUserInDepartment(authState.userDetails.department, departmentName);
         }
@@ -73,9 +73,22 @@ const Sidebar = (props: SidebarProps) => {
 
                     <li className="border-top my-2"/>
 
-                    <li className="nav-item">
+                    <li>
                         {
-                            renderDepartmentIfUser(DepartmentName.NicuPaeds) ? (
+                            renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment]) ? (                 
+                                <li>
+                                    <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
+                                        <i className="bi bi-folder-fill me-2"/>
+                                        <span className='text text-light'>General</span>
+                                    </NavLink>
+                                </li>
+                                ) : (<div></div>)
+                        }
+                    </li>
+
+                    <li>
+                        {
+                            renderDeptIfUserInDept(DepartmentName.NicuPaeds) ? (
                                 <NavLink to="/Department1NICU" className="nav-link link-light" exact activeClassName="active">
                                     <i className="bi bi-brightness-high-fill me-2"/>
                                     <span className="text text-light">{DepartmentName.NicuPaeds}</span>
@@ -85,7 +98,7 @@ const Sidebar = (props: SidebarProps) => {
                     </li>
                     <li>
                         {
-                            renderDepartmentIfUser(DepartmentName.Maternity) ? (
+                            renderDeptIfUserInDept(DepartmentName.Maternity) ? (
                                 <NavLink to="/Department2Maternity" className="nav-link link-light" exact activeClassName="active">
                                     <i className="bi bi-heart-fill me-2"/>
                                     <span className="text text-light">{DepartmentName.Maternity}</span>
@@ -95,7 +108,7 @@ const Sidebar = (props: SidebarProps) => {
                     </li>
                     <li>
                         {
-                            renderDepartmentIfUser(DepartmentName.Rehab) ? (
+                            renderDeptIfUserInDept(DepartmentName.Rehab) ? (
                                 <NavLink to="/Department3Rehab" className="nav-link link-light" exact activeClassName="active">
                                     <i className="bi bi-bootstrap-reboot me-2"/>
                                     <span className="text text-light">{DepartmentName.Rehab}</span>
@@ -105,7 +118,7 @@ const Sidebar = (props: SidebarProps) => {
                     </li>
                     <li>
                         {
-                            renderDepartmentIfUser(DepartmentName.CommunityHealth) ? (
+                            renderDeptIfUserInDept(DepartmentName.CommunityHealth) ? (
                                 <NavLink to="/Department4ComHealth" className="nav-link link-light" exact activeClassName="active">
                                     <i className="bi bi-headset me-2"/>
                                     {/* TODO: Use DepartmentName.CommunityHealth enum for the text in the sidebar.
@@ -113,6 +126,14 @@ const Sidebar = (props: SidebarProps) => {
                                     <span className="text text-light">Com & Health</span>
                                 </NavLink>
                             ) : (<div></div>)
+                        }
+                    </li>
+                    <li>
+                        {
+                                <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-wrench me-2"/>
+                                    <span className="text text-light">Bio Support</span>
+                                </NavLink>
                         }
                     </li>
 
