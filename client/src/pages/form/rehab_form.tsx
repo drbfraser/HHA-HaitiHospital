@@ -334,7 +334,7 @@ function RehabForm() {
                 for (let idx = 0; idx < patientState; idx++) {
                     for (let jdx = 0; jdx < field.field_template.length; jdx++) {
                         inputElement = (document.getElementById("ListInputs" + i + idx + jdx)?.childNodes[0] as HTMLInputElement);
-                        isFormValid = listInputValidation(idx, jdx, field.field_template[jdx].field_type, i);
+                        isFormValid = listInputValidation(idx, jdx, field.field_template[jdx].field_type, i) && isFormValid;
                     }
                 }
             }

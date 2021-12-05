@@ -139,8 +139,9 @@ const routes = [
     {
         path: '/rehabForm',
         component: RehabForm,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [DepartmentName.Rehab]
     },
     {
         path: '/Department4ComHealth',
