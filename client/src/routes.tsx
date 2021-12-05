@@ -23,6 +23,7 @@ import MaternityForm from 'pages/form/maternity_form';
 import { Role, DepartmentName } from 'constants/interfaces';
 import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
+import RehabForm from 'pages/form/rehab_form';
 import GeneralReports from 'pages/general_reports/general_reports';
 
 // Remember to keep the low level urls before high level urls
@@ -134,6 +135,13 @@ const routes = [
         loginRequired: true,
         rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [DepartmentName.Rehab],
+    },
+    {
+        path: '/rehabForm',
+        component: RehabForm,
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [DepartmentName.Rehab]
     },
     {
         path: '/Department4ComHealth',
