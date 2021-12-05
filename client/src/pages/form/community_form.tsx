@@ -101,7 +101,7 @@ function CommunityForm() {
 
             }
 
-            data.departmentId = 4;
+            data.departmentId = 2;
             data["Vaccination"] = vaccineTable;
             data["Pregnant Women Vaccinations"] = pregnantTable;
             await axios.post('/api/report/add', data).then(res => {
@@ -110,7 +110,7 @@ function CommunityForm() {
                 console.error('Something went wrong!', error.response);
             });
 
-            // console.log(data);
+            reset({})
             history.push("/Department4ComHealth");
         } else {
             alert("Some fields contain invalid values");
