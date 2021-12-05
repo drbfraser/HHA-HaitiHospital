@@ -28,7 +28,7 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
     formData.append("document", postData);
     formData.append("file", selectedFile);
 
-    axios.post('/api/biomech', formData).then(res => { //not sure of right path of biomech
+    axios.post('/api/biomech', formData).then(res => { 
       window.alert("Biomechanic report successfully submitted!");
       reset({});
       setSelectedFile(null);

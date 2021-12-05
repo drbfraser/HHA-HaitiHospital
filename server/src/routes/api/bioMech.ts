@@ -33,7 +33,6 @@ router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
     try{
         const user = req.user;
         const department = req.user.department;
-        // alert(user);
         const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
     
         let imgPath : String;

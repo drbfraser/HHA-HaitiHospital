@@ -80,8 +80,6 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                       console.log(index);
                                       console.log(item);
                                       console.log();
-                                      // let fullName = (item["user"] as Json)["name"] as String;
-                                      // console.log(fullName);
                                       return(
                                       <tr key={item._id}>
                                           <th scope="row">{index + 1}</th>
