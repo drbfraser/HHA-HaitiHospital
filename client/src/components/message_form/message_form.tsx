@@ -1,150 +1,111 @@
-// import React from 'react';
-import React from 'react';
-
-import { ElementStyleProps } from 'constants/interfaces';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import Axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router';
+import { ElementStyleProps, Message, emptyMessage, DepartmentName, DepartmentId, getDepartmentId, getDepartmentName } from 'constants/interfaces';
 
-import SideBar from '../side_bar/side_bar';
-import Header from 'components/header/header';
 
-import './message_form_styles.css'
 import {useTranslation} from "react-i18next";
 
-
-
-interface Message {
-  deparmentId: Number;
-  departmentName: String;
-  authorId: Number;
-  date: Date;
-  messageBody: String;
-  messageHeader: String;
+interface MessageFormProps extends ElementStyleProps{
+    optionalMsg? : Message, 
+    submitAction: (data) => void,
 }
 
 
-const messageFormSchema = Yup.object({
-  authorId: Yup.number().min(0).required('Required'),
+function MessageForm(props: MessageFormProps) {
 
-  messageBody: Yup.string()
-    .min(5, 'Must be 5 characters at minimum')
-    .max(300, 'Must be 300 characters or less')
-    .required('Required'),
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        // resolver: yupResolver(messageFormSchema)
+    });
+    // const [ departmentSelect, setDepartmentSelect] = useState<string>("");
+    const [ prefilledMsg, setPrefilledMsg ] = useState<Message>(props.optionalMsg || emptyMessage);
+    const [ department, setDepartment ] = useState<string>('')
 
-  messageHeader: Yup.string()
-    .min(5, 'Must be 5 characters at minimum')
-    .max(100, 'Must be 100 characters or less')
-    .required('Required'),
-});
+    useEffect(() => {
+        let isMounted = true;
+        if (isMounted == true) {
+            if (props.optionalMsg !== undefined) {
+                setPrefilledMsg(props.optionalMsg);
+            }
+        } 
 
-const postMessage = (async (data) => {
-  await Axios.post('/api/messageboard/', data).then(res => {
-  }).catch(error => {
-    console.error('Something went wrong!', error.response);
-  });
-})
+        return function leaveSite() {
+            isMounted = false
+        }
+    }, [props.optionalMsg])
 
-function AddMessage() {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    // resolver: yupResolver(messageFormSchema)
-  });
+    useEffect(() => {
+        setDepartment(prefilledMsg.departmentName);
+        reset(prefilledMsg);
+    }, [prefilledMsg])
 
-  const history = useHistory();
 
-  const getDepartmentId = (department: any) => {
-    switch (department) {
-      case 'NICUPaeds':
-        return 1;
+    const history = useHistory();
+    const onSubmit = (data: any) => {
+        if (data.departmentName === "") {
+            alert("Must select a department");
+            return;
+        }
+    
+        data.departmentId = getDepartmentId(data.departmentName);
+        props.submitAction(data);
 
-      case 'CommunityHealth':
-        return 2;
-
-      case 'Rehab':
-        return 3;
-
-      case 'Maternity':
-        return 4;
-
-      default:
-        return 0;
+        reset();
+        history.push('/message-board')
     }
-  }
+    const {t, i18n} = useTranslation();
+    
+    return (
 
-  const onSubmit = (data: any) => {
+    <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="row">
 
-    if (data.departmentName === "") {
-      alert("Must select a department");
-      return;
-    }
+            <div className="col-md-3 mb-3">
+                <label htmlFor="select-menu" className="form-label">{t("addMessageDepartment")}</label>
+                <select className="form-select" id="select-menu"
+                value={department}
+                {...register("departmentName")}
+                onChange={(e) => setDepartment(e.target.value)}
+                >
+                    <option value=""> Select </option>
+                    {Object.values(DepartmentName).map((deptName, index) => 
+                        { 
+                        return (
+                        <option value={deptName}
+                        key={index}>
+                            {deptName}
+                        </option>
+                        );
+                        }
+                    )}
 
-    if (getDepartmentId(data.departmentName) !== 0) {
-      data.departmentId = getDepartmentId(data.departmentName);
-    }
-
-    data.date = Date();
-
-    postMessage(data);
-    // console.log(data);
-    reset();
-    history.push('/messageBoard')
-  }
-
-  const {t, i18n} = useTranslation();
-
-  return (
-    <div className="add_message">
-      <SideBar/>
-
-      <main className="main_container">
-        <Header/>
-
-        <div className="container">
-          <h1 className="h1">{t("addMessageAddMessage")}</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="row">
-
-              <div className="col-md-4 mb-4">
-                <label htmlFor="" className="form-label">{t("addMessageUserID")}</label>
-                <input className="form-control" type="number" {...register("authorId")} />
-              </div>
-
-              <div className="col-md-4 mb-4">
-                <label htmlFor="" className="form-label">{t("addMessageDepartment")}</label>
-                <select className="form-select" {...register("departmentName")}>
-                  <option value="">{t("addMessageSelect")}</option>
-                  <option value="NICUPaeds">NICU/Paeds</option>
-                  <option value="Maternity">Maternity</option>
-                  <option value="Rehab">Rehabilitation</option>
-                  <option value="CommunityHealth">Community Health</option>
                 </select>
-              </div>
 
             </div>
-
-
-
-            <div className="mb-3">
-              <label htmlFor="" className="form-label">{t("addMessageTitle")}</label>
-              <input className="form-control" type="text" {...register("messageHeader")} />
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="" className="form-label">{t("addMessageBody")}</label>
-              <textarea className="form-control" {...register("messageBody")} cols={30} rows={10}></textarea>
-            </div>
-
-            <button className="btn btn-primary">{t("addMessageSubmit")}</button>
-
-          </form>
 
         </div>
-      </main>
-    </div>
-  )
 
+        <div className="mb-3">
+            <label htmlFor="" className="form-label">{t("addMessageTitle")}</label>
+            <input className="form-control" type="text" {...register("messageHeader")} 
+            defaultValue = {prefilledMsg["messageHeader"]}/>
+        </div>
+
+        <div className="mb-3">
+            <label htmlFor="" className="form-label">{t("addMessageBody")}</label>
+            <textarea 
+                className="form-control" 
+                {...register("messageBody")} 
+                cols={30} rows={10}
+                defaultValue = {prefilledMsg["messageBody"]}>
+            </textarea>
+        </div>
+
+        <button className="btn btn-primary">{t("addMessageSubmit")}</button>
+
+    </form>
+    );
 }
 
-export default AddMessage;
+
+export default MessageForm;

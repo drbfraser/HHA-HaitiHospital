@@ -43,7 +43,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       reset4({});
       reset5({});
       setSelectedFile(null);
-      props.history.push("/caseStudyMain");
+      props.history.push("/case-study");
     }).catch(error =>{
       console.error('Something went wrong!', error.message);
       setSubmissionStatus("failure");

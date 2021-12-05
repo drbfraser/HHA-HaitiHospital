@@ -33,7 +33,7 @@ const NavBar = (props:INavBar) => {
         <NavLink className="toLeadersBoard" to="/leaderboard" exact>
             LeadersBoard
         </NavLink>
-        <NavLink className="toMessageBoard" to="/messageBoard" exact>
+        <NavLink className="toMessageBoard" to="/messageboard" exact>
             MessageBoard
         </NavLink>
         <NavLink className="toDepartments" to="/DepartmentMain" exact>
