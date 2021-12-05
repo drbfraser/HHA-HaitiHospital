@@ -4,6 +4,8 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 
 import CaseStudy from '../../models/CaseStudies';
+import { checkIsInRole } from '../../utils/roleUtils';
+import { Role } from '../../models/User';
 
 const router = Router();
 
@@ -55,7 +57,7 @@ router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector) ,async (req, res) => {
     try {
         CaseStudy.findByIdAndRemove(req.params.id)
             .then(data => res.json(data))

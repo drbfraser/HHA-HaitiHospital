@@ -17,12 +17,14 @@ import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import AddMessage from 'pages/add_message/add_message';
 import EditMessage from 'pages/edit_message/edit_message';
 
+import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
+import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
 import AddReport from 'pages/add_report/add_report';
 import  DepartmentReport from 'pages/department_report/department_report';
 
-import { Role } from 'constants/interfaces';
+import { Role, DepartmentName } from 'constants/interfaces';
 
 
 
@@ -33,38 +35,44 @@ const routes = [
     {
         path: '/login',
         component: Login,
-        isPrivate: false,
-        rolesRequired: [],
+        loginRequired: false,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/admin',
         component: Admin,
-        isPrivate: true,
-        rolesRequired: [Role.Admin],
+        loginRequired: true,
+        rolesAllowed: [Role.Admin],
+        departmentsAllowed: [],
     },
     {
         path: '/admin-add-user',
         component: AddUserForm,
-        isPrivate: true,
-        rolesRequired: [Role.Admin],
+        loginRequired: true,
+        rolesAllowed: [Role.Admin],
+        departmentsAllowed: [],
     },
     {
         path: '/admin-edit-user/:id',
         component: EditUserForm,
-        isPrivate: true,
-        rolesRequired: [Role.Admin]
+        loginRequired: true,
+        rolesAllowed: [Role.Admin],
+        departmentsAllowed: [],
     },
     {
         path: '/home',
         component: Home,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/general_reports',
         component: GeneralReports,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+        departmentsAllowed: [],
     },
     {
         path: '/department/:deptId/add',
@@ -84,6 +92,77 @@ const routes = [
         isPrivate: true,
         rolesRequired: [],
     },
+    // {
+    //     path: '/Department1NICU/detailed_report/view/:id',
+    //     component: () => <DepartmentReport edit = {false}/>,
+    //     loginRequired: true,
+    //     rolesAllowed: [],
+    //     departmentsAllowed: [DepartmentName.NicuPaeds],
+    // },
+    // {
+    //     path: '/Department1NICU/detailed_report/edit/:id',
+    //     component: () => <DepartmentReport edit={true} />,
+    //     loginRequired: true,
+    //     rolesAllowed: [Role.Admin, Role.User],
+    //     departmentsAllowed: [DepartmentName.NicuPaeds],
+    // },
+    {
+        path: '/biomechanic',
+        component: BiomechanicalPage,
+        isPrivate: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/brokenkit',
+        component: BrokenKitReport,
+        isPrivate: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    // {
+    //     path: '/Department1NICU',
+    //     component: DepartmentOne,
+    //     loginRequired: true,
+    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+    //     departmentsAllowed: [DepartmentName.NicuPaeds],
+    // },
+    
+    // {
+    //     path: '/NICUForm',
+    //     component: NICUForm,
+    //     loginRequired: true,
+    //     rolesAllowed: [],
+    //     departmentsAllowed: [DepartmentName.NicuPaeds],
+    // },
+    // {
+    //     path: '/Department2Maternity',
+    //     component: DepartmentTwo,
+    //     loginRequired: true,
+    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+    //     departmentsAllowed: [DepartmentName.Maternity],
+    // },
+    // {
+    //     path: '/maternityForm',
+    //     component: MaternityForm,
+    //     loginRequired: true,
+    //     rolesAllowed: [],
+    //     departmentsAllowed: [DepartmentName.Maternity],
+    // },
+    // {
+    //     path: '/Department3Rehab',
+    //     component: DepartmentThree,
+    //     loginRequired: true,
+    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+    //     departmentsAllowed: [DepartmentName.Rehab],
+    // },
+    // {
+    //     path: '/Department4ComHealth',
+    //     component: DepartmentFour,
+    //     loginRequired: true,
+    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+    //     departmentsAllowed: [DepartmentName.CommunityHealth],
+    // },
     {
         path: '/department/:deptId',
         component: Department,
@@ -93,26 +172,30 @@ const routes = [
     {
         path: '/caseStudyMain',
         component: CaseStudyMain,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/caseStudyForm',
         component: CaseStudyForm,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/caseStudyView/:id',
         component: CaseStudyView,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/leaderBoard',
         component: LeaderBoardMain,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/messageBoard/edit/:id',
@@ -123,27 +206,33 @@ const routes = [
     {
         path: '/messageBoard',
         component: MessageBoardMain,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/addMessage',
         component: AddMessage,
-        isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/',
-        component: Login,
-        isPrivate: false,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [Role.Admin, Role.MedicalDirector],
+        departmentsAllowed: [],
     },
     {
         path: '/notFound',
         component: NotFound,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: false,
+        rolesAllowed: [],
+        departmentsAllowed: [],
     },
+    // WARNING: If adding new routes, do not add anything below the '/' route. 
+    // Have new routes above otherwise routing may not work properly.
+    {
+        path: '/',
+        component: Login,
+        loginRequired: false,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    }
 ];
 
 export default routes;

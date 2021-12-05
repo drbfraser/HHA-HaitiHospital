@@ -20,7 +20,7 @@ export const changeLanguage = (ln) => {
 const Sidebar = (props: SidebarProps) => {
     const authState = useAuthState();
 
-    const renderDepartmentIfUser = (departmentName: string): boolean => {
+    const renderDeptIfUserInDept = (departmentName: string): boolean => {
         if (authState.userDetails.role === Role.User) {
             return isUserInDepartment(authState.userDetails.department, departmentName);
         }
@@ -67,17 +67,23 @@ const Sidebar = (props: SidebarProps) => {
                     <li className="border-top my-2"/>
 
                     <li>
-                        <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
-                            <i className="bi bi-folder-fill me-2"/>
-                            <span className='text text-light'>General</span>
-                        </NavLink>
+                        {
+                            renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment]) ? (                 
+                                <li>
+                                    <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
+                                        <i className="bi bi-folder-fill me-2"/>
+                                        <span className='text text-light'>General</span>
+                                    </NavLink>
+                                </li>
+                                ) : (<div></div>)
+                        }
                     </li>
 
                     { Object.keys(DepartmentName).map((deptName) => {
                         const deptNameEnum = DepartmentName[deptName];
                         const deptId = getDepartmentId(deptNameEnum);
 
-                        if (renderDepartmentIfUser(deptNameEnum) === true)
+                        if (renderDeptIfUserInDept(deptNameEnum) === true)
                             return (
                                 <li>
                                     <NavLink to={`/department/${deptId}`} className='nav-link link-light' exact activeClassName='active'>
@@ -90,6 +96,15 @@ const Sidebar = (props: SidebarProps) => {
                             return <></>
                     })}
  
+                    <li>
+                        {
+                                <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-wrench me-2"/>
+                                    <span className="text text-light">Bio Support</span>
+                                </NavLink>
+                        }
+                    </li>
+
                     <li className="border-top my-2"/>
                         {
                             renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (                 
