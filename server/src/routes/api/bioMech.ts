@@ -31,32 +31,20 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
     try{
-        let dateTime: Date = new Date();
         const userId = req.user.id;
-        // const userId = 0; //TEST ONLY
-        const createdOn: Date = dateTime;
-        const equipmentName: String = req.body.equipmentName;
-        const equipmentFault: String = req.body.equipmentFault;
-        const equipmentPriority: String = req.body.equipmentPriority;
-        let imgPath : String;
-        let contentType : String = 'image/jpg';
+        const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
     
+        let imgPath : String;
         if(req.file){
             imgPath = req.file.path;
         }
     
-        const image = {
-            imgPath,
-            contentType,
-        };
-    
         const bioMech = new BioMech({
             userId,
-            createdOn,
             equipmentName,
             equipmentFault,
             equipmentPriority,
-            image,
+            imgPath,
         });
 
         bioMech.save()
