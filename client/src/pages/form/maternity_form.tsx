@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function MaternityForm() {
-    const { register, handleSubmit } = useForm({});
+    const { register, handleSubmit, reset } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
     const [sectionState, setSectionState] = useState(0);
@@ -96,7 +96,7 @@ function MaternityForm() {
 
             data.decriptions = addFormDescriptions(fields);
 
-            data.departmentId = 2;
+            data.departmentId = 3;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
 
             await axios.post('/api/report/add', data).then(res => {
@@ -104,7 +104,7 @@ function MaternityForm() {
             }).catch(error => {
                 console.error('Something went wrong!', error.response);
             });
-
+            reset({});
             history.push("/Department2Maternity");
 
         } else {
@@ -378,6 +378,20 @@ function MaternityForm() {
                             }
                         }
                     }
+                } else if (num === 6) {
+                    if (document.getElementById("selectList" + num) !== null) {
+                        var selectList = document.getElementById("selectList" + num)?.childNodes[1] as HTMLInputElement
+                        if (selectList.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
+                } else if (num === 7) {
+                    if (document.getElementById("selectList" + num) !== null) {
+                        var selectList = document.getElementById("selectList" + num)?.childNodes[1] as HTMLInputElement
+                        if (selectList.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
                 } else {
                     var inputElement = (document.getElementById("inputs" + num)?.childNodes[0] as HTMLInputElement);
                     if (inputElement.classList.contains("is-invalid")) {
@@ -447,28 +461,33 @@ function MaternityForm() {
         return true;
     }
 
-    const listInputValidation = (i, j, type, fieldIndex) => {
+    function listInputValidation(i, j, type, fieldIndex) {
         var inputElement = (document.getElementById("ListInputs" + fieldIndex + i + j)?.childNodes[0] as HTMLInputElement);
         var selectList = document.getElementById("selectList" + fieldIndex)?.childNodes[1] as HTMLInputElement
         if (type === "number") {
             if (!isValid(inputElement)) {
                 makeValidity(selectList, false, "One or more fields are invalid");
-                return;
+                return false;
             }
         } else if (type === "text") {
-            if (inputElement.value == "") {
+            if (inputElement.value === "") {
                 makeValidity(inputElement, false, "Must enter field");
                 makeValidity(selectList, false, "One or more fields are invalid");
                 return false;
-            } else {
-                makeValidity(inputElement, true, "");
-                return true;
             }
+        } else if (type === "select") {
+            if (inputElement.value === "Select option") {
+                makeValidity(inputElement, false, "Must select option");
+                makeValidity(selectList, false, "One or more fields are invalid");
+                return false;
+            }
+
         }
 
-
-        makeValidity(inputElement, true, "");
         makeValidity(selectList, true, "");
+        makeValidity(inputElement, true, "");
+
+        return true;
 
 
     }
@@ -890,10 +909,18 @@ function MaternityForm() {
                                                                             var rowLength = field.row_labels.length - 1;
                                                                             var colLength = field.col_labels.length - 1;
                                                                             if (field.invalid_inputs[inputCount][j] === 1) {
+                                                                                const dataInput = (
+                                                                                    <td id={"tables" + i + idx + j} className="text-center">
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
+                                                                                            disabled
+                                                                                        />
+                                                                                    </td>
+                                                                                )
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return <td id={"tables" + i + idx + j} className="text-center"></td>
+                                                                                return dataInput;
                                                                             } else {
                                                                                 const dataInput = (
                                                                                     <td id={"tables" + i + idx + j} className="align-middle">
