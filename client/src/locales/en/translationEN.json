@@ -16,6 +16,8 @@
   "sidebarMessageBoard": "Message Board",
   "sidebarLeaderBoard": "Leaderboard",
   "sidebarCaseStudy": "Case Study",
+  "sidebarGeneral": "General",
+  "sidebarBioSupport": "Bio Support",
   "sidebarAdmin": "Admin",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
@@ -29,6 +31,9 @@
   "headerDepartmentMaternity": "Department of Maternity",
   "headerDepartmentRehab": "Department of Rehab",
   "headerDepartmentCom": "Department of Com&Health",
+  "headerBiomechanicalSupport": "Biomechanical Support",
+  "headerBrokenKitReport": "Broken Kit Report",
+  "headerGeneralReports": "General Reports",
   "headerAdmin": "Admin Desk",
   "headerAddUser": "Add User",
   "headerEditUser": "Edit User",
@@ -179,6 +184,8 @@
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
   "departmentReportDisplayBack": "Back",
+
+  "bioSupportReportBrokenKit" : "Report Broken Kit",
 
   "adminAddUser": "Add User",
   "adminEdit": "Edit",

@@ -15,30 +15,32 @@ interface BiomechanicalPageProps extends RouteComponentProps {}
 
 export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
-  return (
+    const { t } = useTranslation();
+
+    return (
       
-<div className = 'biomechanical_page'>
-<SideBar/>
-<main className="container-fluid main-region">
-            <Header/>
+    <div className = 'biomechanical_page'>
+    <SideBar/>
+    <main className="container-fluid main-region">
+                <Header/>
 
-            <div className="mt-3">
+                <div className="mt-3">
 
-                <section>
-                    <div className="row my-2 justify-items-center">
+                    <section>
+                        <div className="row my-2 justify-items-center">
 
-                        <div className='col-sm-6 col-md-6 col-lg-6'>
-                            <Link to={"/brokenkit"}>
-                                <button className=" btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">Report Broken Kit</div>
-                                </button>
-                            </Link>
+                            <div className='col-sm-6 col-md-6 col-lg-6'>
+                                <Link to={"/brokenkit"}>
+                                    <button className=" btn btn-dark btn-sm rounded-bill">
+                                        <div className="lead">{t("bioSupportReportBrokenKit")}</div>
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-            </div>
-        </main>
-</div>
-  );
+                </div>
+            </main>
+    </div>
+      );
 };

@@ -18,6 +18,8 @@ export const changeLanguage = (ln) => {
 }
 
 const Sidebar = (props: SidebarProps) => {
+
+    const { t } = useTranslation();
     const authState = useAuthState();
 
     const renderDeptIfUserInDept = (departmentName: string): boolean => {
@@ -34,7 +36,6 @@ const Sidebar = (props: SidebarProps) => {
             return `Sidebar ${props.classes} `
     }
 
-    const {t, i18n} = useTranslation();
 
     return (
         <div className={getClassName()}>
@@ -79,7 +80,7 @@ const Sidebar = (props: SidebarProps) => {
                                 <li>
                                     <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
                                         <i className="bi bi-folder-fill me-2"/>
-                                        <span className='text text-light'>General</span>
+                                        <span className='text text-light'>{t("sidebarGeneral")}</span>
                                     </NavLink>
                                 </li>
                                 ) : (<div></div>)
@@ -132,7 +133,7 @@ const Sidebar = (props: SidebarProps) => {
                         {
                                 <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
                                     <i className="bi bi-wrench me-2"/>
-                                    <span className="text text-light">Bio Support</span>
+                                    <span className="text text-light">{t("sidebarBioSupport")}</span>
                                 </NavLink>
                         }
                     </li>
@@ -143,7 +144,7 @@ const Sidebar = (props: SidebarProps) => {
                                     <li>
                                         <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                                             <i className="bi bi-person-badge-fill me-2"/>
-                                            <span className="text text-light">Admin</span>
+                                            <span className="text text-light">{t("sidebarAdmin")}</span>
                                         </NavLink>
 
                                         <li className="border-top my-2"/>
