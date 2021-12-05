@@ -4,6 +4,8 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 
 import CaseStudy from '../../models/CaseStudies';
+import { checkIsInRole } from '../../utils/roleUtils';
+import { Role } from '../../models/User';
 
 const router = Router();
 
@@ -48,14 +50,14 @@ router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
             imgPath
         });
         newCaseStudy.save()
-            .then(() => res.json("Case study submmitted successfully"))
+            .then(() => res.json("Case Study Submitted successfully"))
             .catch(err => res.status(400).json('Case study submission failed: ' + err));
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong.' });
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector) ,async (req, res) => {
     try {
         CaseStudy.findByIdAndRemove(req.params.id)
             .then(data => res.json(data))

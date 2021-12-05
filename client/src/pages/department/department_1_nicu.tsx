@@ -3,7 +3,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from "components/header/header";
-import DepartmentReports from 'components/department_reports/department_reports';
+import ReportSummary from 'components/report_summary/report_summary';
 import './department_1_nicu.css'
 import {useTranslation} from "react-i18next";
 import {DepartmentName} from 'constants/interfaces'
@@ -68,7 +68,7 @@ export const DepartmentOne = (props : DepartmentProps) => {
                 {/* Department Report Summary */}
                 <section>
                     {/* <DepartmentReports department={"NICU/PAED"}/> */}
-                    <DepartmentReports 
+                    <ReportSummary 
                         department={DepartmentName.NicuPaeds}
                         dateRange={dayRange}
                     />
