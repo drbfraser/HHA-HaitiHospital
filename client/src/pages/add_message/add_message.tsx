@@ -10,6 +10,7 @@ import Header from 'components/header/header';
 
 import './add_message_styles.css'
 import MessageForm  from '../../components/message_form/message_form';
+import {useTranslation} from "react-i18next";
 
 // Not sure what these are for
 
@@ -41,20 +42,21 @@ import MessageForm  from '../../components/message_form/message_form';
 
 function AddMessage() {
     const history = useHistory();
+    const {t,i18n} = useTranslation();
 
     const postMessage = (async (data) => {
         const api = '/api/messageboard/';
     try {
         let response = await Axios.post(api, data);
         history.push('/messageBoard')
-        alert('success');
+        alert(i18n.t("addMessageAlertSuccess"));
 
     }
     catch (e) {
         if (e.response.status === 401)
-            alert("update message failed: unauthorized");
+            alert(i18n.t("addMessageAlertUnauthorized"));
         else 
-            alert("update message failed");
+            alert(i18n.t("addMessageAlertFailed"));
         console.log("update message failed ", e.response.status);
     }
     })
@@ -68,7 +70,7 @@ function AddMessage() {
         <Header/>
 
         <div className="container">
-            <h1 className="h1">Add Message</h1>
+            <h1 className="h1">{t("addMessageAddMessage")}</h1>
             <MessageForm
             submitAction={postMessage}
             />
@@ -78,7 +80,7 @@ function AddMessage() {
             <button 
             className="btn btn-md btn-outline-secondary"
             onClick={history.goBack}
-            > Back </button>
+            > {t("addMessageBack")} </button>
 
         </div>
       </main>

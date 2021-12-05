@@ -14,6 +14,7 @@ interface MessageFormProps extends ElementStyleProps{
 
 function MessageForm(props: MessageFormProps) {
 
+    const {t } = useTranslation();
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         // resolver: yupResolver(messageFormSchema)
     });
@@ -53,10 +54,9 @@ function MessageForm(props: MessageFormProps) {
         reset();
         history.push('/messageBoard')
     }
-    const {t, i18n} = useTranslation();
+
     
     return (
-
     <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
 
@@ -67,7 +67,7 @@ function MessageForm(props: MessageFormProps) {
                 {...register("departmentName")}
                 onChange={(e) => setDepartment(e.target.value)}
                 >
-                    <option value=""> Select </option>
+                    <option value=""> {t("addMessageSelect")} </option>
                     {/* <option value={DepartmentName.NicuPaeds}>
                         {DepartmentName.NicuPaeds}
                     </option>

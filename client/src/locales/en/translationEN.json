@@ -59,6 +59,7 @@
   "messageBoardAddMessage": "Add Message",
   "messageBoardMore": "More",
   "messageBoardLess": "Less",
+  "messageBoardTitle": "Title",
 
   "addMessageAddMessage": "Add Message",
   "addMessageUserID": "User ID",
@@ -67,6 +68,10 @@
   "addMessageTitle": "Title",
   "addMessageBody": "Body",
   "addMessageSubmit": "Submit",
+  "addMessageBack": "Back",
+  "addMessageAlertSuccess": "Success",
+  "addMessageAlertUnauthorized": "Update message failed: unauthorized",
+  "addMessageAlertFailed": "Update message failed",
 
   "leaderBoardDepartmentLeaderboard": "Department Leaderboard",
   "leaderBoardPosition": "Position",

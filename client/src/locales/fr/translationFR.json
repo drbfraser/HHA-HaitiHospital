@@ -59,6 +59,7 @@
   "messageBoardAddMessage": "Ajouter un message",
   "messageBoardMore": "Suite",
   "messageBoardLess": "Moins",
+  "messageBoardTitle": "Titre",
 
   "addMessageAddMessage": "Ajouter un message",
   "addMessageUserID": "Identifiant d'utilisateur",
@@ -67,6 +68,10 @@
   "addMessageTitle": "Titre",
   "addMessageBody": "Corps",
   "addMessageSubmit": "Soumettre",
+  "addMessageBack": "Arrière",
+  "addMessageAlertSuccess": "Succès",
+  "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
+  "addMessageAlertFailed": "Échec de la mise à jour du message",
 
   "leaderBoardDepartmentLeaderboard": "Classement du département",
   "leaderBoardPosition": "Position",
