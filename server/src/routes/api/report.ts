@@ -38,14 +38,17 @@ router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
 
     let dateTime: Date = new Date();
     const createdByUserId = req.user.id as String;
-    const createdOn = dateTime;
+    const createdOn: Date = dateTime;
     const lastUpdatedByUserId = req.user.id;
-    const lastUpdatedOn = dateTime;
+    const lastUpdatedOn: Date = dateTime;
     const departmentId = req.body.departmentId as String;
     const formData = req.body;
+    const reportingMonth: Date = dateTime; //TODO: Modify Month to be able to be easily filtered by HHA Staff
+
     const formEntry = new FormEntry({
         "departmentId" : departmentId,
         "createdByUserId": createdByUserId,
+        "reportingMonth": reportingMonth,
         "createdOn" : createdOn,
         "lastUpdatedByUserId": lastUpdatedByUserId,
         "lastUpdatedOn" : lastUpdatedOn,
