@@ -41,8 +41,8 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
                         <div className='col-sm-6 col-md-6 col-lg-6'>
                             <Link to={"/brokenkit"}>
-                                <button className=" btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">Report Broken Kit</div>
+                                <button type="button" className="btn btn-outline-dark">
+                                   Report Broken Kit
                                 </button>
                             </Link>
                         </div>
@@ -51,6 +51,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Priority</th>
                                     <th scope="col">Author</th>
                                     <th scope="col">Created</th>
                                     <th scope="col">Options</th>
@@ -61,7 +62,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                     BioReport.map((item, index) => (
                                     <tr key={item._id}>
                                         <th scope="row">{index + 1}</th>
-                                        {/* <td>{item.caseStudyType}</td> */}
+                                        <td scope="row">{item.equipmentPriority}</td>
                                         <td>{item.user ? item.user.name : "[deleted]"}</td>
                                         <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                                         <td>
