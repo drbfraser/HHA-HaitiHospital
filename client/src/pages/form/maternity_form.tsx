@@ -94,7 +94,6 @@ function MaternityForm() {
                 index++;
             }
 
-            data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.decriptions = addFormDescriptions(fields);
 
             data.departmentId = 2;
@@ -106,7 +105,6 @@ function MaternityForm() {
                 console.error('Something went wrong!', error.response);
             });
 
-            //console.log(data);
             history.push("/Department2Maternity");
 
         } else {
@@ -308,7 +306,6 @@ function MaternityForm() {
         for (let i = 1; i <= fields.length; i++) {
 
             var field = fields[i - 1];
-            console.log(i, field.field_type);
             if (field.field_type === "array") {
                 var formValues = formValuesComeFrom;
                 for (let j = 0; j < formValues.length; j++) {
@@ -626,7 +623,6 @@ function MaternityForm() {
     }
 
     function tableInputValidation(num: number, idx: number, jdx: number) {
-        //console.log(num, idx, jdx);
         var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
         if (!isValid(inputElement)) return;
 
