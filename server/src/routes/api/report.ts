@@ -43,7 +43,6 @@ router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
     const lastUpdatedOn = dateTime;
     const departmentId = req.body.departmentId as String;
     const formData = req.body;
-
     const formEntry = new FormEntry({
         "departmentId" : departmentId,
         "createdByUserId": createdByUserId,

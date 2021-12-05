@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { DepartmentName } from './Leaderboard';
 
 const { Schema } = mongoose;
 
@@ -11,7 +12,8 @@ enum bioMechEnum {
 const bioMechSchema = new Schema(
     {
         //all BioMech Data
-        userId: {type: mongoose.Schema.Types.ObjectId, required: true},
+        user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true},
+        department: {type: DepartmentName},
         equipmentName: {type: String, required: true},
         equipmentFault: {type: String, required: true},
         equipmentPriority: {type: bioMechEnum, required: true},

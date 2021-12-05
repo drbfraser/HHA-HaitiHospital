@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
-import { ElementStyleProps, Role } from "constants/interfaces";
+import { ElementStyleProps, Role, Json } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import axios from 'axios';
@@ -76,20 +76,27 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                 </thead>
                                 <tbody>
                                 {
-                                    BioReport.map((item, index) => (
-                                    <tr key={item._id}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td scope="row">{item.equipmentPriority}</td>
-                                        <td>{item.user ? item.user.name : "[deleted]"}</td>
-                                        <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                                        <td>
-                                        <Link to={'/bioMechView/' + item._id} className="link-primary text-decoration-none">View </Link>
-                                        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? 
-                                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>Delete</a>
-                                        : null}
-                                        </td>
-                                    </tr>
-                                    ))
+                                    BioReport.map((item, index) => {
+                                      console.log(index);
+                                      console.log(item);
+                                      console.log();
+                                      // let fullName = (item["user"] as Json)["name"] as String;
+                                      // console.log(fullName);
+                                      return(
+                                      <tr key={item._id}>
+                                          <th scope="row">{index + 1}</th>
+                                          <td scope="row">{item.equipmentPriority}</td>
+                                          <td>{item.user ? item.user.name : "[deleted]"}</td>
+                                          <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                                          <td>
+                                          <Link to={'/bioMechView/' + item._id} className="link-primary text-decoration-none">View </Link>
+                                          {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? 
+                                          <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>Delete</a>
+                                          : null}
+                                          </td>
+                                      </tr>
+                                      );
+                                    })
                                 }
                                 </tbody>
                             </table>

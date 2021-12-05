@@ -11,7 +11,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try{
-        BioMech.find({}).sort({createdOn: 'desc'})
+        BioMech.find({}).populate('user').sort({createdOn: 'desc'})
             .then(Reports => res.json(Reports))
             .catch(err => res.status(400).json('Could not find any results: ' + err));
     } catch(err){
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try{
-        BioMech.findById(req.params.id)
+        BioMech.findById(req.params.id).populate('user')
             .then(Reports => res.json(Reports))
             .catch(err => res.status(400).json('Could not find any results: ' + err));
     } catch(err){
@@ -31,7 +31,9 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
     try{
-        const userId = req.user.id;
+        const user = req.user;
+        const department = req.user.department;
+        // alert(user);
         const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
     
         let imgPath : String;
@@ -40,7 +42,8 @@ router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
         }
     
         const bioMech = new BioMech({
-            userId,
+            user,
+            department,
             equipmentName,
             equipmentFault,
             equipmentPriority,
@@ -51,7 +54,7 @@ router.post('/', [requireJwtAuth, upload.single("file")], async (req, res) => {
             .then(() => res.json("BioMech Report Submitted Successfully"))
             .catch(err => res.status(400).json('BioMech Report submission failed: ' + err));
     } catch(err){
-        res.status(500).json({message: 'Something went wrong.'});
+        res.status(500).json({message: 'Something went wrong:' + err});
     }
 });
 
