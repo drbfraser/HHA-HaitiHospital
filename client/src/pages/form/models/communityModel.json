@@ -67,6 +67,7 @@
         "section_label" : "Contraceptives",
         "section_fields": [
             {
+                "subsection_label" : "Contraceptives Distributed",
                 "field_type" : "table",
                 "field_level" : 0,
                 "total_cols" : 2,
@@ -86,6 +87,7 @@
             },
 
             {
+                "subsection_label" : "CCV Operations",
                 "field_type" : "table",
                 "field_level" : 0,
                 "total_cols" : 1,
@@ -122,6 +124,7 @@
             },
 
             {
+                "subsection_label" : "Consumables",
                 "field_type" : "table",
                 "field_level" : 0,
                 "total_cols" : 3,
@@ -148,7 +151,7 @@
                 "field_level" : 0,
                 "total_cols" : 15,
                 "total_rows" : 18,
-                "col_labels" : [["Girls", "Boys", ""], ["0-11 Months", "12-23 Months", "0-11 Months", "12-23 Months", "", "Vaccine Doses"], ["Inst.", "Comm.", "Total", "Inst.", "Comm.", "Total", "Inst.", "Comm.", "Total", "Inst.", "Comm.", "Total", "Total Doses", "Used", "Administered"]],
+                "col_labels" : [["Girls", "Boys", ""], ["0-11 Months", "12-23 Months", "0-11 Months", "12-23 Months", "", "Vaccine Doses"], ["Inst 1", "Comm 1", "Total 1", "Inst 2", "Comm 2", "Total 2", "Inst 3", "Comm 3", "Total 3", "Inst 4", "Comm 4", "Total 4", "Total Doses", "Used", "Administered"]],
                 "col_spans" : [[6, 6, 3], [3, 3, 3, 3, 1, 2], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
                 "row_labels" : [["BCG", "VPO", "VPO 1", "VPO 2", "Rappel VPO", "VPI", "Penta 1", "Penta 2", "Penta 3", "Rota 1", "Rota 2", "RR 1", "RR 2", "Pneumo 1", "Pneumo 2", "Pneumo 3", "DTp Rappel", "ECV"]],
                 "row_spans" : [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
@@ -162,9 +165,9 @@
                                     [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
                                     [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
                                     [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
-                                    [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
                                     [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
-                                    [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1],
+                                    [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+                                    [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
                                     [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
                                     [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
                                     [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
@@ -175,11 +178,12 @@
                                 
             },
             {
+                "subsection_label" : "Pregnant Women Vaccinations",
                 "field_type" : "table",
                 "field_level" : 0,
                 "total_cols" : 5,
                 "total_rows" : 2,
-                "col_labels" : [["Pregnant Women", "Total Doses"], ["Inst.", "Comm.", "Total", "Used", "Administered"]],
+                "col_labels" : [["Pregnant Women", "Total Doses"], ["Inst", "Comm", "Total", "Used", "Administered"]],
                 "col_spans" : [[3, 2], [1, 1, 1, 1, 1]],
                 "row_labels" : [["dT1", "dT2+"]],
                 "row_spans" : [[1, 1]],

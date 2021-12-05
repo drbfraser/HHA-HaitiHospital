@@ -7,8 +7,7 @@ import Header from 'components/header/header';
 import communityModel from './models/communityModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './nicu_form_styles.css'
-import { spawn } from 'child_process';
-import { render } from '@testing-library/react';
+
 
 
 
@@ -68,27 +67,51 @@ function CommunityForm() {
         if (!window.confirm("Press OK to finalize submission.")) {
             return;
         }
+        
+        if (submitValidation()) {
 
+            var vaccineTable = data["Vaccination"];
 
+            for (let i = 0; i < 18; i++) {
+                var totalCounter = 1;
+                for (let j = 0; j < 12; j += 3) {
+                    var totalElement = document.getElementById("tables" + 8 + "-" + i + "-" + (j + 2));
+                    vaccineTable[fields[7].row_labels[0][i]]["Total " + (totalCounter++)] = totalElement.innerHTML
+                }
 
-        data.decriptions = addFormDescriptions(fields);
-        console.log(data);
-        var valid = true;//submitValidation();
+                var totalElement = document.getElementById("tables" + 8 + "-" + i + "-" + 12);
+                vaccineTable[fields[7].row_labels[0][i]]["Total Doses"] = totalElement.innerHTML
 
-        if (valid === true) {
+                if (i === 0 || i === 1 || i === 5 || i === 6 || i === 9 || i === 11 || i === 13 || i === 16 || i === 17) {
+                    var totalElement = document.getElementById("tables" + 8 + "-" + i + "-" + 14);
+                    vaccineTable[fields[7].row_labels[0][i]]["Administered"] = totalElement.innerHTML
+                }
+            }
 
-            //     data.departmentId = 1;
-            //     data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-            //     data.admissions.mainCondition.otherMedical = formValuesAdCondition;
-            //     data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            //     await axios.post('/api/report/add', data).then(res => {
-            //         console.log(res.data);
-            //     }).catch(error => {
-            //         console.error('Something went wrong!', error.response);
-            //     });
+            var pregnantTable = data["Pregnant Women Vaccinations"];
 
-            //     //console.log(data);
-            //     history.push("/Department2Maternity");
+            for (var i = 0; i < 2; i++) {
+                var totalElement = document.getElementById("tables" + 9 + "-" + i + "-" + 2);
+                pregnantTable[fields[8].row_labels[0][i]]["Total"] = totalElement.innerHTML
+
+                if (i === 0) {
+                    var totalElement = document.getElementById("tables" + 9 + "-" + 0 + "-" + 4);
+                    pregnantTable[fields[8].row_labels[0][i]]["Administered"] = totalElement.innerHTML
+                }
+
+            }
+
+            data.departmentId = 4;
+            data["Vaccination"] = vaccineTable;
+            data["Pregnant Women Vaccinations"] = pregnantTable;
+            await axios.post('/api/report/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                console.error('Something went wrong!', error.response);
+            });
+
+            // console.log(data);
+            history.push("/Department4ComHealth");
         } else {
             alert("Some fields contain invalid values");
             window.scrollTo(0, 0);
@@ -179,12 +202,23 @@ function CommunityForm() {
             tdElement.remove();
         }
 
-        tdElement = document.getElementById("tables" + "8" + "-" + "10" + "-" + "13") as HTMLTableCellElement;
+        tdElement = document.getElementById("tables" + "8" + "-" + "9" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             tdElement.rowSpan = 2;
             (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 2;
         }
+        tdElement = document.getElementById("tables" + "8" + "-" + "10" + "-" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            (tdElement.nextSibling as HTMLTableCellElement).remove();
+            tdElement.remove();
+        }
+
         tdElement = document.getElementById("tables" + "8" + "-" + "11" + "-" + "13") as HTMLTableCellElement;
+        if (tdElement) {
+            tdElement.rowSpan = 2;
+            (tdElement.nextSibling as HTMLTableCellElement).rowSpan = 2;
+        }
+        tdElement = document.getElementById("tables" + "8" + "-" + "12" + "-" + "13") as HTMLTableCellElement;
         if (tdElement) {
             (tdElement.nextSibling as HTMLTableCellElement).remove();
             tdElement.remove();
@@ -236,7 +270,6 @@ function CommunityForm() {
         for (let i = 1; i <= fields.length; i++) {
 
             var field = fields[i - 1];
-            console.log(i, field.field_type);
             if (field.field_type === "table") {
                 for (var idx = 0; idx < field.total_rows; idx++) {
                     for (var jdx = 0; jdx < field.total_cols; jdx++) {
@@ -390,13 +423,10 @@ function CommunityForm() {
             totalElement.innerHTML = String(grandTotals[6] + grandTotals[7] + grandTotals[8]);
 
             totalElement = document.getElementById("tables" + num + "-" + 9 + "-" + 14);
-            totalElement.innerHTML = String(grandTotals[9]);
+            totalElement.innerHTML = String(grandTotals[9] + grandTotals[10]);
 
-            totalElement = document.getElementById("tables" + num + "-" + 10 + "-" + 14);
-            totalElement.innerHTML = String(grandTotals[10] + grandTotals[11]);
-
-            totalElement = document.getElementById("tables" + num + "-" + 12 + "-" + 14);
-            totalElement.innerHTML = String(grandTotals[12]);
+            totalElement = document.getElementById("tables" + num + "-" + 11 + "-" + 14);
+            totalElement.innerHTML = String(grandTotals[11] + grandTotals[12]);
 
             totalElement = document.getElementById("tables" + num + "-" + 13 + "-" + 14);
             totalElement.innerHTML = String(grandTotals[13] + grandTotals[14] + grandTotals[15]);
@@ -566,7 +596,7 @@ function CommunityForm() {
                                             ret.push(
                                                 <>
                                                     <div id={"inputs" + i} style={{
-                                                        
+
                                                     }}>
                                                         <table className="table table-bordered table-sm table table-responsive">
                                                             <tbody>
@@ -579,7 +609,7 @@ function CommunityForm() {
                                                                         ))}
 
                                                                         {row.map((col, colj) => (
-                                                                            <th style={{minWidth: '100px'}} className="text-center " colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
+                                                                            <th style={{ minWidth: '100px' }} className="text-center " colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
                                                                         ))}
                                                                     </tr>
                                                                 ))}
@@ -617,14 +647,15 @@ function CommunityForm() {
                                                                             var rowLength = field.row_labels.length - 1;
                                                                             var colLength = field.col_labels.length - 1;
                                                                             if (field.invalid_inputs[inputCount][j] === 1) {
+                                                                                const dataInput = (
+                                                                                    <td id={"tables" + i + "-" + idx + "-" + j} className="text-center align-middle">
+                                                                                        <input type="text" {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])} disabled />
+                                                                                    </td>
+                                                                                )
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return (
-                                                                                    <td id={"tables" + i + "-" + idx + "-" + j} className="text-center align-middle">
-                                                                                        <input type="text" {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])} disabled/>
-                                                                                    </td>
-                                                                                );
+                                                                                return dataInput;
                                                                             } else {
                                                                                 const dataInput = (
                                                                                     <td id={"tables" + i + "-" + idx + "-" + j} className="align-middle">
