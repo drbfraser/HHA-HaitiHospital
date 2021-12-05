@@ -5,7 +5,8 @@ const { Schema } = mongoose;
 const formEntrySchema = new Schema({
     //front 
     departmentId: {type: Number, required: true},
-    createdOn: { type: Date, required: true, },
+    reportingMonth: {type:Date, required: false}, //TODO: For future plans, encorporate a way to sort by specific date. Currently the dates are filtered and ordered by the created/last updated on
+    createdOn: { type: Date, required: true},
     createdByUserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true},
     lastUpdatedOn: { type: Date, required: true, },
     lastUpdatedByUserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true},
