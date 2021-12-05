@@ -77,20 +77,30 @@ const routes = [
     {
         path: '/department/:deptId/add',
         component: AddReport,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector],
+        departmentAllowed: [],
     },
     {
         path: '/department/:deptId/view/:id',
         component: () => <DepartmentReport edit={false}/>,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [Role.Admin, Role.User],
+        departmentAllowed: [],
     },
     {
         path: '/department/:deptId/edit/:id',
         component: () => <DepartmentReport edit={true}/>,
-        isPrivate: true,
-        rolesRequired: [],
+        loginRequired: true,
+        rolesAllowed: [Role.Admin, Role.User],
+        departmentAllowed: []
+    },
+    {
+        path: '/department/:deptId',
+        component: Department,
+        loginRequired: true,
+        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+        departmentAllowed: [],
     },
     // {
     //     path: '/Department1NICU/detailed_report/view/:id',
@@ -163,12 +173,7 @@ const routes = [
     //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
     //     departmentsAllowed: [DepartmentName.CommunityHealth],
     // },
-    {
-        path: '/department/:deptId',
-        component: Department,
-        isPrivate: true,
-        rolesRequired: [],
-    },
+    
     {
         path: '/caseStudyMain',
         component: CaseStudyMain,

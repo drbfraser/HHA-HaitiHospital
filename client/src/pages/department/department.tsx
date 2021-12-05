@@ -30,7 +30,6 @@ export const Department = (props : DepartmentProps) => {
             setDeptName(name);
         }
         catch (e) {
-            console.log("Not found");
             history.push("/notFound");
         }
 
@@ -62,7 +61,7 @@ export const Department = (props : DepartmentProps) => {
                         </div>
 
                         <div className='col-auto'>
-                            <Link to={"#"}>
+                            <Link to={`/biomechanic`}>
                                 <button className="btn btn-dark btn-sm rounded-bill">
                                     <div className="lead">{t("departmentPageBiomechanic")}</div>
                                 </button>
