@@ -29,8 +29,9 @@ const App = () => {
 							key={route.path}
 							path={route.path}
 							component={route.component}
-							isPrivate={route.isPrivate}
-              rolesRequired={route.rolesRequired}
+							loginRequired={route.loginRequired}
+              rolesAllowed={route.rolesAllowed}
+							departmentsAllowed={route.departmentsAllowed}
 						/>
 					))}
 				</Switch>
