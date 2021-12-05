@@ -2,19 +2,16 @@ import React, {useEffect, useRef} from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
-
 import { ReportProps } from 'constants/interfaces';
 import ReportDisplay from 'components/report_display/report_display';
-
 import { ElementStyleProps } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import './department_report.css'
 import {useTranslation} from "react-i18next";
 import { CSVLink } from "react-csv";
-import {PDFExport, savePDF} from '@progress/kendo-react-pdf';
-import {PDFViewer} from '@react-pdf/renderer'
-import { Document, Page } from 'react-pdf';
+import { PDFExport } from '@progress/kendo-react-pdf';
+import './department_report.css'
+
 
 interface DepartmentReportProps extends ElementStyleProps {
   edit: boolean;
@@ -25,56 +22,32 @@ interface UrlParams {
 };
 
 const DepartmentReport = (props : DepartmentReportProps) => {
-  // const ref = React.createRef();
-  // const options = {
-  //   orientation: 'landscape',
-  //   unit: 'in',
-  //   format: [4,2]
-  // };
 
-
-  // const [numPages, setNumPages] = useState(null);
-  // const [pageNumber, setPageNumber] = useState(1);
-  //
-  // function onDocumentLoadSuccess({ numPages }) {
-  //   setNumPages(numPages);
-  // }
-
-  const  handleExportWithComponent  = (event) => {
-    pdfExportComponent.current.save();
-  }
-
+  const {t} = useTranslation();
   const { id } = useParams<UrlParams>();
   const getReportApi = `/api/report/viewreport/${id}`;
   const [ report, setReport] = useState<ReportProps>({});
-
-  // const [show, setShow] = useState(false);
-  // const toggleShow = () => setShow(!show);
-
   const [ csvData, setCsvData ] = useState<Object[]> ([]);
   const apiSource = Axios.CancelToken.source();
   const pdfExportComponent = useRef(null);
-  const handleExportWinthComponent = (event) => {
+  const handleExportWithComponent  = (event) => {
     pdfExportComponent.current.save();
-  };
+  }
 
   useEffect(() => {
     console.log(csvData);
   }, [csvData])
 
   useEffect(() => {
-    // let data: ReportProps = {};
     let data: Object[] = [];
     if (report.formData !== undefined && report.formData !== null) {
       Object.keys(report.formData).forEach((key) => {
         let reportType = typeof (report.formData[key]);
         if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
-          // data[key] = report.formData[key];
           let item: Object = {};
           item['name'] = key;
           item['content'] = report.formData[key];
           data.push(item);
-
         } else {
           let objReport: ReportProps = report.formData[key];
           if (objReport !== undefined && objReport !== null) {
@@ -82,7 +55,6 @@ const DepartmentReport = (props : DepartmentReportProps) => {
               let innerReportType = typeof (objReport[key1]);
               if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
                 let tempKey = key + "_" + key1;
-                // data[tempKey] = objReport[key1];
                 let item: Object = {};
                 item['name'] = tempKey;
                 item['content'] = objReport[key1];
@@ -92,7 +64,6 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                 if (innerReport !== undefined && innerReport !== null) {
                   Object.keys(innerReport).forEach((key2) => {
                     let tempKey = key + "_" + key1 + "_" + key2;
-                    // data[tempKey] = innerReport[key2];
                     let item: Object = {};
                     item['name'] = tempKey;
                     item['content'] = innerReport[key2];
@@ -105,10 +76,6 @@ const DepartmentReport = (props : DepartmentReportProps) => {
         }
       })
     }
-    // let arrayOfData: Object[] = [];
-    // arrayOfData.push(data);
-    // console.log(arrayOfData);
-    // setCsvData(arrayOfData);
     setCsvData(data);
   }, [report])
 
@@ -151,10 +118,6 @@ const DepartmentReport = (props : DepartmentReportProps) => {
     else
       return `department-report ${props.classes}`;
   }
-
-  const {t, i18n} = useTranslation();
-
-  // var renderedOutput = csvData.map(item => <div> {item} </div>)
 
   return (
     <div className={getClassName()}>
@@ -217,20 +180,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
 
           {/* Report Details */}
           <section className='mt-3' id="report">
-            <PDFExport  ref={pdfExportComponent}  paperSize="A4">
-              {/*<div>*/}
-              {/*  {*/}
-              {/*    Object.keys(csvData).map((key, index) => (*/}
-              {/*        <p key={index}>{csvData[key]}</p>*/}
-              {/*    ))*/}
-              {/*  }*/}
-              {/*</div>*/}
-              {/*<div>*/}
-              {/*  {Object.entries(csvData).map(([key, value]) => (*/}
-              {/*      <button key={key}>{value}</button>*/}
-              {/*  ))}*/}
-              {/*</div>*/}
-
+            <PDFExport  ref={pdfExportComponent}  paperSize="A4" fileName={id}>
               <div className="container w-50">
                 {
                   (Object.keys(report).length===0 ) ?
