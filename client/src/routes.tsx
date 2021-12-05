@@ -20,6 +20,7 @@ import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'pages/add_message/add_message';
 import EditMessage from 'pages/edit_message/edit_message';
 import MaternityForm from 'pages/form/maternity_form';
+import CommunityForm from 'pages/form/community_form';
 import { Role, DepartmentName } from 'constants/interfaces';
 import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
@@ -150,7 +151,14 @@ const routes = [
         rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentsAllowed: [DepartmentName.CommunityHealth],
     },
-    // TODO: DepartmentMain can be deleted?
+    {
+        path: '/communityForm',
+        component: CommunityForm,
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [DepartmentName.CommunityHealth]
+    },
+     // TODO: DepartmentMain can be deleted?
     {
         path: '/departmentMain',
         component: DepartmentMain,
