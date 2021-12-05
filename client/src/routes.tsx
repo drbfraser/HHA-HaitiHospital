@@ -16,6 +16,7 @@ import { MessageBoardMain } from "pages/message_board_main/message_board_main";
 import  DepartmentReport from 'pages/department_report/department_report';
 import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
 import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
+import { BrokenKitView } from 'pages/broken_kit_view/broken_kit_report_view';
 import NICUForm from 'pages/form/nicu_form';
 import AddMessage from 'pages/add_message/add_message';
 import EditMessage from 'pages/edit_message/edit_message';
@@ -183,6 +184,13 @@ const routes = [
     {
         path: '/caseStudyView/:id',
         component: CaseStudyView,
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/bioMechView/:id',
+        component: BrokenKitView,
         loginRequired: true,
         rolesAllowed: [],
         departmentsAllowed: [],
