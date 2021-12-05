@@ -16,7 +16,6 @@ interface BrokenKitReport extends RouteComponentProps {}
 
 export const BrokenKitReport = (props: BrokenKitReport) => {
 
-  const [formOption, setformOption] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [submissionStatus, setSubmissionStatus] = useState("");
   const { register, handleSubmit, reset } = useForm<BiomechModel>({});
@@ -29,7 +28,7 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
     formData.append("document", postData);
     formData.append("file", selectedFile);
 
-    axios.post('/api/biomech', formData).then(res => {
+    axios.post('/api/biomech', formData).then(res => { //not sure of right path of biomech
       window.alert("Biomechanic report successfully submitted!");
       reset({});
       setSelectedFile(null);
@@ -63,9 +62,9 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
                     <label htmlFor="Equipment Fault" className = "form-label">Fault with equipment</label>
                     <textarea className="form-control mb-2 mt-0" id="Equipment Fault" required {...register("equipmentFault", {required: true })}></textarea>
                     <label htmlFor="Equipment Priority" className = "form-label">Priority of Equipment</label>
-                    <select className="form-select" id="Equipment Priority" aria-label="Default select example" required>
+                    <select className="form-select" id="Equipment Priority" aria-label="Default select example" required {...register("equipmentPriority", {required: true })}>
                         <option selected value="">Click to select Priority</option>
-                        <option value={bioMechEnum.Urgent}>Urgent</option>
+                        <option value={bioMechEnum.Urgent} >Urgent</option>
                         <option value={bioMechEnum.Important}>Important</option>
                         <option value={bioMechEnum.NonUrgent}>Non-Urgent</option>
                     </select>
