@@ -36,11 +36,34 @@ function DynamicForm() {
         sidePanelClick(sectionState);
     })
 
-    const elements: any = Object.values(formModel);
+    const sections: any = Object.values(formModel);
+    const fields = [];
+    for (var i = 0; i < sections.length; i++) {
+        for (var j = 0; j < sections[i].section_fields.length; j++) {
+            fields.push(sections[i].section_fields[j]);
+        }
+    }
 
-    // function refreshPage() {
-    //     window.location.reload();
-    // }
+    const addFormDescriptions = (formFields) => {
+        var descriptions = {};
+        fields.forEach(field => {
+            if (field.field_type === "number") {
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
+            } else if (field.field_type === "array") {
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
+            } else if (field.field_type === "list") {
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
+                field.field_template.forEach(listField => {
+                    var listID = key + "_" + listField.field_id;
+                    descriptions[listID] = listField.field_label;
+                })
+            }
+        });
+        return descriptions;
+    }
 
     const onSubmit = async (data: any) => {
 
@@ -53,6 +76,9 @@ function DynamicForm() {
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.admissions.mainCondition.otherMedical = formValuesAdCondition;
             data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
+
+            data.descriptions = addFormDescriptions(fields);
+
             await axios.post('/api/report/add', data).then(res => {
                 console.log(res.data);
             }).catch(error => {
@@ -201,7 +227,7 @@ function DynamicForm() {
             }
 
             document.getElementById("section" + i)!.style.display = show;
-            for (let j = 1; j <= elements[i].section_fields.length; j++, startj++) {
+            for (let j = 1; j <= sections[i].section_fields.length; j++, startj++) {
                 if (document.getElementById("subsection" + startj)) document.getElementById("subsection" + startj)!.style.display = show;
                 if (document.getElementById("input" + startj)) document.getElementById("input" + startj)!.style.display = show;
                 if (document.getElementById("inputs" + startj)) document.getElementById("inputs" + startj)!.style.display = show;
@@ -249,7 +275,7 @@ function DynamicForm() {
         const listGroup = document.getElementsByClassName("list-group-item");
         let num = 1;
         for (let i = 0; i < listGroup.length; i++) {
-            var section = elements[i];
+            var section = sections[i];
 
             var isSectionValid = true;
             for (let j = 1; j <= section.section_fields.length; j++, num++) {
@@ -284,7 +310,7 @@ function DynamicForm() {
                 if (listElement.childElementCount > 1) {
                     listElement.removeChild(listElement.childNodes[1]);
                 }
-                console.log("remed");
+                
             } else {
                 if (listElement.childElementCount > 1) {
                     listElement.removeChild(listElement.childNodes[1]);
@@ -594,7 +620,7 @@ function DynamicForm() {
                 <div className="mb-3 text-start sticky-top bg-light">
                     <h4 className="text-primary">Steps: </h4>
                     <ul className="list-group list-group-horizontal">
-                        {elements ? elements.map((section: any, idx: any) => {
+                        {sections ? sections.map((section: any, idx: any) => {
                             var isActive = idx === 0 ? true : false;
                             return (
                                 <>
@@ -612,7 +638,7 @@ function DynamicForm() {
                     <div className="col-sm-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
                         <form onSubmit={handleSubmit(onSubmit)} className="needs-validation">
                             <div className="row g-2">
-                                {elements ? elements.map((section: any, idx: any) => {
+                                {sections ? sections.map((section: any, idx: any) => {
                                     var ret = [];
 
                                     // render the section title

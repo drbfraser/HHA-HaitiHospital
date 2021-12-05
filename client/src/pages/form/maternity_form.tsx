@@ -42,19 +42,20 @@ function MaternityForm() {
     }
 
     const addFormDescriptions = (formFields) => {
-        var descriptions = [];
+        var descriptions = {};
         fields.forEach(field => {
             if (field.field_type === "number") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "array") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "list") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
                 field.field_template.forEach(listField => {
-                    var listID = field.field_id + "." + listField.field_id;
-                    descriptions.push(
-                        { [listID]: listField.field_label }
-                    );
+                    var listID = key + "_" + listField.field_id;
+                    descriptions[listID] = listField.field_label;
                 })
             }
         });
@@ -66,50 +67,48 @@ function MaternityForm() {
             return;
         }
 
-        var object = data["Support for wife and mother"];
-        
-        var index = 0;
-        for(var key in object){
-            var totalElement = document.getElementById("tables" + 42 + index + 5);
-            object[key].total = totalElement.innerHTML;
-            index++;
-        }
-        
-        object.totalVisits = {
-            "1st Visit" : 0,
-            "2nd Visit" : 0,
-            "3rd Visit" : 0,
-            "4th Visit" : 0,
-            "5th Visit" : 0,
-            "total" : 0 
-        };
+        if (submitValidation()) {
 
-        index = 0;
-        for(var key in object.totalVisits){
-            var totalElement = document.getElementById("tables" + 42 + 3 + index);
-            object.totalVisits[key] = totalElement.innerHTML;
-            index++;
-        }
+            var object = data["Support for wife and mother"];
 
-        data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-        data.decriptions = addFormDescriptions(fields);
-        console.log(data);
-        var valid = submitValidation();
+            var index = 0;
+            for (var key in object) {
+                var totalElement = document.getElementById("tables" + 42 + index + 5);
+                object[key].total = totalElement.innerHTML;
+                index++;
+            }
 
-        if (valid === true) {
+            object.totalVisits = {
+                "1st Visit": 0,
+                "2nd Visit": 0,
+                "3rd Visit": 0,
+                "4th Visit": 0,
+                "5th Visit": 0,
+                "total": 0
+            };
 
-            //     data.departmentId = 1;
-            //     data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-            //     data.admissions.mainCondition.otherMedical = formValuesAdCondition;
-            //     data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            //     await axios.post('/api/report/add', data).then(res => {
-            //         console.log(res.data);
-            //     }).catch(error => {
-            //         console.error('Something went wrong!', error.response);
-            //     });
+            index = 0;
+            for (var key in object.totalVisits) {
+                var totalElement = document.getElementById("tables" + 42 + 3 + index);
+                object.totalVisits[key] = totalElement.innerHTML;
+                index++;
+            }
 
-            //     //console.log(data);
-            //     history.push("/Department2Maternity");
+            data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            data.decriptions = addFormDescriptions(fields);
+
+            data.departmentId = 2;
+            data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+
+            await axios.post('/api/report/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                console.error('Something went wrong!', error.response);
+            });
+
+            //console.log(data);
+            history.push("/Department2Maternity");
+
         } else {
             alert("Some fields contain invalid values");
             window.scrollTo(0, 0);
@@ -360,7 +359,7 @@ function MaternityForm() {
 
             var isSectionValid = true;
             for (let j = 1; j <= section.section_fields.length; j++, num++) {
-                var field = fields[num-1];
+                var field = fields[num - 1];
 
                 if (field.field_type === "array") {
                     var formValues = formValuesComeFrom;
@@ -373,9 +372,9 @@ function MaternityForm() {
                         }
                     }
                 } else if (field.field_type === "table") {
-                    
+
                     for (var idx = 0; idx < field.total_rows; idx++) {
-                        for (var jdx=0; jdx<field.total_cols; jdx++) {
+                        for (var jdx = 0; jdx < field.total_cols; jdx++) {
                             var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
                             if (field.invalid_inputs[idx][jdx] === 0 && inputElement.classList.contains("is-invalid")) {
                                 isSectionValid = false;

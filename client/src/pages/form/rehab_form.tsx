@@ -71,7 +71,7 @@ function RehabForm() {
 
         if (submitValidation()) {
 
-            data.departmentId = 0; //Rehab ID
+            data.departmentId = 3; //Rehab ID
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.descriptions = addFormDescriptions(fields);
             console.log(data);
