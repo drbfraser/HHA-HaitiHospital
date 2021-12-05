@@ -15,6 +15,18 @@ interface BiomechanicalPageProps extends RouteComponentProps {}
 
 export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
+   const [BioReport, setBioReport] = useState([]);
+   const BioReportUrl = `/api/biomech/`;
+   const getBioReport = async () => {
+    const res = await axios.get(BioReportUrl);
+    setBioReport(res.data);
+  }
+
+
+   useEffect(() => {
+    getBioReport();
+  }, [])
+
   return (
       
 <div className = 'biomechanical_page'>
@@ -46,17 +58,17 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                 </thead>
                                 <tbody>
                                 {
-                                    // caseStudies.map((item, index) => (
-                                    // <tr key={item._id}>
-                                    //     <th scope="row">{index + 1}</th>
-                                    //     {/* <td>{item.caseStudyType}</td> */}
-                                    //     <td>{item.user ? item.user.name : "[deleted]"}</td>
-                                    //     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
-                                    //     <td>
-                                    //     <Link to={'/bioMechView/' + item._id} className="link-primary text-decoration-none">View </Link>
-                                    //     </td>
-                                    // </tr>
-                                    // ))
+                                    BioReport.map((item, index) => (
+                                    <tr key={item._id}>
+                                        <th scope="row">{index + 1}</th>
+                                        {/* <td>{item.caseStudyType}</td> */}
+                                        <td>{item.user ? item.user.name : "[deleted]"}</td>
+                                        <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
+                                        <td>
+                                        <Link to={'/bioMechView/' + item._id} className="link-primary text-decoration-none">View </Link>
+                                        </td>
+                                    </tr>
+                                    ))
                                 }
                                 </tbody>
                             </table>
