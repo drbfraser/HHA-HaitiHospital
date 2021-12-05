@@ -34,33 +34,32 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
 });
 
 //POST - sends user submitted form to the server as a JSON
-router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
-    checkUserIsDepartmentAuthed(req.user.id, req.body.departmentId, req.user.role).then((isValidated) => {
-        if (!isValidated) {
-            return res.status(401).json('User is unauthorized in to make a post in current department.');
-        }
+router.route('/add').post(requireJwtAuth, async (req: any, res: any) => {
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, req.body.departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to make a post in current department.');
+    }
 
-        let dateTime: Date = new Date();
-        const createdByUserId = req.user.id as String;
-        const createdOn = dateTime;
-        const lastUpdatedByUserId = req.user.id;
-        const lastUpdatedOn = dateTime;
-        const departmentId = req.body.departmentId as String;
-        const formData = req.body;
+    let dateTime: Date = new Date();
+    const createdByUserId = req.user.id as String;
+    const createdOn = dateTime;
+    const lastUpdatedByUserId = req.user.id;
+    const lastUpdatedOn = dateTime;
+    const departmentId = req.body.departmentId as String;
+    const formData = req.body;
+
+    const formEntry = new FormEntry({
+        "departmentId" : departmentId,
+        "createdByUserId": createdByUserId,
+        "createdOn" : createdOn,
+        "lastUpdatedByUserId": lastUpdatedByUserId,
+        "lastUpdatedOn" : lastUpdatedOn,
+        "formData" : formData
+    });
     
-        const formEntry = new FormEntry({
-            "departmentId" : departmentId,
-            "createdByUserId": createdByUserId,
-            "createdOn" : createdOn,
-            "lastUpdatedByUserId": lastUpdatedByUserId,
-            "lastUpdatedOn" : lastUpdatedOn,
-            "formData" : formData
-        });
-        
-        formEntry.save()
-            .then(() => res.json("Report has been successfully submitted"))
-            .catch(err => res.status(400).json('Report did not successfully submit: ' + err));
-    })
+    formEntry.save()
+        .then(() => res.json("Report has been successfully submitted"))
+        .catch(err => res.status(400).json('Report did not successfully submit: ' + err));
 });
 
 
@@ -98,8 +97,14 @@ router.route('/edit/:Reportid').get((req: any, res: any) => {
 });
 
 //make the changes to report of id reportID
-router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
-    // TODO: Protect this route
+router.route('/edit/:Reportid').put(requireJwtAuth, async (req: any, res: any) => {
+    const form = await FormEntry.findById(req.params.Reportid);
+    const departmentId = form.departmentId;
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to delete the current department.');
+    }
+
     let updatedDateTime: Date = new Date();
     const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = updatedDateTime;
@@ -118,8 +123,14 @@ router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
 
 //---DELETE REPORTS---//
 //delete a single report with Reportid
-router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) => {
-    // TODO: Protect this route
+router.route('/delete/:Reportid').delete(requireJwtAuth, async (req: any, res: any) => {
+    const form = await FormEntry.findById(req.params.Reportid);
+    const departmentId = form.departmentId;
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to delete the current department.');
+    }
+
     FormEntry.deleteOne({_id: req.params.Reportid})
         .then(() => res.json('Succesfully deleted report'))
         .catch(err => res.status(400).json('Could not delete: ' + err));
@@ -127,11 +138,13 @@ router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) =>
 
 // retrieve reports with deparmentId param and/or dateRange param
 // ?departmentId?from=YYYY-MM-DD?to=YYYY-MM-DD
-router.route('/').get( async (req, res) => {
-    // TODO: Protect this route
+router.route('/').get(requireJwtAuth, async (req, res) => {
     try {
         const departmentId = req.query.departmentId;
-
+        const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+        if (!isValidated) {
+            return res.status(401).json('User is unauthorized in to view the current department.');
+        }
         const strFrom = req.query.from;
         const strTo = req.query.to;
 
