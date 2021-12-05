@@ -489,11 +489,8 @@ function MaternityForm() {
         }
 
         // Total Admissions
-        if (num === 18 || num >= 19 && num <= 22) {
+        if (num >= 18 && num <= 29) {
             arrayTotalValidation(18, 19, 22);
-            return;
-        }
-        if (num === 18 || num >= 23 && num <= 29) {
             totalValidation(18, 23, 29);
             return;
         }

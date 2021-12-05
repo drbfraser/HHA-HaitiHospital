@@ -376,38 +376,18 @@ function DynamicForm() {
         }
 
         //Where do patients come from?
-        if (num === 26 || num >= 27 && num <= 30) {
+        if (num >= 26 && num <= 59) {
             arrayTotalValidation(26, 27, 30);
-            return;
-        }
-        //Age
-        if (num === 26 || num >= 31 && num <= 38) {
             totalValidation(26, 31, 38);
-            return;
-        }
-        //Gender
-        if (num === 26 || num >= 39 && num <= 40) {
             totalValidation(26, 39, 40);
-            return;
-        }
-        //Main Condition
-        if (num === 26 || num >= 41 && num <= 59) {
             arrayTotalValidation(26, 41, 59);
             return;
         }
 
         //Age
-        if (num === 60 || num >= 61 && num <= 68) {
+        if (num >= 60 && num <= 89) {
             totalValidation(60, 61, 68);
-            return;
-        }
-        //Gender
-        if (num === 60 || num >= 69 && num <= 70) {
             totalValidation(60, 69, 70);
-            return;
-        }
-        //Main Condition
-        if (num === 60 || num >= 71 && num <= 89) {
             arrayTotalValidation(60, 71, 89);
             return;
         }
