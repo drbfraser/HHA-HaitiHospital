@@ -1,7 +1,8 @@
 import faker from 'faker';
 
 import User, { hashPassword, Role } from '../models/User';
-import Department, { DepartmentName } from '../models/Leaderboard';
+import Department from '../models/Leaderboard';
+import { DepartmentName } from '../models/Departments';
 
 import NicuPaeds from '../models/NicuPaeds';
 import Community from '../models/Community';
