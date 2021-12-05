@@ -25,6 +25,7 @@ import AddReport from 'pages/add_report/add_report';
 import  DepartmentReport from 'pages/department_report/department_report';
 
 import { Role, DepartmentName } from 'constants/interfaces';
+import NotAuthorized from 'pages/not_authorized/not_authorized';
 
 
 
@@ -102,20 +103,6 @@ const routes = [
         rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
         departmentAllowed: [],
     },
-    // {
-    //     path: '/Department1NICU/detailed_report/view/:id',
-    //     component: () => <DepartmentReport edit = {false}/>,
-    //     loginRequired: true,
-    //     rolesAllowed: [],
-    //     departmentsAllowed: [DepartmentName.NicuPaeds],
-    // },
-    // {
-    //     path: '/Department1NICU/detailed_report/edit/:id',
-    //     component: () => <DepartmentReport edit={true} />,
-    //     loginRequired: true,
-    //     rolesAllowed: [Role.Admin, Role.User],
-    //     departmentsAllowed: [DepartmentName.NicuPaeds],
-    // },
     {
         path: '/biomechanic',
         component: BiomechanicalPage,
@@ -129,51 +116,7 @@ const routes = [
         isPrivate: true,
         rolesAllowed: [],
         departmentsAllowed: [],
-    },
-    // {
-    //     path: '/Department1NICU',
-    //     component: DepartmentOne,
-    //     loginRequired: true,
-    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
-    //     departmentsAllowed: [DepartmentName.NicuPaeds],
-    // },
-    
-    // {
-    //     path: '/NICUForm',
-    //     component: NICUForm,
-    //     loginRequired: true,
-    //     rolesAllowed: [],
-    //     departmentsAllowed: [DepartmentName.NicuPaeds],
-    // },
-    // {
-    //     path: '/Department2Maternity',
-    //     component: DepartmentTwo,
-    //     loginRequired: true,
-    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
-    //     departmentsAllowed: [DepartmentName.Maternity],
-    // },
-    // {
-    //     path: '/maternityForm',
-    //     component: MaternityForm,
-    //     loginRequired: true,
-    //     rolesAllowed: [],
-    //     departmentsAllowed: [DepartmentName.Maternity],
-    // },
-    // {
-    //     path: '/Department3Rehab',
-    //     component: DepartmentThree,
-    //     loginRequired: true,
-    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
-    //     departmentsAllowed: [DepartmentName.Rehab],
-    // },
-    // {
-    //     path: '/Department4ComHealth',
-    //     component: DepartmentFour,
-    //     loginRequired: true,
-    //     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
-    //     departmentsAllowed: [DepartmentName.CommunityHealth],
-    // },
-    
+    },    
     {
         path: '/caseStudyMain',
         component: CaseStudyMain,
@@ -226,6 +169,13 @@ const routes = [
         path: '/notFound',
         component: NotFound,
         loginRequired: false,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/unauthorized',
+        component: NotAuthorized,
+        loginRequired: true,
         rolesAllowed: [],
         departmentsAllowed: [],
     },
