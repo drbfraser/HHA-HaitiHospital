@@ -7,7 +7,7 @@ import Header from 'components/header/header';
 import nicuJSON from './models/nicuModel.json';
 import nicuJSONFr from './models/nicuModelFr.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './nicu_form_styles.css'
+import './styles.css'
 import { useTranslation } from "react-i18next";
 
 
@@ -570,7 +570,7 @@ function DynamicForm() {
 
 
     return (
-        <div className="nicu_form">
+        <div className="form">
             <SideBar />
 
             <main className="container">
