@@ -20,12 +20,16 @@ function DynamicForm() {
     const [sectionState, setSectionState] = useState(0);
 
     const history = useHistory();
-
     const {t, i18n} = useTranslation();
 
     useEffect(() => {
         const getData = async () => {
-            await setFormModel(nicuJSON);
+            if (i18n.language === "fr") {
+                await setFormModel(nicuJSONFr);
+            } else {
+                await setFormModel(nicuJSON);
+            }
+
             setSectionState(0);
         }
 
@@ -37,10 +41,6 @@ function DynamicForm() {
     })
 
     const elements: any = Object.values(formModel);
-
-    // function refreshPage() {
-    //     window.location.reload();
-    // }
 
     const onSubmit = async (data: any) => {
 

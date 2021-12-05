@@ -10,6 +10,7 @@ import Header from "components/header/header";
 import MessageForm from "components/message_form/message_form";
 
 import './edit_message_styles.css'
+import {useTranslation} from "react-i18next";
 
 async function fetchMsgFromDb(id: string) {
 
@@ -27,6 +28,7 @@ async function fetchMsgFromDb(id: string) {
 
 // sample url /messageBoard/edit/{id}
 const EditMessage = () => {
+    const { t } = useTranslation();
     const { id } = useParams<{id? : string}>();
     const [msg, setMsg] = useState<Message>(emptyMessage)
     const history = useHistory();
@@ -73,7 +75,7 @@ const EditMessage = () => {
             <main>
                 <Header/>
                 <div className="container">
-                    <h1 className="">Edit Message</h1>
+                    <h1 className="">{t("editMessage")}</h1>
                     <MessageForm 
                         optionalMsg = {msg}
                         submitAction = {updateMessage}

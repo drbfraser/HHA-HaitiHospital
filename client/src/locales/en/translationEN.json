@@ -64,6 +64,7 @@
   "messageBoardMore": "More",
   "messageBoardLess": "Less",
   "messageBoardTitle": "Title",
+  "MessageAlertDeleteMessage": "Delete message?",
 
   "addMessageAddMessage": "Add Message",
   "addMessageUserID": "User ID",
@@ -76,6 +77,8 @@
   "addMessageAlertSuccess": "Success",
   "addMessageAlertUnauthorized": "Update message failed: unauthorized",
   "addMessageAlertFailed": "Update message failed",
+
+  "editMessage": "Edit Message",
 
   "leaderBoardDepartmentLeaderboard": "Department Leaderboard",
   "leaderBoardPosition": "Position",

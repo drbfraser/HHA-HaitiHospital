@@ -7,6 +7,7 @@ import { Role } from "../../constants/interfaces"
 import { Json, ElementStyleProps } from 'constants/interfaces';
 import Axios from 'axios';
 import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 interface MessageDisplayProps extends ElementStyleProps  {
     msgJson : Json;
@@ -19,7 +20,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     const authState = useAuthState();
 
     async function deleteMessage(msgId: string) {
-        if (window.confirm("Delete message?")) {
+        if (window.confirm(i18n.t("MessageAlertDeleteMessage"))) {
 
             const success = await deleteMessageFromDb(msgId);
 
