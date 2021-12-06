@@ -64,7 +64,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             </thead>
             <tbody>
               {
-                caseStudies.map((item, index) => (
+                caseStudies.map((item, index) => {
+                  console.log(item);
+                  return(
                   <tr key={item._id}>
                     <th scope="row">{index + 1}</th>
                     <td>{i18n.t(item.caseStudyType)}</td>
@@ -77,7 +79,8 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                       : null}
                     </td>
                   </tr>
-                ))
+                  )
+                })
               }
             </tbody>
           </table>

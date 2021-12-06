@@ -1,7 +1,11 @@
+import { useState, useRef } from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
+import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
+import {BiomechModel, bioMechEnum}  from "./BiomechModel"
+import axios from 'axios';
 import "./broken_kit_report.css";
 import {useTranslation} from "react-i18next";
 
@@ -13,6 +17,31 @@ interface BrokenKitReport extends RouteComponentProps {}
 
 export const BrokenKitReport = (props: BrokenKitReport) => {
     const {t} = useTranslation();
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [submissionStatus, setSubmissionStatus] = useState("");
+  const { register, handleSubmit, reset } = useForm<BiomechModel>({});
+  const failureMessageRef = useRef(null);
+
+  const onSubmit = (data: any) => {
+    var formData = new FormData();
+
+    var postData = JSON.stringify(data);
+    formData.append("document", postData);
+    formData.append("file", selectedFile);
+
+    axios.post('/api/biomech', formData).then(res => {
+      window.alert("Biomechanic report successfully submitted!");
+      reset({});
+      setSelectedFile(null);
+      props.history.push("/biomechanic");
+    }).catch(error =>{
+      console.error('Something went wrong!', error.message);
+      setSubmissionStatus("failure");
+      failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    });
+
+  }
 
     return (
         
@@ -26,20 +55,20 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
             </Link>
           </div>
           <div>
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-group col-md-6">
                   <label className = "font-weight-bold">{t("brokenKitReportBrokenKitReport")}</label>
                   <div>
                     <label htmlFor="Equipment Name" className = "form-label">{t("brokenKitReportNameOfEquipment")}</label>
-                    <input className="form-control mb-2 mt-0" type="text" id="Equipment Name" required></input>
+                    <input className="form-control mb-2 mt-0" type="text" id="Equipment Name" required {...register("equipmentName", {required: true })}></input>
                     <label htmlFor="Equipment Fault" className = "form-label">{t("brokenKitReportFaultWithEquipment")}</label>
-                    <textarea className="form-control mb-2 mt-0" id="Equipment Fault" required></textarea>
+                    <textarea className="form-control mb-2 mt-0" id="Equipment Fault" required {...register("equipmentFault", {required: true })}></textarea>
                     <label htmlFor="Equipment Priority" className = "form-label">{t("brokenKitReportPriorityOfEquipment")}</label>
-                    <select className="form-select" id="Equipment Priority" aria-label="Default select example" required>
+                    <select className="form-select" id="Equipment Priority" aria-label="Default select example" required {...register("equipmentPriority", {required: true })}>
                         <option selected value="">{t("brokenKitReportClickToSelectPriority")}</option>
-                        <option value="1">{t("brokenKitReportUrgent")}</option>
-                        <option value="2">{t("brokenKitReportImportant")}</option>
-                        <option value="3">{t("brokenKitReportNon-Urgent")}</option>
+                        <option value={bioMechEnum.Urgent} >{t("brokenKitReportUrgent")}</option>
+                        <option value={bioMechEnum.Important}>{t("brokenKitReportImportant")}</option>
+                        <option value={bioMechEnum.NonUrgent}>{t("brokenKitReportNon-Urgent")}</option>
                     </select>
                     <label htmlFor="customFile" className="form-label mt-2">{t("brokenKitReportUploadImage")}</label>
                     <input type="file" accept="image/*" className="form-control" id="customFile"/>
