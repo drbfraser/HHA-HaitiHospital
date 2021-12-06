@@ -161,5 +161,27 @@
   "departmentReportDisplaySave": "sauvegarder",
   "departmentReportDisplayDiscard": "Jeter",
   "departmentReportDisplaySubmit": "Soumettre",
-  "departmentReportDisplayBack": "Arrière"
+  "departmentReportDisplayBack": "Arrière",
+
+  "bioSupportReportBrokenKit": "Signaler un kit cassé",
+  "bioSupportReportPriority": "Priorité",
+  "bioSupportReportAuthor": "Auteur",
+  "bioSupportReportCreated": "Créé",
+  "bioSupportReportOptions": "Options",
+  "bioSupportAlertDeleteAlert": "Êtes-vous sûr de vouloir supprimer ce rapport bio ?",
+
+  "brokenKitReportBack": "Arrière",
+  "brokenKitReportBrokenKitReport": "Rapport de kit cassé",
+  "brokenKitReportNameOfEquipment": "Nom de l'équipement",
+  "brokenKitReportFaultWithEquipment": "Défaut avec l'équipement",
+  "brokenKitReportPriorityOfEquipment": "Priorité de l'équipement",
+  "brokenKitReportClickToSelectPriority": "Cliquez pour sélectionner Priorité",
+  "brokenKitReportUrgent": "Urgent",
+  "brokenKitReportImportant": "Important",
+  "brokenKitReportNonUrgent": "Non urgent",
+  "brokenKitReportUploadImage": "Télécharger une image",
+  "brokenKitReportSubmitForm": "Soumettre le formulaire",
+  "brokenKitReportView": "Vue",
+  "brokenKitReportDelete": "Effacer",
+  "brokenKitReportAuthor": "Auteur: "
 }

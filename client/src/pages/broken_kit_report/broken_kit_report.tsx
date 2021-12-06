@@ -16,7 +16,7 @@ interface BrokenKitReport extends ElementStyleProps {
 interface BrokenKitReport extends RouteComponentProps {}
 
 export const BrokenKitReport = (props: BrokenKitReport) => {
-
+    const {t} = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<BiomechModel>({});
   const history = useHistory();
@@ -47,30 +47,30 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
           <Header/>
           <div className="ml-3 mb-3 d-flex justify-content-start">
             <Link to="/biomechanic">
-              <button type="button" className="btn btn-outline-dark">Back</button>
+              <button type="button" className="btn btn-outline-dark">{t("brokenKitReportBack")}</button>
             </Link>
           </div>
           <div>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-group col-md-6">
-                  <label className = "font-weight-bold">Broken Kit Report</label>
+                  <label className = "font-weight-bold">{t("brokenKitReportBrokenKitReport")}</label>
                   <div>
-                    <label htmlFor="Equipment Name" className = "form-label">Name of Equipment</label>
+                    <label htmlFor="Equipment Name" className = "form-label">{t("brokenKitReportNameOfEquipment")}</label>
                     <input className="form-control mb-2 mt-0" type="text" id="Equipment Name" required {...register("equipmentName", {required: true })}></input>
-                    <label htmlFor="Equipment Fault" className = "form-label">Fault with equipment</label>
+                    <label htmlFor="Equipment Fault" className = "form-label">{t("brokenKitReportFaultWithEquipment")}</label>
                     <textarea className="form-control mb-2 mt-0" id="Equipment Fault" required {...register("equipmentFault", {required: true })}></textarea>
-                    <label htmlFor="Equipment Priority" className = "form-label">Priority of Equipment</label>
+                    <label htmlFor="Equipment Priority" className = "form-label">{t("brokenKitReportPriorityOfEquipment")}</label>
                     <select className="form-select" id="Equipment Priority" aria-label="Default select example" required {...register("equipmentPriority", {required: true })}>
-                        <option selected value="">Click to select Priority</option>
-                        <option value={bioMechEnum.Urgent} >Urgent</option>
-                        <option value={bioMechEnum.Important}>Important</option>
-                        <option value={bioMechEnum.NonUrgent}>Non-Urgent</option>
+                        <option selected value="">{t("brokenKitReportClickToSelectPriority")}</option>
+                        <option value={bioMechEnum.Urgent} >{t("brokenKitReportUrgent")}</option>
+                        <option value={bioMechEnum.Important}>{t("brokenKitReportImportant")}</option>
+                        <option value={bioMechEnum.NonUrgent}>{t("brokenKitReportNonUrgent")}</option>
                     </select>
-                    <label htmlFor="customFile" className="form-label mt-2">Upload Image</label>
+                    <label htmlFor="customFile" className="form-label mt-2">{t("brokenKitReportUploadImage")}</label>
                     <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
                   </div>
                   <div>
-                    <button className="btn btn-primary mt-4 " type="submit">Submit Form</button>
+                    <button className="btn btn-primary mt-4 " type="submit">{t("brokenKitReportSubmitForm")}</button>
                   </div>
                 </div>
               </form>

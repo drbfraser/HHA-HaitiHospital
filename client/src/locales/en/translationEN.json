@@ -161,5 +161,27 @@
   "departmentReportDisplaySave": "Save",
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
-  "departmentReportDisplayBack": "Back"
+  "departmentReportDisplayBack": "Back",
+
+  "bioSupportReportBrokenKit": "Report Broken Kit",
+  "bioSupportReportPriority": "Priority",
+  "bioSupportReportAuthor": "Author",
+  "bioSupportReportCreated": "Created",
+  "bioSupportReportOptions": "Options",
+  "bioSupportAlertDeleteAlert": "Are you sure you want to delete this Bio report?",
+
+  "brokenKitReportBack": "Back",
+  "brokenKitReportBrokenKitReport": "Broken Kit Report",
+  "brokenKitReportNameOfEquipment": "Name of Equipment",
+  "brokenKitReportFaultWithEquipment": "Fault with equipment",
+  "brokenKitReportPriorityOfEquipment": "Priority of Equipment",
+  "brokenKitReportClickToSelectPriority": "Click to select Priority",
+  "brokenKitReportUrgent": "Urgent",
+  "brokenKitReportImportant": "Important",
+  "brokenKitReportNonUrgent": "Non-Urgent",
+  "brokenKitReportUploadImage": "Upload Image",
+  "brokenKitReportSubmitForm": "Submit Form",
+  "brokenKitReportView": "View",
+  "brokenKitReportDelete": "Delete",
+  "brokenKitReportAuthor": "Author: "
 }
