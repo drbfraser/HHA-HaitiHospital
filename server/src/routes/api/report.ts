@@ -5,7 +5,7 @@ import Departments from '../../models/Departments';
 import FormEntry from '../../models/FormEntry';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { date } from 'joi';
-
+import { checkUserIsDepartmentAuthed } from '../../utils/authUtils';
 
 //---RESEED DATABASE---//
 //GET - reseeds the department database with the base models(WARNING: WILL REMOVE CUSTOM DEPARTMENTS)
@@ -34,7 +34,11 @@ router.route('/add/:Departmentid').get((req: any, res: any) => {
 });
 
 //POST - sends user submitted form to the server as a JSON
-router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
+router.route('/add').post(requireJwtAuth, async (req: any, res: any) => {
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, req.body.departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to make a post in current department.');
+    }
 
     let dateTime: Date = new Date();
     const createdByUserId = req.user.id as String;
@@ -95,7 +99,14 @@ router.route('/edit/:Reportid').get((req: any, res: any) => {
 });
 
 //make the changes to report of id reportID
-router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
+router.route('/edit/:Reportid').put(requireJwtAuth, async (req: any, res: any) => {
+    const form = await FormEntry.findById(req.params.Reportid);
+    const departmentId = form.departmentId;
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to delete the current department.');
+    }
+
     let updatedDateTime: Date = new Date();
     const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = updatedDateTime;
@@ -114,7 +125,14 @@ router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
 
 //---DELETE REPORTS---//
 //delete a single report with Reportid
-router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) => {
+router.route('/delete/:Reportid').delete(requireJwtAuth, async (req: any, res: any) => {
+    const form = await FormEntry.findById(req.params.Reportid);
+    const departmentId = form.departmentId;
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to delete the current department.');
+    }
+
     FormEntry.deleteOne({_id: req.params.Reportid})
         .then(() => res.json('Succesfully deleted report'))
         .catch(err => res.status(400).json('Could not delete: ' + err));
@@ -122,10 +140,13 @@ router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) =>
 
 // retrieve reports with deparmentId param and/or dateRange param
 // ?departmentId?from=YYYY-MM-DD?to=YYYY-MM-DD
-router.route('/').get( async (req, res) => {
+router.route('/').get(requireJwtAuth, async (req, res) => {
     try {
         const departmentId = req.query.departmentId;
-
+        const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+        if (!isValidated) {
+            return res.status(401).json('User is unauthorized in to view the current department.');
+        }
         const strFrom = req.query.from;
         const strTo = req.query.to;
 

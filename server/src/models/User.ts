@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import { isValidUrl } from '../utils/utils';
-import { DepartmentName } from './Leaderboard';
+import { DepartmentName } from './Departments';
 
 const { Schema } = mongoose;
 
