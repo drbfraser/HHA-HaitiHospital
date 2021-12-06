@@ -17,14 +17,14 @@
         "field_level": 0
       },
       {
-        "field_id" : "bedDays",
+        "field_id" : "patientDays",
         "field_label": "Nombre total de jours-patients",
         "field_type": "number",
         "field_value": 0,
         "field_level": 0
       },
       {
-        "field_id" : "hospitalized.total",
+        "field_id" : "hospitalized",
         "field_label": "Nombre total de patients hospitalisés",
         "field_type": "number",
         "field_value": 0,
@@ -33,7 +33,7 @@
 
 
       {
-        "field_id" : "dischargedAlive.total",
+        "field_id" : "dischargedAlive",
         "field_label": "Nombre total de patients sortis vivants :",
         "field_type": "number",
         "field_value": 0,
@@ -321,6 +321,7 @@
       },
 
       {
+        "subsection_label" : "Consultations postnatales",
         "field_type" : "table",
         "field_level" : 0,
         "total_cols" : 3,
@@ -389,14 +390,14 @@
       },
 
       {
-        "subsection_label" : "Soutien à l'épouse et à la mère",
+        "subsection_label" : "Soutien à l épouse et à la mère",
         "field_type" : "table",
         "field_level" : 0,
         "total_cols" : 6,
         "total_rows" : 4,
-        "col_labels" : [["1ère visite", "2e visite", "3ème visite", "4ème visite", "5ème visite", "Le total"]],
+        "col_labels" : [["1st Visit", "2nd Visit", "3rd Visit", "4th Visit", "5th Visit", "Total"]],
         "col_spans" : [[1, 1, 1, 1, 1, 1]],
-        "row_labels" : [["Période de grossesse"], ["0-3 mois", "4-6 mois", "7-9 mois", "Nombre total de visites"]],
+        "row_labels" : [["Period of pregnancy"], ["0-3 months", "4-6 months", "7-9 months", "Total visits"]],
         "row_spans" : [[3], [1, 1, 1, 1]],
         "invalid_inputs" : [[0 ,0 ,0 ,0 ,0, 1],
           [0 ,0 ,0 ,0 ,0, 1],
@@ -548,7 +549,7 @@
       },
 
       {
-        "subsection_label" : "La gestion de la main-d'œuvre",
+        "subsection_label" : "La gestion de la main-d œuvre",
         "field_type" : "table",
         "field_level" : 0,
         "total_cols" : 3,

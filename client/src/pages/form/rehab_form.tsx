@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import rehabModel from './models/rehabModel.json';
+import rehabModelFr from './models/rehabModelFr.json'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css'
 import i18n from "i18next";
@@ -26,12 +27,16 @@ function RehabForm() {
 
     useEffect(() => {
         const getData = async () => {
-            await setFormModel(rehabModel);
+            if (i18n.language === 'fr') {
+                await setFormModel(rehabModelFr);
+            } else {
+                await setFormModel(rehabModel);
+            }
             setSectionState(0);
         }
 
         getData();
-    }, [])
+    }, [i18n.language])
 
     useEffect(() => {
         sidePanelClick(sectionState);

@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import communityModel from './models/communityModel.json';
+import communityModelFr from './models/communityModelFr.json'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css'
 import i18n from "i18next";
@@ -23,12 +24,17 @@ function CommunityForm() {
 
     useEffect(() => {
         const getData = async () => {
-            await setFormModel(communityModel);
+            if (i18n.language === 'fr') {
+                await setFormModel(communityModelFr);
+            } else {
+                await setFormModel(communityModel);
+            }
+
             setSectionState(0);
         }
 
         getData();
-    }, [])
+    }, [i18n.language])
 
     useEffect(() => {
         sidePanelClick(sectionState);
