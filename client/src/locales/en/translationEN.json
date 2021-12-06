@@ -204,6 +204,8 @@
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
   "departmentReportDisplayBack": "Back",
+  "departmentReportDisplayDownloadCSV": "Download CSV",
+  "departmentReportDisplayGeneratePDF": "Generate PDF",
 
   "bioSupportReportBrokenKit" : "Report Broken Kit",
 
