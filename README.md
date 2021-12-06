@@ -1,21 +1,37 @@
-# CMPT 373 Haumea: HHA Database and Form Entry
+# CMPT 373 Haumea: HHA Internal Project
 
-This is the CMPT 373 Haumea's team project for Hope Health Action. This project is intended to support database management, and registration for HHA internal use. The project is utilizing a MERN Boilerplate to meet the clients needs/requirements(boilerplate can be found here: https://github.com/nemanjam/mern-boilerplate). The project currently contains Database support for departments, users, reports, and messages, and houses a clean and improved UI. 
+This is the CMPT 373 Haumea's team project for Hope Health Action. This project is intended to support database management, and registration for HHA internal use. The project is utilizing a MERN Boilerplate to meet the clients needs/requirements(boilerplate can be found here: https://github.com/nemanjam/mern-boilerplate). In the final iteration for the current CMPT 373 fall term, the project has built off the previous iteration, fleshing out concepts and ensuring smooth interface interactions.
 
-### Additional features have been added for the second iteration, such as:
+#### [More information about the project is available here](https://docs.google.com/document/d/1JG4cK-soyS3thzk-ZJnUyMR3XHxJoLA5gg7Uk1v1aFk/edit?usp=sharing )
+
+### Features
 - Message board (viewing and adding messages)
-- Interface overhaul
+- Clean User Interface
 - Sidebar navigation
-- Login with JWT authentication
-- Case Studies (viewing)
+- Page Route Protection based on Role and Department of User
+    - Dynamic Page Rendering based on Role and Department of User
+- API JWT Authentication/Authorization
+- Account Management and Admin Dashboard for User Management
+- French Translation
+- Report Submission/Viewing/Editing for all Departments
+- Database Routing/Structures
+- Structured Report Models for each Department
+- Multiple Report deletion and Aggregation/Report Merging
+- CSV and PDF Export Functionality
+- Case Studies Submissions and Display
+- Biomechanical Issues Report Submissions and Display
+- Leaderboard between Departments 
 
-### Some features have been improved, such as:
-- Improved report-list and report viewing
-- Improved Report, Message, and User API
-- Improved report entry
-- Improved homepage
-- Improved website navigation
-
+### Future Improvements
+- Backend Coupling Resolution between API Routing and Backend Logic
+- Frontend Coupling Resolution for API Calls and Business Logic
+- Dynamic Form Creation/Data Rendering 
+- Automatic Unit Testing/Integration
+- Creole Translation
+- Reminder system for Department Report Submission based on time
+- Biomechanical Page Secondary Support Form
+- Biomechanical Page Route Protection/Authentication
+- Internal Logic for Employee of the Month
 
 ## Demo
 
@@ -61,6 +77,19 @@ $ npm run dev-start
 ```
 $ npm install
 $ npm start
+```
+
+### Known Issues
+- If there are issues with npm dependencies when running npm install, run the following line:
+```
+$ npm i --legacy-peer-deps
+```
+
+### Docker Setup
+- To run the docker containers, run the following commands from the root directory
+```
+$ sudo docker-compose build
+$ sudo docker-compose up
 ```
 
 ### Using the System
