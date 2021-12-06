@@ -6,6 +6,8 @@ import { Role } from "../../constants/interfaces"
 
 import { Json, ElementStyleProps } from 'constants/interfaces';
 import Axios from 'axios';
+import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 interface MessageDisplayProps extends ElementStyleProps  {
     msgJson : Json;
@@ -13,10 +15,12 @@ interface MessageDisplayProps extends ElementStyleProps  {
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
+
+    const {t} = useTranslation();
     const authState = useAuthState();
 
     async function deleteMessage(msgId: string) {
-        if (window.confirm("Delete message?")) {
+        if (window.confirm(i18n.t("MessageAlertDeleteMessage"))) {
 
             const success = await deleteMessageFromDb(msgId);
 
@@ -61,7 +65,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
 
             {/* Message title */}
             <div className='text-gray-dark'>
-                <p><strong>Title: {props.msgJson.messageHeader}</strong></p>
+                <p><strong>{t("messageBoardTitle")}: {props.msgJson.messageHeader}</strong></p>
             </div>
 
             {/* Message body with utility buttons */}

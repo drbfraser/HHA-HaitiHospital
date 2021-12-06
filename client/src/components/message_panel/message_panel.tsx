@@ -14,6 +14,7 @@ interface MessagePanelProps extends ElementStyleProps {
 
 const MessagePanel = (props: MessagePanelProps) => {
 
+    const {t} = useTranslation();
     const [count, setCount] = useState<number>(5);
     const [rerender, setRerender] = useState<boolean> (false);
     const authState = useAuthState();
@@ -57,9 +58,6 @@ const MessagePanel = (props: MessagePanelProps) => {
         console.log("Rerendering....");
     }
 
-    
-
-    const {t, i18n} = useTranslation();
 
     return (<>
         <div className="my-3 p-3 bg-body rounded shadow-sm">

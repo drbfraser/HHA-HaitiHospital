@@ -10,6 +10,8 @@ import {useTranslation} from "react-i18next";
 import { useAuthState } from "Context";
 import { renderBasedOnRole } from "actions/roleActions"
 import DbErrorHandler from "actions/http_error_handler";
+import i18n from "i18next";
+
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -69,7 +71,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                   return(
                   <tr key={item._id}>
                     <th scope="row">{index + 1}</th>
-                    <td>{item.caseStudyType}</td>
+                    <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{item.user ? item.user.name : "[deleted]"}</td>
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>

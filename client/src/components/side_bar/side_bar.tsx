@@ -18,6 +18,8 @@ export const changeLanguage = (ln) => {
 }
 
 const Sidebar = (props: SidebarProps) => {
+
+    const {t, i18n} = useTranslation();
     const authState = useAuthState();
 
     const renderDeptIfUserInDept = (departmentName: string): boolean => {
@@ -27,7 +29,6 @@ const Sidebar = (props: SidebarProps) => {
         return true;
     }
 
-    const {t, i18n} = useTranslation();
 
     return (
         <div className={"Sidebar"}>
@@ -67,7 +68,7 @@ const Sidebar = (props: SidebarProps) => {
                         {
                                 <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
                                     <i className="bi bi-wrench me-2"/>
-                                    <span className="text text-light">Bio Support</span>
+                                    <span className="text text-light">{t("sidebarBioSupport")}</span>
                                 </NavLink>
                         }
                     </li>
@@ -80,7 +81,7 @@ const Sidebar = (props: SidebarProps) => {
                                 <li>
                                     <NavLink to='/general_reports' className='nav-link link-light' exact activeClassName="active">
                                         <i className="bi bi-folder-fill me-2"/>
-                                        <span className='text text-light'>General</span>
+                                        <span className='text text-light'>{t("sidebarGeneral")}</span>
                                     </NavLink>
                                 </li>
                                 ) : (<div></div>)
@@ -96,22 +97,22 @@ const Sidebar = (props: SidebarProps) => {
                                 <li>
                                     <NavLink to={`/department/${deptId}`} className='nav-link link-light' exact activeClassName='active'>
                                         <i className="bi bi-brightness-high-fill me-2"/>
-                                        <span className="text text-light">{deptNameEnum}</span>
+                                        <span className="text text-light">{i18n.t(deptNameEnum)}</span>
                                     </NavLink>
                                 </li>
                             );
-                        else  
+                        else
                             return <></>
                     })}
- 
-    
+
+
                     <li className="border-top my-2"/>
                         {
                             renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (                 
                                     <li>
                                         <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                                             <i className="bi bi-person-badge-fill me-2"/>
-                                            <span className="text text-light">Admin</span>
+                                            <span className="text text-light">{t("sidebarAdmin")}</span>
                                         </NavLink>
 
                                         <li className="border-top my-2"/>

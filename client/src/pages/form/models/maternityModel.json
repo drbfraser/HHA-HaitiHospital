@@ -30,8 +30,8 @@
                 "field_value": 0,
                 "field_level": 0
             },
-            
-            
+
+
             {
                 "field_id" : "dischargedAlive",
                 "field_label": "Total number of patients discharged alive:",
@@ -65,9 +65,9 @@
                     }
 
                 ]
-                
+
             },
-            
+
             {
                 "field_id" : "diedAfter48hr.total",
                 "field_label": "Total number of patients that died AFTER 48hrs",
@@ -93,9 +93,9 @@
                     }
 
                 ]
-                
+
             },
-           
+
             {
                 "field_id" : "daysHospitalized",
                 "field_label": "Total number of days hospitalized between all patients",
@@ -280,11 +280,11 @@
                 "row_labels" : [["Weight"], ["Weight < 1(DOT)5kg", "1(DOT)kg ≤ Weight <2(DOT)5kg", "2(DOT)5kg and over", "Not weighed", "Immediately breastfed", "Skin to skin therapy"]],
                 "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
                 "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0]]
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0]]
             },
 
             {
@@ -400,10 +400,10 @@
                 "row_labels" : [["Period of pregnancy"], ["0-3 months", "4-6 months", "7-9 months", "Total visits"]],
                 "row_spans" : [[3], [1, 1, 1, 1]],
                 "invalid_inputs" : [[0 ,0 ,0 ,0 ,0, 1],
-                                    [0 ,0 ,0 ,0 ,0, 1],
-                                    [0 ,0 ,0 ,0 ,0, 1],
-                                    [1 ,1 ,1 ,1 ,1, 1]]
-                    
+                    [0 ,0 ,0 ,0 ,0, 1],
+                    [0 ,0 ,0 ,0 ,0, 1],
+                    [1 ,1 ,1 ,1 ,1, 1]]
+
             }
         ]
     },
@@ -516,7 +516,7 @@
                 "field_value" : 0,
                 "field_level" : 0
             },
-            
+
             {
                 "field_id" : "otherServices.womenPostabortionCare",
                 "field_label": "Women receiving postabortion care",
@@ -541,11 +541,11 @@
                 "row_labels" : [["Age of mothers"], ["<15 years", "15-19 years", "20-24 years", "25-29 years", "30+ years", "Unknown"]],
                 "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
                 "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0],
-                                    [0 ,0 ,0 ,0 ,0]]
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0],
+                    [0 ,0 ,0 ,0 ,0]]
             },
 
             {
@@ -559,7 +559,7 @@
                 "row_labels" : [["Use of partograph", "Active management of the 3rd phase of labor"]],
                 "row_spans" : [[1, 1]],
                 "invalid_inputs" : [[0, 0, 0],
-                                    [0, 1, 0]]
+                    [0, 1, 0]]
             }
         ]
     }

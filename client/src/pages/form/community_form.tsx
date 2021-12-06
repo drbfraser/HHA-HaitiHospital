@@ -5,8 +5,11 @@ import { useHistory } from "react-router-dom";
 import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import communityModel from './models/communityModel.json';
+import communityModelFr from './models/communityModelFr.json'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css'
+import i18n from "i18next";
+import {useTranslation} from "react-i18next";
 
 
 
@@ -15,18 +18,22 @@ function CommunityForm() {
     const { register, handleSubmit, reset, } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [sectionState, setSectionState] = useState(0);
-
-
     const history = useHistory();
+    const {t, i18n} = useTranslation();
 
     useEffect(() => {
         const getData = async () => {
-            await setFormModel(communityModel);
+            if (i18n.language === 'fr') {
+                await setFormModel(communityModelFr);
+            } else {
+                await setFormModel(communityModel);
+            }
+
             setSectionState(0);
         }
 
         getData();
-    }, [])
+    }, [i18n.language])
 
     useEffect(() => {
         sidePanelClick(sectionState);
@@ -64,7 +71,7 @@ function CommunityForm() {
 
 
     const onSubmit = async (data: any) => {
-        if (!window.confirm("Press OK to finalize submission.")) {
+        if (!window.confirm(i18n.t("departmentFormSubmitAlertPressOKToSubmit"))) {
             return;
         }
         
@@ -113,7 +120,7 @@ function CommunityForm() {
             reset({})
             history.goBack();
         } else {
-            alert("Some fields contain invalid values");
+            alert(i18n.t("departmentFormArrayInputValidationSomeFieldsContainInvalidValues"));
             window.scrollTo(0, 0);
         }
 
@@ -357,18 +364,18 @@ function CommunityForm() {
     function isValid(inputElement: HTMLInputElement) {
         var numberAsText = inputElement.value;
         if (numberAsText == "") {
-            makeValidity(inputElement, false, "Must enter a value");
+            makeValidity(inputElement, false, i18n.t("departmentFormInputValidationMustEnterValue"));
             return false;
         }
 
         var number = Number(numberAsText);
         if (number < 0) {
-            makeValidity(inputElement, false, "Positive numbers only");
+            makeValidity(inputElement, false, i18n.t("departmentFormInputValidationPositiveNumberOnly"));
             return false;
         }
 
         if (number % 1 != 0) {
-            makeValidity(inputElement, false, "Integers only");
+            makeValidity(inputElement, false, i18n.t("departmentFormInputValidationIntegersOnly"));
             return false;
         }
 
@@ -488,29 +495,29 @@ function CommunityForm() {
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
                         history.goBack();
-                    }}>Back</button>
+                    }}>{t("departmentAddBack")}</button>
                 </div>
 
                 <div className="py-3 text-start">
                     {/* <h2>NICU/Paediatrics Form</h2> */}
-                    <span className="lead">Date: </span>
+                    <span className="lead">{t("departmentAddDate")} </span>
                     <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
-                        <option selected>Month</option>
-                        <option value="1">January</option>
-                        <option value="2">Feburary</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
+                        <option selected>{t("departmentAddMonth")}</option>
+                        <option value="1">{t("departmentAddJanuary")}</option>
+                        <option value="2">{t("departmentAddFebruary")}</option>
+                        <option value="3">{t("departmentAddMarch")}</option>
+                        <option value="4">{t("departmentAddApril")}</option>
+                        <option value="5">{t("departmentAddMay")}</option>
+                        <option value="6">{t("departmentAddJune")}</option>
+                        <option value="7">{t("departmentAddJuly")}</option>
+                        <option value="8">{t("departmentAddAugust")}</option>
+                        <option value="9">{t("departmentAddSeptember")}</option>
+                        <option value="10">{t("departmentAddOctober")}</option>
+                        <option value="11">{t("departmentAddNovember")}r</option>
+                        <option value="12">{t("departmentAddDecember")}</option>
                     </select>
                     <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
-                        <option selected>Year</option>
+                        <option selected>{t("departmentAddYear")}</option>
                         <option value="2021">2021</option>
                         <option value="2020">2020</option>
                         <option value="2019">2019</option>
@@ -578,7 +585,7 @@ function CommunityForm() {
                                                         // onBlur={() => inputValidation(i)}
                                                         />
                                                         <div className="invalid-feedback">
-                                                            Requires a valid number
+                                                            {t("departmentFormRequiresValidNumber")}
                                                         </div>
                                                     </div>
                                                 </>
@@ -664,7 +671,7 @@ function CommunityForm() {
                                                                                             onBlur={() => tableInputValidation(i, idx, j)}
                                                                                         />
                                                                                         <div className="invalid-feedback text-end">
-                                                                                            Requires a valid number
+                                                                                            {t("departmentFormRequiresValidNumber")}
                                                                                         </div>
                                                                                     </td>
                                                                                 );
@@ -696,8 +703,8 @@ function CommunityForm() {
                         </form>
 
                         <div className="btn-group d-flex">
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>{t("departmentFormPrevious")}</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>{t("departmentFormNext")}</button>
                         </div>
 
                         <button
@@ -705,7 +712,7 @@ function CommunityForm() {
                             type="submit"
                             style={{ display: sectionState === 2 ? '' : 'none' }}
                             onClick={handleSubmit(onSubmit)}>
-                            Submit
+                            {t("departmentFormSubmit")}
                         </button>
                     </div>
                 </div>

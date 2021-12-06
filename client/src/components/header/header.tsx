@@ -13,10 +13,10 @@ interface HeaderProps extends ElementStyleProps{
 }
 
 function HeaderView() {
+    const {t} = useTranslation();
     const location = useLocation();
     // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
 
-    const {t} = useTranslation();
     if (location.pathname.slice(1) === 'home') {
         return <h4 className="text-secondary">{t("headerOverview")}</h4>
     } else if (location.pathname.slice(1) === 'message-board') {
@@ -26,11 +26,11 @@ function HeaderView() {
     } else if (location.pathname.slice(1) === 'case-study') {
         return <h4 className="text-secondary">{t("headerCaseStudy")}</h4>
     } else if (location.pathname.split('/')[1] === 'case-study' && location.pathname.split('/')[2] === 'form') {
-        return <h4 className="text-secondary">Case Study Form</h4>
+        return <h4 className="text-secondary">{t("headerCaseStudyForm")}</h4>
     } else if (location.pathname.slice(1) === 'biomechanic') {
-        return <h4 className="text-secondary">Biomechanical Support</h4>
+        return <h4 className="text-secondary">{t("headerBiomechanicalSupport")}</h4>
     } else if (location.pathname.slice(1) === 'brokenkit') {
-        return <h4 className="text-secondary">Broken Kit Report</h4>
+        return <h4 className="text-secondary">{t("headerBrokenKitReport")}</h4>
     } else if (location.pathname.split('/')[1] === 'caseStudyView') {
         return <h4 className="text-secondary">{t("headerCaseStudyForm")}</h4>
     } else if (location.pathname.slice(1) === 'Department1NICU') {
@@ -45,12 +45,12 @@ function HeaderView() {
         return <h4 className="text-secondary">{t("headerAdmin")}</h4>
     } else if (location.pathname.slice(1) === 'general_reports') {
         // Need translation
-        return (<h4 className='text-secondary'>General</h4>)
+        return (<h4 className='text-secondary'>{t("headerGeneralReports")}</h4>)
     }
     else if (location.pathname.split('/')[1] === 'admin' && location.pathname.split('/')[2] === 'add-user') {
-        return <h4 className="text-secondary">Add User</h4>
+        return <h4 className="text-secondary">{t("headerAddUser")}</h4>
     } else if (location.pathname.split('/')[1] === 'admin' && location.pathname.split('/')[2] === 'edit-user') {
-        return <h4 className="text-secondary">Edit User</h4>
+        return <h4 className="text-secondary">{t("headerEditUser")}</h4>
     } else {
         // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
         return <h4></h4>
@@ -120,7 +120,7 @@ const Header = (props: HeaderProps) => {
                             </li>
                             <li>
                                 <button className="dropdown-item disabled text-muted mb-2">
-                                    <i className="bi bi-person-badge-fill"></i>{' ' + userInfo.role}
+                                    <i className="bi bi-person-badge-fill"></i>{' ' + i18n.t(userInfo.role)}
                                 </button>
                             </li>
                             <li className={`${userInfo.department ? "d-block" : "d-none"}`}>

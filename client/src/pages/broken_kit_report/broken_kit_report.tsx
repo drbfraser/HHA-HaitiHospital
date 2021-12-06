@@ -28,7 +28,7 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
     formData.append("document", postData);
     formData.append("file", selectedFile);
 
-    axios.post('/api/biomech', formData).then(res => { 
+    axios.post('/api/biomech', formData).then(res => {
       window.alert("Biomechanic report successfully submitted!");
       reset({});
       setSelectedFile(null);
@@ -64,7 +64,7 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
                         <option selected value="">{t("brokenKitReportClickToSelectPriority")}</option>
                         <option value={bioMechEnum.Urgent} >{t("brokenKitReportUrgent")}</option>
                         <option value={bioMechEnum.Important}>{t("brokenKitReportImportant")}</option>
-                        <option value={bioMechEnum.NonUrgent}>{t("brokenKitReportNonUrgent")}</option>
+                        <option value={bioMechEnum.NonUrgent}>{t("brokenKitReportNon-Urgent")}</option>
                     </select>
                     <label htmlFor="customFile" className="form-label mt-2">{t("brokenKitReportUploadImage")}</label>
                     <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>

@@ -174,14 +174,14 @@ const DepartmentReport = (props: DepartmentReportProps) => {
                         <button
                           className=""
                           color="primary">
-                          Download CSV
+                          {t("departmentReportDisplayDownloadCSV")}
                         </button>
                       </CSVLink>
                     </li>
                     <li className='col-sm-auto'>
                       <div className="button-area">
                         {/*<button onClick={toggleShow}>show</button>*/}
-                        <button onClick={handleExportWithComponent}>Generate PDF</button>
+                        <button onClick={handleExportWithComponent}>{t("departmentReportDisplayGeneratePDF")}</button>
                       </div>
                     </li>
                   </ul>

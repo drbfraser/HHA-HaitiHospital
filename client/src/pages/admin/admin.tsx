@@ -6,6 +6,8 @@ import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import './admin.css'
 import DbErrorHandler from 'actions/http_error_handler';
+import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 interface AdminProps extends ElementStyleProps {
 };
@@ -13,6 +15,7 @@ interface AdminProps extends ElementStyleProps {
 const Admin = (props : AdminProps) => {
   const [users, setUsers] = useState([]);
   const history = useHistory();
+  const {t} = useTranslation();
 
   const usersUrl = '/api/users';
   const getUsers = async () => {
@@ -26,12 +29,12 @@ const Admin = (props : AdminProps) => {
 
   const deleteUser = async (id) => {
     try {
-      if (!window.confirm('Are you sure you want to delete this user?')) {
+      if (!window.confirm(i18n.t("adminAreYouSureToDeleteTheUser"))) {
         throw new Error("Deletion cancelled")
       }
       const res = await axios.delete(usersUrl + '/' + id);
       getUsers();
-      alert("User deleted");
+      alert(i18n.t("adminAlertUserDeleted"));
     } catch (err) {
       DbErrorHandler(err, history);
     }
@@ -47,7 +50,7 @@ const Admin = (props : AdminProps) => {
       <main className='container-fluid main-region'>
         <Header/>
         <div className="d-flex justify-content-start">
-          <Link to="/admin/add-user"><button type="button" className="btn btn-outline-dark">Add User</button></Link>
+          <Link to="/admin/add-user"><button type="button" className="btn btn-outline-dark">{t("adminAddUser")}</button></Link>
         </div>
         
         <div className="table-responsive">
@@ -55,12 +58,12 @@ const Admin = (props : AdminProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col">Name</th>
-                <th scope="col">Role</th>
-                <th scope="col">Department</th>
-                <th scope="col">Created</th>
-                <th scope="col" className="text-center">Options</th>
+                <th scope="col">{t("adminUsername")}</th>
+                <th scope="col">{t("adminName")}</th>
+                <th scope="col">{t("adminRole")}</th>
+                <th scope="col">{t("adminDepartment")}</th>
+                <th scope="col">{t("adminCreated")}</th>
+                <th scope="col" className="text-center">{t("adminOptions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -75,8 +78,8 @@ const Admin = (props : AdminProps) => {
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
                       <div className="text-center">
-                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`/admin/edit-user/${item.id}`)}>Edit </a>
-                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>Delete</a>
+                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`/admin/edit-user/${item.id}`)}>{t("adminEdit")}    </a>
+                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>{t("adminDelete")}</a>
                       </div>
                     </td>
                   </tr>
