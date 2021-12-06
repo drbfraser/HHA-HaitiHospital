@@ -1,42 +1,41 @@
 import React, { useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
-import { ReportProps } from 'constants/interfaces';
-import ReportDisplay from 'components/report_display/report_display';
-import { ElementStyleProps } from 'constants/interfaces';
+
+import { getDepartmentName, ReportProps } from 'constants/interfaces';
+import {ReportDisplay} from 'components/report_display/report_display';
+
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
+import DbErrorHandler from 'actions/http_error_handler';
 import { CSVLink } from "react-csv";
 import { PDFExport } from '@progress/kendo-react-pdf';
 import './department_report.css'
 
 
-interface DepartmentReportProps extends ElementStyleProps {
+interface DepartmentReportProps {
   edit: boolean;
 };
 
 interface UrlParams {
-  id: string;
+    deptId: string;
+    id: string;
 };
 
 const DepartmentReport = (props: DepartmentReportProps) => {
 
-  const { t } = useTranslation();
-  const { id } = useParams<UrlParams>();
-  const getReportApi = `/api/report/viewreport/${id}`;
-  const [report, setReport] = useState<ReportProps>({});
-  const [csvData, setCsvData] = useState<Object[]>([]);
+  const {t} = useTranslation();
+  const { deptId, id } = useParams<UrlParams>();
+  const [ report, setReport] = useState<ReportProps>({});
+  const [ csvData, setCsvData ] = useState<Object[]> ([]);
   const apiSource = Axios.CancelToken.source();
   const pdfExportComponent = useRef(null);
   const handleExportWithComponent = () => {
     pdfExportComponent.current.save();
   }
-
-  useEffect(() => {
-    console.log(csvData);
-  }, [csvData])
+  const history = useHistory();
 
   useEffect(() => {
     let BreakException = {};
@@ -98,11 +97,11 @@ const DepartmentReport = (props: DepartmentReportProps) => {
   useEffect(() => {
     let isMounted = true;
     async function getReport() {
-      const reportFromServer = await fetchReport();
+      const reportsFromServer = await fetchReport();
       if (isMounted)
-        setReport(reportFromServer);
-    }
-
+        setReport(reportsFromServer[0]);
+    };
+    
     getReport();
 
     return function cancelReqWhenUnmounted() {
@@ -112,6 +111,14 @@ const DepartmentReport = (props: DepartmentReportProps) => {
   }, []);
 
   async function fetchReport() {
+    const qs = new URLSearchParams("");
+    qs.append("departmentId", deptId);
+    qs.append("reportId", id);
+    let getReportApi = `/api/report/`;
+    if (qs.toString().length > 0) {
+        getReportApi += `?${qs.toString()}`;
+    }
+
     try {
       const res = await Axios.get(getReportApi, {
         cancelToken: apiSource.token
@@ -121,21 +128,14 @@ const DepartmentReport = (props: DepartmentReportProps) => {
       if (Axios.isCancel(err)) {
         console.log(`Info: Cancel subscription to ${getReportApi} API`, err);
       }
-      else { console.log(err); }
+      else { DbErrorHandler(err, history) }
     }
     return {};
   }
 
-  function getClassName() {
-    if (props.classes === undefined)
-      return 'department-report';
-    else
-      return `department-report ${props.classes}`;
-  }
-
   return (
-    <div className={getClassName()}>
-      <SideBar />
+    <div className={"department-report"}>
+      <SideBar/>
 
       <main className="container-fluid">
         <Header />
@@ -143,7 +143,8 @@ const DepartmentReport = (props: DepartmentReportProps) => {
 
           {/* Dept Title */}
           <section className='mt-3'>
-            <h1 className="lead text-center">{t("departmentReportDisplayDepartmentNICU")}</h1>
+            <h1 className="lead text-center">{`Department of ${getDepartmentName(parseInt(deptId))}`}</h1>
+
           </section>
 
           {/* Utility buttons */}
@@ -154,9 +155,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
                   <ul className='row justify-content-md-center'>
                     <li className='col-sm-auto'><button className="">{t("departmentReportDisplaySave")}</button></li>
                     <li className='col-sm-auto'>
-                      <Link to={'/Department1NICU'}>
-                        <button className="">{t("Discard")}</button>
-                      </Link>
+                        <button onClick={()=>history.goBack()}>{t("Discard")}</button>
                     </li>
                     <li className='col-sm-auto'><button className="">{t("departmentReportDisplaySubmit")}</button></li>
                   </ul>
@@ -167,9 +166,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
                 <div className="container w-50 text-center">
                   <ul className='row justify-content-md-center'>
                     <li className='col-sm-auto'>
-                      <Link to={'/Department1NICU'}>
-                        <button className="">{t("departmentReportDisplayBack")}</button>
-                      </Link>
+                        <button onClick={()=>history.goBack()}>{t("departmentReportDisplayBack")}</button>
                     </li>
                     <li className='col-sm-auto'>
                       <CSVLink

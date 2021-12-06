@@ -10,28 +10,30 @@ import Header from "components/header/header";
 import MessageForm from "components/message_form/message_form";
 
 import './edit_message_styles.css'
+import DbErrorHandler from "actions/http_error_handler";
 import {useTranslation} from "react-i18next";
 
-async function fetchMsgFromDb(id: string) {
-
-    const api = `/api/messageBoard/message/${id}`;
-    try {
-        const response = await Axios.get(api);
-        return response.data;
-    }
-    catch (err){
-        console.log("Fetch msg from db failed: ",err);
-        return {};
-    }
-
-}
 
 // sample url /message-board/edit/{id}
 const EditMessage = () => {
-    const { t } = useTranslation();
     const { id } = useParams<{id? : string}>();
     const [msg, setMsg] = useState<Message>(emptyMessage)
     const history = useHistory();
+
+
+    async function fetchMsgFromDb(id: string) {
+
+        const api = `/api/messageBoard/message/${id}`;
+        try {
+            const response = await Axios.get(api);
+            return response.data;
+        }
+        catch (err){
+            DbErrorHandler(err, history);
+            return {};
+        }
+
+    }
 
     async function fetchMsg(id: string) {
         const msgData = await fetchMsgFromDb(id);
@@ -53,18 +55,14 @@ const EditMessage = () => {
     }, [])
 
     const updateMessage = async (data) => {
-        const api = `api/messageboard/${id}`;
+        const api = `/api/messageboard/${id}`;
         try {
             let response = await Axios.put(api, data);
             history.push('/message-board')
             alert('success');
         }
         catch (e) {
-            if (e.response.status === 401)
-                alert("update message failed: unauthorized");
-            else 
-                alert("update message failed");
-            console.log("update message failed ", e.response.status);
+            DbErrorHandler(e, history);
         }
     }
 

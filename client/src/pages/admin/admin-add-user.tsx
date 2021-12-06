@@ -26,7 +26,6 @@ export const AddUserForm = (props: AdminProps) => {
 
   const onSubmit = (data: any) => {
     axios.post('/api/users', data).then(res => {
-      console.log(res.data);
       reset({});
       history.push("/admin");
     }).catch(error => {

@@ -6,18 +6,22 @@ import './leader_board_main.css'
 import EOM from '../../img/case1.jpg'
 import axios from 'axios'
 import {useTranslation} from "react-i18next";
+import DbErrorHandler from "actions/http_error_handler";
+import { useHistory } from "react-router";
 
 interface LeaderBoardMainProps extends ElementStyleProps {};
 
 export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
     const [leaderboard, setLeaderboard] = useState([]);
+    const history = useHistory();
+    
     const urlLeaderboard = '/api/leaderboard';
     const getLeaderboard = async () => {
         try {
             const res = await axios.get(urlLeaderboard);
             setLeaderboard(res.data);
         } catch (err) {
-            console.log(err);
+            DbErrorHandler(err, history);
         }
     }
 

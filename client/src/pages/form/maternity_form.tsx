@@ -19,7 +19,6 @@ function MaternityForm() {
     const [sectionState, setSectionState] = useState(0);
     const [patientStateBefore, setPatientStateBefore] = useState(0);
     const [patientStateAfter, setPatientStateAfter] = useState(0);
-
     const history = useHistory();
     const {t, i18n} = useTranslation();
 
@@ -116,7 +115,7 @@ function MaternityForm() {
                 console.error('Something went wrong!', error.response);
             });
             reset({});
-            history.push("/Department2Maternity");
+            history.goBack();
 
         } else {
             alert(i18n.t("departmentFormArrayInputValidationSomeFieldsContainInvalidValues"));
@@ -713,7 +712,7 @@ function MaternityForm() {
 
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
-                        history.push("/Department1NICU");
+                        history.goBack();
                     }}>{t("departmentAddBack")}</button>
                 </div>
 

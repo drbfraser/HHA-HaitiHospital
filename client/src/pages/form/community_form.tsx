@@ -18,7 +18,6 @@ function CommunityForm() {
     const { register, handleSubmit, reset, } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [sectionState, setSectionState] = useState(0);
-
     const history = useHistory();
     const {t, i18n} = useTranslation();
 
@@ -119,7 +118,7 @@ function CommunityForm() {
             });
 
             reset({})
-            history.push("/Department4ComHealth");
+            history.goBack();
         } else {
             alert(i18n.t("departmentFormArrayInputValidationSomeFieldsContainInvalidValues"));
             window.scrollTo(0, 0);
@@ -495,7 +494,7 @@ function CommunityForm() {
 
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
-                        history.push("/Department4ComHealth");
+                        history.goBack();
                     }}>{t("departmentAddBack")}</button>
                 </div>
 

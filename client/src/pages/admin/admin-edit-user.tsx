@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RouteComponentProps, Link, useHistory, useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import { ElementStyleProps, User, Role, DepartmentName } from "constants/interfaces";
+import { User, Role, DepartmentName } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import axios from 'axios';
 
 import "./admin.css";
+import DbErrorHandler from "actions/http_error_handler";
 import {useTranslation} from "react-i18next";
 import i18n from "i18next";
 
-interface AdminProps extends ElementStyleProps {
+interface AdminProps {
 }
 
 export const EditUserForm = (props: AdminProps) => {
@@ -25,19 +26,18 @@ export const EditUserForm = (props: AdminProps) => {
 
   const failureMessageRef = useRef(null); 
   const history = useHistory();
-
+  const {t} = useTranslation();
   const id = useLocation().pathname.split('/')[2];
   const userUrl = `/api/users/${id}`;
 
   const getUser = async () => {
     try {
       const res = await axios.get(userUrl);
-      console.log(res);
       setUser(res.data);
       setRole(res.data.role);
       setDepartment(res.data.department);
     } catch (err) {
-      console.log(err);
+      DbErrorHandler(err, history);
     }
   }
 
@@ -47,7 +47,6 @@ export const EditUserForm = (props: AdminProps) => {
 
   const onSubmit = (data: any) => {
     axios.put(userUrl, data).then(res => {
-      console.log(res.data);
       reset({});
       history.push("/admin");
     }).catch(error => {
@@ -67,9 +66,9 @@ export const EditUserForm = (props: AdminProps) => {
     }
   }
 
-  const {t} = useTranslation();
+
   return (
-    <div className={"admin "+ props.classes}>
+    <div className={"admin"}>
       <SideBar/>
 
       <main className="container-fluid main-region">

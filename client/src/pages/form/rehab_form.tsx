@@ -89,7 +89,7 @@ function RehabForm() {
             });
 
             reset({});
-            history.push("/Department3Rehab");
+            history.goBack();
         } else {
             alert(i18n.t("departmentFormSubmitAlertContainInvalidValues"));
             window.scrollTo(0, 0);
@@ -680,7 +680,7 @@ function RehabForm() {
 
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
-                        history.push("/Department1NICU");
+                        history.goBack();
                     }}>{t("departmentAddBack")}</button>
                 </div>
 

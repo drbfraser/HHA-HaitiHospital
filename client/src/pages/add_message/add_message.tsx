@@ -1,9 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import Axios from 'axios';
-
-// import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
+import Axios, { AxiosError } from 'axios';
 
 import Sidebar from '../../components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -12,32 +9,8 @@ import './add_message_styles.css'
 import MessageForm  from '../../components/message_form/message_form';
 import {useTranslation} from "react-i18next";
 
-// Not sure what these are for
 
-// interface Message {
-//   deparmentId: Number;
-//   departmentName: String;
-//   authorId: Number;
-//   date: Date;
-//   messageBody: String;
-//   messageHeader: String;
-// }
-
-
-// const messageFormSchema = Yup.object({
-//   authorId: Yup.number().min(0).required('Required'),
-
-//   messageBody: Yup.string()
-//     .min(5, 'Must be 5 characters at minimum')
-//     .max(300, 'Must be 300 characters or less')
-//     .required('Required'),
-
-//   messageHeader: Yup.string()
-//     .min(5, 'Must be 5 characters at minimum')
-//     .max(100, 'Must be 100 characters or less')
-//     .required('Required'),
-// });
-
+import DbErrorHandler from 'actions/http_error_handler';
 
 
 function AddMessage() {
@@ -49,15 +22,12 @@ function AddMessage() {
     try {
         let response = await Axios.post(api, data);
         history.push('/message-board')
+        alert('success');
         alert(i18n.t("addMessageAlertSuccess"));
 
     }
     catch (e) {
-        if (e.response.status === 401)
-            alert(i18n.t("addMessageAlertUnauthorized"));
-        else 
-            alert(i18n.t("addMessageAlertFailed"));
-        console.log("update message failed ", e.response.status);
+        DbErrorHandler(e, history);
     }
     })
 

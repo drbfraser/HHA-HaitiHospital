@@ -18,14 +18,18 @@ export const checkIsInRole = (...roles) => (req: Request, res: Response, next: N
     return next()
 }
 
-export const checkUserIsDepartmentAuthed = async (userId: number, reportDepartmentId: number, userRole: string) => {
+export const checkUserIsDepartmentAuthed = async (userId: string, reportDepartmentId: number, userRole: string) => {
     // All roles other than a regular user role are authorized to do any departmental work
     if (userRole != Role.User) {
         return true;
     }
-
+    console.log(userId);
     const user = await User.findById(userId);
-    const userDepartment = user.department;
+    console.log(user);
+
+    const userDepartment = user["department"];
+    console.log(userDepartment, getDepartmentName(reportDepartmentId));
+
     if (userDepartment === getDepartmentName(reportDepartmentId)) {
         return true;
     }
