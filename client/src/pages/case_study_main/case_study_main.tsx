@@ -66,7 +66,6 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             <tbody>
               {
                 caseStudies.map((item, index) => {
-                  console.log(item);
                   return(
                   <tr key={item._id}>
                     <th scope="row">{index + 1}</th>

@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import { History } from "history";
 import React from 'react-router-dom';
 
+const BADREQUEST_CODE = 400;
 const UNAUTHORIZE_CODE = 401;
 const NOTFOUND_CODE = 404;
 const INTERNAL_CODE = 500;
@@ -24,6 +25,10 @@ const DbErrorHandler = (e, history: History) => {
         }
         case (INTERNAL_CODE) : {
             alert(`Internal Error ${e.response}`);
+            break;
+        }
+        case (BADREQUEST_CODE) : {
+            alert(`Invalid Report`);
             break;
         }
         default:
