@@ -179,6 +179,7 @@
   "departmentAddYear" : "Year",
 
   "departmentFormSteps": "Steps:",
+  "departmentFormSelectPatient": "Select Patient",
   "departmentFormSubmitAlertPressOKToSubmit": "Press OK to finalize submission",
   "departmentFormSubmitAlertContainInvalidValues": "Some fields contain invalid values",
   "departmentFormSubmit": "Submit",
@@ -193,13 +194,12 @@
   "departmentFormArrayInputValidationMustEnterValue" : "Must enter a value for this field",
   "departmentFormArrayInputValidationPositiveNumberOnly" : "Positive numbers only for this field",
   "departmentFormArrayInputValidationIntegersOnly" : "Integers only for this field",
-
   "departmentFormInputValidationMustEnterValue" : "Must enter a value",
   "departmentFormInputValidationPositiveNumberOnly" : "Positive numbers only",
   "departmentFormInputValidationIntegersOnly" : "Integers only",
-
   "departmentFormTotalValidationDoesNotAddUpToTotal" : "Does not add up to total",
   "departmentFormTotalValidationMustEnterName" : "Must enter a name",
+  "departmentFormValidationOneOrMoreFieldsAreInvalid" : "One or more fields are invalid",
 
   "departmentReportDisplayDepartmentNICU": "Department of NICU/Paediatrics",
   "departmentReportDisplayNoReportFound": "No report found",

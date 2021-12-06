@@ -147,14 +147,14 @@ function MaternityForm() {
                         <div className="col-sm-10 ps-5" id={"selectList" + fieldIndex}>
                             <span className="pe-2">Patient</span>
                             <select className="form-select-sm" aria-label=".form-select-sm" onChange={(e) => selectList(e.target.value, state, field)}>
-                                <option selected>Select Patient</option>
+                                <option selected>{t("departmentFormSelectPatient")}</option>
 
                                 {[...Array(Number(state))].map((e, i) => (
                                     <option>{i + 1}</option>
                                 ))}
                             </select>
                             <div className="invalid-feedback">
-                                One or more fields are invalid
+                                {t("departmentFormValidationOneOrMoreFieldsAreInvalid")}
                             </div>
                         </div>
                     </div>
@@ -174,7 +174,7 @@ function MaternityForm() {
                                                 onBlur={() => listInputValidation(i, j, item.field_type, fieldIndex)}
                                             />
                                             <div className="invalid-feedback">
-                                                Requires a valid number
+                                                {t("departmentFormRequiresValidNumber")}
                                             </div>
                                         </div>
                                     </>
@@ -822,7 +822,7 @@ function MaternityForm() {
                                                 <>
                                                     <div id={"input" + i} className={"" + indentClass}>
                                                         <span className="align-middle me-2">{i}. {field.field_label}</span>
-                                                        <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>Add</button>
+                                                        <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>{t("departmentFormAdd")}</button>
                                                     </div>
                                                     <div id={"inputs" + i}>
                                                         {formValues.map((element, j) => (

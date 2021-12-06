@@ -179,6 +179,7 @@
   "departmentAddYear" : "Année",
 
   "departmentFormSteps": "Pas:",
+  "departmentFormSelectPatient": "Sélectionner un patient",
   "departmentFormSubmitAlertPressOKToSubmit": "Appuyez sur OK pour finaliser la soumission",
   "departmentFormSubmitAlertContainInvalidValues": "Certains champs contiennent des valeurs invalides",
   "departmentFormSubmit": "Soumettret",
@@ -193,13 +194,12 @@
   "departmentFormArrayInputValidationMustEnterValue" : "Doit entrer une valeur pour ce champ",
   "departmentFormArrayInputValidationPositiveNumberOnly" : "Nombres positifs uniquement pour ce champ",
   "departmentFormArrayInputValidationIntegersOnly" : "Entiers uniquement pour ce champ",
-
   "departmentFormInputValidationMustEnterValue" : "Doit entrer une valeur",
   "departmentFormInputValidationPositiveNumberOnly" : "Nombres positifs uniquement",
   "departmentFormInputValidationIntegersOnly" : "Entiers uniquement",
-
   "departmentFormTotalValidationDoesNotAddUpToTotal" : "Ne correspond pas au total",
   "departmentFormTotalValidationMustEnterName" : "Doit entrer un nom",
+  "departmentFormValidationOneOrMoreFieldsAreInvalid" : "Un ou plusieurs champs sont invalides",
 
   "departmentReportDisplayDepartmentNICU": "Département de l'NICU/pédiatrie",
   "departmentReportDisplayNoReportFound": "Aucun rapport trouvé",

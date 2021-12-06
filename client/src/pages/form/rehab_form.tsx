@@ -8,7 +8,6 @@ import rehabModel from './models/rehabModel.json';
 import rehabModelFr from './models/rehabModelFr.json'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css'
-import i18n from "i18next";
 import {useTranslation} from "react-i18next";
 
 
@@ -789,7 +788,7 @@ function RehabForm() {
                                                 <>
                                                     <div id={"input" + i} className={"" + indentClass}>
                                                         <span className="align-middle me-2">{i}. {field.field_label}</span>
-                                                        <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>Add</button>
+                                                        <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>{t("departmentFormAdd")}</button>
                                                     </div>
                                                     <div id={"inputs" + i}>
                                                         {formValues.map((element, j) => (
