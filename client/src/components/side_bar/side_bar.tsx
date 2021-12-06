@@ -53,22 +53,30 @@ const Sidebar = (props: SidebarProps) => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/messageBoard" className="nav-link link-light" exact activeClassName="active">
+                        <NavLink to="/message-board" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-chat-right-text-fill me-2"/>
                             <span className="text text-light">{t("sidebarMessageBoard")}</span>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/leaderBoard" className="nav-link link-light" exact activeClassName="active">
+                        <NavLink to="/leaderboard" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-bar-chart-fill me-2"/>
                             <span className="text text-light">{t("sidebarLeaderBoard")}</span>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/caseStudyMain" className="nav-link link-light" exact activeClassName="active">
+                        <NavLink to="/case-study" className="nav-link link-light" exact activeClassName="active">
                             <i className="bi bi-award-fill me-2"/>
                             <span className="text text-light">{t("sidebarCaseStudy")}</span>
                         </NavLink>
+                    </li>
+                    <li>
+                        {
+                                <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-wrench me-2"/>
+                                    <span className="text text-light">Bio Support</span>
+                                </NavLink>
+                        }
                     </li>
 
                     <li className="border-top my-2"/>
@@ -126,14 +134,6 @@ const Sidebar = (props: SidebarProps) => {
                                     <span className="text text-light">Com & Health</span>
                                 </NavLink>
                             ) : (<div></div>)
-                        }
-                    </li>
-                    <li>
-                        {
-                                <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
-                                    <i className="bi bi-wrench me-2"/>
-                                    <span className="text text-light">Bio Support</span>
-                                </NavLink>
                         }
                     </li>
 

@@ -43,7 +43,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       reset4({});
       reset5({});
       setSelectedFile(null);
-      props.history.push("/caseStudyMain");
+      props.history.push("/case-study");
     }).catch(error =>{
       console.error('Something went wrong!', error.message);
       setSubmissionStatus("failure");
@@ -63,7 +63,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <Header/>
 
         <div className="ml-3 mb-3 d-flex justify-content-start">
-          <Link to="/caseStudyMain"><button type="button" className="btn btn-outline-dark">{t("caseStudyFormBack")}</button></Link>
+          <Link to="/case-study"><button type="button" className="btn btn-outline-dark">{t("caseStudyFormBack")}</button></Link>
         </div>
 
 
