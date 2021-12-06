@@ -5,15 +5,17 @@ import { Link, useParams, useHistory } from "react-router-dom";
 import SideBar from 'components/side_bar/side_bar';
 import Header from "components/header/header";
 import ReportSummary from 'components/report_summary/report_summary';
-import {DepartmentName, getDepartmentName} from 'constants/interfaces';
+import {DepartmentName, getDepartmentName, Role} from 'constants/interfaces';
 import './department_style.css'
 import DatePicker, { DayRange } from "react-modern-calendar-datepicker";
+import { useAuthState } from "Context";
 
 interface DepartmentProps {
 }
 
 export const Department = (props : DepartmentProps) => {
     const {t, i18n} = useTranslation();
+    const authState = useAuthState();
     const {deptId} = useParams<{deptId:string}>();
     const [ deptName, setDeptName ] = React.useState<DepartmentName>();
     const history = useHistory();
@@ -52,6 +54,7 @@ export const Department = (props : DepartmentProps) => {
                 <section>
                     <div className="row">
 
+                        {authState.userDetails.role === Role.HeadOfDepartment && authState.userDetails.department !== deptName ? null :
                         <div className='col-auto'>
                             <Link to={`/department/${deptId}/add`}>
                                 <button className=" btn btn-dark btn-sm rounded-bill">
@@ -59,7 +62,7 @@ export const Department = (props : DepartmentProps) => {
                                 </button>
                             </Link>
                         </div>
-
+                        }
                         <div className='col-auto'>
                             <Link to={`/biomechanic`}>
                                 <button className="btn btn-dark btn-sm rounded-bill">
