@@ -1,0 +1,195 @@
+[
+  {
+    "section_label" : "MSPP requis",
+    "section_fields" : [
+      {
+        "subsection_label" : "Livraisons",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 5,
+        "total_rows" : 6,
+        "col_labels" : [["Institutionnel", "Communauté"], ["Normal", "césarienne", "Instrumentalisé", "matrones formées", "Autres"]],
+        "col_spans" : [[3,2], [1, 1, 1, 1, 1]],
+        "row_labels" : [["Âge des mères"], ["<15 ans", "15-19 ans", "20-24 ans", "25-29 ans", "30+ ans", "Inconnu"]],
+        "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
+        "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0]]
+      },
+
+      {
+        "subsection_label" : "Naissances",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 5,
+        "total_rows" : 6,
+        "col_labels" : [["Institutionnel", "Communauté"], ["Normal", "césarienne", "Instrumentalisé", "matrones formées", "Autres"]],
+        "col_spans" : [[3,2], [1, 1, 1, 1, 1]],
+        "row_labels" : [["Poids"], ["Poids <1(DOT)5kg", "1(DOT)5kg ≤ Poids <2(DOT)5kg", "2(DOT)5kg et plus", "Non pesé", "Allaité immédiatement", "Thérapie peau à peau"]],
+        "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
+        "invalid_inputs" : [[0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0 ,0]]
+      },
+
+      {
+        "subsection_label" : "Contrôle des naissances",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 4,
+        "total_rows" : 11,
+        "col_labels" : [["Acceptant", "Nombre total d'utilisateurs"], ["<25 ans", "25+ ans", "<25 ans", "25+ ans"]],
+        "col_spans" : [[2,2], [1, 1, 1, 1]],
+        "row_labels" : [["Méthodes/Sexe"], ["Femelle", "Mâle"], ["OCP", "Pièce", "Injection de dépôt", "Implant", "Dispositifs intra-utérins (IUD)", "Anneau vaginal",
+          "L'allaitement comme moyen de contraception", "Préservatif féminin", "Stérilisation", "Préservatif masculin", "Vasectomie"]],
+        "row_spans" : [[11], [8,3], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
+        "invalid_inputs" : [[0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0],
+          [0 ,0 ,0 ,0]]
+      }
+    ]
+  },
+  {
+    "section_label" : "Contraceptifs",
+    "section_fields": [
+      {
+        "subsection_label" : "Contraceptifs distribués",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 2,
+        "total_rows" : 7,
+        "col_labels" : [["Contraceptifs distribués"], ["Montant", "Nombre de jours de rupture de stock par mois"]],
+        "col_spans" : [[2], [1, 1]],
+        "row_labels" : [["OCP", "Pièce", "Injection de dépôt", "Implant", "Dispositifs intra-utérins (DIU)", "Anneau vaginal", "Préservatif féminin"],
+          ["Cycle", "Cycle", "Fiole", "Emballer", "Pièce", "Pièce", "Pièce"]],
+        "row_spans" : [[1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1]],
+        "invalid_inputs" : [[0 ,0],
+          [0 ,0],
+          [0 ,0],
+          [0 ,0],
+          [0 ,0],
+          [0 ,0],
+          [0 ,0]]
+      },
+
+      {
+        "subsection_label" : "Opérations CCV",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 1,
+        "total_rows" : 2,
+        "col_labels" : [["Quantité"]],
+        "col_spans" : [[1]],
+        "row_labels" : [["Opérations CCV"], ["Stérilisation", "Vasectomie"]],
+        "row_spans" : [[2], [1, 1]],
+        "invalid_inputs" : [[0],
+          [0]]
+      },
+
+      {
+        "subsection_label" : "Vaccins et consommables",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 3,
+        "total_rows" : 10,
+        "col_labels" : [["Quantité disponible dans le mois", "Solde à la fin du mois", "Nombre de jours de rupture de stock"]],
+        "col_spans" : [[1, 1, 1]],
+        "row_labels" : [["Type de vaccin"],["BCG", "VPO", "Penta", "Rota", "RR", "dT",
+          "VPI", "Flu", "DTP", "COVID-19"]],
+        "row_spans" : [[10], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
+        "invalid_inputs" : [[0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0]]
+      },
+
+      {
+        "subsection_label" : "Consommables",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 3,
+        "total_rows" : 6,
+        "col_labels" : [["Quantité disponible dans le mois", "Solde à la fin du mois", "Nombre de jours de rupture de stock"]],
+        "col_spans" : [[1, 1, 1]],
+        "row_labels" : [["Consommable"],["SAB 0.05ml", "SAB 0.5ml", "Sdil_2ml", "Sdil_5ml", "Boîtes de sécurité", "Coton"]],
+        "row_spans" : [[6], [1, 1, 1, 1, 1, 1]],
+        "invalid_inputs" : [[0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0],
+          [0 ,0 ,0]]
+      }
+    ]
+  },
+  {
+    "section_label" : "Vaccination",
+    "section_fields": [
+      {
+        "subsection_label" : "Vaccination",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 15,
+        "total_rows" : 18,
+        "col_labels" : [["Filles", "Garçons", ""], ["0-11 mois", "12-23 mois", "0-11 mois", "12-23 mois", "", "Doses de vaccin"], ["Inst 1", "Comm 1", "Total 1", "Inst 2", "Comm 2", "Total 2", "Inst 3", "Comm 3", "Total 3", "Inst 4", "Comm 4", "Total 4", "Doses totales", "Utilisé", "Administré"]],
+        "col_spans" : [[6, 6, 3], [3, 3, 3, 3, 1, 2], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
+        "row_labels" : [["BCG", "VPO", "VPO 1", "VPO 2", "Rappel VPO", "VPI", "Penta 1", "Penta 2", "Penta 3", "Rota 1", "Rota 2", "RR 1", "RR 2", "Pneumo 1", "Pneumo 2", "Pneumo 3", "DTp Rappel", "ECV"]],
+        "row_spans" : [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
+        "invalid_inputs" : [[0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+          [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1],
+          [0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1]
+        ]
+
+
+      },
+      {
+        "subsection_label" : "Vaccination des femmes enceintes",
+        "field_type" : "table",
+        "field_level" : 0,
+        "total_cols" : 5,
+        "total_rows" : 2,
+        "col_labels" : [["Femmes enceintes", "Doses totales"], ["Inst", "Comm", "Le total", "Utilisé", "Administré"]],
+        "col_spans" : [[3, 2], [1, 1, 1, 1, 1]],
+        "row_labels" : [["dT1", "dT2+"]],
+        "row_spans" : [[1, 1]],
+        "invalid_inputs" : [[0 ,0 ,1, 0, 1],
+          [0 ,0 ,1, 1, 1]]
+      }
+    ]
+  }
+]
