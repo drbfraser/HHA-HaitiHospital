@@ -4,6 +4,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import NICUForm from 'pages/form/nicu_form';
 import { DepartmentName, getDepartmentName } from 'constants/interfaces';
 import MaternityForm from 'pages/form/maternity_form';
+import RehabForm from 'pages/form/rehab_form';
+import CommunityForm from 'pages/form/community_form';
 
 const AddReport = () => {
     const history = useHistory();
@@ -14,13 +16,13 @@ try {
 
     switch (deptName) {
         case DepartmentName.Rehab:
-            return <p>No form</p>;
+            return <RehabForm></RehabForm>;
         case DepartmentName.NicuPaeds:
             return <NICUForm></NICUForm>;
         case DepartmentName.Maternity:
             return <MaternityForm></MaternityForm>;
         case DepartmentName.CommunityHealth:
-            return <>No form</>;
+            return <CommunityForm></CommunityForm>;
     }
 }
 catch (e) {
