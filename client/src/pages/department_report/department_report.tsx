@@ -39,43 +39,57 @@ const DepartmentReport = (props: DepartmentReportProps) => {
   }, [csvData])
 
   useEffect(() => {
+    let BreakException = {};
     let data: Object[] = [];
     if (report.formData !== undefined && report.formData !== null) {
-      Object.keys(report.formData).forEach((key) => {
-        let reportType = typeof (report.formData[key]);
-        if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
-          let item: Object = {};
-          item['Heading'] = key;
-          item['Detail'] = report.formData[key];
-          data.push(item);
-        } else {
-          let objReport: ReportProps = report.formData[key];
-          if (objReport !== undefined && objReport !== null) {
-            Object.keys(objReport).forEach((key1) => {
-              let innerReportType = typeof (objReport[key1]);
-              if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
-                let tempKey = key + "_" + key1;
-                let item: Object = {};
-                item['Heading'] = tempKey;
-                item['Detail'] = objReport[key1];
-                data.push(item);
-              } else {
-                let innerReport = objReport[key1];
-                if (innerReport !== undefined && innerReport !== null) {
-                  Object.keys(innerReport).forEach((key2) => {
-                    let tempKey = key + "_" + key1 + "_" + key2;
-                    let item: Object = {};
-                    item['Heading'] = tempKey;
-                    item['Detail'] = innerReport[key2];
-                    data.push(item);
-                  })
-                }
-              }
-            })
+      try {
+        Object.keys(report.formData).forEach((key) => {
+          if (key === 'departmentId') {
+            console.log(key);
+            let item: Object = {};
+            item['Heading'] = key;
+            item['Detail'] = report.formData[key];
+            data.push(item);
+            throw BreakException;
           }
-        }
-      })
+          let reportType = typeof (report.formData[key]);
+          if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
+            let item: Object = {};
+            item['Heading'] = key;
+            item['Detail'] = report.formData[key];
+            data.push(item);
+          } else {
+            let objReport: ReportProps = report.formData[key];
+            if (objReport !== undefined && objReport !== null) {
+              Object.keys(objReport).forEach((key1) => {
+                let innerReportType = typeof (objReport[key1]);
+                if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
+                  let tempKey = key + "_" + key1;
+                  let item: Object = {};
+                  item['Heading'] = tempKey;
+                  item['Detail'] = objReport[key1];
+                  data.push(item);
+                } else {
+                  let innerReport = objReport[key1];
+                  if (innerReport !== undefined && innerReport !== null) {
+                    Object.keys(innerReport).forEach((key2) => {
+                      let tempKey = key + "_" + key1 + "_" + key2;
+                      let item: Object = {};
+                      item['Heading'] = tempKey;
+                      item['Detail'] = innerReport[key2];
+                      data.push(item);
+                    })
+                  }
+                }
+              })
+            }
+          }
+        })
+      } catch (e) {
+        if (e !== BreakException) throw e;
+      }
     }
+    console.log(data);
     setCsvData(data);
   }, [report])
 
