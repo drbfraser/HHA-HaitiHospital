@@ -99,6 +99,8 @@ function MaternityForm() {
 
             data.departmentId = 3;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            data.diedBefore48hr.total = patientStateBefore;
+            data.diedAfter48hr.total = patientStateAfter;
             data["Support for wife and mother"] = table;
             data.descriptions = addFormDescriptions(fields);
             console.log(data);
@@ -967,7 +969,7 @@ function MaternityForm() {
                                                         <span className="align-middle">{i}. {field.field_label}</span>
                                                     </div>
                                                     <div id={"inputs" + i} className="col-sm-2">
-                                                        <input type="text" className="form-control" placeholder=""
+                                                        <input type="text" className="form-control"
                                                             {...register(field.field_id)}
                                                             onBlur={() => inputValidation(i)}
                                                             onChange={(event) => handleListInput(field, event, i)}
