@@ -14,7 +14,7 @@ interface DepartmentProps {
 }
 
 export const Department = (props : DepartmentProps) => {
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const authState = useAuthState();
     const {deptId} = useParams<{deptId:string}>();
     const [ deptName, setDeptName ] = React.useState<DepartmentName>();
@@ -47,7 +47,7 @@ export const Department = (props : DepartmentProps) => {
 
                 {/* Department Title */ }
                 <section>
-                    <h1 className='text-start'>{`Department of ${deptName}`}</h1>
+                    <h1 className='text-start'>{t("departmentPageDepartmentOf")} {deptName}</h1>
                 </section>
 
                 {/* Nav buttons */}
@@ -58,7 +58,7 @@ export const Department = (props : DepartmentProps) => {
                         <div className='col-auto'>
                             <Link to={`/department/${deptId}/add`}>
                                 <button className=" btn btn-dark btn-sm rounded-bill">
-                                    <div className="lead">{t("departmentPageSubmitDate")}</div>
+                                    <div className="lead">{t("departmentPageSubmitData")}</div>
                                 </button>
                             </Link>
                         </div>

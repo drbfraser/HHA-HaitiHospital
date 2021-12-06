@@ -22,7 +22,6 @@ function AddMessage() {
     try {
         let response = await Axios.post(api, data);
         history.push('/message-board')
-        alert('success');
         alert(i18n.t("addMessageAlertSuccess"));
 
     }

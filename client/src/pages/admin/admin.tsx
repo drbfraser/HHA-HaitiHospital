@@ -7,6 +7,7 @@ import axios from 'axios'
 import './admin.css'
 import DbErrorHandler from 'actions/http_error_handler';
 import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 interface AdminProps extends ElementStyleProps {
 };
@@ -28,12 +29,12 @@ const Admin = (props : AdminProps) => {
 
   const deleteUser = async (id) => {
     try {
-      if (!window.confirm('Are you sure you want to delete this user?')) {
+      if (!window.confirm(i18n.t("adminAreYouSureToDeleteTheUser"))) {
         throw new Error("Deletion cancelled")
       }
       const res = await axios.delete(usersUrl + '/' + id);
       getUsers();
-      alert("User deleted");
+      alert(i18n.t("adminAlertUserDeleted"));
     } catch (err) {
       DbErrorHandler(err, history);
     }
@@ -77,7 +78,7 @@ const Admin = (props : AdminProps) => {
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
                       <div className="text-center">
-                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`/admin/edit-user/${item.id}`)}>{t("adminEdit")}</a>
+                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`/admin/edit-user/${item.id}`)}>{t("adminEdit")}    </a>
                         <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>{t("adminDelete")}</a>
                       </div>
                     </td>

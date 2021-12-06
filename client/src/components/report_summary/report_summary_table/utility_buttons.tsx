@@ -119,6 +119,7 @@ async function getDepartmentTemplateFromDb(departmentid: string) {
 }
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
+    const {t, i18n} = useTranslation();
 
     function deleteReports(tickTracker: {[rid: string]: boolean}) {
         if (window.confirm("Delete report(s) ?"))
@@ -130,11 +131,11 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
                 }
                 catch (err) {
                     console.log("Something wrong when delete report");
-                    window.alert("Delete report(s) failed");
+                    window.alert(i18n.t("reportAlertDeleteReportsFailed"));
                 }
             })
             props.notifyTable();
-            window.alert("Report(s) deleted");
+            window.alert(i18n.t("reportAlertReportsDeleted"));
         }
     }
 
@@ -170,15 +171,13 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
         }).catch(err => "Aggregation Error: " + err);
     }
 
-    const {t, i18n} = useTranslation();
-
     return (
     <>
       {(isShown(props.tickTracker))?
         <div className="row justify-content-end">
             <div className="btn-group col-auto">
                 <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                    Action
+                    {i18n.t("departmentPageAction")}
                 </button>
 
                 <ul className="dropdown-menu">
@@ -187,7 +186,7 @@ const UtilityButtons = (props: UtilityButtonsProps) => {
                     onClick= {()=> {
                         deleteReports(props.tickTracker);
                     }}> 
-                            Delete
+                            {i18n.t("departmentPageDelete")}
                         </span>
                     </li>
                     <li>

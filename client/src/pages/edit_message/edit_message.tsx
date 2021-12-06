@@ -12,6 +12,7 @@ import MessageForm from "components/message_form/message_form";
 import './edit_message_styles.css'
 import DbErrorHandler from "actions/http_error_handler";
 import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 
 // sample url /message-board/edit/{id}
@@ -60,7 +61,7 @@ const EditMessage = () => {
         try {
             let response = await Axios.put(api, data);
             history.push('/message-board')
-            alert('success');
+            alert(i18n.t("addMessageAlertSuccess"));
         }
         catch (e) {
             DbErrorHandler(e, history);
@@ -85,7 +86,7 @@ const EditMessage = () => {
                     <button 
                     className="btn btn-md btn-outline-secondary"
                     onClick={history.goBack}
-                    > Back </button>
+                    > {t("addMessageBack")} </button>
                 </div>
             </main>
 

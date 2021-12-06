@@ -106,7 +106,7 @@ export const AddUserForm = (props: AdminProps) => {
           </form>
           
           <div className={`alert alert-danger ${submissionStatus === "failure" ? "d-block" : "d-none"}`} role="alert" ref={failureMessageRef}>
-            An error occurred during the submission! {errorMessage}
+            {t("adminAddErrorOccurredDuringTheSubmission")} {errorMessage}
           </div>
         </div>
       </main>

@@ -77,6 +77,7 @@
   "addMessageAlertSuccess": "Succès",
   "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
   "addMessageAlertFailed": "Échec de la mise à jour du message",
+  "addMessageAlertMustSelectDepartment": "Doit sélectionner un département",
 
   "editMessage": "Modifier le message",
 
@@ -152,13 +153,15 @@
   "caseStudyViewDate": "Date: ",
 
   "departmentPageNICU/PAED": "Département de NICU/PAED",
-  "departmentPageAddReport": "Ajouter un rapport",
+  "departmentPageDepartmentOf": "Département de ",
+  "departmentPageSubmitData": "Soumettre des données",
   "departmentPageBiomechanic": "Biomécanique",
   "departmentPageReportID": "ID de rapport",
   "departmentPageLastUpdatedOn": "Dernière mise à jour le",
   "departmentPageLastUpdatedUserID": "Dernière mise à jour par l'ID utilisateur",
   "departmentPageEdit": "Éditer",
   "departmentPageDelete": "Effacer",
+  "departmentPageAction": "action",
   "departmentPageAccumulate": "Accumuler",
 
   "departmentAddBack" : "Arrière",
@@ -210,6 +213,9 @@
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
 
+  "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",
+  "reportAlertReportsDeleted": "Rapport(s) supprimé(s)",
+
   "bioSupportReportBrokenKit" : "Signaler un kit cassé",
 
   "brokenKitReportBack": "Arrière",
@@ -247,5 +253,9 @@
   "adminAddUserDepartment": "département",
   "adminAddUserSelectDepartment": "Sélectionnez le service de l'utilisateur",
   "adminAddUserSubmit": "Soumettre",
-  "adminEditUserLeaveBlank": "Leave blank to keep it unchanged"
+  "adminAddErrorOccurredDuringTheSubmission": "Une erreur s'est produite lors de la soumission !",
+
+  "adminEditUserLeaveBlank": "Laissez vide pour le garder inchangé",
+  "adminAlertUserDeleted": "Utilisateur supprimé",
+  "adminAreYouSureToDeleteTheUser": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
 }
