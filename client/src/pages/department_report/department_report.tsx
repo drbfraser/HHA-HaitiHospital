@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
@@ -8,9 +8,11 @@ import ReportDisplay from 'components/report_display/report_display';
 
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import './department_report.css'
 import {useTranslation} from "react-i18next";
 import DbErrorHandler from 'actions/http_error_handler';
+import { CSVLink } from "react-csv";
+import { PDFExport } from '@progress/kendo-react-pdf';
+import './department_report.css'
 
 
 interface DepartmentReportProps {
@@ -23,29 +25,60 @@ interface UrlParams {
 };
 
 const DepartmentReport = (props : DepartmentReportProps) => {
+
+  const {t} = useTranslation();
   const { deptId, id } = useParams<UrlParams>();
   const [ report, setReport] = useState<ReportProps>({});
   const [ csvData, setCsvData ] = useState<Object[]> ([]);
+  const apiSource = Axios.CancelToken.source();
+  const pdfExportComponent = useRef(null);
+  const handleExportWithComponent  = () => {
+    pdfExportComponent.current.save();
+  }
   const history = useHistory();
 
-  const apiSource = Axios.CancelToken.source();
   useEffect(() => {
-    console.log(csvData);
-  }, [csvData])
-
-  useEffect(() => {
-    let data :Object[] = [];
+    let data: Object[] = [];
     if (report.formData !== undefined && report.formData !== null) {
-        Object.keys(report.formData).forEach((key) => {
-            let tempObj: Object = {};
-            tempObj[key] = report.formData[key];
-            data.push(tempObj)
-        })
+      Object.keys(report.formData).forEach((key) => {
+        let reportType = typeof (report.formData[key]);
+        if (reportType === 'number' || reportType === 'string' || reportType === 'boolean') {
+          let item: Object = {};
+          item['Heading'] = key;
+          item['Detail'] = report.formData[key];
+          data.push(item);
+        } else {
+          let objReport: ReportProps = report.formData[key];
+          if (objReport !== undefined && objReport !== null) {
+            Object.keys(objReport).forEach((key1) => {
+              let innerReportType = typeof (objReport[key1]);
+              if (innerReportType === 'number' || innerReportType === 'string' || innerReportType === 'boolean') {
+                let tempKey = key + "_" + key1;
+                let item: Object = {};
+                item['Heading'] = tempKey;
+                item['Detail'] = objReport[key1];
+                data.push(item);
+              } else {
+                let innerReport = objReport[key1];
+                if (innerReport !== undefined && innerReport !== null) {
+                  Object.keys(innerReport).forEach((key2) => {
+                    let tempKey = key + "_" + key1 + "_" + key2;
+                    let item: Object = {};
+                    item['Heading'] = tempKey;
+                    item['Detail'] = innerReport[key2];
+                    data.push(item);
+                  })
+                }
+              }
+            })
+          }
+        }
+      })
     }
-
     setCsvData(data);
-
   }, [report])
+
+
   // Get Report Id when Loaded
   useEffect(() => {
     let isMounted = true;
@@ -79,14 +112,12 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       return res.data;
     } catch (err) {
       if (Axios.isCancel(err)) {
-        console.log(`Info: Cancel subsciption to ${getReportApi} API`, err);
+        console.log(`Info: Cancel subscription to ${getReportApi} API`, err);
       }
       else { DbErrorHandler(err, history) }
     }
     return {};
   }
-
-  const {t, i18n} = useTranslation();
 
   return (
     <div className={"department-report"}>
@@ -95,25 +126,11 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       <main className="container-fluid">
         <Header/>
         <div className='mt-2'>
+
           {/* Dept Title */}
           <section className='mt-3'>
             <h1 className="lead text-center">{`Department of ${getDepartmentName(parseInt(deptId))}`}</h1>
 
-          </section>
-
-
-          {/* Report Details */}
-          <section className='mt-3'>
-            <div className="container w-50">
-              {
-                (Object.keys(report).length===0 ) ?
-                  <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
-                  <ReportDisplay
-                    report = {report.formData as ReportProps || {}}
-                    edit = {props.edit}
-                  />
-              }
-            </div>
           </section>
 
           {/* Utility buttons */}
@@ -133,10 +150,49 @@ const DepartmentReport = (props : DepartmentReportProps) => {
             :
               <section className="mt-3">
                 <div className="container w-50 text-center">
-                    <button onClick={()=>history.goBack()}>{t("departmentReportDisplayBack")}</button>
+                  <ul className='row justify-content-md-center'>
+                    <li className='col-sm-auto'>
+                      <Link to={'/Department1NICU'}>
+                        <button className="">{t("departmentReportDisplayBack")}</button>
+                      </Link>
+                    </li>
+                    <li className='col-sm-auto'>
+                      <CSVLink
+                          data={csvData} filename={id} >
+                        <button
+                            className=""
+                            color="primary">
+                          Download CSV
+                        </button>
+                      </CSVLink>
+                    </li>
+                    <li className='col-sm-auto'>
+                      <div  className="button-area">
+                        {/*<button onClick={toggleShow}>show</button>*/}
+                        <button onClick={handleExportWithComponent}>Generate PDF</button>
+                      </div>
+                    </li>
+                  </ul>
+
                 </div>
               </section>
           }
+
+          {/* Report Details */}
+          <section className='mt-3' id="report">
+            <PDFExport  ref={pdfExportComponent}  paperSize="A4" fileName={id}>
+              <div className="container w-50">
+                {
+                  (Object.keys(report).length===0 ) ?
+                      <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
+                      <ReportDisplay
+                          report = {report.formData as ReportProps}
+                          edit = {props.edit}
+                      />
+                }
+              </div>
+            </PDFExport>
+          </section>
 
         </div>
       </main>

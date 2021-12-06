@@ -13,7 +13,7 @@ import './edit_message_styles.css'
 import DbErrorHandler from "actions/http_error_handler";
 
 
-// sample url /messageBoard/edit/{id}
+// sample url /message-board/edit/{id}
 const EditMessage = () => {
     const { id } = useParams<{id? : string}>();
     const [msg, setMsg] = useState<Message>(emptyMessage)
@@ -57,7 +57,7 @@ const EditMessage = () => {
         const api = `/api/messageboard/${id}`;
         try {
             let response = await Axios.put(api, data);
-            history.push('/messageBoard')
+            history.push('/message-board')
             alert('success');
         }
         catch (e) {

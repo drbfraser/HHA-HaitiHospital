@@ -67,18 +67,6 @@ function MessageForm(props: MessageFormProps) {
                 onChange={(e) => setDepartment(e.target.value)}
                 >
                     <option value=""> Select </option>
-                    {/* <option value={DepartmentName.NicuPaeds}>
-                        {DepartmentName.NicuPaeds}
-                    </option>
-                    <option value={DepartmentName.Maternity}>
-                        {DepartmentName.Maternity}
-                    </option>
-                    <option value={DepartmentName.Rehab}>
-                        {DepartmentName.Rehab}
-                    </option>
-                    <option value={DepartmentName.CommunityHealth}>
-                        {DepartmentName.CommunityHealth}
-                    </option> */}
                     {Object.values(DepartmentName).map((deptName, index) => 
                         { 
                         return (
@@ -88,8 +76,7 @@ function MessageForm(props: MessageFormProps) {
                         </option>
                         );
                         }
-                      )
-                    }
+                    )}
 
                 </select>
 

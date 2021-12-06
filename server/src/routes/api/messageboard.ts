@@ -3,7 +3,7 @@ const { number } = require('joi');
 import MessageBody from '../../models/MessageBody';
 import { Request, Response } from "express";
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { checkIsInRole } from '../../utils/roleUtils';
+import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from "../../models/User"
 
 router.get('/', async (req: any, res: any) => {

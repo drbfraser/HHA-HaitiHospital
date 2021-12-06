@@ -1,11 +1,8 @@
 import { seedDepartments } from '../../utils/seed';
 const router = require('express').Router();
-const { number } = require('joi');
-import Departments from '../../models/Departments';
 import FormEntry from '../../models/FormEntry';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { date } from 'joi';
-
+import { checkUserIsDepartmentAuthed } from '../../utils/authUtils';
 
 //---RESEED DATABASE---//
 //GET - reseeds the department database with the base models(WARNING: WILL REMOVE CUSTOM DEPARTMENTS)
@@ -18,23 +15,27 @@ router.get('/seedDepartments', async (req, res) => {
 
 //---ADD TO DATABASE---//
 //GET - gets the form key value pairs and sends a JSON of that data(template of the department)
-router.route('/add/:Departmentid').get((req: any, res: any) => {
-    let departmentArg = 0;
-    try{
-        departmentArg = +req.params.Departmentid;
-    }
-    catch(error){
-        error => res.status(400).json('id is not a number: '+ error);
-    }
+// router.route('/add/:Departmentid').get((req: any, res: any) => {
+//     let departmentArg = 0;
+//     try{
+//         departmentArg = +req.params.Departmentid;
+//     }
+//     catch(error){
+//         error => res.status(400).json('id is not a number: '+ error);
+//     }
     
-    //TODO: VALIDATE THAT THE :ID DOES NOT RETURN AN EMPTY ARRAY
-    Departments.find({departmentId : departmentArg}).populate('createdByUserId').populate('lastUpdatedByUserId')
-    .then(Departments => res.json(Departments))
-    .catch(err => res.status(400).json('Could not find the Department: ' + err));
-});
+//     //TODO: VALIDATE THAT THE :ID DOES NOT RETURN AN EMPTY ARRAY
+//     Departments.find({departmentId : departmentArg}).populate('createdByUserId').populate('lastUpdatedByUserId')
+//     .then(Departments => res.json(Departments))
+//     .catch(err => res.status(400).json('Could not find the Department: ' + err));
+// });
 
 //POST - sends user submitted form to the server as a JSON
-router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
+router.route('/add').post(requireJwtAuth, async (req: any, res: any) => {
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, req.body.departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to make a post in current department.');
+    }
 
     let dateTime: Date = new Date();
     const createdByUserId = req.user.id as string;
@@ -43,10 +44,12 @@ router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
     const lastUpdatedOn = dateTime;
     const departmentId = req.body.departmentId as string;
     const formData = req.body;
+    const reportingMonth: Date = dateTime; //TODO: Modify Month to be able to be easily filtered by HHA Staff
 
     const formEntry = new FormEntry({
         "departmentId" : departmentId,
         "createdByUserId": createdByUserId,
+        "reportingMonth": reportingMonth,
         "createdOn" : createdOn,
         "lastUpdatedByUserId": lastUpdatedByUserId,
         "lastUpdatedOn" : lastUpdatedOn,
@@ -61,39 +64,46 @@ router.route('/add').post(requireJwtAuth, (req: any, res: any) => {
 
 //---VIEW DATABASE---//
 //view all Reports in the database
-router.route('/view').get((req: any, res: any) => {
+// router.route('/view').get((req: any, res: any) => {
     
-    FormEntry.find({}).populate('createdByUserId').populate('lastUpdatedByUserId').sort({createdOn: 'desc'})
-        .then(Reports => res.json(Reports))
-        .catch(err => res.status(400).json('Could not find any results: ' + err));
-});
+//     FormEntry.find({}).populate('createdByUserId').populate('lastUpdatedByUserId').sort({createdOn: 'desc'})
+//         .then(Reports => res.json(Reports))
+//         .catch(err => res.status(400).json('Could not find any results: ' + err));
+// });
 
 //view all forms from a specific department
-router.route('/viewdepartment/:Departmentid').get((req: any, res: any) => {
+// router.route('/viewdepartment/:Departmentid').get((req: any, res: any) => {
 
-    FormEntry.find({departmentId : req.params.Departmentid}).populate('createdByUserId').populate('lastUpdatedByUserId')
-        .then(Reports => res.json(Reports))
-        .catch(err => res.status(400).json('Could not find any results: ' + err));
-});
+//     FormEntry.find({departmentId : req.params.Departmentid}).populate('createdByUserId').populate('lastUpdatedByUserId')
+//         .then(Reports => res.json(Reports))
+//         .catch(err => res.status(400).json('Could not find any results: ' + err));
+// });
 
 //view specific Report by id
-router.route('/viewreport/:Reportid').get((req: any, res: any) => {
+// router.route('/viewreport/:Reportid').get((req: any, res: any) => {
 
-    FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
-        .then(Report => res.json(Report))
-        .catch(err => res.status(400).json('Could not find any results: ' + err));
-});
+//     FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
+//         .then(Report => res.json(Report))
+//         .catch(err => res.status(400).json('Could not find any results: ' + err));
+// });
 
 //---EDIT REPORTS---//
 //get specific report to display results before edit 
-router.route('/edit/:Reportid').get((req: any, res: any) => {
-    FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
-        .then(Report => res.json(Report))
-        .catch(err => res.status(400).json('Could not find any results: ' + err));
-});
+// router.route('/edit/:Reportid').get((req: any, res: any) => {
+//     FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
+//         .then(Report => res.json(Report))
+//         .catch(err => res.status(400).json('Could not find any results: ' + err));
+// });
 
 //make the changes to report of id reportID
-router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
+router.route('/edit/:Reportid').put(requireJwtAuth, async (req: any, res: any) => {
+    const form = await FormEntry.findById(req.params.Reportid);
+    const departmentId = form.departmentId;
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to delete the current department.');
+    }
+
     let updatedDateTime: Date = new Date();
     const lastUpdatedByUserId = req.user.id;
     const lastUpdatedOn = updatedDateTime;
@@ -112,17 +122,28 @@ router.route('/edit/:Reportid').put(requireJwtAuth,(req: any, res: any) => {
 
 //---DELETE REPORTS---//
 //delete a single report with Reportid
-router.route('/delete/:Reportid').delete(requireJwtAuth, (req: any, res: any) => {
+router.route('/delete/:Reportid').delete(requireJwtAuth, async (req: any, res: any) => {
+    const form = await FormEntry.findById(req.params.Reportid);
+    const departmentId = form.departmentId;
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+    if (!isValidated) {
+        return res.status(401).json('User is unauthorized in to delete the current department.');
+    }
+
     FormEntry.deleteOne({_id: req.params.Reportid})
         .then(() => res.json('Succesfully deleted report'))
         .catch(err => res.status(400).json('Could not delete: ' + err));
 });
 
-// retrieve reports with deparmentId, dateRange, reportId params
-// ?departmentId&from=YYYY-MM-DD&to=YYYY-MM-DD&reportId=
-router.route('/').get( async (req, res) => {
+// retrieve reports with deparmentId param and/or dateRange param
+// ?departmentId?from=YYYY-MM-DD?to=YYYY-MM-DD
+router.route('/').get(requireJwtAuth, async (req, res) => {
     try {
         const departmentId = req.query.departmentId;
+        const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+        if (!isValidated) {
+            return res.status(401).json('User is unauthorized in to view the current department.');
+        }
         const strFrom = req.query.from;
         const strTo = req.query.to;
         const reportId = req.query.reportId;

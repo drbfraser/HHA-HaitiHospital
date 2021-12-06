@@ -47,7 +47,7 @@ const Admin = (props : AdminProps) => {
       <main className='container-fluid main-region'>
         <Header/>
         <div className="d-flex justify-content-start">
-          <Link to="/admin-add-user"><button type="button" className="btn btn-outline-dark">Add User</button></Link>
+          <Link to="/admin/add-user"><button type="button" className="btn btn-outline-dark">Add User</button></Link>
         </div>
         
         <div className="table-responsive">
@@ -75,7 +75,7 @@ const Admin = (props : AdminProps) => {
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
                       <div className="text-center">
-                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`admin-edit-user/${item.id}`)}>Edit </a>
+                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`/admin/edit-user/${item.id}`)}>Edit </a>
                         <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>Delete</a>
                       </div>
                     </td>

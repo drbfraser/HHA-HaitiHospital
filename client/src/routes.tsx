@@ -19,6 +19,8 @@ import EditMessage from 'pages/edit_message/edit_message';
 
 import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
 import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
+import { BrokenKitView } from 'pages/broken_kit_view/broken_kit_report_view';
+
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
 import AddReport from 'pages/add_report/add_report';
@@ -41,22 +43,22 @@ const routes = [
         departmentsAllowed: [],
     },
     {
-        path: '/admin',
-        component: Admin,
-        loginRequired: true,
-        rolesAllowed: [Role.Admin],
-        departmentsAllowed: [],
-    },
-    {
-        path: '/admin-add-user',
+        path: '/admin/add-user',
         component: AddUserForm,
         loginRequired: true,
         rolesAllowed: [Role.Admin],
         departmentsAllowed: [],
     },
-    {
-        path: '/admin-edit-user/:id',
+        {
+        path: '/admin/edit-user/:id',
         component: EditUserForm,
+        loginRequired: true,
+        rolesAllowed: [Role.Admin],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/admin',
+        component: Admin,
         loginRequired: true,
         rolesAllowed: [Role.Admin],
         departmentsAllowed: [],
@@ -104,6 +106,20 @@ const routes = [
         departmentsAllowed: [],
     },
     {
+        path: '/biomechanic/report_broken_kit',
+        component: BrokenKitReport,
+        isPrivate: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/biomechanic/view/:id',
+        component: BrokenKitView,
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
         path: '/biomechanic',
         component: BiomechanicalPage,
         isPrivate: true,
@@ -111,58 +127,52 @@ const routes = [
         departmentsAllowed: [],
     },
     {
-        path: '/brokenkit',
-        component: BrokenKitReport,
-        isPrivate: true,
-        rolesAllowed: [],
-        departmentsAllowed: [],
-    },    
-    {
-        path: '/caseStudyMain',
-        component: CaseStudyMain,
-        loginRequired: true,
-        rolesAllowed: [],
-        departmentsAllowed: [],
-    },
-    {
-        path: '/caseStudyForm',
-        component: CaseStudyForm,
-        loginRequired: true,
-        rolesAllowed: [],
-        departmentsAllowed: [],
-    },
-    {
-        path: '/caseStudyView/:id',
+        path: '/case-study/view/:id',
         component: CaseStudyView,
         loginRequired: true,
         rolesAllowed: [],
         departmentsAllowed: [],
     },
     {
-        path: '/leaderBoard',
+        path: '/case-study/form',
+        component: CaseStudyForm,
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/case-study',
+        component: CaseStudyMain,
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/leaderboard',
         component: LeaderBoardMain,
         loginRequired: true,
         rolesAllowed: [],
         departmentsAllowed: [],
     },
     {
-        path: '/messageBoard/edit/:id',
+        path: '/message-board/edit/:id',
         component: EditMessage,
         isPrivate: true,
-        rolesRequired: [],
-    },
-    {
-        path: '/messageBoard',
-        component: MessageBoardMain,
-        loginRequired: true,
-        rolesAllowed: [],
+        rolesAllowed: [Role.Admin, Role.MedicalDirector],
         departmentsAllowed: [],
     },
     {
-        path: '/addMessage',
+        path: '/message-board/add-message',
         component: AddMessage,
         loginRequired: true,
         rolesAllowed: [Role.Admin, Role.MedicalDirector],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/message-board',
+        component: MessageBoardMain,
+        loginRequired: true,
+        rolesAllowed: [],
         departmentsAllowed: [],
     },
     {

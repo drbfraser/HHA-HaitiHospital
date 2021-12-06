@@ -41,7 +41,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     getCaseStudies();
   }, [])
 
-    const {t, i18n} = useTranslation();
+    const {t: translateText} = useTranslation();
 
   return (
     <div className={"case-study-main"}>
@@ -49,7 +49,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <main className="container-fluid main-region">
         <Header/>
         <div className="d-flex justify-content-start">
-          <Link to="/caseStudyForm"><button type="button" className="btn btn-outline-dark">{t("caseStudyMainAddCaseStudy")}</button></Link>
+          <Link to="/case-study/form"><button type="button" className="btn btn-outline-dark">{translateText("caseStudyMainAddCaseStudy")}</button></Link>
         </div>
 
         <div className="table-responsive">
@@ -57,28 +57,31 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{t("caseStudyMainCaseStudyType")}</th>
-                <th scope="col">{t("caseStudyMainAuthor")}</th>
-                <th scope="col">{t("caseStudyMainCreated")}</th>
-                <th scope="col">{t("caseStudyMainLink")}</th>
+                <th scope="col">{translateText("caseStudyMainCaseStudyType")}</th>
+                <th scope="col">{translateText("caseStudyMainAuthor")}</th>
+                <th scope="col">{translateText("caseStudyMainCreated")}</th>
+                <th scope="col">{translateText("caseStudyMainLink")}</th>
               </tr>
             </thead>
             <tbody>
               {
-                caseStudies.map((item, index) => (
+                caseStudies.map((item, index) => {
+                  console.log(item);
+                  return(
                   <tr key={item._id}>
                     <th scope="row">{index + 1}</th>
                     <td>{item.caseStudyType}</td>
                     <td>{item.user ? item.user.name : "[deleted]"}</td>
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
-                      <Link to={'/caseStudyView/' + item._id} className="link-primary text-decoration-none">{t("caseStudyMainViewCaseStudy") + " "}</Link>
+                      <Link to={'/case-study/view/' + item._id} className="link-primary text-decoration-none">{translateText("caseStudyMainViewCaseStudy") + " "}</Link>
                       {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? 
-                      <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>{t("caseStudyMainDelete")}</a>
+                      <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>{translateText("caseStudyMainDelete")}</a>
                       : null}
                     </td>
                   </tr>
-                ))
+                  )
+                })
               }
             </tbody>
           </table>

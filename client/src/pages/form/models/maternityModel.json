@@ -321,6 +321,7 @@
             },
 
             {
+                "subsection_label" : "Post Natal Consultations",
                 "field_type" : "table",
                 "field_level" : 0,
                 "total_cols" : 3,
