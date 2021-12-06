@@ -38,16 +38,15 @@ This is the CMPT 373 Haumea's team project for Hope Health Action. This project 
 ## Demo
 
 The Demo of the project can be viewed using this link: http://142.58.21.74:3000/
-Please keep in mind that the VPN must be used to view the application(there are some known issues with the VPN currently).
+Please keep in mind that the VPN must be used to view the application.
 
 ## Directory Structure
 
 The Directory can be split into client and serverside. Here are a few important locations:
 #### Serverside
-- /server/src contains resources to database models(/models), routes and API calls(/routes), and JSON test entries(/tests). 
-- /server/security contains the SSL security protocols(certificate information)
+- /server/src contains resources to database models(/models), routes and API calls(/routes), JSON test entries(/tests), and other backend code. 
 #### Clientside
-- /server/src contains resources to react components(/components), and index file(index.ts)
+- /server/src contains resources to react components(/components), index file(index.ts), and other frontend code
 
 ## Build/Dependencies Initialization and Run Instructions
 
