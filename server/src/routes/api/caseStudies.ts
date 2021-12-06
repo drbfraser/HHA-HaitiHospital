@@ -4,7 +4,7 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 
 import CaseStudy from '../../models/CaseStudies';
-import { checkIsInRole } from '../../utils/roleUtils';
+import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/User';
 
 const router = Router();

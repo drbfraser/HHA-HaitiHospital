@@ -48,7 +48,7 @@ function AddMessage() {
         const api = '/api/messageboard/';
     try {
         let response = await Axios.post(api, data);
-        history.push('/messageBoard')
+        history.push('/message-board')
         alert(i18n.t("addMessageAlertSuccess"));
 
     }

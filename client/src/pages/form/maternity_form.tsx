@@ -98,9 +98,10 @@ function MaternityForm() {
             }
 
 
-
             data.departmentId = 3;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            data.diedBefore48hr.total = patientStateBefore;
+            data.diedAfter48hr.total = patientStateAfter;
             data["Support for wife and mother"] = table;
             data.descriptions = addFormDescriptions(fields);
             console.log(data);
@@ -164,8 +165,8 @@ function MaternityForm() {
                                         </div>
                                         <div id={"ListInputs" + fieldIndex + i + j} className="col-sm-2">
                                             <input type="text" className="form-control"
-                                                   {...register(item.field_parent + ".patient" + (i + 1) + "." + item.field_id)}
-                                                   onBlur={() => listInputValidation(i, j, item.field_type, fieldIndex)}
+                                                {...register(item.field_parent + ".patient" + (i + 1) + "." + item.field_id)}
+                                                onBlur={() => listInputValidation(i, j, item.field_type, fieldIndex)}
                                             />
                                             <div className="invalid-feedback">
                                                 Requires a valid number
@@ -303,7 +304,7 @@ function MaternityForm() {
 
     //
     // VALIDATION FUNCTIONS
-    //
+    // 
 
     function submitValidation() {
         var isFormValid = true;
@@ -519,7 +520,7 @@ function MaternityForm() {
     }
 
     function totalValidation(start: number, a: number, b: number) {
-        // check if the entire series in total is all filled out
+        // check if the entire series in total is all filled out 
         var totalElement = (document.getElementById("inputs" + start)?.childNodes[0] as HTMLInputElement);
         var isSeriesComplete = totalElement.classList.contains("is-valid") || totalElement.classList.contains("is-invalid");
         for (var i = a; i <= b; i++) {
@@ -796,8 +797,8 @@ function MaternityForm() {
                                                     </div>
                                                     <div id={"inputs" + i} className="col-sm-2">
                                                         <input type="text" className="form-control" placeholder=""
-                                                               {...register(field.field_id)}
-                                                               onBlur={() => inputValidation(i)}
+                                                            {...register(field.field_id)}
+                                                            onBlur={() => inputValidation(i)}
                                                         />
                                                         <div className="invalid-feedback">
                                                             {t("departmentFormRequiresValidNumber")}
@@ -823,10 +824,10 @@ function MaternityForm() {
                                                             <div className={"row g-2 mb-1 align-items-center" + indentClass}>
                                                                 <div className="col-sm-7">
                                                                     <input className="form-control" type="text"
-                                                                           value={element.name || ""}
-                                                                           placeholder="Name"
-                                                                           onChange={e => handleChange(i, j, e, 0)}
-                                                                           onBlur={() => arrayInputValidation(i, j, "text")}
+                                                                        value={element.name || ""}
+                                                                        placeholder="Name"
+                                                                        onChange={e => handleChange(i, j, e, 0)}
+                                                                        onBlur={() => arrayInputValidation(i, j, "text")}
                                                                     />
                                                                     <div className="invalid-feedback text-end">
                                                                         {t("departmentFormRequiresValidNumber")}
@@ -834,10 +835,10 @@ function MaternityForm() {
                                                                 </div>
                                                                 <div className="col-sm-3">
                                                                     <input className="form-control" type="text"
-                                                                           value={element.value || ""}
-                                                                           placeholder="#"
-                                                                           onChange={e => handleChange(i, j, e, 1)}
-                                                                           onBlur={() => arrayInputValidation(i, j, "number")}
+                                                                        value={element.value || ""}
+                                                                        placeholder="#"
+                                                                        onChange={e => handleChange(i, j, e, 1)}
+                                                                        onBlur={() => arrayInputValidation(i, j, "number")}
                                                                     />
                                                                     <div className="invalid-feedback text-end">
                                                                         {t("departmentFormRequiresValidNumber")}
@@ -867,87 +868,87 @@ function MaternityForm() {
                                                     <div id={"inputs" + i}>
                                                         <table className="table table-bordered table-sm">
                                                             <tbody>
-                                                            {/* COLUMNS */}
+                                                                {/* COLUMNS */}
 
-                                                            {field.col_labels.map((row, coli) => (
-                                                                <tr>
-                                                                    {field.row_labels.map((x, y) => (
-                                                                        <td></td>
-                                                                    ))}
+                                                                {field.col_labels.map((row, coli) => (
+                                                                    <tr>
+                                                                        {field.row_labels.map((x, y) => (
+                                                                            <td></td>
+                                                                        ))}
 
-                                                                    {row.map((col, colj) => (
-                                                                        <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
-                                                                    ))}
-                                                                </tr>
-                                                            ))}
+                                                                        {row.map((col, colj) => (
+                                                                            <th className="text-center" colSpan={field.col_spans[coli][colj]} scope="colgroup">{field.col_labels[coli][colj]}</th>
+                                                                        ))}
+                                                                    </tr>
+                                                                ))}
 
 
-                                                            {/* ROWS */}
-                                                            {[...Array(field.total_rows)].map((e, idx) => (
-                                                                <tr>
-                                                                    {[...Array(field.row_labels.length)].map((e, j) => {
-                                                                        if (count[j] === 0) {
-                                                                            const rowLabel = getRowLabel(field.row_labels[j][k[j]]);
-                                                                            const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{rowLabel}</th>
-                                                                            count[j]++;
+                                                                {/* ROWS */}
+                                                                {[...Array(field.total_rows)].map((e, idx) => (
+                                                                    <tr>
+                                                                        {[...Array(field.row_labels.length)].map((e, j) => {
+                                                                            if (count[j] === 0) {
+                                                                                const rowLabel = getRowLabel(field.row_labels[j][k[j]]);
+                                                                                const header = <th className="align-middle" rowSpan={field.row_spans[j][k[j]]}>{rowLabel}</th>
+                                                                                count[j]++;
 
-                                                                            if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                k[j]++;
-                                                                                count[j] = 0;
+                                                                                if (count[j] === field.row_spans[j][k[j]]) {
+                                                                                    k[j]++;
+                                                                                    count[j] = 0;
+                                                                                }
+
+                                                                                return header;
+                                                                            } else {
+                                                                                count[j]++;
+
+                                                                                if (count[j] === field.row_spans[j][k[j]]) {
+                                                                                    k[j]++;
+                                                                                    count[j] = 0;
+                                                                                }
+                                                                                return;
+                                                                            }
+                                                                        })}
+
+                                                                        {/* ENTRIES */}
+
+                                                                        {[...Array(field.total_cols)].map((e, j) => {
+                                                                            var rowLength = field.row_labels.length - 1;
+                                                                            var colLength = field.col_labels.length - 1;
+                                                                            if (field.invalid_inputs[inputCount][j] === 1) {
+                                                                                const dataInput = (
+                                                                                    <td id={"tables" + i + idx + j} className="text-center">
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
+                                                                                            disabled
+                                                                                        />
+                                                                                    </td>
+                                                                                )
+                                                                                if ((j + 1) % field.total_cols === 0) {
+                                                                                    inputCount++;
+                                                                                }
+                                                                                return dataInput;
+                                                                            } else {
+                                                                                const dataInput = (
+                                                                                    <td id={"tables" + i + idx + j} className="align-middle">
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
+                                                                                            onBlur={() => tableInputValidation(i, idx, j)}
+                                                                                        />
+                                                                                        <div className="invalid-feedback text-end">
+                                                                                            {t("departmentFormRequiresValidNumber")}
+                                                                                        </div>
+                                                                                    </td>
+                                                                                );
+                                                                                if ((j + 1) % field.total_cols === 0) {
+                                                                                    inputCount++;
+                                                                                }
+                                                                                return dataInput;
                                                                             }
 
-                                                                            return header;
-                                                                        } else {
-                                                                            count[j]++;
+                                                                        })}
+                                                                    </tr>
 
-                                                                            if (count[j] === field.row_spans[j][k[j]]) {
-                                                                                k[j]++;
-                                                                                count[j] = 0;
-                                                                            }
-                                                                            return;
-                                                                        }
-                                                                    })}
-
-                                                                    {/* ENTRIES */}
-
-                                                                    {[...Array(field.total_cols)].map((e, j) => {
-                                                                        var rowLength = field.row_labels.length - 1;
-                                                                        var colLength = field.col_labels.length - 1;
-                                                                        if (field.invalid_inputs[inputCount][j] === 1) {
-                                                                            const dataInput = (
-                                                                                <td id={"tables" + i + idx + j} className="text-center">
-                                                                                    <input className="form-control" type="text"
-                                                                                           {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
-                                                                                           disabled
-                                                                                    />
-                                                                                </td>
-                                                                            )
-                                                                            if ((j + 1) % field.total_cols === 0) {
-                                                                                inputCount++;
-                                                                            }
-                                                                            return dataInput;
-                                                                        } else {
-                                                                            const dataInput = (
-                                                                                <td id={"tables" + i + idx + j} className="align-middle">
-                                                                                    <input className="form-control" type="text"
-                                                                                           {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
-                                                                                           onBlur={() => tableInputValidation(i, idx, j)}
-                                                                                    />
-                                                                                    <div className="invalid-feedback text-end">
-                                                                                        {t("departmentFormRequiresValidNumber")}
-                                                                                    </div>
-                                                                                </td>
-                                                                            );
-                                                                            if ((j + 1) % field.total_cols === 0) {
-                                                                                inputCount++;
-                                                                            }
-                                                                            return dataInput;
-                                                                        }
-
-                                                                    })}
-                                                                </tr>
-
-                                                            ))}
+                                                                ))}
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -969,10 +970,10 @@ function MaternityForm() {
                                                         <span className="align-middle">{i}. {field.field_label}</span>
                                                     </div>
                                                     <div id={"inputs" + i} className="col-sm-2">
-                                                        <input type="text" className="form-control" placeholder=""
-                                                               {...register(field.field_id)}
-                                                               onBlur={() => inputValidation(i)}
-                                                               onChange={(event) => handleListInput(field, event, i)}
+                                                        <input type="text" className="form-control"
+                                                            {...register(field.field_id)}
+                                                            onBlur={() => inputValidation(i)}
+                                                            onChange={(event) => handleListInput(field, event, i)}
                                                         />
                                                         <div className="invalid-feedback">
                                                             {t("departmentFormRequiresValidNumber")}

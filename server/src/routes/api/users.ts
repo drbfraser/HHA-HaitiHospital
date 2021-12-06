@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import User, { hashPassword, Role, validateUserSchema, validateUpdatedUserSchema } from '../../models/User';
-import { checkIsInRole } from '../../utils/roleUtils';
+import { checkIsInRole } from '../../utils/authUtils';
 
 const router = Router();
 

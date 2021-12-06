@@ -1,13 +1,7 @@
 import mongoose from 'mongoose';
+import { DepartmentName } from './Departments';
 
 const { Schema } = mongoose;
-
-export enum DepartmentName {
-    NicuPaeds = "NICU/Paeds",
-    Maternity = "Maternity",
-    Rehab = "Rehab",
-    CommunityHealth = "Community & Health",
-}
 
 const departmentSchema = new Schema(
     {

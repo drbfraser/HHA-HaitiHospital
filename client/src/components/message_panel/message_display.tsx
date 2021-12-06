@@ -77,7 +77,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 <p className='d-md-flex lh-sm'>
 
                     { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-                        <Link className='align-self-center' to={`messageBoard/edit/${props.msgJson["_id"]}`}>
+                        <Link className='align-self-center' to={`/message-board/edit/${props.msgJson["_id"]}`}>
                             <button type='button' className='btn btn-md btn-outline-secondary'>
                                 <i className="bi bi-pencil"></i>
                             </button>

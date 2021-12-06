@@ -52,11 +52,12 @@ function MessageForm(props: MessageFormProps) {
         props.submitAction(data);
 
         reset();
-        history.push('/messageBoard')
+        history.push('/message-board')
     }
 
     
     return (
+
     <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
 
@@ -67,19 +68,7 @@ function MessageForm(props: MessageFormProps) {
                 {...register("departmentName")}
                 onChange={(e) => setDepartment(e.target.value)}
                 >
-                    <option value=""> {t("addMessageSelect")} </option>
-                    {/* <option value={DepartmentName.NicuPaeds}>
-                        {DepartmentName.NicuPaeds}
-                    </option>
-                    <option value={DepartmentName.Maternity}>
-                        {DepartmentName.Maternity}
-                    </option>
-                    <option value={DepartmentName.Rehab}>
-                        {DepartmentName.Rehab}
-                    </option>
-                    <option value={DepartmentName.CommunityHealth}>
-                        {DepartmentName.CommunityHealth}
-                    </option> */}
+                    <option value="">{t("addMessageSelect")} </option>
                     {Object.values(DepartmentName).map((deptName, index) => 
                         { 
                         return (
@@ -89,8 +78,7 @@ function MessageForm(props: MessageFormProps) {
                         </option>
                         );
                         }
-                      )
-                    }
+                    )}
 
                 </select>
 

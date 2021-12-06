@@ -19,13 +19,13 @@ function HeaderView() {
 
     if (location.pathname.slice(1) === 'home') {
         return <h4 className="text-secondary">{t("headerOverview")}</h4>
-    } else if (location.pathname.slice(1) === 'messageBoard') {
+    } else if (location.pathname.slice(1) === 'message-board') {
         return <h4 className="text-secondary">{t("headerMessageBoard")}</h4>
-    } else if (location.pathname.slice(1) === 'leaderBoard') {
+    } else if (location.pathname.slice(1) === 'leaderboard') {
         return <h4 className="text-secondary">{t("headerLeaderBoard")}</h4>
-    } else if (location.pathname.slice(1) === 'caseStudyMain') {
+    } else if (location.pathname.slice(1) === 'case-study') {
         return <h4 className="text-secondary">{t("headerCaseStudy")}</h4>
-    } else if (location.pathname.slice(1) === 'caseStudyForm') {
+    } else if (location.pathname.split('/')[1] === 'case-study' && location.pathname.split('/')[2] === 'form') {
         return <h4 className="text-secondary">{t("headerCaseStudyForm")}</h4>
     } else if (location.pathname.slice(1) === 'biomechanic') {
         return <h4 className="text-secondary">{t("headerBiomechanicalSupport")}</h4>
@@ -46,9 +46,10 @@ function HeaderView() {
     } else if (location.pathname.slice(1) === 'general_reports') {
         // Need translation
         return (<h4 className='text-secondary'>{t("headerGeneralReports")}</h4>)
-    } else if (location.pathname.split('/')[1] === 'admin-add-user') {
+    }
+    else if (location.pathname.split('/')[1] === 'admin' && location.pathname.split('/')[2] === 'add-user') {
         return <h4 className="text-secondary">{t("headerAddUser")}</h4>
-    } else if (location.pathname.split('/')[1] === 'admin-edit-user') {
+    } else if (location.pathname.split('/')[1] === 'admin' && location.pathname.split('/')[2] === 'edit-user') {
         return <h4 className="text-secondary">{t("headerEditUser")}</h4>
     } else {
         // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
@@ -90,7 +91,6 @@ const Header = (props: HeaderProps) => {
     
     useEffect(() => {
         getUserInfo();
-    // }, [userInfo.username]);
     }, []);
     const {t, i18n} = useTranslation();
 

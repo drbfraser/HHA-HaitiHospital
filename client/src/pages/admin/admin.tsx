@@ -13,6 +13,7 @@ interface AdminProps extends ElementStyleProps {
 const Admin = (props : AdminProps) => {
   const [users, setUsers] = useState([]);
   const history = useHistory();
+  const {t} = useTranslation();
 
   const usersUrl = '/api/users';
   const getUsers = async () => {
@@ -40,7 +41,6 @@ const Admin = (props : AdminProps) => {
     getUsers();
   }, [])
 
-  const {t} = useTranslation();
 
   return(
     <div className={'admin '+ (props.classes||'')}>
@@ -48,7 +48,7 @@ const Admin = (props : AdminProps) => {
       <main className='container-fluid main-region'>
         <Header/>
         <div className="d-flex justify-content-start">
-          <Link to="/admin-add-user"><button type="button" className="btn btn-outline-dark">{t("adminAddUser")}</button></Link>
+          <Link to="/admin/add-user"><button type="button" className="btn btn-outline-dark">{t("adminAddUser")}</button></Link>
         </div>
         
         <div className="table-responsive">
@@ -76,7 +76,7 @@ const Admin = (props : AdminProps) => {
                     <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                     <td>
                       <div className="text-center">
-                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`admin-edit-user/${item.id}`)}>{t("adminEdit")}</a>
+                        <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => history.push(`/admin/edit-user/${item.id}`)}>{t("adminEdit")}</a>
                         <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteUser(item.id)}>{t("adminDelete")}</a>
                       </div>
                     </td>
