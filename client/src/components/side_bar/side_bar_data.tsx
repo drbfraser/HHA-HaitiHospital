@@ -39,7 +39,7 @@ export const SidebarData = [
     },
     {
         title: "LeaderBoard",
-        path: '/leaderBoard',
+        path: '/leaderboard',
         icon: <i className="bi bi-bar-chart-fill"/>,
         cName: 'nav-text'
     },

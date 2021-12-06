@@ -70,7 +70,7 @@ const MessagePanel = (props: MessagePanelProps) => {
                 <div className='ml-auto'>
 
                     { renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-                        <Link to='/addMessage'>
+                        <Link to='/message-board/add-message'>
                             <button
                                 className='btn btn-md btn-outline-secondary'
                             >
