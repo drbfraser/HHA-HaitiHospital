@@ -66,7 +66,7 @@
 
       {
         "field_id" : "dischargedAlive.total",
-        "field_label": "Exéatés vivants:",
+        "field_label": "Exéatés vivants",
         "field_type": "number",
         "field_value": 0,
         "field_level": 0,
@@ -138,7 +138,7 @@
 
       {
         "field_id" : "diedAfter48hr.paeds",
-        "field_label": "Nombre de personnes décédées APRÈS 48 heures dans NPaeds",
+        "field_label": "Nombre de personnes décédées après 48 heures en pédiatrie",
         "field_type": "number",
         "field_value": 0,
         "field_level": 1,

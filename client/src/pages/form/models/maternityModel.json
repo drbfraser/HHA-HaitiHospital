@@ -24,7 +24,7 @@
                 "field_level": 0
             },
             {
-                "field_id" : "hospitalized.total",
+                "field_id" : "hospitalized",
                 "field_label": "Total number of hospitalized patients",
                 "field_type": "number",
                 "field_value": 0,
@@ -33,7 +33,7 @@
             
             
             {
-                "field_id" : "dischargedAlive.total",
+                "field_id" : "dischargedAlive",
                 "field_label": "Total number of patients discharged alive:",
                 "field_type": "number",
                 "field_value": 0,
