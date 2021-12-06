@@ -17,6 +17,7 @@ interface BiomechanicalPageProps extends ElementStyleProps {
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
 export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
+    const {t} = useTranslation();
     const { t } = useTranslation();
     const [BioReport, setBioReport] = useState([]);
     const authState = useAuthState();
@@ -29,7 +30,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   const deleteCaseStudy = async (id) => {
     try {
-      if (!window.confirm('Are you sure you want to delete this case study?')) {
+      if (!window.confirm('Are you sure you want to delete this Bio report?')) {
         throw new Error("Deletion cancelled")
       }
       const res = await axios.delete(BioReportUrl + '/' + id);
@@ -68,10 +69,10 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Priority</th>
-                                    <th scope="col">Author</th>
-                                    <th scope="col">Created</th>
-                                    <th scope="col">Options</th>
+                                    <th scope="col">{t("bioSupportReportPriority")}</th>
+                                    <th scope="col">{t("bioSupportReportAuthor")}</th>
+                                    <th scope="col">{t("bioSupportReportCreated")}</th>
+                                    <th scope="col">{t("bioSupportReportOptions")}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -84,9 +85,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                           <td>{item.user ? item.user.name : "[deleted]"}</td>
                                           <td>{(new Date(item.createdAt)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}</td>
                                           <td>
-                                          <Link to={'/biomechanic/view/' + item._id} className="link-primary text-decoration-none">View </Link>
+                                          <Link to={'/biomechanic/view/' + item._id} className="link-primary text-decoration-none">{t("brokenKitReportView")} </Link>
                                           {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? 
-                                          <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>Delete</a>
+                                          <a href="javascript:void(0)" className="link-primary text-decoration-none" onClick={() => deleteCaseStudy(item._id)}>{t("brokenKitReportDelete")}</a>
                                           : null}
                                           </td>
                                       </tr>

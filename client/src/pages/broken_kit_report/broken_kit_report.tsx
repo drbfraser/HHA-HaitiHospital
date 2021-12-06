@@ -10,7 +10,6 @@ import "./broken_kit_report.css";
 import {useTranslation} from "react-i18next";
 import DbErrorHandler from "actions/http_error_handler";
 
-
 interface BrokenKitReport extends ElementStyleProps {
 }
 
@@ -18,7 +17,6 @@ interface BrokenKitReport extends RouteComponentProps {}
 
 export const BrokenKitReport = (props: BrokenKitReport) => {
     const {t} = useTranslation();
-
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<BiomechModel>({});
   const history = useHistory();
@@ -69,12 +67,11 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
                         <option value={bioMechEnum.NonUrgent}>{t("brokenKitReportNon-Urgent")}</option>
                     </select>
                     <label htmlFor="customFile" className="form-label mt-2">{t("brokenKitReportUploadImage")}</label>
-                    <input type="file" accept="image/*" className="form-control" id="customFile"/>
+                    <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>
                   </div>
                   <div>
                     <button className="btn btn-primary mt-4 " type="submit">{t("brokenKitReportSubmitForm")}</button>
                   </div>
-
                 </div>
               </form>
         </div>

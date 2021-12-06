@@ -80,12 +80,12 @@ router.route('/add').post(requireJwtAuth, async (req: any, res: any) => {
 // });
 
 //view specific Report by id
-// router.route('/viewreport/:Reportid').get((req: any, res: any) => {
+router.route('/viewreport/:Reportid').get((req: any, res: any) => {
 
-//     FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
-//         .then(Report => res.json(Report))
-//         .catch(err => res.status(400).json('Could not find any results: ' + err));
-// });
+    FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
+        .then(Report => res.json(Report))
+        .catch(err => res.status(400).json('Could not find any results: ' + err));
+});
 
 //---EDIT REPORTS---//
 //get specific report to display results before edit 
