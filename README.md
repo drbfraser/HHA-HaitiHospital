@@ -27,7 +27,7 @@ This is the CMPT 373 Haumea's team project for Hope Health Action. This project 
 - Frontend Coupling Resolution for API Calls and Business Logic
 - Dynamic Form Creation/Data Rendering 
 - Editing Report For Department
-- Dispayling Report Aggregation
+- Displaying Frontend Report Aggregation
 - Automatic Unit Testing/Integration
 - Creole Translation
 - Reminder system for Department Report Submission based on time
