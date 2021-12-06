@@ -17,7 +17,7 @@ interface DepartmentProps extends RouteComponentProps {
 
 
 export const DepartmentOne = (props : DepartmentProps) => {
-    const {t, i18n} = useTranslation();
+    const { t } = useTranslation();
     const [dayRange, setDayRange] = React.useState<DayRange>({
         from: null,
         to: null
@@ -43,7 +43,7 @@ export const DepartmentOne = (props : DepartmentProps) => {
                         <div className='col-auto'>
                             <Link to={"/NICUForm"}>
                                 <button className="btn btn-dark btn-lg">
-                                    <div className="">{t("departmentPageSubmitDate")}</div>
+                                    <div className="">{t("departmentPageAddReport")}</div>
                                 </button>
                             </Link>
                         </div>

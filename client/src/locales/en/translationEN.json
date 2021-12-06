@@ -149,7 +149,7 @@
   "caseStudyFormAnErrorOccurred":"An error occurred during the submission. Please try again.",
 
   "departmentPageNICU/PAED": "Department of NICU/PAED",
-  "departmentPageSubmitDate": "Add Report",
+  "departmentPageAddReport": "Add Report",
   "departmentPageBiomechanic": "Biomechanic",
   "departmentPageReportID": "ReportID",
   "departmentPageLastUpdatedOn": "Last Updated On",
@@ -158,9 +158,26 @@
   "departmentPageDelete": "Delete",
   "departmentPageAccumulate": "Accumulate",
 
-  "departmentFormNICUForm": "NICU/Paediatrics Form",
-  "departmentFormForDate": "For: September 2021",
-  "departmentFormSteps": "Steps",
+  "departmentAddBack" : "Back",
+  "departmentAddDate" : "Date:",
+  "departmentAddMonth" : "Month",
+  "departmentAddJanuary" : "January",
+  "departmentAddFebruary" : "February",
+  "departmentAddMarch" : "March",
+  "departmentAddApril" : "April",
+  "departmentAddMay" : "May",
+  "departmentAddJune" : "June",
+  "departmentAddJuly" : "July",
+  "departmentAddAugust" : "August",
+  "departmentAddSeptember" : "September",
+  "departmentAddOctober" : "October",
+  "departmentAddNovember" : "November",
+  "departmentAddDecember" : "December",
+  "departmentAddYear" : "Year",
+
+  "departmentFormSteps": "Steps:",
+  "departmentFormSubmitAlertPressOKToSubmit": "Press OK to finalize submission",
+  "departmentFormSubmitAlertContainInvalidValues": "Some fields contain invalid values",
   "departmentFormSubmit": "Submit",
   "departmentFormPrevious": "Previous",
   "departmentFormNext": "Next",
@@ -174,11 +191,12 @@
   "departmentFormArrayInputValidationPositiveNumberOnly" : "Positive numbers only for this field",
   "departmentFormArrayInputValidationIntegersOnly" : "Integers only for this field",
 
-  "departmentFormTotalValidationDoesNotAddUpToTotal" : "Does not add up to total",
-
   "departmentFormInputValidationMustEnterValue" : "Must enter a value",
   "departmentFormInputValidationPositiveNumberOnly" : "Positive numbers only",
   "departmentFormInputValidationIntegersOnly" : "Integers only",
+
+  "departmentFormTotalValidationDoesNotAddUpToTotal" : "Does not add up to total",
+  "departmentFormTotalValidationMustEnterName" : "Must enter a name",
 
   "departmentReportDisplayDepartmentNICU": "Department of NICU/Paediatrics",
   "departmentReportDisplayNoReportFound": "No report found",
