@@ -32,7 +32,7 @@ router.get('/seedDepartments', async (req, res) => {
 
 //POST - sends user submitted form to the server as a JSON
 router.route('/add').post(requireJwtAuth, async (req: any, res: any) => {
-    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, req.body.departmentId, req.user.role);
+    const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, parseInt(req.body.departmentId), req.user.role);
     if (!isValidated) {
         return res.status(401).json('User is unauthorized in to make a post in current department.');
     }
@@ -139,11 +139,14 @@ router.route('/delete/:Reportid').delete(requireJwtAuth, async (req: any, res: a
 // ?departmentId?from=YYYY-MM-DD?to=YYYY-MM-DD
 router.route('/').get(requireJwtAuth, async (req, res) => {
     try {
-        const departmentId = req.query.departmentId;
+        const departmentId: number = parseInt(req.query.departmentId);
+
         const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+        
         if (!isValidated) {
             return res.status(401).json('User is unauthorized in to view the current department.');
         }
+
         const strFrom = req.query.from;
         const strTo = req.query.to;
         const reportId = req.query.reportId;
@@ -168,14 +171,16 @@ router.route('/').get(requireJwtAuth, async (req, res) => {
             })
         }
     
-        if (departmentId !== undefined) {
+        if (Number.isNaN(departmentId) === false) {
             filterQuery = filterQuery.find({
-                departmentId: departmentId as number
+                departmentId: departmentId
             })
         }
-    
+        
+
         let result = await filterQuery.sort({createdOn: 'desc'}).populate("lastUpdatedByUserId").exec();
         res.status(200).json(result)
+
     }
     catch (error) {
         return res.status(500).json({

@@ -81,28 +81,28 @@ const routes = [
         path: '/department/:deptId/add',
         component: AddReport,
         loginRequired: true,
-        rolesAllowed: [Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector],
+        rolesAllowed: [],
         departmentsAllowed: [],
     },
     {
         path: '/department/:deptId/view/:id',
         component: () => <DepartmentReport edit={false}/>,
         loginRequired: true,
-        rolesAllowed: [Role.Admin, Role.User],
+        rolesAllowed: [],
         departmentsAllowed: [],
     },
     {
         path: '/department/:deptId/edit/:id',
         component: () => <DepartmentReport edit={true}/>,
         loginRequired: true,
-        rolesAllowed: [Role.Admin, Role.User],
+        rolesAllowed: [],
         departmentsAllowed: []
     },
     {
         path: '/department/:deptId',
         component: Department,
         loginRequired: true,
-        rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+        rolesAllowed: [],
         departmentsAllowed: [],
     },
     {
