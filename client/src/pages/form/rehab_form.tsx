@@ -6,6 +6,7 @@ import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import rehabModel from './models/rehabModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles.css'
 
 
 
@@ -71,7 +72,7 @@ function RehabForm() {
 
         if (submitValidation()) {
 
-            data.departmentId = 0; //Rehab ID
+            data.departmentId = 0;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
             data.descriptions = addFormDescriptions(fields);
             console.log(data);
@@ -665,7 +666,7 @@ function RehabForm() {
     document.body.classList.add("bg-light");
 
     return (
-        <div className="nicu_form">
+        <div className="form">
             <SideBar />
 
             <main className="container">
