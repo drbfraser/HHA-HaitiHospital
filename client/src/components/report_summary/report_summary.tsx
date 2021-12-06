@@ -106,8 +106,6 @@ function buildApiRoute(dateRange: DayRange, department: DepartmentName): string 
     }
 
     returnApi = concatParamsToRoute(prefix, params);
-
-    console.log("api : ", returnApi);
     return returnApi;
 }
 

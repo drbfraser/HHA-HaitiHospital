@@ -82,7 +82,6 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
           <tbody>
             {props.reports.map((report, index) => {
-                console.log(report);
                 let username = (report["lastUpdatedByUserId"] as Json)["username"] as string;
                 let fullName = (report["lastUpdatedByUserId"] as Json)["name"] as string;
                 

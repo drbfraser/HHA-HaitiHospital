@@ -108,7 +108,7 @@ function MaternityForm() {
                 console.error('Something went wrong!', error.response);
             });
             reset({});
-            history.push("/Department2Maternity");
+            history.goBack();
 
         } else {
             alert("Some fields contain invalid values");

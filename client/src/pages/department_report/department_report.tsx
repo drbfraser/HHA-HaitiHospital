@@ -152,9 +152,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                 <div className="container w-50 text-center">
                   <ul className='row justify-content-md-center'>
                     <li className='col-sm-auto'>
-                      <Link to={'/Department1NICU'}>
-                        <button className="">{t("departmentReportDisplayBack")}</button>
-                      </Link>
+                        <button onClick={()=>history.goBack()}>{t("departmentReportDisplayBack")}</button>
                     </li>
                     <li className='col-sm-auto'>
                       <CSVLink

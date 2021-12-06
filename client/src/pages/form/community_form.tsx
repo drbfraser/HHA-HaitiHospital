@@ -111,7 +111,7 @@ function CommunityForm() {
             });
 
             reset({})
-            history.push("/Department4ComHealth");
+            history.goBack();
         } else {
             alert("Some fields contain invalid values");
             window.scrollTo(0, 0);
@@ -487,7 +487,7 @@ function CommunityForm() {
 
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
-                        history.push("/Department4ComHealth");
+                        history.goBack();
                     }}>Back</button>
                 </div>
 
