@@ -19,6 +19,7 @@ const EditMessage = () => {
     const { id } = useParams<{id? : string}>();
     const [msg, setMsg] = useState<Message>(emptyMessage)
     const history = useHistory();
+    const { t } = useTranslation();
 
 
     async function fetchMsgFromDb(id: string) {
