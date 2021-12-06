@@ -26,7 +26,7 @@ export const ObjectEntry = (props: ObjectEntryProps) => {
             { props.name }
           </button>
         </div>
-        <div className="accordion-collapse collapse"
+        <div className="accordion-collapse"
           id={`collapse_${props.name}`}
           data-bs-parent={`#object_entry_${props.name}`}
         >
