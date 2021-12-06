@@ -40,8 +40,8 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           {(caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.PatientStory) ? 
             <div>
               <h4 className="mt-3 mb-3 fw-bold">{translateText("caseStudyFormPatientStoryCaseStudy")}</h4>
-              <h6 className="fs-6 lh-base">Author: {caseStudy.user ? caseStudy.user.name : "[deleted]"}</h6>
-              <h6 className="fs-6 mb-5 lh-base">Date: {(new Date(caseStudy.createdAt)).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })}</h6>
+              <h6 className="fs-6 lh-base">{translateText("caseStudyViewAuthor")} {caseStudy.user ? caseStudy.user.name : "[deleted]"}</h6>
+              <h6 className="fs-6 mb-5 lh-base">{translateText("caseStudyViewDate")} {(new Date(caseStudy.createdAt)).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })}</h6>
               <img src={`../../${caseStudy.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${caseStudy.imgPath ? "d-block" : "d-none"}`} />
               <h6 className="fs-6 fw-bold lh-base">{translateText("caseStudyFormPatientName")}</h6>
               <p className='fs-6 lh-base text-break'>{caseStudy.patientStory.patientsName}</p>

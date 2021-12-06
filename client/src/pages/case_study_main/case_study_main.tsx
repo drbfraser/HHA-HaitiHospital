@@ -9,6 +9,7 @@ import "./case_study_main_styles.css";
 import {useTranslation} from "react-i18next";
 import { useAuthState } from "Context";
 import { renderBasedOnRole } from "actions/roleActions"
+import i18n from "i18next";
 
 interface CaseStudyMainProps extends ElementStyleProps {
 }
