@@ -6,9 +6,11 @@ import { DepartmentName, getDepartmentName } from 'constants/interfaces';
 import MaternityForm from 'pages/form/maternity_form';
 
 const AddReport = () => {
-    const {deptId} = useParams<{deptId: string}>();
-    const deptName: DepartmentName = getDepartmentName(parseInt(deptId));
     const history = useHistory();
+    const {deptId} = useParams<{deptId: string}>();
+
+try {
+    const deptName: DepartmentName = getDepartmentName(parseInt(deptId));
 
     switch (deptName) {
         case DepartmentName.Rehab:
@@ -19,9 +21,11 @@ const AddReport = () => {
             return <MaternityForm></MaternityForm>;
         case DepartmentName.CommunityHealth:
             return <>No form</>;
-        default:
-            history.push('/notFound');
     }
+}
+catch (e) {
+    history.push('/notFound');
+}
 }
 
 export default AddReport;

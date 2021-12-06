@@ -1,4 +1,3 @@
-import { throws } from 'assert/strict';
 import {CSSProperties} from 'react';
 export interface CustomCssProps extends CSSProperties {
   '--grid-cols'? : string,

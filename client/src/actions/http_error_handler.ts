@@ -1,13 +1,19 @@
-import { AxiosAdapter, AxiosError } from "axios";
-import React, {useHistory} from 'react-router-dom';
+import { AxiosError } from "axios";
+import { History } from "history";
+import React from 'react-router-dom';
 
 const UNAUTHORIZE_CODE = 401;
 const NOTFOUND_CODE = 404;
 const INTERNAL_CODE = 500;
 
-const FailedReqHandler = (e: AxiosError) => {
-    const history = useHistory();
-    switch (parseInt(e.code)) {
+const DbErrorHandler = (e, history: History) => {
+    if ((e as AxiosError).isAxiosError === undefined)
+    {
+        console.log(e.message);
+        return;
+    }
+
+    switch (e.response.status) {
         case (UNAUTHORIZE_CODE): {
             history.push('/unauthorized');
             break;
@@ -21,8 +27,8 @@ const FailedReqHandler = (e: AxiosError) => {
             break;
         }
         default:
-            alert("Axios Error Needs a Handler");
+            console.log("Axios Error Needs a Handler");
     }
 }
 
-export default FailedReqHandler;
+export default DbErrorHandler;

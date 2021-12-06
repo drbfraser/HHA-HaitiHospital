@@ -43,7 +43,7 @@ const AppRoutes = ({ component: Component, path, loginRequired, rolesAllowed, de
 
 			// If the user is logged in, and does not have role or department access redirect them to not found page
 			if (!Boolean(roleAccess && departmentAccess)) {
-				return <Redirect to={{ pathname: '/notFound' }} />
+				return <Redirect to={{ pathname: '/unauthorized' }} />
 			} else {
 				// Otherwise, if user is not logged in and they try to access other pages, redirect to login page
 				return <Redirect to={{ pathname: '/login' }} />

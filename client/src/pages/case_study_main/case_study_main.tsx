@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { RouteComponentProps, Link } from "react-router-dom";
-import { ElementStyleProps, Role } from "constants/interfaces";
+import { RouteComponentProps, Link, useHistory } from "react-router-dom";
+import { Role } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import axios from 'axios';
@@ -9,15 +9,14 @@ import "./case_study_main_styles.css";
 import {useTranslation} from "react-i18next";
 import { useAuthState } from "Context";
 import { renderBasedOnRole } from "actions/roleActions"
-
-interface CaseStudyMainProps extends ElementStyleProps {
-}
+import DbErrorHandler from "actions/http_error_handler";
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
+  const history = useHistory();
 
 
   const caseStudiesUrl = '/api/casestudies';
@@ -34,7 +33,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       const res = await axios.delete(caseStudiesUrl + '/' + id);
       getCaseStudies();
     } catch (err) {
-      console.log(err);
+      DbErrorHandler(err, history);
     }
   }
 
@@ -45,7 +44,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     const {t, i18n} = useTranslation();
 
   return (
-    <div className={"case-study-main "+ props.classes}>
+    <div className={"case-study-main"}>
       <SideBar/>
       <main className="container-fluid main-region">
         <Header/>

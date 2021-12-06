@@ -80,28 +80,28 @@ const routes = [
         component: AddReport,
         loginRequired: true,
         rolesAllowed: [Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector],
-        departmentAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/department/:deptId/view/:id',
         component: () => <DepartmentReport edit={false}/>,
         loginRequired: true,
         rolesAllowed: [Role.Admin, Role.User],
-        departmentAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/department/:deptId/edit/:id',
         component: () => <DepartmentReport edit={true}/>,
         loginRequired: true,
         rolesAllowed: [Role.Admin, Role.User],
-        departmentAllowed: []
+        departmentsAllowed: []
     },
     {
         path: '/department/:deptId',
         component: Department,
         loginRequired: true,
         rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
-        departmentAllowed: [],
+        departmentsAllowed: [],
     },
     {
         path: '/biomechanic',

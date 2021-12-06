@@ -7,6 +7,8 @@ import ReportSummaryTable from 'components/report_summary/report_summary_table/r
 
 import {DayRange} from 'react-modern-calendar-datepicker';
 import './styles.css';
+import DbErrorHandler from 'actions/http_error_handler';
+import { useHistory } from 'react-router-dom';
 
 interface DepartmentReportsProps extends ElementStyleProps {
   department?: DepartmentName;
@@ -16,6 +18,7 @@ interface DepartmentReportsProps extends ElementStyleProps {
 const ReportSummary = (props: DepartmentReportsProps) => {
   let [reports, setReports] = useState<JsonArray>([]);
   let [refetch, setRefetch] = useState<boolean>(false);
+  const history = useHistory();
 
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
@@ -39,21 +42,17 @@ const ReportSummary = (props: DepartmentReportsProps) => {
     
     try {
         apiForReports = buildApiRoute(props.dateRange, props.department);
-        console.log(apiForReports);
-
         let res = await Axios.get(apiForReports, {
             cancelToken: apiSource.token
         });
-        if (res.status != 200)
-            return [];
-
         return res.data;
+
     } catch (err) {
       if (Axios.isCancel(err)) {
         console.log(`Info: Subscription to ${apiForReports} is canceled`,err)
       }
       else 
-        console.log(err);
+        DbErrorHandler(err, history);
       return [];
     }
   }

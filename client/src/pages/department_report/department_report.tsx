@@ -10,6 +10,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import './department_report.css'
 import {useTranslation} from "react-i18next";
+import DbErrorHandler from 'actions/http_error_handler';
 
 
 interface DepartmentReportProps {
@@ -80,7 +81,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       if (Axios.isCancel(err)) {
         console.log(`Info: Cancel subsciption to ${getReportApi} API`, err);
       }
-      else { console.log(err); }
+      else { DbErrorHandler(err, history) }
     }
     return {};
   }
