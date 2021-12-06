@@ -17,7 +17,7 @@
                 "field_level": 0
             },
             {
-                "field_id": "bedDays",
+                "field_id": "patientDays",
                 "field_label": "Total number of patients days",
                 "field_type": "number",
                 "field_value": 0,
