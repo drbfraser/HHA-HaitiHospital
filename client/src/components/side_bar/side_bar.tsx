@@ -70,6 +70,14 @@ const Sidebar = (props: SidebarProps) => {
                             <span className="text text-light">{t("sidebarCaseStudy")}</span>
                         </NavLink>
                     </li>
+                    <li>
+                        {
+                                <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
+                                    <i className="bi bi-wrench me-2"/>
+                                    <span className="text text-light">Bio Support</span>
+                                </NavLink>
+                        }
+                    </li>
 
                     <li className="border-top my-2"/>
 
@@ -126,14 +134,6 @@ const Sidebar = (props: SidebarProps) => {
                                     <span className="text text-light">Com & Health</span>
                                 </NavLink>
                             ) : (<div></div>)
-                        }
-                    </li>
-                    <li>
-                        {
-                                <NavLink to="/biomechanic" className="nav-link link-light" exact activeClassName="active">
-                                    <i className="bi bi-wrench me-2"/>
-                                    <span className="text text-light">Bio Support</span>
-                                </NavLink>
                         }
                     </li>
 
