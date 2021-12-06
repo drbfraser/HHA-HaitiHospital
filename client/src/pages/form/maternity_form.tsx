@@ -6,11 +6,12 @@ import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import maternityModel from './models/maternityModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles.css'
 
 
 
 function MaternityForm() {
-    const { register, handleSubmit } = useForm({});
+    const { register, handleSubmit, reset } = useForm({});
     const [formModel, setFormModel] = useState({});
     const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any; }[]>([])
     const [sectionState, setSectionState] = useState(0);
@@ -42,19 +43,20 @@ function MaternityForm() {
     }
 
     const addFormDescriptions = (formFields) => {
-        var descriptions = [];
+        var descriptions = {};
         fields.forEach(field => {
             if (field.field_type === "number") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "array") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
             } else if (field.field_type === "list") {
-                descriptions.push({ [field.field_id]: field.field_label });
+                let key = field.field_id.replaceAll(".", "_");
+                descriptions[key] = field.field_label;
                 field.field_template.forEach(listField => {
-                    var listID = field.field_id + "." + listField.field_id;
-                    descriptions.push(
-                        { [listID]: listField.field_label }
-                    );
+                    var listID = key + "_" + listField.field_id;
+                    descriptions[listID] = listField.field_label;
                 })
             }
         });
@@ -66,50 +68,46 @@ function MaternityForm() {
             return;
         }
 
-        var object = data["Support for wife and mother"];
-        
-        var index = 0;
-        for(var key in object){
-            var totalElement = document.getElementById("tables" + 42 + index + 5);
-            object[key].total = totalElement.innerHTML;
-            index++;
-        }
-        
-        object.totalVisits = {
-            "1st Visit" : 0,
-            "2nd Visit" : 0,
-            "3rd Visit" : 0,
-            "4th Visit" : 0,
-            "5th Visit" : 0,
-            "total" : 0 
-        };
+        if (submitValidation()) {
 
-        index = 0;
-        for(var key in object.totalVisits){
-            var totalElement = document.getElementById("tables" + 42 + 3 + index);
-            object.totalVisits[key] = totalElement.innerHTML;
-            index++;
-        }
+            var object = data["Support for wife and mother"];
 
-        data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-        data.decriptions = addFormDescriptions(fields);
-        console.log(data);
-        var valid = submitValidation();
+            var index = 0;
+            for (var key in object) {
+                var totalElement = document.getElementById("tables" + 42 + index + 5);
+                object[key].total = totalElement.innerHTML;
+                index++;
+            }
 
-        if (valid === true) {
+            object.totalVisits = {
+                "1st Visit": 0,
+                "2nd Visit": 0,
+                "3rd Visit": 0,
+                "4th Visit": 0,
+                "5th Visit": 0,
+                "total": 0
+            };
 
-            //     data.departmentId = 1;
-            //     data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-            //     data.admissions.mainCondition.otherMedical = formValuesAdCondition;
-            //     data.numberOfOutPatients.mainCondition.otherMedical = formValuesOutCondition;
-            //     await axios.post('/api/report/add', data).then(res => {
-            //         console.log(res.data);
-            //     }).catch(error => {
-            //         console.error('Something went wrong!', error.response);
-            //     });
+            index = 0;
+            for (var key in object.totalVisits) {
+                var totalElement = document.getElementById("tables" + 42 + 3 + index);
+                object.totalVisits[key] = totalElement.innerHTML;
+                index++;
+            }
 
-            //     //console.log(data);
-            //     history.push("/Department2Maternity");
+            data.decriptions = addFormDescriptions(fields);
+
+            data.departmentId = 3;
+            data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+
+            await axios.post('/api/report/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                console.error('Something went wrong!', error.response);
+            });
+            reset({});
+            history.push("/Department2Maternity");
+
         } else {
             alert("Some fields contain invalid values");
             window.scrollTo(0, 0);
@@ -309,7 +307,6 @@ function MaternityForm() {
         for (let i = 1; i <= fields.length; i++) {
 
             var field = fields[i - 1];
-            console.log(i, field.field_type);
             if (field.field_type === "array") {
                 var formValues = formValuesComeFrom;
                 for (let j = 0; j < formValues.length; j++) {
@@ -360,7 +357,7 @@ function MaternityForm() {
 
             var isSectionValid = true;
             for (let j = 1; j <= section.section_fields.length; j++, num++) {
-                var field = fields[num-1];
+                var field = fields[num - 1];
 
                 if (field.field_type === "array") {
                     var formValues = formValuesComeFrom;
@@ -373,13 +370,27 @@ function MaternityForm() {
                         }
                     }
                 } else if (field.field_type === "table") {
-                    
+
                     for (var idx = 0; idx < field.total_rows; idx++) {
-                        for (var jdx=0; jdx<field.total_cols; jdx++) {
+                        for (var jdx = 0; jdx < field.total_cols; jdx++) {
                             var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
                             if (field.invalid_inputs[idx][jdx] === 0 && inputElement.classList.contains("is-invalid")) {
                                 isSectionValid = false;
                             }
+                        }
+                    }
+                } else if (num === 6) {
+                    if (document.getElementById("selectList" + num) !== null) {
+                        var selectList = document.getElementById("selectList" + num)?.childNodes[1] as HTMLInputElement
+                        if (selectList.classList.contains("is-invalid")) {
+                            isSectionValid = false;
+                        }
+                    }
+                } else if (num === 7) {
+                    if (document.getElementById("selectList" + num) !== null) {
+                        var selectList = document.getElementById("selectList" + num)?.childNodes[1] as HTMLInputElement
+                        if (selectList.classList.contains("is-invalid")) {
+                            isSectionValid = false;
                         }
                     }
                 } else {
@@ -451,28 +462,33 @@ function MaternityForm() {
         return true;
     }
 
-    const listInputValidation = (i, j, type, fieldIndex) => {
+    function listInputValidation(i, j, type, fieldIndex) {
         var inputElement = (document.getElementById("ListInputs" + fieldIndex + i + j)?.childNodes[0] as HTMLInputElement);
         var selectList = document.getElementById("selectList" + fieldIndex)?.childNodes[1] as HTMLInputElement
         if (type === "number") {
             if (!isValid(inputElement)) {
                 makeValidity(selectList, false, "One or more fields are invalid");
-                return;
+                return false;
             }
         } else if (type === "text") {
-            if (inputElement.value == "") {
+            if (inputElement.value === "") {
                 makeValidity(inputElement, false, "Must enter field");
                 makeValidity(selectList, false, "One or more fields are invalid");
                 return false;
-            } else {
-                makeValidity(inputElement, true, "");
-                return true;
             }
+        } else if (type === "select") {
+            if (inputElement.value === "Select option") {
+                makeValidity(inputElement, false, "Must select option");
+                makeValidity(selectList, false, "One or more fields are invalid");
+                return false;
+            }
+
         }
 
-
-        makeValidity(inputElement, true, "");
         makeValidity(selectList, true, "");
+        makeValidity(inputElement, true, "");
+
+        return true;
 
 
     }
@@ -489,11 +505,8 @@ function MaternityForm() {
         }
 
         // Total Admissions
-        if (num === 18 || num >= 19 && num <= 22) {
+        if (num >= 18 && num <= 29) {
             arrayTotalValidation(18, 19, 22);
-            return;
-        }
-        if (num === 18 || num >= 23 && num <= 29) {
             totalValidation(18, 23, 29);
             return;
         }
@@ -630,7 +643,6 @@ function MaternityForm() {
     }
 
     function tableInputValidation(num: number, idx: number, jdx: number) {
-        //console.log(num, idx, jdx);
         var inputElement = (document.getElementById("tables" + num + idx + jdx)?.childNodes[0] as HTMLInputElement);
         if (!isValid(inputElement)) return;
 
@@ -683,7 +695,7 @@ function MaternityForm() {
     let fieldCount = 0;
     document.body.classList.add("bg-light");
     return (
-        <div className="nicu_form">
+        <div className="form">
             <SideBar />
 
             <main className="container">
@@ -898,10 +910,18 @@ function MaternityForm() {
                                                                             var rowLength = field.row_labels.length - 1;
                                                                             var colLength = field.col_labels.length - 1;
                                                                             if (field.invalid_inputs[inputCount][j] === 1) {
+                                                                                const dataInput = (
+                                                                                    <td id={"tables" + i + idx + j} className="text-center">
+                                                                                        <input className="form-control" type="text"
+                                                                                            {...register(field.subsection_label + "." + field.row_labels[rowLength][inputCount] + "." + field.col_labels[colLength][j])}
+                                                                                            disabled
+                                                                                        />
+                                                                                    </td>
+                                                                                )
                                                                                 if ((j + 1) % field.total_cols === 0) {
                                                                                     inputCount++;
                                                                                 }
-                                                                                return <td id={"tables" + i + idx + j} className="text-center"></td>
+                                                                                return dataInput;
                                                                             } else {
                                                                                 const dataInput = (
                                                                                     <td id={"tables" + i + idx + j} className="align-middle">

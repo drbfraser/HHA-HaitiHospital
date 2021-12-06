@@ -6,7 +6,7 @@ import SideBar from "../../components/side_bar/side_bar";
 import Header from 'components/header/header';
 import communityModel from './models/communityModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './nicu_form_styles.css'
+import './styles.css'
 
 
 
@@ -101,7 +101,7 @@ function CommunityForm() {
 
             }
 
-            data.departmentId = 4;
+            data.departmentId = 2;
             data["Vaccination"] = vaccineTable;
             data["Pregnant Women Vaccinations"] = pregnantTable;
             await axios.post('/api/report/add', data).then(res => {
@@ -110,7 +110,7 @@ function CommunityForm() {
                 console.error('Something went wrong!', error.response);
             });
 
-            // console.log(data);
+            reset({})
             history.push("/Department4ComHealth");
         } else {
             alert("Some fields contain invalid values");
@@ -479,7 +479,7 @@ function CommunityForm() {
     document.body.classList.add("bg-light");
 
     return (
-        <div className="nicu_form">
+        <div className="form">
             <SideBar />
 
             <main className="container">
