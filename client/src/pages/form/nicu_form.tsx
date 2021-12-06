@@ -697,7 +697,7 @@ function DynamicForm() {
                                                 <>
                                                     <div id={"input" + i} className={"" + indentClass}>
                                                         <span className="me-2">{i}. {field.field_label}</span>
-                                                        <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>Add</button>
+                                                        <button type="button" className="btn btn-success btn-sm" onClick={() => addFormFields(i)}>{t("departmentFormAdd")}</button>
                                                     </div>
 
                                                     <div id={"inputs" + i}>

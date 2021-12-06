@@ -7,6 +7,8 @@ import Header from 'components/header/header';
 import rehabModel from './models/rehabModel.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css'
+import i18n from "i18next";
+import {useTranslation} from "react-i18next";
 
 
 
@@ -19,8 +21,8 @@ function RehabForm() {
     const [patientStateAfter, setPatientStateAfter] = useState(0);
     const [patientStateDischarge, setPatientStateDischarge] = useState(0);
 
-
     const history = useHistory();
+    const {t, i18n} = useTranslation();
 
     useEffect(() => {
         const getData = async () => {
@@ -66,7 +68,7 @@ function RehabForm() {
 
 
     const onSubmit = async (data: any) => {
-        if (!window.confirm("Press OK to finalize submission.")) {
+        if (!window.confirm(i18n.t("departmentFormSubmitAlertPressOKToSubmit"))) {
             return;
         }
 
@@ -85,7 +87,7 @@ function RehabForm() {
             reset({});
             history.push("/Department3Rehab");
         } else {
-            alert("Some fields contain invalid values");
+            alert(i18n.t("departmentFormSubmitAlertContainInvalidValues"));
             window.scrollTo(0, 0);
         }
 
@@ -123,7 +125,7 @@ function RehabForm() {
                                 ))}
                             </select>
                             <div className="invalid-feedback">
-                                One or more fields are invalid
+                                {t("departmentFormInputValidationOneOrMoreFieldsAreInvalid")}
                             </div>
                         </div>
                     </div>
@@ -166,7 +168,7 @@ function RehabForm() {
                                                     onBlur={() => listInputValidation(i, j, item.field_type, fieldIndex)}
                                                 />
                                                 <div className="invalid-feedback">
-                                                    Requires a valid number
+                                                    {t("departmentFormRequiresValidNumber")}
                                                 </div>
                                             </div>
                                         </>
@@ -433,18 +435,18 @@ function RehabForm() {
     function isValid(inputElement: HTMLInputElement) {
         var numberAsText = inputElement.value;
         if (numberAsText === "") {
-            makeValidity(inputElement, false, "Must enter a value");
+            makeValidity(inputElement, false, i18n.t("departmentFormInputValidationMustEnterValue"));
             return false;
         }
 
         var number = Number(numberAsText);
         if (number < 0) {
-            makeValidity(inputElement, false, "Positive numbers only");
+            makeValidity(inputElement, false, i18n.t("departmentFormInputValidationPositiveNumberOnly"));
             return false;
         }
 
         if (number % 1 !== 0) {
-            makeValidity(inputElement, false, "Integers only");
+            makeValidity(inputElement, false, i18n.t("departmentFormInputValidationIntegersOnly"));
             return false;
         }
 
@@ -457,19 +459,19 @@ function RehabForm() {
         var selectList = document.getElementById("selectList" + fieldIndex)?.childNodes[1] as HTMLInputElement
         if (type === "number") {
             if (!isValid(inputElement)) {
-                makeValidity(selectList, false, "One or more fields are invalid");
+                makeValidity(selectList, false, i18n.t("departmentFormInputValidationOneOrMoreFieldsAreInvalid"));
                 return false;
             }
         } else if (type === "text") {
             if (inputElement.value === "") {
-                makeValidity(inputElement, false, "Must enter field");
-                makeValidity(selectList, false, "One or more fields are invalid");
+                makeValidity(inputElement, false, i18n.t("departmentFormInputValidationMustEnterField"));
+                makeValidity(selectList, false, i18n.t("departmentFormInputValidationOneOrMoreFieldsAreInvalid"));
                 return false;
             }
         } else if (type === "select") {
             if (inputElement.value === "Select option") {
-                makeValidity(inputElement, false, "Must select option");
-                makeValidity(selectList, false, "One or more fields are invalid");
+                makeValidity(inputElement, false, i18n.t("departmentFormInputValidationMustSelectOption"));
+                makeValidity(selectList, false, i18n.t("departmentFormInputValidationOneOrMoreFieldsAreInvalid"));
                 return false;
             }
 
@@ -557,7 +559,7 @@ function RehabForm() {
 
         if (isSeriesValid) {
             if (total !== total2) {
-                makeValidity(totalElement, false, "Does not add up to total");
+                makeValidity(totalElement, false, i18n.t("departmentFormTotalValidationDoesNotAddUpToTotal"));
                 for (let i = a; i <= b; i++) {
                     inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
                     makeValidity(inputElement, false, "");
@@ -578,7 +580,7 @@ function RehabForm() {
         if (type === "text") {
             var textInput = (inputGroup.childNodes[idx].childNodes[0].childNodes[0] as HTMLInputElement);
             if (textInput.value === "") {
-                makeValidity(textInput, false, "Must enter a name");
+                makeValidity(textInput, false, i18n.t("departmentFormInputValidationMustEnterName"));
                 return false;
             } else {
                 makeValidity(textInput, true, "");
@@ -636,7 +638,7 @@ function RehabForm() {
                 makeValidity(totalElement, false, "");
                 for (let i = a; i <= b - 1; i++) {
                     inputElement = (document.getElementById("inputs" + i)?.childNodes[0] as HTMLInputElement);
-                    var errorMsg = i === a ? "Does not add up to total" : "";
+                    var errorMsg = i === a ? i18n.t("departmentFormTotalValidationDoesNotAddUpToTotal") : "";
                     makeValidity(inputElement, false, errorMsg);
                 }
                 for (let i = 0; i < arrayElement!.length; i++) {
@@ -675,29 +677,29 @@ function RehabForm() {
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
                         history.push("/Department1NICU");
-                    }}>Back</button>
+                    }}>{t("departmentAddBack")}</button>
                 </div>
 
                 <div className="py-3 text-start">
                     {/* <h2>NICU/Paediatrics Form</h2> */}
-                    <span className="lead">Date: </span>
+                    <span className="lead">{t("departmentAddDate")} </span>
                     <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
-                        <option selected>Month</option>
-                        <option value="1">January</option>
-                        <option value="2">Feburary</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
+                        <option selected>{t("departmentAddMonth")}</option>
+                        <option value="1">{t("departmentAddJanuary")}</option>
+                        <option value="2">{t("departmentAddFebruary")}</option>
+                        <option value="3">{t("departmentAddMarch")}</option>
+                        <option value="4">{t("departmentAddApril")}</option>
+                        <option value="5">{t("departmentAddMay")}</option>
+                        <option value="6">{t("departmentAddJune")}</option>
+                        <option value="7">{t("departmentAddJuly")}</option>
+                        <option value="8">{t("departmentAddAugust")}</option>
+                        <option value="9">{t("departmentAddSeptember")}</option>
+                        <option value="10">{t("departmentAddOctober")}</option>
+                        <option value="11">{t("departmentAddNovember")}r</option>
+                        <option value="12">{t("departmentAddDecember")}</option>
                     </select>
                     <select className="form-select form-select-sm" style={{ width: "auto", display: "inline-block" }}>
-                        <option selected>Year</option>
+                        <option selected>{t("departmentAddYear")}</option>
                         <option value="2021">2021</option>
                         <option value="2020">2020</option>
                         <option value="2019">2019</option>
@@ -714,7 +716,7 @@ function RehabForm() {
                 </div>
 
                 <div className="mb-3 text-start sticky-top bg-light">
-                    <h4 className="text-primary">Steps: </h4>
+                    <h4 className="text-primary">{t("departmentFormSteps")} </h4>
                     <ul className="list-group list-group-horizontal">
                         {sections ? sections.map((section: any, idx: any) => {
                             var isActive = idx === 0 ? true : false;
@@ -767,7 +769,7 @@ function RehabForm() {
                                                             onBlur={() => inputValidation(i)}
                                                         />
                                                         <div className="invalid-feedback">
-                                                            Requires a valid number
+                                                            {t("departmentFormRequiresValidNumber")}
                                                         </div>
                                                     </div>
                                                 </>
@@ -795,7 +797,7 @@ function RehabForm() {
                                                                         onBlur={() => arrayInputValidation(i, j, "text")}
                                                                     />
                                                                     <div className="invalid-feedback text-end">
-                                                                        Requires a valid number
+                                                                        {t("departmentFormRequiresValidNumber")}
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-sm-3">
@@ -806,12 +808,12 @@ function RehabForm() {
                                                                         onBlur={() => arrayInputValidation(i, j, "number")}
                                                                     />
                                                                     <div className="invalid-feedback text-end">
-                                                                        Requires a valid number
+                                                                        {t("departmentFormRequiresValidNumber")}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="col-sm-2 d-grid">
-                                                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => removeFormFields(i, j)}>Remove</button>
+                                                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => removeFormFields(i, j)}>{t("departmentFormRemove")}</button>
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -842,7 +844,7 @@ function RehabForm() {
                                                             onChange={(event) => handleListInput(field, event, i)}
                                                         />
                                                         <div className="invalid-feedback">
-                                                            Requires a valid number
+                                                            {t("departmentFormRequiresValidNumber")}
                                                         </div>
                                                     </div>
 
@@ -862,8 +864,8 @@ function RehabForm() {
                         </form>
 
                         <div className="btn-group d-flex mb-2">
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>Previous</button>
-                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>Next</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickPrevious} disabled={sectionState === 0 ? true : false}>{t("departmentFormPrevious")}</button>
+                            <button className="w-100 btn btn-secondary btn-sm" onClick={clickNext} disabled={sectionState === 2 ? true : false}>{t("departmentFormNext")}</button>
                         </div>
 
                         <button
@@ -871,7 +873,7 @@ function RehabForm() {
                             type="submit"
                             style={{ display: sectionState === 2 ? '' : 'none' }}
                             onClick={handleSubmit(onSubmit)}>
-                            Submit
+                            {t("departmentFormSubmit")}
                         </button>
                     </div>
                 </div>
