@@ -96,15 +96,22 @@ const routes = [
         departmentsAllowed: [DepartmentName.NicuPaeds],
     },
     {
-        path: '/biomechanic',
-        component: BiomechanicalPage,
+        path: '/biomechanic/report_broken_kit',
+        component: BrokenKitReport,
         isPrivate: true,
         rolesAllowed: [],
         departmentsAllowed: [],
     },
     {
-        path: '/brokenkit',
-        component: BrokenKitReport,
+        path: '/biomechanic/view/:id',
+        component: BrokenKitView,
+        loginRequired: true,
+        rolesAllowed: [],
+        departmentsAllowed: [],
+    },
+    {
+        path: '/biomechanic',
+        component: BiomechanicalPage,
         isPrivate: true,
         rolesAllowed: [],
         departmentsAllowed: [],
@@ -187,13 +194,6 @@ const routes = [
         rolesAllowed: [],
         departmentsAllowed: [],
     },
-    {
-        path: '/bioMechView/:id',
-        component: BrokenKitView,
-        loginRequired: true,
-        rolesAllowed: [],
-        departmentsAllowed: [],
-    }
     {
         path: '/leaderboard',
         component: LeaderBoardMain,

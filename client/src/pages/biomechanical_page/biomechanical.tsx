@@ -18,11 +18,11 @@ interface BiomechanicalPageProps extends RouteComponentProps {}
 
 export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
-   const [BioReport, setBioReport] = useState([]);
-   const authState = useAuthState();
+    const [BioReport, setBioReport] = useState([]);
+    const authState = useAuthState();
 
-   const BioReportUrl = `/api/biomech/`;
-   const getBioReport = async () => {
+    const BioReportUrl = `/api/biomech/`;
+    const getBioReport = async () => {
     const res = await axios.get(BioReportUrl);
     setBioReport(res.data);
   }
@@ -57,9 +57,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                     <div className="row my-2 justify-items-center">
 
                         <div className='col-sm-6 col-md-6 col-lg-6'>
-                            <Link to={"/brokenkit"}>
+                            <Link to={"/biomechanic/report_broken_kit"}>
                                 <button type="button" className="btn btn-outline-dark">
-                                   Report Broken Kit
+                                  Report Broken Kit
                                 </button>
                             </Link>
                         </div>

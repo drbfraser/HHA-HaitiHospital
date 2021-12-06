@@ -13,7 +13,7 @@ interface BrokenKitViewProps extends RouteComponentProps {}
 
 export const BrokenKitView = (props: BrokenKitViewProps) => {
     const [BioReport, setBioReport] = useState({} as any);
-    const id = useLocation().pathname.split('/')[2];
+    const id = useLocation().pathname.split('/')[3];
     const BioReportUrl = `/api/biomech/${id}`;
   
     const getBioReport = async () => {
@@ -38,7 +38,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                     <h4 className="mt-3 mb-3 fw-bold">Broken Kit Report</h4>
                     <h6 className="fs-6 lh-base">Author: {BioReport.user ? BioReport.user.name : "[deleted]"}</h6>
                     <h6 className="fs-6 mb-5 lh-base">Date: {(new Date(BioReport.createdAt)).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })}</h6>
-                    <img src={`../${BioReport.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${BioReport.imgPath ? "d-block" : "d-none"}`} />
+                    <img src={`../../${BioReport.imgPath}`} className={`img-thumbnail img-fluid mt-3 mb-3 ${BioReport.imgPath ? "d-block" : "d-none"}`} />
                     <h6 className="fs-6 fw-bold lh-base">Equipment Name</h6>
                     <p className='fs-6 lh-base text-break'>{BioReport.equipmentName}</p>
                     <h6 className="fs-6 fw-bold lh-base">Priority of Equipment</h6>
