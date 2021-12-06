@@ -97,7 +97,7 @@ const Sidebar = (props: SidebarProps) => {
                                 <li>
                                     <NavLink to={`/department/${deptId}`} className='nav-link link-light' exact activeClassName='active'>
                                         <i className="bi bi-brightness-high-fill me-2"/>
-                                        <span className="text text-light">{deptNameEnum}</span>
+                                        <span className="text text-light">{i18n.t(deptNameEnum)}</span>
                                     </NavLink>
                                 </li>
                             );

@@ -1,4 +1,9 @@
 {
+  "NICU/Paeds": "NICU/Paeds",
+  "Maternity": "Maternity",
+  "Rehab": "Rehab",
+  "Community & Health": "Com & Health",
+
   "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
   "signInPleasePlaceHolderPassword": "Password",
