@@ -70,35 +70,37 @@ function MaternityForm() {
 
         if (true || submitValidation()) {
 
-            var object = data["Support for wife and mother"];
+            var table = data["Support for wife and mother"];
 
             var index = 0;
-            for (var key in object) {
+            for (var key in table) {
                 var totalElement = document.getElementById("tables" + 42 + index + 5);
-                object[key].total = totalElement.innerHTML;
+                table[key].Total = totalElement.innerHTML;
                 index++;
             }
 
-            object.totalVisits = {
+            table["Total visits"] = {
                 "1st Visit": 0,
                 "2nd Visit": 0,
                 "3rd Visit": 0,
                 "4th Visit": 0,
                 "5th Visit": 0,
-                "total": 0
+                "Total": 0
             };
 
             index = 0;
-            for (var key in object.totalVisits) {
+            for (var key in table["Total visits"]) {
                 var totalElement = document.getElementById("tables" + 42 + 3 + index);
-                object.totalVisits[key] = totalElement.innerHTML;
+                table["Total visits"][key] = totalElement.innerHTML;
                 index++;
             }
 
-            data.descriptions = addFormDescriptions(fields);
+            
 
             data.departmentId = 1;//3;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            data["Support for wife and mother"] = table;
+            data.descriptions = addFormDescriptions(fields);
             console.log(data);
             // await axios.post('/api/report/add', data).then(res => {
             //     console.log(res.data);
