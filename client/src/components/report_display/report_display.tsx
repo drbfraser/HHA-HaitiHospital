@@ -23,19 +23,19 @@ export const ReportDisplay = (props: ReportDisplayProps) => {
     }
   }
 
-  function startsWithCapital(word){
+  function startsWithCapital(word) {
     return word.charAt(0) === word.charAt(0).toUpperCase()
-}
+  }
 
   function mapKeyToJsx(entryKey: string, index: number, array: string[]): React.ReactNode {
     if (entryKey === "descriptions" || entryKey === "departmentId") {
       return;
     }
-    // console.log(props.descriptions);
+
     let entryValue = props.report[entryKey];
     let valueType = typeof (entryValue);
 
-    console.log(concatParent(entryKey));
+    console.log(entryKey);
 
 
     if (valueType === 'number' || valueType === 'string' || valueType === 'boolean') {
@@ -54,14 +54,14 @@ export const ReportDisplay = (props: ReportDisplayProps) => {
         descriptions={props.descriptions}
         entries={entryValue as ReportProps[]}
         edit={props.edit} />);
-    } else if(startsWithCapital(entryKey)) {
-      return(<TableEntry key={index}
-        name={props.descriptions[concatParent(entryKey)] === undefined ? entryKey : props.descriptions[concatParent(entryKey)]}
+    } else if (startsWithCapital(entryKey)) {
+      return (<TableEntry key={index}
+        name={entryKey}
         entryKey={entryKey}
         parentKey={props.parentKey}
         value={entryValue as ReportProps}
         edit={props.edit} />
-        )
+      )
     } else {
       // see an object entry as a sub-report
       return (<ObjectEntry key={index}

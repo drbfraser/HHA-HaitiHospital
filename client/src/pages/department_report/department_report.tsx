@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
@@ -7,7 +7,7 @@ import ReportDisplay from 'components/report_display/report_display';
 import { ElementStyleProps } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { CSVLink } from "react-csv";
 import { PDFExport } from '@progress/kendo-react-pdf';
 import './department_report.css'
@@ -21,16 +21,16 @@ interface UrlParams {
   id: string;
 };
 
-const DepartmentReport = (props : DepartmentReportProps) => {
+const DepartmentReport = (props: DepartmentReportProps) => {
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const { id } = useParams<UrlParams>();
   const getReportApi = `/api/report/viewreport/${id}`;
-  const [ report, setReport] = useState<ReportProps>({});
-  const [ csvData, setCsvData ] = useState<Object[]> ([]);
+  const [report, setReport] = useState<ReportProps>({});
+  const [csvData, setCsvData] = useState<Object[]>([]);
   const apiSource = Axios.CancelToken.source();
   const pdfExportComponent = useRef(null);
-  const handleExportWithComponent  = () => {
+  const handleExportWithComponent = () => {
     pdfExportComponent.current.save();
   }
 
@@ -88,7 +88,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
       if (isMounted)
         setReport(reportFromServer);
     }
-    
+
     getReport();
 
     return function cancelReqWhenUnmounted() {
@@ -121,32 +121,15 @@ const DepartmentReport = (props : DepartmentReportProps) => {
 
   return (
     <div className={getClassName()}>
-      <SideBar/>
+      <SideBar />
 
       <main className="container-fluid">
-        <Header/>
+        <Header />
         <div className='mt-2'>
 
           {/* Dept Title */}
           <section className='mt-3'>
             <h1 className="lead text-center">{t("departmentReportDisplayDepartmentNICU")}</h1>
-          </section>
-
-
-          {/* Report Details */}
-          <section className='mt-3'>
-            <div className="container w-50">
-              {
-                (Object.keys(report).length===0 ) ?
-                  <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
-                  <ReportDisplay
-                    report = {report.formData as ReportProps}
-                    parentKey= ""
-                    descriptions = {(report.formData as ReportProps)["descriptions"]}
-                    edit = {props.edit}
-                  />
-              }
-            </div>
           </section>
 
           {/* Utility buttons */}
@@ -165,7 +148,7 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                   </ul>
                 </div>
               </section>
-            :
+              :
               <section className="mt-3">
                 <div className="container w-50 text-center">
                   <ul className='row justify-content-md-center'>
@@ -176,16 +159,16 @@ const DepartmentReport = (props : DepartmentReportProps) => {
                     </li>
                     <li className='col-sm-auto'>
                       <CSVLink
-                          data={csvData} filename={id} >
+                        data={csvData} filename={id} >
                         <button
-                            className=""
-                            color="primary">
+                          className=""
+                          color="primary">
                           Download CSV
                         </button>
                       </CSVLink>
                     </li>
                     <li className='col-sm-auto'>
-                      <div  className="button-area">
+                      <div className="button-area">
                         {/*<button onClick={toggleShow}>show</button>*/}
                         <button onClick={handleExportWithComponent}>Generate PDF</button>
                       </div>
@@ -198,15 +181,17 @@ const DepartmentReport = (props : DepartmentReportProps) => {
 
           {/* Report Details */}
           <section className='mt-3' id="report">
-            <PDFExport  ref={pdfExportComponent}  paperSize="A4" fileName={id}>
+            <PDFExport ref={pdfExportComponent} paperSize="A4" fileName={id}>
               <div className="container w-50">
                 {
-                  (Object.keys(report).length===0 ) ?
-                      <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3>:
-                      <ReportDisplay
-                          report = {report.formData as ReportProps}
-                          edit = {props.edit}
-                      />
+                  (Object.keys(report).length === 0) ?
+                    <h3 className="lead">{t("departmentReportDisplayNoReportFound")}</h3> :
+                    <ReportDisplay
+                      report={report.formData as ReportProps}
+                      parentKey=""
+                      descriptions={(report.formData as ReportProps)["descriptions"]}
+                      edit={props.edit}
+                    />
                 }
               </div>
             </PDFExport>

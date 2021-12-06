@@ -34,36 +34,6 @@ export const ObjectEntry = (props: ObjectEntryProps) => {
         </>
       }</>
     </div>
-    // <div className={`entry object-entry accordion my-2 ${props.classes || ''}`}
-    //   id={`object_entry_${props.name}`}>
-    //   <div className="accordion-item">
-    //     <div className="accordion-header h3-small">
-    //       <button 
-    //         className="accordion-button" 
-    //         type='button'
-    //         data-bs-toggle='collapse'
-    //         data-bs-target={`#collapse_${props.name}`}
-    //         >
-    //         { props.name }
-    //       </button>
-    //     </div>
-    //     <div className="accordion-collapse collapse"
-    //       id={`collapse_${props.name}`}
-    //       data-bs-parent={`#object_entry_${props.name}`}
-    //     >
-    //       <div className="accordion-body text-dark h4-small">
-    //         <>{
-    //           <>{'\t'}
-    //           <ReportDisplay report={props.value}
-    //             parentKey={concatParent(props.entryKey)}
-    //             descriptions={props.descriptions}
-    //             edit={props.edit}/>
-    //           </>
-    //         }</>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
 

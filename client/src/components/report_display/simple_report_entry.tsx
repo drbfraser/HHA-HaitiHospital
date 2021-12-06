@@ -19,6 +19,11 @@ export const SimpleEntry = (props: SimpleEntryProps) => {
       return `entry simple-entry ${props.classes}`
   }
 
+  function startsWithCapital(word) {
+    return word.charAt(0) === word.charAt(0).toUpperCase()
+  }
+
+
   if (props.edit === true)
     return (
       <div className={`${getClassName()} row my-2 input-group`}>
@@ -38,12 +43,22 @@ export const SimpleEntry = (props: SimpleEntryProps) => {
             <div className="col-sm-2"> {`${props.value as string}`}</div>
           </div>
           :
-          <div className={`${getClassName()} row my-2 text-dark`}>
-            <div className="col-sm-10 strong ps-5">
-              {`${props.name}`}
+          startsWithCapital(props.parentKey) ?
+            <div className={`${getClassName()} row my-2 text-dark`}>
+              <div className="col-sm-10 strong ps-5">
+                <div className="ps-5">
+                  {`${props.name}`}
+                </div>
+              </div>
+              <div className="col-sm-2"> {`${props.value as string}`}</div>
             </div>
-            <div className="col-sm-2"> {`${props.value as string}`}</div>
-          </div>
+            :
+            <div className={`${getClassName()} row my-2 text-dark`}>
+              <div className="col-sm-10 strong ps-5">
+                {`${props.name}`}
+              </div>
+              <div className="col-sm-2"> {`${props.value as string}`}</div>
+            </div>
         }
       </div>
 

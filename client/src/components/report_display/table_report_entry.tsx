@@ -22,12 +22,17 @@ export const TableEntry = (props: TableEntryProps) => {
         }
     }
 
+    function replaceDotProperty(text: string) {
+        text = text.replaceAll("(DOT)", ".");
+        return text;
+    }
+
     return (
         <div>
             {props.parentKey === "" ?
                 <div>
                     <div className="col-sm-10 strong font-weight-bold">
-                        {props.entryKey}
+                        {replaceDotProperty(props.entryKey)}
                     </div>
                     <div>
                         <>{'\t'}
@@ -42,7 +47,7 @@ export const TableEntry = (props: TableEntryProps) => {
                 :
                 <div>
                     <div className="col-sm-10 strong font-weight-bold ps-5">
-                        {props.entryKey}
+                        {replaceDotProperty(props.entryKey)}
                     </div>
                     <div>
                         <>{'\t'}
@@ -54,40 +59,10 @@ export const TableEntry = (props: TableEntryProps) => {
 
                     </div>
                 </div>
-        }
+            }
 
 
         </div>
-        // <div className={`entry object-entry accordion my-2 ${props.classes || ''}`}
-        //   id={`object_entry_${props.name}`}>
-        //   <div className="accordion-item">
-        //     <div className="accordion-header h3-small">
-        //       <button 
-        //         className="accordion-button" 
-        //         type='button'
-        //         data-bs-toggle='collapse'
-        //         data-bs-target={`#collapse_${props.name}`}
-        //         >
-        //         { props.name }
-        //       </button>
-        //     </div>
-        //     <div className="accordion-collapse collapse"
-        //       id={`collapse_${props.name}`}
-        //       data-bs-parent={`#object_entry_${props.name}`}
-        //     >
-        //       <div className="accordion-body text-dark h4-small">
-        //         <>{
-        //           <>{'\t'}
-        //           <ReportDisplay report={props.value}
-        //             parentKey={concatParent(props.entryKey)}
-        //             descriptions={props.descriptions}
-        //             edit={props.edit}/>
-        //           </>
-        //         }</>
-        //       </div>
-        //     </div>
-        //   </div>
-        // </div>
     );
 }
 

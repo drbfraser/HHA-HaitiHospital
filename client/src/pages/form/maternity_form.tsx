@@ -68,7 +68,7 @@ function MaternityForm() {
             return;
         }
 
-        if (true || submitValidation()) {
+        if (submitValidation()) {
 
             var table = data["Support for wife and mother"];
 
@@ -97,18 +97,20 @@ function MaternityForm() {
 
             
 
-            data.departmentId = 1;//3;
+            data.departmentId = 3;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
+            data.diedBefore48hr.total = patientStateBefore;
+            data.diedAfter48hr.total = patientStateAfter;
             data["Support for wife and mother"] = table;
             data.descriptions = addFormDescriptions(fields);
             console.log(data);
-            // await axios.post('/api/report/add', data).then(res => {
-            //     console.log(res.data);
-            // }).catch(error => {
-            //     console.error('Something went wrong!', error.response);
-            // });
-            // reset({});
-            // history.push("/Department2Maternity");
+            await axios.post('/api/report/add', data).then(res => {
+                console.log(res.data);
+            }).catch(error => {
+                console.error('Something went wrong!', error.response);
+            });
+            reset({});
+            history.push("/Department2Maternity");
 
         } else {
             alert("Some fields contain invalid values");
@@ -967,7 +969,7 @@ function MaternityForm() {
                                                         <span className="align-middle">{i}. {field.field_label}</span>
                                                     </div>
                                                     <div id={"inputs" + i} className="col-sm-2">
-                                                        <input type="text" className="form-control" placeholder=""
+                                                        <input type="text" className="form-control"
                                                             {...register(field.field_id)}
                                                             onBlur={() => inputValidation(i)}
                                                             onChange={(event) => handleListInput(field, event, i)}
