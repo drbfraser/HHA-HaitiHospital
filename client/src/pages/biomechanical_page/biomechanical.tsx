@@ -17,7 +17,6 @@ interface BiomechanicalPageProps extends ElementStyleProps {
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
 export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
-    const {t} = useTranslation();
     const { t } = useTranslation();
     const [BioReport, setBioReport] = useState([]);
     const authState = useAuthState();
