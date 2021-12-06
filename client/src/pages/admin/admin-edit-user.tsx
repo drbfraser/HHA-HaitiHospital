@@ -27,7 +27,7 @@ export const EditUserForm = (props: AdminProps) => {
   const failureMessageRef = useRef(null); 
   const history = useHistory();
   const {t} = useTranslation();
-  const id = useLocation().pathname.split('/')[2];
+  const id = useLocation().pathname.split('/')[3];
   const userUrl = `/api/users/${id}`;
 
   const getUser = async () => {
