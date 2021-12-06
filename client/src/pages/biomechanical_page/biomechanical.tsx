@@ -9,6 +9,7 @@ import { renderBasedOnRole } from "actions/roleActions"
 import "./biomechanical.css";
 import {useTranslation} from "react-i18next";
 import { useAuthState } from "Context";
+import i18n from "i18next";
 
 
 interface BiomechanicalPageProps extends ElementStyleProps {
@@ -29,7 +30,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   const deleteCaseStudy = async (id) => {
     try {
-      if (!window.confirm('Are you sure you want to delete this Bio report?')) {
+      if (!window.confirm(i18n.t("bioSupportAlertDeleteAlert"))) {
         throw new Error("Deletion cancelled")
       }
       const res = await axios.delete(BioReportUrl + '/' + id);
