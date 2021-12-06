@@ -68,7 +68,7 @@ function MaternityForm() {
             return;
         }
 
-        if (submitValidation()) {
+        if (true || submitValidation()) {
 
             var object = data["Support for wife and mother"];
 
@@ -95,18 +95,18 @@ function MaternityForm() {
                 index++;
             }
 
-            data.decriptions = addFormDescriptions(fields);
+            data.descriptions = addFormDescriptions(fields);
 
-            data.departmentId = 3;
+            data.departmentId = 1;//3;
             data.admissions.comeFrom.otherDepartments = formValuesComeFrom;
-
-            await axios.post('/api/report/add', data).then(res => {
-                console.log(res.data);
-            }).catch(error => {
-                console.error('Something went wrong!', error.response);
-            });
-            reset({});
-            history.push("/Department2Maternity");
+            console.log(data);
+            // await axios.post('/api/report/add', data).then(res => {
+            //     console.log(res.data);
+            // }).catch(error => {
+            //     console.error('Something went wrong!', error.response);
+            // });
+            // reset({});
+            // history.push("/Department2Maternity");
 
         } else {
             alert("Some fields contain invalid values");
