@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 import { ReportProps} from 'constants/interfaces';
 import { SimpleEntry } from 'components/report_display/simple_report_entry';
@@ -35,7 +36,7 @@ export const ReportDisplay = (props: ReportDisplayProps) => {
     let entryValue = props.report[entryKey];
     let valueType = typeof (entryValue);
 
-    console.log(entryKey);
+    // console.log(entryKey);
 
 
     if (valueType === 'number' || valueType === 'string' || valueType === 'boolean') {
