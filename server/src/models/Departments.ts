@@ -17,19 +17,16 @@ export enum DepartmentId {
 }
 
 export function getDepartmentName(deptId: number): DepartmentName {
+
   switch (deptId) {
       case 0:
           return DepartmentName.Rehab;
-
-      case 1:
+      case 1: 
           return DepartmentName.NicuPaeds;
-      
       case 2:
           return DepartmentName.CommunityHealth;
-
       case 3:
           return DepartmentName.Maternity;
-
       default:
           throw new Error("Invalid department id");
   }  

@@ -7,16 +7,16 @@ This is the CMPT 373 Haumea's team project for Hope Health Action. This project 
 ### Features
 - Message board (viewing and adding messages)
 - Clean User Interface
-- Sidebar navigation
+- Sidebar Navigation
 - Page Route Protection based on Role and Department of User
     - Dynamic Page Rendering based on Role and Department of User
 - API JWT Authentication/Authorization
 - Account Management and Admin Dashboard for User Management
 - French Translation
-- Report Submission/Viewing/Editing for all Departments
+- Report Submission/Viewing for all Departments
 - Database Routing/Structures
 - Structured Report Models for each Department
-- Multiple Report deletion and Aggregation/Report Merging
+- Multiple Report Deletion and Aggregation/Report Merging
 - CSV and PDF Export Functionality
 - Case Studies Submissions and Display
 - Biomechanical Issues Report Submissions and Display
@@ -26,6 +26,8 @@ This is the CMPT 373 Haumea's team project for Hope Health Action. This project 
 - Backend Coupling Resolution between API Routing and Backend Logic
 - Frontend Coupling Resolution for API Calls and Business Logic
 - Dynamic Form Creation/Data Rendering 
+- Editing Report For Department
+- Dispayling Report Aggregation
 - Automatic Unit Testing/Integration
 - Creole Translation
 - Reminder system for Department Report Submission based on time

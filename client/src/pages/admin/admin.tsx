@@ -5,6 +5,7 @@ import Header from 'components/header/header'
 import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import './admin.css'
+import DbErrorHandler from 'actions/http_error_handler';
 
 interface AdminProps extends ElementStyleProps {
 };
@@ -19,7 +20,7 @@ const Admin = (props : AdminProps) => {
       const res = await axios.get(usersUrl);
       setUsers(res.data);
     } catch (err) {
-      console.log(err);
+      DbErrorHandler(err, history);
     }
   }
 
@@ -30,8 +31,9 @@ const Admin = (props : AdminProps) => {
       }
       const res = await axios.delete(usersUrl + '/' + id);
       getUsers();
+      alert("User deleted");
     } catch (err) {
-      console.log(err);
+      DbErrorHandler(err, history);
     }
   }
 

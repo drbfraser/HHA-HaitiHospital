@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
-import { ElementStyleProps } from "../../constants/interfaces";
+import { ElementStyleProps, getDepartmentId } from "../../constants/interfaces";
 import './side_bar.css';
 import { useAuthState } from 'Context';
 import { useTranslation } from 'react-i18next';
@@ -27,17 +27,10 @@ const Sidebar = (props: SidebarProps) => {
         return true;
     }
 
-    function getClassName() {
-        if (props.classes === undefined) 
-            return "Sidebar";
-        else 
-            return `Sidebar ${props.classes} `
-    }
-
     const {t, i18n} = useTranslation();
 
     return (
-        <div className={getClassName()}>
+        <div className={"Sidebar"}>
             <div className="bg-dark">
                 <div className="sidebar_logo">
                     <div className="text-center" style={{width: 190}}>
@@ -94,49 +87,24 @@ const Sidebar = (props: SidebarProps) => {
                         }
                     </li>
 
-                    <li>
-                        {
-                            renderDeptIfUserInDept(DepartmentName.NicuPaeds) ? (
-                                <NavLink to="/Department1NICU" className="nav-link link-light" exact activeClassName="active">
-                                    <i className="bi bi-brightness-high-fill me-2"/>
-                                    <span className="text text-light">{DepartmentName.NicuPaeds}</span>
-                                </NavLink>
-                            ) : (<div></div>)
-                        }
-                    </li>
-                    <li>
-                        {
-                            renderDeptIfUserInDept(DepartmentName.Maternity) ? (
-                                <NavLink to="/Department2Maternity" className="nav-link link-light" exact activeClassName="active">
-                                    <i className="bi bi-heart-fill me-2"/>
-                                    <span className="text text-light">{DepartmentName.Maternity}</span>
-                                </NavLink>
-                            ) : (<div></div>)
-                        }
-                    </li>
-                    <li>
-                        {
-                            renderDeptIfUserInDept(DepartmentName.Rehab) ? (
-                                <NavLink to="/Department3Rehab" className="nav-link link-light" exact activeClassName="active">
-                                    <i className="bi bi-bootstrap-reboot me-2"/>
-                                    <span className="text text-light">{DepartmentName.Rehab}</span>
-                                </NavLink>
-                            ) : (<div></div>)
-                        }
-                    </li>
-                    <li>
-                        {
-                            renderDeptIfUserInDept(DepartmentName.CommunityHealth) ? (
-                                <NavLink to="/Department4ComHealth" className="nav-link link-light" exact activeClassName="active">
-                                    <i className="bi bi-headset me-2"/>
-                                    {/* TODO: Use DepartmentName.CommunityHealth enum for the text in the sidebar.
-                                    Problem: Text is too long */}
-                                    <span className="text text-light">Com & Health</span>
-                                </NavLink>
-                            ) : (<div></div>)
-                        }
-                    </li>
+                    { Object.keys(DepartmentName).map((deptName) => {
+                        const deptNameEnum = DepartmentName[deptName];
+                        const deptId = getDepartmentId(deptNameEnum);
 
+                        if (renderDeptIfUserInDept(deptNameEnum) === true)
+                            return (
+                                <li>
+                                    <NavLink to={`/department/${deptId}`} className='nav-link link-light' exact activeClassName='active'>
+                                        <i className="bi bi-brightness-high-fill me-2"/>
+                                        <span className="text text-light">{deptNameEnum}</span>
+                                    </NavLink>
+                                </li>
+                            );
+                        else  
+                            return <></>
+                    })}
+ 
+    
                     <li className="border-top my-2"/>
                         {
                             renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (                 

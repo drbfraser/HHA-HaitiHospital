@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { useState } from "react";
+import { RouteComponentProps, Link, useHistory } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
@@ -8,6 +8,7 @@ import {BiomechModel, bioMechEnum}  from "./BiomechModel"
 import axios from 'axios';
 import "./broken_kit_report.css";
 import {useTranslation} from "react-i18next";
+import DbErrorHandler from "actions/http_error_handler";
 
 interface BrokenKitReport extends ElementStyleProps {
 }
@@ -17,9 +18,8 @@ interface BrokenKitReport extends RouteComponentProps {}
 export const BrokenKitReport = (props: BrokenKitReport) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
-  const [submissionStatus, setSubmissionStatus] = useState("");
   const { register, handleSubmit, reset } = useForm<BiomechModel>({});
-  const failureMessageRef = useRef(null);
+  const history = useHistory();
 
   const onSubmit = (data: any) => {
     var formData = new FormData();
@@ -34,9 +34,7 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
       setSelectedFile(null);
       props.history.push("/biomechanic");
     }).catch(error =>{
-      console.error('Something went wrong!', error.message);
-      setSubmissionStatus("failure");
-      failureMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+      DbErrorHandler(error, history);
     });
 
   }

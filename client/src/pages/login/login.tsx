@@ -1,5 +1,4 @@
 import { RouteComponentProps } from "react-router-dom";
-import { ElementStyleProps } from 'constants/interfaces';
 import { loginUser } from "../../actions/authActions";
 import { useFormik } from 'formik';
 // import { loginSchema } from './validation';
@@ -13,7 +12,7 @@ import {useTranslation} from "react-i18next";
 import {changeLanguage} from "../../components/side_bar/side_bar";
 
 
-interface LoginProps extends ElementStyleProps {
+interface LoginProps  {
 };
 
 interface LoginProps extends RouteComponentProps {}
@@ -66,7 +65,7 @@ const Login = (props : LoginProps) => {
     });
 
     return(
-        <div className={'login '+ (props.classes||'')}>
+        <div className={'login'}>
             <img className="login-logo user-select-none" src={logo} alt="logo logo"/>
             <h4 className="text-center mt-4 mb-4 user-select-none fw-bold">{t("signInPleaseSignIn")}</h4>
             <form className="mb-5" onSubmit={formik.handleSubmit}>

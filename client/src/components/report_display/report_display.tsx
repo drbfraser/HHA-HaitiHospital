@@ -1,12 +1,13 @@
 import React from 'react';
+import { useEffect } from 'react';
 
-import { ElementStyleProps, ReportProps } from 'constants/interfaces';
+import { ReportProps} from 'constants/interfaces';
 import { SimpleEntry } from 'components/report_display/simple_report_entry';
 import { ArrayEntry } from 'components/report_display/array_report_entry';
 import { ObjectEntry } from 'components/report_display/object_report_entry';
 import { TableEntry } from './table_report_entry';
 
-interface ReportDisplayProps extends ElementStyleProps {
+interface ReportDisplayProps {
   report: ReportProps;
   parentKey: string;
   descriptions: Object;
@@ -35,7 +36,7 @@ export const ReportDisplay = (props: ReportDisplayProps) => {
     let entryValue = props.report[entryKey];
     let valueType = typeof (entryValue);
 
-    console.log(entryKey);
+    // console.log(entryKey);
 
 
     if (valueType === 'number' || valueType === 'string' || valueType === 'boolean') {
@@ -75,9 +76,7 @@ export const ReportDisplay = (props: ReportDisplayProps) => {
   }
 
   return (
-    <div className={'report-display my-4' + (props.classes || '')}
-      id='report_display'
-    >
+    <div className={'report-display'} id='report_display'>
       {
         Object.keys(props.report).map(mapKeyToJsx)
       }

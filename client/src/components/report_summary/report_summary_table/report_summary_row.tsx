@@ -1,12 +1,13 @@
 import React, {SyntheticEvent, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
-import { ElementStyleProps} from 'constants/interfaces';
+import { ElementStyleProps, getDepartmentName} from 'constants/interfaces';
 import {TickList, TickObserver} from 'components/report_summary/report_summary_table/tick_list'
 import {useTranslation} from "react-i18next";
 
 interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
+  deptId: number;
   lastUpdatedOn: Date;
   lastUpdatedBy: string;
   isTicked: boolean;
@@ -25,15 +26,18 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
 
   return (
     <tr id={`rp-sum-row-${props.reportId}`}>
-      <th scope='row'>
-        <Link to={`/Department1NICU/detailed_report/view/${props.reportId}`}>
+      <td>
+        <Link to={`/department/${props.deptId}/view/${props.reportId}`}>
           { props.reportId }
         </Link>
-      </th>
+      </td>
+      <td>
+          {getDepartmentName(props.deptId)}
+      </td>
       <td>{ props.lastUpdatedOn.toDateString() }</td>
       <td>{ props.lastUpdatedBy }</td>
       <td>
-        <Link to={`/Department1NICU/detailed_report/edit/${props.reportId}`}>
+        <Link to={`/department/${props.deptId}/edit/${props.reportId}`}>
           <button className="btn btn-small btn-primary">{t("departmentPageEdit")}</button>
         </Link>
       </td>

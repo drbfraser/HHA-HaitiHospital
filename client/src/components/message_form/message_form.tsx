@@ -51,7 +51,6 @@ function MessageForm(props: MessageFormProps) {
         props.submitAction(data);
 
         reset();
-        history.push('/message-board')
     }
     const {t, i18n} = useTranslation();
     

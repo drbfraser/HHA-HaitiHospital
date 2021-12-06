@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { RouteComponentProps, useLocation, Link } from "react-router-dom";
-import { ElementStyleProps } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header'
 import axios from 'axios';
 import { CaseStudyOptions, CaseStudyModel } from '../case_study_forms/CaseStudies';
 import {useTranslation} from "react-i18next";
-
-interface CaseStudyViewProps extends ElementStyleProps {
-}
 
 interface CaseStudyViewProps extends RouteComponentProps {}
 
@@ -29,7 +25,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
   const {t: translateText} = useTranslation();
 
   return (
-    <div className={"case-study-main "+ props.classes}>
+    <div className={"case-study-main"}>
       <SideBar/>
       <main className="container-fluid main-region">
         <Header/>

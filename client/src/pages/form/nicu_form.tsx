@@ -85,7 +85,7 @@ function DynamicForm() {
                 console.error('Something went wrong!', error.response);
             });
 
-            history.push("/Department1NICU");
+            history.goBack();
 
         } else {
             window.scrollTo(0, 0);
@@ -578,7 +578,7 @@ function DynamicForm() {
 
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
-                        history.push("/Department1NICU");
+                        history.goBack();
                     }}>Back</button>
                 </div>
 

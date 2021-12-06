@@ -110,7 +110,7 @@ function MaternityForm() {
                 console.error('Something went wrong!', error.response);
             });
             reset({});
-            history.push("/Department2Maternity");
+            history.goBack();
 
         } else {
             alert("Some fields contain invalid values");
@@ -707,7 +707,7 @@ function MaternityForm() {
 
                 <div className="d-flex justify-content-start">
                     <button type="button" className="btn btn-primary btn-sm" onClick={() => {
-                        history.push("/Department1NICU");
+                        history.goBack();
                     }}>Back</button>
                 </div>
 
