@@ -101,6 +101,18 @@ $ npm start
 $ npm i --legacy-peer-deps
 ```
 
+### Prettier Setup
+
+- Install Prettier as a VSCode extension
+- Navigate to the root directory
+- Run the following commands to install and use prettier on the whole directory
+- Pressing CTRL S in a file will run prettier on that single file
+
+```
+$ npm install --global prettier
+$ prettier --write
+```
+
 ### Docker Setup
 
 - To run the docker containers, run the following commands from the root directory
