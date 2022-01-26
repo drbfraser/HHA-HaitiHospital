@@ -18,6 +18,6 @@ router.use('/leaderboard', leaderboardRouter);
 router.use('/biomech', biomechRouter);
 
 //TODO: Might have to change messageBoard routing based on dashboard and where it needs to go
-router.use('/messageBoard',messageBoardRoutes);
+router.use('/messageBoard', messageBoardRoutes);
 
 export default router;

@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-      "outDir": "./dist",
-      "allowJs": true,
-      "module": "commonjs",
-      "target": "es5",
-      "rootDir": "./",
-      "moduleResolution": "node",
-      "esModuleInterop": true,
-      "strict": false,
-      "noImplicitAny": false,
-      "strictNullChecks": false,
-      "downlevelIteration": true
+    "outDir": "./dist",
+    "allowJs": true,
+    "module": "commonjs",
+    "target": "es5",
+    "rootDir": "./",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "downlevelIteration": true
   },
-      "include": [
-      "./src/**/*",
-      "./security/*"
-  ]
+  "include": ["./src/**/*", "./security/*"]
 }

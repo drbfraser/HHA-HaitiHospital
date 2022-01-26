@@ -20,10 +20,10 @@ router.post('/login', requireLocalAuth, (req: Request, res: Response) => {
 });
 
 router.post('/register', async (req: Request, res: Response, next: NextFunction) => {
-  const someJoi : any = Joi;
+  const someJoi: any = Joi;
   const { error } = someJoi.validate(req.body, registerSchema);
   if (error) {
-    console.error("Failed registration validation")
+    console.error('Failed registration validation');
     return res.status(422).send({ success: false, message: error.details[0].message });
   }
 
@@ -43,7 +43,7 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
         // email,
         username,
         password,
-        name,
+        name
         // avatar: faker.image.avatar(),
       });
 

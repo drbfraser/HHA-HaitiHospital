@@ -16,11 +16,11 @@ export const seedDb = async () => {
   seedCaseStudies();
   seedDepartments();
   await MessageBody.deleteMany({});
-//   seedMessageBoard();
+  //   seedMessageBoard();
   seedLeaderboard();
 };
 
-export const seedUsers = async() => {
+export const seedUsers = async () => {
   console.log('Seeding users...');
 
   try {
@@ -30,7 +30,7 @@ export const seedUsers = async() => {
       var foundUser = await User.findOne({ username: `user${index}` });
       if (foundUser) {
         switch (index) {
-          case 0: 
+          case 0:
             foundUser.role = Role.Admin;
             foundUser.department = undefined;
             break;
@@ -62,13 +62,11 @@ export const seedUsers = async() => {
             break;
         }
         foundUser.save();
-
       } else {
-
         const user = new User({
           username: `user${index}`,
           password: '123456789',
-          name: faker.name.findName(),
+          name: faker.name.findName()
         });
 
         switch (index) {
@@ -110,10 +108,10 @@ export const seedUsers = async() => {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-export const seedDepartments = async() => {
-  console.log("Seeding default departments...");
+export const seedDepartments = async () => {
+  console.log('Seeding default departments...');
 
   let dateTime: Date = new Date();
   var month: number = dateTime.getUTCMonth() + 1;
@@ -126,22 +124,21 @@ export const seedDepartments = async() => {
 
   // NICU/Paeds Department Default value creation:
   var departmentId: number = 1;
-  var departmentName: string = "nicupaeds";
-  const originalNicuPaedsDocument = new NicuPaeds({departmentId,departmentName,month,year});
+  var departmentName: string = 'nicupaeds';
+  const originalNicuPaedsDocument = new NicuPaeds({ departmentId, departmentName, month, year });
   await originalNicuPaedsDocument.save();
-
 
   //TODO Community
   departmentId = 2;
-  departmentName = "community";
-  const originalCommunityDocument = new Community({departmentId,departmentName, month, year});
+  departmentName = 'community';
+  const originalCommunityDocument = new Community({ departmentId, departmentName, month, year });
   await originalCommunityDocument.save();
 
-  console.log("Default departments seeded");
-}
+  console.log('Default departments seeded');
+};
 
 export const seedMessageBoard = async () => {
-  console.log('Seeding message board...')
+  console.log('Seeding message board...');
   await MessageBody.deleteMany({});
 
   // add 3 messages
@@ -152,7 +149,7 @@ export const seedMessageBoard = async () => {
     name: faker.name.findName(),
     date: new Date(),
     messageBody: 'Everyone will get the day off on December 25th. Thank you.',
-    messageHeader: 'Christmas',
+    messageHeader: 'Christmas'
   });
 
   const message2 = new MessageBody({
@@ -162,7 +159,7 @@ export const seedMessageBoard = async () => {
     name: faker.name.findName(),
     date: new Date(),
     messageBody: 'Welcome to the message board!',
-    messageHeader: 'Welcome',
+    messageHeader: 'Welcome'
   });
 
   const message3 = new MessageBody({
@@ -172,61 +169,61 @@ export const seedMessageBoard = async () => {
     name: faker.name.findName(),
     date: new Date(),
     messageBody: 'The case study is due this Friday. Please submit the case study form before the deadline',
-    messageHeader: 'Case study due',
+    messageHeader: 'Case study due'
   });
 
   message1.save();
   message2.save();
   message3.save();
   console.log('Message board seeded');
-}
+};
 
 export const seedCaseStudies = async () => {
-  console.log('Seeding case studies...')
+  console.log('Seeding case studies...');
 
   try {
     await CaseStudy.deleteMany({});
-  
+
     const users = await User.find();
     users.map(async (user, index) => {
       var caseStudy;
       switch (user.username) {
-        case "user2":
+        case 'user2':
           caseStudy = new CaseStudy({
             caseStudyType: CaseStudyOptions.PatientStory,
             user: user.id,
             userDepartment: user.department,
-            imgPath: "public/images/case1.jpg",
+            imgPath: 'public/images/case1.jpg',
             patientStory: {
               patientsName: faker.name.findName(),
-              patientsAge: faker.random.number({ 'min': 10, 'max': 50 }),
+              patientsAge: faker.random.number({ min: 10, max: 50 }),
               whereIsThePatientFrom: faker.lorem.words(),
               whyComeToHcbh: faker.lorem.sentences(),
               howLongWereTheyAtHcbh: faker.lorem.words(),
               diagnosis: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10),
+              caseStudyStory: faker.lorem.paragraph(10)
             }
           });
           caseStudy.save();
           break;
-        case "user3":
+        case 'user3':
           caseStudy = new CaseStudy({
             caseStudyType: CaseStudyOptions.StaffRecognition,
             user: user.id,
             userDepartment: user.department,
-            imgPath: "public/images/case2.jpg",
+            imgPath: 'public/images/case2.jpg',
             staffRecognition: {
               staffName: faker.name.findName(),
               jobTitle: faker.lorem.words(),
               department: faker.lorem.words(),
               howLongWorkingAtHcbh: faker.lorem.words(),
               mostEnjoy: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10),
+              caseStudyStory: faker.lorem.paragraph(10)
             }
           });
           caseStudy.save();
           break;
-        case "user4":
+        case 'user4':
           caseStudy = new CaseStudy({
             caseStudyType: CaseStudyOptions.TrainingSession,
             user: user.id,
@@ -237,12 +234,12 @@ export const seedCaseStudies = async () => {
               whoConducted: faker.name.findName(),
               whoAttended: faker.name.findName(),
               benefitsFromTraining: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10),
+              caseStudyStory: faker.lorem.paragraph(10)
             }
           });
           caseStudy.save();
           break;
-        case "user5":
+        case 'user5':
           caseStudy = new CaseStudy({
             caseStudyType: CaseStudyOptions.EquipmentReceived,
             user: user.id,
@@ -253,7 +250,7 @@ export const seedCaseStudies = async () => {
               whoSentEquipment: faker.name.findName(),
               purchasedOrDonated: faker.lorem.words(),
               whatDoesEquipmentDo: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10),
+              caseStudyStory: faker.lorem.paragraph(10)
             }
           });
           caseStudy.save();
@@ -262,21 +259,21 @@ export const seedCaseStudies = async () => {
           break;
       }
     });
-  
+
     console.log('Case studies seeded');
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-export const seedLeaderboard = async() => {
+export const seedLeaderboard = async () => {
   console.log('Seeding leaderboard...');
   try {
     await Department.deleteMany({});
     for (let key in DepartmentName) {
       let departmentName = DepartmentName[key];
       const department = new Department({
-        name: departmentName,
+        name: departmentName
       });
       department.save();
     }
@@ -284,4 +281,4 @@ export const seedLeaderboard = async() => {
   } catch (err) {
     console.log(err);
   }
-}
+};

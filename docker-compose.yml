@@ -14,7 +14,7 @@ services:
       - /usr/src/app/dist
     depends_on:
       - mongodb
-    env_file: 
+    env_file:
       - ./server/.env
   mongodb:
     network_mode: host
@@ -35,7 +35,7 @@ services:
     depends_on:
       - server
     stdin_open: true # docker run -i
-    tty: true        # docker run -t
+    tty: true # docker run -t
 
 volumes:
   db:

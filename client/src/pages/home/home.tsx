@@ -1,36 +1,29 @@
-import React, { useEffect } from "react"
-import SideBar from 'components/side_bar/side_bar'
-import Header from 'components/header/header'
-import DashboardLeaderOverview from "../../components/dashboard_leader_overview/dashboard_leader_overview";
-import DashboardMessageOverview from "components/dashboard_message_overview/dashboard_message_overview"
-import './home.css'
-import {useTranslation} from "react-i18next";
+import React, { useEffect } from 'react';
+import SideBar from 'components/side_bar/side_bar';
+import Header from 'components/header/header';
+import DashboardLeaderOverview from '../../components/dashboard_leader_overview/dashboard_leader_overview';
+import DashboardMessageOverview from 'components/dashboard_message_overview/dashboard_message_overview';
+import './home.css';
+import { useTranslation } from 'react-i18next';
 
-interface HomeProps {
-}
+interface HomeProps {}
 
-
-const Home = (props : HomeProps) => {
-
-    return (
+const Home = (props: HomeProps) => {
+  return (
     <div className={`home`}>
-        <SideBar/>
+      <SideBar />
 
-        {/* <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4"> */}
-        <main className='container-fluid main-region'>
-            <Header/>
-            <DashboardLeaderOverview/>
-            <DashboardMessageOverview/>
-        </main>
-
+      {/* <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4"> */}
+      <main className="container-fluid main-region">
+        <Header />
+        <DashboardLeaderOverview />
+        <DashboardMessageOverview />
+      </main>
     </div>
   );
-}
+};
 
 export default Home;
-
-
-
 
 // Commented out during JS to TS for future reference
 // import React from 'react';

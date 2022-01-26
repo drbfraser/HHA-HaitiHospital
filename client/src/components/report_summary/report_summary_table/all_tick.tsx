@@ -1,42 +1,41 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 
-import {ElementStyleProps} from 'constants/interfaces';
+import { ElementStyleProps } from 'constants/interfaces';
 
 interface AllTickProps extends ElementStyleProps {
-    tickTracker : {[rid: string] : boolean},
-    notifyTable(ticked : boolean) : void,
+  tickTracker: { [rid: string]: boolean };
+  notifyTable(ticked: boolean): void;
 }
 
-function isAllTicked(tickTracker: {[rid: string] : boolean}) {
-    // console.log(tickTracker)
-    const values = Object.values(tickTracker);
-    return !(values.includes(false))
+function isAllTicked(tickTracker: { [rid: string]: boolean }) {
+  // console.log(tickTracker)
+  const values = Object.values(tickTracker);
+  return !values.includes(false);
 }
 
 const AllTick = (props: AllTickProps) => {
-    const [isTicked, setTicked] = useState<boolean>(isAllTicked(props.tickTracker));
+  const [isTicked, setTicked] = useState<boolean>(isAllTicked(props.tickTracker));
 
-    useEffect(() => {
-        setTicked(isAllTicked(props.tickTracker));
-    }, [props.tickTracker])
-    
-    return (
+  useEffect(() => {
+    setTicked(isAllTicked(props.tickTracker));
+  }, [props.tickTracker]);
+
+  return (
     <div className="form-check">
-        <input className="form-check-input"
-            type="checkbox"
-            id='tick-all'
-            checked={isTicked}
+      <input
+        className="form-check-input"
+        type="checkbox"
+        id="tick-all"
+        checked={isTicked}
+        onChange={(e: SyntheticEvent) => {
+          const target = e.target as HTMLInputElement;
+          props.notifyTable(target.checked);
+        }}
+      />
 
-            onChange = {(e: SyntheticEvent) => {
-                const target = e.target as HTMLInputElement;
-                props.notifyTable(target.checked);
-            }}
-        />
-
-        <label className="form-check-label" htmlFor="tick-all">
-        </label>
+      <label className="form-check-label" htmlFor="tick-all"></label>
     </div>
-    );
-}
+  );
+};
 
 export default AllTick;

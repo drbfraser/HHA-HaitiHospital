@@ -10,10 +10,10 @@ import { DepartmentName } from './Departments';
 const { Schema } = mongoose;
 
 export enum Role {
-  Admin = "Admin",
-  MedicalDirector = "Medical Director",
-  HeadOfDepartment = "Head of Department",
-  User = "User",
+  Admin = 'Admin',
+  MedicalDirector = 'Medical Director',
+  HeadOfDepartment = 'Head of Department',
+  User = 'User'
 }
 
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
@@ -35,19 +35,19 @@ const userSchema = new Schema<User>(
       unique: true,
       required: [true, "can't be blank"],
       match: [/^[a-zA-Z0-9_]+$/, 'is invalid'],
-      index: true,
+      index: true
     },
     password: {
       type: String,
       trim: true,
       minlength: 6,
-      maxlength: 60,
+      maxlength: 60
     },
     name: String,
     role: { type: String, default: Role.User },
     department: { type: DepartmentName }
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 userSchema.methods.toJSON = function () {
@@ -58,7 +58,7 @@ userSchema.methods.toJSON = function () {
     role: this.role,
     department: this.department,
     createdAt: this.createdAt,
-    updatedAt: this.updatedAt,
+    updatedAt: this.updatedAt
   };
 };
 
@@ -74,7 +74,7 @@ userSchema.methods.generateJWT = function () {
       name: this.name,
       role: this.role
     },
-    secretOrKey,
+    secretOrKey
   );
   return token;
 };
@@ -113,43 +113,20 @@ export async function hashPassword(password) {
 }
 
 export const validateUserSchema = Joi.object().keys({
-  username: Joi.string()
-    .alphanum()
-    .min(2)
-    .max(20)
-    .required(),
-  password: Joi.string()
-    .min(6)
-    .max(20)
-    .required(),
-  name: Joi.string()
-    .min(2)
-    .max(30)
-    .required(),
-  role: Joi.string()
-    .required(),
+  username: Joi.string().alphanum().min(2).max(20).required(),
+  password: Joi.string().min(6).max(20).required(),
+  name: Joi.string().min(2).max(30).required(),
+  role: Joi.string().required(),
   department: Joi.string()
-})
+});
 
 export const validateUpdatedUserSchema = Joi.object().keys({
-  username: Joi.string()
-    .alphanum()
-    .min(2)
-    .max(20)
-    .allow(''),
-  password: Joi.string()
-    .min(6)
-    .max(20)
-    .allow(''),
-  name: Joi.string()
-    .min(2)
-    .max(30)
-    .allow(''),
-  role: Joi.string()
-    .allow(''),
-  department: Joi.string()
-    .allow(''),
-})
+  username: Joi.string().alphanum().min(2).max(20).allow(''),
+  password: Joi.string().min(6).max(20).allow(''),
+  name: Joi.string().min(2).max(30).allow(''),
+  role: Joi.string().allow(''),
+  department: Joi.string().allow('')
+});
 
 export const validateUser = (user) => {
   return validateUserSchema.validate(user);

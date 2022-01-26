@@ -43,11 +43,7 @@
             "field_type": "select",
             "field_value": 0,
             "field_level": 1,
-            "field_options": [
-              "SCI",
-              "le nage",
-              "Autre"
-            ]
+            "field_options": ["SCI", "le nage", "Autre"]
           },
           {
             "field_id": "numOfDaysInRehab",
@@ -111,13 +107,7 @@
             "field_type": "select",
             "field_value": 0,
             "field_level": 1,
-            "field_options": [
-              "Fauteuil roulant",
-              "Marcheur",
-              "Canne",
-              "Béquilles",
-              "Rien"
-            ]
+            "field_options": ["Fauteuil roulant", "Marcheur", "Canne", "Béquilles", "Rien"]
           },
           {
             "field_id": "dischargeLocation",
@@ -161,11 +151,7 @@
             "field_type": "select",
             "field_value": 0,
             "field_level": 1,
-            "field_options": [
-              "SCI",
-              "le nage",
-              "Autre"
-            ]
+            "field_options": ["SCI", "le nage", "Autre"]
           },
           {
             "field_id": "age",
@@ -198,11 +184,7 @@
             "field_type": "select",
             "field_value": 0,
             "field_level": 1,
-            "field_options": [
-              "SCI",
-              "le nage",
-              "Autre"
-            ]
+            "field_options": ["SCI", "le nage", "Autre"]
           },
           {
             "field_id": "age",
@@ -420,10 +402,7 @@
             "field_type": "select",
             "field_value": 0,
             "field_level": 1,
-            "field_options": [
-              "Compléter",
-              "Incomplet"
-            ]
+            "field_options": ["Compléter", "Incomplet"]
           },
           {
             "field_id": "injuryLevel",
@@ -481,10 +460,7 @@
             "field_type": "select",
             "field_value": 0,
             "field_level": 1,
-            "field_options": [
-              "Compléter",
-              "Incomplet"
-            ]
+            "field_options": ["Compléter", "Incomplet"]
           },
           {
             "field_id": "injuryLevel",
@@ -641,7 +617,7 @@
         "field_level": 0
       },
       {
-        "subsection_label" : "Années d'âge)",
+        "subsection_label": "Années d'âge)",
         "field_id": "outpatients.age.0-5",
         "field_label": "0-5",
         "field_type": "number",
@@ -691,7 +667,7 @@
         "field_level": 1
       },
       {
-        "subsection_label" : "Genre",
+        "subsection_label": "Genre",
         "field_id": "outpatients.gender.male",
         "field_label": "Mâle",
         "field_type": "number",
@@ -713,7 +689,7 @@
         "field_level": 0
       },
       {
-        "subsection_label" : "Cause de la LME",
+        "subsection_label": "Cause de la LME",
         "field_id": "returningOutpatients.causeSCI.transportAccident",
         "field_label": "Accident de transport",
         "field_type": "number",
@@ -770,7 +746,7 @@
         "field_level": 0
       },
       {
-        "subsection_label" : "État principal des nouveaux patients",
+        "subsection_label": "État principal des nouveaux patients",
         "field_id": "newOutpatients.mainCondition.SCIparaplegia",
         "field_label": "SCI-paraplégie",
         "field_type": "number",
@@ -848,7 +824,7 @@
         "field_level": 1
       },
       {
-        "subsection_label" : "Âge des nouveaux patients (années)",
+        "subsection_label": "Âge des nouveaux patients (années)",
         "field_id": "newOutpatients.age.0-5",
         "field_label": "0-5",
         "field_type": "number",
@@ -898,7 +874,7 @@
         "field_level": 1
       },
       {
-        "subsection_label" : "Sexe des nouveaux patients",
+        "subsection_label": "Sexe des nouveaux patients",
         "field_id": "newOutpatients.gender.male",
         "field_label": "Mâle",
         "field_type": "number",
