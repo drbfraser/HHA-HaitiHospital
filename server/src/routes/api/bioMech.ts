@@ -1,38 +1,36 @@
-import { Router, Request, Response, NextFunction } from 'express';
-
+import { Router, Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
-
+import { validateInput } from '../../middleware/inputSanitization';
 import BioMech from '../../models/BioMech';
-
-import { readFileSync } from 'fs';
+import { registerBioMechCreate } from '../../schema/registerBioMech';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
-    BioMech.find({})
+    await BioMech.find({})
       .populate('user')
       .sort({ createdOn: 'desc' })
-      .then((Reports) => res.json(Reports))
-      .catch((err) => res.status(400).json('Could not find any results: ' + err));
+      .then((response: any) => res.status(200).json(response))
+      .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response) => {
   try {
-    BioMech.findById(req.params.id)
+    await BioMech.findById(req.params.id)
       .populate('user')
-      .then((Reports) => res.json(Reports))
-      .catch((err) => res.status(400).json('Could not find any results: ' + err));
+      .then((response: any) => res.status(200).json(response))
+      .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
 });
 
-router.post('/', [requireJwtAuth, upload.single('file')], async (req, res) => {
+router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single('file'), async (req: any, res: Response) => {
   try {
     const user = req.user;
     const department = req.user.department;
@@ -54,17 +52,21 @@ router.post('/', [requireJwtAuth, upload.single('file')], async (req, res) => {
 
     bioMech
       .save()
-      .then(() => res.json('BioMech Report Submitted Successfully'))
-      .catch((err) => res.status(400).json('BioMech Report submission failed: ' + err));
+      .then(() => res.status(201).json('BioMech Report Submitted Successfully'))
+      .catch((err: any) => res.status(400).json('BioMech Report submission failed: ' + err));
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong:' + err });
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  BioMech.deleteOne({ _id: req.params.id })
-    .then(() => res.json('Succesfully deleted report'))
-    .catch((err) => res.status(400).json('Could not delete: ' + err));
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    await BioMech.deleteOne({ _id: req.params.id })
+      .then(() => res.sendStatus(204))
+      .catch((err: any) => res.status(400).json('Could not delete: ' + err));
+  } catch (err) {
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
 });
 
 export default router;

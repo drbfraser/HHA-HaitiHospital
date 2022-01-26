@@ -11,7 +11,6 @@ enum bioMechEnum {
 
 const bioMechSchema = new Schema(
   {
-    //all BioMech Data
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
     department: { type: DepartmentName },
     equipmentName: { type: String, required: true },
@@ -23,4 +22,5 @@ const bioMechSchema = new Schema(
 );
 
 const BioMech = mongoose.model('BioMech', bioMechSchema, 'BioMechReports');
+
 export default BioMech;

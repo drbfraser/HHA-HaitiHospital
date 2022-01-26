@@ -20,16 +20,16 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
   const { register, handleSubmit, reset } = useForm<BiomechModel>({});
   const history = useHistory();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     var formData = new FormData();
 
     var postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
 
-    axios
+    await axios
       .post('/api/biomech', formData)
-      .then((res) => {
+      .then(() => {
         window.alert('Biomechanic report successfully submitted!');
         reset({});
         setSelectedFile(null);
