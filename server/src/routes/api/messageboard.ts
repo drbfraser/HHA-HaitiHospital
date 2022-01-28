@@ -56,7 +56,7 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoard
 });
 
 //make the changes to message of id reportID
-router.route('/:id').put(requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, (req: Request, res: Response) => {
+router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, (req: Request, res: Response) => {
   let dateTime: Date = new Date();
   const departmentId: number = parseInt(req.body.departmentId);
   const departmentName: string = req.body.departmentName;
@@ -85,7 +85,7 @@ router.route('/:id').put(requireJwtAuth, checkIsInRole(Role.Admin), registerMess
 });
 
 // delete message id
-router.route('/:id').delete(requireJwtAuth, checkIsInRole(Role.Admin), (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), (req: Request, res: Response) => {
   try {
     MessageBody.findByIdAndRemove(req.params.id)
       .then((data: any) => res.status(204).json(data))
