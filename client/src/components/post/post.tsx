@@ -1,23 +1,18 @@
-import React from "react";
-import { RouteComponentProps } from "react-router";
+import React from 'react';
+import { RouteComponentProps } from 'react-router';
 
 import { ElementStyleProps } from 'constants/interfaces';
 
-import { isPropertySignature } from "typescript";
+import { isPropertySignature } from 'typescript';
 
-interface PostProps extends ElementStyleProps {
-};
+interface PostProps extends ElementStyleProps {}
 
 interface PostProps extends RouteComponentProps {
   id: string;
-};
+}
 
 const Post = (props: PostProps) => {
-  return (
-    <div className={'post '+ (props.classes || '')}>
-
-    </div>
-  )
+  return <div className={'post ' + (props.classes || '')}></div>;
 };
 
 export default Post;

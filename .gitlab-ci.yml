@@ -4,13 +4,13 @@ stages:
   - test
 
 variables:
-  GIT_CLEAN_FLAGS: -x -f -e client/node_modules/** -e server/node_modules/** -e server/dist/** -e server/public/** 
+  GIT_CLEAN_FLAGS: -x -f -e client/node_modules/** -e server/node_modules/** -e server/dist/** -e server/public/**
 
 build-job:
   stage: build
   only:
     - master
-  tags: 
+  tags:
     - cd
   script:
     - sudo docker-compose down
@@ -22,7 +22,7 @@ build-cache:
   stage: build
   except:
     - master
-  tags: 
+  tags:
     - cd
   script:
     - sudo docker-compose down
@@ -41,7 +41,7 @@ start-app:
 
 test-mongo:
   stage: test
-  tags: 
+  tags:
     - cd
   script:
     - sudo docker-compose logs mongodb
@@ -49,7 +49,7 @@ test-mongo:
 
 test-server:
   stage: test
-  tags: 
+  tags:
     - cd
   script:
     - sudo docker-compose logs server
@@ -57,18 +57,17 @@ test-server:
 
 test-client:
   stage: test
-  tags: 
+  tags:
     - cd
   script:
     - sudo docker-compose logs client
     - sudo docker ps | grep hha-app-client
     - sudo docker logs hha-app-client | ( ! grep "Failed to compile")
-
 # deploy-job:
 #   stage: deploy
 #   only:
 #     - master
-#   tags: 
+#   tags:
 #     - cd
 #   script:
 #     - sudo docker-compose -f docker-compose.yml up -d

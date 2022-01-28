@@ -4,13 +4,11 @@ import { ElementStyleProps } from 'constants/interfaces';
 
 import './message_styles.css';
 
-interface MessageProps extends ElementStyleProps {
-
-};
+interface MessageProps extends ElementStyleProps {}
 
 const Message = (props: MessageProps) => {
-  return (<div className={'message '+ (props.classes||'')}></div>);
-}
+  return <div className={'message ' + (props.classes || '')}></div>;
+};
 
 export default Message;
 

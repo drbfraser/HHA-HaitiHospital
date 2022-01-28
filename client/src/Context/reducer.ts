@@ -1,37 +1,36 @@
-let user = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")).user
+let user = localStorage.getItem('currentUser')
+  ? JSON.parse(localStorage.getItem('currentUser')).user
   : '';
-let isAuth = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")).isAuth
+let isAuth = localStorage.getItem('currentUser')
+  ? JSON.parse(localStorage.getItem('currentUser')).isAuth
   : '';
 
 export const initialState = {
   userDetails: '' || user,
   isAuth: '' || isAuth,
   loading: false,
-  errorMessage: null
+  errorMessage: null,
 };
-
 
 export const AuthReducer = (initialState, action) => {
   switch (action.type) {
     case 'REQUEST_LOGIN':
       return {
         ...initialState,
-        loading: true
+        loading: true,
       };
     case 'LOGIN_SUCCESS':
       return {
         ...initialState,
         userDetails: action.payload.user,
         isAuth: action.payload.isAuth,
-        loading: false
+        loading: false,
       };
     case 'LOGOUT':
       return {
         ...initialState,
         userDetails: '',
-        isAuth: ''
+        isAuth: '',
       };
 
     case 'LOGIN_ERROR':
@@ -39,7 +38,7 @@ export const AuthReducer = (initialState, action) => {
         ...initialState,
         loading: false,
         // TODO: Potentially change the message sent back from the backend to be more user friendly than dev friendly
-        errorMessage: action.error.toJSON().message + " Invalid login"
+        errorMessage: action.error.toJSON().message + ' Invalid login',
       };
 
     default:

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 // import * as mongoose from 'mongoose';
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import * as https from 'https';
 import { readFileSync } from 'fs';
 import { resolve, join } from 'path';
@@ -14,16 +14,16 @@ import { seedDb } from './utils/seed';
 
 const app = express();
 
-// Cross-Origin 
+// Cross-Origin
 const cors = require('cors');
 const corsOptions = {
   origin: process.env.CLIENT_URL,
-  credentials: true,            //access-control-allow-credentials:true
+  credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
   methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type'],
   exposedHeaders: ['Content-Type']
-}
+};
 app.use(cors(corsOptions));
 
 // Bodyparser Middleware
@@ -41,7 +41,7 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
+    useFindAndModify: false
   })
   .then(() => {
     console.log('MongoDB Connected...');
@@ -56,4 +56,3 @@ app.use('/public', express.static('public'));
 // Start listening to PORT
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
-

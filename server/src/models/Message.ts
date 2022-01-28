@@ -15,11 +15,11 @@ const messageSchema = new Schema<Message>(
   {
     text: {
       type: String,
-      required: true,
+      required: true
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 messageSchema.methods.toJSON = function () {
@@ -29,7 +29,7 @@ messageSchema.methods.toJSON = function () {
     text: this.text,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
-    user: someUser.toJSON(),
+    user: someUser.toJSON()
   };
 };
 
@@ -37,7 +37,7 @@ export const validateMessage = (message: Message) => {
   const someJoi: any = Joi;
 
   const schema = {
-    text: Joi.string().min(5).max(300).required(),
+    text: Joi.string().min(5).max(300).required()
   };
   return someJoi.validate(message, schema);
 };

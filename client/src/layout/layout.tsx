@@ -6,14 +6,12 @@ import { ElementStyleProps } from 'constants/interfaces';
 import './layout_styles.css';
 
 interface LayoutProps extends ElementStyleProps {
-  children: any,
-};
+  children: any;
+}
 
 const Layout = (props: LayoutProps) => {
-  return (
-    <div className={'layout '+props.classes}></div>
-  );
-}
+  return <div className={'layout ' + props.classes}></div>;
+};
 
 export default Layout;
 

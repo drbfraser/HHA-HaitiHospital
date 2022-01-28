@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as PassportLocalStrategy } from 'passport-local';
 import Joi from 'joi';
-import { Request } from "express";
+import { Request } from 'express';
 
 import User from '../models/User';
 import { loginSchema } from './validators';
@@ -11,14 +11,17 @@ const passportLogin = new PassportLocalStrategy(
     usernameField: 'username',
     passwordField: 'password',
     session: false,
-    passReqToCallback: true,
+    passReqToCallback: true
   },
   async (req: Request, username: string, password: string, done) => {
-    loginSchema.validateAsync({ username, password }).then(val => {
-      req.body = val;
-    }).catch(err => {
-      throw new Error('Failed to validate input ' + err.details[0].message);
-    })
+    loginSchema
+      .validateAsync({ username, password })
+      .then((val) => {
+        req.body = val;
+      })
+      .catch((err) => {
+        throw new Error('Failed to validate input ' + err.details[0].message);
+      });
 
     try {
       const user = await User.findOne({ username: username.trim() });
@@ -37,15 +40,15 @@ const passportLogin = new PassportLocalStrategy(
     } catch (err) {
       return done(err);
     }
-  },
+  }
 );
 
 // Serializing required for sessions
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 

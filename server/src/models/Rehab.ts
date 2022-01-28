@@ -1,49 +1,49 @@
 enum DischargedDiagnosisEnum {
   Other,
   SCI,
-  Stroke,
+  Stroke
 }
 
 enum DischargeReasonEnum {
-  AllGoalsMet, 
-  GoalsPartiallyMet, 
-  GoalsNotMet 
+  AllGoalsMet,
+  GoalsPartiallyMet,
+  GoalsNotMet
 }
 
 enum DischargeOutcomeEnum {
-  Independent, 
-  ModifiedIndependent, 
-  SuperVision, 
-  MinimumAssistance, 
-  ModerateAssistance, 
-  MaximumAssistance, 
+  Independent,
+  ModifiedIndependent,
+  SuperVision,
+  MinimumAssistance,
+  ModerateAssistance,
+  MaximumAssistance,
   Dependent
 }
 
 enum MobilityAidEnum {
   WheelChair,
-  Walker, 
-  Cane, 
+  Walker,
+  Cane,
   Crutches
 }
 
 enum DischargeLocationEnum {
-  ReturnHomeAlone, 
-  ReturnHomeFamily, 
+  ReturnHomeAlone,
+  ReturnHomeFamily,
   AdmittedToHospital
 }
 
 enum DischargeEmploymentStatusEnum {
-  Employed, 
+  Employed,
   UnemployedUnableToFindWork,
-  UnemployedDueToCondition, 
+  UnemployedDueToCondition,
   RetiredDueToAge
 }
 
 enum PatientDiagnosisEnum {
   Other,
-  SCI, 
-  CVA, 
+  SCI,
+  CVA
 }
 
 export interface RehabModel {
@@ -59,9 +59,9 @@ export interface RehabModel {
   diedAfter48hr: DiedInfo[];
   daysHospitalized: number;
   referrals: number;
-  transfers: number,
-  selfDischarge: SelfDischarge // -- VALIDATION REQUIRED - FRONT/BACKEND;
-  stayedInWard: StayedInWard // -- VALIDATION REQUIRED - FRONT/BACKEND
+  transfers: number;
+  selfDischarge: SelfDischarge; // -- VALIDATION REQUIRED - FRONT/BACKEND;
+  stayedInWard: StayedInWard; // -- VALIDATION REQUIRED - FRONT/BACKEND
   Admissions: Admission;
   numberOfOutpatients: number;
   returningOutpatients: number;
@@ -86,20 +86,22 @@ export interface DiedInfo {
   causeOfDeath: string;
 }
 
-export interface SelfDischarge { // -- VALIDATION REQUIRED - FRONT/BACKEND
+export interface SelfDischarge {
+  // -- VALIDATION REQUIRED - FRONT/BACKEND
   other: number;
   selfDischarged: number; // all values properties below have to add up to this
   financeCantAfford: number;
   financeLefTtoAvoidPaying: number;
-  religiousCultural : number;
+  religiousCultural: number;
   personalFamily: number;
-};
+}
 
-export interface StayedInWard { // -- VALIDATION REQUIRED - FRONT/BACKEND
+export interface StayedInWard {
+  // -- VALIDATION REQUIRED - FRONT/BACKEND
   stayedInWard: number; // all values properties below have to add up to this
-  reasonNotYetDischarged: ReasonNotYetDischarged
+  reasonNotYetDischarged: ReasonNotYetDischarged;
   LengthOfStayOfCurrentInpatients: LengthOfStayOfCurrentInpatients;
-};
+}
 
 export interface ReasonNotYetDischarged {
   woundCare: number;
@@ -121,13 +123,13 @@ export interface Admission {
   whereDoPatientsComeFrom: WhereDoPatientsComeFrom;
   mainCondition: AdmissionMainCondition;
   timeFromInjuryUntilAdmittedToRehab: TimeFromInjuryUntilAdmittedToRehab;
-};
+}
 
 export interface WhereDoPatientsComeFrom {
   quarterMorin: number;
   capHaitian: number;
   departmentNord: number;
-  otherDepartments: WhereDoPatientsComeFromOtherDepartments[];// ensure that the .length of otherDepartments is part of the totalAdmissions
+  otherDepartments: WhereDoPatientsComeFromOtherDepartments[]; // ensure that the .length of otherDepartments is part of the totalAdmissions
 }
 
 export interface WhereDoPatientsComeFromOtherDepartments {
@@ -136,7 +138,7 @@ export interface WhereDoPatientsComeFromOtherDepartments {
 }
 
 export interface AdmissionMainCondition {
-  // TODO: ??????? idk man properties here ???? 
+  // TODO: ??????? idk man properties here ????
   causeOfSCI: CauseOfSCI;
   Stroke: number;
   fracturedHip: number;
