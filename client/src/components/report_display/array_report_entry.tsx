@@ -10,15 +10,14 @@ interface ArrayEntryProps extends ElementStyleProps {
   descriptions: Object;
   entries: ReportProps[];
   edit: boolean;
-};
+}
 
 export const ArrayEntry = (props: ArrayEntryProps) => {
-
   function concatParent(entryKey: string) {
-    if (props.parentKey === "") {
+    if (props.parentKey === '') {
       return entryKey;
     } else {
-      return props.parentKey + "_" + entryKey;
+      return props.parentKey + '_' + entryKey;
     }
   }
   console.log(props.entries);
@@ -27,18 +26,17 @@ export const ArrayEntry = (props: ArrayEntryProps) => {
     <div className="entry simple-entry row my-2 text-dark ps-5">
       {props.name}
       <>
-        {
-          props.entries.map((entry) => (
-            <div className="">
-              {'\t'}<ReportDisplay
-                report={entry as ReportProps}
-                parentKey={concatParent(props.entryKey)}
-                descriptions={props.descriptions}
-                edit={props.edit} />
-            </div>
-          )
-          )
-        }
+        {props.entries.map((entry) => (
+          <div className="">
+            {'\t'}
+            <ReportDisplay
+              report={entry as ReportProps}
+              parentKey={concatParent(props.entryKey)}
+              descriptions={props.descriptions}
+              edit={props.edit}
+            />
+          </div>
+        ))}
       </>
     </div>
   );

@@ -1,27 +1,23 @@
 {
-    "EntryTypes" : [
-        "Categories",
-        "Questionnaire",
-        "Table"
-    ],
-    
-    "Metadata" : {
-        "Description" : "String",
-        "InputType" : ["Number","String","Dropdown"],
-        "Default" : [0,""]
-    },
+  "EntryTypes": ["Categories", "Questionnaire", "Table"],
 
-    "Categories" : {
-        "Type" : "Categories",
-        "Metadata" : {},
-        "Children" : []
-    },
+  "Metadata": {
+    "Description": "String",
+    "InputType": ["Number", "String", "Dropdown"],
+    "Default": [0, ""]
+  },
 
-    "Questionnaire" : {
-        "Type" : "Questionnaire"
-    },
+  "Categories": {
+    "Type": "Categories",
+    "Metadata": {},
+    "Children": []
+  },
 
-    "Table" : {
-        "Type" : "Table"
-    }
+  "Questionnaire": {
+    "Type": "Questionnaire"
+  },
+
+  "Table": {
+    "Type": "Table"
+  }
 }

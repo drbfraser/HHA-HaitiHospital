@@ -6,7 +6,7 @@ import { checkIsInRole } from '../../utils/authUtils';
 
 const router = Router();
 
-router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Request, res : Response) => {
+router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
     const tempUser = await User.findById(req.params.id);
     if (!tempUser) return res.status(404).json({ message: 'No such user' });
@@ -21,7 +21,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req : Reque
       password: req.body.password,
       name: req.body.name,
       role: req.body.role,
-      department: req.body.department,
+      department: req.body.department
     });
 
     if (validationResult.error) {
@@ -71,7 +71,7 @@ router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
   }
 });
 
-// delete user, currently working without req.user 
+// delete user, currently working without req.user
 router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
   try {
     const tempUser = await User.findById(req.params.id);
@@ -100,7 +100,7 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
       password,
       name,
       role,
-      department,
+      department
     });
 
     const validationResult = validateUserSchema.validate({
@@ -108,7 +108,7 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
       password,
       name,
       role,
-      department,
+      department
     });
 
     if (validationResult.error) {
@@ -121,7 +121,6 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
       if (err) throw err;
       res.json({ message: 'Successfully added user.' }); // just redirect to login
     });
-
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong' });
   }

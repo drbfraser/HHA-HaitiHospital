@@ -1,917 +1,893 @@
 [
-    {
-        "section_label": "MSPP Required",
-        "section_fields": [
-            {
-                "field_id": "bedsAvailable",
-                "field_label": "Total number of beds available in department",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "bedDays",
-                "field_label": "Total number of bed days of patients",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "patientDays",
-                "field_label": "Total number of patients days",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "hospitalized.total",
-                "field_label": "Total number of hospitalized patients",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "dischargedAlive.total",
-                "field_label": "Total number of patients discharged alive",
-                "field_type": "list",
-                "field_level": 0,
-                "field_template": [
-                    {
-                        "field_id": "diagnosis",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Diagnosis",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "SCI",
-                            "Stroke",
-                            "Other"
-                        ]
-                    },
-                    {
-                        "field_id": "numOfDaysInRehab",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Number of days in rehab unit from admission to discharge",
-                        "field_type": "number",
-                        "field_value": 0,
-                        "field_level": 1
-                    },
-                    {
-                        "field_id": "dischargeReason",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Discharge Reason",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "All goals met",
-                            "Goals partially met, sufficient for discharge",
-                            "Goals not met, discharged for alternate reason"
-                        ]
-                    },
-                    {
-                        "field_id": "dischargeOutcomeADLSelfCare",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Discharge Outcome (ADLs/Self-Care)",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "Independent",
-                            "Modified Independent",
-                            "Supervision",
-                            "Minimum Assistance",
-                            "Moderate Assistance",
-                            "Maximum Assistance",
-                            "Dependent"
-                        ]
-                    },
-                    {
-                        "field_id": "dischargeOutcomeTransfersMobility",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Discharge Outcome (Transfers and Mobility)",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "Independent",
-                            "Modified Independent",
-                            "Supervision",
-                            "Minimum Assistance",
-                            "Moderate Assistance",
-                            "Maximum Assistance",
-                            "Dependent"
-                        ]
-                    },
-                    {
-                        "field_id": "mobilityAidAssistiveDevice",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Mobility Aid/Assistive Device Given",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "Wheelchair",
-                            "Walker",
-                            "Cane",
-                            "Crutches",
-                            "None"
-                        ]
-                    },
-                    {
-                        "field_id": "dischargeLocation",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Discharge Location",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "Return home, alone",
-                            "Return home, with family/caregiver(s)",
-                            "Admitted to hospital"
-                        ]
-                    },
-                    {
-                        "field_id": "dischargeEmploymentStatus",
-                        "field_parent": "dischargedAlive",
-                        "field_label": "Discharge Employment Status",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "Employed",
-                            "Unemployed, unable to find work",
-                            "Unemployed, due to condition",
-                            "Retired, not working due to age"
-                        ]
-                    }
-                ]
-            },
-            {
-                "field_id": "diedBefore48hr.total",
-                "field_label": "Total number of patients that died BEFORE 48hrs",
-                "field_type": "list",
-                "field_level": 0,
-                "field_template": [
-                    {
-                        "field_id": "diagnosis",
-                        "field_parent": "diedBefore48hr",
-                        "field_label": "Diagnosis",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "SCI",
-                            "Stroke",
-                            "Other"
-                        ]
-                    },
-                    {
-                        "field_id": "age",
-                        "field_parent": "diedBefore48hr",
-                        "field_label": "Age",
-                        "field_type": "number",
-                        "field_value": 0,
-                        "field_level": 1
-                    },
-                    {
-                        "field_id": "causeOfDeath",
-                        "field_parent": "diedBefore48hr",
-                        "field_label": "Cause of Death",
-                        "field_type": "text",
-                        "field_value": 0,
-                        "field_level": 1
-                    }
-                ]
-            },
-            {
-                "field_id": "diedAfter48hr.total",
-                "field_label": "Total number of patients that died AFTER 48hrs",
-                "field_type": "list",
-                "field_level": 0,
-                "field_template": [
-                    {
-                        "field_id": "diagnosis",
-                        "field_parent": "diedAfter48hr",
-                        "field_label": "Diagnosis",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "SCI",
-                            "Stroke",
-                            "Other"
-                        ]
-                    },
-                    {
-                        "field_id": "age",
-                        "field_parent": "diedAfter48hr",
-                        "field_label": "Age",
-                        "field_type": "number",
-                        "field_value": 0,
-                        "field_level": 1
-                    },
-                    {
-                        "field_id": "causeOfDeath",
-                        "field_parent": "diedAfter48hr",
-                        "field_label": "Cause of Death",
-                        "field_type": "text",
-                        "field_value": 0,
-                        "field_level": 1
-                    }
-                ]
-            },
-            {
-                "field_id": "daysHospitalized",
-                "field_label": "Total number of days hospitalized between all patients",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "referrals",
-                "field_label": "Total number of referrals",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "transfers",
-                "field_label": "Total number of transfers",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "selfDischarge.total",
-                "field_label": "Total number of self-discharged patients",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "field_id": "selfDischarge.cannotAfford",
-                "field_label": "Finance: Leave as cannot afford care",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "selfDischarge.avoidedPaying",
-                "field_label": "Finance: Left to avoid paying",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "selfDischarge.religiousCultural",
-                "field_label": "Religious/Cultural",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "selfDischarge.personalFamily",
-                "field_label": "Personal/Family",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "selfDischarge.other",
-                "field_label": "Other reason",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            }
+  {
+    "section_label": "MSPP Required",
+    "section_fields": [
+      {
+        "field_id": "bedsAvailable",
+        "field_label": "Total number of beds available in department",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "bedDays",
+        "field_label": "Total number of bed days of patients",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "patientDays",
+        "field_label": "Total number of patients days",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "hospitalized.total",
+        "field_label": "Total number of hospitalized patients",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "dischargedAlive.total",
+        "field_label": "Total number of patients discharged alive",
+        "field_type": "list",
+        "field_level": 0,
+        "field_template": [
+          {
+            "field_id": "diagnosis",
+            "field_parent": "dischargedAlive",
+            "field_label": "Diagnosis",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": ["SCI", "Stroke", "Other"]
+          },
+          {
+            "field_id": "numOfDaysInRehab",
+            "field_parent": "dischargedAlive",
+            "field_label": "Number of days in rehab unit from admission to discharge",
+            "field_type": "number",
+            "field_value": 0,
+            "field_level": 1
+          },
+          {
+            "field_id": "dischargeReason",
+            "field_parent": "dischargedAlive",
+            "field_label": "Discharge Reason",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": [
+              "All goals met",
+              "Goals partially met, sufficient for discharge",
+              "Goals not met, discharged for alternate reason"
+            ]
+          },
+          {
+            "field_id": "dischargeOutcomeADLSelfCare",
+            "field_parent": "dischargedAlive",
+            "field_label": "Discharge Outcome (ADLs/Self-Care)",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": [
+              "Independent",
+              "Modified Independent",
+              "Supervision",
+              "Minimum Assistance",
+              "Moderate Assistance",
+              "Maximum Assistance",
+              "Dependent"
+            ]
+          },
+          {
+            "field_id": "dischargeOutcomeTransfersMobility",
+            "field_parent": "dischargedAlive",
+            "field_label": "Discharge Outcome (Transfers and Mobility)",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": [
+              "Independent",
+              "Modified Independent",
+              "Supervision",
+              "Minimum Assistance",
+              "Moderate Assistance",
+              "Maximum Assistance",
+              "Dependent"
+            ]
+          },
+          {
+            "field_id": "mobilityAidAssistiveDevice",
+            "field_parent": "dischargedAlive",
+            "field_label": "Mobility Aid/Assistive Device Given",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": ["Wheelchair", "Walker", "Cane", "Crutches", "None"]
+          },
+          {
+            "field_id": "dischargeLocation",
+            "field_parent": "dischargedAlive",
+            "field_label": "Discharge Location",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": [
+              "Return home, alone",
+              "Return home, with family/caregiver(s)",
+              "Admitted to hospital"
+            ]
+          },
+          {
+            "field_id": "dischargeEmploymentStatus",
+            "field_parent": "dischargedAlive",
+            "field_label": "Discharge Employment Status",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": [
+              "Employed",
+              "Unemployed, unable to find work",
+              "Unemployed, due to condition",
+              "Retired, not working due to age"
+            ]
+          }
         ]
-    },
+      },
+      {
+        "field_id": "diedBefore48hr.total",
+        "field_label": "Total number of patients that died BEFORE 48hrs",
+        "field_type": "list",
+        "field_level": 0,
+        "field_template": [
+          {
+            "field_id": "diagnosis",
+            "field_parent": "diedBefore48hr",
+            "field_label": "Diagnosis",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": ["SCI", "Stroke", "Other"]
+          },
+          {
+            "field_id": "age",
+            "field_parent": "diedBefore48hr",
+            "field_label": "Age",
+            "field_type": "number",
+            "field_value": 0,
+            "field_level": 1
+          },
+          {
+            "field_id": "causeOfDeath",
+            "field_parent": "diedBefore48hr",
+            "field_label": "Cause of Death",
+            "field_type": "text",
+            "field_value": 0,
+            "field_level": 1
+          }
+        ]
+      },
+      {
+        "field_id": "diedAfter48hr.total",
+        "field_label": "Total number of patients that died AFTER 48hrs",
+        "field_type": "list",
+        "field_level": 0,
+        "field_template": [
+          {
+            "field_id": "diagnosis",
+            "field_parent": "diedAfter48hr",
+            "field_label": "Diagnosis",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": ["SCI", "Stroke", "Other"]
+          },
+          {
+            "field_id": "age",
+            "field_parent": "diedAfter48hr",
+            "field_label": "Age",
+            "field_type": "number",
+            "field_value": 0,
+            "field_level": 1
+          },
+          {
+            "field_id": "causeOfDeath",
+            "field_parent": "diedAfter48hr",
+            "field_label": "Cause of Death",
+            "field_type": "text",
+            "field_value": 0,
+            "field_level": 1
+          }
+        ]
+      },
+      {
+        "field_id": "daysHospitalized",
+        "field_label": "Total number of days hospitalized between all patients",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "referrals",
+        "field_label": "Total number of referrals",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "transfers",
+        "field_label": "Total number of transfers",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "selfDischarge.total",
+        "field_label": "Total number of self-discharged patients",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "field_id": "selfDischarge.cannotAfford",
+        "field_label": "Finance: Leave as cannot afford care",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "selfDischarge.avoidedPaying",
+        "field_label": "Finance: Left to avoid paying",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "selfDischarge.religiousCultural",
+        "field_label": "Religious/Cultural",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "selfDischarge.personalFamily",
+        "field_label": "Personal/Family",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "selfDischarge.other",
+        "field_label": "Other reason",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      }
+    ]
+  },
 
-    {
-        "section_label": "Stayed in Ward",
-        "section_fields": [
-            {
-                "field_id": "stayedInWard.total",
-                "field_label": "Number of patients that stayed in ward",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "subsection_label": "Reason Not Yet Discharged",
-                "field_id": "stayedInWard.notReadyTherapy",
-                "field_label": "Not ready from therapy standpoint",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.woundCare",
-                "field_label": "Wound care",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.otherMedical",
-                "field_label": "Other medical reason (such as IV medication)",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.finacialOrNoPlacetoDischarge",
-                "field_label": "Financial/no place to discharge to",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "subsection_label": "Length of Stay of Current Inpatients",
-                "field_id": "stayedInWard.1to3Months",
-                "field_label": "1-3 months",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.3to6Months",
-                "field_label": "3-6 monthse",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.6Monthsto1Year",
-                "field_label": "6 months to 1 year",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.1to2Years",
-                "field_label": "1-2 years",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.2to3Years",
-                "field_label": "2-3 years",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "stayedInWard.3PlusYears",
-                "field_label": "3+ years",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.total",
-                "field_label": "Total Admissions",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "subsection_label": "Where do patients come from?",
-                "field_id": "admissions.comeFrom.quarterMorin",
-                "field_label": "Quarter Morin",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.comeFrom.capHaitian",
-                "field_label": "Cap Haitian",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.comeFrom.departmentNord",
-                "field_label": "Department Nord",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.comeFrom.otherDepartments",
-                "field_label": "If other, specify",
-                "field_type": "array",
-                "field_level": 1
-            },
-            {
-                "subsection_label": "Main Condition of Patient",
-                "field_id": "admissions.mainCondition.SCItetraplegia",
-                "field_label": "SCI - tetraplegia ",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1,
-                "field_template": [
-                    {
-                        "field_id": "completion",
-                        "field_parent": "admissions.mainCondition.SCItetraplegia",
-                        "field_label": "Completion Level",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "Complete",
-                            "Incomplete"
-                        ]
-                    },
-                    {
-                        "field_id": "injuryLevel",
-                        "field_parent": "admissions.mainCondition.SCItetraplegia",
-                        "field_label": "Level of Injury",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "C1",
-                            "C2",
-                            "C3",
-                            "C4",
-                            "C5",
-                            "C6",
-                            "C7",
-                            "C8",
-                            "T1",
-                            "T2",
-                            "T3",
-                            "T4",
-                            "T5",
-                            "T6",
-                            "T7",
-                            "T8",
-                            "T9",
-                            "T10",
-                            "T11",
-                            "T12",
-                            "L1",
-                            "L2",
-                            "L3",
-                            "L4",
-                            "L5",
-                            "S1",
-                            "S2",
-                            "S3",
-                            "S4",
-                            "S5"
-                        ]
-                    }
-                ]
-            },
-            {
-                "field_id": "admissions.mainCondition.SCIparaplegia",
-                "field_label": "SCI - paraplegia",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1,
-                "field_template": [
-                    {
-                        "field_id": "completion",
-                        "field_parent": "admissions.mainCondition.SCIparaplegia",
-                        "field_label": "Completion Level",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "Complete",
-                            "Incomplete"
-                        ]
-                    },
-                    {
-                        "field_id": "injuryLevel",
-                        "field_parent": "admissions.mainCondition.SCIparaplegia",
-                        "field_label": "Level of Injury",
-                        "field_type": "select",
-                        "field_value": 0,
-                        "field_level": 1,
-                        "field_options": [
-                            "C1",
-                            "C2",
-                            "C3",
-                            "C4",
-                            "C5",
-                            "C6",
-                            "C7",
-                            "C8",
-                            "T1",
-                            "T2",
-                            "T3",
-                            "T4",
-                            "T5",
-                            "T6",
-                            "T7",
-                            "T8",
-                            "T9",
-                            "T10",
-                            "T11",
-                            "T12",
-                            "L1",
-                            "L2",
-                            "L3",
-                            "L4",
-                            "L5",
-                            "S1",
-                            "S2",
-                            "S3",
-                            "S4",
-                            "S5"
-                        ]
-                    }
-                ]
-            },
-            {
-                "field_id": "admissions.mainCondition.strokeCVA",
-                "field_label": "Stroke/CVA",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.mainCondition.fracturedHip",
-                "field_label": "Fractured Hip",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.mainCondition.neurodegenerativeDisease",
-                "field_label": "Neurodegenerative Disease ",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.mainCondition.headInjury",
-                "field_label": "Head Injury",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.mainCondition.woundCare",
-                "field_label": "Wound Care",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.mainCondition.otherTrauma",
-                "field_label": "Other trauma",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.mainCondition.otherMedical",
-                "field_label": "Other medical",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "subsection_label": "Time from Injury until Admitted to Rehab",
-                "field_id": "admissions.timeUntilAdmitRehab.<1month",
-                "field_label": "<1 month",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.timeUntilAdmitRehab.1-2months",
-                "field_label": "1-2 months",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.timeUntilAdmitRehab.3months",
-                "field_label": "3 months",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.timeUntilAdmitRehab.6months",
-                "field_label": "6 months",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.timeUntilAdmitRehab.1year",
-                "field_label": "1 year",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.timeUntilAdmitRehab.2years",
-                "field_label": "2 years",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "admissions.timeUntilAdmitRehab.3years+",
-                "field_label": "3 years+",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            }
+  {
+    "section_label": "Stayed in Ward",
+    "section_fields": [
+      {
+        "field_id": "stayedInWard.total",
+        "field_label": "Number of patients that stayed in ward",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "subsection_label": "Reason Not Yet Discharged",
+        "field_id": "stayedInWard.notReadyTherapy",
+        "field_label": "Not ready from therapy standpoint",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.woundCare",
+        "field_label": "Wound care",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.otherMedical",
+        "field_label": "Other medical reason (such as IV medication)",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.finacialOrNoPlacetoDischarge",
+        "field_label": "Financial/no place to discharge to",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "subsection_label": "Length of Stay of Current Inpatients",
+        "field_id": "stayedInWard.1to3Months",
+        "field_label": "1-3 months",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.3to6Months",
+        "field_label": "3-6 monthse",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.6Monthsto1Year",
+        "field_label": "6 months to 1 year",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.1to2Years",
+        "field_label": "1-2 years",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.2to3Years",
+        "field_label": "2-3 years",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "stayedInWard.3PlusYears",
+        "field_label": "3+ years",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.total",
+        "field_label": "Total Admissions",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "subsection_label": "Where do patients come from?",
+        "field_id": "admissions.comeFrom.quarterMorin",
+        "field_label": "Quarter Morin",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.comeFrom.capHaitian",
+        "field_label": "Cap Haitian",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.comeFrom.departmentNord",
+        "field_label": "Department Nord",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.comeFrom.otherDepartments",
+        "field_label": "If other, specify",
+        "field_type": "array",
+        "field_level": 1
+      },
+      {
+        "subsection_label": "Main Condition of Patient",
+        "field_id": "admissions.mainCondition.SCItetraplegia",
+        "field_label": "SCI - tetraplegia ",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_template": [
+          {
+            "field_id": "completion",
+            "field_parent": "admissions.mainCondition.SCItetraplegia",
+            "field_label": "Completion Level",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": ["Complete", "Incomplete"]
+          },
+          {
+            "field_id": "injuryLevel",
+            "field_parent": "admissions.mainCondition.SCItetraplegia",
+            "field_label": "Level of Injury",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "T1",
+              "T2",
+              "T3",
+              "T4",
+              "T5",
+              "T6",
+              "T7",
+              "T8",
+              "T9",
+              "T10",
+              "T11",
+              "T12",
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5",
+              "S1",
+              "S2",
+              "S3",
+              "S4",
+              "S5"
+            ]
+          }
         ]
-    },
+      },
+      {
+        "field_id": "admissions.mainCondition.SCIparaplegia",
+        "field_label": "SCI - paraplegia",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1,
+        "field_template": [
+          {
+            "field_id": "completion",
+            "field_parent": "admissions.mainCondition.SCIparaplegia",
+            "field_label": "Completion Level",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": ["Complete", "Incomplete"]
+          },
+          {
+            "field_id": "injuryLevel",
+            "field_parent": "admissions.mainCondition.SCIparaplegia",
+            "field_label": "Level of Injury",
+            "field_type": "select",
+            "field_value": 0,
+            "field_level": 1,
+            "field_options": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "T1",
+              "T2",
+              "T3",
+              "T4",
+              "T5",
+              "T6",
+              "T7",
+              "T8",
+              "T9",
+              "T10",
+              "T11",
+              "T12",
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5",
+              "S1",
+              "S2",
+              "S3",
+              "S4",
+              "S5"
+            ]
+          }
+        ]
+      },
+      {
+        "field_id": "admissions.mainCondition.strokeCVA",
+        "field_label": "Stroke/CVA",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.mainCondition.fracturedHip",
+        "field_label": "Fractured Hip",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.mainCondition.neurodegenerativeDisease",
+        "field_label": "Neurodegenerative Disease ",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.mainCondition.headInjury",
+        "field_label": "Head Injury",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.mainCondition.woundCare",
+        "field_label": "Wound Care",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.mainCondition.otherTrauma",
+        "field_label": "Other trauma",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.mainCondition.otherMedical",
+        "field_label": "Other medical",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "subsection_label": "Time from Injury until Admitted to Rehab",
+        "field_id": "admissions.timeUntilAdmitRehab.<1month",
+        "field_label": "<1 month",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.timeUntilAdmitRehab.1-2months",
+        "field_label": "1-2 months",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.timeUntilAdmitRehab.3months",
+        "field_label": "3 months",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.timeUntilAdmitRehab.6months",
+        "field_label": "6 months",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.timeUntilAdmitRehab.1year",
+        "field_label": "1 year",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.timeUntilAdmitRehab.2years",
+        "field_label": "2 years",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "admissions.timeUntilAdmitRehab.3years+",
+        "field_label": "3 years+",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      }
+    ]
+  },
 
-    {
-        "section_label": "Outpatients",
-        "section_fields": [
-            {
-                "field_id": "outpatients.total",
-                "field_label": "Number of Outpatients",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "subsection_label" : "Age (years)",
-                "field_id": "outpatients.age.0-5",
-                "field_label": "0-5",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "outpatients.age.6-11",
-                "field_label": "6-11",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "outpatients.age.12-18",
-                "field_label": "12-18",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "outpatients.age.19-30",
-                "field_label": "18-30",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "outpatients.age.31-50",
-                "field_label": "31-50",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "outpatients.age.51-70",
-                "field_label": "51-70",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "outpatients.age70+",
-                "field_label": "70+",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "subsection_label" : "Gender",
-                "field_id": "outpatients.gender.male",
-                "field_label": "Male",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "outpatients.gender.female",
-                "field_label": "Female",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "returningOutpatients.total",
-                "field_label": "Returning outpatients",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "subsection_label" : "Cause of SCI",
-                "field_id": "returningOutpatients.causeSCI.transportAccident",
-                "field_label": "Transport accident",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "returningOutpatients.causeSCI.fall",
-                "field_label": "Fall",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "returningOutpatients.causeSCI.assault",
-                "field_label": "Assault",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "returningOutpatients.causeSCI.sports",
-                "field_label": "Sports",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "returningOutpatients.causeSCI.nonTraumaSpinalCordDysfunction",
-                "field_label": "Non-traumatic spinal cord dysfunction",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "returningOutpatients.causeSCI.medicalSurgicalComplication",
-                "field_label": "Medical/Surgical complication",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "returningOutpatients.causeSCI.otherTrauma",
-                "field_label": "Other traumatic reason",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.total",
-                "field_label": "New outpatients initial evaluation",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 0
-            },
-            {
-                "subsection_label" : "Main Condition of New Patients",
-                "field_id": "newOutpatients.mainCondition.SCIparaplegia",
-                "field_label": "SCI-paraplegia",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.SCItetraplegia",
-                "field_label": "SCI-tetraplegia",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.strokeCVA",
-                "field_label": "Stroke/CVA",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.fracturedHip",
-                "field_label": "Fractured Hip",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.fracturedLongBones",
-                "field_label": "Fractured Long Bones",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.neurodegenerativeDisease",
-                "field_label": "Neurodegenerative Disease ",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.headInjury",
-                "field_label": "Head Injury",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.woundCare",
-                "field_label": "Wound Care",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.cerabralPalsy",
-                "field_label": "Cerabral Palsy",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.downSyndrome",
-                "field_label": "Down Syndrome",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.mainCondition.other",
-                "field_label": "Other",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "subsection_label" : "Age of New Patients(years)",
-                "field_id": "newOutpatients.age.0-5",
-                "field_label": "0-5",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.age.6-11",
-                "field_label": "6-11",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.age.12-18",
-                "field_label": "12-18",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.age.19-30",
-                "field_label": "18-30",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.age.31-50",
-                "field_label": "31-50",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.age.51-70",
-                "field_label": "51-70",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.age70+",
-                "field_label": "70+",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "subsection_label" : "Gender of New Patients",
-                "field_id": "newOutpatients.gender.male",
-                "field_label": "Male",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            },
-            {
-                "field_id": "newOutpatients.gender.female",
-                "field_label": "Female",
-                "field_type": "number",
-                "field_value": 0,
-                "field_level": 1
-            }
-        ]
-    }
+  {
+    "section_label": "Outpatients",
+    "section_fields": [
+      {
+        "field_id": "outpatients.total",
+        "field_label": "Number of Outpatients",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "subsection_label": "Age (years)",
+        "field_id": "outpatients.age.0-5",
+        "field_label": "0-5",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "outpatients.age.6-11",
+        "field_label": "6-11",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "outpatients.age.12-18",
+        "field_label": "12-18",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "outpatients.age.19-30",
+        "field_label": "18-30",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "outpatients.age.31-50",
+        "field_label": "31-50",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "outpatients.age.51-70",
+        "field_label": "51-70",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "outpatients.age70+",
+        "field_label": "70+",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "subsection_label": "Gender",
+        "field_id": "outpatients.gender.male",
+        "field_label": "Male",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "outpatients.gender.female",
+        "field_label": "Female",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "returningOutpatients.total",
+        "field_label": "Returning outpatients",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "subsection_label": "Cause of SCI",
+        "field_id": "returningOutpatients.causeSCI.transportAccident",
+        "field_label": "Transport accident",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "returningOutpatients.causeSCI.fall",
+        "field_label": "Fall",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "returningOutpatients.causeSCI.assault",
+        "field_label": "Assault",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "returningOutpatients.causeSCI.sports",
+        "field_label": "Sports",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "returningOutpatients.causeSCI.nonTraumaSpinalCordDysfunction",
+        "field_label": "Non-traumatic spinal cord dysfunction",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "returningOutpatients.causeSCI.medicalSurgicalComplication",
+        "field_label": "Medical/Surgical complication",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "returningOutpatients.causeSCI.otherTrauma",
+        "field_label": "Other traumatic reason",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.total",
+        "field_label": "New outpatients initial evaluation",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 0
+      },
+      {
+        "subsection_label": "Main Condition of New Patients",
+        "field_id": "newOutpatients.mainCondition.SCIparaplegia",
+        "field_label": "SCI-paraplegia",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.SCItetraplegia",
+        "field_label": "SCI-tetraplegia",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.strokeCVA",
+        "field_label": "Stroke/CVA",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.fracturedHip",
+        "field_label": "Fractured Hip",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.fracturedLongBones",
+        "field_label": "Fractured Long Bones",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.neurodegenerativeDisease",
+        "field_label": "Neurodegenerative Disease ",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.headInjury",
+        "field_label": "Head Injury",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.woundCare",
+        "field_label": "Wound Care",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.cerabralPalsy",
+        "field_label": "Cerabral Palsy",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.downSyndrome",
+        "field_label": "Down Syndrome",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.mainCondition.other",
+        "field_label": "Other",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "subsection_label": "Age of New Patients(years)",
+        "field_id": "newOutpatients.age.0-5",
+        "field_label": "0-5",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.age.6-11",
+        "field_label": "6-11",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.age.12-18",
+        "field_label": "12-18",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.age.19-30",
+        "field_label": "18-30",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.age.31-50",
+        "field_label": "31-50",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.age.51-70",
+        "field_label": "51-70",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.age70+",
+        "field_label": "70+",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "subsection_label": "Gender of New Patients",
+        "field_id": "newOutpatients.gender.male",
+        "field_label": "Male",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      },
+      {
+        "field_id": "newOutpatients.gender.female",
+        "field_label": "Female",
+        "field_type": "number",
+        "field_value": 0,
+        "field_level": 1
+      }
+    ]
+  }
 ]

@@ -7,8 +7,8 @@ import { expression } from 'joi';
 // JWT strategy
 const jwtLogin = new JwtStrategy(
   {
-    jwtFromRequest: req => req.cookies.jwt,
-    secretOrKey: process.env.JWT_SECRET,
+    jwtFromRequest: (req) => req.cookies.jwt,
+    secretOrKey: process.env.JWT_SECRET
   },
   async (payload, done) => {
     try {
@@ -22,7 +22,7 @@ const jwtLogin = new JwtStrategy(
     } catch (err) {
       done(err, false);
     }
-  },
+  }
 );
 
 passport.use(jwtLogin);

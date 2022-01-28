@@ -1,9 +1,9 @@
 {
-    "departmentId" : 1,
-    "departmentName" : "NICU/Paeds",
-    "authorId" : 223123,
-    "authorFirstName" : "John",
-    "authorLastName" : "Smith",
-    "messageBody" : "hello this is a test\n this is a test newline.",
-    "messageHeader" : "testing"
+  "departmentId": 1,
+  "departmentName": "NICU/Paeds",
+  "authorId": 223123,
+  "authorFirstName": "John",
+  "authorLastName": "Smith",
+  "messageBody": "hello this is a test\n this is a test newline.",
+  "messageHeader": "testing"
 }

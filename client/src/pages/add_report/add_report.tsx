@@ -8,26 +8,25 @@ import RehabForm from 'pages/form/rehab_form';
 import CommunityForm from 'pages/form/community_form';
 
 const AddReport = () => {
-    const history = useHistory();
-    const {deptId} = useParams<{deptId: string}>();
+  const history = useHistory();
+  const { deptId } = useParams<{ deptId: string }>();
 
-try {
+  try {
     const deptName: DepartmentName = getDepartmentName(parseInt(deptId));
 
     switch (deptName) {
-        case DepartmentName.Rehab:
-            return <RehabForm></RehabForm>;
-        case DepartmentName.NicuPaeds:
-            return <NICUForm></NICUForm>;
-        case DepartmentName.Maternity:
-            return <MaternityForm></MaternityForm>;
-        case DepartmentName.CommunityHealth:
-            return <CommunityForm></CommunityForm>;
+      case DepartmentName.Rehab:
+        return <RehabForm></RehabForm>;
+      case DepartmentName.NicuPaeds:
+        return <NICUForm></NICUForm>;
+      case DepartmentName.Maternity:
+        return <MaternityForm></MaternityForm>;
+      case DepartmentName.CommunityHealth:
+        return <CommunityForm></CommunityForm>;
     }
-}
-catch (e) {
+  } catch (e) {
     history.push('/notFound');
-}
-}
+  }
+};
 
 export default AddReport;

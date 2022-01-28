@@ -11,29 +11,30 @@ interface ObjectEntryProps extends ElementStyleProps {
   value: ReportProps;
   edit: boolean;
 }
-;
-
 export const ObjectEntry = (props: ObjectEntryProps) => {
-
   function concatParent(entryKey: string) {
-    if (props.parentKey === "") {
+    if (props.parentKey === '') {
       return entryKey;
     } else {
-      return props.parentKey + "_" + entryKey;
+      return props.parentKey + '_' + entryKey;
     }
   }
 
   return (
     <div>
-      <>{
-        <>{'\t'}
-          <ReportDisplay report={props.value}
-            parentKey={concatParent(props.entryKey)}
-            descriptions={props.descriptions}
-            edit={props.edit} />
-        </>
-      }</>
+      <>
+        {
+          <>
+            {'\t'}
+            <ReportDisplay
+              report={props.value}
+              parentKey={concatParent(props.entryKey)}
+              descriptions={props.descriptions}
+              edit={props.edit}
+            />
+          </>
+        }
+      </>
     </div>
   );
-}
-
+};

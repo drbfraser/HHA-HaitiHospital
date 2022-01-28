@@ -1,6 +1,6 @@
 {
   "departmentId": 1,
-	"departmentName": "nicupaeds",
+  "departmentName": "nicupaeds",
   "bedsAvailable": 2,
   "bedDays": 2,
   "patientDays": 1,
@@ -43,15 +43,15 @@
       "capHaitian": 1,
       "departmentNord": 2,
       "otherDepartments": [
-				{
-					"nameOfDepartment" : "Haiti Central",
-					"numberOfPatients" : 123
-				},
-				{
-					"nameOfDepartment" : "Canada",
-					"numberOfPatients" : 1236
-				}
-			]
+        {
+          "nameOfDepartment": "Haiti Central",
+          "numberOfPatients": 123
+        },
+        {
+          "nameOfDepartment": "Canada",
+          "numberOfPatients": 1236
+        }
+      ]
     },
     "age": {
       "extremelyPreterm": 1,
@@ -85,7 +85,7 @@
       "communityAcquiredPneumonia": 0,
       "aspirationPneumonia": 0,
       "moderatePrematurity": 0,
-      "severePrematurity":2,
+      "severePrematurity": 2,
       "otherMedical": [
         {
           "nameOfCondition": "COVID",
@@ -95,7 +95,7 @@
           "nameOfCondition": "Intense Diarrhea",
           "numberOfPatients": 123
         },
-				{
+        {
           "nameOfCondition": "Vomiting",
           "numberOfPatients": 15
         }
@@ -128,7 +128,7 @@
       "alteredMentalStatus": 0,
       "gastroenteritis": 0,
       "hemorrhage": 1,
-      "hypothermia":2,
+      "hypothermia": 2,
       "cardiacCongenitalAnomaly": 0,
       "otherCongenitalAnomaly": 0,
       "malnutrition": 0,
