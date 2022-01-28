@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 interface DashboardMessageProps extends ElementStyleProps {}
 
 const fetchMessages = async () => {
-  let messages = await Axios.get('/api/messageboard');
+  let messages = await Axios.get('/api/message-board');
   return messages;
 };
 

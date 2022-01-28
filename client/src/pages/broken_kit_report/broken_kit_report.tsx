@@ -21,9 +21,9 @@ export const BrokenKitReport = (props: BrokenKitReport) => {
   const history = useHistory();
 
   const onSubmit = async (data: any) => {
-    var formData = new FormData();
+    let formData = new FormData();
 
-    var postData = JSON.stringify(data);
+    let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
 

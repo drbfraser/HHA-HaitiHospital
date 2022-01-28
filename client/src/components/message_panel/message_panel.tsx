@@ -17,7 +17,7 @@ const MessagePanel = (props: MessagePanelProps) => {
   const authState = useAuthState();
 
   const [msgsJson, setMsgJson] = useState<Json[]>([]);
-  const dbApiForMessageBoard = '/api/messageBoard/';
+  const dbApiForMessageBoard = '/api/message-board/';
 
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {

@@ -1,14 +1,11 @@
-import Axios, { AxiosResponse } from 'axios';
-import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import { useParams } from 'react-router';
-
 import { emptyMessage, Message } from 'constants/interfaces';
 import Sidebar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import MessageForm from 'components/message_form/message_form';
-
 import './edit_message_styles.css';
 import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +19,7 @@ const EditMessage = () => {
   const { t } = useTranslation();
 
   async function fetchMsgFromDb(id: string) {
-    const api = `/api/messageBoard/message/${id}`;
+    const api = `/api/message-board/${id}`;
     try {
       const response = await Axios.get(api);
       return response.data;
@@ -52,7 +49,7 @@ const EditMessage = () => {
   }, []);
 
   const updateMessage = async (data) => {
-    const api = `/api/messageboard/${id}`;
+    const api = `/api/message-board/${id}`;
     try {
       let response = await Axios.put(api, data);
       history.push('/message-board');

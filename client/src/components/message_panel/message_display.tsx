@@ -27,7 +27,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   }
 
   async function deleteMessageFromDb(msgId: string): Promise<boolean> {
-    const deleteMsgApi = `/api/messageboard/${msgId}`;
+    const deleteMsgApi = `/api/message-board/${msgId}`;
     try {
       const response = await Axios.delete(deleteMsgApi);
       return true;
