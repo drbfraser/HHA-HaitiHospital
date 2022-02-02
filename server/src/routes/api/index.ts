@@ -11,7 +11,7 @@ const router = Router();
 router.use('/users', usersRoutes);
 router.use('/nicupaeds', nicuPaedsRoutes);
 router.use('/report', reportRouter);
-router.use('/caseStudies', caseStudiesRouter);
+router.use('/case-studies', caseStudiesRouter);
 router.use('/leaderboard', leaderboardRouter);
 router.use('/biomech', biomechRouter);
 

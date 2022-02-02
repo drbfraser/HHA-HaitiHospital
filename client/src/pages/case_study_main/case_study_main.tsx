@@ -19,7 +19,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const authState = useAuthState();
   const history = useHistory();
 
-  const caseStudiesUrl = '/api/casestudies';
+  const caseStudiesUrl = '/api/case-studies';
   const getCaseStudies = async () => {
     const res = await axios.get(caseStudiesUrl);
     setCaseStudies(res.data);
