@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import localAuthRoutes from './localAuth';
+import localAuthRoutes from './api/localAuth';
 import apiRoutes from './api';
 const router = Router();
 

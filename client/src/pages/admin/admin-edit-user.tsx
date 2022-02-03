@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { RouteComponentProps, Link, useHistory, useLocation } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { User, Role, DepartmentName } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
-
 import './admin.css';
 import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +19,6 @@ export const EditUserForm = (props: AdminProps) => {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [role, setRole] = useState(null);
   const [department, setDepartment] = useState(null);
-
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
 
   const failureMessageRef = useRef(null);
@@ -35,7 +33,7 @@ export const EditUserForm = (props: AdminProps) => {
       setUser(res.data);
       setRole(res.data.role);
       setDepartment(res.data.department);
-    } catch (err) {
+    } catch (err: any) {
       DbErrorHandler(err, history);
     }
   };

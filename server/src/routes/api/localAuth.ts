@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import requireLocalAuth from '../middleware/requireLocalAuth';
+import requireLocalAuth from '../../middleware/requireLocalAuth';
 
 const router = Router();
 
