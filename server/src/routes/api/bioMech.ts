@@ -50,7 +50,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
       imgPath
     });
 
-    bioMech
+    await bioMech
       .save()
       .then(() => res.status(201).json('BioMech Report Submitted Successfully'))
       .catch((err: any) => res.status(400).json('BioMech Report submission failed: ' + err));

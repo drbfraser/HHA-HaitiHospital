@@ -7,8 +7,8 @@ import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/User';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
 
-router.get('/', async (req: Request, res: Response) => {
-  MessageBody.find({})
+router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
+  await MessageBody.find({})
     .sort({ date: 'desc' })
     .populate('userId')
     .then((response: any) => res.status(200).json(response))
@@ -16,21 +16,21 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 //REMOVED FOR NOW - MIGHT BRING DEPARTMENT SPECIFIC MESSAGES FUNCTION BACK LATER
-router.get('/department/:departmentId', async (req: Request, res: Response) => {
-  MessageBody.find({ departmentId: req.params.departmentId })
+router.get('/department/:departmentId', requireJwtAuth, async (req: Request, res: Response) => {
+  await MessageBody.find({ departmentId: req.params.departmentId })
     .sort({ date: 'desc' })
     .then((response: any) => res.json(response))
     .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-  MessageBody.findById(req.params.id)
+  await MessageBody.findById(req.params.id)
     .populate('userId')
     .then((response: any) => res.status(200).json(response))
     .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
 });
 
-router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, (req: Request, res: Response) => {
+router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   let dateTime: Date = new Date();
   const departmentId: number = req.body.departmentId;
   const departmentName: string = req.body.departmentName;
@@ -49,14 +49,14 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoard
     messageHeader: messageHeader
   });
 
-  messageEntry
+  await messageEntry
     .save()
     .then(() => res.status(201).json('Message has been successfully posted'))
     .catch((err: any) => res.status(400).json('Message did not successfully post: ' + err));
 });
 
 //make the changes to message of id reportID
-router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, (req: Request, res: Response) => {
+router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   let dateTime: Date = new Date();
   const departmentId: number = parseInt(req.body.departmentId);
   const departmentName: string = req.body.departmentName;
@@ -78,16 +78,16 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoa
 
   Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
 
-  return MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true })
+  return await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true })
     .populate('userId')
     .then((message: any) => res.status(201).json(message))
     .catch((err: any) => res.status(400).json('Edit message failed: ' + err));
 });
 
 // delete message id
-router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
-    MessageBody.findByIdAndRemove(req.params.id)
+    await MessageBody.findByIdAndRemove(req.params.id)
       .then((data: any) => res.status(204).json(data))
       .catch((err: any) => res.status(400).json('Failed to delete: ' + err));
   } catch (err) {

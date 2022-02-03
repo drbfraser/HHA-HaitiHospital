@@ -11,7 +11,7 @@ const router = Router();
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
   try {
-    CaseStudy.find()
+    await CaseStudy.find()
       .populate('user')
       .then((data: any) => res.status(200).json(data))
       .catch((err: any) => res.status(400).json('Failed to get case studies: ' + err));
@@ -22,7 +22,7 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
 
 router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
   try {
-    CaseStudy.findById(req.params.id)
+    await CaseStudy.findById(req.params.id)
       .populate('user')
       .then((data) => res.status(200).json(data))
       .catch((err) => res.status(400).json('Failed to get case study: ' + err));
@@ -51,7 +51,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
       otherStory,
       imgPath
     });
-    newCaseStudy
+    await newCaseStudy
       .save()
       .then(() => res.status(201).json('Case Study Submitted successfully'))
       .catch((err: any) => res.status(400).json('Case study submission failed: ' + err));
@@ -62,7 +62,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
 
 router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
   try {
-    CaseStudy.findByIdAndRemove(req.params.id)
+    await CaseStudy.findByIdAndRemove(req.params.id)
       .then((data: any) => res.status(204).json(data))
       .catch((err: any) => res.status(400).json('Failed to delete: ' + err));
   } catch (err: any) {
@@ -94,7 +94,7 @@ router.put('/:id', requireJwtAuth, registerCaseStudiesCreate, validateInput, upl
     };
     Object.keys(updatedCaseStudy).forEach((k) => (!updatedCaseStudy[k] || updatedCaseStudy[k] === undefined) && delete updatedCaseStudy[k]);
 
-    CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
+    await CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
       .then((data: any) => res.status(201).json(data))
       .catch((err: any) => res.status(400).json('Failed to update: ' + err));
   } catch (err: any) {

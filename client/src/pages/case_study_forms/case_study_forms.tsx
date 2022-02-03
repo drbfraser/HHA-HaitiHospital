@@ -46,7 +46,6 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     data.caseStudyType = formOption;
     let formData = new FormData();
     let postData = JSON.stringify(data);
-    console.log(postData);
     formData.append('document', postData);
     formData.append('file', selectedFile);
 

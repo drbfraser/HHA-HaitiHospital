@@ -13,7 +13,6 @@ const AddMessage = () => {
 
   const postMessage = async (data) => {
     const api = '/api/message-board/';
-    console.log(data);
     try {
       await Axios.post(api, data);
       history.push('/message-board');
