@@ -11,7 +11,6 @@ import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 
-// sample url /message-board/edit/{id}
 const EditMessage = () => {
   const { id } = useParams<{ id?: string }>();
   const [msg, setMsg] = useState<Message>(emptyMessage);
@@ -51,7 +50,7 @@ const EditMessage = () => {
   const updateMessage = async (data) => {
     const api = `/api/message-board/${id}`;
     try {
-      let response = await Axios.put(api, data);
+      await Axios.put(api, data);
       history.push('/message-board');
       alert(i18n.t('addMessageAlertSuccess'));
     } catch (e) {

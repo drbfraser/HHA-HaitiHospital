@@ -1,9 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { renderBasedOnRole } from '../../actions/roleActions';
 import { useAuthState } from 'Context';
 import { Role } from '../../constants/interfaces';
-
 import { Json, ElementStyleProps } from 'constants/interfaces';
 import Axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -18,24 +16,24 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const { t } = useTranslation();
   const authState = useAuthState();
 
-  async function deleteMessage(msgId: string) {
-    if (window.confirm(i18n.t('MessageAlertDeleteMessage'))) {
-      const success = await deleteMessageFromDb(msgId);
-
-      if (success === true) props.notifyChange();
-    }
-  }
-
-  async function deleteMessageFromDb(msgId: string): Promise<boolean> {
+  const deleteMessageFromDb = async (msgId: string): Promise<boolean> => {
     const deleteMsgApi = `/api/message-board/${msgId}`;
     try {
-      const response = await Axios.delete(deleteMsgApi);
+      await Axios.delete(deleteMsgApi);
       return true;
     } catch (err: any) {
       console.log('Delete message failed');
       return false;
     }
-  }
+  };
+
+  const deleteMessage = async (msgId: string) => {
+    if (window.confirm(i18n.t('MessageAlertDeleteMessage'))) {
+      const success = await deleteMessageFromDb(msgId);
+
+      if (success === true) props.notifyChange();
+    }
+  };
 
   let readableDate = new Date(props.msgJson.date as string).toLocaleString();
 

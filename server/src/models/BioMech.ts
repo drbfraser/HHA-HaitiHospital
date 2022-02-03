@@ -22,5 +22,4 @@ const bioMechSchema = new Schema(
 );
 
 const BioMech = mongoose.model('BioMech', bioMechSchema, 'BioMechReports');
-
 export default BioMech;
