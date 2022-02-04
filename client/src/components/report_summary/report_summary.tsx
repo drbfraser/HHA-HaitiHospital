@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Axios from 'axios';
-
 import { ElementStyleProps } from 'constants/interfaces';
 import { JsonArray, DepartmentName, getDepartmentId } from 'constants/interfaces';
 import ReportSummaryTable from 'components/report_summary/report_summary_table/report_summary_table';
-
 import { DayRange } from 'react-modern-calendar-datepicker';
 import './styles.css';
 import DbErrorHandler from 'actions/http_error_handler';
@@ -22,14 +20,13 @@ const ReportSummary = (props: DepartmentReportsProps) => {
 
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {
-    // To fetch data from db
     let isMounted = true;
     const getReports = async () => {
       const reportsFromServer = await fetchReports();
       if (isMounted) setReports(reportsFromServer);
     };
     getReports();
-    return function cleanup() {
+    return () => {
       apiSource.cancel();
       isMounted = false;
     };
@@ -52,14 +49,12 @@ const ReportSummary = (props: DepartmentReportsProps) => {
     }
   };
 
-  function refetchReportsHandler() {
-    // console.log("Refetch reports");
+  const refetchReportsHandler = () => {
     setRefetch(!refetch);
-  }
+  };
 
   return (
     <div className={'deparment-reports'}>
-      {/*<div className='container my-4'>*/}
       <div className="my-4">
         {reports === undefined || reports.length === 0 ? (
           <div className="lead">No submitted reports</div>
@@ -79,7 +74,7 @@ export default ReportSummary;
 
 //  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 
-function buildApiRoute(dateRange: DayRange, department: DepartmentName): string {
+const buildApiRoute = (dateRange: DayRange, department: DepartmentName): string => {
   const prefix = '/api/report';
   const fromParam = 'from';
   const toParam = 'to';
@@ -103,17 +98,17 @@ function buildApiRoute(dateRange: DayRange, department: DepartmentName): string 
 
   returnApi = concatParamsToRoute(prefix, params);
   return returnApi;
-}
+};
 
-function isDateRangeValid(dateRange: DayRange): boolean {
+const isDateRangeValid = (dateRange: DayRange): boolean => {
   return dateRange !== undefined && dateRange.from !== null && dateRange.to !== null;
-}
+};
 
-function formatDateToStr(date: { year: Number; month: Number; day: Number }): String {
+const formatDateToStr = (date: { year: Number; month: Number; day: Number }): String => {
   return `${date.year}-${date.month}-${date.day}`;
-}
+};
 
-function concatParamsToRoute(prefix: string, params: { [paramName: string]: string }): string {
+const concatParamsToRoute = (prefix: string, params: { [paramName: string]: string }): string => {
   let returnRoute = prefix;
   let nParams = Object.keys(params).length;
 
@@ -127,6 +122,6 @@ function concatParamsToRoute(prefix: string, params: { [paramName: string]: stri
     if (idx < nParams - 1) returnRoute += '&';
   });
   return returnRoute;
-}
+};
 
 //  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<
