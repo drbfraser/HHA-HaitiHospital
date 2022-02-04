@@ -23,8 +23,6 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
 
   const { t, i18n } = useTranslation();
 
-  console.log(props.createdOn);
-
   return (
     <tr id={`rp-sum-row-${props.reportId}`}>
       <td>
