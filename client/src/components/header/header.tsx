@@ -6,18 +6,19 @@ import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
-// import {stringify} from "querystring";
-// import * as Routing from 'constants/routing';
-
 interface HeaderProps extends ElementStyleProps {}
 
-function HeaderView() {
+interface HeaderViewProps extends ElementStyleProps {
+  user: User;
+}
+
+function HeaderView(props: HeaderViewProps) {
   const { t } = useTranslation();
   const location = useLocation();
-  // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
-
+  const departmentName =
+    props.user.department == undefined ? props.user.role : props.user.department;
   if (location.pathname.slice(1) === 'home') {
-    return <h4 className="text-secondary">{t('headerOverview')}</h4>;
+    return <h2 className="text-secondary">{t('headerOverview') + ' - ' + departmentName}</h2>;
   } else if (location.pathname.slice(1) === 'message-board') {
     return <h4 className="text-secondary">{t('headerMessageBoard')}</h4>;
   } else if (location.pathname.slice(1) === 'leaderboard') {
@@ -59,7 +60,6 @@ function HeaderView() {
   ) {
     return <h4 className="text-secondary">{t('headerEditUser')}</h4>;
   } else {
-    // return <h4 className="text-secondary">{location.pathname.slice(1)}</h4>
     return <h4></h4>;
   }
 }
@@ -100,14 +100,15 @@ const Header = (props: HeaderProps) => {
     getUserInfo();
   }, []);
   const { t, i18n } = useTranslation();
-
   return (
     <div className={'header ' + (props.classes || '')}>
       <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
+        {/* Header text */}
         <div className="col">
-          <HeaderView />
+          <HeaderView user={userInfo} />
         </div>
 
+        {/* User drop down */}
         <div className="col-auto">
           <div className="dropdown">
             <button
