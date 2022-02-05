@@ -1,11 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps, User, Role, DepartmentName } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
-
 import './admin.css';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
@@ -17,25 +16,24 @@ export const AddUserForm = (props: AdminProps) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
-
   const failureMessageRef = useRef(null);
   const history = useHistory();
 
-  const onSubmit = (data: any) => {
-    axios
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    await axios
       .post('/api/users', data)
-      .then((res) => {
+      .then(() => {
         reset({});
         history.push('/admin');
       })
-      .catch((error) => {
+      .catch((error: any) => {
         handleSubmitFailure(error);
       });
   };
 
-  const handleSubmitFailure = (error) => {
+  const handleSubmitFailure = (error: any) => {
     try {
       if (error.response.data.message) {
         setErrorMessage(error.response.data.message);

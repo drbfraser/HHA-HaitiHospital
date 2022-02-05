@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-
-import { ElementStyleProps, JsonArray, Json } from 'constants/interfaces';
+import { useEffect, useState } from 'react';
+import { ElementStyleProps, Json } from 'constants/interfaces';
 import ReportSummaryRow from 'components/report_summary/report_summary_table/report_summary_row';
 import AllTick from 'components/report_summary/report_summary_table/all_tick';
 import UtilityButtons from 'components/report_summary/report_summary_table/utility_buttons';
 import { useTranslation } from 'react-i18next';
-import { TriggerConfig } from 'react-hook-form';
 
 interface ReportSummaryTableProps extends ElementStyleProps {
   reports: Json[];
@@ -25,8 +23,7 @@ const ReportSummaryTable = (props: ReportSummaryTableProps) => {
     setTracker(trackerTemp);
   }, [props.reports]);
 
-  function tickRow(update: { [rid: string]: boolean }) {
-    // console.log("Row ticked", update)
+  const tickRow = (update: { [rid: string]: boolean }) => {
     const rids = Object.keys(tickTracker);
     let newTracker = { ...tickTracker };
 
@@ -35,35 +32,32 @@ const ReportSummaryTable = (props: ReportSummaryTableProps) => {
       else console.log('Tick non-existing report row');
     });
     setTracker(newTracker);
-  }
+  };
 
-  function tickAll(update: boolean) {
+  const tickAll = (update: boolean) => {
     const newTracker = { ...tickTracker };
-    const rids = Object.keys(tickTracker);
 
     Object.keys(newTracker).forEach((rid) => {
       newTracker[rid] = update;
     });
 
     setTracker(newTracker);
-  }
+  };
 
-  function tableStateChange() {
-    //   console.log("Table notified for delete");
+  const tableStateChange = () => {
     props.refetchReports();
-  }
+  };
 
   const { t, i18n } = useTranslation();
 
   return (
     <section>
-      {/* Table must be wrapped inside table-responsive to be responsive */}
       <div className="table-responsive-md">
         <table className={'report-summary-table table'}>
           <thead>
             <tr>
               <th className="mx-1" scope="col">
-                {t('departmentPageReportID')}
+                {t('departmentPageReportName')}
               </th>
               <th className="mx-1" scope="col">
                 Department
@@ -90,6 +84,7 @@ const ReportSummaryTable = (props: ReportSummaryTableProps) => {
                 <ReportSummaryRow
                   key={index}
                   reportId={report['_id'] as string}
+                  createdOn={report['createdOn'] as string}
                   deptId={parseInt(report['departmentId'] as string)}
                   lastUpdatedOn={new Date(report['lastUpdatedOn'] as string)}
                   lastUpdatedBy={`${username} / ${fullName}`}
@@ -101,7 +96,6 @@ const ReportSummaryTable = (props: ReportSummaryTableProps) => {
           </tbody>
         </table>
       </div>
-
       <UtilityButtons tickTracker={tickTracker} notifyTable={tableStateChange} />
     </section>
   );

@@ -1,12 +1,12 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { ElementStyleProps, getDepartmentName } from 'constants/interfaces';
-import { TickList, TickObserver } from 'components/report_summary/report_summary_table/tick_list';
 import { useTranslation } from 'react-i18next';
+import { makeDateShort } from 'utils/dateFormatting';
 
 interface ReportSummaryProps extends ElementStyleProps {
   reportId: string;
+  createdOn: string;
   deptId: number;
   lastUpdatedOn: Date;
   lastUpdatedBy: string;
@@ -26,7 +26,9 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
   return (
     <tr id={`rp-sum-row-${props.reportId}`}>
       <td>
-        <Link to={`/department/${props.deptId}/view/${props.reportId}`}>{props.reportId}</Link>
+        <Link to={`/department/${props.deptId}/view/${props.reportId}`}>
+          {makeDateShort(props.createdOn)}
+        </Link>
       </td>
       <td>{getDepartmentName(props.deptId)}</td>
       <td>{props.lastUpdatedOn.toDateString()}</td>

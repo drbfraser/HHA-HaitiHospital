@@ -1,12 +1,13 @@
 import { Router, Request, Response } from 'express';
-
 import requireJwtAuth from '../../middleware/requireJwtAuth';
+import { validateInput } from '../../middleware/inputSanitization';
 import User, { hashPassword, Role, validateUserSchema, validateUpdatedUserSchema } from '../../models/User';
 import { checkIsInRole } from '../../utils/authUtils';
+import { registerUserCreate } from '../../schema/registerUser';
 
 const router = Router();
 
-router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
+router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
     const tempUser = await User.findById(req.params.id);
     if (!tempUser) return res.status(404).json({ message: 'No such user' });
@@ -36,12 +37,11 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Reques
     }
 
     const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
-    // remove '', null, undefined
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     const user = await User.findByIdAndUpdate(tempUser.id, { $set: updatedUser }, { new: true });
 
-    res.json(user);
-  } catch (err) {
+    res.status(201).json(user);
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
@@ -51,44 +51,42 @@ router.get('/me', requireJwtAuth, async (req, res) => {
 });
 
 // get one user, currently working
-router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
+router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
     const foundUser = await User.findById(req.params.id);
     if (!foundUser) return res.status(404).json({ message: 'No such user' });
-    res.json(foundUser);
-  } catch (err) {
+    res.status(200).json(foundUser);
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
 // get all users, currently working
-router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
+router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
     const users = await User.find().sort({ createdAt: 'desc' });
-    res.json(users);
-  } catch (err) {
+    res.status(200).json(users);
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
 // delete user, currently working without req.user
-router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
     const tempUser = await User.findById(req.params.id);
     if (!tempUser) return res.status(404).json({ message: 'No such user' });
-
     const user = await User.findByIdAndRemove(tempUser.id);
-    res.json(user);
-  } catch (err) {
+    res.status(204).json(user);
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
 // add user, currently working
-router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => {
+router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
     const { username, password, name, role, department } = req.body;
-
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
@@ -117,11 +115,11 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req, res) => 
       return res.status(403).json({ message: errorMessage });
     }
 
-    newUser.registerUser(newUser, (err, user) => {
+    newUser.registerUser(newUser, (err: any) => {
       if (err) throw err;
-      res.json({ message: 'Successfully added user.' }); // just redirect to login
+      res.status(201).json({ message: 'Successfully added user.' });
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong' });
   }
 });

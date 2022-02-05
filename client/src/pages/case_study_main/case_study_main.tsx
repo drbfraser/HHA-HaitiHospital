@@ -4,7 +4,6 @@ import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
-
 import './case_study_main_styles.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
@@ -19,7 +18,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const authState = useAuthState();
   const history = useHistory();
 
-  const caseStudiesUrl = '/api/casestudies';
+  const caseStudiesUrl = '/api/case-studies';
   const getCaseStudies = async () => {
     const res = await axios.get(caseStudiesUrl);
     setCaseStudies(res.data);

@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { ElementStyleProps, Json } from 'constants/interfaces';
 import { useState } from 'react';
-
-import { MessageProps } from 'constants/interfaces';
 import Axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import './dashboard_message_overview.css';
@@ -11,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 interface DashboardMessageProps extends ElementStyleProps {}
 
 const fetchMessages = async () => {
-  let messages = await Axios.get('/api/messageboard');
+  let messages = await Axios.get('/api/message-board');
   return messages;
 };
 
