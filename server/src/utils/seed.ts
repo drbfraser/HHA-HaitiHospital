@@ -16,7 +16,6 @@ export const seedDb = async () => {
   seedCaseStudies();
   seedDepartments();
   await MessageBody.deleteMany({});
-  //   seedMessageBoard();
   seedLeaderboard();
 };
 
@@ -24,8 +23,6 @@ export const seedUsers = async () => {
   console.log('Seeding users...');
 
   try {
-    // await User.collection.dropIndexes();
-
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
       if (foundUser) {
@@ -137,6 +134,7 @@ export const seedDepartments = async () => {
   console.log('Default departments seeded');
 };
 
+// Todo: review this before deploying.
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   await MessageBody.deleteMany({});
