@@ -9,6 +9,7 @@ import Community from '../models/Community';
 
 import MessageBody from '../models/MessageBody';
 import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
+import 'dotenv/config';
 
 export const seedDb = async () => {
   await seedUsers();
@@ -21,6 +22,8 @@ export const seedDb = async () => {
 
 export const seedUsers = async () => {
   console.log('Seeding users...');
+
+  await User.deleteMany({})
 
   try {
     [...Array(7).keys()].forEach(async (index, i) => {
@@ -62,7 +65,7 @@ export const seedUsers = async () => {
       } else {
         const user = new User({
           username: `user${index}`,
-          password: '123456789',
+          password: process.env.SEED_PWD,
           name: faker.name.findName()
         });
 
