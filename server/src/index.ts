@@ -17,7 +17,7 @@ const app = express();
 // Cross-Origin
 const cors = require('cors');
 const corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: process.env.CORS,
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
   methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
