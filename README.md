@@ -58,7 +58,7 @@ The Directory can be split into client and serverside. Here are a few important 
 
 # Devs Build Instructions
 
-This instruction is intended for people looking to contribute to setup a development enviroment.
+This instruction is intended for people looking to setup a development enviroment.
 
 ### Install Node.js
 
@@ -76,14 +76,13 @@ This instruction is intended for people looking to contribute to setup a develop
 
 ### Setup Process Enviroments
 
-You will need to specify process enviroment variables specific to your setup. **These variables are required for the server to function properly.** Navigate to the server folder and create a `.env`
-file. You can use the following default values:
+You will need to specify process enviroment variables specific to your setup. Navigate to the server folder and create a `.env` file. You can use the following default values:
 
 ```
-# MongoDB URI. For a local mongoDB isntallation, the default port is usually 27017.
+# MongoDB URI. Defaults to port is usually 27017.
 MONGO_URI=mongodb://localhost:27017/
 
-# Secret used to generate JWT tokens
+# REQUIRED - Secret used to generate JWT tokens
 JWT_SECRET=sauce
 
 # The React client host. For development this would be your React devlopment server. The default port is usually 3000
@@ -92,7 +91,7 @@ CORS=http://localhost:3000
 # Server configs
 SERVER_PORT=5000
 
-# The server will seed users into db with this password.
+# REQUIRED - The server will seed users into db with this password.
 SEED_PWD=catdog
 ```
 
