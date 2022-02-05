@@ -1,35 +1,36 @@
 const router = require('express').Router();
-const { number } = require('joi');
 import MessageBody from '../../models/MessageBody';
 import { Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
+import { validateInput } from '../../middleware/inputSanitization';
 import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/User';
+import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
 
-router.get('/', async (req: any, res: any) => {
-  MessageBody.find({})
+router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
+  await MessageBody.find({})
     .sort({ date: 'desc' })
     .populate('userId')
-    .then((Reports) => res.json(Reports))
-    .catch((err) => res.status(400).json('Could not find any results: ' + err));
+    .then((response: any) => res.status(200).json(response))
+    .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
 });
 
 //REMOVED FOR NOW - MIGHT BRING DEPARTMENT SPECIFIC MESSAGES FUNCTION BACK LATER
-router.get('/department/:departmentId', async (req: any, res: any) => {
-  MessageBody.find({ departmentId: req.params.departmentId })
+router.get('/department/:departmentId', requireJwtAuth, async (req: Request, res: Response) => {
+  await MessageBody.find({ departmentId: req.params.departmentId })
     .sort({ date: 'desc' })
-    .then((Reports) => res.json(Reports))
-    .catch((err) => res.status(400).json('Could not find any results: ' + err));
+    .then((response: any) => res.json(response))
+    .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
 });
 
-router.get('/message/:messageId', async (req: any, res: any) => {
-  MessageBody.findById(req.params.messageId)
+router.get('/:id', async (req: Request, res: Response) => {
+  await MessageBody.findById(req.params.id)
     .populate('userId')
-    .then((Reports) => res.json(Reports))
-    .catch((err) => res.status(400).json('Could not find any results: ' + err));
+    .then((response: any) => res.status(200).json(response))
+    .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
 });
 
-router.route('/').post(requireJwtAuth, checkIsInRole(Role.Admin), (req: Request, res: Response) => {
+router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   let dateTime: Date = new Date();
   const departmentId: number = req.body.departmentId;
   const departmentName: string = req.body.departmentName;
@@ -39,8 +40,6 @@ router.route('/').post(requireJwtAuth, checkIsInRole(Role.Admin), (req: Request,
   const messageHeader: string = req.body.messageHeader;
   // @ts-ignore
   const userId: string = req.user.id;
-  console.log(req);
-
   const messageEntry = new MessageBody({
     departmentId: departmentId,
     departmentName: departmentName,
@@ -50,14 +49,14 @@ router.route('/').post(requireJwtAuth, checkIsInRole(Role.Admin), (req: Request,
     messageHeader: messageHeader
   });
 
-  messageEntry
+  await messageEntry
     .save()
-    .then(() => res.json('Message has been successfully posted'))
-    .catch((err) => res.status(400).json('Message did not successfully post: ' + err));
+    .then(() => res.status(201).json('Message has been successfully posted'))
+    .catch((err: any) => res.status(400).json('Message did not successfully post: ' + err));
 });
 
 //make the changes to message of id reportID
-router.route('/:messageId').put(requireJwtAuth, checkIsInRole(Role.Admin), (req: any, res: any) => {
+router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   let dateTime: Date = new Date();
   const departmentId: number = parseInt(req.body.departmentId);
   const departmentName: string = req.body.departmentName;
@@ -79,18 +78,18 @@ router.route('/:messageId').put(requireJwtAuth, checkIsInRole(Role.Admin), (req:
 
   Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
 
-  return MessageBody.findByIdAndUpdate({ _id: req.params.messageId }, updatedMessage, { new: true })
+  return await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true })
     .populate('userId')
-    .then((message) => res.json(message))
-    .catch((err) => res.status(400).json('Edit message failed: ' + err));
+    .then((message: any) => res.status(201).json(message))
+    .catch((err: any) => res.status(400).json('Edit message failed: ' + err));
 });
 
 // delete message id
-router.route('/:id').delete(requireJwtAuth, checkIsInRole(Role.Admin), (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
-    MessageBody.findByIdAndRemove(req.params.id)
-      .then((data) => res.json(data))
-      .catch((err) => res.status(400).json('Failed to delete: ' + err));
+    await MessageBody.findByIdAndRemove(req.params.id)
+      .then((data: any) => res.status(204).json(data))
+      .catch((err: any) => res.status(400).json('Failed to delete: ' + err));
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong.' });
   }

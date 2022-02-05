@@ -1,37 +1,37 @@
 import { Router, Request, Response, NextFunction } from 'express';
-
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
-
+import { validateInput } from '../../middleware/inputSanitization';
 import CaseStudy from '../../models/CaseStudies';
 import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/User';
+import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
   try {
-    CaseStudy.find()
+    await CaseStudy.find()
       .populate('user')
-      .then((data) => res.json(data))
-      .catch((err) => res.status(400).json('Failed to get case studies: ' + err));
-  } catch (err) {
+      .then((data: any) => res.status(200).json(data))
+      .catch((err: any) => res.status(400).json('Failed to get case studies: ' + err));
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
   try {
-    CaseStudy.findById(req.params.id)
+    await CaseStudy.findById(req.params.id)
       .populate('user')
-      .then((data) => res.json(data))
+      .then((data) => res.status(200).json(data))
       .catch((err) => res.status(400).json('Failed to get case study: ' + err));
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
 });
 
-router.post('/', [requireJwtAuth, upload.single('file')], async (req, res) => {
+router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, upload.single('file'), async (req: any, res: Response) => {
   try {
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const user = req.user.id;
@@ -51,26 +51,26 @@ router.post('/', [requireJwtAuth, upload.single('file')], async (req, res) => {
       otherStory,
       imgPath
     });
-    newCaseStudy
+    await newCaseStudy
       .save()
-      .then(() => res.json('Case Study Submitted successfully'))
-      .catch((err) => res.status(400).json('Case study submission failed: ' + err));
-  } catch (err) {
+      .then(() => res.status(201).json('Case Study Submitted successfully'))
+      .catch((err: any) => res.status(400).json('Case study submission failed: ' + err));
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
 });
 
-router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req, res) => {
+router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
   try {
-    CaseStudy.findByIdAndRemove(req.params.id)
-      .then((data) => res.json(data))
-      .catch((err) => res.status(400).json('Failed to delete: ' + err));
-  } catch (err) {
+    await CaseStudy.findByIdAndRemove(req.params.id)
+      .then((data: any) => res.status(204).json(data))
+      .catch((err: any) => res.status(400).json('Failed to delete: ' + err));
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
 });
 
-router.put('/:id', [requireJwtAuth, upload.single('file')], async (req: Request, res: Response, next: NextFunction) => {
+router.put('/:id', requireJwtAuth, registerCaseStudiesCreate, validateInput, upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const oldCaseStudy = await CaseStudy.findById(req.params.id);
@@ -94,11 +94,10 @@ router.put('/:id', [requireJwtAuth, upload.single('file')], async (req: Request,
     };
     Object.keys(updatedCaseStudy).forEach((k) => (!updatedCaseStudy[k] || updatedCaseStudy[k] === undefined) && delete updatedCaseStudy[k]);
 
-    CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
-      .then((data) => res.json(data))
-      .catch((err) => res.status(400).json('Failed to update: ' + err));
-  } catch (err) {
-    console.log(err);
+    await CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
+      .then((data: any) => res.status(201).json(data))
+      .catch((err: any) => res.status(400).json('Failed to update: ' + err));
+  } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
 });

@@ -9,7 +9,7 @@ import passport from 'passport';
 import all_routes from 'express-list-endpoints';
 import cookieParser from 'cookie-parser';
 
-import routes from './routes';
+import routes from './routes/routes';
 import { seedDb } from './utils/seed';
 
 const app = express();
