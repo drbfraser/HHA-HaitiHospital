@@ -23,7 +23,6 @@ export const seedDb = async () => {
 
 export const seedUsers = async () => {
   console.log('Seeding users...');
-
   try {
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
