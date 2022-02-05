@@ -1,24 +1,20 @@
-import React from 'react';
 import { useHistory } from 'react-router-dom';
-import Axios, { AxiosError } from 'axios';
-
+import Axios from 'axios';
 import Sidebar from '../../components/side_bar/side_bar';
 import Header from 'components/header/header';
-
 import './add_message_styles.css';
 import MessageForm from '../../components/message_form/message_form';
 import { useTranslation } from 'react-i18next';
-
 import DbErrorHandler from 'actions/http_error_handler';
 
-function AddMessage() {
+const AddMessage = () => {
   const history = useHistory();
   const { t, i18n } = useTranslation();
 
   const postMessage = async (data) => {
-    const api = '/api/messageboard/';
+    const api = '/api/message-board/';
     try {
-      let response = await Axios.post(api, data);
+      await Axios.post(api, data);
       history.push('/message-board');
       alert(i18n.t('addMessageAlertSuccess'));
     } catch (e) {
@@ -47,6 +43,6 @@ function AddMessage() {
       </main>
     </div>
   );
-}
+};
 
 export default AddMessage;

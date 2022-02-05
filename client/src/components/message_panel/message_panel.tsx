@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { ElementStyleProps, Json } from 'constants/interfaces';
 import Axios from 'axios';
 import MessageDisplay from './message_display';
@@ -17,7 +16,7 @@ const MessagePanel = (props: MessagePanelProps) => {
   const authState = useAuthState();
 
   const [msgsJson, setMsgJson] = useState<Json[]>([]);
-  const dbApiForMessageBoard = '/api/messageBoard/';
+  const dbApiForMessageBoard = '/api/message-board/';
 
   const apiSource = Axios.CancelToken.source();
   useEffect(() => {

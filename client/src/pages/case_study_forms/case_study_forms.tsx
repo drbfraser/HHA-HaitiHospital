@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ElementStyleProps } from 'constants/interfaces';
@@ -44,14 +44,13 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
 
   const onSubmit = (data: any) => {
     data.caseStudyType = formOption;
-    var formData = new FormData();
-
-    var postData = JSON.stringify(data);
+    let formData = new FormData();
+    let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
 
     axios
-      .post('/api/casestudies', formData)
+      .post('/api/case-studies', formData)
       .then((res) => {
         window.alert('Case study successfully submitted!');
         reset({});

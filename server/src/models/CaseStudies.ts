@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 import { DepartmentName } from './Departments';
 
 const { Schema } = mongoose;
