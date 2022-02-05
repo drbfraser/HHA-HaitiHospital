@@ -54,5 +54,5 @@ app.use('/', routes);
 app.use('/public', express.static('public'));
 
 // Start listening to PORT
-const port = process.env.PORT || 5000;
+const port = process.env.SERVER_PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
