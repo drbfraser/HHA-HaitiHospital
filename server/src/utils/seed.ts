@@ -9,7 +9,8 @@ import Community from '../models/Community';
 
 import MessageBody from '../models/MessageBody';
 import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
-import 'dotenv/config';
+
+import * as EnvUtils from '../utils/envUtils';
 
 export const seedDb = async () => {
   await seedUsers();
@@ -63,7 +64,7 @@ export const seedUsers = async () => {
       } else {
         const user = new User({
           username: `user${index}`,
-          password: process.env.SEED_PWD,
+          password: EnvUtils.PASSWORD_SEED,
           name: faker.name.findName()
         });
 

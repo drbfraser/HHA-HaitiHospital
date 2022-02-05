@@ -1,11 +1,9 @@
-import fs from 'fs';
-import { join } from 'path';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
-import { isValidUrl } from '../utils/utils';
 import { DepartmentName } from './Departments';
+import * as EnvUtils from '../utils/envUtils';
 
 const { Schema } = mongoose;
 
@@ -71,7 +69,7 @@ userSchema.methods.generateJWT = function () {
       name: this.name,
       role: this.role
     },
-    process.env.JWT_SECRET
+    EnvUtils.JWT_SECRET
   );
   return token;
 };

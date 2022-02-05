@@ -76,7 +76,8 @@ This instruction is intended for people looking to contribute to setup a develop
 
 ### Setup Process Enviroments
 
-You will need to specify process enviroment variables specific to your setup. Navigate to the server folder and create a `.env` file, then copy the following default values:
+You will need to specify process enviroment variables specific to your setup. **These variables are required for the server to function properly.** Navigate to the server folder and create a `.env`
+file. You can use the following default values:
 
 ```
 # MongoDB URI. For a local mongoDB isntallation, the default port is usually 27017.
