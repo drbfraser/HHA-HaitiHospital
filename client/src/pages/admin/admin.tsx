@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ElementStyleProps } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -8,8 +8,6 @@ import './admin.css';
 import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-var _ = require("lodash");
-
 
 interface AdminProps extends ElementStyleProps {}
 
@@ -80,7 +78,7 @@ const Admin = (props: AdminProps) => {
                   <td>{item.username}</td>
                   <td>{item.name}</td>
                   <td>{item.role}</td>
-                  <td>{item.department ? _.unescape(item.department) : 'N/A'}</td>
+                  <td>{item.department ? item.department : 'N/A'}</td>
                   <td>
                     {new Date(item.createdAt).toLocaleString('en-US', {
                       timeZone: 'America/Los_Angeles',
