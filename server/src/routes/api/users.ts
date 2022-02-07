@@ -4,7 +4,6 @@ import { validateInput } from '../../middleware/inputSanitization';
 import User, { hashPassword, Role, validateUserSchema } from '../../models/User';
 import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
-var validator = require('validator');
 
 const router = Router();
 
@@ -54,13 +53,6 @@ router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Reques
 router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
     const users: [] = await User.find().sort({ createdAt: 'desc' });
-    for (let user in users) {
-        for (let key in user as any) {
-            if (key === "department") {
-                user[key] == validator.unescape(user[key]);
-            }
-        }
-    }
     res.status(200).json(users);
   } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong' });
@@ -82,7 +74,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
 // add user, currently working
 router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
-    const { username, password, name, role, department } = req.body;
+    let { username, password, name, role, department } = req.body;
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
