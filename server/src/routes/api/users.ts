@@ -4,17 +4,16 @@ import { validateInput } from '../../middleware/inputSanitization';
 import User, { hashPassword, Role, validateUserSchema } from '../../models/User';
 import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
-var validator = require('validator');
 
 const router = Router();
 
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
   try {
-    const tempUser = await User.findById(req.params.id);
-    if (!tempUser) return res.status(404).json({ message: 'No such user' });
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) return res.status(404).json({ message: 'No such user' });
 
     const existingUser = await User.findOne({ username: req.body.username });
-    if (existingUser && existingUser.username !== tempUser.username) {
+    if (existingUser && existingUser.username !== targetUser.username) {
         return res.status(422).json({ message: 'Username is taken' });
     }
 
@@ -27,7 +26,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, 
     Object.keys(updatedUser).forEach(
         (k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]
     );
-    const user = await User.findByIdAndUpdate(tempUser.id, { $set: updatedUser }, { new: true });
+    const user = await User.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
     res.status(201).json(user);
   } catch (err: any) {
@@ -54,13 +53,6 @@ router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Reques
 router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
   try {
     const users: [] = await User.find().sort({ createdAt: 'desc' });
-    for (let user in users) {
-        for (let key in user as any) {
-            if (key === "department") {
-                user[key] == validator.unescape(user[key]);
-            }
-        }
-    }
     res.status(200).json(users);
   } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong' });
@@ -82,7 +74,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
 // add user, currently working
 router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
-    const { username, password, name, role, department } = req.body;
+    let { username, password, name, role, department } = req.body;
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
