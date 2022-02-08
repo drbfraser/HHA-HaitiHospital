@@ -52,6 +52,16 @@ export const EditUserForm = (props: AdminProps) => {
     });
   }, [user])
 
+  useEffect(() => {
+    reset({
+        username: user.username,
+        password: user.password,
+        name: user.name,
+        department: user.department,
+        role: user.role
+    });
+  }, [user])
+
   const onSubmit = (data: any) => {
     axios
       .put(userUrl, data)
