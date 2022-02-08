@@ -54,7 +54,6 @@ export const EditUserForm = (props: AdminProps) => {
   }, [user])
 
   const onSubmit = (data: any) => {
-    console.log(data);
     axios
       .put(userUrl, data)
       .then((res) => {
