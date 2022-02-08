@@ -10,6 +10,8 @@ import Community from '../models/Community';
 import MessageBody from '../models/MessageBody';
 import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 
+import * as ENV from './processEnv';
+
 export const seedDb = async () => {
   await User.deleteMany({});
   await MessageBody.deleteMany({});
@@ -26,7 +28,8 @@ export const seedUsers = async () => {
   console.log('Seeding users...');
 
   try {
-    // await User.collection.dropIndexes();
+    // Delete seeded users on server start so we can reseed them.
+    await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
@@ -67,7 +70,7 @@ export const seedUsers = async () => {
       } else {
         const user = new User({
           username: `user${index}`,
-          password: '123456789',
+          password: ENV.PASSWORD_SEED,
           name: faker.name.findName()
         });
 

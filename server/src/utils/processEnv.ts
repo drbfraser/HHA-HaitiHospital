@@ -7,13 +7,16 @@ class EnviromentConfigurationError extends Error {
   }
 }
 
-export const MONGO_DB = process.env.MONGO_UR || 'mongodb://localhost:27017/';
-export const SERVER_PORT = process.env.SERVER_PORT || 5000;
-export const CORS = process.env.CORS || 'http://localhost:3000';
+// Options with default values.
+export const MONGO_DB = 'mongodb://localhost:27017/' || process.env.MONGO_URI;
+export const CORS = 'http://localhost:3000' || process.env.CORS;
+export const SERVER_PORT = 5000 || parseInt(process.env.SERVER_PORT);
+export const TEST_SERVER_PORT = 5001 || parseInt(process.env.TEST_PORT);
 
-const pwdSeed = process.env.SEED_PWD;
-if (pwdSeed === undefined) throw new EnviromentConfigurationError('PWD_SEED missing');
-export const PASSWORD_SEED = pwdSeed;
+// Options without default values.
+const passwordSeed = process.env.PASSWORD_SEED;
+if (passwordSeed === undefined) throw new EnviromentConfigurationError('PWD_SEED missing');
+export const PASSWORD_SEED = passwordSeed;
 
 const secret = process.env.JWT_SECRET;
 if (secret === undefined) throw new EnviromentConfigurationError('JWT SECRET missing from .env');

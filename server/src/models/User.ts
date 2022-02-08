@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import { DepartmentName } from './Departments';
+import * as ENV from '../utils/processEnv';
 
 const { Schema } = mongoose;
 
@@ -59,9 +60,6 @@ userSchema.methods.toJSON = function () {
   };
 };
 
-const isProduction = process.env.NODE_ENV === 'production';
-const secretOrKey = isProduction ? process.env.JWT_SECRET_PROD : process.env.JWT_SECRET_DEV;
-
 userSchema.methods.generateJWT = function () {
   const token = jwt.sign(
     {
@@ -71,7 +69,7 @@ userSchema.methods.generateJWT = function () {
       name: this.name,
       role: this.role
     },
-    secretOrKey
+    ENV.JWT_SECRET
   );
   return token;
 };
@@ -118,8 +116,8 @@ export const validateUserSchema = Joi.object().keys({
 });
 
 export const validateUpdatedUserSchema = Joi.object().keys({
-  username: Joi.string().alphanum().min(2).max(20).allow(""),
-  password: Joi.string().min(6).max(20).allow(""),
+  username: Joi.string().alphanum().min(2).max(20).allow(''),
+  password: Joi.string().min(6).max(20).allow(''),
   name: Joi.string().min(2).max(30).allow(''),
   role: Joi.string().allow(''),
   department: Joi.string().allow('')

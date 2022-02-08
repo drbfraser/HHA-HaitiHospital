@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import http from 'http';
 import express, { Application } from 'express';
 import mongoose from 'mongoose';
@@ -6,6 +5,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import routes from './routes/routes';
 import { seedDb } from './utils/seed';
+import * as ENV from './utils/processEnv';
 
 export const createServer = () => {
   const app = express();
@@ -13,7 +13,7 @@ export const createServer = () => {
   // Cross-Origin
   const cors = require('cors');
   const corsOptions = {
-    origin: process.env.CLIENT_URL,
+    origin: ENV.CORS,
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200,
     methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
@@ -33,7 +33,7 @@ export const createServer = () => {
 
   // Connect to Mongo
   mongoose
-    .connect(process.env.MONGO_URI, {
+    .connect(ENV.MONGO_DB, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
@@ -55,5 +55,5 @@ export const createServer = () => {
 export const setServerPort = (app: Application, PORT: number) => {
   // Start listening to PORT
   const httpServer = http.createServer(app);
-  httpServer.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  httpServer.listen(ENV.SERVER_PORT, () => console.log(`Server started on port ${PORT}`));
 };
