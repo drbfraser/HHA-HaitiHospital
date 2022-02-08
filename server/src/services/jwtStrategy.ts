@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-
+import * as ENV from '../utils/processEnv';
 import User from '../models/User';
 import { expression } from 'joi';
 
@@ -8,7 +8,7 @@ import { expression } from 'joi';
 const jwtLogin = new JwtStrategy(
   {
     jwtFromRequest: (req) => req.cookies.jwt,
-    secretOrKey: process.env.JWT_SECRET
+    secretOrKey: ENV.JWT_SECRET
   },
   async (payload, done) => {
     try {

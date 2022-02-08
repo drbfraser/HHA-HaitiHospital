@@ -1,6 +1,7 @@
 import request from 'supertest';
 import http from 'http';
 import { createServer } from '../../src/server';
+import * as ENV from '../../src/utils/processEnv';
 import { Application, Request, Response, NextFunction } from 'express';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -27,7 +28,7 @@ describe('test working server', () => {
       res.send('Welcome to HHA');
     });
     httpServer = http.createServer(testApp);
-    httpServer.listen(parseInt(process.env.TEST_PORT) || 5001);
+    httpServer.listen(ENV.TEST_SERVER_PORT);
   });
   after(() => {
     httpServer.close();
