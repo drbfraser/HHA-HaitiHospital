@@ -1,9 +1,8 @@
-# CMPT 415 Haumea: HHA Internal Project Continuation
+# CMPT 373 Haumea: HHA Internal Project
 
-This is the CMPT 373 Haumea's team project for Hope Health Action (HHA). It is a web application aimed at providing HHA a digital portal for collecting and managing data in the fields. The project is
-uses the MERN stack and was built off of a [boilerplate project](https://github.com/nemanjam/mern-boilerplate).
-
-This project is currently being managed by CMPT 415 Spring 2022 team with the aim to deploy it for real world use.
+This is the CMPT 373 Haumea's team project for Hope Health Action. This project is intended to support database management, and registration for HHA internal use. The project is utilizing a MERN
+Boilerplate to meet the clients needs/requirements(boilerplate can be found here: https://github.com/nemanjam/mern-boilerplate). In the final iteration for the current CMPT 373 fall term, the project
+has built off the previous iteration, fleshing out concepts and ensuring smooth interface interactions.
 
 #### [More information about the project is available here](https://docs.google.com/document/d/1JG4cK-soyS3thzk-ZJnUyMR3XHxJoLA5gg7Uk1v1aFk/edit?usp=sharing)
 
@@ -56,46 +55,25 @@ The Directory can be split into client and serverside. Here are a few important 
 
 - /server/src contains resources to react components(/components), index file(index.ts), and other frontend code
 
-# Devs Build Instructions
+## Build/Dependencies Initialization and Run Instructions
 
-This instruction is intended for people looking to setup a development enviroment.
+### Prequisites
 
-### Install Node.js
+- We assume Node has already been installed
+  - If not, download and install here: https://nodejs.org/en/download/
 
-- Install the latest version [here](https://nodejs.org). LTS is preferred
+### Database Setup
 
-### Install MongoDB
-
-- For MacOS, follow the instructions from this link:
-  - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/
-- For Windows:
-  - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
-- MongoDB Compass (Optional):
-  - MongoDB Compass provides a GUI for MongoDB:
+- Assuming you do not have MongoDB set up on your computer, follow the instructions to set it up
+  - For MacOS, follow the instructions from this link:
+    - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/
+  - For Windows:
+    - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+- (Recommended)
+  - Download MongoDB Compass to view database records:
     - https://www.mongodb.com/try/download/compass
 
-### Setup Process Enviroments
-
-You will need to specify process enviroment variables specific to your setup. Navigate to the server folder and create a `.env` file. You can use the following default values:
-
-```
-# MongoDB URI. Defaults to port is usually 27017.
-MONGO_URI=mongodb://localhost:27017/
-
-# REQUIRED - Secret used to generate JWT tokens
-JWT_SECRET=sauce
-
-# The React client host. For development this would be your React devlopment server. The default port is usually 3000
-CORS=http://localhost:3000
-
-# Server configs
-SERVER_PORT=5000
-
-# REQUIRED - The server will seed users into db with this password.
-SEED_PWD=catdog
-```
-
-### Starting the server
+### Server Setup
 
 - navigate into into /server folder from the root directory
 - run the following:
@@ -105,7 +83,7 @@ $ npm install
 $ npm run dev-start
 ```
 
-### Starting the client
+### Client Setup
 
 - Navigate to the /client folder from the root directory
 - Run the following commands to install dependencies and start the client
@@ -120,42 +98,20 @@ $ npm start
 - If there are issues with npm dependencies when running npm install, run the following line:
 
 ```
-$ npm i --legacy-peer-deps install
+$ npm i --legacy-peer-deps
 ```
-
-## Validate
-
-The web app should now be accessible at your React dev server, the default is http://localhost:3000.
-
-The seeded users are:
-
-- Role: Admin
-  - Username: user0
-- Role: Medical Director
-  - Username: user1
-- Role: Head of Department
-  - Username: user2
-- Role: User
-  - Username: user3 to user6
-
-Their passwords are as defined in your `.env`.
-
-## Other Instructions
 
 ### Prettier Setup
 
-We use prettier as our code formatter. Once setup, saving a file will automatically format the code.
-
 - Install Prettier as a VSCode extension
-- Mavigate to the root of the project
-- Run:
+- Navigate to the root directory
+- Run the following commands to install and use prettier on the whole directory
+- Pressing CTRL S in a file will run prettier on that single file
 
 ```
 $ npm install --global prettier
 $ prettier --write
 ```
-
-This will install and use prettier on the whole directory.
 
 ### Docker Setup
 
@@ -165,6 +121,22 @@ This will install and use prettier on the whole directory.
 $ sudo docker-compose build
 $ sudo docker-compose up
 ```
+
+### Using the System
+
+- Seeded User Credentials:
+  - Role: Admin
+    - Username: user0
+    - Password: 123456789
+  - Role: Medical Director
+    - Username: user1
+    - Password: 123456789
+  - Role: Head of Department
+    - Username: user2
+    - Password: 123456789
+  - Role: User
+    - Username: user3
+    - Password: 123456789
 
 ### License
 
