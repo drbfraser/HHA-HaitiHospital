@@ -16,3 +16,4 @@ package-lock.json
 # random generated files on MacOS
 .DS_Store
 **/.DS_Store
+.env
