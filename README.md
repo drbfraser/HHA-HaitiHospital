@@ -1,6 +1,6 @@
 # CMPT 373 Haumea: HHA Internal Project
 
-This is a web application made for Hope Health Action (HHA) with the goal to digitize its data collection process at field hospitals. The project uses the MERN stack and is based on a
+This is a web application made for Hope Health Action (HHA) with the goal to digitize its data collection process at field hospitals. The project uses the MERN stack and based on a
 [boiler plate](https://github.com/nemanjam/mern-boilerplate).
 
 The project was originally created by team Haumea for CMPT 373 and is currently further developed by CMPT 415 team with the goal of deploying it for sumer 2022.
