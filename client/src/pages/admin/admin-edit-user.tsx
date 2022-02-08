@@ -10,6 +10,7 @@ import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 
+
 interface AdminProps {}
 
 export const EditUserForm = (props: AdminProps) => {
@@ -41,9 +42,17 @@ export const EditUserForm = (props: AdminProps) => {
     getUser();
   }, [history, userUrl])
 
+  useEffect(() => {
+    reset({
+        username: user.username,
+        password: user.password,
+        name: user.name,
+        department: user.department,
+        role: user.role
+    });
+  }, [user])
+
   const onSubmit = (data: any) => {
-    console.log(data);
-    
     axios
       .put(userUrl, data)
       .then((res) => {
