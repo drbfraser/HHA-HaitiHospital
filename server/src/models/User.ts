@@ -118,8 +118,8 @@ export const validateUserSchema = Joi.object().keys({
 });
 
 export const validateUpdatedUserSchema = Joi.object().keys({
-  username: Joi.string().alphanum().min(2).max(20).allow(''),
-  password: Joi.string().min(6).max(20).allow(''),
+  username: Joi.string().alphanum().min(2).max(20).allow(""),
+  password: Joi.string().min(6).max(20).allow(""),
   name: Joi.string().min(2).max(30).allow(''),
   role: Joi.string().allow(''),
   department: Joi.string().allow('')

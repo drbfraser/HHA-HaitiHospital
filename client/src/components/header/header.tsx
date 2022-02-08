@@ -1,112 +1,86 @@
-import { useAuthDispatch, useAuthState } from '../../Context';
-import React, { useState, useEffect } from 'react';
+import { useAuthDispatch } from '../../Context'
+import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { ElementStyleProps, User } from 'constants/interfaces';
+import { User } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-
-interface HeaderProps extends ElementStyleProps {}
-
-interface HeaderViewProps extends ElementStyleProps {
-  user: User;
+interface HeaderProps {
 }
 
-function HeaderView(props: HeaderViewProps) {
-  const { t } = useTranslation();
-  const location = useLocation();
-  const departmentName =
-    props.user.department == undefined ? props.user.role : props.user.department;
-  if (location.pathname.slice(1) === 'home') {
-    return <h2 className="text-secondary">{t('headerOverview') + ' - ' + departmentName}</h2>;
-  } else if (location.pathname.slice(1) === 'message-board') {
-    return <h4 className="text-secondary">{t('headerMessageBoard')}</h4>;
-  } else if (location.pathname.slice(1) === 'leaderboard') {
-    return <h4 className="text-secondary">{t('headerLeaderBoard')}</h4>;
-  } else if (location.pathname.slice(1) === 'case-study') {
-    return <h4 className="text-secondary">{t('headerCaseStudy')}</h4>;
-  } else if (
-    location.pathname.split('/')[1] === 'case-study' &&
-    location.pathname.split('/')[2] === 'form'
-  ) {
-    return <h4 className="text-secondary">{t('headerCaseStudyForm')}</h4>;
-  } else if (location.pathname.slice(1) === 'biomechanic') {
-    return <h4 className="text-secondary">{t('headerBiomechanicalSupport')}</h4>;
-  } else if (location.pathname.slice(1) === 'brokenkit') {
-    return <h4 className="text-secondary">{t('headerBrokenKitReport')}</h4>;
-  } else if (location.pathname.split('/')[1] === 'caseStudyView') {
-    return <h4 className="text-secondary">{t('headerCaseStudyForm')}</h4>;
-  } else if (location.pathname.slice(1) === 'Department1NICU') {
-    return <h4 className="text-secondary">{t('headerDepartmentNICU')}</h4>;
-  } else if (location.pathname.slice(1) === 'Department2Maternity') {
-    return <h4 className="text-secondary">{t('headerDepartmentMaternity')}</h4>;
-  } else if (location.pathname.slice(1) === 'Department3Rehab') {
-    return <h4 className="text-secondary">{t('headerDepartmentRehab')}</h4>;
-  } else if (location.pathname.slice(1) === 'Department4ComHealth') {
-    return <h4 className="text-secondary">{t('headerDepartmentCom')}</h4>;
-  } else if (location.pathname.slice(1) === 'admin') {
-    return <h4 className="text-secondary">{t('headerAdmin')}</h4>;
-  } else if (location.pathname.slice(1) === 'general_reports') {
-    // Need translation
-    return <h4 className="text-secondary">{t('headerGeneralReports')}</h4>;
-  } else if (
-    location.pathname.split('/')[1] === 'admin' &&
-    location.pathname.split('/')[2] === 'add-user'
-  ) {
-    return <h4 className="text-secondary">{t('headerAddUser')}</h4>;
-  } else if (
-    location.pathname.split('/')[1] === 'admin' &&
-    location.pathname.split('/')[2] === 'edit-user'
-  ) {
-    return <h4 className="text-secondary">{t('headerEditUser')}</h4>;
-  } else {
-    return <h4></h4>;
-  }
-}
+function HeaderView() {
+    const {t} = useTranslation();
+    const location = useLocation();
 
-function GetUsername() {
-  let username = localStorage.getItem('username');
-  let name = '';
-  if (username) {
-    name = (username as any).replace(/['"]+/g, '');
-  } else {
-    name = 'default';
-  }
-  return <h6> {name}</h6>;
+    if (location.pathname.slice(1) === 'home') {
+        return <h4 className="text-secondary">{t("headerOverview")}</h4>
+    } else if (location.pathname.slice(1) === 'message-board') {
+        return <h4 className="text-secondary">{t("headerMessageBoard")}</h4>
+    } else if (location.pathname.slice(1) === 'leaderboard') {
+        return <h4 className="text-secondary">{t("headerLeaderBoard")}</h4>
+    } else if (location.pathname.slice(1) === 'case-study') {
+        return <h4 className="text-secondary">{t("headerCaseStudy")}</h4>
+    } else if (location.pathname.split('/')[1] === 'case-study' && location.pathname.split('/')[2] === 'form') {
+        return <h4 className="text-secondary">{t("headerCaseStudyForm")}</h4>
+    } else if (location.pathname.slice(1) === 'biomechanic') {
+        return <h4 className="text-secondary">{t("headerBiomechanicalSupport")}</h4>
+    } else if (location.pathname.slice(1) === 'brokenkit') {
+        return <h4 className="text-secondary">{t("headerBrokenKitReport")}</h4>
+    } else if (location.pathname.split('/')[1] === 'caseStudyView') {
+        return <h4 className="text-secondary">{t("headerCaseStudyForm")}</h4>
+    } else if (location.pathname.slice(1) === 'Department1NICU') {
+        return <h4 className="text-secondary">{t("headerDepartmentNICU")}</h4>
+    } else if (location.pathname.slice(1) === 'Department2Maternity') {
+        return <h4 className="text-secondary">{t("headerDepartmentMaternity")}</h4>
+    } else if (location.pathname.slice(1) === 'Department3Rehab') {
+        return <h4 className="text-secondary">{t("headerDepartmentRehab")}</h4>
+    } else if (location.pathname.slice(1) === 'Department4ComHealth') {
+        return <h4 className="text-secondary">{t("headerDepartmentCom")}</h4>
+    } else if (location.pathname.slice(1) === 'admin') {
+        return <h4 className="text-secondary">{t("headerAdmin")}</h4>
+    } else if (location.pathname.slice(1) === 'general_reports') {
+        // Need translation
+        return (<h4 className='text-secondary'>{t("headerGeneralReports")}</h4>)
+    }
+    else if (location.pathname.split('/')[1] === 'admin' && location.pathname.split('/')[2] === 'add-user') {
+        return <h4 className="text-secondary">{t("headerAddUser")}</h4>
+    } else if (location.pathname.split('/')[1] === 'admin' && location.pathname.split('/')[2] === 'edit-user') {
+        return <h4 className="text-secondary">{t("headerEditUser")}</h4>
+    } else {
+        return <h4>{''}</h4>
+    }
 }
 
 const Header = (props: HeaderProps) => {
-  const dispatch = useAuthDispatch(); // read dispatch method from context
-  const userDetails = useAuthState(); //read user details from context
-  const onLogOut = (event) => {
-    logOutUser(dispatch);
-    history.push('/login');
-  };
+    const dispatch = useAuthDispatch() // read dispatch method from context
+    const onLogOut = (event) => {
+        logOutUser(dispatch);
+        history.push("/login");
+    };
+    const history = useHistory();
+    const [userInfo, setUserInfo] = useState({} as User);
+    const userUrl = '/api/users/me';
 
-  const history = useHistory();
+    useEffect(() => {
+        const getUserInfo = async () => {
+            try {
+              const res = await axios.get(userUrl);
+              setUserInfo(res.data);
+            } catch (err) {
+              console.log(err);
+            }
+          };
+        getUserInfo();
+    }, []);
+    
+    const { t, i18n } = useTranslation();
+    return (
+        <div className={'header'}>
+            <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
 
-  const [userInfo, setUserInfo] = useState({} as User);
-  const userUrl = '/api/users/me';
-  const getUserInfo = async () => {
-    try {
-      const res = await axios.get(userUrl);
-      setUserInfo(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
-  const { t, i18n } = useTranslation();
-  return (
-    <div className={'header ' + (props.classes || '')}>
-      <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
-        {/* Header text */}
-        <div className="col">
-          <HeaderView user={userInfo} />
-        </div>
+                <div className="col">
+                    <HeaderView/>
+                </div>
 
         {/* User drop down */}
         <div className="col-auto">

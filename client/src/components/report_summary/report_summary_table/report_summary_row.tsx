@@ -1,10 +1,12 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import {SyntheticEvent, useState} from 'react';
 import { Link } from 'react-router-dom';
-import { ElementStyleProps, getDepartmentName } from 'constants/interfaces';
-import { useTranslation } from 'react-i18next';
+
+import { getDepartmentName} from 'constants/interfaces';
+import {useTranslation} from "react-i18next";
 import { makeDateShort } from 'utils/dateFormatting';
 
-interface ReportSummaryProps extends ElementStyleProps {
+
+interface ReportSummaryProps {
   reportId: string;
   createdOn: string;
   deptId: number;
@@ -15,13 +17,9 @@ interface ReportSummaryProps extends ElementStyleProps {
 }
 
 const ReportSummaryRow = (props: ReportSummaryProps) => {
-  const [isTicked, setTicked] = useState<boolean>(props.isTicked);
 
-  useEffect(() => {
-    setTicked(props.isTicked);
-  }, [props.isTicked]);
-
-  const { t, i18n } = useTranslation();
+  const [isTicked] = useState<boolean>(props.isTicked);
+  const {t} = useTranslation();
 
   return (
     <tr id={`rp-sum-row-${props.reportId}`}>
@@ -43,7 +41,7 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
           <input
             className="form-check-input"
             type="checkbox"
-            value={props.reportId}
+            // value={props.reportId}
             id={`tick-${props.reportId}`}
             checked={isTicked}
             onChange={(e: SyntheticEvent) => {

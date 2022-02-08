@@ -1,10 +1,8 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 
-import { ElementStyleProps } from 'constants/interfaces';
-
-interface AllTickProps extends ElementStyleProps {
-  tickTracker: { [rid: string]: boolean };
-  notifyTable(ticked: boolean): void;
+interface AllTickProps{
+    tickTracker : {[rid: string] : boolean},
+    notifyTable(ticked : boolean) : void,
 }
 
 function isAllTicked(tickTracker: { [rid: string]: boolean }) {

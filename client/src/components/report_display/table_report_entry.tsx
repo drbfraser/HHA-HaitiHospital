@@ -1,15 +1,14 @@
-import React from 'react';
-import { ElementStyleProps, ReportProps } from 'constants/interfaces';
+import { ReportProps } from 'constants/interfaces';
 import { ReportDisplay } from 'components/report_display/report_display';
-import TextHolder from 'components/text_holder/text_holder';
 
-interface TableEntryProps extends ElementStyleProps {
-  name: string;
-  entryKey: string;
-  parentKey: string;
-  value: ReportProps;
-  edit: boolean;
-}
+interface TableEntryProps {
+    name: string;
+    entryKey: string;
+    parentKey: string;
+    value: ReportProps;
+    edit: boolean;
+};
+
 export const TableEntry = (props: TableEntryProps) => {
   function concatParent(entryKey: string) {
     if (props.parentKey === '') {

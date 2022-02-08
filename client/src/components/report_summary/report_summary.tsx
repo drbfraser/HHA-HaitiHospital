@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import Axios from 'axios';
-import { ElementStyleProps } from 'constants/interfaces';
+
 import { JsonArray, DepartmentName, getDepartmentId } from 'constants/interfaces';
 import ReportSummaryTable from 'components/report_summary/report_summary_table/report_summary_table';
 import { DayRange } from 'react-modern-calendar-datepicker';
@@ -8,7 +8,7 @@ import './styles.css';
 import DbErrorHandler from 'actions/http_error_handler';
 import { useHistory } from 'react-router-dom';
 
-interface DepartmentReportsProps extends ElementStyleProps {
+interface DepartmentReportsProps {
   department?: DepartmentName;
   dateRange?: DayRange;
 }
@@ -18,10 +18,32 @@ const ReportSummary = (props: DepartmentReportsProps) => {
   let [refetch, setRefetch] = useState<boolean>(false);
   const history = useHistory();
 
-  const apiSource = Axios.CancelToken.source();
   useEffect(() => {
+    // To fetch data from db
+    const apiSource = Axios.CancelToken.source();
     let isMounted = true;
-    const getReports = async () => {
+
+    async function fetchReports() {
+        let apiForReports = '';
+        
+        try {
+            apiForReports = buildApiRoute(props.dateRange, props.department);
+            let res = await Axios.get(apiForReports, {
+                cancelToken: apiSource.token
+            });
+            return res.data;
+
+        } catch (err) {
+            if (Axios.isCancel(err)) {
+            console.log(`Info: Subscription to ${apiForReports} is canceled`,err)
+            }
+            else 
+            DbErrorHandler(err, history);
+            return [];
+        }
+    }
+    
+    async function getReports() {
       const reportsFromServer = await fetchReports();
       if (isMounted) setReports(reportsFromServer);
     };
@@ -29,42 +51,26 @@ const ReportSummary = (props: DepartmentReportsProps) => {
     return () => {
       apiSource.cancel();
       isMounted = false;
-    };
-  }, [refetch, props.department, props.dateRange]);
-
-  const fetchReports = async () => {
-    let apiForReports = '';
-
-    try {
-      apiForReports = buildApiRoute(props.dateRange, props.department);
-      let res = await Axios.get(apiForReports, {
-        cancelToken: apiSource.token,
-      });
-      return res.data;
-    } catch (err) {
-      if (Axios.isCancel(err)) {
-        console.log(`Info: Subscription to ${apiForReports} is canceled`, err);
-      } else DbErrorHandler(err, history);
-      return [];
     }
-  };
+  }, [refetch, props.department, props.dateRange, history]);
 
-  const refetchReportsHandler = () => {
+
+  
+  function refetchReportsHandler() {
+    // console.log("Refetch reports");
     setRefetch(!refetch);
   };
 
   return (
-    <div className={'deparment-reports'}>
-      <div className="my-4">
-        {reports === undefined || reports.length === 0 ? (
-          <div className="lead">No submitted reports</div>
-        ) : (
-          <ReportSummaryTable
-            reports={reports}
-            classes="text-dark bg-light"
-            refetchReports={refetchReportsHandler}
-          />
-        )}
+    <div className={"deparment-reports"}>
+      <div className='my-4'>
+        {
+          (reports === undefined || reports.length === 0) ? 
+            <div className="lead">No submitted reports</div> : 
+            <ReportSummaryTable 
+              reports={reports}
+              refetchReports={refetchReportsHandler}/>
+        }
       </div>
     </div>
   );
