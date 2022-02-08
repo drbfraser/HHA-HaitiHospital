@@ -1,4 +1,3 @@
-import * as React from 'react';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import MessagePanel from 'components/message_panel/message_panel';

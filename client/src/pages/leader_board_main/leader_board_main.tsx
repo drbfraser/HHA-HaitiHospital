@@ -47,7 +47,6 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                     <th scope="col" style={{width: '5%'}} className="text-center">{t("leaderBoardPosition")}</th>
                                     <th scope="col" style={{width: '10%'}} className="text-center"></th>
                                     <th scope="col" className="text-center">{t("leaderBoardDepartment")}</th>
-                                    {/* <th scope="col" style={{width: '5%'}} className="d-none d-sm-table-cell">Forms</th> */}
                                     <th scope="col" style={{width: '15%'}} className="d-none d-sm-table-cell text-center">{t("leaderBoardCase Studies")}</th>
                                     <th scope="col" className="text-center">{t("leaderBoardPoints")}</th>
                                 </tr>
@@ -62,7 +61,6 @@ export const LeaderBoardMain = ( props :LeaderBoardMainProps) => {
                                         {index === 2 ? <i className="text-danger bi-trophy-fill"/> : null}
                                     </td>
                                     <td className="text-center">{item.name}</td>
-                                    {/* <td className="d-none d-sm-table-cell">0</td> */}
                                     <td className="d-none d-sm-table-cell text-center">{item.nCaseStudies}</td>
                                     <td className="fw-bold text-center">{item.points}</td>
                                 </tr>

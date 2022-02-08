@@ -33,8 +33,6 @@ export const ReportDisplay = (props: ReportDisplayProps) => {
     let entryValue = props.report[entryKey];
     let valueType = typeof entryValue;
 
-    // console.log(entryKey);
-
     if (valueType === 'number' || valueType === 'string' || valueType === 'boolean') {
       return (
         <SimpleEntry
@@ -104,5 +102,3 @@ export const ReportDisplay = (props: ReportDisplayProps) => {
     </div>
   );
 };
-
-export default ReportDisplay;

@@ -6,7 +6,6 @@ interface AllTickProps{
 }
 
 function isAllTicked(tickTracker: { [rid: string]: boolean }) {
-  // console.log(tickTracker)
   const values = Object.values(tickTracker);
   return !values.includes(false);
 }

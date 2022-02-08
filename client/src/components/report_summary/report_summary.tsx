@@ -53,11 +53,8 @@ const ReportSummary = (props: DepartmentReportsProps) => {
       isMounted = false;
     }
   }, [refetch, props.department, props.dateRange, history]);
-
-
   
   function refetchReportsHandler() {
-    // console.log("Refetch reports");
     setRefetch(!refetch);
   };
 

@@ -5,7 +5,6 @@ import { getDepartmentName} from 'constants/interfaces';
 import {useTranslation} from "react-i18next";
 import { makeDateShort } from 'utils/dateFormatting';
 
-
 interface ReportSummaryProps {
   reportId: string;
   createdOn: string;
@@ -41,7 +40,6 @@ const ReportSummaryRow = (props: ReportSummaryProps) => {
           <input
             className="form-check-input"
             type="checkbox"
-            // value={props.reportId}
             id={`tick-${props.reportId}`}
             checked={isTicked}
             onChange={(e: SyntheticEvent) => {
