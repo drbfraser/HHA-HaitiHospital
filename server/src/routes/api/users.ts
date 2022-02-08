@@ -9,11 +9,11 @@ const router = Router();
 
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
-    const tempUser = await User.findById(req.params.id);
-    if (!tempUser) return res.status(404).json({ message: 'No such user' });
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) return res.status(404).json({ message: 'No such user' });
 
     const existingUser = await User.findOne({ username: req.body.username });
-    if (existingUser && existingUser.username !== tempUser.username) {
+    if (existingUser && existingUser.username !== targetUser.username) {
       return res.status(422).json({ message: 'Username is in use' });
     }
 
@@ -38,7 +38,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate
 
     const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
-    const user = await User.findByIdAndUpdate(tempUser.id, { $set: updatedUser }, { new: true });
+    const user = await User.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
     res.status(201).json(user);
   } catch (err: any) {

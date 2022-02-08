@@ -1,15 +1,15 @@
-import { useState, useRef } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useState, useRef } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import { ElementStyleProps, User, Role, DepartmentName } from 'constants/interfaces';
+import { User, Role, DepartmentName } from "constants/interfaces";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
 import './admin.css';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-
-interface AdminProps extends ElementStyleProps {}
+interface AdminProps {
+}
 
 export const AddUserForm = (props: AdminProps) => {
   const [submissionStatus, setSubmissionStatus] = useState<string>('');
@@ -48,8 +48,8 @@ export const AddUserForm = (props: AdminProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className={'admin ' + props.classes}>
-      <SideBar />
+    <div className={"admin"}>
+      <SideBar/>
 
       <main className="container-fluid main-region">
         <Header />
@@ -119,22 +119,13 @@ export const AddUserForm = (props: AdminProps) => {
               ></input>
             </div>
             <div className="mb-3">
-              <label htmlFor="role" className="form-label">
-                {t('adminAddUserRole')}
-              </label>
-              <select
-                className="form-select"
-                id="role"
-                required
-                {...register('role', { required: true })}
-                onChange={(e) => {
-                  setRole(e.target.value);
-                  unregister('department');
-                }}
+              <label htmlFor="role" className="form-label">{t("adminAddUserRole")}</label>
+              <select className="form-select" 
+                id="role" required {...register("role", {required: true})} 
+                onChange={(e)=>{setRole(e.target.value);unregister("department")}}
+                defaultValue=""
               >
-                <option value="" selected disabled hidden>
-                  {t('adminAddUserSelectRole')}
-                </option>
+                <option value="" disabled hidden>{t("adminAddUserSelectRole")}</option>
                 <option value={Role.User}>{i18n.t(Role.User)}</option>
                 <option value={Role.Admin}>{i18n.t(Role.Admin)}</option>
                 <option value={Role.MedicalDirector}>{i18n.t(Role.MedicalDirector)}</option>
@@ -143,18 +134,11 @@ export const AddUserForm = (props: AdminProps) => {
             </div>
             {role === Role.User || role === Role.HeadOfDepartment ? (
               <div className="mb-3">
-                <label htmlFor="department" className="form-label">
-                  {t('adminAddUserDepartment')}
-                </label>
-                <select
-                  className="form-select"
-                  id="department"
-                  required
-                  {...register('department', { required: true })}
+                <label htmlFor="department" className="form-label">{t("adminAddUserDepartment")}</label>
+                <select className="form-select" id="department" required {...register("department", {required: true})}
+                    defaultValue=""
                 >
-                  <option value="" selected disabled hidden>
-                    {t('adminAddUserSelectDepartment')}
-                  </option>
+                  <option value="" disabled hidden>{t("adminAddUserSelectDepartment")}</option>
                   <option value={DepartmentName.NicuPaeds}>{DepartmentName.NicuPaeds}</option>
                   <option value={DepartmentName.Maternity}>{DepartmentName.Maternity}</option>
                   <option value={DepartmentName.Rehab}>{DepartmentName.Rehab}</option>

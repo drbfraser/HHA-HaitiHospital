@@ -14,11 +14,13 @@ const AddMessage = () => {
   const postMessage = async (data) => {
     const api = '/api/message-board/';
     try {
-      await Axios.post(api, data);
-      history.push('/message-board');
-      alert(i18n.t('addMessageAlertSuccess'));
-    } catch (e) {
-      DbErrorHandler(e, history);
+        await Axios.post(api, data);
+        history.push('/message-board')
+        alert(i18n.t("addMessageAlertSuccess"));
+
+    }
+    catch (e) {
+        DbErrorHandler(e, history);
     }
   };
 

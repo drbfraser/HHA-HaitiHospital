@@ -12,5 +12,5 @@
     "strictNullChecks": false,
     "downlevelIteration": true
   },
-  "include": ["./src/**/*", "./security/*"]
+  "include": ["./src/**/*", "./security/*", "./tests/**/*"]
 }

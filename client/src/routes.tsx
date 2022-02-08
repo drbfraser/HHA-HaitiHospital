@@ -1,4 +1,3 @@
-import React from 'react';
 import Login from 'pages/login/login';
 import Home from 'pages/home/home';
 import NotFound from 'pages/not_found/not_found';
@@ -26,7 +25,7 @@ import { Department } from 'pages/department/department';
 import AddReport from 'pages/add_report/add_report';
 import DepartmentReport from 'pages/department_report/department_report';
 
-import { Role, DepartmentName } from 'constants/interfaces';
+import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 
 // Remember to keep the low level urls before high level urls

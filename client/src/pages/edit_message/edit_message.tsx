@@ -12,72 +12,78 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 
 const EditMessage = () => {
-  const { id } = useParams<{ id?: string }>();
-  const [msg, setMsg] = useState<Message>(emptyMessage);
-  const history = useHistory();
-  const { t } = useTranslation();
+    const { id } = useParams<{id? : string}>();
+    const [msg, setMsg] = useState<Message>(emptyMessage)
+    const history = useHistory();
+    const { t } = useTranslation();
+    
+    useEffect(() => {
+        async function fetchMsgFromDb(id: string) {
 
-  async function fetchMsgFromDb(id: string) {
-    const api = `/api/message-board/${id}`;
-    try {
-      const response = await Axios.get(api);
-      return response.data;
-    } catch (err) {
-      DbErrorHandler(err, history);
-      return {};
+            const api = `/api/message-board/${id}`;
+            try {
+                const response = await Axios.get(api);
+                return response.data;
+            }
+            catch (err){
+                DbErrorHandler(err, history);
+                return {};
+            }
+        }
+
+        async function fetchMsg(id: string) {
+            const msgData = await fetchMsgFromDb(id);
+            const msg : Message = {
+                messageBody: msgData["messageBody"],
+                messageHeader: msgData["messageHeader"],
+                departmentId: msgData["departmentId"],
+                departmentName: msgData['departmentName'],
+                user: msgData['userId'],
+                date: msgData['date'],
+            }
+        
+            setMsg(msg);
+        }
+    
+        fetchMsg(id);
+    }, [id, history])
+
+    const updateMessage = async (data) => {
+        const api = `/api/messageboard/${id}`;
+        try {
+            await Axios.put(api, data);
+            history.push('/message-board')
+            alert(i18n.t("addMessageAlertSuccess"));
+        }
+        catch (e) {
+            DbErrorHandler(e, history);
+        }
     }
-  }
 
-  async function fetchMsg(id: string) {
-    const msgData = await fetchMsgFromDb(id);
+    return (<>
+        <div className='edit-message'>
+            <Sidebar/>
 
-    const msg: Message = {
-      messageBody: msgData['messageBody'],
-      messageHeader: msgData['messageHeader'],
-      departmentId: msgData['departmentId'],
-      departmentName: msgData['departmentName'],
-      user: msgData['userId'],
-      date: msgData['date'],
-    };
+            <main>
+                <Header/>
+                <div className="container">
+                    <h1 className="">{t("editMessage")}</h1>
+                    <MessageForm 
+                        optionalMsg = {msg}
+                        submitAction = {updateMessage}
+                    />
 
-    setMsg(msg);
-  }
+                    <br/>
 
-  useEffect(() => {
-    fetchMsg(id);
-  }, []);
+                    <button 
+                    className="btn btn-md btn-outline-secondary"
+                    onClick={history.goBack}
+                    > {t("addMessageBack")} </button>
+                </div>
+            </main>
 
-  const updateMessage = async (data) => {
-    const api = `/api/message-board/${id}`;
-    try {
-      await Axios.put(api, data);
-      history.push('/message-board');
-      alert(i18n.t('addMessageAlertSuccess'));
-    } catch (e) {
-      DbErrorHandler(e, history);
-    }
-  };
+        </div>
 
-  return (
-    <>
-      <div className="edit-message">
-        <Sidebar />
-
-        <main>
-          <Header />
-          <div className="container">
-            <h1 className="">{t('editMessage')}</h1>
-            <MessageForm optionalMsg={msg} submitAction={updateMessage} />
-
-            <br />
-
-            <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
-              {' '}
-              {t('addMessageBack')}{' '}
-            </button>
-          </div>
-        </main>
-      </div>
     </>
   );
 };

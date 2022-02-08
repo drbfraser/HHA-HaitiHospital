@@ -1,9 +1,7 @@
-import React from 'react';
-import { ElementStyleProps, ReportProps } from 'constants/interfaces';
+import { ReportProps } from 'constants/interfaces';
 import { ReportDisplay } from 'components/report_display/report_display';
-import TextHolder from 'components/text_holder/text_holder';
 
-interface ArrayEntryProps extends ElementStyleProps {
+interface ArrayEntryProps {
   name: string;
   entryKey: string;
   parentKey: string;
@@ -20,7 +18,6 @@ export const ArrayEntry = (props: ArrayEntryProps) => {
       return props.parentKey + '_' + entryKey;
     }
   }
-  console.log(props.entries);
 
   return (
     <div className="entry simple-entry row my-2 text-dark ps-5">

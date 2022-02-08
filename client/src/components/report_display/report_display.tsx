@@ -1,7 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
-
-import { ReportProps } from 'constants/interfaces';
+import { ReportProps} from 'constants/interfaces';
 import { SimpleEntry } from 'components/report_display/simple_report_entry';
 import { ArrayEntry } from 'components/report_display/array_report_entry';
 import { ObjectEntry } from 'components/report_display/object_report_entry';

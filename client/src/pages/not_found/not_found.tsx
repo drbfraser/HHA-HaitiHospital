@@ -1,10 +1,8 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { ElementStyleProps } from 'constants/interfaces';
 import './not_found_styles.css';
 
-interface NotFoundProps extends ElementStyleProps {}
+interface NotFoundProps {}
 
 const NotFound = (props: NotFoundProps) => {
   return (

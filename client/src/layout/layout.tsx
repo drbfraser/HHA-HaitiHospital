@@ -1,17 +1,15 @@
-import React from 'react';
-
-import { ElementStyleProps } from 'constants/interfaces';
-
 // import 'components/layout/home_styles.css';
 import './layout_styles.css';
 
-interface LayoutProps extends ElementStyleProps {
-  children: any;
-}
+interface LayoutProps {
+  children: any,
+};
 
 const Layout = (props: LayoutProps) => {
-  return <div className={'layout ' + props.classes}></div>;
-};
+  return (
+    <div className={'layou'}></div>
+  );
+}
 
 export default Layout;
 
