@@ -10,22 +10,20 @@ import Community from '../models/Community';
 import MessageBody from '../models/MessageBody';
 import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 
+import * as EnvUtils from '../utils/envUtils';
+
 export const seedDb = async () => {
   await seedUsers();
 
   seedCaseStudies();
   seedDepartments();
   await MessageBody.deleteMany({});
-  //   seedMessageBoard();
   seedLeaderboard();
 };
 
 export const seedUsers = async () => {
   console.log('Seeding users...');
-
   try {
-    // await User.collection.dropIndexes();
-
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
       if (foundUser) {
@@ -65,7 +63,7 @@ export const seedUsers = async () => {
       } else {
         const user = new User({
           username: `user${index}`,
-          password: '123456789',
+          password: EnvUtils.PASSWORD_SEED,
           name: faker.name.findName()
         });
 
@@ -137,6 +135,7 @@ export const seedDepartments = async () => {
   console.log('Default departments seeded');
 };
 
+// Todo: review this before deploying.
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   await MessageBody.deleteMany({});
