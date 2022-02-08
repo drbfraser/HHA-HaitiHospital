@@ -1,67 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useParams } from 'react-router';
-import {
-  ElementStyleProps,
-  Message,
-  emptyMessage,
-  DepartmentName,
-  DepartmentId,
-  getDepartmentId,
-  getDepartmentName,
-} from 'constants/interfaces';
+import { Message, emptyMessage, DepartmentName, getDepartmentId} from 'constants/interfaces';
 
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from "react-i18next";
 
-interface MessageFormProps extends ElementStyleProps {
-  optionalMsg?: Message;
-  submitAction: (data) => void;
+interface MessageFormProps {
+    optionalMsg? : Message, 
+    submitAction: (data) => void,
 }
 
 function MessageForm(props: MessageFormProps) {
-  const { t } = useTranslation();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    // resolver: yupResolver(messageFormSchema)
-  });
-  // const [ departmentSelect, setDepartmentSelect] = useState<string>("");
-  const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
-  const [department, setDepartment] = useState<string>('');
 
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted == true) {
-      if (props.optionalMsg !== undefined) {
-        setPrefilledMsg(props.optionalMsg);
-      }
+    const {t} = useTranslation();
+    const { register, handleSubmit, reset } = useForm({
+    });
+
+    
+    const [ prefilledMsg, setPrefilledMsg ] = useState<Message>(props.optionalMsg || emptyMessage);
+    const [ department, setDepartment ] = useState<string>('')
+
+    useEffect(() => {
+        let isMounted = true;
+        if (isMounted === true) {
+            if (props.optionalMsg !== undefined) {
+                setPrefilledMsg(props.optionalMsg);
+            }
+        } 
+
+        return function leaveSite() {
+            isMounted = false
+        }
+    }, [props.optionalMsg])
+
+    useEffect(() => {
+        setDepartment(prefilledMsg.departmentName);
+        reset(prefilledMsg);
+    }, [prefilledMsg, reset])
+
+
+    const onSubmit = (data: any) => {
+        if (data.departmentName === "") {
+            alert("Must select a department");
+            return;
+        }
+    
+        data.departmentId = getDepartmentId(data.departmentName);
+        props.submitAction(data);
+
+        reset();
     }
 
-    return function leaveSite() {
-      isMounted = false;
-    };
-  }, [props.optionalMsg]);
-
-  useEffect(() => {
-    setDepartment(prefilledMsg.departmentName);
-    reset(prefilledMsg);
-  }, [prefilledMsg]);
-
-  const history = useHistory();
-  const onSubmit = (data: any) => {
-    if (data.departmentName === '') {
-      alert('Must select a department');
-      return;
-    }
-
-    data.departmentId = getDepartmentId(data.departmentName);
-    props.submitAction(data);
-
-    reset();
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

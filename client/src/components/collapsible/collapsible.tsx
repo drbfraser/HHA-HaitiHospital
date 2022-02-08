@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
 function Collapsible(props) {
   const [isOpen, setIsOpen] = useState(false);

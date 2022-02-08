@@ -1,13 +1,9 @@
-import React from 'react';
-
-import { ElementStyleProps, ReportProps } from 'constants/interfaces';
-import Axios from 'axios';
-// import FormEntry from '../../../../../server/src/models/FormEntry';
+import Axios from 'axios'
 import { useTranslation } from 'react-i18next';
 
-interface UtilityButtonsProps extends ElementStyleProps {
-  tickTracker: { [rid: string]: boolean };
-  notifyTable(): void;
+interface UtilityButtonsProps {
+    tickTracker : {[rid: string]: boolean},
+    notifyTable() : void,
 }
 
 function isShown(tickTracker: { [rid: string]: boolean }): boolean {
@@ -95,8 +91,8 @@ function aggregateReport(reportArray: Array<Object>): Object {
 }
 
 async function delTickedReportFromDb(rid: string) {
-  let dbApiToDelRid = `/api/report/delete/${rid}`;
-  const res = await Axios.delete(dbApiToDelRid);
+    let dbApiToDelRid = `/api/report/delete/${rid}`;
+    await Axios.delete(dbApiToDelRid);
 }
 
 async function aggTickedReportFromDb(rid: string) {
@@ -107,13 +103,13 @@ async function aggTickedReportFromDb(rid: string) {
   return res;
 }
 
-async function getDepartmentTemplateFromDb(departmentid: string) {
-  let dbApiToAggSingleRid = `/api/report/add/${departmentid}`;
-  const res = await Axios.get(dbApiToAggSingleRid);
-  // reportArray.push(res);
-  // console.log(res);
-  return res;
-}
+// async function getDepartmentTemplateFromDb(departmentid: string) {
+//     let dbApiToAggSingleRid = `/api/report/add/${departmentid}`;
+//     const res = await Axios.get(dbApiToAggSingleRid);
+//     // reportArray.push(res);
+//     // console.log(res);
+//     return res;
+// }
 
 const UtilityButtons = (props: UtilityButtonsProps) => {
   const { t, i18n } = useTranslation();

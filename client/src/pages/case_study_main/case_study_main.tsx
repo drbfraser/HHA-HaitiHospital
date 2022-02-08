@@ -29,7 +29,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       if (!window.confirm('Are you sure you want to delete this case study?')) {
         throw new Error('Deletion cancelled');
       }
-      const res = await axios.delete(caseStudiesUrl + '/' + id);
+      await axios.delete(caseStudiesUrl + '/' + id);
       getCaseStudies();
     } catch (err) {
       DbErrorHandler(err, history);
@@ -79,25 +79,21 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                       })}
                     </td>
                     <td>
-                      <Link
-                        to={'/case-study/view/' + item._id}
-                        className="link-primary text-decoration-none"
-                      >
-                        {translateText('caseStudyMainViewCaseStudy') + ' '}
-                      </Link>
-                      {renderBasedOnRole(authState.userDetails.role, [
-                        Role.Admin,
-                        Role.MedicalDirector,
-                      ]) ? (
-                        <a
-                          href="javascript:void(0)"
-                          className="link-primary text-decoration-none"
-                          onClick={() => deleteCaseStudy(item._id)}
+                        <button className="btn btn-link text-decoration-none"
+                            onClick={() => history.push(`/case-study/view/${item._id}`)}
                         >
-                          {translateText('caseStudyMainDelete')}
-                        </a>
-                      ) : null}
-                    </td>
+                            {translateText("caseStudyMainViewCaseStudy") + " "}
+                        </button>
+
+                        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? 
+                            <button className="btn btn-link text-decoration-none"
+                                onClick={() => deleteCaseStudy(item._id)}
+                            >
+                                {translateText("caseStudyMainDelete") + " "}
+                            </button>
+                        : null
+                        }
+                    </td>   
                   </tr>
                 );
               })}

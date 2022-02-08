@@ -1,6 +1,5 @@
-import { AxiosError } from 'axios';
-import { History } from 'history';
-import React from 'react-router-dom';
+import { AxiosError } from "axios";
+import { History } from "history";
 
 const BADREQUEST_CODE = 400;
 const UNAUTHORIZE_CODE = 401;

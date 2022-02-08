@@ -23,19 +23,19 @@
 }
 
 @media only screen and (max-width: 700px) {
-  .text {
-    display: none;
-  }
-  .sidebar_logo {
-    display: none;
-  }
-  .Sidebar {
-    width: 70px;
-    height: 100vh;
-    display: flex;
-    position: fixed;
-    justify-content: start;
-  }
+    .text {
+        display: none;
+    }
+    .sidebar_logo {
+        display: none;
+    }
+    .Sidebar {
+        width: 70px;
+        height: 100vh;
+        display: flex;
+        position: fixed;
+        justify-content: flex-start;
+    }
 }
 
 /*.Sidebar.active {*/
