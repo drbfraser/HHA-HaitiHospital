@@ -19,5 +19,3 @@ export interface BiomechModel {
     //contentType: {type: String, required: true},
   };
 }
-
-export default BiomechModel;

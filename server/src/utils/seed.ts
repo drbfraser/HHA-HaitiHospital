@@ -11,11 +11,11 @@ import MessageBody from '../models/MessageBody';
 import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 
 export const seedDb = async () => {
-  await User.deleteMany({});
+//   await User.deleteMany({});
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
-  await seedUsers();
+//   await seedUsers();
   await seedCaseStudies();
   await seedDepartments();
   // seedMessageBoard();

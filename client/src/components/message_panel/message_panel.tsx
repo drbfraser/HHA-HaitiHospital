@@ -8,9 +8,7 @@ import {useTranslation} from "react-i18next";
 import { renderBasedOnRole } from "../../actions/roleActions";
 import { useAuthState } from 'Context';
 import { Role } from "../../constants/interfaces"
-interface MessagePanelProps {
-
-}
+interface MessagePanelProps {}
 
 const MessagePanel = (props: MessagePanelProps) => {
 

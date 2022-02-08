@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import NICUForm from 'pages/form/nicu_form';

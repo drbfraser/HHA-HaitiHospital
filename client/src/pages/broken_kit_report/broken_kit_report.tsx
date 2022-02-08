@@ -67,7 +67,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                         <option value="">{t("brokenKitReportClickToSelectPriority")}</option>
                         <option value={bioMechEnum.Urgent} >{t("brokenKitReportUrgent")}</option>
                         <option value={bioMechEnum.Important}>{t("brokenKitReportImportant")}</option>
-                        <option value={bioMechEnum.NonUrgent}>{t("brokenKitReportNon-Urgent")}</option>
+                        <option value={bioMechEnum.NonUrgent}>{t("brokenKitReportNonUrgent")}</option>
                     </select>
                     <label htmlFor="customFile" className="form-label mt-2">{t("brokenKitReportUploadImage")}</label>
                     <input type="file" accept="image/*" className="form-control" id="customFile" onChange={(e) => setSelectedFile(e.target.files[0])}/>

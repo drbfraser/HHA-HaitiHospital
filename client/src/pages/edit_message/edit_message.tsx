@@ -49,7 +49,7 @@ const EditMessage = () => {
     }, [id, history])
 
     const updateMessage = async (data) => {
-        const api = `/api/messageboard/${id}`;
+        const api = `/api/message-board/${id}`;
         try {
             await Axios.put(api, data);
             history.push('/message-board')
