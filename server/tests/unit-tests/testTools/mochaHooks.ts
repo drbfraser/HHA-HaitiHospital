@@ -36,7 +36,7 @@ export const setupHttpServer = (testApp: Application) => {
 export const attemptAuthentication = (agent: any, done: Mocha.Done, userAccount: UserAccount = AdminUser) => {
   // Something weird going on with content type, explicitly using a different content type to make it https://stackoverflow.com/questions/38078569/seem-to-have-the-wrong-content-type-when-posting-with-chai-http
   agent
-    .post('/auth/login')
+    .post('/api/auth/login')
     .set('content-type', 'application/json')
     .send(userAccount)
     .then((res: any) => {});

@@ -23,7 +23,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:5000/auth/login",
+              "raw": "http://localhost:5000/api/auth/login",
               "protocol": "http",
               "host": ["localhost"],
               "port": "5000",
@@ -38,7 +38,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:5000/auth/logout",
+              "raw": "http://localhost:5000/api/auth/logout",
               "protocol": "http",
               "host": ["localhost"],
               "port": "5000",
