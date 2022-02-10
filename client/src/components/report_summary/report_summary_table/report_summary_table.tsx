@@ -79,8 +79,9 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
           <tbody>
             {props.reports.map((report, index) => {
-              let username = (report['lastUpdatedByUserId'] as Json)['username'] as string;
-              let fullName = (report['lastUpdatedByUserId'] as Json)['name'] as string;
+              console.log((report))
+              const reportUser = (report['lastUpdatedByUserId'] as Json)
+              const fullName = (reportUser != null) ? reportUser['name'] : "N/A";
 
               return (
                 <ReportSummaryRow
@@ -89,7 +90,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
                   createdOn={report['createdOn'] as string}
                   deptId={parseInt(report['departmentId'] as string)}
                   lastUpdatedOn={new Date(report['lastUpdatedOn'] as string)}
-                  lastUpdatedBy={`${username} / ${fullName}`}
+                  lastUpdatedBy={`${fullName}`}
                   isTicked={tickTracker[report['_id'] as string]}
                   notifyTable={tickRow}
                 />
