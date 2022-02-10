@@ -85,7 +85,7 @@ MONGO_URI=mongodb://localhost:27017/
 # Secret use to generate JWT tokens
 JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
-CORS=https://localhost:3000
+CORS=http://localhost:3000
 # Port for server
 SERVER_PORT=5000
 # Port for unit test server
