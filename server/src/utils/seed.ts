@@ -13,11 +13,11 @@ import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
 import * as ENV from './processEnv';
 
 export const seedDb = async () => {
-//   await User.deleteMany({});
+  //   await User.deleteMany({});
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
-//   await seedUsers();
+  //   await seedUsers();
   await seedCaseStudies();
   await seedDepartments();
   // seedMessageBoard();
@@ -29,7 +29,7 @@ export const seedUsers = async () => {
 
   try {
     // Delete seeded users on server start so we can reseed them.
-    await User.collection.dropIndexes();
+    // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
