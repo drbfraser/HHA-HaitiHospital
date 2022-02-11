@@ -2,7 +2,7 @@ import { Router } from 'express';
 import usersRoutes from './user';
 import nicuPaedsRoutes from './nicuPaeds';
 import reportRouter from './report';
-import messageBoardRoutes from './messageBoard.route';
+import messageBoardRoutes from './messageBoard';
 import caseStudiesRouter from './caseStudies';
 import leaderboardRouter from './leaderboard';
 import biomechRouter from './bioMech';
