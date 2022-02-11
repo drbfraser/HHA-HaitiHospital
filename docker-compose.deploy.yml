@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    depends_on:
+      - mongodb
+    restart: always
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - CORS=${CORS}
+      - PASSWORD_SEED=${PASSWORD_SEED}
+    ports:
+      - "5000:5000"
+  mongodb:
+    restart: always
+  caddy:
+    container_name: hhahaiti_caddy
+    build:
+      context: .
+      dockerfile: caddy/Dockerfile
+    restart: always
+    environment:
+      - DOMAIN=${DOMAIN}
+      - API_HOSTNAME=hhahaiti_server
+    ports:
+      - "80:80"
+      - "443:443"

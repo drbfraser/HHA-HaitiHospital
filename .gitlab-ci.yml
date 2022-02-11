@@ -1,74 +1,76 @@
 stages:
   - build
-  - start
-  - test
+  - deploy
 
-variables:
-  GIT_CLEAN_FLAGS: -x -f -e client/node_modules/** -e server/node_modules/** -e server/dist/** -e server/public/**
-
-build-job:
+build server:
   stage: build
+  image: node:16
+  tags:
+    - docker
   only:
     - master
-  tags:
-    - cd
+    - staging
+    - merge_requests
+  before_script:
+    - cd server
+    - npm ci
   script:
-    - sudo docker-compose down
-    - sudo docker system prune --volumes -f
-    - CI=false sudo docker-compose -f docker-compose.yml build --no-cache --parallel
-    - sudo docker system prune --volumes -f
+    - npm run build
+  after_script:
+    - cd server && tar -czf ../server_build.tar.gz .
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - server_build.tar.gz
 
-build-cache:
+build client:
   stage: build
-  except:
+  image: node:16
+  tags:
+    - docker
+  only:
     - master
-  tags:
-    - cd
+    - staging
+    - merge_requests
+  before_script:
+    - cd client
+    - npm ci
   script:
-    - sudo docker-compose down
-    - sudo docker system prune --volumes -f
-    - CI=false sudo docker-compose -f docker-compose.yml build --parallel
-    - sudo docker system prune --volumes -f
+    # TODO: remove "CI=false", temporarily required because the project has warnings during the build
+    - CI=false GENERATE_SOURCEMAP=false npm run build
+  after_script:
+    - cd client/build && tar -czvf ../../client_build.tar.gz .
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - client_build.tar.gz
 
-start-app:
-  stage: start
-  tags:
-    - cd
-  script:
-    - CI=false sudo docker-compose -f docker-compose.yml up -d
-    # - sudo docker image prune -af
-    - sleep 60
+.deploy-script: &deploy-script
+  - cp /var/hhahaiti/.env ./.env
+  - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
+  - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
+  - docker image prune -f # remove unused images since we just built new ones
 
-test-mongo:
-  stage: test
+deploy development:
+  stage: deploy
+  environment:
+    name: development
+    url: hhahaiti-dev.cmpt.sfu.ca
   tags:
-    - cd
+    - deploy-development
+  only:
+    - master
   script:
-    - sudo docker-compose logs mongodb
-    - sudo docker ps | grep hha-app-mongo
+    - *deploy-script
 
-test-server:
-  stage: test
+deploy staging:
+  stage: deploy
+  environment:
+    name: staging
+    url: hhahaiti-stg.cmpt.sfu.ca
   tags:
-    - cd
+    - deploy-staging
+  only:
+    - staging
   script:
-    - sudo docker-compose logs server
-    - sudo docker ps | grep hha-app-server
-
-test-client:
-  stage: test
-  tags:
-    - cd
-  script:
-    - sudo docker-compose logs client
-    - sudo docker ps | grep hha-app-client
-    - sudo docker logs hha-app-client | ( ! grep "Failed to compile")
-# deploy-job:
-#   stage: deploy
-#   only:
-#     - master
-#   tags:
-#     - cd
-#   script:
-#     - sudo docker-compose -f docker-compose.yml up -d
-#     - echo complete
+    - *deploy-script
