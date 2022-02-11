@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import User from '../models/user.model';
-import { getDepartmentName, DepartmentName } from '../models/departments.model';
-import { Role } from '../models/user.model';
+import User from '../models/user';
+import { getDepartmentName, DepartmentName } from '../models/departments';
+import { Role } from '../models/user';
 
 export const checkIsInRole =
   (...roles) =>

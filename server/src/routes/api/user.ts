@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
-import User, { hashPassword, Role, validateUserSchema } from '../../models/user.model';
+import User, { hashPassword, Role, validateUserSchema } from '../../models/user';
 import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
 

@@ -2,9 +2,9 @@ import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
-import CaseStudy from '../../models/caseStudies.model';
+import CaseStudy from '../../models/caseStudies';
 import { checkIsInRole } from '../../utils/authUtils';
-import { Role } from '../../models/user.model';
+import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 
 const router = Router();

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import * as ENV from '../utils/processEnv';
-import User from '../models/user.model';
+import User from '../models/user';
 import { expression } from 'joi';
 
 // JWT strategy

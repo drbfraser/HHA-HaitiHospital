@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
-import BioMech from '../../models/bioMech.model';
+import BioMech from '../../models/bioMech';
 import { registerBioMechCreate } from '../../schema/registerBioMech';
 
 const router = Router();

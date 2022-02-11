@@ -3,7 +3,7 @@ import { Strategy as PassportLocalStrategy } from 'passport-local';
 import Joi from 'joi';
 import { Request } from 'express';
 
-import User from '../models/user.model';
+import User from '../models/user';
 import { loginSchema } from './validators';
 
 const passportLogin = new PassportLocalStrategy(

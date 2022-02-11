@@ -1,6 +1,6 @@
 import { seedDepartments } from '../../utils/seed';
 const router = require('express').Router();
-import FormEntry from '../../models/formEntry.model';
+import FormEntry from '../../models/formEntry';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { checkUserIsDepartmentAuthed } from '../../utils/authUtils';
 
