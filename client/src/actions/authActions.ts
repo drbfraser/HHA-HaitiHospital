@@ -8,7 +8,7 @@ interface FormData {
 export async function loginUser(dispatch, formData: FormData) {
   try {
     dispatch({ type: 'REQUEST_LOGIN' });
-    const response = await axios.post('/auth/login', formData);
+    const response = await axios.post('/api/auth/login', formData);
     const data = await response.data;
     if (data.success) {
       dispatch({ type: 'LOGIN_SUCCESS', payload: data });
@@ -27,7 +27,7 @@ export async function loginUser(dispatch, formData: FormData) {
 export async function logOutUser(dispatch) {
   dispatch({ type: 'LOGOUT' });
   axios
-    .get('/auth/logout')
+    .get('/api/auth/logout')
     .then(() => {
       deleteAllCookies();
       localStorage.removeItem('currentUser');

@@ -17,7 +17,7 @@ export const createServer = () => {
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200,
     methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type', 'Cookie'],
     exposedHeaders: ['Content-Type']
   };
   app.use(cors(corsOptions));

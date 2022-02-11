@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  server:
+    image: node:16
+    volumes:
+      - ./server:/code
+    working_dir: /code
+    command: npm start
+    ports:
+      - "5000:5000"
+  mongodb:
+    ports:
+      - "27017:27017"
+  client:
+    container_name: hhahaiti_client
+    image: node:16
+    volumes:
+      - ./client:/code
+    working_dir: /code
+    command: npm start
+    ports:
+      - "3000:3000"

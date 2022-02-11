@@ -26,7 +26,7 @@ describe('getUsers', () => {
   it('should get all users successfully', (done) => {
     // There is probably a better way to auth before calling APIs that require auth
     agent
-      .post('/auth/login')
+      .post('/api/auth/login')
       .set('content-type', 'application/json')
       .send(Accounts.AdminUser)
       .then(function (res: any) {
