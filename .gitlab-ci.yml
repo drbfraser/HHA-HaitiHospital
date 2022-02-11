@@ -55,7 +55,7 @@ deploy development:
   stage: deploy
   environment:
     name: development
-    url: hhahaiti-dev.cmpt.sfu.ca
+    url: https://hhahaiti-dev.cmpt.sfu.ca
   tags:
     - deploy-development
   only:
@@ -67,7 +67,7 @@ deploy staging:
   stage: deploy
   environment:
     name: staging
-    url: hhahaiti-stg.cmpt.sfu.ca
+    url: https://hhahaiti-stg.cmpt.sfu.ca
   tags:
     - deploy-staging
   only:
