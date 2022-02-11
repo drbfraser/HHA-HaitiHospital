@@ -1,10 +1,10 @@
 const router = require('express').Router();
-import MessageBody from '../../models/messageBoard';
+import MessageBody from '../../models/messageBoard.model';
 import { Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import { checkIsInRole } from '../../utils/authUtils';
-import { Role } from '../../models/user';
+import { Role } from '../../models/user.model';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {

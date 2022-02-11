@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import Department from '../../models/leaderboard';
+import Department from '../../models/leaderboard.model';
 import { updateDepartmentPoints } from '../../utils/leaderboardUtils';
 
 const router = Router();
