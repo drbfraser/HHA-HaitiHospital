@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { number } = require('joi');
-import NicuPaeds from '../../models/NicuPaeds';
+import NicuPaeds from '../../models/nicuPaeds';
 
 router.route('/').get((req, res) => {
   NicuPaeds.find()

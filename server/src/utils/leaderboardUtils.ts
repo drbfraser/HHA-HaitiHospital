@@ -1,6 +1,6 @@
-import CaseStudy from '../models/CaseStudies';
-import Department from '../models/Leaderboard';
-import { DepartmentName } from '../models/Departments';
+import CaseStudy from '../models/caseStudies';
+import Department from '../models/leaderboard';
+import { DepartmentName } from '../models/departments';
 
 const pointsPerCaseStudy = 10;
 

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { DepartmentName } from './Departments';
+import { DepartmentName } from './departments';
 
 const { Schema } = mongoose;
 

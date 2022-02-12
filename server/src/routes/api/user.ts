@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
-import User, { hashPassword, Role, validateUserSchema } from '../../models/User';
+import User, { hashPassword, Role, validateUserSchema } from '../../models/user';
 import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
 
@@ -14,7 +14,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, 
 
     const existingUser = await User.findOne({ username: req.body.username });
     if (existingUser && existingUser.username !== targetUser.username) {
-        return res.status(422).json({ message: 'Username is taken' });
+      return res.status(422).json({ message: 'Username is taken' });
     }
 
     let password = null;
@@ -23,9 +23,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, 
     }
 
     const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
-    Object.keys(updatedUser).forEach(
-        (k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]
-    );
+    Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     const user = await User.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
     res.status(201).json(user);
