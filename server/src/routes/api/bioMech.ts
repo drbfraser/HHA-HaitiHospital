@@ -4,6 +4,7 @@ import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
 import BioMech from '../../models/bioMech';
 import { registerBioMechCreate } from '../../schema/registerBioMech';
+import { deleteUploadedImage } from '../../utils/unlinkImage';
 
 const router = Router();
 
@@ -61,9 +62,10 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
 
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    await BioMech.deleteOne({ _id: req.params.id })
+    BioMech.deleteOne({ _id: req.params.id })
+      .then((data: any) => deleteUploadedImage(data.imgPath))
       .then(() => res.sendStatus(204))
-      .catch((err: any) => res.status(400).json('Could not delete: ' + err));
+      .catch((err: any) => res.status(400).json('Failed to delete bio mech: ' + err));
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong.' });
   }

@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import React, { useEffect } from 'react';
-
-// import './app.css';
+import { useEffect } from 'react';
 import { AuthProvider } from 'Context';
 import routes from './routes';
 import AppRoute from './AppRoute';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   useEffect(() => {
@@ -23,6 +23,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <ToastContainer />
         <Switch>
           {routes.map((route) => (
             <AppRoute
