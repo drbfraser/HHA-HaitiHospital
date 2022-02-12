@@ -1,42 +1,18 @@
-version: '3.7'
+version: "3.9"
 
 services:
   server:
-    network_mode: host
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    image: hha-app-server
-    container_name: hha-app-server
-    volumes:
-      - ./server/:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/dist
+    container_name: hhahaiti_server
     depends_on:
       - mongodb
-    env_file:
-      - ./server/.env
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - SERVER_PORT=5000
   mongodb:
-    network_mode: host
-    container_name: hha-app-mongo
-    image: mongo
+    container_name: hhahaiti_mongodb
+    image: mongo:5.0.6-focal
     volumes:
-      - db:/data/db
-  client:
-    network_mode: host
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    image: hha-app-client
-    container_name: hha-app-client
-    volumes:
-      - ./client/:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - server
-    stdin_open: true # docker run -i
-    tty: true # docker run -t
+      - hhahaiti_mongodb_data:/data/db
 
 volumes:
-  db:
-    driver: local
+  hhahaiti_mongodb_data:

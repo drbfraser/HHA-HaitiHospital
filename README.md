@@ -85,7 +85,7 @@ MONGO_URI=mongodb://localhost:27017/
 # Secret use to generate JWT tokens
 JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
-CORS=https://localhost:3000
+CORS=http://localhost:3000
 # Port for server
 SERVER_PORT=5000
 # Port for unit test server
@@ -101,7 +101,7 @@ PASSWORD_SEED=catdog
 
 ```
 $ npm install
-$ npm run dev-start
+$ npm start
 ```
 
 ### Client Setup
@@ -126,14 +126,6 @@ Now that everything is up, visit http://localhost:3000 and login with the seeded
   - Username: user3 to user 6
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
-
-### Known Issues
-
-- If there are issues with npm dependencies when running `npm install`, run the following line instead:
-
-```
-$ npm i --legacy-peer-deps install
-```
 
 ### Prettier Setup
 

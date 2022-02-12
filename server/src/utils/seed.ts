@@ -1,14 +1,14 @@
 import faker from 'faker';
 
-import User, { hashPassword, Role } from '../models/User';
-import Department from '../models/Leaderboard';
-import { DepartmentName } from '../models/Departments';
+import User, { hashPassword, Role } from '../models/user';
+import Department from '../models/leaderboard';
+import { DepartmentName } from '../models/departments';
 
-import NicuPaeds from '../models/NicuPaeds';
-import Community from '../models/Community';
+import NicuPaeds from '../models/nicuPaeds';
+import Community from '../models/community';
 
-import MessageBody from '../models/MessageBody';
-import CaseStudy, { CaseStudyOptions } from '../models/CaseStudies';
+import MessageBody from '../models/messageBoard';
+import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 
 import * as ENV from './processEnv';
 
