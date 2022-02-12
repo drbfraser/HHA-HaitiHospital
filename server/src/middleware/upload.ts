@@ -4,7 +4,7 @@ const maxSize = 200 * 1024 * 1024; // max file size in bytes: 200 MB
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public');
+    cb(null, 'public/images');
   },
   filename: function (req, file, cb) {
     const fileName = file.originalname.toLowerCase().split(' ').join('-');

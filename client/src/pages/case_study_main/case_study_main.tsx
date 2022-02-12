@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import './case_study_main_styles.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
 import { renderBasedOnRole } from 'actions/roleActions';
-import DbErrorHandler from 'actions/http_error_handler';
 import i18n from 'i18next';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
@@ -17,28 +17,29 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
-
   const caseStudiesUrl = '/api/case-studies';
-  const getCaseStudies = async () => {
+
+  const getCaseStudies = useCallback(async () => {
     const res = await axios.get(caseStudiesUrl);
     setCaseStudies(res.data);
-  };
+  }, [caseStudiesUrl]);
 
-  const deleteCaseStudy = async (id) => {
+  const deleteCaseStudy = async (id: string) => {
     try {
       if (!window.confirm('Are you sure you want to delete this case study?')) {
         throw new Error('Deletion cancelled');
       }
-      await axios.delete(caseStudiesUrl + '/' + id);
+      toast.success('Case Study deleted!');
+      await axios.delete(caseStudiesUrl.concat(`/${id}`));
       getCaseStudies();
     } catch (err) {
-      DbErrorHandler(err, history);
+      toast.error('Error: Unable to delete Case Study!');
     }
   };
 
   useEffect(() => {
     getCaseStudies();
-  }, []);
+  }, [getCaseStudies]);
 
   const { t: translateText } = useTranslation();
 
@@ -79,21 +80,25 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                       })}
                     </td>
                     <td>
-                        <button className="btn btn-link text-decoration-none"
-                            onClick={() => history.push(`/case-study/view/${item._id}`)}
-                        >
-                            {translateText("caseStudyMainViewCaseStudy") + " "}
-                        </button>
+                      <button
+                        className="btn btn-link text-decoration-none"
+                        onClick={() => history.push(`/case-study/view/${item._id}`)}
+                      >
+                        {translateText('caseStudyMainViewCaseStudy') + ' '}
+                      </button>
 
-                        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? 
-                            <button className="btn btn-link text-decoration-none"
-                                onClick={() => deleteCaseStudy(item._id)}
-                            >
-                                {translateText("caseStudyMainDelete") + " "}
-                            </button>
-                        : null
-                        }
-                    </td>   
+                      {renderBasedOnRole(authState.userDetails.role, [
+                        Role.Admin,
+                        Role.MedicalDirector,
+                      ]) ? (
+                        <button
+                          className="btn btn-link text-decoration-none"
+                          onClick={() => deleteCaseStudy(item._id)}
+                        >
+                          {translateText('caseStudyMainDelete') + ' '}
+                        </button>
+                      ) : null}
+                    </td>
                   </tr>
                 );
               })}
