@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "8d55eea4-05a6-45f5-9f4d-4dba83c96ee2",
+    "_postman_id": "5a477433-f970-4855-bc72-646220f18133",
     "name": "hha",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -27,7 +27,7 @@
               "protocol": "http",
               "host": ["localhost"],
               "port": "5000",
-              "path": ["auth", "login"]
+              "path": ["api", "auth", "login"]
             }
           },
           "response": []
@@ -42,7 +42,7 @@
               "protocol": "http",
               "host": ["localhost"],
               "port": "5000",
-              "path": ["auth", "logout"]
+              "path": ["api", "auth", "logout"]
             }
           },
           "response": []

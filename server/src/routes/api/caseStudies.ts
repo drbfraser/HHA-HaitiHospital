@@ -6,6 +6,7 @@ import CaseStudy from '../../models/caseStudies';
 import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
+import { deleteUploadedImage } from '../../utils/unlinkImage';
 
 const router = Router();
 
@@ -62,9 +63,10 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
 
 router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
   try {
-    await CaseStudy.findByIdAndRemove(req.params.id)
-      .then((data: any) => res.status(204).json(data))
-      .catch((err: any) => res.status(400).json('Failed to delete: ' + err));
+    CaseStudy.findByIdAndRemove(req.params.id)
+      .then((data: any) => deleteUploadedImage(data.imgPath))
+      .then(() => res.sendStatus(204))
+      .catch((err: any) => res.status(400).json('Failed to delete case study: ' + err));
   } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
