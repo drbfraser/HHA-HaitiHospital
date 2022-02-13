@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 
 const reportSchema = new Schema({
     metadata: {
-        updatedBy: mongoose.Types.ObjectId,
+        updatedBy: mongoose.Schema.Types.ObjectId,
         departmentId: {
             type: Number,
             required: true
