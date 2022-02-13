@@ -10,35 +10,56 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import { useTranslation } from 'react-i18next';
 import { FieldInputProps } from 'formik';
-import * as TestModels from './models/TestModels'
+import * as TestModels from './models/TestModels';
+import { toInteger } from 'lodash';
+
+type Item = {
+  id: string;
+  text?: string;
+  indent?: string;
+  type?: string;
+  value?: string;
+};
+
+type Section = {
+  title?: string;
+  items?: Item[];
+};
 
 function Report() {
-  const { register, handleSubmit, reset } = useForm({});
-  const [formModel, setFormModel] = useState({});
-  const [formValuesComeFrom, setFormValuesComeFrom] = useState<{ name: any; value: any }[]>([]);
-  const [formValuesAdCondition, setFormValuesAdCondition] = useState<{ name: any; value: any }[]>(
-    [],
-  );
-  const [formValuesOutCondition, setFormValuesOutCondition] = useState<{ name: any; value: any }[]>(
-    [],
-  );
-  const [sectionState, setSectionState] = useState(0);
-
   const history = useHistory();
   const { t, i18n } = useTranslation();
 
   useEffect(() => {});
 
-  const sections: any = Object.values(formModel);
-  const fields = [];
-  for (var i = 0; i < sections.length; i++) {
-    for (var j = 0; j < sections[i].section_fields.length; j++) {
-      fields.push(sections[i].section_fields[j]);
-    }
+  const sections: Section[] = TestModels.NICU_MODEL.map((section, idx): Section => {
+    return {
+      title: section.section_label,
+      items: section.section_fields.map((item, idx): Item => {
+        return {
+          id: item.field_id,
+          text: item.field_label ?? 'N/A',
+          type: item.field_type,
+          value: item.field_value ? item.field_value.toString() : '',
+          indent: item.field_level ? item.field_level.toString() : '0',
+        };
+      }),
+    };
+  });
+
+  const [formState, setFormState] = useState(sections);
+
+  const handleInputChange = (sectionIdx:number, itemIdx:number, value:string) =>{
+    formState[sectionIdx].items[itemIdx].value = value
+    setFormState(formState)
+  }
+
+  const handleSubmit:React.MouseEventHandler<HTMLButtonElement> = ()=>{
+
   }
 
   return (
-    <div className="form">
+    <div>
       <SideBar />
       <Header />
       <main className="container">
@@ -66,108 +87,35 @@ function Report() {
         {/* Render step buttons (sections) */}
         <div className="mb-3 text-start sticky-top bg-light">
           <h4 className="text-primary">{t('departmentFormSteps')} </h4>
-          <ul className="list-group list-group-horizontal">
-            {sections
-              ? sections.map((section: any, idx: any) => {
-                  var isActive = idx === 0 ? true : false;
-                  return (
-                    <>
-                      <li
-                        className={
-                          isActive
-                            ? 'list-group-item d-flex justify-content-between active'
-                            : 'list-group-item d-flex justify-content-between'
-                        }
-                      >
-                        <span>
-                          {idx + 1}. {section.section_label}
-                        </span>
-                      </li>
-                    </>
-                  );
-                })
-              : null}
-          </ul>
+          <ul className="list-group list-group-horizontal"></ul>
         </div>
 
         {/* Render questions and their sections */}
-        <div className="row g-3">
-          <div className="col-sm-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-            <form className="needs-validation">
-              <div className="row g-2">
-                <Section title='CYBER CUM' items={TestModels.NICU_MODEL}/>
-              </div>
-            </form>
+        <div className="row">
+          <div className="col-8 mx-auto">
+            <div className="row g-2">
+              {sections.map((section, idx) => (
+                // Key should not be idx
+                <Section id={idx} title={section.title ?? 'CYBER CUM'} items={section.items} onChange={handleInputChange} key={idx}/>
+              ))}
+            </div>
 
             {/* Render bottom buttons */}
             <div className="btn-group d-flex mb-2">
-              <button
-                className="w-100 btn btn-secondary btn-sm"
-                disabled={sectionState === 0 ? true : false}
-              >
+              <button className="w-100 btn btn-secondary btn-sm">
                 {t('departmentFormPrevious')}
               </button>
-              <button
-                className="w-100 btn btn-secondary btn-sm"
-                disabled={sectionState === 2 ? true : false}
-              >
-                {t('departmentFormNext')}
-              </button>
+              <button className="w-100 btn btn-secondary btn-sm">{t('departmentFormNext')}</button>
             </div>
 
-            <button
-              className="w-100 btn btn-primary btn-lg"
-              type="submit"
-              style={{ display: sectionState === 2 ? '' : 'none' }}
-            >
+            <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit}>
               {t('departmentFormSubmit')}
             </button>
           </div>
         </div>
+
+        <footer className="my-5 pt-5 text-muted text-center text-small"></footer>
       </main>
-
-      <footer className="my-5 pt-5 text-muted text-center text-small"></footer>
-    </div>
-  );
-}
-
-enum Indent {
-  None = '',
-  ONE = 'ps-5',
-}
-
-enum FieldTypes {
-  Text = 'text',
-  Numeric = 'number',
-}
-
-type TextProps = {
-  text?: string;
-  indent?: string;
-};
-
-type InputProps = { type?: string };
-
-type InputFieldProps = TextProps &
-  InputProps & {
-    id: string;
-    value: string;
-    onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
-  };
-
-function InputField(props: InputFieldProps): JSX.Element {
-  const defaultState = { valid: true };
-  const [state, setState] = useState({});
-  const { t, i18n } = useTranslation();
-
-  return (
-    <div>
-      <div className={'col-sm-10 ' + props.indent}>
-        <span className="align-middle">{props.text ?? 'Hello'}</span>
-      </div>
-      <div className="col-sm-2">
-        <input id={props.id} type={props.type} value={props.value} className="form-control" />
-      </div>
     </div>
   );
 }
@@ -179,26 +127,33 @@ function Label(props: LabelProps): JSX.Element {
   return <h6 className={'fw-bold ' + props.indent}>{props.text}</h6>;
 }
 
-type SectionProps = { title?: string; items?: any[] };
+type SectionProps = {
+  id:number
+  title?: string;
+  items?: any[];
+  onChange?: (sectionIdx: number, itemIdx: number, value:string) => void;
+};
 
 function Section(props: SectionProps): JSX.Element {
-
+  const onChange = props.onChange
   const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const inputId = e.currentTarget.id;
     console.log('input changed: id ' + inputId);
+    onChange(props.id, toInteger(inputId), e.currentTarget.value)
   };
 
   return (
-    <div>
+    <form>
       <h4 className="mb-3 text-primary"> {props.title} </h4>
-      {props.items.map((item, index) => {
+      {props.items.map((item:Item, index:number) => {
         switch (item.type) {
           case 'label':
             return <Label text={item.text} indent={item.indent} />;
-          case 'input':
+          default:
             return (
               <InputField
-                id={index.toString()}
+                id={index}
+                key={item.id}
                 value={item.value}
                 type={item.type}
                 text={item.text}
@@ -208,6 +163,53 @@ function Section(props: SectionProps): JSX.Element {
             );
         }
       })}
+    </form>
+  );
+}
+
+enum Indent {
+  None = '',
+  ONE = 'ps-5',
+}
+
+enum FieldTypes {
+  Text = 'text',
+  Number = 'number',
+}
+
+type TextProps = {
+  text?: string;
+  indent?: string;
+};
+
+type InputProps = { type?: string };
+
+type InputFieldProps = TextProps &
+  InputProps & {
+    id: number;
+    value: string;
+    onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
+  };
+
+function InputField(props: InputFieldProps): JSX.Element {
+  const defaultState = { valid: true };
+  const [state, setState] = useState({});
+  const { t, i18n } = useTranslation();
+  const inputId = props.id.toString();
+  return (
+    <div className="form-group row m-3">
+      <label className="col-sm-10 col-form-label" htmlFor={inputId}>
+        {props.text ?? 'Hello'}
+      </label>
+      <div className="col-sm-2">
+        <input
+          id={inputId}
+          type={props.type}
+          // value={props.value}
+          onChange={props.onChange}
+          className="form-control"
+        />
+      </div>
     </div>
   );
 }
