@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { BadRequestError, HttpError } from '../../exceptions/httpException';
+import { departmentAuth } from '../../middleware/departmentAuth';
 import httpErrorMiddleware from '../../middleware/httpErrorHandler';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
@@ -28,6 +29,45 @@ router.route('/').get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector)
         res.status(200)
             .send({
                 reports: allReports
+            });
+        }
+    catch (e) {
+        if (e instanceof HttpError) {
+            next(e);
+        }
+        else {
+            const internalError = new HttpError(500, e.message);
+            next(e);
+        }
+    }
+  
+}, httpErrorMiddleware);
+
+//Fetch reports of a department with department id
+//Support searching by date with query parameters/string: from, to
+router.route('/:departmentId').get(requireJwtAuth, departmentAuth, 
+    async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const extractFromQuery = getFromDateQuery;
+        const from = extractFromQuery(req); 
+        const extractToQuery = getToDateQuery;
+        const to = extractToQuery(req);
+        let query = ReportModel.find({
+            'metadata.dateCreated': {
+                $gte: from,
+                $lte: to
+            }
+        })
+
+        const deptId = parseInt(req.params.departmentId);
+        query = query.find({
+            "metadata.departmentId": deptId,
+        })
+        
+        const reports = await query.sort({ 'metadata.dateCreated' : 'desc'}).exec();
+        res.status(200)
+            .send({
+                reports: reports
             });
         }
     catch (e) {

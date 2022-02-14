@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import Department from './leaderboard';
 // import { FormDataModels } from './formdataModels';
 const { Schema } = mongoose;
 
@@ -18,17 +19,32 @@ export enum DepartmentId {
 
 export function getDepartmentName(deptId: number): DepartmentName {
   switch (deptId) {
-    case 0:
+    case DepartmentId.Rehab:
       return DepartmentName.Rehab;
-    case 1:
+    case DepartmentId.NicuPaeds:
       return DepartmentName.NicuPaeds;
-    case 2:
+    case DepartmentId.CommunityHealth:
       return DepartmentName.CommunityHealth;
-    case 3:
+    case DepartmentId.Maternity:
       return DepartmentName.Maternity;
     default:
       throw new Error('Invalid department id');
   }
+}
+
+export function getDepartmentId(deptName: string): DepartmentId {
+    switch (deptName) {
+        case DepartmentName.NicuPaeds:
+            return DepartmentId.NicuPaeds;
+        case DepartmentName.Maternity:
+            return DepartmentId.Maternity;
+        case DepartmentName.Rehab:
+            return DepartmentId.Rehab;
+        case DepartmentName.CommunityHealth:
+            return DepartmentId.CommunityHealth;
+        default:
+            throw new Error("Invalid department name");
+    }
 }
 
 const departmentsSchema = new Schema({});
