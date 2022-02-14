@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Message, emptyMessage, DepartmentName, getDepartmentId } from 'constants/interfaces';
-
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface MessageFormProps {
   optionalMsg?: Message;
@@ -36,7 +36,7 @@ function MessageForm(props: MessageFormProps) {
 
   const onSubmit = (data: any) => {
     if (data.departmentName === '') {
-      alert('Must select a department');
+      toast.error('Must select a department');
       return;
     }
 

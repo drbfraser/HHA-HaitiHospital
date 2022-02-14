@@ -7,6 +7,7 @@ import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
 import axios from 'axios';
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -49,7 +50,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     axios
       .post('/api/case-studies', formData)
       .then(() => {
-        window.alert('Case study successfully submitted!');
+        toast.success('Case study successfully submitted!');
         reset({});
         reset2({});
         reset3({});

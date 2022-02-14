@@ -10,6 +10,7 @@ import './edit_message_styles.css';
 import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import { toast } from 'react-toastify';
 
 const EditMessage = () => {
   const { id } = useParams<{ id?: string }>();
@@ -18,7 +19,7 @@ const EditMessage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    async function fetchMsgFromDb(id: string) {
+    const fetchMsgFromDb = async (id: string) => {
       const api = `/api/message-board/${id}`;
       try {
         const response = await Axios.get(api);
@@ -27,9 +28,9 @@ const EditMessage = () => {
         DbErrorHandler(err, history);
         return {};
       }
-    }
+    };
 
-    async function fetchMsg(id: string) {
+    const fetchMsg = async (id: string) => {
       const msgData = await fetchMsgFromDb(id);
       const msg: Message = {
         messageBody: msgData['messageBody'],
@@ -41,7 +42,7 @@ const EditMessage = () => {
       };
 
       setMsg(msg);
-    }
+    };
 
     fetchMsg(id);
   }, [id, history]);
@@ -51,7 +52,7 @@ const EditMessage = () => {
     try {
       await Axios.put(api, data);
       history.push('/message-board');
-      alert(i18n.t('addMessageAlertSuccess'));
+      toast.success(i18n.t('addMessageAlertSuccess'));
     } catch (e) {
       DbErrorHandler(e, history);
     }

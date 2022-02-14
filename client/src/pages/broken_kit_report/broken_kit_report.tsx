@@ -8,6 +8,7 @@ import axios from 'axios';
 import './broken_kit_report.css';
 import { useTranslation } from 'react-i18next';
 import DbErrorHandler from 'actions/http_error_handler';
+import { toast } from 'react-toastify';
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 
@@ -27,7 +28,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
     await axios
       .post('/api/biomech', formData)
       .then(() => {
-        window.alert('Biomechanic report successfully submitted!');
+        toast.success('Biomechanic report successfully submitted!');
         reset({});
         setSelectedFile(null);
         props.history.push('/biomechanic');

@@ -7,6 +7,7 @@ import './admin.css';
 import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import { toast } from 'react-toastify';
 
 interface AdminProps {}
 
@@ -32,7 +33,7 @@ const Admin = (props: AdminProps) => {
       }
       await axios.delete(usersUrl + '/' + id);
       getUsers();
-      alert(i18n.t('adminAlertUserDeleted'));
+      toast.error(i18n.t('adminAlertUserDeleted'));
     } catch (err) {
       DbErrorHandler(err, history);
     }

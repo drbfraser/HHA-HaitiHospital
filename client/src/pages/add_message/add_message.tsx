@@ -3,6 +3,7 @@ import Axios from 'axios';
 import Sidebar from '../../components/side_bar/side_bar';
 import Header from 'components/header/header';
 import './add_message_styles.css';
+import { toast } from 'react-toastify';
 import MessageForm from '../../components/message_form/message_form';
 import { useTranslation } from 'react-i18next';
 import DbErrorHandler from 'actions/http_error_handler';
@@ -16,7 +17,7 @@ const AddMessage = () => {
     try {
       await Axios.post(api, data);
       history.push('/message-board');
-      alert(i18n.t('addMessageAlertSuccess'));
+      toast.success(i18n.t('addMessageAlertSuccess'));
     } catch (e) {
       DbErrorHandler(e, history);
     }
