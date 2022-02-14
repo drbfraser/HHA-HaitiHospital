@@ -62,7 +62,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
 
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    BioMech.deleteOne({ _id: req.params.id })
+    BioMech.findByIdAndRemove(req.params.id)
       .then((data: any) => deleteUploadedImage(data.imgPath))
       .then(() => res.sendStatus(204))
       .catch((err: any) => res.status(400).json('Failed to delete bio mech: ' + err));
