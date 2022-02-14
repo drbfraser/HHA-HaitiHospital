@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { useState, useRef } from 'react';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -64,11 +64,11 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         failureMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
       });
   };
-    const {t} = useTranslation();
+  const { t } = useTranslation();
 
-    return (
+  return (
     <div className={'case-study-form'}>
-      <SideBar/>
+      <SideBar />
 
       <main className="container-fluid main-region">
         {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
@@ -85,22 +85,30 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <div>
           <form>
             <div className="form-group col-md-6">
-              <label className = "font-weight-bold">{t("caseStudyFormCaseStudyOptions")}</label>
-              <select className="form-control" 
-                id="CaseStudyType" 
-                onChange={(e)=> {
-                                const selectedForm = e.target.value;
-                                setformOption(selectedForm);
+              <label className="font-weight-bold">{t('caseStudyFormCaseStudyOptions')}</label>
+              <select
+                className="form-control"
+                id="CaseStudyType"
+                onChange={(e) => {
+                  const selectedForm = e.target.value;
+                  setformOption(selectedForm);
                 }}
-                defaultValue={""}
+                defaultValue={''}
               >
-
-                <option value = "">{t("caseStudyFormClickToSelect")}</option>
-                <option value = {CaseStudyOptions.PatientStory} >{t("caseStudyFormPatientStory")}</option>
-                <option value = {CaseStudyOptions.StaffRecognition} >{t("caseStudyFormStaffRecognition")}</option>
-                <option value = {CaseStudyOptions.TrainingSession} >{t("caseStudyFormTrainingSession")}</option>
-                <option value = {CaseStudyOptions.EquipmentReceived} >{t("caseStudyFormEquipmentReceived")}</option>
-                <option value = {CaseStudyOptions.OtherStory} >{t("caseStudyFormOtherStory")}</option>
+                <option value="">{t('caseStudyFormClickToSelect')}</option>
+                <option value={CaseStudyOptions.PatientStory}>
+                  {t('caseStudyFormPatientStory')}
+                </option>
+                <option value={CaseStudyOptions.StaffRecognition}>
+                  {t('caseStudyFormStaffRecognition')}
+                </option>
+                <option value={CaseStudyOptions.TrainingSession}>
+                  {t('caseStudyFormTrainingSession')}
+                </option>
+                <option value={CaseStudyOptions.EquipmentReceived}>
+                  {t('caseStudyFormEquipmentReceived')}
+                </option>
+                <option value={CaseStudyOptions.OtherStory}>{t('caseStudyFormOtherStory')}</option>
               </select>
             </div>
           </form>

@@ -1,9 +1,9 @@
-import Axios from 'axios'
+import Axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
 interface UtilityButtonsProps {
-    tickTracker : {[rid: string]: boolean},
-    notifyTable() : void,
+  tickTracker: { [rid: string]: boolean };
+  notifyTable(): void;
 }
 
 function isShown(tickTracker: { [rid: string]: boolean }): boolean {
@@ -91,8 +91,8 @@ function aggregateReport(reportArray: Array<Object>): Object {
 }
 
 async function delTickedReportFromDb(rid: string) {
-    let dbApiToDelRid = `/api/report/delete/${rid}`;
-    await Axios.delete(dbApiToDelRid);
+  let dbApiToDelRid = `/api/report/delete/${rid}`;
+  await Axios.delete(dbApiToDelRid);
 }
 
 async function aggTickedReportFromDb(rid: string) {

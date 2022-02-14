@@ -23,18 +23,15 @@ export const Department = (props: DepartmentProps) => {
     to: null,
   });
 
-
-    React.useEffect(() => {
-        try {
-            const numberId: number = parseInt(deptId);
-            const name: DepartmentName = getDepartmentName(numberId);
-            setDeptName(name);
-        }
-        catch (e) {
-            history.push("/notFound");
-        }
-
-    },[deptId, history])
+  React.useEffect(() => {
+    try {
+      const numberId: number = parseInt(deptId);
+      const name: DepartmentName = getDepartmentName(numberId);
+      setDeptName(name);
+    } catch (e) {
+      history.push('/notFound');
+    }
+  }, [deptId, history]);
 
   return (
     <div className="department">

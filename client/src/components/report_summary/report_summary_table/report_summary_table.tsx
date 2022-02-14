@@ -1,20 +1,18 @@
+import { useEffect, useState } from 'react';
 
-import {useEffect, useState} from 'react';
-
-import { Json} from 'constants/interfaces';
+import { Json } from 'constants/interfaces';
 import ReportSummaryRow from 'components/report_summary/report_summary_table/report_summary_row';
 import AllTick from 'components/report_summary/report_summary_table/all_tick';
 import UtilityButtons from 'components/report_summary/report_summary_table/utility_buttons';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-interface ReportSummaryTableProps{
-  reports :Json[],
-  refetchReports(): void,
-};
+interface ReportSummaryTableProps {
+  reports: Json[];
+  refetchReports(): void;
+}
 
-
-const ReportSummaryTable = (props : ReportSummaryTableProps) => {
-  const [tickTracker, setTracker] = useState<{[rid : string] : boolean}>({})
+const ReportSummaryTable = (props: ReportSummaryTableProps) => {
+  const [tickTracker, setTracker] = useState<{ [rid: string]: boolean }>({});
   useEffect(() => {
     let trackerTemp: { [rid: string]: boolean } = {};
 
@@ -50,7 +48,7 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
     props.refetchReports();
   };
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <section>
@@ -79,9 +77,9 @@ const ReportSummaryTable = (props : ReportSummaryTableProps) => {
 
           <tbody>
             {props.reports.map((report, index) => {
-              console.log((report))
-              const reportUser = (report['lastUpdatedByUserId'] as Json)
-              const fullName = (reportUser != null) ? reportUser['name'] : "N/A";
+              console.log(report);
+              const reportUser = report['lastUpdatedByUserId'] as Json;
+              const fullName = reportUser != null ? reportUser['name'] : 'N/A';
 
               return (
                 <ReportSummaryRow

@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useState, useRef, useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { User, Role, DepartmentName } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
@@ -9,7 +9,6 @@ import './admin.css';
 import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-
 
 interface AdminProps {}
 
@@ -30,37 +29,37 @@ export const EditUserForm = (props: AdminProps) => {
 
   useEffect(() => {
     const getUser = async () => {
-        try {
-          const res = await axios.get(userUrl);
-          setUser(res.data);
-          setRole(res.data.role);
-          setDepartment(res.data.department);
-        } catch (err) {
-          DbErrorHandler(err, history);
-        }
+      try {
+        const res = await axios.get(userUrl);
+        setUser(res.data);
+        setRole(res.data.role);
+        setDepartment(res.data.department);
+      } catch (err) {
+        DbErrorHandler(err, history);
       }
+    };
     getUser();
-  }, [history, userUrl])
+  }, [history, userUrl]);
 
   useEffect(() => {
     reset({
-        username: user.username,
-        password: user.password,
-        name: user.name,
-        department: user.department,
-        role: user.role
+      username: user.username,
+      password: user.password,
+      name: user.name,
+      department: user.department,
+      role: user.role,
     });
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     reset({
-        username: user.username,
-        password: user.password,
-        name: user.name,
-        department: user.department,
-        role: user.role
+      username: user.username,
+      password: user.password,
+      name: user.name,
+      department: user.department,
+      role: user.role,
     });
-  }, [user])
+  }, [user]);
 
   const onSubmit = (data: any) => {
     axios
@@ -162,9 +161,23 @@ export const EditUserForm = (props: AdminProps) => {
               ></input>
             </div>
             <div className="mb-3">
-              <label htmlFor="role" className="form-label">{t("adminAddUserRole")}</label>
-              <select className="form-select" id="role" defaultValue={role} required {...register("role")} onChange={(e)=>{setRole(e.target.value);       unregister("department")}}>
-                <option value="" disabled hidden>{t("adminAddUserSelectRole")}</option>
+              <label htmlFor="role" className="form-label">
+                {t('adminAddUserRole')}
+              </label>
+              <select
+                className="form-select"
+                id="role"
+                defaultValue={role}
+                required
+                {...register('role')}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                  unregister('department');
+                }}
+              >
+                <option value="" disabled hidden>
+                  {t('adminAddUserSelectRole')}
+                </option>
                 <option value={Role.User}>{i18n.t(Role.User)}</option>
                 <option value={Role.Admin}>{i18n.t(Role.Admin)}</option>
                 <option value={Role.MedicalDirector}>{i18n.t(Role.MedicalDirector)}</option>
@@ -173,9 +186,22 @@ export const EditUserForm = (props: AdminProps) => {
             </div>
             {role === Role.User || role === Role.HeadOfDepartment ? (
               <div className="mb-3">
-                <label htmlFor="department" className="form-label">{t("adminAddUserDepartment")}</label>
-                <select className="form-select" id="department" defaultValue={department} required {...register("department")} onChange={(e)=>{setDepartment(e.target.value)}}>
-                  <option value="" disabled hidden>{t("adminAddUserSelectDepartment")}</option>
+                <label htmlFor="department" className="form-label">
+                  {t('adminAddUserDepartment')}
+                </label>
+                <select
+                  className="form-select"
+                  id="department"
+                  defaultValue={department}
+                  required
+                  {...register('department')}
+                  onChange={(e) => {
+                    setDepartment(e.target.value);
+                  }}
+                >
+                  <option value="" disabled hidden>
+                    {t('adminAddUserSelectDepartment')}
+                  </option>
                   <option value={DepartmentName.NicuPaeds}>{DepartmentName.NicuPaeds}</option>
                   <option value={DepartmentName.Maternity}>{DepartmentName.Maternity}</option>
                   <option value={DepartmentName.Rehab}>{DepartmentName.Rehab}</option>
