@@ -1,5 +1,6 @@
-import { AxiosError } from "axios";
-import { History } from "history";
+import { AxiosError } from 'axios';
+import { History } from 'history';
+import { toast } from 'react-toastify';
 
 const BADREQUEST_CODE = 400;
 const UNAUTHORIZE_CODE = 401;
@@ -18,15 +19,15 @@ const DbErrorHandler = (e, history: History) => {
       break;
     }
     case NOTFOUND_CODE: {
-      alert('API URL not found');
+      toast.error('API URL not found');
       break;
     }
     case INTERNAL_CODE: {
-      alert(`Internal Error ${e.response}`);
+      toast.error(`Internal Error ${e.response}`);
       break;
     }
     case BADREQUEST_CODE: {
-      alert(`Invalid Report`);
+      toast.error(`Invalid Report`);
       break;
     }
     default:

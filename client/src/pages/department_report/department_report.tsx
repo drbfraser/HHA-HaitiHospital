@@ -26,8 +26,8 @@ interface UrlParams {
 const DepartmentReport = (props: DepartmentReportProps) => {
   const { t } = useTranslation();
   const { deptId, id } = useParams<UrlParams>();
-  const [ report, setReport] = useState<ReportProps>({});
-  const [ csvData, setCsvData ] = useState<Object[]> ([]);
+  const [report, setReport] = useState<ReportProps>({});
+  const [csvData, setCsvData] = useState<Object[]>([]);
   const pdfExportComponent = useRef(null);
   const handleExportWithComponent = () => {
     pdfExportComponent.current.save();
@@ -99,26 +99,27 @@ const DepartmentReport = (props: DepartmentReportProps) => {
     const apiSource = Axios.CancelToken.source();
 
     async function fetchReport() {
-        const qs = new URLSearchParams("");
-        qs.append("departmentId", deptId);
-        qs.append("reportId", id);
-        let getReportApi = `/api/report/`;
-        if (qs.toString().length > 0) {
-            getReportApi += `?${qs.toString()}`;
+      const qs = new URLSearchParams('');
+      qs.append('departmentId', deptId);
+      qs.append('reportId', id);
+      let getReportApi = `/api/report/`;
+      if (qs.toString().length > 0) {
+        getReportApi += `?${qs.toString()}`;
+      }
+
+      try {
+        const res = await Axios.get(getReportApi, {
+          cancelToken: apiSource.token,
+        });
+        return res.data;
+      } catch (err) {
+        if (Axios.isCancel(err)) {
+          console.log(`Info: Cancel subscription to ${getReportApi} API`, err);
+        } else {
+          DbErrorHandler(err, history);
         }
-    
-        try {
-          const res = await Axios.get(getReportApi, {
-            cancelToken: apiSource.token
-          });
-          return res.data;
-        } catch (err) {
-          if (Axios.isCancel(err)) {
-            console.log(`Info: Cancel subscription to ${getReportApi} API`, err);
-          }
-          else { DbErrorHandler(err, history) }
-        }
-        return {};
+      }
+      return {};
     }
 
     async function getReport() {
@@ -131,10 +132,8 @@ const DepartmentReport = (props: DepartmentReportProps) => {
     return function cancelReqWhenUnmounted() {
       isMounted = false;
       apiSource.cancel();
-    }
+    };
   }, [history, deptId, id]);
-
- 
 
   return (
     <div className={'department-report'}>

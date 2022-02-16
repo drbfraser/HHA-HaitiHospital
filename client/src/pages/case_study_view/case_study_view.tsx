@@ -3,8 +3,8 @@ import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
-import { CaseStudyOptions} from '../case_study_forms/CaseStudies';
-import {useTranslation} from "react-i18next";
+import { CaseStudyOptions } from '../case_study_forms/CaseStudies';
+import { useTranslation } from 'react-i18next';
 
 interface CaseStudyViewProps extends RouteComponentProps {}
 
@@ -13,12 +13,11 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
   const id = useLocation().pathname.split('/')[3];
   const caseStudyUrl = `/api/case-studies/${id}`;
 
-
   useEffect(() => {
     const getCaseStudy = async () => {
-        const res = await axios.get(caseStudyUrl);
-        setCaseStudy(res.data);
-    }
+      const res = await axios.get(caseStudyUrl);
+      setCaseStudy(res.data);
+    };
 
     getCaseStudy();
   }, [caseStudyUrl]);
@@ -58,7 +57,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
                 className={`img-thumbnail img-fluid mt-3 mb-3 ${
                   caseStudy.imgPath ? 'd-block' : 'd-none'
                 }`}
-                alt = "case study"
+                alt="case study"
               />
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormPatientName')}</h6>
               <p className="fs-6 lh-base text-break">{caseStudy.patientStory.patientsName}</p>
@@ -110,7 +109,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
                 className={`img-thumbnail img-fluid mt-3 mb-3 ${
                   caseStudy.imgPath ? 'd-block' : 'd-none'
                 }`}
-                alt = "case study"
+                alt="case study"
               />
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormStaffName')}</h6>
               <p className="fs-6 lh-base text-break">{caseStudy.staffRecognition.staffName}</p>
@@ -156,7 +155,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
                 className={`img-thumbnail img-fluid mt-3 mb-3 ${
                   caseStudy.imgPath ? 'd-block' : 'd-none'
                 }`}
-                alt = "case study"
+                alt="case study"
               />
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormTrainingDate')}</h6>
               <p className="fs-6 lh-base text-break">

@@ -1,7 +1,7 @@
 import { ReportProps } from 'constants/interfaces';
 import { ReportDisplay } from 'components/report_display/report_display';
 
-interface ObjectEntryProps  {
+interface ObjectEntryProps {
   name: string;
   entryKey: string;
   parentKey: string;

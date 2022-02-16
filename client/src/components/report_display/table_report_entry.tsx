@@ -2,12 +2,12 @@ import { ReportProps } from 'constants/interfaces';
 import { ReportDisplay } from 'components/report_display/report_display';
 
 interface TableEntryProps {
-    name: string;
-    entryKey: string;
-    parentKey: string;
-    value: ReportProps;
-    edit: boolean;
-};
+  name: string;
+  entryKey: string;
+  parentKey: string;
+  value: ReportProps;
+  edit: boolean;
+}
 
 export const TableEntry = (props: TableEntryProps) => {
   function concatParent(entryKey: string) {

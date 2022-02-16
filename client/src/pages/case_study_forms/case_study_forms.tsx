@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { useState, useRef } from 'react';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -7,6 +7,7 @@ import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
 import axios from 'axios';
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -49,7 +50,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     axios
       .post('/api/case-studies', formData)
       .then(() => {
-        window.alert('Case study successfully submitted!');
+        toast.success('Case study successfully submitted!');
         reset({});
         reset2({});
         reset3({});
@@ -64,11 +65,11 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         failureMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
       });
   };
-    const {t} = useTranslation();
+  const { t } = useTranslation();
 
-    return (
+  return (
     <div className={'case-study-form'}>
-      <SideBar/>
+      <SideBar />
 
       <main className="container-fluid main-region">
         {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
@@ -85,22 +86,30 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <div>
           <form>
             <div className="form-group col-md-6">
-              <label className = "font-weight-bold">{t("caseStudyFormCaseStudyOptions")}</label>
-              <select className="form-control" 
-                id="CaseStudyType" 
-                onChange={(e)=> {
-                                const selectedForm = e.target.value;
-                                setformOption(selectedForm);
+              <label className="font-weight-bold">{t('caseStudyFormCaseStudyOptions')}</label>
+              <select
+                className="form-control"
+                id="CaseStudyType"
+                onChange={(e) => {
+                  const selectedForm = e.target.value;
+                  setformOption(selectedForm);
                 }}
-                defaultValue={""}
+                defaultValue={''}
               >
-
-                <option value = "">{t("caseStudyFormClickToSelect")}</option>
-                <option value = {CaseStudyOptions.PatientStory} >{t("caseStudyFormPatientStory")}</option>
-                <option value = {CaseStudyOptions.StaffRecognition} >{t("caseStudyFormStaffRecognition")}</option>
-                <option value = {CaseStudyOptions.TrainingSession} >{t("caseStudyFormTrainingSession")}</option>
-                <option value = {CaseStudyOptions.EquipmentReceived} >{t("caseStudyFormEquipmentReceived")}</option>
-                <option value = {CaseStudyOptions.OtherStory} >{t("caseStudyFormOtherStory")}</option>
+                <option value="">{t('caseStudyFormClickToSelect')}</option>
+                <option value={CaseStudyOptions.PatientStory}>
+                  {t('caseStudyFormPatientStory')}
+                </option>
+                <option value={CaseStudyOptions.StaffRecognition}>
+                  {t('caseStudyFormStaffRecognition')}
+                </option>
+                <option value={CaseStudyOptions.TrainingSession}>
+                  {t('caseStudyFormTrainingSession')}
+                </option>
+                <option value={CaseStudyOptions.EquipmentReceived}>
+                  {t('caseStudyFormEquipmentReceived')}
+                </option>
+                <option value={CaseStudyOptions.OtherStory}>{t('caseStudyFormOtherStory')}</option>
               </select>
             </div>
           </form>
