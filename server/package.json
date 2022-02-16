@@ -11,7 +11,7 @@
     "clean": "rm -rf ./dist",
     "start": "ts-node-dev --respawn --transpile-only src/app.ts",
     "start-prod": "node dist/src/app.js",
-    "test": "ts-mocha --exit --timeout 10000 -p tsconfig.json tests/unit-tests/*.spec.ts"
+    "test": "ts-mocha --exit --timeout 10000 -p tsconfig.json tests/unitTests/*.spec.ts"
   },
   "license": "ISC",
   "dependencies": {
