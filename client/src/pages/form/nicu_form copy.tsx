@@ -1,5 +1,5 @@
-import { useForm } from 'react-hook-form';
-import React, { useState, useEffect, Fragment as div } from 'react';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import React, { useState, useEffect, Fragment as div, Fragment } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import SideBar from '../../components/side_bar/side_bar';
@@ -10,166 +10,234 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import { useTranslation } from 'react-i18next';
 import { FieldInputProps } from 'formik';
-import * as TestModels from './models/TestModels';
+import * as TestData from './models/TestModels';
 import { toInteger } from 'lodash';
-
-type Item = {
-  id: string;
-  text?: string;
-  indent?: string;
-  type?: string;
-  value?: string;
-};
-
-type Section = {
-  title?: string;
-  items?: Item[];
-};
+import { v4 as uuid } from 'uuid';
+import { fromString } from 'uuidv4';
+import { Link } from 'react-scroll';
 
 function Report() {
+  const formContext = useForm();
   const history = useHistory();
   const { t, i18n } = useTranslation();
-
-  useEffect(() => {});
-
-  const sections: Section[] = TestModels.NICU_MODEL.map((section, idx): Section => {
-    return {
-      title: section.section_label,
-      items: section.section_fields.map((item, idx): Item => {
-        return {
-          id: item.field_id,
-          text: item.field_label ?? 'N/A',
-          type: item.field_type,
-          value: item.field_value ? item.field_value.toString() : '',
-          indent: item.field_level ? item.field_level.toString() : '0',
-        };
-      }),
-    };
+  useEffect(() => {
+    $('body').scrollspy({ target: '#navbar' });
   });
 
-  const [formState, setFormState] = useState(sections);
-
-  const handleInputChange = (sectionIdx:number, itemIdx:number, value:string) =>{
-    formState[sectionIdx].items[itemIdx].value = value
-    setFormState(formState)
-  }
-
-  const handleSubmit:React.MouseEventHandler<HTMLButtonElement> = ()=>{
-
-  }
+  // console.log(form.metadata.name)
+  // console.log(form.items)
+  // const [formState, setFormState] = useState(sections);
 
   return (
-    <div>
-      <SideBar />
+    <Fragment>
       <Header />
+      <SideBar />
       <main className="container">
-        {/* Render back Button */}
-        <div className="d-flex justify-content-start">
-          <button
-            type="button"
-            className="btn btn-primary btn-sm"
-            onClick={() => {
-              history.goBack();
-            }}
-          >
-            {t('departmentAddBack')}
-          </button>
-        </div>
 
-        {/* TODO: Render report title */}
+        <div className="row justify-content-center">
 
-        {/* Render date selection. TODO: Relaced with a calendar selection from General report*/}
-        <div className="py-3 text-start">
-          <span className="lead">{t('departmentAddDate')} </span>
-          {/* TODO: Add calendar selection here */}
-        </div>
-
-        {/* Render step buttons (sections) */}
-        <div className="mb-3 text-start sticky-top bg-light">
-          <h4 className="text-primary">{t('departmentFormSteps')} </h4>
-          <ul className="list-group list-group-horizontal"></ul>
-        </div>
-
-        {/* Render questions and their sections */}
-        <div className="row">
-          <div className="col-8 mx-auto">
-            <div className="row g-2">
-              {sections.map((section, idx) => (
-                // Key should not be idx
-                <Section id={idx} title={section.title ?? 'CYBER CUM'} items={section.items} onChange={handleInputChange} key={idx}/>
-              ))}
+          <div className="col-sm-2 p-auto">
+            <div className="card sticky-top" >
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <p className="card-text">
+                  Some quick example text to build on the card title and make up the bulk of the
+                  card's content.
+                </p>
+                <a href="#" className="btn btn-primary">
+                  Go somewhere
+                </a>
+              </div>
             </div>
+          </div>
 
-            {/* Render bottom buttons */}
-            <div className="btn-group d-flex mb-2">
-              <button className="w-100 btn btn-secondary btn-sm">
-                {t('departmentFormPrevious')}
-              </button>
-              <button className="w-100 btn btn-secondary btn-sm">{t('departmentFormNext')}</button>
-            </div>
+          <div className="col-sm-8">
+            <nav id="navbar" className="navbar sticky-top navbar-light bg-secondary">
+              <a className="navbar-brand" href="#">
+                Navbar
+              </a>
+              <ul className="nav nav-pills">
+                <li className="nav-item">
+                  <a className="nav-link" href="#section1">
+                    Label 1
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="#section2">
+                    Label 2
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="#section3">
+                    Label 3
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            
+            <FormProvider {...formContext}>
+              <form onSubmit={formContext.handleSubmit((data) => console.log(data))}>
+                <div id="section1" className="pt-5">
+                  <h1>Section 1</h1>
+                  {[...Array(50).keys()].map((i) => (
+                    <NumberInputField id={uuid()} />
+                  ))}
+                </div>
 
-            <button className="w-100 btn btn-primary btn-lg" type="submit" onClick={handleSubmit}>
-              {t('departmentFormSubmit')}
-            </button>
+                <div id="section2" className="pt-5">
+                  <h1>Section 2</h1>
+                  {[...Array(50).keys()].map((i) => (
+                    <NumberInputField id={uuid()} />
+                  ))}
+                </div>
+
+                <div id="section3" className="pt-5">
+                  <h1>Section 3</h1>
+                  {[...Array(50).keys()].map((i) => (
+                    <NumberInputField id={uuid()} />
+                  ))}
+                </div>
+
+                <input type="submit" />
+              </form>
+            </FormProvider>
           </div>
         </div>
-
-        <footer className="my-5 pt-5 text-muted text-center text-small"></footer>
       </main>
-    </div>
+    </Fragment>
   );
 }
 
-type LabelProps = TextProps;
+//   return (
+//     <div>
+//       <SideBar />
+//       <Header />
+//       <main className="container">
+//         {/* Render back Button */}
+//         <div className="d-flex justify-content-start">
+//           <button
+//             type="button"
+//             className="btn btn-primary btn-sm"
+//             onClick={() => {
+//               history.goBack();
+//             }}
+//           >
+//             {t('departmentAddBack')}
+//           </button>
+//         </div>
 
-// Refactor to use BootStrap CSS instead of h6
-function Label(props: LabelProps): JSX.Element {
-  return <h6 className={'fw-bold ' + props.indent}>{props.text}</h6>;
-}
+//         {/* TODO: Render report title */}
+
+//         {/* Render date selection. TODO: Relaced with a calendar selection from General report*/}
+//         <div className="py-3 text-start">
+//           <span className="lead">{t('departmentAddDate')} </span>
+//           {/* TODO: Add calendar selection here */}
+//         </div>
+
+//         {/* Render scroll buttons*/}
+//         <nav id="navbar-example2" className="navbar bg-light sticky-top">
+//           <a className="navbar-brand" href="#">
+//             Navbar
+//           </a>
+//           <ul className="nav nav-pills">
+//             <li className="nav-item">
+//               <a className="nav-link" href="#1">
+//                 111111111111111
+//               </a>
+//             </li>
+//             <li className="nav-item">
+//               <a className="nav-link" href="#2">
+//                 222222222222
+//               </a>
+//             </li>
+//             <li className="nav-item">
+//               <a className="nav-link" href="#3">
+//                 33333333333333
+//               </a>
+//             </li>
+//           </ul>
+//         </nav>
+
+//         {/* Render questions and their sections */}
+//         <div className="row">
+//           <div className="col-8 mx-auto">
+//             <div className="row g-2" >
+//               <FormProvider {...formContext}>
+//                 <form onSubmit={formContext.handleSubmit((data) => console.log(data))}>
+//                   {[...Array(50).keys()].map((i) => (
+//                     <NumberInputField id={uuid()} />
+//                   ))}
+//                   <Label id="1" text="1" />
+//                   {[...Array(50).keys()].map((i) => (
+//                     <NumberInputField id={uuid()} />
+//                   ))}
+//                   <Label id="2" text="2" />
+//                   {[...Array(50).keys()].map((i) => (
+//                     <NumberInputField id={uuid()} />
+//                   ))}
+//                   <Label id="3" text="3" />
+//                   <input type="submit" />
+//                 </form>
+//               </FormProvider>
+//             </div>
+
+//             {/* Render bottom buttons */}
+//             <div className="btn-group d-flex mb-2">
+//               <button className="w-100 btn btn-secondary btn-sm">
+//                 {t('departmentFormPrevious')}
+//               </button>
+//               <button className="w-100 btn btn-secondary btn-sm">{t('departmentFormNext')}</button>
+//             </div>
+
+//             <button className="w-100 btn btn-primary btn-lg" type="submit">
+//               {t('departmentFormSubmit')}
+//             </button>
+//           </div>
+//         </div>
+
+//         <footer className="my-5 pt-5 text-muted text-center text-small"></footer>
+//       </main>
+//     </div>
+//   );
+// }
 
 type SectionProps = {
-  id:number
+  id: number;
   title?: string;
   items?: any[];
-  onChange?: (sectionIdx: number, itemIdx: number, value:string) => void;
+  formHooks?: any;
 };
 
 function Section(props: SectionProps): JSX.Element {
-  const onChange = props.onChange
-  const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const inputId = e.currentTarget.id;
-    console.log('input changed: id ' + inputId);
-    onChange(props.id, toInteger(inputId), e.currentTarget.value)
-  };
+  const formHooks = props.formHooks;
 
   return (
-    <form>
+    <Fragment>
       <h4 className="mb-3 text-primary"> {props.title} </h4>
-      {props.items.map((item:Item, index:number) => {
+      {props.items.map((item, index: number) => {
         switch (item.type) {
           case 'label':
-            return <Label text={item.text} indent={item.indent} />;
+          // return <Label key={index} options={(item as Label)}/>;
           default:
-            return (
-              <InputField
-                id={index}
-                key={item.id}
-                value={item.value}
-                type={item.type}
-                text={item.text}
-                indent={item.indent}
-                onChange={onInputChange}
-              />
-            );
+          // return (
+          //   <InputField
+          //     id={item.id}
+          //     key={item.id}
+          //     value={item.value}
+          //     type={item.type}
+          //     text={item.text}
+          //     formHook={formHooks}
+          //   />
+          // );
         }
       })}
-    </form>
+    </Fragment>
   );
 }
 
 enum Indent {
   None = '',
-  ONE = 'ps-5',
+  ONE = 'ms-5',
 }
 
 enum FieldTypes {
@@ -177,38 +245,28 @@ enum FieldTypes {
   Number = 'number',
 }
 
-type TextProps = {
+function Label(props: { id: string; text: string; size?: number }) {
+  return <h1 id={props.id ?? ''}>{props.text}</h1>;
+}
+
+type NumberInputField = {
+  id: string;
   text?: string;
+  value?: string;
   indent?: string;
 };
 
-type InputProps = { type?: string };
-
-type InputFieldProps = TextProps &
-  InputProps & {
-    id: number;
-    value: string;
-    onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
-  };
-
-function InputField(props: InputFieldProps): JSX.Element {
-  const defaultState = { valid: true };
+function NumberInputField(props: NumberInputField): JSX.Element {
+  const { register } = useFormContext();
   const [state, setState] = useState({});
   const { t, i18n } = useTranslation();
-  const inputId = props.id.toString();
   return (
-    <div className="form-group row m-3">
-      <label className="col-sm-10 col-form-label" htmlFor={inputId}>
+    <div className={'form-group row mb-3 ' + props.indent ?? Indent.None}>
+      <label className="col-sm-10 col-form-label" htmlFor={props.id}>
         {props.text ?? 'Hello'}
       </label>
       <div className="col-sm-2">
-        <input
-          id={inputId}
-          type={props.type}
-          // value={props.value}
-          onChange={props.onChange}
-          className="form-control"
-        />
+        <input id={props.id} type={'number'} className="form-control" {...register(props.id)} />
       </div>
     </div>
   );
