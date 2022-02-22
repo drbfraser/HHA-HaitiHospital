@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { InternalError, UnauthorizedError, UnprocessableEntityError } from "../exceptions/httpException";
-import { DepartmentId, DepartmentName, getDepartmentId } from "../models/departments"
+import { getDepartmentId } from "../common/utils/departments";
+import { DepartmentId, DepartmentName } from "../common/definitions/departments";
 import { Role } from "../models/user"
 
 type UserPrivilegeInfo = {

@@ -1,4 +1,4 @@
-import { DepartmentId } from "../../models/departments";
+import { DepartmentId } from "./departments";
 
 
 export enum ItemType {
@@ -31,37 +31,33 @@ interface ReportItem<Type> {
 }
 
 //Short Answer Item
-export interface ReportSaItem extends ReportItem<string> {
-};
+// export interface ReportSaItem extends ReportItem<string> {};
 //Numeric Item
-export interface ReportNItem extends ReportItem<number> {
-};
+export interface ReportNItem extends ReportItem<number> {};
 //Yes No item
-export interface ReportYnItem extends ReportItem<boolean> {
-};
+// export interface ReportYnItem extends ReportItem<boolean> {};
 //Mcq item
-export interface ReportMcqItem extends ReportItem<number> {
-    options: Array<JsonMcqOption>;
-    hasUserInput: boolean;
-    other?: JsonMcqOption;
-};
+// export interface ReportMcqItem extends ReportItem<number> {
+//     options: Array<JsonMcqOption>;
+//     hasUserInput: boolean;
+//     other?: JsonMcqOption;
+// };
 //Pick one item
-export interface ReportPoItem extends ReportMcqItem {
-};
+// export interface ReportPoItem extends ReportMcqItem {};
 
-export interface JsonMcqOption {
-    description: string;
-    value: string;
-}
+// export interface JsonMcqOption {
+//     description: string;
+//     value: string;
+// }
 //Sum item
 export interface ReportSumItem extends ReportItem<number> {
     numericItems: Array<ReportNItem>;
 };
 
 //Survey Generator item
-export interface JsonReportSurveyItem extends ReportItem<number> {
-    items: Array<ReportItem<ItemAnswerTypes>>
-}
+// export interface JsonReportSurveyItem extends ReportItem<number> {
+//     items: Array<ReportItem<ItemAnswerTypes>>
+// }
 
 export type ItemAnswerTypes = string | number | boolean;
 export interface JsonReportDescriptor {
