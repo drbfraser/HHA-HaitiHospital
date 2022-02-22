@@ -199,6 +199,7 @@ export const seedCaseStudies = async () => {
             user: user.id,
             userDepartment: user.department,
             imgPath: 'public/images/case1.jpg',
+            featured: true,
             patientStory: {
               patientsName: faker.name.findName(),
               patientsAge: faker.random.number({ min: 10, max: 50 }),
@@ -217,6 +218,7 @@ export const seedCaseStudies = async () => {
             user: user.id,
             userDepartment: user.department,
             imgPath: 'public/images/case2.jpg',
+            featured: false,
             staffRecognition: {
               staffName: faker.name.findName(),
               jobTitle: faker.lorem.words(),
@@ -233,6 +235,7 @@ export const seedCaseStudies = async () => {
             caseStudyType: CaseStudyOptions.TrainingSession,
             user: user.id,
             userDepartment: user.department,
+            featured: false,
             trainingSession: {
               trainingDate: faker.date.recent(),
               trainingOn: faker.lorem.sentences(),
@@ -249,6 +252,7 @@ export const seedCaseStudies = async () => {
             caseStudyType: CaseStudyOptions.EquipmentReceived,
             user: user.id,
             userDepartment: user.department,
+            featured: false,
             equipmentReceived: {
               equipmentReceived: faker.lorem.words(),
               departmentReceived: faker.lorem.words(),
