@@ -1,4 +1,4 @@
-import { DepartmentId } from "./departments_2";
+import { DepartmentId } from "./departments";
 
 
 export enum ItemType {
