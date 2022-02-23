@@ -235,6 +235,7 @@ export const seedCaseStudies = async () => {
             caseStudyType: CaseStudyOptions.TrainingSession,
             user: user.id,
             userDepartment: user.department,
+            imgPath: 'public/images/case2.jpg',
             featured: false,
             trainingSession: {
               trainingDate: faker.date.recent(),
@@ -252,6 +253,7 @@ export const seedCaseStudies = async () => {
             caseStudyType: CaseStudyOptions.EquipmentReceived,
             user: user.id,
             userDepartment: user.department,
+            imgPath: 'public/images/case2.jpg',
             featured: false,
             equipmentReceived: {
               equipmentReceived: faker.lorem.words(),

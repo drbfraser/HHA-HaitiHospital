@@ -18,7 +18,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 mb-5 lh-base">
             {translateText('caseStudyViewDate')}{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-              timeZone: 'America/Los_Angeles',
+              timeZone: 'America/Cancun',
             })}
           </h6>
           <img
@@ -60,7 +60,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 mb-5 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-              timeZone: 'America/Los_Angeles',
+              timeZone: 'America/Cancun',
             })}
           </h6>
           <img
@@ -104,7 +104,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 mb-5 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-              timeZone: 'America/Los_Angeles',
+              timeZone: 'America/Cancun',
             })}
           </h6>
           <img
@@ -117,7 +117,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormTrainingDate')}</h6>
           <p className="fs-6 lh-base text-break">
             {new Date(caseStudy.trainingSession.trainingDate).toLocaleDateString('en-US', {
-              timeZone: 'America/Los_Angeles',
+              timeZone: 'America/Cancun',
             })}
           </p>
           <h6 className="fs-6 fw-bold lh-base">
@@ -154,7 +154,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 mb-5 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-              timeZone: 'America/Los_Angeles',
+              timeZone: 'America/Cancun',
             })}
           </h6>
           <img
@@ -204,7 +204,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 mb-5 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-              timeZone: 'America/Los_Angeles',
+              timeZone: 'America/Cancun',
             })}
           </h6>
           <img
