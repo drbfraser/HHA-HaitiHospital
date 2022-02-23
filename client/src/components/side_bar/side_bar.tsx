@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
-import { getDepartmentId } from '../../constants/interfaces';
+import { getDepartmentId } from "../../common/utils/departments";
 import './side_bar.css';
 import { useAuthState } from 'Context';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { isUserInDepartment, renderBasedOnRole } from '../../actions/roleActions';
-import { Role, DepartmentName } from '../../constants/interfaces';
+import { Role } from '../../constants/interfaces';
+import { DepartmentName } from "../../common/definitions/departments";
 
 interface SidebarProps {}
 
