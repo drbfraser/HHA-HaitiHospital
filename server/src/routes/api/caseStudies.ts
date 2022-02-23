@@ -54,7 +54,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
     const userDepartment = req.user.department;
     let imgPath: string;
     if (req.file) {
-      imgPath = req.file.path;
+      imgPath = req.file.path.replace(/\\/g, '/');
     }
     const featured: boolean = ((await CaseStudy.estimatedDocumentCount()) as number) === 0;
     const newCaseStudy = new CaseStudy({

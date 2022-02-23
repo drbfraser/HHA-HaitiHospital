@@ -1,8 +1,31 @@
+import { useEffect, useState } from 'react';
 import { CaseStudyOptions } from 'pages/case_study_forms/CaseStudies';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const CaseStudySummary = ({ caseStudy }) => {
   const { t: translateText } = useTranslation();
+  const [caseStudyImage, setCaseStudyImage] = useState<string>('');
+
+  const getCaseStudyImage = async () => {
+    console.log(caseStudy.imgPath);
+    await axios
+      .get(`/api/image/${caseStudy.imgPath.split('/')[2]}`, {
+        responseType: 'blob',
+      })
+      .then((response: any) => {
+        setCaseStudyImage(URL.createObjectURL(response.data));
+      })
+      .catch(() => {
+        toast.error('Unable to fetch image');
+      });
+  };
+
+  useEffect(() => {
+    // Only execute once case study data has been successfully passed to this component
+    if (caseStudy.imgPath !== undefined) getCaseStudyImage();
+  }, [caseStudy]);
 
   return (
     <div className="mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
@@ -15,18 +38,18 @@ export const CaseStudySummary = ({ caseStudy }) => {
             {translateText('caseStudyViewAuthor')}{' '}
             {caseStudy.user ? caseStudy.user.name : '[deleted]'}
           </h6>
-          <h6 className="fs-6 mb-5 lh-base">
+          <h6 className="fs-6 lh-base">
             {translateText('caseStudyViewDate')}{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
               timeZone: 'America/Cancun',
             })}
           </h6>
           <img
-            src={`../../${caseStudy.imgPath}`}
+            src={caseStudyImage}
             className={`img-thumbnail img-fluid mt-3 mb-3 ${
               caseStudy.imgPath ? 'd-block' : 'd-none'
             }`}
-            alt="case study"
+            alt="Case Study Here..."
           />
           <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormPatientName')}</h6>
           <p className="fs-6 lh-base text-break">{caseStudy.patientStory.patientsName}</p>
@@ -57,18 +80,18 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 lh-base">
             Author: {caseStudy.user ? caseStudy.user.name : '[deleted]'}
           </h6>
-          <h6 className="fs-6 mb-5 lh-base">
+          <h6 className="fs-6 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
               timeZone: 'America/Cancun',
             })}
           </h6>
           <img
-            src={`../../${caseStudy.imgPath}`}
+            src={caseStudyImage}
             className={`img-thumbnail img-fluid mt-3 mb-3 ${
               caseStudy.imgPath ? 'd-block' : 'd-none'
             }`}
-            alt="case study"
+            alt="Case Study Here..."
           />
           <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormStaffName')}</h6>
           <p className="fs-6 lh-base text-break">{caseStudy.staffRecognition.staffName}</p>
@@ -101,18 +124,18 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 lh-base">
             Author: {caseStudy.user ? caseStudy.user.name : '[deleted]'}
           </h6>
-          <h6 className="fs-6 mb-5 lh-base">
+          <h6 className="fs-6 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
               timeZone: 'America/Cancun',
             })}
           </h6>
           <img
-            src={`../../${caseStudy.imgPath}`}
+            src={caseStudyImage}
             className={`img-thumbnail img-fluid mt-3 mb-3 ${
               caseStudy.imgPath ? 'd-block' : 'd-none'
             }`}
-            alt="case study"
+            alt="Case Study Here..."
           />
           <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormTrainingDate')}</h6>
           <p className="fs-6 lh-base text-break">
@@ -151,18 +174,18 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 lh-base">
             Author: {caseStudy.user ? caseStudy.user.name : '[deleted]'}
           </h6>
-          <h6 className="fs-6 mb-5 lh-base">
+          <h6 className="fs-6 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
               timeZone: 'America/Cancun',
             })}
           </h6>
           <img
-            src={`../../${caseStudy.imgPath}`}
+            src={caseStudyImage}
             className={`img-thumbnail img-fluid mt-3 mb-3 ${
               caseStudy.imgPath ? 'd-block' : 'd-none'
             }`}
-            alt="case study"
+            alt="Case Study Here..."
           />
           <h6 className="fs-6 fw-bold lh-base">
             {translateText('caseStudyFormWhatEquipmentWasReceived')}
@@ -201,18 +224,18 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <h6 className="fs-6 lh-base">
             Author: {caseStudy.user ? caseStudy.user.name : '[deleted]'}
           </h6>
-          <h6 className="fs-6 mb-5 lh-base">
+          <h6 className="fs-6 lh-base">
             Date:{' '}
             {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
               timeZone: 'America/Cancun',
             })}
           </h6>
           <img
-            src={`../../${caseStudy.imgPath}`}
+            src={caseStudyImage}
             className={`img-thumbnail img-fluid mt-3 mb-3 ${
               caseStudy.imgPath ? 'd-block' : 'd-none'
             }`}
-            alt="case study"
+            alt="Case Study Here..."
           />
           <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormCaseStudy/Story')}</h6>
           <p className="fs-6 lh-base text-break">{caseStudy.otherStory.caseStudyStory}</p>
