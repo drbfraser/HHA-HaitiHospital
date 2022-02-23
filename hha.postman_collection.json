@@ -216,6 +216,26 @@
           "response": []
         },
         {
+          "name": "Set a case study as featured by id",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/case-studies/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Remove a case study by id",
           "request": {
             "method": "DELETE",
