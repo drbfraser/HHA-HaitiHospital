@@ -37,6 +37,16 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     }
   };
 
+  const featureCaseStudy = async (id: string) => {
+    try {
+      toast.success('Featured case study has now changed!');
+      await axios.patch(caseStudiesUrl.concat(`/${id}`));
+      getCaseStudies();
+    } catch (err) {
+      toast.error('Error: Unable to set new featured Case Study!');
+    }
+  };
+
   useEffect(() => {
     getCaseStudies();
   }, [getCaseStudies]);
@@ -84,7 +94,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/case-study/view/${item._id}`)}
                       >
-                        {translateText('caseStudyMainViewCaseStudy') + ' '}
+                        {translateText('caseStudyMainViewCaseStudy').concat(' ')}
                       </button>
 
                       {renderBasedOnRole(authState.userDetails.role, [
@@ -95,7 +105,23 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                           className="btn btn-link text-decoration-none"
                           onClick={() => deleteCaseStudy(item._id)}
                         >
-                          {translateText('caseStudyMainDelete') + ' '}
+                          {translateText('caseStudyMainDelete').concat(' ')}
+                        </button>
+                      ) : null}
+
+                      {renderBasedOnRole(authState.userDetails.role, [
+                        Role.Admin,
+                        Role.MedicalDirector,
+                      ]) ? (
+                        <button
+                          className="btn btn-link text-decoration-none"
+                          disabled={item.featured}
+                          style={item.featured ? { fontStyle: 'italic' } : {}}
+                          onClick={() => (item.featured ? undefined : featureCaseStudy(item._id))}
+                        >
+                          {item.featured
+                            ? translateText('caseStudyMainUnFeatured')
+                            : translateText('caseStudyMainFeatured')}
                         </button>
                       ) : null}
                     </td>

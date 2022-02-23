@@ -106,6 +106,8 @@
   "caseStudyMainLink": "Options",
   "caseStudyMainViewCaseStudy": "View",
   "caseStudyMainDelete": "Delete",
+  "caseStudyMainFeatured": "Set as Featured",
+  "caseStudyMainUnFeatured": "Currently Featured",
 
   "caseStudyFormBack": "Back",
   "caseStudyFormCaseStudyOptions": "Case Study Options",
