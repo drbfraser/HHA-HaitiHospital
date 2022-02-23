@@ -1,7 +1,8 @@
 import { useAuthDispatch } from '../../Context';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { User, Role, DepartmentName } from 'constants/interfaces';
+import { User, Role} from 'constants/interfaces';
+import { DepartmentName } from 'common/definitions/departments';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
