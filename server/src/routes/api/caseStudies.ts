@@ -25,12 +25,23 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
   }
 });
 
+router.get('/featured', requireJwtAuth, async (req: Request, res: Response) => {
+  try {
+    await CaseStudy.findOne(setFeatured(true))
+      .populate('user')
+      .then((data: any) => res.status(200).json(data))
+      .catch((err: any) => res.status(400).json('Failed to get case study: ' + err));
+  } catch (err: any) {
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
+});
+
 router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
   try {
     await CaseStudy.findById(req.params.id)
       .populate('user')
-      .then((data) => res.status(200).json(data))
-      .catch((err) => res.status(400).json('Failed to get case study: ' + err));
+      .then((data: any) => res.status(200).json(data))
+      .catch((err: any) => res.status(400).json('Failed to get case study: ' + err));
   } catch (err: any) {
     res.status(500).json({ message: 'Something went wrong.' });
   }
