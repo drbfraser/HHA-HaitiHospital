@@ -187,6 +187,20 @@
           "response": []
         },
         {
+          "name": "Get featured case study",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/case-studies/featured",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies", "featured"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Add a case study",
           "request": {
             "method": "POST",
