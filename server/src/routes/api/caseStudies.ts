@@ -41,6 +41,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
     if (req.file) {
       imgPath = req.file.path;
     }
+    const featured: boolean = ((await CaseStudy.estimatedDocumentCount()) as number) === 0;
     const newCaseStudy = new CaseStudy({
       caseStudyType,
       user,
@@ -50,7 +51,8 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
       trainingSession,
       equipmentReceived,
       otherStory,
-      imgPath
+      imgPath,
+      featured
     });
     await newCaseStudy
       .save()
