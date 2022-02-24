@@ -9,7 +9,6 @@ export const CaseStudySummary = ({ caseStudy }) => {
   const [caseStudyImage, setCaseStudyImage] = useState<string>('');
 
   const getCaseStudyImage = async () => {
-    console.log(caseStudy.imgPath);
     await axios
       .get(`/api/image/${caseStudy.imgPath.split('/')[2]}`, {
         responseType: 'blob',

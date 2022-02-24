@@ -3,7 +3,6 @@ import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
-import { CaseStudyOptions } from '../case_study_forms/CaseStudies';
 import { useTranslation } from 'react-i18next';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 
