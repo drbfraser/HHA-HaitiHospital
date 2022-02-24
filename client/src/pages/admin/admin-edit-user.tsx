@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role, DepartmentName } from 'constants/interfaces';
+import { User, Role } from 'constants/interfaces';
+import { DepartmentName } from "common/definitions/departments";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import axios from 'axios';
