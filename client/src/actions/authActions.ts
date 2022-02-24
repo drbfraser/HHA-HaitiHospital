@@ -39,7 +39,7 @@ export async function logOutUser(dispatch) {
     });
 }
 
-function deleteAllCookies() {
+const deleteAllCookies = () => {
   var cookies = document.cookie.split(';');
 
   for (var i = 0; i < cookies.length; i++) {
@@ -48,7 +48,7 @@ function deleteAllCookies() {
     var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
   }
-}
+};
 
 export const attachTokenToHeaders = (getState: any) => {
   const token = getState().auth.token;
@@ -64,4 +64,13 @@ export const attachTokenToHeaders = (getState: any) => {
   }
 
   return config;
+};
+
+export const getCSRFToken = async (): Promise<void> => {
+  try {
+    const response = await axios.get('api/auth/csrftoken');
+    axios.defaults.headers.post['X-CSRF-Token'] = response.data.CSRFToken;
+  } catch (error) {
+    console.error('Error with getting the CSRF token', error);
+  }
 };
