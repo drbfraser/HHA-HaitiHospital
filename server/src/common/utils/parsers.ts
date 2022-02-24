@@ -1,17 +1,25 @@
-import { JsonReportDescriptor } from "common/definitions/json_report";
+import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from "common/definitions/json_report";
 
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
-import { JSON_REPORT_TYPE, PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES } from "./constants";
+import { PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES } from "./constants";
+
+import ts from 'typescript';
+import path from 'path';
+
+const getTsCompilerOptions = function(): {} {
+    const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json");
+    const configFile = ts.readConfigFile(configFileName, ts.sys.readFile);
+    const compilerOptions = ts.parseJsonConfigFileContent(configFile.config, ts.sys, path.dirname(configFileName));
+    return compilerOptions;
+}
 
 const getJsonSchemaGenerator = () => {
     // optionally pass ts compiler options
-    const compilerOptions: TJS.CompilerOptions = {
-        strictNullChecks: true,
-    };
+    const compilerOptions: TJS.CompilerOptions = getTsCompilerOptions();
 
     // optionally pass a base path
-    const basePath = "./";
+    const basePath = __dirname;
     const pathsToTypes = [PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES];
 
     const program = TJS.getProgramFromFiles(
@@ -32,7 +40,7 @@ const getJsonSchemaGenerator = () => {
 export const jsonToJsonReport = function(jsonString: string): JsonReportDescriptor {
     // JSON.parse(jsonString, )
     const schemaGenerator = getJsonSchemaGenerator();
-    const schema = schemaGenerator.getSchemaForSymbol(JSON_REPORT_TYPE);
+    const schema = schemaGenerator.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
     console.log(schema);
     return null;
 }
