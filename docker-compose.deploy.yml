@@ -1,4 +1,4 @@
-version: "3.9"
+version: '3.9'
 
 services:
   server:
@@ -13,7 +13,7 @@ services:
       - CORS=${CORS}
       - PASSWORD_SEED=${PASSWORD_SEED}
     ports:
-      - "5000:5000"
+      - '5000:5000'
   mongodb:
     restart: always
   caddy:
@@ -26,5 +26,5 @@ services:
       - DOMAIN=${DOMAIN}
       - API_HOSTNAME=hhahaiti_server
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'

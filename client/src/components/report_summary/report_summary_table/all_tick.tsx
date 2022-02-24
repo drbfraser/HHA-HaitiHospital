@@ -1,8 +1,8 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 
-interface AllTickProps{
-    tickTracker : {[rid: string] : boolean},
-    notifyTable(ticked : boolean) : void,
+interface AllTickProps {
+  tickTracker: { [rid: string]: boolean };
+  notifyTable(ticked: boolean): void;
 }
 
 function isAllTicked(tickTracker: { [rid: string]: boolean }) {

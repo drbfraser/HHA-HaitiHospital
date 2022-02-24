@@ -1,7 +1,7 @@
-import {Link} from 'react-router-dom'
-import { renderBasedOnRole } from "../../actions/roleActions";
+import { Link } from 'react-router-dom';
+import { renderBasedOnRole } from '../../actions/roleActions';
 import { useAuthState } from 'Context';
-import { Role } from "../../constants/interfaces"
+import { Role } from '../../constants/interfaces';
 
 import { Json } from 'constants/interfaces';
 import Axios from 'axios';
@@ -9,8 +9,8 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 
 interface MessageDisplayProps {
-    msgJson : Json;
-    notifyChange : Function;
+  msgJson: Json;
+  notifyChange: Function;
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
