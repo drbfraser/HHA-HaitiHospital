@@ -4,6 +4,8 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from "common/defini
 import * as TJS from 'typescript-json-schema';
 import { PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES } from "./constants";
 
+import Ajv from 'ajv';
+
 import ts from 'typescript';
 import path from 'path';
 
@@ -41,6 +43,9 @@ export const jsonToJsonReport = function(jsonString: string): JsonReportDescript
     // JSON.parse(jsonString, )
     const schemaGenerator = getJsonSchemaGenerator();
     const schema = schemaGenerator.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
-    console.log(schema);
+
+    const ajv = new Ajv();
+    const validator = ajv.compile(schema);
+    console.log("Test validate: ", validator(jsonString));
     return null;
 }
