@@ -1,6 +1,5 @@
 import { JsonReportDescriptor } from "common/definitions/json_report";
 
-import { resolve } from 'path';
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
 import { JSON_REPORT_TYPE, PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES } from "./constants";
@@ -13,7 +12,7 @@ const getJsonSchemaGenerator = () => {
 
     // optionally pass a base path
     const basePath = "./";
-    const pathsToTypes = [resolve(PATH_TO_JSON_REPORT_TYPES), resolve(PATH_TO_REPORT_TYPES)];
+    const pathsToTypes = [PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES];
 
     const program = TJS.getProgramFromFiles(
         pathsToTypes,
