@@ -2,7 +2,7 @@ import faker from 'faker';
 
 import User, { hashPassword, Role } from '../models/user';
 import Department from '../models/leaderboard';
-import { DepartmentName } from "../common/definitions/departments";
+import { DepartmentName } from '../common/definitions/departments';
 
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
