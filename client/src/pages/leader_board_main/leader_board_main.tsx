@@ -31,7 +31,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
     const urlCaseStudy = '/api/case-studies/featured';
     try {
       const res = await axios.get(urlCaseStudy);
-      setCaseStudy(res.data);
+      if (res.data !== null) setCaseStudy(res.data);
     } catch (err) {
       DbErrorHandler(err, history);
     }
