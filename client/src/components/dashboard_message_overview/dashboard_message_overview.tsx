@@ -57,7 +57,7 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
                       <td className="text-secondary">{fullName}</td>
                       <td className="text-secondary">
                         {new Date(message.date).toLocaleString('en-US', {
-                          timeZone: 'America/Los_Angeles',
+                          timeZone: 'Amercia/Cancun',
                         })}
                       </td>
                       <td className="text-secondary text-break">

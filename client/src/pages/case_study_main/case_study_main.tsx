@@ -86,7 +86,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
                     <td>
                       {new Date(item.createdAt).toLocaleString('en-US', {
-                        timeZone: 'America/Los_Angeles',
+                        timeZone: 'Amercia/Cancun',
                       })}
                     </td>
                     <td>

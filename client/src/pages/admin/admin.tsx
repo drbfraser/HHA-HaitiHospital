@@ -33,7 +33,7 @@ const Admin = (props: AdminProps) => {
       }
       await axios.delete(usersUrl + '/' + id);
       getUsers();
-      toast.error(i18n.t('adminAlertUserDeleted'));
+      toast.success(i18n.t('adminAlertUserDeleted'));
     } catch (err) {
       DbErrorHandler(err, history);
     }
@@ -81,7 +81,7 @@ const Admin = (props: AdminProps) => {
                   <td>{item.department ? item.department : 'N/A'}</td>
                   <td>
                     {new Date(item.createdAt).toLocaleString('en-US', {
-                      timeZone: 'America/Los_Angeles',
+                      timeZone: 'Amercia/Cancun',
                     })}
                   </td>
                   <td>
