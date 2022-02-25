@@ -272,6 +272,31 @@
       ]
     },
     {
+      "name": "Images",
+      "item": [
+        {
+          "name": "Get an image by image path",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/image/:imgPath",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "image", ":imgPath"],
+              "variable": [
+                {
+                  "key": "imgPath",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Leaderboard",
       "item": [
         {
