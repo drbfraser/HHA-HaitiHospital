@@ -3,6 +3,7 @@ import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { renderBasedOnRole } from 'actions/roleActions';
@@ -15,6 +16,9 @@ interface BiomechanicalPageProps extends RouteComponentProps {}
 
 export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const { t } = useTranslation();
+  const DEFAULT_INDEX: string = '';
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [BioReport, setBioReport] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
@@ -27,15 +31,29 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   const deleteBioMech = async (id: string) => {
     try {
-      if (!window.confirm(i18n.t('bioSupportAlertDeleteAlert'))) {
-        throw new Error('Deletion cancelled');
-      }
       toast.success('Bio Mech request deleted!');
       await axios.delete(BioReportUrl.concat(`/${id}`));
       getBioReport();
     } catch (err) {
       toast.error('Unable to delete Bio Mech Request!');
     }
+  };
+
+  const onDeleteBioMech = (event: any, id: string) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setCurrentIndex(id);
+    setDeleteModal(true);
+  };
+
+  const onModalClose = () => {
+    setCurrentIndex(DEFAULT_INDEX);
+    setDeleteModal(false);
+  };
+
+  const onModalDelete = (id: string) => {
+    deleteBioMech(id);
+    setDeleteModal(false);
   };
 
   useEffect(() => {
@@ -47,6 +65,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
+        <ModalDelete
+          currentItem={currentIndex}
+          show={deleteModal}
+          item={'biomech report'}
+          onModalClose={onModalClose}
+          onModalDelete={onModalDelete}
+        ></ModalDelete>
 
         <section>
           <div className="row my-2 justify-items-center">
@@ -93,7 +118,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                           ]) ? (
                             <button
                               className="btn btn-link text-decoration-none d-inline"
-                              onClick={() => deleteBioMech(item._id)}
+                              onClick={(event) => {
+                                onDeleteBioMech(event, item._id);
+                              }}
                             >
                               {t('brokenKitReportDelete')}
                             </button>

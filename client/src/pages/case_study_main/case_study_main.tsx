@@ -3,6 +3,7 @@ import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './case_study_main_styles.css';
@@ -10,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
 import { renderBasedOnRole } from 'actions/roleActions';
 import i18n from 'i18next';
-import ModalDelete from 'components/popup_modal/popup_modal_delete';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -30,9 +30,6 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   const deleteCaseStudy = async (id: string) => {
     try {
-      // if (!window.confirm('Are you sure you want to delete this case study?')) {
-      //   throw new Error('Deletion cancelled');
-      // }
       toast.success('Case Study deleted!');
       await axios.delete(caseStudiesUrl.concat(`/${id}`));
       getCaseStudies();
