@@ -70,6 +70,7 @@
   "messageBoardLess": "Less",
   "messageBoardTitle": "Title",
   "MessageAlertDeleteMessage": "Delete message?",
+  "MessageAlertMessageDeleted": "Message deleted!",
 
   "addMessageAddMessage": "Add Message",
   "addMessageUserID": "User ID",
@@ -79,7 +80,7 @@
   "addMessageBody": "Body",
   "addMessageSubmit": "Submit",
   "addMessageBack": "Back",
-  "addMessageAlertSuccess": "Success",
+  "addMessageAlertSuccess": "Message is successfully added!",
   "addMessageAlertUnauthorized": "Update message failed: unauthorized",
   "addMessageAlertFailed": "Update message failed",
   "addMessageAlertMustSelectDepartment": "Must select a department",
