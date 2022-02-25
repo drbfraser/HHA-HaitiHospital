@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
+import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import './leader_board_main.css';
 import EOM from '../../img/case1.jpg';
 import axios from 'axios';
@@ -11,32 +12,41 @@ import { useHistory } from 'react-router';
 interface LeaderBoardMainProps {}
 
 export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
+  const { t } = useTranslation();
   const [leaderboard, setLeaderboard] = useState([]);
+  const [caseStudy, setCaseStudy] = useState({} as any);
   const history = useHistory();
 
-  useEffect(() => {
+  const getLeaderboard = async () => {
     const urlLeaderboard = '/api/leaderboard';
+    try {
+      const res = await axios.get(urlLeaderboard);
+      setLeaderboard(res.data);
+    } catch (err) {
+      DbErrorHandler(err, history);
+    }
+  };
 
-    const getLeaderboard = async () => {
-      try {
-        const res = await axios.get(urlLeaderboard);
-        setLeaderboard(res.data);
-      } catch (err) {
-        DbErrorHandler(err, history);
-      }
-    };
+  const getCaseStudy = async () => {
+    const urlCaseStudy = '/api/case-studies/featured';
+    try {
+      const res = await axios.get(urlCaseStudy);
+      setCaseStudy(res.data);
+    } catch (err) {
+      DbErrorHandler(err, history);
+    }
+  };
+
+  useEffect(() => {
     getLeaderboard();
+    getCaseStudy();
   }, [history]);
-
-  const { t } = useTranslation();
 
   return (
     <div className={'leader-board-main'}>
       <SideBar />
-
       <main className="container-fluid main-region">
         <Header />
-
         <div className="my-3 p-2 bg-body rounded shadow-sm">
           <h5 className="mb-3">{t('leaderBoardDepartmentLeaderboard')}</h5>
           <div className="table-responsive">
@@ -83,36 +93,8 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
           </div>
         </div>
 
-        <div className="card mb-3">
-          <div className="row no-gutters">
-            <div className="col-md-8">
-              <div className="card-body">
-                <h4 className="card-title pb-4">{t('leaderBoardEmployeeOfMonth')}</h4>
-                <p className="card-text">
-                  There was once a queen who had no children, and it grieved her sorely. One
-                  winter's afternoon she was sitting by the window sewing when she pricked her
-                  finger, and three drops of blood fell on the snow. Then she thought to herself:
-                </p>
-                <p className="card-text">
-                  "Ah, what would I give to have a daughter with skin as white as snow and cheeks as
-                  red as blood."
-                </p>
-                <p className="card-text pb-5">
-                  After a while a little daughter came to her with skin as white as snow and cheeks
-                  as red as blood. So they called her Snow White.
-                </p>
-                <p className="card-text">
-                  <small className="text-muted">{t('leaderBoardLastUpdate')}</small>
-                </p>
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <div className="EOM_img">
-                <img src={EOM} className="card-img-top p-3 m-2" alt="issa meme" />
-              </div>
-            </div>
-          </div>
+        <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
+          <CaseStudySummary caseStudy={caseStudy} />
         </div>
       </main>
     </div>
