@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './admin.css';
@@ -12,6 +13,9 @@ import { toast } from 'react-toastify';
 interface AdminProps {}
 
 const Admin = (props: AdminProps) => {
+  const DEFAULT_INDEX: string = '';
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [users, setUsers] = useState([]);
   const history = useHistory();
   const { t } = useTranslation();
@@ -26,17 +30,31 @@ const Admin = (props: AdminProps) => {
     }
   }, [history]);
 
-  const deleteUser = async (id) => {
+  const deleteUser = async (id: string) => {
     try {
-      if (!window.confirm(i18n.t('adminAreYouSureToDeleteTheUser'))) {
-        throw new Error('Deletion cancelled');
-      }
-      await axios.delete(usersUrl + '/' + id);
+      await axios.delete(`${usersUrl}/${id}`);
       getUsers();
       toast.success(i18n.t('adminAlertUserDeleted'));
     } catch (err) {
       DbErrorHandler(err, history);
     }
+  };
+
+  const onDeleteUser = (event: any, id: string) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setCurrentIndex(id);
+    setDeleteModal(true);
+  };
+
+  const onModalClose = () => {
+    setCurrentIndex(DEFAULT_INDEX);
+    setDeleteModal(false);
+  };
+
+  const onModalDelete = (id: string) => {
+    deleteUser(id);
+    setDeleteModal(false);
   };
 
   useEffect(() => {
@@ -48,6 +66,13 @@ const Admin = (props: AdminProps) => {
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
+        <ModalDelete
+          currentItem={currentIndex}
+          show={deleteModal}
+          item={'user account'}
+          onModalClose={onModalClose}
+          onModalDelete={onModalDelete}
+        ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/admin/add-user">
             <button type="button" className="btn btn-outline-dark">
@@ -73,7 +98,7 @@ const Admin = (props: AdminProps) => {
             </thead>
             <tbody>
               {users.map((item, index) => (
-                <tr key={item.id}>
+                <tr key={index}>
                   <th scope="row">{index + 1}</th>
                   <td>{item.username}</td>
                   <td>{item.name}</td>
@@ -97,7 +122,9 @@ const Admin = (props: AdminProps) => {
                       <button
                         type="button"
                         className="btn btn-link text-decorator-none d-inline"
-                        onClick={() => deleteUser(item.id)}
+                        onClick={(event) => {
+                          onDeleteUser(event, item.id);
+                        }}
                       >
                         {t('adminDelete')}
                       </button>

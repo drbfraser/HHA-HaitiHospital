@@ -10,7 +10,6 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
-import i18n from 'i18next';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
