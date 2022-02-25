@@ -1,5 +1,6 @@
 // Common utility functions used throughout the client
-import { Role, DepartmentName } from 'constants/interfaces';
+import { Role } from 'constants/interfaces';
+import { DepartmentName } from "common/definitions/departments";
 
 export const isUserInDepartment = (userDepartment: string, wantedDepartment: string): boolean => {
   if (userDepartment === wantedDepartment) {
