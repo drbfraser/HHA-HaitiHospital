@@ -3,7 +3,6 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import './leader_board_main.css';
-import EOM from '../../img/case1.jpg';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import DbErrorHandler from 'actions/http_error_handler';
@@ -93,9 +92,11 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
           </div>
         </div>
 
-        <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
-          <CaseStudySummary caseStudy={caseStudy} />
-        </div>
+        {JSON.stringify(caseStudy) !== '{}' && (
+          <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
+            <CaseStudySummary caseStudy={caseStudy} />
+          </div>
+        )}
       </main>
     </div>
   );

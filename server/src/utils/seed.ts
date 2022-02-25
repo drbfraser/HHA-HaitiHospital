@@ -18,7 +18,7 @@ export const seedDb = async () => {
   await CaseStudy.deleteMany({});
 
   //   await seedUsers();
-  await seedCaseStudies();
+  // await seedCaseStudies();
   await seedDepartments();
   // seedMessageBoard();
   await seedLeaderboard();
