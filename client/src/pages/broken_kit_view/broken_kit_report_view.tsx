@@ -51,31 +51,35 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
             </button>
           </Link>
         </div>
-        <div className="mb-5 col-lg-6 col-md-8 col-sm-10 col-12">
-          <div>
-            <h4 className="mt-3 mb-3 fw-bold">{t('brokenKitReportBrokenKitReport')}</h4>
-            <h6 className="fs-6 lh-base">
-              {t('brokenKitReportAuthor')} {BioReport.user ? BioReport.user.name : '[deleted]'}
-            </h6>
-            <h6 className="fs-6 mb-3 lh-base">
-              Date:{' '}
-              {new Date(BioReport.createdAt).toLocaleDateString('en-US', {
-                timeZone: 'America/Los_Angeles',
-              })}
-            </h6>
-            <img
-              src={BioReportImage}
-              alt="Bio Report Here..."
-              className={`img-thumbnail img-fluid mt-3 mb-3 ${
-                BioReport.imgPath ? 'd-block' : 'd-none'
-              }`}
-            />
-            <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportNameOfEquipment')}</h6>
-            <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
-            <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportPriorityOfEquipment')}</h6>
-            <p className="fs-6 lh-base text-break">{BioReport.equipmentPriority}</p>
-            <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportFaultWithEquipment')}</h6>
-            <p className="fs-6 lh-base text-break">{BioReport.equipmentFault}</p>
+        <div className="mb-5">
+          <div style={{ display: 'flex', flex: '1 1 auto' }}>
+            <div className="w-100">
+              <h4 className="mt-3 mb-3 fw-bold">{t('brokenKitReportBrokenKitReport')}</h4>
+              <h6 className="fs-6 lh-base">
+                {t('brokenKitReportAuthor')} {BioReport.user ? BioReport.user.name : '[deleted]'}
+              </h6>
+              <h6 className="fs-6 mb-3 lh-base">
+                Date:{' '}
+                {new Date(BioReport.createdAt).toLocaleDateString('en-US', {
+                  timeZone: 'America/Los_Angeles',
+                })}
+              </h6>
+              <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportNameOfEquipment')}</h6>
+              <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
+              <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportPriorityOfEquipment')}</h6>
+              <p className="fs-6 lh-base text-break">{BioReport.equipmentPriority}</p>
+              <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportFaultWithEquipment')}</h6>
+              <p className="fs-6 lh-base text-break">{BioReport.equipmentFault}</p>
+            </div>
+            <div className="w-100">
+              <img
+                src={BioReportImage}
+                alt="Bio Report Here..."
+                className={`img-thumbnail img-fluid mt-3 mb-3 ${
+                  BioReport.imgPath ? 'd-block' : 'd-none'
+                }`}
+              />
+            </div>
           </div>
         </div>
       </main>
