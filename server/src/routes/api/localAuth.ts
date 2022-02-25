@@ -7,7 +7,6 @@ router.post('/login', requireLocalAuth, (req: any, res: Response) => {
   const token = req.user.generateJWT();
   const user = req.user.toJSON();
   res.cookie('jwt', token, { httpOnly: true });
-  // res.cookie('XSRF-TOKEN', req.csrfToken());
   res.status(200).json({ success: true, isAuth: true, user, csrfToken: req.body._csrf });
 });
 
