@@ -10,10 +10,14 @@ import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
 import { renderBasedOnRole } from 'actions/roleActions';
 import i18n from 'i18next';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
+  const DEFAULT_INDEX: string = '';
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
@@ -26,9 +30,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   const deleteCaseStudy = async (id: string) => {
     try {
-      if (!window.confirm('Are you sure you want to delete this case study?')) {
-        throw new Error('Deletion cancelled');
-      }
+      // if (!window.confirm('Are you sure you want to delete this case study?')) {
+      //   throw new Error('Deletion cancelled');
+      // }
       toast.success('Case Study deleted!');
       await axios.delete(caseStudiesUrl.concat(`/${id}`));
       getCaseStudies();
@@ -47,6 +51,23 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     }
   };
 
+  const onDeleteCaseStudy = (event: any, id: string) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setCurrentIndex(id);
+    setDeleteModal(true);
+  };
+
+  const onModalClose = () => {
+    setCurrentIndex(DEFAULT_INDEX);
+    setDeleteModal(false);
+  };
+
+  const onModalDelete = (id: string) => {
+    deleteCaseStudy(id);
+    setDeleteModal(false);
+  };
+
   useEffect(() => {
     getCaseStudies();
   }, [getCaseStudies]);
@@ -58,6 +79,13 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
+        <ModalDelete
+          currentItem={currentIndex}
+          show={deleteModal}
+          item={'case study'}
+          onModalClose={onModalClose}
+          onModalDelete={onModalDelete}
+        ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/case-study/form">
             <button type="button" className="btn btn-outline-dark">
@@ -86,7 +114,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
                     <td>
                       {new Date(item.createdAt).toLocaleString('en-US', {
-                        timeZone: 'Amercia/Cancun',
+                        timeZone: 'America/Cancun',
                       })}
                     </td>
                     <td>
@@ -103,7 +131,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                       ]) ? (
                         <button
                           className="btn btn-link text-decoration-none"
-                          onClick={() => deleteCaseStudy(item._id)}
+                          onClick={(event) => {
+                            onDeleteCaseStudy(event, item._id);
+                          }}
                         >
                           {translateText('caseStudyMainDelete').concat(' ')}
                         </button>

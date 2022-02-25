@@ -61,7 +61,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
               <h6 className="fs-6 mb-3 lh-base">
                 Date:{' '}
                 {new Date(BioReport.createdAt).toLocaleDateString('en-US', {
-                  timeZone: 'Amercia/Cancun',
+                  timeZone: 'America/Cancun',
                 })}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportNameOfEquipment')}</h6>

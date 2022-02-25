@@ -11,7 +11,7 @@ const ModalDelete = (props: any) => {
         <Button variant="outline-dark" onClick={() => props.onModalClose()}>
           Cancel
         </Button>
-        <Button variant="outline-danger" onClick={() => props.onModalDelete(props.currBlogPost)}>
+        <Button variant="outline-danger" onClick={() => props.onModalDelete(props.currentItem)}>
           Delete
         </Button>
       </Modal.Footer>
