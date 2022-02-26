@@ -3,6 +3,7 @@ import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './case_study_main_styles.css';
@@ -14,6 +15,9 @@ import i18n from 'i18next';
 interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
+  const DEFAULT_INDEX: string = '';
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
@@ -26,15 +30,39 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   const deleteCaseStudy = async (id: string) => {
     try {
-      if (!window.confirm('Are you sure you want to delete this case study?')) {
-        throw new Error('Deletion cancelled');
-      }
       toast.success('Case Study deleted!');
       await axios.delete(caseStudiesUrl.concat(`/${id}`));
       getCaseStudies();
     } catch (err) {
       toast.error('Error: Unable to delete Case Study!');
     }
+  };
+
+  const featureCaseStudy = async (id: string) => {
+    try {
+      toast.success('Featured case study has now changed!');
+      await axios.patch(caseStudiesUrl.concat(`/${id}`));
+      getCaseStudies();
+    } catch (err) {
+      toast.error('Error: Unable to set new featured Case Study!');
+    }
+  };
+
+  const onDeleteCaseStudy = (event: any, id: string) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setCurrentIndex(id);
+    setDeleteModal(true);
+  };
+
+  const onModalClose = () => {
+    setCurrentIndex(DEFAULT_INDEX);
+    setDeleteModal(false);
+  };
+
+  const onModalDelete = (id: string) => {
+    deleteCaseStudy(id);
+    setDeleteModal(false);
   };
 
   useEffect(() => {
@@ -48,6 +76,13 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
+        <ModalDelete
+          currentItem={currentIndex}
+          show={deleteModal}
+          item={'case study'}
+          onModalClose={onModalClose}
+          onModalDelete={onModalDelete}
+        ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/case-study/form">
             <button type="button" className="btn btn-outline-dark">
@@ -76,7 +111,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
                     <td>
                       {new Date(item.createdAt).toLocaleString('en-US', {
-                        timeZone: 'America/Los_Angeles',
+                        timeZone: 'America/Cancun',
                       })}
                     </td>
                     <td>
@@ -84,7 +119,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/case-study/view/${item._id}`)}
                       >
-                        {translateText('caseStudyMainViewCaseStudy') + ' '}
+                        {translateText('caseStudyMainViewCaseStudy').concat(' ')}
                       </button>
 
                       {renderBasedOnRole(authState.userDetails.role, [
@@ -93,9 +128,27 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                       ]) ? (
                         <button
                           className="btn btn-link text-decoration-none"
-                          onClick={() => deleteCaseStudy(item._id)}
+                          onClick={(event) => {
+                            onDeleteCaseStudy(event, item._id);
+                          }}
                         >
-                          {translateText('caseStudyMainDelete') + ' '}
+                          {translateText('caseStudyMainDelete').concat(' ')}
+                        </button>
+                      ) : null}
+
+                      {renderBasedOnRole(authState.userDetails.role, [
+                        Role.Admin,
+                        Role.MedicalDirector,
+                      ]) ? (
+                        <button
+                          className="btn btn-link text-decoration-none"
+                          disabled={item.featured}
+                          style={item.featured ? { fontStyle: 'italic' } : {}}
+                          onClick={() => (item.featured ? undefined : featureCaseStudy(item._id))}
+                        >
+                          {item.featured
+                            ? translateText('caseStudyMainUnFeatured')
+                            : translateText('caseStudyMainFeatured')}
                         </button>
                       ) : null}
                     </td>

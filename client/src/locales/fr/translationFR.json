@@ -70,6 +70,7 @@
   "messageBoardLess": "Moins",
   "messageBoardTitle": "Titre",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
+  "MessageAlertMessageDeleted": "Message supprimé!",
 
   "addMessageAddMessage": "Ajouter un message",
   "addMessageUserID": "Identifiant d'utilisateur",
@@ -79,7 +80,7 @@
   "addMessageBody": "Corps",
   "addMessageSubmit": "Soumettre",
   "addMessageBack": "Arrière",
-  "addMessageAlertSuccess": "Succès",
+  "addMessageAlertSuccess": "Le message a été ajouté avec succès!",
   "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
   "addMessageAlertFailed": "Échec de la mise à jour du message",
   "addMessageAlertMustSelectDepartment": "Doit sélectionner un département",
@@ -106,6 +107,8 @@
   "caseStudyMainLink": "Options",
   "caseStudyMainViewCaseStudy": "Voir",
   "caseStudyMainDelete": "Effacer",
+  "caseStudyMainFeatured": "Définir comme présenté ",
+  "caseStudyMainUnFeatured": "Actuellement en vedette ",
 
   "caseStudyFormBack": "Arrière",
   "caseStudyFormCaseStudyOptions": "Options d'étude de cas",
