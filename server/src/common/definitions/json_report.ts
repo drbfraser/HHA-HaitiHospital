@@ -4,11 +4,9 @@
 import { nameof } from 'ts-simple-nameof';
 interface Interfaces {
     JsonReportDescriptor: JsonReportDescriptor;
-    JsonReportMeta: JsonReportMeta;
 
 }
 export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonReportDescriptor);
-export const JSON_REPORT_META_NAME = nameof<Interfaces>((o) => o.JsonReportMeta);
 
 
 /**
@@ -67,7 +65,7 @@ export interface JsonMcqOption {
 
 /**
  * @additionalProperties false
- */
+ * */
 export interface JsonReportDescriptor {
     /**
      * Meta data for a submitted report.
