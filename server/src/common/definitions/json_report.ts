@@ -4,9 +4,16 @@
 import { nameof } from 'ts-simple-nameof';
 interface Interfaces {
     JsonReportDescriptor: JsonReportDescriptor;
+    JsonReportMeta: JsonReportMeta;
+
 }
 export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonReportDescriptor);
+export const JSON_REPORT_META_NAME = nameof<Interfaces>((o) => o.JsonReportMeta);
 
+
+/**
+ * @additionalProperties false
+ */
 export interface JsonReportMeta {
     readonly id: string;
     readonly departmentId : string;
@@ -14,6 +21,9 @@ export interface JsonReportMeta {
     readonly submittedUserId: string;
 };
 
+/**
+ * @additionalProperties false
+ */
 export interface JsonReportItemMeta {
     /**
      * Meta data for an item
@@ -21,8 +31,14 @@ export interface JsonReportItemMeta {
     readonly type: string;
 }
 
+/**
+ * @additionalProperties false
+ */
 export type JsonItemAnswer = Array<string>;
 
+/**
+ * @additionalProperties false
+ */
 interface JsonReportItem {
     /**
      * Json structure of an item
@@ -41,11 +57,17 @@ interface JsonReportItem {
 
 }
 
+/**
+ * @additionalProperties false
+ */
 export interface JsonMcqOption {
     readonly description: string;
     readonly value: string;
 }
 
+/**
+ * @additionalProperties false
+ */
 export interface JsonReportDescriptor {
     /**
      * Meta data for a submitted report.

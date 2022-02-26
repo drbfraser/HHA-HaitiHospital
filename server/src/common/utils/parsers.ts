@@ -1,4 +1,4 @@
-import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from "common/definitions/json_report";
+import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME, JSON_REPORT_META_NAME } from "common/definitions/json_report";
 
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
@@ -16,13 +16,16 @@ const getTsCompilerOptions = function(): {} {
     return compilerOptions;
 }
 
-const getJsonSchemaGenerator = () => {
+const initSchemaGenerator = () => {
+    // this generator can generate json schema for types in 2 dirs:
+    // PATH_TO_JSON_REPORT_TYPES and PATH_TO_REPORT_TYPES
+
     // optionally pass ts compiler options
     const compilerOptions: TJS.CompilerOptions = getTsCompilerOptions();
 
     // optionally pass a base path
     const basePath = __dirname;
-    const pathsToTypes = [PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES];
+    const pathsToTypes = [PATH_TO_JSON_REPORT_TYPES];
 
     const program = TJS.getProgramFromFiles(
         pathsToTypes,
@@ -39,13 +42,23 @@ const getJsonSchemaGenerator = () => {
     return generator;
 }
 
-export const jsonToJsonReport = function(jsonString: string): JsonReportDescriptor {
-    // JSON.parse(jsonString, )
-    const schemaGenerator = getJsonSchemaGenerator();
-    const schema = schemaGenerator.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
+const schemaGenerator = initSchemaGenerator();
+const ajv = new Ajv();
 
-    const ajv = new Ajv();
+export const jsonStringToJsonReport = function(jsonString: string) : JsonReportDescriptor {
+    validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME); 
+    const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
+    return jsonReport;
+}
+
+const validateJsonString = function(jsonString: string, objectName: string) {
+    
+    const schema = schemaGenerator.getSchemaForSymbol(objectName);
+
     const validator = ajv.compile(schema);
-    console.log("Test validate: ", validator(jsonString));
-    return null;
+    const valid = validator(JSON.parse(jsonString));
+
+    if (valid === false) {
+        throw new Error(`${validator.errors}`);
+    }
 }
