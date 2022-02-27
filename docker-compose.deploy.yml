@@ -12,8 +12,6 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - CORS=${CORS}
       - PASSWORD_SEED=${PASSWORD_SEED}
-    ports:
-      - '5000:5000'
   mongodb:
     restart: always
   caddy:
