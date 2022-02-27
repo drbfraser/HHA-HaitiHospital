@@ -79,11 +79,11 @@ function CommunityForm() {
         for (let j = 0; j < 12; j += 3) {
           var totalElement = document.getElementById('tables' + 8 + '-' + i + '-' + (j + 2));
           vaccineTable[fields[7].row_labels[0][i]]['Total ' + totalCounter++] =
-            totalElement.innerHTML;
+            totalElement.innerText;
         }
 
         var totalElement = document.getElementById('tables' + 8 + '-' + i + '-' + 12);
-        vaccineTable[fields[7].row_labels[0][i]]['Total Doses'] = totalElement.innerHTML;
+        vaccineTable[fields[7].row_labels[0][i]]['Total Doses'] = totalElement.innerText;
 
         if (
           i === 0 ||
@@ -97,7 +97,7 @@ function CommunityForm() {
           i === 17
         ) {
           var totalElement = document.getElementById('tables' + 8 + '-' + i + '-' + 14);
-          vaccineTable[fields[7].row_labels[0][i]]['Administered'] = totalElement.innerHTML;
+          vaccineTable[fields[7].row_labels[0][i]]['Administered'] = totalElement.innerText;
         }
       }
 
@@ -105,11 +105,11 @@ function CommunityForm() {
 
       for (var i = 0; i < 2; i++) {
         var totalElement = document.getElementById('tables' + 9 + '-' + i + '-' + 2);
-        pregnantTable[fields[8].row_labels[0][i]]['Total'] = totalElement.innerHTML;
+        pregnantTable[fields[8].row_labels[0][i]]['Total'] = totalElement.innerText;
 
         if (i === 0) {
           var totalElement = document.getElementById('tables' + 9 + '-' + 0 + '-' + 4);
-          pregnantTable[fields[8].row_labels[0][i]]['Administered'] = totalElement.innerHTML;
+          pregnantTable[fields[8].row_labels[0][i]]['Administered'] = totalElement.innerText;
         }
       }
 
@@ -373,7 +373,7 @@ function CommunityForm() {
     var errorMessage = inputElement.nextSibling as HTMLElement;
     inputElement.classList.remove('is-invalid');
     inputElement.classList.remove('is-valid');
-    errorMessage.innerHTML = '';
+    errorMessage.innerText = '';
   }
 
   function makeValidity(inputElement: HTMLInputElement, isVal: boolean, msg: string) {
@@ -382,11 +382,11 @@ function CommunityForm() {
     if (isVal) {
       inputElement.classList.remove('is-invalid');
       inputElement.classList.add('is-valid');
-      errorMessage.innerHTML = '';
+      errorMessage.innerText = '';
     } else {
       inputElement.classList.remove('is-valid');
       inputElement.classList.add('is-invalid');
-      errorMessage.innerHTML = msg;
+      errorMessage.innerText = msg;
     }
 
     checkSideBar();
@@ -441,44 +441,44 @@ function CommunityForm() {
 
           if (inputElement1 || inputElement2) {
             var totalElement = document.getElementById('tables' + num + '-' + i + '-' + (j + 2));
-            totalElement.innerHTML = String(total);
+            totalElement.innerText = String(total);
             rowTotal += total;
           }
         }
 
         var totalElement = document.getElementById('tables' + num + '-' + i + '-' + 12);
-        totalElement.innerHTML = String(rowTotal);
+        totalElement.innerText = String(rowTotal);
         grandTotals[i] = rowTotal;
       }
 
       var totalElement = document.getElementById('tables' + num + '-' + 0 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[0]);
+      totalElement.innerText = String(grandTotals[0]);
 
       totalElement = document.getElementById('tables' + num + '-' + 1 + '-' + 14);
-      totalElement.innerHTML = String(
+      totalElement.innerText = String(
         grandTotals[1] + grandTotals[2] + grandTotals[3] + grandTotals[4],
       );
 
       totalElement = document.getElementById('tables' + num + '-' + 5 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[5]);
+      totalElement.innerText = String(grandTotals[5]);
 
       totalElement = document.getElementById('tables' + num + '-' + 6 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[6] + grandTotals[7] + grandTotals[8]);
+      totalElement.innerText = String(grandTotals[6] + grandTotals[7] + grandTotals[8]);
 
       totalElement = document.getElementById('tables' + num + '-' + 9 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[9] + grandTotals[10]);
+      totalElement.innerText = String(grandTotals[9] + grandTotals[10]);
 
       totalElement = document.getElementById('tables' + num + '-' + 11 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[11] + grandTotals[12]);
+      totalElement.innerText = String(grandTotals[11] + grandTotals[12]);
 
       totalElement = document.getElementById('tables' + num + '-' + 13 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[13] + grandTotals[14] + grandTotals[15]);
+      totalElement.innerText = String(grandTotals[13] + grandTotals[14] + grandTotals[15]);
 
       totalElement = document.getElementById('tables' + num + '-' + 16 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[16]);
+      totalElement.innerText = String(grandTotals[16]);
 
       totalElement = document.getElementById('tables' + num + '-' + 17 + '-' + 14);
-      totalElement.innerHTML = String(grandTotals[17]);
+      totalElement.innerText = String(grandTotals[17]);
 
       return;
     } else if (num === 9) {
@@ -498,14 +498,14 @@ function CommunityForm() {
 
         if (inputElement1 || inputElement2) {
           var totalElement = document.getElementById('tables' + num + '-' + i + '-' + 2);
-          totalElement.innerHTML = String(rowTotal);
+          totalElement.innerText = String(rowTotal);
         }
 
         grandTotals[i] = rowTotal;
       }
 
       var totalElement = document.getElementById('tables' + num + '-' + 0 + '-' + 4);
-      totalElement.innerHTML = String(grandTotals[0] + grandTotals[1]);
+      totalElement.innerText = String(grandTotals[0] + grandTotals[1]);
 
       return;
     }

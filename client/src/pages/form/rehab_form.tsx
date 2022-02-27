@@ -252,7 +252,7 @@ function RehabForm() {
       if (textInput2.classList.contains('is-valid')) {
         makeValidity(textInput1, true, '');
       } else if (textInput2.classList.contains('is-invalid')) {
-        makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerHTML);
+        makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerText);
       } else {
         removeValidity(textInput1);
       }
@@ -260,7 +260,7 @@ function RehabForm() {
       if (valueInput2.classList.contains('is-valid')) {
         makeValidity(valueInput1, true, '');
       } else if (valueInput2.classList.contains('is-invalid')) {
-        makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerHTML);
+        makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerText);
       } else {
         removeValidity(valueInput1);
       }
@@ -429,7 +429,7 @@ function RehabForm() {
     var errorMessage = inputElement.nextSibling as HTMLElement;
     inputElement.classList.remove('is-invalid');
     inputElement.classList.remove('is-valid');
-    errorMessage.innerHTML = '';
+    errorMessage.innerText = '';
   }
 
   function makeValidity(inputElement: HTMLInputElement, isVal: boolean, msg: string) {
@@ -438,11 +438,11 @@ function RehabForm() {
     if (isVal) {
       inputElement.classList.remove('is-invalid');
       inputElement.classList.add('is-valid');
-      errorMessage.innerHTML = '';
+      errorMessage.innerText = '';
     } else {
       inputElement.classList.remove('is-valid');
       inputElement.classList.add('is-invalid');
-      errorMessage.innerHTML = msg;
+      errorMessage.innerText = msg;
     }
 
     checkSideBar();
