@@ -46,7 +46,7 @@ interface JsonReportItem {
 
     // To suppport mcq (choices and selection)
     readonly options?: Array<JsonMcqOption>;
-    readonly hasUserInput?: boolean;
+    readonly hasUserInput?: string;
     readonly optionOther?: JsonMcqOption;
 
     // To support survey generator and sum (any item that has sub-items)
