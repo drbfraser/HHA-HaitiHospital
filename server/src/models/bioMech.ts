@@ -1,9 +1,9 @@
 import * as mongoose from 'mongoose';
-import { DepartmentName } from "../common/definitions/departments";
+import { DepartmentName } from '../common/definitions/departments';
 
 const { Schema } = mongoose;
 
-enum bioMechEnum {
+export enum bioMechEnum {
   Urgent = 'Urgent',
   Important = 'Important',
   NonUrgent = 'Non-Urgent'
