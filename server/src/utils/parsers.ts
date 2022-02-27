@@ -13,10 +13,15 @@ let validations;
 import ts from 'typescript';
 
 const getTsCompilerOptions = function(): {} {
-    const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json");
-    const configFile = ts.readConfigFile(configFileName, ts.sys.readFile);
-    const compilerOptions = ts.parseJsonConfigFileContent(configFile.config, ts.sys, path.dirname(configFileName));
-    return compilerOptions;
+    try {
+        const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json");
+        const configFile = ts.readConfigFile(configFileName, ts.sys.readFile);
+        const compilerOptions = ts.parseJsonConfigFileContent(configFile.config, ts.sys, path.dirname(configFileName));
+        return compilerOptions;
+    }
+    catch {
+        return {};
+    }
 }
 
 const getSchemaGenerator = function() {
