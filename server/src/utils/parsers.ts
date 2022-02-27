@@ -4,7 +4,7 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from "common/definit
 import * as TJS from 'typescript-json-schema';
 import { PATH_TO_JSON_REPORT_TYPES } from "./constants";
 
-import Ajv from 'ajv';
+import Ajv, { JSONSchemaType } from 'ajv';
 import fs from 'fs';
 import path from 'path';
 import standaloneCode from 'ajv/dist/standalone';
@@ -19,15 +19,13 @@ const getTsCompilerOptions = function(): {} {
         const compilerOptions = ts.parseJsonConfigFileContent(configFile.config, ts.sys, path.dirname(configFileName));
         return compilerOptions;
     }
-    catch {
+    catch (e) {
         return {};
     }
 }
 
 const getSchemaGenerator = function() {
-    // this generator can generate json schema for types in 2 dirs:
-    // PATH_TO_JSON_REPORT_TYPES and PATH_TO_REPORT_TYPES
-
+    // this generator generate JSON schema for JsonReportDescriptor in PATH_TO_JSON_REPORT_TYPES
     // optionally pass ts compiler options
     const compilerOptions: TJS.CompilerOptions = getTsCompilerOptions();
 
@@ -44,9 +42,14 @@ const getSchemaGenerator = function() {
      // optionally pass argument to schema generator
     const settings: TJS.PartialArgs = {
         required: true,
+        strictNullChecks: true,
+        // Todo: set schema id with "id": string
     };
 
     const generator = TJS.buildGenerator(program, settings);
+    if (!generator) 
+        throw new Error("failed to build a json schema generator");
+
     return generator;
 }
 
@@ -57,14 +60,18 @@ const getSchemaId = (objectName: string): string => {
 const initAjvAsStandAlone = function() {
     const schemaGenerator = getSchemaGenerator();
     const schema = schemaGenerator.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
-    schema["$id"] = getSchemaId(JSON_REPORT_DESCRIPTOR_NAME);
 
+    let x: JSONSchemaType<JsonReportDescriptor>;
+
+    console.log(schema);
+    schema["$id"] = getSchemaId(JSON_REPORT_DESCRIPTOR_NAME);
+    
     const ajv = new Ajv(
         {code: {source: true},
         schemas: [schema]}
     );
     let moduleCode = standaloneCode(ajv);
-    fs.writeFileSync(path.join(__dirname, "consume/validate-cjs.ts"), moduleCode);
+    fs.writeFileSync(path.join(__dirname, "consume/validate-cjs.js"), moduleCode);
     validations = require('./consume/validate-cjs');
 }
 
