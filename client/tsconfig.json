@@ -3,12 +3,16 @@
     "jsx": "react-jsx",
     "target": "es6",
     "module": "esnext",
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+    ],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
@@ -17,7 +21,9 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
