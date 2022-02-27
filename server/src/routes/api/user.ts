@@ -17,7 +17,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, 
       return res.status(422).json({ message: 'Username is taken' });
     }
 
-    let password = null;
+    let password: string | null = null;
     if (req.body.password && req.body.password !== '') {
       password = await hashPassword(req.body.password);
     }

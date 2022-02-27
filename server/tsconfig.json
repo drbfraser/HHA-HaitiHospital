@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "strict": false,
     "noImplicitAny": false,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "downlevelIteration": true
   },
   "include": ["./src/**/*", "./security/*", "./tests/**/*"]

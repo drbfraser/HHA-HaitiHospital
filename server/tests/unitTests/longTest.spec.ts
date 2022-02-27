@@ -1,12 +1,16 @@
 
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from 'common/definitions/json_report';
-import { initAjvAsStandAlone, jsonStringToJsonReport } from 'utils/parsers';
+import { cleanupAjvStandAlone, initAjvAsStandAlone, jsonStringToJsonReport } from 'utils/parsers';
 const chai = require('chai');
 
 
 describe("Test parsing json string to a jsonReportDescriptor", () => {
     before(() => {
         initAjvAsStandAlone();
+    })
+
+    after(() => {
+        cleanupAjvStandAlone();
     })
 
     it('should parse sucessfully', (done) => {

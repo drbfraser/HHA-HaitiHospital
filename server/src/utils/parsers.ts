@@ -14,13 +14,20 @@ import ts from 'typescript';
 
 const getTsCompilerOptions = function(): {} {
     try {
-        const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json");
-        const configFile = ts.readConfigFile(configFileName, ts.sys.readFile);
-        const compilerOptions = ts.parseJsonConfigFileContent(configFile.config, ts.sys, path.dirname(configFileName));
+        const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json") || null;
+        if (!configFileName) {
+            throw new Error("Can't find ts config file");
+        }
+        const configFile = ts.readConfigFile(configFileName!, ts.sys.readFile);
+        if (!configFile) {
+            throw new Error("Can't read ts config file");
+        }
+
+        const compilerOptions = ts.parseJsonConfigFileContent(configFile!.config, ts.sys, path.dirname(configFileName));
         return compilerOptions;
     }
     catch (e) {
-        return {};
+        throw new Error(e);
     }
 }
 
@@ -59,7 +66,7 @@ const getSchemaId = (objectName: string): string => {
 
 const initAjvAsStandAlone = function() {
     const schemaGenerator = getSchemaGenerator();
-    const schema = schemaGenerator.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
+    const schema = schemaGenerator!.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
 
     let x: JSONSchemaType<JsonReportDescriptor>;
 
@@ -73,6 +80,15 @@ const initAjvAsStandAlone = function() {
     let moduleCode = standaloneCode(ajv);
     fs.writeFileSync(path.join(__dirname, "consume/validate-cjs.js"), moduleCode);
     validations = require('./consume/validate-cjs');
+}
+
+export const cleanupAjvStandAlone = function() {
+    try {
+        fs.unlinkSync(path.join(__dirname, "consume/validate-cjs.js"));
+    } catch (e) {
+        throw new Error(`Clean Ajv StandAlone failed: ${e}`)
+    }
+
 }
 
 const validateJsonString = function(jsonString: string, objectName: string) {
