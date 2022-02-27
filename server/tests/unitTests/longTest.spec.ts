@@ -1,10 +1,14 @@
 
-import { JsonReportDescriptor, JsonReportMeta, JSON_REPORT_DESCRIPTOR_NAME, JSON_REPORT_META_NAME } from 'common/definitions/json_report';
-import { jsonStringToJsonReport } from 'common/utils/parsers';
+import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from 'common/definitions/json_report';
+import { initAjvAsStandAlone, jsonStringToJsonReport } from 'utils/parsers';
 const chai = require('chai');
 
 
 describe("Test parsing json string to a jsonReportDescriptor", () => {
+    before(() => {
+        initAjvAsStandAlone();
+    })
+
     it('should parse sucessfully', (done) => {
         try {
             const stringJson = '{"meta":{"id":"1234","departmentId":"1234","submittedDate":"1234","submittedUserId":"123"},"items":[{"meta":{"type":"something"},"description":"item 1","answer":[["answer 1 - item 1","answer 2 - item 1"]]},{"meta":{"type":"table"},"description":"a table","answer":[["answer 1 - col 1","answer 2 - col 1"],["answer 1 - col 2"]]}]}';

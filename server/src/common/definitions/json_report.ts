@@ -4,7 +4,6 @@
 import { nameof } from 'ts-simple-nameof';
 interface Interfaces {
     JsonReportDescriptor: JsonReportDescriptor;
-
 }
 export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonReportDescriptor);
 
