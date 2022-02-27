@@ -39,7 +39,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
 
     let imgPath: String;
     if (req.file) {
-      imgPath = req.file.path;
+      imgPath = req.file.path.replace(/\\/g, '/');
     }
 
     const bioMech = new BioMech({

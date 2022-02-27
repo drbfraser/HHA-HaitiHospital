@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { renderBasedOnRole } from '../../actions/roleActions';
 import { useAuthState } from 'Context';
 import { Role } from '../../constants/interfaces';
-
 import { Json } from 'constants/interfaces';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import Axios from 'axios';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 
@@ -16,31 +18,55 @@ interface MessageDisplayProps {
 const MessageDisplay = (props: MessageDisplayProps) => {
   const { t } = useTranslation();
   const authState = useAuthState();
+  const DEFAULT_INDEX: string = '';
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
 
-  const deleteMessageFromDb = async (msgId: string): Promise<boolean> => {
-    const deleteMsgApi = `/api/message-board/${msgId}`;
+  const deleteMessageFromDb = async (id: string): Promise<boolean> => {
+    const deleteMsgApi = `/api/message-board/${id}`;
     try {
       await Axios.delete(deleteMsgApi);
+      toast.success(i18n.t('MessageAlertMessageDeleted'));
       return true;
     } catch (err: any) {
-      console.log('Delete message failed');
+      toast.error('Unable to delete message!');
       return false;
     }
   };
 
-  const deleteMessage = async (msgId: string) => {
-    if (window.confirm(i18n.t('MessageAlertDeleteMessage'))) {
-      const success = await deleteMessageFromDb(msgId);
+  const deleteMessage = async (id: string) => {
+    const success = await deleteMessageFromDb(id);
+    if (success) props.notifyChange();
+  };
 
-      if (success === true) props.notifyChange();
-    }
+  const onDeleteMessage = (event: any, id: string) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setCurrentIndex(id);
+    setDeleteModal(true);
+  };
+
+  const onModalClose = () => {
+    setCurrentIndex(DEFAULT_INDEX);
+    setDeleteModal(false);
+  };
+
+  const onModalDelete = (id: string) => {
+    deleteMessage(id);
+    setDeleteModal(false);
   };
 
   let readableDate = new Date(props.msgJson.date as string).toLocaleString();
 
   return (
     <div className="d-flex text-muted pt-2">
-      {/* Profile pic */}
+      <ModalDelete
+        currentItem={currentIndex}
+        show={deleteModal}
+        item={'message'}
+        onModalClose={onModalClose}
+        onModalDelete={onModalDelete}
+      ></ModalDelete>
       <svg
         className="bd-placeholder-img flex-shrink-0 me-2 rounded"
         width="32"
@@ -106,7 +132,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
               <button
                 type="button"
                 className="btn btn-md btn-outline-secondary"
-                onClick={() => deleteMessage(props.msgJson['_id'] as string)}
+                onClick={(event) => {
+                  onDeleteMessage(event, props.msgJson['_id'] as string);
+                }}
               >
                 <i className="bi bi-trash"></i>
               </button>

@@ -6,11 +6,15 @@ import cookieParser from 'cookie-parser';
 import routes from './routes/routes';
 import { seedDb } from './utils/seed';
 import * as ENV from './utils/processEnv';
+const path = require('path');
 
 import csrf from 'csurf';
 
 export const createServer = () => {
   const app = express();
+
+  // Path to static folder
+  app.use(express.static(path.join(__dirname, '../public')));
 
   // Cross-Origin
   const cors = require('cors');

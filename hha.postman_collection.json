@@ -296,6 +296,26 @@
 					"response": []
 				},
 				{
+					"name": "Get featured case study",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/case-studies/featured",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"case-studies",
+								"featured"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add a case study",
 					"request": {
 						"method": "POST",
@@ -336,6 +356,38 @@
 					"response": []
 				},
 				{
+					"name": "Set a case study as featured by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "XSRF-TOKEN",
+								"value": "{{xsrf_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/case-studies/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"case-studies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Remove a case study by id",
 					"request": {
 						"method": "DELETE",
@@ -360,6 +412,37 @@
 							"variable": [
 								{
 									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "Get an image by image path",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/image/:imgPath",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"image",
+								":imgPath"
+							],
+							"variable": [
+								{
+									"key": "imgPath",
 									"value": ""
 								}
 							]
