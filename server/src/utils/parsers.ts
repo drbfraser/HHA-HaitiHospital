@@ -2,15 +2,15 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from "common/definit
 
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
-import { PATH_TO_JSON_REPORT_TYPES, PATH_TO_REPORT_TYPES } from "./constants";
+import { PATH_TO_JSON_REPORT_TYPES } from "./constants";
 
 import Ajv from 'ajv';
 import fs from 'fs';
 import path from 'path';
 import standaloneCode from 'ajv/dist/standalone';
-const validations = require('./consume/validate-cjs');
+let validations;
 
-import ts, { getAllJSDocTags } from 'typescript';
+import ts from 'typescript';
 
 const getTsCompilerOptions = function(): {} {
     const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json");
@@ -49,12 +49,10 @@ const getSchemaId = (objectName: string): string => {
     return `#/definitions/${objectName}`;
 }
 
-export const initAjv = function() {
+const initAjvAsStandAlone = function() {
     const schemaGenerator = getSchemaGenerator();
     const schema = schemaGenerator.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
     schema["$id"] = getSchemaId(JSON_REPORT_DESCRIPTOR_NAME);
-
-    console.log(schema);
 
     const ajv = new Ajv(
         {code: {source: true},
@@ -62,9 +60,13 @@ export const initAjv = function() {
     );
     let moduleCode = standaloneCode(ajv);
     fs.writeFileSync(path.join(__dirname, "consume/validate-cjs.ts"), moduleCode);
+    validations = require('./consume/validate-cjs');
 }
 
 const validateJsonString = function(jsonString: string, objectName: string) {
+    if (!validations) {
+        throw new Error("Init Ajv validator first");
+    }
     const validator = validations[getSchemaId(objectName)];
     const valid = validator(JSON.parse(jsonString));
 
@@ -73,8 +75,10 @@ const validateJsonString = function(jsonString: string, objectName: string) {
     }
 }
 
-export const jsonStringToJsonReport = function(jsonString: string) : JsonReportDescriptor {
+const jsonStringToJsonReport = function(jsonString: string) : JsonReportDescriptor {
     validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME); 
     const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
     return jsonReport;
 }
+
+export {jsonStringToJsonReport, initAjvAsStandAlone};
