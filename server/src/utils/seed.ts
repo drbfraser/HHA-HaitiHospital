@@ -20,8 +20,9 @@ export const seedDb = async () => {
   //   await seedUsers();
   await seedCaseStudies();
   await seedDepartments();
-  // seedMessageBoard();
+  await seedMessageBoard();
   await seedLeaderboard();
+  console.log('Database seeding completed.');
 };
 
 export const seedUsers = async () => {
@@ -146,40 +147,60 @@ export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   await MessageBody.deleteMany({});
 
-  // add 3 messages
-  const message1 = new MessageBody({
-    departmentId: 3,
-    departmentName: DepartmentName.CommunityHealth,
-    authorId: 1,
-    name: faker.name.findName(),
-    date: new Date(),
-    messageBody: 'Everyone will get the day off on December 25th. Thank you.',
-    messageHeader: 'Christmas'
-  });
-
-  const message2 = new MessageBody({
-    departmentId: 0,
-    departmentName: DepartmentName.NicuPaeds,
-    authorId: 2,
-    name: faker.name.findName(),
-    date: new Date(),
-    messageBody: 'Welcome to the message board!',
-    messageHeader: 'Welcome'
-  });
-
-  const message3 = new MessageBody({
-    departmentId: 1,
-    departmentName: DepartmentName.Maternity,
-    authorId: 3,
-    name: faker.name.findName(),
-    date: new Date(),
-    messageBody: 'The case study is due this Friday. Please submit the case study form before the deadline',
-    messageHeader: 'Case study due'
-  });
-
-  message1.save();
-  message2.save();
-  message3.save();
+  const users = await User.find();
+  for (let i = 0; i < 200; i++) {
+    users.map(async (user, index) => {
+      let message;
+      switch (user.username) {
+        case 'user2':
+          message = new MessageBody({
+            departmentId: 1,
+            departmentName: user.department,
+            userId: user.id,
+            date: new Date(),
+            messageBody: 'Everyone will get the day off on December 25th. Thank you.',
+            messageHeader: 'Christmas'
+          });
+          message.save();
+          break;
+        case 'user3':
+          message = new MessageBody({
+            departmentId: 3,
+            departmentName: user.department,
+            userId: user.id,
+            date: new Date(),
+            messageBody: 'Welcome to the message board!',
+            messageHeader: 'Welcome'
+          });
+          message.save();
+          break;
+        case 'user4':
+          message = new MessageBody({
+            departmentId: 0,
+            departmentName: user.department,
+            userId: user.id,
+            date: new Date(),
+            messageBody: 'The case study is due this Friday. Please submit the case study form before the deadline',
+            messageHeader: 'Case study due'
+          });
+          message.save();
+          break;
+        case 'user5':
+          message = new MessageBody({
+            departmentId: 2,
+            departmentName: user.department,
+            userId: user.id,
+            date: new Date(),
+            messageBody: 'There is a holiday tomorrow, the hospital is closed.',
+            messageHeader: 'Hospital Closed'
+          });
+          message.save();
+          break;
+        default:
+          break;
+      }
+    });
+  }
   console.log('Message board seeded');
 };
 
@@ -190,86 +211,88 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
 
     const users = await User.find();
-    users.map(async (user, index) => {
-      var caseStudy;
-      switch (user.username) {
-        case 'user2':
-          caseStudy = new CaseStudy({
-            caseStudyType: CaseStudyOptions.PatientStory,
-            user: user.id,
-            userDepartment: user.department,
-            imgPath: 'public/images/case1.jpg',
-            featured: true,
-            patientStory: {
-              patientsName: faker.name.findName(),
-              patientsAge: faker.random.number({ min: 10, max: 50 }),
-              whereIsThePatientFrom: faker.lorem.words(),
-              whyComeToHcbh: faker.lorem.sentences(),
-              howLongWereTheyAtHcbh: faker.lorem.words(),
-              diagnosis: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10)
-            }
-          });
-          caseStudy.save();
-          break;
-        case 'user3':
-          caseStudy = new CaseStudy({
-            caseStudyType: CaseStudyOptions.StaffRecognition,
-            user: user.id,
-            userDepartment: user.department,
-            imgPath: 'public/images/case2.jpg',
-            featured: false,
-            staffRecognition: {
-              staffName: faker.name.findName(),
-              jobTitle: faker.lorem.words(),
-              department: faker.lorem.words(),
-              howLongWorkingAtHcbh: faker.lorem.words(),
-              mostEnjoy: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10)
-            }
-          });
-          caseStudy.save();
-          break;
-        case 'user4':
-          caseStudy = new CaseStudy({
-            caseStudyType: CaseStudyOptions.TrainingSession,
-            user: user.id,
-            userDepartment: user.department,
-            imgPath: 'public/images/case2.jpg',
-            featured: false,
-            trainingSession: {
-              trainingDate: faker.date.recent(),
-              trainingOn: faker.lorem.sentences(),
-              whoConducted: faker.name.findName(),
-              whoAttended: faker.name.findName(),
-              benefitsFromTraining: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10)
-            }
-          });
-          caseStudy.save();
-          break;
-        case 'user5':
-          caseStudy = new CaseStudy({
-            caseStudyType: CaseStudyOptions.EquipmentReceived,
-            user: user.id,
-            userDepartment: user.department,
-            imgPath: 'public/images/case2.jpg',
-            featured: false,
-            equipmentReceived: {
-              equipmentReceived: faker.lorem.words(),
-              departmentReceived: faker.lorem.words(),
-              whoSentEquipment: faker.name.findName(),
-              purchasedOrDonated: faker.lorem.words(),
-              whatDoesEquipmentDo: faker.lorem.sentences(),
-              caseStudyStory: faker.lorem.paragraph(10)
-            }
-          });
-          caseStudy.save();
-          break;
-        default:
-          break;
-      }
-    });
+    for (let i = 0; i < 200; i++) {
+      users.map(async (user, index) => {
+        var caseStudy;
+        switch (user.username) {
+          case 'user2':
+            caseStudy = new CaseStudy({
+              caseStudyType: CaseStudyOptions.PatientStory,
+              user: user.id,
+              userDepartment: user.department,
+              imgPath: 'public/images/case1.jpg',
+              featured: true,
+              patientStory: {
+                patientsName: faker.name.findName(),
+                patientsAge: faker.random.number({ min: 10, max: 50 }),
+                whereIsThePatientFrom: faker.lorem.words(),
+                whyComeToHcbh: faker.lorem.sentences(),
+                howLongWereTheyAtHcbh: faker.lorem.words(),
+                diagnosis: faker.lorem.sentences(),
+                caseStudyStory: faker.lorem.paragraph(10)
+              }
+            });
+            caseStudy.save();
+            break;
+          case 'user3':
+            caseStudy = new CaseStudy({
+              caseStudyType: CaseStudyOptions.StaffRecognition,
+              user: user.id,
+              userDepartment: user.department,
+              imgPath: 'public/images/case2.jpg',
+              featured: false,
+              staffRecognition: {
+                staffName: faker.name.findName(),
+                jobTitle: faker.lorem.words(),
+                department: faker.lorem.words(),
+                howLongWorkingAtHcbh: faker.lorem.words(),
+                mostEnjoy: faker.lorem.sentences(),
+                caseStudyStory: faker.lorem.paragraph(10)
+              }
+            });
+            caseStudy.save();
+            break;
+          case 'user4':
+            caseStudy = new CaseStudy({
+              caseStudyType: CaseStudyOptions.TrainingSession,
+              user: user.id,
+              userDepartment: user.department,
+              imgPath: 'public/images/case2.jpg',
+              featured: false,
+              trainingSession: {
+                trainingDate: faker.date.recent(),
+                trainingOn: faker.lorem.sentences(),
+                whoConducted: faker.name.findName(),
+                whoAttended: faker.name.findName(),
+                benefitsFromTraining: faker.lorem.sentences(),
+                caseStudyStory: faker.lorem.paragraph(10)
+              }
+            });
+            caseStudy.save();
+            break;
+          case 'user5':
+            caseStudy = new CaseStudy({
+              caseStudyType: CaseStudyOptions.EquipmentReceived,
+              user: user.id,
+              userDepartment: user.department,
+              imgPath: 'public/images/case2.jpg',
+              featured: false,
+              equipmentReceived: {
+                equipmentReceived: faker.lorem.words(),
+                departmentReceived: faker.lorem.words(),
+                whoSentEquipment: faker.name.findName(),
+                purchasedOrDonated: faker.lorem.words(),
+                whatDoesEquipmentDo: faker.lorem.sentences(),
+                caseStudyStory: faker.lorem.paragraph(10)
+              }
+            });
+            caseStudy.save();
+            break;
+          default:
+            break;
+        }
+      });
+    }
 
     console.log('Case studies seeded');
   } catch (err) {
