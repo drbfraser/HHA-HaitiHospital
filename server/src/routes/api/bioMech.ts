@@ -37,7 +37,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
     const department = req.user.department;
     const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
 
-    let imgPath: String;
+    let imgPath: String = "";
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }

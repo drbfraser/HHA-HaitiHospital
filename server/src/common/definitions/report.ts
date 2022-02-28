@@ -60,7 +60,7 @@ export interface ReportSumItem extends ReportItem<number> {
 // }
 
 export type ItemAnswerTypes = string | number | boolean;
-export interface JsonReportDescriptor {
+export interface ReportDescriptor {
     meta: ReportMeta;
     items: Array<ReportItem<ItemAnswerTypes>>; 
 };

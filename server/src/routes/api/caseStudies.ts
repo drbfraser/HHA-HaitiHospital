@@ -52,7 +52,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const user = req.user.id;
     const userDepartment = req.user.department;
-    let imgPath: string;
+    let imgPath: string = "";
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
