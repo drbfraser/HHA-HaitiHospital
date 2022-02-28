@@ -4,7 +4,7 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from "common/definit
 import * as TJS from 'typescript-json-schema';
 import { PATH_TO_JSON_REPORT_TYPES } from "./constants";
 
-import Ajv, { JSONSchemaType } from 'ajv';
+import Ajv from 'ajv';
 import fs from 'fs';
 import path from 'path';
 import standaloneCode from 'ajv/dist/standalone';
