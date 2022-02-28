@@ -2,7 +2,7 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from "common/definit
 
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
-import { PATH_TO_JSON_REPORT_TYPES } from "./constants";
+import { PATH_TO_CONSUME_AJV_VALIDATORS, PATH_TO_JSON_REPORT_TYPES } from "./constants";
 
 import Ajv from 'ajv';
 import fs from 'fs';
@@ -50,7 +50,6 @@ const getSchemaGenerator = function() {
     const settings: TJS.PartialArgs = {
         required: true,
         strictNullChecks: true,
-        // Todo: set schema id with "id": string
     };
     
     const generator = TJS.buildGenerator(program, settings);
@@ -68,7 +67,6 @@ const initAjvAsStandAlone = function() {
     const schemaGenerator = getSchemaGenerator();
     const schema = schemaGenerator!.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
 
-    // let schema: JSONSchemaType<JsonReportDescriptor>;
     schema["$id"] = getSchemaId(JSON_REPORT_DESCRIPTOR_NAME);
     
     const ajv = new Ajv(
@@ -76,13 +74,14 @@ const initAjvAsStandAlone = function() {
         schemas: [schema]}
     );
     let moduleCode = standaloneCode(ajv);
-    fs.writeFileSync(path.join(__dirname, "consume/validate-cjs.js"), moduleCode);
+    
+    fs.writeFileSync(PATH_TO_CONSUME_AJV_VALIDATORS, moduleCode);
     validations = require('./consume/validate-cjs');
 }
 
 const cleanupAjvStandAlone = function() {
     try {
-        fs.unlinkSync(path.join(__dirname, "consume/validate-cjs.js"));
+        fs.unlinkSync(PATH_TO_CONSUME_AJV_VALIDATORS);
     } catch (e) {
         throw new Error(`Clean Ajv StandAlone failed: ${e}`)
     }
