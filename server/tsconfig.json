@@ -5,7 +5,7 @@
     "module": "commonjs",
     "target": "es5",
     "rootDir": "./",
-    "baseUrl": "./src",
+    "baseUrl": "./src/",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": false,
