@@ -52,7 +52,7 @@ const getSchemaGenerator = function() {
         strictNullChecks: true,
         // Todo: set schema id with "id": string
     };
-
+    
     const generator = TJS.buildGenerator(program, settings);
     if (!generator) 
         throw new Error("failed to build a json schema generator");
@@ -68,9 +68,7 @@ const initAjvAsStandAlone = function() {
     const schemaGenerator = getSchemaGenerator();
     const schema = schemaGenerator!.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
 
-    let x: JSONSchemaType<JsonReportDescriptor>;
-
-    console.log(schema);
+    // let schema: JSONSchemaType<JsonReportDescriptor>;
     schema["$id"] = getSchemaId(JSON_REPORT_DESCRIPTOR_NAME);
     
     const ajv = new Ajv(
@@ -82,7 +80,7 @@ const initAjvAsStandAlone = function() {
     validations = require('./consume/validate-cjs');
 }
 
-export const cleanupAjvStandAlone = function() {
+const cleanupAjvStandAlone = function() {
     try {
         fs.unlinkSync(path.join(__dirname, "consume/validate-cjs.js"));
     } catch (e) {
@@ -96,10 +94,13 @@ const validateJsonString = function(jsonString: string, objectName: string) {
         throw new Error("Init Ajv validator first");
     }
     const validator = validations[getSchemaId(objectName)];
+    if (!validator) {
+        throw new Error("No Ajv validator found");
+    }
     const valid = validator(JSON.parse(jsonString));
 
     if (valid === false) {
-        throw new Error(`${validator.errors}`);
+        throw new Error(validator.errors[0].message);
     }
 }
 
@@ -109,4 +110,4 @@ const jsonStringToJsonReport = function(jsonString: string) : JsonReportDescript
     return jsonReport;
 }
 
-export {jsonStringToJsonReport, initAjvAsStandAlone};
+export {jsonStringToJsonReport, initAjvAsStandAlone, cleanupAjvStandAlone};
