@@ -1,39 +1,38 @@
-import { DepartmentId } from "./departments";
-
+import { DepartmentId } from './departments';
 
 export enum ItemType {
-    // SA = "short answer",
-    N = "numeric",
-    // YN = "yes no",
-    // MCQ = "mcq",
-    // PO = "pick one",
-    // MCQ_OPTION = "mcq option",
-    SUM = "sum",
-    // SG = "survey generator"
+  // SA = "short answer",
+  N = 'numeric',
+  // YN = "yes no",
+  // MCQ = "mcq",
+  // PO = "pick one",
+  // MCQ_OPTION = "mcq option",
+  SUM = 'sum',
+  // SG = "survey generator"
 }
 
 export interface ReportMeta {
-    id: string;
-    departmentId : DepartmentId;
-    submittedDate: Date;
-    submittedUserId: string;
-};
+  id: string;
+  departmentId: DepartmentId;
+  submittedDate: Date;
+  submittedUserId: string;
+}
 
 export interface ReportItemMeta {
-    type: ItemType;
+  type: ItemType;
 }
 
 export type ItemAnswer<Type> = Array<Type>;
 interface ReportItem<Type> {
-    meta: ReportItemMeta;
-    description: string;
-    answer: Array<ItemAnswer<Type>>
+  meta: ReportItemMeta;
+  description: string;
+  answer: Array<ItemAnswer<Type>>;
 }
 
 //Short Answer Item
 // export interface ReportSaItem extends ReportItem<string> {};
 //Numeric Item
-export interface ReportNItem extends ReportItem<number> {};
+export interface ReportNItem extends ReportItem<number> {}
 //Yes No item
 // export interface ReportYnItem extends ReportItem<boolean> {};
 //Mcq item
@@ -51,8 +50,8 @@ export interface ReportNItem extends ReportItem<number> {};
 // }
 //Sum item
 export interface ReportSumItem extends ReportItem<number> {
-    numericItems: Array<ReportNItem>;
-};
+  numericItems: Array<ReportNItem>;
+}
 
 //Survey Generator item
 // export interface JsonReportSurveyItem extends ReportItem<number> {
@@ -61,6 +60,6 @@ export interface ReportSumItem extends ReportItem<number> {
 
 export type ItemAnswerTypes = string | number | boolean;
 export interface ReportDescriptor {
-    meta: ReportMeta;
-    items: Array<ReportItem<ItemAnswerTypes>>; 
-};
+  meta: ReportMeta;
+  items: Array<ReportItem<ItemAnswerTypes>>;
+}

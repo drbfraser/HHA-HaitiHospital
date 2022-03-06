@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/user';
-import { getDepartmentName } from "../common/utils/departments";
-import { DepartmentName } from "../common/definitions/departments";
+import { getDepartmentName } from '../common/utils/departments';
+import { DepartmentName } from '../common/definitions/departments';
 import { Role } from '../models/user';
 
 export const checkIsInRole =

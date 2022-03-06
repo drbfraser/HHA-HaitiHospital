@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
-import { DepartmentName } from "../common/definitions/departments";
+import { DepartmentName } from '../common/definitions/departments';
 import * as ENV from '../utils/processEnv';
 
 const { Schema } = mongoose;

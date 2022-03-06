@@ -7,6 +7,7 @@ import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
+import { msgCatchError } from 'utils/sanitizationMessages';
 
 const router = Router();
 
@@ -21,7 +22,7 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
       .then((data: any) => res.status(200).json(data))
       .catch((err: any) => res.status(400).json('Failed to get case studies: ' + err));
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -32,7 +33,7 @@ router.get('/featured', requireJwtAuth, async (req: Request, res: Response) => {
       .then((data: any) => res.status(200).json(data))
       .catch((err: any) => res.status(400).json('Failed to get case study: ' + err));
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -43,7 +44,7 @@ router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
       .then((data: any) => res.status(200).json(data))
       .catch((err: any) => res.status(400).json('Failed to get case study: ' + err));
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -52,7 +53,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const user = req.user.id;
     const userDepartment = req.user.department;
-    let imgPath: string = "";
+    let imgPath: string = '';
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
@@ -74,7 +75,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
       .then(() => res.status(201).json('Case Study Submitted successfully'))
       .catch((err: any) => res.status(400).json('Case study submission failed: ' + err));
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -85,7 +86,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDire
       .then(() => res.sendStatus(204))
       .catch((err: any) => res.status(400).json('Failed to delete case study: ' + err));
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -124,7 +125,7 @@ router.put(
         .then((data: any) => res.status(201).json(data))
         .catch((err: any) => res.status(400).json('Failed to update: ' + err));
     } catch (err: any) {
-      res.status(500).json({ message: 'Something went wrong.' });
+      res.status(500).json(msgCatchError);
     }
   }
 );
@@ -141,7 +142,7 @@ router.patch('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirec
       .then((data: any) => res.status(201).json(data))
       .catch((err: any) => res.status(400).json('Failed to update new case study: ' + err));
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 

@@ -1,6 +1,6 @@
 import { boolean } from 'joi';
 import mongoose from 'mongoose';
-import { DepartmentName } from "../common/definitions/departments";
+import { DepartmentName } from '../common/definitions/departments';
 
 const { Schema } = mongoose;
 

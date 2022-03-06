@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Message, emptyMessage} from 'constants/interfaces';
-import { getDepartmentId } from "common/utils/departments";
-import { DepartmentName } from "common/definitions/departments";
+import { Message, emptyMessage } from 'constants/interfaces';
+import { getDepartmentId } from 'common/utils/departments';
+import { DepartmentName } from 'common/definitions/departments';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 interface MessageFormProps {

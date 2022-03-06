@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Axios from 'axios';
 
 import { ReportProps } from 'constants/interfaces';
-import { getDepartmentName } from "common/utils/departments";
+import { getDepartmentName } from 'common/utils/departments';
 import { ReportDisplay } from 'components/report_display/report_display';
 
 import SideBar from 'components/side_bar/side_bar';
