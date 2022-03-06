@@ -1,15 +1,13 @@
 import faker from 'faker';
-
-import User, { hashPassword, Role } from '../models/user';
+import User, { Role } from '../models/user';
 import Department from '../models/leaderboard';
 import { DepartmentName } from '../common/definitions/departments';
-
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
-
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
+import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 
 import * as ENV from './processEnv';
 
@@ -25,6 +23,7 @@ export const seedDb = async () => {
   await seedMessageBoard();
   await seedLeaderboard();
   await seedBioMech();
+  await seedEmployeeOfTheMonth();
   console.log('Database seeding completed.');
 };
 
@@ -291,7 +290,7 @@ export const seedCaseStudies = async () => {
     });
 
     console.log('Case studies seeded');
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
   }
 };
@@ -308,7 +307,7 @@ export const seedLeaderboard = async () => {
       department.save();
     }
     console.log('Leaderboard seeded');
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
   }
 };
@@ -348,7 +347,24 @@ export const seedBioMech = async () => {
       }
     });
     console.log('Biomechanical support seeded');
-  } catch (err) {
+  } catch (err: any) {
+    console.log(err);
+  }
+};
+
+export const seedEmployeeOfTheMonth = async () => {
+  console.log('Seeding employee of the month...');
+  try {
+    await EmployeeOfTheMonth.deleteOne({});
+    const employeeOfTheMonth = new EmployeeOfTheMonth({
+      name: 'John Doe',
+      department: 'Rehab',
+      description: 'This is a placeholder',
+      imgPath: 'public/images/default_user.png'
+    });
+    employeeOfTheMonth.save();
+    console.log('Employee of the month seeded');
+  } catch (err: any) {
     console.log(err);
   }
 };
