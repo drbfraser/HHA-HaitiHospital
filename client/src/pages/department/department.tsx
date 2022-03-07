@@ -5,7 +5,9 @@ import { Link, useParams, useHistory } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ReportSummary from 'components/report_summary/report_summary';
-import { DepartmentName, getDepartmentName, Role } from 'constants/interfaces';
+import { Role } from 'constants/interfaces';
+import { getDepartmentName } from "common/utils/departments";
+import { DepartmentName } from "common/definitions/departments";
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
 import { useAuthState } from 'Context';
@@ -23,18 +25,15 @@ export const Department = (props: DepartmentProps) => {
     to: null,
   });
 
-
-    React.useEffect(() => {
-        try {
-            const numberId: number = parseInt(deptId);
-            const name: DepartmentName = getDepartmentName(numberId);
-            setDeptName(name);
-        }
-        catch (e) {
-            history.push("/notFound");
-        }
-
-    },[deptId, history])
+  React.useEffect(() => {
+    try {
+      const numberId: number = parseInt(deptId);
+      const name: DepartmentName = getDepartmentName(numberId);
+      setDeptName(name);
+    } catch (e) {
+      history.push('/notFound');
+    }
+  }, [deptId, history]);
 
   return (
     <div className="department">

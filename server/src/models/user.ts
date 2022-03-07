@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
-import { DepartmentName } from './departments';
+import { DepartmentName } from "../common/definitions/departments";
 import * as ENV from '../utils/processEnv';
 
 const { Schema } = mongoose;
@@ -97,7 +97,7 @@ userSchema.methods.comparePassword = function (candidatePassword, callback) {
 export async function hashPassword(password) {
   const saltRounds = 10;
 
-  const hashedPassword = await new Promise((resolve, reject) => {
+  const hashedPassword: string = await new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function (err, hash) {
       if (err) reject(err);
       else resolve(hash);

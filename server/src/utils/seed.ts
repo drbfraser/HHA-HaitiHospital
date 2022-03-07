@@ -2,26 +2,30 @@ import faker from 'faker';
 
 import User, { hashPassword, Role } from '../models/user';
 import Department from '../models/leaderboard';
-import { DepartmentName } from '../models/departments';
+import { DepartmentName } from '../common/definitions/departments';
 
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
 
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
+import BioMech, { bioMechEnum } from '../models/bioMech';
 
 import * as ENV from './processEnv';
 
 export const seedDb = async () => {
   //   await User.deleteMany({});
+  // TODO: Remove delete many when in prod
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
   //   await seedUsers();
   await seedCaseStudies();
   await seedDepartments();
-  // seedMessageBoard();
+  await seedMessageBoard();
   await seedLeaderboard();
+  await seedBioMech();
+  console.log('Database seeding completed.');
 };
 
 export const seedUsers = async () => {
@@ -29,7 +33,7 @@ export const seedUsers = async () => {
 
   try {
     // Delete seeded users on server start so we can reseed them.
-    await User.collection.dropIndexes();
+    // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await User.findOne({ username: `user${index}` });
@@ -144,42 +148,59 @@ export const seedDepartments = async () => {
 
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
-  await MessageBody.deleteMany({});
 
-  // add 3 messages
-  const message1 = new MessageBody({
-    departmentId: 3,
-    departmentName: DepartmentName.CommunityHealth,
-    authorId: 1,
-    name: faker.name.findName(),
-    date: new Date(),
-    messageBody: 'Everyone will get the day off on December 25th. Thank you.',
-    messageHeader: 'Christmas'
+  const users = await User.find();
+  users.map(async (user, index) => {
+    let message;
+    switch (user.username) {
+      case 'user2':
+        message = new MessageBody({
+          departmentId: 1,
+          departmentName: user.department,
+          userId: user.id,
+          date: new Date(),
+          messageBody: 'Everyone will get the day off on December 25th. Thank you.',
+          messageHeader: 'Christmas'
+        });
+        message.save();
+        break;
+      case 'user3':
+        message = new MessageBody({
+          departmentId: 3,
+          departmentName: user.department,
+          userId: user.id,
+          date: new Date(),
+          messageBody: 'Welcome to the message board!',
+          messageHeader: 'Welcome'
+        });
+        message.save();
+        break;
+      case 'user4':
+        message = new MessageBody({
+          departmentId: 0,
+          departmentName: user.department,
+          userId: user.id,
+          date: new Date(),
+          messageBody: 'The case study is due this Friday. Please submit the case study form before the deadline',
+          messageHeader: 'Case study due'
+        });
+        message.save();
+        break;
+      case 'user5':
+        message = new MessageBody({
+          departmentId: 2,
+          departmentName: user.department,
+          userId: user.id,
+          date: new Date(),
+          messageBody: 'There is a holiday tomorrow, the hospital is closed.',
+          messageHeader: 'Hospital Closed'
+        });
+        message.save();
+        break;
+      default:
+        break;
+    }
   });
-
-  const message2 = new MessageBody({
-    departmentId: 0,
-    departmentName: DepartmentName.NicuPaeds,
-    authorId: 2,
-    name: faker.name.findName(),
-    date: new Date(),
-    messageBody: 'Welcome to the message board!',
-    messageHeader: 'Welcome'
-  });
-
-  const message3 = new MessageBody({
-    departmentId: 1,
-    departmentName: DepartmentName.Maternity,
-    authorId: 3,
-    name: faker.name.findName(),
-    date: new Date(),
-    messageBody: 'The case study is due this Friday. Please submit the case study form before the deadline',
-    messageHeader: 'Case study due'
-  });
-
-  message1.save();
-  message2.save();
-  message3.save();
   console.log('Message board seeded');
 };
 
@@ -187,11 +208,9 @@ export const seedCaseStudies = async () => {
   console.log('Seeding case studies...');
 
   try {
-    await CaseStudy.deleteMany({});
-
     const users = await User.find();
     users.map(async (user, index) => {
-      var caseStudy;
+      let caseStudy;
       switch (user.username) {
         case 'user2':
           caseStudy = new CaseStudy({
@@ -199,6 +218,7 @@ export const seedCaseStudies = async () => {
             user: user.id,
             userDepartment: user.department,
             imgPath: 'public/images/case1.jpg',
+            featured: true,
             patientStory: {
               patientsName: faker.name.findName(),
               patientsAge: faker.random.number({ min: 10, max: 50 }),
@@ -217,6 +237,7 @@ export const seedCaseStudies = async () => {
             user: user.id,
             userDepartment: user.department,
             imgPath: 'public/images/case2.jpg',
+            featured: false,
             staffRecognition: {
               staffName: faker.name.findName(),
               jobTitle: faker.lorem.words(),
@@ -233,6 +254,8 @@ export const seedCaseStudies = async () => {
             caseStudyType: CaseStudyOptions.TrainingSession,
             user: user.id,
             userDepartment: user.department,
+            imgPath: 'public/images/case2.jpg',
+            featured: false,
             trainingSession: {
               trainingDate: faker.date.recent(),
               trainingOn: faker.lorem.sentences(),
@@ -249,6 +272,8 @@ export const seedCaseStudies = async () => {
             caseStudyType: CaseStudyOptions.EquipmentReceived,
             user: user.id,
             userDepartment: user.department,
+            imgPath: 'public/images/case2.jpg',
+            featured: false,
             equipmentReceived: {
               equipmentReceived: faker.lorem.words(),
               departmentReceived: faker.lorem.words(),
@@ -283,6 +308,46 @@ export const seedLeaderboard = async () => {
       department.save();
     }
     console.log('Leaderboard seeded');
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const seedBioMech = async () => {
+  console.log('Seeding biomechanical support...');
+  try {
+    await BioMech.deleteMany({});
+    const users = await User.find();
+    users.map(async (user, index) => {
+      let bioMechReport;
+      switch (user.username) {
+        case 'user3':
+          bioMechReport = new BioMech({
+            user: user,
+            department: user.department,
+            equipmentName: 'X-Ray',
+            equipmentFault: 'Not Working',
+            equipmentPriority: bioMechEnum.Urgent,
+            imgPath: 'public/images/bioMech0.jpeg'
+          });
+          bioMechReport.save();
+          break;
+        case 'user4':
+          bioMechReport = new BioMech({
+            user: user,
+            department: user.department,
+            equipmentName: 'Surgery Lights',
+            equipmentFault: 'Lights are not turning on',
+            equipmentPriority: bioMechEnum.Important,
+            imgPath: 'public/images/bioMech1.jpeg'
+          });
+          bioMechReport.save();
+          break;
+        default:
+          break;
+      }
+    });
+    console.log('Biomechanical support seeded');
   } catch (err) {
     console.log(err);
   }

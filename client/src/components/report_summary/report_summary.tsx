@@ -1,7 +1,9 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Axios from 'axios';
 
-import { JsonArray, DepartmentName, getDepartmentId } from 'constants/interfaces';
+import { JsonArray } from 'constants/interfaces';
+import { getDepartmentId } from "common/utils/departments";
+import { DepartmentName } from "common/definitions/departments";
 import ReportSummaryTable from 'components/report_summary/report_summary_table/report_summary_table';
 import { DayRange } from 'react-modern-calendar-datepicker';
 import './styles.css';
@@ -24,50 +26,45 @@ const ReportSummary = (props: DepartmentReportsProps) => {
     let isMounted = true;
 
     async function fetchReports() {
-        let apiForReports = '';
-        
-        try {
-            apiForReports = buildApiRoute(props.dateRange, props.department);
-            let res = await Axios.get(apiForReports, {
-                cancelToken: apiSource.token
-            });
-            return res.data;
+      let apiForReports = '';
 
-        } catch (err) {
-            if (Axios.isCancel(err)) {
-            console.log(`Info: Subscription to ${apiForReports} is canceled`,err)
-            }
-            else 
-            DbErrorHandler(err, history);
-            return [];
-        }
+      try {
+        apiForReports = buildApiRoute(props.dateRange, props.department);
+        let res = await Axios.get(apiForReports, {
+          cancelToken: apiSource.token,
+        });
+        return res.data;
+      } catch (err) {
+        if (Axios.isCancel(err)) {
+          console.log(`Info: Subscription to ${apiForReports} is canceled`, err);
+        } else DbErrorHandler(err, history);
+        return [];
+      }
     }
-    
+
     async function getReports() {
       const reportsFromServer = await fetchReports();
       if (isMounted) setReports(reportsFromServer);
-    };
+    }
     getReports();
     return () => {
       apiSource.cancel();
       isMounted = false;
-    }
+    };
   }, [refetch, props.department, props.dateRange, history]);
-  
+
   function refetchReportsHandler() {
     setRefetch(!refetch);
-  };
+  }
 
   return (
-    <div className={"deparment-reports"}>
-      <div className='my-4'>
-        {
-          (reports === undefined || reports.length === 0) ? 
-            <div className="lead">No submitted reports</div> : 
-            <ReportSummaryTable 
-              reports={reports}
-              refetchReports={refetchReportsHandler}/>
-        }
+    <div className={'deparment-reports'}>
+      <div className="my-4">
+        {reports === undefined || reports.length === 0 ? (
+          <div className="lead">No submitted reports</div>
+        ) : (
+          <ReportSummaryTable reports={reports} refetchReports={refetchReportsHandler} />
+        )}
       </div>
     </div>
   );

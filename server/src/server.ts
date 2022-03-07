@@ -6,9 +6,15 @@ import cookieParser from 'cookie-parser';
 import routes from './routes/routes';
 import { seedDb } from './utils/seed';
 import * as ENV from './utils/processEnv';
+const path = require('path');
+
+import csrf from 'csurf';
 
 export const createServer = () => {
   const app = express();
+
+  // Path to static folder
+  app.use(express.static(path.join(__dirname, '../public')));
 
   // Cross-Origin
   const cors = require('cors');
@@ -17,7 +23,7 @@ export const createServer = () => {
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200,
     methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Cookie'],
+    allowedHeaders: ['Content-Type', 'Cookie', 'x-xsrf-token', 'X-CSRF-TOKEN'],
     exposedHeaders: ['Content-Type']
   };
   app.use(cors(corsOptions));
@@ -30,6 +36,13 @@ export const createServer = () => {
   app.use(passport.initialize());
   require('./services/jwtStrategy');
   require('./services/localStrategy');
+
+  // CSRF
+  app.use(csrf({ cookie: true }));
+  app.use((req, res, next) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    next();
+  });
 
   // Connect to Mongo
   mongoose

@@ -5,11 +5,12 @@
     "module": "commonjs",
     "target": "es5",
     "rootDir": "./",
+    "baseUrl": "./src/",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": false,
     "noImplicitAny": false,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "downlevelIteration": true
   },
   "include": ["./src/**/*", "./security/*", "./tests/**/*"]

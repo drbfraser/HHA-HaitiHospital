@@ -78,7 +78,7 @@ function MaternityForm() {
       var index = 0;
       for (var key in table) {
         var totalElement = document.getElementById('tables' + 42 + index + 5);
-        table[key].Total = totalElement.innerHTML;
+        table[key].Total = totalElement.innerText;
         index++;
       }
 
@@ -94,7 +94,7 @@ function MaternityForm() {
       index = 0;
       for (var key in table['Total visits']) {
         var totalElement = document.getElementById('tables' + 42 + 3 + index);
-        table['Total visits'][key] = totalElement.innerHTML;
+        table['Total visits'][key] = totalElement.innerText;
         index++;
       }
 
@@ -251,7 +251,7 @@ function MaternityForm() {
       if (textInput2.classList.contains('is-valid')) {
         makeValidity(textInput1, true, '');
       } else if (textInput2.classList.contains('is-invalid')) {
-        makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerHTML);
+        makeValidity(textInput1, false, (textInput2.nextSibling as HTMLElement).innerText);
       } else {
         removeValidity(textInput1);
       }
@@ -259,7 +259,7 @@ function MaternityForm() {
       if (valueInput2.classList.contains('is-valid')) {
         makeValidity(valueInput1, true, '');
       } else if (valueInput2.classList.contains('is-invalid')) {
-        makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerHTML);
+        makeValidity(valueInput1, false, (valueInput2.nextSibling as HTMLElement).innerText);
       } else {
         removeValidity(valueInput1);
       }
@@ -442,7 +442,7 @@ function MaternityForm() {
     var errorMessage = inputElement.nextSibling as HTMLElement;
     inputElement.classList.remove('is-invalid');
     inputElement.classList.remove('is-valid');
-    errorMessage.innerHTML = '';
+    errorMessage.innerText = '';
   }
 
   function makeValidity(inputElement: HTMLInputElement, isVal: boolean, msg: string) {
@@ -451,11 +451,11 @@ function MaternityForm() {
     if (isVal) {
       inputElement.classList.remove('is-invalid');
       inputElement.classList.add('is-valid');
-      errorMessage.innerHTML = '';
+      errorMessage.innerText = '';
     } else {
       inputElement.classList.remove('is-valid');
       inputElement.classList.add('is-invalid');
-      errorMessage.innerHTML = msg;
+      errorMessage.innerText = msg;
     }
 
     checkSideBar();
@@ -707,7 +707,7 @@ function MaternityForm() {
         }
 
         var totalElement = document.getElementById('tables' + num + i + 5);
-        totalElement.innerHTML = String(rowTotal);
+        totalElement.innerText = String(rowTotal);
       }
 
       for (var j = 0; j < 5; j++) {
@@ -719,17 +719,17 @@ function MaternityForm() {
         }
 
         var totalElement = document.getElementById('tables' + num + 3 + j);
-        totalElement.innerHTML = String(colTotal);
+        totalElement.innerText = String(colTotal);
       }
 
       var rowTotal = 0;
       for (var j = 0; j < 5; j++) {
         var element = document.getElementById('tables' + num + 3 + j);
-        rowTotal += Number(element.innerHTML);
+        rowTotal += Number(element.innerText);
       }
 
       var totalElement = document.getElementById('tables' + num + 3 + 5);
-      totalElement.innerHTML = String(rowTotal);
+      totalElement.innerText = String(rowTotal);
 
       return;
     }

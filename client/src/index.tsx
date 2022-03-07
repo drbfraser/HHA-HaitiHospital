@@ -7,10 +7,12 @@ import './i18n';
 import App from 'app';
 import axios from 'axios';
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = `http://${window.location.hostname}:5000`;
   axios.defaults.withCredentials = true;
 }
+
+// initAjvAsStandAlone();
 
 ReactDOM.render(
   <React.StrictMode>
