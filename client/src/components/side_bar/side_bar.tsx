@@ -101,6 +101,12 @@ const Sidebar = (props: SidebarProps) => {
                             return <></>
                     })}
 
+                    <li>
+                        <NavLink to="/report" className="nav-link link-light" exact activeClassName="active">
+                            <i className="bi bi-exclamation-square me-2"/>
+                            <span className="text text-light">Test Report</span>
+                        </NavLink>
+                    </li>
 
                     <li className="border-top my-2"/>
                     {   renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (  

@@ -5,7 +5,6 @@ import { DepartmentName, getDepartmentName } from 'constants/interfaces';
 import MaternityForm from 'pages/form/maternity_form';
 import RehabForm from 'pages/form/rehab_form';
 import CommunityForm from 'pages/form/community_form';
-import Report from 'pages/form/nicu_form copy';
 
 const AddReport = () => {
   const history = useHistory();
@@ -16,9 +15,9 @@ const AddReport = () => {
 
     switch (deptName) {
       case DepartmentName.Rehab:
-        return <NICUForm></NICUForm>;
+        return <RehabForm></RehabForm>;
       case DepartmentName.NicuPaeds:
-        return <Report></Report>;
+        return <NICUForm></NICUForm>;
       case DepartmentName.Maternity:
         return <MaternityForm></MaternityForm>;
       case DepartmentName.CommunityHealth:
