@@ -23,14 +23,16 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const authState = useAuthState();
   const history = useHistory();
   const BioReportUrl = `/api/biomech/`;
+
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const PageSize = 5;
+  const pageSize = 5;
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
     return BioReport.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, BioReport]);
-  const ValueIndex = (currentPage * PageSize) - PageSize;
+  const bioReportNumberIndex = (currentPage * pageSize) - pageSize;
 
   const getBioReport = useCallback(async () => {
     const res = await axios.get(BioReportUrl);
@@ -105,7 +107,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   {currentTableData.map((item, index) => {
                     return (
                       <tr key={item._id}>
-                        <th scope="row">{ValueIndex + index + 1}</th>
+                        <th scope="row">{bioReportNumberIndex + index + 1}</th>
                         <td>{item.equipmentPriority}</td>
                         <td>{item.user ? item.user.name : '[deleted]'}</td>
                         <td>
@@ -143,7 +145,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                     className="pagination-bar"
                     currentPage={currentPage}
                     totalCount={BioReport.length}
-                    pageSize={PageSize}
+                    pageSize={pageSize}
                     onPageChange={page => setCurrentPage(page)}
                   />
                 </tbody>
