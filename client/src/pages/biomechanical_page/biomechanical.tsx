@@ -26,7 +26,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize: number = 5;
+  const pageSize: number = 10;
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
