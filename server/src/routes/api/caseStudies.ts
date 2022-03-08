@@ -105,7 +105,7 @@ router.put(
       let user = oldCaseStudy.user;
       let userDepartment = oldCaseStudy.userDepartment;
       if (req.file) {
-        imgPath = req.file.path;
+        imgPath = req.file.path.replace(/\\/g, '/');
       }
 
       const updatedCaseStudy = {
