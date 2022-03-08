@@ -22,11 +22,11 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const [BioReport, setBioReport] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
-  const BioReportUrl = `/api/biomech/`;
+  const BioReportUrl: string = `/api/biomech/`;
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 5;
+  const pageSize: number = 5;
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
@@ -141,15 +141,15 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                       </tr>
                     );
                   })}
-                  <Pagination
-                    className="pagination-bar"
-                    currentPage={currentPage}
-                    totalCount={BioReport.length}
-                    pageSize={pageSize}
-                    onPageChange={page => setCurrentPage(page)}
-                  />
                 </tbody>
               </table>
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={BioReport.length}
+                pageSize={pageSize}
+                onPageChange={page => setCurrentPage(page)}
+              />
             </div>
           </div>
         </section>

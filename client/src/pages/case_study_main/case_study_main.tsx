@@ -22,11 +22,11 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
-  const caseStudiesUrl = '/api/case-studies';
+  const caseStudiesUrl: string = '/api/case-studies';
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 5;
+  const pageSize: number = 5;
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
@@ -166,15 +166,15 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                   </tr>
                 );
               })}
-              <Pagination
-                className="pagination-bar"
-                currentPage={currentPage}
-                totalCount={caseStudies.length}
-                pageSize={pageSize}
-                onPageChange={page => setCurrentPage(page)}
-              />
             </tbody>
           </table>
+          <Pagination
+            className="pagination-bar"
+            currentPage={currentPage}
+            totalCount={caseStudies.length}
+            pageSize={pageSize}
+            onPageChange={page => setCurrentPage(page)}
+          />
         </div>
       </main>
     </div>
