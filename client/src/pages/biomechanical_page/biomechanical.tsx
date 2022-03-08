@@ -10,6 +10,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
+import Pagination from 'components/pagination/Pagination';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -22,6 +23,12 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const authState = useAuthState();
   const history = useHistory();
   const BioReportUrl = `/api/biomech/`;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = BioReport.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const getBioReport = useCallback(async () => {
     const res = await axios.get(BioReportUrl);
@@ -93,7 +100,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {BioReport.map((item, index) => {
+                  {currentPosts.map((item, index) => {
                     return (
                       <tr key={item._id}>
                         <th scope="row">{index + 1}</th>
@@ -130,6 +137,11 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                       </tr>
                     );
                   })}
+                  <Pagination 
+                    postsPerPage={postsPerPage}
+                    totalPosts={BioReport.length}
+                    paginate={paginate}
+                  />
                 </tbody>
               </table>
             </div>
