@@ -13,15 +13,20 @@ import { FieldInputProps } from 'formik';
 import * as TestData from '../../pages/form/models/TestModels';
 import { toInteger } from 'lodash';
 import { v4 as uuid } from 'uuid';
-import { fromString } from 'uuidv4';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import {
+  JsonReportDescriptor,
+  JsonReportItem,
+  JsonReportItemMeta,
+} from 'common/definitions/json_report';
 
 function Report() {
   const [dataState, setDataState] = useState({});
   const form = useForm();
   const history = useHistory();
   const { t, i18n } = useTranslation();
+  const testData = nicuJSON;
+  const [date, setDate] = useState(new Date());
+
   useEffect(() => {
     $('body').scrollspy({ target: '#navbar' });
   });
@@ -43,32 +48,51 @@ function Report() {
     // Todo: prepare data for send.
   };
 
-  const testData = nicuJSON;
-  const [date, setDate] = useState(new Date());
-  const user = 'User';
-  const locale = 'default';
-  const formName = 'NICU/Paeds ' + date.toLocaleDateString(locale, { month: 'long' }) + ' Report';
+  let data: JsonReportDescriptor = getData();
+  console.log(data)
 
-  const buildElements = (elements: [any]) => {
-    return (
+  const buildForm = (elements: [JsonReportItem]) => {
+    const labels: Label[] = [];
+    return [
       <FormProvider {...form}>
         <form className="row p-3 needs-validation" noValidate>
-          <SectionLabel id="section1" text={testData[0].section_label} />
-          <NumberInputField id={uuid()} weight="bold" text="1. How many admitted ?" />
-
           {elements.map((element, idx) => {
-            return (
-              <NumberInputField key={uuid()} id={uuid()} text={idx + '. ' + element.label} />
-            );
+            switch (element.meta.type) {
+              case 'label':
+                const label: Label = { id: uuid(), text: element.description };
+                labels.push(label);
+                return <Label id={label.id} text={label.text} />;
+              case 'number':
+                return (
+                  <NumberInputField
+                    key={uuid()}
+                    id={uuid()}
+                    text={idx + '. ' + element.description}
+                  />
+                );
+              default:
+                return (
+                  <NumberInputField
+                    key={uuid()}
+                    id={uuid()}
+                    text={idx + '. ' + element.description}
+                  />
+                );
+            }
           })}
           <div id="bottom" />
           <button className="btn btn-primary" type="button" onClick={onSubmit}>
             Submit
           </button>
         </form>
-      </FormProvider>
-    );
+      </FormProvider>,
+      labels,
+    ];
   };
+
+  const user = 'User';
+  const locale = 'default';
+  const formName = 'NICU/Paeds ' + date.toLocaleDateString(locale, { month: 'long' }) + ' Report';
 
   return (
     <div id="top">
@@ -154,6 +178,31 @@ function Report() {
   );
 }
 
+function getData(): JsonReportDescriptor {
+  const items: JsonReportItem[] = nicuJSON.flatMap((section, idx) => {
+    const fields: JsonReportItem[] = section.section_fields.map((field): JsonReportItem => {
+      if ((field.field_type = 'number'))
+        return {
+          meta: { type: 'number' },
+          description: field.field_label,
+          answer: [[field.field_value == undefined ? '' : field.field_value.toString()]],
+        };
+    });
+    fields.push({ meta: { type: 'label' }, description: section.section_label, answer: [] });
+    return fields;
+  });
+
+  return {
+    meta: {
+      id: uuid(),
+      departmentId: '0',
+      submittedDate: 'NA',
+      submittedUserId: '0',
+    },
+    items: items,
+  };
+}
+
 type SectionProps = {
   name: string;
   items?: any[];
@@ -201,7 +250,6 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
   const { t, i18n } = useTranslation();
   const text = props.text ?? 'N/A';
   const getWeightCss = (w: string) => {
-    console.log(w);
     switch (w) {
       case 'light':
         return ' font-weight-light';

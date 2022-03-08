@@ -26,7 +26,7 @@ export type JsonItemAnswer = Array<string>;
 /**
  * @additionalProperties false
  */
-interface JsonReportItem {
+export interface JsonReportItem {
     /**
      * Json structure of an item
      */
