@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
@@ -24,11 +24,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const history = useHistory();
   const BioReportUrl = `/api/biomech/`;
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(5);
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = BioReport.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const PageSize = 5;
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return BioReport.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, BioReport]);
+  const ValueIndex = (currentPage * PageSize) - PageSize;
 
   const getBioReport = useCallback(async () => {
     const res = await axios.get(BioReportUrl);
@@ -100,10 +102,10 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentPosts.map((item, index) => {
+                  {currentTableData.map((item, index) => {
                     return (
                       <tr key={item._id}>
-                        <th scope="row">{index + 1}</th>
+                        <th scope="row">{ValueIndex + index + 1}</th>
                         <td>{item.equipmentPriority}</td>
                         <td>{item.user ? item.user.name : '[deleted]'}</td>
                         <td>
@@ -137,10 +139,12 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                       </tr>
                     );
                   })}
-                  <Pagination 
-                    postsPerPage={postsPerPage}
-                    totalPosts={BioReport.length}
-                    paginate={paginate}
+                  <Pagination
+                    className="pagination-bar"
+                    currentPage={currentPage}
+                    totalCount={BioReport.length}
+                    pageSize={PageSize}
+                    onPageChange={page => setCurrentPage(page)}
                   />
                 </tbody>
               </table>
