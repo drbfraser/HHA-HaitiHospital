@@ -19,17 +19,33 @@ import {
   JsonReportItemMeta,
 } from 'common/definitions/json_report';
 
+interface ReportData extends JsonReportDescriptor {
+  validated?: string;
+}
+
+interface ReportItem extends JsonReportItem {
+  validated: boolean;
+  invalid: boolean;
+}
+
 function Report() {
-  const [dataState, setDataState] = useState({});
+  const [data, setData] = useState<ReportData>(undefined);
   const form = useForm();
   const history = useHistory();
   const { t, i18n } = useTranslation();
   const testData = nicuJSON;
-  const [date, setDate] = useState(new Date());
+
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
 
   useEffect(() => {
-    $('body').scrollspy({ target: '#navbar' });
-  });
+    sleep(1000).then(() => {
+      const data: JsonReportDescriptor = apiGetData();
+      setData(data);
+      $('body').scrollspy({ target: '#navbar' });
+    });
+  }, []);
 
   const onSubmit = async () => {
     //get filled values
@@ -47,55 +63,8 @@ function Report() {
   const assembleData = (data: any) => {
     // Todo: prepare data for send.
   };
-
-  let data: JsonReportDescriptor = getData();
-  console.log(data)
-
-  const buildForm = (elements: [JsonReportItem]) => {
-    const labels: Label[] = [];
-    return [
-      <FormProvider {...form}>
-        <form className="row p-3 needs-validation" noValidate>
-          {elements.map((element, idx) => {
-            switch (element.meta.type) {
-              case 'label':
-                const label: Label = { id: uuid(), text: element.description };
-                labels.push(label);
-                return <Label id={label.id} text={label.text} />;
-              case 'number':
-                return (
-                  <NumberInputField
-                    key={uuid()}
-                    id={uuid()}
-                    text={idx + '. ' + element.description}
-                  />
-                );
-              default:
-                return (
-                  <NumberInputField
-                    key={uuid()}
-                    id={uuid()}
-                    text={idx + '. ' + element.description}
-                  />
-                );
-            }
-          })}
-          <div id="bottom" />
-          <button className="btn btn-primary" type="button" onClick={onSubmit}>
-            Submit
-          </button>
-        </form>
-      </FormProvider>,
-      labels,
-    ];
-  };
-
-  const user = 'User';
-  const locale = 'default';
-  const formName = 'NICU/Paeds ' + date.toLocaleDateString(locale, { month: 'long' }) + ' Report';
-
   return (
-    <div id="top">
+    <div id="top" style={{ paddingBottom: '8%' }}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-1">
@@ -103,74 +72,16 @@ function Report() {
           </div>
           <div className="col-11">
             <Header />
-            <main className="container">
-              <div className="row justify-content-center bg-light rounded ">
-                <div className="col-sm-12">
-                  <div className="jumbotron m-3">
-                    <h2 className="display-4">{formName}</h2>
-                    <p className="lead">
-                      Last updated on: {date.toLocaleDateString()}
-                      <br />
-                      By {user}
-                      <br />
-                      <i>Due on: {date.toLocaleDateString()}</i>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="row justify-content-center bg-light rounded mt-5 ">
-                <div className="col-sm-12">
-                  <div
-                    id="navbar"
-                    className="list-group list-group-horizontal sticky-top justify-content-between bg-white p-2 ps-4 mt-3 shadow-sm"
-                    style={{ top: '10px' }}
-                  >
-                    <div className="list-group list-group-horizontal">
-                      <div className="me-2 fs-4 ">Steps: </div>
-                      <a className="list-group-item rounded-left" href="#section1">
-                        Label 1
-                      </a>
-                      <a className="list-group-item " href="#section2">
-                        Label 2
-                      </a>
-                      <a className="list-group-item " href="#section3">
-                        Label 3
-                      </a>
-                    </div>
-                    <div className="list-group list-group-horizontal justify-content-end">
-                      <a className="list-group-item d-flex justify-content-between" href="#top">
-                        Top
-                      </a>
-                      <a className="list-group-item d-flex justify-content-between" href="#bottom">
-                        Bottom
-                      </a>
-                    </div>
-                  </div>
-
-                  <FormProvider {...form}>
-                    <form className="row p-3 needs-validation" noValidate>
-                      <SectionLabel id="section1" text={testData[0].section_label} />
-                      <NumberInputField id={uuid()} weight="bold" text="1. How many admitted ?" />
-
-                      {testData[0].section_fields.map((field, idx) => {
-                        return (
-                          <NumberInputField
-                            key={uuid()}
-                            id={uuid()}
-                            text={idx + '. ' + field.field_label}
-                          />
-                        );
-                      })}
-                      <div id="bottom" />
-                      <button className="btn btn-primary" type="button" onClick={onSubmit}>
-                        Submit
-                      </button>
-                    </form>
-                  </FormProvider>
-                </div>
-              </div>
-            </main>
+            {data == undefined ? (
+              <Fragment />
+            ) : (
+              <main className="container">
+                <FormHeader />
+                <FormProvider {...form}>
+                  <FormContents items={data.items} onSubmit={onSubmit} />
+                </FormProvider>
+              </main>
+            )}
           </div>
         </div>
       </div>
@@ -178,48 +89,81 @@ function Report() {
   );
 }
 
-function getData(): JsonReportDescriptor {
-  const items: JsonReportItem[] = nicuJSON.flatMap((section, idx) => {
-    const fields: JsonReportItem[] = section.section_fields.map((field): JsonReportItem => {
-      if ((field.field_type = 'number'))
-        return {
-          meta: { type: 'number' },
-          description: field.field_label,
-          answer: [[field.field_value == undefined ? '' : field.field_value.toString()]],
-        };
-    });
-    fields.push({ meta: { type: 'label' }, description: section.section_label, answer: [] });
-    return fields;
-  });
+function FormHeader(props: any) {
+  const date = new Date();
+  const user = 'User';
+  const locale = 'default';
+  const formName = 'NICU/Paeds ' + date.toLocaleDateString(locale, { month: 'long' }) + ' Report';
 
-  return {
-    meta: {
-      id: uuid(),
-      departmentId: '0',
-      submittedDate: 'NA',
-      submittedUserId: '0',
-    },
-    items: items,
-  };
-}
-
-type SectionProps = {
-  name: string;
-  items?: any[];
-};
-
-function Section(props: SectionProps): JSX.Element {
   return (
-    <div>
-      <div id={''} style={{ paddingTop: '80px' }}>
-        <div className="row justify-content-center">
-          <h1>{props.name}</h1>
+    <div className="row justify-content-center bg-light rounded ">
+      <div className="col-sm-12">
+        <div className="jumbotron m-3">
+          <h2 className="display-4">{formName}</h2>
+          <p className="lead">
+            Last updated on: {date.toLocaleDateString()}
+            <br />
+            By {user}
+            <br />
+            <i>Due on: {date.toLocaleDateString()}</i>
+          </p>
         </div>
-        {props.items.map((i) => (
-          <NumberInputField key={uuid()} id={uuid()} />
-        ))}
       </div>
     </div>
+  );
+}
+
+function FormContents(props: { items: JsonReportItem[]; onSubmit?: () => any }) {
+  const labels: Label[] = [];
+  const formElements = (
+    <form className="row p-3 needs-validation" noValidate>
+      {props.items.map((element, idx) => {
+        switch (element.meta.type) {
+          case 'label':
+            const label: Label = { id: 'section' + idx, text: element.description };
+            labels.push(label);
+            return <SectionLabel key={label.id} id={label.id} text={label.text} />;
+          case 'number':
+            return (
+              <NumberInputField
+                key={uuid()}
+                id={idx.toString()}
+                text={idx + '. ' + element.description}
+              />
+            );
+          default:
+            return (
+              <NumberInputField
+                key={uuid()}
+                id={idx.toString()}
+                text={idx + '. ' + element.description}
+              />
+            );
+        }
+      })}
+      <div id="bottom" />
+      <div className="row justify-content-center p-5">
+        <button className="btn btn-primary col-4" type="button" onClick={props.onSubmit}>
+          Submit
+        </button>
+      </div>
+      {/* DEMO ONLY */}
+      <div className="row justify-content-center">
+        <button className="btn btn-success col-4" type="button" onClick={props.onSubmit}>
+          Test Success
+        </button>
+        <button className="btn btn-danger col-4" type="button" onClick={props.onSubmit}>
+          Test Failed
+        </button>
+      </div>
+    </form>
+  );
+
+  return (
+    <Fragment>
+      <NavBar labels={labels} />
+      {formElements}
+    </Fragment>
   );
 }
 
@@ -289,11 +233,9 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
 
 function SectionLabel(props: { id?: string; text?: string }) {
   return (
-    <div className="row justify-content-center">
+    <div id={props.id} className="row justify-content-center">
       <div className="col-8">
-        <h1 id="section1" style={{ paddingTop: '80px' }}>
-          {props.text ?? 'Empty Label'}
-        </h1>
+        <h1 style={{ paddingTop: '80px' }}>{props.text ?? 'Empty Label'}</h1>
         <div className="dropdown-divider pb-4" />
       </div>
     </div>
@@ -305,11 +247,7 @@ type Label = {
   text?: string;
 };
 
-type NavBarProps = {
-  labels?: [Label];
-};
-
-function NavBar(props: { labels?: [any] }) {
+function NavBar(props: { labels: Label[] }) {
   return (
     <div
       id="navbar"
@@ -318,18 +256,13 @@ function NavBar(props: { labels?: [any] }) {
     >
       <div className="list-group list-group-horizontal">
         <div className="me-2 fs-4 ">Steps: </div>
-        {props.labels.map((label) => {
-          <a className="list-group-item rounded-left" href={'#' + label.id}>
-            {label.text}
-          </a>;
+        {props.labels.map((label, idx) => {
+          return (
+            <a key={label.id} className={'list-group-item'} href={'#' + label.id}>
+              {label.text}
+            </a>
+          );
         })}
-
-        <a className="list-group-item " href="#section2">
-          Label 2
-        </a>
-        <a className="list-group-item " href="#section3">
-          Label 3
-        </a>
       </div>
       <div className="list-group list-group-horizontal justify-content-end">
         <a className="list-group-item d-flex justify-content-between" href="#top">
@@ -341,6 +274,40 @@ function NavBar(props: { labels?: [any] }) {
       </div>
     </div>
   );
+}
+
+function apiGetData(): JsonReportDescriptor {
+  const items: ReportItem[] = nicuJSON.flatMap((section, idx) => {
+    const fields: ReportItem[] = [];
+    fields.push({
+      meta: { type: 'label' },
+      description: section.section_label,
+      answer: [],
+      validated: true,
+      invalid: false,
+    });
+    return fields.concat(
+      section.section_fields.map((field): ReportItem => {
+        if ((field.field_type = 'number'))
+          return {
+            meta: { type: 'number' },
+            description: field.field_label,
+            answer: [[field.field_value == undefined ? '' : field.field_value.toString()]],
+            validated: true,
+            invalid: false
+          };
+      }),
+    );
+  });
+  return {
+    meta: {
+      id: uuid(),
+      departmentId: '0',
+      submittedDate: 'NA',
+      submittedUserId: '0',
+    },
+    items: items,
+  };
 }
 
 export default Report;
