@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
-import { DepartmentName } from "../common/definitions/departments";
+import { DepartmentName } from '../common/definitions/departments';
 import * as ENV from '../utils/processEnv';
 
 const { Schema } = mongoose;
@@ -15,7 +15,7 @@ export enum Role {
 }
 
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
-export interface User extends Document {
+export interface UserInterface extends Document {
   username: string;
   password: string;
   name: string;
@@ -25,7 +25,7 @@ export interface User extends Document {
   updatedAt: Date;
 }
 
-const userSchema = new Schema<User>(
+const userSchema = new Schema<UserInterface>(
   {
     username: {
       type: String,

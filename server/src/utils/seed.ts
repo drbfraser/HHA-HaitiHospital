@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import User, { hashPassword, Role } from '../models/user';
+import User, { hashPassword, Role, UserInterface } from '../models/user';
 import Department from '../models/leaderboard';
 import { DepartmentName } from '../common/definitions/departments';
 
@@ -318,37 +318,36 @@ export const seedBioMech = async () => {
   try {
     await BioMech.deleteMany({});
     const users = await User.find();
-    users.map(async (user, index) => {
+    const numOfBioMechReportsToGenerate: number = 100;
+    for (let i = 0; i < numOfBioMechReportsToGenerate; i++) {
+      const randomUser = selectRandomUser(users);
       let bioMechReport;
-      switch (user.username) {
-        case 'user3':
-          bioMechReport = new BioMech({
-            user: user,
-            department: user.department,
-            equipmentName: 'X-Ray',
-            equipmentFault: 'Not Working',
-            equipmentPriority: bioMechEnum.Urgent,
-            imgPath: 'public/images/bioMech0.jpeg'
-          });
-          bioMechReport.save();
-          break;
-        case 'user4':
-          bioMechReport = new BioMech({
-            user: user,
-            department: user.department,
-            equipmentName: 'Surgery Lights',
-            equipmentFault: 'Lights are not turning on',
-            equipmentPriority: bioMechEnum.Important,
-            imgPath: 'public/images/bioMech1.jpeg'
-          });
-          bioMechReport.save();
-          break;
-        default:
-          break;
-      }
-    });
+      bioMechReport = new BioMech({
+        user: randomUser,
+        department: randomUser.department,
+        equipmentName: faker.lorem.words(),
+        equipmentFault: faker.lorem.words(),
+        equipmentPriority: randomEnumValue(bioMechEnum),
+        imgPath: 'public/images/bioMech0.jpeg'
+      });
+      bioMechReport.save();
+    }
     console.log('Biomechanical support seeded');
   } catch (err) {
     console.log(err);
   }
 };
+
+const selectRandomUser = (users: UserInterface[]): UserInterface => {
+  const randomUserIndex = Math.floor(Math.random() * users.length);
+  return users[randomUserIndex];
+};
+
+const randomEnumKey = (enumeration) => {
+  const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
+  const enumKey = keys[Math.floor(Math.random() * keys.length)];
+
+  return enumKey;
+};
+
+const randomEnumValue = (enumeration) => enumeration[randomEnumKey(enumeration)];
