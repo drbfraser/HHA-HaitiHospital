@@ -1,18 +1,25 @@
 import { useMemo } from 'react';
 
-export const DOTS = '...';
+export const DOTS: string = '...';
 
-const range = (start, end) => {
+interface UsePaginationProps {
+  totalCount: number;
+  pageSize: number;
+  siblingCount: number;
+  currentPage: number;
+}
+
+const range = (start: number, end: number): number[] => {
   let length = end - start + 1;
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
-export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentPage }) => {
+export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentPage }: UsePaginationProps): (string | number)[] => {
   const paginationRange = useMemo(() => {
-    const totalPageCount = Math.ceil(totalCount / pageSize);
+    const totalPageCount: number = Math.ceil(totalCount / pageSize);
 
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
-    const totalPageNumbers = siblingCount + 5;
+    const totalPageNumbers: number = siblingCount + 5;
 
     /*
       If the number of pages is less than the page numbers we want to show in our
@@ -22,19 +29,18 @@ export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentP
       return range(1, totalPageCount);
     }
 
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
-    const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPageCount);
+    const leftSiblingIndex: number = Math.max(currentPage - siblingCount, 1);
+    const rightSiblingIndex: number = Math.min(currentPage + siblingCount, totalPageCount);
 
     /*
       We do not want to show dots if there is only one position left 
       after/before the left/right page count as that would lead to a change if our Pagination
       component size which we do not want
     */
-    const shouldShowLeftDots = leftSiblingIndex > 2;
-    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
-
-    const firstPageIndex = 1;
-    const lastPageIndex = totalPageCount;
+    const shouldShowLeftDots: boolean = leftSiblingIndex > 2;
+    const shouldShowRightDots: boolean = rightSiblingIndex < totalPageCount - 2;
+    const firstPageIndex: number = 1;
+    const lastPageIndex: number = totalPageCount;
 
     if (!shouldShowLeftDots && shouldShowRightDots) {
       let leftItemCount = 3 + 2 * siblingCount;

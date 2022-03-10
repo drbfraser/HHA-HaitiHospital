@@ -2,7 +2,16 @@ import classnames from 'classnames';
 import { usePagination, DOTS } from './usePagination';
 import './pagination.scss';
 
-const Pagination = props => {
+interface PaginationProps {
+  onPageChange(page: any): void;
+  totalCount: number;
+  siblingCount?: number;
+  currentPage: number;
+  pageSize: number;
+  className: string;
+}
+
+const Pagination = (props: PaginationProps) => {
   const {
     onPageChange,
     totalCount,
@@ -12,7 +21,8 @@ const Pagination = props => {
     className
   } = props;
 
-  const paginationRange = usePagination({
+  // pagination range are what values are being displayed e.g. < 1 2 3 4 5 ... 9 >
+  const paginationRange: (string | number)[] = usePagination({
     currentPage,
     totalCount,
     siblingCount,
