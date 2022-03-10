@@ -17,19 +17,32 @@ import {
   JsonReportDescriptor,
   JsonReportItem,
   JsonReportItemMeta,
+  JsonItemAnswer
 } from 'common/definitions/json_report';
 
 interface ReportData extends JsonReportDescriptor {
+  reportItems: ReportItem[];
   validated?: string;
 }
 
 interface ReportItem extends JsonReportItem {
   validated: boolean;
-  invalid: boolean;
+  valid: boolean;
+  errorMessage?: string;
 }
 
-function Report() {
-  const [data, setData] = useState<ReportData>(undefined);
+type Validation = {
+  isValidated: boolean;
+  isValid: boolean;
+};
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+export function Report() {
+  const [data, setData] = useState<JsonReportDescriptor>(undefined);
+  const [isValid, setValid] = useState(true);
   const form = useForm();
   const history = useHistory();
   const { t, i18n } = useTranslation();
@@ -40,11 +53,10 @@ function Report() {
   };
 
   useEffect(() => {
-    sleep(1000).then(() => {
-      const data: JsonReportDescriptor = apiGetData();
-      setData(data);
-      $('body').scrollspy({ target: '#navbar' });
-    });
+    const data = mockApiData();
+    console.log("API");
+    console.log(data);
+    setData(data);
   }, []);
 
   const onSubmit = async () => {
@@ -53,16 +65,37 @@ function Report() {
 
     //trigger validation on fields
     const result = await form.trigger();
-    if (!result) {
-      console.log('validation failed');
-    }
+    if (!result) setValid(false);
     console.log(data);
-    assembleData(data);
+    // assemble data to send.
   };
 
-  const assembleData = (data: any) => {
-    // Todo: prepare data for send.
+  // Demo behavior to show input error messages from server
+  const onFailure = async () => {
+    onSubmit();
+    const validatedItems = data.items.map((item) => {
+      (item as ReportItem).valid = Math.random() < 0.5;
+      (item as ReportItem).errorMessage = 'Invalid input';
+      console.log(item);
+      return item;
+    });
+    const newData = { ...data };
+    newData.items = validatedItems;
+
+    // Simmulate data transfer time
+    sleep(1000).then(() => {
+      console.log("B4 setData: \n");
+      console.log(data.items);
+      setData(newData);
+    });
   };
+
+  if(data != undefined){
+    if(data.items != undefined)
+      console.log("B4 render: \n");
+      console.log(data.items);
+  }
+
   return (
     <div id="top" style={{ paddingBottom: '8%' }}>
       <div className="container-fluid">
@@ -78,7 +111,11 @@ function Report() {
               <main className="container">
                 <FormHeader />
                 <FormProvider {...form}>
-                  <FormContents items={data.items} onSubmit={onSubmit} />
+                  <FormContents
+                    items={data.items as ReportItem[]}
+                    onFailure={onFailure}
+                    onSubmit={onSubmit}
+                  />
                 </FormProvider>
               </main>
             )}
@@ -94,7 +131,7 @@ function FormHeader(props: any) {
   const user = 'User';
   const locale = 'default';
   const formName = 'NICU/Paeds ' + date.toLocaleDateString(locale, { month: 'long' }) + ' Report';
-
+  
   return (
     <div className="row justify-content-center bg-light rounded ">
       <div className="col-sm-12">
@@ -113,11 +150,22 @@ function FormHeader(props: any) {
   );
 }
 
-function FormContents(props: { items: JsonReportItem[]; onSubmit?: () => any }) {
+function FormContents(props: {
+  items: ReportItem[];
+  onSubmit?: () => any;
+  onSuccess?: () => {};
+  onFailure?: () => {};
+}) {
   const labels: Label[] = [];
+  console.log("FORM CONTENT: ");
+  console.log(props.items);
   const formElements = (
     <form className="row p-3 needs-validation" noValidate>
       {props.items.map((element, idx) => {
+        // console.log( element.answer);
+        let value = '0'
+        if(element.answer.length > 0)
+          value = element.answer[0]
         switch (element.meta.type) {
           case 'label':
             const label: Label = { id: 'section' + idx, text: element.description };
@@ -129,16 +177,13 @@ function FormContents(props: { items: JsonReportItem[]; onSubmit?: () => any }) 
                 key={uuid()}
                 id={idx.toString()}
                 text={idx + '. ' + element.description}
+                valid={element.valid}
+                errorMessage={element.errorMessage}
+                value={parseInt(value)}
               />
             );
           default:
-            return (
-              <NumberInputField
-                key={uuid()}
-                id={idx.toString()}
-                text={idx + '. ' + element.description}
-              />
-            );
+            <Fragment/>
         }
       })}
       <div id="bottom" />
@@ -149,10 +194,10 @@ function FormContents(props: { items: JsonReportItem[]; onSubmit?: () => any }) 
       </div>
       {/* DEMO ONLY */}
       <div className="row justify-content-center">
-        <button className="btn btn-success col-4" type="button" onClick={props.onSubmit}>
+        <button className="btn btn-success col-4" type="button" onClick={props.onSuccess}>
           Test Success
         </button>
-        <button className="btn btn-danger col-4" type="button" onClick={props.onSubmit}>
+        <button className="btn btn-danger col-4" type="button" onClick={props.onFailure}>
           Test Failed
         </button>
       </div>
@@ -184,14 +229,15 @@ type NumberInputFieldProps = {
   weight?: string;
   indent?: boolean;
   isHeader?: boolean;
-  invalid?: boolean;
-  invalidMsg?: string;
+  valid?: boolean;
+  errorMessage?: string;
+  readOnly?: boolean;
 };
 
 function NumberInputField(props: NumberInputFieldProps): JSX.Element {
   const { register } = useFormContext();
-  const [invalid] = useState(props.invalid);
   const { t, i18n } = useTranslation();
+  const [dirty, setDirty] = useState(false);
   const text = props.text ?? 'N/A';
   const getWeightCss = (w: string) => {
     switch (w) {
@@ -203,6 +249,7 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
         return ' ';
     }
   };
+  const isInvalid = !props.valid && !dirty;
   return (
     <div className="row justify-content-center ">
       <div className="form-group row col-sm-12 col-lg-6 col-xl-6 p-1 m-1">
@@ -221,10 +268,23 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
           <input
             id={props.id}
             type={'number'}
-            className={'form-control ' + (invalid ? 'is-invalid' : '')}
-            {...register(props.id)}
+            className={
+              (props.readOnly ? 'form-control-plaintext' : 'form-control') +
+              (isInvalid ? ' is-invalid' : '')
+            }
+            readOnly={props.readOnly}
+            defaultValue={props.value ?? -1}
+            {...register(props.id, {
+              onChange: (e) => {
+                setDirty(true);
+              },
+            })}
           />
-          <small></small>
+          {isInvalid ? (
+            <small className="invalid-feedback">{props.errorMessage ?? 'Error'}</small>
+          ) : (
+            ''
+          )}
         </div>
       </div>
     </div>
@@ -276,7 +336,7 @@ function NavBar(props: { labels: Label[] }) {
   );
 }
 
-function apiGetData(): JsonReportDescriptor {
+function mockApiData(): JsonReportDescriptor {
   const items: ReportItem[] = nicuJSON.flatMap((section, idx) => {
     const fields: ReportItem[] = [];
     fields.push({
@@ -284,21 +344,29 @@ function apiGetData(): JsonReportDescriptor {
       description: section.section_label,
       answer: [],
       validated: true,
-      invalid: false,
+      valid: true,
+      errorMessage: '',
     });
+    const a = section.section_fields.map((field): ReportItem => {
+      if ((field.field_type = 'number')){
+        let b = {
+          meta: { type: 'number' },
+          description: field.field_label,
+          answer: [Math.floor(Math.random()*100).toString()],
+          validated: true,
+          valid: true,
+          errorMessage: '',
+        };
+        return b
+      }
+    })
+    console.log(a);
+    
     return fields.concat(
-      section.section_fields.map((field): ReportItem => {
-        if ((field.field_type = 'number'))
-          return {
-            meta: { type: 'number' },
-            description: field.field_label,
-            answer: [[field.field_value == undefined ? '' : field.field_value.toString()]],
-            validated: true,
-            invalid: false
-          };
-      }),
+      a
     );
   });
+
   return {
     meta: {
       id: uuid(),
@@ -306,7 +374,7 @@ function apiGetData(): JsonReportDescriptor {
       submittedDate: 'NA',
       submittedUserId: '0',
     },
-    items: items,
+    items: items
   };
 }
 
