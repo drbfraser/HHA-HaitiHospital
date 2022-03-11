@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Json } from 'constants/interfaces';
@@ -8,16 +8,25 @@ import { useTranslation } from 'react-i18next';
 import { renderBasedOnRole } from '../../actions/roleActions';
 import { useAuthState } from 'Context';
 import { Role } from '../../constants/interfaces';
+import Pagination from 'components/pagination/Pagination';
 interface MessagePanelProps {}
 
 const MessagePanel = (props: MessagePanelProps) => {
   const { t } = useTranslation();
-  const [count, setCount] = useState<number>(5);
   const [rerender, setRerender] = useState<boolean>(false);
   const authState = useAuthState();
 
   const [msgsJson, setMsgJson] = useState<Json[]>([]);
-  const dbApiForMessageBoard = '/api/message-board/';
+  const dbApiForMessageBoard: string = '/api/message-board/';
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize: number = 10;
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
+    return msgsJson.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, msgsJson]);
 
   useEffect(() => {
     let isMounted = true;
@@ -46,7 +55,7 @@ const MessagePanel = (props: MessagePanelProps) => {
       apiSource.cancel();
       isMounted = false;
     };
-  }, [count, rerender]);
+  }, [rerender]);
 
   const toggleRerender = async () => {
     setRerender(!rerender);
@@ -56,7 +65,7 @@ const MessagePanel = (props: MessagePanelProps) => {
   return (
     <>
       <div className="my-3 p-3 bg-body rounded shadow-sm">
-        {/* Add message */}
+        {/* Add message button */}
         <div className="d-sm-flex align-items-center">
           <h6 className="border-bottom pb-2 mb-0">{t('messageBoardRecentUpdates')}</h6>
           <div className="ml-auto">
@@ -71,33 +80,19 @@ const MessagePanel = (props: MessagePanelProps) => {
         </div>
 
         {/* Messsage row */}
-        {msgsJson.map((msgJson, index) => {
-          if (index < count) {
-            return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
-          } else {
-            return null;
-          }
+        {currentTableData.map((msgJson, index) => {
+          return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
         })}
 
-        {/* Expand/shrink buttons */}
-        <div className="d-sm-flex jutify-content-end">
-          <div className="ml-auto d-sm-flex">
-            <button
-              className="btn btn-md btn-outline-secondary"
-              onClick={() => count <= msgsJson.length && setCount(count + 5)}
-            >
-              {t('messageBoardMore')}
-            </button>
-
-            <button
-              className="btn btn-md btn-outline-secondary"
-              onClick={() => count > 0 && setCount(count - 5)}
-            >
-              {t('messageBoardLess')}
-            </button>
-          </div>
-        </div>
       </div>
+      {/* Pagination bar */}
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={msgsJson.length}
+        pageSize={pageSize}
+        onPageChange={page => setCurrentPage(page)}
+      />
     </>
   );
 };
