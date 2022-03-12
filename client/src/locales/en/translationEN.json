@@ -248,6 +248,13 @@
   "brokenKitReportDelete": "Delete",
   "brokenKitReportAuthor": "Author: ",
 
+  "employeeOfTheMonthEdit": "Update Employee Of The Month",
+  "employeeOfTheMonthTitle": "Employee of the month for ",
+  "employeeOfTheMonthDate": "Date",
+  "employeeOfTheMonthName": "Name",
+  "employeeOfTheMonthDepartment": "Department",
+  "employeeOfTheMonthDescription": "Description",
+
   "adminAddUser": "Add User",
   "adminEdit": "Edit",
   "adminDelete": "Delete",
@@ -275,5 +282,18 @@
 
   "adminEditUserLeaveBlank": "Leave blank to keep it unchanged",
   "adminAlertUserDeleted": "User deleted",
-  "adminAreYouSureToDeleteTheUser": "Are you sure you want to delete this user?"
+  "adminAreYouSureToDeleteTheUser": "Are you sure you want to delete this user?",
+
+  "monthJanuary": "January",
+  "monthFebruary": "February",
+  "monthMarch": "March",
+  "monthApril": "April",
+  "monthMay": "May",
+  "monthJune": "June",
+  "monthJuly": "July",
+  "monthAugust": "August",
+  "monthSeptember": "September",
+  "monthOctober": "October",
+  "monthNovember": "November",
+  "monthDecember": "December"
 }
