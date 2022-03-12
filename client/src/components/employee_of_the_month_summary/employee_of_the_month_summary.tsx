@@ -51,7 +51,7 @@ export const EmployeeOfTheMonthSummary = ({ employeeOfTheMonth }) => {
   };
 
   useEffect(() => {
-    // Only execute once case study data has been successfully passed to this component
+    // Only execute once employee of the month data has been successfully passed to this component
     if (employeeOfTheMonth.imgPath !== undefined) getEmployeeOfTheMonthImage();
   }, [employeeOfTheMonth]);
 
