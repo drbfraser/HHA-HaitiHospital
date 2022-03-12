@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
 import { renderBasedOnRole } from 'actions/roleActions';
 import i18n from 'i18next';
+import Pagination from 'components/pagination/Pagination';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -21,7 +22,17 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
-  const caseStudiesUrl = '/api/case-studies';
+  const caseStudiesUrl: string = '/api/case-studies';
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize: number = 10;
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
+    return caseStudies.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, caseStudies]);
+  const caseStudyNumberIndex = (currentPage * pageSize) - pageSize;
 
   const getCaseStudies = useCallback(async () => {
     const res = await axios.get(caseStudiesUrl);
@@ -103,10 +114,10 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
               </tr>
             </thead>
             <tbody>
-              {caseStudies.map((item, index) => {
+              {currentTableData.map((item, index) => {
                 return (
                   <tr key={item._id}>
-                    <th scope="row">{index + 1}</th>
+                    <th scope="row">{caseStudyNumberIndex + index + 1}</th>
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
                     <td>
@@ -157,6 +168,13 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
               })}
             </tbody>
           </table>
+          <Pagination
+            className="pagination-bar"
+            currentPage={currentPage}
+            totalCount={caseStudies.length}
+            pageSize={pageSize}
+            onPageChange={page => setCurrentPage(page)}
+          />
         </div>
       </main>
     </div>
