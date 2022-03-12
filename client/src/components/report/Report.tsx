@@ -17,15 +17,16 @@ import {
   JsonReportDescriptor,
   JsonReportItem,
   JsonReportItemMeta,
-  JsonItemAnswer
+  JsonItemAnswer,
 } from 'common/definitions/json_report';
+import * as MockApi from './MockApi';
 
-interface ReportData extends JsonReportDescriptor {
+export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
   validated?: string;
 }
 
-interface ReportItem extends JsonReportItem {
+export interface ReportItem extends JsonReportItem {
   validated: boolean;
   valid: boolean;
   errorMessage?: string;
@@ -42,22 +43,32 @@ function getRandomInt(max) {
 
 export function Report() {
   const [data, setData] = useState<JsonReportDescriptor>(undefined);
-  const [isValid, setValid] = useState(true);
+  const [readonly, setReadonly] = useState(false);
   const form = useForm();
   const history = useHistory();
   const { t, i18n } = useTranslation();
   const testData = nicuJSON;
 
-  const sleep = (milliseconds) => {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  };
-
   useEffect(() => {
-    const data = mockApiData();
-    console.log("API");
+    const data = MockApi.getData();
+    console.log('API');
     console.log(data);
     setData(data);
   }, []);
+
+  const submitData = async (formData: { [key: string]: any }) => {
+    const updatedItems = data.items.map((item) => {
+      const newItem = { ...item };
+      newItem.answer = [formData[item.meta.id]];
+      return newItem;
+    });
+    const newData = { ...data };
+    newData.items = updatedItems;
+    await MockApi.sendData(newData, 1000).then((data) => {
+      setData(data);
+      setReadonly(true);
+    });
+  };
 
   const onSubmit = async () => {
     //get filled values
@@ -65,35 +76,40 @@ export function Report() {
 
     //trigger validation on fields
     const result = await form.trigger();
-    if (!result) setValid(false);
-    console.log(data);
+    // if (!result) setValid(false);
     // assemble data to send.
+    submitData(data);
   };
 
   // Demo behavior to show input error messages from server
   const onFailure = async () => {
-    onSubmit();
-    const validatedItems = data.items.map((item) => {
-      (item as ReportItem).valid = Math.random() < 0.5;
-      (item as ReportItem).errorMessage = 'Invalid input';
-      console.log(item);
-      return item;
+    //get filled values
+    const formData = form.getValues();
+
+    //trigger validation on fields
+    const result = await form.trigger();
+    // if (!result) setValid(false);
+    // assemble data to send.
+    const updatedItems = data.items.map((item) => {
+      const newItem = { ...item };
+      newItem.answer = [formData[item.meta.id]];
+      return newItem;
     });
     const newData = { ...data };
-    newData.items = validatedItems;
-
-    // Simmulate data transfer time
-    sleep(1000).then(() => {
-      console.log("B4 setData: \n");
-      console.log(data.items);
-      setData(newData);
+    newData.items = updatedItems;
+    console.log(newData);
+    await MockApi.sendFaultyData(newData, 1000).then((data) => {
+      setData(data);
     });
   };
 
-  if(data != undefined){
-    if(data.items != undefined)
-      console.log("B4 render: \n");
-      console.log(data.items);
+  const handleEditBtnClicked = () => {
+    setReadonly(false);
+  };
+
+  if (data != undefined) {
+    if (data.items != undefined) console.log('B4 render: \n');
+    console.log(data.items);
   }
 
   return (
@@ -115,6 +131,19 @@ export function Report() {
                     items={data.items as ReportItem[]}
                     onFailure={onFailure}
                     onSubmit={onSubmit}
+                    readOnly={readonly}
+                    navbarButtons={[
+                      <button
+                        type="button"
+                        className="btn btn-primary bi bi-pencil-square"
+                        hidden={!readonly}
+                        onClick={() => {
+                          setReadonly(false);
+                        }}
+                      >
+                        Edit
+                      </button>,
+                    ]}
                   />
                 </FormProvider>
               </main>
@@ -131,7 +160,7 @@ function FormHeader(props: any) {
   const user = 'User';
   const locale = 'default';
   const formName = 'NICU/Paeds ' + date.toLocaleDateString(locale, { month: 'long' }) + ' Report';
-  
+
   return (
     <div className="row justify-content-center bg-light rounded ">
       <div className="col-sm-12">
@@ -152,20 +181,19 @@ function FormHeader(props: any) {
 
 function FormContents(props: {
   items: ReportItem[];
+  readOnly: boolean;
   onSubmit?: () => any;
-  onSuccess?: () => {};
-  onFailure?: () => {};
+  onFailure?: () => void;
+  navbarButtons?: JSX.Element[];
 }) {
   const labels: Label[] = [];
-  console.log("FORM CONTENT: ");
+  console.log('FORM CONTENT: ');
   console.log(props.items);
   const formElements = (
     <form className="row p-3 needs-validation" noValidate>
       {props.items.map((element, idx) => {
-        // console.log( element.answer);
-        let value = '0'
-        if(element.answer.length > 0)
-          value = element.answer[0]
+        let value = '0';
+        if (element.answer.length > 0) value = element.answer[0];
         switch (element.meta.type) {
           case 'label':
             const label: Label = { id: 'section' + idx, text: element.description };
@@ -174,30 +202,38 @@ function FormContents(props: {
           case 'number':
             return (
               <NumberInputField
-                key={uuid()}
-                id={idx.toString()}
+                key={element.meta.id}
+                id={element.meta.id}
                 text={idx + '. ' + element.description}
                 valid={element.valid}
                 errorMessage={element.errorMessage}
                 value={parseInt(value)}
+                readOnly={props.readOnly}
               />
             );
           default:
-            <Fragment/>
+            <Fragment />;
         }
       })}
       <div id="bottom" />
       <div className="row justify-content-center p-5">
-        <button className="btn btn-primary col-4" type="button" onClick={props.onSubmit}>
+        <button
+          className="btn btn-primary col-4"
+          type="button"
+          onClick={props.onSubmit}
+          hidden={props.readOnly}
+        >
           Submit
         </button>
       </div>
       {/* DEMO ONLY */}
       <div className="row justify-content-center">
-        <button className="btn btn-success col-4" type="button" onClick={props.onSuccess}>
-          Test Success
-        </button>
-        <button className="btn btn-danger col-4" type="button" onClick={props.onFailure}>
+        <button
+          className="btn btn-danger col-4"
+          type="button"
+          onClick={props.onFailure}
+          hidden={props.readOnly}
+        >
           Test Failed
         </button>
       </div>
@@ -206,7 +242,7 @@ function FormContents(props: {
 
   return (
     <Fragment>
-      <NavBar labels={labels} />
+      <NavBar labels={labels} buttons={props.navbarButtons ?? []} />
       {formElements}
     </Fragment>
   );
@@ -269,8 +305,7 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
             id={props.id}
             type={'number'}
             className={
-              (props.readOnly ? 'form-control-plaintext' : 'form-control') +
-              (isInvalid ? ' is-invalid' : '')
+              (false ? 'form-control-plaintext' : 'form-control') + (isInvalid ? ' is-invalid' : '')
             }
             readOnly={props.readOnly}
             defaultValue={props.value ?? -1}
@@ -307,15 +342,22 @@ type Label = {
   text?: string;
 };
 
-function NavBar(props: { labels: Label[] }) {
+type NavBarProps = {
+  labels: Label[];
+  buttons: JSX.Element[];
+};
+
+function NavBar(props: NavBarProps) {
   return (
     <div
       id="navbar"
       className="list-group list-group-horizontal sticky-top justify-content-between bg-white p-2 ps-4 mt-3 shadow-sm"
-      style={{ top: '10px' }}
     >
       <div className="list-group list-group-horizontal">
         <div className="me-2 fs-4 ">Steps: </div>
+        <a className="list-group-item d-flex justify-content-between" href="#top">
+          Start
+        </a>
         {props.labels.map((label, idx) => {
           return (
             <a key={label.id} className={'list-group-item'} href={'#' + label.id}>
@@ -323,59 +365,15 @@ function NavBar(props: { labels: Label[] }) {
             </a>
           );
         })}
-      </div>
-      <div className="list-group list-group-horizontal justify-content-end">
-        <a className="list-group-item d-flex justify-content-between" href="#top">
-          Top
-        </a>
         <a className="list-group-item d-flex justify-content-between" href="#bottom">
-          Bottom
+          Ends
         </a>
+      </div>
+      <div className="list-group list-group-horizontal justify-content-end align-middle">
+        {props.buttons}
       </div>
     </div>
   );
-}
-
-function mockApiData(): JsonReportDescriptor {
-  const items: ReportItem[] = nicuJSON.flatMap((section, idx) => {
-    const fields: ReportItem[] = [];
-    fields.push({
-      meta: { type: 'label' },
-      description: section.section_label,
-      answer: [],
-      validated: true,
-      valid: true,
-      errorMessage: '',
-    });
-    const a = section.section_fields.map((field): ReportItem => {
-      if ((field.field_type = 'number')){
-        let b = {
-          meta: { type: 'number' },
-          description: field.field_label,
-          answer: [Math.floor(Math.random()*100).toString()],
-          validated: true,
-          valid: true,
-          errorMessage: '',
-        };
-        return b
-      }
-    })
-    console.log(a);
-    
-    return fields.concat(
-      a
-    );
-  });
-
-  return {
-    meta: {
-      id: uuid(),
-      departmentId: '0',
-      submittedDate: 'NA',
-      submittedUserId: '0',
-    },
-    items: items
-  };
 }
 
 export default Report;
