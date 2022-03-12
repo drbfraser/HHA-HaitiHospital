@@ -257,6 +257,8 @@
   "employeeOfTheMonthDepartment": "Department",
   "employeeOfTheMonthDescription": "Description",
   "employeeOfTheMonthBack": "Back",
+  "employeeOfTheMonthUploadImage": "Upload Image",
+  "employeeOfTheMonthSubmitForm": "Submit Form",
 
   "adminAddUser": "Add User",
   "adminEdit": "Edit",

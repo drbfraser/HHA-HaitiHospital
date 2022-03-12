@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
+import { DepartmentName } from 'common/definitions/departments';
 import axios from 'axios';
 import './employee_of_the_month_form.css';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +26,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
     formData.append('file', selectedFile);
 
     await axios
-      .post('/api/employee-of-the-month', formData)
+      .put('/api/employee-of-the-month', formData)
       .then(() => {
         toast.success('Employee of the month successfully updated!');
         reset({});
@@ -48,6 +49,66 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
               {t('employeeOfTheMonthBack')}
             </button>
           </Link>
+        </div>
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="form-group col-md-6">
+              <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
+              <div>
+                <label htmlFor="Employee Name" className="form-label">
+                  {t('employeeOfTheMonthName')}
+                </label>
+                <input
+                  className="form-control mb-2 mt-0"
+                  type="text"
+                  id="employee-name"
+                  required
+                  {...register('name', { required: true })}
+                ></input>
+                <label htmlFor="Employee Department" className="form-label">
+                  {t('employeeOfTheMonthDepartment')}
+                </label>
+                <select
+                  className="form-select mb-2 mt-0"
+                  id="employee-department"
+                  aria-label="Default select example"
+                  required
+                  {...register('department', { required: true })}
+                  defaultValue=""
+                >
+                  <option value="">{t('brokenKitReportClickToSelectPriority')}</option>
+                  <option value={DepartmentName.NicuPaeds}>{t('NICU/Paeds')}</option>
+                  <option value={DepartmentName.Maternity}>{t('Maternity')}</option>
+                  <option value={DepartmentName.Rehab}>{t('Rehab')}</option>
+                  <option value={DepartmentName.CommunityHealth}>{t('Community & Health')}</option>
+                </select>
+                <label htmlFor="Employee Description" className="form-label">
+                  {t('employeeOfTheMonthDescription')}
+                </label>
+                <textarea
+                  className="form-control mb-2 mt-0"
+                  id="employee-description"
+                  required
+                  {...register('description', { required: true })}
+                ></textarea>
+                <label htmlFor="Employee Image" className="form-label mb-2">
+                  {t('employeeOfTheMonthUploadImage')}
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  id="employee-image"
+                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                />
+              </div>
+              <div>
+                <button className="btn btn-primary mt-4 " type="submit">
+                  {t('employeeOfTheMonthSubmitForm')}
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </main>
     </div>
