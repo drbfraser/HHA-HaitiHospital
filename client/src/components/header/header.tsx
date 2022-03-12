@@ -34,8 +34,18 @@ const HeaderView = (props: HeaderViewProps) => {
     return <h4 className="text-secondary">{t('headerCaseStudyForm')}</h4>;
   } else if (location.pathname.slice(1) === 'employee-of-the-month') {
     return <h4 className="text-secondary">{t('headerEmployeeOfTheMonth')}</h4>;
+  } else if (
+    location.pathname.split('/')[1] === 'employee-of-the-month' &&
+    location.pathname.split('/')[2] === 'form'
+  ) {
+    return <h4 className="text-secondary">{t('headerEmployeeOfTheMonthForm')}</h4>;
   } else if (location.pathname.slice(1) === 'biomechanic') {
     return <h4 className="text-secondary">{t('headerBiomechanicalSupport')}</h4>;
+  } else if (
+    location.pathname.split('/')[1] === 'biomechanic' &&
+    location.pathname.split('/')[2] === 'report-broken-kit'
+  ) {
+    return <h4 className="text-secondary">{t('headerBiomechanicalSupportForm')}</h4>;
   } else if (location.pathname.slice(1) === 'brokenkit') {
     return <h4 className="text-secondary">{t('headerBrokenKitReport')}</h4>;
   } else if (location.pathname.split('/')[1] === 'caseStudyView') {

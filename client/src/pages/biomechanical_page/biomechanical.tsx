@@ -75,7 +75,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
         <section>
           <div className="row my-2 justify-items-center">
             <div className="col-sm-6 col-md-6 col-lg-6">
-              <Link to={'/biomechanic/report_broken_kit'}>
+              <Link to={'/biomechanic/report-broken-kit'}>
                 <button type="button" className="btn btn-outline-dark">
                   {t('bioSupportReportBrokenKit')}
                 </button>

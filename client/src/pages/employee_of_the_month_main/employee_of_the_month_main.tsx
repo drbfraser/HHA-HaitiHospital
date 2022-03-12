@@ -6,7 +6,7 @@ import Header from 'components/header/header';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month_summary/employee_of_the_month_summary';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import './employee_of_the_month.css';
+import './employee_of_the_month_main.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
 import { renderBasedOnRole } from 'actions/roleActions';
@@ -35,7 +35,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
   }, []);
 
   return (
-    <div className={'employee-of-the-month-main'}>
+    <div className="employee-of-the-month-main">
       <SideBar />
       <main className="container-fluid main-region">
         <Header />

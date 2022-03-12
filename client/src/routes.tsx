@@ -19,6 +19,7 @@ import { Department } from 'pages/department/department';
 import AddReport from 'pages/add_report/add_report';
 import DepartmentReport from 'pages/department_report/department_report';
 import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employee_of_the_month_main';
+import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 
@@ -97,7 +98,7 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/biomechanic/report_broken_kit',
+    path: '/biomechanic/report-broken-kit',
     component: BrokenKitReport,
     isPrivate: true,
     rolesAllowed: [],
@@ -164,6 +165,13 @@ const routes = [
     component: MessageBoardMain,
     loginRequired: true,
     rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/form',
+    component: EmployeeOfTheMonthForm,
+    loginRequired: true,
+    rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
   },
   {
