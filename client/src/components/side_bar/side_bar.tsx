@@ -91,6 +91,19 @@ const Sidebar = (props: SidebarProps) => {
               </NavLink>
             }
           </li>
+          <li>
+            {
+              <NavLink
+                to="/employee-of-the-month"
+                className="nav-link link-light"
+                exact
+                activeClassName="active"
+              >
+                <i className="bi bi-star-fill me-2" />
+                <span className="text text-light">{t('sidebarEmployeeOfTheMonth')}</span>
+              </NavLink>
+            }
+          </li>
 
           <li className="border-top my-2" />
 
@@ -101,7 +114,7 @@ const Sidebar = (props: SidebarProps) => {
           ]) ? (
             <li>
               <NavLink
-                to="/general_reports"
+                to="/general-reports"
                 className="nav-link link-light"
                 exact
                 activeClassName="active"
