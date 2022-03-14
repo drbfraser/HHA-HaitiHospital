@@ -99,6 +99,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   accept="image/*"
                   className="form-control"
                   id="employee-image"
+                  required
                   onChange={(e) => setSelectedFile(e.target.files[0])}
                 />
               </div>
