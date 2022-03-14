@@ -15,7 +15,7 @@ export enum Role {
 }
 
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
-export interface UserInterface extends Document {
+export interface User extends Document {
   username: string;
   password: string;
   name: string;
@@ -25,7 +25,7 @@ export interface UserInterface extends Document {
   updatedAt: Date;
 }
 
-const userSchema = new Schema<UserInterface>(
+const userSchema = new Schema<User>(
   {
     username: {
       type: String,
