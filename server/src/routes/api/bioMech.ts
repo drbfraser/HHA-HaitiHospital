@@ -5,6 +5,7 @@ import { validateInput } from '../../middleware/inputSanitization';
 import BioMech from '../../models/bioMech';
 import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
+import { msgCatchError } from 'utils/sanitizationMessages';
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router.get('/', async (req: Request, res: Response) => {
       .then((response: any) => res.status(200).json(response))
       .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -27,7 +28,7 @@ router.get('/:id', async (req: Request, res: Response) => {
       .then((response: any) => res.status(200).json(response))
       .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -37,7 +38,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
     const department = req.user.department;
     const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
 
-    let imgPath: String = "";
+    let imgPath: String = '';
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
@@ -56,7 +57,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
       .then(() => res.status(201).json('BioMech Report Submitted Successfully'))
       .catch((err: any) => res.status(400).json('BioMech Report submission failed: ' + err));
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong:' + err });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -67,7 +68,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
       .then(() => res.sendStatus(204))
       .catch((err: any) => res.status(400).json('Failed to delete bio mech: ' + err));
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 

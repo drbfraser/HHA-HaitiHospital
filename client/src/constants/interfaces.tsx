@@ -1,4 +1,4 @@
-import { DepartmentName } from "../common/definitions/departments";
+import { DepartmentName } from '../common/definitions/departments';
 
 export interface Json {
   [x: string]: string | number | boolean | Date | Json | JsonArray;
