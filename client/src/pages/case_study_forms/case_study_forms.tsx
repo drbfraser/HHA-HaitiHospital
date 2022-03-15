@@ -8,6 +8,7 @@ import axios from 'axios';
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import DbErrorHandler from 'actions/http_error_handler';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -60,9 +61,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         props.history.push('/case-study');
       })
       .catch((error) => {
-        console.error('Something went wrong!', error.message);
+        DbErrorHandler(error, props.history);
         setSubmissionStatus('failure');
-        failureMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
       });
   };
   const { t } = useTranslation();
@@ -72,7 +72,6 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       <SideBar />
 
       <main className="container-fluid main-region">
-        {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
         <Header />
 
         <div className="ml-3 mb-3 d-flex justify-content-start">
@@ -185,16 +184,12 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               {...register('patientStory.caseStudyStory', { required: true })}
             ></textarea>
             <label className="form-label">{t('caseStudyFormUploadImage')}</label>
-            {/*<div>*/}
-            {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-            {/*    <input id="files" style={{visibility:"hidden"}} type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
-            {/*</div>*/}
-            {/* we cannot change the default labels on input box (buttons), they are hard-coded in browsers*/}
             <input
               type="file"
               accept="image/*"
               className="form-control"
               id="customFile"
+              required
               onChange={(e) => setSelectedFile(e.target.files[0])}
             />
             <div className="form-check mt-2 mb-2">
@@ -285,6 +280,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               accept="image/*"
               className="form-control"
               id="customFile"
+              required
               onChange={(e) => setSelectedFile(e.target.files[0])}
             />
             <div className="form-check mt-2 mb-2">
@@ -372,6 +368,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               accept="image/*"
               className="form-control"
               id="customFile"
+              required
               onChange={(e) => setSelectedFile(e.target.files[0])}
             />
             <div className="form-check mt-2 mb-2">
@@ -471,6 +468,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               accept="image/*"
               className="form-control"
               id="customFile"
+              required
               onChange={(e) => setSelectedFile(e.target.files[0])}
             />
             <div className="form-check mt-2 mb-2">
@@ -515,6 +513,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 accept="image/*"
                 className="form-control"
                 id="customFile"
+                required
                 onChange={(e) => setSelectedFile(e.target.files[0])}
               />
               <div className="form-check mt-2 mb-2">

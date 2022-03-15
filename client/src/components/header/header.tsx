@@ -1,25 +1,24 @@
 import { useAuthDispatch } from '../../Context';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { User, Role} from 'constants/interfaces';
-import { DepartmentName } from 'common/definitions/departments';
+import { User } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { userInfo } from 'os';
+
 interface HeaderProps {}
 interface HeaderViewProps {
   user: User;
 }
 
-function HeaderView(props: HeaderViewProps) {
+const HeaderView = (props: HeaderViewProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const user = props.user;
   const department =
-    user.department == undefined && user.role == undefined
+    user.department === undefined && user.role === undefined
       ? ''
-      : `- ${user.department != undefined ? user.department : user.role}`;
+      : `- ${user.department !== undefined ? user.department : user.role}`;
   if (location.pathname.slice(1) === 'home') {
     return <h2 className="text-secondary">{`${t('headerOverview')} ${department}`}</h2>;
   } else if (location.pathname.slice(1) === 'message-board') {
@@ -33,8 +32,20 @@ function HeaderView(props: HeaderViewProps) {
     location.pathname.split('/')[2] === 'form'
   ) {
     return <h4 className="text-secondary">{t('headerCaseStudyForm')}</h4>;
+  } else if (location.pathname.slice(1) === 'employee-of-the-month') {
+    return <h4 className="text-secondary">{t('headerEmployeeOfTheMonth')}</h4>;
+  } else if (
+    location.pathname.split('/')[1] === 'employee-of-the-month' &&
+    location.pathname.split('/')[2] === 'form'
+  ) {
+    return <h4 className="text-secondary">{t('headerEmployeeOfTheMonthForm')}</h4>;
   } else if (location.pathname.slice(1) === 'biomechanic') {
     return <h4 className="text-secondary">{t('headerBiomechanicalSupport')}</h4>;
+  } else if (
+    location.pathname.split('/')[1] === 'biomechanic' &&
+    location.pathname.split('/')[2] === 'report-broken-kit'
+  ) {
+    return <h4 className="text-secondary">{t('headerBiomechanicalSupportForm')}</h4>;
   } else if (location.pathname.slice(1) === 'brokenkit') {
     return <h4 className="text-secondary">{t('headerBrokenKitReport')}</h4>;
   } else if (location.pathname.split('/')[1] === 'caseStudyView') {
@@ -65,7 +76,7 @@ function HeaderView(props: HeaderViewProps) {
   } else {
     return <h4>{''}</h4>;
   }
-}
+};
 
 const Header = (props: HeaderProps) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context

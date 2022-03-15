@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 import { JsonArray } from 'constants/interfaces';
-import { getDepartmentId } from "common/utils/departments";
-import { DepartmentName } from "common/definitions/departments";
+import { getDepartmentId } from 'common/utils/departments';
+import { DepartmentName } from 'common/definitions/departments';
 import ReportSummaryTable from 'components/report_summary/report_summary_table/report_summary_table';
 import { DayRange } from 'react-modern-calendar-datepicker';
 import './styles.css';

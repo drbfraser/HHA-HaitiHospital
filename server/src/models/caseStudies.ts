@@ -1,6 +1,6 @@
 import { boolean } from 'joi';
 import mongoose from 'mongoose';
-import { DepartmentName } from "../common/definitions/departments";
+import { DepartmentName } from '../common/definitions/departments';
 
 const { Schema } = mongoose;
 
@@ -79,8 +79,8 @@ const caseStudySchema = new Schema(
     trainingSession: trainingSessionSchema,
     equipmentReceived: equipmentReceivedSchema,
     otherStory: otherStorySchema,
-    imgPath: { type: String },
-    featured: { type: Boolean }
+    imgPath: { type: String, required: true },
+    featured: { type: Boolean, required: true }
   },
   { timestamps: true }
 );

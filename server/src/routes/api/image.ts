@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { msgCatchError } from 'utils/sanitizationMessages';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 const path = require('path');
 
@@ -9,7 +10,7 @@ router.get('/:imgPath', requireJwtAuth, async (req: Request, res: Response, next
   try {
     res.status(200).sendFile(path.join(__dirname, `../../../public/images/${imgPath}`));
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 

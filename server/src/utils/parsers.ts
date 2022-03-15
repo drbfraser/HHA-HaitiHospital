@@ -1,4 +1,4 @@
-import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from "common/definitions/json_report";
+import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
@@ -96,10 +96,11 @@ const validateJsonString = function(jsonString: string, objectName: string) {
     }
 }
 
-const jsonStringToJsonReport = function(jsonString: string) : JsonReportDescriptor {
-    validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME); 
+
+const jsonStringToJsonReport = function (jsonString: string): JsonReportDescriptor {
+    validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
     const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
     return jsonReport;
-}
+};
 
-export {jsonStringToJsonReport};
+export { jsonStringToJsonReport};
