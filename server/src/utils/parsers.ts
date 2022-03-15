@@ -4,7 +4,6 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/defini
 import * as TJS from 'typescript-json-schema';
 import { PATH_TO_JSON_REPORT_TYPES } from "./constants";
 
-// import Ajv from 'ajv/dist/jtd';
 import Ajv, { ValidateFunction } from 'ajv'
 import path from 'path';
 
@@ -15,7 +14,7 @@ const getTsCompilerOptions = function(): {} {
     try {
         const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json") || null;
         if (!configFileName) {
-            throw new InternalError("Can't find ts config file. Using dafult configuration");
+            throw new InternalError("Can't find ts config file. Using default configuration");
         }
         const configFile = ts.readConfigFile(configFileName!, ts.sys.readFile);
         if (!configFile) {

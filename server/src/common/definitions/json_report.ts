@@ -7,12 +7,6 @@ interface Interfaces {
 }
 export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonReportDescriptor);
 
-<<<<<<< HEAD
-=======
-/**
- * @additionalProperties false
- */
->>>>>>> master
 export interface JsonReportMeta {
   readonly id: string;
   readonly departmentId: string;
