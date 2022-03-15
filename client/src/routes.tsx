@@ -10,7 +10,7 @@ import { CaseStudyView } from 'pages/case_study_view/case_study_view';
 import { LeaderBoardMain } from 'pages/leader_board_main/leader_board_main';
 import { MessageBoardMain } from 'pages/message_board_main/message_board_main';
 import AddMessage from 'pages/add_message/add_message';
-import EditMessage from 'pages/edit_message/edit_message';
+import EditMessage from 'pages/message_board_edit/message_board_edit';
 import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
 import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
 import { BrokenKitView } from 'pages/broken_kit_view/broken_kit_report_view';
