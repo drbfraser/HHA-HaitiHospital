@@ -1,5 +1,9 @@
 // Case studies
-const ENDPOINT_CASESTUDY_FEATURED: string = '/api/case-studies/featured';
+const ENDPOINT_CASESTUDY_GET: string = '/api/case-studies';
+const ENDPOINT_CASESTUDY_GET_BY_ID = (id: string): string => {
+  return `${ENDPOINT_CASESTUDY_GET}/${id}`;
+};
+const ENDPOINT_CASESTUDY_FEATURED: string = `${ENDPOINT_CASESTUDY_GET}/featured`;
 
 // Employee of the month
 const ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET: string = '/api/employee-of-the-month';
@@ -18,6 +22,8 @@ const ENDPOINT_MESSAGEBOARD_PUT = (id: string): string => {
 };
 
 export {
+  ENDPOINT_CASESTUDY_GET,
+  ENDPOINT_CASESTUDY_GET_BY_ID,
   ENDPOINT_CASESTUDY_FEATURED,
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
