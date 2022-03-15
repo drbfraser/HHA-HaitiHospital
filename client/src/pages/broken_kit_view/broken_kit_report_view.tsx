@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import API from '../../actions/apiActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import Api from '../../actions/Api';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -21,7 +21,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   }, [BioReportUrl]);
 
   const getBioReportImage = async (url: string) => {
-    setBioReportImage(await API.Image(url));
+    setBioReportImage(await Api.Image.get(url));
   };
 
   useEffect(() => {

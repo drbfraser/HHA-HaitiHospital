@@ -4,7 +4,7 @@ import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month_summary/employee_of_the_month_summary';
-import API from '../../actions/apiActions';
+import Api from '../../actions/Api';
 import './employee_of_the_month_main.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
@@ -24,7 +24,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
   const { t: translateText } = useTranslation();
 
   const getEmployeeOfTheMonth = async () => {
-    setEmployeeOfTheMonth(await API.Get(ENDPOINT_URL, TOAST_ERROR));
+    setEmployeeOfTheMonth(await Api.Get(ENDPOINT_URL, TOAST_ERROR));
   };
 
   useEffect(() => {
