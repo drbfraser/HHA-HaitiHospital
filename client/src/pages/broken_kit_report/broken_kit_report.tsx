@@ -98,6 +98,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   accept="image/*"
                   className="form-control"
                   id="customFile"
+                  required
                   onChange={(e) => setSelectedFile(e.target.files[0])}
                 />
               </div>

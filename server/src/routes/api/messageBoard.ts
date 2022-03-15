@@ -6,6 +6,7 @@ import { validateInput } from '../../middleware/inputSanitization';
 import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
+import { msgCatchError } from 'utils/sanitizationMessages';
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
   await MessageBody.find({})
@@ -91,7 +92,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
       .then((data: any) => res.status(204).json(data))
       .catch((err: any) => res.status(400).json('Failed to delete: ' + err));
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 

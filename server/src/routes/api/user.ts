@@ -4,6 +4,7 @@ import { validateInput } from '../../middleware/inputSanitization';
 import User, { hashPassword, Role, validateUserSchema } from '../../models/user';
 import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
+import { msgCatchError } from 'utils/sanitizationMessages';
 
 const router = Router();
 
@@ -28,7 +29,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, 
 
     res.status(201).json(user);
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -43,7 +44,7 @@ router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Reques
     if (!foundUser) return res.status(404).json({ message: 'No such user' });
     res.status(200).json(foundUser);
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -53,7 +54,7 @@ router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, 
     const users: [] = await User.find().sort({ createdAt: 'desc' });
     res.status(200).json(users);
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -65,7 +66,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
     const user = await User.findByIdAndRemove(tempUser.id);
     res.status(204).json(user);
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).json(msgCatchError);
   }
 });
 
@@ -106,7 +107,7 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, 
       res.status(201).json({ message: 'Successfully added user.' });
     });
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).json(msgCatchError);
   }
 });
 

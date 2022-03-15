@@ -47,9 +47,9 @@ const Login = (props: LoginProps) => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-        try {
-          getCSRFToken().then(() => {
-            loginUser(dispatch, values)
+      try {
+        getCSRFToken().then(() => {
+          loginUser(dispatch, values)
             .then((res: any) => {
               if (!res.success) return;
               setUsername(res.user.name);
@@ -59,10 +59,10 @@ const Login = (props: LoginProps) => {
               setErrorMessage(i18n.t('signInInvalidLoginCredentials'));
               console.error('Error with logging in: ', error);
             });
-          })
-        } catch (error) {
-          console.error('error with logging in: ', error);
-        }
+        });
+      } catch (error) {
+        console.error('error with logging in: ', error);
+      }
     },
   });
 
@@ -72,10 +72,7 @@ const Login = (props: LoginProps) => {
       <h4 className="text-center mt-4 mb-4 user-select-none fw-bold">{t('signInPleaseSignIn')}</h4>
       <form className="mb-5" onSubmit={formik.handleSubmit}>
         <div>
-          <input 
-            type="hidden" name="_csrf"
-            value="csrfToken"
-            />
+          <input type="hidden" name="_csrf" value="csrfToken" />
         </div>
 
         <div>

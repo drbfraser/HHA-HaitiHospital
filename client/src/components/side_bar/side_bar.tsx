@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
-import { getDepartmentId } from "../../common/utils/departments";
+import { getDepartmentId } from '../../common/utils/departments';
 import './side_bar.css';
 import { useAuthState } from 'Context';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { isUserInDepartment, renderBasedOnRole } from '../../actions/roleActions';
 import { Role } from '../../constants/interfaces';
-import { DepartmentName } from "../../common/definitions/departments";
+import { DepartmentName } from '../../common/definitions/departments';
 
 interface SidebarProps {}
 
@@ -91,6 +91,21 @@ const Sidebar = (props: SidebarProps) => {
               </NavLink>
             }
           </li>
+          <li>
+            {
+              <NavLink
+                to="/employee-of-the-month"
+                className="nav-link link-light"
+                exact
+                activeClassName="active"
+              >
+                <div style={{ display: 'flex', flex: '1 1 auto' }}>
+                  <i className="bi bi-star-fill me-2" />
+                  <span className="text text-light">{t('sidebarEmployeeOfTheMonth')}</span>
+                </div>
+              </NavLink>
+            }
+          </li>
 
           <li className="border-top my-2" />
 
@@ -101,7 +116,7 @@ const Sidebar = (props: SidebarProps) => {
           ]) ? (
             <li>
               <NavLink
-                to="/general_reports"
+                to="/general-reports"
                 className="nav-link link-light"
                 exact
                 activeClassName="active"
