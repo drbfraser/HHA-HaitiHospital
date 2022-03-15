@@ -5,7 +5,7 @@ interface FormData {
   password: string;
 }
 
-export async function loginUser(dispatch, formData: FormData) {
+export const loginUser = async (dispatch, formData: FormData) => {
   try {
     dispatch({ type: 'REQUEST_LOGIN' });
     const response = await axios.post('/api/auth/login', formData);
@@ -22,9 +22,9 @@ export async function loginUser(dispatch, formData: FormData) {
     dispatch({ type: 'LOGIN_ERROR', error: error });
     console.error(error);
   }
-}
+};
 
-export async function logOutUser(dispatch) {
+export const logOutUser = async (dispatch) => {
   dispatch({ type: 'LOGOUT' });
   axios
     .get('/api/auth/logout')
@@ -37,7 +37,7 @@ export async function logOutUser(dispatch) {
     .catch((error) => {
       console.error('Error with logging out', error);
     });
-}
+};
 
 const deleteAllCookies = () => {
   var cookies = document.cookie.split(';');

@@ -4,8 +4,6 @@ import * as Image from './Image';
 import * as Error from './ApiError';
 import DbErrorHandler from './http_error_handler';
 
-// ----------------------- DEFAULT ACTIONS -----------------------
-
 /**
  *
  * @param url

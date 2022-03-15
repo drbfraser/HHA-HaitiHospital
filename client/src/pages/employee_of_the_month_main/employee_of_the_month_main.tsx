@@ -10,7 +10,7 @@ import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toast_messages';
 import Api from '../../actions/Api';
 import './employee_of_the_month_main.css';
 import { useTranslation } from 'react-i18next';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
 import initialEmployeeOfTheMonth from './initialEmployeeOfTheMonth.json';
@@ -23,7 +23,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
     initialEmployeeOfTheMonth as EmployeeOfTheMonth,
   );
   const authState = useAuthState();
-  const history: History = useHistory();
+  const history: History = useHistory<History>();
   const { t: translateText } = useTranslation();
 
   const getEmployeeOfTheMonth = async () => {

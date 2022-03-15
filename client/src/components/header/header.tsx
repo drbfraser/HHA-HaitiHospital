@@ -1,4 +1,4 @@
-import { useAuthDispatch } from '../../Context';
+import { useAuthDispatch } from '../../contexts';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { User } from 'constants/interfaces';

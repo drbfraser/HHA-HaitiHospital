@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { renderBasedOnRole } from 'actions/roleActions';
 import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
@@ -32,7 +32,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
     const lastPageIndex = firstPageIndex + pageSize;
     return BioReport.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, BioReport]);
-  const bioReportNumberIndex = (currentPage * pageSize) - pageSize;
+  const bioReportNumberIndex = currentPage * pageSize - pageSize;
 
   const getBioReport = useCallback(async () => {
     const res = await axios.get(BioReportUrl);
@@ -148,7 +148,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                 currentPage={currentPage}
                 totalCount={BioReport.length}
                 pageSize={pageSize}
-                onPageChange={page => setCurrentPage(page)}
+                onPageChange={(page) => setCurrentPage(page)}
               />
             </div>
           </div>

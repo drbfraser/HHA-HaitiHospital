@@ -8,7 +8,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import './case_study_main_styles.css';
 import { useTranslation } from 'react-i18next';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 import { renderBasedOnRole } from 'actions/roleActions';
 import i18n from 'i18next';
 import Pagination from 'components/pagination/Pagination';
@@ -32,7 +32,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     const lastPageIndex = firstPageIndex + pageSize;
     return caseStudies.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, caseStudies]);
-  const caseStudyNumberIndex = (currentPage * pageSize) - pageSize;
+  const caseStudyNumberIndex = currentPage * pageSize - pageSize;
 
   const getCaseStudies = useCallback(async () => {
     const res = await axios.get(caseStudiesUrl);
@@ -173,7 +173,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             currentPage={currentPage}
             totalCount={caseStudies.length}
             pageSize={pageSize}
-            onPageChange={page => setCurrentPage(page)}
+            onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
       </main>

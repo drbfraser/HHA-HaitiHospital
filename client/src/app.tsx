@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AuthProvider } from 'Context';
+import { AuthProvider } from 'contexts';
 import routes from './routes';
 import AppRoute from './AppRoute';
 import { ToastContainer } from 'react-toastify';

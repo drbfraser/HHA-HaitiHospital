@@ -8,6 +8,7 @@ import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants
 import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toast_messages';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
+import { History } from 'history';
 
 interface LeaderBoardMainProps {}
 
@@ -15,7 +16,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const { t } = useTranslation();
   const [leaderboard, setLeaderboard] = useState([]);
   const [caseStudy, setCaseStudy] = useState({} as any);
-  const history = useHistory<History>();
+  const history: History = useHistory<History>();
 
   const getLeaderboard = async () => {
     setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));

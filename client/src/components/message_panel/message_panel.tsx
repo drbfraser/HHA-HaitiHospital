@@ -6,7 +6,7 @@ import Axios from 'axios';
 import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
 import { renderBasedOnRole } from '../../actions/roleActions';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 import { Role } from '../../constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 interface MessagePanelProps {}
@@ -83,7 +83,6 @@ const MessagePanel = (props: MessagePanelProps) => {
         {currentTableData.map((msgJson, index) => {
           return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
         })}
-
       </div>
       {/* Pagination bar */}
       <Pagination
@@ -91,7 +90,7 @@ const MessagePanel = (props: MessagePanelProps) => {
         currentPage={currentPage}
         totalCount={msgsJson.length}
         pageSize={pageSize}
-        onPageChange={page => setCurrentPage(page)}
+        onPageChange={(page) => setCurrentPage(page)}
       />
     </>
   );

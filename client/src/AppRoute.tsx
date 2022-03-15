@@ -8,7 +8,7 @@ import {
   isDepartmentAllowed,
 } from 'actions/roleActions';
 
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 
 const AppRoutes = ({
   component: Component,
