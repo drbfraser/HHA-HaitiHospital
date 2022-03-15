@@ -15,7 +15,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const { t } = useTranslation();
   const [leaderboard, setLeaderboard] = useState([]);
   const [caseStudy, setCaseStudy] = useState({} as any);
-  const history = useHistory();
+  const history = useHistory<History>();
 
   const getLeaderboard = async () => {
     setLeaderboard(await API.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
