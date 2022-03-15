@@ -76,7 +76,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   {...register('department', { required: true })}
                   defaultValue=""
                 >
-                  <option value="">{t('brokenKitReportClickToSelectPriority')}</option>
+                  <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>
                   <option value={DepartmentName.NicuPaeds}>{t('NICU/Paeds')}</option>
                   <option value={DepartmentName.Maternity}>{t('Maternity')}</option>
                   <option value={DepartmentName.Rehab}>{t('Rehab')}</option>

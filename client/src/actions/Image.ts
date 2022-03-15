@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as Error from './ApiError'
+import * as Error from './ApiError';
 import { toast } from 'react-toastify';
 
 export const get = (url: string): Promise<string> => {
@@ -14,5 +14,4 @@ export const get = (url: string): Promise<string> => {
       toast.error('Unable to fetch image');
       return Error.DEFAULT;
     });
-  }
-
+};
