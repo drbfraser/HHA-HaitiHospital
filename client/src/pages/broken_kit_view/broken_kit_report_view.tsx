@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
+import API from '../../actions/apiActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -20,23 +20,17 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
     setBioReport(res.data);
   }, [BioReportUrl]);
 
-  const getBioReportImage = async () => {
-    await axios
-      .get(`/api/image/${BioReport.imgPath.split('/')[2]}`, {
-        responseType: 'blob',
-      })
-      .then((response: any) => {
-        setBioReportImage(URL.createObjectURL(response.data));
-      })
-      .catch(() => {
-        toast.error('Unable to fetch image');
-      });
+  const getBioReportImage = async (url: string) => {
+    setBioReportImage(await API.Image(url));
   };
 
   useEffect(() => {
     getBioReport();
     // Only execute once biomech data has been successfully passed to this component
-    if (BioReport.imgPath !== undefined) getBioReportImage();
+    if (BioReport.imgPath !== undefined) {
+      const IMAGE_URL: string = `/api/image/${BioReport.imgPath.split('/')[2]}`;
+      getBioReportImage(IMAGE_URL);
+    }
   }, [BioReport]);
 
   return (
