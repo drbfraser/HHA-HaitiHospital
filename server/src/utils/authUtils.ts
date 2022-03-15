@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import User from '../models/user';
+import UserModel from '../models/user';
 import { getDepartmentName } from '../common/utils/departments';
 import { DepartmentName } from '../common/definitions/departments';
-import { Role } from '../models/user';
+import { Role, User } from '../models/user';
 
 export const checkIsInRole =
   (...roles) =>
@@ -27,7 +27,7 @@ export const checkUserIsDepartmentAuthed = async (userId: string, reportDepartme
     return true;
   }
   console.log(userId);
-  const user = await User.findById(userId);
+  const user: User = await UserModel.findById(userId);
   console.log(user);
 
   const userDepartment = user['department'];
