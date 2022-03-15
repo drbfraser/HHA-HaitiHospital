@@ -1,5 +1,6 @@
 
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from 'common/definitions/json_report';
+import { BadRequestError } from 'exceptions/httpException';
 import { jsonStringToJsonReport } from 'utils/parsers';
 const chai = require('chai');
 
@@ -46,11 +47,11 @@ describe("Test parsing json string to a jsonReportDescriptor", () => {
         }
     });
 
-    it('should return empty object due to malformat', (done) => {
+    it('should throw a BadRequestError due to malformat', (done) => {
         try {
             // a stringified json report meta
             const stringJson = '{"id":"123","departmentId":"1","submittedDate":"123","submittedUserId":"123"}';
-            chai.expect(jsonStringToJsonReport(stringJson)).to.be.an('object').that.is.empty;
+            chai.expect(() => jsonStringToJsonReport(stringJson)).to.throw("malformed");
 
             done();
         }

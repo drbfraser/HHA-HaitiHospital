@@ -9,19 +9,26 @@ import Ajv, { ValidateFunction } from 'ajv'
 import path from 'path';
 
 import ts from 'typescript';
+import { BadRequestError, InternalError } from "exceptions/httpException";
 
 const getTsCompilerOptions = function(): {} {
-    const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json") || null;
-    if (!configFileName) {
-        throw new Error("Can't find ts config file");
-    }
-    const configFile = ts.readConfigFile(configFileName!, ts.sys.readFile);
-    if (!configFile) {
-        throw new Error("Can't read ts config file");
-    }
+    try {
+        const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json") || null;
+        if (!configFileName) {
+            throw new InternalError("Can't find ts config file. Using dafult configuration");
+        }
+        const configFile = ts.readConfigFile(configFileName!, ts.sys.readFile);
+        if (!configFile) {
+            throw new InternalError("Can't read ts config file. Using default configuration");
+        }
 
-    const compilerOptions = ts.parseJsonConfigFileContent(configFile!.config, ts.sys, path.dirname(configFileName));
-    return compilerOptions;
+        const compilerOptions = ts.parseJsonConfigFileContent(configFile!.config, ts.sys, path.dirname(configFileName));
+        return compilerOptions;
+    }
+    catch (e) {
+        console.log(e);
+        return {};
+    }
 }
 
 const getSchemaGenerator = function() {
@@ -47,7 +54,7 @@ const getSchemaGenerator = function() {
     
     const generator = TJS.buildGenerator(program, settings);
     if (!generator) 
-        throw new Error("failed to build a json schema generator");
+        throw new InternalError("Failed to build a json schema generator");
 
     return generator;
 }
@@ -62,7 +69,7 @@ const getAjvValidator = function(schemaName: string) {
     const schema = schemaGenerator!.getSchemaForSymbol(schemaName);
     
     if (!schema) {
-        throw new Error(`No schema for ${schemaName} found`);
+        throw new InternalError(`No schema for ${schemaName} found`);
     }
 
     schema["$id"] = getSchemaId(schemaName);
@@ -71,7 +78,7 @@ const getAjvValidator = function(schemaName: string) {
     if (!ajvValidators[schemaName]) {
         const validator = ajv.compile(schema);
         if (!validator)
-            throw new Error("failed to build an ajv parser");
+            throw new InternalError("failed to build an ajv parser");
         ajvValidators[schemaName] = validator;
     }
 
@@ -85,19 +92,14 @@ const validateJsonString = function(jsonString: string, objectName: string) {
     const validate = ajvValidator!(json);
 
     if (!validate) {
-        throw new Error(`json for ${objectName} is malformed`);
+        throw new BadRequestError(`json for ${objectName} is malformed`);
     }
 }
 
 const jsonStringToJsonReport = function(jsonString: string) : JsonReportDescriptor {
-    try {
-        validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME); 
-        const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
-        return jsonReport;
-    }
-    catch (e) {
-        return {} as JsonReportDescriptor;
-    }
+    validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME); 
+    const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
+    return jsonReport;
 }
 
 export {jsonStringToJsonReport};
