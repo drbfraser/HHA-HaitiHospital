@@ -40,11 +40,11 @@ const Get = async (url: string, errorMsg: string, history: History): Promise<any
  * - Error message for toast
  * @param history
  * - History instance from navigation
- * @returns
+ * @returns void
  */
 const Put = async (
   url: string,
-  obj: any,
+  obj: object = {},
   actions: any,
   errorMsg: string,
   history: History,
@@ -61,6 +61,40 @@ const Put = async (
     });
 };
 
-const Api = { Image, Get, Put };
+/**
+ *
+ * @param url
+ * - Endpoint URL
+ * @param obj
+ * - Data to be deleted (Optional)
+ * @param actions
+ * - Actions that should occur after DELETE request is successful
+ * - (Eg. Navigate to new page)
+ * @param errorMsg
+ * - Error message for toast
+ * @param history
+ * - History instance from navigation
+ * @returns void
+ */
+const Delete = async (
+  url: string,
+  obj: object = {},
+  actions: any,
+  errorMsg: string,
+  history: History,
+): Promise<void> => {
+  return await axios
+    .delete(url, { data: obj })
+    .then(() => {
+      actions();
+      return;
+    })
+    .catch((err: any) => {
+      DbErrorHandler(err, history, errorMsg);
+      return;
+    });
+};
+
+const Api = { Image, Get, Put, Delete };
 
 export default Api;

@@ -1,10 +1,14 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
+import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_CASESTUDY_GET, ENDPOINT_CASESTUDY_DELETE_BY_ID } from 'constants/endpoints';
+import { TOAST_CASESTUDY_GET, TOAST_CASESTUDY_DELETE } from 'constants/toast_messages';
 import { toast } from 'react-toastify';
 import './case_study_main_styles.css';
 import { useTranslation } from 'react-i18next';
@@ -12,16 +16,18 @@ import { useAuthState } from 'contexts';
 import { renderBasedOnRole } from 'actions/roleActions';
 import i18n from 'i18next';
 import Pagination from 'components/pagination/Pagination';
+import { History } from 'history';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const DEFAULT_INDEX: string = '';
+  const [genericModal, setGenericModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
-  const history = useHistory();
+  const history: History = useHistory<History>();
   const caseStudiesUrl: string = '/api/case-studies';
 
   // Pagination
@@ -34,19 +40,22 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   }, [currentPage, caseStudies]);
   const caseStudyNumberIndex = currentPage * pageSize - pageSize;
 
-  const getCaseStudies = useCallback(async () => {
-    const res = await axios.get(caseStudiesUrl);
-    setCaseStudies(res.data);
-  }, [caseStudiesUrl]);
+  const deleteCaseStudyActions = () => {
+    toast.success('Case Study deleted!');
+  };
+
+  const getCaseStudies = async () => {
+    setCaseStudies(await Api.Get(ENDPOINT_CASESTUDY_GET, TOAST_CASESTUDY_GET, history));
+  };
 
   const deleteCaseStudy = async (id: string) => {
-    try {
-      toast.success('Case Study deleted!');
-      await axios.delete(caseStudiesUrl.concat(`/${id}`));
-      getCaseStudies();
-    } catch (err) {
-      toast.error('Error: Unable to delete Case Study!');
-    }
+    await Api.Delete(
+      ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
+      {},
+      deleteCaseStudyActions,
+      TOAST_CASESTUDY_DELETE,
+      history,
+    );
   };
 
   const featureCaseStudy = async (id: string) => {
@@ -59,14 +68,19 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     }
   };
 
-  const onDeleteCaseStudy = (event: any, id: string) => {
+  const onDeleteCaseStudy = (event: any, item: any) => {
     event.stopPropagation();
     event.preventDefault();
-    setCurrentIndex(id);
-    setDeleteModal(true);
+    setCurrentIndex(item._id);
+    item.featured ? setGenericModal(true) : setDeleteModal(true);
   };
 
-  const onModalClose = () => {
+  const onModalGenericClose = () => {
+    setCurrentIndex(DEFAULT_INDEX);
+    setGenericModal(false);
+  };
+
+  const onModalDeleteClose = () => {
     setCurrentIndex(DEFAULT_INDEX);
     setDeleteModal(false);
   };
@@ -78,7 +92,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   useEffect(() => {
     getCaseStudies();
-  }, [getCaseStudies]);
+  }, [caseStudies]);
 
   const { t: translateText } = useTranslation();
 
@@ -87,11 +101,20 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
+        <ModalGeneric
+          currentItem={currentIndex}
+          show={genericModal}
+          item={'case study'}
+          message={
+            'Please select another case study to feature before deleting the featured case study'
+          }
+          onModalClose={onModalGenericClose}
+        ></ModalGeneric>
         <ModalDelete
           currentItem={currentIndex}
           show={deleteModal}
           item={'case study'}
-          onModalClose={onModalClose}
+          onModalClose={onModalDeleteClose}
           onModalDelete={onModalDelete}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
@@ -140,7 +163,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         <button
                           className="btn btn-link text-decoration-none"
                           onClick={(event) => {
-                            onDeleteCaseStudy(event, item._id);
+                            onDeleteCaseStudy(event, item);
                           }}
                         >
                           {translateText('caseStudyMainDelete').concat(' ')}
