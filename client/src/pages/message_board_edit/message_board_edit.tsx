@@ -12,11 +12,12 @@ import { TOAST_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_PUT } from 'constants/toast_
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { toast } from 'react-toastify';
+import { History } from 'history';
 
 const EditMessage = () => {
   const { id } = useParams<{ id?: string }>();
   const [msg, setMsg] = useState<Message>(emptyMessage);
-  const history = useHistory();
+  const history: History = useHistory<History>();
   const { t } = useTranslation();
 
   const getMessage = async (id: string) => {

@@ -5,6 +5,8 @@ import DbErrorHandler from './http_error_handler';
 const ERROR_IMG: string = '';
 const ERROR_OBJ: any = {};
 
+// ----------------------- DEFAULT ACTIONS -----------------------
+
 /**
  *
  * @param url
@@ -35,7 +37,8 @@ const Get = async (url: string, errorMsg: string, history: History): Promise<any
  * @param obj
  * - Data to be sent to server (JSON)
  * @param actions
- * - Actions that should occur after PUT request is successful (Eg. Navigate to new page)
+ * - Actions that should occur after PUT request is successful
+ * - (Eg. Navigate to new page)
  * @param errorMsg
  * - Error message for toast
  * @param history
@@ -61,7 +64,8 @@ const Put = async (
     });
 };
 
-// Custom
+// ----------------------- CUSTOM ACTIONS ------------------------
+
 const Image = async (url: string, history: History): Promise<string> => {
   return await httpService
     .get(url, {

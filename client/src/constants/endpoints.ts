@@ -3,6 +3,7 @@ const ENDPOINT_CASESTUDY_FEATURED: string = '/api/case-studies/featured';
 
 // Employee of the month
 const ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET: string = '/api/employee-of-the-month';
+const ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT: string = ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET;
 
 // Leaderboard
 const ENDPOINT_LEADERBOARD_GET: string = '/api/leaderboard';
@@ -19,6 +20,7 @@ const ENDPOINT_MESSAGEBOARD_PUT = (id: string): string => {
 export {
   ENDPOINT_CASESTUDY_FEATURED,
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
+  ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
   ENDPOINT_LEADERBOARD_GET,
   ENDPOINT_MESSAGEBOARD_GET,
   ENDPOINT_MESSAGEBOARD_PUT,

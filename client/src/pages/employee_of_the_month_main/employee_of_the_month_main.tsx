@@ -7,7 +7,7 @@ import Header from 'components/header/header';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month_summary/employee_of_the_month_summary';
 import API from '../../actions/apiActions';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
-import { TOAST_EMPLOYEE_OF_THE_MONTH } from 'constants/toast_messages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toast_messages';
 import './employee_of_the_month_main.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
@@ -28,7 +28,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
 
   const getEmployeeOfTheMonth = async () => {
     setEmployeeOfTheMonth(
-      await API.Get(ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET, TOAST_EMPLOYEE_OF_THE_MONTH, history),
+      await API.Get(ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET, TOAST_EMPLOYEE_OF_THE_MONTH_GET, history),
     );
   };
 
