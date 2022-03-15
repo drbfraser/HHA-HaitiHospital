@@ -16,6 +16,7 @@ export enum Role {
 
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
 export interface User extends Document {
+  _id: number;
   username: string;
   password: string;
   name: string;
@@ -127,6 +128,6 @@ export const validateUser = (user) => {
   return validateUserSchema.validate(user);
 };
 
-const User = mongoose.model('User', userSchema);
+const UserModel = mongoose.model('User', userSchema);
 
-export default User;
+export default UserModel;

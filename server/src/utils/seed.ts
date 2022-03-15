@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import User, { hashPassword, Role } from '../models/user';
+import UserModel, { hashPassword, Role, User } from '../models/user';
 import Department from '../models/leaderboard';
 import { DepartmentName } from '../common/definitions/departments';
 
@@ -36,7 +36,7 @@ export const seedUsers = async () => {
     // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
-      var foundUser = await User.findOne({ username: `user${index}` });
+      var foundUser = await UserModel.findOne({ username: `user${index}` });
       if (foundUser) {
         switch (index) {
           case 0:
@@ -72,7 +72,7 @@ export const seedUsers = async () => {
         }
         foundUser.save();
       } else {
-        const user = new User({
+        const user = new UserModel({
           username: `user${index}`,
           password: ENV.PASSWORD_SEED,
           name: faker.name.findName()
@@ -151,14 +151,14 @@ export const seedDepartments = async () => {
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
 
-  const users = await User.find();
+  const users: User[] = await UserModel.find();
   const numOfMessagesToGenerate: number = 100;
   for (let i = 0; i < numOfMessagesToGenerate; i++) {
-    const randomUser = selectRandomUser(users);
+    const randomUser: User = selectRandomUser(users);
     const message = new MessageBody({
       departmentId: 1,
       departmentName: randomUser.department,
-      userId: randomUser.id,
+      userId: randomUser._id,
       date: new Date(),
       messageBody: faker.lorem.words(),
       messageHeader: faker.lorem.words()
@@ -173,10 +173,10 @@ export const seedCaseStudies = async () => {
   console.log('Seeding case studies...');
 
   try {
-    const users = await User.find();
+    const users: User[] = await UserModel.find();
 
-    const randomUser = selectRandomUser(users);
-    setDefaultFeaturedCaseStudy(randomUser);
+    const randomDefaultUser = selectRandomUser(users);
+    setDefaultFeaturedCaseStudy(randomDefaultUser);
     const numCaseStudiesToGenerate: number = 100;
     for (let i = 0; i < numCaseStudiesToGenerate; i++) {
       const randomUser = selectRandomUser(users);
@@ -211,7 +211,7 @@ export const seedBioMech = async () => {
   console.log('Seeding biomechanical support...');
   try {
     await BioMech.deleteMany({});
-    const users = await User.find();
+    const users: User[] = await UserModel.find();
     const numOfBioMechReportsToGenerate: number = 100;
     for (let i = 0; i < numOfBioMechReportsToGenerate; i++) {
       const randomUser = selectRandomUser(users);
@@ -345,16 +345,18 @@ const generateRandomCaseStudy = (caseStudyType, user) => {
   }
 };
 
-const selectRandomUser = (users) => {
+const selectRandomUser = (users: User[]): User => {
   const randomUserIndex = Math.floor(Math.random() * users.length);
   return users[randomUserIndex];
 };
 
-const randomEnumKey = (enumeration) => {
+// Random Enum Key function here accepts any enumerations and selects the key of the enum.
+const randomEnumKey = (enumeration: any): any => {
   const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
   const enumKey = keys[Math.floor(Math.random() * keys.length)];
 
   return enumKey;
 };
 
-const randomEnumValue = (enumeration) => enumeration[randomEnumKey(enumeration)];
+// Random Enum value function here accepts any enumerations and selects the value of the enum.
+const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
