@@ -5,7 +5,7 @@ const ERROR_CODE: string = 'ERROR';
 
 const Get = async (url: string, errorMsg: string): Promise<any> => {
   return await httpService
-    .get('/api/employee-of-the-month')
+    .get(url)
     .then((response: any) => {
       return response.data;
     })

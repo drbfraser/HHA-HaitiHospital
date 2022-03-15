@@ -99,8 +99,10 @@ const Sidebar = (props: SidebarProps) => {
                 exact
                 activeClassName="active"
               >
-                <i className="bi bi-star-fill me-2" />
-                <span className="text text-light pr-21">{t('sidebarEmployeeOfTheMonth')}</span>
+                <div style={{ display: 'flex', flex: '1 1 auto' }}>
+                  <i className="bi bi-star-fill me-2" />
+                  <span className="text text-light">{t('sidebarEmployeeOfTheMonth')}</span>
+                </div>
               </NavLink>
             }
           </li>
