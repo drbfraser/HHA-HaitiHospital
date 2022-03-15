@@ -66,6 +66,40 @@ const Put = async (
  * @param url
  * - Endpoint URL
  * @param obj
+ * - Data to be sent to server (JSON)
+ * @param actions
+ * - Actions that should occur after PATCH request is successful
+ * - (Eg. Navigate to new page)
+ * @param errorMsg
+ * - Error message for toast
+ * @param history
+ * - History instance from navigation
+ * @returns void
+ */
+const Patch = async (
+  url: string,
+  obj: object = {},
+  actions: any,
+  errorMsg: string,
+  history: History,
+): Promise<void> => {
+  return await axios
+    .patch(url, obj)
+    .then(() => {
+      actions();
+      return;
+    })
+    .catch((err: any) => {
+      DbErrorHandler(err, history, errorMsg);
+      return;
+    });
+};
+
+/**
+ *
+ * @param url
+ * - Endpoint URL
+ * @param obj
  * - Data to be deleted (Optional)
  * @param actions
  * - Actions that should occur after DELETE request is successful
@@ -95,6 +129,6 @@ const Delete = async (
     });
 };
 
-const Api = { Image, Get, Put, Delete };
+const Api = { Image, Get, Put, Patch, Delete };
 
 export default Api;

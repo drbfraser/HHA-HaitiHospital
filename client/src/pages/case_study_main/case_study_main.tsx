@@ -7,8 +7,16 @@ import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import axios from 'axios';
 import Api from 'actions/Api';
-import { ENDPOINT_CASESTUDY_GET, ENDPOINT_CASESTUDY_DELETE_BY_ID } from 'constants/endpoints';
-import { TOAST_CASESTUDY_GET, TOAST_CASESTUDY_DELETE } from 'constants/toast_messages';
+import {
+  ENDPOINT_CASESTUDY_GET,
+  ENDPOINT_CASESTUDY_PATCH_BY_ID,
+  ENDPOINT_CASESTUDY_DELETE_BY_ID,
+} from 'constants/endpoints';
+import {
+  TOAST_CASESTUDY_GET,
+  TOAST_CASESTUDY_DELETE,
+  TOAST_CASESTUDY_PATCH,
+} from 'constants/toast_messages';
 import { toast } from 'react-toastify';
 import './case_study_main_styles.css';
 import { useTranslation } from 'react-i18next';
@@ -40,6 +48,10 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   }, [currentPage, caseStudies]);
   const caseStudyNumberIndex = currentPage * pageSize - pageSize;
 
+  const featureCaseStudyActions = () => {
+    toast.success('Featured case study has now changed!');
+  };
+
   const deleteCaseStudyActions = () => {
     toast.success('Case Study deleted!');
   };
@@ -59,13 +71,13 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   };
 
   const featureCaseStudy = async (id: string) => {
-    try {
-      toast.success('Featured case study has now changed!');
-      await axios.patch(caseStudiesUrl.concat(`/${id}`));
-      getCaseStudies();
-    } catch (err) {
-      toast.error('Error: Unable to set new featured Case Study!');
-    }
+    await Api.Patch(
+      ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
+      {},
+      featureCaseStudyActions,
+      TOAST_CASESTUDY_PATCH,
+      history,
+    );
   };
 
   const onDeleteCaseStudy = (event: any, item: any) => {
