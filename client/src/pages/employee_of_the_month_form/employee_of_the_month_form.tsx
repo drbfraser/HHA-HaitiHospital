@@ -34,7 +34,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
         props.history.push('/employee-of-the-month');
       })
       .catch((error: any) => {
-        DbErrorHandler(error, history);
+        DbErrorHandler(error, history, 'Unable to update employee of the month');
       });
   };
 

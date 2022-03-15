@@ -3,10 +3,12 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { currMonth, currYear } from 'utils/dateFormatting';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
+import { History } from 'history';
 import API from '../../actions/apiActions';
 
 interface EmployeeOfTheMonthSummaryProps extends RouteComponentProps {
   employeeOfTheMonth: EmployeeOfTheMonth;
+  history: History;
 }
 
 export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps) => {
@@ -14,7 +16,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
   const [employeeOfTheMonthImage, setEmployeeOfTheMonthImage] = useState<string>('');
 
   const getEmployeeOfTheMonthImage = async (url: string) => {
-    setEmployeeOfTheMonthImage(await API.Image(url));
+    setEmployeeOfTheMonthImage(await API.Image(url, props.history));
   };
 
   const translateMonth = (monthIndicator: number): string => {

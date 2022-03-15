@@ -19,7 +19,7 @@ const AddMessage = () => {
       history.push('/message-board');
       toast.success(i18n.t('addMessageAlertSuccess'));
     } catch (e) {
-      DbErrorHandler(e, history);
+      DbErrorHandler(e, history, 'Unable to add message');
     }
   };
 

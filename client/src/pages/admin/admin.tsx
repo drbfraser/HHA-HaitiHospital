@@ -26,7 +26,7 @@ const Admin = (props: AdminProps) => {
       const res = await axios.get(usersUrl);
       setUsers(res.data);
     } catch (err) {
-      DbErrorHandler(err, history);
+      DbErrorHandler(err, history, 'Unable to get user');
     }
   }, [history]);
 
@@ -36,7 +36,7 @@ const Admin = (props: AdminProps) => {
       getUsers();
       toast.success(i18n.t('adminAlertUserDeleted'));
     } catch (err) {
-      DbErrorHandler(err, history);
+      DbErrorHandler(err, history, 'Unable to delete user');
     }
   };
 

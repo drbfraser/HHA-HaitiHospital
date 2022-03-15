@@ -25,7 +25,7 @@ const EditMessage = () => {
         const response = await Axios.get(api);
         return response.data;
       } catch (err) {
-        DbErrorHandler(err, history);
+        DbErrorHandler(err, history, 'Unable to get message');
         return {};
       }
     };
@@ -54,7 +54,7 @@ const EditMessage = () => {
       history.push('/message-board');
       toast.success(i18n.t('addMessageAlertSuccess'));
     } catch (e) {
-      DbErrorHandler(e, history);
+      DbErrorHandler(e, history, 'Unable to update message');
     }
   };
 

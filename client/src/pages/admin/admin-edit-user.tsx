@@ -36,7 +36,7 @@ export const EditUserForm = (props: AdminProps) => {
         setRole(res.data.role);
         setDepartment(res.data.department);
       } catch (err) {
-        DbErrorHandler(err, history);
+        DbErrorHandler(err, history, 'Unable to get user');
       }
     };
     getUser();

@@ -34,7 +34,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
         props.history.push('/biomechanic');
       })
       .catch((error) => {
-        DbErrorHandler(error, history);
+        DbErrorHandler(error, history, 'Unable to add biomechanic report');
       });
   };
 

@@ -3,6 +3,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import './leader_board_main.css';
+import API from '../../actions/apiActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import DbErrorHandler from 'actions/http_error_handler';
@@ -15,14 +16,17 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [caseStudy, setCaseStudy] = useState({} as any);
   const history = useHistory();
+  const ENDPOINT_URL: string = '/api/leaderboard';
 
   const getLeaderboard = async () => {
+    // setLeaderboard(await API.Get())
+
     const urlLeaderboard = '/api/leaderboard';
     try {
       const res = await axios.get(urlLeaderboard);
       setLeaderboard(res.data);
     } catch (err) {
-      DbErrorHandler(err, history);
+      DbErrorHandler(err, history, 'Unable to fetch leaderboard');
     }
   };
 
@@ -32,7 +36,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
       const res = await axios.get(urlCaseStudy);
       if (res.data !== null) setCaseStudy(res.data);
     } catch (err) {
-      DbErrorHandler(err, history);
+      DbErrorHandler(err, history, 'Unable to fetch case study');
     }
   };
 

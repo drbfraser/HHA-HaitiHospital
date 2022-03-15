@@ -117,7 +117,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
         if (Axios.isCancel(err)) {
           console.log(`Info: Cancel subscription to ${getReportApi} API`, err);
         } else {
-          DbErrorHandler(err, history);
+          DbErrorHandler(err, history, 'Unable to add department report');
         }
       }
       return {};

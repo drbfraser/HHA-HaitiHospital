@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react';
 import { CaseStudyOptions } from 'pages/case_study_forms/CaseStudies';
 import { useTranslation } from 'react-i18next';
 import API from '../../actions/apiActions';
+import { useHistory } from 'react-router';
+import { History } from 'history';
 
 export const CaseStudySummary = ({ caseStudy }) => {
   const { t: translateText } = useTranslation();
   const [caseStudyImage, setCaseStudyImage] = useState<string>('');
+  const history: History = useHistory();
 
   const getCaseStudyImage = async (url: string) => {
-    setCaseStudyImage(await API.Image(url));
+    setCaseStudyImage(await API.Image(url, history));
   };
 
   useEffect(() => {

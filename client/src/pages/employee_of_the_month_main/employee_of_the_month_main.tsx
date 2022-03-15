@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
@@ -11,6 +12,7 @@ import { useAuthState } from 'Context';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
 import initialEmployeeOfTheMonth from './initialEmployeeOfTheMonth.json';
+import { History } from 'history';
 
 interface EmployeeOfTheMonthMainProps extends RouteComponentProps {}
 
@@ -21,10 +23,11 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
   const authState = useAuthState();
   const ENDPOINT_URL: string = '/api/employee-of-the-month';
   const TOAST_ERROR: string = 'Unable to fetch employee of the month';
+  const history: History = useHistory();
   const { t: translateText } = useTranslation();
 
   const getEmployeeOfTheMonth = async () => {
-    setEmployeeOfTheMonth(await API.Get(ENDPOINT_URL, TOAST_ERROR));
+    setEmployeeOfTheMonth(await API.Get(ENDPOINT_URL, TOAST_ERROR, history));
   };
 
   useEffect(() => {
@@ -49,7 +52,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
         <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
           <EmployeeOfTheMonthSummary
             employeeOfTheMonth={employeeOfTheMonth}
-            history={undefined}
+            history={history}
             location={undefined}
             match={undefined}
           />

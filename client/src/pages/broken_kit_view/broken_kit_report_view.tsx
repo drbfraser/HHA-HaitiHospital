@@ -5,6 +5,8 @@ import Header from 'components/header/header';
 import API from '../../actions/apiActions';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
+import { History } from 'history';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -13,6 +15,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const [BioReport, setBioReport] = useState({} as any);
   const [BioReportImage, setBioReportImage] = useState<string>('');
   const id = useLocation().pathname.split('/')[3];
+  const history: History = useHistory<History>();
   const BioReportUrl = `/api/biomech/${id}`;
 
   const getBioReport = useCallback(async () => {
@@ -21,7 +24,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   }, [BioReportUrl]);
 
   const getBioReportImage = async (url: string) => {
-    setBioReportImage(await API.Image(url));
+    setBioReportImage(await API.Image(url, history));
   };
 
   useEffect(() => {

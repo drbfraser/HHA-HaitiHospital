@@ -61,7 +61,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         props.history.push('/case-study');
       })
       .catch((error) => {
-        DbErrorHandler(error, props.history);
+        DbErrorHandler(error, props.history, 'Unable to add case study');
         setSubmissionStatus('failure');
       });
   };

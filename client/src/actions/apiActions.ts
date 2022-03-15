@@ -1,21 +1,23 @@
 import httpService from './httpService';
-import { toast } from 'react-toastify';
+import { History } from 'history';
+import DbErrorHandler from './http_error_handler';
 
-const ERROR_CODE: string = 'ERROR';
+const ERROR_IMG: string = '';
+const ERROR_OBJ: any = {};
 
-const Get = async (url: string, errorMsg: string): Promise<any> => {
+const Get = async (url: string, errorMsg: string, history: History): Promise<any> => {
   return await httpService
     .get(url)
     .then((response: any) => {
       return response.data;
     })
     .catch((err: any) => {
-      toast.error(errorMsg);
-      return ERROR_CODE;
+      DbErrorHandler(err, history, errorMsg);
+      return ERROR_OBJ;
     });
 };
 
-const Image = async (url: string): Promise<string> => {
+const Image = async (url: string, history: History): Promise<string> => {
   return await httpService
     .get(url, {
       responseType: 'blob',
@@ -23,9 +25,9 @@ const Image = async (url: string): Promise<string> => {
     .then((response: any) => {
       return URL.createObjectURL(response.data);
     })
-    .catch(() => {
-      toast.error('Unable to fetch image');
-      return ERROR_CODE;
+    .catch((err: any) => {
+      DbErrorHandler(err, history, 'Unable to fetch image');
+      return ERROR_IMG;
     });
 };
 
