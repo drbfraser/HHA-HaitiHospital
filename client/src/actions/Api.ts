@@ -1,9 +1,8 @@
-import httpService from './httpService';
+import axios from 'axios';
 import { History } from 'history';
+import * as Image from './Image';
+import * as Error from './ApiError';
 import DbErrorHandler from './http_error_handler';
-
-const ERROR_IMG: string = '';
-const ERROR_OBJ: any = {};
 
 // ----------------------- DEFAULT ACTIONS -----------------------
 
@@ -19,14 +18,14 @@ const ERROR_OBJ: any = {};
  * - Data retrieved from endpoint (Eg. JSON, Array)
  */
 const Get = async (url: string, errorMsg: string, history: History): Promise<any> => {
-  return await httpService
+  return await axios
     .get(url)
     .then((response: any) => {
       return response.data;
     })
     .catch((err: any) => {
       DbErrorHandler(err, history, errorMsg);
-      return ERROR_OBJ;
+      return Error.ERROR_OBJ;
     });
 };
 
@@ -52,7 +51,7 @@ const Put = async (
   errorMsg: string,
   history: History,
 ): Promise<void> => {
-  return await httpService
+  return await axios
     .put(url, obj)
     .then(() => {
       actions();
@@ -64,20 +63,6 @@ const Put = async (
     });
 };
 
-// ----------------------- CUSTOM ACTIONS ------------------------
+const Api = { Image, Get, Put };
 
-const Image = async (url: string, history: History): Promise<string> => {
-  return await httpService
-    .get(url, {
-      responseType: 'blob',
-    })
-    .then((response: any) => {
-      return URL.createObjectURL(response.data);
-    })
-    .catch((err: any) => {
-      DbErrorHandler(err, history, 'Unable to fetch image');
-      return ERROR_IMG;
-    });
-};
-
-export default { Get, Put, Image };
+export default Api;

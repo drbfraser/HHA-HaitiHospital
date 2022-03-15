@@ -5,13 +5,11 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
 import { DepartmentName } from 'common/definitions/departments';
-import axios from 'axios';
-import API from '../../actions/apiActions';
+import Api from '../../actions/Api';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toast_messages';
 import './employee_of_the_month_form.css';
 import { useTranslation } from 'react-i18next';
-import DbErrorHandler from 'actions/http_error_handler';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 
@@ -36,7 +34,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
     formData.append('document', postData);
     formData.append('file', selectedFile);
 
-    await API.Put(
+    await Api.Put(
       ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
       data,
       onSubmitActions,
@@ -83,7 +81,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   {...register('department', { required: true })}
                   defaultValue=""
                 >
-                  <option value="">{t('brokenKitReportClickToSelectPriority')}</option>
+                  <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>
                   <option value={DepartmentName.NicuPaeds}>{t('NICU/Paeds')}</option>
                   <option value={DepartmentName.Maternity}>{t('Maternity')}</option>
                   <option value={DepartmentName.Rehab}>{t('Rehab')}</option>

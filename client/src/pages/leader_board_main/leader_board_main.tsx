@@ -3,7 +3,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import './leader_board_main.css';
-import API from '../../actions/apiActions';
+import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
 import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toast_messages';
 import { useTranslation } from 'react-i18next';
@@ -18,11 +18,11 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const history = useHistory<History>();
 
   const getLeaderboard = async () => {
-    setLeaderboard(await API.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
+    setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
   };
 
   const getCaseStudy = async () => {
-    setCaseStudy(await API.Get(ENDPOINT_CASESTUDY_FEATURED, TOAST_CASESTUDY_GET, history));
+    setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_FEATURED, TOAST_CASESTUDY_GET, history));
   };
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { DepartmentName } from '../common/definitions/departments';
 
 const { Schema } = mongoose;
 
-const employeeOfTheMontSchema = new Schema(
+const employeeOfTheMonthSchema = new Schema(
   {
     name: { type: String, required: true },
     department: { type: DepartmentName, required: true },
@@ -15,5 +15,5 @@ const employeeOfTheMontSchema = new Schema(
   }
 );
 
-const EmployeeOfTheMonth = mongoose.model('EmployeeOfTheMonth', employeeOfTheMontSchema, 'EmployeeOfTheMonth');
+const EmployeeOfTheMonth = mongoose.model('EmployeeOfTheMonth', employeeOfTheMonthSchema, 'EmployeeOfTheMonth');
 export default EmployeeOfTheMonth;
