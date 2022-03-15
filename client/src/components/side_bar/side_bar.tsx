@@ -100,7 +100,7 @@ const Sidebar = (props: SidebarProps) => {
                 activeClassName="active"
               >
                 <i className="bi bi-star-fill me-2" />
-                <span className="text text-light">{t('sidebarEmployeeOfTheMonth')}</span>
+                <span className="text text-light pr-21">{t('sidebarEmployeeOfTheMonth')}</span>
               </NavLink>
             }
           </li>
