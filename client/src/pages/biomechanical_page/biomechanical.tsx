@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
@@ -10,6 +10,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
+import Pagination from 'components/pagination/Pagination';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -21,7 +22,17 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const [BioReport, setBioReport] = useState([]);
   const authState = useAuthState();
   const history = useHistory();
-  const BioReportUrl = `/api/biomech/`;
+  const BioReportUrl: string = `/api/biomech/`;
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize: number = 10;
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
+    return BioReport.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, BioReport]);
+  const bioReportNumberIndex = (currentPage * pageSize) - pageSize;
 
   const getBioReport = useCallback(async () => {
     const res = await axios.get(BioReportUrl);
@@ -93,10 +104,10 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {BioReport.map((item, index) => {
+                  {currentTableData.map((item, index) => {
                     return (
                       <tr key={item._id}>
-                        <th scope="row">{index + 1}</th>
+                        <th scope="row">{bioReportNumberIndex + index + 1}</th>
                         <td>{item.equipmentPriority}</td>
                         <td>{item.user ? item.user.name : '[deleted]'}</td>
                         <td>
@@ -132,6 +143,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   })}
                 </tbody>
               </table>
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={BioReport.length}
+                pageSize={pageSize}
+                onPageChange={page => setCurrentPage(page)}
+              />
             </div>
           </div>
         </section>
