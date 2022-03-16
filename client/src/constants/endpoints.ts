@@ -3,6 +3,7 @@ const ENDPOINT_BIOMECH_GET: string = '/api/biomech';
 const ENDPOINT_BIOMECH_GET_BY_ID = (id: string): string => {
   return `${ENDPOINT_BIOMECH_GET}/${id}`;
 };
+const ENDPOINT_BIOMECH_POST: string = ENDPOINT_BIOMECH_GET;
 
 // Case studies
 const ENDPOINT_CASESTUDY_GET: string = '/api/case-studies';
@@ -41,6 +42,7 @@ const ENDPOINT_MESSAGEBOARD_PUT = (id: string): string => {
 export {
   ENDPOINT_BIOMECH_GET,
   ENDPOINT_BIOMECH_GET_BY_ID,
+  ENDPOINT_BIOMECH_POST,
   ENDPOINT_CASESTUDY_GET,
   ENDPOINT_CASESTUDY_GET_BY_ID,
   ENDPOINT_CASESTUDY_FEATURED,
