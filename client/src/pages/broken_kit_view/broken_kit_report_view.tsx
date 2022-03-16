@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import axios from 'axios';
 import Api from '../../actions/Api';
+import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import { TOAST_BIOMECH_GET } from 'constants/toast_messages';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';
@@ -14,25 +15,23 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const { t } = useTranslation();
   const [BioReport, setBioReport] = useState({} as any);
   const [BioReportImage, setBioReportImage] = useState<string>('');
-  const id = useLocation().pathname.split('/')[3];
+  const id: string = useLocation().pathname.split('/')[3];
   const history: History = useHistory<History>();
-  const BioReportUrl = `/api/biomech/${id}`;
 
-  const getBioReport = useCallback(async () => {
-    const res = await axios.get(BioReportUrl);
-    setBioReport(res.data);
-  }, [BioReportUrl]);
+  const getBioReport = async () => {
+    setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET_BY_ID(id), TOAST_BIOMECH_GET, history));
+  };
 
-  const getBioReportImage = async (url: string) => {
-    setBioReportImage(await Api.Image.get(url, history));
+  const getBioReportImage = async () => {
+    setBioReportImage(await Api.Image.get(ENDPOINT_IMAGE_BY_PATH(BioReport.imgPath), history));
   };
 
   useEffect(() => {
     getBioReport();
+
     // Only execute once biomech data has been successfully passed to this component
     if (BioReport.imgPath !== undefined) {
-      const IMAGE_URL: string = `/api/image/${BioReport.imgPath.split('/')[2]}`;
-      getBioReportImage(IMAGE_URL);
+      getBioReportImage();
     }
   }, [BioReport]);
 

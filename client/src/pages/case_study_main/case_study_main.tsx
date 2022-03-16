@@ -35,7 +35,6 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const [caseStudies, setCaseStudies] = useState([]);
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const caseStudiesUrl: string = '/api/case-studies';
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
