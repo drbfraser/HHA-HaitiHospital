@@ -34,6 +34,40 @@ const Get = async (url: string, errorMsg: string, history: History): Promise<any
  * @param obj
  * - Data to be sent to server (JSON)
  * @param actions
+ * - Actions that should occur after POST request is successful
+ * - (Eg. Navigate to new page)
+ * @param errorMsg
+ * - Error message for toast
+ * @param history
+ * - History instance from navigation
+ * @returns void
+ */
+const Post = async (
+  url: string,
+  obj: object = {},
+  actions: any,
+  errorMsg: string,
+  history: History,
+): Promise<void> => {
+  return await axios
+    .post(url, obj)
+    .then(() => {
+      actions();
+      return;
+    })
+    .catch((err: any) => {
+      DbErrorHandler(err, history, errorMsg);
+      return;
+    });
+};
+
+/**
+ *
+ * @param url
+ * - Endpoint URL
+ * @param obj
+ * - Data to be sent to server (JSON)
+ * @param actions
  * - Actions that should occur after PUT request is successful
  * - (Eg. Navigate to new page)
  * @param errorMsg
@@ -129,6 +163,6 @@ const Delete = async (
     });
 };
 
-const Api = { Image, Get, Put, Patch, Delete };
+const Api = { Image, Get, Post, Put, Patch, Delete };
 
 export default Api;

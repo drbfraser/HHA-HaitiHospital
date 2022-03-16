@@ -5,7 +5,6 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
-import axios from 'axios';
 import Api from 'actions/Api';
 import {
   ENDPOINT_CASESTUDY_GET,

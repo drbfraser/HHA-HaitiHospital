@@ -36,7 +36,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
 
     await Api.Put(
       ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
-      data,
+      formData,
       onSubmitActions,
       TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
       history,
