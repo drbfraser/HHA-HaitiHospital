@@ -27,6 +27,7 @@ const TOAST_LEADERBOARD_GET: string = 'Unable to fetch leaderboard';
 
 // Messageboard
 const TOAST_MESSAGEBOARD_GET: string = 'Unable to fetch message';
+const TOAST_MESSAGEBOARD_POST: string = 'Unable to add message';
 const TOAST_MESSAGEBOARD_PUT: string = 'Unable to update message';
 
 export {
@@ -46,5 +47,6 @@ export {
   TOAST_IMAGE_BY_PATH,
   TOAST_LEADERBOARD_GET,
   TOAST_MESSAGEBOARD_GET,
+  TOAST_MESSAGEBOARD_POST,
   TOAST_MESSAGEBOARD_PUT,
 };

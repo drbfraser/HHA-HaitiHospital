@@ -1,44 +1,45 @@
 import { useHistory } from 'react-router-dom';
-import Axios from 'axios';
 import Sidebar from '../../components/side_bar/side_bar';
 import Header from 'components/header/header';
-import './add_message_styles.css';
+import Api from 'actions/Api';
+import { ENDPOINT_MESSAGEBOARD_POST } from 'constants/endpoints';
+import { TOAST_MESSAGEBOARD_POST } from 'constants/toast_messages';
+import './message_board_add.css';
 import { toast } from 'react-toastify';
 import MessageForm from '../../components/message_form/message_form';
 import { useTranslation } from 'react-i18next';
-import DbErrorHandler from 'actions/http_error_handler';
+import { History } from 'history';
 
 const AddMessage = () => {
-  const history = useHistory();
+  const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();
 
-  const postMessage = async (data) => {
-    const api = '/api/message-board/';
-    try {
-      await Axios.post(api, data);
-      history.push('/message-board');
-      toast.success(i18n.t('addMessageAlertSuccess'));
-    } catch (e) {
-      DbErrorHandler(e, history, 'Unable to add message');
-    }
+  const onSubmitActions = () => {
+    history.push('/message-board');
+    toast.success(i18n.t('addMessageAlertSuccess'));
+  };
+
+  const onSubmit = async (data: any) => {
+    await Api.Post(
+      ENDPOINT_MESSAGEBOARD_POST,
+      data,
+      onSubmitActions,
+      TOAST_MESSAGEBOARD_POST,
+      history,
+    );
   };
 
   return (
     <div className="add_message">
       <Sidebar />
-
       <main className="main_container">
         <Header />
-
         <div className="container">
           <h1 className="h1">{t('addMessageAddMessage')}</h1>
-          <MessageForm submitAction={postMessage} />
-
+          <MessageForm submitAction={onSubmit} />
           <br />
-
           <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
-            {' '}
-            {t('addMessageBack')}{' '}
+            {t('addMessageBack')}
           </button>
         </div>
       </main>
