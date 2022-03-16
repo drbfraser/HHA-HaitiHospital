@@ -4,22 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';
 import Api from '../../actions/Api';
+import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 
 export const CaseStudySummary = ({ caseStudy }) => {
   const { t: translateText } = useTranslation();
   const [caseStudyImage, setCaseStudyImage] = useState<string>('');
-  const history: History = useHistory();
+  const history: History = useHistory<History>();
 
-  const getCaseStudyImage = async (url: string) => {
-    setCaseStudyImage(await Api.Image.get(url, history));
+  const getCaseStudyImage = async () => {
+    setCaseStudyImage(await Api.Image.get(ENDPOINT_IMAGE_BY_PATH(caseStudy.imgPath), history));
   };
 
   useEffect(() => {
     // Only execute once case study data has been successfully passed to this component
-    if (caseStudy.imgPath !== undefined) {
-      const IMAGE_URL: string = `/api/image/${caseStudy.imgPath.split('/')[2]}`;
-      getCaseStudyImage(IMAGE_URL);
-    }
+    if (caseStudy.imgPath !== undefined) getCaseStudyImage();
   }, [caseStudy]);
 
   return (
