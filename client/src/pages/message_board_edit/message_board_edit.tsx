@@ -7,7 +7,10 @@ import Header from 'components/header/header';
 import MessageForm from 'components/message_form/message_form';
 import './message_board_edit.css';
 import Api from 'actions/Api';
-import { ENDPOINT_MESSAGEBOARD_GET_BY_ID, ENDPOINT_MESSAGEBOARD_PUT } from 'constants/endpoints';
+import {
+  ENDPOINT_MESSAGEBOARD_GET_BY_ID,
+  ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
+} from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_PUT } from 'constants/toast_messages';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
@@ -48,7 +51,7 @@ const EditMessage = () => {
 
   const updateMessage = async (data: any) => {
     await Api.Put(
-      ENDPOINT_MESSAGEBOARD_PUT(id),
+      ENDPOINT_MESSAGEBOARD_PUT_BY_ID(id),
       data,
       updateMessageActions,
       TOAST_MESSAGEBOARD_PUT,
