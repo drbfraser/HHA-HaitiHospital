@@ -1,16 +1,10 @@
-import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
-import { cleanupAjvStandAlone, initAjvAsStandAlone, jsonStringToJsonReport } from 'utils/parsers';
+
+import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from 'common/definitions/json_report';
+import { BadRequestError } from 'exceptions/httpException';
+import { jsonStringToJsonReport } from 'utils/parsers';
 const chai = require('chai');
 
-describe('Test parsing json string to a jsonReportDescriptor', () => {
-  before(() => {
-    initAjvAsStandAlone();
-  });
-
-  after(() => {
-    cleanupAjvStandAlone();
-  });
-
+describe("Test parsing json string to a jsonReportDescriptor", () => {
   it('should parse sucessfully', (done) => {
     try {
       const stringJson =
@@ -44,7 +38,7 @@ describe('Test parsing json string to a jsonReportDescriptor', () => {
         ]
       };
 
-      chai.expect(JSON.stringify(actual) == JSON.stringify(expected), true);
+            chai.expect(JSON.stringify(actual) == JSON.stringify(expected)).to.be.true;
 
       done();
     } catch (e) {
@@ -52,15 +46,11 @@ describe('Test parsing json string to a jsonReportDescriptor', () => {
     }
   });
 
-  it('should reject input string due to malformat', (done) => {
-    try {
-      // a stringified json report meta
-      const stringJson = '{"id":"123","departmentId":"1","submittedDate":"123","submittedUserId":"123"}';
-      chai
-        .expect(() => {
-          jsonStringToJsonReport(stringJson);
-        })
-        .to.throw();
+    it('should throw a BadRequestError due to malformat', (done) => {
+        try {
+            // a stringified json report meta
+            const stringJson = '{"id":"123","departmentId":"1","submittedDate":"123","submittedUserId":"123"}';
+            chai.expect(() => jsonStringToJsonReport(stringJson)).to.throw("malformed");
 
       done();
     } catch (e) {

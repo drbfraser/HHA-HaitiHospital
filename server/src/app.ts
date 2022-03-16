@@ -1,4 +1,3 @@
-import { initAjvAsStandAlone } from 'utils/parsers';
 import { Application } from 'express';
 import { createServer, setServerPort } from './server';
 import * as ENV from './utils/processEnv';
@@ -9,4 +8,3 @@ const startServer = () => {
 };
 
 startServer();
-initAjvAsStandAlone();
