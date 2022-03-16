@@ -23,7 +23,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   };
 
   const getBioReportImage = async () => {
-    setBioReportImage(await Api.Image.get(ENDPOINT_IMAGE_BY_PATH(BioReport.imgPath), history));
+    setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(BioReport.imgPath), history));
   };
 
   useEffect(() => {

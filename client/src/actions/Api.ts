@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { History } from 'history';
-import * as Image from './Image';
 import * as Error from './ApiError';
+import { TOAST_IMAGE_BY_PATH } from 'constants/toast_messages';
 import DbErrorHandler from './http_error_handler';
 
 /**
@@ -163,6 +163,28 @@ const Delete = async (
     });
 };
 
-const Api = { Image, Get, Post, Put, Patch, Delete };
+/**
+ *
+ * @param url
+ * - Endpoint URL
+ * @param history
+ * - History instance from navigation
+ * @returns void
+ */
+const Image = async (url: string, history: History): Promise<string> => {
+  return await axios
+    .get(url, {
+      responseType: 'blob',
+    })
+    .then((response: any) => {
+      return URL.createObjectURL(response.data);
+    })
+    .catch((err: any) => {
+      DbErrorHandler(err, history, TOAST_IMAGE_BY_PATH);
+      return Error.ERROR_IMG;
+    });
+};
+
+const Api = { Get, Post, Put, Patch, Delete, Image };
 
 export default Api;

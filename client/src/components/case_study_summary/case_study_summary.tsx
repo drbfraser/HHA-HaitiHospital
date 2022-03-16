@@ -12,7 +12,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
   const history: History = useHistory<History>();
 
   const getCaseStudyImage = async () => {
-    setCaseStudyImage(await Api.Image.get(ENDPOINT_IMAGE_BY_PATH(caseStudy.imgPath), history));
+    setCaseStudyImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(caseStudy.imgPath), history));
   };
 
   useEffect(() => {

@@ -18,7 +18,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
 
   const getEmployeeOfTheMonthImage = async () => {
     setEmployeeOfTheMonthImage(
-      await Api.Image.get(ENDPOINT_IMAGE_BY_PATH(props.employeeOfTheMonth.imgPath), props.history),
+      await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.employeeOfTheMonth.imgPath), props.history),
     );
   };
 
