@@ -1,6 +1,7 @@
 // Biomechanical Reports
 const TOAST_BIOMECH_GET: string = 'Unable to fetch biomech reports';
-const TOAST_BIOMECH_POST: string = 'Unable to post biomech reports';
+const TOAST_BIOMECH_POST: string = 'Unable to add biomech report';
+const TOAST_BIOMECH_DELETE: string = 'Unable to delete biomech report';
 
 // Case studies
 const TOAST_CASESTUDY_GET: string = 'Unable to fetch case study';
@@ -25,6 +26,7 @@ const TOAST_MESSAGEBOARD_PUT: string = 'Unable to update message';
 export {
   TOAST_BIOMECH_GET,
   TOAST_BIOMECH_POST,
+  TOAST_BIOMECH_DELETE,
   TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_POST,
   TOAST_CASESTUDY_PATCH,

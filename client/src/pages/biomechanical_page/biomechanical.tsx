@@ -1,16 +1,19 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_BIOMECH_GET, ENDPOINT_BIOMECH_DELETE_BY_ID } from 'constants/endpoints';
+import { TOAST_BIOMECH_GET, TOAST_BIOMECH_DELETE } from 'constants/toast_messages';
 import { toast } from 'react-toastify';
 import { renderBasedOnRole } from 'actions/roleActions';
 import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
+import { History } from 'history';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -21,8 +24,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [BioReport, setBioReport] = useState([]);
   const authState = useAuthState();
-  const history = useHistory();
-  const BioReportUrl: string = `/api/biomech/`;
+  const history: History = useHistory<History>();
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,19 +36,23 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   }, [currentPage, BioReport]);
   const bioReportNumberIndex = currentPage * pageSize - pageSize;
 
-  const getBioReport = useCallback(async () => {
-    const res = await axios.get(BioReportUrl);
-    setBioReport(res.data);
-  }, [BioReportUrl]);
+  const deleteBioMechActions = () => {
+    toast.success('Bio Mech request deleted!');
+    getBioReport();
+  };
+
+  const getBioReport = async () => {
+    setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, TOAST_BIOMECH_GET, history));
+  };
 
   const deleteBioMech = async (id: string) => {
-    try {
-      toast.success('Bio Mech request deleted!');
-      await axios.delete(BioReportUrl.concat(`/${id}`));
-      getBioReport();
-    } catch (err) {
-      toast.error('Unable to delete Bio Mech Request!');
-    }
+    await Api.Delete(
+      ENDPOINT_BIOMECH_DELETE_BY_ID(id),
+      {},
+      deleteBioMechActions,
+      TOAST_BIOMECH_DELETE,
+      history,
+    );
   };
 
   const onDeleteBioMech = (event: any, id: string) => {
@@ -68,7 +74,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   useEffect(() => {
     getBioReport();
-  }, [getBioReport]);
+  }, [BioReport]);
 
   return (
     <div className="biomechanical_page">

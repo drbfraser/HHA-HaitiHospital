@@ -4,6 +4,9 @@ const ENDPOINT_BIOMECH_GET_BY_ID = (id: string): string => {
   return `${ENDPOINT_BIOMECH_GET}/${id}`;
 };
 const ENDPOINT_BIOMECH_POST: string = ENDPOINT_BIOMECH_GET;
+const ENDPOINT_BIOMECH_DELETE_BY_ID = (id: string): string => {
+  return ENDPOINT_BIOMECH_GET_BY_ID(id);
+};
 
 // Case studies
 const ENDPOINT_CASESTUDY_GET: string = '/api/case-studies';
@@ -32,17 +35,19 @@ const ENDPOINT_IMAGE_BY_PATH = (path: string): string => {
 const ENDPOINT_LEADERBOARD_GET: string = '/api/leaderboard';
 
 // Messageboard
-const ENDPOINT_MESSAGEBOARD_GET = (id: string): string => {
-  return `/api/message-board/${id}`;
+const ENDPOINT_MESSAGEBOARD_GET: string = '/api/message-board';
+const ENDPOINT_MESSAGEBOARD_GET_BY_ID = (id: string): string => {
+  return `${ENDPOINT_MESSAGEBOARD_GET}/${id}`;
 };
 const ENDPOINT_MESSAGEBOARD_PUT = (id: string): string => {
-  return ENDPOINT_MESSAGEBOARD_GET(id);
+  return ENDPOINT_MESSAGEBOARD_GET_BY_ID(id);
 };
 
 export {
   ENDPOINT_BIOMECH_GET,
   ENDPOINT_BIOMECH_GET_BY_ID,
   ENDPOINT_BIOMECH_POST,
+  ENDPOINT_BIOMECH_DELETE_BY_ID,
   ENDPOINT_CASESTUDY_GET,
   ENDPOINT_CASESTUDY_GET_BY_ID,
   ENDPOINT_CASESTUDY_FEATURED,
@@ -54,5 +59,6 @@ export {
   ENDPOINT_IMAGE_BY_PATH,
   ENDPOINT_LEADERBOARD_GET,
   ENDPOINT_MESSAGEBOARD_GET,
+  ENDPOINT_MESSAGEBOARD_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_PUT,
 };
