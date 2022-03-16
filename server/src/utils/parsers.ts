@@ -2,7 +2,7 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/defini
 
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
-import { PATH_TO_JSON_REPORT_TYPES } from "./constants";
+import { PATH_TO_JSON_REPORT_TYPES } from './constants';
 
 import Ajv, { ValidateFunction } from 'ajv'
 import path from 'path';
