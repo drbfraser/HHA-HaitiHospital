@@ -1,89 +1,64 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { User, Role } from 'constants/interfaces';
 import { DepartmentName } from 'common/definitions/departments';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
+import { TOAST_ADMIN_GET, TOAST_ADMIN_PUT } from 'constants/toast_messages';
 import './admin.css';
-import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import { History } from 'history';
+import { toast } from 'react-toastify';
 
 interface AdminProps {}
 
 export const EditUserForm = (props: AdminProps) => {
   const [user, setUser] = useState({} as User);
-  const [submissionStatus, setSubmissionStatus] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [role, setRole] = useState(null);
   const [department, setDepartment] = useState(null);
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
-
-  const failureMessageRef = useRef(null);
-  const history = useHistory();
+  const history: History = useHistory<History>();
   const { t } = useTranslation();
   const id = useLocation().pathname.split('/')[3];
-  const userUrl = `/api/users/${id}`;
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await axios.get(userUrl);
-        setUser(res.data);
-        setRole(res.data.role);
-        setDepartment(res.data.department);
-      } catch (err) {
-        DbErrorHandler(err, history, 'Unable to get user');
-      }
-    };
-    getUser();
-  }, [history, userUrl]);
-
-  useEffect(() => {
-    reset({
-      username: user.username,
-      password: user.password,
-      name: user.name,
-      department: user.department,
-      role: user.role,
-    });
-  }, [user]);
-
-  useEffect(() => {
-    reset({
-      username: user.username,
-      password: user.password,
-      name: user.name,
-      department: user.department,
-      role: user.role,
-    });
-  }, [user]);
-
-  const onSubmit = (data: any) => {
-    axios
-      .put(userUrl, data)
-      .then((res) => {
-        reset({});
-        history.push('/admin');
-      })
-      .catch((error) => {
-        handleSubmitFailure(error);
-      });
+  const getUser = async () => {
+    const retrievedUser = await Api.Get(ENDPOINT_ADMIN_GET_BY_ID(id), TOAST_ADMIN_GET, history);
+    setUser(retrievedUser);
+    setRole(retrievedUser.role);
+    setDepartment(retrievedUser.department);
   };
 
-  const handleSubmitFailure = (error) => {
-    try {
-      if (error.response.data.message) {
-        setErrorMessage(error.response.data.message);
-      }
-      setSubmissionStatus('failure');
-      failureMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
-    } catch (err) {
-      console.log(err);
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const defaultValueHandler = (data: any): object => {
+    if (data.name === '' || data.username === '') {
+      data.name = user.name;
+      data.username = user.username;
     }
+    return data;
+  };
+
+  const onSubmitActions = () => {
+    reset({});
+    history.push('/admin');
+    toast.success('Successfully updated user');
+  };
+
+  const onSubmit = async (data: any) => {
+    await Api.Put(
+      ENDPOINT_ADMIN_PUT_BY_ID(id),
+      defaultValueHandler(data),
+      onSubmitActions,
+      TOAST_ADMIN_PUT,
+      history,
+    );
   };
 
   return (
@@ -92,7 +67,6 @@ export const EditUserForm = (props: AdminProps) => {
 
       <main className="container-fluid main-region">
         <Header />
-
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to="/admin">
             <button type="button" className="btn btn-outline-dark">
@@ -218,16 +192,6 @@ export const EditUserForm = (props: AdminProps) => {
               </button>
             </div>
           </form>
-
-          <div
-            className={`alert alert-danger ${
-              submissionStatus === 'failure' ? 'd-block' : 'd-none'
-            }`}
-            role="alert"
-            ref={failureMessageRef}
-          >
-            {t('adminAddErrorOccurredDuringTheSubmission')} {errorMessage}
-          </div>
         </div>
       </main>
     </div>

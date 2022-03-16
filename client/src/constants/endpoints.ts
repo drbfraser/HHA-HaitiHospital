@@ -1,11 +1,14 @@
 // Admin
 const ENDPOINT_ADMIN_GET: string = '/api/users';
-const ENDPOINT_ADMIN_POST: string = ENDPOINT_ADMIN_GET;
-const ENDPOINT_ADMIN_PUT_BY_ID = (id: string) => {
+const ENDPOINT_ADMIN_GET_BY_ID = (id: string) => {
   return `${ENDPOINT_ADMIN_GET}/${id}`;
 };
+const ENDPOINT_ADMIN_POST: string = ENDPOINT_ADMIN_GET;
+const ENDPOINT_ADMIN_PUT_BY_ID = (id: string) => {
+  return ENDPOINT_ADMIN_GET_BY_ID(id);
+};
 const ENDPOINT_ADMIN_DELETE_BY_ID = (id: string): string => {
-  return ENDPOINT_ADMIN_PUT_BY_ID(id);
+  return ENDPOINT_ADMIN_GET_BY_ID(id);
 };
 
 // Biomechanical Reports
@@ -55,6 +58,7 @@ const ENDPOINT_MESSAGEBOARD_PUT_BY_ID = (id: string): string => {
 
 export {
   ENDPOINT_ADMIN_GET,
+  ENDPOINT_ADMIN_GET_BY_ID,
   ENDPOINT_ADMIN_POST,
   ENDPOINT_ADMIN_PUT_BY_ID,
   ENDPOINT_ADMIN_DELETE_BY_ID,
