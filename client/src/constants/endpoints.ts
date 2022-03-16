@@ -1,3 +1,9 @@
+// Admin
+const ENDPOINT_ADMIN_GET: string = '/api/users';
+const ENDPOINT_ADMIN_DELETE_BY_ID = (id: string): string => {
+  return `${ENDPOINT_ADMIN_GET}/${id}`;
+};
+
 // Biomechanical Reports
 const ENDPOINT_BIOMECH_GET: string = '/api/biomech';
 const ENDPOINT_BIOMECH_GET_BY_ID = (id: string): string => {
@@ -44,6 +50,8 @@ const ENDPOINT_MESSAGEBOARD_PUT = (id: string): string => {
 };
 
 export {
+  ENDPOINT_ADMIN_GET,
+  ENDPOINT_ADMIN_DELETE_BY_ID,
   ENDPOINT_BIOMECH_GET,
   ENDPOINT_BIOMECH_GET_BY_ID,
   ENDPOINT_BIOMECH_POST,

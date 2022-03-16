@@ -1,3 +1,7 @@
+// Admin
+const TOAST_ADMIN_GET: string = 'Unable to fetch users';
+const TOAST_ADMIN_DELETE: string = 'Unable to delete users';
+
 // Biomechanical Reports
 const TOAST_BIOMECH_GET: string = 'Unable to fetch biomech reports';
 const TOAST_BIOMECH_POST: string = 'Unable to add biomech report';
@@ -24,6 +28,8 @@ const TOAST_MESSAGEBOARD_GET: string = 'Unable to fetch message';
 const TOAST_MESSAGEBOARD_PUT: string = 'Unable to update message';
 
 export {
+  TOAST_ADMIN_GET,
+  TOAST_ADMIN_DELETE,
   TOAST_BIOMECH_GET,
   TOAST_BIOMECH_POST,
   TOAST_BIOMECH_DELETE,
