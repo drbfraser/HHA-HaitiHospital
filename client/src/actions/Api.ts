@@ -16,15 +16,13 @@ import DbErrorHandler from './http_error_handler';
  * - Data retrieved from endpoint (Eg. JSON, Array)
  */
 const Get = async (url: string, errorMsg: string, history: History): Promise<any> => {
-  return await axios
-    .get(url)
-    .then((response: any) => {
-      return response.data;
-    })
-    .catch((err: any) => {
-      DbErrorHandler(err, history, errorMsg);
-      return Error.ERROR_OBJ;
-    });
+  try {
+    const response: any = await axios.get(url);
+    return response.data;
+  } catch (error: any) {
+    DbErrorHandler(error, history, errorMsg);
+    return Error.ERROR_OBJ;
+  }
 };
 
 /**
@@ -49,16 +47,14 @@ const Post = async (
   errorMsg: string,
   history: History,
 ): Promise<void> => {
-  return await axios
-    .post(url, obj)
-    .then(() => {
-      actions();
-      return;
-    })
-    .catch((err: any) => {
-      DbErrorHandler(err, history, errorMsg);
-      return;
-    });
+  try {
+    await axios.post(url, obj);
+    actions();
+    return;
+  } catch (error: any) {
+    DbErrorHandler(error, history, errorMsg);
+    return;
+  }
 };
 
 /**
@@ -83,16 +79,14 @@ const Put = async (
   errorMsg: string,
   history: History,
 ): Promise<void> => {
-  return await axios
-    .put(url, obj)
-    .then(() => {
-      actions();
-      return;
-    })
-    .catch((err: any) => {
-      DbErrorHandler(err, history, errorMsg);
-      return;
-    });
+  try {
+    await axios.put(url, obj);
+    actions();
+    return;
+  } catch (error: any) {
+    DbErrorHandler(error, history, errorMsg);
+    return;
+  }
 };
 
 /**
@@ -117,16 +111,14 @@ const Patch = async (
   errorMsg: string,
   history: History,
 ): Promise<void> => {
-  return await axios
-    .patch(url, obj)
-    .then(() => {
-      actions();
-      return;
-    })
-    .catch((err: any) => {
-      DbErrorHandler(err, history, errorMsg);
-      return;
-    });
+  try {
+    await axios.patch(url, obj);
+    actions();
+    return;
+  } catch (error: any) {
+    DbErrorHandler(error, history, errorMsg);
+    return;
+  }
 };
 
 /**
@@ -151,16 +143,14 @@ const Delete = async (
   errorMsg: string,
   history: History,
 ): Promise<void> => {
-  return await axios
-    .delete(url, { data: obj })
-    .then(() => {
-      actions();
-      return;
-    })
-    .catch((err: any) => {
-      DbErrorHandler(err, history, errorMsg);
-      return;
-    });
+  try {
+    await axios.delete(url, { data: obj });
+    actions();
+    return;
+  } catch (error: any) {
+    DbErrorHandler(error, history, errorMsg);
+    return;
+  }
 };
 
 /**
@@ -172,17 +162,15 @@ const Delete = async (
  * @returns void
  */
 const Image = async (url: string, history: History): Promise<string> => {
-  return await axios
-    .get(url, {
+  try {
+    const response: any = await axios.get(url, {
       responseType: 'blob',
-    })
-    .then((response: any) => {
-      return URL.createObjectURL(response.data);
-    })
-    .catch((err: any) => {
-      DbErrorHandler(err, history, TOAST_IMAGE_BY_PATH);
-      return Error.ERROR_IMG;
     });
+    return URL.createObjectURL(response.data);
+  } catch (error: any) {
+    DbErrorHandler(error, history, TOAST_IMAGE_BY_PATH);
+    return Error.ERROR_IMG;
+  }
 };
 
 const Api = { Get, Post, Put, Patch, Delete, Image };
