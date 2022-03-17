@@ -5,11 +5,13 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
 import { DepartmentName } from 'common/definitions/departments';
-import axios from 'axios';
+import Api from '../../actions/Api';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toast_messages';
 import './employee_of_the_month_form.css';
 import { useTranslation } from 'react-i18next';
-import DbErrorHandler from 'actions/http_error_handler';
 import { toast } from 'react-toastify';
+import { History } from 'history';
 
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
@@ -17,7 +19,14 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
-  const history = useHistory();
+  const history: History = useHistory<History>();
+
+  const onSubmitActions = () => {
+    toast.success('Employee of the month successfully updated!');
+    reset({});
+    setSelectedFile(null);
+    props.history.push('/employee-of-the-month');
+  };
 
   const onSubmit = async (data: any) => {
     let formData = new FormData();
@@ -25,17 +34,13 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
     formData.append('document', postData);
     formData.append('file', selectedFile);
 
-    await axios
-      .put('/api/employee-of-the-month', formData)
-      .then(() => {
-        toast.success('Employee of the month successfully updated!');
-        reset({});
-        setSelectedFile(null);
-        props.history.push('/employee-of-the-month');
-      })
-      .catch((error: any) => {
-        DbErrorHandler(error, history);
-      });
+    await Api.Put(
+      ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
+      formData,
+      onSubmitActions,
+      TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
+      history,
+    );
   };
 
   return (

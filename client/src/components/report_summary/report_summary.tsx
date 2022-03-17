@@ -37,7 +37,7 @@ const ReportSummary = (props: DepartmentReportsProps) => {
       } catch (err) {
         if (Axios.isCancel(err)) {
           console.log(`Info: Subscription to ${apiForReports} is canceled`, err);
-        } else DbErrorHandler(err, history);
+        } else DbErrorHandler(err, history, 'Unable to fetch report summary');
         return [];
       }
     }

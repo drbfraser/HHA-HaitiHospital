@@ -3,18 +3,18 @@ import { History } from 'history';
 import { toast } from 'react-toastify';
 
 const BADREQUEST_CODE = 400;
-const UNAUTHORIZE_CODE = 401;
+const UNAUTHORIZED_CODE = 401;
 const NOTFOUND_CODE = 404;
 const INTERNAL_CODE = 500;
 
-const DbErrorHandler = (e, history: History) => {
+const DbErrorHandler = (e, history: History, toastMsg: string) => {
   if ((e as AxiosError).isAxiosError === undefined) {
     console.log(e.message);
     return;
   }
 
   switch (e.response.status) {
-    case UNAUTHORIZE_CODE: {
+    case UNAUTHORIZED_CODE: {
       history.push('/unauthorized');
       break;
     }
@@ -27,7 +27,7 @@ const DbErrorHandler = (e, history: History) => {
       break;
     }
     case BADREQUEST_CODE: {
-      toast.error(`Invalid Report`);
+      toast.error(toastMsg);
       break;
     }
     default:

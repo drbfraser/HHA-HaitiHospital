@@ -1,13 +1,12 @@
 import { RouteComponentProps } from 'react-router-dom';
 import { loginUser, getCSRFToken } from '../../actions/authActions';
 import { useFormik } from 'formik';
-// import { loginSchema } from './validation';
 import * as Yup from 'yup';
 import React from 'react';
 import logo from 'img/logo/LogoWText.svg';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './login_styles.css';
-import { useAuthState, useAuthDispatch } from '../../Context';
+import { useAuthState, useAuthDispatch } from '../../contexts';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage } from '../../components/side_bar/side_bar';
 
@@ -30,7 +29,6 @@ const Login = (props: LoginProps) => {
   // Moved the validation here to support the language translation feature
   const loginSchema = Yup.object({
     username: Yup.string()
-      // .email('Invalid email address')
       .min(2, t('signInValidationMustBe2CharMini'))
       .max(20, t('signInValidationMustBe20CharLess'))
       .required(t('signInUsernameValidationRequired')),
@@ -116,13 +114,6 @@ const Login = (props: LoginProps) => {
             <p className="form-text text-danger user-select-none"> {errorMessage} </p>
           </div>
         ) : null}
-
-        {/* <div className="form-check form-switch mb-4">
-                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                            {t("signInRememberMe")}
-                        </label>
-                </div> */}
 
         <div className="text-center mb-5">
           <button

@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import { getDepartmentId } from '../../common/utils/departments';
 import './side_bar.css';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { isUserInDepartment, renderBasedOnRole } from '../../actions/roleActions';

@@ -4,18 +4,18 @@ import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
+import { TOAST_CASESTUDY_POST } from 'constants/toast_messages';
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import DbErrorHandler from 'actions/http_error_handler';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const [formOption, setformOption] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-  const [submissionStatus, setSubmissionStatus] = useState('');
 
   const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
   const {
@@ -39,31 +39,31 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     reset: reset5,
   } = useForm<CaseStudyModel>({});
 
-  const failureMessageRef = useRef(null);
+  const onSubmitActions = () => {
+    toast.success('Case study successfully submitted!');
+    reset({});
+    reset2({});
+    reset3({});
+    reset4({});
+    reset5({});
+    setSelectedFile(null);
+    props.history.push('/case-study');
+  };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     data.caseStudyType = formOption;
     let formData = new FormData();
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
 
-    axios
-      .post('/api/case-studies', formData)
-      .then(() => {
-        toast.success('Case study successfully submitted!');
-        reset({});
-        reset2({});
-        reset3({});
-        reset4({});
-        reset5({});
-        setSelectedFile(null);
-        props.history.push('/case-study');
-      })
-      .catch((error) => {
-        DbErrorHandler(error, props.history);
-        setSubmissionStatus('failure');
-      });
+    await Api.Post(
+      ENDPOINT_CASESTUDY_POST,
+      formData,
+      onSubmitActions,
+      TOAST_CASESTUDY_POST,
+      props.history,
+    );
   };
   const { t } = useTranslation();
 
@@ -536,16 +536,6 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             </div>
           </div>
         </form>
-
-        <div
-          className={`alert alert-danger ${
-            submissionStatus === 'failure' ? 'd-block' : 'd-none'
-          } col-md-6`}
-          role="alert"
-          ref={failureMessageRef}
-        >
-          {t('caseStudyFormAnErrorOccurred')}
-        </div>
       </main>
     </div>
   );

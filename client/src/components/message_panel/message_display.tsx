@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { renderBasedOnRole } from '../../actions/roleActions';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 import { Role } from '../../constants/interfaces';
 import { Json } from 'constants/interfaces';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';

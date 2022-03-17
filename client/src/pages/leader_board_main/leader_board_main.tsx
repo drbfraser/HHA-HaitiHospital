@@ -3,10 +3,12 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import './leader_board_main.css';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
+import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toast_messages';
 import { useTranslation } from 'react-i18next';
-import DbErrorHandler from 'actions/http_error_handler';
 import { useHistory } from 'react-router';
+import { History } from 'history';
 
 interface LeaderBoardMainProps {}
 
@@ -14,26 +16,14 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const { t } = useTranslation();
   const [leaderboard, setLeaderboard] = useState([]);
   const [caseStudy, setCaseStudy] = useState({} as any);
-  const history = useHistory();
+  const history: History = useHistory<History>();
 
   const getLeaderboard = async () => {
-    const urlLeaderboard = '/api/leaderboard';
-    try {
-      const res = await axios.get(urlLeaderboard);
-      setLeaderboard(res.data);
-    } catch (err) {
-      DbErrorHandler(err, history);
-    }
+    setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
   };
 
   const getCaseStudy = async () => {
-    const urlCaseStudy = '/api/case-studies/featured';
-    try {
-      const res = await axios.get(urlCaseStudy);
-      if (res.data !== null) setCaseStudy(res.data);
-    } catch (err) {
-      DbErrorHandler(err, history);
-    }
+    setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_FEATURED, TOAST_CASESTUDY_GET, history));
   };
 
   useEffect(() => {
