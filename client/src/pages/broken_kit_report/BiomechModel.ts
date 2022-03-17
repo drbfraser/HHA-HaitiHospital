@@ -4,6 +4,12 @@ export enum bioMechEnum {
   NonUrgent = 'Non-Urgent',
 }
 
+export enum bioMechBadge {
+  Urgent = 'danger',
+  Important = 'warning',
+  NonUrgent = 'success',
+}
+
 export interface BiomechModel {
   //all BioMech Data
   userId: { type: Date; required: true };
