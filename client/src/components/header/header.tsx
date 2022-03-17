@@ -1,10 +1,13 @@
-import { useAuthDispatch } from '../../Context';
+import { useAuthDispatch } from '../../contexts';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { User } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
-import axios from 'axios';
+import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
+import { History } from 'history';
+import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
+import { TOAST_ADMIN_GET } from 'constants/toast_messages';
 
 interface HeaderProps {}
 interface HeaderViewProps {
@@ -80,21 +83,15 @@ const HeaderView = (props: HeaderViewProps) => {
 
 const Header = (props: HeaderProps) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
-  const onLogOut = (event) => {
+  const onLogOut = () => {
     logOutUser(dispatch);
     history.push('/login');
   };
-  const history = useHistory();
+  const history: History = useHistory<History>();
   const [userInfo, setUserInfo] = useState({} as User);
-  const userUrl = '/api/users/me';
 
   const getUserInfo = async () => {
-    try {
-      const res = await axios.get(userUrl);
-      setUserInfo(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    setUserInfo(await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history));
   };
 
   useEffect(() => {

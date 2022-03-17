@@ -1,27 +1,27 @@
 import { useEffect } from 'react';
 import { Json } from 'constants/interfaces';
 import { useState } from 'react';
-
-import Axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import Api from 'actions/Api';
+import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
+import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
 import { NavLink } from 'react-router-dom';
 import './dashboard_message_overview.css';
 import { useTranslation } from 'react-i18next';
+import { History } from 'history';
 
 interface DashboardMessageProps {}
 
 const DashboardMessageOverview = (props: DashboardMessageProps) => {
-  const [messages, setMessage] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const history: History = useHistory<History>();
+
+  const getMessages = async () => {
+    setMessages(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history));
+  };
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      let messages = await Axios.get('/api/message-board');
-      return messages;
-    };
-
-    const messagesFromServer = fetchMessages();
-    messagesFromServer.then((val) => {
-      setMessage(val.data);
-    });
+    getMessages();
   }, []);
 
   const { t } = useTranslation();

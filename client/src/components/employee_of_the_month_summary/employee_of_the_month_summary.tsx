@@ -3,27 +3,28 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { currMonth, currYear } from 'utils/dateFormatting';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
-import { toast } from 'react-toastify';
-import Api from '../../actions/Api'
+import { History } from 'history';
+import Api from '../../actions/Api';
+import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 
 interface EmployeeOfTheMonthSummaryProps extends RouteComponentProps {
   employeeOfTheMonth: EmployeeOfTheMonth;
+  history: History;
 }
 
 export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps) => {
   const { t: translateText } = useTranslation();
   const [employeeOfTheMonthImage, setEmployeeOfTheMonthImage] = useState<string>('');
 
-  const awaitGetImage = async (url: string) => {
-    setEmployeeOfTheMonthImage(await Api.Image.get(url));
+  const getEmployeeOfTheMonthImage = async () => {
+    setEmployeeOfTheMonthImage(
+      await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.employeeOfTheMonth.imgPath), props.history),
+    );
   };
 
   useEffect(() => {
     // Only execute once employee of the month data has been successfully passed to this component
-    if (props.employeeOfTheMonth !== null) {
-      const IMAGE_URL: string = `/api/image/${props.employeeOfTheMonth.imgPath.split('/')[2]}`;
-      awaitGetImage(IMAGE_URL)
-    }
+    if (props.employeeOfTheMonth !== null) getEmployeeOfTheMonthImage();
   }, [props.employeeOfTheMonth]);
 
   const translateMonth = (monthIndicator: number): string => {
