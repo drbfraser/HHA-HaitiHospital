@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
+import { Badge } from 'react-bootstrap';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -14,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
+import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -114,7 +116,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                     return (
                       <tr key={item._id}>
                         <th scope="row">{bioReportNumberIndex + index + 1}</th>
-                        <td>{item.equipmentPriority}</td>
+                        <td>
+                          {
+                            <Badge bg={setPriority(item.equipmentPriority)}>
+                              {item.equipmentPriority}
+                            </Badge>
+                          }
+                        </td>
                         <td>{item.user ? item.user.name : '[deleted]'}</td>
                         <td>
                           {new Date(item.createdAt).toLocaleString('en-US', {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
+import { Badge } from 'react-bootstrap';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from '../../actions/Api';
@@ -8,6 +9,7 @@ import { TOAST_BIOMECH_GET } from 'constants/toast_messages';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';
+import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -63,7 +65,13 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
               <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportNameOfEquipment')}</h6>
               <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
               <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportPriorityOfEquipment')}</h6>
-              <p className="fs-6 lh-base text-break">{BioReport.equipmentPriority}</p>
+              <p className="fs-6 lh-base text-break">
+                {
+                  <Badge bg={setPriority(BioReport.equipmentPriority)}>
+                    {BioReport.equipmentPriority}
+                  </Badge>
+                }
+              </p>
               <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportFaultWithEquipment')}</h6>
               <p className="fs-6 lh-base text-break">{BioReport.equipmentFault}</p>
             </div>
