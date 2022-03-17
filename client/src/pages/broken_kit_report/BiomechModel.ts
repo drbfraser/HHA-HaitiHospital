@@ -25,3 +25,14 @@ export interface BiomechModel {
     //contentType: {type: String, required: true},
   };
 }
+
+export const setPriority = (priority: bioMechEnum): string => {
+  switch (priority) {
+    case bioMechEnum.Urgent:
+      return bioMechBadge.Urgent;
+    case bioMechEnum.Important:
+      return bioMechBadge.Important;
+    case bioMechEnum.NonUrgent:
+      return bioMechBadge.NonUrgent;
+  }
+};

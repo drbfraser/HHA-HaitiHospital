@@ -12,7 +12,7 @@ import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'Context';
 import Pagination from 'components/pagination/Pagination';
-import { bioMechEnum, bioMechBadge } from 'pages/broken_kit_report/BiomechModel';
+import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -35,17 +35,6 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
     return BioReport.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, BioReport]);
   const bioReportNumberIndex = currentPage * pageSize - pageSize;
-
-  const setPriority = (priority: bioMechEnum): string => {
-    switch (priority) {
-      case bioMechEnum.Urgent:
-        return bioMechBadge.Urgent;
-      case bioMechEnum.Important:
-        return bioMechBadge.Important;
-      case bioMechEnum.NonUrgent:
-        return bioMechBadge.NonUrgent;
-    }
-  };
 
   const getBioReport = useCallback(async () => {
     const res = await axios.get(BioReportUrl);
