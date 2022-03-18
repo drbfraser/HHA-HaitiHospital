@@ -10,3 +10,9 @@
 .message-body {
   font-size: medium;
 }
+
+.admin-utils {
+  font-size: small;
+  border: 0;
+  padding-left: 0;
+}

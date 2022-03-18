@@ -88,15 +88,15 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </p>
               </div>
               <div className="p-2">
-              <div className="d-md-flex justify-content-between text-gray-dark text-break">
+              <div className="">
 
-                <p className="d-md-flex lh-sm">
                   {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
                     <Link
                       className="align-self-center"
                       to={`/message-board/edit/${props.msgJson['_id']}`}
                     >
-                      <button type="button" className="btn btn-link text-decoration-none">
+                      <button type="button" 
+                        className="btn btn-link text-decoration-none admin-utils">
                         {translateText('messageBoardEdit')}
                       </button>
                     </Link>
@@ -107,7 +107,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
                     <button
                       type="button"
-                      className="btn btn-link text-decoration-none"
+                      className="btn btn-link text-decoration-none admin-utils"
                       onClick={(event) => {
                         onDeleteMessage(event, props.msgJson['_id'] as string);
                       }}
@@ -117,9 +117,8 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   ) : (
                     <div></div>
                   )}
-                </p>
-
                 </div>
+
                 <p className="department-info">
                 {translateText('messageBoardPostedOn')} <br/> {readableDate}
                 </p>
