@@ -1,0 +1,22 @@
+.case-study-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.case-study-subcontainer {
+  height: 100%;
+  width: 80%;
+}
+
+.case-study-image {
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.case-study-image-container {
+  height: 600px;
+  width: 100%;
+}
