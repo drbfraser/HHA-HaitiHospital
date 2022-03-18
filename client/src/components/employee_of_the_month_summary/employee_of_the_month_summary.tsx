@@ -77,6 +77,9 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
         item={ALT_MESSAGE}
         image={employeeOfTheMonthImage}
         onModalClose={onModalImageClose}
+        history={props.history}
+        location={undefined}
+        match={undefined}
       ></ModalImage>
       <div className="employee-subcontainer">
         <div style={{ display: 'flex', flex: '1 1 auto' }}>
