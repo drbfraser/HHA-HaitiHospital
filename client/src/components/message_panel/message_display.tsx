@@ -9,6 +9,7 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import './message_display.css';
 
 interface MessageDisplayProps {
   msgJson: Json;
@@ -67,52 +68,51 @@ const MessageDisplay = (props: MessageDisplayProps) => {
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
       ></ModalDelete>
-      <svg
-        className="bd-placeholder-img flex-shrink-0 me-2 rounded"
-        width="32"
-        height="32"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-label="Placeholder: 32x32"
-        preserveAspectRatio="xMidYMid slice"
-        focusable="false"
-      >
-        <title>Placeholder</title>
-        <rect width="100%" height="100%" fill="#007bff"></rect>
-        <text x="50%" y="50%" fill="#007bff" dy=".3em">
-          32x32
-        </text>
-      </svg>
 
       {/* Message content */}
       <div className="pb-3 mb-0 border-bottom flex-grow-1">
+
+        {/* Message info */}
+        <div className="message-info">
+          <div className="text-gray-dark">
+            <p className="title-info">
+              <strong>
+                {props.msgJson.messageHeader}
+              </strong>
+            </p>
+            <div className="d-flex">
+              <div className="mr-auto p-2">
+                <p className="department-info">
+                  {props.msgJson.departmentName}
+                </p>
+              </div>
+              <div className="p-2">
+                <p>
+                    @{((props.msgJson as Json).userId as Json).name}
+                </p>
+                <p>
+                {t('messageBoardPostedOn')} <br/> {readableDate}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="lh-sm">{props.msgJson.messageBody}</p>
+
         {/* Author Id, Deparment, Date */}
-        <div className="d-md-flex justify-content-between text-gray-dark">
+        {/* <div className="d-md-flex justify-content-between text-gray-dark">
           <p>
             <strong className="text-gray-dark">
               @{((props.msgJson as Json).userId as Json).name}
             </strong>
           </p>
           <p>
-            <strong className="lh-sm">{props.msgJson.departmentName}</strong>
-          </p>
-          <p>
             <strong className="lh-sm">{readableDate}</strong>
           </p>
-        </div>
-
-        {/* Message title */}
-        <div className="text-gray-dark">
-          <p>
-            <strong>
-              {t('messageBoardTitle')}: {props.msgJson.messageHeader}
-            </strong>
-          </p>
-        </div>
+        </div> */}
 
         {/* Message body with utility buttons */}
         <div className="d-md-flex justify-content-between text-gray-dark text-break">
-          <p className="lh-sm">{props.msgJson.messageBody}</p>
 
           <p className="d-md-flex lh-sm">
             {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (

@@ -68,11 +68,12 @@
   "dashboardMessageOverviewMessage": "Message",
   "dashboardMessageOverviewSeeMore": "See More messages",
 
-  "messageBoardRecentUpdates": "Recent updates",
+  "messageBoardRecentUpdates": "Recent Announcements",
   "messageBoardAddMessage": "Add Message",
   "messageBoardMore": "More",
   "messageBoardLess": "Less",
   "messageBoardTitle": "Title",
+  "messageBoardPostedOn": "Posted On:",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
 

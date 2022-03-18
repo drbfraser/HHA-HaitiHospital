@@ -43,19 +43,20 @@ const MessagePanel = (props: MessagePanelProps) => {
   };
 
   return (
-    <>
+    <div className="message-panel">
+      <div className="ml-3 d-flex justify-content-start">
+        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+          <Link to="/message-board/add-message">
+            <button className="btn btn-md btn-outline-secondary">
+              {t('messageBoardAddMessage')}
+            </button>
+          </Link>
+        ) : null}
+      </div>
       <div className="my-3 p-3 bg-body rounded shadow-sm">
+
         <div className="d-sm-flex align-items-center">
           <h6 className="border-bottom pb-2 mb-0">{t('messageBoardRecentUpdates')}</h6>
-          <div className="ml-auto">
-            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-              <Link to="/message-board/add-message">
-                <button className="btn btn-md btn-outline-secondary">
-                  {t('messageBoardAddMessage')}
-                </button>
-              </Link>
-            ) : null}
-          </div>
         </div>
 
         {currentTableData.map((msgJson, index) => {
@@ -69,7 +70,7 @@ const MessagePanel = (props: MessagePanelProps) => {
         pageSize={pageSize}
         onPageChange={(page) => setCurrentPage(page)}
       />
-    </>
+    </div>
   );
 };
 
