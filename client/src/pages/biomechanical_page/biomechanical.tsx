@@ -89,6 +89,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
           item={'biomech report'}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalDelete>
 
         <section>

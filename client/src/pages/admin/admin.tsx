@@ -73,6 +73,9 @@ const Admin = (props: AdminProps) => {
           item={'user account'}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/admin/add-user">

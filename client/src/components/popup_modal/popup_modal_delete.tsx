@@ -1,14 +1,17 @@
 import { Button, Modal } from 'react-bootstrap';
+import { RouteComponentProps } from 'react-router-dom';
+import { History } from 'history';
 
-interface ModalGenericProps extends RouteComponentProps {
+interface ModalDeleteProps extends RouteComponentProps {
   onModalClose: any;
+  onModalDelete: any;
+  currentItem: string;
   show: boolean;
-  message: string;
   item: string;
   history: History;
 }
 
-const ModalDelete = (props: any) => {
+const ModalDelete = (props: ModalDeleteProps) => {
   return (
     <Modal show={props.show} onHide={props.onModalClose}>
       <Modal.Header closeButton>

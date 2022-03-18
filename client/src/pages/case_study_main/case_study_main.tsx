@@ -128,6 +128,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           item={'case study'}
           onModalClose={onModalDeleteClose}
           onModalDelete={onModalDelete}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/case-study/form">
