@@ -1,7 +1,12 @@
 .title-info {
   margin: 0;
+  font-size: large;
 }
 
 .department-info {
   font-size: small;
+}
+
+.message-body {
+  font-size: medium;
 }

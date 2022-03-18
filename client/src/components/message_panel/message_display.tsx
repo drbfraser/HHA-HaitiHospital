@@ -17,7 +17,7 @@ interface MessageDisplayProps {
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
-  const { t } = useTranslation();
+  const { t: translateText } = useTranslation();
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -75,74 +75,60 @@ const MessageDisplay = (props: MessageDisplayProps) => {
         {/* Message info */}
         <div className="message-info">
           <div className="text-gray-dark">
-            <p className="title-info">
-              <strong>
-                {props.msgJson.messageHeader}
-              </strong>
-            </p>
             <div className="d-flex">
               <div className="mr-auto p-2">
+                <p className="title-info">
+                  <strong>
+                    {props.msgJson.messageHeader}
+                  </strong>
+                </p>
                 <p className="department-info">
-                  {props.msgJson.departmentName}
+                  {props.msgJson.departmentName} <br />
+                  {((props.msgJson as Json).userId as Json).name}
                 </p>
               </div>
               <div className="p-2">
-                <p>
-                    @{((props.msgJson as Json).userId as Json).name}
+              <div className="d-md-flex justify-content-between text-gray-dark text-break">
+
+                <p className="d-md-flex lh-sm">
+                  {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+                    <Link
+                      className="align-self-center"
+                      to={`/message-board/edit/${props.msgJson['_id']}`}
+                    >
+                      <button type="button" className="btn btn-link text-decoration-none">
+                        {translateText('messageBoardEdit')}
+                      </button>
+                    </Link>
+                  ) : (
+                    <div></div>
+                  )}
+
+                  {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+                    <button
+                      type="button"
+                      className="btn btn-link text-decoration-none"
+                      onClick={(event) => {
+                        onDeleteMessage(event, props.msgJson['_id'] as string);
+                      }}
+                    >
+                      {translateText('messageBoardDelete')}
+                    </button>
+                  ) : (
+                    <div></div>
+                  )}
                 </p>
-                <p>
-                {t('messageBoardPostedOn')} <br/> {readableDate}
+
+                </div>
+                <p className="department-info">
+                {translateText('messageBoardPostedOn')} <br/> {readableDate}
                 </p>
               </div>
             </div>
           </div>
+          <p className="lh-sm message-body">{props.msgJson.messageBody}</p>
         </div>
-        <p className="lh-sm">{props.msgJson.messageBody}</p>
 
-        {/* Author Id, Deparment, Date */}
-        {/* <div className="d-md-flex justify-content-between text-gray-dark">
-          <p>
-            <strong className="text-gray-dark">
-              @{((props.msgJson as Json).userId as Json).name}
-            </strong>
-          </p>
-          <p>
-            <strong className="lh-sm">{readableDate}</strong>
-          </p>
-        </div> */}
-
-        {/* Message body with utility buttons */}
-        <div className="d-md-flex justify-content-between text-gray-dark text-break">
-
-          <p className="d-md-flex lh-sm">
-            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-              <Link
-                className="align-self-center"
-                to={`/message-board/edit/${props.msgJson['_id']}`}
-              >
-                <button type="button" className="btn btn-md btn-outline-secondary">
-                  <i className="bi bi-pencil"></i>
-                </button>
-              </Link>
-            ) : (
-              <div></div>
-            )}
-
-            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-              <button
-                type="button"
-                className="btn btn-md btn-outline-secondary"
-                onClick={(event) => {
-                  onDeleteMessage(event, props.msgJson['_id'] as string);
-                }}
-              >
-                <i className="bi bi-trash"></i>
-              </button>
-            ) : (
-              <div></div>
-            )}
-          </p>
-        </div>
       </div>
     </div>
   );

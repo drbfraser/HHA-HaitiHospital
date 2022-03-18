@@ -73,6 +73,8 @@
   "messageBoardMore": "Suite",
   "messageBoardLess": "Moins",
   "messageBoardTitle": "Titre",
+  "messageBoardEdit": "Éditer",
+  "messageBoardDelete": "Supprimer",
   "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
   "MessageAlertMessageDeleted": "Message supprimé!",

@@ -73,6 +73,8 @@
   "messageBoardMore": "More",
   "messageBoardLess": "Less",
   "messageBoardTitle": "Title",
+  "messageBoardEdit": "Edit",
+  "messageBoardDelete": "Delete",
   "messageBoardPostedOn": "Posted On:",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
