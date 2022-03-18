@@ -113,7 +113,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
                 className={`employee-image img-thumbnail img-fluid mt-3 mb-3 ${
                   props.employeeOfTheMonth.imgPath ? 'd-block' : 'd-none'
                 }`}
-                alt="ALT_MESSAGE"
+                alt={ALT_MESSAGE}
                 onClick={(event: any) => {
                   onEnlargeImage(event);
                 }}

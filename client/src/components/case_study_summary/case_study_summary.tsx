@@ -98,7 +98,10 @@ export const CaseStudySummary = ({ caseStudy }) => {
                   className={`case-study-image img-thumbnail img-fluid mt-3 mb-3 ${
                     caseStudy.imgPath ? 'd-block' : 'd-none'
                   }`}
-                  alt="Case Study Here..."
+                  alt={ALT_MESSAGE}
+                  onClick={(event: any) => {
+                    onEnlargeImage(event);
+                  }}
                 />
               </div>
             </div>
@@ -150,7 +153,10 @@ export const CaseStudySummary = ({ caseStudy }) => {
                   className={`case-study-image img-thumbnail img-fluid mt-3 mb-3 ${
                     caseStudy.imgPath ? 'd-block' : 'd-none'
                   }`}
-                  alt="Case Study Here..."
+                  alt={ALT_MESSAGE}
+                  onClick={(event: any) => {
+                    onEnlargeImage(event);
+                  }}
                 />
               </div>
             </div>
@@ -208,7 +214,10 @@ export const CaseStudySummary = ({ caseStudy }) => {
                   className={`case-study-image img-thumbnail img-fluid mt-3 mb-3 ${
                     caseStudy.imgPath ? 'd-block' : 'd-none'
                   }`}
-                  alt="Case Study Here..."
+                  alt={ALT_MESSAGE}
+                  onClick={(event: any) => {
+                    onEnlargeImage(event);
+                  }}
                 />
               </div>
             </div>
@@ -274,7 +283,10 @@ export const CaseStudySummary = ({ caseStudy }) => {
                   className={`case-study-image img-thumbnail img-fluid mt-3 mb-3 ${
                     caseStudy.imgPath ? 'd-block' : 'd-none'
                   }`}
-                  alt="Case Study Here..."
+                  alt={ALT_MESSAGE}
+                  onClick={(event: any) => {
+                    onEnlargeImage(event);
+                  }}
                 />
               </div>
             </div>
@@ -308,7 +320,10 @@ export const CaseStudySummary = ({ caseStudy }) => {
                   className={`case-study-image img-thumbnail img-fluid mt-3 mb-3 ${
                     caseStudy.imgPath ? 'd-block' : 'd-none'
                   }`}
-                  alt="Case Study Here..."
+                  alt={ALT_MESSAGE}
+                  onClick={(event: any) => {
+                    onEnlargeImage(event);
+                  }}
                 />
               </div>
             </div>

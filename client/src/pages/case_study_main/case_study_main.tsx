@@ -107,7 +107,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const { t: translateText } = useTranslation();
 
   return (
-    <div className={'case-study-main'}>
+    <div className="case-study-main">
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
