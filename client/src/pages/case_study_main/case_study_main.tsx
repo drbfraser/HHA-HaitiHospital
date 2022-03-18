@@ -112,13 +112,15 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <main className="container-fluid main-region">
         <Header />
         <ModalGeneric
-          currentItem={currentIndex}
           show={genericModal}
           item={'case study'}
           message={
             'Please select another case study to feature before deleting the featured case study'
           }
           onModalClose={onModalGenericClose}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalGeneric>
         <ModalDelete
           currentItem={currentIndex}
