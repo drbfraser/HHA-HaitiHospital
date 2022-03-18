@@ -34,7 +34,7 @@ export function getData(): JsonReportDescriptor {
             type: 'number',
           },
           description: field.field_label,
-          answer: [Math.floor(Math.random() * 100).toString()],
+          answer: [[Math.floor(Math.random() * 100).toString()]],
           validated: true,
           valid: true,
           errorMessage: '',

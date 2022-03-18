@@ -11,7 +11,7 @@ import './styles.css';
 import { useTranslation } from 'react-i18next';
 import { FieldInputProps } from 'formik';
 import * as TestData from '../../pages/form/models/TestModels';
-import { toInteger } from 'lodash';
+import { identity, toInteger } from 'lodash';
 import { v4 as uuid } from 'uuid';
 import {
   JsonReportDescriptor,
@@ -20,6 +20,7 @@ import {
   JsonItemAnswer,
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
+import { useSelector } from 'react-redux';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
@@ -113,7 +114,7 @@ export function Report() {
   }
 
   return (
-    <div id="top" style={{ paddingBottom: '8%' }}>
+    <div style={{ paddingBottom: '8%' }}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-1">
@@ -132,18 +133,7 @@ export function Report() {
                     onFailure={onFailure}
                     onSubmit={onSubmit}
                     readOnly={readonly}
-                    navbarButtons={[
-                      <button
-                        type="button"
-                        className="btn btn-primary bi bi-pencil-square"
-                        hidden={!readonly}
-                        onClick={() => {
-                          setReadonly(false);
-                        }}
-                      >
-                        Edit
-                      </button>,
-                    ]}
+                    navbarButtons={[,]}
                   />
                 </FormProvider>
               </main>
@@ -186,18 +176,140 @@ function FormContents(props: {
   onFailure?: () => void;
   navbarButtons?: JSX.Element[];
 }) {
-  const labels: Label[] = [];
-  console.log('FORM CONTENT: ');
-  console.log(props.items);
-  const formElements = (
+  const [section, setSection] = useState(0);
+  const labels: Label[] = props.items
+    .filter((item) => item.meta.type == 'label')
+    .map((item) => {
+      return { id: item.meta.id, text: item.description };
+    });
+  labels.push({ id: '#submit', text: 'Submit' });
+
+  const sections = [];
+  props.items.forEach((item) => {
+    if (item.meta.type == 'label') {
+      sections.push([item]);
+    } else {
+      const headSection = sections[sections.length - 1];
+      headSection.push(item);
+    }
+  });
+
+  const totalSections = labels.length;
+  const onButtonClickHandler: ReportNavButtonClickedHandler = (name: string, section: number) => {
+    switch (name) {
+      case 'next':
+        setSection((section + 1) % totalSections);
+        break;
+      case 'prev':
+        setSection((section - 1) % totalSections);
+        break;
+      case 'section-clicked':
+        setSection(section);
+    }
+  };
+
+  return (
+    <Fragment>
+      <NavBar labels={labels} activeLabel={section} onClick={onButtonClickHandler} />
+      <Sections itemGroups={sections} activeGroup={section} onClick={onButtonClickHandler} />
+    </Fragment>
+  );
+}
+
+type ReportNavButtonClickedHandler = (name: string, section: number) => void;
+
+function Sections(props: {
+  activeGroup: number;
+  itemGroups: any[];
+  onClick?: ReportNavButtonClickedHandler;
+}) {
+  const activeGroup = props.activeGroup,
+    totalGroups = props.itemGroups.length,
+    navButtons = [];
+
+  if (activeGroup > 0) {
+    navButtons.push(
+      <button
+        className="btn btn-primary col-3"
+        type="button"
+        hidden={false}
+        onClick={() => props.onClick('prev', activeGroup)}
+        key={uuid()}
+      >
+        Previous
+      </button>,
+    );
+  }
+
+  if (activeGroup < totalGroups) {
+    navButtons.push(
+      <button
+        className="btn btn-primary col-3"
+        type="button"
+        hidden={false}
+        onClick={() => props.onClick('next', activeGroup)}
+        key={uuid()}
+      >
+        Next
+      </button>,
+    );
+  }
+
+  return (
     <form className="row p-3 needs-validation" noValidate>
+      {props.itemGroups.map((item, idx) => {
+        return <InputGroup items={item} readOnly={true} active={props.activeGroup == idx} />;
+      })}
+      <div className="btn-group justify-content-center mt-3">{navButtons}</div>
+    </form>
+  );
+}
+
+type Label = {
+  id: string;
+  text?: string;
+};
+
+function NavBar(props: {
+  labels: Label[];
+  activeLabel?: number;
+  onClick: ReportNavButtonClickedHandler;
+}) {
+  return (
+    <div className="list-group list-group-horizontal sticky-top justify-content-between bg-white p-2 ps-4 mt-3 shadow-sm">
+      <div className="list-group list-group-horizontal">
+        <div className="me-2 fs-4 ">Steps: </div>
+        {props.labels.map((label, idx) => {
+          return (
+            <button
+              key={label.id}
+              className={
+                'list-group-item nav nav-pills ' + (idx == props.activeLabel ? 'active' : '')
+              }
+              onClick={() => props.onClick('section-clicked', idx)}
+            >
+              {label.text}
+            </button>
+          );
+        })}
+      </div>
+      <div className="list-group list-group-horizontal justify-content-end align-middle">
+        <button key={uuid()} type="button" className="btn btn-primary bi bi-pencil-square">
+          &nbsp;&nbsp;Edit
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boolean }) {
+  return (
+    <div hidden={!props.active}>
       {props.items.map((element, idx) => {
         let value = '0';
-        if (element.answer.length > 0) value = element.answer[0];
         switch (element.meta.type) {
           case 'label':
             const label: Label = { id: 'section' + idx, text: element.description };
-            labels.push(label);
             return <SectionLabel key={label.id} id={label.id} text={label.text} />;
           case 'number':
             return (
@@ -215,47 +327,11 @@ function FormContents(props: {
             <Fragment />;
         }
       })}
-      <div id="bottom" />
-      <div className="row justify-content-center p-5">
-        <button
-          className="btn btn-primary col-4"
-          type="button"
-          onClick={props.onSubmit}
-          hidden={props.readOnly}
-        >
-          Submit
-        </button>
+      <div className="row justify-content-center mt-3">
+        <div className="col-8 dropdown-divider" />
       </div>
-      {/* DEMO ONLY */}
-      <div className="row justify-content-center">
-        <button
-          className="btn btn-danger col-4"
-          type="button"
-          onClick={props.onFailure}
-          hidden={props.readOnly}
-        >
-          Test Failed
-        </button>
-      </div>
-    </form>
+    </div>
   );
-
-  return (
-    <Fragment>
-      <NavBar labels={labels} buttons={props.navbarButtons ?? []} />
-      {formElements}
-    </Fragment>
-  );
-}
-
-type LabelProps = {
-  id?: string;
-  text: string;
-  size?: number;
-};
-
-function Label(props: LabelProps) {
-  return <h5 id={props.id ?? ''}>{props.text}</h5>;
 }
 
 type NumberInputFieldProps = {
@@ -332,45 +408,6 @@ function SectionLabel(props: { id?: string; text?: string }) {
       <div className="col-8">
         <h1 style={{ paddingTop: '80px' }}>{props.text ?? 'Empty Label'}</h1>
         <div className="dropdown-divider pb-4" />
-      </div>
-    </div>
-  );
-}
-
-type Label = {
-  id: string;
-  text?: string;
-};
-
-type NavBarProps = {
-  labels: Label[];
-  buttons: JSX.Element[];
-};
-
-function NavBar(props: NavBarProps) {
-  return (
-    <div
-      id="navbar"
-      className="list-group list-group-horizontal sticky-top justify-content-between bg-white p-2 ps-4 mt-3 shadow-sm"
-    >
-      <div className="list-group list-group-horizontal">
-        <div className="me-2 fs-4 ">Steps: </div>
-        <a className="list-group-item d-flex justify-content-between" href="#top">
-          Start
-        </a>
-        {props.labels.map((label, idx) => {
-          return (
-            <a key={label.id} className={'list-group-item'} href={'#' + label.id}>
-              {label.text}
-            </a>
-          );
-        })}
-        <a className="list-group-item d-flex justify-content-between" href="#bottom">
-          Ends
-        </a>
-      </div>
-      <div className="list-group list-group-horizontal justify-content-end align-middle">
-        {props.buttons}
       </div>
     </div>
   );

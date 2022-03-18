@@ -16,6 +16,7 @@ export interface JsonReportItemMeta {
      * Meta data for an item
      */
     readonly type: string;
+    id: string;
 }
 
 /**
