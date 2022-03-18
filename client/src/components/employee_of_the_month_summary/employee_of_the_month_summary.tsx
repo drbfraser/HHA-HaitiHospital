@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { currMonth, currYear } from 'utils/dateFormatting';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
+import './employee_of_the_month_summary.css';
 import { History } from 'history';
 import Api from '../../actions/Api';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
@@ -57,35 +58,43 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
   };
 
   return (
-    <div className="mb-5">
-      <div style={{ display: 'flex', flex: '1 1 auto' }}>
-        <div className="w-100">
-          <h4 className="mt-3 mb-3 fw-bold">
-            {translateText('employeeOfTheMonthTitle').concat(
-              translateMonth(currMonth).concat(' ').concat(currYear.toString()),
-            )}
-          </h4>
-          <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
-          <p className="fs-6 lh-base text-break">
-            {new Date(props.employeeOfTheMonth.updatedAt).toLocaleDateString('en-US', {
-              timeZone: 'America/Cancun',
-            })}
-          </p>
-          <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>
-          <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>
-          <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthDepartment')}</h6>
-          <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department}</p>
-          <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthDescription')}</h6>
-          <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.description}</p>
-        </div>
-        <div>
-          <img
-            src={employeeOfTheMonthImage}
-            className={`img-thumbnail img-fluid mt-3 mb-3 ${
-              props.employeeOfTheMonth.imgPath ? 'd-block' : 'd-none'
-            }`}
-            alt="Employee Of The Month..."
-          />
+    <div className="employee-container mb-5">
+      <div className="employee-subcontainer">
+        <div style={{ display: 'flex', flex: '1 1 auto' }}>
+          <div className="w-100 pr-2">
+            <h2 className="mt-3 mb-3 fw-bold">
+              {translateText('employeeOfTheMonthTitle').concat(
+                translateMonth(currMonth).concat(' ').concat(currYear.toString()),
+              )}
+            </h2>
+            <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
+            <p className="fs-6 lh-base text-break">
+              {new Date(props.employeeOfTheMonth.updatedAt).toLocaleDateString('en-US', {
+                timeZone: 'America/Cancun',
+              })}
+            </p>
+            <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>
+            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>
+            <h6 className="fs-6 fw-bold lh-base">
+              {translateText('employeeOfTheMonthDepartment')}
+            </h6>
+            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department}</p>
+            <h6 className="fs-6 fw-bold lh-base">
+              {translateText('employeeOfTheMonthDescription')}
+            </h6>
+            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.description}</p>
+          </div>
+          <div className="w-100 pl-2">
+            <div className="employee-image-container">
+              <img
+                src={employeeOfTheMonthImage}
+                className={`employee-image img-thumbnail img-fluid mt-3 mb-3 ${
+                  props.employeeOfTheMonth.imgPath ? 'd-block' : 'd-none'
+                }`}
+                alt="Employee Of The Month..."
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
