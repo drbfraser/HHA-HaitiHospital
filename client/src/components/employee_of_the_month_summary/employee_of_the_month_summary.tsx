@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import ModalImage from 'components/popup_modal/popup_modal_image';
 import { currMonth, currYear } from 'utils/dateFormatting';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
 import './employee_of_the_month_summary.css';
@@ -14,8 +15,20 @@ interface EmployeeOfTheMonthSummaryProps extends RouteComponentProps {
 }
 
 export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps) => {
+  const ALT_MESSAGE: string = 'Employee Of The Month...';
   const { t: translateText } = useTranslation();
+  const [imageModal, setImageModal] = useState<boolean>(false);
   const [employeeOfTheMonthImage, setEmployeeOfTheMonthImage] = useState<string>('');
+
+  const onEnlargeImage = (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setImageModal(true);
+  };
+
+  const onModalImageClose = () => {
+    setImageModal(false);
+  };
 
   const getEmployeeOfTheMonthImage = async () => {
     setEmployeeOfTheMonthImage(
@@ -59,6 +72,12 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
 
   return (
     <div className="employee-container mb-5">
+      <ModalImage
+        show={imageModal}
+        item={ALT_MESSAGE}
+        image={employeeOfTheMonthImage}
+        onModalClose={onModalImageClose}
+      ></ModalImage>
       <div className="employee-subcontainer">
         <div style={{ display: 'flex', flex: '1 1 auto' }}>
           <div className="w-100 pr-2">
@@ -91,7 +110,10 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
                 className={`employee-image img-thumbnail img-fluid mt-3 mb-3 ${
                   props.employeeOfTheMonth.imgPath ? 'd-block' : 'd-none'
                 }`}
-                alt="Employee Of The Month..."
+                alt="ALT_MESSAGE"
+                onClick={(event: any) => {
+                  onEnlargeImage(event);
+                }}
               />
             </div>
           </div>
