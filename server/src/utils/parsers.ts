@@ -6,10 +6,10 @@ import path from 'path';
 import ts from 'typescript';
 import { BadRequest, InternalError } from "exceptions/httpException";
 
-import { Report } from 'common/utils/report';
 import { ReportDescriptor } from 'common/definitions/report';
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
+import { reportConstructor } from 'common/utils/report';
 
 /**
  * Parse from a json string to a JsonReport then to a Report.
@@ -24,7 +24,7 @@ export const jsonStringToReport = function (jsonString: string): ReportDescripto
     try {
         validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
         const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
-        const report = Report.reportConstructor(jsonReport);
+        const report = reportConstructor(jsonReport);
 
         return report;
     }
