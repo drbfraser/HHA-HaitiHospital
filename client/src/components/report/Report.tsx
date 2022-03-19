@@ -1,4 +1,4 @@
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
 import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -57,61 +57,55 @@ export function Report() {
     setData(data);
   }, []);
 
-  const submitData = async (formData: { [key: string]: any }) => {
-    const updatedItems = data.items.map((item) => {
-      const newItem = { ...item };
-      newItem.answer = [formData[item.meta.id]];
-      return newItem;
-    });
-    const newData = { ...data };
-    newData.items = updatedItems;
-    await MockApi.sendData(newData, 1000).then((data) => {
-      setData(data);
-      setReadonly(true);
-    });
-  };
+  // const submitData = async (formData: { [key: string]: any }) => {
+  //   const updatedItems = data.items.map((item) => {
+  //     const newItem = { ...item };
+  //     newItem.answer = [formData[item.meta.id]];
+  //     return newItem;
+  //   });
+  //   const newData = { ...data };
+  //   newData.items = updatedItems;
+  //   await MockApi.sendData(newData, 1000).then((data) => {
+  //     setData(data);
+  //     setReadonly(true);
+  //   });
+  // };
 
-  const onSubmit = async () => {
-    //get filled values
-    const data = form.getValues();
+  // const onSubmit = async () => {
+  //   //get filled values
+  //   const data = form.getValues();
 
-    //trigger validation on fields
-    const result = await form.trigger();
-    // if (!result) setValid(false);
-    // assemble data to send.
-    submitData(data);
-  };
+  //   //trigger validation on fields
+  //   const result = await form.trigger();
+  //   // if (!result) setValid(false);
+  //   // assemble data to send.
+  //   submitData(data);
+  // };
 
   // Demo behavior to show input error messages from server
-  const onFailure = async () => {
-    //get filled values
-    const formData = form.getValues();
+  // const onFailure = async () => {
+  //   //get filled values
+  //   const formData = form.getValues();
 
-    //trigger validation on fields
-    const result = await form.trigger();
-    // if (!result) setValid(false);
-    // assemble data to send.
-    const updatedItems = data.items.map((item) => {
-      const newItem = { ...item };
-      newItem.answer = [formData[item.meta.id]];
-      return newItem;
-    });
-    const newData = { ...data };
-    newData.items = updatedItems;
-    console.log(newData);
-    await MockApi.sendFaultyData(newData, 1000).then((data) => {
-      setData(data);
-    });
-  };
+  //   //trigger validation on fields
+  //   const result = await form.trigger();
+  //   // if (!result) setValid(false);
+  //   // assemble data to send.
+  //   const updatedItems = data.items.map((item) => {
+  //     const newItem = { ...item };
+  //     newItem.answer = [formData[item.meta.id]];
+  //     return newItem;
+  //   });
+  //   const newData = { ...data };
+  //   newData.items = updatedItems;
+  //   console.log(newData);
+  //   await MockApi.sendFaultyData(newData, 1000).then((data) => {
+  //     setData(data);
+  //   });
+  // };
 
-  const handleEditBtnClicked = () => {
-    setReadonly(false);
-  };
-
-  if (data != undefined) {
-    if (data.items != undefined) console.log('B4 render: \n');
-    console.log(data.items);
-  }
+  const handleSubmit = (data) => console.log(data);
+  console.log('Report render');
 
   return (
     <div style={{ paddingBottom: '8%' }}>
@@ -127,15 +121,12 @@ export function Report() {
             ) : (
               <main className="container">
                 <FormHeader />
-                <FormProvider {...form}>
-                  <FormContents
-                    items={data.items as ReportItem[]}
-                    onFailure={onFailure}
-                    onSubmit={onSubmit}
-                    readOnly={readonly}
-                    navbarButtons={[,]}
-                  />
-                </FormProvider>
+                <FormContents
+                  items={data.items as ReportItem[]}
+                  onSubmit={handleSubmit}
+                  readOnly={readonly}
+                  navbarButtons={[,]}
+                />
               </main>
             )}
           </div>
@@ -172,17 +163,16 @@ function FormHeader(props: any) {
 function FormContents(props: {
   items: ReportItem[];
   readOnly: boolean;
-  onSubmit?: () => any;
-  onFailure?: () => void;
+  onSubmit: (data) => void;
   navbarButtons?: JSX.Element[];
 }) {
+  const methods = useForm({});
   const [section, setSection] = useState(0);
   const labels: Label[] = props.items
     .filter((item) => item.meta.type == 'label')
-    .map((item) => {
-      return { id: item.meta.id, text: item.description };
+    .map((item, idx) => {
+      return { id: item.meta.id, text: idx + '. ' + item.description };
     });
-  labels.push({ id: '#submit', text: 'Submit' });
 
   const sections = [];
   props.items.forEach((item) => {
@@ -205,14 +195,20 @@ function FormContents(props: {
         break;
       case 'section-clicked':
         setSection(section);
+        break;
+      default:
     }
   };
 
   return (
-    <Fragment>
+    <>
       <NavBar labels={labels} activeLabel={section} onClick={onButtonClickHandler} />
-      <Sections itemGroups={sections} activeGroup={section} onClick={onButtonClickHandler} />
-    </Fragment>
+      <FormProvider {...methods}>
+        <form className="row p-3 needs-validation" onSubmit={methods.handleSubmit(props.onSubmit)}>
+          <Sections itemGroups={sections} activeGroup={section} onClick={onButtonClickHandler} />
+        </form>
+      </FormProvider>
+    </>
   );
 }
 
@@ -225,43 +221,53 @@ function Sections(props: {
 }) {
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
-    navButtons = [];
-
-  if (activeGroup > 0) {
-    navButtons.push(
-      <button
-        className="btn btn-primary col-3"
-        type="button"
-        hidden={false}
-        onClick={() => props.onClick('prev', activeGroup)}
-        key={uuid()}
-      >
-        Previous
-      </button>,
-    );
-  }
-
-  if (activeGroup < totalGroups) {
-    navButtons.push(
-      <button
-        className="btn btn-primary col-3"
-        type="button"
-        hidden={false}
-        onClick={() => props.onClick('next', activeGroup)}
-        key={uuid()}
-      >
-        Next
-      </button>,
-    );
-  }
+    submitButtonHidden = activeGroup != totalGroups - 1,
+    prevBtnDisabled = activeGroup <= 0,
+    nextBtnDisabled = activeGroup >= totalGroups - 1;
 
   return (
-    <form className="row p-3 needs-validation" noValidate>
+    <>
       {props.itemGroups.map((item, idx) => {
-        return <InputGroup items={item} readOnly={true} active={props.activeGroup == idx} />;
+        return (
+          <InputGroup
+            key={'ig-' + idx}
+            items={item}
+            readOnly={true}
+            active={props.activeGroup == idx}
+          />
+        );
       })}
-      <div className="btn-group justify-content-center mt-3">{navButtons}</div>
-    </form>
+      <div className="btn-group justify-content-center mt-3">
+        <button
+          className="btn btn-primary col-3"
+          type="button"
+          disabled={prevBtnDisabled}
+          onClick={() => props.onClick('next', activeGroup)}
+          key={uuid()}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-primary col-3"
+          type="button"
+          disabled={nextBtnDisabled}
+          onClick={() => props.onClick('next', activeGroup)}
+          key={uuid()}
+        >
+          Next
+        </button>
+      </div>
+      <div className="btn-group justify-content-center mt-3">
+        <button
+          className="btn btn-success col-6"
+          type="submit"
+          hidden={submitButtonHidden}
+          key={uuid()}
+        >
+          Submit
+        </button>
+      </div>
+    </>
   );
 }
 
@@ -405,8 +411,8 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
 function SectionLabel(props: { id?: string; text?: string }) {
   return (
     <div id={props.id} className="row justify-content-center">
-      <div className="col-8">
-        <h1 style={{ paddingTop: '80px' }}>{props.text ?? 'Empty Label'}</h1>
+      <div className="col-8 mt-5">
+        <h1 style={{ paddingTop: '' }}>{props.text ?? 'Empty Label'}</h1>
         <div className="dropdown-divider pb-4" />
       </div>
     </div>
