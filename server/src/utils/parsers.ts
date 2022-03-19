@@ -87,22 +87,15 @@ const getSchemaGenerator = function() {
     return generator;
 }
 
-const getSchemaGenerator = function () {
-  // this generator generate JSON schema for JsonReportDescriptor in PATH_TO_JSON_REPORT_TYPES
-  // optionally pass ts compiler options
-  const compilerOptions: TJS.CompilerOptions = getTsCompilerOptions();
-
 const ajvValidators: {[interfaceName: string]: ValidateFunction} = {};
-const getAjvValidator = function(schemaName: string) {
+const getAjvValidator = function(schemaName: string): ValidateFunction {
     const schemaGenerator = getSchemaGenerator();
     const schema = schemaGenerator!.getSchemaForSymbol(schemaName);
-    
     if (!schema) {
         throw new IllegalState(`No schema for ${schemaName} found`);
     }
-
-  const program = TJS.getProgramFromFiles(pathsToTypes, compilerOptions, basePath);
-
+    
+    const ajv = new Ajv();
     if (!ajvValidators[schemaName]) {
         const validator = ajv.compile(schema);
         if (!validator)
@@ -110,10 +103,7 @@ const getAjvValidator = function(schemaName: string) {
         ajvValidators[schemaName] = validator;
     }
 
-  const generator = TJS.buildGenerator(program, settings);
-  if (!generator) throw new InternalError('Failed to build a json schema generator');
-
-  return generator;
+    return ajvValidators[schemaName];
 };
 
 const validateStructure = function(jsonString: string, objectName: string) {
@@ -125,7 +115,4 @@ const validateStructure = function(jsonString: string, objectName: string) {
         throw new InvalidInput(`json for ${objectName} is malformed`);
     }
 }
-
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
