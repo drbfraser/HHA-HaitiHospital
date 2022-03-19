@@ -44,6 +44,18 @@ export const jsonStringToReport = function (jsonString: string): ReportDescripto
     }
 };
 
+export const reportToJsonReport = (report: ReportDescriptor): JsonReportDescriptor {
+    try {
+        
+    }
+    catch (e) {
+        if (e instanceof InvalidInput) {
+            throw new BadRequest(e.message);
+        }
+        throw new InternalError(e.message);
+    }
+}
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>
 const getTsCompilerOptions = function(): {} {
     try {

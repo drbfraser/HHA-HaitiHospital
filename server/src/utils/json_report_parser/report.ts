@@ -2,7 +2,7 @@ import { getDepartmentIdKeyFromValue } from 'common/definitions/departments';
 import { JsonReportDescriptor, JsonReportMeta } from 'common/definitions/json_report';
 import { InvalidInput } from 'exceptions/systemException';
 import { ReportDescriptor, ReportItems, ReportMeta } from '../../models/report';
-import * as _JsonUtils  from '../json_report';
+import * as _JsonUtils  from '../report/json_report';
 import * as _ToItem from './item';
 
 /**
@@ -12,7 +12,7 @@ import * as _ToItem from './item';
 export const parseToReport = (jsonReport: JsonReportDescriptor): ReportDescriptor => {
     const meta: ReportMeta = parseToReportMeta(_JsonUtils.getReportMeta(jsonReport));
     const items: ReportItems = _JsonUtils.getReportItems(jsonReport).map((jsonItem) => {
-        const itemConstructor = _ToItem.getParserToItem(_JsonUtils.getItemType(jsonItem));
+        const itemConstructor = _ToItem.getParserJsonToItem(_JsonUtils.getItemType(jsonItem));
         return itemConstructor(jsonItem);
     })
   
@@ -20,7 +20,7 @@ export const parseToReport = (jsonReport: JsonReportDescriptor): ReportDescripto
         items:items,
     };
     return report;
-}
+};
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const verifyUserId = (uid: string): boolean => {
