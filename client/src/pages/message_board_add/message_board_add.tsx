@@ -37,10 +37,11 @@ const AddMessage = () => {
         <div className="container">
           <h1 className="h1">{t('addMessageAddMessage')}</h1>
           <MessageForm submitAction={onSubmit} />
-          <br />
-          <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
-            {t('addMessageBack')}
-          </button>
+          <div className="add-msg-back-btn">
+            <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
+              {t('addMessageBack')}
+            </button>
+          </div>
         </div>
       </main>
     </div>

@@ -68,11 +68,14 @@
   "dashboardMessageOverviewMessage": "Un message",
   "dashboardMessageOverviewSeeMore": "Voir plus de messages",
 
-  "messageBoardRecentUpdates": "Mises à jour récentes",
+  "messageBoardRecentUpdates": "Annonces Récentes",
   "messageBoardAddMessage": "Ajouter un message",
   "messageBoardMore": "Suite",
   "messageBoardLess": "Moins",
   "messageBoardTitle": "Titre",
+  "messageBoardEdit": "Éditer",
+  "messageBoardDelete": "Supprimer",
+  "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
   "MessageAlertMessageDeleted": "Message supprimé!",
 
