@@ -91,7 +91,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   </strong>
                 </p>
                 <p className="department-info">
-                  {parsedDepartmentName} <br />
+                  {parsedDepartmentName}
+                </p>
+                <p className="department-info">
                   {((props.msgJson as Json).userId as Json).name}
                 </p>
               </div>
@@ -128,7 +130,10 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </div>
 
                 <p className="department-info">
-                  {translateText('messageBoardPostedOn')} <br/> {readableDate}
+                  {translateText('messageBoardPostedOn')}
+                </p>
+                <p className="department-info">
+                  {readableDate}
                 </p>
               </div>
             </div>

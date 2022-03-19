@@ -12,3 +12,7 @@
 .message-form .btn {
   width: auto;
 }
+
+.add-msg-back-btn {
+  margin-top: 1em;
+}
