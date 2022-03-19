@@ -10,6 +10,7 @@ import { ReportDescriptor } from 'models/report';
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
 import { parseToReport } from 'utils/json_report_parser/report';
+import { parseToJson } from './json_report';
 
 /**
 <<<<<<< HEAD
@@ -44,9 +45,10 @@ export const jsonStringToReport = function (jsonString: string): ReportDescripto
     }
 };
 
-export const reportToJsonReport = (report: ReportDescriptor): JsonReportDescriptor {
+export const reportToJsonReport = (report: ReportDescriptor): JsonReportDescriptor => {
     try {
-        
+        const jsonReport: JsonReportDescriptor = parseToJson(report);
+        return jsonReport;
     }
     catch (e) {
         if (e instanceof InvalidInput) {

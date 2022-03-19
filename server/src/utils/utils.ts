@@ -45,4 +45,12 @@ export const getItemTypeFromValue = (type: string): _ReportDefs.ItemTypeKeys=> {
     return key!;
 };
 
+export const formatDateString = (date: Date): string => {
+    // const myOptions = {year: "numeric", month: 'long', day: 'numeric'};
+    return date.toLocaleDateString('en-US', {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+}
 // test
