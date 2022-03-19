@@ -6,11 +6,19 @@ import * as _JsonDefs from 'common/definitions/json_report';
 import { hasNumType, checkAnswerType, hasSumType } from "../report/json_item";
 import { isSumCorrect } from "../report/item";
 
-export const getParserJsonToItem = (type: string): _ReportDefs.ItemParser => {
+export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
     const typeKey = getItemTypeFromValue(type);
-    const parser = JsonToItem.typeToParser.get(typeKey!);
+    const parser = JsonToItem.parserByType.get(typeKey!);
     if (!parser) {
-        throw new InvalidInput(`Constructor for item type "${type}" is not yet supported`);
+        throw new IllegalState(`Parser for json item type "${type}" is not supported`);
+    }
+    return parser!;
+};
+
+export const getParserItemToJson = (typeKey: _ReportDefs.ItemTypeKeys) : ItemToJson.ItemParser => {
+    const parser = ItemToJson.parserByType.get(typeKey);
+    if (!parser) {
+        throw new IllegalState(`Parser for item type "${typeKey}" is not supported`);
     }
     return parser!;
 };
@@ -18,7 +26,11 @@ export const getParserJsonToItem = (type: string): _ReportDefs.ItemParser => {
 // >>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 namespace JsonToItem {
-    const parseToNumericItem: _ReportDefs.ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportNItem => {
+    export interface ItemParser {
+        (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportItem;    
+    }
+
+    const parseToNumericItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportNItem => {
         const typeKey = getItemTypeFromValue(jsonItem.type);
         if (!hasNumType(jsonItem)) {
             throw new InvalidInput(`Constructor for numeric item but ${typeKey} was provided - item: ${jsonItem.description}`);
@@ -39,7 +51,7 @@ namespace JsonToItem {
         return newItem;
     }
 
-    const parseToSumItem: _ReportDefs.ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportSumItem => {
+    const parseToSumItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportSumItem => {
         const typeKey = getItemTypeFromValue(jsonItem.type);
         if (!hasSumType(jsonItem)) {
             throw new InvalidInput(`Constructor for sum item but ${typeKey} was provided - item: ${jsonItem.description}`);
@@ -83,8 +95,8 @@ namespace JsonToItem {
         return newItem;
     }
 
-    export const typeToParser = new Map<_ReportDefs.ItemTypeKeys, _ReportDefs.ItemParser>();
-    const initTypeToParserMap = (map: Map<_ReportDefs.ItemTypeKeys, _ReportDefs.ItemParser>) => {
+    export const parserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
+    const initParserByType = (map: Map<_ReportDefs.ItemTypeKeys, ItemParser>) => {
         map.clear();
         map.set("N", parseToNumericItem);
         map.set("SUM", parseToSumItem);
@@ -93,8 +105,61 @@ namespace JsonToItem {
             throw new IllegalState(`item type - constructor map must have length ${expectedSize}`);
         }
     }
-    initTypeToParserMap(typeToParser);
-
+    initParserByType(parserByType);
 };
 
+namespace ItemToJson {
+    export interface ItemParser {
+        (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem;
+    }
+
+    const parseFromItem: ItemParser = (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem => {
+        const jsonType: string = _ReportDefs.ItemType[item.type].toString();
+        const jsonDescription: string = item.description;
+        const answer: _JsonDefs.JsonItemAnswer = item.answer;
+        const jsonAnswer: Array<_JsonDefs.JsonItemAnswer> = new Array<_JsonDefs.JsonItemAnswer>();
+        jsonAnswer.push(answer);
+
+        const jsonItem: _JsonDefs.JsonReportItem = {
+            type: jsonType,
+            description: jsonDescription,
+            answer: jsonAnswer
+        }
+        return jsonItem;
+    }
+
+    const parseFromNumericItem: ItemParser = (item: _ReportDefs.ReportNItem): _JsonDefs.JsonReportItem => {
+        const jsonItem: _JsonDefs.JsonReportItem = parseFromItem(item);
+        return jsonItem;
+    }
+
+    const parseFromSumItem: ItemParser = (item: _ReportDefs.ReportSumItem): _JsonDefs.JsonReportItem => {
+        const base: _JsonDefs.JsonReportItem = parseFromItem(item);
+        const jsonChildren: _JsonDefs.JsonItemChildren = item.numericItems.map((child) => {
+            return parseFromNumericItem(child);
+        });
+
+        const jsonItem: _JsonDefs.JsonReportItem = {
+            type: base.type,
+            description: base.description,
+            answer: base.answer,
+            items: jsonChildren
+        };
+
+        return jsonItem;
+    }
+
+    type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
+    export const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
+    const initParserByType = (map: ParserByType) => {
+        map.set("N", parseFromNumericItem);
+        map.set("SUM", parseFromSumItem);
+
+        const expectedSize = getLengthOfEnum(_ReportDefs.ItemType); 
+        if (map.size != expectedSize) {
+            throw new IllegalState(`Item type - parser map must have size of ${expectedSize} but have size ${map.size}`);
+        }
+    }
+    initParserByType(parserByType);
+}
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

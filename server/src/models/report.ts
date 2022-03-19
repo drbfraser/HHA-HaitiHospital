@@ -46,9 +46,6 @@ export interface ReportItem {
   description: string;
   answer: ItemAnswer;
 }
-export interface ItemParser {
-    (jsonReport: JsonReportItem): ReportItem;
-}
 
 //Short Answer Item
 // export interface ReportSaItem extends ReportItem<string> {};

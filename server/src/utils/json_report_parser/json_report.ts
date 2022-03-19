@@ -1,22 +1,7 @@
 import { DepartmentId } from "common/definitions/departments";
-import { JsonReportItem, JsonReportItems, JsonReportMeta } from "common/definitions/json_report";
+import { JsonReportDescriptor, JsonReportItem, JsonReportItems, JsonReportMeta } from "common/definitions/json_report";
 import { ReportDescriptor, ReportItems, ReportMeta } from "models/report";
 import * as _ReportUtils from "../report/report";
-
-
-interface JsonReportDescriptor {
-  /**
-   * Meta data for a submitted report.
-   *
-   */
-  readonly meta: JsonReportMeta;
-
-  /**
-   * A collection of items in a submitted report.
-   *
-   */
-  readonly items: Array<JsonReportItem>;
-}
 
 export const parseToJson = (report: ReportDescriptor) => {
     const meta: JsonReportMeta = parseToJsonMeta(_ReportUtils.getReportMeta(report));
