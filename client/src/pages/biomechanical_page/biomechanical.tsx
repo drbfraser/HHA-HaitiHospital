@@ -16,6 +16,7 @@ import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
+import { timezone, language } from 'constants/timezones';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -128,8 +129,8 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         </td>
                         <td>{item.user ? item.user.name : '[deleted]'}</td>
                         <td>
-                          {new Date(item.createdAt).toLocaleString('en-US', {
-                            timeZone: 'America/Cancun',
+                          {new Date(item.createdAt).toLocaleString(language, {
+                            timeZone: timezone,
                           })}
                         </td>
                         <td>

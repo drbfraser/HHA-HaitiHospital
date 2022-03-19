@@ -12,6 +12,7 @@ import { useHistory } from 'react-router';
 import './broken_kit_report_view.css';
 import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
+import { timezone, language } from 'constants/timezones';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -84,8 +85,8 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                   </h6>
                   <h6 className="fs-6 mb-3 lh-base">
                     Date:{' '}
-                    {new Date(BioReport.createdAt).toLocaleDateString('en-US', {
-                      timeZone: 'America/Cancun',
+                    {new Date(BioReport.createdAt).toLocaleDateString(language, {
+                      timeZone: timezone,
                     })}
                   </h6>
                   <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportNameOfEquipment')}</h6>

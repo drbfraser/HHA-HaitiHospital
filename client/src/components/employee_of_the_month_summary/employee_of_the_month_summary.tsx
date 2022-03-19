@@ -8,6 +8,7 @@ import './employee_of_the_month_summary.css';
 import { History } from 'history';
 import Api from '../../actions/Api';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import { timezone, language } from 'constants/timezones';
 
 interface EmployeeOfTheMonthSummaryProps extends RouteComponentProps {
   employeeOfTheMonth: EmployeeOfTheMonth;
@@ -91,8 +92,8 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
             </h2>
             <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
             <p className="fs-6 lh-base text-break">
-              {new Date(props.employeeOfTheMonth.updatedAt).toLocaleDateString('en-US', {
-                timeZone: 'America/Cancun',
+              {new Date(props.employeeOfTheMonth.updatedAt).toLocaleDateString(language, {
+                timeZone: timezone,
               })}
             </p>
             <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>

@@ -7,6 +7,7 @@ import './case_study_summary.css';
 import { History } from 'history';
 import Api from '../../actions/Api';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import { timezone, language } from 'constants/timezones';
 
 export const CaseStudySummary = ({ caseStudy }) => {
   const ALT_MESSAGE: string = 'Case Study...';
@@ -58,8 +59,8 @@ export const CaseStudySummary = ({ caseStudy }) => {
               </h6>
               <h6 className="fs-6 lh-base">
                 {translateText('caseStudyViewDate')}{' '}
-                {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-                  timeZone: 'America/Cancun',
+                {new Date(caseStudy.createdAt).toLocaleDateString(language, {
+                  timeZone: timezone,
                 })}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormPatientName')}</h6>
@@ -119,8 +120,8 @@ export const CaseStudySummary = ({ caseStudy }) => {
               </h6>
               <h6 className="fs-6 lh-base">
                 Date:{' '}
-                {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-                  timeZone: 'America/Cancun',
+                {new Date(caseStudy.createdAt).toLocaleDateString(language, {
+                  timeZone: timezone,
                 })}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormStaffName')}</h6>
@@ -174,14 +175,14 @@ export const CaseStudySummary = ({ caseStudy }) => {
               </h6>
               <h6 className="fs-6 lh-base">
                 Date:{' '}
-                {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-                  timeZone: 'America/Cancun',
+                {new Date(caseStudy.createdAt).toLocaleDateString(language, {
+                  timeZone: timezone,
                 })}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormTrainingDate')}</h6>
               <p className="fs-6 lh-base text-break">
-                {new Date(caseStudy.trainingSession.trainingDate).toLocaleDateString('en-US', {
-                  timeZone: 'America/Cancun',
+                {new Date(caseStudy.trainingSession.trainingDate).toLocaleDateString(language, {
+                  timeZone: timezone,
                 })}
               </p>
               <h6 className="fs-6 fw-bold lh-base">
@@ -235,8 +236,8 @@ export const CaseStudySummary = ({ caseStudy }) => {
               </h6>
               <h6 className="fs-6 lh-base">
                 Date:{' '}
-                {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-                  timeZone: 'America/Cancun',
+                {new Date(caseStudy.createdAt).toLocaleDateString(language, {
+                  timeZone: timezone,
                 })}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">
@@ -304,8 +305,8 @@ export const CaseStudySummary = ({ caseStudy }) => {
               </h6>
               <h6 className="fs-6 lh-base">
                 Date:{' '}
-                {new Date(caseStudy.createdAt).toLocaleDateString('en-US', {
-                  timeZone: 'America/Cancun',
+                {new Date(caseStudy.createdAt).toLocaleDateString(language, {
+                  timeZone: timezone,
                 })}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">

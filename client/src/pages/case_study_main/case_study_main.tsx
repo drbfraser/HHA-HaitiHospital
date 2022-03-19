@@ -24,6 +24,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import i18n from 'i18next';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
+import { timezone, language } from 'constants/timezones';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -159,8 +160,8 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
                     <td>
-                      {new Date(item.createdAt).toLocaleString('en-US', {
-                        timeZone: 'America/Cancun',
+                      {new Date(item.createdAt).toLocaleString(language, {
+                        timeZone: timezone,
                       })}
                     </td>
                     <td>
