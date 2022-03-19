@@ -12,6 +12,7 @@ import './employee_of_the_month_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
+import { imageCompressor } from 'utils/imageCompressor';
 
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
@@ -20,6 +21,10 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
   const history: History = useHistory<History>();
+
+  const onImageUpload = (item: File) => {
+    setSelectedFile(item);
+  };
 
   const onSubmitActions = () => {
     toast.success('Employee of the month successfully updated!');
@@ -105,7 +110,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   className="form-control"
                   id="employee-image"
                   required
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                  onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
                 />
               </div>
               <div>
