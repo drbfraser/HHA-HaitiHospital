@@ -96,7 +96,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </p>
               </div>
               <div className="p-2">
-              <div className="">
+                <div>
 
                   {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
                     <Link
@@ -128,12 +128,14 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </div>
 
                 <p className="department-info">
-                {translateText('messageBoardPostedOn')} <br/> {readableDate}
+                  {translateText('messageBoardPostedOn')} <br/> {readableDate}
                 </p>
               </div>
             </div>
           </div>
-          <p className="lh-sm message-body">{props.msgJson.messageBody}</p>
+          <div className="mr-auto p-2">
+            <p className="lh-sm message-body">{props.msgJson.messageBody}</p>
+          </div>
         </div>
 
       </div>
