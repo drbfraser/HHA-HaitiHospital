@@ -27,18 +27,20 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
   const { t: translateText } = useTranslation();
 
   return (
-    <div className={'case-study-main'}>
+    <div className="case-study-main">
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
-        <div className="ml-3 d-flex justify-content-start">
+        <div className="d-flex justify-content-start">
           <Link to="/case-study">
             <button type="button" className="btn btn-outline-dark">
               {translateText('caseStudyFormBack')}
             </button>
           </Link>
         </div>
-        <CaseStudySummary caseStudy={caseStudy} />
+        <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
+          <CaseStudySummary caseStudy={caseStudy} />
+        </div>
         {caseStudy !== {} && document.documentElement.scrollHeight > window.innerHeight ? (
           <div className="ml-3 mb-5 d-flex justify-content-start">
             <Link to="/case-study">

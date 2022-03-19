@@ -11,6 +11,7 @@ import './broken_kit_report.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
+import { imageCompressor } from 'utils/imageCompressor';
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 
@@ -19,6 +20,10 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<BiomechModel>({});
   const history: History = useHistory<History>();
+
+  const onImageUpload = (item: File) => {
+    setSelectedFile(item);
+  };
 
   const onSubmitActions = () => {
     toast.success('Biomechanic report successfully submitted!');
@@ -96,7 +101,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   className="form-control"
                   id="customFile"
                   required
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                  onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
                 />
               </div>
               <div>

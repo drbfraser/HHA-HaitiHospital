@@ -24,6 +24,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import i18n from 'i18next';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
+import { timezone, language } from 'constants/timezones';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -107,18 +108,20 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const { t: translateText } = useTranslation();
 
   return (
-    <div className={'case-study-main'}>
+    <div className="case-study-main">
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
         <ModalGeneric
-          currentItem={currentIndex}
           show={genericModal}
           item={'case study'}
           message={
             'Please select another case study to feature before deleting the featured case study'
           }
           onModalClose={onModalGenericClose}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalGeneric>
         <ModalDelete
           currentItem={currentIndex}
@@ -126,6 +129,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           item={'case study'}
           onModalClose={onModalDeleteClose}
           onModalDelete={onModalDelete}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/case-study/form">
@@ -154,8 +160,8 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
                     <td>
-                      {new Date(item.createdAt).toLocaleString('en-US', {
-                        timeZone: 'America/Cancun',
+                      {new Date(item.createdAt).toLocaleString(language, {
+                        timeZone: timezone,
                       })}
                     </td>
                     <td>

@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
+import { timezone, language } from 'constants/timezones';
 
 interface AdminProps {}
 
@@ -73,6 +74,9 @@ const Admin = (props: AdminProps) => {
           item={'user account'}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/admin/add-user">
@@ -106,8 +110,8 @@ const Admin = (props: AdminProps) => {
                   <td>{item.role}</td>
                   <td>{item.department ? item.department : 'N/A'}</td>
                   <td>
-                    {new Date(item.createdAt).toLocaleString('en-US', {
-                      timeZone: 'America/Cancun',
+                    {new Date(item.createdAt).toLocaleString(language, {
+                      timeZone: timezone,
                     })}
                   </td>
                   <td>

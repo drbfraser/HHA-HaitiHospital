@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom';
 import './dashboard_message_overview.css';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
+import { timezone, language } from 'constants/timezones';
 
 interface DashboardMessageProps {}
 
@@ -56,8 +57,8 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
                       </th>
                       <td className="text-secondary">{fullName}</td>
                       <td className="text-secondary">
-                        {new Date(message.date).toLocaleString('en-US', {
-                          timeZone: 'America/Cancun',
+                        {new Date(message.date).toLocaleString(language, {
+                          timeZone: timezone,
                         })}
                       </td>
                       <td className="text-secondary text-break">

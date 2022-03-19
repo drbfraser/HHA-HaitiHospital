@@ -66,6 +66,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
         item={'message'}
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
+        history={undefined}
+        location={undefined}
+        match={undefined}
       ></ModalDelete>
       <svg
         className="bd-placeholder-img flex-shrink-0 me-2 rounded"
