@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
@@ -10,6 +10,7 @@ import { TOAST_CASESTUDY_POST } from 'constants/toast_messages';
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { imageCompressor } from 'utils/imageCompressor';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -38,6 +39,10 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     handleSubmit: handleSubmit5,
     reset: reset5,
   } = useForm<CaseStudyModel>({});
+
+  const onImageUpload = (item: File) => {
+    setSelectedFile(item);
+  };
 
   const onSubmitActions = () => {
     toast.success('Case study successfully submitted!');
@@ -190,7 +195,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               className="form-control"
               id="customFile"
               required
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -281,7 +286,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               className="form-control"
               id="customFile"
               required
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -369,7 +374,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               className="form-control"
               id="customFile"
               required
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -469,7 +474,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               className="form-control"
               id="customFile"
               required
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -514,7 +519,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 className="form-control"
                 id="customFile"
                 required
-                onChange={(e) => setSelectedFile(e.target.files[0])}
+                onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
               />
               <div className="form-check mt-2 mb-2">
                 <input
