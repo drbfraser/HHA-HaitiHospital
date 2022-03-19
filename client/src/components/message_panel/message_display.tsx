@@ -57,7 +57,15 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     setDeleteModal(false);
   };
 
-  let readableDate = new Date(props.msgJson.date as string).toLocaleString();
+  const readableDate = new Date(props.msgJson.date as string).toLocaleString();
+
+  const parseEscapedCharacters = (escapedCharacter: string) => {
+    const parser = new DOMParser();
+    return parser.parseFromString(`<!doctype html><body>${escapedCharacter}`, 'text/html').body.textContent;
+  }
+
+  // Department name when stored in the database: Community &amp; Health or NICU&#x2F;Paeds needs to be parsed.
+  const parsedDepartmentName = parseEscapedCharacters(props.msgJson.departmentName as string)
 
   return (
     <div className="d-flex text-muted pt-2">
@@ -83,7 +91,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   </strong>
                 </p>
                 <p className="department-info">
-                  {props.msgJson.departmentName} <br />
+                  {parsedDepartmentName} <br />
                   {((props.msgJson as Json).userId as Json).name}
                 </p>
               </div>
