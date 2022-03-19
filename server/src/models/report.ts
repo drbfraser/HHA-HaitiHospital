@@ -68,7 +68,7 @@ export interface ReportNItem extends ReportItem {}
 // }
 //Sum item
 export interface ReportSumItem extends ReportItem {
-  numericItems: Array<ReportNItem>;
+  children: Array<ReportNItem | ReportSumItem>;
 }
 
 //Survey Generator item

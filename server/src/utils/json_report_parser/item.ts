@@ -8,22 +8,17 @@ import { isSumCorrect } from "../report/item";
 
 export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
     const typeKey = getItemTypeFromValue(type);
-    const parser = JsonToItem.parserByType.get(typeKey!);
-    if (!parser) {
-        throw new IllegalState(`Parser for json item type "${type}" is not supported`);
-    }
+    const parser = JsonToItem.getParserByType(typeKey!);
     return parser!;
 };
 
 export const getParserItemToJson = (typeKey: _ReportDefs.ItemTypeKeys) : ItemToJson.ItemParser => {
-    const parser = ItemToJson.parserByType.get(typeKey);
-    if (!parser) {
-        throw new IllegalState(`Parser for item type "${typeKey}" is not supported`);
-    }
+    const parser = ItemToJson.getParserByType(typeKey);
     return parser!;
 };
 
 // >>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 
 namespace JsonToItem {
     export interface ItemParser {
@@ -71,13 +66,12 @@ namespace JsonToItem {
 
             const isChildTypeValid = hasNumType(jsonChild) || hasSumType(jsonChild); 
             const childType = _JsonUtils.getItemType(jsonChild);
-
             if (!(isChildTypeValid)) {
                 throw new InvalidInput(`Item: ${jsonItem.description} does not support a child of type ${childType}`);
             }
 
-            const constructor = getParserJsonToItem(childType);
-            const child = constructor(jsonChild);
+            const parser = getParserJsonToItem(childType);
+            const child = parser(jsonChild);
             return child;
         });
 
@@ -90,12 +84,13 @@ namespace JsonToItem {
             type: typeKey!,
             description: jsonItem.description,
             answer: answerList,
-            numericItems: children
+            children: children
         };
         return newItem;
     }
 
-    export const parserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
+    export type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
+    const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
     const initParserByType = (map: Map<_ReportDefs.ItemTypeKeys, ItemParser>) => {
         map.clear();
         map.set("N", parseToNumericItem);
@@ -106,6 +101,14 @@ namespace JsonToItem {
         }
     }
     initParserByType(parserByType);
+
+    export const getParserByType = (typeKey: _ReportDefs.ItemTypeKeys): ItemParser => {
+        const parser = parserByType.get(typeKey);
+        if (!parser) {
+            throw new InvalidInput(`Parser from json to item for item type ${typeKey} is not supported`);
+        }
+        return parser!;
+    }
 };
 
 namespace ItemToJson {
@@ -135,8 +138,9 @@ namespace ItemToJson {
 
     const parseFromSumItem: ItemParser = (item: _ReportDefs.ReportSumItem): _JsonDefs.JsonReportItem => {
         const base: _JsonDefs.JsonReportItem = parseFromItem(item);
-        const jsonChildren: _JsonDefs.JsonItemChildren = item.numericItems.map((child) => {
-            return parseFromNumericItem(child);
+        const jsonChildren: _JsonDefs.JsonItemChildren = item.children.map((child) => {
+            const parser = getParserByType(child.type);
+            return parser(child);
         });
 
         const jsonItem: _JsonDefs.JsonReportItem = {
@@ -149,8 +153,8 @@ namespace ItemToJson {
         return jsonItem;
     }
 
-    type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
-    export const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
+    export type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
+    const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
     const initParserByType = (map: ParserByType) => {
         map.set("N", parseFromNumericItem);
         map.set("SUM", parseFromSumItem);
@@ -161,5 +165,14 @@ namespace ItemToJson {
         }
     }
     initParserByType(parserByType);
+
+    export const getParserByType = (typeKey: _ReportDefs.ItemTypeKeys): ItemParser => {
+
+        const parser = parserByType.get(typeKey);
+        if (!parser) {
+            throw new InvalidInput(`Parser from item to json for item type ${typeKey} is not supported`);
+        }
+        return parser!;
+    }
 }
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
