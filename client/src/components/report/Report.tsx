@@ -57,53 +57,6 @@ export function Report() {
     setData(data);
   }, []);
 
-  // const submitData = async (formData: { [key: string]: any }) => {
-  //   const updatedItems = data.items.map((item) => {
-  //     const newItem = { ...item };
-  //     newItem.answer = [formData[item.meta.id]];
-  //     return newItem;
-  //   });
-  //   const newData = { ...data };
-  //   newData.items = updatedItems;
-  //   await MockApi.sendData(newData, 1000).then((data) => {
-  //     setData(data);
-  //     setReadonly(true);
-  //   });
-  // };
-
-  // const onSubmit = async () => {
-  //   //get filled values
-  //   const data = form.getValues();
-
-  //   //trigger validation on fields
-  //   const result = await form.trigger();
-  //   // if (!result) setValid(false);
-  //   // assemble data to send.
-  //   submitData(data);
-  // };
-
-  // Demo behavior to show input error messages from server
-  // const onFailure = async () => {
-  //   //get filled values
-  //   const formData = form.getValues();
-
-  //   //trigger validation on fields
-  //   const result = await form.trigger();
-  //   // if (!result) setValid(false);
-  //   // assemble data to send.
-  //   const updatedItems = data.items.map((item) => {
-  //     const newItem = { ...item };
-  //     newItem.answer = [formData[item.meta.id]];
-  //     return newItem;
-  //   });
-  //   const newData = { ...data };
-  //   newData.items = updatedItems;
-  //   console.log(newData);
-  //   await MockApi.sendFaultyData(newData, 1000).then((data) => {
-  //     setData(data);
-  //   });
-  // };
-
   const handleSubmit = (data) => console.log(data);
   console.log('Report render');
 
@@ -125,7 +78,6 @@ export function Report() {
                   items={data.items as ReportItem[]}
                   onSubmit={handleSubmit}
                   readOnly={readonly}
-                  navbarButtons={[,]}
                 />
               </main>
             )}
@@ -160,14 +112,10 @@ function FormHeader(props: any) {
   );
 }
 
-function FormContents(props: {
-  items: ReportItem[];
-  readOnly: boolean;
-  onSubmit: (data) => void;
-  navbarButtons?: JSX.Element[];
-}) {
+function FormContents(props: { items: ReportItem[]; readOnly: boolean; onSubmit: (data) => void }) {
   const methods = useForm({});
   const [section, setSection] = useState(0);
+  const [readOnly, setReadOnly] = useState(false);
   const labels: Label[] = props.items
     .filter((item) => item.meta.type == 'label')
     .map((item, idx) => {
@@ -185,7 +133,7 @@ function FormContents(props: {
   });
 
   const totalSections = labels.length;
-  const onButtonClickHandler: ReportNavButtonClickedHandler = (name: string, section: number) => {
+  const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
     switch (name) {
       case 'next':
         setSection((section + 1) % totalSections);
@@ -200,28 +148,55 @@ function FormContents(props: {
     }
   };
 
+  const editButtonHandler = (name: string) => {
+    switch (name) {
+      case 'edit':
+        setReadOnly(false);
+        break;
+      default:
+    }
+  };
+
+  const submitHandler = (data) => {
+    setReadOnly(true)
+    props.onSubmit(data)
+  }
+
   return (
     <>
-      <NavBar labels={labels} activeLabel={section} onClick={onButtonClickHandler} />
+      <NavBar
+        labels={labels}
+        activeLabel={section}
+        onNavClick={navButtonClickHandler}
+        hideEditButton={!readOnly}
+        onEditClick={editButtonHandler}
+      />
       <FormProvider {...methods}>
-        <form className="row p-3 needs-validation" onSubmit={methods.handleSubmit(props.onSubmit)}>
-          <Sections itemGroups={sections} activeGroup={section} onClick={onButtonClickHandler} />
+        <form className="row p-3 needs-validation" onSubmit={methods.handleSubmit(submitHandler)}>
+          <Sections
+            readOnly={readOnly}
+            itemGroups={sections}
+            activeGroup={section}
+            onClick={navButtonClickHandler}
+          />
         </form>
       </FormProvider>
     </>
   );
 }
 
-type ReportNavButtonClickedHandler = (name: string, section: number) => void;
+type NavButtonClickedHandler = (name: string, section: number) => void;
+type ButtonClickedHandler = (name: string) => void;
 
 function Sections(props: {
   activeGroup: number;
   itemGroups: any[];
-  onClick?: ReportNavButtonClickedHandler;
+  onClick?: NavButtonClickedHandler;
+  readOnly: boolean;
 }) {
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
-    submitButtonHidden = activeGroup != totalGroups - 1,
+    submitButtonHidden = (activeGroup != totalGroups - 1) || props.readOnly,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
 
@@ -232,7 +207,7 @@ function Sections(props: {
           <InputGroup
             key={'ig-' + idx}
             items={item}
-            readOnly={true}
+            readOnly={props.readOnly}
             active={props.activeGroup == idx}
           />
         );
@@ -279,7 +254,9 @@ type Label = {
 function NavBar(props: {
   labels: Label[];
   activeLabel?: number;
-  onClick: ReportNavButtonClickedHandler;
+  onNavClick: NavButtonClickedHandler;
+  hideEditButton: boolean;
+  onEditClick: ButtonClickedHandler;
 }) {
   return (
     <div className="list-group list-group-horizontal sticky-top justify-content-between bg-white p-2 ps-4 mt-3 shadow-sm">
@@ -292,7 +269,7 @@ function NavBar(props: {
               className={
                 'list-group-item nav nav-pills ' + (idx == props.activeLabel ? 'active' : '')
               }
-              onClick={() => props.onClick('section-clicked', idx)}
+              onClick={() => props.onNavClick('section-clicked', idx)}
             >
               {label.text}
             </button>
@@ -300,7 +277,13 @@ function NavBar(props: {
         })}
       </div>
       <div className="list-group list-group-horizontal justify-content-end align-middle">
-        <button key={uuid()} type="button" className="btn btn-primary bi bi-pencil-square">
+        <button
+          key={uuid()}
+          type="button"
+          className="btn btn-primary bi bi-pencil-square"
+          hidden={props.hideEditButton}
+          onClick={() => props.onEditClick('edit')}
+        >
           &nbsp;&nbsp;Edit
         </button>
       </div>
