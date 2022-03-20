@@ -7,7 +7,6 @@ const httpErrorMiddleware = (error: Error, request: Request, response: Response,
   const status = isHttpError ? error.status : 500;
   const message = error.message || 'Something went wrong';
   response.status(status).send({
-    status,
     message
   });
 };

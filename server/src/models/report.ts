@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { ReportItems } from '../utils/definitions/report';
 const { Schema } = mongoose;
 
-interface TemplateDocument {
+export interface TemplateDocument {
     id: String,
     departmentId: String,
     submittedDate: String,
@@ -22,7 +22,7 @@ const templateSchema = new Schema<TemplateDocument>({
 });
 
 const TEMPLATE_COLLECTION_NAME = "Template";
-const TemplateCollection = mongoose.model(TEMPLATE_COLLECTION_NAME, templateSchema);
+const TemplateCollection = mongoose.model<TemplateDocument>(TEMPLATE_COLLECTION_NAME, templateSchema);
 
 const uniqueTemplateId = (value, done) => {
     TemplateCollection.count({ id: value }, function(err, count) {
