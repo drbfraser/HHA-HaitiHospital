@@ -11,6 +11,7 @@ import { useAuthState } from 'contexts';
 import { Role } from '../../constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
+import { getDepartmentId } from '../../common/utils/departments';
 
 interface MessagePanelProps {}
 
@@ -28,9 +29,14 @@ const MessagePanel = (props: MessagePanelProps) => {
     return msgsJson.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, msgsJson]);
 
+  let messages = [];
+
   const getMessages = async (isMounted: boolean) => {
-    if (isMounted === true)
-      setMsgJson(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history));
+    if (isMounted === true) {
+      const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history);
+      const filteredMessages = filterMessages(messages);
+      setMsgJson(filteredMessages);
+    }
   };
 
   useEffect(() => {
@@ -41,6 +47,28 @@ const MessagePanel = (props: MessagePanelProps) => {
   const toggleRerender = async () => {
     setRerender(!rerender);
   };
+
+  const filterMessages = (messagesToBeFiltered) => {
+    if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment])) {
+      console.log("here0")
+      return messagesToBeFiltered;
+    }
+    console.log("WE SHOULD BE HERE");
+    return filterMessagesBasedOnDepartment(messagesToBeFiltered);
+  }
+
+  const filterMessagesBasedOnDepartment = (messagesToBeFiltered): void => {
+    const currentUserDepartment = authState.userDetails.department;
+    console.log(messagesToBeFiltered);
+    console.log("Above is the msgsJson")
+    const filteredMsgs = messagesToBeFiltered.filter((message) => 
+      message.departmentId === getDepartmentId(currentUserDepartment)
+    )
+    console.log(filteredMsgs);
+    console.log("above is the filtered msgs")
+    // setMsgJson(filteredMsgs);
+    // console.log(msgsJson);
+  }
 
   return (
     <div className="message-panel">
@@ -53,7 +81,28 @@ const MessagePanel = (props: MessagePanelProps) => {
           </Link>
         ) : null}
       </div>
-      <div className="my-3 p-3 bg-body rounded shadow-sm">
+      {msgsJson.length > 0 && (
+        <div>
+                <div className="my-3 p-3 bg-body rounded shadow-sm">
+
+                <div className="d-sm-flex align-items-center">
+                  <h6 className="border-bottom pb-2 mb-0">{t('messageBoardRecentUpdates')}</h6>
+                </div>
+        
+                {currentTableData.map((msgJson, index) => {
+                  return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
+                })}
+              </div>
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={msgsJson.length}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+            />
+        </div>
+      )}
+      {/* <div className="my-3 p-3 bg-body rounded shadow-sm">
 
         <div className="d-sm-flex align-items-center">
           <h6 className="border-bottom pb-2 mb-0">{t('messageBoardRecentUpdates')}</h6>
@@ -69,7 +118,7 @@ const MessagePanel = (props: MessagePanelProps) => {
         totalCount={msgsJson.length}
         pageSize={pageSize}
         onPageChange={(page) => setCurrentPage(page)}
-      />
+      /> */}
     </div>
   );
 };
