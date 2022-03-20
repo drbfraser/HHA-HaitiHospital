@@ -36,22 +36,53 @@ export interface ReportItem extends JsonReportItem {
 }
 
 export function Report() {
-  const [data, setData] = useState<JsonReportDescriptor>(undefined);
-  const { t, i18n } = useTranslation();
-
-  let invalidItems = [];
-  useEffect(() => {
-    const data = MockApi.getInvalidData();
+  const [data, setData] = useState<JsonReportDescriptor>(() => {
+    const data = MockApi.getData();
     console.log('API');
     console.log(data);
-    setData(data);
-  }, []);
+    return data
+  });
+  const { t, i18n } = useTranslation();
 
-  const handleSubmit = (data) => {
-    console.log(data);
-    return false;
+  // React.useEffect(() => {
+  //   const data = MockApi.getData();
+  //   console.log('API');
+  //   console.log(data);
+  //   setData(data);
+  // }, []);
+
+  const handleSubmit = async (data) => {
+    const report = assembleData(data);
+    console.log('Submit');
+    console.log(report);
+    /*
+     * Ideally, here we make a request to server and handle the responses.
+     * Because it is async, the caller will handle either cases.
+     * Todo: refactor
+     */
+    try{
+      const result = await MockApi.submitData(report, 1000, true);
+      setData(result)
+      return result
+    }catch(errorData){
+      setData(errorData)
+      throw errorData
+    }
   };
 
+  const assembleData = (answers): JsonReportDescriptor => {
+    const copy = { ...data };
+    copy.items = copy.items.map((item) => {
+      const answer = answers[item.meta.id];
+      const itemCopy = { ...item };
+      itemCopy.answer = [[answer]];
+      return itemCopy;
+    });
+    return copy;
+  };
+
+  console.log('Render Report');
+  
   return (
     <div style={{ paddingBottom: '8%' }}>
       <div className="container-fluid">
@@ -100,7 +131,7 @@ function FormHeader(props: any) {
   );
 }
 
-function FormContents(props: { items: ReportItem[]; onSubmit: (data) => boolean }) {
+function FormContents(props: { items: ReportItem[]; onSubmit: (data) => Promise<any> }) {
   const methods = useForm();
   const [section, setSection] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
@@ -120,19 +151,19 @@ function FormContents(props: { items: ReportItem[]; onSubmit: (data) => boolean 
     }
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     props.items
       .filter((item) => !(item as ReportItem).valid)
       .forEach((invalidItem) => {
         const id = invalidItem.meta.id;
-        const message = invalidItem.errorMessage
+        const message = invalidItem.errorMessage;
         const error = {
           type: 'invalid-input',
           message: message,
         };
         methods.setError(id, error);
-      })
-  }, []);
+      });
+  }, [props.items]);
 
   const totalSections = labels.length;
   const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
@@ -160,7 +191,15 @@ function FormContents(props: { items: ReportItem[]; onSubmit: (data) => boolean 
   };
 
   const submitHandler = (data) => {
-    setReadOnly(props.onSubmit(data));
+    props
+      .onSubmit(data)
+      .then((data) => {
+        setReadOnly(true);
+      })
+      .catch((data) => {
+        console.log('caught');
+        setReadOnly(false);
+      });
   };
 
   console.log('Content render');
@@ -197,16 +236,16 @@ function Sections(props: {
   onClick?: NavButtonClickedHandler;
   readOnly: boolean;
 }) {
-  const {formState} = useFormContext()
+  const { formState } = useFormContext();
   // We count the properties of formState.errors
-  const errorsCount = Object.keys(formState.errors).length
+  const errorsCount = Object.keys(formState.errors).length;
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
     submitButtonHidden = activeGroup != totalGroups - 1 || props.readOnly,
-    errorsPresent =  errorsCount != 0,
+    errorsPresent = errorsCount != 0,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
-  console.log(errorsCount);  
+  console.log('Errors count ' + errorsCount);
   return (
     <>
       {props.itemGroups.map((item, idx) => {
@@ -357,7 +396,7 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
         return ' ';
     }
   };
-  const invalid: boolean = formState.errors[props.id]
+  const invalid: boolean = formState.errors[props.id];
   const errorMessage = formState.errors[props.id]?.message;
   return (
     <div className="row justify-content-center ">
@@ -380,11 +419,12 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
             className={'form-control' + (invalid ? ' is-invalid' : '')}
             readOnly={props.readOnly}
             defaultValue={props.value}
-            {...register(props.id, {required: true,
-            onChange: () => {
-              clearErrors(props.id)
-            }})
-          }
+            {...register(props.id, {
+              required: true,
+              onChange: () => {
+                clearErrors(props.id);
+              },
+            })}
           />
           <small className="invalid-feedback">{errorMessage}</small>
         </div>

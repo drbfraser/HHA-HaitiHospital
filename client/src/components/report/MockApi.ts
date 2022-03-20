@@ -59,10 +59,13 @@ export function getData(): JsonReportDescriptor {
 }
 
 export function getInvalidData(): JsonReportDescriptor {
-  const data = getData();
+  return makeInvalid(getData())
+}
+
+function makeInvalid(data) {
   const invalidItems = [...data.items].map((item, idx) => {
     const copy = { ...item };
-    if (idx > data.items.length - 10) {
+    if (idx > data.items.length - 5) {
       (copy as ReportItem).valid = false;
       (copy as ReportItem).errorMessage = 'Invalid input';
     }
@@ -73,22 +76,14 @@ export function getInvalidData(): JsonReportDescriptor {
   return invalidData;
 }
 
-export async function sendData(data, delay: number) {
-  return sleep(delay).then(() => {
-    return data;
-  });
-}
-
-export async function sendFaultyData(data, delay: number) {
-  // Simmulate data transfer time
-  return sleep(delay).then(() => {
-    const validatedItems = data.items.map((item) => {
-      (item as ReportItem).valid = Math.random() < 0.5;
-      (item as ReportItem).errorMessage = 'Invalid input';
-      return item;
+export async function submitData(data: JsonReportDescriptor, delayMillis: number, success: boolean): Promise<JsonReportDescriptor> {
+  if(success){
+    return sleep(delayMillis).then(() => {
+      return {...data};
     });
-    const newData = { ...data };
-    newData.items = validatedItems;
-    return newData;
-  });
+  }else{
+    return sleep(delayMillis).then(() => {
+      return Promise.reject({...makeInvalid(data)})
+    });
+  }
 }
