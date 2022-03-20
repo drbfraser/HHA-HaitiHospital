@@ -17,7 +17,7 @@ export function getData(): JsonReportDescriptor {
     const fields: ReportItem[] = [];
     fields.push({
       meta: {
-        id: uuid(),
+        id: 'label' + idx,
         type: 'label',
       },
       description: section.section_label,
@@ -26,25 +26,25 @@ export function getData(): JsonReportDescriptor {
       valid: true,
       errorMessage: '',
     });
-    const a = section.section_fields.map((field): ReportItem => {
-      if ((field.field_type = 'number')) {
-        let b = {
-          meta: {
-            id: uuid(),
-            type: 'number',
-          },
-          description: field.field_label,
-          answer: [[Math.floor(Math.random() * 100).toString()]],
-          validated: true,
-          valid: true,
-          errorMessage: '',
-        };
-        return b;
-      }
-    });
-    console.log(a);
-
-    return fields.concat(a);
+    return fields.concat(
+      section.section_fields.map((field, idx): ReportItem => {
+        if ((field.field_type = 'number')) {
+          const value = Math.floor(Math.random() * 100).toString();
+          const id = section.section_label.replaceAll(' ', '') + '_field_' + idx;
+          return {
+            meta: {
+              id: id,
+              type: 'number',
+            },
+            description: field.field_label,
+            answer: [[value]],
+            validated: true,
+            valid: true,
+            errorMessage: '',
+          };
+        }
+      }),
+    );
   });
 
   return {
@@ -58,10 +58,25 @@ export function getData(): JsonReportDescriptor {
   };
 }
 
+export function getInvalidData(): JsonReportDescriptor {
+  const data = getData();
+  const invalidItems = [...data.items].map((item, idx) => {
+    const copy = { ...item };
+    if (idx > data.items.length - 10) {
+      (copy as ReportItem).valid = false;
+      (copy as ReportItem).errorMessage = 'Invalid input';
+    }
+    return copy;
+  });
+  const invalidData = { ...data };
+  invalidData.items = invalidItems;
+  return invalidData;
+}
+
 export async function sendData(data, delay: number) {
-    return sleep(delay).then(() => {
-        return data
-    })
+  return sleep(delay).then(() => {
+    return data;
+  });
 }
 
 export async function sendFaultyData(data, delay: number) {

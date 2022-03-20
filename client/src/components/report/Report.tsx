@@ -21,6 +21,8 @@ import {
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
 import { useSelector } from 'react-redux';
+import { read } from 'fs';
+import { invalid } from 'moment';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
@@ -33,32 +35,22 @@ export interface ReportItem extends JsonReportItem {
   errorMessage?: string;
 }
 
-type Validation = {
-  isValidated: boolean;
-  isValid: boolean;
-};
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 export function Report() {
   const [data, setData] = useState<JsonReportDescriptor>(undefined);
-  const [readonly, setReadonly] = useState(false);
-  const form = useForm();
-  const history = useHistory();
   const { t, i18n } = useTranslation();
-  const testData = nicuJSON;
 
+  let invalidItems = [];
   useEffect(() => {
-    const data = MockApi.getData();
+    const data = MockApi.getInvalidData();
     console.log('API');
     console.log(data);
     setData(data);
   }, []);
 
-  const handleSubmit = (data) => console.log(data);
-  console.log('Report render');
+  const handleSubmit = (data) => {
+    console.log(data);
+    return false;
+  };
 
   return (
     <div style={{ paddingBottom: '8%' }}>
@@ -74,11 +66,7 @@ export function Report() {
             ) : (
               <main className="container">
                 <FormHeader />
-                <FormContents
-                  items={data.items as ReportItem[]}
-                  onSubmit={handleSubmit}
-                  readOnly={readonly}
-                />
+                <FormContents items={data.items as ReportItem[]} onSubmit={handleSubmit} />
               </main>
             )}
           </div>
@@ -112,8 +100,8 @@ function FormHeader(props: any) {
   );
 }
 
-function FormContents(props: { items: ReportItem[]; readOnly: boolean; onSubmit: (data) => void }) {
-  const methods = useForm({});
+function FormContents(props: { items: ReportItem[]; onSubmit: (data) => boolean }) {
+  const methods = useForm();
   const [section, setSection] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const labels: Label[] = props.items
@@ -131,6 +119,20 @@ function FormContents(props: { items: ReportItem[]; readOnly: boolean; onSubmit:
       headSection.push(item);
     }
   });
+
+  useEffect(() => {
+    props.items
+      .filter((item) => !(item as ReportItem).valid)
+      .forEach((invalidItem) => {
+        const id = invalidItem.meta.id;
+        const message = invalidItem.errorMessage
+        const error = {
+          type: 'invalid-input',
+          message: message,
+        };
+        methods.setError(id, error);
+      })
+  }, []);
 
   const totalSections = labels.length;
   const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
@@ -158,9 +160,10 @@ function FormContents(props: { items: ReportItem[]; readOnly: boolean; onSubmit:
   };
 
   const submitHandler = (data) => {
-    setReadOnly(true)
-    props.onSubmit(data)
-  }
+    setReadOnly(props.onSubmit(data));
+  };
+
+  console.log('Content render');
 
   return (
     <>
@@ -194,12 +197,16 @@ function Sections(props: {
   onClick?: NavButtonClickedHandler;
   readOnly: boolean;
 }) {
+  const {formState} = useFormContext()
+  // We count the properties of formState.errors
+  const errorsCount = Object.keys(formState.errors).length
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
-    submitButtonHidden = (activeGroup != totalGroups - 1) || props.readOnly,
+    submitButtonHidden = activeGroup != totalGroups - 1 || props.readOnly,
+    errorsPresent =  errorsCount != 0,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
-
+  console.log(errorsCount);  
   return (
     <>
       {props.itemGroups.map((item, idx) => {
@@ -237,6 +244,7 @@ function Sections(props: {
           className="btn btn-success col-6"
           type="submit"
           hidden={submitButtonHidden}
+          disabled={errorsPresent}
           key={uuid()}
         >
           Submit
@@ -295,12 +303,12 @@ function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boo
   return (
     <div hidden={!props.active}>
       {props.items.map((element, idx) => {
-        let value = '0';
         switch (element.meta.type) {
           case 'label':
             const label: Label = { id: 'section' + idx, text: element.description };
             return <SectionLabel key={label.id} id={label.id} text={label.text} />;
           case 'number':
+            let value = element.answer[0][0];
             return (
               <NumberInputField
                 key={element.meta.id}
@@ -308,7 +316,7 @@ function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boo
                 text={idx + '. ' + element.description}
                 valid={element.valid}
                 errorMessage={element.errorMessage}
-                value={parseInt(value)}
+                value={value}
                 readOnly={props.readOnly}
               />
             );
@@ -326,19 +334,18 @@ function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boo
 type NumberInputFieldProps = {
   id: string;
   text?: string;
-  value?: number;
+  value: string;
   weight?: string;
   indent?: boolean;
   isHeader?: boolean;
-  valid?: boolean;
+  valid: boolean;
   errorMessage?: string;
   readOnly?: boolean;
 };
 
 function NumberInputField(props: NumberInputFieldProps): JSX.Element {
-  const { register } = useFormContext();
+  const { register, formState, clearErrors } = useFormContext();
   const { t, i18n } = useTranslation();
-  const [dirty, setDirty] = useState(false);
   const text = props.text ?? 'N/A';
   const getWeightCss = (w: string) => {
     switch (w) {
@@ -350,7 +357,8 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
         return ' ';
     }
   };
-  const isInvalid = !props.valid && !dirty;
+  const invalid: boolean = formState.errors[props.id]
+  const errorMessage = formState.errors[props.id]?.message;
   return (
     <div className="row justify-content-center ">
       <div className="form-group row col-sm-12 col-lg-6 col-xl-6 p-1 m-1">
@@ -369,22 +377,16 @@ function NumberInputField(props: NumberInputFieldProps): JSX.Element {
           <input
             id={props.id}
             type={'number'}
-            className={
-              (false ? 'form-control-plaintext' : 'form-control') + (isInvalid ? ' is-invalid' : '')
-            }
+            className={'form-control' + (invalid ? ' is-invalid' : '')}
             readOnly={props.readOnly}
-            defaultValue={props.value ?? -1}
-            {...register(props.id, {
-              onChange: (e) => {
-                setDirty(true);
-              },
-            })}
+            defaultValue={props.value}
+            {...register(props.id, {required: true,
+            onChange: () => {
+              clearErrors(props.id)
+            }})
+          }
           />
-          {isInvalid ? (
-            <small className="invalid-feedback">{props.errorMessage ?? 'Error'}</small>
-          ) : (
-            ''
-          )}
+          <small className="invalid-feedback">{errorMessage}</small>
         </div>
       </div>
     </div>
