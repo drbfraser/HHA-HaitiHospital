@@ -1,3 +1,4 @@
+import { InvalidInput } from 'exceptions/systemException';
 import mongoose from 'mongoose';
 import { ReportItems } from '../utils/definitions/report';
 const { Schema } = mongoose;
@@ -24,15 +25,18 @@ const templateSchema = new Schema<TemplateDocument>({
 const TEMPLATE_COLLECTION_NAME = "Template";
 const TemplateCollection = mongoose.model<TemplateDocument>(TEMPLATE_COLLECTION_NAME, templateSchema);
 
-const uniqueTemplateId = (value, done) => {
+const uniqueTemplateId = (value) => {
     TemplateCollection.count({ id: value }, function(err, count) {
         if (err) {
-            done(err);
+            throw new Error(err.message);
         }
         // If more than 0 count, invalidate
-        done(!count);
+        if (!count) {
+            throw new InvalidInput("Template id must be unique");
+        }
     });
 }
+
 const uniqueTemplateDepartment = (value, done) => {
     TemplateCollection.count({ departmentId: value }, function(err, count) {
         if (err) {
@@ -44,9 +48,15 @@ const uniqueTemplateDepartment = (value, done) => {
 }
 
 templateSchema.path('id').validate({
-    validator: [ uniqueTemplateId, uniqueTemplateDepartment ],
+    validator: uniqueTemplateId,
     message: function(props) {
         return `Template with id ${props.value} already exists`;
+    }
+});
+templateSchema.path('departmentId').validate({
+    validator: uniqueTemplateDepartment,
+    message: function(props) {
+        return `Template with department id ${props.value} already exists`;
     }
 });
 

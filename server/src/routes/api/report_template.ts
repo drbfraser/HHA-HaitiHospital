@@ -5,6 +5,9 @@ import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection } from 'models/report';
 import { Role } from 'models/user';
+import { ReportDescriptor } from 'utils/definitions/report';
+import { jsonStringToReport } from 'utils/json_report_parser/parsers';
+import { parseToReport } from 'utils/json_report_parser/report';
 
 const router = Router();
 export default router;
@@ -54,6 +57,9 @@ router.route('/:departmentId').get(
 //     async (req: Request, res: Response, next: NextFunction) => {
 //         try {
 //             const bodyStr: string = JSON.stringify(req.body);
+//             const report: ReportDescriptor = jsonStringToReport(bodyStr);
+//             report.meta.submittedDate = new Date();
+//             report.meta.submittedUserId = req.user!.
 
 //         } catch (e) {
 //             next(e);
