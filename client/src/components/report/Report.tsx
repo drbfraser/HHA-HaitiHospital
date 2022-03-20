@@ -23,6 +23,8 @@ import * as MockApi from './MockApi';
 import { useSelector } from 'react-redux';
 import { read } from 'fs';
 import { invalid } from 'moment';
+import {ItemType} from 'common/definitions/report'
+import { toast } from 'react-toastify';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
@@ -36,37 +38,108 @@ export interface ReportItem extends JsonReportItem {
 }
 
 export function Report() {
+  console.log('Render Report');
+  return (
+    <div style={{ paddingBottom: '8%' }}>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-1">
+            <SideBar />
+          </div>
+          <div className="col-11">
+            <Header />
+              <main className="container">
+                <FormContents path='/nicu'/>
+              </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FormContents(props: { path: string }) {
+  const methods = useForm();
+  const { t, i18n } = useTranslation();
+  const [sectionIdx, setSectionIdx] = useState(0);
+  const [readOnly, setReadOnly] = useState(false);
   const [data, setData] = useState<JsonReportDescriptor>(() => {
     const data = MockApi.getData();
     console.log('API');
     console.log(data);
     return data
   });
-  const { t, i18n } = useTranslation();
 
-  // React.useEffect(() => {
-  //   const data = MockApi.getData();
-  //   console.log('API');
-  //   console.log(data);
-  //   setData(data);
-  // }, []);
+  const labels: Label[] = data.items
+    .filter((item) => item.meta.type == 'label')
+    .map((item, idx) => {
+      return { id: item.meta.id, text: idx + '. ' + item.description };
+    });
 
-  const handleSubmit = async (data) => {
-    const report = assembleData(data);
-    console.log('Submit');
-    console.log(report);
+  const sections = [];
+  data.items.forEach((item) => {
+    if (item.meta.type == 'label') {
+      sections.push([item]);
+    } else {
+      const headSection = sections[sections.length - 1];
+      headSection.push(item);
+    }
+  });
+
+  React.useEffect(() => {
+    data.items
+      .filter((item) => !(item as ReportItem).valid)
+      .forEach((invalidItem) => {
+        const id = invalidItem.meta.id;
+        const message = (invalidItem as ReportItem).errorMessage;
+        const error = {
+          type: 'invalid-input',
+          message: message,
+        };
+        methods.setError(id, error);
+      });
+  }, [data]);
+
+  const totalSections = labels.length;
+  const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
+    switch (name) {
+      case 'next':
+        setSectionIdx((section + 1) % totalSections);
+        break;
+      case 'prev':
+        setSectionIdx((section - 1) % totalSections);
+        break;
+      case 'section-clicked':
+        setSectionIdx(section);
+        break;
+      default:
+    }
+  };
+
+  const editButtonHandler = (name: string) => {
+    switch (name) {
+      case 'edit':
+        setReadOnly(false);
+        break;
+      default:
+    }
+  };
+
+  const submitHandler = async (data) => {
     /*
      * Ideally, here we make a request to server and handle the responses.
      * Because it is async, the caller will handle either cases.
      * Todo: refactor
      */
     try{
-      const result = await MockApi.submitData(report, 1000, true);
+      const result = await MockApi.submitData(assembleData(data), 1000, true);
       setData(result)
-      return result
+      setReadOnly(true);
+      toast.success('Data submited')
     }catch(errorData){
-      setData(errorData)
-      throw errorData
+      setData(errorData.data)
+      setReadOnly(false);
+      toast.error(errorData.message)
     }
   };
 
@@ -81,29 +154,29 @@ export function Report() {
     return copy;
   };
 
-  console.log('Render Report');
-  
+  console.log('Content render');
+
   return (
-    <div style={{ paddingBottom: '8%' }}>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-1">
-            <SideBar />
-          </div>
-          <div className="col-11">
-            <Header />
-            {data == undefined ? (
-              <Fragment />
-            ) : (
-              <main className="container">
-                <FormHeader />
-                <FormContents items={data.items as ReportItem[]} onSubmit={handleSubmit} />
-              </main>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <FormHeader />
+      <NavBar
+        labels={labels}
+        activeLabel={sectionIdx}
+        onNavClick={navButtonClickHandler}
+        hideEditButton={!readOnly}
+        onEditClick={editButtonHandler}
+      />
+      <FormProvider {...methods}>
+        <form className="row p-3 needs-validation" onSubmit={methods.handleSubmit(submitHandler)}>
+          <Sections
+            readOnly={readOnly}
+            itemGroups={sections}
+            activeGroup={sectionIdx}
+            onClick={navButtonClickHandler}
+          />
+        </form>
+      </FormProvider>
+    </>
   );
 }
 
@@ -131,102 +204,6 @@ function FormHeader(props: any) {
   );
 }
 
-function FormContents(props: { items: ReportItem[]; onSubmit: (data) => Promise<any> }) {
-  const methods = useForm();
-  const [section, setSection] = useState(0);
-  const [readOnly, setReadOnly] = useState(false);
-  const labels: Label[] = props.items
-    .filter((item) => item.meta.type == 'label')
-    .map((item, idx) => {
-      return { id: item.meta.id, text: idx + '. ' + item.description };
-    });
-
-  const sections = [];
-  props.items.forEach((item) => {
-    if (item.meta.type == 'label') {
-      sections.push([item]);
-    } else {
-      const headSection = sections[sections.length - 1];
-      headSection.push(item);
-    }
-  });
-
-  React.useEffect(() => {
-    props.items
-      .filter((item) => !(item as ReportItem).valid)
-      .forEach((invalidItem) => {
-        const id = invalidItem.meta.id;
-        const message = invalidItem.errorMessage;
-        const error = {
-          type: 'invalid-input',
-          message: message,
-        };
-        methods.setError(id, error);
-      });
-  }, [props.items]);
-
-  const totalSections = labels.length;
-  const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
-    switch (name) {
-      case 'next':
-        setSection((section + 1) % totalSections);
-        break;
-      case 'prev':
-        setSection((section - 1) % totalSections);
-        break;
-      case 'section-clicked':
-        setSection(section);
-        break;
-      default:
-    }
-  };
-
-  const editButtonHandler = (name: string) => {
-    switch (name) {
-      case 'edit':
-        setReadOnly(false);
-        break;
-      default:
-    }
-  };
-
-  const submitHandler = (data) => {
-    props
-      .onSubmit(data)
-      .then((data) => {
-        setReadOnly(true);
-      })
-      .catch((data) => {
-        console.log('caught');
-        setReadOnly(false);
-      });
-  };
-
-  console.log('Content render');
-
-  return (
-    <>
-      <NavBar
-        labels={labels}
-        activeLabel={section}
-        onNavClick={navButtonClickHandler}
-        hideEditButton={!readOnly}
-        onEditClick={editButtonHandler}
-      />
-      <FormProvider {...methods}>
-        <form className="row p-3 needs-validation" onSubmit={methods.handleSubmit(submitHandler)}>
-          <Sections
-            readOnly={readOnly}
-            itemGroups={sections}
-            activeGroup={section}
-            onClick={navButtonClickHandler}
-          />
-        </form>
-      </FormProvider>
-    </>
-  );
-}
-
 type NavButtonClickedHandler = (name: string, section: number) => void;
 type ButtonClickedHandler = (name: string) => void;
 
@@ -245,7 +222,6 @@ function Sections(props: {
     errorsPresent = errorsCount != 0,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
-  console.log('Errors count ' + errorsCount);
   return (
     <>
       {props.itemGroups.map((item, idx) => {
@@ -263,7 +239,7 @@ function Sections(props: {
           className="btn btn-primary col-3"
           type="button"
           disabled={prevBtnDisabled}
-          onClick={() => props.onClick('next', activeGroup)}
+          onClick={() => props.onClick('prev', activeGroup)}
           key={uuid()}
         >
           Previous
@@ -346,7 +322,7 @@ function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boo
           case 'label':
             const label: Label = { id: 'section' + idx, text: element.description };
             return <SectionLabel key={label.id} id={label.id} text={label.text} />;
-          case 'number':
+          case ItemType.N:
             let value = element.answer[0][0];
             return (
               <NumberInputField

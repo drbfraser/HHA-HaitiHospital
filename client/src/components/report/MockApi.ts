@@ -7,6 +7,7 @@ import {
   JsonReportItemMeta,
   JsonItemAnswer,
 } from 'common/definitions/json_report';
+import {ItemType} from 'common/definitions/report'
 
 export const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -34,7 +35,7 @@ export function getData(): JsonReportDescriptor {
           return {
             meta: {
               id: id,
-              type: 'number',
+              type: ItemType.N,
             },
             description: field.field_label,
             answer: [[value]],
@@ -77,13 +78,19 @@ function makeInvalid(data) {
 }
 
 export async function submitData(data: JsonReportDescriptor, delayMillis: number, success: boolean): Promise<JsonReportDescriptor> {
+  console.log('Mock API submit, success: ' + success);
+  console.log(data);
   if(success){
     return sleep(delayMillis).then(() => {
       return {...data};
     });
   }else{
     return sleep(delayMillis).then(() => {
-      return Promise.reject({...makeInvalid(data)})
+      const errorData = {
+        message: 'Invalid data',
+        data: {...makeInvalid(data)}
+      }
+      return Promise.reject(errorData)
     });
   }
 }
