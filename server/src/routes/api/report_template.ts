@@ -1,10 +1,13 @@
-import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
+import { DepartmentId, getDepartmentName } from 'common/definitions/departments';
+import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
+import { object } from 'joi';
 import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection, TemplateDocument } from 'models/template';
-import { Role } from 'models/user';
+import UserModel, { Role } from 'models/user';
+import { report } from 'superagent';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { TemplateReport } from 'utils/definitions/template';
 import { jsonStringToReport } from 'utils/json_report_parser/parsers';
@@ -12,6 +15,7 @@ import { getTemplate } from 'utils/report/report';
 import { formatDateString, generateUuid } from 'utils/utils';
 
 const router = Router();
+const USER_ID_FIELD = "username";
 export default router;
 
 router.route('/').get(
@@ -24,8 +28,10 @@ router.route('/').get(
             if (!result.length) {
                 res.status(HTTP_NOCONTENT_CODE).json(result);
             }
-
-            res.status(HTTP_OK_CODE).json(result);
+            else {
+                const hide = await Promise.all(result.map((user) => hideUserId(user)));
+                res.status(HTTP_OK_CODE).json(hide);
+            }
         } catch (e) {
             next(e);
         }
@@ -45,15 +51,39 @@ router.route('/:departmentId').get(
             if (!result) {
                 res.status(HTTP_NOCONTENT_CODE).json({});
             }
-            res.status(HTTP_OK_CODE).json(result);
+            else {
+                const temp = hideUserId(result);
+                res.status(HTTP_OK_CODE).json(temp);
+            }
         } catch (e) {
             next(e);
         }
     },
     httpErrorMiddleware
 );
-
-
+router.route('/:departmentId').delete(
+    requireJwtAuth,
+    roleAuth(Role.Admin, Role.MedicalDirector),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const deptId = req.params['departmentId'];
+            let query = TemplateCollection.findOneAndDelete({ departmentId: deptId });
+            let result = await query.exec();
+            if (!result) {
+                res.status(HTTP_NOCONTENT_CODE).send();
+            } else {
+                res.status(HTTP_OK_CODE).send({
+                    message: `Template for department with id ${deptId} is removed`
+                });
+            }
+        }
+        catch (e) {
+            console.log(e);
+            next(e);
+        }
+    },
+    httpErrorMiddleware
+);
 
 router.route('/').post(
     requireJwtAuth,
@@ -62,27 +92,65 @@ router.route('/').post(
         try {
             const bodyStr: string = JSON.stringify(req.body);
             const report: ReportDescriptor = jsonStringToReport(bodyStr);
+
+            // Add some server generated values, since this creates a new template
             report.meta.id = generateUuid();
             report.meta.submittedDate = new Date();
-            report.meta.submittedUserId = req.user!["name"];
-            const newTemplate: TemplateReport = getTemplate(report);
-            const dbDocument: TemplateDocument = {
-                id: newTemplate.meta.id,
-                departmentId: newTemplate.meta.departmentId,
-                submittedDate: formatDateString(newTemplate.meta.submittedDate),
-                submittedByUserId: newTemplate.meta.submittedUserId,
-                items: newTemplate.items
-            }
-            const document = new TemplateCollection(dbDocument);
-            // await document.save();
+            report.meta.submittedUserId = req.user![`${USER_ID_FIELD}`];
 
-            res.status(HTTP_CREATED_CODE).send({
-                message: "new template created",
-                result: dbDocument
-            });
+            // Parse to DB document
+            const document = await parseToDocument(report);
+            const result = await document.save();
+
+            if (result) {
+                res.status(HTTP_CREATED_CODE).send({
+                    message: "new template created",
+                });
+            }
+            else {
+                throw new InternalError("Save to DB failed");
+            }
+           
         } catch (e) {
             next(e);
         }
     },
     httpErrorMiddleware
 )
+
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+async function hideUserId(report: TemplateDocument) {
+    // const user = await UserModel.find({"username":report.submittedByUserId}).exec();
+    const userId = report.submittedByUserId;
+    const query = UserModel.findOne({ username : userId });
+    const user = await query.exec();
+    report.submittedByUserId = user.name;
+    return report;
+}   
+
+async function parseToDocument(report: ReportDescriptor) {
+    const newTemplate: TemplateReport = getTemplate(report);
+    const isIdExist = await TemplateCollection.exists({ id: newTemplate.meta.id });
+    if (isIdExist) {
+        throw new InternalError("Generated template uuid exists");
+    }
+
+    const isDepartmentExist = await TemplateCollection.exists({ departmentId: DepartmentId[newTemplate.meta.departmentId].toString() });
+    if (isDepartmentExist) {
+        throw new Conflict(`Template for department id ${newTemplate.meta.departmentId} exists`);
+    }
+
+    const dbDocument: TemplateDocument = {
+        id: newTemplate.meta.id,
+        departmentId: DepartmentId[newTemplate.meta.departmentId].toString(),
+        submittedDate: formatDateString(newTemplate.meta.submittedDate),
+        submittedByUserId: newTemplate.meta.submittedUserId,
+        items: newTemplate.items
+    };
+    return new TemplateCollection(dbDocument);
+}
+
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

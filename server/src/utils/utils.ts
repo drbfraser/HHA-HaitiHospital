@@ -55,7 +55,6 @@ export const formatDateString = (date: Date): string => {
         month: "long",
         day: "numeric"
     });
-    console.log(result);
     return result;
 }
 
