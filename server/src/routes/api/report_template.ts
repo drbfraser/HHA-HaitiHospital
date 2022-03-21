@@ -1,13 +1,11 @@
-import { DepartmentId, getDepartmentName } from 'common/definitions/departments';
+import { DepartmentId} from 'common/definitions/departments';
 import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
-import { object } from 'joi';
 import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection, TemplateDocument } from 'models/template';
 import UserModel, { Role } from 'models/user';
-import { report } from 'superagent';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { TemplateReport } from 'utils/definitions/template';
 import { jsonStringToReport } from 'utils/json_report_parser/parsers';
@@ -93,14 +91,8 @@ router.route('/').post(
             const bodyStr: string = JSON.stringify(req.body);
             const report: ReportDescriptor = jsonStringToReport(bodyStr);
 
-            // Add some server generated values, since this creates a new template
-            report.meta.id = generateUuid();
-            report.meta.submittedDate = new Date();
-            report.meta.submittedUserId = req.user![`${USER_ID_FIELD}`];
-
-            // Parse to DB document
-            const document = await parseToDocument(report);
-            const result = await document.save();
+            const newTemplate: TemplateReport = generateNewTemplate(report, req);
+            const result = await attemptToSaveTemplate(newTemplate);
 
             if (result) {
                 res.status(HTTP_CREATED_CODE).send({
@@ -118,20 +110,29 @@ router.route('/').post(
     httpErrorMiddleware
 )
 
-
-
 // >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 async function hideUserId(report: TemplateDocument) {
     // const user = await UserModel.find({"username":report.submittedByUserId}).exec();
     const userId = report.submittedByUserId;
     const query = UserModel.findOne({ username : userId });
     const user = await query.exec();
-    report.submittedByUserId = user.name;
-    return report;
+    const hide = report;
+    hide.submittedByUserId = user.name;
+
+    return hide;
 }   
 
-async function parseToDocument(report: ReportDescriptor) {
+function generateNewTemplate(report: ReportDescriptor, req) {
+    // Add some server generated values, since this creates a new template
+
+    report.meta.id = generateUuid();
+    report.meta.submittedDate = new Date();
+    report.meta.submittedUserId = req.user![`${USER_ID_FIELD}`];
     const newTemplate: TemplateReport = getTemplate(report);
+    return newTemplate;
+}
+
+async function attemptToSaveTemplate(newTemplate: TemplateReport) {
     const isIdExist = await TemplateCollection.exists({ id: newTemplate.meta.id });
     if (isIdExist) {
         throw new InternalError("Generated template uuid exists");
@@ -149,7 +150,9 @@ async function parseToDocument(report: ReportDescriptor) {
         submittedByUserId: newTemplate.meta.submittedUserId,
         items: newTemplate.items
     };
-    return new TemplateCollection(dbDocument);
+    const document = new TemplateCollection(dbDocument);
+    const result = await document.save();
+    return result;
 }
 
 
