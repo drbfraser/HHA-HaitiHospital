@@ -23,9 +23,8 @@ import * as MockApi from './MockApi';
 import { useSelector } from 'react-redux';
 import { read } from 'fs';
 import { invalid } from 'moment';
-import {ItemType} from 'common/definitions/report'
-import { toast } from 'react-toastify';
-
+import { ItemType } from 'common/definitions/report';
+import * as ReportApiUtils from './ReportApiUtils';
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
   validated?: string;
@@ -48,9 +47,9 @@ export function Report() {
           </div>
           <div className="col-11">
             <Header />
-              <main className="container">
-                <FormContents path='/nicu'/>
-              </main>
+            <main className="container">
+              <FormContents path="/nicu" />
+            </main>
           </div>
         </div>
       </div>
@@ -67,25 +66,10 @@ function FormContents(props: { path: string }) {
     const data = MockApi.getData();
     console.log('API');
     console.log(data);
-    return data
+    return data;
   });
 
-  const labels: Label[] = data.items
-    .filter((item) => item.meta.type == 'label')
-    .map((item, idx) => {
-      return { id: item.meta.id, text: idx + '. ' + item.description };
-    });
-
-  const sections = [];
-  data.items.forEach((item) => {
-    if (item.meta.type == 'label') {
-      sections.push([item]);
-    } else {
-      const headSection = sections[sections.length - 1];
-      headSection.push(item);
-    }
-  });
-
+  // Setting errors from data using react-hook-form
   React.useEffect(() => {
     data.items
       .filter((item) => !(item as ReportItem).valid)
@@ -99,6 +83,22 @@ function FormContents(props: { path: string }) {
         methods.setError(id, error);
       });
   }, [data]);
+
+  // parse the items and group them into sections.
+  const sections = [];
+  data.items.forEach((item) => {
+    if (item.meta.type == 'label') {
+      sections.push([item]);
+    } else {
+      const headSection = sections[sections.length - 1];
+      headSection.push(item);
+    }
+  });
+
+  // get labels from the groupings found
+  const labels: ReportItem[] = sections.map((section, idx) => {
+    return section[0];
+  });
 
   const totalSections = labels.length;
   const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
@@ -125,37 +125,11 @@ function FormContents(props: { path: string }) {
     }
   };
 
-  const submitHandler = async (data) => {
-    /*
-     * Ideally, here we make a request to server and handle the responses.
-     * Because it is async, the caller will handle either cases.
-     * Todo: refactor
-     */
-    try{
-      const result = await MockApi.submitData(assembleData(data), 1000, true);
-      setData(result)
-      setReadOnly(true);
-      toast.success('Data submited')
-    }catch(errorData){
-      setData(errorData.data)
-      setReadOnly(false);
-      toast.error(errorData.message)
-    }
-  };
-
-  const assembleData = (answers): JsonReportDescriptor => {
-    const copy = { ...data };
-    copy.items = copy.items.map((item) => {
-      const answer = answers[item.meta.id];
-      const itemCopy = { ...item };
-      itemCopy.answer = [[answer]];
-      return itemCopy;
-    });
-    return copy;
+  const submitHandler = (answers) => {
+    ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
   };
 
   console.log('Content render');
-
   return (
     <>
       <FormHeader />
@@ -275,7 +249,7 @@ type Label = {
 };
 
 function NavBar(props: {
-  labels: Label[];
+  labels: ReportItem[];
   activeLabel?: number;
   onNavClick: NavButtonClickedHandler;
   hideEditButton: boolean;
@@ -286,15 +260,17 @@ function NavBar(props: {
       <div className="list-group list-group-horizontal">
         <div className="me-2 fs-4 ">Steps: </div>
         {props.labels.map((label, idx) => {
+          const id = label.meta.id;
+          const text = idx + 1 + '. ' + label.description;
           return (
             <button
-              key={label.id}
+              key={id}
               className={
                 'list-group-item nav nav-pills ' + (idx == props.activeLabel ? 'active' : '')
               }
               onClick={() => props.onNavClick('section-clicked', idx)}
             >
-              {label.text}
+              {text}
             </button>
           );
         })}
