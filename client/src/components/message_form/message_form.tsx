@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Message, emptyMessage} from 'constants/interfaces';
-import { getDepartmentId } from "common/utils/departments";
-import { DepartmentName } from "common/definitions/departments";
-
-import { useTranslation } from "react-i18next";
+import { Message, emptyMessage } from 'constants/interfaces';
+import { getDepartmentId } from 'common/utils/departments';
+import { DepartmentName } from 'common/definitions/departments';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 interface MessageFormProps {
   optionalMsg?: Message;
-  submitAction: (data) => void;
+  submitAction: (data: any) => void;
 }
 
-function MessageForm(props: MessageFormProps) {
+const MessageForm = (props: MessageFormProps) => {
   const { t } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
-
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
   const [department, setDepartment] = useState<string>('');
 
@@ -27,7 +25,7 @@ function MessageForm(props: MessageFormProps) {
       }
     }
 
-    return function leaveSite() {
+    return () => {
       isMounted = false;
     };
   }, [props.optionalMsg]);
@@ -103,6 +101,6 @@ function MessageForm(props: MessageFormProps) {
       <button className="btn btn-primary">{t('addMessageSubmit')}</button>
     </form>
   );
-}
+};
 
 export default MessageForm;

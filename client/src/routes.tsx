@@ -1,30 +1,25 @@
 import Login from 'pages/login/login';
 import Home from 'pages/home/home';
 import NotFound from 'pages/not_found/not_found';
-
 import Admin from 'pages/admin/admin';
 import { AddUserForm } from 'pages/admin/admin-add-user';
 import { EditUserForm } from 'pages/admin/admin-edit-user';
-
 import { CaseStudyMain } from 'pages/case_study_main/case_study_main';
 import { CaseStudyForm } from 'pages/case_study_forms/case_study_forms';
 import { CaseStudyView } from 'pages/case_study_view/case_study_view';
-
 import { LeaderBoardMain } from 'pages/leader_board_main/leader_board_main';
-
 import { MessageBoardMain } from 'pages/message_board_main/message_board_main';
-import AddMessage from 'pages/add_message/add_message';
-import EditMessage from 'pages/edit_message/edit_message';
-
+import AddMessage from 'pages/message_board_add/message_board_add';
+import EditMessage from 'pages/message_board_edit/message_board_edit';
 import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
 import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
 import { BrokenKitView } from 'pages/broken_kit_view/broken_kit_report_view';
-
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
 import AddReport from 'pages/add_report/add_report';
 import DepartmentReport from 'pages/department_report/department_report';
-
+import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employee_of_the_month_main';
+import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 import Report from 'components/report/Report';
@@ -69,7 +64,7 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/general_reports',
+    path: '/general-reports',
     component: GeneralReports,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
@@ -104,7 +99,7 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/biomechanic/report_broken_kit',
+    path: '/biomechanic/report-broken-kit',
     component: BrokenKitReport,
     isPrivate: true,
     rolesAllowed: [],
@@ -176,6 +171,20 @@ const routes = [
   {
     path: '/message-board',
     component: MessageBoardMain,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/form',
+    component: EmployeeOfTheMonthForm,
+    loginRequired: true,
+    rolesAllowed: [Role.Admin, Role.MedicalDirector],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month',
+    component: EmployeeOfTheMonthMain,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],

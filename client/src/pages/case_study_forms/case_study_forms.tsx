@@ -1,20 +1,22 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
+import { TOAST_CASESTUDY_POST } from 'constants/toast_messages';
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { imageCompressor } from 'utils/imageCompressor';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyForm = (props: CaseStudyMainProps) => {
   const [formOption, setformOption] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-  const [submissionStatus, setSubmissionStatus] = useState('');
 
   const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
   const {
@@ -38,32 +40,35 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     reset: reset5,
   } = useForm<CaseStudyModel>({});
 
-  const failureMessageRef = useRef(null);
+  const onImageUpload = (item: File) => {
+    setSelectedFile(item);
+  };
 
-  const onSubmit = (data: any) => {
+  const onSubmitActions = () => {
+    toast.success('Case study successfully submitted!');
+    reset({});
+    reset2({});
+    reset3({});
+    reset4({});
+    reset5({});
+    setSelectedFile(null);
+    props.history.push('/case-study');
+  };
+
+  const onSubmit = async (data: any) => {
     data.caseStudyType = formOption;
     let formData = new FormData();
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
 
-    axios
-      .post('/api/case-studies', formData)
-      .then(() => {
-        toast.success('Case study successfully submitted!');
-        reset({});
-        reset2({});
-        reset3({});
-        reset4({});
-        reset5({});
-        setSelectedFile(null);
-        props.history.push('/case-study');
-      })
-      .catch((error) => {
-        console.error('Something went wrong!', error.message);
-        setSubmissionStatus('failure');
-        failureMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
-      });
+    await Api.Post(
+      ENDPOINT_CASESTUDY_POST,
+      formData,
+      onSubmitActions,
+      TOAST_CASESTUDY_POST,
+      props.history,
+    );
   };
   const { t } = useTranslation();
 
@@ -72,7 +77,6 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       <SideBar />
 
       <main className="container-fluid main-region">
-        {/*<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">*/}
         <Header />
 
         <div className="ml-3 mb-3 d-flex justify-content-start">
@@ -185,17 +189,13 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               {...register('patientStory.caseStudyStory', { required: true })}
             ></textarea>
             <label className="form-label">{t('caseStudyFormUploadImage')}</label>
-            {/*<div>*/}
-            {/*    <label htmlFor="files" className="btn btn-secondary">{t("caseStudyFormChooseFile")}</label>*/}
-            {/*    <input id="files" style={{visibility:"hidden"}} type="file" onChange={(e) => setSelectedFile(e.target.files[0])}/>*/}
-            {/*</div>*/}
-            {/* we cannot change the default labels on input box (buttons), they are hard-coded in browsers*/}
             <input
               type="file"
               accept="image/*"
               className="form-control"
               id="customFile"
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              required
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -285,7 +285,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               accept="image/*"
               className="form-control"
               id="customFile"
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              required
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -372,7 +373,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               accept="image/*"
               className="form-control"
               id="customFile"
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              required
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -471,7 +473,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               accept="image/*"
               className="form-control"
               id="customFile"
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              required
+              onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
@@ -515,7 +518,8 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 accept="image/*"
                 className="form-control"
                 id="customFile"
-                onChange={(e) => setSelectedFile(e.target.files[0])}
+                required
+                onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
               />
               <div className="form-check mt-2 mb-2">
                 <input
@@ -537,16 +541,6 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             </div>
           </div>
         </form>
-
-        <div
-          className={`alert alert-danger ${
-            submissionStatus === 'failure' ? 'd-block' : 'd-none'
-          } col-md-6`}
-          role="alert"
-          ref={failureMessageRef}
-        >
-          {t('caseStudyFormAnErrorOccurred')}
-        </div>
       </main>
     </div>
   );

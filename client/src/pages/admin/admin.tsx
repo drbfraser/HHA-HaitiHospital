@@ -1,14 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { Link, useHistory } from 'react-router-dom';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_ADMIN_GET, ENDPOINT_ADMIN_DELETE_BY_ID } from 'constants/endpoints';
+import { TOAST_ADMIN_GET, TOAST_ADMIN_DELETE } from 'constants/toast_messages';
 import './admin.css';
-import DbErrorHandler from 'actions/http_error_handler';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { toast } from 'react-toastify';
+import { History } from 'history';
+import { timezone, language } from 'constants/timezones';
 
 interface AdminProps {}
 
@@ -17,27 +20,26 @@ const Admin = (props: AdminProps) => {
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [users, setUsers] = useState([]);
-  const history = useHistory();
+  const history: History = useHistory<History>();
   const { t } = useTranslation();
-  const usersUrl = '/api/users';
 
-  const getUsers = useCallback(async () => {
-    try {
-      const res = await axios.get(usersUrl);
-      setUsers(res.data);
-    } catch (err) {
-      DbErrorHandler(err, history);
-    }
-  }, [history]);
+  const deleteUserActions = () => {
+    getUsers();
+    toast.success(i18n.t('adminAlertUserDeleted'));
+  };
+
+  const getUsers = async () => {
+    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, TOAST_ADMIN_GET, history));
+  };
 
   const deleteUser = async (id: string) => {
-    try {
-      await axios.delete(`${usersUrl}/${id}`);
-      getUsers();
-      toast.success(i18n.t('adminAlertUserDeleted'));
-    } catch (err) {
-      DbErrorHandler(err, history);
-    }
+    await Api.Delete(
+      ENDPOINT_ADMIN_DELETE_BY_ID(id),
+      {},
+      deleteUserActions,
+      TOAST_ADMIN_DELETE,
+      history,
+    );
   };
 
   const onDeleteUser = (event: any, id: string) => {
@@ -59,7 +61,7 @@ const Admin = (props: AdminProps) => {
 
   useEffect(() => {
     getUsers();
-  }, [getUsers]);
+  }, [users]);
 
   return (
     <div className={'admin'}>
@@ -72,6 +74,9 @@ const Admin = (props: AdminProps) => {
           item={'user account'}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/admin/add-user">
@@ -105,8 +110,8 @@ const Admin = (props: AdminProps) => {
                   <td>{item.role}</td>
                   <td>{item.department ? item.department : 'N/A'}</td>
                   <td>
-                    {new Date(item.createdAt).toLocaleString('en-US', {
-                      timeZone: 'America/Cancun',
+                    {new Date(item.createdAt).toLocaleString(language, {
+                      timeZone: timezone,
                     })}
                   </td>
                   <td>

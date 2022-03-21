@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
-
 import HHALogoSvg from 'img/logo/LogoWText.svg';
-
 import './hha_logo_styles.css';
 
 interface HhaLogoProps {

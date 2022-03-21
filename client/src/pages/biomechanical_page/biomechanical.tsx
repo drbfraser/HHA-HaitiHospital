@@ -1,15 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
+import { Badge } from 'react-bootstrap';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_BIOMECH_GET, ENDPOINT_BIOMECH_DELETE_BY_ID } from 'constants/endpoints';
+import { TOAST_BIOMECH_GET, TOAST_BIOMECH_DELETE } from 'constants/toast_messages';
 import { toast } from 'react-toastify';
 import { renderBasedOnRole } from 'actions/roleActions';
 import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
+import Pagination from 'components/pagination/Pagination';
+import { History } from 'history';
+import { setPriority } from 'pages/broken_kit_report/BiomechModel';
+import { timezone, language } from 'constants/timezones';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -20,22 +27,35 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [BioReport, setBioReport] = useState([]);
   const authState = useAuthState();
-  const history = useHistory();
-  const BioReportUrl = `/api/biomech/`;
+  const history: History = useHistory<History>();
 
-  const getBioReport = useCallback(async () => {
-    const res = await axios.get(BioReportUrl);
-    setBioReport(res.data);
-  }, [BioReportUrl]);
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize: number = 10;
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
+    return BioReport.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, BioReport]);
+  const bioReportNumberIndex = currentPage * pageSize - pageSize;
+
+  const deleteBioMechActions = () => {
+    toast.success('Bio Mech request deleted!');
+    getBioReport();
+  };
+
+  const getBioReport = async () => {
+    setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, TOAST_BIOMECH_GET, history));
+  };
 
   const deleteBioMech = async (id: string) => {
-    try {
-      toast.success('Bio Mech request deleted!');
-      await axios.delete(BioReportUrl.concat(`/${id}`));
-      getBioReport();
-    } catch (err) {
-      toast.error('Unable to delete Bio Mech Request!');
-    }
+    await Api.Delete(
+      ENDPOINT_BIOMECH_DELETE_BY_ID(id),
+      {},
+      deleteBioMechActions,
+      TOAST_BIOMECH_DELETE,
+      history,
+    );
   };
 
   const onDeleteBioMech = (event: any, id: string) => {
@@ -57,7 +77,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   useEffect(() => {
     getBioReport();
-  }, [getBioReport]);
+  }, [BioReport]);
 
   return (
     <div className="biomechanical_page">
@@ -70,12 +90,15 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
           item={'biomech report'}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
+          history={history}
+          location={undefined}
+          match={undefined}
         ></ModalDelete>
 
         <section>
           <div className="row my-2 justify-items-center">
             <div className="col-sm-6 col-md-6 col-lg-6">
-              <Link to={'/biomechanic/report_broken_kit'}>
+              <Link to={'/biomechanic/report-broken-kit'}>
                 <button type="button" className="btn btn-outline-dark">
                   {t('bioSupportReportBrokenKit')}
                 </button>
@@ -93,15 +116,21 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {BioReport.map((item, index) => {
+                  {currentTableData.map((item, index) => {
                     return (
                       <tr key={item._id}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{item.equipmentPriority}</td>
+                        <th scope="row">{bioReportNumberIndex + index + 1}</th>
+                        <td>
+                          {
+                            <Badge bg={setPriority(item.equipmentPriority)}>
+                              {item.equipmentPriority}
+                            </Badge>
+                          }
+                        </td>
                         <td>{item.user ? item.user.name : '[deleted]'}</td>
                         <td>
-                          {new Date(item.createdAt).toLocaleString('en-US', {
-                            timeZone: 'America/Cancun',
+                          {new Date(item.createdAt).toLocaleString(language, {
+                            timeZone: timezone,
                           })}
                         </td>
                         <td>
@@ -132,6 +161,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   })}
                 </tbody>
               </table>
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={BioReport.length}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
             </div>
           </div>
         </section>

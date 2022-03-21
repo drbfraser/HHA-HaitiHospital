@@ -4,11 +4,14 @@ import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { BiomechModel, bioMechEnum } from './BiomechModel';
-import axios from 'axios';
+import Api from '../../actions/Api';
+import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
+import { TOAST_BIOMECH_POST } from 'constants/toast_messages';
 import './broken_kit_report.css';
 import { useTranslation } from 'react-i18next';
-import DbErrorHandler from 'actions/http_error_handler';
 import { toast } from 'react-toastify';
+import { History } from 'history';
+import { imageCompressor } from 'utils/imageCompressor';
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 
@@ -16,26 +19,25 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<BiomechModel>({});
-  const history = useHistory();
+  const history: History = useHistory<History>();
+
+  const onImageUpload = (item: File) => {
+    setSelectedFile(item);
+  };
+
+  const onSubmitActions = () => {
+    toast.success('Biomechanic report successfully submitted!');
+    reset({});
+    setSelectedFile(null);
+    props.history.push('/biomechanic');
+  };
 
   const onSubmit = async (data: any) => {
     let formData = new FormData();
-
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
-
-    await axios
-      .post('/api/biomech', formData)
-      .then(() => {
-        toast.success('Biomechanic report successfully submitted!');
-        reset({});
-        setSelectedFile(null);
-        props.history.push('/biomechanic');
-      })
-      .catch((error) => {
-        DbErrorHandler(error, history);
-      });
+    await Api.Post(ENDPOINT_BIOMECH_POST, formData, onSubmitActions, TOAST_BIOMECH_POST, history);
   };
 
   return (
@@ -98,7 +100,8 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   accept="image/*"
                   className="form-control"
                   id="customFile"
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                  required
+                  onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
                 />
               </div>
               <div>

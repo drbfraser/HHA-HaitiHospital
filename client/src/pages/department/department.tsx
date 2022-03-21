@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useHistory } from 'react-router-dom';
-
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ReportSummary from 'components/report_summary/report_summary';
 import { Role } from 'constants/interfaces';
-import { getDepartmentName } from "common/utils/departments";
-import { DepartmentName } from "common/definitions/departments";
+import { getDepartmentName } from 'common/utils/departments';
+import { DepartmentName } from 'common/definitions/departments';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
+import { History } from 'history';
 
 interface DepartmentProps {}
 
@@ -19,7 +19,7 @@ export const Department = (props: DepartmentProps) => {
   const authState = useAuthState();
   const { deptId } = useParams<{ deptId: string }>();
   const [deptName, setDeptName] = React.useState<DepartmentName>();
-  const history = useHistory();
+  const history: History = useHistory<History>();
   const [dateRange, setDayRange] = React.useState<DayRange>({
     from: null,
     to: null,

@@ -6,9 +6,7 @@ import Sidebar from 'components/side_bar/side_bar';
 //https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-
 import React from 'react';
-
 import './general_reports_styles.css';
 
 const GeneralReports = () => {

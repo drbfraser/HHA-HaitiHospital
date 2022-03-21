@@ -1,3 +1,5 @@
+import { timezone, language } from 'constants/timezones';
+
 // Haiti is GMT-5 (EASTERN TIME ET)
 enum Month {
   'January',
@@ -14,7 +16,7 @@ enum Month {
   'December',
 }
 
-const currDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Cancun' }));
+const currDate = new Date(new Date().toLocaleString(language, { timeZone: timezone }));
 const currMonth = currDate.getMonth();
 const currYear = currDate.getFullYear();
 const currMonthLastDay = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0).getDate();

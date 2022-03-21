@@ -1,42 +1,46 @@
 import { useEffect, useState } from 'react';
-import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
+import { RouteComponentProps, useLocation, Link, useHistory } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_CASESTUDY_GET_BY_ID } from 'constants/endpoints';
+import { TOAST_CASESTUDY_GET } from 'constants/toast_messages';
 import { useTranslation } from 'react-i18next';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
+import { History } from 'history';
 
 interface CaseStudyViewProps extends RouteComponentProps {}
 
 export const CaseStudyView = (props: CaseStudyViewProps) => {
   const [caseStudy, setCaseStudy] = useState({} as any);
-  const id = useLocation().pathname.split('/')[3];
-  const caseStudyUrl = `/api/case-studies/${id}`;
+  const id: string = useLocation().pathname.split('/')[3];
+  const history: History = useHistory<History>();
+
+  const getCaseStudy = async () => {
+    setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_GET_BY_ID(id), TOAST_CASESTUDY_GET, history));
+  };
 
   useEffect(() => {
-    const getCaseStudy = async () => {
-      const res = await axios.get(caseStudyUrl);
-      setCaseStudy(res.data);
-    };
-
     getCaseStudy();
-  }, [caseStudyUrl]);
+  }, []);
 
   const { t: translateText } = useTranslation();
 
   return (
-    <div className={'case-study-main'}>
+    <div className="case-study-main">
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
-        <div className="ml-3 d-flex justify-content-start">
+        <div className="d-flex justify-content-start">
           <Link to="/case-study">
             <button type="button" className="btn btn-outline-dark">
               {translateText('caseStudyFormBack')}
             </button>
           </Link>
         </div>
-        <CaseStudySummary caseStudy={caseStudy} />
+        <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
+          <CaseStudySummary caseStudy={caseStudy} />
+        </div>
         {caseStudy !== {} && document.documentElement.scrollHeight > window.innerHeight ? (
           <div className="ml-3 mb-5 d-flex justify-content-start">
             <Link to="/case-study">

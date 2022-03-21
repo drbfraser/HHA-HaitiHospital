@@ -23,6 +23,7 @@
   "sidebarCaseStudy": "Case Study",
   "sidebarGeneral": "General",
   "sidebarBioSupport": "Bio Support",
+  "sidebarEmployeeOfTheMonth": "Employee of the Month",
   "sidebarAdmin": "Admin",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
@@ -36,7 +37,10 @@
   "headerDepartmentMaternity": "Department of Maternity",
   "headerDepartmentRehab": "Department of Rehab",
   "headerDepartmentCom": "Department of Com&Health",
+  "headerEmployeeOfTheMonth": "Employee Of The Month",
+  "headerEmployeeOfTheMonthForm": "Employee Of The Month Form",
   "headerBiomechanicalSupport": "Biomechanical Support",
+  "headerBiomechanicalSupportForm": "Biomechanical Support Form",
   "headerBrokenKitReport": "Broken Kit Report",
   "headerGeneralReports": "General Reports",
   "headerAdmin": "Admin Desk",
@@ -64,11 +68,14 @@
   "dashboardMessageOverviewMessage": "Message",
   "dashboardMessageOverviewSeeMore": "See More messages",
 
-  "messageBoardRecentUpdates": "Recent updates",
+  "messageBoardRecentUpdates": "Recent Announcements",
   "messageBoardAddMessage": "Add Message",
   "messageBoardMore": "More",
   "messageBoardLess": "Less",
   "messageBoardTitle": "Title",
+  "messageBoardEdit": "Edit",
+  "messageBoardDelete": "Delete",
+  "messageBoardPostedOn": "Posted On:",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
 
@@ -246,6 +253,17 @@
   "brokenKitReportDelete": "Delete",
   "brokenKitReportAuthor": "Author: ",
 
+  "employeeOfTheMonthEdit": "Update Employee Of The Month",
+  "employeeOfTheMonthTitle": "Employee of the month for ",
+  "employeeOfTheMonthDate": "Date updated",
+  "employeeOfTheMonthName": "Name",
+  "employeeOfTheMonthDepartment": "Department",
+  "employeeOfTheMonthDescription": "Description",
+  "employeeOfTheMonthBack": "Back",
+  "employeeOfTheMonthUploadImage": "Upload Image",
+  "employeeOfTheMonthSubmitForm": "Submit Form",
+  "employeeOfTheMonthDepartmentOption": "Click to select a department",
+
   "adminAddUser": "Add User",
   "adminEdit": "Edit",
   "adminDelete": "Delete",
@@ -273,5 +291,18 @@
 
   "adminEditUserLeaveBlank": "Leave blank to keep it unchanged",
   "adminAlertUserDeleted": "User deleted",
-  "adminAreYouSureToDeleteTheUser": "Are you sure you want to delete this user?"
+  "adminAreYouSureToDeleteTheUser": "Are you sure you want to delete this user?",
+
+  "monthJanuary": "January",
+  "monthFebruary": "February",
+  "monthMarch": "March",
+  "monthApril": "April",
+  "monthMay": "May",
+  "monthJune": "June",
+  "monthJuly": "July",
+  "monthAugust": "August",
+  "monthSeptember": "September",
+  "monthOctober": "October",
+  "monthNovember": "November",
+  "monthDecember": "December"
 }

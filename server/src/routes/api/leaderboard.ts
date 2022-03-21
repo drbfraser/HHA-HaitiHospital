@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import Department from '../../models/leaderboard';
 import { updateDepartmentPoints } from '../../utils/leaderboardUtils';
+import { msgCatchError } from 'utils/sanitizationMessages';
 
 const router = Router();
 
@@ -11,7 +12,7 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
     const leaders = await Department.find().sort({ points: 'desc', name: 'asc' });
     res.status(200).json(leaders);
   } catch (err: any) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json(msgCatchError);
   }
 });
 

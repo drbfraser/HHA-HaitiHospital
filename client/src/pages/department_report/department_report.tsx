@@ -2,11 +2,9 @@ import { useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
-
 import { ReportProps } from 'constants/interfaces';
-import { getDepartmentName } from "common/utils/departments";
+import { getDepartmentName } from 'common/utils/departments';
 import { ReportDisplay } from 'components/report_display/report_display';
-
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +12,7 @@ import DbErrorHandler from 'actions/http_error_handler';
 import { CSVLink } from 'react-csv';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import './department_report.css';
+import { History } from 'history';
 
 interface DepartmentReportProps {
   edit: boolean;
@@ -33,7 +32,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
   const handleExportWithComponent = () => {
     pdfExportComponent.current.save();
   };
-  const history = useHistory();
+  const history: History = useHistory<History>();
 
   useEffect(() => {
     let BreakException = {};
@@ -99,7 +98,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
     let isMounted = true;
     const apiSource = Axios.CancelToken.source();
 
-    async function fetchReport() {
+    const fetchReport = async () => {
       const qs = new URLSearchParams('');
       qs.append('departmentId', deptId);
       qs.append('reportId', id);
@@ -117,20 +116,20 @@ const DepartmentReport = (props: DepartmentReportProps) => {
         if (Axios.isCancel(err)) {
           console.log(`Info: Cancel subscription to ${getReportApi} API`, err);
         } else {
-          DbErrorHandler(err, history);
+          DbErrorHandler(err, history, 'Unable to add department report');
         }
       }
       return {};
-    }
+    };
 
-    async function getReport() {
+    const getReport = async () => {
       const reportsFromServer = await fetchReport();
       if (isMounted) setReport(reportsFromServer[0]);
-    }
+    };
 
     getReport();
 
-    return function cancelReqWhenUnmounted() {
+    return () => {
       isMounted = false;
       apiSource.cancel();
     };

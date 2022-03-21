@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { renderBasedOnRole } from '../../actions/roleActions';
-import { useAuthState } from 'Context';
+import { useAuthState } from 'contexts';
 import { Role } from '../../constants/interfaces';
 import { Json } from 'constants/interfaces';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
@@ -9,6 +9,7 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import './message_display.css';
 
 interface MessageDisplayProps {
   msgJson: Json;
@@ -16,7 +17,7 @@ interface MessageDisplayProps {
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
-  const { t } = useTranslation();
+  const { t: translateText } = useTranslation();
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -56,7 +57,15 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     setDeleteModal(false);
   };
 
-  let readableDate = new Date(props.msgJson.date as string).toLocaleString();
+  const readableDate = new Date(props.msgJson.date as string).toLocaleString();
+
+  const parseEscapedCharacters = (escapedCharacter: string) => {
+    const parser = new DOMParser();
+    return parser.parseFromString(`<!doctype html><body>${escapedCharacter}`, 'text/html').body.textContent;
+  }
+
+  // Department name when stored in the database: Community &amp; Health or NICU&#x2F;Paeds needs to be parsed.
+  const parsedDepartmentName = parseEscapedCharacters(props.msgJson.departmentName as string)
 
   return (
     <div className="d-flex text-muted pt-2">
@@ -66,83 +75,77 @@ const MessageDisplay = (props: MessageDisplayProps) => {
         item={'message'}
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
+        history={undefined}
+        location={undefined}
+        match={undefined}
       ></ModalDelete>
-      <svg
-        className="bd-placeholder-img flex-shrink-0 me-2 rounded"
-        width="32"
-        height="32"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-label="Placeholder: 32x32"
-        preserveAspectRatio="xMidYMid slice"
-        focusable="false"
-      >
-        <title>Placeholder</title>
-        <rect width="100%" height="100%" fill="#007bff"></rect>
-        <text x="50%" y="50%" fill="#007bff" dy=".3em">
-          32x32
-        </text>
-      </svg>
 
       {/* Message content */}
       <div className="pb-3 mb-0 border-bottom flex-grow-1">
-        {/* Author Id, Deparment, Date */}
-        <div className="d-md-flex justify-content-between text-gray-dark">
-          <p>
-            <strong className="text-gray-dark">
-              @{((props.msgJson as Json).userId as Json).name}
-            </strong>
-          </p>
-          <p>
-            <strong className="lh-sm">{props.msgJson.departmentName}</strong>
-          </p>
-          <p>
-            <strong className="lh-sm">{readableDate}</strong>
-          </p>
+
+        {/* Message info */}
+        <div className="message-info">
+          <div className="text-gray-dark">
+            <div className="d-flex">
+              <div className="mr-auto p-2">
+                <p className="title-info">
+                  <strong>
+                    {props.msgJson.messageHeader}
+                  </strong>
+                </p>
+                <p className="department-info">
+                  {parsedDepartmentName}
+                </p>
+                <p className="department-info">
+                  {((props.msgJson as Json).userId as Json).name}
+                </p>
+              </div>
+              <div className="p-2">
+                <div>
+
+                  {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+                    <Link
+                      className="align-self-center"
+                      to={`/message-board/edit/${props.msgJson['_id']}`}
+                    >
+                      <button type="button" 
+                        className="btn btn-link text-decoration-none admin-utils">
+                        {translateText('messageBoardEdit')}
+                      </button>
+                    </Link>
+                  ) : (
+                    <div></div>
+                  )}
+
+                  {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+                    <button
+                      type="button"
+                      className="btn btn-link text-decoration-none admin-utils"
+                      onClick={(event) => {
+                        onDeleteMessage(event, props.msgJson['_id'] as string);
+                      }}
+                    >
+                      {translateText('messageBoardDelete')}
+                    </button>
+                  ) : (
+                    <div></div>
+                  )}
+                </div>
+
+                <p className="department-info">
+                  {translateText('messageBoardPostedOn')}
+                </p>
+                <p className="department-info">
+                  {readableDate}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="mr-auto p-2">
+            <p className="lh-sm message-body">{props.msgJson.messageBody}</p>
+          </div>
         </div>
 
-        {/* Message title */}
-        <div className="text-gray-dark">
-          <p>
-            <strong>
-              {t('messageBoardTitle')}: {props.msgJson.messageHeader}
-            </strong>
-          </p>
-        </div>
-
-        {/* Message body with utility buttons */}
-        <div className="d-md-flex justify-content-between text-gray-dark text-break">
-          <p className="lh-sm">{props.msgJson.messageBody}</p>
-
-          <p className="d-md-flex lh-sm">
-            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-              <Link
-                className="align-self-center"
-                to={`/message-board/edit/${props.msgJson['_id']}`}
-              >
-                <button type="button" className="btn btn-md btn-outline-secondary">
-                  <i className="bi bi-pencil"></i>
-                </button>
-              </Link>
-            ) : (
-              <div></div>
-            )}
-
-            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-              <button
-                type="button"
-                className="btn btn-md btn-outline-secondary"
-                onClick={(event) => {
-                  onDeleteMessage(event, props.msgJson['_id'] as string);
-                }}
-              >
-                <i className="bi bi-trash"></i>
-              </button>
-            ) : (
-              <div></div>
-            )}
-          </p>
-        </div>
       </div>
     </div>
   );

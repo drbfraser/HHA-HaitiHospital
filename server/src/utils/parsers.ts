@@ -1,112 +1,93 @@
-import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME} from "common/definitions/json_report";
-
+import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
-import { PATH_TO_CONSUME_AJV_VALIDATORS, PATH_TO_JSON_REPORT_TYPES } from "./constants";
-
-import Ajv from 'ajv';
-import fs from 'fs';
+import { PATH_TO_JSON_REPORT_TYPES } from './constants';
+import Ajv, { ValidateFunction } from 'ajv';
 import path from 'path';
-import standaloneCode from 'ajv/dist/standalone';
-let validations;
-
 import ts from 'typescript';
+import { BadRequestError, InternalError } from 'exceptions/httpException';
 
-const getTsCompilerOptions = function(): {} {
-    try {
-        const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json") || null;
-        if (!configFileName) {
-            throw new Error("Can't find ts config file");
-        }
-        const configFile = ts.readConfigFile(configFileName!, ts.sys.readFile);
-        if (!configFile) {
-            throw new Error("Can't read ts config file");
-        }
-
-        const compilerOptions = ts.parseJsonConfigFileContent(configFile!.config, ts.sys, path.dirname(configFileName));
-        return compilerOptions;
+const getTsCompilerOptions = function (): {} {
+  try {
+    const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, 'tsconfig.json') || null;
+    if (!configFileName) {
+      throw new InternalError("Can't find ts config file. Using default configuration");
     }
-    catch (e) {
-        throw new Error(e);
+    const configFile = ts.readConfigFile(configFileName!, ts.sys.readFile);
+    if (!configFile) {
+      throw new InternalError("Can't read ts config file. Using default configuration");
     }
-}
 
-const getSchemaGenerator = function() {
-    // this generator generate JSON schema for JsonReportDescriptor in PATH_TO_JSON_REPORT_TYPES
-    // optionally pass ts compiler options
-    const compilerOptions: TJS.CompilerOptions = getTsCompilerOptions();
+    const compilerOptions = ts.parseJsonConfigFileContent(configFile!.config, ts.sys, path.dirname(configFileName));
+    return compilerOptions;
+  } catch (e) {
+    console.log(e);
+    return {};
+  }
+};
 
-    // optionally pass a base path
-    const basePath = __dirname;
-    const pathsToTypes = [PATH_TO_JSON_REPORT_TYPES];
+const getSchemaGenerator = function () {
+  // this generator generate JSON schema for JsonReportDescriptor in PATH_TO_JSON_REPORT_TYPES
+  // optionally pass ts compiler options
+  const compilerOptions: TJS.CompilerOptions = getTsCompilerOptions();
 
-    const program = TJS.getProgramFromFiles(
-        pathsToTypes,
-        compilerOptions,
-        basePath
-    );
+  // optionally pass a base path
+  const basePath = __dirname;
+  const pathsToTypes = [PATH_TO_JSON_REPORT_TYPES];
 
-     // optionally pass argument to schema generator
-    const settings: TJS.PartialArgs = {
-        required: true,
-        strictNullChecks: true,
-    };
-    
-    const generator = TJS.buildGenerator(program, settings);
-    if (!generator) 
-        throw new Error("failed to build a json schema generator");
+  const program = TJS.getProgramFromFiles(pathsToTypes, compilerOptions, basePath);
 
-    return generator;
-}
+  // optionally pass argument to schema generator
+  const settings: TJS.PartialArgs = {
+    required: true,
+    strictNullChecks: true
+  };
+
+  const generator = TJS.buildGenerator(program, settings);
+  if (!generator) throw new InternalError('Failed to build a json schema generator');
+
+  return generator;
+};
 
 const getSchemaId = (objectName: string): string => {
-    return `#/definitions/${objectName}`;
-}
+  return `#/definitions/${objectName}`;
+};
 
-const initAjvAsStandAlone = function() {
-    const schemaGenerator = getSchemaGenerator();
-    const schema = schemaGenerator!.getSchemaForSymbol(JSON_REPORT_DESCRIPTOR_NAME);
+const ajvValidators: { [interfaceName: string]: ValidateFunction } = {};
+const getAjvValidator = function (schemaName: string) {
+  const schemaGenerator = getSchemaGenerator();
+  const schema = schemaGenerator!.getSchemaForSymbol(schemaName);
 
-    schema["$id"] = getSchemaId(JSON_REPORT_DESCRIPTOR_NAME);
-    
-    const ajv = new Ajv(
-        {code: {source: true},
-        schemas: [schema]}
-    );
-    let moduleCode = standaloneCode(ajv);
-    
-    fs.writeFileSync(PATH_TO_CONSUME_AJV_VALIDATORS, moduleCode);
-    validations = require('./consume/validate-cjs');
-}
+  if (!schema) {
+    throw new InternalError(`No schema for ${schemaName} found`);
+  }
 
-const cleanupAjvStandAlone = function() {
-    try {
-        fs.unlinkSync(PATH_TO_CONSUME_AJV_VALIDATORS);
-    } catch (e) {
-        throw new Error(`Clean Ajv StandAlone failed: ${e}`)
-    }
+  schema['$id'] = getSchemaId(schemaName);
+  const ajv = new Ajv();
 
-}
+  if (!ajvValidators[schemaName]) {
+    const validator = ajv.compile(schema);
+    if (!validator) throw new InternalError('failed to build an ajv parser');
+    ajvValidators[schemaName] = validator;
+  }
 
-const validateJsonString = function(jsonString: string, objectName: string) {
-    if (!validations) {
-        throw new Error("Init Ajv validator first");
-    }
-    const validator = validations[getSchemaId(objectName)];
-    if (!validator) {
-        throw new Error("No Ajv validator found");
-    }
-    const valid = validator(JSON.parse(jsonString));
+  return ajvValidators[schemaName];
+};
 
-    if (valid === false) {
-        throw new Error(validator.errors[0].message);
-    }
-}
+const validateJsonString = function (jsonString: string, objectName: string) {
+  const ajvValidator = getAjvValidator(objectName);
+  const json = JSON.parse(jsonString);
+  const validate = ajvValidator!(json);
 
-const jsonStringToJsonReport = function(jsonString: string) : JsonReportDescriptor {
-    validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME); 
-    const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
-    return jsonReport;
-}
+  if (!validate) {
+    throw new BadRequestError(`json for ${objectName} is malformed`);
+  }
+};
 
-export {jsonStringToJsonReport, initAjvAsStandAlone, cleanupAjvStandAlone};
+const jsonStringToJsonReport = function (jsonString: string): JsonReportDescriptor {
+  validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
+  const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
+  return jsonReport;
+};
+
+export { jsonStringToJsonReport };

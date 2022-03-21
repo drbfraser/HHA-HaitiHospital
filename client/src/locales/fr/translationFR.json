@@ -23,6 +23,7 @@
   "sidebarCaseStudy": "Étude de cas",
   "sidebarGeneral": "Général",
   "sidebarBioSupport": "Soutien Bio",
+  "sidebarEmployeeOfTheMonth": "Employé du mois",
   "sidebarAdmin": "Administrateur",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
@@ -36,7 +37,10 @@
   "headerDepartmentMaternity": "Département de Maternity",
   "headerDepartmentRehab": "Département de Rehab",
   "headerDepartmentCom": "Département de la Com&Health",
+  "headerEmployeeOfTheMonth": "Employé du mois",
+  "headerEmployeeOfTheMonthForm": "Formulaire d'employé du mois",
   "headerBiomechanicalSupport": "Soutien biomécanique",
+  "headerBiomechanicalSupportForm": "Formulaire de soutien biomécanique",
   "headerBrokenKitReport": "Signaler un kit cassé",
   "headerGeneralReports": "Rapports généraux",
   "headerAdmin": "Bureau d'administration",
@@ -64,11 +68,14 @@
   "dashboardMessageOverviewMessage": "Un message",
   "dashboardMessageOverviewSeeMore": "Voir plus de messages",
 
-  "messageBoardRecentUpdates": "Mises à jour récentes",
+  "messageBoardRecentUpdates": "Annonces Récentes",
   "messageBoardAddMessage": "Ajouter un message",
   "messageBoardMore": "Suite",
   "messageBoardLess": "Moins",
   "messageBoardTitle": "Titre",
+  "messageBoardEdit": "Éditer",
+  "messageBoardDelete": "Supprimer",
+  "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
   "MessageAlertMessageDeleted": "Message supprimé!",
 
@@ -246,6 +253,17 @@
   "brokenKitReportDelete": "Effacer",
   "brokenKitReportAuthor": "Auteur: ",
 
+  "employeeOfTheMonthEdit": "Mettre à jour l'employé du mois",
+  "employeeOfTheMonthTitle": "Employé du mois de ",
+  "employeeOfTheMonthDate": "Date de mise à jour",
+  "employeeOfTheMonthName": "Nom",
+  "employeeOfTheMonthDepartment": "Département",
+  "employeeOfTheMonthDescription": "La description",
+  "employeeOfTheMonthBack": "Arrière",
+  "employeeOfTheMonthUploadImage": "Télécharger une image",
+  "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
+  "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
+
   "adminAddUser": "Ajouter un utilisateur",
   "adminEdit": "Éditer",
   "adminDelete": "Effacer",
@@ -273,5 +291,18 @@
 
   "adminEditUserLeaveBlank": "Laissez vide pour le garder inchangé",
   "adminAlertUserDeleted": "Utilisateur supprimé",
-  "adminAreYouSureToDeleteTheUser": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
+  "adminAreYouSureToDeleteTheUser": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+
+  "monthJanuary": "Janvier",
+  "monthFebruary": "Février",
+  "monthMarch": "Mars",
+  "monthApril": "Avril",
+  "monthMay": "Mai",
+  "monthJune": "Juin",
+  "monthJuly": "Juillet",
+  "monthAugust": "Août",
+  "monthSeptember": "Septembre",
+  "monthOctober": "Octobre",
+  "monthNovember": "Novembre",
+  "monthDecember": "Décembre"
 }

@@ -1,51 +1,37 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role } from "constants/interfaces";
-import { DepartmentName } from "common/definitions/departments";
+import { User, Role } from 'constants/interfaces';
+import { DepartmentName } from 'common/definitions/departments';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import axios from 'axios';
+import Api from 'actions/Api';
+import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
+import { TOAST_ADMIN_POST } from 'constants/toast_messages';
 import './admin.css';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import { History } from 'history';
+import { toast } from 'react-toastify';
+
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
-  const [submissionStatus, setSubmissionStatus] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
-  const failureMessageRef = useRef(null);
-  const history = useHistory();
+  const { t } = useTranslation();
+  const history: History = useHistory<History>();
+
+  const onSubmitActions = () => {
+    toast.success('Successfully created user');
+    reset({});
+    history.push('/admin');
+  };
 
   const onSubmit = async (data: any) => {
-    console.log(data);
-    await axios
-      .post('/api/users', data)
-      .then(() => {
-        reset({});
-        history.push('/admin');
-      })
-      .catch((error: any) => {
-        handleSubmitFailure(error);
-      });
+    await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
   };
-
-  const handleSubmitFailure = (error: any) => {
-    try {
-      if (error.response.data.message) {
-        setErrorMessage(error.response.data.message);
-      }
-      setSubmissionStatus('failure');
-      failureMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const { t } = useTranslation();
 
   return (
     <div className={'admin'}>
@@ -172,16 +158,6 @@ export const AddUserForm = (props: AdminProps) => {
               </button>
             </div>
           </form>
-
-          <div
-            className={`alert alert-danger ${
-              submissionStatus === 'failure' ? 'd-block' : 'd-none'
-            }`}
-            role="alert"
-            ref={failureMessageRef}
-          >
-            {t('adminAddErrorOccurredDuringTheSubmission')} {errorMessage}
-          </div>
         </div>
       </main>
     </div>
