@@ -4,6 +4,7 @@ import {
   JsonReportItemMeta,
   JsonItemAnswer,
 } from 'common/definitions/json_report';
+import { getDepartmentName } from 'common/utils/departments';
 import { toast } from 'react-toastify';
 import * as MockApi from './MockApi';
 

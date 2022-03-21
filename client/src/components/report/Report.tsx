@@ -1,30 +1,22 @@
 import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
 import React, { useState, useEffect, Fragment } from 'react';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
-import nicuJSON from '../../pages/form/models/nicuModel.json';
-import nicuJSONFr from '../../pages/form/models/nicuModelFr.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import { useTranslation } from 'react-i18next';
-import { FieldInputProps } from 'formik';
-import * as TestData from '../../pages/form/models/TestModels';
-import { identity, toInteger } from 'lodash';
 import { v4 as uuid } from 'uuid';
 import {
   JsonReportDescriptor,
   JsonReportItem,
   JsonReportItemMeta,
   JsonItemAnswer,
+  JsonReportMeta,
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
-import { useSelector } from 'react-redux';
-import { read } from 'fs';
-import { invalid } from 'moment';
 import { ItemType } from 'common/definitions/report';
 import * as ReportApiUtils from './ReportApiUtils';
+import * as JsonInterfaceUtitls from 'common/utils/departments';
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
   validated?: string;
@@ -35,7 +27,6 @@ export interface ReportItem extends JsonReportItem {
   valid: boolean;
   errorMessage?: string;
 }
-
 export function Report() {
   console.log('Render Report');
   return (
@@ -69,7 +60,7 @@ function FormContents(props: { path: string }) {
     return data;
   });
 
-  // Setting errors from data using react-hook-form
+  // Setting errors from data using react-hook-form. Note the dependency
   React.useEffect(() => {
     data.items
       .filter((item) => !(item as ReportItem).valid)
@@ -132,7 +123,7 @@ function FormContents(props: { path: string }) {
   console.log('Content render');
   return (
     <>
-      <FormHeader />
+      <FormHeader reportMetadata={data.meta} />
       <NavBar
         labels={labels}
         activeLabel={sectionIdx}
@@ -154,11 +145,13 @@ function FormContents(props: { path: string }) {
   );
 }
 
-function FormHeader(props: any) {
+function FormHeader(props: { reportMetadata: JsonReportMeta }) {
   const date = new Date();
-  const user = 'User';
   const locale = 'default';
-  const formName = 'NICU/Paeds ' + date.toLocaleDateString(locale, { month: 'long' }) + ' Report';
+  const formName =
+    JsonInterfaceUtitls.getDepartmentName(parseInt(props.reportMetadata.departmentId)) + ' ' +
+    date.toLocaleDateString(locale, { month: 'long' }) +
+    ' Report';
 
   return (
     <div className="row justify-content-center bg-light rounded ">
@@ -166,9 +159,9 @@ function FormHeader(props: any) {
         <div className="jumbotron m-3">
           <h2 className="display-4">{formName}</h2>
           <p className="lead">
-            Last updated on: {date.toLocaleDateString()}
+            Last updated on: {props.reportMetadata.submittedDate}
             <br />
-            By {user}
+            By user {props.reportMetadata.submittedUserId}
             <br />
             <i>Due on: {date.toLocaleDateString()}</i>
           </p>
@@ -188,7 +181,6 @@ function Sections(props: {
   readOnly: boolean;
 }) {
   const { formState } = useFormContext();
-  // We count the properties of formState.errors
   const errorsCount = Object.keys(formState.errors).length;
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
