@@ -49,7 +49,7 @@ router.route('/:departmentId').get(
                 res.status(HTTP_NOCONTENT_CODE).json({});
             }
             else {
-                const temp = hideUserId(result);
+                const temp = await hideUserId(result);
                 res.status(HTTP_OK_CODE).json(temp);
             }
         } catch (e) {
@@ -90,7 +90,8 @@ router.route('/').post(
             const bodyStr: string = JSON.stringify(req.body);
             const report: ReportDescriptor = jsonStringToReport(bodyStr);
 
-            const newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
+            let newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
+            newTemplate = generateNewTemplate(report,req);
             const result = await attemptToSaveTemplate(newTemplate);
 
             if (result) {
@@ -181,7 +182,6 @@ async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: 
 
 function generateNewTemplate(report: ReportDescriptor, req): TemplateDocument {
     // Add some server generated values, since this creates a new template
-
     report.meta.id = generateUuid();
     report.meta.submittedDate = new Date();
     report.meta.submittedUserId = req.user![`${USER_ID_FIELD}`];

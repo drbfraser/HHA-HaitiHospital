@@ -5,7 +5,6 @@ import { BadRequest, HttpError } from '../exceptions/httpException';
 const httpErrorMiddleware = (error: Error, request: Request, response: Response, next: NextFunction) => {
   
   let isHttpError = error instanceof HttpError;
-
   if (!isHttpError) {
     if (error instanceof InvalidInput) {
       error = new BadRequest(error.message);
@@ -13,7 +12,11 @@ const httpErrorMiddleware = (error: Error, request: Request, response: Response,
     }
   }
 
-  const status = isHttpError ? error.status : 500;
+  let status = 500;
+  if (isHttpError) {
+    status = (error as HttpError).status;
+  }
+
   const message = error.message || 'Something went wrong';
   response.status(status).send({
     message

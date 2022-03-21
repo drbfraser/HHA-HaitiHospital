@@ -90,7 +90,7 @@ namespace JsonToItem {
         return newItem;
     }
 
-    export type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
+    type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
     const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
     const initParserByType = (map: Map<_ReportDefs.ItemTypeKeys, ItemParser>) => {
         map.clear();
@@ -154,7 +154,7 @@ namespace ItemToJson {
         return jsonItem;
     }
 
-    export type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
+    type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
     const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
     const initParserByType = (map: ParserByType) => {
         map.set("N", parseFromNumericItem);
