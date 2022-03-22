@@ -5,6 +5,7 @@ import {
 import { getDepartmentName } from 'common/definitions/departments';
 import { toast } from 'react-toastify';
 import * as MockApi from './MockApi';
+import { ReportItem } from './Report';
 
 export const submitHandler = async (
   answers: object,
@@ -17,7 +18,8 @@ export const submitHandler = async (
    * Todo: refactor
    */
   try {
-    const result = await MockApi.submitData(assembleData(answers, data), 1000, true);
+    const assemData = assembleData(answers, data)
+    const result = await MockApi.submitData(assemData, 1000, true);
     setData(result);
     setReadOnly(true);
     toast.success('Data submited');
@@ -28,10 +30,10 @@ export const submitHandler = async (
   }
 };
 
-const assembleData = (answers, data): JsonReportDescriptor => {
+const assembleData = (answers: object, data: JsonReportDescriptor): JsonReportDescriptor => {
   const copy = { ...data };
   copy.items = copy.items.map((item) => {
-    const answer = answers[item.meta.id];
+    const answer = answers[(item as ReportItem).id];
     const itemCopy = { ...item };
     itemCopy.answer = [[answer]];
     return itemCopy;

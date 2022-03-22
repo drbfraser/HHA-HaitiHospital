@@ -26,11 +26,7 @@ export const departmentAuth = (req: Request, res: Response, next: NextFunction) 
   }
 
   if (userPrivilege.department === undefined) {
-<<<<<<< HEAD
-    const missingInfoError = new UnprocessableEntityError('Missing user department info');
-=======
     const missingInfoError = new UnprocessableEntity('Missing user department info');
->>>>>>> master
     next(missingInfoError);
   }
 
@@ -38,11 +34,7 @@ export const departmentAuth = (req: Request, res: Response, next: NextFunction) 
   const inDepartment = departmentIds.includes(userDeptId);
 
   if (inDepartment === false) {
-<<<<<<< HEAD
-    const noPermissionerror = new UnauthorizedError(`User does not have access to department information`);
-=======
     const noPermissionerror = new Unauthorized(`User does not have access to department information`);
->>>>>>> master
     next(noPermissionerror);
   }
 
