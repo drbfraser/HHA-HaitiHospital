@@ -13,29 +13,14 @@ import { parseToReport } from 'utils/json_report_parser/report';
 import { parseToJson } from './json_report';
 
 /**
-<<<<<<< HEAD
  * Parse a json string to a ReportDescriptor. Throws 400 on invalid structure or semantic.
-=======
- * Parse from a json string to a JsonReport then to a Report.
- * This validates the structure of the report being passed in as
- * a json string during the process. 
- * This validates the semantic value of the report being passed in as a
- * json string during the process.
->>>>>>> 7077d3c... move parser methods from common to BE/utils and refactor some methods
  * @param jsonString json string to parse
  * @returns return a jsonReport object if sucessful
  */
 export const jsonStringToReport = function (jsonString: string): ReportDescriptor {
     try {
-<<<<<<< HEAD
         const jsonReport: JsonReportDescriptor = validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
         const report = parseToReport(jsonReport);
-=======
-        validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
-        const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
-        const report = parseToReport(jsonReport);
-
->>>>>>> 7077d3c... move parser methods from common to BE/utils and refactor some methods
         return report;
     }
     catch (e) {
@@ -129,7 +114,6 @@ const getAjvValidator = function(schemaName: string): ValidateFunction {
     return ajvValidators[schemaName];
 };
 
-<<<<<<< HEAD
 const validateStructure = function(jsonString: string, objectName: string): JsonReportDescriptor {
     const ajvValidator = getAjvValidator(objectName);
     const json: JsonReportDescriptor = JSON.parse(jsonString);
@@ -139,15 +123,5 @@ const validateStructure = function(jsonString: string, objectName: string): Json
     }
 
     return json;
-=======
-const validateStructure = function(jsonString: string, objectName: string) {
-    const ajvValidator = getAjvValidator(objectName);
-    const json = JSON.parse(jsonString);
-    const validate = ajvValidator!(json);
-
-    if (!validate) {
-        throw new InvalidInput(`json for ${objectName} is malformed`);
-    }
->>>>>>> 7077d3c... move parser methods from common to BE/utils and refactor some methods
 }
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<
