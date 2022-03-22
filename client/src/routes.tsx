@@ -22,6 +22,7 @@ import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employe
 import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
+import Report from 'components/report/Report';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -135,6 +136,13 @@ const routes = [
   {
     path: '/case-study',
     component: CaseStudyMain,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/report',
+    component: Report,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
