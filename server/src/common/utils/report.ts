@@ -19,12 +19,9 @@ export const ReportConstructor = (meta: ReportMeta, items: ReportItems): ReportD
     return report;
 }
 
-export const getItemTypeFromValue = (type: string): ItemTypeKeys => {
+export const getItemTypeFromValue = (type: string): ItemTypeKeys | null=> {
     const key = getEnumKeyByStringValue(ItemType, type);
-    if (!key) {
-        throw new BadRequestError(`Provided item type is not valid ${type}`)
-    }
-    return key!;
+    return key;
 }
 
 export const ItemMetaConstructor = (type: ItemTypeKeys): ReportItemMeta => {

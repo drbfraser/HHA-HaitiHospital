@@ -1,4 +1,4 @@
-import { JsonReportDescriptor, JsonReportItem, JsonReportItemMeta, JsonReportMeta, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
+import { JsonItemAnswer, JsonReportDescriptor, JsonReportItem, JsonReportItemMeta, JsonReportMeta, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 
 // https://github.com/YousefED/typescript-json-schema
 import * as TJS from 'typescript-json-schema';
@@ -85,11 +85,96 @@ const validateJsonString = function (jsonString: string, objectName: string) {
   }
 };
 
+const verifyUserId = (uid: string): boolean => {
+    // ToDo: actually verify submitted user id is logged in user
+    return true;
+}
+
+const validateSemanticsOfReportMeta = (meta: JsonReportMeta) => {
+    const deptId = getDepartmentIdFromString(meta.departmentId);
+    if (!deptId) {
+        throw new BadRequestError(`No department with id ${meta.departmentId}`);
+    }
+    const submittedDate = new Date(meta.submittedDate);
+    if (!submittedDate) {
+        throw new BadRequestError(`Submitted date provided is not valid: ${meta.submittedDate}`);
+    }
+    const isUser = verifyUserId(meta.submittedUserId);
+    if (!isUser) {
+        throw new UnauthorizedError(`Submitted user is not logged in`);
+    }
+}
+
+const validateSemantics = (report: JsonReportDescriptor) => {
+    // Meta
+    validateSemanticsOfReportMeta(report.meta);
+
+    // Items
+    validateSemanticsOfReportItems(report.items);
+}
+
+const isBooleanValue = (str: string) => {
+    const parsed = JSON.parse(str.toLowerCase());
+    if (parsed === true || parsed === false) {
+        return true;
+    }
+    
+    return false;
+}
+
+const validateSemanticsOfASingleCellAnswer = (answer: JsonItemAnswer, itemType: ItemTypeKeys) => {
+    // a single cell answer may have more than 1 entry
+    switch (mapItemTypeToAnswerType.get(itemType)) {
+        case ("number"): {
+            answer.forEach((answerEntry) => {
+                if (isNaN(Number(answerEntry))) {
+                    throw new BadRequestError(`Item must have numeric answer but got this ${answerEntry}`);
+                }
+            })
+            break;
+        }
+        case("boolean"): {
+            answer.forEach((answerEntry) => {
+                if (!isBooleanValue(answerEntry)) {
+                    throw new BadRequestError(`Item must have boolean answer but got this ${answerEntry}`);
+                }
+            })
+            break;
+        }
+        case("string"): {
+            break;
+        }
+        default: {
+            throw new InternalError("Item type is not defined to map with an answer type");
+        }
+    }
+}
+
+const validateSemanticsOfAReportItem = (item: JsonReportItem) => {
+    const typeKey = getItemTypeFromValue(item.type);
+    if (!typeKey) {
+        throw new BadRequestError(`No item of type ${item.type}`);
+    }
+
+    // answer can contains more than 1 cell if item was a table
+    item.answer.forEach((singleCellAnswer) => {
+        validateSemanticsOfASingleCellAnswer(singleCellAnswer, typeKey);
+    })
+    // ToDo: fill the rest when implement other item types
+}
+
+const validateSemanticsOfReportItems = (items: Array<JsonReportItem>) => {
+    items.forEach((item) => validateSemanticsOfAReportItem(item));
+}   
+
 const jsonStringToJsonReport = function (jsonString: string): JsonReportDescriptor {
-  validateJsonString(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
+  validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
   const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
+
+  validateSemantics(jsonReport);;
   return jsonReport;
 };
+
 
 // const parseReportMeta = (jsonMeta: JsonReportMeta): ReportMeta => {
 //     const id = jsonMeta.id;
@@ -141,3 +226,6 @@ const jsonStringToJsonReport = function (jsonString: string): JsonReportDescript
 //     return report;
 // }
 export { jsonStringToJsonReport, initAjvAsStandAlone, cleanupAjvStandAlone };
+
+
+
