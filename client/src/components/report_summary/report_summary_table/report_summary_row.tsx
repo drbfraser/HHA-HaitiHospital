@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getDepartmentName } from 'common/utils/departments';
+import { getDepartmentName } from 'common/definitions/departments';
 import { useTranslation } from 'react-i18next';
 import { makeDateShort } from 'utils/dateFormatting';
 

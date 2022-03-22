@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UnauthorizedError } from '../exceptions/httpException';
+import { Unauthorized } from '../exceptions/httpException';
 import { Role } from '../models/user';
 
 type UserPrivilegeInfo = {
@@ -10,7 +10,7 @@ export const roleAuth =
   (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
-      const error = new UnauthorizedError('User are not logged in');
+      const error = new Unauthorized('User are not logged in');
       next(error);
     }
 
@@ -19,7 +19,7 @@ export const roleAuth =
     const hasPermission = roles.includes(reqUserRole);
     if (!hasPermission) {
       //   console.log('User with role ' + reqUserRole + 'does not have sufficient permissions');
-      const error = new UnauthorizedError(`User with role ${reqUserRole} is unauthorized`);
+      const error = new Unauthorized(`User with role ${reqUserRole} is unauthorized`);
       next(error);
     }
 
