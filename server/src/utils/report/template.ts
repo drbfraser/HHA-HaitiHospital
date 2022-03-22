@@ -44,11 +44,11 @@ export const buildTemplateDocument = (template: TemplateReport): TemplateDocumen
     return newDoc;
 }
 
-const mapToDefaultAnswer = new Map<ItemTypeKeys, string>();
-const initToDefaultAnswerMap = (map: Map<ItemTypeKeys, string>) => {
+const mapToDefaultAnswer = new Map<ItemType, string>();
+const initToDefaultAnswerMap = (map: Map<ItemType, string>) => {
     map.clear();
-    map.set("N", "0");
-    map.set("SUM", "0");
+    map.set(ItemType.N, "0");
+    map.set(ItemType.SUM, "0");
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);
     if (map.size != expectedSize) {
@@ -57,10 +57,10 @@ const initToDefaultAnswerMap = (map: Map<ItemTypeKeys, string>) => {
 }
 initToDefaultAnswerMap(mapToDefaultAnswer);
 const getDefaultAnswer = (item: ReportItem): string => {
-    const typeKey = item.type;
-    const defaultAnswer = mapToDefaultAnswer.get(typeKey);
+    const type = ItemType[item.type];
+    const defaultAnswer = mapToDefaultAnswer.get(type);
     if (!defaultAnswer) {
-        throw new InvalidInput(`Item of type ${item.type} does not support a default value`);
+        throw new InvalidInput(`Item of type ${type} does not support a default value`);
     }
     return defaultAnswer;
 }
@@ -96,11 +96,11 @@ const sumParser: ItemTemplateParser = (item: ReportSumItem): TemplateSumItem => 
     return sumItem;
 }
 
-const typeToParser = new Map<ItemTypeKeys, ItemTemplateParser>();
-const initTypeToParserMap = (map: Map<ItemTypeKeys, ItemTemplateParser>) => {
+const typeToParser = new Map<ItemType, ItemTemplateParser>();
+const initTypeToParserMap = (map: Map<ItemType, ItemTemplateParser>) => {
     map.clear();
-    map.set("N", numericParser);
-    map.set("SUM", sumParser);
+    map.set(ItemType.N, numericParser);
+    map.set(ItemType.SUM, sumParser);
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);
     if (map.size != expectedSize) {
@@ -109,9 +109,10 @@ const initTypeToParserMap = (map: Map<ItemTypeKeys, ItemTemplateParser>) => {
 }
 initTypeToParserMap(typeToParser);
 const getParserForType = (typeKey: ItemTypeKeys): ItemTemplateParser => {
-    const parser = typeToParser.get(typeKey);
+    const type = ItemType[typeKey];
+    const parser = typeToParser.get(type);
     if (!parser) {
-        throw new InvalidInput(`Item of type ${typeKey} does not support a default value`);
+        throw new InvalidInput(`Item of type ${type} does not have template parser`);
     }
     return parser;
 }

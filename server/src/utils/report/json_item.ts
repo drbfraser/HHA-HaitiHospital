@@ -47,11 +47,11 @@ const stringAnswerTypeChecker: AnswerTypeChecker = (answer: _JsonDefs.JsonItemAn
     // jsonReport only supports string value
     return true;
 };
-const mapItemTypeToAnswerTypeChecker = new Map<_ReportDefs.ItemTypeKeys, AnswerTypeChecker>();
-const initItemAnswerTypeCheckerMap = (map: Map<_ReportDefs.ItemTypeKeys, AnswerTypeChecker>) => {
+const mapItemTypeToAnswerTypeChecker = new Map<_ReportDefs.ItemType, AnswerTypeChecker>();
+const initItemAnswerTypeCheckerMap = (map: Map<_ReportDefs.ItemType, AnswerTypeChecker>) => {
     map.clear();
-    map.set("N", numericAnswerTypeChecker);
-    map.set("SUM", numericAnswerTypeChecker);
+    map.set(_ReportDefs.ItemType.N, numericAnswerTypeChecker);
+    map.set(_ReportDefs.ItemType.SUM, numericAnswerTypeChecker);
     //ToDo: fill out the rest later
     const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);
     if (map.size != expectedSize) {
@@ -60,9 +60,10 @@ const initItemAnswerTypeCheckerMap = (map: Map<_ReportDefs.ItemTypeKeys, AnswerT
 };
 initItemAnswerTypeCheckerMap(mapItemTypeToAnswerTypeChecker);
 const getAnswerTypeChecker = (typeKey: _ReportDefs.ItemTypeKeys): AnswerTypeChecker => {
-    const typeChecker = mapItemTypeToAnswerTypeChecker.get(typeKey);
+    const type = _ReportDefs.ItemType[typeKey];
+    const typeChecker = mapItemTypeToAnswerTypeChecker.get(type);
     if (!typeChecker) {
-        throw new InvalidInput(`Item of type ${_ReportDefs.ItemType[typeKey]} does not have an answer type checker`);
+        throw new InvalidInput(`Item of type ${type} does not have an answer type checker`);
     }
     return typeChecker;
 };
