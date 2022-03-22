@@ -1,5 +1,6 @@
-import { ItemType, ItemTypeKeys, mapItemTypeToAnswerType } from 'common/definitions/report';
-import { BadRequestError, InternalError } from 'exceptions/httpException';
+import { ItemType, ItemTypeKeys } from 'common/definitions/report';
+import { BadRequest, InternalError } from 'exceptions/httpException';
+import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../definitions/json_report';
 import { Report } from './report';
 
@@ -41,7 +42,7 @@ export const isInATable = (jsonItem: JsonReportItem): boolean => {
 export const isANumericItem = (jsonItem: JsonReportItem): boolean => {
     const typeKey = Report.getItemTypeFromValue(jsonItem.type);
     if (!typeKey) {
-        throw new Error(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
+        throw new InvalidInput(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
     }
     if (ItemType[typeKey!] !== ItemType.N) {
         return false;
@@ -51,7 +52,7 @@ export const isANumericItem = (jsonItem: JsonReportItem): boolean => {
 export const isASumItem = (jsonItem: JsonReportItem): boolean => {
     const typeKey = Report.getItemTypeFromValue(jsonItem.type);
     if (!typeKey) {
-        throw new Error(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
+        throw new InvalidInput(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
     }
     if (ItemType[typeKey!] !== ItemType.SUM) {
         return false;
@@ -85,31 +86,57 @@ const isBooleanValue = (str: string) => {
     return false;
 }
 
-export const validateAnswerInputType = (answer: JsonItemAnswer, itemType: ItemTypeKeys) => {
-    // a single cell answer may have more than 1 entry
-    switch (mapItemTypeToAnswerType.get(itemType)) {
-        case ("number"): {
-            answer.forEach((answerEntry) => {
-                if (isNaN(Number(answerEntry))) {
-                    throw new BadRequestError(`Item must have numeric answer but got this ${answerEntry}`);
-                }
-            })
-            break;
-        }
-        case("boolean"): {
-            answer.forEach((answerEntry) => {
-                if (!isBooleanValue(answerEntry)) {
-                    throw new BadRequestError(`Item must have boolean answer but got this ${answerEntry}`);
-                }
-            })
-            break;
-        }
-        case("string"): {
-            break;
-        }
-        default: {
-            throw new InternalError("Item type is not defined to map with an answer type");
-        }
+interface AnswerTypeChecker {
+    (answer: JsonItemAnswer): void
+};
+
+const mapItemTypeToAnswerTypeChecker = new Map<ItemTypeKeys, AnswerTypeChecker>();
+const initItemAnswerTypeCheckerMap = (map: Map<ItemTypeKeys, AnswerTypeChecker>) => {
+    map.clear();
+    map.set("N", numericAnswerTypeChecker);
+    map.set("SUM", numericAnswerTypeChecker);
+    //ToDo: fill out the rest later
+    if (map.size != Object.keys(ItemType).length) {
+        throw new IllegalState(`item - answer type checker map must have length ${Object.keys(ItemType).length}`);
     }
 }
+initItemAnswerTypeCheckerMap(mapItemTypeToAnswerTypeChecker);
+
+// a single cell answer may have more than 1 entry
+const numericAnswerTypeChecker: AnswerTypeChecker = (answer: JsonItemAnswer) => {
+    answer.forEach((answerEntry) => {
+        if (isNaN(Number(answerEntry))) {
+            throw new InvalidInput(`Item must have a numeric answer but got this ${answerEntry}`);
+        }
+    })
+}
+
+// a single cell answer may have more than 1 entry
+const booleanAnswerTypeChecker: AnswerTypeChecker = (answer: JsonItemAnswer) => {
+    answer.forEach((answerEntry) => {
+        if (!isBooleanValue(answerEntry)) {
+            throw new InvalidInput(`Item must have a boolean type answer but got this ${answerEntry}`);
+        }
+    })
+}
+
+// a single cell answer may have more than 1 entry
+const stringAnswerTypeChecker: AnswerTypeChecker = (answer: JsonItemAnswer) => {
+    // jsonReport only supports string value
+    return true;
+}
+
+const getAnswerTypeChecker = (typeKey: ItemTypeKeys): AnswerTypeChecker => {
+    const typeChecker = mapItemTypeToAnswerTypeChecker.get(typeKey);
+    if (!typeChecker) {
+        throw new InvalidInput(`Item of type ${typeKey} does not have an answer type checker`);
+    }
+    return typeChecker;
+}
+
+export const validateAnswerType = (answer: JsonItemAnswer, itemType: ItemTypeKeys) => {
+    const typeChecker = getAnswerTypeChecker(itemType);
+    typeChecker(answer);
+}
+
 }

@@ -49,7 +49,6 @@ export function getDepartmentName(deptId: number): DepartmentName {
     return deptIdtoName.get(idKey)!;
 }
 
-
 const deptNameToId = new Map<DepartmentNameKeys, DepartmentId>();
 const initNameToId = (map: Map<DepartmentNameKeys, DepartmentId>) => {
     map.set("Rehab", DepartmentId.Rehab);
@@ -76,4 +75,3 @@ export const getDepartmentIdKeyFromValue = (idValue: string): DepartmentIdKeys |
     const key = getEnumKeyByStringValue(DepartmentId, idValue);
     return key;
 }
-
