@@ -1,13 +1,10 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
 import { v4 as uuid } from 'uuid';
-import { ReportData, ReportItem } from './Report';
+import { ReportItem } from './Report';
 import {
   JsonReportDescriptor,
-  JsonReportItem,
-  JsonReportItemMeta,
-  JsonItemAnswer,
 } from 'common/definitions/json_report';
-import { ItemType } from 'common/definitions/report';
+import { ItemType } from 'common/definitions/json_report';
 import { DepartmentId } from 'common/definitions/departments';
 
 const sleep = (milliseconds) => {
@@ -19,10 +16,8 @@ export function getData(): JsonReportDescriptor {
   const items: ReportItem[] = nicuJSON.flatMap((section, idx) => {
     const items: ReportItem[] = [];
     const label = {
-      meta: {
-        id: 'label' + idx,
-        type: 'label',
-      },
+      id: 'label' + idx,
+      type: 'label',
       description: section.section_label,
       answer: [],
       validated: true,
@@ -114,10 +109,8 @@ function makeNumericItem(
   const value = Math.floor(Math.random() * 100).toString();
   const id = section.section_label.replaceAll(' ', '') + '_field_' + idx;
   return {
-    meta: {
-      id: id,
-      type: ItemType.N,
-    },
+    id: id,
+    type: ItemType.N,
     description: field.field_label,
     answer: [[value]],
     validated: true,

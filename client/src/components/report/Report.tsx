@@ -9,20 +9,20 @@ import { v4 as uuid } from 'uuid';
 import {
   JsonReportDescriptor,
   JsonReportItem,
-  JsonReportItemMeta,
   JsonItemAnswer,
   JsonReportMeta,
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
-import { ItemType } from 'common/definitions/report';
+import { ItemType } from 'common/definitions/json_report';
 import * as ReportApiUtils from './ReportApiUtils';
-import * as JsonInterfaceUtitls from 'common/utils/departments';
+import * as JsonInterfaceUtitls from 'common/definitions/departments';
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
   validated?: string;
 }
 
 export interface ReportItem extends JsonReportItem {
+  id:string;
   validated: boolean;
   valid: boolean;
   errorMessage?: string;
@@ -65,7 +65,7 @@ function FormContents(props: { path: string }) {
     data.items
       .filter((item) => !(item as ReportItem).valid)
       .forEach((invalidItem) => {
-        const id = invalidItem.meta.id;
+        const id = (invalidItem as ReportItem).id;
         const message = (invalidItem as ReportItem).errorMessage;
         const error = {
           type: 'invalid-input',
@@ -78,7 +78,7 @@ function FormContents(props: { path: string }) {
   // parse the items and group them into sections.
   const sections = [];
   data.items.forEach((item) => {
-    if (item.meta.type == 'label') {
+    if (item.type == 'label') {
       sections.push([item]);
     } else {
       const headSection = sections[sections.length - 1];
@@ -252,7 +252,7 @@ function NavBar(props: {
       <div className="list-group list-group-horizontal">
         <div className="me-2 fs-4 ">Steps: </div>
         {props.labels.map((label, idx) => {
-          const id = label.meta.id;
+          const id = (label as ReportItem).id;
           const text = idx + 1 + '. ' + label.description;
           return (
             <button
@@ -286,7 +286,7 @@ function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boo
   return (
     <div hidden={!props.active}>
       {props.items.map((element, idx) => {
-        switch (element.meta.type) {
+        switch (element.type) {
           case 'label':
             const label: Label = { id: 'section' + idx, text: element.description };
             return <SectionLabel key={label.id} id={label.id} text={label.text} />;
@@ -294,8 +294,8 @@ function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boo
             let value = element.answer[0][0];
             return (
               <NumberInputField
-                key={element.meta.id}
-                id={element.meta.id}
+                key={(element as ReportItem).id}
+                id={(element as ReportItem).id}
                 text={idx + '. ' + element.description}
                 valid={element.valid}
                 errorMessage={element.errorMessage}
