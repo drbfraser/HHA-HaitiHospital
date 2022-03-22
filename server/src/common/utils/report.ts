@@ -7,9 +7,12 @@ import { JsonReport } from './json_report';
 
 export namespace Report {
 
-export const getItemTypeFromValue = (type: string): ItemTypeKeys | null=> {
+export const getItemTypeFromValue = (type: string): ItemTypeKeys=> {
     const key = getEnumKeyByStringValue(ItemType, type);
-    return key;
+    if (!key) {
+        throw new Error(`Item of type: ${type} is not supported`);
+    }
+    return key!;
 }
 
 export const getAnswerList = (item: ReportItem): ItemAnswer => {
@@ -31,7 +34,7 @@ export const reportConstructor = (jsonReport: JsonReportDescriptor): ReportDescr
 
 export const numericReportItemConstructor: ReportItemConstructor = (jsonItem: JsonReportItem): ReportNItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
-    if (!JsonReport.isANumericItem(jsonItem)) {
+    if (!isANumericItem(jsonItem)) {
         throw new InvalidInput(`Constructor for numeric item but ${typeKey} was provided - item: ${jsonItem.description}`);
     }
 
@@ -52,7 +55,7 @@ export const numericReportItemConstructor: ReportItemConstructor = (jsonItem: Js
 
 export const sumReportItemConstructor: ReportItemConstructor = (jsonItem: JsonReportItem): ReportSumItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
-    if (!JsonReport.isASumItem(jsonItem)) {
+    if (!isASumItem(jsonItem)) {
         throw new InvalidInput(`Constructor for sum item but ${typeKey} was provided - item: ${jsonItem.description}`);
     }
     if (JsonReport.isInATable(jsonItem)) {
@@ -67,7 +70,16 @@ export const sumReportItemConstructor: ReportItemConstructor = (jsonItem: JsonRe
 
     const jsonChildren = JsonReport.getChildren(jsonItem);
     const children = jsonChildren.map((jsonChild) => {
-        const child = numericReportItemConstructor(jsonChild);
+
+        const isChildTypeValid = isANumericItem(jsonChild) || isASumItem(jsonChild); 
+        const childType = JsonReport.getItemType(jsonChild);
+
+        if (!(isChildTypeValid)) {
+            throw new InvalidInput(`Item: ${jsonItem.description} does not support a child of type ${childType}`);
+        }
+
+        const constructor = getConstructorForItemType(childType);
+        const child = constructor(jsonChild);
         return child;
     });
 
@@ -151,6 +163,27 @@ const isSumCorrect = (sum: Number, children: ReportNItem[]) => {
         return true;
     else
         return false;
+}
+
+const isANumericItem = (jsonItem: JsonReportItem): boolean => {
+    const typeKey = Report.getItemTypeFromValue(jsonItem.type);
+    if (!typeKey) {
+        throw new InvalidInput(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
+    }
+    if (ItemType[typeKey!] !== ItemType.N) {
+        return false;
+    }
+    return true;
+}
+const isASumItem = (jsonItem: JsonReportItem): boolean => {
+    const typeKey = Report.getItemTypeFromValue(jsonItem.type);
+    if (!typeKey) {
+        throw new InvalidInput(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
+    }
+    if (ItemType[typeKey!] !== ItemType.SUM) {
+        return false;
+    }
+    return true;
 }
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 }

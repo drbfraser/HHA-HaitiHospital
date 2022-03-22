@@ -2,7 +2,6 @@ import { ItemType, ItemTypeKeys } from 'common/definitions/report';
 import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../definitions/json_report';
 import { getLengthOfEnum } from './common';
-import { Report } from './report';
 
 export namespace JsonReport {
 /**
@@ -37,27 +36,6 @@ export const isInATable = (jsonItem: JsonReportItem): boolean => {
         return true;
     }
     return false;
-}
-
-export const isANumericItem = (jsonItem: JsonReportItem): boolean => {
-    const typeKey = Report.getItemTypeFromValue(jsonItem.type);
-    if (!typeKey) {
-        throw new InvalidInput(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
-    }
-    if (ItemType[typeKey!] !== ItemType.N) {
-        return false;
-    }
-    return true;
-}
-export const isASumItem = (jsonItem: JsonReportItem): boolean => {
-    const typeKey = Report.getItemTypeFromValue(jsonItem.type);
-    if (!typeKey) {
-        throw new InvalidInput(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
-    }
-    if (ItemType[typeKey!] !== ItemType.SUM) {
-        return false;
-    }
-    return true;
 }
 
 export const getItemAnswerLength = (jsonItem: JsonReportItem): number => {
