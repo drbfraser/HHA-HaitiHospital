@@ -8,12 +8,11 @@ import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-import { getDepartmentId } from '../common/utils/departments';
 
 import * as ENV from './processEnv';
 
 export const seedDb = async () => {
-  // await UserModel.deleteMany({});
+  // await User.deleteMany({});
   // TODO: Remove delete many when in prod
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
@@ -33,7 +32,7 @@ export const seedUsers = async () => {
 
   try {
     // Delete seeded users on server start so we can reseed them.
-    // await UserModel.collection.dropIndexes();
+    // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await UserModel.findOne({ username: `user${index}` });
@@ -41,11 +40,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.department = 'None';
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.department = 'None';
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
@@ -81,11 +80,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.department = DepartmentName.NicuPaeds;
+            user.department = 'None';
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.department = DepartmentName.NicuPaeds;
+            user.department = 'None';
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
@@ -156,7 +155,7 @@ export const seedMessageBoard = async () => {
   for (let i = 0; i < numOfMessagesToGenerate; i++) {
     const randomUser: User = selectRandomUser(users);
     const message = new MessageBody({
-      departmentId: getDepartmentId(randomUser.department),
+      departmentId: 1,
       departmentName: randomUser.department,
       userId: randomUser._id,
       date: new Date(),
