@@ -1,4 +1,4 @@
-import { getLengthOfEnum } from "common/utils/common";
+import { getLengthOfEnum } from "utils/json_report_parser/common";
 
 export enum DepartmentName {
   NicuPaeds = 'NICU/Paeds',
