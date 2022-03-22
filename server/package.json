@@ -12,7 +12,7 @@
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/app.ts",
     "start-prod": "node dist/src/app.js",
     "test": "ts-mocha --exit --timeout 10000 -p tsconfig.json tests/unitTests/*.spec.ts",
-    "long-test": "ts-mocha --paths --exit --timeout 20000 -p tsconfig.json tests/unitTests/longTest.spec.ts"
+    "report-parser": "ts-mocha --paths --exit --timeout 20000 -p tsconfig.json tests/unitTests/reportParser.spec.ts"
   },
   "license": "ISC",
   "dependencies": {

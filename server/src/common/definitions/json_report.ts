@@ -14,21 +14,18 @@ export interface JsonReportMeta {
   readonly submittedUserId: string;
 }
 
-export interface JsonReportItemMeta {
-  /**
-   * Meta data for an item
-   */
-  readonly type: string;
-}
-
 export type JsonItemAnswer = Array<string>;
-
+export type JsonItemChildren = Array<JsonReportItem>
 export interface JsonReportItem {
   /**
    * Json structure of an item
    */
-  readonly meta: JsonReportItemMeta;
+  readonly type: string;
   readonly description: string;
+  // answer is an array of array to support table
+  // the outer array is for table row (sharing 1 question which is the column)
+  // the inner array is the actual answer to that 1 cell (row, col)
+  // one cell/one question may have more than 1 entry for an answer.
   readonly answer: Array<JsonItemAnswer>;
 
   // To suppport mcq (choices and selection)
@@ -36,8 +33,9 @@ export interface JsonReportItem {
   readonly hasUserInput?: string;
   readonly optionOther?: JsonMcqOption;
 
-  // To support survey generator and sum (any item that has sub-items)
-  readonly items?: Array<JsonReportItem>;
+  // To support table
+  // inner array contains the actual children of a cell.
+  readonly items?: JsonItemChildren;
 }
 
 export interface JsonMcqOption {

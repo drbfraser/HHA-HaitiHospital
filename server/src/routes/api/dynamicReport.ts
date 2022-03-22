@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { BadRequestError, HttpError } from '../../exceptions/httpException';
+import { BadRequest, HttpError } from '../../exceptions/httpException';
 import { departmentAuth } from '../../middleware/departmentAuth';
 import httpErrorMiddleware from '../../middleware/httpErrorHandler';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
@@ -34,12 +34,7 @@ router.route('/').get(
         reports: allReports
       });
     } catch (e) {
-      if (e instanceof HttpError) {
-        next(e);
-      } else {
-        const internalError = new HttpError(500, e.message);
-        next(e);
-      }
+      next(e);
     }
   },
   httpErrorMiddleware
@@ -73,12 +68,7 @@ router.route('/:departmentId').get(
         reports: reports
       });
     } catch (e) {
-      if (e instanceof HttpError) {
-        next(e);
-      } else {
-        const internalError = new HttpError(500, e.message);
-        next(e);
-      }
+      next(e);
     }
   },
   httpErrorMiddleware
@@ -99,7 +89,7 @@ function getToDateQuery(req: Request): Date {
     const to = strDateParser(strTo);
     return to;
   } catch (err) {
-    throw new BadRequestError(`Bad query - to date: ${err.message}`);
+    throw new BadRequest(`Bad query - to date: ${err.message}`);
   }
 }
 
@@ -116,7 +106,7 @@ function getFromDateQuery(req: Request): Date {
     const from = strDateParser(strFrom);
     return from;
   } catch (err) {
-    throw new BadRequestError(`Bad query - from date: ${err.message}`);
+    throw new BadRequest(`Bad query - from date: ${err.message}`);
   }
 }
 
@@ -125,7 +115,7 @@ function strToDate(strDate: string): Date {
   const re = new RegExp('^d{4}-d{2}-d{2}$');
   const isMatched = re.test(strDate);
   if (!isMatched) {
-    throw new BadRequestError('Date in bad format, expecting YYYY-MM-DD');
+    throw new BadRequest('Date in bad format, expecting YYYY-MM-DD');
   }
 
   const substrs = strDate.split('-');
@@ -136,7 +126,7 @@ function strToDate(strDate: string): Date {
   const date = new Date(year, month - 1, day);
 
   if (!date) {
-    throw new BadRequestError('Date has bad value');
+    throw new BadRequest('Date has bad value');
   }
 
   return date;

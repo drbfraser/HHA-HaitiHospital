@@ -1,7 +1,7 @@
 import { useParams, useHistory } from 'react-router-dom';
 
 import NICUForm from 'pages/form/nicu_form';
-import { getDepartmentName } from 'common/utils/departments';
+import { getDepartmentName } from 'common/definitions/departments';
 import { DepartmentName } from 'common/definitions/departments';
 import MaternityForm from 'pages/form/maternity_form';
 import RehabForm from 'pages/form/rehab_form';
