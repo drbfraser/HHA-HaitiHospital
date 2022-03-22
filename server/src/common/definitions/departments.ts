@@ -1,3 +1,5 @@
+import { getLengthOfEnum } from "common/utils/common";
+
 export enum DepartmentName {
   NicuPaeds = 'NICU/Paeds',
   Maternity = 'Maternity',

@@ -16,29 +16,6 @@ export const getAnswerList = (item: ReportItem) => {
     return item.answer[0];
 }
 
-const getConstructorForItemType = (type: string): ReportItemConstructor => {
-    const typeKey = getItemTypeFromValue(type);
-    if (!typeKey) {
-        throw new InvalidInput(`Item type of "${type}" is not supported`);
-    }
-    const constructor = mapItemTypeToConstructor.get(typeKey!);
-    if (!constructor) {
-        throw new InvalidInput(`Constructor for item type "${type}" is not yet supported`);
-    }
-    return constructor!;
-}
-
-const mapItemTypeToConstructor = new Map<ItemTypeKeys, ReportItemConstructor>();
-const initItemConstructorMap = (map: Map<ItemTypeKeys, ReportItemConstructor>) => {
-    map.clear();
-    map.set("N", Report.numericReportItemConstructor);
-    map.set("SUM", Report.sumReportItemConstructor);
-    if (map.size != Object.keys(ItemType).length) {
-        throw new IllegalState(`item type - constructor map must have length ${Object.keys(ItemType).length}`);
-    }
-}
-initItemConstructorMap(mapItemTypeToConstructor);
-
 export const reportConstructor = (jsonReport: JsonReportDescriptor): ReportDescriptor => {
     const meta: ReportMeta = reportMetaConstructor(JsonReport.getReportMeta(jsonReport));
     const items: ReportItems = JsonReport.getReportItems(jsonReport).map((jsonItem) => {
@@ -51,7 +28,6 @@ export const reportConstructor = (jsonReport: JsonReportDescriptor): ReportDescr
     };
     return report;
 }
-
 
 export const numericReportItemConstructor: ReportItemConstructor = (jsonItem: JsonReportItem): ReportNItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
@@ -72,19 +48,6 @@ export const numericReportItemConstructor: ReportItemConstructor = (jsonItem: Js
     };
 
     return newItem;
-}
-
-const isSumCorrect = (sum: Number, children: ReportNItem[]) => {
-    let childrenSum = 0;
-    children.forEach((child) => {
-        const answerList = getAnswerList(child);
-        childrenSum += Number(answerList[0]);
-    })
-
-    if (sum === childrenSum)
-        return true;
-    else
-        return false;
 }
 
 export const sumReportItemConstructor: ReportItemConstructor = (jsonItem: JsonReportItem): ReportSumItem => {
@@ -121,6 +84,7 @@ export const sumReportItemConstructor: ReportItemConstructor = (jsonItem: JsonRe
     return newItem;
 }
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const verifyUserId = (uid: string): boolean => {
     // ToDo: actually verify submitted user id is logged in user
     return true;
@@ -150,4 +114,41 @@ const reportMetaConstructor = (jsonMeta: JsonReportMeta) => {
     };
     return meta;
 };
+
+const getConstructorForItemType = (type: string): ReportItemConstructor => {
+    const typeKey = getItemTypeFromValue(type);
+    if (!typeKey) {
+        throw new InvalidInput(`Item type of "${type}" is not supported`);
+    }
+    const constructor = mapItemTypeToConstructor.get(typeKey!);
+    if (!constructor) {
+        throw new InvalidInput(`Constructor for item type "${type}" is not yet supported`);
+    }
+    return constructor!;
+}
+
+const mapItemTypeToConstructor = new Map<ItemTypeKeys, ReportItemConstructor>();
+const initItemConstructorMap = (map: Map<ItemTypeKeys, ReportItemConstructor>) => {
+    map.clear();
+    map.set("N", Report.numericReportItemConstructor);
+    map.set("SUM", Report.sumReportItemConstructor);
+    if (map.size != Object.keys(ItemType).length) {
+        throw new IllegalState(`item type - constructor map must have length ${Object.keys(ItemType).length}`);
+    }
+}
+initItemConstructorMap(mapItemTypeToConstructor);
+
+const isSumCorrect = (sum: Number, children: ReportNItem[]) => {
+    let childrenSum = 0;
+    children.forEach((child) => {
+        const answerList = getAnswerList(child);
+        childrenSum += Number(answerList[0]);
+    })
+
+    if (sum === childrenSum)
+        return true;
+    else
+        return false;
+}
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 }

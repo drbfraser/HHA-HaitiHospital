@@ -11,6 +11,31 @@ import { ReportDescriptor } from 'common/definitions/report';
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
 
+/**
+ * Parse from a json string to a JsonReport then to a Report.
+ * This validates the structure of the report being passed in as
+ * a json string during the process. 
+ * This validates the semantic value of the report being passed in as a
+ * json string during the process.
+ * @param jsonString json string to parse
+ * @returns return a jsonReport object if sucessful
+ */
+export const jsonStringToReport = function (jsonString: string): ReportDescriptor {
+    try {
+        validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
+        const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
+        const report = Report.reportConstructor(jsonReport);
+
+        return report;
+    }
+    catch (e) {
+        if (e instanceof InvalidInput)
+            throw new BadRequest(e.message);
+        throw new InternalError(e.message);
+    }
+};
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>
 const getTsCompilerOptions = function(): {} {
     try {
         const configFileName = ts.findConfigFile(__dirname, ts.sys.fileExists, "tsconfig.json") || null;
@@ -101,31 +126,6 @@ const validateStructure = function(jsonString: string, objectName: string) {
     }
 }
 
-/**
- * Parse from a json string to a JsonReport then to a Report.
- * This validates the structure of the report being passed in as
- * a json string during the process. 
- * This validates the semantic value of the report being passed in as a
- * json string during the process.
- * @param jsonString json string to parse
- * @returns return a jsonReport object if sucessful
- */
-const jsonStringToReport = function (jsonString: string): ReportDescriptor {
-    try {
-        validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
-        const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
-        const report = Report.reportConstructor(jsonReport);
-
-        return report;
-    }
-    catch (e) {
-        if (e instanceof InvalidInput)
-            throw new BadRequest(e.message);
-        throw new InternalError(e.message);
-    }
-};
-
-export { jsonStringToReport };
-
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 

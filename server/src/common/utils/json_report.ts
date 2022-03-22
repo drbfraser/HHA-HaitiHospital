@@ -1,5 +1,4 @@
 import { ItemType, ItemTypeKeys } from 'common/definitions/report';
-import { BadRequest, InternalError } from 'exceptions/httpException';
 import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../definitions/json_report';
 import { Report } from './report';
@@ -77,6 +76,12 @@ export const getReportMeta = (report: JsonReportDescriptor): JsonReportMeta => {
     return report.meta;
 }
 
+export const validateAnswerType = (answer: JsonItemAnswer, itemType: ItemTypeKeys) => {
+    const typeChecker = getAnswerTypeChecker(itemType);
+    typeChecker(answer);
+}
+
+// >>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const isBooleanValue = (str: string) => {
     const parsed = JSON.parse(str.toLowerCase());
     if (parsed === true || parsed === false) {
@@ -134,9 +139,5 @@ const getAnswerTypeChecker = (typeKey: ItemTypeKeys): AnswerTypeChecker => {
     return typeChecker;
 }
 
-export const validateAnswerType = (answer: JsonItemAnswer, itemType: ItemTypeKeys) => {
-    const typeChecker = getAnswerTypeChecker(itemType);
-    typeChecker(answer);
-}
-
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<
 }
