@@ -5,17 +5,11 @@ import * as _JsonDefs from 'common/definitions/json_report';
 
 export const hasNumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
-    if (_ReportDefs.ItemType[typeKey!] !== _ReportDefs.ItemType.N) {
-        return false;
-    }
-    return true;
+    return _ReportDefs.ItemType[typeKey!] !== _ReportDefs.ItemType.N;
 };
 export const hasSumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
-    if (_ReportDefs.ItemType[typeKey!] !== _ReportDefs.ItemType.SUM) {
-        return false;
-    }
-    return true;
+    return _ReportDefs.ItemType[typeKey!] !== _ReportDefs.ItemType.SUM;
 };
 
 export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _ReportDefs.ItemTypeKeys) => {
@@ -26,11 +20,7 @@ export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _Rep
 // >>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 const isBooleanValue = (str: string) => {
     const parsed = JSON.parse(str.toLowerCase());
-    if (parsed === true || parsed === false) {
-        return true;
-    }
-
-    return false;
+    return typeof parsed === "boolean";
 };
 interface AnswerTypeChecker {
     (answer: _JsonDefs.JsonItemAnswer): void;
