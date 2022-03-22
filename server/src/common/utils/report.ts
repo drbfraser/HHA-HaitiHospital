@@ -1,7 +1,7 @@
 import { getDepartmentIdKeyFromValue } from 'common/definitions/departments';
 import { JsonReportDescriptor, JsonReportItem, JsonReportMeta } from 'common/definitions/json_report';
 import { IllegalState, InvalidInput } from 'exceptions/systemException';
-import { ItemType, ItemTypeKeys, ReportDescriptor, ReportItem, ReportItemConstructor, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from '../definitions/report';
+import { ItemAnswer, ItemType, ItemTypeKeys, ReportDescriptor, ReportItem, ReportItemConstructor, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from '../definitions/report';
 import { getEnumKeyByStringValue, getLengthOfEnum } from './common';
 import { JsonReport } from './json_report';
 
@@ -12,8 +12,8 @@ export const getItemTypeFromValue = (type: string): ItemTypeKeys | null=> {
     return key;
 }
 
-export const getAnswerList = (item: ReportItem) => {
-    return item.answer[0];
+export const getAnswerList = (item: ReportItem): ItemAnswer => {
+    return item.answer;
 }
 
 export const reportConstructor = (jsonReport: JsonReportDescriptor): ReportDescriptor => {
@@ -67,7 +67,8 @@ export const sumReportItemConstructor: ReportItemConstructor = (jsonItem: JsonRe
 
     const jsonChildren = JsonReport.getChildren(jsonItem);
     const children = jsonChildren.map((jsonChild) => {
-        return numericReportItemConstructor(jsonChild);
+        const child = numericReportItemConstructor(jsonChild);
+        return child;
     });
 
     const sum = Number(answerList[0]);
