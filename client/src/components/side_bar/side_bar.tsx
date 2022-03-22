@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
-import { getDepartmentId } from '../../common/utils/departments';
+import { getDepartmentId } from 'common/definitions/departments';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';

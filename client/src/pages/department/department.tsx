@@ -5,7 +5,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ReportSummary from 'components/report_summary/report_summary';
 import { Role } from 'constants/interfaces';
-import { getDepartmentName } from 'common/utils/departments';
+import { getDepartmentName } from 'common/definitions/departments';
 import { DepartmentName } from 'common/definitions/departments';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { InternalError, UnauthorizedError, UnprocessableEntityError } from '../exceptions/httpException';
-import { getDepartmentId } from '../common/utils/departments';
-import { DepartmentId, DepartmentName } from '../common/definitions/departments';
+import { InternalError, Unauthorized, UnprocessableEntity } from '../exceptions/httpException';
+import { DepartmentId, DepartmentName, getDepartmentId } from '../common/definitions/departments';
 import { Role } from '../models/user';
 
 type UserPrivilegeInfo = {
@@ -27,7 +26,11 @@ export const departmentAuth = (req: Request, res: Response, next: NextFunction) 
   }
 
   if (userPrivilege.department === undefined) {
+<<<<<<< HEAD
     const missingInfoError = new UnprocessableEntityError('Missing user department info');
+=======
+    const missingInfoError = new UnprocessableEntity('Missing user department info');
+>>>>>>> master
     next(missingInfoError);
   }
 
@@ -35,7 +38,11 @@ export const departmentAuth = (req: Request, res: Response, next: NextFunction) 
   const inDepartment = departmentIds.includes(userDeptId);
 
   if (inDepartment === false) {
+<<<<<<< HEAD
     const noPermissionerror = new UnauthorizedError(`User does not have access to department information`);
+=======
+    const noPermissionerror = new Unauthorized(`User does not have access to department information`);
+>>>>>>> master
     next(noPermissionerror);
   }
 

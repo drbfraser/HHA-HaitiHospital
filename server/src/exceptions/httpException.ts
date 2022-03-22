@@ -11,13 +11,13 @@ export class HttpError extends Error {
   }
 }
 
-export class UnauthorizedError extends HttpError {
+export class Unauthorized extends HttpError {
   constructor(message: string) {
     super(HTTP_UNAUTHORIZED_CODE, message);
   }
 }
 
-export class BadRequestError extends HttpError {
+export class BadRequest extends HttpError {
   constructor(message: string) {
     super(HTTP_BADREQUEST_CODE, message);
   }
@@ -29,7 +29,7 @@ export class InternalError extends HttpError {
   }
 }
 
-export class UnprocessableEntityError extends HttpError {
+export class UnprocessableEntity extends HttpError {
   constructor(message: string) {
     super(HTTP_UNPROCESSABLE_ENTITY_CODE, message);
   }
