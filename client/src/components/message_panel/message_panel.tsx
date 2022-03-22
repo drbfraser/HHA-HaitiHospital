@@ -11,6 +11,7 @@ import { useAuthState } from 'contexts';
 import { Role } from '../../constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
+import { getDepartmentId } from '../../common/definitions/departments';
 
 interface MessagePanelProps {}
 
@@ -29,8 +30,11 @@ const MessagePanel = (props: MessagePanelProps) => {
   }, [currentPage, msgsJson]);
 
   const getMessages = async (isMounted: boolean) => {
-    if (isMounted === true)
-      setMsgJson(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history));
+    if (isMounted === true) {
+      const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history);
+      const filteredMessages = filterMessages(messages);
+      setMsgJson(filteredMessages);
+    }
   };
 
   useEffect(() => {
@@ -41,6 +45,22 @@ const MessagePanel = (props: MessagePanelProps) => {
   const toggleRerender = async () => {
     setRerender(!rerender);
   };
+
+
+  const filterMessages = (msgs: Json[]): Json[] => {
+    if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment])) {
+      return msgs;
+    }
+    return filterMessagesBasedOnDepartment(msgs);
+  }
+
+  const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Json[]): Json[] => {
+    const currentUserDepartment = authState.userDetails.department;
+    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter((message) => 
+      message.departmentId === getDepartmentId(currentUserDepartment)
+    )
+    return filteredMsgsBasedOnUserDepartment;
+  }
 
   return (
     <div className="message-panel">
@@ -53,23 +73,25 @@ const MessagePanel = (props: MessagePanelProps) => {
           </Link>
         ) : null}
       </div>
-      <div className="my-3 p-3 bg-body rounded shadow-sm">
-
-        <div className="d-sm-flex align-items-center">
-          <h6 className="border-bottom pb-2 mb-0">{t('messageBoardRecentUpdates')}</h6>
+      {msgsJson && (
+        <div>
+          <div className="my-3 p-3 bg-body rounded shadow-sm">
+            <div className="d-sm-flex align-items-center">
+              <h6 className="border-bottom pb-2 mb-0">{t('messageBoardRecentUpdates')}</h6>
+            </div>
+            {currentTableData.map((msgJson, index) => {
+              return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
+            })}
+          </div>
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={msgsJson.length}
+              pageSize={pageSize}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
         </div>
-
-        {currentTableData.map((msgJson, index) => {
-          return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
-        })}
-      </div>
-      <Pagination
-        className="pagination-bar"
-        currentPage={currentPage}
-        totalCount={msgsJson.length}
-        pageSize={pageSize}
-        onPageChange={(page) => setCurrentPage(page)}
-      />
+      )}
     </div>
   );
 };
