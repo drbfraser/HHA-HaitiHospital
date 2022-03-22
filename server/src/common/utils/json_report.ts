@@ -1,6 +1,6 @@
 import { ItemType } from 'common/definitions/report';
-import { JsonItemAnswer, JsonItemChildren, JsonReportItem } from '../definitions/json_report';
-import { getItemTypeFromValue } from './report';
+import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../definitions/json_report';
+import { Report } from './report';
 
 export namespace JsonReport {
 /**
@@ -26,6 +26,10 @@ export const getChildren = (jsonItem: JsonReportItem, rowIndex: number = 0): Jso
     }
 } 
 
+export const getItemType = (jsonItem: JsonReportItem): string => {
+    return jsonItem.type;
+}
+
 export const isInATable = (jsonItem: JsonReportItem): boolean => {
     if (jsonItem.answer.length > 1) {
         return true;
@@ -34,7 +38,7 @@ export const isInATable = (jsonItem: JsonReportItem): boolean => {
 }
 
 export const isANumericItem = (jsonItem: JsonReportItem): boolean => {
-    const typeKey = getItemTypeFromValue(jsonItem.type);
+    const typeKey = Report.getItemTypeFromValue(jsonItem.type);
     if (!typeKey) {
         throw new Error(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
     }
@@ -44,7 +48,7 @@ export const isANumericItem = (jsonItem: JsonReportItem): boolean => {
     return true;
 }
 export const isASumItem = (jsonItem: JsonReportItem): boolean => {
-    const typeKey = getItemTypeFromValue(jsonItem.type);
+    const typeKey = Report.getItemTypeFromValue(jsonItem.type);
     if (!typeKey) {
         throw new Error(`"${jsonItem.description}" item has invalid item type: ${jsonItem.type}`);
     }
@@ -61,6 +65,14 @@ export const getItemAnswerLength = (jsonItem: JsonReportItem): number => {
 
 export const getAnswerList = (jsonItem: JsonReportItem): JsonItemAnswer => {
     return jsonItem.answer[0];
+}
+
+export const getReportItems = (report: JsonReportDescriptor): JsonReportItem[] => {
+    return report.items;
+}
+
+export const getReportMeta = (report: JsonReportDescriptor): JsonReportMeta => {
+    return report.meta;
 }
 
 }

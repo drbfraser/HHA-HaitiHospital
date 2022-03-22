@@ -12,7 +12,6 @@ export enum ItemType {
   SUM = 'sum'
   // SG = "survey generator"
 }
-
 export type ItemTypeKeys = keyof typeof ItemType;
 
 export enum AnswerType {

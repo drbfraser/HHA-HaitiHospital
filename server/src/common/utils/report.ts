@@ -1,115 +1,35 @@
 import { JsonItemAnswer, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from 'common/definitions/json_report';
 import { BadRequestError, InternalError, UnauthorizedError } from 'exceptions/httpException';
-import { DepartmentId, DepartmentIdKeys } from '../definitions/departments';
-import { ItemType, ItemTypeKeys, mapItemTypeToAnswerType, ReportDescriptor, ReportItem, ReportItemConstructor, ReportItemMeta, ReportItems, ReportMeta, ReportNItem, ReportSumItem, SingleCellAnswer } from '../definitions/report';
+import { ItemType, ItemTypeKeys, mapItemTypeToAnswerType, mapItemTypeToConstructor, ReportDescriptor, ReportItem, ReportItemConstructor, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from '../definitions/report';
 import { getEnumKeyByStringValue } from './common';
 import { getDepartmentIdFromString } from './departments';
 import { JsonReport } from './json_report';
 
 export namespace Report {
-// const verifyUserId = (uid: string): boolean => {
-//     // ToDo: actually verify submitted user id is logged in user
-//     return true;
-// }
-
-// const isAnswerBoolean = (answer: string) => {
-//     const parsed = JSON.parse(answer.toLowerCase());
-//     if (parsed === true || parsed === false) {
-//         return true;
-//     }
-    
-//     return false;
-// }
-
-// const validateAnswerInputType = (answer: SingleCellAnswer, itemType: ItemTypeKeys) => {
-//     // a single cell answer may have more than 1 entry
-//     switch (mapItemTypeToAnswerType.get(itemType)) {
-//         case ("number"): {
-//             answer.forEach((answerEntry) => {
-//                 if (isNaN(Number(answerEntry))) {
-//                     throw new Error(`Item must have numeric answer but got this ${answerEntry}`);
-//                 }
-//             })
-//             break;
-//         }
-//         case("boolean"): {
-//             answer.forEach((answerEntry) => {
-//                 if (!isAnswerBoolean(answerEntry)) {
-//                     throw new Error(`Item must have boolean answer but got this ${answerEntry}`);
-//                 }
-//             })
-//             break;
-//         }
-//         case("string"): {
-//             break;
-//         }
-//         default: {
-//             throw new Error("Item type is not defined to map with an answer type");
-//         }
-//     }
-// }
-
-// const numericItemValidator: ItemValidator = (item: ReportItem): void => {
-// }
-// const validateItemByType = (item: ReportItem) => {
-    
-// };
-
 
 export const getItemTypeFromValue = (type: string): ItemTypeKeys | null=> {
     const key = getEnumKeyByStringValue(ItemType, type);
     return key;
 }
 
-
-// const validateSemanticsOfReportMeta = (meta: ReportMeta) => {
-//     const deptId = getDepartmentIdFromString(meta.departmentId);
-//     if (!deptId) {
-//         throw new BadRequestError(`No department with id ${meta.departmentId}`);
-//     }
-//     const submittedDate = new Date(meta.submittedDate);
-//     if (!submittedDate) {
-//         throw new BadRequestError(`Submitted date provided is not valid: ${meta.submittedDate}`);
-//     }
-//     const isUser = verifyUserId(meta.submittedUserId);
-//     if (!isUser) {
-//         throw new UnauthorizedError(`Submitted user is not logged in`);
-//     }
-// }
-
-// const validateSemanticsOfAReportItem = (item: ReportItem) => {
-//     const typeKey = getItemTypeFromValue(item.type);
-//     if (!typeKey) {
-//         throw new BadRequestError(`No item of type ${item.type}`);
-//     }
-
-//     // answer can contains more than 1 cell if item was a table
-//     item.answer.forEach((singleCellAnswer) => {
-//         validateAnswerInputType(singleCellAnswer, typeKey);
-//     })
-
-//     // children - to support wrapper item
-//     validateItemByType(item);
-//     // ToDo: fill the rest when implement other item types
-// }
-
-// const validateSemanticsOfReportItems = (items: ReportItems) => {
-//     items.forEach((item) => validateSemanticsOfAReportItem(item));
-// }   
-
-// const reportValidator = (report: ReportDescriptor) => {
-//     // Meta
-//     validateSemanticsOfReportMeta(report.meta);
-
-//     // Items
-//     validateSemanticsOfReportItems(report.items);
-// }
+const getConstructorForItemType = (type: string): ReportItemConstructor => {
+    const typeKey = getItemTypeFromValue(type);
+    if (!typeKey) {
+        throw new Error(`Item type of "${type}" type is not valid`);
+    }
+    const constructor = mapItemTypeToConstructor.get(typeKey!);
+    if (!constructor) {
+        throw new Error(`Constructor for item type "${type}" is not yet supported`);
+    }
+    return constructor!;
+}
 
 
-export const reportConstructor = (json: JsonReportDescriptor): ReportDescriptor => {
-    const meta: ReportMeta = reportMetaConstructor(json.meta);
-    const items: ReportItems = json.items.map((jsonItem) => {
-        return reportItemConstructor(jsonItem);
+export const reportConstructor = (jsonReport: JsonReportDescriptor): ReportDescriptor => {
+    const meta: ReportMeta = reportMetaConstructor(JsonReport.getReportMeta(jsonReport));
+    const items: ReportItems = JsonReport.getReportItems(jsonReport).map((jsonItem) => {
+        const itemConstructor = getConstructorForItemType(JsonReport.getItemType(jsonItem));
+        return itemConstructor(jsonItem);
     })
   
     let report: ReportDescriptor = {meta: meta, 
@@ -117,13 +37,6 @@ export const reportConstructor = (json: JsonReportDescriptor): ReportDescriptor 
     };
     return report;
 }
-
-// const reportItemConstructor = (jsonItem: JsonReportItem): ReportItem => {
-//     const itemType = getItemTypeFromValue(jsonItem.type);
-//     if (!itemType) {
-//         throw new Error(`Item type is not valid: ${jsonItem.type}`);
-//     }
-// }
 
 const isBooleanValue = (str: string) => {
     const parsed = JSON.parse(str.toLowerCase());
@@ -168,14 +81,11 @@ export const numericReportItemConstructor: ReportItemConstructor = (jsonItem: Js
         throw new Error(`Constructor for numeric item but ${typeKey} was provided - item: ${jsonItem.description}`);
     }
 
+    if (JsonReport.getItemAnswerLength(jsonItem) !== 1) {
+        throw new Error(`Numeric item -"${jsonItem.description}" must have exactly 1 answer`);
+    }
     const answerList = JsonReport.getAnswerList(jsonItem);
-
-    jsonItem.answer.forEach((singleCellAnswer) => {
-        if (singleCellAnswer.length > 1) {
-            throw new Error(`Answer for ${jsonItem.description} should have at most 1 value`);
-        }
-        validateAnswerInputType(singleCellAnswer, typeKey!)}
-    );
+    validateAnswerInputType(answerList, typeKey!);
 
     let newItem: ReportNItem = {
         type: typeKey!,
