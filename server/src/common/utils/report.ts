@@ -2,7 +2,7 @@ import { getDepartmentIdKeyFromValue } from 'common/definitions/departments';
 import { JsonReportDescriptor, JsonReportItem, JsonReportMeta } from 'common/definitions/json_report';
 import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { ItemType, ItemTypeKeys, ReportDescriptor, ReportItem, ReportItemConstructor, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from '../definitions/report';
-import { getEnumKeyByStringValue } from './common';
+import { getEnumKeyByStringValue, getLengthOfEnum } from './common';
 import { JsonReport } from './json_report';
 
 export namespace Report {
@@ -132,8 +132,9 @@ const initItemConstructorMap = (map: Map<ItemTypeKeys, ReportItemConstructor>) =
     map.clear();
     map.set("N", Report.numericReportItemConstructor);
     map.set("SUM", Report.sumReportItemConstructor);
-    if (map.size != Object.keys(ItemType).length) {
-        throw new IllegalState(`item type - constructor map must have length ${Object.keys(ItemType).length}`);
+    const expectedSize = getLengthOfEnum(ItemType);
+    if (map.size != expectedSize) {
+        throw new IllegalState(`item type - constructor map must have length ${expectedSize}`);
     }
 }
 initItemConstructorMap(mapItemTypeToConstructor);

@@ -1,6 +1,7 @@
 import { ItemType, ItemTypeKeys } from 'common/definitions/report';
 import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../definitions/json_report';
+import { getLengthOfEnum } from './common';
 import { Report } from './report';
 
 export namespace JsonReport {
@@ -95,18 +96,6 @@ interface AnswerTypeChecker {
     (answer: JsonItemAnswer): void
 };
 
-const mapItemTypeToAnswerTypeChecker = new Map<ItemTypeKeys, AnswerTypeChecker>();
-const initItemAnswerTypeCheckerMap = (map: Map<ItemTypeKeys, AnswerTypeChecker>) => {
-    map.clear();
-    map.set("N", numericAnswerTypeChecker);
-    map.set("SUM", numericAnswerTypeChecker);
-    //ToDo: fill out the rest later
-    if (map.size != Object.keys(ItemType).length) {
-        throw new IllegalState(`item - answer type checker map must have length ${Object.keys(ItemType).length}`);
-    }
-}
-initItemAnswerTypeCheckerMap(mapItemTypeToAnswerTypeChecker);
-
 // a single cell answer may have more than 1 entry
 const numericAnswerTypeChecker: AnswerTypeChecker = (answer: JsonItemAnswer) => {
     answer.forEach((answerEntry) => {
@@ -130,6 +119,19 @@ const stringAnswerTypeChecker: AnswerTypeChecker = (answer: JsonItemAnswer) => {
     // jsonReport only supports string value
     return true;
 }
+
+const mapItemTypeToAnswerTypeChecker = new Map<ItemTypeKeys, AnswerTypeChecker>();
+const initItemAnswerTypeCheckerMap = (map: Map<ItemTypeKeys, AnswerTypeChecker>) => {
+    map.clear();
+    map.set("N", numericAnswerTypeChecker);
+    map.set("SUM", numericAnswerTypeChecker);
+    //ToDo: fill out the rest later
+    const expectedSize = getLengthOfEnum(ItemType);
+    if (map.size != expectedSize) {
+        throw new IllegalState(`item - answer type checker map must have length ${expectedSize}`);
+    }
+}
+initItemAnswerTypeCheckerMap(mapItemTypeToAnswerTypeChecker);
 
 const getAnswerTypeChecker = (typeKey: ItemTypeKeys): AnswerTypeChecker => {
     const typeChecker = mapItemTypeToAnswerTypeChecker.get(typeKey);
