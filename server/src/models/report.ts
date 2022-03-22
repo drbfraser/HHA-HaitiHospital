@@ -46,9 +46,6 @@ export interface ReportItem {
   description: string;
   answer: ItemAnswer;
 }
-export interface ItemParser {
-    (jsonReport: JsonReportItem): ReportItem;
-}
 
 //Short Answer Item
 // export interface ReportSaItem extends ReportItem<string> {};
@@ -71,7 +68,7 @@ export interface ReportNItem extends ReportItem {}
 // }
 //Sum item
 export interface ReportSumItem extends ReportItem {
-  numericItems: Array<ReportNItem>;
+  children: Array<ReportNItem | ReportSumItem>;
 }
 
 //Survey Generator item
