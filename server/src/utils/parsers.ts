@@ -122,7 +122,7 @@ const isBooleanValue = (str: string) => {
     return false;
 }
 
-const validateSemanticsOfASingleCellAnswer = (answer: JsonItemAnswer, itemType: ItemTypeKeys) => {
+const validateAnswerInputType = (answer: JsonItemAnswer, itemType: ItemTypeKeys) => {
     // a single cell answer may have more than 1 entry
     switch (mapItemTypeToAnswerType.get(itemType)) {
         case ("number"): {
@@ -150,16 +150,23 @@ const validateSemanticsOfASingleCellAnswer = (answer: JsonItemAnswer, itemType: 
     }
 }
 
+const validateItemChildren = (item: JsonReportItem) => {
+
+};
+
 const validateSemanticsOfAReportItem = (item: JsonReportItem) => {
     const typeKey = getItemTypeFromValue(item.type);
     if (!typeKey) {
-        throw new BadRequestError(`No item of type ${item.type}`);
+        throw new Error(`No item of type ${item.type}`);
     }
 
     // answer can contains more than 1 cell if item was a table
     item.answer.forEach((singleCellAnswer) => {
-        validateSemanticsOfASingleCellAnswer(singleCellAnswer, typeKey);
+        validateAnswerInputType(singleCellAnswer, typeKey);
     })
+
+    // children - to support wrapper item
+    validateItemChildren(item);
     // ToDo: fill the rest when implement other item types
 }
 
@@ -171,60 +178,16 @@ const jsonStringToJsonReport = function (jsonString: string): JsonReportDescript
   validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
   const jsonReport: JsonReportDescriptor = JSON.parse(jsonString);
 
-  validateSemantics(jsonReport);;
+//   validateSemantics(jsonReport);
   return jsonReport;
 };
 
 
-// const parseReportMeta = (jsonMeta: JsonReportMeta): ReportMeta => {
-//     const id = jsonMeta.id;
-//     const deptId = getDepartmentIdFromString(jsonMeta.departmentId);
 
-//     const submittedDate = new Date(jsonMeta.submittedDate);
-//     if (!submittedDate) {
-//         throw new BadRequestError(`Submitted date provided is not valid: ${submittedDate}`);
-//     }
-//     const submittedUserId = jsonMeta.submittedUserId;
-//     const meta: ReportMeta = ReportMetaConstructor(id, deptId, submittedDate, submittedUserId);
-//     return meta;
-// }
-
-// const parseItemMeta = (jsonMeta: JsonReportItemMeta): ReportItemMeta => {
-//     const itemType = getItemTypeFromValue(jsonMeta.type);
-//     const meta = ItemMetaConstructor(itemType);
-//     return meta;
-// }
-
-// const parseItemAnswerByType = (singleCellAnswer: Array<ItemAnswerTypes>):  => {
-
-// }
-
-// const parseItemBody = (jsonItem: JsonReportItem, itemMeta: ReportItemMeta): ReportItem<ItemAnswerTypes> => {
-//     const description: string = jsonItem.description;
-
-//     // answer supports table (Array<real answer for an item>)
-//     const answer: ItemAnswer<ItemAnswerTypes> = jsonItem.answer.map((singleCellAnswer) => {
-//         const tempAnswer: Array<ItemAnswerTypes> = parseItemAnswerByType(singleCellAnswer);
-
-//     });
-// }
-
-// const parseReportItems = (jsonItems: JsonReportItem[] ): ReportItems => {
-//     const items: ReportItems =  jsonItems.map((jsonItem) => {
-//         const meta = parseItemMeta(jsonItem.meta);
-//         const body = parseItemBody(jsonItem, meta);
-
-//     })
-
-//     return items;
-// }
-
-// const jsonReportToReport = function(json: JsonReportDescriptor): ReportDescriptor {
-//     const meta: ReportMeta = parseReportMeta(json.meta);
-//     const items: ReportItems = parseReportItems(json.items);
-//     const report = ReportConstructor(meta, items);
-//     return report;
-// }
+const jsonReportToReport = function(json: JsonReportDescriptor): ReportDescriptor {
+    const report = reportConstructor(json);
+    return report;
+}
 export { jsonStringToJsonReport, initAjvAsStandAlone, cleanupAjvStandAlone };
 
 

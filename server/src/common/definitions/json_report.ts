@@ -16,6 +16,12 @@ export interface JsonReportMeta {
 
 export type JsonItemAnswer = Array<string>;
 export type JsonItemChildren = Array<JsonReportItem>
+<<<<<<< HEAD
+=======
+/**
+ * @additionalProperties false
+ */
+>>>>>>> 00634b8... implemented constructors for numeric and sum items
 export interface JsonReportItem {
   /**
    * Json structure of an item
@@ -35,7 +41,11 @@ export interface JsonReportItem {
 
   // To support table
   // inner array contains the actual children of a cell.
+<<<<<<< HEAD
   readonly items?: JsonItemChildren;
+=======
+  readonly items?: Array<JsonItemChildren>;
+>>>>>>> 00634b8... implemented constructors for numeric and sum items
 }
 
 export interface JsonMcqOption {
