@@ -43,6 +43,7 @@ export interface JsonMcqOption {
   readonly value: string;
 }
 
+export type JsonReportItems = Array<JsonReportItem>;
 export interface JsonReportDescriptor {
   /**
    * Meta data for a submitted report.
@@ -54,5 +55,5 @@ export interface JsonReportDescriptor {
    * A collection of items in a submitted report.
    *
    */
-  readonly items: Array<JsonReportItem>;
+  readonly items: JsonReportItems;
 }

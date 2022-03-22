@@ -1,11 +1,5 @@
-import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../common/definitions/json_report';
+import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../../common/definitions/json_report';
 
-/**
- * 
- * @param jsonItem Item being examnined
- * @param rowIndex If item is not in a table, rowIndex = 0
- * @returns if item has children
- */
 export const hasChildren = (jsonItem: JsonReportItem): boolean => {
     if (jsonItem.items) {
         if (jsonItem.items!.length > 0)
@@ -50,4 +44,3 @@ export const getReportItems = (report: JsonReportDescriptor): JsonReportItem[] =
 export const getReportMeta = (report: JsonReportDescriptor): JsonReportMeta => {
     return report.meta;
 }
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -10,6 +10,7 @@ import { ReportDescriptor } from 'models/report';
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
 import { parseToReport } from 'utils/json_report_parser/report';
+import { parseToJson } from './json_report';
 
 /**
  * Parse a json string to a ReportDescriptor. Throws 400 on invalid structure or semantic.
@@ -28,6 +29,19 @@ export const jsonStringToReport = function (jsonString: string): ReportDescripto
         throw new InternalError(e.message);
     }
 };
+
+export const reportToJsonReport = (report: ReportDescriptor): JsonReportDescriptor => {
+    try {
+        const jsonReport: JsonReportDescriptor = parseToJson(report);
+        return jsonReport;
+    }
+    catch (e) {
+        if (e instanceof InvalidInput) {
+            throw new BadRequest(e.message);
+        }
+        throw new InternalError(e.message);
+    }
+}
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>
 const getTsCompilerOptions = function(): {} {
