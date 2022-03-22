@@ -91,46 +91,53 @@ const jsonStringToJsonReport = function (jsonString: string): JsonReportDescript
   return jsonReport;
 };
 
-const parseReportMeta = (jsonMeta: JsonReportMeta): ReportMeta => {
-    const id = jsonMeta.id;
-    const deptId = getDepartmentIdFromString(jsonMeta.departmentId);
+// const parseReportMeta = (jsonMeta: JsonReportMeta): ReportMeta => {
+//     const id = jsonMeta.id;
+//     const deptId = getDepartmentIdFromString(jsonMeta.departmentId);
 
-    const submittedDate = new Date(jsonMeta.submittedDate);
-    if (!submittedDate) {
-        throw new BadRequestError(`Submitted date provided is not valid: ${submittedDate}`);
-    }
-    const submittedUserId = jsonMeta.submittedUserId;
-    const meta: ReportMeta = ReportMetaConstructor(id, deptId, submittedDate, submittedUserId);
-    return meta;
-}
+//     const submittedDate = new Date(jsonMeta.submittedDate);
+//     if (!submittedDate) {
+//         throw new BadRequestError(`Submitted date provided is not valid: ${submittedDate}`);
+//     }
+//     const submittedUserId = jsonMeta.submittedUserId;
+//     const meta: ReportMeta = ReportMetaConstructor(id, deptId, submittedDate, submittedUserId);
+//     return meta;
+// }
 
-const parseItemMeta = (jsonMeta: JsonReportItemMeta): ReportItemMeta => {
-    const itemType = getItemTypeFromValue(jsonMeta.type);
-    const meta = ItemMetaConstructor(itemType);
-    return meta;
-}
+// const parseItemMeta = (jsonMeta: JsonReportItemMeta): ReportItemMeta => {
+//     const itemType = getItemTypeFromValue(jsonMeta.type);
+//     const meta = ItemMetaConstructor(itemType);
+//     return meta;
+// }
 
-const parseItemBody = (jsonItem: JsonReportItem, itemMeta: ReportItemMeta): ReportItem<ItemAnswerTypes> => {
-    const description: string = jsonItem.description;
+// const parseItemAnswerByType = (singleCellAnswer: Array<ItemAnswerTypes>):  => {
 
-    // const answer: ItemAnswer<> = jsonItem.answer.map((answer) => {
-    });
-}
+// }
 
-const parseReportItems = (jsonItems: JsonReportItem[] ): ReportItems => {
-    const items: ReportItems =  jsonItems.map((jsonItem) => {
-        const meta = parseItemMeta(jsonItem.meta);
-        const body = parseItemBody(jsonItem, meta.type);
+// const parseItemBody = (jsonItem: JsonReportItem, itemMeta: ReportItemMeta): ReportItem<ItemAnswerTypes> => {
+//     const description: string = jsonItem.description;
 
-    })
+//     // answer supports table (Array<real answer for an item>)
+//     const answer: ItemAnswer<ItemAnswerTypes> = jsonItem.answer.map((singleCellAnswer) => {
+//         const tempAnswer: Array<ItemAnswerTypes> = parseItemAnswerByType(singleCellAnswer);
 
-    return items;
-}
+//     });
+// }
 
-const jsonReportToReport = function(json: JsonReportDescriptor): ReportDescriptor {
-    const meta: ReportMeta = parseReportMeta(json.meta);
-    const items: ReportItems = parseReportItems(json.items);
-    const report = ReportConstructor(meta, items);
-    return report;
-}
+// const parseReportItems = (jsonItems: JsonReportItem[] ): ReportItems => {
+//     const items: ReportItems =  jsonItems.map((jsonItem) => {
+//         const meta = parseItemMeta(jsonItem.meta);
+//         const body = parseItemBody(jsonItem, meta);
+
+//     })
+
+//     return items;
+// }
+
+// const jsonReportToReport = function(json: JsonReportDescriptor): ReportDescriptor {
+//     const meta: ReportMeta = parseReportMeta(json.meta);
+//     const items: ReportItems = parseReportItems(json.items);
+//     const report = ReportConstructor(meta, items);
+//     return report;
+// }
 export { jsonStringToJsonReport, initAjvAsStandAlone, cleanupAjvStandAlone };
