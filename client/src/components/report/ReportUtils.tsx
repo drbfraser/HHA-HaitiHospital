@@ -19,7 +19,7 @@ export const submitHandler = async (
    */
   try {
     const assemData = assembleData(answers, data)
-    const result = await MockApi.submitData(assemData, 1000, true);
+    const result = await MockApi.submitData(assemData, 5000, true);
     setData(result);
     setReadOnly(true);
     toast.success('Data submited');

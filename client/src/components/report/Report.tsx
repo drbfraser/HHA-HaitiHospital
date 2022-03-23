@@ -14,7 +14,7 @@ import {
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
 import { ItemType } from 'common/definitions/json_report';
-import * as ReportApiUtils from './ReportApiUtils';
+import * as ReportApiUtils from './ReportUtils';
 import * as JsonInterfaceUtitls from 'common/definitions/departments';
 import {NumberInputField, SectionLabel, InputGroup} from './ReportItems'
 export interface ReportData extends JsonReportDescriptor {
@@ -54,10 +54,12 @@ function FormContents(props: { path: string }) {
   const { t, i18n } = useTranslation();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
+  const [loading, setLoading] = useState(true)
   const [data, setData] = useState<JsonReportDescriptor>(() => {
     const data = MockApi.getData();
     console.log('API');
     console.log(data);
+    setLoading(false)
     return data;
   });
 
@@ -117,8 +119,10 @@ function FormContents(props: { path: string }) {
     }
   };
 
-  const submitHandler = (answers) => {
-    ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
+  const submitHandler = async (answers) => {
+    setLoading(true)
+    await ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
+    setLoading(false)
   };
 
   console.log('Content render');
@@ -139,6 +143,7 @@ function FormContents(props: { path: string }) {
             itemGroups={sections}
             activeGroup={sectionIdx}
             onClick={navButtonClickHandler}
+            loading={loading}
           />
         </form>
       </FormProvider>
@@ -180,15 +185,18 @@ function Sections(props: {
   itemGroups: any[];
   onClick?: NavButtonClickedHandler;
   readOnly: boolean;
+  loading:boolean
 }) {
   const { formState } = useFormContext();
   const errorsCount = Object.keys(formState.errors).length;
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
     submitButtonHidden = activeGroup != totalGroups - 1 || props.readOnly,
-    errorsPresent = errorsCount != 0,
+    disableButton = errorsCount != 0 || props.loading,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
+  console.log("loading " + props.loading);
+    
   return (
     <>
       {props.itemGroups.map((item, idx) => {
@@ -226,10 +234,10 @@ function Sections(props: {
           className="btn btn-success col-6"
           type="submit"
           hidden={submitButtonHidden}
-          disabled={errorsPresent}
+          disabled={disableButton}
           key={uuid()}
         >
-          Submit
+          {props.loading? 'Loading...': 'Submit'}
         </button>
       </div>
     </>
