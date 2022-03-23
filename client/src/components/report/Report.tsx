@@ -55,16 +55,14 @@ function FormContents(props: { path: string }) {
   const { t, i18n } = useTranslation();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [data, setData] = useState<JsonReportDescriptor>();
-
+  const [submitting, setSubmitting] = useState(false)
   React.useEffect(() => {
-    // MockApi.getDataDelay(3000).then((data) => {
-    //   setData(data);
-    //   setLoading(false);
-    //   console.log('API');
-    //   console.log(data);
-    // });
+    MockApi.getDataDelay(1500).then((data) => {
+      setData(data);
+      console.log('API');
+      console.log(data);
+    });
   }, []);
 
   // Whenever data changed, check for errors messages to give to react form hook
@@ -79,16 +77,18 @@ function FormContents(props: { path: string }) {
           type: 'invalid-input',
           message: message,
         };
+        //  This changes the analogous to a setState call, thus must be called here. 
         formHook.setError(id, error);
       });
   }, [data]);
 
+  const loading = !data;
   if (loading)
     return (
-      <div
-        className="row justify-content-center"
-      >
-        <p className="col-6 text-center" style={{marginTop:'25%'}}>Loading...</p>
+      <div className="row justify-content-center">
+        <p className="col-6 text-center" style={{ marginTop: '25%' }}>
+          Loading...
+        </p>
       </div>
     );
   else {
@@ -134,9 +134,9 @@ function FormContents(props: { path: string }) {
     };
 
     const submitHandler = async (answers) => {
-      setLoading(true);
+      setSubmitting(true);
       await ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
-      setLoading(false);
+      setSubmitting(false);
     };
 
     console.log('Content render');
@@ -161,7 +161,7 @@ function FormContents(props: { path: string }) {
               itemGroups={sections}
               activeGroup={sectionIdx}
               onClick={navButtonClickHandler}
-              loading={loading}
+              loading={submitting}
             />
           </form>
         </FormProvider>
