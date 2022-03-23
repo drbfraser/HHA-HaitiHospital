@@ -11,7 +11,12 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export function getData(): JsonReportDescriptor {
+export async function getDataDelay(millis): Promise<JsonReportDescriptor> {
+  await sleep(millis)
+  return getData();
+}
+
+function getData() {
   const date = new Date();
   const items: ReportItem[] = nicuJSON.flatMap((section, idx) => {
     const items: ReportItem[] = [];
