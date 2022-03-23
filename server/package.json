@@ -10,7 +10,7 @@
     "build": "tsc -p tsconfig.json",
     "clean": "rm -rf ./dist",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/app.ts",
-    "start-prod": "node dist/src/app.js",
+    "start-prod": "ts-node -r tsconfig-paths/register --transpile-only dist/src/app.js",
     "test": "ts-mocha --exit --timeout 10000 -p tsconfig.json tests/unitTests/*.spec.ts",
     "report-parser": "ts-mocha --paths --exit --timeout 20000 -p tsconfig.json tests/unitTests/reportParser.spec.ts"
   },
@@ -40,6 +40,7 @@
     "passport-local": "^1.0.0",
     "react-scripts": "^4.0.3",
     "request": "^2.88.2",
+    "ts-node": "^10.7.0",
     "ts-simple-nameof": "^1.3.1",
     "tsconfig-paths": "^3.12.0",
     "typescript": "^4.4.3",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
@@ -28,9 +28,9 @@ const Admin = (props: AdminProps) => {
     toast.success(i18n.t('adminAlertUserDeleted'));
   };
 
-  const getUsers = async () => {
+  const getUsers = useCallback(async () => {
     setUsers(await Api.Get(ENDPOINT_ADMIN_GET, TOAST_ADMIN_GET, history));
-  };
+  }, [history]) 
 
   const deleteUser = async (id: string) => {
     await Api.Delete(
@@ -61,7 +61,7 @@ const Admin = (props: AdminProps) => {
 
   useEffect(() => {
     getUsers();
-  }, [users]);
+  }, [getUsers]);
 
   return (
     <div className={'admin'}>
