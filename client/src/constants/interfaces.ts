@@ -51,7 +51,6 @@ export interface User {
 export interface UserJson {
   username: string;
   name: string;
-  password: string;
   role: Role;
   department: DepartmentName;
   createdAt: string;

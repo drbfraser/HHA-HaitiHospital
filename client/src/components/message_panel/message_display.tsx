@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { History } from 'history';
+import initialUserJson from './initialUserJson.json';
 import './message_display.css';
 
 interface MessageDisplayProps {
@@ -21,16 +22,17 @@ interface MessageDisplayProps {
 
 const MessageDisplay = (props: MessageDisplayProps) => {
   const { t: translateText } = useTranslation();
-  const [author, setAuthor] = useState<UserJson>();
+  const [author, setAuthor] = useState<UserJson>(initialUserJson as UserJson);
   const history: History = useHistory<History>();
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
 
-  // useEffect(() => {
-  //   setAuthor(props.msgJson.userId);
-  // }, []);
+  useEffect(() => {
+    const retrievedUser = props.msgJson.userId as unknown;
+    setAuthor(retrievedUser as UserJson);
+  }, [props.msgJson]);
 
   const deleteMessageActions = () => {
     toast.success(i18n.t('MessageAlertMessageDeleted'));
@@ -99,8 +101,11 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   <strong>{props.msgJson.messageHeader}</strong>
                 </p>
                 {/* {console.log(author.role)} */}
-                {console.log(props.msgJson.userId)}
-                <p className="department-info">{parsedDepartmentName}</p>
+                <p className="department-info">
+                  {author.role === 'Admin' || author.role === 'Medical Director'
+                    ? author.role
+                    : parsedDepartmentName}
+                </p>
                 <p className="department-info">{((props.msgJson as Json).userId as Json).name}</p>
               </div>
               <div className="p-2">
