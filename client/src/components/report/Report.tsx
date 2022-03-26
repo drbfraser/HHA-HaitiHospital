@@ -18,11 +18,12 @@ import * as ReportApiUtils from './ReportUtils';
 import * as JsonInterfaceUtitls from 'common/definitions/departments';
 import { NumberInputField, SectionLabel, InputGroup } from './ReportItems';
 import { Button, Modal } from 'react-bootstrap';
+import { Spinner } from 'components/spinner/Spinner';
+
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
   validated?: string;
 }
-import { Spinner } from 'components/spinner/Spinner';
 export interface ReportItem extends JsonReportItem {
   id: string;
   validated: boolean;
@@ -255,7 +256,9 @@ function Sections(props: {
           disabled={disableButton}
           key={uuid()}
         >
-          {props.loading ? 'Loading...' : 'Submit'}
+          {props.loading ? 
+          <span className="spinner-border spinner-border-sm"/>
+           : 'Submit'}
         </button>
       </div>
     </>
