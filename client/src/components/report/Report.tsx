@@ -22,7 +22,7 @@ export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
   validated?: string;
 }
-
+import { Spinner } from 'components/spinner/Spinner';
 export interface ReportItem extends JsonReportItem {
   id: string;
   validated: boolean;
@@ -56,7 +56,7 @@ function FormContents(props: { path: string }) {
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const [data, setData] = useState<JsonReportDescriptor>();
-  const [submitting, setSubmitting] = useState(false)
+  const [submitting, setSubmitting] = useState(false);
   React.useEffect(() => {
     MockApi.getDataDelay(1500).then((data) => {
       setData(data);
@@ -77,7 +77,7 @@ function FormContents(props: { path: string }) {
           type: 'invalid-input',
           message: message,
         };
-        //  This changes the analogous to a setState call, thus must be called here. 
+        //  This changes the analogous to a setState call, thus must be called here.
         formHook.setError(id, error);
       });
   }, [data]);
@@ -86,9 +86,7 @@ function FormContents(props: { path: string }) {
   if (loading)
     return (
       <div className="row justify-content-center">
-        <p className="col-6 text-center" style={{ marginTop: '25%' }}>
-          Loading...
-        </p>
+        <Spinner size='3rem' style={{marginTop:'25%'}}/>
       </div>
     );
   else {
