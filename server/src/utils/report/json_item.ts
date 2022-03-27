@@ -5,11 +5,11 @@ import * as _JsonDefs from 'common/definitions/json_report';
 
 export const hasNumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
-    return _ReportDefs.ItemType[typeKey!] === _ReportDefs.ItemType.NUMERIC;
+    return _ReportDefs.ItemType[typeKey] === _ReportDefs.ItemType.NUMERIC;
 };
 export const hasSumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
-    return _ReportDefs.ItemType[typeKey!] !== _ReportDefs.ItemType.SUM;
+    return _ReportDefs.ItemType[typeKey] === _ReportDefs.ItemType.SUM;
 };
 
 export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _ReportDefs.ItemTypeKeys) => {

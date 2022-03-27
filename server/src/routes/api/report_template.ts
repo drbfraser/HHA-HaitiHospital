@@ -10,6 +10,7 @@ import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/json_report_parser/parsers';
 import { formatDateString, generateUuid } from 'utils/utils';
 import { generateReportFromDocument, getTemplateDocumentFromReport } from 'utils/report/template';
+import { InvalidInput } from 'exceptions/systemException';
 
 const router = Router();
 const USER_ID_FIELD = "username";
@@ -174,7 +175,7 @@ async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: 
     if (changeDepartment) {
         const departmentHasTemplate = await TemplateCollection.exists({ departmentId: submittedDeptId });
         if (departmentHasTemplate) {
-            throw new Conflict(`Failed to update. Deparment ${getDepartmentName(submittedDeptId)} already has a template`);
+            throw new InvalidInput(`Failed to update. Deparment ${getDepartmentName(submittedDeptId)} already has a template`);
         }
     }
     template.submittedDate = formatDateString(new Date());
@@ -191,7 +192,7 @@ async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Requ
 
     const isDepartmentExist = await TemplateCollection.exists({ departmentId: newTemplate.departmentId });
     if (isDepartmentExist) {
-        throw new Conflict(`Failed to save. Template for department id ${newTemplate.departmentId} exists`);
+        throw new InvalidInput(`Failed to save. Template for department id ${newTemplate.departmentId} exists`);
     }
 
     // Add some server generated values, since this creates a new template
