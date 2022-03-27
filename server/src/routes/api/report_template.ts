@@ -31,8 +31,7 @@ router.route('/').get(
                     const report = generateReportFromDocument(doc);
                     return report;
                 });
-                const hide = await Promise.all(reports.map((report) => hideUserId(report)));
-                res.status(HTTP_OK_CODE).json(hide);
+                res.status(HTTP_OK_CODE).json(reports);
             }
         } catch (e) {
             next(e);
@@ -54,8 +53,7 @@ router.route('/:departmentId').get(
                 res.status(HTTP_NOCONTENT_CODE).json({});
             }
             else {
-                const temp = await hideUserId(generateReportFromDocument(result));
-                res.status(HTTP_OK_CODE).json(temp);
+                res.status(HTTP_OK_CODE).json(result);
             }
         } catch (e) {
             next(e);
@@ -63,6 +61,7 @@ router.route('/:departmentId').get(
     },
     httpErrorMiddleware
 );
+
 router.route('/:departmentId').delete(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
@@ -97,15 +96,9 @@ router.route('/').post(
 
             let newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
             const result = await attemptToSaveNewTemplate(newTemplate, req);
-
-            if (result) {
-                res.status(HTTP_CREATED_CODE).send({
-                    message: "new template created",
-                });
-            }
-            else {
-                throw new InternalError("Save to DB failed");
-            }
+            res.status(HTTP_CREATED_CODE).send({
+                message: "new template created",
+            });
            
         } catch (e) {
             next(e);
@@ -127,25 +120,14 @@ router.route('/').put(
             let result;
             if (existingDoc) {
                 // Update an existing template
-                result = await attemptToUpdateTemplate(template, existingDoc, req);
-                if (result) {
-                    res.status(HTTP_NOCONTENT_CODE).send();
-                } else {
-                    throw new InternalError("Failed to update a template ");
-                }
+                await attemptToUpdateTemplate(template, existingDoc, req);
+                res.status(HTTP_NOCONTENT_CODE).send();
             } else {
                 // Create a new template
-                result = await attemptToSaveNewTemplate(template, req);
-                if (result) {
-                    res.status(HTTP_CREATED_CODE).send({
-                        message: `New template for department ${getDepartmentName(template.departmentId)} is created`
-                    })
-                } else {
-                    throw new InternalError("Failed to create a template");
-                }
-            }
-            if (!result) {
-                throw new InternalError("Update a template failed");
+                await attemptToSaveNewTemplate(template, req);
+                res.status(HTTP_CREATED_CODE).send({
+                    message: `New template for department ${getDepartmentName(template.departmentId)} is created`
+                })
             }
         
         } catch (e) {
@@ -158,16 +140,18 @@ router.route('/').put(
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-async function hideUserId(report: ReportDescriptor) {
-    // const user = await UserModel.find({"username":report.submittedByUserId}).exec();
-    const userId = report.meta.submittedUserId;
-    const query = UserModel.findOne({ username : userId });
-    const user = await query.exec();
-    const hide = report;
-    hide.meta.submittedUserId = user.name;
 
-    return hide;
-}   
+// To replace user id with username (may be desired in the future)
+// async function hideUserId(report: ReportDescriptor) {
+//     // const user = await UserModel.find({"username":report.submittedByUserId}).exec();
+//     const userId = report.meta.submittedUserId;
+//     const query = UserModel.findOne({ username : userId });
+//     const user = await query.exec();
+//     const hide = report;
+//     hide.meta.submittedUserId = user.name;
+
+//     return hide;
+// }   
 
 async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: TemplateDocument & import("mongoose").Document<any, any, TemplateDocument>, req:Request) {
     const submittedDeptId: string = template.departmentId;
@@ -181,6 +165,10 @@ async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: 
     template.submittedDate = formatDateString(new Date());
     template.submittedByUserId = req.user![`${USER_ID_FIELD}`];
     const result = await existingDoc.updateOne(template);
+
+    if (!result) {
+        throw new InternalError(`Failed to update template with id ${template.id}`);
+    }
     return result;
 }
 
@@ -200,6 +188,10 @@ async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Requ
     newTemplate.submittedDate = formatDateString(new Date());
     newTemplate.submittedByUserId = req.user![`${USER_ID_FIELD}`];
     const result = await new TemplateCollection(newTemplate).save();
+
+    if (!result) {
+        throw new InternalError(`Failed to save template with id ${newTemplate.id}`)
+    }
     return result;
 }
 

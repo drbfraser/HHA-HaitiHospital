@@ -20,7 +20,7 @@ export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _Rep
 // >>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 const isBooleanValue = (str: string) => {
     const parsed = JSON.parse(str.toLowerCase());
-    return parsed === true || parsed === false;
+    return typeof parsed === "boolean";
 };
 interface AnswerTypeChecker {
     (answer: _JsonDefs.JsonItemAnswer): void;

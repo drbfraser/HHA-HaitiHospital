@@ -25,8 +25,8 @@ const templateSchema = new Schema<TemplateDocument>({
 const TEMPLATE_COLLECTION_NAME = "Template";
 const TemplateCollection = mongoose.model<TemplateDocument>(TEMPLATE_COLLECTION_NAME, templateSchema);
 
-const uniqueTemplateId = (value) => {
-    TemplateCollection.countDocuments({ id: value }, function(err, count) {
+const uniqueTemplateId = (value: string) => {
+    TemplateCollection.countDocuments({ id: value }, function(err, count: Number) {
         if (err) {
             return false;
         }
@@ -39,8 +39,8 @@ const uniqueTemplateId = (value) => {
     return true;
 }
 
-const uniqueTemplateDepartment = (value) => {
-    TemplateCollection.countDocuments({ departmentId: value }, function(err, count) {
+const uniqueTemplateDepartment = (value: string) => {
+    TemplateCollection.countDocuments({ departmentId: value }, function(err, count: Number) {
         if (err) {
             return false;
         }
