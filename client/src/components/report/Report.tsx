@@ -1,5 +1,5 @@
-import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
-import React, { useState, useEffect, Fragment } from 'react';
+import { FormProvider, useForm, useFormContext} from 'react-hook-form';
+import React, { useState} from 'react';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,15 +9,12 @@ import { v4 as uuid } from 'uuid';
 import {
   JsonReportDescriptor,
   JsonReportItem,
-  JsonItemAnswer,
   JsonReportMeta,
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
-import { ItemType } from 'common/definitions/json_report';
 import * as ReportApiUtils from './ReportUtils';
 import * as JsonInterfaceUtitls from 'common/definitions/departments';
-import { NumberInputField, SectionLabel, InputGroup } from './ReportItems';
-import { Button, Modal } from 'react-bootstrap';
+import { InputGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 
 export interface ReportData extends JsonReportDescriptor {
