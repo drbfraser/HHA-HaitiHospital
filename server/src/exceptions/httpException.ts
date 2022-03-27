@@ -1,4 +1,5 @@
 export const HTTP_OK_CODE = 200;
+export const HTTP_CREATED_CODE = 201;
 export const HTTP_NOCONTENT_CODE = 204;
 export const HTTP_UNAUTHORIZED_CODE = 401;
 export const HTTP_BADREQUEST_CODE = 400;

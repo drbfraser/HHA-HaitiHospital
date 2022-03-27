@@ -1,13 +1,14 @@
 import { InvalidInput } from 'exceptions/systemException';
 import mongoose from 'mongoose';
-import { ReportItems } from '../utils/definitions/report';
+import { TemplateItems } from 'utils/definitions/template';
 const { Schema } = mongoose;
 
 export interface TemplateDocument {
     id: String,
     departmentId: String,
     submittedDate: String,
-    items: ReportItems
+    submittedByUserId: String,
+    items: TemplateItems
 }
 
 const templateSchema = new Schema<TemplateDocument>({

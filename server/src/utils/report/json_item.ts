@@ -1,6 +1,6 @@
 import { IllegalState, InvalidInput } from "exceptions/systemException";
 import { getItemTypeFromValue, getLengthOfEnum } from "../utils";
-import * as _ReportDefs from '../../models/report';
+import * as _ReportDefs from '../../models/template';
 import * as ItemType from "../definitions/report";
 import * as _JsonDefs from 'common/definitions/json_report';
 

@@ -12,10 +12,10 @@ router.post('/login', requireLocalAuth, (req: any, res: Response) => {
 });
 
 router.post('/logout', requireJwtAuth, (req: Request, res: Response) => {
-  console.log('User successfully logged out');
   res.cookie('jwt', 'invalidated-jwt-token');
   req.logout();
-  res.redirect('/');
+  console.log('User successfully logged out');
+  res.send(true);
 });
 
 router.get('/csrftoken', (req: Request, res: Response) => {
