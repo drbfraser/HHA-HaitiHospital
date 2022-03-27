@@ -55,6 +55,7 @@ function FormContents(props: { path: string }) {
   const [readOnly, setReadOnly] = useState(false);
   const [data, setData] = useState<JsonReportDescriptor>();
   const [submitting, setSubmitting] = useState(false);
+  const pageTop = React.useRef(null)
   React.useEffect(() => {
     MockApi.getDataDelay(1500).then((data) => {
       setData(data);
@@ -118,6 +119,7 @@ function FormContents(props: { path: string }) {
           break;
         default:
       }
+      pageTop.current.scrollIntoView()
     };
 
     const editButtonHandler = (name: string) => {
@@ -139,6 +141,7 @@ function FormContents(props: { path: string }) {
 
     return (
       <>
+        <div ref={pageTop}/>
         <FormHeader reportMetadata={data.meta} />
         <NavBar
           labels={labels}
@@ -211,7 +214,6 @@ function Sections(props: {
     disableButton = errorsCount != 0 || props.loading,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
-  console.log('loading ' + props.loading);
 
   return (
     <>
