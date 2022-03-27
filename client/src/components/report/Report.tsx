@@ -28,7 +28,6 @@ export interface ReportItem extends JsonReportItem {
   errorMessage?: string;
 }
 export function Report() {
-  console.log('Render Report');
   return (
     <div style={{ paddingBottom: '8%' }}>
       <div className="container-fluid">
@@ -59,8 +58,6 @@ function FormContents(props: { path: string }) {
   React.useEffect(() => {
     MockApi.getDataDelay(1500).then((data) => {
       setData(data);
-      console.log('API');
-      console.log(data);
     });
   }, []);
 
@@ -136,8 +133,6 @@ function FormContents(props: { path: string }) {
       await ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
       setSubmitting(false);
     };
-
-    console.log('Content render');
 
     return (
       <>
