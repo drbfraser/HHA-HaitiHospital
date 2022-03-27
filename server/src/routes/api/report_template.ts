@@ -95,7 +95,7 @@ router.route('/').post(
             const report: ReportDescriptor = jsonStringToReport(bodyStr);
 
             let newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
-            const result = await attemptToSaveNewTemplate(newTemplate, req);
+            await attemptToSaveNewTemplate(newTemplate, req);
             res.status(HTTP_CREATED_CODE).send({
                 message: "new template created",
             });
@@ -117,7 +117,6 @@ router.route('/').put(
             const template: TemplateDocument = getTemplateDocumentFromReport(report);
 
             const existingDoc = await TemplateCollection.findOne({ id: template.id }).exec();
-            let result;
             if (existingDoc) {
                 // Update an existing template
                 await attemptToUpdateTemplate(template, existingDoc, req);
@@ -173,6 +172,11 @@ async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: 
 }
 
 async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Request) {
+    // Add some server generated values, since this creates a new template
+    newTemplate.id = generateUuid();
+    newTemplate.submittedDate = formatDateString(new Date());
+    newTemplate.submittedByUserId = req.user![`${USER_ID_FIELD}`];
+
     const isIdExist = await TemplateCollection.exists({ id: newTemplate.id });
     if (isIdExist) {
         throw new InternalError("Generated template uuid exists");
@@ -183,12 +187,7 @@ async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Requ
         throw new InvalidInput(`Failed to save. Template for department id ${newTemplate.departmentId} exists`);
     }
 
-    // Add some server generated values, since this creates a new template
-    newTemplate.id = generateUuid();
-    newTemplate.submittedDate = formatDateString(new Date());
-    newTemplate.submittedByUserId = req.user![`${USER_ID_FIELD}`];
     const result = await new TemplateCollection(newTemplate).save();
-
     if (!result) {
         throw new InternalError(`Failed to save template with id ${newTemplate.id}`)
     }
