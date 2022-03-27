@@ -12,6 +12,7 @@ import {
   ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
 } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_PUT } from 'constants/toast_messages';
+import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { toast } from 'react-toastify';
@@ -33,7 +34,7 @@ const EditMessage = () => {
       messageBody: msgData['messageBody'],
       messageHeader: msgData['messageHeader'],
       departmentId: msgData['departmentId'],
-      departmentName: msgData['departmentName'],
+      departmentName: parseEscapedCharacters(msgData['departmentName']),
       user: msgData['userId'],
       date: msgData['date'],
     };
@@ -60,23 +61,21 @@ const EditMessage = () => {
   };
 
   return (
-    <>
-      <div className="edit-message">
-        <Sidebar />
-        <main>
-          <Header />
-          <div className="container">
-            <h1 className="">{t('editMessage')}</h1>
-            <MessageForm optionalMsg={msg} submitAction={updateMessage} />
-            <div className="edit-msg-back-btn">
-              <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
-                {t('addMessageBack')}
-              </button>
-            </div>
+    <div className="edit-message">
+      <Sidebar />
+      <main>
+        <Header />
+        <div className="container">
+          <h1 className="">{t('editMessage')}</h1>
+          <MessageForm optionalMsg={msg} submitAction={updateMessage} />
+          <div className="edit-msg-back-btn">
+            <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
+              {t('addMessageBack')}
+            </button>
           </div>
-        </main>
-      </div>
-    </>
+        </div>
+      </main>
+    </div>
   );
 };
 

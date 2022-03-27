@@ -8,6 +8,7 @@ import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_DELETE_BY_ID } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_DELETE } from 'constants/toast_messages';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
@@ -28,6 +29,8 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
+  const readableDate = new Date(props.msgJson.date as string).toLocaleString();
+  const parsedDepartmentName = parseEscapedCharacters(props.msgJson.departmentName as string);
 
   useEffect(() => {
     const retrievedUser = props.msgJson.userId as unknown;
@@ -65,17 +68,6 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     deleteMessage(id);
     setDeleteModal(false);
   };
-
-  const readableDate = new Date(props.msgJson.date as string).toLocaleString();
-
-  const parseEscapedCharacters = (escapedCharacter: string) => {
-    const parser = new DOMParser();
-    return parser.parseFromString(`<!doctype html><body>${escapedCharacter}`, 'text/html').body
-      .textContent;
-  };
-
-  // Department name when stored in the database: Community &amp; Health or NICU&#x2F;Paeds needs to be parsed.
-  const parsedDepartmentName = parseEscapedCharacters(props.msgJson.departmentName as string);
 
   return (
     <div className="d-flex text-muted pt-2">
