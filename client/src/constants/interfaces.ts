@@ -47,3 +47,12 @@ export interface User {
   role: Role;
   department: DepartmentName;
 }
+
+export interface UserJson {
+  username: string;
+  name: string;
+  role: Role;
+  department: DepartmentName;
+  createdAt: string;
+  updatedAt: string;
+}
