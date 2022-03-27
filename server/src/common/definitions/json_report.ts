@@ -7,6 +7,18 @@ interface Interfaces {
 }
 export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonReportDescriptor);
 
+export enum ItemType {
+    // SA = "short answer",
+    NUMERIC = 'numeric',
+    // YN = "yes no",
+    // MCQ = "mcq",
+    // PO = "pick one",
+    // MCQ_OPTION = "mcq option",
+    SUM = 'sum'
+    // SG = "survey generator"
+}
+export type ItemTypeKeys = keyof typeof ItemType;
+
 export interface JsonReportMeta {
   readonly id: string;
   readonly departmentId: string;

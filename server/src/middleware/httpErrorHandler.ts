@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from 'express';
 import { BadRequest, HttpError, InternalError } from '../exceptions/httpException';
 
 const httpErrorMiddleware = (error: Error, request: Request, response: Response, next: NextFunction) => {
-
   let isHttpError = (error as HttpError) instanceof HttpError;
   if (!isHttpError) {
     if (error instanceof InvalidInput) {

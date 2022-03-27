@@ -1,18 +1,6 @@
 // import { IllegalState } from 'exceptions/systemException';
+import { ItemTypeKeys } from 'common/definitions/json_report';
 import { DepartmentIdKeys } from '../../common/definitions/departments';
-
-
-export enum ItemType {
-    // SA = "short answer",
-    NUMERIC = 'numeric',
-    // YN = "yes no",
-    // MCQ = "mcq",
-    // PO = "pick one",
-    // MCQ_OPTION = "mcq option",
-    SUM = 'sum'
-    // SG = "survey generator"
-}
-export type ItemTypeKeys = keyof typeof ItemType;
 
 // export enum AnswerType {
 //     number,

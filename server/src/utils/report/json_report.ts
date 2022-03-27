@@ -22,10 +22,7 @@ export const getItemType = (jsonItem: JsonReportItem): string => {
 }
 
 export const isInATable = (jsonItem: JsonReportItem): boolean => {
-    if (jsonItem.answer.length > 1) {
-        return true;
-    }
-    return false;
+    return (jsonItem.answer.length > 1);
 }
 
 export const getItemAnswerLength = (jsonItem: JsonReportItem): number => {

@@ -1,8 +1,9 @@
-import { ItemAnswer, ItemType, ItemTypeKeys, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
-import { formatDateString, generateUuid, getLengthOfEnum } from '../utils';
+import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
+import { formatDateString, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { TemplateDocument } from '../../models/template';
 import { DepartmentId } from "../../common/definitions/departments";
+import { ItemType, ItemTypeKeys } from "common/definitions/json_report";
 
 
 interface TemplateReport extends ReportDescriptor{};

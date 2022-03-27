@@ -1,11 +1,11 @@
-import { DepartmentId, getDepartmentName} from 'common/definitions/departments';
-import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
+import { getDepartmentName} from 'common/definitions/departments';
+import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection, TemplateDocument } from 'models/template';
-import UserModel, { Role } from 'models/user';
+import { Role } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/json_report_parser/parsers';
 import { formatDateString, generateUuid } from 'utils/utils';
