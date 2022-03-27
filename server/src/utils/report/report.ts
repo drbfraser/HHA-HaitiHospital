@@ -1,4 +1,4 @@
-import { ReportDescriptor, ReportItems, ReportMeta } from "models/report"
+import { ReportDescriptor, ReportItems, ReportMeta } from "utils/definitions/report";
 
 export const getReportMeta = (report: ReportDescriptor): ReportMeta => {
     return report.meta;

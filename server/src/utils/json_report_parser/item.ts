@@ -2,6 +2,7 @@ import { IllegalState, InvalidInput } from "exceptions/systemException";
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as  _JsonUtils from "../report/json_report";
 import * as _ReportDefs from '../../models/report'
+import * as ItemType from "../definitions/report";
 import * as _JsonDefs from 'common/definitions/json_report';
 import { hasNumType, checkAnswerType, hasSumType } from "../report/json_item";
 import { isSumCorrect } from "../report/item";
@@ -95,7 +96,7 @@ namespace JsonToItem {
         map.clear();
         map.set("N", parseToNumericItem);
         map.set("SUM", parseToSumItem);
-        const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);
+        const expectedSize = getLengthOfEnum(ItemType.ItemType);
         if (map.size != expectedSize) {
             throw new IllegalState(`item type - constructor map must have length ${expectedSize}`);
         }
@@ -117,7 +118,7 @@ namespace ItemToJson {
     }
 
     const parseFromItem: ItemParser = (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem => {
-        const jsonType: string = _ReportDefs.ItemType[item.type].toString();
+        const jsonType: string = ItemType.ItemType[item.type].toString();
         const jsonDescription: string = item.description;
         const answer: _JsonDefs.JsonItemAnswer = item.answer;
         const jsonAnswer: Array<_JsonDefs.JsonItemAnswer> = new Array<_JsonDefs.JsonItemAnswer>();
@@ -159,7 +160,7 @@ namespace ItemToJson {
         map.set("N", parseFromNumericItem);
         map.set("SUM", parseFromSumItem);
 
-        const expectedSize = getLengthOfEnum(_ReportDefs.ItemType); 
+        const expectedSize = getLengthOfEnum(ItemType.ItemType); 
         if (map.size != expectedSize) {
             throw new IllegalState(`Item type - parser map must have size of ${expectedSize} but have size ${map.size}`);
         }

@@ -27,6 +27,7 @@ export const isValidUrl = (str) => {
 
 import { InvalidInput } from 'exceptions/systemException';
 import * as _ReportDefs from '../models/report'
+import * as ItemType from "./definitions/report";
 export const getEnumKeyByStringValue = function <T extends { [index: string]: any; }>(myEnum: T, enumValue: string): keyof T | null {
     let keys = Object.keys(myEnum).filter(x => myEnum[x].toString() == enumValue);
     return keys.length > 0 ? keys[0] : null;
@@ -38,7 +39,7 @@ export const getLengthOfEnum = function<T extends {[index: string]: any;}>(myEnu
 }
 
 export const getItemTypeFromValue = (type: string): _ReportDefs.ItemTypeKeys=> {
-    const key = getEnumKeyByStringValue(_ReportDefs.ItemType, type);
+    const key = getEnumKeyByStringValue(ItemType.ItemType, type);
     if (!key) {
         throw new InvalidInput(`Item of type: ${type} is not supported`);
     }

@@ -1,7 +1,7 @@
 import { getDepartmentIdKeyFromValue } from 'common/definitions/departments';
 import { JsonReportDescriptor, JsonReportMeta } from 'common/definitions/json_report';
 import { InvalidInput } from 'exceptions/systemException';
-import { ReportDescriptor, ReportItems, ReportMeta } from '../../models/report';
+import { ReportDescriptor, ReportItems, ReportMeta } from "../definitions/report";
 import * as _JsonUtils  from '../report/json_report';
 import * as _ItemParser from './item';
 

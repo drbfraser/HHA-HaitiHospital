@@ -1,6 +1,7 @@
 import { IllegalState, InvalidInput } from "exceptions/systemException";
 import { getItemTypeFromValue, getLengthOfEnum } from "../utils";
 import * as _ReportDefs from '../../models/report';
+import * as ItemType from "../definitions/report";
 import * as _JsonDefs from 'common/definitions/json_report';
 
 export const hasNumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
@@ -53,7 +54,7 @@ const initItemAnswerTypeCheckerMap = (map: Map<_ReportDefs.ItemTypeKeys, AnswerT
     map.set("N", numericAnswerTypeChecker);
     map.set("SUM", numericAnswerTypeChecker);
     //ToDo: fill out the rest later
-    const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);
+    const expectedSize = getLengthOfEnum(ItemType.ItemType);
     if (map.size != expectedSize) {
         throw new IllegalState(`item - answer type checker map must have length ${expectedSize}`);
     }
