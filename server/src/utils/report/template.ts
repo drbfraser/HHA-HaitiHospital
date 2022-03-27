@@ -1,5 +1,5 @@
-import { ItemAnswer, ItemType, ItemTypeKeys, ReportDescriptor, ReportItem, ReportNItem, ReportSumItem } from "../definitions/report";
-import { formatDateString, getLengthOfEnum } from '../utils';
+import { ItemAnswer, ItemType, ItemTypeKeys, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
+import { formatDateString, generateUuid, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { TemplateDocument } from '../../models/template';
 import { DepartmentId } from "../../common/definitions/departments";
@@ -16,6 +16,21 @@ export const getTemplateDocumentFromReport = (report: ReportDescriptor): Templat
     const reportTemplate = ItemToTemplate.getReportTemplate(report);
     const doc = ItemToTemplate.buildTemplateDocument(reportTemplate);
     return doc;
+}
+
+export const generateReportFromDocument = (doc: TemplateDocument): ReportDescriptor => {
+    let report: ReportDescriptor;
+    let meta: ReportMeta = {
+        id: doc.id,
+        departmentId: DepartmentId[doc.departmentId].toString(),
+        submittedDate: new Date(doc.submittedDate),
+        submittedUserId: doc.submittedByUserId
+    }
+    let items: ReportItems = doc.items;
+    return report = {
+        meta: meta,
+        items: items
+    }
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -47,7 +62,7 @@ export const buildTemplateDocument = (template: TemplateReport): TemplateDocumen
 const mapToDefaultAnswer = new Map<ItemType, string>();
 const initToDefaultAnswerMap = (map: Map<ItemType, string>) => {
     map.clear();
-    map.set(ItemType.N, "0");
+    map.set(ItemType.NUMERIC, "0");
     map.set(ItemType.SUM, "0");
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);
@@ -99,7 +114,7 @@ const sumParser: ItemTemplateParser = (item: ReportSumItem): TemplateSumItem => 
 const typeToParser = new Map<ItemType, ItemTemplateParser>();
 const initTypeToParserMap = (map: Map<ItemType, ItemTemplateParser>) => {
     map.clear();
-    map.set(ItemType.N, numericParser);
+    map.set(ItemType.NUMERIC, numericParser);
     map.set(ItemType.SUM, sumParser);
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);

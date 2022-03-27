@@ -93,7 +93,7 @@ namespace JsonToItem {
     const parserByType: ParserByType = new Map<_ReportDefs.ItemType, ItemParser>();
     const initParserByType = (map: Map<_ReportDefs.ItemType, ItemParser>) => {
         map.clear();
-        map.set(_ReportDefs.ItemType.N, parseToNumericItem);
+        map.set(_ReportDefs.ItemType.NUMERIC, parseToNumericItem);
         map.set(_ReportDefs.ItemType.SUM, parseToSumItem);
         const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);
         if (map.size != expectedSize) {
@@ -150,7 +150,7 @@ namespace ItemToJson {
     type ParserByType = Map<_ReportDefs.ItemType, ItemParser>
     const parserByType: ParserByType = new Map<_ReportDefs.ItemType, ItemParser>();
     const initParserByType = (map: ParserByType) => {
-        map.set(_ReportDefs.ItemType.N, parseFromNumericItem);
+        map.set(_ReportDefs.ItemType.NUMERIC, parseFromNumericItem);
         map.set(_ReportDefs.ItemType.SUM, parseFromSumItem);
 
         const expectedSize = getLengthOfEnum(_ReportDefs.ItemType); 

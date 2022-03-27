@@ -9,7 +9,7 @@ import UserModel, { Role } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/json_report_parser/parsers';
 import { formatDateString, generateUuid } from 'utils/utils';
-import { getTemplateDocumentFromReport } from 'utils/report/template';
+import { generateReportFromDocument, getTemplateDocumentFromReport } from 'utils/report/template';
 
 const router = Router();
 const USER_ID_FIELD = "username";
@@ -21,12 +21,16 @@ router.route('/').get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             let query = TemplateCollection.find();
-            const result = await query.exec();
-            if (!result.length) {
-                res.status(HTTP_NOCONTENT_CODE).json(result);
+            const documents = await query.lean();
+            if (!documents.length) {
+                res.status(HTTP_NOCONTENT_CODE).json(documents);
             }
             else {
-                const hide = await Promise.all(result.map((user) => hideUserId(user)));
+                const reports: ReportDescriptor[] = documents.map((doc) => {
+                    const report = generateReportFromDocument(doc);
+                    return report;
+                });
+                const hide = await Promise.all(reports.map((report) => hideUserId(report)));
                 res.status(HTTP_OK_CODE).json(hide);
             }
         } catch (e) {
@@ -49,7 +53,7 @@ router.route('/:departmentId').get(
                 res.status(HTTP_NOCONTENT_CODE).json({});
             }
             else {
-                const temp = await hideUserId(result);
+                const temp = await hideUserId(generateReportFromDocument(result));
                 res.status(HTTP_OK_CODE).json(temp);
             }
         } catch (e) {
@@ -91,8 +95,7 @@ router.route('/').post(
             const report: ReportDescriptor = jsonStringToReport(bodyStr);
 
             let newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
-            newTemplate = generateNewTemplate(report,req);
-            const result = await attemptToSaveTemplate(newTemplate);
+            const result = await attemptToSaveNewTemplate(newTemplate, req);
 
             if (result) {
                 res.status(HTTP_CREATED_CODE).send({
@@ -131,7 +134,7 @@ router.route('/').put(
                 }
             } else {
                 // Create a new template
-                result = await attemptToSaveTemplate(template);
+                result = await attemptToSaveNewTemplate(template, req);
                 if (result) {
                     res.status(HTTP_CREATED_CODE).send({
                         message: `New template for department ${getDepartmentName(template.departmentId)} is created`
@@ -154,13 +157,13 @@ router.route('/').put(
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-async function hideUserId(report: TemplateDocument) {
+async function hideUserId(report: ReportDescriptor) {
     // const user = await UserModel.find({"username":report.submittedByUserId}).exec();
-    const userId = report.submittedByUserId;
+    const userId = report.meta.submittedUserId;
     const query = UserModel.findOne({ username : userId });
     const user = await query.exec();
     const hide = report;
-    hide.submittedByUserId = user.name;
+    hide.meta.submittedUserId = user.name;
 
     return hide;
 }   
@@ -180,16 +183,7 @@ async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: 
     return result;
 }
 
-function generateNewTemplate(report: ReportDescriptor, req): TemplateDocument {
-    // Add some server generated values, since this creates a new template
-    report.meta.id = generateUuid();
-    report.meta.submittedDate = new Date();
-    report.meta.submittedUserId = req.user![`${USER_ID_FIELD}`];
-    const newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
-    return newTemplate;
-}
-
-async function attemptToSaveTemplate(newTemplate: TemplateDocument) {
+async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Request) {
     const isIdExist = await TemplateCollection.exists({ id: newTemplate.id });
     if (isIdExist) {
         throw new InternalError("Generated template uuid exists");
@@ -200,6 +194,10 @@ async function attemptToSaveTemplate(newTemplate: TemplateDocument) {
         throw new Conflict(`Failed to save. Template for department id ${newTemplate.departmentId} exists`);
     }
 
+    // Add some server generated values, since this creates a new template
+    newTemplate.id = generateUuid();
+    newTemplate.submittedDate = formatDateString(new Date());
+    newTemplate.submittedByUserId = req.user![`${USER_ID_FIELD}`];
     const result = await new TemplateCollection(newTemplate).save();
     return result;
 }

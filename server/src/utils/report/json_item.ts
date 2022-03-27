@@ -5,7 +5,7 @@ import * as _JsonDefs from 'common/definitions/json_report';
 
 export const hasNumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
-    return _ReportDefs.ItemType[typeKey!] !== _ReportDefs.ItemType.N;
+    return (_ReportDefs.ItemType[typeKey!] !== _ReportDefs.ItemType.NUMERIC;
 };
 export const hasSumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
@@ -50,7 +50,7 @@ const stringAnswerTypeChecker: AnswerTypeChecker = (answer: _JsonDefs.JsonItemAn
 const mapItemTypeToAnswerTypeChecker = new Map<_ReportDefs.ItemType, AnswerTypeChecker>();
 const initItemAnswerTypeCheckerMap = (map: Map<_ReportDefs.ItemType, AnswerTypeChecker>) => {
     map.clear();
-    map.set(_ReportDefs.ItemType.N, numericAnswerTypeChecker);
+    map.set(_ReportDefs.ItemType.NUMERIC, numericAnswerTypeChecker);
     map.set(_ReportDefs.ItemType.SUM, numericAnswerTypeChecker);
     //ToDo: fill out the rest later
     const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);

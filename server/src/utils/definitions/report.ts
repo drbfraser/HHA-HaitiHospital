@@ -1,10 +1,10 @@
-import { IllegalState } from 'exceptions/systemException';
+// import { IllegalState } from 'exceptions/systemException';
 import { DepartmentIdKeys } from '../../common/definitions/departments';
 
 
 export enum ItemType {
     // SA = "short answer",
-    N = 'numeric',
+    NUMERIC = 'numeric',
     // YN = "yes no",
     // MCQ = "mcq",
     // PO = "pick one",
