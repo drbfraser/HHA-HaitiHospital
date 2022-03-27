@@ -10,6 +10,7 @@ import biomechRoutes from './bioMech';
 import imageRoutes from './image';
 import authRoutes from './localAuth';
 import employeeOfTheMonthRoutes from './employeeOfTheMonth';
+import templateRoutes from './report_template';
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use('/image', imageRoutes);
 //TODO: Might have to change messageBoard routing based on dashboard and where it needs to go
 router.use('/message-board', messageBoardRoutes);
 router.use('/employee-of-the-month', employeeOfTheMonthRoutes);
+router.use('/template', templateRoutes);
 
 export default router;

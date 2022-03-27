@@ -1,4 +1,4 @@
-import * as _ReportDefs from '../../models/report';
+import * as _ReportDefs from '../definitions/report';
 
 export const isSumCorrect = (sum: Number, children: _ReportDefs.ReportNItem[]) => {
     let childrenSum = 0;
@@ -8,6 +8,13 @@ export const isSumCorrect = (sum: Number, children: _ReportDefs.ReportNItem[]) =
     });
     return sum === childrenSum;
 };
+
+export const isItemOfType = (item: _ReportDefs.ReportItem, type: _ReportDefs.ItemType): boolean => {
+    const typeKey = item.type;
+    if (_ReportDefs.ItemType[typeKey] === type)
+        return true;
+    return false;
+}
 
 const getAnswerList = (item: _ReportDefs.ReportItem): _ReportDefs.ItemAnswer => {
     return item.answer;

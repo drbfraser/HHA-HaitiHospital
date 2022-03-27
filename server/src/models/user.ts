@@ -17,10 +17,10 @@ export enum Role {
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
 export interface User extends Document {
   _id: number;
-  username: string;
-  password: string;
-  name: string;
-  role: string;
+  username: String;
+  password: String;
+  name: String;
+  role: String;
   department: DepartmentName;
   createdAt: Date;
   updatedAt: Date;

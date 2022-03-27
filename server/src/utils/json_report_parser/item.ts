@@ -1,7 +1,7 @@
 import { IllegalState, InvalidInput } from "exceptions/systemException";
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as  _JsonUtils from "../report/json_report";
-import * as _ReportDefs from '../../models/report'
+import * as _ReportDefs from "../definitions/report";
 import * as _JsonDefs from 'common/definitions/json_report';
 import { hasNumType, checkAnswerType, hasSumType } from "../report/json_item";
 import { isSumCorrect } from "../report/item";
@@ -28,7 +28,7 @@ namespace JsonToItem {
     const parseToNumericItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportNItem => {
         const typeKey = getItemTypeFromValue(jsonItem.type);
         if (!hasNumType(jsonItem)) {
-            throw new InvalidInput(`Constructor for numeric item but ${typeKey} was provided - item: ${jsonItem.description}`);
+            throw new InvalidInput(`Constructor for numeric item but ${jsonItem.type} was provided - item: ${jsonItem.description}`);
         }
 
         if (_JsonUtils.getItemAnswerLength(jsonItem) !== 1) {
@@ -38,7 +38,7 @@ namespace JsonToItem {
         checkAnswerType(answerList, typeKey!);
 
         let newItem: _ReportDefs.ReportNItem = {
-            type: typeKey!,
+            type: typeKey,
             description: jsonItem.description,
             answer: answerList
         };
@@ -89,23 +89,23 @@ namespace JsonToItem {
         return newItem;
     }
 
-    export type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
-    const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
-    const initParserByType = (map: Map<_ReportDefs.ItemTypeKeys, ItemParser>) => {
+    type ParserByType = Map<_ReportDefs.ItemType, ItemParser>
+    const parserByType: ParserByType = new Map<_ReportDefs.ItemType, ItemParser>();
+    const initParserByType = (map: Map<_ReportDefs.ItemType, ItemParser>) => {
         map.clear();
-        map.set("N", parseToNumericItem);
-        map.set("SUM", parseToSumItem);
+        map.set(_ReportDefs.ItemType.NUMERIC, parseToNumericItem);
+        map.set(_ReportDefs.ItemType.SUM, parseToSumItem);
         const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);
         if (map.size != expectedSize) {
             throw new IllegalState(`item type - constructor map must have length ${expectedSize}`);
         }
     }
     initParserByType(parserByType);
-
     export const getParserByType = (typeKey: _ReportDefs.ItemTypeKeys): ItemParser => {
-        const parser = parserByType.get(typeKey);
+        const type = _ReportDefs.ItemType[typeKey];
+        const parser = parserByType.get(type);
         if (!parser) {
-            throw new InvalidInput(`Parser from json to item for item type ${typeKey} is not supported`);
+            throw new InvalidInput(`Parser from json to item for item type ${type} is not supported`);
         }
         return parser!;
     }
@@ -116,7 +116,7 @@ namespace ItemToJson {
         (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem;
     }
 
-    const parseFromItem: ItemParser = (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem => {
+    const baseParser: ItemParser = (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem => {
         const jsonType: string = _ReportDefs.ItemType[item.type].toString();
         const jsonDescription: string = item.description;
         const answer: _JsonDefs.JsonItemAnswer = item.answer;
@@ -132,32 +132,26 @@ namespace ItemToJson {
     }
 
     const parseFromNumericItem: ItemParser = (item: _ReportDefs.ReportNItem): _JsonDefs.JsonReportItem => {
-        const jsonItem: _JsonDefs.JsonReportItem = parseFromItem(item);
+        const jsonItem: _JsonDefs.JsonReportItem = baseParser(item);
         return jsonItem;
     }
 
     const parseFromSumItem: ItemParser = (item: _ReportDefs.ReportSumItem): _JsonDefs.JsonReportItem => {
-        const base: _JsonDefs.JsonReportItem = parseFromItem(item);
+        const base: _JsonDefs.JsonReportItem = baseParser(item);
         const jsonChildren: _JsonDefs.JsonItemChildren = item.children.map((child) => {
             const parser = getParserByType(child.type);
             return parser(child);
         });
 
-        const jsonItem: _JsonDefs.JsonReportItem = {
-            type: base.type,
-            description: base.description,
-            answer: base.answer,
-            items: jsonChildren
-        };
-
+        const jsonItem: _JsonDefs.JsonReportItem = {...base, items: jsonChildren};
         return jsonItem;
     }
 
-    export type ParserByType = Map<_ReportDefs.ItemTypeKeys, ItemParser>
-    const parserByType: ParserByType = new Map<_ReportDefs.ItemTypeKeys, ItemParser>();
+    type ParserByType = Map<_ReportDefs.ItemType, ItemParser>
+    const parserByType: ParserByType = new Map<_ReportDefs.ItemType, ItemParser>();
     const initParserByType = (map: ParserByType) => {
-        map.set("N", parseFromNumericItem);
-        map.set("SUM", parseFromSumItem);
+        map.set(_ReportDefs.ItemType.NUMERIC, parseFromNumericItem);
+        map.set(_ReportDefs.ItemType.SUM, parseFromSumItem);
 
         const expectedSize = getLengthOfEnum(_ReportDefs.ItemType); 
         if (map.size != expectedSize) {
@@ -167,10 +161,10 @@ namespace ItemToJson {
     initParserByType(parserByType);
 
     export const getParserByType = (typeKey: _ReportDefs.ItemTypeKeys): ItemParser => {
-
-        const parser = parserByType.get(typeKey);
+        const type = _ReportDefs.ItemType[typeKey];
+        const parser = parserByType.get(type);
         if (!parser) {
-            throw new InvalidInput(`Parser from item to json for item type ${typeKey} is not supported`);
+            throw new InvalidInput(`Parser from item to json for item type ${type} is not supported`);
         }
         return parser!;
     }
