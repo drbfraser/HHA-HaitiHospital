@@ -26,7 +26,7 @@ export const isValidUrl = (str) => {
 };
 
 import { InvalidInput } from 'exceptions/systemException';
-import * as _ReportDefs from '../models/template'
+import * as _ReportDefs from './definitions/report';
 import * as ItemType from "./definitions/report";
 import crypto from "crypto";
 

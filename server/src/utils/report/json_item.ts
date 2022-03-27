@@ -1,7 +1,6 @@
 import { IllegalState, InvalidInput } from "exceptions/systemException";
 import { getItemTypeFromValue, getLengthOfEnum } from "../utils";
-import * as _ReportDefs from '../../models/template';
-import * as ItemType from "../definitions/report";
+import * as _ReportDefs from "../definitions/report";
 import * as _JsonDefs from 'common/definitions/json_report';
 
 export const hasNumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
@@ -54,7 +53,7 @@ const initItemAnswerTypeCheckerMap = (map: Map<_ReportDefs.ItemTypeKeys, AnswerT
     map.set("N", numericAnswerTypeChecker);
     map.set("SUM", numericAnswerTypeChecker);
     //ToDo: fill out the rest later
-    const expectedSize = getLengthOfEnum(ItemType.ItemType);
+    const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);
     if (map.size != expectedSize) {
         throw new IllegalState(`item - answer type checker map must have length ${expectedSize}`);
     }
@@ -63,10 +62,8 @@ initItemAnswerTypeCheckerMap(mapItemTypeToAnswerTypeChecker);
 const getAnswerTypeChecker = (typeKey: _ReportDefs.ItemTypeKeys): AnswerTypeChecker => {
     const typeChecker = mapItemTypeToAnswerTypeChecker.get(typeKey);
     if (!typeChecker) {
-        throw new InvalidInput(`Item of type ${typeKey} does not have an answer type checker`);
+        throw new InvalidInput(`Item of type ${_ReportDefs.ItemType[typeKey]} does not have an answer type checker`);
     }
     return typeChecker;
 };
-
-
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<

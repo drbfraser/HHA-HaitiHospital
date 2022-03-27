@@ -14,23 +14,23 @@ export enum ItemType {
 }
 export type ItemTypeKeys = keyof typeof ItemType;
 
-export enum AnswerType {
-    number,
-    boolean,
-    string
-}
-export type AnswerTypeKeys = keyof typeof AnswerType;
+// export enum AnswerType {
+//     number,
+//     boolean,
+//     string
+// }
+// export type AnswerTypeKeys = keyof typeof AnswerType;
 
-export const mapItemTypeToAnswerType = new Map<ItemTypeKeys, AnswerTypeKeys>();
-const initItemAnswerMap = (map: Map<ItemTypeKeys, AnswerTypeKeys>) => {
-    map.clear();
-    map.set("N", "number");
-    map.set("SUM", "number");
-    // ToDo: fill out later
-    if (map.size != Object.keys(ItemType).length)
-        throw new IllegalState(`item type - answer type map must have length ${Object.keys(ItemType).length}`);
-};
-initItemAnswerMap(mapItemTypeToAnswerType);
+// export const mapItemTypeToAnswerType = new Map<ItemTypeKeys, AnswerTypeKeys>();
+// const initItemAnswerMap = (map: Map<ItemTypeKeys, AnswerTypeKeys>) => {
+//     map.clear();
+//     map.set("N", "number");
+//     map.set("SUM", "number");
+//     // ToDo: fill out later
+//     if (map.size != Object.keys(ItemType).length)
+//         throw new IllegalState(`item type - answer type map must have length ${Object.keys(ItemType).length}`);
+// };
+// initItemAnswerMap(mapItemTypeToAnswerType);
 
 
 export interface ReportMeta {

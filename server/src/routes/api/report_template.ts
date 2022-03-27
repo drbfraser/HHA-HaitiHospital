@@ -1,5 +1,5 @@
-import { DepartmentId} from 'common/definitions/departments';
-import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { DepartmentId, getDepartmentName} from 'common/definitions/departments';
+import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import requireJwtAuth from 'middleware/requireJwtAuth';
@@ -7,10 +7,9 @@ import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection, TemplateDocument } from 'models/template';
 import UserModel, { Role } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
-import { TemplateReport } from 'utils/definitions/template';
 import { jsonStringToReport } from 'utils/json_report_parser/parsers';
-import { getTemplate } from 'utils/report/report';
 import { formatDateString, generateUuid } from 'utils/utils';
+import { getTemplateDocumentFromReport } from 'utils/report/template';
 
 const router = Router();
 const USER_ID_FIELD = "username";
@@ -91,7 +90,7 @@ router.route('/').post(
             const bodyStr: string = JSON.stringify(req.body);
             const report: ReportDescriptor = jsonStringToReport(bodyStr);
 
-            const newTemplate: TemplateReport = generateNewTemplate(report, req);
+            const newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
             const result = await attemptToSaveTemplate(newTemplate);
 
             if (result) {
@@ -110,6 +109,49 @@ router.route('/').post(
     httpErrorMiddleware
 )
 
+router.route('/').put(
+    requireJwtAuth,
+    roleAuth(Role.Admin, Role.MedicalDirector),
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const bodyStr: string = JSON.stringify(req.body);
+            const report: ReportDescriptor = jsonStringToReport(bodyStr);
+            const template: TemplateDocument = getTemplateDocumentFromReport(report);
+
+            const existingDoc = await TemplateCollection.findOne({ id: template.id }).exec();
+            let result;
+            if (existingDoc) {
+                // Update an existing template
+                result = await attemptToUpdateTemplate(template, existingDoc, req);
+                if (result) {
+                    res.status(HTTP_NOCONTENT_CODE).send();
+                } else {
+                    throw new InternalError("Failed to update a template ");
+                }
+            } else {
+                // Create a new template
+                result = await attemptToSaveTemplate(template);
+                if (result) {
+                    res.status(HTTP_CREATED_CODE).send({
+                        message: `New template for department ${getDepartmentName(template.departmentId)} is created`
+                    })
+                } else {
+                    throw new InternalError("Failed to create a template");
+                }
+            }
+            if (!result) {
+                throw new InternalError("Update a template failed");
+            }
+        
+        } catch (e) {
+            next(e);
+        }
+    },
+    httpErrorMiddleware
+)
+
+
+
 // >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 async function hideUserId(report: TemplateDocument) {
     // const user = await UserModel.find({"username":report.submittedByUserId}).exec();
@@ -122,36 +164,43 @@ async function hideUserId(report: TemplateDocument) {
     return hide;
 }   
 
-function generateNewTemplate(report: ReportDescriptor, req) {
+async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: TemplateDocument & import("mongoose").Document<any, any, TemplateDocument>, req:Request) {
+    const submittedDeptId: string = template.departmentId;
+    const changeDepartment = existingDoc.departmentId !== submittedDeptId;
+    if (changeDepartment) {
+        const departmentHasTemplate = await TemplateCollection.exists({ departmentId: submittedDeptId });
+        if (departmentHasTemplate) {
+            throw new Conflict(`Failed to update. Deparment ${getDepartmentName(submittedDeptId)} already has a template`);
+        }
+    }
+    template.submittedDate = formatDateString(new Date());
+    template.submittedByUserId = req.user![`${USER_ID_FIELD}`];
+    const result = await existingDoc.updateOne(template);
+    return result;
+}
+
+function generateNewTemplate(report: ReportDescriptor, req): TemplateDocument {
     // Add some server generated values, since this creates a new template
 
     report.meta.id = generateUuid();
     report.meta.submittedDate = new Date();
     report.meta.submittedUserId = req.user![`${USER_ID_FIELD}`];
-    const newTemplate: TemplateReport = getTemplate(report);
+    const newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
     return newTemplate;
 }
 
-async function attemptToSaveTemplate(newTemplate: TemplateReport) {
-    const isIdExist = await TemplateCollection.exists({ id: newTemplate.meta.id });
+async function attemptToSaveTemplate(newTemplate: TemplateDocument) {
+    const isIdExist = await TemplateCollection.exists({ id: newTemplate.id });
     if (isIdExist) {
         throw new InternalError("Generated template uuid exists");
     }
 
-    const isDepartmentExist = await TemplateCollection.exists({ departmentId: DepartmentId[newTemplate.meta.departmentId].toString() });
+    const isDepartmentExist = await TemplateCollection.exists({ departmentId: newTemplate.departmentId });
     if (isDepartmentExist) {
-        throw new Conflict(`Template for department id ${newTemplate.meta.departmentId} exists`);
+        throw new Conflict(`Failed to save. Template for department id ${newTemplate.departmentId} exists`);
     }
 
-    const dbDocument: TemplateDocument = {
-        id: newTemplate.meta.id,
-        departmentId: DepartmentId[newTemplate.meta.departmentId].toString(),
-        submittedDate: formatDateString(newTemplate.meta.submittedDate),
-        submittedByUserId: newTemplate.meta.submittedUserId,
-        items: newTemplate.items
-    };
-    const document = new TemplateCollection(dbDocument);
-    const result = await document.save();
+    const result = await new TemplateCollection(newTemplate).save();
     return result;
 }
 
