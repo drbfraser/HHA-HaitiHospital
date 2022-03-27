@@ -1,5 +1,5 @@
-import { FormProvider, useForm, useFormContext} from 'react-hook-form';
-import React, { useState} from 'react';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import React, { useState } from 'react';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,6 +16,7 @@ import * as ReportApiUtils from './ReportUtils';
 import * as JsonInterfaceUtitls from 'common/definitions/departments';
 import { InputGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
+import { toast } from 'react-toastify';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
@@ -47,24 +48,46 @@ export function Report() {
   );
 }
 
+type None = {} | undefined | null;
+
+type FormState = {
+  type: number;
+  data: any;
+};
+
+enum StateType {
+  loading,
+  ready,
+  invalid,
+  error,
+}
+
+type State = {
+  value: StateType;
+  data: ReportData;
+};
+
+type LoadingState = { data: None } & State;
+
 function FormContents(props: { path: string }) {
   const formHook = useForm();
   const { t, i18n } = useTranslation();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
-  const [data, setData] = useState<JsonReportDescriptor>();
+  // const [data, setData] = useState<JsonReportDescriptor>();
   const [submitting, setSubmitting] = useState(false);
-  const pageTop = React.useRef(null)
+  const [state, setState] = useState<State>({ value: StateType.loading, data: null });
+  const pageTop = React.useRef(null);
   React.useEffect(() => {
     MockApi.getDataDelay(1500).then((data) => {
-      setData(data);
+      setState({ value: StateType.ready, data: data as ReportData });
     });
   }, []);
 
   // Whenever data changed, check for errors messages to give to react form hook
   React.useEffect(() => {
-    if (!data) return;
-    data.items
+    if (state.value == StateType.loading || state.value == StateType.error) return;
+    state.data.items
       .filter((item) => !(item as ReportItem).valid)
       .forEach((invalidItem) => {
         const id = (invalidItem as ReportItem).id;
@@ -76,32 +99,42 @@ function FormContents(props: { path: string }) {
         //  This changes the analogous to a setState call, thus must be called here.
         formHook.setError(id, error);
       });
-  }, [data]);
+  }, [state]);
 
-  const loading = !data;
-  if (loading)
+  const editButtonHandler = (name: string) => {
+    switch (name) {
+      case 'edit':
+        setReadOnly(false);
+        break;
+      default:
+    }
+  };
+
+  const renderLoading = () => {
     return (
       <div className="row justify-content-center">
-        <Spinner size='3rem' style={{marginTop:'25%'}}/>
+        <Spinner size="3rem" style={{ marginTop: '25%' }} />
       </div>
     );
-  else {
-    // parse the items into groups marked by the first label found.
-    const sections = [];
-    data.items.forEach((item) => {
-      if (item.type == 'label') {
-        sections.push([item]);
-      } else {
-        const headSection = sections[sections.length - 1];
-        headSection.push(item);
-      }
-    });
+  };
 
-    // get labels from the groupings found
-    const labels: ReportItem[] = sections.map((section, idx) => {
-      return section[0];
-    });
+  const submitHandler = async (answers) => {
+    setSubmitting(true);
+    let result
+    try{
+      result = await ReportApiUtils.submitData(answers, state.data);
+      toast.success("Data submitted")
+    }catch(err){
+      result = err.data
+      toast.error(`Error ${err.code}: ${err.message}`)
+    }
+    setSubmitting(false);
+    setState({value: StateType.ready, data: result})
+  };
 
+  const renderContent = () => {
+    const data = state.data
+    const [labels, sections] = extractGroupings(state.data);
     const totalSections = labels.length;
     const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
       switch (name) {
@@ -116,27 +149,12 @@ function FormContents(props: { path: string }) {
           break;
         default:
       }
-      pageTop.current.scrollIntoView()
-    };
-
-    const editButtonHandler = (name: string) => {
-      switch (name) {
-        case 'edit':
-          setReadOnly(false);
-          break;
-        default:
-      }
-    };
-
-    const submitHandler = async (answers) => {
-      setSubmitting(true);
-      await ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
-      setSubmitting(false);
+      pageTop.current.scrollIntoView();
     };
 
     return (
       <>
-        <div ref={pageTop}/>
+        <div ref={pageTop} />
         <FormHeader reportMetadata={data.meta} />
         <NavBar
           labels={labels}
@@ -161,7 +179,33 @@ function FormContents(props: { path: string }) {
         </FormProvider>
       </>
     );
+  };
+
+  switch (state.value) {
+    case StateType.loading:
+      return renderLoading();
+    default:
+      return renderContent();
   }
+}
+
+function extractGroupings(data: ReportData): [ReportItem[], ReportItem[]] {
+  // parse the items into groups marked by the first label found.
+  const sections = [];
+  data.items.forEach((item) => {
+    if (item.type == 'label') {
+      sections.push([item]);
+    } else {
+      const headSection = sections[sections.length - 1];
+      headSection.push(item);
+    }
+  });
+
+  // get labels from the groupings found
+  const labels: ReportItem[] = sections.map((section, idx) => {
+    return section[0];
+  });
+  return [labels, sections];
 }
 
 function FormHeader(props: { reportMetadata: JsonReportMeta }) {
@@ -250,9 +294,7 @@ function Sections(props: {
           disabled={disableButton}
           key={uuid()}
         >
-          {props.loading ? 
-          <span className="spinner-border spinner-border-sm"/>
-           : 'Submit'}
+          {props.loading ? <span className="spinner-border spinner-border-sm" /> : 'Submit'}
         </button>
       </div>
     </>

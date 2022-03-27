@@ -5,29 +5,18 @@ import {
 import { getDepartmentName } from 'common/definitions/departments';
 import { toast } from 'react-toastify';
 import * as MockApi from './MockApi';
-import { ReportItem } from './Report';
+import { ReportItem, ReportData } from './Report';
 
-export const submitHandler = async (
+export const submitData = async (
   answers: object,
   data: JsonReportDescriptor,
-  setData: React.Dispatch<React.SetStateAction<JsonReportDescriptor>>,
-  setReadOnly: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   /*
    * Here we make a request to server and handle the responses.
    * Todo: refactor
    */
-  try {
     const assemData = assembleData(answers, data)
-    const result = await MockApi.submitData(assemData, 2000, true);
-    setData(result);
-    setReadOnly(true);
-    toast.success('Data submited');
-  } catch (errorData) {
-    setData(errorData.data);
-    setReadOnly(false);
-    toast.error(errorData.message);
-  }
+    return await MockApi.submitData(assemData, 2000, false);
 };
 
 const assembleData = (answers: object, data: JsonReportDescriptor): JsonReportDescriptor => {
