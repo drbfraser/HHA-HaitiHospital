@@ -11,9 +11,12 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export async function getDataDelay(millis): Promise<JsonReportDescriptor> {
+export async function getDataDelay(millis: number, success: boolean): Promise<JsonReportDescriptor> {
   await sleep(millis)
-  return getData();
+  if(success)
+    return getData();
+  else 
+    throw {code:'500', message:'Internal server error'}
 }
 
 function getData() {
@@ -37,8 +40,6 @@ function getData() {
         }
       })
       .filter((item) => item != undefined);
-    console.log(itemsFound);
-
     items.push(label);
     return items.concat(itemsFound);
   });
@@ -147,8 +148,6 @@ export async function submitData(
   delayMillis: number,
   success: boolean,
 ): Promise<JsonReportDescriptor> {
-  console.log('Mock API submit, success: ' + success);
-  console.log(data);
   if (success) {
     return sleep(delayMillis).then(() => {
       return { ...data };

@@ -16,7 +16,7 @@ export const submitData = async (
    * Todo: refactor
    */
     const assemData = assembleData(answers, data)
-    return await MockApi.submitData(assemData, 2000, false);
+    return await MockApi.submitData(assemData, 2000, true);
 };
 
 const assembleData = (answers: object, data: JsonReportDescriptor): JsonReportDescriptor => {

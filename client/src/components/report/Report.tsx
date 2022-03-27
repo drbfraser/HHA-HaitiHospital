@@ -48,46 +48,47 @@ export function Report() {
   );
 }
 
-type None = {} | undefined | null;
-
-type FormState = {
-  type: number;
-  data: any;
-};
-
 enum StateType {
   loading,
   ready,
-  invalid,
   error,
+}
+
+type ErrorData = {
+  code: string
+  message: string
 }
 
 type State = {
   value: StateType;
-  data: ReportData;
+  data: ReportData | ErrorData;
 };
 
-type LoadingState = { data: None } & State;
+function Loading(): State {return { value: StateType.loading, data: null }}
+function Ready(data: ReportData): State {return { value: StateType.ready, data: data }}
+function Error(data: ErrorData): State {return { value: StateType.error, data: data }}
+
 
 function FormContents(props: { path: string }) {
   const formHook = useForm();
   const { t, i18n } = useTranslation();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
-  // const [data, setData] = useState<JsonReportDescriptor>();
   const [submitting, setSubmitting] = useState(false);
-  const [state, setState] = useState<State>({ value: StateType.loading, data: null });
+  const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
   React.useEffect(() => {
-    MockApi.getDataDelay(1500).then((data) => {
+    MockApi.getDataDelay(1500, true).then((data) => {
       setState({ value: StateType.ready, data: data as ReportData });
+    }).catch(err => {
+      setState(Error(err))
     });
   }, []);
 
   // Whenever data changed, check for errors messages to give to react form hook
-  React.useEffect(() => {
+  React.useEffect(() => {    
     if (state.value == StateType.loading || state.value == StateType.error) return;
-    state.data.items
+    (state.data as ReportData).items
       .filter((item) => !(item as ReportItem).valid)
       .forEach((invalidItem) => {
         const id = (invalidItem as ReportItem).id;
@@ -101,40 +102,44 @@ function FormContents(props: { path: string }) {
       });
   }, [state]);
 
-  const editButtonHandler = (name: string) => {
-    switch (name) {
-      case 'edit':
-        setReadOnly(false);
-        break;
-      default:
+  const editButtonHandler = () => setReadOnly(false);
+
+  const submitHandler = async (answers) => {
+    const submittingData = (state.data as ReportData)
+    let data
+    setSubmitting(true);
+    try{
+      data = await ReportApiUtils.submitData(answers, submittingData);
+      toast.success("Data submitted")
+    }catch(err){
+      data = err.data
+      toast.error(`Error ${err.code}: ${err.message}`)
     }
+    setSubmitting(false);
+    setState(Ready(data))
   };
 
   const renderLoading = () => {
     return (
-      <div className="row justify-content-center">
-        <Spinner size="3rem" style={{ marginTop: '25%' }} />
+      <div className="row justify-content-center" style={{ marginTop: '25%' }}>
+        <Spinner size="3rem"/>
       </div>
     );
   };
 
-  const submitHandler = async (answers) => {
-    setSubmitting(true);
-    let result
-    try{
-      result = await ReportApiUtils.submitData(answers, state.data);
-      toast.success("Data submitted")
-    }catch(err){
-      result = err.data
-      toast.error(`Error ${err.code}: ${err.message}`)
-    }
-    setSubmitting(false);
-    setState({value: StateType.ready, data: result})
+  const renderError = () => {
+    const errorData = (state.data as ErrorData)
+    return (
+      <div className="row justify-content-center text-center" style={{ marginTop: '25%' }}>
+        <h1 className='text-danger' >{`Error ${errorData.code}`}</h1>
+        <strong>{`${errorData.message}`}</strong>
+      </div>
+    );
   };
 
   const renderContent = () => {
-    const data = state.data
-    const [labels, sections] = extractGroupings(state.data);
+    const data = (state.data as ReportData)
+    const [labels, sections] = extractGroupings(data);
     const totalSections = labels.length;
     const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
       switch (name) {
@@ -184,6 +189,8 @@ function FormContents(props: { path: string }) {
   switch (state.value) {
     case StateType.loading:
       return renderLoading();
+      case StateType.error:
+        return renderError();
     default:
       return renderContent();
   }
@@ -234,9 +241,6 @@ function FormHeader(props: { reportMetadata: JsonReportMeta }) {
     </div>
   );
 }
-
-type NavButtonClickedHandler = (name: string, section: number) => void;
-type ButtonClickedHandler = (name: string) => void;
 
 function Sections(props: {
   activeGroup: number;
@@ -301,12 +305,14 @@ function Sections(props: {
   );
 }
 
+type NavButtonClickedHandler = (name: string, section: number) => void;
+
 function NavBar(props: {
   labels: ReportItem[];
   activeLabel?: number;
   onNavClick: NavButtonClickedHandler;
   hideEditButton: boolean;
-  onEditClick: ButtonClickedHandler;
+  onEditClick: () => void;
 }) {
   return (
     <div className="list-group list-group-horizontal sticky-top justify-content-between bg-white p-2 ps-4 mt-3 shadow-sm">
@@ -334,7 +340,7 @@ function NavBar(props: {
           type="button"
           className="btn btn-primary bi bi-pencil-square"
           hidden={props.hideEditButton}
-          onClick={() => props.onEditClick('edit')}
+          onClick={() => props.onEditClick()}
         >
           &nbsp;&nbsp;Edit
         </button>
