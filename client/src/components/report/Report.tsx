@@ -1,5 +1,5 @@
-import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
-import React, { useState, useEffect, Fragment } from 'react';
+import { FormProvider, useForm, useFormContext} from 'react-hook-form';
+import React, { useState} from 'react';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,26 +9,25 @@ import { v4 as uuid } from 'uuid';
 import {
   JsonReportDescriptor,
   JsonReportItem,
-  JsonItemAnswer,
   JsonReportMeta,
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
-import { ItemType } from 'common/definitions/json_report';
-import * as ReportApiUtils from './ReportApiUtils';
+import * as ReportApiUtils from './ReportUtils';
 import * as JsonInterfaceUtitls from 'common/definitions/departments';
+import { InputGroup } from './ReportItems';
+import { Spinner } from 'components/spinner/Spinner';
+
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
   validated?: string;
 }
-
 export interface ReportItem extends JsonReportItem {
-  id:string;
+  id: string;
   validated: boolean;
   valid: boolean;
   errorMessage?: string;
 }
 export function Report() {
-  console.log('Render Report');
   return (
     <div style={{ paddingBottom: '8%' }}>
       <div className="container-fluid">
@@ -49,19 +48,22 @@ export function Report() {
 }
 
 function FormContents(props: { path: string }) {
-  const methods = useForm();
+  const formHook = useForm();
   const { t, i18n } = useTranslation();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
-  const [data, setData] = useState<JsonReportDescriptor>(() => {
-    const data = MockApi.getData();
-    console.log('API');
-    console.log(data);
-    return data;
-  });
-
-  // Setting errors from data using react-hook-form. Note the dependency
+  const [data, setData] = useState<JsonReportDescriptor>();
+  const [submitting, setSubmitting] = useState(false);
+  const pageTop = React.useRef(null)
   React.useEffect(() => {
+    MockApi.getDataDelay(1500).then((data) => {
+      setData(data);
+    });
+  }, []);
+
+  // Whenever data changed, check for errors messages to give to react form hook
+  React.useEffect(() => {
+    if (!data) return;
     data.items
       .filter((item) => !(item as ReportItem).valid)
       .forEach((invalidItem) => {
@@ -71,85 +73,103 @@ function FormContents(props: { path: string }) {
           type: 'invalid-input',
           message: message,
         };
-        methods.setError(id, error);
+        //  This changes the analogous to a setState call, thus must be called here.
+        formHook.setError(id, error);
       });
   }, [data]);
 
-  // parse the items and group them into sections.
-  const sections = [];
-  data.items.forEach((item) => {
-    if (item.type == 'label') {
-      sections.push([item]);
-    } else {
-      const headSection = sections[sections.length - 1];
-      headSection.push(item);
-    }
-  });
+  const loading = !data;
+  if (loading)
+    return (
+      <div className="row justify-content-center">
+        <Spinner size='3rem' style={{marginTop:'25%'}}/>
+      </div>
+    );
+  else {
+    // parse the items into groups marked by the first label found.
+    const sections = [];
+    data.items.forEach((item) => {
+      if (item.type == 'label') {
+        sections.push([item]);
+      } else {
+        const headSection = sections[sections.length - 1];
+        headSection.push(item);
+      }
+    });
 
-  // get labels from the groupings found
-  const labels: ReportItem[] = sections.map((section, idx) => {
-    return section[0];
-  });
+    // get labels from the groupings found
+    const labels: ReportItem[] = sections.map((section, idx) => {
+      return section[0];
+    });
 
-  const totalSections = labels.length;
-  const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
-    switch (name) {
-      case 'next':
-        setSectionIdx((section + 1) % totalSections);
-        break;
-      case 'prev':
-        setSectionIdx((section - 1) % totalSections);
-        break;
-      case 'section-clicked':
-        setSectionIdx(section);
-        break;
-      default:
-    }
-  };
+    const totalSections = labels.length;
+    const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
+      switch (name) {
+        case 'next':
+          setSectionIdx((section + 1) % totalSections);
+          break;
+        case 'prev':
+          setSectionIdx((section - 1) % totalSections);
+          break;
+        case 'section-clicked':
+          setSectionIdx(section);
+          break;
+        default:
+      }
+      pageTop.current.scrollIntoView()
+    };
 
-  const editButtonHandler = (name: string) => {
-    switch (name) {
-      case 'edit':
-        setReadOnly(false);
-        break;
-      default:
-    }
-  };
+    const editButtonHandler = (name: string) => {
+      switch (name) {
+        case 'edit':
+          setReadOnly(false);
+          break;
+        default:
+      }
+    };
 
-  const submitHandler = (answers) => {
-    ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
-  };
+    const submitHandler = async (answers) => {
+      setSubmitting(true);
+      await ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
+      setSubmitting(false);
+    };
 
-  console.log('Content render');
-  return (
-    <>
-      <FormHeader reportMetadata={data.meta} />
-      <NavBar
-        labels={labels}
-        activeLabel={sectionIdx}
-        onNavClick={navButtonClickHandler}
-        hideEditButton={!readOnly}
-        onEditClick={editButtonHandler}
-      />
-      <FormProvider {...methods}>
-        <form className="row p-3 needs-validation" onSubmit={methods.handleSubmit(submitHandler)}>
-          <Sections
-            readOnly={readOnly}
-            itemGroups={sections}
-            activeGroup={sectionIdx}
-            onClick={navButtonClickHandler}
-          />
-        </form>
-      </FormProvider>
-    </>
-  );
+    return (
+      <>
+        <FormHeader reportMetadata={data.meta} />
+        <NavBar
+          labels={labels}
+          activeLabel={sectionIdx}
+          onNavClick={navButtonClickHandler}
+          hideEditButton={!readOnly}
+          onEditClick={editButtonHandler}
+        />
+        <FormProvider {...formHook}>
+        <div ref={pageTop}/>
+          <form
+            className="row p-3 needs-validation"
+            onSubmit={formHook.handleSubmit(submitHandler)}
+          >
+            <Sections
+              readOnly={readOnly}
+              itemGroups={sections}
+              activeGroup={sectionIdx}
+              onClick={navButtonClickHandler}
+              loading={submitting}
+            />
+          </form>
+        </FormProvider>
+      </>
+    );
+  }
 }
 
 function FormHeader(props: { reportMetadata: JsonReportMeta }) {
   const date = new Date();
   const locale = 'default';
   const formName =
-    JsonInterfaceUtitls.getDepartmentName(parseInt(props.reportMetadata.departmentId)) + ' ' +
+    JsonInterfaceUtitls.getDepartmentName(parseInt(props.reportMetadata.departmentId)) +
+    ' ' +
     date.toLocaleDateString(locale, { month: 'long' }) +
     ' Report';
 
@@ -179,15 +199,17 @@ function Sections(props: {
   itemGroups: any[];
   onClick?: NavButtonClickedHandler;
   readOnly: boolean;
+  loading: boolean;
 }) {
   const { formState } = useFormContext();
   const errorsCount = Object.keys(formState.errors).length;
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
     submitButtonHidden = activeGroup != totalGroups - 1 || props.readOnly,
-    errorsPresent = errorsCount != 0,
+    disableButton = errorsCount != 0 || props.loading,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
+
   return (
     <>
       {props.itemGroups.map((item, idx) => {
@@ -225,20 +247,17 @@ function Sections(props: {
           className="btn btn-success col-6"
           type="submit"
           hidden={submitButtonHidden}
-          disabled={errorsPresent}
+          disabled={disableButton}
           key={uuid()}
         >
-          Submit
+          {props.loading ? 
+          <span className="spinner-border spinner-border-sm"/>
+           : 'Submit'}
         </button>
       </div>
     </>
   );
 }
-
-type Label = {
-  id: string;
-  text?: string;
-};
 
 function NavBar(props: {
   labels: ReportItem[];
@@ -277,112 +296,6 @@ function NavBar(props: {
         >
           &nbsp;&nbsp;Edit
         </button>
-      </div>
-    </div>
-  );
-}
-
-function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boolean }) {
-  return (
-    <div hidden={!props.active}>
-      {props.items.map((element, idx) => {
-        switch (element.type) {
-          case 'label':
-            const label: Label = { id: 'section' + idx, text: element.description };
-            return <SectionLabel key={label.id} id={label.id} text={label.text} />;
-          case ItemType.N:
-            let value = element.answer[0][0];
-            return (
-              <NumberInputField
-                key={(element as ReportItem).id}
-                id={(element as ReportItem).id}
-                text={idx + '. ' + element.description}
-                valid={element.valid}
-                errorMessage={element.errorMessage}
-                value={value}
-                readOnly={props.readOnly}
-              />
-            );
-          default:
-            <Fragment />;
-        }
-      })}
-      <div className="row justify-content-center mt-3">
-        <div className="col-8 dropdown-divider" />
-      </div>
-    </div>
-  );
-}
-
-type NumberInputFieldProps = {
-  id: string;
-  text?: string;
-  value: string;
-  weight?: string;
-  indent?: boolean;
-  isHeader?: boolean;
-  valid: boolean;
-  errorMessage?: string;
-  readOnly?: boolean;
-};
-
-function NumberInputField(props: NumberInputFieldProps): JSX.Element {
-  const { register, formState, clearErrors } = useFormContext();
-  const { t, i18n } = useTranslation();
-  const text = props.text ?? 'N/A';
-  const getWeightCss = (w: string) => {
-    switch (w) {
-      case 'light':
-        return ' font-weight-light';
-      case 'bold':
-        return ' font-weight-bold';
-      default:
-        return ' ';
-    }
-  };
-  const invalid: boolean = formState.errors[props.id];
-  const errorMessage = formState.errors[props.id]?.message;
-  return (
-    <div className="row justify-content-center ">
-      <div className="form-group row col-sm-12 col-lg-6 col-xl-6 p-1 m-1">
-        <label
-          className={
-            'col-sm-8 col-form-label align-middle' +
-            getWeightCss(props.weight) +
-            (props.indent ? ' ps-5' : '')
-          }
-          htmlFor={props.id}
-        >
-          {props.isHeader ? <h5>{text}</h5> : text}
-        </label>
-
-        <div className="col-sm-4">
-          <input
-            id={props.id}
-            type={'number'}
-            className={'form-control' + (invalid ? ' is-invalid' : '')}
-            readOnly={props.readOnly}
-            defaultValue={props.value}
-            {...register(props.id, {
-              required: true,
-              onChange: () => {
-                clearErrors(props.id);
-              },
-            })}
-          />
-          <small className="invalid-feedback">{errorMessage}</small>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SectionLabel(props: { id?: string; text?: string }) {
-  return (
-    <div id={props.id} className="row justify-content-center">
-      <div className="col-8 mt-5">
-        <h1 style={{ paddingTop: '' }}>{props.text ?? 'Empty Label'}</h1>
-        <div className="dropdown-divider pb-4" />
       </div>
     </div>
   );
