@@ -7,7 +7,6 @@ import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { verifyDeptId } from 'common/definitions/departments';
 import { BadRequest, InternalError } from 'exceptions/httpException';
-import httpErrorMiddleware from 'middleware/httpErrorHandler';
 
 const router = Router();
 
@@ -17,14 +16,14 @@ router.get('/', async (req: Request, res: Response) => {
       .sort({ createdOn: 'desc' })
       .then((response: any) => res.status(200).json(response))
       .catch((err: any) => {throw new InternalError(`Get biomechs failed: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 router.get('/:id', async (req: Request, res: Response) => {
     await BioMech.findById(req.params.id)
       .populate('user')
       .then((response: any) => res.status(200).json(response))
       .catch((err: any) => {throw new BadRequest(`Could not find biomech id ${req.params.id} results`)});
-}, httpErrorMiddleware);
+});
 
 router.post('/', 
     requireJwtAuth, 
@@ -59,13 +58,13 @@ router.post('/',
       .save()
       .then(() => res.status(201).json('BioMech Report Submitted Successfully'))
       .catch((err: any) => { throw new InternalError(`BioMech Report submission failed: ${err}`)} );
-}, httpErrorMiddleware);
+});
 
 router.delete('/:id', async (req: Request, res: Response) => {
     BioMech.findByIdAndRemove(req.params.id)
         .then((data: any) => deleteUploadedImage(data.imgPath))
         .then(() => res.sendStatus(204))
         .catch((err: any) => {throw new InternalError(`Failed to delete bio mech: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 export default router;

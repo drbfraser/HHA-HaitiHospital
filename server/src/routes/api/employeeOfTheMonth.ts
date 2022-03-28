@@ -7,7 +7,6 @@ import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../schema/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import { BadRequest, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 import { verifyDeptId } from 'common/definitions/departments';
 
@@ -17,7 +16,7 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
     await EmployeeOfTheMonth.findOne()
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => { throw new InternalError(`get employee of the month posts failed: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 router.put('/', requireJwtAuth, checkIsInRole(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
     const previousEmployeeOfTheMonth = await EmployeeOfTheMonth.findOne();
@@ -40,6 +39,6 @@ router.put('/', requireJwtAuth, checkIsInRole(Role.Admin), registerEmployeeOfThe
     await EmployeeOfTheMonth.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth._id }, { $set: updatedEmployeeOfTheMonth }, { new: true })
       .then((data: any) => res.status(HTTP_NOCONTENT_CODE).json(data))
       .catch((err: any) => { throw new InternalError(`Failed to update employee of the month: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 export default router;

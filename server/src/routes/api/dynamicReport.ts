@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { BadRequest, HttpError } from '../../exceptions/httpException';
+import { BadRequest } from '../../exceptions/httpException';
 import { departmentAuth } from '../../middleware/departmentAuth';
-import httpErrorMiddleware from '../../middleware/httpErrorHandler';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
 import { ReportModel } from '../../models/dynamicReport';
@@ -32,8 +31,7 @@ router.route('/').get(
     res.status(200).send({
     reports: allReports
     });
-  },
-  httpErrorMiddleware
+  }
 );
 
 //Fetch reports of a department with department id
@@ -62,8 +60,7 @@ router.route('/:departmentId').get(
     res.status(200).send({
     reports: reports
     });
-  },
-  httpErrorMiddleware
+  }
 );
 
 // >>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>

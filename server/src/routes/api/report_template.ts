@@ -1,7 +1,6 @@
 import { getDeptNameFromId} from 'common/definitions/departments';
 import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
-import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection, TemplateDocument } from 'models/template';
@@ -31,8 +30,7 @@ router.route('/').get(
             });
             res.status(HTTP_OK_CODE).json(reports);
         }
-    },
-    httpErrorMiddleware
+    }
 );
 
 router.route('/:departmentId').get(
@@ -49,8 +47,7 @@ router.route('/:departmentId').get(
         else {
             res.status(HTTP_OK_CODE).json(result);
         }
-    },
-    httpErrorMiddleware
+    }
 );
 
 router.route('/:departmentId').delete(
@@ -67,8 +64,7 @@ router.route('/:departmentId').delete(
                 message: `Template for department with id ${deptId} is removed`
             });
         }
-    },
-    httpErrorMiddleware
+    }
 );
 
 router.route('/').post(
@@ -83,8 +79,7 @@ router.route('/').post(
         res.status(HTTP_CREATED_CODE).send({
             message: "new template created",
         });
-    },
-    httpErrorMiddleware
+    }
 )
 
 router.route('/').put(
@@ -107,8 +102,7 @@ router.route('/').put(
                 message: `New template for department ${getDeptNameFromId(template.departmentId)} is created`
             })
         }   
-    },
-    httpErrorMiddleware
+    }
 )
 
 

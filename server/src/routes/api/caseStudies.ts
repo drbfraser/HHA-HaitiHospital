@@ -7,7 +7,6 @@ import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import { HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 
 const router = Router();
@@ -21,21 +20,21 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
       .populate('user')
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => {throw new InternalError(`Failed to get case studies: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 router.get('/featured', requireJwtAuth, async (req: Request, res: Response) => {
     await CaseStudy.findOne(setFeatured(true))
       .populate('user')
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => {throw new InternalError(`Failed to get featured case study: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
     await CaseStudy.findById(req.params.id)
       .populate('user')
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => {throw new InternalError(`Failed to get case study id ${req.params.id}: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 router.post('/', 
     requireJwtAuth, registerCaseStudiesCreate, 
@@ -67,7 +66,7 @@ router.post('/',
       .then(() => res.status(201).json('Case Study Submitted successfully'))
       .catch((err: any) => { throw new InternalError(`Case study submission failed: ${err}`)});
 
-}, httpErrorMiddleware);
+});
 
 router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
     CaseStudy.findByIdAndRemove(req.params.id)
@@ -75,7 +74,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDire
       .then(() => res.sendStatus(204))
       .catch((err: any) => {throw new InternalError(`Delete case study id ${req.params.id} failed: ${err}`)});
 
-}, httpErrorMiddleware);
+});
 
 router.put('/:id',
   requireJwtAuth,
@@ -109,8 +108,7 @@ router.put('/:id',
     await CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
         .then((data: any) => res.status(HTTP_NOCONTENT_CODE).json(data))
         .catch((err: any) => {throw new InternalError(`Failed to update case study id ${req.params.id}: ${err}`)});
-  }, 
-  httpErrorMiddleware
+  }
 );
 
 router.patch('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response, next: NextFunction) => {
@@ -126,6 +124,6 @@ router.patch('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirec
     await CaseStudy.findByIdAndUpdate(req.params.id, { $set: setFeatured(true) }, { new: true })
         .then((data: any) => res.status(HTTP_NOCONTENT_CODE).json(data))
         .catch((err: any) => { throw new InternalError(`Failed to feature the new case study: ${err}`)});
-}, httpErrorMiddleware);
+});
 
 export default router;

@@ -9,6 +9,7 @@ import * as ENV from './utils/processEnv';
 const path = require('path');
 
 import csrf from 'csurf';
+import httpErrorMiddleware from 'middleware/httpErrorHandler';
 
 export const createServer = () => {
   const app = express();
@@ -61,6 +62,7 @@ export const createServer = () => {
   // Use Routes
   app.use('/', routes);
   app.use('/public', express.static('public'));
+  app.use(httpErrorMiddleware);
 
   return app;
 };
