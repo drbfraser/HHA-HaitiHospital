@@ -1,4 +1,4 @@
-import { getDepartmentIdKeyFromValue } from 'common/definitions/departments';
+import { verifyDeptId } from 'common/definitions/departments';
 import { JsonReportDescriptor, JsonReportMeta } from 'common/definitions/json_report';
 import { InvalidInput } from 'exceptions/systemException';
 import { ReportDescriptor, ReportItems, ReportMeta } from "../definitions/report";
@@ -24,8 +24,8 @@ export const parseToReport = (jsonReport: JsonReportDescriptor): ReportDescripto
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const parseToReportMeta = (jsonMeta: JsonReportMeta) => {
-    const deptIdKey = getDepartmentIdKeyFromValue(jsonMeta.departmentId);
-    if (!deptIdKey) {
+    const isValid: boolean = verifyDeptId(jsonMeta.departmentId);
+    if (!isValid) {
         throw new InvalidInput(`Department Id: ${jsonMeta.departmentId} is not valid`);
     }
 
@@ -45,7 +45,7 @@ const parseToReportMeta = (jsonMeta: JsonReportMeta) => {
 
     let meta: ReportMeta = {
         id: jsonMeta.id,
-        departmentId: deptIdKey,
+        departmentId: jsonMeta.departmentId,
         submittedDate: submittedDate,
         submittedUserId: submittedUserId
     };

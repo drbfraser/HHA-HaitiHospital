@@ -1,5 +1,5 @@
-import { getDepartmentName} from 'common/definitions/departments';
-import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
+import { getDeptNameFromId} from 'common/definitions/departments';
+import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import httpErrorMiddleware from 'middleware/httpErrorHandler';
 import requireJwtAuth from 'middleware/requireJwtAuth';
@@ -125,7 +125,7 @@ router.route('/').put(
                 // Create a new template
                 await attemptToSaveNewTemplate(template, req);
                 res.status(HTTP_CREATED_CODE).send({
-                    message: `New template for department ${getDepartmentName(template.departmentId)} is created`
+                    message: `New template for department ${getDeptNameFromId(template.departmentId)} is created`
                 })
             }
         
@@ -158,7 +158,7 @@ async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: 
     if (changeDepartment) {
         const departmentHasTemplate = await TemplateCollection.exists({ departmentId: submittedDeptId });
         if (departmentHasTemplate) {
-            throw new InvalidInput(`Failed to update. Deparment ${getDepartmentName(submittedDeptId)} already has a template`);
+            throw new Conflict(`Failed to update. Deparment ${getDeptNameFromId(submittedDeptId)} already has a template`);
         }
     }
     template.submittedDate = formatDateString(new Date());
@@ -184,7 +184,7 @@ async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Requ
 
     const isDepartmentExist = await TemplateCollection.exists({ departmentId: newTemplate.departmentId });
     if (isDepartmentExist) {
-        throw new InvalidInput(`Failed to save. Template for department id ${newTemplate.departmentId} exists`);
+        throw new Conflict(`Failed to save. Template for department id ${newTemplate.departmentId} exists`);
     }
 
     const result = await new TemplateCollection(newTemplate).save();

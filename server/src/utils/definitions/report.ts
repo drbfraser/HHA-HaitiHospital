@@ -1,6 +1,5 @@
 // import { IllegalState } from 'exceptions/systemException';
 import { ItemTypeKeys } from 'common/definitions/json_report';
-import { DepartmentIdKeys } from '../../common/definitions/departments';
 
 // export enum AnswerType {
 //     number,
@@ -23,7 +22,7 @@ import { DepartmentIdKeys } from '../../common/definitions/departments';
 
 export interface ReportMeta {
     id: string;
-    departmentId: DepartmentIdKeys;
+    departmentId: string;
     submittedDate: Date;
     submittedUserId: string;
 }

@@ -1,23 +1,22 @@
-import { InvalidInput, SystemException } from 'exceptions/systemException';
+import { CustomError } from 'exceptions/custom_exception';
+import { InvalidInput } from 'exceptions/systemException';
 import { NextFunction, Request, Response } from 'express';
 import { BadRequest, HttpError, InternalError } from '../exceptions/httpException';
 
-const httpErrorMiddleware = (error: Error, request: Request, response: Response, next: NextFunction) => {
-  let isHttpError = (error as HttpError) instanceof HttpError;
-  if (!isHttpError) {
+const httpErrorMiddleware = (error: Error | CustomError, request: Request, response: Response, next: NextFunction) => {
+  let httpError: HttpError;
+  if (error instanceof HttpError) {
+    httpError = error;
+  } else 
+  {
     if (error instanceof InvalidInput) {
-      error = new BadRequest(error.message);
-      isHttpError = true;
-    } else {
-        error = new InternalError(error.message || "Something went wrong");
+        httpError = new BadRequest(error.message);
+    }
+    else {
+        httpError = new InternalError(error.message || "Something went wrong");
     }
   }
-
-  let status = (error as HttpError).status;
-  const message = error.message;
-  response.status(status).send({
-    message
-  });
+  response.status(httpError.status).send(httpError.message);
 };
 
 export default httpErrorMiddleware;

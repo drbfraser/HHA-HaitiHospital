@@ -2,7 +2,6 @@ import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, Repo
 import { formatDateString, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { TemplateDocument } from '../../models/template';
-import { DepartmentId } from "../../common/definitions/departments";
 import { ItemType, ItemTypeKeys } from "common/definitions/json_report";
 
 
@@ -23,7 +22,7 @@ export const generateReportFromDocument = (doc: TemplateDocument): ReportDescrip
     let report: ReportDescriptor;
     let meta: ReportMeta = {
         id: doc.id,
-        departmentId: DepartmentId[doc.departmentId].toString(),
+        departmentId: doc.departmentId,
         submittedDate: new Date(doc.submittedDate),
         submittedUserId: doc.submittedByUserId
     }
@@ -52,7 +51,7 @@ export const getReportTemplate = (report: ReportDescriptor): TemplateReport => {
 export const buildTemplateDocument = (template: TemplateReport): TemplateDocument => {
     let newDoc: TemplateDocument = {
         id: template.meta.id,
-        departmentId: DepartmentId[template.meta.departmentId].toString(),
+        departmentId: template.meta.departmentId,
         submittedByUserId: template.meta.submittedUserId,
         submittedDate: formatDateString(template.meta.submittedDate),
         items: template.items
@@ -86,7 +85,7 @@ interface ItemTemplateParser {
 }
 const baseItemParser = (item: ReportItem): TemplateItem => {
     let answer: TemplateAnswer;
-    answer = item.answer.map((element) => {
+    answer = item.answer.map(() => {
         return getDefaultAnswer(item);
     });
 

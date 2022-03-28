@@ -1,4 +1,3 @@
-import { DepartmentId } from "common/definitions/departments";
 import { JsonReportDescriptor, JsonReportItems, JsonReportMeta } from "common/definitions/json_report";
 import { ReportDescriptor, ReportItems, ReportMeta } from "utils/definitions/report";
 import { formatDateString } from "utils/utils";
@@ -17,8 +16,8 @@ export const parseToJson = (report: ReportDescriptor) => {
 
 // >>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>
 const parseToJsonMeta = (meta: ReportMeta): JsonReportMeta => {
-    const id: string = meta.id.toString();
-    const departmentId: string = DepartmentId[meta.departmentId].toString();
+    const id: string = meta.id;
+    const departmentId: string = meta.departmentId;
     const submittedDate: string = formatDateString(meta.submittedDate);
     const submittedUserId: string = meta.submittedUserId;
     

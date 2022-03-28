@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { InternalError, Unauthorized, UnprocessableEntity } from '../exceptions/httpException';
-import { DepartmentId, DepartmentName, getDepartmentId } from '../common/definitions/departments';
+import { DepartmentName, getDeptIdFromName } from '../common/definitions/departments';
 import { Role } from '../models/user';
 
 type UserPrivilegeInfo = {
@@ -16,7 +16,7 @@ export const departmentAuth = (req: Request, res: Response, next: NextFunction) 
     next(internalError);
   }
 
-  const departmentIds = [parseInt(deptIdParam)];
+  const departmentIds = [deptIdParam];
 
   const userPrivilege = req.user as UserPrivilegeInfo;
   const ROLES_BYPASS_DEPARTMENT = [Role.Admin, Role.MedicalDirector];
@@ -30,7 +30,7 @@ export const departmentAuth = (req: Request, res: Response, next: NextFunction) 
     next(missingInfoError);
   }
 
-  const userDeptId = getDepartmentId(userPrivilege.department);
+  const userDeptId = getDeptIdFromName(userPrivilege.department);
   const inDepartment = departmentIds.includes(userDeptId);
 
   if (inDepartment === false) {

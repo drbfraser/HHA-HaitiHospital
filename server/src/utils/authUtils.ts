@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import UserModel from '../models/user';
-import { DepartmentName, getDepartmentName } from '../common/definitions/departments';
+import { DepartmentName, getDeptNameFromId } from '../common/definitions/departments';
 import { Role, User } from '../models/user';
 
 export const checkIsInRole =
@@ -29,10 +29,10 @@ export const checkUserIsDepartmentAuthed = async (userId: string, reportDepartme
   const user: User = await UserModel.findById(userId);
   console.log(user);
 
-  const userDepartment = user['department'];
-  console.log(userDepartment, getDepartmentName(reportDepartmentId));
+  const userDepartment = user.departmentId;
+  console.log(userDepartment, getDeptNameFromId(reportDepartmentId));
 
-  if (userDepartment === getDepartmentName(reportDepartmentId)) {
+  if (userDepartment === getDeptNameFromId(reportDepartmentId)) {
     return true;
   }
 
