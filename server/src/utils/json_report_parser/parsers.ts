@@ -18,29 +18,14 @@ import { parseToJson } from './json_report';
  * @returns return a jsonReport object if sucessful
  */
 export const jsonStringToReport = function (jsonString: string): ReportDescriptor {
-    try {
-        const jsonReport: JsonReportDescriptor = validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
-        const report = parseToReport(jsonReport);
-        return report;
-    }
-    catch (e) {
-        if (e instanceof InvalidInput)
-            throw new BadRequest(e.message);
-        throw new InternalError(e.message);
-    }
+    const jsonReport: JsonReportDescriptor = validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
+    const report = parseToReport(jsonReport);
+    return report;
 };
 
 export const reportToJsonReport = (report: ReportDescriptor): JsonReportDescriptor => {
-    try {
-        const jsonReport: JsonReportDescriptor = parseToJson(report);
-        return jsonReport;
-    }
-    catch (e) {
-        if (e instanceof InvalidInput) {
-            throw new BadRequest(e.message);
-        }
-        throw new InternalError(e.message);
-    }
+    const jsonReport: JsonReportDescriptor = parseToJson(report);
+    return jsonReport;
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>

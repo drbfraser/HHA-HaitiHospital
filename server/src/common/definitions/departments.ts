@@ -1,13 +1,13 @@
 import { getEnumKeyByStringValue, getLengthOfEnum } from "utils/utils";
 
-export enum DepartmentName {
+enum DepartmentName {
   NicuPaeds = 'NICU/Paeds',
   Maternity = 'Maternity',
   Rehab = 'Rehab',
   CommunityHealth = 'Community & Health'
 }
 
-export enum DepartmentId {
+enum DepartmentId {
   Rehab = 0,
   NicuPaeds = 1,
   CommunityHealth = 2,

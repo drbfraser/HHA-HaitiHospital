@@ -1,6 +1,6 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
-import Department from '../models/leaderboard';
+import Department from '../models/departments';
 import { DepartmentName } from '../common/definitions/departments';
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';

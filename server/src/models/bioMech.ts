@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { DepartmentName } from '../common/definitions/departments';
 
 const { Schema } = mongoose;
 
@@ -12,7 +11,7 @@ export enum bioMechEnum {
 const bioMechSchema = new Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
-    department: { type: DepartmentName },
+    department: String,
     equipmentName: { type: String, required: true },
     equipmentFault: { type: String, required: true },
     equipmentPriority: { type: bioMechEnum, required: true },

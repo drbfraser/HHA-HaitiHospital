@@ -1,6 +1,5 @@
 import { boolean } from 'joi';
 import mongoose from 'mongoose';
-import { DepartmentName } from '../common/definitions/departments';
 
 const { Schema } = mongoose;
 
@@ -73,7 +72,7 @@ const caseStudySchema = new Schema(
     caseStudyType: { type: CaseStudyOptions, required: true },
     // TODO: add created by user. right now JWT is not yet applied
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    userDepartment: { type: DepartmentName },
+    userDepartment: String,
     patientStory: patientStorySchema,
     staffRecognition: staffRecognitionSchema,
     trainingSession: trainingSessionSchema,

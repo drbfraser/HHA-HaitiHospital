@@ -6,36 +6,40 @@ import { validateInput } from '../../middleware/inputSanitization';
 import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
-import { msgCatchError } from 'utils/sanitizationMessages';
+import httpErrorMiddleware from 'middleware/httpErrorHandler';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
+import { getDeptNameFromId, verifyDeptId } from 'common/definitions/departments';
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
   await MessageBody.find({})
     .sort({ date: 'desc' })
     .populate('userId')
-    .then((response: any) => res.status(200).json(response))
-    .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
-});
+    .then((response: any) => res.status(HTTP_OK_CODE).json(response))
+    .catch((err: any) => { throw new InternalError(`Failed to get messages: ${err}`)});
+}, httpErrorMiddleware);
 
-//REMOVED FOR NOW - MIGHT BRING DEPARTMENT SPECIFIC MESSAGES FUNCTION BACK LATER
 router.get('/department/:departmentId', requireJwtAuth, async (req: Request, res: Response) => {
   await MessageBody.find({ departmentId: req.params.departmentId })
     .sort({ date: 'desc' })
-    .then((response: any) => res.json(response))
-    .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
-});
+    .then((response: any) => res.status(HTTP_OK_CODE).json(response))
+    .catch((err: any) => { throw new InternalError(`Failed to find messages for department id ${req.params.departmentId}: ${err}`)});
+}, httpErrorMiddleware);
 
 router.get('/:id', async (req: Request, res: Response) => {
   await MessageBody.findById(req.params.id)
     .populate('userId')
-    .then((response: any) => res.status(200).json(response))
-    .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
-});
+    .then((response: any) => res.status(HTTP_OK_CODE).json(response))
+    .catch((err: any) => { throw new InternalError(`Failed to find message with id ${req.params.id}: ${err}`)});
+}, httpErrorMiddleware);
 
 router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
-  let dateTime: Date = new Date();
-  const departmentId: number = req.body.departmentId;
-  const departmentName: string = req.body.departmentName;
-  const date: Date = dateTime;
+  const departmentId: string = req.body.departmentId;
+  if (!verifyDeptId) {
+    throw new BadRequest(`Invalid department id ${departmentId}`);
+  }
+
+  const departmentName: string = getDeptNameFromId(departmentId);
+  const date: Date = new Date();
   const messageBody: string = req.body.messageBody;
   //TODO: replace messageHeader with Document Type
   const messageHeader: string = req.body.messageHeader;
@@ -52,16 +56,19 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoard
 
   await messageEntry
     .save()
-    .then(() => res.status(201).json('Message has been successfully posted'))
-    .catch((err: any) => res.status(400).json('Message did not successfully post: ' + err));
-});
+    .then(() => res.status(HTTP_CREATED_CODE).json('Message has been successfully posted'))
+    .catch((err: any) => { throw new InternalError(`Submit message failed: ${err}`) });
+}, httpErrorMiddleware);
 
 //make the changes to message of id reportID
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
-  let dateTime: Date = new Date();
-  const departmentId: number = parseInt(req.body.departmentId);
-  const departmentName: string = req.body.departmentName;
-  const date: Date = dateTime;
+  const departmentId: string = req.body.departmentId;
+  if (!verifyDeptId) {
+    throw new BadRequest(`Invalid department id ${departmentId}`);
+  }
+
+  const departmentName: string = getDeptNameFromId(departmentId);
+  const date: Date = new Date();
   const messageBody: string = req.body.messageBody;
   //TODO: replace messageHeader with Document Type
   const messageHeader: string = req.body.messageHeader;
@@ -79,21 +86,18 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoa
 
   Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
 
-  return await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true })
+  await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true })
     .populate('userId')
-    .then((message: any) => res.status(201).json(message))
-    .catch((err: any) => res.status(400).json('Edit message failed: ' + err));
-});
+    .then((message: any) => res.status(HTTP_NOCONTENT_CODE).json(message))
+    .catch((err: any) => { throw new InternalError(`Failed to update message with id ${req.params.id}: ${err}`)});
+}, httpErrorMiddleware);
 
 // delete message id
 router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
-  try {
-    await MessageBody.findByIdAndRemove(req.params.id)
-      .then((data: any) => res.status(204).json(data))
-      .catch((err: any) => res.status(400).json('Failed to delete: ' + err));
-  } catch (err) {
-    res.status(500).json(msgCatchError);
-  }
-});
+    const msgId: string = req.params.id;
+    await MessageBody.findByIdAndRemove(msgId)
+        .then((data: any) => res.status(HTTP_NOCONTENT_CODE).send(`Removed message with id ${msgId}`))
+        .catch((err: any) => { throw new InternalError(`Failed to remove message with id ${msgId}: ${err}`)});
+}, httpErrorMiddleware);
 
 export = router;

@@ -16,26 +16,22 @@ router.route('/').get(
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const extractFromQuery = getFromDateQuery;
-      const from = extractFromQuery(req);
-      const extractToQuery = getToDateQuery;
-      const to = extractToQuery(req);
+    const extractFromQuery = getFromDateQuery;
+    const from = extractFromQuery(req);
+    const extractToQuery = getToDateQuery;
+    const to = extractToQuery(req);
 
-      const allReports = await ReportModel.find({
-        'metadata.dateCreated': {
-          $gte: from,
-          $lte: to
-        }
-      })
-        .sort({ 'metadata.dateCreated': 'desc' })
-        .exec();
-      res.status(200).send({
-        reports: allReports
-      });
-    } catch (e) {
-      next(e);
+    const allReports = await ReportModel.find({
+    'metadata.dateCreated': {
+        $gte: from,
+        $lte: to
     }
+    })
+    .sort({ 'metadata.dateCreated': 'desc' })
+    .exec();
+    res.status(200).send({
+    reports: allReports
+    });
   },
   httpErrorMiddleware
 );
@@ -46,30 +42,26 @@ router.route('/:departmentId').get(
   requireJwtAuth,
   departmentAuth,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const extractFromQuery = getFromDateQuery;
-      const from = extractFromQuery(req);
-      const extractToQuery = getToDateQuery;
-      const to = extractToQuery(req);
-      let query = ReportModel.find({
-        'metadata.dateCreated': {
-          $gte: from,
-          $lte: to
-        }
-      });
-
-      const deptId = parseInt(req.params.departmentId);
-      query = query.find({
-        'metadata.departmentId': deptId
-      });
-
-      const reports = await query.sort({ 'metadata.dateCreated': 'desc' }).exec();
-      res.status(200).send({
-        reports: reports
-      });
-    } catch (e) {
-      next(e);
+    const extractFromQuery = getFromDateQuery;
+    const from = extractFromQuery(req);
+    const extractToQuery = getToDateQuery;
+    const to = extractToQuery(req);
+    let query = ReportModel.find({
+    'metadata.dateCreated': {
+        $gte: from,
+        $lte: to
     }
+    });
+
+    const deptId = parseInt(req.params.departmentId);
+    query = query.find({
+    'metadata.departmentId': deptId
+    });
+
+    const reports = await query.sort({ 'metadata.dateCreated': 'desc' }).exec();
+    res.status(200).send({
+    reports: reports
+    });
   },
   httpErrorMiddleware
 );

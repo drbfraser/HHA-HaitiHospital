@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
-import { DepartmentName } from '../common/definitions/departments';
 import * as ENV from '../utils/processEnv';
 
 const { Schema } = mongoose;
@@ -17,11 +16,11 @@ export enum Role {
 // Reference to fix .js to .ts here: https://stackoverflow.com/questions/45485073/typescript-date-type
 export interface User extends Document {
   _id: number;
-  username: String;
-  password: String;
-  name: String;
-  role: String;
-  department: DepartmentName;
+  username: string;
+  password: string;
+  name: string;
+  role: string;
+  department: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -44,7 +43,7 @@ const userSchema = new Schema<User>(
     },
     name: String,
     role: { type: String, default: Role.User },
-    department: { type: DepartmentName }
+    department: String
   },
   { timestamps: true }
 );
@@ -77,7 +76,7 @@ userSchema.methods.generateJWT = function () {
 
 userSchema.methods.registerUser = (newUser, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(newUser.password, salt, (errh, hash) => {
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
       if (err) {
         console.log(err);
       }
