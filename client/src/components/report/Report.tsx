@@ -78,7 +78,7 @@ function FormContents(props: { path: string }) {
   const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
   React.useEffect(() => {
-    MockApi.getDataDelay(1500, true).then((data) => {
+    MockApi.getDataDelay(1500, false).then((data) => {
       setState({ value: StateType.ready, data: data as ReportData });
     }).catch(err => {
       setState(Error(err))
@@ -135,6 +135,7 @@ function FormContents(props: { path: string }) {
       <div className="row justify-content-center text-center" style={{ marginTop: '25%' }}>
         <h1 className='text-danger' >{`Error code: ${errorData.code}`}</h1>
         <strong>{`${errorData.message}`}</strong>
+        <button type="button" className='btn btn-primary col-2 mt-3' onClick={()=> window.location.reload()}>Refresh</button>
       </div>
     );
   };
