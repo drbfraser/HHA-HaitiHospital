@@ -155,7 +155,7 @@ export async function submitData(
   } else {
     return sleep(delayMillis).then(() => {
       const errorData = {
-        code: 400,
+        code: 500,
         message: 'Invalid data',
         data: { ...makeInvalid(data) },
       };

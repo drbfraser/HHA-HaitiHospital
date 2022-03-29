@@ -106,17 +106,19 @@ function FormContents(props: { path: string }) {
 
   const submitHandler = async (answers) => {
     const submittingData = (state.data as ReportData)
-    let data
+    let data, nextState
     setSubmitting(true);
     try{
       data = await ReportApiUtils.submitData(answers, submittingData);
+      nextState = Ready(data)
       toast.success("Data submitted")
     }catch(err){
-      data = err.data
+      if(err.code < 500) nextState = Ready(err.data)
+      else nextState = Error({code:err.code, message:err.message})
       toast.error(`Error ${err.code}: ${err.message}`)
     }
     setSubmitting(false);
-    setState(Ready(data))
+    setState(nextState)
   };
 
   const renderLoading = () => {
@@ -131,7 +133,7 @@ function FormContents(props: { path: string }) {
     const errorData = (state.data as ErrorData)
     return (
       <div className="row justify-content-center text-center" style={{ marginTop: '25%' }}>
-        <h1 className='text-danger' >{`Error ${errorData.code}`}</h1>
+        <h1 className='text-danger' >{`Error code: ${errorData.code}`}</h1>
         <strong>{`${errorData.message}`}</strong>
       </div>
     );
