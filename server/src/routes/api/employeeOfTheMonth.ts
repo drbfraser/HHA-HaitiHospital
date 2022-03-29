@@ -13,7 +13,7 @@ import { verifyDeptId } from 'common/definitions/departments';
 const router = Router();
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
-    await EmployeeOfTheMonth.findOne()
+    EmployeeOfTheMonth.findOne().exec()
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => { throw new InternalError(`get employee of the month posts failed: ${err}`)});
 });
@@ -26,19 +26,18 @@ router.put('/', requireJwtAuth, checkIsInRole(Role.Admin), registerEmployeeOfThe
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
-
-    if (!verifyDeptId) {
+    if (!verifyDeptId(department)) {
         throw new BadRequest(`Invalid department id ${department}`);
     }
+
     const updatedEmployeeOfTheMonth = {
       name: name,
       department: department,
       description: description,
       imgPath: imgPath
     };
-    await EmployeeOfTheMonth.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth._id }, { $set: updatedEmployeeOfTheMonth }, { new: true })
-      .then((data: any) => res.status(HTTP_NOCONTENT_CODE).json(data))
-      .catch((err: any) => { throw new InternalError(`Failed to update employee of the month: ${err}`)});
+    const post = await EmployeeOfTheMonth.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth._id }, { $set: updatedEmployeeOfTheMonth }, { new: true }).exec();
+    res.status(HTTP_OK_CODE).json(post);
 });
 
 export default router;

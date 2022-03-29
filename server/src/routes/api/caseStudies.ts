@@ -7,7 +7,7 @@ import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
+import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 
 const router = Router();
 
@@ -16,34 +16,37 @@ const setFeatured = (flag: boolean): object => {
 };
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
-    await CaseStudy.find()
-      .populate('user')
-      .then((data: any) => res.status(HTTP_OK_CODE).json(data))
+    CaseStudy.find().populate('user').exec()
+      .then((data: []) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => {throw new InternalError(`Failed to get case studies: ${err}`)});
 });
 
 router.get('/featured', requireJwtAuth, async (req: Request, res: Response) => {
-    await CaseStudy.findOne(setFeatured(true))
-      .populate('user')
+    CaseStudy.findOne(setFeatured(true)).populate('user').exec()
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => {throw new InternalError(`Failed to get featured case study: ${err}`)});
 });
 
 router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
-    await CaseStudy.findById(req.params.id)
-      .populate('user')
-      .then((data: any) => res.status(HTTP_OK_CODE).json(data))
-      .catch((err: any) => {throw new InternalError(`Failed to get case study id ${req.params.id}: ${err}`)});
+    const caseId = req.params.id;
+    CaseStudy.findById(caseId).populate('user').exec()
+      .then((data: any) => {
+          if (!data) {
+            throw new NotFound(`Case study with id ${caseId} not available`);
+          }
+          res.status(HTTP_OK_CODE).json(data);
+        })
+      .catch((err: any) => {throw new InternalError(`Failed to get case study id ${caseId}: ${err}`)});
 });
 
 router.post('/', 
     requireJwtAuth, registerCaseStudiesCreate, 
     validateInput, upload.single('file'), 
     async (req: any, res: Response) => {
-
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
-    const user = req.user.id;
-    const userDepartment = req.user.department;
+    const user = req.user;
+    const userId = user.id;
+    const userDepartment = user.department;
     let imgPath: string = '';
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
@@ -51,7 +54,7 @@ router.post('/',
     const featured: boolean = ((await CaseStudy.estimatedDocumentCount()) as number) === 0;
     const newCaseStudy = new CaseStudy({
       caseStudyType,
-      user,
+      user: userId,
       userDepartment,
       patientStory,
       staffRecognition,
@@ -61,18 +64,25 @@ router.post('/',
       imgPath,
       featured
     });
-    await newCaseStudy
-      .save()
-      .then(() => res.status(201).json('Case Study Submitted successfully'))
+    newCaseStudy.save()
+      .then(() => res.status(HTTP_CREATED_CODE).json('Case Study Submitted successfully'))
       .catch((err: any) => { throw new InternalError(`Case study submission failed: ${err}`)});
 
 });
 
 router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
-    CaseStudy.findByIdAndRemove(req.params.id)
-      .then((data: any) => deleteUploadedImage(data.imgPath))
-      .then(() => res.sendStatus(204))
-      .catch((err: any) => {throw new InternalError(`Delete case study id ${req.params.id} failed: ${err}`)});
+    const caseId = req.params.id;
+
+    CaseStudy.findByIdAndRemove(caseId).exec()
+      .then((data: any) => {
+        if (!data) {
+            throw new NotFound(`No case study with id ${caseId} found`);
+        }
+
+        return deleteUploadedImage(data.imgPath);
+      })
+      .then(() => res.sendStatus(HTTP_NOCONTENT_CODE))
+      .catch((err: any) => {throw new InternalError(`Delete case study id ${caseId} failed: ${err}`)});
 
 });
 
@@ -89,7 +99,7 @@ router.put('/:id',
     let user = req.user.id;
     let userDepartment = user.department;
     if (req.file) {
-    imgPath = req.file.path.replace(/\\/g, '/');
+        imgPath = req.file.path.replace(/\\/g, '/');
     }
 
     const updatedCaseStudy = {
@@ -105,24 +115,24 @@ router.put('/:id',
     };
     Object.keys(updatedCaseStudy).forEach((k) => (!updatedCaseStudy[k] || updatedCaseStudy[k] === undefined) && delete updatedCaseStudy[k]);
 
-    await CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true })
-        .then((data: any) => res.status(HTTP_NOCONTENT_CODE).json(data))
+    CaseStudy.findByIdAndUpdate(req.params.id, { $set: updatedCaseStudy }, { new: true }).exec()
+        .then((data: any) => res.status(HTTP_OK_CODE).json(data))
         .catch((err: any) => {throw new InternalError(`Failed to update case study id ${req.params.id}: ${err}`)});
   }
 );
 
+// Set feature case study
 router.patch('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response, next: NextFunction) => {
     const prevFeaturedCaseStudy = await CaseStudy.findOne(setFeatured(true));
     if ((prevFeaturedCaseStudy._id as string) === req.params.id) {
-        res.status(HTTP_NOCONTENT_CODE).json({ message: 'Case study is already featured' });
-        return;
+        return res.status(HTTP_NOCONTENT_CODE).send();
     }
 
-    await CaseStudy.findByIdAndUpdate(prevFeaturedCaseStudy._id, { $set: setFeatured(false) })
+    CaseStudy.findByIdAndUpdate(prevFeaturedCaseStudy._id, { $set: setFeatured(false) }).exec()
         .catch((err: any) => { throw new InternalError(`Failed to unfeature previous case study: ${err}`)});
 
-    await CaseStudy.findByIdAndUpdate(req.params.id, { $set: setFeatured(true) }, { new: true })
-        .then((data: any) => res.status(HTTP_NOCONTENT_CODE).json(data))
+    CaseStudy.findByIdAndUpdate(req.params.id, { $set: setFeatured(true) }, { new: true }).exec()
+        .then((data: any) => res.status(HTTP_OK_CODE).json(data))
         .catch((err: any) => { throw new InternalError(`Failed to feature the new case study: ${err}`)});
 });
 

@@ -5,24 +5,27 @@ import { validateInput } from '../../middleware/inputSanitization';
 import BioMech from '../../models/bioMech';
 import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { verifyDeptId } from 'common/definitions/departments';
-import { BadRequest, InternalError } from 'exceptions/httpException';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-    await BioMech.find({})
-      .populate('user')
-      .sort({ createdOn: 'desc' })
-      .then((response: any) => res.status(200).json(response))
+    BioMech.find({}).populate('user')
+      .sort({ createdOn: 'desc' }).exec()
+      .then((response: []) => res.status(HTTP_OK_CODE).json(response))
       .catch((err: any) => {throw new InternalError(`Get biomechs failed: ${err}`)});
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-    await BioMech.findById(req.params.id)
-      .populate('user')
-      .then((response: any) => res.status(200).json(response))
-      .catch((err: any) => {throw new BadRequest(`Could not find biomech id ${req.params.id} results`)});
+    const bioId = req.params.id;
+    BioMech.findById(bioId).populate('user')
+      .then((response: any) => {
+          if (!response) {
+            throw new NotFound(`No biomech post with id ${bioId} available`);
+          }
+          res.status(HTTP_OK_CODE).json(response)
+        })
+      .catch((err: any) => {throw new BadRequest(`Could not find biomech id ${bioId} results`)});
 });
 
 router.post('/', 
@@ -33,14 +36,10 @@ router.post('/',
     async (req: any, res: Response) => {
 
     const user = req.user;
-    const department = req.user.department;
-    if (!verifyDeptId(department)) {
-        throw new BadRequest(`Invalid department id ${department}`);
-    }
-
+    const department = user.department;
     const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
 
-    let imgPath: String = '';
+    let imgPath: string = '';
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
@@ -54,17 +53,22 @@ router.post('/',
       imgPath
     });
 
-    await bioMech
-      .save()
-      .then(() => res.status(201).json('BioMech Report Submitted Successfully'))
+    bioMech.save()
+      .then(() => res.status(HTTP_CREATED_CODE).json('BioMech Report Submitted Successfully'))
       .catch((err: any) => { throw new InternalError(`BioMech Report submission failed: ${err}`)} );
 });
 
 router.delete('/:id', async (req: Request, res: Response) => {
-    BioMech.findByIdAndRemove(req.params.id)
-        .then((data: any) => deleteUploadedImage(data.imgPath))
-        .then(() => res.sendStatus(204))
-        .catch((err: any) => {throw new InternalError(`Failed to delete bio mech: ${err}`)});
+    const bioId = req.params.id;
+    BioMech.findByIdAndRemove(bioId).exec()
+        .then((data: any) => { 
+            if (!data) {
+                throw new BadRequest(`No biomech post with id ${bioId} available`);
+            }
+            return deleteUploadedImage(data.imgPath); 
+        })
+        .then(() => res.sendStatus(HTTP_NOCONTENT_CODE))
+        .catch((err: any) => {throw new InternalError(`Failed to delete biomech post: ${err}`)});
 });
 
 export default router;

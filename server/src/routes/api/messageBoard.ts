@@ -6,34 +6,41 @@ import { validateInput } from '../../middleware/inputSanitization';
 import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
-import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { getDeptNameFromId, verifyDeptId } from 'common/definitions/departments';
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
-  await MessageBody.find({})
-    .sort({ date: 'desc' })
-    .populate('userId')
-    .then((response: any) => res.status(HTTP_OK_CODE).json(response))
+  MessageBody.find({}).sort({ date: 'desc' }).populate('userId').exec()
+    .then((response: []) => res.status(HTTP_OK_CODE).json(response))
     .catch((err: any) => { throw new InternalError(`Failed to get messages: ${err}`)});
 });
 
 router.get('/department/:departmentId', requireJwtAuth, async (req: Request, res: Response) => {
-  await MessageBody.find({ departmentId: req.params.departmentId })
-    .sort({ date: 'desc' })
-    .then((response: any) => res.status(HTTP_OK_CODE).json(response))
+  const deptId = req.params.departmentId;
+  if (!verifyDeptId(deptId)) {
+      throw new BadRequest(`Invalid department id: ${deptId}`);
+  }
+
+  MessageBody.find({ departmentId: deptId }).sort({ date: 'desc' }).exec()
+    .then((response: []) => res.status(HTTP_OK_CODE).json(response))
     .catch((err: any) => { throw new InternalError(`Failed to find messages for department id ${req.params.departmentId}: ${err}`)});
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-  await MessageBody.findById(req.params.id)
-    .populate('userId')
-    .then((response: any) => res.status(HTTP_OK_CODE).json(response))
-    .catch((err: any) => { throw new InternalError(`Failed to find message with id ${req.params.id}: ${err}`)});
+  const msgId = req.params.id;
+  MessageBody.findById(msgId).populate('userId').exec()
+    .then((response: any) => {
+        if (!response) {
+            throw new NotFound(`No message with id ${msgId} available`);
+        }
+        res.status(HTTP_OK_CODE).json(response)
+    })
+    .catch((err: any) => { throw new InternalError(`Failed to find message with id ${msgId}: ${err}`)});
 });
 
 router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   const departmentId: string = req.body.departmentId;
-  if (!verifyDeptId) {
+  if (!verifyDeptId(departmentId)) {
     throw new BadRequest(`Invalid department id ${departmentId}`);
   }
 
@@ -53,16 +60,15 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoard
     messageHeader: messageHeader
   });
 
-  await messageEntry
-    .save()
+  messageEntry.save()
     .then(() => res.status(HTTP_CREATED_CODE).json('Message has been successfully posted'))
-    .catch((err: any) => { throw new InternalError(`Submit message failed: ${err}`) });
+    .catch((err: any) => { throw new InternalError(`Message submission failed: ${err}`) });
 });
 
 //make the changes to message of id reportID
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   const departmentId: string = req.body.departmentId;
-  if (!verifyDeptId) {
+  if (!verifyDeptId(departmentId)) {
     throw new BadRequest(`Invalid department id ${departmentId}`);
   }
 
@@ -85,18 +91,21 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoa
 
   Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
 
-  await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true })
-    .populate('userId')
-    .then((message: any) => res.status(HTTP_NOCONTENT_CODE).json(message))
-    .catch((err: any) => { throw new InternalError(`Failed to update message with id ${req.params.id}: ${err}`)});
+  const msg = await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true }).populate('userId').exec();
+  if (!msg) {
+    throw new NotFound(`No message with id ${req.params.id} found`);
+  }
+  res.status(HTTP_OK_CODE).json(msg).send();
 });
 
 // delete message id
 router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
     const msgId: string = req.params.id;
-    await MessageBody.findByIdAndRemove(msgId)
-        .then((data: any) => res.status(HTTP_NOCONTENT_CODE).send(`Removed message with id ${msgId}`))
-        .catch((err: any) => { throw new InternalError(`Failed to remove message with id ${msgId}: ${err}`)});
+    const msg = await MessageBody.findByIdAndRemove(msgId).exec();
+    if (!msg) {
+        throw new NotFound(`No message with id ${msgId} found`);
+    }
+    res.status(HTTP_NOCONTENT_CODE).send();
 });
 
 export = router;

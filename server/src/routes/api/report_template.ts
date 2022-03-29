@@ -1,5 +1,5 @@
-import { getDeptNameFromId} from 'common/definitions/departments';
-import { Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
+import { getDeptNameFromId, verifyDeptId} from 'common/definitions/departments';
+import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
@@ -20,16 +20,11 @@ router.route('/').get(
     async (req: Request, res: Response, next: NextFunction) => {
         let query = TemplateCollection.find();
         const documents = await query.lean();
-        if (!documents.length) {
-            res.status(HTTP_NOCONTENT_CODE).json(documents);
-        }
-        else {
-            const reports: ReportDescriptor[] = documents.map((doc) => {
-                const report = generateReportFromDocument(doc);
-                return report;
-            });
-            res.status(HTTP_OK_CODE).json(reports);
-        }
+        const reports: ReportDescriptor[] = documents.map((doc) => {
+            const report = generateReportFromDocument(doc);
+            return report;
+        });
+        res.status(HTTP_OK_CODE).json(reports);
     }
 );
 
@@ -38,15 +33,17 @@ router.route('/:departmentId').get(
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: Request, res: Response, next: NextFunction) => {
         const deptId = req.params['departmentId'];
-        let query = TemplateCollection.findOne({ departmentId: deptId });
+        if (!verifyDeptId(deptId)) {
+            throw new BadRequest(`Invalid department id ${deptId}`);
+        }
 
+        let query = TemplateCollection.findOne({ departmentId: deptId });
         const result = await query.exec();
         if (!result) {
-            res.status(HTTP_NOCONTENT_CODE).json({});
+            throw new NotFound(`No template for department ${getDeptNameFromId(deptId)} found`);
         }
-        else {
-            res.status(HTTP_OK_CODE).json(result);
-        }
+
+        res.status(HTTP_OK_CODE).json(result);
     }
 );
 
@@ -55,15 +52,17 @@ router.route('/:departmentId').delete(
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: Request, res: Response, next: NextFunction) => {
         const deptId = req.params['departmentId'];
+        if (!verifyDeptId) {
+            throw new BadRequest(`Invalid department id ${deptId}`);
+        }
+
         let query = TemplateCollection.findOneAndDelete({ departmentId: deptId });
         let result = await query.exec();
         if (!result) {
-            res.status(HTTP_NOCONTENT_CODE).send();
-        } else {
-            res.status(HTTP_OK_CODE).send({
-                message: `Template for department with id ${deptId} is removed`
-            });
+            throw new NotFound(`No template for department ${getDeptNameFromId(deptId)} found`);
         }
+
+        res.status(HTTP_NOCONTENT_CODE);
     }
 );
 
@@ -76,9 +75,7 @@ router.route('/').post(
 
         let newTemplate: TemplateDocument = getTemplateDocumentFromReport(report);
         await attemptToSaveNewTemplate(newTemplate, req);
-        res.status(HTTP_CREATED_CODE).send({
-            message: "new template created",
-        });
+        res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(newTemplate.departmentId)}`);
     }
 )
 
@@ -98,14 +95,10 @@ router.route('/').put(
         } else {
             // Create a new template
             await attemptToSaveNewTemplate(template, req);
-            res.status(HTTP_CREATED_CODE).send({
-                message: `New template for department ${getDeptNameFromId(template.departmentId)} is created`
-            })
+            res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(template.departmentId)} is created`);
         }   
     }
 )
-
-
 
 // >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -132,12 +125,11 @@ async function attemptToUpdateTemplate(template: TemplateDocument, existingDoc: 
     }
     template.submittedDate = formatDateString(new Date());
     template.submittedByUserId = req.user![`${USER_ID_FIELD}`];
-    const result = await existingDoc.updateOne(template);
 
+    const result = await existingDoc.updateOne(template);
     if (!result) {
         throw new InternalError(`Failed to update template with id ${template.id}`);
     }
-    return result;
 }
 
 async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Request) {
@@ -160,7 +152,6 @@ async function attemptToSaveNewTemplate(newTemplate: TemplateDocument, req: Requ
     if (!result) {
         throw new InternalError(`Failed to save template with id ${newTemplate.id}`)
     }
-    return result;
 }
 
 
