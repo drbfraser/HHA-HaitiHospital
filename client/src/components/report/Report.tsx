@@ -78,7 +78,7 @@ function FormContents(props: { path: string }) {
   const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
   React.useEffect(() => {
-    MockApi.getDataDelay(1500, false).then((data) => {
+    MockApi.getDataDelay(1500, true).then((data) => {
       setState({ value: StateType.ready, data: data as ReportData });
     }).catch(err => {
       setState(Error(err))
