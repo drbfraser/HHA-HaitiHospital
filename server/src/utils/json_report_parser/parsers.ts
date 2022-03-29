@@ -4,7 +4,6 @@ import { PATH_TO_JSON_REPORT_TYPES } from '../constants';
 import Ajv, { ValidateFunction } from 'ajv';
 import path from 'path';
 import ts from 'typescript';
-import { BadRequest, InternalError } from "exceptions/httpException";
 
 import { ReportDescriptor } from "utils/definitions/report";
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';

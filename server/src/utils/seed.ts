@@ -1,7 +1,6 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
 import Department from '../models/departments';
-import { DepartmentName } from '../common/definitions/departments';
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
 import MessageBody from '../models/messageBoard';
@@ -10,6 +9,7 @@ import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 
 import * as ENV from './processEnv';
+import { Departments, getAllDepartments } from 'common/definitions/departments';
 
 const selectRandomUser = (users: User[]): User => {
   const randomUserIndex = Math.floor(Math.random() * users.length);
@@ -67,23 +67,23 @@ export const seedUsers = async () => {
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.department = "1";
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.Maternity;
+            foundUser.department = "3";
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.Rehab;
+            foundUser.department = "0";
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.CommunityHealth;
+            foundUser.department = "2"
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.department = "1";
             break;
           default:
             break;
@@ -107,23 +107,23 @@ export const seedUsers = async () => {
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.department = DepartmentName.NicuPaeds;
+            user.department = "1";
             break;
           case 3:
             user.role = Role.User;
-            user.department = DepartmentName.Maternity;
+            user.department = "3";
             break;
           case 4:
             user.role = Role.User;
-            user.department = DepartmentName.Rehab;
+            user.department = "0";
             break;
           case 5:
             user.role = Role.User;
-            user.department = DepartmentName.CommunityHealth;
+            user.department = "2";
             break;
           case 6:
             user.role = Role.User;
-            user.department = DepartmentName.NicuPaeds;
+            user.department = "1";
             break;
           default:
             break;
@@ -237,12 +237,13 @@ export const seedLeaderboard = async () => {
   console.log('Seeding leaderboard...');
   try {
     await Department.deleteMany({});
-    for (let key in DepartmentName) {
-      let departmentName = DepartmentName[key];
-      const department = new Department({
-        name: departmentName
-      });
-      department.save();
+    const depts: Departments = getAllDepartments();
+    for (let key in depts) {
+        let deptName = depts[key];
+        const department = new Department({
+            name: deptName
+        });
+        await department.save();
     }
     console.log('Leaderboard seeded');
   } catch (err: any) {

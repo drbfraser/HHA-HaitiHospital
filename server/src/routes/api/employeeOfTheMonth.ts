@@ -3,12 +3,12 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../schema/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { BadRequest, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
+import { BadRequest, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 import { verifyDeptId } from 'common/definitions/departments';
+import { roleAuth } from 'middleware/roleAuth';
 
 const router = Router();
 
@@ -18,7 +18,7 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
       .catch((err: any) => { throw new InternalError(`get employee of the month posts failed: ${err}`)});
 });
 
-router.put('/', requireJwtAuth, checkIsInRole(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
+router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
     const previousEmployeeOfTheMonth = await EmployeeOfTheMonth.findOne();
     deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
     const { name, department, description } = JSON.parse(req.body.document);

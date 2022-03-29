@@ -3,11 +3,11 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
 import CaseStudy from '../../models/caseStudies';
-import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { roleAuth } from 'middleware/roleAuth';
 
 const router = Router();
 
@@ -70,7 +70,7 @@ router.post('/',
 
 });
 
-router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
     const caseId = req.params.id;
 
     CaseStudy.findByIdAndRemove(caseId).exec()
@@ -91,7 +91,7 @@ router.put('/:id',
   registerCaseStudiesCreate,
   validateInput,
   upload.single('file'),
-  checkIsInRole(Role.Admin, Role.MedicalDirector),
+  roleAuth(Role.Admin, Role.MedicalDirector),
   async (req, res, next: NextFunction) => {
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const oldCaseStudy = await CaseStudy.findById(req.params.id);
@@ -122,7 +122,7 @@ router.put('/:id',
 );
 
 // Set feature case study
-router.patch('/:id', requireJwtAuth, checkIsInRole(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response, next: NextFunction) => {
     const prevFeaturedCaseStudy = await CaseStudy.findOne(setFeatured(true));
     if ((prevFeaturedCaseStudy._id as string) === req.params.id) {
         return res.status(HTTP_NOCONTENT_CODE).send();

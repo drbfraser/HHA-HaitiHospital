@@ -2,14 +2,14 @@ import { Router, Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import User, { hashPassword, Role, validateUserSchema } from '../../models/user';
-import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
 import { verifyDeptId } from 'common/definitions/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { roleAuth } from 'middleware/roleAuth';
 
 const router = Router();
 
-router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
+router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
     const targetUser = await User.findById(req.params.id).exec();
     if (!targetUser) {
         throw new NotFound(`No user with provided Id found`);
@@ -39,7 +39,7 @@ router.get('/me', requireJwtAuth, async (req, res) => {
   res.json(req.user);
 });
 
-router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
+router.get('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response) => {
     const foundUser = await User.findById(req.params.id).exec();
     if (!foundUser) {
         throw new NotFound(`No user with provided id available`);
@@ -47,12 +47,12 @@ router.get('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Reques
     res.status(HTTP_OK_CODE).json(foundUser);
 });
 
-router.get('/', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
+router.get('/', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response) => {
     const users: [] = await User.find().sort({ createdAt: 'desc' }).exec();
     res.status(HTTP_OK_CODE).json(users);
 });
 
-router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response) => {
     const tempUser = await User.findById(req.params.id).exec();
     if (!tempUser) {
         throw new NotFound(`No user found with provided id`);
@@ -65,7 +65,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
     res.status(HTTP_NOCONTENT_CODE).send();
 });
 
-router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
+router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
     let { username, password, name, role, department } = req.body;
     const existingUser = await User.findOne({ username }).exec();
     if (existingUser) {

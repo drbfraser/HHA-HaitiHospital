@@ -1,3 +1,4 @@
+import { number } from "joi";
 import { getEnumKeyByStringValue, getLengthOfEnum } from "utils/utils";
 
 enum DepartmentName {
@@ -74,6 +75,21 @@ export const verifyDeptId = (deptId: string): boolean => {
 export const verifyDeptName = (deptName: string): boolean => {
     const nameKey = getEnumKeyByStringValue(DepartmentName, deptName);
     return (nameKey !== null);
+}
+
+export interface Departments {
+    [id: string]: string
+}
+export const getAllDepartments = (): Departments => {
+    let depts: Departments = {};
+    for (let key in DepartmentId) {
+        if (isNaN(Number(key))) {
+            const deptId: string = DepartmentId[key];
+            depts[deptId] = getDeptNameFromId(deptId);
+        }
+    }
+
+    return depts;
 }
 // export const getDepartmentIdKeyFromValue = (idValue: string): DepartmentIdKeys | null=> {
 //     const key = getEnumKeyByStringValue(DepartmentId, idValue);

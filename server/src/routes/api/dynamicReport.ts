@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { BadRequest } from '../../exceptions/httpException';
-import { departmentAuth } from '../../middleware/departmentAuth';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
 import { ReportModel } from '../../models/dynamicReport';
@@ -38,7 +37,6 @@ router.route('/').get(
 //Support searching by date with query parameters/string: from, to
 router.route('/:departmentId').get(
   requireJwtAuth,
-  departmentAuth,
   async (req: Request, res: Response, next: NextFunction) => {
     const extractFromQuery = getFromDateQuery;
     const from = extractFromQuery(req);

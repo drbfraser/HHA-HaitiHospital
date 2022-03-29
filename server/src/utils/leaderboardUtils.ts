@@ -1,6 +1,6 @@
+import { SystemException } from 'exceptions/systemException';
 import CaseStudy from '../models/caseStudies';
 import Department from '../models/departments';
-import { DepartmentName } from '../common/definitions/departments';
 
 const pointsPerCaseStudy = 10;
 
@@ -20,5 +20,6 @@ export async function updateDepartmentPoints() {
     });
   } catch (err) {
     console.log(err);
+    throw new SystemException(err);
   }
 }

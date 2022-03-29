@@ -3,11 +3,11 @@ import MessageBody from '../../models/messageBoard';
 import { Request, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
-import { checkIsInRole } from '../../utils/authUtils';
 import { Role } from '../../models/user';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { getDeptNameFromId, verifyDeptId } from 'common/definitions/departments';
+import { roleAuth } from 'middleware/roleAuth';
 
 router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
   MessageBody.find({}).sort({ date: 'desc' }).populate('userId').exec()
@@ -38,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     .catch((err: any) => { throw new InternalError(`Failed to find message with id ${msgId}: ${err}`)});
 });
 
-router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
+router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   const departmentId: string = req.body.departmentId;
   if (!verifyDeptId(departmentId)) {
     throw new BadRequest(`Invalid department id ${departmentId}`);
@@ -66,7 +66,7 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoard
 });
 
 //make the changes to message of id reportID
-router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
+router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: Request, res: Response) => {
   const departmentId: string = req.body.departmentId;
   if (!verifyDeptId(departmentId)) {
     throw new BadRequest(`Invalid department id ${departmentId}`);
@@ -99,7 +99,7 @@ router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerMessageBoa
 });
 
 // delete message id
-router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response) => {
     const msgId: string = req.params.id;
     const msg = await MessageBody.findByIdAndRemove(msgId).exec();
     if (!msg) {
