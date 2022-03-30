@@ -102,9 +102,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 </p>
                 {/* {console.log(author.role)} */}
                 <p className="department-info">
-                  {author.role === 'Admin' || author.role === 'Medical Director'
-                    ? author.role
-                    : parsedDepartmentName}
+                  {parsedDepartmentName}
                 </p>
                 <p className="department-info">{((props.msgJson as Json).userId as Json).name}</p>
               </div>

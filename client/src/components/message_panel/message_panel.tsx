@@ -11,7 +11,7 @@ import { useAuthState } from 'contexts';
 import { Role } from '../../constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
-import { getDepartmentId } from '../../common/definitions/departments';
+import { getDepartmentId, DepartmentId } from '../../common/definitions/departments';
 
 interface MessagePanelProps {}
 
@@ -56,8 +56,8 @@ const MessagePanel = (props: MessagePanelProps) => {
 
   const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Json[]): Json[] => {
     const currentUserDepartment = authState.userDetails.department;
-    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter((message) => 
-      message.departmentId === getDepartmentId(currentUserDepartment)
+    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter((message) =>
+      message.departmentId ===  DepartmentId.General || message.departmentId === getDepartmentId(currentUserDepartment)
     )
     return filteredMsgsBasedOnUserDepartment;
   }
