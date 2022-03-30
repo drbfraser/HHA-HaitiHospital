@@ -45,7 +45,7 @@ interface UserDoc extends User {
     comparePassword: (otherPw: any, callback: Function) => void
 }
 
-const userSchema = new Schema<UserDoc, Model<UserDoc, {}>>(
+const userSchema = new Schema<UserDoc>(
   {
     username: {
       type: String,

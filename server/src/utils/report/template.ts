@@ -1,7 +1,7 @@
 import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
 import { formatDateString, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
-import { TemplateDocument } from '../../models/template';
+import { TemplateBase } from '../../models/template';
 import { ItemType, ItemTypeKeys } from "common/definitions/json_report";
 
 
@@ -12,13 +12,13 @@ interface TemplateSumItem extends ReportSumItem{};
 export type TemplateItems = Array<TemplateItem>;
 type TemplateAnswer = ItemAnswer;
 
-export const getTemplateDocumentFromReport = (report: ReportDescriptor): TemplateDocument => {
+export const getTemplateDocumentFromReport = (report: ReportDescriptor): TemplateBase => {
     const reportTemplate = ItemToTemplate.getReportTemplate(report);
     const doc = ItemToTemplate.buildTemplateDocument(reportTemplate);
     return doc;
 }
 
-export const generateReportFromDocument = (doc: TemplateDocument): ReportDescriptor => {
+export const generateReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
     let report: ReportDescriptor;
     let meta: ReportMeta = {
         id: doc.id,
@@ -48,8 +48,8 @@ export const getReportTemplate = (report: ReportDescriptor): TemplateReport => {
     return template;
 }
 
-export const buildTemplateDocument = (template: TemplateReport): TemplateDocument => {
-    let newDoc: TemplateDocument = {
+export const buildTemplateDocument = (template: TemplateReport): TemplateBase => {
+    let newDoc: TemplateBase = {
         id: template.meta.id,
         departmentId: template.meta.departmentId,
         submittedByUserId: template.meta.submittedUserId,

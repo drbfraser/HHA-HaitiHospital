@@ -1,8 +1,11 @@
-import mongoose from 'mongoose';
-import { TemplateItems } from 'utils/report/template';
+import { JsonReportDescriptor } from 'common/definitions/json_report';
+import mongoose, { Model } from 'mongoose';
+import { ReportDescriptor } from 'utils/definitions/report';
+import { parseToJson } from 'utils/json_report_parser/json_report';
+import { generateReportFromTemplate, TemplateItems } from 'utils/report/template';
 const { Schema } = mongoose;
 
-export interface TemplateDocument {
+export interface TemplateBase {
     id: string,
     departmentId: string,
     submittedDate: string,
@@ -10,7 +13,11 @@ export interface TemplateDocument {
     items: TemplateItems
 }
 
-const templateSchema = new Schema<TemplateDocument>({
+export interface TemplateWithUtils extends TemplateBase {
+    toJsonReport: () => JsonReportDescriptor
+};
+
+const templateSchema = new Schema<TemplateWithUtils>({
     id: {
         type: String, 
         unique: true, 
@@ -22,8 +29,13 @@ const templateSchema = new Schema<TemplateDocument>({
     items: {type: Object, required: true}
 });
 
+templateSchema.methods.toJsonReport = function(): JsonReportDescriptor {
+    const report: ReportDescriptor = generateReportFromTemplate(this);
+    return parseToJson(report);
+}
+
 const TEMPLATE_COLLECTION_NAME = "Template";
-const TemplateCollection = mongoose.model<TemplateDocument>(TEMPLATE_COLLECTION_NAME, templateSchema);
+const TemplateCollection = mongoose.model<TemplateWithUtils>(TEMPLATE_COLLECTION_NAME, templateSchema);
 
 const uniqueTemplateId = (value: string) => {
     TemplateCollection.countDocuments({ id: value }, function(err, count: Number) {
