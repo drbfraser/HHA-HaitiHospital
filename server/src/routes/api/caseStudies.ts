@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
@@ -8,6 +8,7 @@ import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
+import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
@@ -15,19 +16,19 @@ const setFeatured = (flag: boolean): object => {
   return { featured: flag };
 };
 
-router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
     CaseStudy.find().populate('user').exec()
       .then((data: []) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => {throw new InternalError(`Failed to get case studies: ${err}`)});
 });
 
-router.get('/featured', requireJwtAuth, async (req: Request, res: Response) => {
+router.get('/featured', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
     CaseStudy.findOne(setFeatured(true)).populate('user').exec()
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => {throw new InternalError(`Failed to get featured case study: ${err}`)});
 });
 
-router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
+router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
     const caseId = req.params.id;
     CaseStudy.findById(caseId).populate('user').exec()
       .then((data: any) => {
@@ -42,7 +43,7 @@ router.get('/:id', requireJwtAuth, async (req: Request, res: Response) => {
 router.post('/', 
     requireJwtAuth, registerCaseStudiesCreate, 
     validateInput, upload.single('file'), 
-    async (req: any, res: Response) => {
+    async (req: RequestWithUser, res: Response) => {
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const user = req.user;
     const userId = user.id;
@@ -70,7 +71,7 @@ router.post('/',
 
 });
 
-router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response) => {
     const caseId = req.params.id;
 
     CaseStudy.findByIdAndRemove(caseId).exec()
@@ -92,19 +93,20 @@ router.put('/:id',
   validateInput,
   upload.single('file'),
   roleAuth(Role.Admin, Role.MedicalDirector),
-  async (req, res, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const oldCaseStudy = await CaseStudy.findById(req.params.id);
     let imgPath = oldCaseStudy.imgPath;
-    let user = req.user.id;
-    let userDepartment = user.department;
+    const user = req.user;
+    const userId = req.user.id;
+    const userDepartment = user.department;
     if (req.file) {
         imgPath = req.file.path.replace(/\\/g, '/');
     }
 
     const updatedCaseStudy = {
     caseStudyType: caseStudyType,
-    user: user,
+    user: userId,
     userDepartment: userDepartment,
     patientStory: patientStory,
     staffRecognition: staffRecognition,
@@ -122,7 +124,7 @@ router.put('/:id',
 );
 
 // Set feature case study
-router.patch('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const prevFeaturedCaseStudy = await CaseStudy.findOne(setFeatured(true));
     if ((prevFeaturedCaseStudy._id as string) === req.params.id) {
         return res.status(HTTP_NOCONTENT_CODE).send();

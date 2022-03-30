@@ -12,11 +12,11 @@ export async function updateDepartmentPoints() {
         await Department.updateMany({}, { $set: { points: 0, nCaseStudies: 0 } });
       })(),
       (async () => {
-        caseStudies = await CaseStudy.find().populate('user');
+        caseStudies = await CaseStudy.find().populate('user').lean();
       })()
     ]);
     caseStudies.forEach(async (item) => {
-      await Department.findOneAndUpdate({ name: item.user.department }, { $inc: { points: pointsPerCaseStudy, nCaseStudies: 1 } }).exec();
+      await Department.findOneAndUpdate({ name: item.user.department }, { $inc: { points: pointsPerCaseStudy, nCaseStudies: 1 } });
     });
   } catch (err) {
     console.log(err);

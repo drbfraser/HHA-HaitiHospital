@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
@@ -6,17 +6,18 @@ import BioMech from '../../models/bioMech';
 import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
     BioMech.find({}).populate('user')
       .sort({ createdOn: 'desc' }).exec()
       .then((response: []) => res.status(HTTP_OK_CODE).json(response))
       .catch((err: any) => {throw new InternalError(`Get biomechs failed: ${err}`)});
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
     const bioId = req.params.id;
     BioMech.findById(bioId).populate('user')
       .then((response: any) => {
@@ -25,7 +26,7 @@ router.get('/:id', async (req: Request, res: Response) => {
           }
           res.status(HTTP_OK_CODE).json(response)
         })
-      .catch((err: any) => {throw new BadRequest(`Could not find biomech id ${bioId} results`)});
+      .catch((err: any) => {throw new InternalError(`Could not find biomech id ${bioId} results`)});
 });
 
 router.post('/', 
@@ -33,9 +34,10 @@ router.post('/',
     registerBioMechCreate, 
     validateInput, 
     upload.single('file'), 
-    async (req: any, res: Response) => {
+    async (req: RequestWithUser, res: Response) => {
 
     const user = req.user;
+    const userId = user.id;
     const department = user.department;
     const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
 
@@ -45,7 +47,7 @@ router.post('/',
     }
 
     const bioMech = new BioMech({
-      user,
+      userId,
       department,
       equipmentName,
       equipmentFault,
@@ -58,7 +60,7 @@ router.post('/',
       .catch((err: any) => { throw new InternalError(`BioMech Report submission failed: ${err}`)} );
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
     const bioId = req.params.id;
     BioMech.findByIdAndRemove(bioId).exec()
         .then((data: any) => { 

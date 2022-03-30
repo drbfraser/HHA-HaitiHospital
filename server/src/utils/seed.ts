@@ -37,7 +37,7 @@ export const seedDb = async () => {
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
-  // await seedUsers();
+  await seedUsers();
   await seedLeaderboard();
   await seedDepartments();
   await seedCaseStudies();
@@ -54,7 +54,7 @@ export const seedUsers = async () => {
     // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
-      var foundUser = await UserModel.findOne({ username: `user${index}` });
+      var foundUser = await UserModel.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
           case 0:

@@ -1,18 +1,23 @@
+
 import { HTTP_OK_CODE } from 'exceptions/httpException';
 import { Router, Request, Response } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
+import UserModel from 'models/user';
+import { RequestWithUser } from 'utils/definitions/express';
 import requireLocalAuth from '../../middleware/requireLocalAuth';
 
 const router = Router();
 
-router.post('/login', requireLocalAuth, (req: any, res: Response) => {
-  const token = req.user.generateJWT();
-  const user = req.user.toJSON();
+router.post('/login', requireLocalAuth, async (req: RequestWithUser, res: Response) => {
+  const user = req.user;
+  const mongooseUser = await UserModel.findOne({username: user.username});
+  const jsonUser = mongooseUser!.toJSON();
+  const token = mongooseUser!.generateJWT();
   res.cookie('jwt', token, { httpOnly: true });
-  res.status(HTTP_OK_CODE).json({ success: true, isAuth: true, user, csrfToken: req.body._csrf });
+  res.status(HTTP_OK_CODE).json({ success: true, isAuth: true, user: jsonUser, csrfToken: req.body._csrf });
 });
 
-router.post('/logout', requireJwtAuth, (req: Request, res: Response) => {
+router.post('/logout', requireJwtAuth, (req: RequestWithUser, res: Response) => {
   res.cookie('jwt', 'invalidated-jwt-token');
   req.logout();
   console.log('User successfully logged out');

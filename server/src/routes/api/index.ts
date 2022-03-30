@@ -8,7 +8,7 @@ import caseStudiesRoutes from './caseStudies';
 import leaderboardRoutes from './leaderboard';
 import biomechRoutes from './bioMech';
 import imageRoutes from './image';
-import authRoutes from './localAuth';
+import authRoutes from './authentication';
 import employeeOfTheMonthRoutes from './employeeOfTheMonth';
 import templateRoutes from './report_template';
 

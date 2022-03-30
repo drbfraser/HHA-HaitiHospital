@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { RequestWithUser } from 'utils/definitions/express';
 import { BadRequest } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
@@ -13,7 +14,7 @@ const EARLIEST_DATE = new Date(1970, 1, 1);
 router.route('/').get(
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const extractFromQuery = getFromDateQuery;
     const from = extractFromQuery(req);
     const extractToQuery = getToDateQuery;
@@ -37,7 +38,7 @@ router.route('/').get(
 //Support searching by date with query parameters/string: from, to
 router.route('/:departmentId').get(
   requireJwtAuth,
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const extractFromQuery = getFromDateQuery;
     const from = extractFromQuery(req);
     const extractToQuery = getToDateQuery;

@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
@@ -9,16 +9,20 @@ import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { BadRequest, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
 import { verifyDeptId } from 'common/definitions/departments';
 import { roleAuth } from 'middleware/roleAuth';
+import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
-router.get('/', requireJwtAuth, async (req: Request, res: Response) => {
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
     EmployeeOfTheMonth.findOne().exec()
       .then((data: any) => res.status(HTTP_OK_CODE).json(data))
       .catch((err: any) => { throw new InternalError(`get employee of the month posts failed: ${err}`)});
 });
 
-router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
+router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, 
+    validateInput, upload.single('file'), 
+    async (req: RequestWithUser, res: Response, next: NextFunction) => {
+
     const previousEmployeeOfTheMonth = await EmployeeOfTheMonth.findOne();
     deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
     const { name, department, description } = JSON.parse(req.body.document);
@@ -36,7 +40,7 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
       description: description,
       imgPath: imgPath
     };
-    const post = await EmployeeOfTheMonth.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth._id }, { $set: updatedEmployeeOfTheMonth }, { new: true }).exec();
+    const post = await EmployeeOfTheMonth.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth._id }, { $set: updatedEmployeeOfTheMonth }, { new: true });
     res.status(HTTP_OK_CODE).json(post);
 });
 
