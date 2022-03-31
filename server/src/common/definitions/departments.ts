@@ -69,7 +69,7 @@ initNameToId(deptNameToId);
 export function getDepartmentId(deptName: string): DepartmentId {
   const nameKey = getEnumKeyByStringValue(DepartmentName, deptName);
   if (!nameKey) {
-    throw new Error(`Deparmtnet Name ${deptName} is not supported`);
+    throw new Error(`Department Name ${deptName} is not supported`);
   }
   return deptNameToId.get(nameKey)!;
 }
