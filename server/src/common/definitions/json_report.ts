@@ -10,8 +10,8 @@ export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonRepor
 export interface JsonReportMeta {
   readonly id: string;
   readonly departmentId: string;
-  readonly submittedDate: string;
-  readonly submittedUserId: string;
+  readonly submittedDate?: string;
+  readonly submittedUserId?: string;
 }
 
 export type JsonItemAnswer = Array<string>;

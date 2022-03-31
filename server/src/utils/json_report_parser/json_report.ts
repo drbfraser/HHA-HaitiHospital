@@ -1,6 +1,6 @@
 import { DepartmentId } from "common/definitions/departments";
 import { JsonReportDescriptor, JsonReportItem, JsonReportItems, JsonReportMeta } from "common/definitions/json_report";
-import { ReportDescriptor, ReportItems, ReportMeta } from "models/report";
+import { ReportDescriptor, ReportItems, ReportMeta } from "utils/definitions/report";
 import { formatDateString } from "utils/utils";
 import * as _ReportUtils from "../report/report";
 import { getParserItemToJson } from "./item";

@@ -1,5 +1,5 @@
 import faker from 'faker';
-import UserModel, { hashPassword, Role, User } from '../models/user';
+import UserModel, { Role, User } from '../models/user';
 import Department from '../models/leaderboard';
 import { DepartmentName } from '../common/definitions/departments';
 import NicuPaeds from '../models/nicuPaeds';
@@ -8,21 +8,40 @@ import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-import { getDepartmentId } from '../common/definitions/departments';
 
 import * as ENV from './processEnv';
 
+const selectRandomUser = (users: User[]): User => {
+  const randomUserIndex = Math.floor(Math.random() * users.length);
+  return users[randomUserIndex];
+};
+
+// Random Enum Key function here accepts any enumerations and selects the key of the enum.
+const randomEnumKey = (enumeration: any): any => {
+  const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
+  const enumKey = keys[Math.floor(Math.random() * keys.length)];
+
+  return enumKey;
+};
+
+// Random Enum value function here accepts any enumerations and selects the value of the enum.
+const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
+
+const setDepartment = (user: User): string => {
+  return user.role === 'Admin' || user.role === 'Medical Director' ? 'All' : user.department;
+};
+
 export const seedDb = async () => {
-  // await UserModel.deleteMany({});
+  // await User.deleteMany({});
   // TODO: Remove delete many when in prod
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
   // await seedUsers();
-  await seedCaseStudies();
-  await seedDepartments();
-  await seedMessageBoard();
   await seedLeaderboard();
+  await seedDepartments();
+  await seedCaseStudies();
+  await seedMessageBoard();
   await seedBioMech();
   await seedEmployeeOfTheMonth();
   console.log('Database seeding completed.');
@@ -30,10 +49,9 @@ export const seedDb = async () => {
 
 export const seedUsers = async () => {
   console.log('Seeding users...');
-
   try {
     // Delete seeded users on server start so we can reseed them.
-    // await UserModel.collection.dropIndexes();
+    // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
       var foundUser = await UserModel.findOne({ username: `user${index}` });
@@ -41,11 +59,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.department = 'All';
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.department = 'All';
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
@@ -81,11 +99,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.department = DepartmentName.NicuPaeds;
+            user.department = 'All';
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.department = DepartmentName.NicuPaeds;
+            user.department = 'All';
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
@@ -114,67 +132,93 @@ export const seedUsers = async () => {
         await user.registerUser(user, () => {});
       }
     });
-
     console.log('Users seeded');
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    console.error(err);
   }
 };
 
 export const seedDepartments = async () => {
   console.log('Seeding default departments...');
+  try {
+    const dateTime: Date = new Date();
+    const month: number = dateTime.getUTCMonth() + 1;
+    const year: number = dateTime.getUTCFullYear();
+    //ONLY USED TO TEST - MUST REMOVE IF IN PROD:
+    await NicuPaeds.deleteMany({});
+    await Community.deleteMany({});
 
-  let dateTime: Date = new Date();
-  var month: number = dateTime.getUTCMonth() + 1;
-  var year: number = dateTime.getUTCFullYear();
-  //ONLY USED TO TEST - MUST REMOVE IF IN PROD:
-  await NicuPaeds.deleteMany({});
-  await Community.deleteMany({});
+    //TODO Rehab Department Default value creation:
 
-  //TODO Rehab Department Default value creation:
+    // NICU/Paeds Department Default value creation:
+    let departmentId: number = 1;
+    let departmentName: string = 'nicupaeds';
+    const originalNicuPaedsDocument = new NicuPaeds({ departmentId, departmentName, month, year });
+    await originalNicuPaedsDocument.save();
 
-  // NICU/Paeds Department Default value creation:
-  var departmentId: number = 1;
-  var departmentName: string = 'nicupaeds';
-  const originalNicuPaedsDocument = new NicuPaeds({ departmentId, departmentName, month, year });
-  await originalNicuPaedsDocument.save();
+    //TODO Community
+    departmentId = 2;
+    departmentName = 'community';
+    const originalCommunityDocument = new Community({ departmentId, departmentName, month, year });
+    await originalCommunityDocument.save();
 
-  //TODO Community
-  departmentId = 2;
-  departmentName = 'community';
-  const originalCommunityDocument = new Community({ departmentId, departmentName, month, year });
-  await originalCommunityDocument.save();
-
-  console.log('Default departments seeded');
+    console.log('Default departments seeded');
+  } catch (err: any) {
+    console.error(err);
+  }
 };
 
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
-
-  const users: User[] = await UserModel.find();
-  const numOfMessagesToGenerate: number = 100;
-  for (let i = 0; i < numOfMessagesToGenerate; i++) {
-    const randomUser: User = selectRandomUser(users);
-    const message = new MessageBody({
-      departmentId: getDepartmentId(randomUser.department),
-      departmentName: randomUser.department,
-      userId: randomUser._id,
-      date: new Date(),
-      messageBody: faker.lorem.words(),
-      messageHeader: faker.lorem.words()
-    });
-    message.save();
+  try {
+    const users: User[] = await UserModel.find();
+    const numOfMessagesToGenerate: number = 100;
+    for (let i = 0; i < numOfMessagesToGenerate; i++) {
+      const randomUser: User = selectRandomUser(users);
+      const message = new MessageBody({
+        departmentId: 1,
+        departmentName: setDepartment(randomUser),
+        userId: randomUser._id,
+        date: new Date(),
+        messageBody: faker.lorem.words(),
+        messageHeader: faker.lorem.words()
+      });
+      message.save();
+    }
+    console.log('Message board seeded');
+  } catch (err: any) {
+    console.error(err);
   }
+};
 
-  console.log('Message board seeded');
+const setDefaultFeaturedCaseStudy = (user: User) => {
+  try {
+    let caseStudy = new CaseStudy({
+      caseStudyType: CaseStudyOptions.PatientStory,
+      user: user._id,
+      userDepartment: setDepartment(user),
+      imgPath: 'public/images/case1.jpg',
+      featured: true,
+      patientStory: {
+        patientsName: faker.name.findName(),
+        patientsAge: faker.random.number({ min: 10, max: 50 }),
+        whereIsThePatientFrom: faker.lorem.words(),
+        whyComeToHcbh: faker.lorem.sentences(),
+        howLongWereTheyAtHcbh: faker.lorem.words(),
+        diagnosis: faker.lorem.sentences(),
+        caseStudyStory: faker.lorem.paragraph(10)
+      }
+    });
+    caseStudy.save();
+  } catch (err: any) {
+    console.error(err);
+  }
 };
 
 export const seedCaseStudies = async () => {
   console.log('Seeding case studies...');
-
   try {
     const users: User[] = await UserModel.find();
-
     const randomDefaultUser = selectRandomUser(users);
     setDefaultFeaturedCaseStudy(randomDefaultUser);
     const numCaseStudiesToGenerate: number = 100;
@@ -183,10 +227,9 @@ export const seedCaseStudies = async () => {
       const randomCaseStudy = randomEnumValue(CaseStudyOptions);
       generateRandomCaseStudy(randomCaseStudy, randomUser);
     }
-
     console.log('Case studies seeded');
   } catch (err: any) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -203,7 +246,7 @@ export const seedLeaderboard = async () => {
     }
     console.log('Leaderboard seeded');
   } catch (err: any) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -217,7 +260,7 @@ export const seedBioMech = async () => {
       const randomUser = selectRandomUser(users);
       const bioMechReport = new BioMech({
         user: randomUser,
-        department: randomUser.department,
+        department: setDepartment(randomUser),
         equipmentName: faker.lorem.words(),
         equipmentFault: faker.lorem.words(),
         equipmentPriority: randomEnumValue(bioMechEnum),
@@ -227,7 +270,7 @@ export const seedBioMech = async () => {
     }
     console.log('Biomechanical support seeded');
   } catch (err: any) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -244,136 +287,104 @@ export const seedEmployeeOfTheMonth = async () => {
     employeeOfTheMonth.save();
     console.log('Employee of the month seeded');
   } catch (err: any) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-const setDefaultFeaturedCaseStudy = (user) => {
-  let caseStudy = new CaseStudy({
-    caseStudyType: CaseStudyOptions.PatientStory,
-    user: user.id,
-    userDepartment: user.department,
-    imgPath: 'public/images/case1.jpg',
-    featured: true,
-    patientStory: {
-      patientsName: faker.name.findName(),
-      patientsAge: faker.random.number({ min: 10, max: 50 }),
-      whereIsThePatientFrom: faker.lorem.words(),
-      whyComeToHcbh: faker.lorem.sentences(),
-      howLongWereTheyAtHcbh: faker.lorem.words(),
-      diagnosis: faker.lorem.sentences(),
-      caseStudyStory: faker.lorem.paragraph(10)
+const generateRandomCaseStudy = (caseStudyType, user: User) => {
+  try {
+    let caseStudy;
+    switch (caseStudyType) {
+      case CaseStudyOptions.PatientStory:
+        caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.PatientStory,
+          user: user._id,
+          userDepartment: setDepartment(user),
+          imgPath: 'public/images/case1.jpg',
+          featured: false,
+          patientStory: {
+            patientsName: faker.name.findName(),
+            patientsAge: faker.random.number({ min: 10, max: 50 }),
+            whereIsThePatientFrom: faker.lorem.words(),
+            whyComeToHcbh: faker.lorem.sentences(),
+            howLongWereTheyAtHcbh: faker.lorem.words(),
+            diagnosis: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10)
+          }
+        });
+        caseStudy.save();
+        break;
+      case CaseStudyOptions.StaffRecognition:
+        caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.StaffRecognition,
+          user: user._id,
+          userDepartment: setDepartment(user),
+          imgPath: 'public/images/case2.jpg',
+          featured: false,
+          staffRecognition: {
+            staffName: faker.name.findName(),
+            jobTitle: faker.lorem.words(),
+            department: faker.lorem.words(),
+            howLongWorkingAtHcbh: faker.lorem.words(),
+            mostEnjoy: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10)
+          }
+        });
+        caseStudy.save();
+        break;
+      case CaseStudyOptions.TrainingSession:
+        caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.TrainingSession,
+          user: user._id,
+          userDepartment: setDepartment(user),
+          imgPath: 'public/images/case2.jpg',
+          featured: false,
+          trainingSession: {
+            trainingDate: faker.date.recent(),
+            trainingOn: faker.lorem.sentences(),
+            whoConducted: faker.name.findName(),
+            whoAttended: faker.name.findName(),
+            benefitsFromTraining: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10)
+          }
+        });
+        caseStudy.save();
+        break;
+      case CaseStudyOptions.EquipmentReceived:
+        caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.EquipmentReceived,
+          user: user._id,
+          userDepartment: setDepartment(user),
+          imgPath: 'public/images/case2.jpg',
+          featured: false,
+          equipmentReceived: {
+            equipmentReceived: faker.lorem.words(),
+            departmentReceived: faker.lorem.words(),
+            whoSentEquipment: faker.name.findName(),
+            purchasedOrDonated: faker.lorem.words(),
+            whatDoesEquipmentDo: faker.lorem.sentences(),
+            caseStudyStory: faker.lorem.paragraph(10)
+          }
+        });
+        caseStudy.save();
+        break;
+      case CaseStudyOptions.OtherStory:
+        caseStudy = new CaseStudy({
+          caseStudyType: CaseStudyOptions.OtherStory,
+          user: user._id,
+          userDepartment: setDepartment(user),
+          imgPath: 'public/images/case2.jpg',
+          featured: false,
+          otherStory: {
+            caseStudyStory: faker.lorem.paragraph(10)
+          }
+        });
+        caseStudy.save();
+        break;
+      default:
+        break;
     }
-  });
-  caseStudy.save();
-};
-
-const generateRandomCaseStudy = (caseStudyType, user) => {
-  let caseStudy;
-  switch (caseStudyType) {
-    case CaseStudyOptions.PatientStory:
-      caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.PatientStory,
-        user: user.id,
-        userDepartment: user.department,
-        imgPath: 'public/images/case1.jpg',
-        featured: false,
-        patientStory: {
-          patientsName: faker.name.findName(),
-          patientsAge: faker.random.number({ min: 10, max: 50 }),
-          whereIsThePatientFrom: faker.lorem.words(),
-          whyComeToHcbh: faker.lorem.sentences(),
-          howLongWereTheyAtHcbh: faker.lorem.words(),
-          diagnosis: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10)
-        }
-      });
-      caseStudy.save();
-      break;
-    case CaseStudyOptions.StaffRecognition:
-      caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.StaffRecognition,
-        user: user.id,
-        userDepartment: user.department,
-        imgPath: 'public/images/case2.jpg',
-        featured: false,
-        staffRecognition: {
-          staffName: faker.name.findName(),
-          jobTitle: faker.lorem.words(),
-          department: faker.lorem.words(),
-          howLongWorkingAtHcbh: faker.lorem.words(),
-          mostEnjoy: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10)
-        }
-      });
-      caseStudy.save();
-      break;
-    case CaseStudyOptions.TrainingSession:
-      caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.TrainingSession,
-        user: user.id,
-        userDepartment: user.department,
-        imgPath: 'public/images/case2.jpg',
-        featured: false,
-        trainingSession: {
-          trainingDate: faker.date.recent(),
-          trainingOn: faker.lorem.sentences(),
-          whoConducted: faker.name.findName(),
-          whoAttended: faker.name.findName(),
-          benefitsFromTraining: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10)
-        }
-      });
-      caseStudy.save();
-      break;
-    case CaseStudyOptions.EquipmentReceived:
-      caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.EquipmentReceived,
-        user: user.id,
-        userDepartment: user.department,
-        imgPath: 'public/images/case2.jpg',
-        featured: false,
-        equipmentReceived: {
-          equipmentReceived: faker.lorem.words(),
-          departmentReceived: faker.lorem.words(),
-          whoSentEquipment: faker.name.findName(),
-          purchasedOrDonated: faker.lorem.words(),
-          whatDoesEquipmentDo: faker.lorem.sentences(),
-          caseStudyStory: faker.lorem.paragraph(10)
-        }
-      });
-      caseStudy.save();
-      break;
-    case CaseStudyOptions.OtherStory:
-      caseStudy = new CaseStudy({
-        caseStudyType: CaseStudyOptions.OtherStory,
-        user: user.id,
-        userDepartment: user.department,
-        imgPath: 'public/images/case2.jpg',
-        featured: false,
-        otherStory: {
-          caseStudyStory: faker.lorem.paragraph(10)
-        }
-      });
-      caseStudy.save();
-      break;
-    default:
-      break;
+  } catch (err: any) {
+    console.error(err);
   }
 };
-
-const selectRandomUser = (users: User[]): User => {
-  const randomUserIndex = Math.floor(Math.random() * users.length);
-  return users[randomUserIndex];
-};
-
-// Random Enum Key function here accepts any enumerations and selects the key of the enum.
-const randomEnumKey = (enumeration: any): any => {
-  const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
-  const enumKey = keys[Math.floor(Math.random() * keys.length)];
-
-  return enumKey;
-};
-
-// Random Enum value function here accepts any enumerations and selects the value of the enum.
-const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];

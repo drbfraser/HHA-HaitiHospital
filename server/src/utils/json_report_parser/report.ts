@@ -1,7 +1,7 @@
 import { getDepartmentIdKeyFromValue } from 'common/definitions/departments';
 import { JsonReportDescriptor, JsonReportMeta } from 'common/definitions/json_report';
 import { InvalidInput } from 'exceptions/systemException';
-import { ReportDescriptor, ReportItems, ReportMeta } from '../../models/report';
+import { ReportDescriptor, ReportItems, ReportMeta } from "../definitions/report";
 import * as _JsonUtils  from '../report/json_report';
 import * as _ItemParser from './item';
 
@@ -23,25 +23,24 @@ export const parseToReport = (jsonReport: JsonReportDescriptor): ReportDescripto
 };
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-const verifyUserId = (uid: string): boolean => {
-    // ToDo: actually verify submitted user id is logged in user
-    return true;
-}
-
 const parseToReportMeta = (jsonMeta: JsonReportMeta) => {
     const deptIdKey = getDepartmentIdKeyFromValue(jsonMeta.departmentId);
     if (!deptIdKey) {
         throw new InvalidInput(`Department Id: ${jsonMeta.departmentId} is not valid`);
     }
 
-    const submittedDate = new Date(jsonMeta.submittedDate);
-    if (!submittedDate) {
-        throw new InvalidInput(`Submitted date provided is not valid: ${jsonMeta.submittedDate}`);
+    let submittedDate: Date = new Date();
+    if (jsonMeta.submittedDate) {
+        submittedDate = new Date(jsonMeta.submittedDate!);
+        if (!submittedDate) {
+            throw new InvalidInput(`Submitted date provided is not valid: ${jsonMeta.submittedDate}`);
+        }
     }
+    
+    let submittedUserId: string = "";
+    if (jsonMeta.submittedUserId) {
+        submittedUserId = jsonMeta.submittedUserId;
 
-    const submittedUserId = jsonMeta.submittedUserId;
-    if (!verifyUserId(submittedUserId)) {
-        throw new InvalidInput(`Submitted user is not logged in`);
     }
 
     let meta: ReportMeta = {

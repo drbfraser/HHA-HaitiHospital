@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "clean": "rm -rf ./dist",
-    "start": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/app.ts",
+    "start": "ts-node-dev -r tsconfig-paths/register --respawn --trace-warnings --transpile-only src/app.ts",
     "start-prod": "ts-node -r tsconfig-paths/register --transpile-only dist/src/app.js",
     "test": "ts-mocha --exit --timeout 10000 -p tsconfig.json tests/unitTests/*.spec.ts",
     "report-parser": "ts-mocha --paths --exit --timeout 20000 -p tsconfig.json tests/unitTests/reportParser.spec.ts"

@@ -1,6 +1,6 @@
 
 import { JsonReportDescriptor} from 'common/definitions/json_report';
-import { ReportDescriptor } from 'models/report';
+import { ReportDescriptor } from "utils/definitions/report";
 import { jsonStringToReport, reportToJsonReport } from 'utils/json_report_parser/parsers';
 const chai = require('chai');
 

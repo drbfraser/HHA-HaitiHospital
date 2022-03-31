@@ -41,7 +41,7 @@ const initIdNameMap = (map: Map<DepartmentIdKeys, DepartmentName>) => {
 }
 initIdNameMap(deptIdtoName);
 
-export function getDepartmentName(deptId: number): DepartmentName {
+export function getDepartmentName(deptId: number | String): DepartmentName {
     const idKey = getEnumKeyByStringValue(DepartmentId, deptId.toString());
     if (!idKey) {
         throw new Error(`Department Id ${deptId} is not supported`);

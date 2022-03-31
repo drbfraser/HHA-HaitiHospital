@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import requireJwtAuth from 'middleware/requireJwtAuth';
 import requireLocalAuth from '../../middleware/requireLocalAuth';
 
 const router = Router();
@@ -10,11 +11,11 @@ router.post('/login', requireLocalAuth, (req: any, res: Response) => {
   res.status(200).json({ success: true, isAuth: true, user, csrfToken: req.body._csrf });
 });
 
-router.get('/logout', (req: Request, res: Response) => {
-  console.log('User successfully logged out');
+router.post('/logout', requireJwtAuth, (req: Request, res: Response) => {
   res.cookie('jwt', 'invalidated-jwt-token');
   req.logout();
-  res.send(false);
+  console.log('User successfully logged out');
+  res.send(true);
 });
 
 router.get('/csrftoken', (req: Request, res: Response) => {

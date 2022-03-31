@@ -6,7 +6,7 @@ import path from 'path';
 import ts from 'typescript';
 import { BadRequest, InternalError } from "exceptions/httpException";
 
-import { ReportDescriptor } from 'models/report';
+import { ReportDescriptor } from "utils/definitions/report";
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
 import { parseToReport } from 'utils/json_report_parser/report';
