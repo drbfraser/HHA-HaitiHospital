@@ -136,7 +136,7 @@ const Sidebar = (props: SidebarProps) => {
             <></>
           )}
 
-          {departments.map((dept: Department, index) => {
+          {departments.map((dept: Department, index: number) => {
             const deptName = dept.name;
             const deptId = dept.id;
 
