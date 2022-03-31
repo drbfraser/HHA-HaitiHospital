@@ -8,7 +8,7 @@ import { expression } from 'joi';
 const jwtLogin = new JwtStrategy(
   {
     jwtFromRequest: (req) => req.cookies.jwt,
-    secretOrKey: ENV.JWT_SECRET
+    secretOrKey: ENV.JWT_SECRET 
   },
   async (payload, done) => {
     try {
@@ -16,7 +16,7 @@ const jwtLogin = new JwtStrategy(
 
       if (user) {
         done(null, user);
-      } else {
+      } else {  
         done(null, false);
       }
     } catch (err) {

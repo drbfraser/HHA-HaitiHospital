@@ -11,7 +11,12 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export function getData(): JsonReportDescriptor {
+export async function getDataDelay(millis): Promise<JsonReportDescriptor> {
+  await sleep(millis)
+  return getData();
+}
+
+function getData() {
   const date = new Date();
   const items: ReportItem[] = nicuJSON.flatMap((section, idx) => {
     const items: ReportItem[] = [];
@@ -32,8 +37,6 @@ export function getData(): JsonReportDescriptor {
         }
       })
       .filter((item) => item != undefined);
-    console.log(itemsFound);
-
     items.push(label);
     return items.concat(itemsFound);
   });
@@ -142,8 +145,6 @@ export async function submitData(
   delayMillis: number,
   success: boolean,
 ): Promise<JsonReportDescriptor> {
-  console.log('Mock API submit, success: ' + success);
-  console.log(data);
   if (success) {
     return sleep(delayMillis).then(() => {
       return { ...data };
