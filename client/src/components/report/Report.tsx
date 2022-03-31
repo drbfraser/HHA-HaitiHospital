@@ -111,6 +111,7 @@ function FormContents(props: { path: string }) {
     try{
       data = await ReportApiUtils.submitData(answers, submittingData);
       nextState = Ready(data)
+      setReadOnly(true);
       toast.success("Data submitted")
     }catch(err){
       if(err.code < 500) nextState = Ready(err.data)

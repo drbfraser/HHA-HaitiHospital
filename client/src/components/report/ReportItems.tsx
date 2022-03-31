@@ -6,18 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { ItemType } from 'common/definitions/json_report';
 import { ReportItem } from './Report';
 
-export type NumberInputFieldProps = {
-  id: string;
-  text?: string;
-  value: string;
-  weight?: string;
-  indent?: boolean;
-  isHeader?: boolean;
-  valid: boolean;
-  errorMessage?: string;
-  readOnly?: boolean;
-};
-
 type Label = {
     id: string;
     text?: string;
@@ -36,12 +24,8 @@ export function InputGroup(props: { items: ReportItem[]; readOnly: boolean; acti
             return (
               <NumberInputField
                 key={(element as ReportItem).id}
-                id={(element as ReportItem).id}
-                text={idx + '. ' + element.description}
-                valid={element.valid}
-                errorMessage={element.errorMessage}
-                value={value}
-                readOnly={props.readOnly}
+                item={element as ReportItem}
+                readonly={props.readOnly}
               />
             );
           default:
@@ -55,10 +39,23 @@ export function InputGroup(props: { items: ReportItem[]; readOnly: boolean; acti
   );
 }
 
-export function NumberInputField(props: NumberInputFieldProps): JSX.Element {
+export type NumberInputFieldProps = {
+  id: string;
+  text?: string;
+  value: string;
+  weight?: string;
+  indent?: boolean;
+  isHeader?: boolean;
+  valid: boolean;
+  errorMessage?: string;
+  readOnly?: boolean;
+};
+
+export function NumberInputField(props: {item: ReportItem, readonly: boolean}): JSX.Element {
   const { register, formState, clearErrors } = useFormContext();
   const { t, i18n } = useTranslation();
-  const text = props.text ?? 'N/A';
+  const item = props.item
+  const text = item.description ?? 'N/A';
   const getWeightCss = (w: string) => {
     switch (w) {
       case 'light':
@@ -69,33 +66,37 @@ export function NumberInputField(props: NumberInputFieldProps): JSX.Element {
         return ' ';
     }
   };
-  const invalid: boolean = formState.errors[props.id];
-  const errorMessage = formState.errors[props.id]?.message;
+  const invalid: boolean = formState.errors[item.id];
+  const errorMessage = formState.errors[item.id]?.message;
+  const weight = ''
+  const indent = false
+  const isHeader = ''
+  const defaultValue = item.answer[0][0]
   return (
     <div className="row justify-content-center ">
       <div className="form-group row col-sm-12 col-lg-6 col-xl-6 p-1 m-1">
         <label
           className={
             'col-sm-8 col-form-label align-middle' +
-            getWeightCss(props.weight) +
-            (props.indent ? ' ps-5' : '')
+            getWeightCss(weight) +
+            (indent ? ' ps-5' : '')
           }
-          htmlFor={props.id}
+          htmlFor={item.id}
         >
-          {props.isHeader ? <h5>{text}</h5> : text}
+          {isHeader ? <h5>{text}</h5> : text}
         </label>
 
         <div className="col-sm-4">
           <input
-            id={props.id}
+            id={item.id}
             type={'number'}
             className={'form-control' + (invalid ? ' is-invalid' : '')}
-            readOnly={props.readOnly}
-            defaultValue={props.value}
-            {...register(props.id, {
+            readOnly={props.readonly}
+            defaultValue={defaultValue}
+            {...register(item.id, {
               required: true,
               onChange: () => {
-                clearErrors(props.id);
+                clearErrors(item.id);
               },
             })}
           />
