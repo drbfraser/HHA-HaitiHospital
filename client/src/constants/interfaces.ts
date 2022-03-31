@@ -56,3 +56,12 @@ export interface UserJson {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Department {
+  id: string;
+  name: string;
+}
+
+export interface DepartmentJson {
+  departments: Department[];
+}
