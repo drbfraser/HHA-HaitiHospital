@@ -30,8 +30,16 @@ export const AddUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
+    data = setGeneralDepartmentForAdminAndMedicalDir(data);
     await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
   };
+
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): any => {
+    if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
+      data.department = DepartmentName.General;
+    }
+    return data;
+  }
 
   return (
     <div className={'admin'}>

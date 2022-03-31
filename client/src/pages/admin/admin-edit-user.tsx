@@ -52,6 +52,7 @@ export const EditUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
+    data = setGeneralDepartmentForAdminAndMedicalDir(data);
     await Api.Put(
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       defaultValueHandler(data),
@@ -60,6 +61,13 @@ export const EditUserForm = (props: AdminProps) => {
       history,
     );
   };
+
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): any => {
+    if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
+      data.department = DepartmentName.General;
+    }
+    return data;
+  }
 
   return (
     <div className={'admin'}>

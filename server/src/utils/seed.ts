@@ -238,6 +238,10 @@ export const seedLeaderboard = async () => {
   try {
     await Department.deleteMany({});
     for (let key in DepartmentName) {
+      // We want do not want the General to be seeded as a leaderboard department
+      if (key === DepartmentName.General) {
+        continue;
+      }
       let departmentName = DepartmentName[key];
       const department = new Department({
         name: departmentName
