@@ -8,7 +8,7 @@ import ts from 'typescript';
 import { ReportDescriptor } from "utils/definitions/report";
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
-import { parseToReport } from 'utils/json_report_parser/report';
+import { parseToReport } from 'utils/parsers/report';
 import { parseToJson } from './json_report';
 
 /**

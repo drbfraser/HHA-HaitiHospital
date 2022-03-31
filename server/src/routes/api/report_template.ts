@@ -6,9 +6,9 @@ import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection, TemplateBase } from 'models/template';
 import { Role, User } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
-import { jsonStringToReport } from 'utils/json_report_parser/parsers';
+import { jsonStringToReport } from 'utils/parsers/parsers';
 import { generateUuid } from 'utils/utils';
-import { getTemplateDocumentFromReport } from 'utils/report/template';
+import { getTemplateDocumentFromReport } from 'utils/parsers/template';
 import { RequestWithUser } from 'utils/definitions/express';
 import { JsonReportDescriptor } from 'common/definitions/json_report';
 

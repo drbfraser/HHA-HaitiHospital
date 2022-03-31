@@ -1,8 +1,8 @@
 import { JsonReportDescriptor } from 'common/definitions/json_report';
 import mongoose, { ValidatorProps } from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
-import { parseToJson } from 'utils/json_report_parser/json_report';
-import { generateReportFromTemplate, TemplateItems } from 'utils/report/template';
+import { parseToJson } from 'utils/parsers/json_report';
+import { generateReportFromTemplate, TemplateItems } from 'utils/parsers/template';
 const { Schema } = mongoose;
 
 export interface TemplateBase {
