@@ -6,7 +6,7 @@ const path = require('path');
 
 const router = Router();
 
-router.get('/:imgPath', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/:imgPath', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const imgPath: string = req.params.imgPath;
   res.status(HTTP_OK_CODE).sendFile(path.join(__dirname, `../../../public/images/${imgPath}`));
 });

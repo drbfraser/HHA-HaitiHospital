@@ -12,7 +12,7 @@ const jwtLogin = new JwtStrategy(
   },
   async (payload, done) => {
     try {
-      const user = await User.findById(payload.id).lean().exec();
+      const user = await User.findById(payload.id).lean();
 
       if (user) {
         done(null, user);

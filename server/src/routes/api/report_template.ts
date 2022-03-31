@@ -4,10 +4,10 @@ import { NextFunction, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { TemplateCollection, TemplateBase } from 'models/template';
-import { Role, UserJson } from 'models/user';
+import { Role, User } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/json_report_parser/parsers';
-import { formatDateString, generateUuid } from 'utils/utils';
+import { generateUuid } from 'utils/utils';
 import { getTemplateDocumentFromReport } from 'utils/report/template';
 import { RequestWithUser } from 'utils/definitions/express';
 import { JsonReportDescriptor } from 'common/definitions/json_report';
@@ -19,9 +19,13 @@ router.route('/').get(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
         const documents = await TemplateCollection.find();
         const jsonReports = documents.map((doc) => doc.toJsonReport());
         res.status(HTTP_OK_CODE).json(jsonReports);
+
+    } catch (e) { next(e); }
     }
 );
 
@@ -30,17 +34,20 @@ router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).get(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
         const deptId = req.params[DEPARTMENT_ID_URL_PARAM];
         if (!verifyDeptId(deptId)) {
             throw new BadRequest(`Invalid department id ${deptId}`);
         }
-
         const template = await TemplateCollection.findOne({ departmentId: deptId });
         if (!template) {
             throw new NotFound(`No template for department ${getDeptNameFromId(deptId)} found`);
         }
         const jsonReport: JsonReportDescriptor = template.toJsonReport();
         res.status(HTTP_OK_CODE).json(jsonReport);
+
+    } catch (e) { next(e); } 
     }
 );
 
@@ -48,8 +55,10 @@ router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).delete(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
         const deptId = req.params[DEPARTMENT_ID_URL_PARAM];
-        if (!verifyDeptId) {
+        if (!verifyDeptId(deptId)) {
             throw new BadRequest(`Invalid department id ${deptId}`);
         }
 
@@ -57,8 +66,9 @@ router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).delete(
         if (!template) {
             throw new NotFound(`No template for department ${getDeptNameFromId(deptId)} found`);
         }
+        res.sendStatus(HTTP_NOCONTENT_CODE);
 
-        res.status(HTTP_NOCONTENT_CODE);
+    } catch (e) { next(e); }
     }
 );
 
@@ -66,6 +76,8 @@ router.route('/').post(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
         const bodyStr: string = JSON.stringify(req.body);
         const report: ReportDescriptor = jsonStringToReport(bodyStr);
 
@@ -73,18 +85,22 @@ router.route('/').post(
         const submittedUser = req.user;
         await attemptToSaveNewTemplate(newTemplate, submittedUser);
         res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(newTemplate.departmentId)}`);
+
+    } catch(e) { next(e); }
     }
-)
+);
 
 router.route('/').put(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
         const bodyStr: string = JSON.stringify(req.body);
         const report: ReportDescriptor = jsonStringToReport(bodyStr);
         const template: TemplateBase = getTemplateDocumentFromReport(report);
 
-        const existingDoc = await TemplateCollection.findOne({ id: template.id }).exec();
+        const existingDoc = await TemplateCollection.findOne({ id: template.id });
         const submittedUser = req.user;
         if (existingDoc) {
             // Update an existing template
@@ -95,8 +111,10 @@ router.route('/').put(
             await attemptToSaveNewTemplate(template, submittedUser);
             res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(template.departmentId)} is created`);
         }   
+
+    } catch (e) { next(e); }
     }
-)
+);
 
 // >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -112,7 +130,7 @@ router.route('/').put(
 //     return hide;
 // }   
 
-async function attemptToUpdateTemplate(template: TemplateBase, existingDoc: TemplateBase & import("mongoose").Document<any, any, TemplateBase>, submittedUser: UserJson) {
+async function attemptToUpdateTemplate(template: TemplateBase, existingDoc: TemplateBase & import("mongoose").Document<any, any, TemplateBase>, submittedUser: User) {
     const submittedDeptId: string = template.departmentId;
     const changeDepartment = existingDoc.departmentId !== submittedDeptId;
     if (changeDepartment) {
@@ -121,8 +139,8 @@ async function attemptToUpdateTemplate(template: TemplateBase, existingDoc: Temp
             throw new Conflict(`Failed to update. Deparment ${getDeptNameFromId(submittedDeptId)} already has a template`);
         }
     }
-    template.submittedDate = formatDateString(new Date());
-    template.submittedByUserId = submittedUser.id;
+    template.submittedDate = new Date();
+    template.submittedByUserId = submittedUser._id!;
 
     const result = await existingDoc.updateOne(template);
     if (!result) {
@@ -130,11 +148,11 @@ async function attemptToUpdateTemplate(template: TemplateBase, existingDoc: Temp
     }
 }
 
-async function attemptToSaveNewTemplate(newTemplate: TemplateBase, submittedUser: UserJson) {
+async function attemptToSaveNewTemplate(newTemplate: TemplateBase, submittedUser: User) {
     // Add some server generated values, since this creates a new template
     newTemplate.id = generateUuid();
-    newTemplate.submittedDate = formatDateString(new Date());
-    newTemplate.submittedByUserId = submittedUser.id;
+    newTemplate.submittedDate = new Date();
+    newTemplate.submittedByUserId = submittedUser._id!;
 
     const isIdExist = await TemplateCollection.exists({ id: newTemplate.id });
     if (isIdExist) {

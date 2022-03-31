@@ -1,5 +1,5 @@
 import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
-import { formatDateString, getLengthOfEnum } from '../utils';
+import { getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { TemplateBase } from '../../models/template';
 import { ItemType, ItemTypeKeys } from "common/definitions/json_report";
@@ -23,7 +23,7 @@ export const generateReportFromTemplate = (doc: TemplateBase): ReportDescriptor 
     let meta: ReportMeta = {
         id: doc.id,
         departmentId: doc.departmentId,
-        submittedDate: new Date(doc.submittedDate),
+        submittedDate: doc.submittedDate,
         submittedUserId: doc.submittedByUserId
     }
     let items: ReportItems = doc.items;
@@ -53,7 +53,7 @@ export const buildTemplateDocument = (template: TemplateReport): TemplateBase =>
         id: template.meta.id,
         departmentId: template.meta.departmentId,
         submittedByUserId: template.meta.submittedUserId,
-        submittedDate: formatDateString(template.meta.submittedDate),
+        submittedDate: template.meta.submittedDate,
         items: template.items
     }
     return newDoc;

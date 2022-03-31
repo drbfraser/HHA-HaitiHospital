@@ -1,3 +1,4 @@
+import { getDeptNameFromId } from 'common/definitions/departments';
 import { SystemException } from 'exceptions/systemException';
 import CaseStudy from '../models/caseStudies';
 import Department from '../models/departments';
@@ -16,7 +17,7 @@ export async function updateDepartmentPoints() {
       })()
     ]);
     caseStudies.forEach(async (item) => {
-      await Department.findOneAndUpdate({ name: item.user.department }, { $inc: { points: pointsPerCaseStudy, nCaseStudies: 1 } });
+      await Department.findOneAndUpdate({ name: getDeptNameFromId(item.user.department) }, { $inc: { points: pointsPerCaseStudy, nCaseStudies: 1 } });
     });
   } catch (err) {
     console.log(err);

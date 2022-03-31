@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import UserModel, { hashPassword, Role, User, validateUserSchema } from '../../models/user';
@@ -6,10 +6,13 @@ import { registerUserCreate, registerUserEdit } from '../../schema/registerUser'
 import { verifyDeptId } from 'common/definitions/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
+import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
-router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
+router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
     const targetUser = await UserModel.findById(req.params.id);
     if (!targetUser) {
         throw new NotFound(`No user with provided Id found`);
@@ -33,39 +36,54 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
     await UserModel.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
     res.status(HTTP_NOCONTENT_CODE).send();
+
+    } catch (e) { next(e); }
 });
 
-router.get('/me', requireJwtAuth, async (req, res) => {
-  res.json(req.user);
+router.get('/me', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
+    UserModel.findOne({username: req.user.username}).exec()
+        .then((user) => res.json(user!.toJSON()))
+        .catch((err) => next(err));
 });
 
-router.get('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response) => {
-    const foundUser = await UserModel.findById(req.params.id).lean();
+router.get('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+    const foundUser = await UserModel.findById(req.params.id);
     if (!foundUser) {
         throw new NotFound(`No user with provided id available`);
     }
-    res.status(HTTP_OK_CODE).json(foundUser);
+    res.status(HTTP_OK_CODE).json(foundUser.toJSON());
+
+    } catch (e) { next(e); }
 });
 
-router.get('/', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response) => {
-    const users = await UserModel.find().sort({ createdAt: 'desc' }).lean();
-    res.status(HTTP_OK_CODE).json(users);
+router.get('/', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+    const users = await UserModel.find().sort({ createdAt: 'desc' });
+    const jsonUsers = users.map((user) => user.toJSON());
+    res.status(HTTP_OK_CODE).json(jsonUsers);
+
+    } catch (e) { next(e); }
 });
 
-router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response) => {
-    const tempUser = await UserModel.findById(req.params.id).exec();
-    if (!tempUser) {
-        throw new NotFound(`No user found with provided id`);
-    }
+router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
     const userId = req.params.id;
     const user = await UserModel.findByIdAndRemove(userId);
     if (!user) {
         throw new NotFound(`No user with provided id found`);
     }
-    res.status(HTTP_NOCONTENT_CODE).send();
+    res.sendStatus(HTTP_NOCONTENT_CODE);
+
+    } catch (e) { next(e); }
 });
 
-router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
+router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
     let { username, password, name, role, department } = req.body;
     const existingUser = await UserModel.findOne({ username });
     if (existingUser) {
@@ -103,6 +121,8 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
       if (err) throw new InternalError(`Failed to register new user: ${err}`);
       res.status(HTTP_CREATED_CODE).send(`New user created`);
     });
+    
+    } catch (e) { next(e); }
 });
 
 export default router;

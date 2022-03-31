@@ -8,9 +8,13 @@ import { RequestWithUser } from 'utils/definitions/express';
 const router = Router();
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
     await updateDepartmentPoints();
     const leaders = await Department.find().sort({ points: 'desc', name: 'asc' });
     res.status(HTTP_OK_CODE).json(leaders);
+    
+    } catch (e) { next(e); }
 });
 
 export default router;

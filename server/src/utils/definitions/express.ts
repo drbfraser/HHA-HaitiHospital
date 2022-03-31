@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { UserJson } from "models/user";
+import { User } from "models/user";
 
 export interface RequestWithUser extends Request {
-    user: UserJson
+    user: User
 };

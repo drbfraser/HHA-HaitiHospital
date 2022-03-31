@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
@@ -10,23 +10,23 @@ import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
-router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
+router.get('/', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
     BioMech.find({}).populate('user')
       .sort({ createdOn: 'desc' }).exec()
       .then((response: []) => res.status(HTTP_OK_CODE).json(response))
-      .catch((err: any) => {throw new InternalError(`Get biomechs failed: ${err}`)});
+      .catch((err: any) => next(new InternalError(`Get biomechs failed: ${err}`)));
 });
 
-router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
+router.get('/:id', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
     const bioId = req.params.id;
     BioMech.findById(bioId).populate('user')
       .then((response: any) => {
           if (!response) {
-            throw new NotFound(`No biomech post with id ${bioId} available`);
+            return next(new NotFound(`No biomech post with id ${bioId} available`));
           }
-          res.status(HTTP_OK_CODE).json(response)
+          res.status(HTTP_OK_CODE).json(response);
         })
-      .catch((err: any) => {throw new InternalError(`Could not find biomech id ${bioId} results`)});
+      .catch((err: any) => next(new InternalError(`Could not find biomech id ${bioId} results`)));
 });
 
 router.post('/', 
@@ -34,10 +34,10 @@ router.post('/',
     registerBioMechCreate, 
     validateInput, 
     upload.single('file'), 
-    async (req: RequestWithUser, res: Response) => {
+    (req: RequestWithUser, res: Response, next: NextFunction) => {
 
     const user = req.user;
-    const userId = user.id;
+    const userId = user._id!;
     const department = user.department;
     const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
 
@@ -57,20 +57,20 @@ router.post('/',
 
     bioMech.save()
       .then(() => res.status(HTTP_CREATED_CODE).json('BioMech Report Submitted Successfully'))
-      .catch((err: any) => { throw new InternalError(`BioMech Report submission failed: ${err}`)} );
+      .catch((err: any) => next(new InternalError(`BioMech Report submission failed: ${err}`)));
 });
 
-router.delete('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response) => {
+router.delete('/:id', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
     const bioId = req.params.id;
     BioMech.findByIdAndRemove(bioId).exec()
         .then((data: any) => { 
             if (!data) {
-                throw new BadRequest(`No biomech post with id ${bioId} available`);
+                return next(new BadRequest(`No biomech post with id ${bioId} available`));
             }
             return deleteUploadedImage(data.imgPath); 
         })
         .then(() => res.sendStatus(HTTP_NOCONTENT_CODE))
-        .catch((err: any) => {throw new InternalError(`Failed to delete biomech post: ${err}`)});
+        .catch((err: any) => next(new InternalError(`Failed to delete biomech post: ${err}`)));
 });
 
 export default router;

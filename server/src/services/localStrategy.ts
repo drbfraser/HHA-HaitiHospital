@@ -24,7 +24,7 @@ const passportLogin = new PassportLocalStrategy(
       });
 
     try {
-      const user = await UserModel.findOne({ username: username.trim() }).exec();
+      const user = await UserModel.findOne({ username: username.trim() });
       if (!user) {
         return done(null, false, { message: 'Username does not exists.' });
       }
@@ -35,7 +35,8 @@ const passportLogin = new PassportLocalStrategy(
         if (!isMatch) {
           return done(null, false, { message: 'Incorrect password.' });
         }
-        return done(null, user.toJSON());
+        const leanUser = await UserModel.findOne({username: username.trim()}).lean();
+        return done(null, leanUser!);
       });
     } catch (err) {
       return done(err);

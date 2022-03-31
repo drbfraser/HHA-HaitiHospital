@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import usersRoutes from './user';
-import nicuPaedsRoutes from './nicuPaeds';
-import reportRoutes from './report';
+// import nicuPaedsRoutes from './nicuPaeds';
+// import reportRoutes from './report';
 import newReportRoutes from './dynamicReport';
 import messageBoardRoutes from './messageBoard';
 import caseStudiesRoutes from './caseStudies';
@@ -15,8 +15,8 @@ import templateRoutes from './report_template';
 const router = Router();
 
 router.use('/users', usersRoutes);
-router.use('/nicupaeds', nicuPaedsRoutes);
-router.use('/report', reportRoutes);
+// router.use('/nicupaeds', nicuPaedsRoutes);
+// router.use('/report', reportRoutes);
 router.use('/case-studies', caseStudiesRoutes);
 router.use('/leaderboard', leaderboardRoutes);
 router.use('/biomech', biomechRoutes);

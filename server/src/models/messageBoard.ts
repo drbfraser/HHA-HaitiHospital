@@ -1,9 +1,30 @@
 import * as mongoose from 'mongoose';
+import { formatDateString } from 'utils/utils';
 
 let dateTime: Date = new Date();
 const { Schema } = mongoose;
 
-const messageBodySchema = new Schema({
+interface Message {
+    departmentId: string,
+    userId: string,
+    date: Date,
+    messageBody: string,
+    messageHeader: string
+}
+
+interface MessageJson {
+    id: string,
+    departmentId: string,
+    userId: string,
+    date: string,
+    messageBody: string,
+    messageHeader: string
+}
+
+interface MessageWithInstanceMethods extends Message {
+    toJson: () => MessageJson
+};
+const messageBodySchema = new Schema<MessageWithInstanceMethods>({
   // entry data
   departmentId: { type: String, required: true},
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -11,6 +32,17 @@ const messageBodySchema = new Schema({
   messageBody: { type: String, required: true, default: '' },
   messageHeader: { type: String, required: true, default: '' }
 });
+messageBodySchema.methods.toJson = function(): MessageJson {
+    const json: MessageJson = {
+        id: this._id,
+        departmentId: this.departmentId,
+        userId: this.userId,
+        date: formatDateString(this.date),
+        messageBody: this.messageBody,
+        messageHeader: this.messageHeader
+    };
+    return json;
+}
 
-const MessageBody = mongoose.model('MessageBody', messageBodySchema, 'Message Board');
+const MessageBody = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'Message Board');
 export default MessageBody;
