@@ -6,7 +6,7 @@ const dataToMap = (): Map<string, Department> => {
   try {
     let _departmentMap = new Map<string, Department>();
     Object.values(departmentData.departments).forEach((dept: Department) => {
-      _departmentMap.set(dept.id, dept);
+      _departmentMap.set(dept.id.toString(), dept);
     });
     return _departmentMap;
   } catch (error: any) {
@@ -15,7 +15,7 @@ const dataToMap = (): Map<string, Department> => {
   }
 };
 
-const departmentMap = dataToMap();
+const departmentMap: Map<string, Department> = dataToMap();
 
 const getDepartments = (): Department[] => {
   return departmentData.departments;

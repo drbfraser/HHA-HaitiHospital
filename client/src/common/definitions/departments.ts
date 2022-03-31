@@ -78,6 +78,8 @@ export const getDepartmentIdKeyFromValue = (idValue: string): DepartmentIdKeys |
   return key;
 };
 
+// -------------------------------------------------------------------------------------------------------------- //
+
 // import { getEnumKeyByStringValue, getLengthOfEnum } from 'utils/utils';
 
 // enum DepartmentName {

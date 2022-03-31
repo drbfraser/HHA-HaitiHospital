@@ -1,8 +1,4 @@
-import {
-  JsonReportDescriptor,
-  JsonItemAnswer,
-} from 'common/definitions/json_report';
-import { getDepartmentName } from 'common/definitions/departments';
+import { JsonReportDescriptor, JsonItemAnswer } from 'common/definitions/json_report';
 import { toast } from 'react-toastify';
 import * as MockApi from './MockApi';
 import { ReportItem } from './Report';
@@ -18,7 +14,7 @@ export const submitHandler = async (
    * Todo: refactor
    */
   try {
-    const assemData = assembleData(answers, data)
+    const assemData = assembleData(answers, data);
     const result = await MockApi.submitData(assemData, 2000, true);
     setData(result);
     setReadOnly(true);
