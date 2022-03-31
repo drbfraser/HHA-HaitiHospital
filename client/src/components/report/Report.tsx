@@ -168,7 +168,7 @@ function FormContents(props: { path: string }) {
 function FormHeader(props: { reportMetadata: JsonReportMeta }) {
   // Temporary switch to MockDepartmentApi for now
   const currentDepartment: Department = MockDepartmentApi.getDepartmentById(
-    props.reportMetadata.departmentId.toString(),
+    props.reportMetadata.departmentId,
   ) as Department;
   const date = new Date();
   const locale = 'default';

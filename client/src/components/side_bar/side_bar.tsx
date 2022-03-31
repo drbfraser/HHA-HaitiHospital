@@ -1,13 +1,14 @@
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
-import { getDepartmentId } from 'common/definitions/departments';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-import { isUserInDepartment, renderBasedOnRole } from '../../actions/roleActions';
-import { Role } from '../../constants/interfaces';
-import { DepartmentName } from '../../common/definitions/departments';
+import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
+import { Role, Department } from 'constants/interfaces';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import initialDepartments from 'utils/json/departments.json';
 
 interface SidebarProps {}
 
@@ -19,8 +20,14 @@ export const changeLanguage = (ln) => {
 };
 
 const Sidebar = (props: SidebarProps) => {
+  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
+
+  useEffect(() => {
+    // For Future Devs: Replace MockDepartmentApi with Api
+    setDepartments(MockDepartmentApi.getDepartments());
+  }, []);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
@@ -129,11 +136,11 @@ const Sidebar = (props: SidebarProps) => {
             <></>
           )}
 
-          {Object.keys(DepartmentName).map((deptName, index) => {
-            const deptNameEnum = DepartmentName[deptName];
-            const deptId = getDepartmentId(deptNameEnum);
+          {departments.map((dept: Department, index) => {
+            const deptName = dept.name;
+            const deptId = dept.id;
 
-            if (renderDeptIfUserInDept(deptNameEnum) === true)
+            if (renderDeptIfUserInDept(deptName))
               return (
                 <li key={index}>
                   <NavLink
@@ -143,7 +150,7 @@ const Sidebar = (props: SidebarProps) => {
                     activeClassName="active"
                   >
                     <i className="bi bi-brightness-high-fill me-2" />
-                    <span className="text text-light">{i18n.t(deptNameEnum)}</span>
+                    <span className="text text-light">{i18n.t(deptName)}</span>
                   </NavLink>
                 </li>
               );
