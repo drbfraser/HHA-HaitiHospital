@@ -163,7 +163,6 @@ function FormContents(props: { path: string }) {
 
     return (
       <>
-        <div ref={pageTop} />
         <FormHeader reportMetadata={data.meta} />
         <NavBar
           labels={labels}
@@ -172,6 +171,7 @@ function FormContents(props: { path: string }) {
           hideEditButton={!readOnly}
           onEditClick={editButtonHandler}
         />
+        <div ref={pageTop} />
         <FormProvider {...formHook}>
           <form
             className="row p-3 needs-validation"
