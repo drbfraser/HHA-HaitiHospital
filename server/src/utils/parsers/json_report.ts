@@ -1,3 +1,4 @@
+import { getDeptNameFromId } from "common/definitions/departments";
 import { JsonReportDescriptor, JsonReportItems, JsonReportMeta } from "common/definitions/json_report";
 import { ReportDescriptor, ReportItems, ReportMeta } from "utils/definitions/report";
 import { formatDateString } from "utils/utils";
@@ -23,7 +24,10 @@ const parseToJsonMeta = (meta: ReportMeta): JsonReportMeta => {
     
     const jsonMeta: JsonReportMeta = {
         id: id,
-        departmentId: departmentId,
+        department: {
+            id: departmentId,
+            name: getDeptNameFromId(departmentId)
+        },
         submittedDate: submittedDate,
         submittedUserId: submittedUserId
     }

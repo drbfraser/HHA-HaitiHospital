@@ -24,9 +24,9 @@ export const parseToReport = (jsonReport: JsonReportDescriptor): ReportDescripto
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const parseToReportMeta = (jsonMeta: JsonReportMeta) => {
-    const isValid: boolean = verifyDeptId(jsonMeta.departmentId);
+    const isValid: boolean = verifyDeptId(jsonMeta.department.id);
     if (!isValid) {
-        throw new InvalidInput(`Department Id: ${jsonMeta.departmentId} is not valid`);
+        throw new InvalidInput(`Department Id: ${jsonMeta.department.id} is not valid`);
     }
 
     let submittedDate: Date = new Date();
@@ -45,7 +45,7 @@ const parseToReportMeta = (jsonMeta: JsonReportMeta) => {
 
     let meta: ReportMeta = {
         id: jsonMeta.id,
-        departmentId: jsonMeta.departmentId,
+        departmentId: jsonMeta.department.id,
         submittedDate: submittedDate,
         submittedUserId: submittedUserId
     };
