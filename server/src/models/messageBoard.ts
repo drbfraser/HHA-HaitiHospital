@@ -1,3 +1,4 @@
+import { getDeptNameFromId } from 'common/definitions/departments';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
 
@@ -14,7 +15,10 @@ interface Message {
 
 interface MessageJson {
     id: string,
-    departmentId: string,
+    department: {
+        id: string,
+        name: string
+    },
     userId: string,
     date: string,
     messageBody: string,
@@ -35,7 +39,10 @@ const messageBodySchema = new Schema<MessageWithInstanceMethods>({
 messageBodySchema.methods.toJson = function(): MessageJson {
     const json: MessageJson = {
         id: this._id,
-        departmentId: this.departmentId,
+        department: {
+            id: this.departmentId,
+            name: getDeptNameFromId(this.departmentId)
+        },
         userId: this.userId,
         date: formatDateString(this.date),
         messageBody: this.messageBody,

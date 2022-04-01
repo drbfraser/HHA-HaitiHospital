@@ -72,7 +72,6 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreat
     .catch((err: any) => next(new InternalError(`Message submission failed: ${err}`)));
 });
 
-//make the changes to message of id reportID
 router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
 
@@ -107,7 +106,6 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
   }
 });
 
-// delete message id
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
 
