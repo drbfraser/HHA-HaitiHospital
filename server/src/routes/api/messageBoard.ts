@@ -50,7 +50,7 @@ router.get('/:id', (req: RequestWithUser, res: Response, next: NextFunction) => 
 
 router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
   
-  const departmentId: string = req.body.departmentId;
+  const departmentId: string = req.body.department.id;
   if (!verifyDeptId(departmentId)) {
     return next(new BadRequest(`Invalid department id ${departmentId}`));
   }
@@ -68,14 +68,14 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreat
   });
 
   messageEntry.save()
-    .then(() => res.status(HTTP_CREATED_CODE).json('Message has been successfully posted'))
+    .then(() => res.status(HTTP_CREATED_CODE).send('Message has been successfully posted'))
     .catch((err: any) => next(new InternalError(`Message submission failed: ${err}`)));
 });
 
 router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
 
-  const departmentId: string = req.body.departmentId;
+  const departmentId: string = req.body.department.id;
   if (!verifyDeptId(departmentId)) {
     throw new BadRequest(`Invalid department id ${departmentId}`);
   }
