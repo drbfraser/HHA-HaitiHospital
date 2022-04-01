@@ -46,13 +46,13 @@ const Sidebar = (props: SidebarProps) => {
         </div>
 
         <ul className="nav nav-pills flex-column mb-auto p-2">
-          <li>
+          <li key="home">
             <NavLink to="/home" className="nav-link link-light" exact activeClassName="active">
               <i className="bi bi-house-door-fill me-2" />
               <span className="text text-light">{t('sidebarHome')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="message-board">
             <NavLink
               to="/message-board"
               className="nav-link link-light"
@@ -63,7 +63,7 @@ const Sidebar = (props: SidebarProps) => {
               <span className="text text-light">{t('sidebarMessageBoard')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="leaderboard">
             <NavLink
               to="/leaderboard"
               className="nav-link link-light"
@@ -74,7 +74,7 @@ const Sidebar = (props: SidebarProps) => {
               <span className="text text-light">{t('sidebarLeaderBoard')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="case-study">
             <NavLink
               to="/case-study"
               className="nav-link link-light"
@@ -85,7 +85,7 @@ const Sidebar = (props: SidebarProps) => {
               <span className="text text-light">{t('sidebarCaseStudy')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="biomechanic">
             {
               <NavLink
                 to="/biomechanic"
@@ -98,7 +98,7 @@ const Sidebar = (props: SidebarProps) => {
               </NavLink>
             }
           </li>
-          <li>
+          <li key="employee-of-the-month">
             {
               <NavLink
                 to="/employee-of-the-month"
@@ -114,14 +114,14 @@ const Sidebar = (props: SidebarProps) => {
             }
           </li>
 
-          <li className="border-top my-2" />
+          <li className="border-top my-2" key="border-1" />
 
           {renderBasedOnRole(authState.userDetails.role, [
             Role.Admin,
             Role.MedicalDirector,
             Role.HeadOfDepartment,
           ]) ? (
-            <li>
+            <li key='general-rports"'>
               <NavLink
                 to="/general-reports"
                 className="nav-link link-light"
@@ -141,7 +141,7 @@ const Sidebar = (props: SidebarProps) => {
 
             if (renderDeptIfUserInDept(deptName) && deptName !== 'General')
               return (
-                <li key={index}>
+                <li key={'department'.concat(index.toString())}>
                   <NavLink
                     to={`/department/${deptId}`}
                     className="nav-link link-light"
@@ -156,36 +156,36 @@ const Sidebar = (props: SidebarProps) => {
             else return <></>;
           })}
 
-          <li>
+          <li key="report">
             <NavLink to="/report" className="nav-link link-light" exact activeClassName="active">
               <i className="bi bi-exclamation-square me-2" />
               <span className="text text-light">Test Report</span>
             </NavLink>
           </li>
 
-          <li className="border-top my-2" />
+          <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (
             <>
-              <li>
+              <li key="admin">
                 <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                   <i className="bi bi-person-badge-fill me-2" />
                   <span className="text text-light">{t('sidebarAdmin')}</span>
                 </NavLink>
               </li>
-              <li className="border-top my-2" />
+              <li className="border-top my-2" key="border-3" />
             </>
           ) : (
             <></>
           )}
 
-          <li className="btn-group-toggle" data-toggle="buttons">
+          <li className="btn-group-toggle" data-toggle="buttons" key="english">
             <button className="nav-link link-light" onClick={changeLanguage('en')}>
               <i className="bi bi-gear-fill me-2" />
               <span className="text text-light">{t('sidebarEnglish')}</span>
             </button>
           </li>
 
-          <li>
+          <li key="french">
             <button className="nav-link link-light" id="fc" onClick={changeLanguage('fr')}>
               <i className="bi bi-gear me-2" />
               <span className="text text-light">{t('sidebarFrench')}</span>
