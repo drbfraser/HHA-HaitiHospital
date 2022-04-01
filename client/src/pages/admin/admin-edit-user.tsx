@@ -181,11 +181,15 @@ export const EditUserForm = (props: AdminProps) => {
                   <option value="" disabled hidden>
                     {t('adminAddUserSelectDepartment')}
                   </option>
-                  {departments.map((dept: Department, index: number) => (
-                    <option key={index} value={dept.name}>
-                      {dept.name}
-                    </option>
-                  ))}
+                  {departments.map((dept: Department, index: number) => {
+                    return dept.name !== 'General' ? (
+                      <option key={index} value={dept.name}>
+                        {dept.name}
+                      </option>
+                    ) : (
+                      <></>
+                    );
+                  })}
                 </select>
               </div>
             ) : null}

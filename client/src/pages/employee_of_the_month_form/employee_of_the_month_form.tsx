@@ -95,10 +95,15 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   defaultValue=""
                 >
                   <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>
-                  <option value={departments[0].name}>{t('NICU/Paeds')}</option>
-                  <option value={departments[1].name}>{t('Maternity')}</option>
-                  <option value={departments[2].name}>{t('Rehab')}</option>
-                  <option value={departments[3].name}>{t('Community & Health')}</option>
+                  {departments.map((dept: Department, index: number) => {
+                    return dept.name !== 'General' ? (
+                      <option key={index} value={dept.name}>
+                        {dept.name}
+                      </option>
+                    ) : (
+                      <></>
+                    );
+                  })}
                 </select>
                 <label htmlFor="Employee Description" className="form-label">
                   {t('employeeOfTheMonthDescription')}
