@@ -135,12 +135,11 @@ const Sidebar = (props: SidebarProps) => {
           ) : (
             <></>
           )}
-
           {departments.map((dept: Department, index: number) => {
             const deptName = dept.name;
             const deptId = dept.id;
 
-            if (renderDeptIfUserInDept(deptName))
+            if (renderDeptIfUserInDept(deptName) && deptName !== 'General')
               return (
                 <li key={index}>
                   <NavLink
