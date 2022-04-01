@@ -49,7 +49,7 @@ router.post('/',
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
     const user = req.user;
     const userId = user._id!;
-    const userDepartment = user.department;
+    const userDepartment = user.departmentId;
     let imgPath: string = '';
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
@@ -106,7 +106,7 @@ router.put('/:id',
     let imgPath = oldCaseStudy.imgPath;
     const user = req.user;
     const userId = req.user._id!;
-    const userDepartment = user.department;
+    const userDepartment = user.departmentId;
     if (req.file) {
         imgPath = req.file.path.replace(/\\/g, '/');
     }

@@ -38,7 +38,7 @@ router.post('/',
 
     const user = req.user;
     const userId = user._id!;
-    const department = user.department;
+    const department = user.departmentId;
     const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
 
     let imgPath: string = '';

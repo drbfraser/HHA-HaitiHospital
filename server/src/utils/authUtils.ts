@@ -11,6 +11,6 @@ export const checkUserIsDepartmentAuthed = async (userId: string, reportDepartme
   if (!user) {
     throw new InvalidInput(`No user with provided id found`);
   }
-  const userDepartment = user.department;
+  const userDepartment = user.departmentId;
   return userDepartment === reportDepartmentId;
 };

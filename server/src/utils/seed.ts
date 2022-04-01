@@ -28,7 +28,7 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? 'All' : user.department;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? 'All' : user.departmentId;
 };
 
 export const seedDb = async () => {
@@ -59,31 +59,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.department = 'All';
+            foundUser.departmentId = 'All';
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.department = 'All';
+            foundUser.departmentId = 'All';
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.department = "1";
+            foundUser.departmentId = "1";
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.department = "3";
+            foundUser.departmentId = "3";
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.department = "0";
+            foundUser.departmentId = "0";
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.department = "2"
+            foundUser.departmentId = "2"
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.department = "1";
+            foundUser.departmentId = "1";
             break;
           default:
             break;
@@ -99,31 +99,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.department = 'All';
+            user.departmentId = 'All';
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.department = 'All';
+            user.departmentId = 'All';
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.department = "1";
+            user.departmentId = "1";
             break;
           case 3:
             user.role = Role.User;
-            user.department = "3";
+            user.departmentId = "3";
             break;
           case 4:
             user.role = Role.User;
-            user.department = "0";
+            user.departmentId = "0";
             break;
           case 5:
             user.role = Role.User;
-            user.department = "2";
+            user.departmentId = "2";
             break;
           case 6:
             user.role = Role.User;
-            user.department = "1";
+            user.departmentId = "1";
             break;
           default:
             break;

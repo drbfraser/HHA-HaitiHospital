@@ -28,14 +28,14 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
       password = await hashPassword(req.body.password);
     }
 
-    const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
-    if (!verifyDeptId(updatedUser.department)) {
-        throw new BadRequest(`Invalid department id ${updatedUser.department}`);
+    const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, departmentId: req.body.department.id };
+    if (!verifyDeptId(updatedUser.departmentId)) {
+        throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
     }
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     await UserModel.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
-    res.status(HTTP_NOCONTENT_CODE).send();
+    res.sendStatus(HTTP_NOCONTENT_CODE);
 
     } catch (e) { next(e); }
 });
@@ -85,12 +85,13 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
     try {
 
     let { username, password, name, role, department } = req.body;
+    let departmentId = department.id;
     const existingUser = await UserModel.findOne({ username });
     if (existingUser) {
       throw new Conflict(`Username ${username} exists`);
     }
-    if (!verifyDeptId(department)) {
-      throw new BadRequest(`Invalid department id ${department}`);
+    if (!verifyDeptId(departmentId)) {
+      throw new BadRequest(`Invalid department id ${department.id}`);
     }
 
     const userInfo: User = {
@@ -98,7 +99,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
         password: password,
         name: name,
         role: role,
-        department: department,
+        departmentId: departmentId,
         createdAt: new Date(),
         updatedAt: new Date()
     }
@@ -108,7 +109,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
       password,
       name,
       role,
-      department
+      departmentId
     });
 
     if (validationResult.error) {
