@@ -28,7 +28,7 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? 'All' : user.departmentId;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? '0' : user.departmentId;
 };
 
 export const seedDb = async () => {
@@ -196,7 +196,7 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
     let caseStudy = new CaseStudy({
       caseStudyType: CaseStudyOptions.PatientStory,
       user: user._id,
-      userDepartment: setDepartment(user),
+      departmentId: setDepartment(user),
       imgPath: 'public/images/case1.jpg',
       featured: true,
       patientStory: {
@@ -218,7 +218,7 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
 export const seedCaseStudies = async () => {
   console.log('Seeding case studies...');
   try {
-    const users: User[] = await UserModel.find();
+    const users = await UserModel.find().lean();
     const randomDefaultUser = selectRandomUser(users);
     setDefaultFeaturedCaseStudy(randomDefaultUser);
     const numCaseStudiesToGenerate: number = 100;
@@ -300,7 +300,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.PatientStory,
           user: user._id,
-          userDepartment: setDepartment(user),
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case1.jpg',
           featured: false,
           patientStory: {
@@ -319,7 +319,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.StaffRecognition,
           user: user._id,
-          userDepartment: setDepartment(user),
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           staffRecognition: {
@@ -337,7 +337,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.TrainingSession,
           user: user._id,
-          userDepartment: setDepartment(user),
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           trainingSession: {
@@ -355,7 +355,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.EquipmentReceived,
           user: user._id,
-          userDepartment: setDepartment(user),
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           equipmentReceived: {
@@ -373,7 +373,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.OtherStory,
           user: user._id,
-          userDepartment: setDepartment(user),
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           otherStory: {

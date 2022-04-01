@@ -39,13 +39,13 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
-    if (!verifyDeptId(department)) {
+    if (!verifyDeptId(department.id)) {
         throw new BadRequest(`Invalid department id ${department}`);
     }
 
     const updatedEmployeeOfTheMonth: EmployeeOfTheMonth = {
       name: name,
-      departmentId: department,
+      departmentId: department.id,
       description: description,
       imgPath: imgPath
     };

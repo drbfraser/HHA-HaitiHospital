@@ -14,6 +14,7 @@ export interface EmployeeOfTheMonth {
 }
 
 export interface EmployeeOfTheMonthJson {
+    id: string,
     name: string,
     department: {
         id: string,
@@ -44,6 +45,7 @@ const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethod
 );
 employeeOfTheMonthSchema.methods.toJson = function(): EmployeeOfTheMonthJson {
     let json: EmployeeOfTheMonthJson = {
+        id: this.id,
         name: this.name,
         department: {
             id: this.departmentId,
