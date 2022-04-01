@@ -281,7 +281,7 @@ export const seedEmployeeOfTheMonth = async () => {
     await EmployeeOfTheMonth.deleteOne({});
     const employeeOfTheMonth = new EmployeeOfTheMonth({
       name: 'John Doe',
-      department: 'Rehab',
+      departmentId: '1',
       description: 'This is a placeholder',
       imgPath: 'public/images/default_user.png'
     });
