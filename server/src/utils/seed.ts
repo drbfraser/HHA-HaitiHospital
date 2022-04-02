@@ -28,7 +28,7 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? '0' : user.departmentId;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? 'All' : user.departmentId;
 };
 
 export const seedDb = async () => {
@@ -260,8 +260,8 @@ export const seedBioMech = async () => {
     for (let i = 0; i < numOfBioMechReportsToGenerate; i++) {
       const randomUser = selectRandomUser(users);
       const bioMechReport = new BioMech({
-        user: randomUser,
-        department: setDepartment(randomUser),
+        userId: randomUser,
+        departmentId: setDepartment(randomUser),
         equipmentName: faker.lorem.words(),
         equipmentFault: faker.lorem.words(),
         equipmentPriority: randomEnumValue(bioMechEnum),

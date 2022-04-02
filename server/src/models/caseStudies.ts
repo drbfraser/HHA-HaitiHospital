@@ -163,8 +163,6 @@ const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
   { timestamps: true }
 );
 caseStudySchema.methods.toJson = function(): CaseStudyJson {
-    console.log(this);
-    
     const json: CaseStudyJson = {
         id: this._id,
         caseStudyType: this.caseStudyType,

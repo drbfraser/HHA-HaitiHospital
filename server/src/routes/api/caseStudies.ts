@@ -127,8 +127,6 @@ router.put('/:id',
         imgPath = req.file.path.replace(/\\/g, '/');
     }
 
-    console.log("hello");
-
     const updatedCaseStudy: CaseStudy = {
         caseStudyType: caseStudyType,
         user: userId,
@@ -151,7 +149,7 @@ router.put('/:id',
             if (!data) {
                 return res.sendStatus(HTTP_CREATED_CODE);
             }
-            res.status(HTTP_OK_CODE).json(data.toJson())
+            res.sendStatus(HTTP_OK_CODE);
         })
         .catch((err: any) => {throw new InternalError(`Failed to update case study id ${req.params.id}: ${err}`)});
 

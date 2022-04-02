@@ -50,7 +50,7 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
       imgPath: imgPath
     };
     const post = await EmployeeOfTheMonthModel.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth?._id }, { $set: updatedEmployeeOfTheMonth }, { new: true });
-    res.status(HTTP_OK_CODE).json(post);
+    res.sendStatus(HTTP_OK_CODE);
     
     } catch (e) { next(e); }
 });

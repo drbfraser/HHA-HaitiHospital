@@ -68,7 +68,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreat
   });
 
   messageEntry.save()
-    .then(() => res.status(HTTP_CREATED_CODE).send('Message has been successfully posted'))
+    .then(() => res.sendStatus(HTTP_CREATED_CODE))
     .catch((err: any) => next(new InternalError(`Message submission failed: ${err}`)));
 });
 
@@ -96,10 +96,10 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
   Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
 
   const msg = await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true });
-  if (!msg) {
-    throw new NotFound(`No message with id ${req.params.id} found`);
+  if (msg) {
+    return res.sendStatus(HTTP_OK_CODE);
   }
-  res.status(HTTP_OK_CODE).json(msg.toJson());
+  return res.sendStatus(HTTP_CREATED_CODE);
   
   } catch (e) {
     next(e);
