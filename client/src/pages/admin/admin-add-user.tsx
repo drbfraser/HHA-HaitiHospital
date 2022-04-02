@@ -30,7 +30,6 @@ export const AddUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: User) => {
-    console.log(data);
     await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
   };
 

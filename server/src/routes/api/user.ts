@@ -19,7 +19,6 @@ interface UserData {
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
   try {
     const userData: UserData = setGeneralDepartmentForAdminAndMedicalDir(req.body);
-    console.log(userData);
     const targetUser = await User.findById(req.params.id);
     if (!targetUser) return res.status(404).json({ message: 'No such user' });
 
@@ -84,7 +83,6 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
 router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
     const userData: UserData = setGeneralDepartmentForAdminAndMedicalDir(req.body);
-    console.log(userData);
     let { username, password, name, role, department } = userData;
     const existingUser = await User.findOne({ username });
 

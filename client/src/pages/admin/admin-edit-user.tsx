@@ -42,7 +42,6 @@ export const EditUserForm = (props: AdminProps) => {
       data.name = user.name;
       data.username = user.username;
     }
-    console.log(data);
     return data;
   };
 
