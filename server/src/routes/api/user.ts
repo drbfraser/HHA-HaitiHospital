@@ -18,21 +18,20 @@ interface UserData {
 
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
   try {
-    const userData: UserData = req.body;
     const targetUser = await User.findById(req.params.id);
     if (!targetUser) return res.status(404).json({ message: 'No such user' });
 
-    const existingUser = await User.findOne({ username: userData.username });
+    const existingUser = await User.findOne({ username: req.body.username });
     if (existingUser && existingUser.username !== targetUser.username) {
       return res.status(422).json({ message: 'Username is taken' });
     }
 
     let password: string | null = null;
-    if (userData.password && userData.password !== '') {
-      password = await hashPassword(userData.password);
+    if (req.body.password && req.body.password !== '') {
+      password = await hashPassword(req.body.password);
     }
 
-    const updatedUser = { name: userData.name, username: userData.username, password, role: userData.role, department: userData.department };
+    const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     const user = await User.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
@@ -82,8 +81,7 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
 // add user, currently working
 router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
-    const userData: UserData = req.body;
-    let { username, password, name, role, department } = userData;
+    let { username, password, name, role, department } = req.body;
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
