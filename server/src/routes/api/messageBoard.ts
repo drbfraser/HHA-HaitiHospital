@@ -10,42 +10,48 @@ import { verifyDeptId } from 'common/definitions/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 
-router.get('/', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
-  
-    MessageBody.find({}).sort({ date: 'desc' }).exec()
-    .then((messages) => {
-        const jsonMessages = messages.map((message) => message.toJson());
-        res.status(HTTP_OK_CODE).json(jsonMessages);
-    })
-    .catch((err: any) => next(new InternalError(`Failed to get messages: ${err}`)));
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+        const docs = await MessageBody.find({}).sort({ date: 'desc' }).exec();
+        const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
+        res.status(HTTP_OK_CODE).json(jsons);
+    }
+    catch (e) {
+        next(e);
+    }
 });
 
-router.get('/department/:departmentId', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
-  
+router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
     const deptId = req.params.departmentId;
     if (!verifyDeptId(deptId)) {
-        return next(new BadRequest(`Invalid department id: ${deptId}`));
+        throw new BadRequest(`Invalid department id: ${deptId}`);
     }
+    const docs = await MessageBody.find({ departmentId: deptId }).sort({ date: 'desc' }).exec();
+    const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
+    res.status(HTTP_OK_CODE).json(jsons);
 
-  MessageBody.find({ departmentId: deptId }).sort({ date: 'desc' }).exec()
-    .then((messages) => {
-        const jsonMessages = messages.map((message) => message.toJson());
-        res.status(HTTP_OK_CODE).json(jsonMessages); 
-    })
-    .catch((err: any) => next(new InternalError(`Failed to find messages for department id ${req.params.departmentId}: ${err}`)));
+    }
+    catch (e) {
+        next(e);
+    }
 });
 
-router.get('/:id', (req: RequestWithUser, res: Response, next: NextFunction) => {
-  
-  const msgId = req.params.id;
-  MessageBody.findById(msgId).exec()
-    .then((message) => {
-        if (!message) {
-            return next(new NotFound(`No message with id ${msgId} available`));
-        }
-        res.status(HTTP_OK_CODE).json(message.toJson());
-    })
-    .catch((err: any) => next(new InternalError(`Failed to find message with id ${msgId}: ${err}`)));
+router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
+    const msgId = req.params.id;
+    const doc = await MessageBody.findById(msgId).exec();
+    if (!doc) {
+        throw new NotFound(`No message with id ${msgId} available`);
+    }
+    const json = doc.toJson();
+    res.status(HTTP_OK_CODE).json(json);
+    
+    } catch (e) {
+        next(e);
+    }
 });
 
 router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {

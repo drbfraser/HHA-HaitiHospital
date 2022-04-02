@@ -30,7 +30,6 @@ export interface User {
 // UserJson is used when ready to be send in response
 export interface UserJson {
   id: string,
-  username: string,
   name: string,
   role: string,
   department: {
@@ -42,7 +41,7 @@ export interface UserJson {
 };
 
 interface UserWithInstanceMethods extends User {
-    toJSON: () => UserJson,
+    toJson: () => UserJson,
     generateJWT: () => any,
     registerUser: (newUser: any, callback: Function) => void,
     comparePassword: (otherPw: any, callback: Function) => void
@@ -71,10 +70,9 @@ const userSchema = new Schema<UserWithInstanceMethods>(
   { timestamps: true }
 );
 
-userSchema.methods.toJSON = function (): UserJson {
+userSchema.methods.toJson = function (): UserJson {
   return {
     id: this._id,
-    username: this.username,
     name: this.name,
     role: this.role,
     department:{

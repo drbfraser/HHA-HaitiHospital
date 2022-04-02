@@ -7,7 +7,6 @@ import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
-import { resolveSchema } from 'ajv/dist/compile';
 
 const router = Router();
 

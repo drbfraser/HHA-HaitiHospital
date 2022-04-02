@@ -42,7 +42,7 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
 
 router.get('/me', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
     UserModel.findOne({username: req.user.username}).exec()
-        .then((user) => res.json(user!.toJSON()))
+        .then((user) => res.json(user!.toJson()))
         .catch((err) => next(err));
 });
 
@@ -53,7 +53,7 @@ router.get('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, re
     if (!foundUser) {
         throw new NotFound(`No user with provided id available`);
     }
-    res.status(HTTP_OK_CODE).json(foundUser.toJSON());
+    res.status(HTTP_OK_CODE).json(foundUser.toJson());
 
     } catch (e) { next(e); }
 });
@@ -62,7 +62,7 @@ router.get('/', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: 
     try {
 
     const users = await UserModel.find().sort({ createdAt: 'desc' });
-    const jsonUsers = users.map((user) => user.toJSON());
+    const jsonUsers = users.map((user) => user.toJson());
     res.status(HTTP_OK_CODE).json(jsonUsers);
 
     } catch (e) { next(e); }
