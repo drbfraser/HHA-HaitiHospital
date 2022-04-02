@@ -27,7 +27,7 @@ export const isValidUrl = (str) => {
 
 import { InvalidInput } from 'exceptions/systemException';
 import crypto from "crypto";
-import { ItemType, ItemTypeKeys } from 'common/definitions/json_report';
+import { ItemType, ItemTypeKeys } from 'common/json_report';
 
 export const getEnumKeyByStringValue = function <T extends { [index: string]: any; }>(myEnum: T, enumValue: string): keyof T | null {
     let keys = Object.keys(myEnum).filter(x => myEnum[x].toString() == enumValue);

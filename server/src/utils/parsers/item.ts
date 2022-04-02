@@ -2,7 +2,7 @@ import { IllegalState, InvalidInput } from "exceptions/systemException";
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as  _JsonUtils from "../report/json_report";
 import * as _ReportDefs from "../definitions/report";
-import * as _JsonDefs from 'common/definitions/json_report';
+import * as _JsonDefs from 'common/json_report';
 import { hasNumType, checkAnswerType, hasSumType } from "../report/json_item";
 import { isSumCorrect } from "../report/item";
 

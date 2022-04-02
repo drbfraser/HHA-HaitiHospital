@@ -2,7 +2,7 @@ import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, Repo
 import { getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { TemplateBase } from '../../models/template';
-import { ItemType, ItemTypeKeys } from "common/definitions/json_report";
+import { ItemType, ItemTypeKeys } from "common/json_report";
 
 
 interface TemplateReport extends ReportDescriptor{};

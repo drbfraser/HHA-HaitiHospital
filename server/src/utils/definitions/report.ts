@@ -1,5 +1,5 @@
 // import { IllegalState } from 'exceptions/systemException';
-import { ItemTypeKeys } from 'common/definitions/json_report';
+import { ItemTypeKeys } from 'common/json_report';
 
 // export enum AnswerType {
 //     number,

@@ -1,4 +1,4 @@
-import { JsonReportDescriptor } from 'common/definitions/json_report';
+import { JsonReportDescriptor } from 'common/json_report';
 import mongoose, { ValidatorProps } from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { parseToJson } from 'utils/parsers/json_report';

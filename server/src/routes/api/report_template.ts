@@ -10,7 +10,7 @@ import { jsonStringToReport } from 'utils/parsers/parsers';
 import { generateUuid } from 'utils/utils';
 import { getTemplateDocumentFromReport } from 'utils/parsers/template';
 import { RequestWithUser } from 'utils/definitions/express';
-import { JsonReportDescriptor } from 'common/definitions/json_report';
+import { JsonReportDescriptor } from 'common/json_report';
 
 const router = Router();
 export default router;
