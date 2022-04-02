@@ -5,25 +5,35 @@ import User, { hashPassword, Role, validateUserSchema } from '../../models/user'
 import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
 import { msgCatchError } from 'utils/sanitizationMessages';
+import { DepartmentName } from 'common/definitions/departments';
 
 const router = Router();
+interface UserData {
+  username: string;
+  password: string;
+  name: string;
+  department: DepartmentName;
+  role: Role;
+}
 
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
   try {
+    const userData: UserData = setGeneralDepartmentForAdminAndMedicalDir(req.body);
+    console.log(userData);
     const targetUser = await User.findById(req.params.id);
     if (!targetUser) return res.status(404).json({ message: 'No such user' });
 
-    const existingUser = await User.findOne({ username: req.body.username });
+    const existingUser = await User.findOne({ username: userData.username });
     if (existingUser && existingUser.username !== targetUser.username) {
       return res.status(422).json({ message: 'Username is taken' });
     }
 
     let password: string | null = null;
-    if (req.body.password && req.body.password !== '') {
-      password = await hashPassword(req.body.password);
+    if (userData.password && userData.password !== '') {
+      password = await hashPassword(userData.password);
     }
 
-    const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, department: req.body.department };
+    const updatedUser = { name: userData.name, username: userData.username, password, role: userData.role, department: userData.department };
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     const user = await User.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
@@ -73,7 +83,9 @@ router.delete('/:id', requireJwtAuth, checkIsInRole(Role.Admin), async (req: Req
 // add user, currently working
 router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response) => {
   try {
-    let { username, password, name, role, department } = req.body;
+    const userData: UserData = setGeneralDepartmentForAdminAndMedicalDir(req.body);
+    console.log(userData);
+    let { username, password, name, role, department } = userData;
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
@@ -110,5 +122,12 @@ router.post('/', requireJwtAuth, checkIsInRole(Role.Admin), registerUserCreate, 
     res.status(500).json(msgCatchError);
   }
 });
+
+const setGeneralDepartmentForAdminAndMedicalDir = (data: UserData): UserData => {
+  if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
+    data.department = DepartmentName.General;
+  }
+  return data;
+};
 
 export default router;
