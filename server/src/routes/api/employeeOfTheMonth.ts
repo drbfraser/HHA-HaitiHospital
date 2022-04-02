@@ -14,25 +14,23 @@ import { RequestWithUser } from 'utils/definitions/express';
 const router = Router();
 
 router.get('/', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
-    EmployeeOfTheMonthModel.findOne().exec()
-      .then((data) => {
-          if (!data) {
-            return res.status(HTTP_NOCONTENT_CODE);
-          }
+  EmployeeOfTheMonthModel.findOne()
+    .exec()
+    .then((data) => {
+      if (!data) {
+        return res.status(HTTP_NOCONTENT_CODE);
+      }
 
-          res.status(HTTP_OK_CODE).json(data.toJson());
-        })
-      .catch((err) => next(new InternalError(`get employee of the month posts failed: ${err}`)));
+      res.status(HTTP_OK_CODE).json(data.toJson());
+    })
+    .catch((err) => next(new InternalError(`get employee of the month posts failed: ${err}`)));
 });
 
-router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, 
-    validateInput, upload.single('file'), 
-    async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-
+router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
     const previousEmployeeOfTheMonth = await EmployeeOfTheMonthModel.findOne();
     if (previousEmployeeOfTheMonth) {
-        deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
+      deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
     }
     const { name, department, description } = JSON.parse(req.body.document);
     let imgPath: string = '';
@@ -40,7 +38,7 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
       imgPath = req.file.path.replace(/\\/g, '/');
     }
     if (!verifyDeptId(department.id)) {
-        throw new BadRequest(`Invalid department id ${department}`);
+      throw new BadRequest(`Invalid department id ${department}`);
     }
 
     const updatedEmployeeOfTheMonth: EmployeeOfTheMonth = {
@@ -49,10 +47,11 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
       description: description,
       imgPath: imgPath
     };
-    const post = await EmployeeOfTheMonthModel.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth?._id }, { $set: updatedEmployeeOfTheMonth }, { new: true });
+    await EmployeeOfTheMonthModel.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth?._id }, { $set: updatedEmployeeOfTheMonth }, { new: true });
     res.sendStatus(HTTP_OK_CODE);
-    
-    } catch (e) { next(e); }
+  } catch (e) {
+    next(e);
+  }
 });
 
 export default router;

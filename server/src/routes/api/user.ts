@@ -12,16 +12,15 @@ import { IllegalState } from 'exceptions/systemException';
 const router = Router();
 
 router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-
+  try {
     const targetUser = await UserModel.findById(req.params.id);
     if (!targetUser) {
-        throw new NotFound(`No user with provided Id found`);
+      throw new NotFound(`No user with provided Id found`);
     }
 
     const existingUser = await UserModel.findOne({ username: req.body.username }).lean();
     if (existingUser && existingUser.username !== targetUser.username) {
-      throw new Conflict(`Username ${req.body.username} is taken`)
+      throw new Conflict(`Username ${req.body.username} is taken`);
     }
 
     let password: string | null = null;
@@ -31,71 +30,68 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
 
     const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, departmentId: req.body.department.id };
     if (!verifyDeptId(updatedUser.departmentId)) {
-        throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
+      throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
     }
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     await UserModel.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
     res.sendStatus(HTTP_NOCONTENT_CODE);
-
-    } catch (e) { next(e); }
+  } catch (e) {
+    next(e);
+  }
 });
 
 router.get('/me', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-        
-    const doc = await UserModel.findOne({username: req.user.username});
+  try {
+    const doc = await UserModel.findOne({ username: req.user.username });
     if (!doc) {
-        throw new IllegalState(`Can not find username for the requesting user`);
+      throw new IllegalState(`Can not find username for the requesting user`);
     }
     const json = await doc.toJson();
     res.status(HTTP_OK_CODE).json(json);
-
-    } catch (e) {
-        next(e);
-    }
-
+  } catch (e) {
+    next(e);
+  }
 });
 
 router.get('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-
+  try {
     const foundUser = await UserModel.findById(req.params.id);
     if (!foundUser) {
-        throw new NotFound(`No user with provided id available`);
+      throw new NotFound(`No user with provided id available`);
     }
     const json = await foundUser.toJson();
     res.status(HTTP_OK_CODE).json(json);
-
-    } catch (e) { next(e); }
+  } catch (e) {
+    next(e);
+  }
 });
 
 router.get('/', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-
+  try {
     const users = await UserModel.find().sort({ createdAt: 'desc' });
     const jsonUsers = await Promise.all(users.map((user) => user.toJson()));
     res.status(HTTP_OK_CODE).json(jsonUsers);
-
-    } catch (e) { next(e); }
+  } catch (e) {
+    next(e);
+  }
 });
 
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response, next: NextFunction) => {
-    try {
-
+  try {
     const userId = req.params.id;
     const user = await UserModel.findByIdAndRemove(userId);
     if (!user) {
-        throw new NotFound(`No user with provided id found`);
+      throw new NotFound(`No user with provided id found`);
     }
     res.sendStatus(HTTP_NOCONTENT_CODE);
-
-    } catch (e) { next(e); }
+  } catch (e) {
+    next(e);
+  }
 });
 
 router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-
+  try {
     let { username, password, name, role, department } = req.body;
     let departmentId = department.id;
     const existingUser = await UserModel.findOne({ username });
@@ -107,14 +103,14 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
     }
 
     const userInfo: User = {
-        username: username,
-        password: password,
-        name: name,
-        role: role,
-        departmentId: departmentId,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }
+      username: username,
+      password: password,
+      name: name,
+      role: role,
+      departmentId: departmentId,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
     const newUser = new UserModel(userInfo);
     const validationResult = validateUserSchema.validate({
       username,
@@ -134,8 +130,9 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
       if (err) throw new InternalError(`Failed to register new user: ${err}`);
       res.status(HTTP_CREATED_CODE).send(`New user created`);
     });
-    
-    } catch (e) { next(e); }
+  } catch (e) {
+    next(e);
+  }
 });
 
 export default router;

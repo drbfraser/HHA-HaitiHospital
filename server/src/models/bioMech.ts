@@ -1,6 +1,8 @@
 import { getDeptNameFromId } from 'utils/departments';
 import * as mongoose from 'mongoose';
+import { IllegalState } from 'exceptions/systemException';
 import { formatDateString } from 'utils/utils';
+import UserModel, { UserJson } from './user';
 
 const { Schema } = mongoose;
 
@@ -23,7 +25,7 @@ export interface BioMech {
 
 export interface BioMechJson {
   id: string;
-  user: string;
+  user: UserJson;
   department: {
     id: string;
     name: string;
@@ -51,10 +53,16 @@ const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
   },
   { timestamps: true }
 );
-bioMechSchema.methods.toJson = function (): BioMechJson {
+bioMechSchema.methods.toJson = async function (): Promise<BioMechJson> {
+  const userDoc = await UserModel.findOne({ _id: this.userId }).exec();
+  if (!userDoc) {
+    throw new IllegalState(`Biomech references to non-existing user with id ${this.userId}`);
+  }
+  const userJson = userDoc.toJson();
+
   const json: BioMechJson = {
     id: this._id,
-    user: this.userId,
+    user: userJson,
     department: {
       id: this.departmentId,
       name: getDeptNameFromId(this.departmentId)
