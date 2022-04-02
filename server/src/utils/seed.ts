@@ -7,9 +7,8 @@ import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-
+import { Departments, getAllDepartments } from './departments';
 import * as ENV from './processEnv';
-import { Departments, getAllDepartments } from 'common/definitions/departments';
 
 const selectRandomUser = (users: User[]): User => {
   const randomUserIndex = Math.floor(Math.random() * users.length);
@@ -67,23 +66,23 @@ export const seedUsers = async () => {
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.departmentId = "1";
+            foundUser.departmentId = '1';
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.departmentId = "3";
+            foundUser.departmentId = '3';
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.departmentId = "0";
+            foundUser.departmentId = '0';
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.departmentId = "2"
+            foundUser.departmentId = '2';
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.departmentId = "1";
+            foundUser.departmentId = '1';
             break;
           default:
             break;
@@ -107,23 +106,23 @@ export const seedUsers = async () => {
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.departmentId = "1";
+            user.departmentId = '1';
             break;
           case 3:
             user.role = Role.User;
-            user.departmentId = "3";
+            user.departmentId = '3';
             break;
           case 4:
             user.role = Role.User;
-            user.departmentId = "0";
+            user.departmentId = '0';
             break;
           case 5:
             user.role = Role.User;
-            user.departmentId = "2";
+            user.departmentId = '2';
             break;
           case 6:
             user.role = Role.User;
-            user.departmentId = "1";
+            user.departmentId = '1';
             break;
           default:
             break;
@@ -177,7 +176,6 @@ export const seedMessageBoard = async () => {
       const randomUser: User = selectRandomUser(users);
       const message = new MessageBody({
         departmentId: 1,
-        departmentName: setDepartment(randomUser),
         userId: randomUser._id,
         date: new Date(),
         messageBody: faker.lorem.words(),
@@ -239,11 +237,11 @@ export const seedLeaderboard = async () => {
     await Department.deleteMany({});
     const depts: Departments = getAllDepartments();
     for (let key in depts) {
-        let deptName = depts[key];
-        const department = new Department({
-            name: deptName
-        });
-        await department.save();
+      let deptName = depts[key];
+      const department = new Department({
+        name: deptName
+      });
+      await department.save();
     }
     console.log('Leaderboard seeded');
   } catch (err: any) {

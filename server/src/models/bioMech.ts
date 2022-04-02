@@ -11,39 +11,39 @@ export enum bioMechEnum {
 }
 
 export interface BioMech {
-    userId: string,
-    departmentId: string,
-    equipmentName: string,
-    equipmentFault: string,
-    equipmentPriority: bioMechEnum
-    createdAt: Date,
-    updatedAt: Date,
-    imgPath: string
-};
+  userId: string;
+  departmentId: string;
+  equipmentName: string;
+  equipmentFault: string;
+  equipmentPriority: bioMechEnum;
+  createdAt: Date;
+  updatedAt: Date;
+  imgPath: string;
+}
 
 export interface BioMechJson {
-    id: string,
-    user: string,
-    department: {
-        id: string,
-        name: string
-    }
-    equipmentName: string,
-    equipmentFault: string,
-    equipmentPriority: string,
-    createdAt: string,
-    updatedAt: string,
-    imgPath: string
+  id: string;
+  user: string;
+  department: {
+    id: string;
+    name: string;
+  };
+  equipmentName: string;
+  equipmentFault: string;
+  equipmentPriority: string;
+  createdAt: string;
+  updatedAt: string;
+  imgPath: string;
 }
 
 interface BioMechWithInstanceMethods extends BioMech {
-    toJson(): () => BioMechJson
-};
+  toJson(): () => BioMechJson;
+}
 
 const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
-    departmentId: { type: String, required: true } ,
+    departmentId: { type: String, required: true },
     equipmentName: { type: String, required: true },
     equipmentFault: { type: String, required: true },
     equipmentPriority: { type: bioMechEnum, required: true },
@@ -51,23 +51,23 @@ const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
   },
   { timestamps: true }
 );
-bioMechSchema.methods.toJson = function(): BioMechJson {
-    const json: BioMechJson = {
-        id: this._id,
-        user: this.userId,
-        department: {
-            id: this.departmentId,
-            name: getDeptNameFromId(this.departmentId)
-        },
-        equipmentName: this.equipmentName,
-        equipmentPriority: this.equipmentPriority,
-        equipmentFault: this.equipmentFault,
-        createdAt: formatDateString(this.createdAt),
-        updatedAt: formatDateString(this.createdAt),
-        imgPath: this.imgPath
-    };
-    return json;
-}
+bioMechSchema.methods.toJson = function (): BioMechJson {
+  const json: BioMechJson = {
+    id: this._id,
+    user: this.userId,
+    department: {
+      id: this.departmentId,
+      name: getDeptNameFromId(this.departmentId)
+    },
+    equipmentName: this.equipmentName,
+    equipmentPriority: this.equipmentPriority,
+    equipmentFault: this.equipmentFault,
+    createdAt: formatDateString(this.createdAt),
+    updatedAt: formatDateString(this.createdAt),
+    imgPath: this.imgPath
+  };
+  return json;
+};
 
 const BioMech = mongoose.model<BioMechWithInstanceMethods>('BioMech', bioMechSchema, 'BioMechReports');
 export default BioMech;
