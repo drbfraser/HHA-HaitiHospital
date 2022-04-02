@@ -113,7 +113,7 @@ function makeNumericItem(
   const id = section.section_label.replaceAll(' ', '') + '_field_' + idx;
   return {
     id: id,
-    type: ItemType.N,
+    type: ItemType.NUMERIC,
     description: field.field_label,
     answer: [[value]],
     validated: true,

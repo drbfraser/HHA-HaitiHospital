@@ -4,7 +4,7 @@
 import { nameof } from 'ts-simple-nameof';
 export enum ItemType {
   // SA = "short answer",
-  N = 'numeric',
+  NUMERIC = 'numeric',
   // YN = "yes no",
   // MCQ = "mcq",
   // PO = "pick one",
