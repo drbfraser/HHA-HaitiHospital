@@ -12,7 +12,7 @@ import { RequestWithUser } from 'utils/definitions/express';
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-        const docs = await MessageBody.find({}).sort({ date: 'desc' }).exec();
+        const docs = await MessageBody.find({}).sort({ date: 'desc' });
         const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
         res.status(HTTP_OK_CODE).json(jsons);
     }
@@ -28,7 +28,7 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
     if (!verifyDeptId(deptId)) {
         throw new BadRequest(`Invalid department id: ${deptId}`);
     }
-    const docs = await MessageBody.find({ departmentId: deptId }).sort({ date: 'desc' }).exec();
+    const docs = await MessageBody.find({ departmentId: deptId }).sort({ date: 'desc' });
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
 
@@ -42,7 +42,7 @@ router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunctio
     try {
 
     const msgId = req.params.id;
-    const doc = await MessageBody.findById(msgId).exec();
+    const doc = await MessageBody.findById(msgId);
     if (!doc) {
         throw new NotFound(`No message with id ${msgId} available`);
     }

@@ -7,6 +7,7 @@ import { verifyDeptId } from 'common/definitions/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
+import { IllegalState } from 'exceptions/systemException';
 
 const router = Router();
 
@@ -40,10 +41,20 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
     } catch (e) { next(e); }
 });
 
-router.get('/me', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
-    UserModel.findOne({username: req.user.username}).exec()
-        .then((user) => res.json(user!.toJson()))
-        .catch((err) => next(err));
+router.get('/me', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+        
+    const doc = await UserModel.findOne({username: req.user.username});
+    if (!doc) {
+        throw new IllegalState(`Can not find username for the requesting user`);
+    }
+    const json = await doc.toJson();
+    res.status(HTTP_OK_CODE).json(json);
+
+    } catch (e) {
+        next(e);
+    }
+
 });
 
 router.get('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: Response, next: NextFunction) => {
@@ -53,7 +64,8 @@ router.get('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, re
     if (!foundUser) {
         throw new NotFound(`No user with provided id available`);
     }
-    res.status(HTTP_OK_CODE).json(foundUser.toJson());
+    const json = await foundUser.toJson();
+    res.status(HTTP_OK_CODE).json(json);
 
     } catch (e) { next(e); }
 });
@@ -62,7 +74,7 @@ router.get('/', requireJwtAuth, roleAuth(Role.Admin), async (req: Request, res: 
     try {
 
     const users = await UserModel.find().sort({ createdAt: 'desc' });
-    const jsonUsers = users.map((user) => user.toJson());
+    const jsonUsers = await Promise.all(users.map((user) => user.toJson()));
     res.status(HTTP_OK_CODE).json(jsonUsers);
 
     } catch (e) { next(e); }
