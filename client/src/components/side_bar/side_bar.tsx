@@ -1,13 +1,14 @@
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
-import { getDepartmentId } from 'common/definitions/departments';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-import { isUserInDepartment, renderBasedOnRole } from '../../actions/roleActions';
-import { Role } from '../../constants/interfaces';
-import { DepartmentName } from '../../common/definitions/departments';
+import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
+import { Role, Department } from 'constants/interfaces';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import initialDepartments from 'utils/json/departments.json';
 
 interface SidebarProps {}
 
@@ -19,8 +20,14 @@ export const changeLanguage = (ln) => {
 };
 
 const Sidebar = (props: SidebarProps) => {
+  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
+
+  useEffect(() => {
+    // For Future Devs: Replace MockDepartmentApi with Api
+    setDepartments(MockDepartmentApi.getDepartments());
+  }, []);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
@@ -39,13 +46,13 @@ const Sidebar = (props: SidebarProps) => {
         </div>
 
         <ul className="nav nav-pills flex-column mb-auto p-2">
-          <li>
+          <li key="home">
             <NavLink to="/home" className="nav-link link-light" exact activeClassName="active">
               <i className="bi bi-house-door-fill me-2" />
               <span className="text text-light">{t('sidebarHome')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="message-board">
             <NavLink
               to="/message-board"
               className="nav-link link-light"
@@ -56,7 +63,7 @@ const Sidebar = (props: SidebarProps) => {
               <span className="text text-light">{t('sidebarMessageBoard')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="leaderboard">
             <NavLink
               to="/leaderboard"
               className="nav-link link-light"
@@ -67,7 +74,7 @@ const Sidebar = (props: SidebarProps) => {
               <span className="text text-light">{t('sidebarLeaderBoard')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="case-study">
             <NavLink
               to="/case-study"
               className="nav-link link-light"
@@ -78,7 +85,7 @@ const Sidebar = (props: SidebarProps) => {
               <span className="text text-light">{t('sidebarCaseStudy')}</span>
             </NavLink>
           </li>
-          <li>
+          <li key="biomechanic">
             {
               <NavLink
                 to="/biomechanic"
@@ -91,7 +98,7 @@ const Sidebar = (props: SidebarProps) => {
               </NavLink>
             }
           </li>
-          <li>
+          <li key="employee-of-the-month">
             {
               <NavLink
                 to="/employee-of-the-month"
@@ -107,14 +114,14 @@ const Sidebar = (props: SidebarProps) => {
             }
           </li>
 
-          <li className="border-top my-2" />
+          <li className="border-top my-2" key="border-1" />
 
           {renderBasedOnRole(authState.userDetails.role, [
             Role.Admin,
             Role.MedicalDirector,
             Role.HeadOfDepartment,
           ]) ? (
-            <li>
+            <li key='general-rports"'>
               <NavLink
                 to="/general-reports"
                 className="nav-link link-light"
@@ -128,14 +135,13 @@ const Sidebar = (props: SidebarProps) => {
           ) : (
             <></>
           )}
+          {departments.map((dept: Department, index: number) => {
+            const deptName = dept.name;
+            const deptId = dept.id;
 
-          {Object.keys(DepartmentName).map((deptName, index) => {
-            const deptNameEnum = DepartmentName[deptName];
-            const deptId = getDepartmentId(deptNameEnum);
-
-            if (renderDeptIfUserInDept(deptNameEnum) === true)
+            if (renderDeptIfUserInDept(deptName) && deptName !== 'General')
               return (
-                <li key={index}>
+                <li key={'department'.concat(index.toString())}>
                   <NavLink
                     to={`/department/${deptId}`}
                     className="nav-link link-light"
@@ -143,43 +149,43 @@ const Sidebar = (props: SidebarProps) => {
                     activeClassName="active"
                   >
                     <i className="bi bi-brightness-high-fill me-2" />
-                    <span className="text text-light">{i18n.t(deptNameEnum)}</span>
+                    <span className="text text-light">{i18n.t(deptName)}</span>
                   </NavLink>
                 </li>
               );
             else return <></>;
           })}
 
-          <li>
+          <li key="report">
             <NavLink to="/report" className="nav-link link-light" exact activeClassName="active">
               <i className="bi bi-exclamation-square me-2" />
               <span className="text text-light">Test Report</span>
             </NavLink>
           </li>
 
-          <li className="border-top my-2" />
+          <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (
             <>
-              <li>
+              <li key="admin">
                 <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
                   <i className="bi bi-person-badge-fill me-2" />
                   <span className="text text-light">{t('sidebarAdmin')}</span>
                 </NavLink>
               </li>
-              <li className="border-top my-2" />
+              <li className="border-top my-2" key="border-3" />
             </>
           ) : (
             <></>
           )}
 
-          <li className="btn-group-toggle" data-toggle="buttons">
+          <li className="btn-group-toggle" data-toggle="buttons" key="english">
             <button className="nav-link link-light" onClick={changeLanguage('en')}>
               <i className="bi bi-gear-fill me-2" />
               <span className="text text-light">{t('sidebarEnglish')}</span>
             </button>
           </li>
 
-          <li>
+          <li key="french">
             <button className="nav-link link-light" id="fc" onClick={changeLanguage('fr')}>
               <i className="bi bi-gear me-2" />
               <span className="text text-light">{t('sidebarFrench')}</span>

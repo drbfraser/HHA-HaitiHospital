@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role } from 'constants/interfaces';
-import { DepartmentName } from 'common/definitions/departments';
+import { User, Role, Department } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import initialDepartments from 'utils/json/departments.json';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { TOAST_ADMIN_POST } from 'constants/toast_messages';
 import './admin.css';
@@ -17,11 +18,17 @@ import { toast } from 'react-toastify';
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
+  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
   const { t } = useTranslation();
   const history: History = useHistory<History>();
+
+  useEffect(() => {
+    // For Future Devs: Replace MockDepartmentApi with Api
+    setDepartments(MockDepartmentApi.getDepartments());
+  }, []);
 
   const onSubmitActions = () => {
     toast.success('Successfully created user');
@@ -143,12 +150,15 @@ export const AddUserForm = (props: AdminProps) => {
                   <option value="" disabled hidden>
                     {t('adminAddUserSelectDepartment')}
                   </option>
-                  <option value={DepartmentName.NicuPaeds}>{DepartmentName.NicuPaeds}</option>
-                  <option value={DepartmentName.Maternity}>{DepartmentName.Maternity}</option>
-                  <option value={DepartmentName.Rehab}>{DepartmentName.Rehab}</option>
-                  <option value={DepartmentName.CommunityHealth}>
-                    {DepartmentName.CommunityHealth}
-                  </option>
+                  {departments.map((dept: Department, index: number) => {
+                    return dept.name !== 'General' ? (
+                      <option key={index} value={dept.name}>
+                        {dept.name}
+                      </option>
+                    ) : (
+                      <></>
+                    );
+                  })}
                 </select>
               </div>
             ) : null}

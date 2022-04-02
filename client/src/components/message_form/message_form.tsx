@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Message, emptyMessage } from 'constants/interfaces';
-import { getDepartmentId } from 'common/definitions/departments';
-import { DepartmentName } from 'common/definitions/departments';
+import { Department } from 'constants/interfaces';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import initialDepartments from 'utils/json/departments.json';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -12,6 +13,7 @@ interface MessageFormProps {
 }
 
 const MessageForm = (props: MessageFormProps) => {
+  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const { t } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
@@ -31,6 +33,8 @@ const MessageForm = (props: MessageFormProps) => {
   }, [props.optionalMsg]);
 
   useEffect(() => {
+    // For Future Devs: Replace MockDepartmentApi with Api
+    setDepartments(MockDepartmentApi.getDepartments());
     setDepartment(prefilledMsg.departmentName);
     reset(prefilledMsg);
   }, [prefilledMsg, reset]);
@@ -41,7 +45,10 @@ const MessageForm = (props: MessageFormProps) => {
       return;
     }
 
-    data.departmentId = getDepartmentId(data.departmentName);
+    const currentDepartment: Department = MockDepartmentApi.getDepartmentById(
+      data.departmentName,
+    ) as Department;
+    data.departmentId = currentDepartment.id;
     props.submitAction(data);
 
     reset();
@@ -62,11 +69,13 @@ const MessageForm = (props: MessageFormProps) => {
             onChange={(e) => setDepartment(e.target.value)}
           >
             <option value="">{t('addMessageSelect')} </option>
-            {Object.values(DepartmentName).map((deptName, index) => {
-              return (
-                <option value={deptName} key={index}>
-                  {deptName}
+            {departments.map((dept: Department, index: number) => {
+              return dept.name !== 'General' ? (
+                <option key={index} value={dept.name}>
+                  {dept.name}
                 </option>
+              ) : (
+                <></>
               );
             })}
           </select>

@@ -1,18 +1,17 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
 import { v4 as uuid } from 'uuid';
 import { ReportItem } from './Report';
-import {
-  JsonReportDescriptor,
-} from 'common/definitions/json_report';
+import { JsonReportDescriptor } from 'common/definitions/json_report';
 import { ItemType } from 'common/definitions/json_report';
-import { DepartmentId } from 'common/definitions/departments';
+import { Department } from 'constants/interfaces';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
 
-const sleep = (milliseconds) => {
+const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export async function getDataDelay(millis): Promise<JsonReportDescriptor> {
-  await sleep(millis)
+export async function getDataDelay(millis: number): Promise<JsonReportDescriptor> {
+  await sleep(millis);
   return getData();
 }
 
@@ -36,15 +35,21 @@ function getData() {
           return makeNumericItem(section, idx, field);
         }
       })
-      .filter((item) => item != undefined);
+      .filter((item) => item !== undefined);
     items.push(label);
     return items.concat(itemsFound);
   });
 
+  // Temporary switch to MockDepartmentApi for now
+  const nicuId: number = 2;
+  const sampleDepartment: Department = MockDepartmentApi.getDepartmentById(
+    nicuId.toString(),
+  ) as Department;
+
   return {
     meta: {
       id: uuid(),
-      departmentId: DepartmentId.NicuPaeds.toString(),
+      departmentId: sampleDepartment.id,
       submittedDate: date.toLocaleDateString(),
       submittedUserId: '0',
     },

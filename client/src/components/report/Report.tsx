@@ -1,5 +1,5 @@
-import { FormProvider, useForm, useFormContext} from 'react-hook-form';
-import React, { useState} from 'react';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import React, { useState } from 'react';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,9 +13,10 @@ import {
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
 import * as ReportApiUtils from './ReportUtils';
-import * as JsonInterfaceUtitls from 'common/definitions/departments';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
 import { InputGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
+import { Department } from 'constants/interfaces';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
@@ -54,7 +55,7 @@ function FormContents(props: { path: string }) {
   const [readOnly, setReadOnly] = useState(false);
   const [data, setData] = useState<JsonReportDescriptor>();
   const [submitting, setSubmitting] = useState(false);
-  const pageTop = React.useRef(null)
+  const pageTop = React.useRef(null);
   React.useEffect(() => {
     MockApi.getDataDelay(1500).then((data) => {
       setData(data);
@@ -82,14 +83,14 @@ function FormContents(props: { path: string }) {
   if (loading)
     return (
       <div className="row justify-content-center">
-        <Spinner size='3rem' style={{marginTop:'25%'}}/>
+        <Spinner size="3rem" style={{ marginTop: '25%' }} />
       </div>
     );
   else {
     // parse the items into groups marked by the first label found.
     const sections = [];
     data.items.forEach((item) => {
-      if (item.type == 'label') {
+      if (item.type === 'label') {
         sections.push([item]);
       } else {
         const headSection = sections[sections.length - 1];
@@ -116,7 +117,7 @@ function FormContents(props: { path: string }) {
           break;
         default:
       }
-      pageTop.current.scrollIntoView()
+      pageTop.current.scrollIntoView();
     };
 
     const editButtonHandler = (name: string) => {
@@ -145,7 +146,7 @@ function FormContents(props: { path: string }) {
           onEditClick={editButtonHandler}
         />
         <FormProvider {...formHook}>
-        <div ref={pageTop}/>
+          <div ref={pageTop} />
           <form
             className="row p-3 needs-validation"
             onSubmit={formHook.handleSubmit(submitHandler)}
@@ -165,13 +166,16 @@ function FormContents(props: { path: string }) {
 }
 
 function FormHeader(props: { reportMetadata: JsonReportMeta }) {
+  // Temporary switch to MockDepartmentApi for now
+  const currentDepartment: Department = MockDepartmentApi.getDepartmentById(
+    props.reportMetadata.departmentId,
+  ) as Department;
   const date = new Date();
   const locale = 'default';
-  const formName =
-    JsonInterfaceUtitls.getDepartmentName(parseInt(props.reportMetadata.departmentId)) +
-    ' ' +
-    date.toLocaleDateString(locale, { month: 'long' }) +
-    ' Report';
+  const formName = currentDepartment.name
+    .concat(' ')
+    .concat(date.toLocaleDateString(locale, { month: 'long' }))
+    .concat(' Report');
 
   return (
     <div className="row justify-content-center bg-light rounded ">
@@ -218,7 +222,7 @@ function Sections(props: {
             key={'ig-' + idx}
             items={item}
             readOnly={props.readOnly}
-            active={props.activeGroup == idx}
+            active={props.activeGroup === idx}
           />
         );
       })}
@@ -250,9 +254,7 @@ function Sections(props: {
           disabled={disableButton}
           key={uuid()}
         >
-          {props.loading ? 
-          <span className="spinner-border spinner-border-sm"/>
-           : 'Submit'}
+          {props.loading ? <span className="spinner-border spinner-border-sm" /> : 'Submit'}
         </button>
       </div>
     </>
@@ -277,7 +279,7 @@ function NavBar(props: {
             <button
               key={id}
               className={
-                'list-group-item nav nav-pills ' + (idx == props.activeLabel ? 'active' : '')
+                'list-group-item nav nav-pills ' + (idx === props.activeLabel ? 'active' : '')
               }
               onClick={() => props.onNavClick('section-clicked', idx)}
             >
