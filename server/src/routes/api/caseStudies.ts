@@ -16,36 +16,47 @@ const setFeatured = (flag: boolean): object => {
   return { featured: flag };
 };
 
-router.get('/', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
-    CaseStudyModel.find().exec()
-      .then((stories) => {
-          const jsons = stories.map((story) => story.toJson());
-          res.status(HTTP_OK_CODE).json(jsons);
-      })
-      .catch((err: any) => next(new InternalError(`Failed to get case studies: ${err}`)));
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
+    const postDocs = await CaseStudyModel.find();
+    const jsonPosts = await Promise.all(postDocs.map((post) => post.toJson()));
+    res.status(HTTP_OK_CODE).json(jsonPosts);
+
+    } catch (e) {
+        next(e);
+    }
 });
 
-router.get('/featured', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
-    CaseStudyModel.findOne(setFeatured(true)).populate('user').exec()
-      .then((data) => {
-          if (!data) {
-            return res.sendStatus(HTTP_NOCONTENT_CODE);
-          }
-          res.status(HTTP_OK_CODE).json(data.toJson())
-        })
-      .catch((err: any) => next(new InternalError(`Failed to get featured case study: ${err}`)));
+router.get('/featured', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+    
+    const postDoc = await CaseStudyModel.findOne({featured: true});
+    if (!postDoc) {
+        return res.sendStatus(HTTP_NOCONTENT_CODE);
+    }
+    const jsonPost = await postDoc.toJson();
+    res.status(HTTP_OK_CODE).json(jsonPost);
+    
+    } catch (e) {
+        next(e);
+    }
 });
 
-router.get('/:id', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+
     const caseId = req.params.id;
-    CaseStudyModel.findById(caseId).populate('user').exec()
-      .then((data: any) => {
-          if (!data) {
-             return next(new NotFound(`Case study with id ${caseId} not available`));
-          }
-          res.status(HTTP_OK_CODE).json(data.toJson());
-        })
-      .catch((err: any) => next(new InternalError(`Failed to get case study id ${caseId}: ${err}`)));
+    const postDoc = await CaseStudyModel.findById(caseId);
+    if (!postDoc) {
+        throw new NotFound(`No case study with id ${caseId} available`);
+    }
+    const postJson = await postDoc.toJson();
+    res.status(HTTP_OK_CODE).json(postJson);
+
+    } catch (e) {
+        next(e);
+    }
 });
 
 router.post('/', 
@@ -66,7 +77,7 @@ router.post('/',
     const featured: boolean = ((await CaseStudyModel.estimatedDocumentCount()) as number) === 0;
     const newCaseStudy: CaseStudy = {
         caseStudyType: caseStudyType,
-        user: userId,
+        userId: userId,
         departmentId: userDepartment,
         patientStory: patientStory,
         staffRecognition: staffRecognition,
@@ -129,7 +140,7 @@ router.put('/:id',
 
     const updatedCaseStudy: CaseStudy = {
         caseStudyType: caseStudyType,
-        user: userId,
+        userId: userId,
         departmentId: userDepartment,
         patientStory: patientStory,
         staffRecognition: staffRecognition,

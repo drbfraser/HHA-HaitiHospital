@@ -1,7 +1,9 @@
 import { getDeptNameFromId } from 'common/definitions/departments';
+import { IllegalState } from 'exceptions/systemException';
 import { boolean } from 'joi';
 import mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
+import UserModel from './user';
 
 const { Schema } = mongoose;
 
@@ -111,7 +113,7 @@ const otherStorySchema = new Schema<OtherStory>(
 
 export interface CaseStudy {
     caseStudyType: CaseStudyOptions,
-    user: string,
+    userId: string,
     departmentId: string,
     patientStory?: PatientStory,
     staffRecognition?: StaffRecognition,
@@ -127,7 +129,7 @@ export interface CaseStudy {
 export interface CaseStudyJson {
     id: string,
     caseStudyType: CaseStudyOptions,
-    user: string,
+    user: UserJson,
     department:  {
         id: string,
         name: string
@@ -144,13 +146,13 @@ export interface CaseStudyJson {
 }
 
 export interface CaseStudyWithInstanceMethods extends CaseStudy {
-    toJson: () => CaseStudyJson
+    toJson: () => Promise<CaseStudyJson>
 }
 
 const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
   {
     caseStudyType: { type: CaseStudyOptions, required: true },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     departmentId: { type: String, required: true },
     patientStory: patientStorySchema,
     staffRecognition: staffRecognitionSchema,
@@ -162,11 +164,17 @@ const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
   },
   { timestamps: true }
 );
-caseStudySchema.methods.toJson = function(): CaseStudyJson {
+caseStudySchema.methods.toJson = async function(): Promise<CaseStudyJson> {
+    const userDoc = await UserModel.findById(this.userId);
+    if (!userDoc) {
+        throw new IllegalState(`Case study references to non-existing user id ${this.userId}`);
+    }
+
+    const userJson = await userDoc.toJson();
     const json: CaseStudyJson = {
         id: this._id,
         caseStudyType: this.caseStudyType,
-        user: this.user,
+        user: userJson,
         department: {
             id: this.departmentId,
             name: getDeptNameFromId(this.departmentId)

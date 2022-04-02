@@ -195,7 +195,7 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
   try {
     let caseStudy = new CaseStudy({
       caseStudyType: CaseStudyOptions.PatientStory,
-      user: user._id,
+      userId: user._id,
       departmentId: setDepartment(user),
       imgPath: 'public/images/case1.jpg',
       featured: true,
@@ -299,7 +299,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.PatientStory:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.PatientStory,
-          user: user._id,
+          userId: user._id,
           departmentId: setDepartment(user),
           imgPath: 'public/images/case1.jpg',
           featured: false,
@@ -318,7 +318,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.StaffRecognition:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.StaffRecognition,
-          user: user._id,
+          userId: user._id,
           departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
@@ -336,7 +336,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.TrainingSession:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.TrainingSession,
-          user: user._id,
+          userId: user._id,
           departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
@@ -354,7 +354,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.EquipmentReceived:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.EquipmentReceived,
-          user: user._id,
+          userId: user._id,
           departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
@@ -372,7 +372,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.OtherStory:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.OtherStory,
-          user: user._id,
+          userId: user._id,
           departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
