@@ -1,4 +1,4 @@
-import { getDeptNameFromId } from 'common/definitions/departments';
+import { getDeptNameFromId } from 'utils/departments';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
 

@@ -7,7 +7,7 @@ import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../schema/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { BadRequest, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
-import { verifyDeptId } from 'common/definitions/departments';
+import { verifyDeptId } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 

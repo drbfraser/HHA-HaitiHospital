@@ -6,7 +6,7 @@ import { validateInput } from '../../middleware/inputSanitization';
 import { Role } from '../../models/user';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
-import { verifyDeptId } from 'common/definitions/departments';
+import { verifyDeptId } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 

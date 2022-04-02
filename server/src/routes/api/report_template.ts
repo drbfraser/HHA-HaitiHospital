@@ -1,4 +1,4 @@
-import { getDeptNameFromId, verifyDeptId} from 'common/definitions/departments';
+import { getDeptNameFromId, verifyDeptId} from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { NextFunction, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';

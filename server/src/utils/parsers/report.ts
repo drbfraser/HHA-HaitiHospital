@@ -1,4 +1,4 @@
-import { verifyDeptId } from 'common/definitions/departments';
+import { verifyDeptId } from 'utils/departments';
 import { JsonReportDescriptor, JsonReportMeta } from 'common/json_report';
 import { InvalidInput } from 'exceptions/systemException';
 import { ReportDescriptor, ReportItems, ReportMeta } from "../definitions/report";

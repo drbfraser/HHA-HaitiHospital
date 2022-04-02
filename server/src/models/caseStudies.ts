@@ -1,9 +1,9 @@
-import { getDeptNameFromId } from 'common/definitions/departments';
+import { getDeptNameFromId } from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import { boolean } from 'joi';
 import mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
-import UserModel from './user';
+import UserModel, { UserJson } from './user';
 
 const { Schema } = mongoose;
 

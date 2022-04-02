@@ -3,7 +3,7 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import UserModel, { hashPassword, Role, User, validateUserSchema } from '../../models/user';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
-import { verifyDeptId } from 'common/definitions/departments';
+import { verifyDeptId } from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
