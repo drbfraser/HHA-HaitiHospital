@@ -14,7 +14,7 @@ import { timezone, language } from 'constants/timezones';
 interface DashboardMessageProps {}
 
 const DashboardMessageOverview = (props: DashboardMessageProps) => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const history: History = useHistory<History>();
 
   const getMessages = async () => {
