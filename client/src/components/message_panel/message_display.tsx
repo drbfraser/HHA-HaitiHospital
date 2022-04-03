@@ -3,7 +3,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { UserJson, Role, Message, emptyMessage } from 'constants/interfaces';
-import { Json } from 'constants/interfaces';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_DELETE_BY_ID } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_DELETE } from 'constants/toast_messages';
@@ -17,7 +16,7 @@ import initialUserJson from './initialUserJson.json';
 import './message_display.css';
 
 interface MessageDisplayProps {
-  msgJson: Json;
+  msgJson: Message;
   notifyChange: Function;
 }
 
@@ -30,12 +29,12 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
-  const readableDate = new Date(props.msgJson.date as string).toLocaleString();
+  const readableDate = new Date(props.msgJson.date).toLocaleString();
 
   useEffect(() => {
     const retrievedUser = props.msgJson.user as unknown;
     setAuthor(retrievedUser as UserJson);
-    setMessage(props.msgJson as unknown as Message);
+    setMessage(props.msgJson);
   }, [props.msgJson]);
 
   const deleteMessageActions = () => {

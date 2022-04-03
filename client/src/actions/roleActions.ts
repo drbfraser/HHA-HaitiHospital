@@ -1,19 +1,13 @@
 // Common utility functions used throughout the client
 import { Role } from 'constants/interfaces';
-import { DepartmentName } from 'common/definitions/departments';
+import { Department } from 'constants/interfaces';
 
 export const isUserInDepartment = (userDepartment: string, wantedDepartment: string): boolean => {
-  if (userDepartment === wantedDepartment) {
-    return true;
-  }
-  return false;
+  return userDepartment === wantedDepartment;
 };
 
 export const renderBasedOnRole = (currentUserRole: string, requiredRoles: string[]): boolean => {
-  if (requiredRoles.includes(currentUserRole)) {
-    return true;
-  }
-  return false;
+  return requiredRoles.includes(currentUserRole);
 };
 
 export const renderBasedOnUserRoleAndDepartment = (
@@ -22,13 +16,9 @@ export const renderBasedOnUserRoleAndDepartment = (
   currentUserDepartment: string,
   requiredDepartments: string[],
 ): boolean => {
-  if (
-    requiredRoles.includes(currentUserRole) &&
-    requiredDepartments.includes(currentUserDepartment)
-  ) {
-    return true;
-  }
-  return false;
+  return (
+    requiredRoles.includes(currentUserRole) && requiredDepartments.includes(currentUserDepartment)
+  );
 };
 
 export const getAllUserRoles = (): Role[] => {
@@ -36,10 +26,7 @@ export const getAllUserRoles = (): Role[] => {
 };
 
 export const isRoleRequired = (rolesAllowed: Role[]): boolean => {
-  if (rolesAllowed.length > 0) {
-    return true;
-  }
-  return false;
+  return rolesAllowed.length > 0;
 };
 
 export const isRoleAuthenticated = (rolesAllowed: Role[], currentUserRole: string): boolean => {
@@ -52,11 +39,8 @@ export const isRoleAuthenticated = (rolesAllowed: Role[], currentUserRole: strin
   return false;
 };
 
-export const isDepartmentRequired = (departmentsAllowed: DepartmentName[]): boolean => {
-  if (departmentsAllowed.length > 0) {
-    return true;
-  }
-  return false;
+export const isDepartmentRequired = (departmentsAllowed: Department[]): boolean => {
+  return departmentsAllowed.length > 0;
 };
 
 export const isDepartmentAllowed = (
