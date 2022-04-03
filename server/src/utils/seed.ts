@@ -1,14 +1,13 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
-import Department from '../models/department';
-import { DepartmentName, DepartmentId } from './utils/department';
+import Department from '../models/departments';
+import { DepartmentName, DepartmentId } from './departments';
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-import { Departments, getAllDepartments } from './departments';
 import * as ENV from './processEnv';
 
 const selectRandomUser = (users: User[]): User => {
@@ -243,7 +242,7 @@ export const seedLeaderboard = async () => {
       }
       let departmentName = DepartmentName[key];
       const department = new Department({
-        name: deptName
+        name: departmentName
       });
       await department.save();
     }
