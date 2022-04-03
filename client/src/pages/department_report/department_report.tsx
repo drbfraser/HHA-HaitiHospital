@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
 import { ReportProps } from 'constants/interfaces';
-import { getDepartmentName } from 'common/definitions/departments';
 import { ReportDisplay } from 'components/report_display/report_display';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -144,9 +144,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
         <div className="mt-2">
           {/* Dept Title */}
           <section className="mt-3">
-            <h1 className="lead text-center">{`Department of ${getDepartmentName(
-              parseInt(deptId),
-            )}`}</h1>
+            <h1 className="lead text-center">{MockDepartmentApi.getDepartmentById(deptId)}</h1>
           </section>
 
           {/* Utility buttons */}

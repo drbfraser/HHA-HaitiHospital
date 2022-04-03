@@ -1,8 +1,8 @@
-import { DepartmentName } from 'common/definitions/departments';
+import { Department } from 'constants/interfaces';
 
 export interface EmployeeOfTheMonth {
   name: string;
-  department: DepartmentName;
+  department: Department;
   description: string;
   imgPath: string;
   createdAt: string;

@@ -1,4 +1,3 @@
-import ReportSummary from 'components/report_summary/report_summary';
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 
@@ -24,7 +23,7 @@ const GeneralReports = () => {
 
           <section>
             <DatePicker value={dayRange} onChange={setDayRange} />
-            <ReportSummary dateRange={dayRange} />
+            {/* <ReportSummary dateRange={dayRange} /> */}
           </section>
         </main>
       </div>

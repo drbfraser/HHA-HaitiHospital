@@ -29,6 +29,11 @@ export interface DepartmentJson {
   departments: Department[];
 }
 
+export const emptyDepartment: Department = {
+  id: '',
+  name: '',
+};
+
 export interface Message {
   id: string;
   department: Department;

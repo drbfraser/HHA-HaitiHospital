@@ -8,6 +8,7 @@ import Api from '../../actions/Api';
 import { Department } from 'constants/interfaces';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 import initialDepartments from 'utils/json/departments.json';
+import { setDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toast_messages';
 import './employee_of_the_month_form.css';
@@ -19,7 +20,9 @@ import { imageCompressor } from 'utils/imageCompressor';
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
+  const [departments, setDepartments] = useState<Map<string, Department>>(
+    setDepartmentMap(initialDepartments.departments),
+  );
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
@@ -38,6 +41,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
 
   const onSubmit = async (data: any) => {
     let formData = new FormData();
+    data.department = departments.get(data.department);
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
@@ -53,7 +57,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
 
   useEffect(() => {
     // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(MockDepartmentApi.getDepartments());
+    setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
   }, []);
 
   return (
@@ -95,7 +99,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   defaultValue=""
                 >
                   <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>
-                  {departments.map((dept: Department, index: number) => {
+                  {Array.from(departments.values()).map((dept: Department, index: number) => {
                     return dept.name !== 'General' ? (
                       <option key={index} value={dept.name}>
                         {dept.name}

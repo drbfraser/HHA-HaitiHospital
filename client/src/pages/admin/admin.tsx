@@ -30,7 +30,7 @@ const Admin = (props: AdminProps) => {
 
   const getUsers = useCallback(async () => {
     setUsers(await Api.Get(ENDPOINT_ADMIN_GET, TOAST_ADMIN_GET, history));
-  }, [history]) 
+  }, [history]);
 
   const deleteUser = async (id: string) => {
     await Api.Delete(
@@ -91,7 +91,6 @@ const Admin = (props: AdminProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{t('adminUsername')}</th>
                 <th scope="col">{t('adminName')}</th>
                 <th scope="col">{t('adminRole')}</th>
                 <th scope="col">{t('adminDepartment')}</th>
@@ -105,10 +104,9 @@ const Admin = (props: AdminProps) => {
               {users.map((item, index) => (
                 <tr key={index}>
                   <th scope="row">{index + 1}</th>
-                  <td>{item.username}</td>
                   <td>{item.name}</td>
                   <td>{item.role}</td>
-                  <td>{item.department ? item.department : 'N/A'}</td>
+                  <td>{item.department.name}</td>
                   <td>
                     {new Date(item.createdAt).toLocaleString(language, {
                       timeZone: timezone,

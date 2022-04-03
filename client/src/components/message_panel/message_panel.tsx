@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Json } from 'constants/interfaces';
+import { Message } from 'constants/interfaces';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
@@ -11,7 +11,6 @@ import { useAuthState } from 'contexts';
 import { Role } from '../../constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
-import { getDepartmentId } from '../../common/definitions/departments';
 
 interface MessagePanelProps {}
 
@@ -20,7 +19,7 @@ const MessagePanel = (props: MessagePanelProps) => {
   const history: History = useHistory<History>();
   const [rerender, setRerender] = useState<boolean>(false);
   const authState = useAuthState();
-  const [msgsJson, setMsgJson] = useState<Json[]>([]);
+  const [msgsJson, setMsgJson] = useState<Message[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize: number = 10;
   const currentTableData = useMemo(() => {
@@ -46,7 +45,7 @@ const MessagePanel = (props: MessagePanelProps) => {
     setRerender(!rerender);
   };
 
-  const filterMessages = (msgs: Json[]): Json[] => {
+  const filterMessages = (msgs: Message[]): Message[] => {
     if (
       renderBasedOnRole(authState.userDetails.role, [
         Role.Admin,
@@ -59,10 +58,10 @@ const MessagePanel = (props: MessagePanelProps) => {
     return filterMessagesBasedOnDepartment(msgs);
   };
 
-  const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Json[]): Json[] => {
+  const filterMessagesBasedOnDepartment = (messageData: Message[]): Message[] => {
     const currentUserDepartment = authState.userDetails.department;
-    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter(
-      (message) => message.departmentId === getDepartmentId(currentUserDepartment),
+    const filteredMsgsBasedOnUserDepartment = messageData.filter(
+      (message) => message.department.id === currentUserDepartment.id,
     );
     return filteredMsgsBasedOnUserDepartment;
   };
