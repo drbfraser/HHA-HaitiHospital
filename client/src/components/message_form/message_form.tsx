@@ -12,8 +12,22 @@ interface MessageFormProps {
   submitAction: (data: any) => void;
 }
 
+const setMap = (data: Department[]): Map<string, Department> => {
+  try {
+    let departmentMap = new Map<string, Department>();
+    Object.values(data).forEach((dept: Department) => {
+      departmentMap.set(dept.id, dept);
+    });
+    return departmentMap;
+  } catch (error: any) {
+    return new Map<string, Department>();
+  }
+};
+
 const MessageForm = (props: MessageFormProps) => {
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
+  const [departments, setDepartments] = useState<Map<string, Department>>(
+    setMap(initialDepartments.departments),
+  );
   const { t } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
@@ -34,21 +48,17 @@ const MessageForm = (props: MessageFormProps) => {
 
   useEffect(() => {
     // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(MockDepartmentApi.getDepartments());
-    setDepartment(prefilledMsg.departmentName);
+    setDepartments(setMap(MockDepartmentApi.getDepartments()));
+    setDepartment(prefilledMsg.department.name);
     reset(prefilledMsg);
   }, [prefilledMsg, reset]);
 
   const onSubmit = (data: any) => {
-    if (data.departmentName === '') {
+    if (data.department === '') {
       toast.error('Must select a department');
       return;
     }
-
-    const currentDepartment: Department = MockDepartmentApi.getDepartmentById(
-      data.departmentName,
-    ) as Department;
-    data.departmentId = currentDepartment.id;
+    data.department = departments.get(data.department);
     props.submitAction(data);
 
     reset();
@@ -65,11 +75,11 @@ const MessageForm = (props: MessageFormProps) => {
             className="form-select"
             id="select-menu"
             value={department}
-            {...register('departmentName')}
+            {...register('department')}
             onChange={(e) => setDepartment(e.target.value)}
           >
             <option value="">{t('addMessageSelect')} </option>
-            {departments.map((dept: Department, index: number) => {
+            {Array.from(departments.values()).map((dept: Department, index: number) => {
               return dept.name !== 'General' ? (
                 <option key={index} value={dept.name}>
                   {dept.name}

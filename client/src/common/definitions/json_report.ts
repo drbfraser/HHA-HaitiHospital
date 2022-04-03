@@ -9,7 +9,7 @@ export enum ItemType {
   // MCQ = "mcq",
   // PO = "pick one",
   // MCQ_OPTION = "mcq option",
-  SUM = 'sum'
+  SUM = 'sum',
   // SG = "survey generator"
 }
 export type ItemTypeKeys = keyof typeof ItemType;
@@ -21,13 +21,16 @@ export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonRepor
 
 export interface JsonReportMeta {
   readonly id: string;
-  readonly departmentId: string;
-  readonly submittedDate: string;
-  readonly submittedUserId: string;
+  readonly department: {
+    id: string;
+    name: string;
+  };
+  readonly submittedDate?: string;
+  readonly submittedUserId?: string;
 }
 
 export type JsonItemAnswer = Array<string>;
-export type JsonItemChildren = Array<JsonReportItem>
+export type JsonItemChildren = Array<JsonReportItem>;
 export interface JsonReportItem {
   /**
    * Json structure of an item
@@ -53,8 +56,8 @@ export interface JsonReportItem {
 export interface JsonMcqOption {
   readonly description: string;
   readonly value: string;
-
 }
+
 export type JsonReportItems = Array<JsonReportItem>;
 export interface JsonReportDescriptor {
   /**

@@ -30,7 +30,7 @@ const MessagePanel = (props: MessagePanelProps) => {
   }, [currentPage, msgsJson]);
 
   const getMessages = async (isMounted: boolean) => {
-    if (isMounted === true) {
+    if (isMounted) {
       const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history);
       const filteredMessages = filterMessages(messages);
       setMsgJson(filteredMessages);
@@ -46,21 +46,26 @@ const MessagePanel = (props: MessagePanelProps) => {
     setRerender(!rerender);
   };
 
-
   const filterMessages = (msgs: Json[]): Json[] => {
-    if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment])) {
+    if (
+      renderBasedOnRole(authState.userDetails.role, [
+        Role.Admin,
+        Role.MedicalDirector,
+        Role.HeadOfDepartment,
+      ])
+    ) {
       return msgs;
     }
     return filterMessagesBasedOnDepartment(msgs);
-  }
+  };
 
   const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Json[]): Json[] => {
     const currentUserDepartment = authState.userDetails.department;
-    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter((message) => 
-      message.departmentId === getDepartmentId(currentUserDepartment)
-    )
+    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter(
+      (message) => message.departmentId === getDepartmentId(currentUserDepartment),
+    );
     return filteredMsgsBasedOnUserDepartment;
-  }
+  };
 
   return (
     <div className="message-panel">
@@ -83,13 +88,13 @@ const MessagePanel = (props: MessagePanelProps) => {
               return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
             })}
           </div>
-            <Pagination
-              className="pagination-bar"
-              currentPage={currentPage}
-              totalCount={msgsJson.length}
-              pageSize={pageSize}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+          <Pagination
+            className="pagination-bar"
+            currentPage={currentPage}
+            totalCount={msgsJson.length}
+            pageSize={pageSize}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       )}
     </div>

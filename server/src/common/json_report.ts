@@ -1,17 +1,16 @@
 // A hack to stringify an interface name
 // https://stackoverflow.com/questions/27945515/is-it-possible-to-get-name-of-the-interface-as-a-string#comment106146140_53431302
 // Interfaces property will be stringified so make sure the property name is identical to the interface name who is being stringified.
-import { string } from 'joi';
 import { nameof } from 'ts-simple-nameof';
 export enum ItemType {
-    // SA = "short answer",
-    NUMERIC = 'numeric',
-    // YN = "yes no",
-    // MCQ = "mcq",
-    // PO = "pick one",
-    // MCQ_OPTION = "mcq option",
-    SUM = 'sum'
-    // SG = "survey generator"
+  // SA = "short answer",
+  NUMERIC = 'numeric',
+  // YN = "yes no",
+  // MCQ = "mcq",
+  // PO = "pick one",
+  // MCQ_OPTION = "mcq option",
+  SUM = 'sum'
+  // SG = "survey generator"
 }
 export type ItemTypeKeys = keyof typeof ItemType;
 
@@ -23,15 +22,15 @@ export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonRepor
 export interface JsonReportMeta {
   readonly id: string;
   readonly department: {
-      id: string,
-      name: string
-  },
+    id: string;
+    name: string;
+  };
   readonly submittedDate?: string;
   readonly submittedUserId?: string;
 }
 
 export type JsonItemAnswer = Array<string>;
-export type JsonItemChildren = Array<JsonReportItem>
+export type JsonItemChildren = Array<JsonReportItem>;
 export interface JsonReportItem {
   /**
    * Json structure of an item

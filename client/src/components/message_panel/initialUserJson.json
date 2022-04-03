@@ -1,9 +1,11 @@
 {
-  "id": "",
   "username": "",
   "name": "",
   "role": "Admin",
-  "department": "",
+  "department": {
+    "id": "",
+    "name": ""
+  },
   "createdAt": "",
   "updatedAt": ""
 }

@@ -1,5 +1,3 @@
-import { DepartmentName } from '../common/definitions/departments';
-
 export interface Json {
   [x: string]: string | number | boolean | Date | Json | JsonArray;
 }
@@ -15,46 +13,11 @@ export interface MessageProps {
   [index: string]: MessageEntry;
 }
 
-export interface Message {
-  departmentId: number;
-  departmentName: string;
-  date: Date;
-  user: Object;
-  messageBody: string;
-  messageHeader: string;
-}
-
-export const emptyMessage: Message = {
-  messageBody: '',
-  messageHeader: '',
-  departmentId: -1,
-  user: {},
-  departmentName: '',
-  date: new Date(),
-};
-
 export enum Role {
   Admin = 'Admin',
   MedicalDirector = 'Medical Director',
   HeadOfDepartment = 'Head of Department',
   User = 'User',
-}
-
-export interface User {
-  username: string;
-  name: string;
-  password: string;
-  role: Role;
-  department: DepartmentName;
-}
-
-export interface UserJson {
-  username: string;
-  name: string;
-  role: Role;
-  department: DepartmentName;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface Department {
@@ -64,4 +27,44 @@ export interface Department {
 
 export interface DepartmentJson {
   departments: Department[];
+}
+
+export interface Message {
+  department: Department;
+  date: Date;
+  user: UserJson;
+  messageBody: string;
+  messageHeader: string;
+}
+
+export const emptyMessage: Message = {
+  department: { id: '', name: '' },
+  date: new Date(),
+  user: {
+    username: '',
+    name: '',
+    role: Role.Admin,
+    department: { id: '', name: '' },
+    createdAt: '',
+    updatedAt: '',
+  },
+  messageBody: '',
+  messageHeader: '',
+};
+
+export interface User {
+  username: string;
+  name: string;
+  password: string;
+  role: Role;
+  department: Department;
+}
+
+export interface UserJson {
+  username: string;
+  name: string;
+  role: Role;
+  department: Department;
+  createdAt: string;
+  updatedAt: string;
 }

@@ -23,14 +23,13 @@ interface MessageDisplayProps {
 
 const MessageDisplay = (props: MessageDisplayProps) => {
   const { t: translateText } = useTranslation();
-  const [author, setAuthor] = useState<UserJson>(initialUserJson as UserJson);
+  const [author, setAuthor] = useState<UserJson>(initialUserJson as unknown as UserJson);
   const history: History = useHistory<History>();
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const readableDate = new Date(props.msgJson.date as string).toLocaleString();
-  const parsedDepartmentName = parseEscapedCharacters(props.msgJson.departmentName as string);
 
   useEffect(() => {
     const retrievedUser = props.msgJson.userId as unknown;
@@ -92,12 +91,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                 <p className="title-info">
                   <strong>{props.msgJson.messageHeader}</strong>
                 </p>
-                {/* {console.log(author.role)} */}
-                <p className="department-info">
-                  {author.role === 'Admin' || author.role === 'Medical Director'
-                    ? author.role
-                    : parsedDepartmentName}
-                </p>
+                <p className="department-info">{parseEscapedCharacters(author.department.name)}</p>
                 <p className="department-info">{((props.msgJson as Json).userId as Json).name}</p>
               </div>
               <div className="p-2">
