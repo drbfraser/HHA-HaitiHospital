@@ -30,6 +30,7 @@ export interface DepartmentJson {
 }
 
 export interface Message {
+  id: string;
   department: Department;
   date: Date;
   user: UserJson;
@@ -38,6 +39,7 @@ export interface Message {
 }
 
 export const emptyMessage: Message = {
+  id: '',
   department: { id: '', name: '' },
   date: new Date(),
   user: {

@@ -31,6 +31,7 @@ const EditMessage = () => {
       history,
     );
     const msg: Message = {
+      id: msgData.id,
       messageBody: msgData.messageBody,
       messageHeader: msgData.messageHeader,
       department: {

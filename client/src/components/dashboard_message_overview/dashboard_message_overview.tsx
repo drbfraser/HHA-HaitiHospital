@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { Json } from 'constants/interfaces';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
+import { Message } from 'constants/interfaces';
 import { NavLink } from 'react-router-dom';
 import './dashboard_message_overview.css';
 import { useTranslation } from 'react-i18next';
@@ -44,18 +44,14 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
             </thead>
 
             <tbody className="text-muted">
-              {messages.map((message, index) => {
-                // Displaying top 3 messages
-
-                let fullName = (message.userId as Json).name;
-
+              {messages.map((message: Message, index: number) => {
                 if (index <= 2) {
                   return (
                     <tr key={index}>
                       <th scope="row" className="text-secondary text-break">
                         {message.messageHeader}
                       </th>
-                      <td className="text-secondary">{fullName}</td>
+                      <td className="text-secondary">{message.user.name}</td>
                       <td className="text-secondary">
                         {new Date(message.date).toLocaleString(language, {
                           timeZone: timezone,

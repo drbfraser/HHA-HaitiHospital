@@ -16,7 +16,7 @@ const setMap = (data: Department[]): Map<string, Department> => {
   try {
     let departmentMap = new Map<string, Department>();
     Object.values(data).forEach((dept: Department) => {
-      departmentMap.set(dept.id, dept);
+      departmentMap.set(dept.name, dept);
     });
     return departmentMap;
   } catch (error: any) {
@@ -35,23 +35,17 @@ const MessageForm = (props: MessageFormProps) => {
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted === true) {
+    if (isMounted) {
       if (props.optionalMsg !== undefined) {
         setPrefilledMsg(props.optionalMsg);
+        setDepartments(setMap(MockDepartmentApi.getDepartments()));
       }
     }
 
     return () => {
       isMounted = false;
     };
-  }, [props.optionalMsg]);
-
-  useEffect(() => {
-    // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(setMap(MockDepartmentApi.getDepartments()));
-    setDepartment(prefilledMsg.department.name);
-    reset(prefilledMsg);
-  }, [prefilledMsg, reset]);
+  }, [props.optionalMsg, department]);
 
   const onSubmit = (data: any) => {
     if (data.department === '') {
