@@ -1,5 +1,6 @@
 import {
   JsonReportDescriptor,
+  JsonReportItem,
   JsonItemAnswer,
 } from 'common/definitions/json_report';
 import { getDepartmentName } from 'common/definitions/departments';
@@ -29,3 +30,21 @@ const assembleData = (answers: object, data: JsonReportDescriptor): JsonReportDe
   });
   return copy;
 };
+
+export function toReportData(data: JsonReportDescriptor): ReportData{
+  const newItems = data.items.map((item: JsonReportItem, idx) => {
+    const id = item.type+"-"+idx
+    return {
+      id: id,
+      type: item.type,
+      description: item.description,
+      answer: item.answer,
+      validated: true,
+      valid: true,
+      errorMessage: '',
+    }
+  })
+  const copy = {... data}
+  copy.items = newItems
+  return (copy as ReportData)
+}

@@ -20,7 +20,6 @@ import { toast } from 'react-toastify';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
-  validated?: string;
 }
 export interface ReportItem extends JsonReportItem {
   id: string;
@@ -79,7 +78,8 @@ function FormContents(props: { path: string }) {
   const pageTop = React.useRef(null);
   React.useEffect(() => {
     MockApi.getDataDelay(1500, true).then((data) => {
-      setState({ value: StateType.ready, data: data as ReportData });
+      const reportData = ReportApiUtils.toReportData(data)
+      setState({ value: StateType.ready, data: reportData});
     }).catch(err => {
       setState(Error(err))
     });
