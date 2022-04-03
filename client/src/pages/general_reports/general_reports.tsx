@@ -24,7 +24,7 @@ const GeneralReports = () => {
 
           <section>
             <DatePicker value={dayRange} onChange={setDayRange} />
-            <ReportSummary dateRange={dayRange} />
+            {/* <ReportSummary dateRange={dayRange} /> */}
           </section>
         </main>
       </div>

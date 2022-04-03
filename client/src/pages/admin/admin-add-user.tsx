@@ -7,6 +7,7 @@ import Header from 'components/header/header';
 import Api from 'actions/Api';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 import initialDepartments from 'utils/json/departments.json';
+import { setDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { TOAST_ADMIN_POST } from 'constants/toast_messages';
 import './admin.css';
@@ -18,7 +19,9 @@ import { toast } from 'react-toastify';
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
+  const [departments, setDepartments] = useState<Map<string, Department>>(
+    setDepartmentMap(initialDepartments.departments),
+  );
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
@@ -27,7 +30,7 @@ export const AddUserForm = (props: AdminProps) => {
 
   useEffect(() => {
     // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(MockDepartmentApi.getDepartments());
+    setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
   }, []);
 
   const onSubmitActions = () => {
@@ -37,6 +40,7 @@ export const AddUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
+    data.department = departments.get(data.department);
     await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
   };
 
@@ -150,7 +154,7 @@ export const AddUserForm = (props: AdminProps) => {
                   <option value="" disabled hidden>
                     {t('adminAddUserSelectDepartment')}
                   </option>
-                  {departments.map((dept: Department, index: number) => {
+                  {Array.from(departments.values()).map((dept: Department, index: number) => {
                     return dept.name !== 'General' ? (
                       <option key={index} value={dept.name}>
                         {dept.name}

@@ -7,6 +7,7 @@ import Header from 'components/header/header';
 import Api from 'actions/Api';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 import initialDepartments from 'utils/json/departments.json';
+import { setDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
 import { TOAST_ADMIN_GET, TOAST_ADMIN_PUT } from 'constants/toast_messages';
 import './admin.css';
@@ -18,7 +19,9 @@ import { toast } from 'react-toastify';
 interface AdminProps {}
 
 export const EditUserForm = (props: AdminProps) => {
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
+  const [departments, setDepartments] = useState<Map<string, Department>>(
+    setDepartmentMap(initialDepartments.departments),
+  );
   const [user, setUser] = useState({} as User);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [role, setRole] = useState(null);
@@ -38,7 +41,7 @@ export const EditUserForm = (props: AdminProps) => {
   useEffect(() => {
     getUser();
     // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(MockDepartmentApi.getDepartments());
+    setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
   }, []);
 
   const defaultValueHandler = (data: any): object => {
@@ -56,6 +59,7 @@ export const EditUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
+    data.department = departments.get(data.department);
     await Api.Put(
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       defaultValueHandler(data),
@@ -181,7 +185,7 @@ export const EditUserForm = (props: AdminProps) => {
                   <option value="" disabled hidden>
                     {t('adminAddUserSelectDepartment')}
                   </option>
-                  {departments.map((dept: Department, index: number) => {
+                  {Array.from(departments.values()).map((dept: Department, index: number) => {
                     return dept.name !== 'General' ? (
                       <option key={index} value={dept.name}>
                         {dept.name}

@@ -77,9 +77,7 @@ export const Department = (props: DepartmentProps) => {
           </section>
 
           {/* Department Report Summary */}
-          <section>
-            <ReportSummary department={deptName} dateRange={dateRange} />
-          </section>
+          <section>{/* <ReportSummary department={deptName} dateRange={dateRange} /> */}</section>
         </div>
       </main>
     </div>
