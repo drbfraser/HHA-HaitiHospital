@@ -43,7 +43,6 @@ export const emptyMessage: Message = {
   department: { id: '', name: '' },
   date: new Date(),
   user: {
-    username: '',
     name: '',
     role: Role.Admin,
     department: { id: '', name: '' },
@@ -63,10 +62,17 @@ export interface User {
 }
 
 export interface UserJson {
-  username: string;
   name: string;
   role: Role;
   department: Department;
   createdAt: string;
   updatedAt: string;
 }
+
+export const emptyUser: UserJson = {
+  name: '',
+  role: Role.User,
+  department: { id: '', name: '' },
+  createdAt: '',
+  updatedAt: '',
+};
