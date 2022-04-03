@@ -44,7 +44,7 @@ export const EditUserForm = (props: AdminProps) => {
     setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
   }, []);
 
-  const defaultValueHandler = (data: any): object => {
+  const defaultValueHandler = (data: User): object => {
     if (data.name === '' || data.username === '') {
       data.name = user.name;
       data.username = user.username;
@@ -59,7 +59,7 @@ export const EditUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
-    data.department = departments.get(data.department);
+    data = setGeneralDepartmentForAdminAndMedicalDir(data);
     await Api.Put(
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       defaultValueHandler(data),
@@ -67,6 +67,15 @@ export const EditUserForm = (props: AdminProps) => {
       TOAST_ADMIN_PUT,
       history,
     );
+  };
+
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): any => {
+    if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
+      data.department = departments.get('General');
+    } else {
+      data.department = departments.get(data.department);
+    }
+    return data;
   };
 
   return (

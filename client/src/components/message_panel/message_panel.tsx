@@ -58,10 +58,11 @@ const MessagePanel = (props: MessagePanelProps) => {
     return filterMessagesBasedOnDepartment(msgs);
   };
 
-  const filterMessagesBasedOnDepartment = (messageData: Message[]): Message[] => {
+  const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Message[]): Message[] => {
     const currentUserDepartment = authState.userDetails.department;
-    const filteredMsgsBasedOnUserDepartment = messageData.filter(
-      (message) => message.department.id === currentUserDepartment.id,
+    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter(
+      (message) =>
+        message.department.name === 'General' || message.department.id === currentUserDepartment.id,
     );
     return filteredMsgsBasedOnUserDepartment;
   };

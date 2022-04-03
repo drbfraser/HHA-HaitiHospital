@@ -1,6 +1,7 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
-import Department from '../models/departments';
+import Department from '../models/department';
+import { DepartmentName, DepartmentId } from './utils/department';
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
 import MessageBody from '../models/messageBoard';
@@ -31,8 +32,8 @@ const setDepartment = (user: User): string => {
 };
 
 export const seedDb = async () => {
-  // await User.deleteMany({});
   // TODO: Remove delete many when in prod
+  // await UserModel.deleteMany({});
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
@@ -150,14 +151,14 @@ export const seedDepartments = async () => {
     //TODO Rehab Department Default value creation:
 
     // NICU/Paeds Department Default value creation:
-    let departmentId: number = 1;
-    let departmentName: string = 'nicupaeds';
+    let departmentId: number = DepartmentId.NicuPaeds;
+    let departmentName: string = DepartmentName.NicuPaeds;
     const originalNicuPaedsDocument = new NicuPaeds({ departmentId, departmentName, month, year });
     await originalNicuPaedsDocument.save();
 
     //TODO Community
-    departmentId = 2;
-    departmentName = 'community';
+    departmentId = DepartmentId.CommunityHealth;
+    departmentName = DepartmentName.CommunityHealth;
     const originalCommunityDocument = new Community({ departmentId, departmentName, month, year });
     await originalCommunityDocument.save();
 
@@ -235,9 +236,12 @@ export const seedLeaderboard = async () => {
   console.log('Seeding leaderboard...');
   try {
     await Department.deleteMany({});
-    const depts: Departments = getAllDepartments();
-    for (let key in depts) {
-      let deptName = depts[key];
+    for (let key in DepartmentName) {
+      // We want do not want the General to be seeded as a leaderboard department
+      if (key === DepartmentName.General) {
+        continue;
+      }
+      let departmentName = DepartmentName[key];
       const department = new Department({
         name: deptName
       });
