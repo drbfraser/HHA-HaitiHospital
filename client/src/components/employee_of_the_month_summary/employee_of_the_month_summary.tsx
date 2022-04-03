@@ -101,7 +101,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
             <h6 className="fs-6 fw-bold lh-base">
               {translateText('employeeOfTheMonthDepartment')}
             </h6>
-            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department}</p>
+            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department.name}</p>
             <h6 className="fs-6 fw-bold lh-base">
               {translateText('employeeOfTheMonthDescription')}
             </h6>

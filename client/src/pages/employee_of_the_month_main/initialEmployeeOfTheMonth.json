@@ -1,6 +1,9 @@
 {
   "name": "John Doe",
-  "department": "Rehab",
+  "department": {
+    "id": "",
+    "name": "Rehab"
+  },
   "description": "This is a placeholder",
   "imgPath": "public/images/avatar0.jpg",
   "createdAt": "2022-03-15T01:53:21.553Z",

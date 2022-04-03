@@ -4,6 +4,7 @@ import { Message, emptyMessage } from 'constants/interfaces';
 import { Department } from 'constants/interfaces';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 import initialDepartments from 'utils/json/departments.json';
+import { setDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -12,21 +13,9 @@ interface MessageFormProps {
   submitAction: (data: any) => void;
 }
 
-const setMap = (data: Department[]): Map<string, Department> => {
-  try {
-    let departmentMap = new Map<string, Department>();
-    Object.values(data).forEach((dept: Department) => {
-      departmentMap.set(dept.name, dept);
-    });
-    return departmentMap;
-  } catch (error: any) {
-    return new Map<string, Department>();
-  }
-};
-
 const MessageForm = (props: MessageFormProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
-    setMap(initialDepartments.departments),
+    setDepartmentMap(initialDepartments.departments),
   );
   const { t } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
@@ -38,7 +27,7 @@ const MessageForm = (props: MessageFormProps) => {
     if (isMounted) {
       if (props.optionalMsg !== undefined) {
         setPrefilledMsg(props.optionalMsg);
-        setDepartments(setMap(MockDepartmentApi.getDepartments()));
+        setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
       }
     }
 
