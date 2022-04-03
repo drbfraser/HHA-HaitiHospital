@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Message, emptyMessage } from 'constants/interfaces';
-import { getDepartmentId } from 'common/definitions/departments';
-import { DepartmentName } from 'common/definitions/departments';
+import { getDepartmentId, DepartmentName } from 'common/definitions/departments';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 

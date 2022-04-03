@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
-import { getDepartmentId } from 'common/definitions/departments';
+import { DepartmentId, getDepartmentId } from 'common/definitions/departments';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
@@ -132,7 +132,10 @@ const Sidebar = (props: SidebarProps) => {
           {Object.keys(DepartmentName).map((deptName, index) => {
             const deptNameEnum = DepartmentName[deptName];
             const deptId = getDepartmentId(deptNameEnum);
-
+            // Hide department "All" in the sidebar
+            if (deptId === DepartmentId.General) {
+              return <></>;
+            }
             if (renderDeptIfUserInDept(deptNameEnum) === true)
               return (
                 <li key={index}>

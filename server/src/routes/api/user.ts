@@ -5,8 +5,16 @@ import User, { hashPassword, Role, validateUserSchema } from '../../models/user'
 import { checkIsInRole } from '../../utils/authUtils';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
 import { msgCatchError } from 'utils/sanitizationMessages';
+import { DepartmentName } from 'common/definitions/departments';
 
 const router = Router();
+interface UserData {
+  username: string;
+  password: string;
+  name: string;
+  department: DepartmentName;
+  role: Role;
+}
 
 router.put('/:id', requireJwtAuth, checkIsInRole(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response) => {
   try {

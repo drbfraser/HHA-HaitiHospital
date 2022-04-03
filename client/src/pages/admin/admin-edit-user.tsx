@@ -37,7 +37,7 @@ export const EditUserForm = (props: AdminProps) => {
     getUser();
   }, []);
 
-  const defaultValueHandler = (data: any): object => {
+  const defaultValueHandler = (data: User): object => {
     if (data.name === '' || data.username === '') {
       data.name = user.name;
       data.username = user.username;
@@ -51,7 +51,8 @@ export const EditUserForm = (props: AdminProps) => {
     toast.success('Successfully updated user');
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: User) => {
+    data = setGeneralDepartmentForAdminAndMedicalDir(data);
     await Api.Put(
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       defaultValueHandler(data),
@@ -60,6 +61,13 @@ export const EditUserForm = (props: AdminProps) => {
       history,
     );
   };
+
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: User): User => {
+    if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
+      data.department = DepartmentName.General;
+    }
+    return data;
+  }
 
   return (
     <div className={'admin'}>

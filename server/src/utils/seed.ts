@@ -1,7 +1,7 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
 import Department from '../models/leaderboard';
-import { DepartmentName } from '../common/definitions/departments';
+import { DepartmentName, DepartmentId, getDepartmentId } from '../common/definitions/departments';
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
 import MessageBody from '../models/messageBoard';
@@ -28,12 +28,12 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? 'All' : user.department;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? DepartmentName.General : user.department;
 };
 
 export const seedDb = async () => {
-  // await User.deleteMany({});
   // TODO: Remove delete many when in prod
+  // await UserModel.deleteMany({});
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
@@ -59,11 +59,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.department = 'All';
+            foundUser.department = DepartmentName.General;
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.department = 'All';
+            foundUser.department = DepartmentName.General;
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
@@ -99,11 +99,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.department = 'All';
+            user.department = DepartmentName.General;
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.department = 'All';
+            user.department = DepartmentName.General;
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
@@ -151,14 +151,14 @@ export const seedDepartments = async () => {
     //TODO Rehab Department Default value creation:
 
     // NICU/Paeds Department Default value creation:
-    let departmentId: number = 1;
-    let departmentName: string = 'nicupaeds';
+    let departmentId: number = DepartmentId.NicuPaeds;
+    let departmentName: string = DepartmentName.NicuPaeds;
     const originalNicuPaedsDocument = new NicuPaeds({ departmentId, departmentName, month, year });
     await originalNicuPaedsDocument.save();
 
     //TODO Community
-    departmentId = 2;
-    departmentName = 'community';
+    departmentId = DepartmentId.CommunityHealth;
+    departmentName = DepartmentName.CommunityHealth;
     const originalCommunityDocument = new Community({ departmentId, departmentName, month, year });
     await originalCommunityDocument.save();
 
@@ -176,8 +176,8 @@ export const seedMessageBoard = async () => {
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
       const message = new MessageBody({
-        departmentId: 1,
-        departmentName: setDepartment(randomUser),
+        departmentId: getDepartmentId(randomUser.department),
+        departmentName: randomUser.department,
         userId: randomUser._id,
         date: new Date(),
         messageBody: faker.lorem.words(),
@@ -238,6 +238,10 @@ export const seedLeaderboard = async () => {
   try {
     await Department.deleteMany({});
     for (let key in DepartmentName) {
+      // We want do not want the General to be seeded as a leaderboard department
+      if (key === DepartmentName.General) {
+        continue;
+      }
       let departmentName = DepartmentName[key];
       const department = new Department({
         name: departmentName
