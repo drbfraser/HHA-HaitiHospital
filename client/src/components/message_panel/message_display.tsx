@@ -121,7 +121,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                       type="button"
                       className="btn btn-link text-decoration-none admin-utils"
                       onClick={(event) => {
-                        onDeleteMessage(event, props.msgJson['_id'] as string);
+                        onDeleteMessage(event, message.id);
                       }}
                     >
                       {translateText('messageBoardDelete')}
