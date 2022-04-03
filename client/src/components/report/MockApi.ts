@@ -49,7 +49,7 @@ function getData() {
   return {
     meta: {
       id: uuid(),
-      departmentId: sampleDepartment.id,
+      department: sampleDepartment,
       submittedDate: date.toLocaleDateString(),
       submittedUserId: '0',
     },

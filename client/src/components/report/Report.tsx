@@ -13,10 +13,8 @@ import {
 } from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
 import * as ReportApiUtils from './ReportUtils';
-import MockDepartmentApi from 'actions/MockDepartmentApi';
 import { InputGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
-import { Department } from 'constants/interfaces';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
@@ -166,13 +164,9 @@ function FormContents(props: { path: string }) {
 }
 
 function FormHeader(props: { reportMetadata: JsonReportMeta }) {
-  // Temporary switch to MockDepartmentApi for now
-  const currentDepartment: Department = MockDepartmentApi.getDepartmentById(
-    props.reportMetadata.departmentId,
-  ) as Department;
   const date = new Date();
   const locale = 'default';
-  const formName = currentDepartment.name
+  const formName = props.reportMetadata.department.name
     .concat(' ')
     .concat(date.toLocaleDateString(locale, { month: 'long' }))
     .concat(' Report');
@@ -209,8 +203,8 @@ function Sections(props: {
   const errorsCount = Object.keys(formState.errors).length;
   const activeGroup = props.activeGroup,
     totalGroups = props.itemGroups.length,
-    submitButtonHidden = activeGroup != totalGroups - 1 || props.readOnly,
-    disableButton = errorsCount != 0 || props.loading,
+    submitButtonHidden = activeGroup !== totalGroups - 1 || props.readOnly,
+    disableButton = errorsCount !== 0 || props.loading,
     prevBtnDisabled = activeGroup <= 0,
     nextBtnDisabled = activeGroup >= totalGroups - 1;
 
