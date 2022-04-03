@@ -19,9 +19,9 @@ const HeaderView = (props: HeaderViewProps) => {
   const location = useLocation();
   const user = props.user;
   const department =
-    user.department === undefined && user.role === undefined
+    user.department.name === undefined && user.role === undefined
       ? ''
-      : `- ${user.department !== undefined ? user.department : user.role}`;
+      : `- ${user.department.name !== undefined ? user.department.name : user.role}`;
   if (location.pathname.slice(1) === 'home') {
     return <h2 className="text-secondary">{`${t('headerOverview')} ${department}`}</h2>;
   } else if (location.pathname.slice(1) === 'message-board') {
