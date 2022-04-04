@@ -380,7 +380,7 @@
                 },
                 {
                   "key": "document",
-                  "value": "{\"name\": \"Anderson McDonald\", \"department\": \"Maternity\", \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur mattis sed arcu rutrum porttitor. In dictum molestie auctor. Suspendisse potenti. Duis ut lacus non nunc volutpat tempus vitae nec elit. Morbi gravida dolor efficitur dolor consequat faucibus. Ut ac velit ac ante euismod viverra a pulvinar dui. In quis diam quis nunc convallis pretium. Phasellus in sagittis augue. Phasellus sed aliquet augue, nec ultricies nibh. Suspendisse nec mauris sed risus finibus suscipit. Donec efficitur elementum magna sit amet porttitor. Donec faucibus nibh ac ornare sagittis. Donec fringilla vestibulum felis. Proin posuere laoreet sem, vel luctus arcu sodales eget. \"}",
+                  "value": "{\"name\": \"Anderson McDonald\", \"department\": {\"id\": \"0\", \"name\": \"Rehab\"}, \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur mattis sed arcu rutrum porttitor. In dictum molestie auctor. Suspendisse potenti. Duis ut lacus non nunc volutpat tempus vitae nec elit. Morbi gravida dolor efficitur dolor consequat faucibus. Ut ac velit ac ante euismod viverra a pulvinar dui. In quis diam quis nunc convallis pretium. Phasellus in sagittis augue. Phasellus sed aliquet augue, nec ultricies nibh. Suspendisse nec mauris sed risus finibus suscipit. Donec efficitur elementum magna sit amet porttitor. Donec faucibus nibh ac ornare sagittis. Donec fringilla vestibulum felis. Proin posuere laoreet sem, vel luctus arcu sodales eget. \"}",
                   "type": "default"
                 }
               ]
@@ -490,7 +490,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"departmentId\": 0,\r\n    \"departmentName\": \"Rehab\",\r\n    \"messageBody\": \"Test\",\r\n    \"messageHeader\": \"Testing\"\r\n}",
+              "raw": "{\r\n    \"department\": {\r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    },\r\n    \"messageBody\": \"Test\",\r\n    \"messageHeader\": \"Testing\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -519,7 +519,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"departmentId\": 0,\r\n    \"departmentName\": \"Maternity\",\r\n    \"messageBody\": \"Test 2\",\r\n    \"messageHeader\": \"Testing 2\"\r\n}",
+              "raw": "{\r\n    \"department\": {\r\n        \"id\": \"2\",\r\n        \"name\": \"Community & Health\"\r\n    },\r\n    \"messageBody\": \"Test 2\",\r\n    \"messageHeader\": \"Testing 2\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -527,16 +527,10 @@
               }
             },
             "url": {
-              "raw": "localhost:5000/api/message-board/:id",
+              "raw": "localhost:5000/api/message-board/6248cb3ab42b664364b9ddb5",
               "host": ["localhost"],
               "port": "5000",
-              "path": ["api", "message-board", ":id"],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
+              "path": ["api", "message-board", "6248cb3ab42b664364b9ddb5"]
             }
           },
           "response": []
@@ -633,7 +627,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Bob\",\r\n    \"role\": \"User\",\r\n    \"department\": \"Rehab\"\r\n}",
+              "raw": "{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Bob\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -662,7 +656,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"editeduser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Joe\",\r\n    \"role\": \"User\",\r\n    \"department\": \"Maternity\"\r\n}",
+              "raw": "{\r\n    \"username\": \"editeduser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Joe\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"3\",\r\n        \"name\": \"Maternity\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

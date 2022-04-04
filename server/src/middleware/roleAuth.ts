@@ -10,8 +10,7 @@ export const roleAuth =
   (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
-      const error = new Unauthorized('User are not logged in');
-      next(error);
+      return next(new Unauthorized('User are not logged in'));
     }
 
     const userInfo = req.user as UserPrivilegeInfo;
@@ -19,8 +18,7 @@ export const roleAuth =
     const hasPermission = roles.includes(reqUserRole);
     if (!hasPermission) {
       //   console.log('User with role ' + reqUserRole + 'does not have sufficient permissions');
-      const error = new Unauthorized(`User with role ${reqUserRole} is unauthorized`);
-      next(error);
+      return next(new Unauthorized(`User with role ${reqUserRole} is not privileged`));
     }
 
     next();

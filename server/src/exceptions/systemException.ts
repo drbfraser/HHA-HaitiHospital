@@ -1,6 +1,8 @@
-export class SystemException extends Error {
+import { CustomError } from "./custom_exception";
+
+export class SystemException extends CustomError {
     constructor(msg: string) {
-        super(msg);
+        super(new Error(msg));
     }
 }
 

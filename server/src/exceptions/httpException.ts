@@ -1,3 +1,5 @@
+import { CustomError } from "./custom_exception";
+
 export const HTTP_OK_CODE = 200;
 export const HTTP_CREATED_CODE = 201;
 export const HTTP_NOCONTENT_CODE = 204;
@@ -8,10 +10,10 @@ export const HTTP_CONFLICT_CODE = 409;
 export const HTTP_UNPROCESSABLE_ENTITY_CODE = 422;
 export const HTTP_INTERNALERROR_CODE = 500;
 
-export class HttpError extends Error {
+export class HttpError extends CustomError {
   status: number;
   constructor(status: number, message: string) {
-    super(message);
+    super(new Error(message));
     this.status = status;
   }
 }

@@ -1,18 +1,5 @@
 // import { IllegalState } from 'exceptions/systemException';
-import { DepartmentIdKeys } from '../../common/definitions/departments';
-
-
-export enum ItemType {
-    // SA = "short answer",
-    NUMERIC = 'numeric',
-    // YN = "yes no",
-    // MCQ = "mcq",
-    // PO = "pick one",
-    // MCQ_OPTION = "mcq option",
-    SUM = 'sum'
-    // SG = "survey generator"
-}
-export type ItemTypeKeys = keyof typeof ItemType;
+import { ItemTypeKeys } from 'common/json_report';
 
 // export enum AnswerType {
 //     number,
@@ -35,7 +22,7 @@ export type ItemTypeKeys = keyof typeof ItemType;
 
 export interface ReportMeta {
     id: string;
-    departmentId: DepartmentIdKeys;
+    departmentId: string;
     submittedDate: Date;
     submittedUserId: string;
 }

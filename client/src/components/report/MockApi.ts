@@ -1,22 +1,23 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
 import { v4 as uuid } from 'uuid';
 import { ReportItem } from './Report';
-import {
-  JsonReportDescriptor, JsonReportItem,
-} from 'common/definitions/json_report';
+import { JsonReportDescriptor, JsonReportItem } from 'common/definitions/json_report';
 import { ItemType } from 'common/definitions/json_report';
-import { DepartmentId } from 'common/definitions/departments';
+import { Department } from 'constants/interfaces';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
 
-const sleep = (milliseconds) => {
+const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export async function getDataDelay(millis: number, success: boolean): Promise<JsonReportDescriptor> {
-  await sleep(millis)
-  if(success)
-    return getData();
-  else 
-    throw {code:'500', message:'Internal server error'}
+export async function getDataDelay(
+  millis: number,
+  success: boolean,
+): Promise<JsonReportDescriptor> {
+  await sleep(millis);
+  if (success) return getData();
+  // eslint-disable-next-line no-throw-literal
+  else throw { code: '500', message: 'Internal server error' };
 }
 
 function getData(): JsonReportDescriptor {
@@ -35,15 +36,21 @@ function getData(): JsonReportDescriptor {
           return makeNumericItem(section, idx, field);
         }
       })
-      .filter((item) => item != undefined);
+      .filter((item) => item !== undefined);
     items.push(label);
     return items.concat(itemsFound);
   });
 
+  // Temporary switch to MockDepartmentApi for now
+  const nicuId: number = 2;
+  const sampleDepartment: Department = MockDepartmentApi.getDepartmentById(
+    nicuId.toString(),
+  ) as Department;
+
   return {
     meta: {
       id: uuid(),
-      departmentId: DepartmentId.NicuPaeds.toString(),
+      department: sampleDepartment,
       submittedDate: date.toLocaleDateString(),
       submittedUserId: '0',
     },
@@ -109,11 +116,10 @@ function makeNumericItem(
       },
 ): JsonReportItem {
   const value = Math.floor(Math.random() * 100).toString();
-  const id = section.section_label.replaceAll(' ', '') + '_field_' + idx;
   return {
-    type: ItemType.N,
+    type: ItemType.NUMERIC,
     description: field.field_label,
-    answer: [[value]]
+    answer: [[value]],
   };
 }
 

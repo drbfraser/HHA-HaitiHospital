@@ -2,7 +2,7 @@ import { IllegalState, InvalidInput } from "exceptions/systemException";
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as  _JsonUtils from "../report/json_report";
 import * as _ReportDefs from "../definitions/report";
-import * as _JsonDefs from 'common/definitions/json_report';
+import * as _JsonDefs from 'common/json_report';
 import { hasNumType, checkAnswerType, hasSumType } from "../report/json_item";
 import { isSumCorrect } from "../report/item";
 
@@ -12,7 +12,7 @@ export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
     return parser!;
 };
 
-export const getParserItemToJson = (typeKey: _ReportDefs.ItemTypeKeys) : ItemToJson.ItemParser => {
+export const getParserItemToJson = (typeKey: _JsonDefs.ItemTypeKeys) : ItemToJson.ItemParser => {
     const parser = ItemToJson.getParserByType(typeKey);
     return parser!;
 };
@@ -89,20 +89,20 @@ namespace JsonToItem {
         return newItem;
     }
 
-    type ParserByType = Map<_ReportDefs.ItemType, ItemParser>
-    const parserByType: ParserByType = new Map<_ReportDefs.ItemType, ItemParser>();
-    const initParserByType = (map: Map<_ReportDefs.ItemType, ItemParser>) => {
+    type ParserByType = Map<_JsonDefs.ItemType, ItemParser>
+    const parserByType: ParserByType = new Map<_JsonDefs.ItemType, ItemParser>();
+    const initParserByType = (map: Map<_JsonDefs.ItemType, ItemParser>) => {
         map.clear();
-        map.set(_ReportDefs.ItemType.NUMERIC, parseToNumericItem);
-        map.set(_ReportDefs.ItemType.SUM, parseToSumItem);
-        const expectedSize = getLengthOfEnum(_ReportDefs.ItemType);
+        map.set(_JsonDefs.ItemType.NUMERIC, parseToNumericItem);
+        map.set(_JsonDefs.ItemType.SUM, parseToSumItem);
+        const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
         if (map.size != expectedSize) {
             throw new IllegalState(`item type - constructor map must have length ${expectedSize}`);
         }
     }
     initParserByType(parserByType);
-    export const getParserByType = (typeKey: _ReportDefs.ItemTypeKeys): ItemParser => {
-        const type = _ReportDefs.ItemType[typeKey];
+    export const getParserByType = (typeKey: _JsonDefs.ItemTypeKeys): ItemParser => {
+        const type = _JsonDefs.ItemType[typeKey];
         const parser = parserByType.get(type);
         if (!parser) {
             throw new InvalidInput(`Parser from json to item for item type ${type} is not supported`);
@@ -117,7 +117,7 @@ namespace ItemToJson {
     }
 
     const baseParser: ItemParser = (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem => {
-        const jsonType: string = _ReportDefs.ItemType[item.type].toString();
+        const jsonType: string = _JsonDefs.ItemType[item.type].toString();
         const jsonDescription: string = item.description;
         const answer: _JsonDefs.JsonItemAnswer = item.answer;
         const jsonAnswer: Array<_JsonDefs.JsonItemAnswer> = new Array<_JsonDefs.JsonItemAnswer>();
@@ -147,21 +147,21 @@ namespace ItemToJson {
         return jsonItem;
     }
 
-    type ParserByType = Map<_ReportDefs.ItemType, ItemParser>
-    const parserByType: ParserByType = new Map<_ReportDefs.ItemType, ItemParser>();
+    type ParserByType = Map<_JsonDefs.ItemType, ItemParser>
+    const parserByType: ParserByType = new Map<_JsonDefs.ItemType, ItemParser>();
     const initParserByType = (map: ParserByType) => {
-        map.set(_ReportDefs.ItemType.NUMERIC, parseFromNumericItem);
-        map.set(_ReportDefs.ItemType.SUM, parseFromSumItem);
+        map.set(_JsonDefs.ItemType.NUMERIC, parseFromNumericItem);
+        map.set(_JsonDefs.ItemType.SUM, parseFromSumItem);
 
-        const expectedSize = getLengthOfEnum(_ReportDefs.ItemType); 
+        const expectedSize = getLengthOfEnum(_JsonDefs.ItemType); 
         if (map.size != expectedSize) {
             throw new IllegalState(`Item type - parser map must have size of ${expectedSize} but have size ${map.size}`);
         }
     }
     initParserByType(parserByType);
 
-    export const getParserByType = (typeKey: _ReportDefs.ItemTypeKeys): ItemParser => {
-        const type = _ReportDefs.ItemType[typeKey];
+    export const getParserByType = (typeKey: _JsonDefs.ItemTypeKeys): ItemParser => {
+        const type = _JsonDefs.ItemType[typeKey];
         const parser = parserByType.get(type);
         if (!parser) {
             throw new InvalidInput(`Parser from item to json for item type ${type} is not supported`);

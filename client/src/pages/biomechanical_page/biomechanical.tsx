@@ -118,7 +118,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                 <tbody>
                   {currentTableData.map((item, index) => {
                     return (
-                      <tr key={item._id}>
+                      <tr key={item.id}>
                         <th scope="row">{bioReportNumberIndex + index + 1}</th>
                         <td>
                           {
@@ -136,7 +136,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         <td>
                           <button
                             className="btn btn-link text-decoration-none d-inline"
-                            onClick={() => history.push(`/biomechanic/view/${item._id}`)}
+                            onClick={() => history.push(`/biomechanic/view/${item.id}`)}
                           >
                             {t('brokenKitReportView')}
                           </button>
@@ -147,7 +147,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                             <button
                               className="btn btn-link text-decoration-none d-inline"
                               onClick={(event) => {
-                                onDeleteBioMech(event, item._id);
+                                onDeleteBioMech(event, item.id);
                               }}
                             >
                               {t('brokenKitReportDelete')}

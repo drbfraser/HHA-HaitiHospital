@@ -82,7 +82,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const onDeleteCaseStudy = (event: any, item: any) => {
     event.stopPropagation();
     event.preventDefault();
-    setCurrentIndex(item._id);
+    setCurrentIndex(item.id);
     item.featured ? setGenericModal(true) : setDeleteModal(true);
   };
 
@@ -155,7 +155,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             <tbody>
               {currentTableData.map((item, index) => {
                 return (
-                  <tr key={item._id}>
+                  <tr key={item.id}>
                     <th scope="row">{caseStudyNumberIndex + index + 1}</th>
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
@@ -167,7 +167,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>
                       <button
                         className="btn btn-link text-decoration-none"
-                        onClick={() => history.push(`/case-study/view/${item._id}`)}
+                        onClick={() => history.push(`/case-study/view/${item.id}`)}
                       >
                         {translateText('caseStudyMainViewCaseStudy').concat(' ')}
                       </button>
@@ -194,7 +194,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                           className="btn btn-link text-decoration-none"
                           disabled={item.featured}
                           style={item.featured ? { fontStyle: 'italic' } : {}}
-                          onClick={() => (item.featured ? undefined : featureCaseStudy(item._id))}
+                          onClick={() => (item.featured ? undefined : featureCaseStudy(item.id))}
                         >
                           {item.featured
                             ? translateText('caseStudyMainUnFeatured')

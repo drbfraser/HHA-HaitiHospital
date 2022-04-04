@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { BadRequest, HttpError } from '../../exceptions/httpException';
-import { departmentAuth } from '../../middleware/departmentAuth';
-import httpErrorMiddleware from '../../middleware/httpErrorHandler';
+import { RequestWithUser } from 'utils/definitions/express';
+import { BadRequest } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
 import { ReportModel } from '../../models/dynamicReport';
@@ -15,63 +14,52 @@ const EARLIEST_DATE = new Date(1970, 1, 1);
 router.route('/').get(
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const extractFromQuery = getFromDateQuery;
-      const from = extractFromQuery(req);
-      const extractToQuery = getToDateQuery;
-      const to = extractToQuery(req);
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const extractFromQuery = getFromDateQuery;
+    const from = extractFromQuery(req);
+    const extractToQuery = getToDateQuery;
+    const to = extractToQuery(req);
 
-      const allReports = await ReportModel.find({
-        'metadata.dateCreated': {
-          $gte: from,
-          $lte: to
-        }
-      })
-        .sort({ 'metadata.dateCreated': 'desc' })
-        .exec();
-      res.status(200).send({
-        reports: allReports
-      });
-    } catch (e) {
-      next(e);
+    const allReports = await ReportModel.find({
+    'metadata.dateCreated': {
+        $gte: from,
+        $lte: to
     }
-  },
-  httpErrorMiddleware
+    })
+    .sort({ 'metadata.dateCreated': 'desc' })
+    .exec();
+    res.status(200).send({
+    reports: allReports
+    });
+  }
 );
 
 //Fetch reports of a department with department id
 //Support searching by date with query parameters/string: from, to
 router.route('/:departmentId').get(
   requireJwtAuth,
-  departmentAuth,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const extractFromQuery = getFromDateQuery;
-      const from = extractFromQuery(req);
-      const extractToQuery = getToDateQuery;
-      const to = extractToQuery(req);
-      let query = ReportModel.find({
-        'metadata.dateCreated': {
-          $gte: from,
-          $lte: to
-        }
-      });
-
-      const deptId = parseInt(req.params.departmentId);
-      query = query.find({
-        'metadata.departmentId': deptId
-      });
-
-      const reports = await query.sort({ 'metadata.dateCreated': 'desc' }).exec();
-      res.status(200).send({
-        reports: reports
-      });
-    } catch (e) {
-      next(e);
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const extractFromQuery = getFromDateQuery;
+    const from = extractFromQuery(req);
+    const extractToQuery = getToDateQuery;
+    const to = extractToQuery(req);
+    let query = ReportModel.find({
+    'metadata.dateCreated': {
+        $gte: from,
+        $lte: to
     }
-  },
-  httpErrorMiddleware
+    });
+
+    const deptId = parseInt(req.params.departmentId);
+    query = query.find({
+    'metadata.departmentId': deptId
+    });
+
+    const reports = await query.sort({ 'metadata.dateCreated': 'desc' }).exec();
+    res.status(200).send({
+    reports: reports
+    });
+  }
 );
 
 // >>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>

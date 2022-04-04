@@ -1,75 +1,79 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
-import BioMech from '../../models/bioMech';
+import BioMechModel, { BioMech } from '../../models/bioMech';
 import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { msgCatchError } from 'utils/sanitizationMessages';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    await BioMech.find({})
-      .populate('user')
-      .sort({ createdOn: 'desc' })
-      .then((response: any) => res.status(200).json(response))
-      .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
-  } catch (err) {
-    res.status(500).json(msgCatchError);
+    const docs = await BioMechModel.find({}).sort({ createdAt: 'desc' });
+    const jsons = await Promise.all(docs.map((post) => post.toJson()));
+    res.status(HTTP_OK_CODE).json(jsons);
+  } catch (e) {
+    next(e);
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    await BioMech.findById(req.params.id)
-      .populate('user')
-      .then((response: any) => res.status(200).json(response))
-      .catch((err: any) => res.status(400).json('Could not find any results: ' + err));
-  } catch (err) {
-    res.status(500).json(msgCatchError);
-  }
-});
-
-router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single('file'), async (req: any, res: Response) => {
-  try {
-    const user = req.user;
-    const department = req.user.department;
-    const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
-
-    let imgPath: String = '';
-    if (req.file) {
-      imgPath = req.file.path.replace(/\\/g, '/');
+    const bioId = req.params.id;
+    const doc = await BioMechModel.findById(bioId);
+    if (!doc) {
+      throw new NotFound(`No biomech post with id ${bioId} available`);
     }
-
-    const bioMech = new BioMech({
-      user,
-      department,
-      equipmentName,
-      equipmentFault,
-      equipmentPriority,
-      imgPath
-    });
-
-    await bioMech
-      .save()
-      .then(() => res.status(201).json('BioMech Report Submitted Successfully'))
-      .catch((err: any) => res.status(400).json('BioMech Report submission failed: ' + err));
-  } catch (err) {
-    res.status(500).json(msgCatchError);
+    const json = await doc.toJson();
+    res.status(HTTP_OK_CODE).json(json);
+  } catch (e) {
+    next(e);
   }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
-  try {
-    BioMech.findByIdAndRemove(req.params.id)
-      .then((data: any) => deleteUploadedImage(data.imgPath))
-      .then(() => res.sendStatus(204))
-      .catch((err: any) => res.status(400).json('Failed to delete bio mech: ' + err));
-  } catch (err) {
-    res.status(500).json(msgCatchError);
+router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single('file'), (req: RequestWithUser, res: Response, next: NextFunction) => {
+  const user = req.user;
+  const userId = user._id!;
+  const department = user.departmentId;
+  const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
+
+  let imgPath: string = '';
+  if (req.file) {
+    imgPath = req.file.path.replace(/\\/g, '/');
   }
+
+  const bioMech: BioMech = {
+    userId: userId,
+    departmentId: department,
+    equipmentName: equipmentName,
+    equipmentFault: equipmentFault,
+    equipmentPriority: equipmentPriority,
+    imgPath: imgPath,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+  const doc = new BioMechModel(bioMech);
+  doc
+    .save()
+    .then(() => res.sendStatus(HTTP_CREATED_CODE))
+    .catch((err: any) => next(new InternalError(`BioMech Report submission failed: ${err}`)));
+});
+
+router.delete('/:id', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
+  const bioId = req.params.id;
+  BioMechModel.findByIdAndRemove(bioId)
+    .exec()
+    .then((data) => {
+      if (!data) {
+        return next(new BadRequest(`No biomech post with id ${bioId} available`));
+      }
+      deleteUploadedImage(data.imgPath);
+      res.sendStatus(HTTP_NOCONTENT_CODE);
+    })
+    .catch((err: any) => next(new InternalError(`Failed to delete biomech post: ${err}`)));
 });
 
 export default router;

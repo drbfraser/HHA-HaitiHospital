@@ -78,16 +78,10 @@ const routes = [
     rolesAllowed: ['None'],
     departmentsAllowed: ['None'],
   },
+
   {
     path: '/department/:deptId/add',
     component: AddReport,
-    loginRequired: true,
-    rolesAllowed: [],
-    departmentsAllowed: [],
-  },
-  {
-    path: '/department/:deptId/view/:id',
-    component: () => <DepartmentReport edit={false} />,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],

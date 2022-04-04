@@ -4,14 +4,16 @@
 import { nameof } from 'ts-simple-nameof';
 export enum ItemType {
   // SA = "short answer",
-  N = 'numeric',
+  NUMERIC = 'numeric',
   // YN = "yes no",
   // MCQ = "mcq",
   // PO = "pick one",
   // MCQ_OPTION = "mcq option",
-  SUM = 'sum'
+  SUM = 'sum',
   // SG = "survey generator"
 }
+export type ItemTypeKeys = keyof typeof ItemType;
+
 interface Interfaces {
   JsonReportDescriptor: JsonReportDescriptor;
 }
@@ -19,13 +21,16 @@ export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonRepor
 
 export interface JsonReportMeta {
   readonly id: string;
-  readonly departmentId: string;
-  readonly submittedDate: string;
-  readonly submittedUserId: string;
+  readonly department: {
+    id: string;
+    name: string;
+  };
+  readonly submittedDate?: string;
+  readonly submittedUserId?: string;
 }
 
 export type JsonItemAnswer = Array<string>;
-export type JsonItemChildren = Array<JsonReportItem>
+export type JsonItemChildren = Array<JsonReportItem>;
 export interface JsonReportItem {
   /**
    * Json structure of an item
@@ -53,6 +58,7 @@ export interface JsonMcqOption {
   readonly value: string;
 }
 
+export type JsonReportItems = Array<JsonReportItem>;
 export interface JsonReportDescriptor {
   /**
    * Meta data for a submitted report.
@@ -64,5 +70,5 @@ export interface JsonReportDescriptor {
    * A collection of items in a submitted report.
    *
    */
-  readonly items: Array<JsonReportItem>;
+  readonly items: JsonReportItems;
 }

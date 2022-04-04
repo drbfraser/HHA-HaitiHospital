@@ -1,8 +1,8 @@
-import { ItemAnswer, ItemType, ItemTypeKeys, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
-import { formatDateString, generateUuid, getLengthOfEnum } from '../utils';
+import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
+import { getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
-import { TemplateDocument } from '../../models/template';
-import { DepartmentId } from "../../common/definitions/departments";
+import { TemplateBase } from '../../models/template';
+import { ItemType, ItemTypeKeys } from "common/json_report";
 
 
 interface TemplateReport extends ReportDescriptor{};
@@ -12,18 +12,18 @@ interface TemplateSumItem extends ReportSumItem{};
 export type TemplateItems = Array<TemplateItem>;
 type TemplateAnswer = ItemAnswer;
 
-export const getTemplateDocumentFromReport = (report: ReportDescriptor): TemplateDocument => {
+export const getTemplateDocumentFromReport = (report: ReportDescriptor): TemplateBase => {
     const reportTemplate = ItemToTemplate.getReportTemplate(report);
     const doc = ItemToTemplate.buildTemplateDocument(reportTemplate);
     return doc;
 }
 
-export const generateReportFromDocument = (doc: TemplateDocument): ReportDescriptor => {
+export const generateReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
     let report: ReportDescriptor;
     let meta: ReportMeta = {
         id: doc.id,
-        departmentId: DepartmentId[doc.departmentId].toString(),
-        submittedDate: new Date(doc.submittedDate),
+        departmentId: doc.departmentId,
+        submittedDate: doc.submittedDate,
         submittedUserId: doc.submittedByUserId
     }
     let items: ReportItems = doc.items;
@@ -48,12 +48,12 @@ export const getReportTemplate = (report: ReportDescriptor): TemplateReport => {
     return template;
 }
 
-export const buildTemplateDocument = (template: TemplateReport): TemplateDocument => {
-    let newDoc: TemplateDocument = {
+export const buildTemplateDocument = (template: TemplateReport): TemplateBase => {
+    let newDoc: TemplateBase = {
         id: template.meta.id,
-        departmentId: DepartmentId[template.meta.departmentId].toString(),
+        departmentId: template.meta.departmentId,
         submittedByUserId: template.meta.submittedUserId,
-        submittedDate: formatDateString(template.meta.submittedDate),
+        submittedDate: template.meta.submittedDate,
         items: template.items
     }
     return newDoc;
@@ -85,7 +85,7 @@ interface ItemTemplateParser {
 }
 const baseItemParser = (item: ReportItem): TemplateItem => {
     let answer: TemplateAnswer;
-    answer = item.answer.map((element) => {
+    answer = item.answer.map(() => {
         return getDefaultAnswer(item);
     });
 

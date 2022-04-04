@@ -25,18 +25,21 @@ const EditMessage = () => {
   const { t } = useTranslation();
 
   const getMessage = async (id: string) => {
-    const msgData = await Api.Get(
+    const msgData: Message = await Api.Get(
       ENDPOINT_MESSAGEBOARD_GET_BY_ID(id),
       TOAST_MESSAGEBOARD_GET,
       history,
     );
     const msg: Message = {
-      messageBody: msgData['messageBody'],
-      messageHeader: msgData['messageHeader'],
-      departmentId: msgData['departmentId'],
-      departmentName: parseEscapedCharacters(msgData['departmentName']),
-      user: msgData['userId'],
-      date: msgData['date'],
+      id: msgData.id,
+      messageBody: msgData.messageBody,
+      messageHeader: msgData.messageHeader,
+      department: {
+        id: msgData.department.id,
+        name: parseEscapedCharacters(msgData.department.name),
+      },
+      user: msgData.user,
+      date: msgData.date,
     };
     setMsg(msg);
   };

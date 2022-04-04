@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Json } from 'constants/interfaces';
+import { Message } from 'constants/interfaces';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
@@ -8,10 +8,9 @@ import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
 import { renderBasedOnRole } from '../../actions/roleActions';
 import { useAuthState } from 'contexts';
-import { Role } from '../../constants/interfaces';
+import { Role, GeneralDepartment } from '../../constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
-import { getDepartmentId, DepartmentId } from '../../common/definitions/departments';
 
 interface MessagePanelProps {}
 
@@ -20,7 +19,7 @@ const MessagePanel = (props: MessagePanelProps) => {
   const history: History = useHistory<History>();
   const [rerender, setRerender] = useState<boolean>(false);
   const authState = useAuthState();
-  const [msgsJson, setMsgJson] = useState<Json[]>([]);
+  const [msgsJson, setMsgJson] = useState<Message[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize: number = 10;
   const currentTableData = useMemo(() => {
@@ -30,7 +29,7 @@ const MessagePanel = (props: MessagePanelProps) => {
   }, [currentPage, msgsJson]);
 
   const getMessages = async (isMounted: boolean) => {
-    if (isMounted === true) {
+    if (isMounted) {
       const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history);
       const filteredMessages = filterMessages(messages);
       setMsgJson(filteredMessages);
@@ -46,21 +45,28 @@ const MessagePanel = (props: MessagePanelProps) => {
     setRerender(!rerender);
   };
 
-
-  const filterMessages = (msgs: Json[]): Json[] => {
-    if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment])) {
+  const filterMessages = (msgs: Message[]): Message[] => {
+    if (
+      renderBasedOnRole(authState.userDetails.role, [
+        Role.Admin,
+        Role.MedicalDirector,
+        Role.HeadOfDepartment,
+      ])
+    ) {
       return msgs;
     }
     return filterMessagesBasedOnDepartment(msgs);
-  }
+  };
 
-  const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Json[]): Json[] => {
+  const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Message[]): Message[] => {
     const currentUserDepartment = authState.userDetails.department;
-    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter((message) =>
-      message.departmentId ===  DepartmentId.General || message.departmentId === getDepartmentId(currentUserDepartment)
-    )
+    const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter(
+      (message) =>
+        message.department.name === GeneralDepartment ||
+        message.department.id === currentUserDepartment.id,
+    );
     return filteredMsgsBasedOnUserDepartment;
-  }
+  };
 
   return (
     <div className="message-panel">
@@ -83,13 +89,13 @@ const MessagePanel = (props: MessagePanelProps) => {
               return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
             })}
           </div>
-            <Pagination
-              className="pagination-bar"
-              currentPage={currentPage}
-              totalCount={msgsJson.length}
-              pageSize={pageSize}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+          <Pagination
+            className="pagination-bar"
+            currentPage={currentPage}
+            totalCount={msgsJson.length}
+            pageSize={pageSize}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       )}
     </div>

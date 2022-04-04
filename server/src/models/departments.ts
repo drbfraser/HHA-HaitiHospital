@@ -1,8 +1,16 @@
-import * as mongoose from 'mongoose';
-// import { FormDataModels } from './formdataModels';
+import mongoose from 'mongoose';
+
 const { Schema } = mongoose;
 
-const departmentsSchema = new Schema({});
+const departmentSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    points: { type: Number, required: true, default: 0 },
+    nCaseStudies: { type: Number, require: true, default: 0 }
+  },
+  { timestamps: true }
+);
 
-const Departments = mongoose.model('Departments', departmentsSchema, 'Departments');
-export default Departments;
+const Department = mongoose.model('Department', departmentSchema);
+
+export default Department;

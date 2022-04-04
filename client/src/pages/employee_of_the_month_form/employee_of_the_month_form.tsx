@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
-import { DepartmentName } from 'common/definitions/departments';
 import Api from '../../actions/Api';
+import { Department, GeneralDepartment } from 'constants/interfaces';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import initialDepartments from 'utils/json/departments.json';
+import { setDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toast_messages';
 import './employee_of_the_month_form.css';
@@ -17,6 +20,9 @@ import { imageCompressor } from 'utils/imageCompressor';
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
+  const [departments, setDepartments] = useState<Map<string, Department>>(
+    setDepartmentMap(initialDepartments.departments),
+  );
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
@@ -35,6 +41,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
 
   const onSubmit = async (data: any) => {
     let formData = new FormData();
+    data.department = departments.get(data.department);
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
@@ -47,6 +54,11 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
       history,
     );
   };
+
+  useEffect(() => {
+    // For Future Devs: Replace MockDepartmentApi with Api
+    setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
+  }, []);
 
   return (
     <div className="employee-of-the-month-form">
@@ -87,10 +99,15 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   defaultValue=""
                 >
                   <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>
-                  <option value={DepartmentName.NicuPaeds}>{t('NICU/Paeds')}</option>
-                  <option value={DepartmentName.Maternity}>{t('Maternity')}</option>
-                  <option value={DepartmentName.Rehab}>{t('Rehab')}</option>
-                  <option value={DepartmentName.CommunityHealth}>{t('Community & Health')}</option>
+                  {Array.from(departments.values()).map((dept: Department, index: number) => {
+                    return dept.name !== GeneralDepartment ? (
+                      <option key={index} value={dept.name}>
+                        {dept.name}
+                      </option>
+                    ) : (
+                      <></>
+                    );
+                  })}
                 </select>
                 <label htmlFor="Employee Description" className="form-label">
                   {t('employeeOfTheMonthDescription')}

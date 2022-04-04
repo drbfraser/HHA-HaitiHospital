@@ -26,9 +26,8 @@ export const isValidUrl = (str) => {
 };
 
 import { InvalidInput } from 'exceptions/systemException';
-import * as _ReportDefs from './definitions/report';
-import * as ItemType from "./definitions/report";
 import crypto from "crypto";
+import { ItemType, ItemTypeKeys } from 'common/json_report';
 
 export const getEnumKeyByStringValue = function <T extends { [index: string]: any; }>(myEnum: T, enumValue: string): keyof T | null {
     let keys = Object.keys(myEnum).filter(x => myEnum[x].toString() == enumValue);
@@ -40,8 +39,8 @@ export const getLengthOfEnum = function<T extends {[index: string]: any;}>(myEnu
     return count;
 }
 
-export const getItemTypeFromValue = (type: string): _ReportDefs.ItemTypeKeys=> {
-    const key = getEnumKeyByStringValue(ItemType.ItemType, type);
+export const getItemTypeFromValue = (type: string): ItemTypeKeys=> {
+    const key = getEnumKeyByStringValue(ItemType, type);
     if (!key) {
         throw new InvalidInput(`Item of type: ${type} is not supported`);
     }
@@ -53,7 +52,10 @@ export const formatDateString = (date: Date): string => {
     const result =  date.toLocaleDateString('en-US', {
         year: "numeric",
         month: "long",
-        day: "numeric"
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric"
     });
     return result;
 }

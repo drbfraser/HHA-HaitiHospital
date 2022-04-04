@@ -4,12 +4,11 @@ import { PATH_TO_JSON_REPORT_TYPES } from '../constants';
 import Ajv, { ValidateFunction } from 'ajv';
 import path from 'path';
 import ts from 'typescript';
-import { BadRequest, InternalError } from "exceptions/httpException";
 
 import { ReportDescriptor } from "utils/definitions/report";
-import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/definitions/json_report';
+import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from 'common/json_report';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
-import { parseToReport } from 'utils/json_report_parser/report';
+import { parseToReport } from 'utils/parsers/report';
 import { parseToJson } from './json_report';
 
 /**
@@ -18,29 +17,14 @@ import { parseToJson } from './json_report';
  * @returns return a jsonReport object if sucessful
  */
 export const jsonStringToReport = function (jsonString: string): ReportDescriptor {
-    try {
-        const jsonReport: JsonReportDescriptor = validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
-        const report = parseToReport(jsonReport);
-        return report;
-    }
-    catch (e) {
-        if (e instanceof InvalidInput)
-            throw new BadRequest(e.message);
-        throw new InternalError(e.message);
-    }
+    const jsonReport: JsonReportDescriptor = validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
+    const report = parseToReport(jsonReport);
+    return report;
 };
 
 export const reportToJsonReport = (report: ReportDescriptor): JsonReportDescriptor => {
-    try {
-        const jsonReport: JsonReportDescriptor = parseToJson(report);
-        return jsonReport;
-    }
-    catch (e) {
-        if (e instanceof InvalidInput) {
-            throw new BadRequest(e.message);
-        }
-        throw new InternalError(e.message);
-    }
+    const jsonReport: JsonReportDescriptor = parseToJson(report);
+    return jsonReport;
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>

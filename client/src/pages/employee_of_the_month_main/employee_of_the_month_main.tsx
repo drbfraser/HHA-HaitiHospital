@@ -20,7 +20,7 @@ interface EmployeeOfTheMonthMainProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(
-    initialEmployeeOfTheMonth as EmployeeOfTheMonth,
+    initialEmployeeOfTheMonth as unknown as EmployeeOfTheMonth,
   );
   const authState = useAuthState();
   const history: History = useHistory<History>();

@@ -3,10 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import ReportSummary from 'components/report_summary/report_summary';
-import { Role } from 'constants/interfaces';
-import { getDepartmentName } from 'common/definitions/departments';
-import { DepartmentName } from 'common/definitions/departments';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import { Department as DepartmentModel, emptyDepartment, Role } from 'constants/interfaces';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
 import { useAuthState } from 'contexts';
@@ -18,7 +16,7 @@ export const Department = (props: DepartmentProps) => {
   const { t } = useTranslation();
   const authState = useAuthState();
   const { deptId } = useParams<{ deptId: string }>();
-  const [deptName, setDeptName] = React.useState<DepartmentName>();
+  const [department, setDepartment] = React.useState<DepartmentModel>(emptyDepartment);
   const history: History = useHistory<History>();
   const [dateRange, setDayRange] = React.useState<DayRange>({
     from: null,
@@ -27,9 +25,7 @@ export const Department = (props: DepartmentProps) => {
 
   React.useEffect(() => {
     try {
-      const numberId: number = parseInt(deptId);
-      const name: DepartmentName = getDepartmentName(numberId);
-      setDeptName(name);
+      setDepartment(MockDepartmentApi.getDepartmentById(deptId) as DepartmentModel);
     } catch (e) {
       history.push('/notFound');
     }
@@ -45,7 +41,7 @@ export const Department = (props: DepartmentProps) => {
           {/* Department Title */}
           <section>
             <h1 className="text-start">
-              {t('departmentPageDepartmentOf')} {deptName}
+              {t('departmentPageDepartmentOf')} {department.name}
             </h1>
           </section>
 
@@ -53,7 +49,7 @@ export const Department = (props: DepartmentProps) => {
           <section>
             <div className="row">
               {authState.userDetails.role === Role.HeadOfDepartment &&
-              authState.userDetails.department !== deptName ? null : (
+              authState.userDetails.department !== department.name ? null : (
                 <div className="col-auto">
                   <Link to={`/department/${deptId}/add`}>
                     <button className=" btn btn-dark btn-sm rounded-bill">
@@ -74,11 +70,6 @@ export const Department = (props: DepartmentProps) => {
                 <DatePicker value={dateRange} onChange={setDayRange} />
               </div>
             </div>
-          </section>
-
-          {/* Department Report Summary */}
-          <section>
-            <ReportSummary department={deptName} dateRange={dateRange} />
           </section>
         </div>
       </main>

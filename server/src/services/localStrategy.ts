@@ -3,7 +3,7 @@ import { Strategy as PassportLocalStrategy } from 'passport-local';
 import Joi from 'joi';
 import { Request } from 'express';
 
-import User from '../models/user';
+import UserModel, { User } from '../models/user';
 import { loginSchema } from './validators';
 
 const passportLogin = new PassportLocalStrategy(
@@ -24,18 +24,19 @@ const passportLogin = new PassportLocalStrategy(
       });
 
     try {
-      const user = await User.findOne({ username: username.trim() });
+      const user = await UserModel.findOne({ username: username.trim() });
       if (!user) {
         return done(null, false, { message: 'Username does not exists.' });
       }
-      user.comparePassword(password, function (err: any, isMatch: boolean) {
+      user!.comparePassword(password, async function (err: any, isMatch: boolean) {
         if (err) {
           return done(err);
         }
         if (!isMatch) {
           return done(null, false, { message: 'Incorrect password.' });
         }
-        return done(null, user);
+        const leanUser = await UserModel.findOne({username: username.trim()}).lean();
+        return done(null, leanUser!);
       });
     } catch (err) {
       return done(err);
@@ -44,11 +45,11 @@ const passportLogin = new PassportLocalStrategy(
 );
 
 // Serializing required for sessions
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function (user: User, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function (user: Express.User, done) {
+passport.deserializeUser(function (user: User, done) {
   done(null, user);
 });
 

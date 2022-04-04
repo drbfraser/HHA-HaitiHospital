@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { renderBasedOnRole } from '../../actions/roleActions';
+import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
-import { UserJson, Role } from '../../constants/interfaces';
-import { Json } from 'constants/interfaces';
+import { UserJson, Role, Message, emptyMessage } from 'constants/interfaces';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_DELETE_BY_ID } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_DELETE } from 'constants/toast_messages';
@@ -17,24 +16,25 @@ import initialUserJson from './initialUserJson.json';
 import './message_display.css';
 
 interface MessageDisplayProps {
-  msgJson: Json;
+  msgJson: Message;
   notifyChange: Function;
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
   const { t: translateText } = useTranslation();
-  const [author, setAuthor] = useState<UserJson>(initialUserJson as UserJson);
+  const [message, setMessage] = useState<Message>(emptyMessage);
+  const [author, setAuthor] = useState<UserJson>(initialUserJson as unknown as UserJson);
   const history: History = useHistory<History>();
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
-  const readableDate = new Date(props.msgJson.date as string).toLocaleString();
-  const parsedDepartmentName = parseEscapedCharacters(props.msgJson.departmentName as string);
+  const readableDate = new Date(props.msgJson.date).toLocaleString();
 
   useEffect(() => {
-    const retrievedUser = props.msgJson.userId as unknown;
+    const retrievedUser = props.msgJson.user as unknown;
     setAuthor(retrievedUser as UserJson);
+    setMessage(props.msgJson);
   }, [props.msgJson]);
 
   const deleteMessageActions = () => {
@@ -90,13 +90,10 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             <div className="d-flex">
               <div className="mr-auto p-2">
                 <p className="title-info">
-                  <strong>{props.msgJson.messageHeader}</strong>
+                  <strong>{message.messageHeader}</strong>
                 </p>
-                {/* {console.log(author.role)} */}
-                <p className="department-info">
-                  {parsedDepartmentName}
-                </p>
-                <p className="department-info">{((props.msgJson as Json).userId as Json).name}</p>
+                <p className="department-info">{parseEscapedCharacters(message.department.name)}</p>
+                <p className="department-info">{author.name}</p>
               </div>
               <div className="p-2">
                 <div>
@@ -104,10 +101,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                     Role.Admin,
                     Role.MedicalDirector,
                   ]) ? (
-                    <Link
-                      className="align-self-center"
-                      to={`/message-board/edit/${props.msgJson['_id']}`}
-                    >
+                    <Link className="align-self-center" to={`/message-board/edit/${message.id}`}>
                       <button
                         type="button"
                         className="btn btn-link text-decoration-none admin-utils"
@@ -127,7 +121,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                       type="button"
                       className="btn btn-link text-decoration-none admin-utils"
                       onClick={(event) => {
-                        onDeleteMessage(event, props.msgJson['_id'] as string);
+                        onDeleteMessage(event, message.id);
                       }}
                     >
                       {translateText('messageBoardDelete')}
@@ -143,7 +137,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             </div>
           </div>
           <div className="mr-auto p-2">
-            <p className="lh-sm message-body">{props.msgJson.messageBody}</p>
+            <p className="lh-sm message-body">{message.messageBody}</p>
           </div>
         </div>
       </div>

@@ -1,17 +1,14 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { msgCatchError } from 'utils/sanitizationMessages';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
+import { Router, Response, NextFunction } from 'express';
+import { RequestWithUser } from 'utils/definitions/express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 const path = require('path');
 
 const router = Router();
 
-router.get('/:imgPath', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:imgPath', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const imgPath: string = req.params.imgPath;
-  try {
-    res.status(200).sendFile(path.join(__dirname, `../../../public/images/${imgPath}`));
-  } catch (err: any) {
-    res.status(500).json(msgCatchError);
-  }
+  res.status(HTTP_OK_CODE).sendFile(path.join(__dirname, `../../../public/images/${imgPath}`));
 });
 
 export default router;

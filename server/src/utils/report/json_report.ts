@@ -1,4 +1,4 @@
-import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../../common/definitions/json_report';
+import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../../common/json_report';
 
 export const hasChildren = (jsonItem: JsonReportItem): boolean => {
     if (jsonItem.items) {
@@ -22,10 +22,7 @@ export const getItemType = (jsonItem: JsonReportItem): string => {
 }
 
 export const isInATable = (jsonItem: JsonReportItem): boolean => {
-    if (jsonItem.answer.length > 1) {
-        return true;
-    }
-    return false;
+    return (jsonItem.answer.length > 1);
 }
 
 export const getItemAnswerLength = (jsonItem: JsonReportItem): number => {

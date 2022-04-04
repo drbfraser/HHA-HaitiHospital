@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role } from 'constants/interfaces';
-import { DepartmentName } from 'common/definitions/departments';
+import { User, Role, Department, GeneralDepartment } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import initialDepartments from 'utils/json/departments.json';
+import { setDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { TOAST_ADMIN_POST } from 'constants/toast_messages';
 import './admin.css';
@@ -17,11 +19,19 @@ import { toast } from 'react-toastify';
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
+  const [departments, setDepartments] = useState<Map<string, Department>>(
+    setDepartmentMap(initialDepartments.departments),
+  );
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
   const { t } = useTranslation();
   const history: History = useHistory<History>();
+
+  useEffect(() => {
+    // For Future Devs: Replace MockDepartmentApi with Api
+    setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
+  }, []);
 
   const onSubmitActions = () => {
     toast.success('Successfully created user');
@@ -29,17 +39,18 @@ export const AddUserForm = (props: AdminProps) => {
     history.push('/admin');
   };
 
-  const onSubmit = async (data: User) => {
-    data = setGeneralDepartmentForAdminAndMedicalDir(data);
+  const onSubmit = async (data: any) => {
+    data = setGeneralDepartmentForAdminAndMedicalDir(data) as User;
     await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
   };
 
-  const setGeneralDepartmentForAdminAndMedicalDir = (data: User): User => {
-    if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
-      data.department = DepartmentName.General;
-    }
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): User => {
+    data.department =
+      data.role === Role.Admin || data.role === Role.MedicalDirector
+        ? departments.get(GeneralDepartment)
+        : departments.get(data.department);
     return data;
-  }
+  };
 
   return (
     <div className={'admin'}>
@@ -151,12 +162,15 @@ export const AddUserForm = (props: AdminProps) => {
                   <option value="" disabled hidden>
                     {t('adminAddUserSelectDepartment')}
                   </option>
-                  <option value={DepartmentName.NicuPaeds}>{DepartmentName.NicuPaeds}</option>
-                  <option value={DepartmentName.Maternity}>{DepartmentName.Maternity}</option>
-                  <option value={DepartmentName.Rehab}>{DepartmentName.Rehab}</option>
-                  <option value={DepartmentName.CommunityHealth}>
-                    {DepartmentName.CommunityHealth}
-                  </option>
+                  {Array.from(departments.values()).map((dept: Department, index: number) => {
+                    return dept.name !== GeneralDepartment ? (
+                      <option key={index} value={dept.name}>
+                        {dept.name}
+                      </option>
+                    ) : (
+                      <></>
+                    );
+                  })}
                 </select>
               </div>
             ) : null}

@@ -7,8 +7,8 @@ import { ItemType } from 'common/definitions/json_report';
 import { ReportItem } from './Report';
 
 type Label = {
-    id: string;
-    text?: string;
+  id: string;
+  text?: string;
 };
 
 export function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boolean }) {
@@ -19,7 +19,7 @@ export function InputGroup(props: { items: ReportItem[]; readOnly: boolean; acti
           case 'label':
             const label: Label = { id: 'section' + idx, text: element.description };
             return <SectionLabel key={label.id} id={label.id} text={label.text} />;
-          case ItemType.N:
+          case ItemType.NUMERIC:
             let value = element.answer[0][0];
             return (
               <NumberInputField

@@ -1,24 +1,20 @@
+import { getDeptNameFromId } from 'utils/departments';
+import { IllegalState, SystemException } from 'exceptions/systemException';
 import CaseStudy from '../models/caseStudies';
-import Department from '../models/leaderboard';
-import { DepartmentName } from '../common/definitions/departments';
+import Department from '../models/departments';
+import UserModel from 'models/user';
 
 const pointsPerCaseStudy = 10;
 
 export async function updateDepartmentPoints() {
-  try {
-    var caseStudies;
-    await Promise.all([
-      (async () => {
-        await Department.updateMany({}, { $set: { points: 0, nCaseStudies: 0 } });
-      })(),
-      (async () => {
-        caseStudies = await CaseStudy.find().populate('user');
-      })()
-    ]);
-    caseStudies.forEach(async (item) => {
-      await Department.findOneAndUpdate({ name: item.user.department }, { $inc: { points: pointsPerCaseStudy, nCaseStudies: 1 } }).exec();
-    });
-  } catch (err) {
-    console.log(err);
+  await Department.updateMany({}, { $set: { points: 0, nCaseStudies: 0 } });
+  const caseStudies = await CaseStudy.find().lean();
+  for (const post of caseStudies) {
+    const user = await UserModel.findOne({ _id: post.userId }).lean();
+    if (!user) {
+      throw new IllegalState(`Case study has non-existing user id ${post.userId}`);
+    }
+    const postDeptName = getDeptNameFromId(user.departmentId);
+    await Department.findOneAndUpdate({ name: postDeptName }, { $inc: { points: pointsPerCaseStudy, nCaseStudies: 1 } });
   }
 }

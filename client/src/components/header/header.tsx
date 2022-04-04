@@ -1,7 +1,7 @@
 import { useAuthDispatch } from '../../contexts';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { User } from 'constants/interfaces';
+import { emptyUser, UserJson } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import { TOAST_ADMIN_GET } from 'constants/toast_messages';
 
 interface HeaderProps {}
 interface HeaderViewProps {
-  user: User;
+  user: UserJson;
 }
 
 const HeaderView = (props: HeaderViewProps) => {
@@ -19,9 +19,9 @@ const HeaderView = (props: HeaderViewProps) => {
   const location = useLocation();
   const user = props.user;
   const department =
-    user.department === undefined && user.role === undefined
+    user.department.name === undefined && user.role === undefined
       ? ''
-      : `- ${user.department !== undefined ? user.department : user.role}`;
+      : `- ${user.department.name !== undefined ? user.department.name : user.role}`;
   if (location.pathname.slice(1) === 'home') {
     return <h2 className="text-secondary">{`${t('headerOverview')} ${department}`}</h2>;
   } else if (location.pathname.slice(1) === 'message-board') {
@@ -88,7 +88,7 @@ const Header = (props: HeaderProps) => {
     history.push('/login');
   };
   const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState({} as User);
+  const [userInfo, setUserInfo] = useState(emptyUser as UserJson);
 
   const getUserInfo = async () => {
     setUserInfo(await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history));
@@ -125,20 +125,14 @@ const Header = (props: HeaderProps) => {
               </li>
               <li>
                 <button className="dropdown-item disabled text-muted mb-2">
-                  <i className="bi bi-person-fill"></i>
-                  {' @' + userInfo.username}
-                </button>
-              </li>
-              <li>
-                <button className="dropdown-item disabled text-muted mb-2">
                   <i className="bi bi-person-badge-fill"></i>
-                  {' ' + i18n.t(userInfo.role)}
+                  {i18n.t(userInfo.role)}
                 </button>
               </li>
-              <li className={`${userInfo.department ? 'd-block' : 'd-none'}`}>
+              <li className={`${userInfo.department.name ? 'd-block' : 'd-none'}`}>
                 <button className="dropdown-item disabled text-muted">
                   <i className="bi bi-people-fill"></i>
-                  {' ' + userInfo.department}
+                  {userInfo.department.name}
                 </button>
               </li>
               <li>
@@ -147,7 +141,7 @@ const Header = (props: HeaderProps) => {
               <li>
                 <button className="dropdown-item" type="button" onClick={onLogOut}>
                   <i className="fa fa-sign-out" aria-hidden="true"></i>
-                  {' ' + t('headerSignOut')}
+                  {t('headerSignOut')}
                 </button>
               </li>
             </ul>

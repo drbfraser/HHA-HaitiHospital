@@ -1,14 +1,11 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
-import Department from '../models/leaderboard';
-import { DepartmentName, DepartmentId, getDepartmentId } from '../common/definitions/departments';
-import NicuPaeds from '../models/nicuPaeds';
-import Community from '../models/community';
+import Department from '../models/departments';
+import { DepartmentName } from './departments';
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-
 import * as ENV from './processEnv';
 
 const selectRandomUser = (users: User[]): User => {
@@ -28,18 +25,17 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? DepartmentName.General : user.department;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? '0' : user.departmentId;
 };
 
 export const seedDb = async () => {
   // TODO: Remove delete many when in prod
-  // await UserModel.deleteMany({});
+  //   await UserModel.deleteMany({});
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
-  // await seedUsers();
+  await seedUsers();
   await seedLeaderboard();
-  await seedDepartments();
   await seedCaseStudies();
   await seedMessageBoard();
   await seedBioMech();
@@ -54,36 +50,36 @@ export const seedUsers = async () => {
     // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index, i) => {
-      var foundUser = await UserModel.findOne({ username: `user${index}` });
+      var foundUser = await UserModel.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.department = DepartmentName.General;
+            foundUser.departmentId = '0';
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.department = DepartmentName.General;
+            foundUser.departmentId = '0';
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.departmentId = '2';
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.Maternity;
+            foundUser.departmentId = '4';
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.Rehab;
+            foundUser.departmentId = '1';
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.CommunityHealth;
+            foundUser.departmentId = '3';
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.department = DepartmentName.NicuPaeds;
+            foundUser.departmentId = '2';
             break;
           default:
             break;
@@ -99,31 +95,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.department = DepartmentName.General;
+            user.departmentId = '0';
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.department = DepartmentName.General;
+            user.departmentId = '0';
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.department = DepartmentName.NicuPaeds;
+            user.departmentId = '2';
             break;
           case 3:
             user.role = Role.User;
-            user.department = DepartmentName.Maternity;
+            user.departmentId = '4';
             break;
           case 4:
             user.role = Role.User;
-            user.department = DepartmentName.Rehab;
+            user.departmentId = '1';
             break;
           case 5:
             user.role = Role.User;
-            user.department = DepartmentName.CommunityHealth;
+            user.departmentId = '3';
             break;
           case 6:
             user.role = Role.User;
-            user.department = DepartmentName.NicuPaeds;
+            user.departmentId = '2';
             break;
           default:
             break;
@@ -138,36 +134,6 @@ export const seedUsers = async () => {
   }
 };
 
-export const seedDepartments = async () => {
-  console.log('Seeding default departments...');
-  try {
-    const dateTime: Date = new Date();
-    const month: number = dateTime.getUTCMonth() + 1;
-    const year: number = dateTime.getUTCFullYear();
-    //ONLY USED TO TEST - MUST REMOVE IF IN PROD:
-    await NicuPaeds.deleteMany({});
-    await Community.deleteMany({});
-
-    //TODO Rehab Department Default value creation:
-
-    // NICU/Paeds Department Default value creation:
-    let departmentId: number = DepartmentId.NicuPaeds;
-    let departmentName: string = DepartmentName.NicuPaeds;
-    const originalNicuPaedsDocument = new NicuPaeds({ departmentId, departmentName, month, year });
-    await originalNicuPaedsDocument.save();
-
-    //TODO Community
-    departmentId = DepartmentId.CommunityHealth;
-    departmentName = DepartmentName.CommunityHealth;
-    const originalCommunityDocument = new Community({ departmentId, departmentName, month, year });
-    await originalCommunityDocument.save();
-
-    console.log('Default departments seeded');
-  } catch (err: any) {
-    console.error(err);
-  }
-};
-
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   try {
@@ -176,8 +142,7 @@ export const seedMessageBoard = async () => {
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
       const message = new MessageBody({
-        departmentId: getDepartmentId(randomUser.department),
-        departmentName: randomUser.department,
+        departmentId: 1,
         userId: randomUser._id,
         date: new Date(),
         messageBody: faker.lorem.words(),
@@ -195,8 +160,8 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
   try {
     let caseStudy = new CaseStudy({
       caseStudyType: CaseStudyOptions.PatientStory,
-      user: user._id,
-      userDepartment: setDepartment(user),
+      userId: user._id,
+      departmentId: setDepartment(user),
       imgPath: 'public/images/case1.jpg',
       featured: true,
       patientStory: {
@@ -218,7 +183,7 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
 export const seedCaseStudies = async () => {
   console.log('Seeding case studies...');
   try {
-    const users: User[] = await UserModel.find();
+    const users = await UserModel.find().lean();
     const randomDefaultUser = selectRandomUser(users);
     setDefaultFeaturedCaseStudy(randomDefaultUser);
     const numCaseStudiesToGenerate: number = 100;
@@ -246,7 +211,7 @@ export const seedLeaderboard = async () => {
       const department = new Department({
         name: departmentName
       });
-      department.save();
+      await department.save();
     }
     console.log('Leaderboard seeded');
   } catch (err: any) {
@@ -263,8 +228,8 @@ export const seedBioMech = async () => {
     for (let i = 0; i < numOfBioMechReportsToGenerate; i++) {
       const randomUser = selectRandomUser(users);
       const bioMechReport = new BioMech({
-        user: randomUser,
-        department: setDepartment(randomUser),
+        userId: randomUser,
+        departmentId: setDepartment(randomUser),
         equipmentName: faker.lorem.words(),
         equipmentFault: faker.lorem.words(),
         equipmentPriority: randomEnumValue(bioMechEnum),
@@ -284,7 +249,7 @@ export const seedEmployeeOfTheMonth = async () => {
     await EmployeeOfTheMonth.deleteOne({});
     const employeeOfTheMonth = new EmployeeOfTheMonth({
       name: 'John Doe',
-      department: 'Rehab',
+      departmentId: '1',
       description: 'This is a placeholder',
       imgPath: 'public/images/default_user.png'
     });
@@ -302,8 +267,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.PatientStory:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.PatientStory,
-          user: user._id,
-          userDepartment: setDepartment(user),
+          userId: user._id,
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case1.jpg',
           featured: false,
           patientStory: {
@@ -321,8 +286,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.StaffRecognition:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.StaffRecognition,
-          user: user._id,
-          userDepartment: setDepartment(user),
+          userId: user._id,
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           staffRecognition: {
@@ -339,8 +304,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.TrainingSession:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.TrainingSession,
-          user: user._id,
-          userDepartment: setDepartment(user),
+          userId: user._id,
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           trainingSession: {
@@ -357,8 +322,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.EquipmentReceived:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.EquipmentReceived,
-          user: user._id,
-          userDepartment: setDepartment(user),
+          userId: user._id,
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           equipmentReceived: {
@@ -375,8 +340,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
       case CaseStudyOptions.OtherStory:
         caseStudy = new CaseStudy({
           caseStudyType: CaseStudyOptions.OtherStory,
-          user: user._id,
-          userDepartment: setDepartment(user),
+          userId: user._id,
+          departmentId: setDepartment(user),
           imgPath: 'public/images/case2.jpg',
           featured: false,
           otherStory: {

@@ -1,6 +1,9 @@
+import { getDeptNameFromId } from 'utils/departments';
+import { IllegalState } from 'exceptions/systemException';
 import { boolean } from 'joi';
 import mongoose from 'mongoose';
-import { DepartmentName } from '../common/definitions/departments';
+import { formatDateString } from 'utils/utils';
+import UserModel, { UserJson } from './user';
 
 const { Schema } = mongoose;
 
@@ -12,7 +15,17 @@ export enum CaseStudyOptions {
   OtherStory = 'Other Story'
 }
 
-const patientStorySchema = new Schema(
+export interface PatientStory {
+  patientsName: string;
+  patientsAge: number;
+  whereIsThePatientFrom: string;
+  whyComeToHcbh: string;
+  howLongWereTheyAtHcbh: string;
+  diagnosis: string;
+  caseStudyStory: string;
+}
+
+const patientStorySchema = new Schema<PatientStory>(
   {
     patientsName: { type: String, required: true },
     patientsAge: { type: Number, required: true },
@@ -25,7 +38,16 @@ const patientStorySchema = new Schema(
   { _id: false }
 );
 
-const staffRecognitionSchema = new Schema(
+export interface StaffRecognition {
+  staffName: string;
+  jobTitle: string;
+  department: string;
+  howLongWorkingAtHcbh: string;
+  mostEnjoy: string;
+  caseStudyStory: string;
+}
+
+const staffRecognitionSchema = new Schema<StaffRecognition>(
   {
     staffName: { type: String, required: true },
     jobTitle: { type: String, required: true },
@@ -37,7 +59,15 @@ const staffRecognitionSchema = new Schema(
   { _id: false }
 );
 
-const trainingSessionSchema = new Schema(
+export interface TrainingSession {
+  trainingDate: Date;
+  trainingOn: string;
+  whoConducted: string;
+  whoAttended: string;
+  benefitsFromTraining: string;
+  caseStudyStory: string;
+}
+const trainingSessionSchema = new Schema<TrainingSession>(
   {
     trainingDate: { type: Date, required: true },
     trainingOn: { type: String, required: true },
@@ -49,7 +79,15 @@ const trainingSessionSchema = new Schema(
   { _id: false }
 );
 
-const equipmentReceivedSchema = new Schema(
+export interface EquipmentReceived {
+  equipmentReceived: string;
+  departmentReceived: string;
+  whoSentEquipment: string;
+  purchasedOrDonated: string;
+  whatDoesEquipmentDo: string;
+  caseStudyStory: string;
+}
+const equipmentReceivedSchema = new Schema<EquipmentReceived>(
   {
     equipmentReceived: { type: String, required: true },
     departmentReceived: { type: String, required: true },
@@ -61,19 +99,59 @@ const equipmentReceivedSchema = new Schema(
   { _id: false }
 );
 
-const otherStorySchema = new Schema(
+export interface OtherStory {
+  caseStudyStory: string;
+}
+const otherStorySchema = new Schema<OtherStory>(
   {
     caseStudyStory: { type: String, required: true }
   },
   { _id: false }
 );
 
-const caseStudySchema = new Schema(
+export interface CaseStudy {
+  caseStudyType: CaseStudyOptions;
+  userId: string;
+  departmentId: string;
+  patientStory?: PatientStory;
+  staffRecognition?: StaffRecognition;
+  trainingSession?: TrainingSession;
+  equipmentReceived?: EquipmentReceived;
+  otherStory?: OtherStory;
+  imgPath: string;
+  featured: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CaseStudyJson {
+  id: string;
+  caseStudyType: CaseStudyOptions;
+  user: UserJson;
+  department: {
+    id: string;
+    name: string;
+  };
+  patientStory?: PatientStory;
+  staffRecognition?: StaffRecognition;
+  trainingSession?: TrainingSession;
+  equipmentReceived?: EquipmentReceived;
+  otherStory?: OtherStory;
+  imgPath: string;
+  featured: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CaseStudyWithInstanceMethods extends CaseStudy {
+  toJson: () => Promise<CaseStudyJson>;
+}
+
+const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
   {
     caseStudyType: { type: CaseStudyOptions, required: true },
-    // TODO: add created by user. right now JWT is not yet applied
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    userDepartment: { type: DepartmentName },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    departmentId: { type: String, required: true },
     patientStory: patientStorySchema,
     staffRecognition: staffRecognitionSchema,
     trainingSession: trainingSessionSchema,
@@ -84,7 +162,35 @@ const caseStudySchema = new Schema(
   },
   { timestamps: true }
 );
+caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
+  const userDoc = await UserModel.findById(this.userId);
+  if (!userDoc) {
+    throw new IllegalState(`Case study references to non-existing user id ${this.userId}`);
+  }
 
-const CaseStudy = mongoose.model('CaseStudy', caseStudySchema);
+  const userJson = await userDoc.toJson();
+  const json: CaseStudyJson = {
+    id: this._id,
+    caseStudyType: this.caseStudyType,
+    user: userJson,
+    department: {
+      id: this.departmentId,
+      name: getDeptNameFromId(this.departmentId)
+    },
+    imgPath: this.imgPath,
+    featured: this.featured,
+    createdAt: formatDateString(this.createdAt),
+    updatedAt: formatDateString(this.updatedAt),
+    patientStory: this.patientStory ? this.patientStory : undefined,
+    staffRecognition: this.staffRecognition ? this.staffRecognition : undefined,
+    trainingSession: this.trainingSession ? this.trainingSession : undefined,
+    equipmentReceived: this.equipmentReceived,
+    otherStory: this.otherStory ? this.otherStory : undefined
+  };
+
+  return json;
+};
+
+const CaseStudy = mongoose.model<CaseStudyWithInstanceMethods>('CaseStudy', caseStudySchema);
 
 export default CaseStudy;

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Message, emptyMessage } from 'constants/interfaces';
-import { getDepartmentId, DepartmentName } from 'common/definitions/departments';
+import { Department } from 'constants/interfaces';
+import MockDepartmentApi from 'actions/MockDepartmentApi';
+import initialDepartments from 'utils/json/departments.json';
+import { setDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -11,6 +14,9 @@ interface MessageFormProps {
 }
 
 const MessageForm = (props: MessageFormProps) => {
+  const [departments, setDepartments] = useState<Map<string, Department>>(
+    setDepartmentMap(initialDepartments.departments),
+  );
   const { t } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
@@ -18,29 +24,24 @@ const MessageForm = (props: MessageFormProps) => {
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted === true) {
+    if (isMounted) {
       if (props.optionalMsg !== undefined) {
         setPrefilledMsg(props.optionalMsg);
+        setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
       }
     }
 
     return () => {
       isMounted = false;
     };
-  }, [props.optionalMsg]);
-
-  useEffect(() => {
-    setDepartment(prefilledMsg.departmentName);
-    reset(prefilledMsg);
-  }, [prefilledMsg, reset]);
+  }, [props.optionalMsg, department]);
 
   const onSubmit = (data: any) => {
-    if (data.departmentName === '') {
+    if (data.department === '') {
       toast.error('Must select a department');
       return;
     }
-
-    data.departmentId = getDepartmentId(data.departmentName);
+    data.department = departments.get(data.department);
     props.submitAction(data);
 
     reset();
@@ -57,17 +58,15 @@ const MessageForm = (props: MessageFormProps) => {
             className="form-select"
             id="select-menu"
             value={department}
-            {...register('departmentName')}
+            {...register('department')}
             onChange={(e) => setDepartment(e.target.value)}
           >
             <option value="">{t('addMessageSelect')} </option>
-            {Object.values(DepartmentName).map((deptName, index) => {
-              return (
-                <option value={deptName} key={index}>
-                  {deptName}
-                </option>
-              );
-            })}
+            {Array.from(departments.values()).map((dept: Department, index: number) => (
+              <option key={index} value={dept.name}>
+                {dept.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
