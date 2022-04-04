@@ -9,11 +9,11 @@ export enum DepartmentName {
 }
 
 export enum DepartmentId {
-  Rehab = 0,
-  NicuPaeds = 1,
-  CommunityHealth = 2,
-  Maternity = 3,
-  General = 4
+  Rehab = '1',
+  NicuPaeds = '2',
+  CommunityHealth = '3',
+  Maternity = '4',
+  General = '5'
 }
 export const GENERAL_DEPARTMENT_ID = DepartmentId.General;
 

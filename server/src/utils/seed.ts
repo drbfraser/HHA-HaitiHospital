@@ -1,9 +1,7 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
 import Department from '../models/departments';
-import { DepartmentName, DepartmentId } from './departments';
-import NicuPaeds from '../models/nicuPaeds';
-import Community from '../models/community';
+import { DepartmentName } from './departments';
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
@@ -27,18 +25,17 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? '4' : user.departmentId;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? '5' : user.departmentId;
 };
 
 export const seedDb = async () => {
   // TODO: Remove delete many when in prod
-//   await UserModel.deleteMany({});
+  //   await UserModel.deleteMany({});
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
   await seedUsers();
   await seedLeaderboard();
-  await seedDepartments();
   await seedCaseStudies();
   await seedMessageBoard();
   await seedBioMech();
@@ -58,31 +55,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.departmentId = '4';
+            foundUser.departmentId = '5';
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.departmentId = '4';
+            foundUser.departmentId = '5';
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.departmentId = '1';
+            foundUser.departmentId = '2';
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.departmentId = '3';
+            foundUser.departmentId = '4';
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.departmentId = '0';
+            foundUser.departmentId = '1';
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.departmentId = '2';
+            foundUser.departmentId = '3';
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.departmentId = '1';
+            foundUser.departmentId = '2';
             break;
           default:
             break;
@@ -98,31 +95,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.departmentId = '4';
+            user.departmentId = '5';
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.departmentId = '4';
+            user.departmentId = '5';
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.departmentId = '1';
+            user.departmentId = '2';
             break;
           case 3:
             user.role = Role.User;
-            user.departmentId = '3';
+            user.departmentId = '4';
             break;
           case 4:
             user.role = Role.User;
-            user.departmentId = '0';
+            user.departmentId = '1';
             break;
           case 5:
             user.role = Role.User;
-            user.departmentId = '2';
+            user.departmentId = '3';
             break;
           case 6:
             user.role = Role.User;
-            user.departmentId = '1';
+            user.departmentId = '2';
             break;
           default:
             break;
@@ -132,36 +129,6 @@ export const seedUsers = async () => {
       }
     });
     console.log('Users seeded');
-  } catch (err: any) {
-    console.error(err);
-  }
-};
-
-export const seedDepartments = async () => {
-  console.log('Seeding default departments...');
-  try {
-    const dateTime: Date = new Date();
-    const month: number = dateTime.getUTCMonth() + 1;
-    const year: number = dateTime.getUTCFullYear();
-    //ONLY USED TO TEST - MUST REMOVE IF IN PROD:
-    await NicuPaeds.deleteMany({});
-    await Community.deleteMany({});
-
-    //TODO Rehab Department Default value creation:
-
-    // NICU/Paeds Department Default value creation:
-    let departmentId: number = DepartmentId.NicuPaeds;
-    let departmentName: string = DepartmentName.NicuPaeds;
-    const originalNicuPaedsDocument = new NicuPaeds({ departmentId, departmentName, month, year });
-    await originalNicuPaedsDocument.save();
-
-    //TODO Community
-    departmentId = DepartmentId.CommunityHealth;
-    departmentName = DepartmentName.CommunityHealth;
-    const originalCommunityDocument = new Community({ departmentId, departmentName, month, year });
-    await originalCommunityDocument.save();
-
-    console.log('Default departments seeded');
   } catch (err: any) {
     console.error(err);
   }
