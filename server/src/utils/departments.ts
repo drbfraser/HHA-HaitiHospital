@@ -15,6 +15,7 @@ export enum DepartmentId {
   Maternity = 3,
   General = 4
 }
+export const GENERAL_DEPARTMENT_ID = DepartmentId.General;
 
 const deptIdtoName = new Map<DepartmentId, DepartmentName>();
 const initIdToNameMap = (map: Map<DepartmentId, DepartmentName>) => {

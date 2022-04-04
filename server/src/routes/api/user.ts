@@ -3,7 +3,7 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import UserModel, { hashPassword, Role, User, validateUserSchema } from '../../models/user';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
-import { verifyDeptId } from 'utils/departments';
+import { GENERAL_DEPARTMENT_ID, verifyDeptId } from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -18,8 +18,13 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
       throw new NotFound(`No user with provided Id found`);
     }
 
-    const updatedUser = { name: req.body.name, username: req.body.username, password: req.body.password , role: req.body.role, departmentId: req.body.department.id };
-    console.log(updatedUser);
+    const updatedUser = { 
+        name: req.body.name, 
+        username: req.body.username, 
+        password: req.body.password , 
+        role: req.body.role,
+        departmentId: req.body.department? req.body.department.id : GENERAL_DEPARTMENT_ID
+    };
 
     const existingUser = await UserModel.findOne({ username: updatedUser.username }).lean();
     if (existingUser && existingUser.username !== targetUser.username) {

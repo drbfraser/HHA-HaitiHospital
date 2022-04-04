@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role, Department } from 'constants/interfaces';
+import { User, Role, Department, UserJson, emptyUser } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
@@ -15,34 +15,58 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
+import { Spinner } from 'components/spinner/Spinner';
+import { getEnumKeyByStringValue } from 'utils/utils';
 
 interface AdminProps {}
+
+interface FetchState {
+    isLoading: boolean,
+    data: UserJson
+}
+const initFetchState: FetchState = {
+    isLoading: true,
+    data: emptyUser
+}
 
 export const EditUserForm = (props: AdminProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
     setDepartmentMap(initialDepartments.departments),
   );
-  const [user, setUser] = useState({} as User);
+  const [ fetch, setFetch ] = useState<FetchState>(initFetchState);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const [role, setRole] = useState(null);
-  const [department, setDepartment] = useState(null);
+  const [showDepartment, setShowDepartment] = useState<boolean>();
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
   const history: History = useHistory<History>();
   const { t } = useTranslation();
   const id = useLocation().pathname.split('/')[3];
 
-  const getUser = async () => {
-    const retrievedUser = await Api.Get(ENDPOINT_ADMIN_GET_BY_ID(id), TOAST_ADMIN_GET, history);
-    setUser(retrievedUser);
-    setRole(retrievedUser.role);
-    setDepartment(retrievedUser.department);
-  };
+  useEffect(() => {
+
+    const fetchAndSetUser = async () => {
+        const retrievedUser: UserJson = await Api.Get(ENDPOINT_ADMIN_GET_BY_ID(id), TOAST_ADMIN_GET, history);
+        setFetch({
+            data: retrievedUser,
+            isLoading: false
+        });
+    }
+    fetchAndSetUser();
+
+    // For Future Devs: Replace MockDepartmentApi with Api
+    const fetchAndSetDepartments = async () => {
+        const departments = await MockDepartmentApi.getDepartments();
+        setDepartments(setDepartmentMap(departments));
+    }
+    fetchAndSetDepartments();
+
+  }, []);
 
   useEffect(() => {
-    getUser();
-    // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
-  }, []);
+    if (fetch.isLoading === false) {
+        const isShown = fetch.data.role === Role.User || fetch.data.role === Role.HeadOfDepartment;
+        setShowDepartment(isShown);
+    }
+  }, [fetch])
 
   const onSubmitActions = () => {
     reset({});
@@ -51,9 +75,6 @@ export const EditUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
-    console.log("Data submitted: ", data);
-    
-    data = setGeneralDepartmentForAdminAndMedicalDir(data);
     await Api.Put(
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       data,
@@ -63,19 +84,23 @@ export const EditUserForm = (props: AdminProps) => {
     );
   };
 
-  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): any => {
-    if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
-      data.department = departments.get('General');
-    } else {
-      data.department = departments.get(data.department);
-    }
-    return data;
-  };
+  const onRoleChange = (value: string) => {
+      const roleKey = getEnumKeyByStringValue(Role, value);
+      if (!roleKey) {
+          throw new Error(`Role of value ${value} not existing`);
+      }
+      const isShown = (Role[roleKey] === Role.User || Role[roleKey] === Role.HeadOfDepartment);
+      setShowDepartment(isShown);
+      if (!isShown) {
+        unregister("department");
+      }
+  } 
 
   return (
-    <div className={'admin'}>
+    <div className={'admin'}> 
       <SideBar />
-
+      {fetch.isLoading === true? 
+      <Spinner></Spinner>: 
       <main className="container-fluid main-region">
         <Header />
         <div className="ml-3 mb-3 d-flex justify-content-start">
@@ -145,7 +170,7 @@ export const EditUserForm = (props: AdminProps) => {
                 type="text"
                 className="form-control"
                 id="name"
-                defaultValue={user.name}
+                defaultValue={fetch.data.name}
                 required
                 {...register('name')}
               ></input>
@@ -157,13 +182,10 @@ export const EditUserForm = (props: AdminProps) => {
               <select
                 className="form-select"
                 id="role"
-                defaultValue={role}
+                defaultValue={fetch.data.role}
                 required
                 {...register('role')}
-                onChange={(e) => {
-                  setRole(e.target.value);
-                  unregister('department');
-                }}
+                onChange={(e) => onRoleChange(e.target.value)}
               >
                 <option value="" disabled hidden>
                   {t('adminAddUserSelectRole')}
@@ -174,7 +196,7 @@ export const EditUserForm = (props: AdminProps) => {
                 <option value={Role.HeadOfDepartment}>{i18n.t(Role.HeadOfDepartment)}</option>
               </select>
             </div>
-            {role === Role.User || role === Role.HeadOfDepartment ? (
+            {showDepartment ? (
               <div className="mb-3">
                 <label htmlFor="department" className="form-label">
                   {t('adminAddUserDepartment')}
@@ -182,19 +204,16 @@ export const EditUserForm = (props: AdminProps) => {
                 <select
                   className="form-select"
                   id="department"
-                  defaultValue={department}
+                  defaultValue={fetch.data.department.id}
                   required
-                  {...register('department')}
-                  onChange={(e) => {
-                    setDepartment(e.target.value);
-                  }}
+                  {...register('department.id')}
                 >
                   <option value="" disabled hidden>
                     {t('adminAddUserSelectDepartment')}
                   </option>
                   {Array.from(departments.values()).map((dept: Department, index: number) => {
                     return dept.name !== 'General' ? (
-                      <option key={index} value={dept.name}>
+                      <option key={index} value={dept.id}>
                         {dept.name}
                       </option>
                     ) : (
@@ -212,6 +231,7 @@ export const EditUserForm = (props: AdminProps) => {
           </form>
         </div>
       </main>
+      }
     </div>
-  );
+    );
 };

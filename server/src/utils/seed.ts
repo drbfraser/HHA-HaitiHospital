@@ -1,7 +1,7 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
 import Department from '../models/departments';
-// import { DepartmentName, DepartmentId } from './departments';
+import { DepartmentName, DepartmentId } from './departments';
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
 import MessageBody from '../models/messageBoard';
@@ -32,7 +32,7 @@ const setDepartment = (user: User): string => {
 
 export const seedDb = async () => {
   // TODO: Remove delete many when in prod
-  // await UserModel.deleteMany({});
+//   await UserModel.deleteMany({});
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 

@@ -41,7 +41,7 @@ export interface UserJson {
 }
 
 interface UserWithInstanceMethods extends User {
-  toJson: () => UserJson;
+  toJson: () => Promise<UserJson>;
   generateJWT: () => any;
   registerUser: (newUser: any, callback: Function) => void;
   comparePassword: (otherPw: any, callback: Function) => void;
