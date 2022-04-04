@@ -219,14 +219,14 @@ export const EditUserForm = (props: AdminProps) => {
                     id="department"
                     defaultValue={fetch.data.department.id}
                     required
-                    {...register('department.id')}
+                    {...register('department')}
                   >
                     <option value="" disabled hidden>
                       {t('adminAddUserSelectDepartment')}
                     </option>
                     {Array.from(departments.values()).map((dept: Department, index: number) => {
                       return dept.name !== GeneralDepartment ? (
-                        <option key={index} value={dept.id}>
+                        <option key={index} value={dept.name}>
                           {dept.name}
                         </option>
                       ) : (
