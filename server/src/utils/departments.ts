@@ -32,10 +32,6 @@ const initIdToNameMap = (map: Map<DepartmentId, DepartmentName>) => {
 };
 initIdToNameMap(deptIdtoName);
 export function getDeptNameFromId(deptId: string): string {
-  if (deptId === 'All') {
-    return 'All';
-  }
-
   const idKey = getEnumKeyByStringValue(DepartmentId, deptId.toString());
   if (!idKey) {
     throw new Error(`Department Id ${deptId} is not supported`);

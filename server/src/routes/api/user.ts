@@ -18,20 +18,21 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
       throw new NotFound(`No user with provided Id found`);
     }
 
-    const existingUser = await UserModel.findOne({ username: req.body.username }).lean();
+    const updatedUser = { name: req.body.name, username: req.body.username, password: req.body.password , role: req.body.role, departmentId: req.body.department.id };
+    console.log(updatedUser);
+
+    const existingUser = await UserModel.findOne({ username: updatedUser.username }).lean();
     if (existingUser && existingUser.username !== targetUser.username) {
       throw new Conflict(`Username ${req.body.username} is taken`);
     }
 
-    let password: string | null = null;
-    if (req.body.password && req.body.password !== '') {
-      password = await hashPassword(req.body.password);
+    if (updatedUser.password && updatedUser.password !== '') {
+      updatedUser.password = await hashPassword(updatedUser.password);
     }
-
-    const updatedUser = { name: req.body.name, username: req.body.username, password, role: req.body.role, departmentId: req.body.department.id };
     if (!verifyDeptId(updatedUser.departmentId)) {
       throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
     }
+
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     await UserModel.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 

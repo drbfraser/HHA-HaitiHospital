@@ -44,14 +44,6 @@ export const EditUserForm = (props: AdminProps) => {
     setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
   }, []);
 
-  const defaultValueHandler = (data: User): object => {
-    if (data.name === '' || data.username === '') {
-      data.name = user.name;
-      data.username = user.username;
-    }
-    return data;
-  };
-
   const onSubmitActions = () => {
     reset({});
     history.push('/admin');
@@ -59,10 +51,12 @@ export const EditUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
+    console.log("Data submitted: ", data);
+    
     data = setGeneralDepartmentForAdminAndMedicalDir(data);
     await Api.Put(
       ENDPOINT_ADMIN_PUT_BY_ID(id),
-      defaultValueHandler(data),
+      data,
       onSubmitActions,
       TOAST_ADMIN_PUT,
       history,
@@ -98,16 +92,20 @@ export const EditUserForm = (props: AdminProps) => {
               <label htmlFor="username" className="form-label">
                 {t('adminAddUserUsername')}
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="username"
-                autoComplete="new-password"
-                defaultValue={user.username}
-                required
-                {...register('username')}
-              ></input>
+              <div className='input-group'>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="username"
+                    autoComplete="new-username"
+                    {...register('username')}
+                ></input>
+              </div>
+                <div id='usernameHelp' className='form-text'>
+                    {t('adminEditUserLeaveBlank')}
+                </div>
             </div>
+
             <div className="mb-3">
               <label htmlFor="password" className="form-label">
                 {t('adminAddUserPassword')}

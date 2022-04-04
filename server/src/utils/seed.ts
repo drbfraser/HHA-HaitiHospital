@@ -1,7 +1,7 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
 import Department from '../models/departments';
-import { DepartmentName, DepartmentId } from './departments';
+// import { DepartmentName, DepartmentId } from './departments';
 import NicuPaeds from '../models/nicuPaeds';
 import Community from '../models/community';
 import MessageBody from '../models/messageBoard';
@@ -27,7 +27,7 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? 'All' : user.departmentId;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? '4' : user.departmentId;
 };
 
 export const seedDb = async () => {
@@ -58,11 +58,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.departmentId = 'All';
+            foundUser.departmentId = '4';
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.departmentId = 'All';
+            foundUser.departmentId = '4';
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
@@ -98,11 +98,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.departmentId = 'All';
+            user.departmentId = '4';
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.departmentId = 'All';
+            user.departmentId = '4';
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
