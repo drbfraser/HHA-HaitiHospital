@@ -2,7 +2,7 @@ import nicuJSON from '../../pages/form/models/nicuModel.json';
 import { v4 as uuid } from 'uuid';
 import { ReportItem } from './Report';
 import {
-  JsonReportDescriptor,
+  JsonReportDescriptor, JsonReportItem,
 } from 'common/definitions/json_report';
 import { ItemType } from 'common/definitions/json_report';
 import { DepartmentId } from 'common/definitions/departments';
@@ -11,27 +11,26 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export async function getDataDelay(millis): Promise<JsonReportDescriptor> {
+export async function getDataDelay(millis: number, success: boolean): Promise<JsonReportDescriptor> {
   await sleep(millis)
-  return getData();
+  if(success)
+    return getData();
+  else 
+    throw {code:'500', message:'Internal server error'}
 }
 
-function getData() {
+function getData(): JsonReportDescriptor {
   const date = new Date();
-  const items: ReportItem[] = nicuJSON.flatMap((section, idx) => {
-    const items: ReportItem[] = [];
-    const label = {
-      id: 'label' + idx,
+  const items: JsonReportItem[] = nicuJSON.flatMap((section, idx) => {
+    const items: JsonReportItem[] = [];
+    const label: JsonReportItem = {
       type: 'label',
       description: section.section_label,
       answer: [],
-      validated: true,
-      valid: true,
-      errorMessage: '',
     };
 
     const itemsFound = section.section_fields
-      .map((field, idx): ReportItem => {
+      .map((field, idx): JsonReportItem => {
         if ((field.field_type = 'number')) {
           return makeNumericItem(section, idx, field);
         }
@@ -108,17 +107,13 @@ function makeNumericItem(
         field_value?: undefined;
         subsection_label?: undefined;
       },
-) {
+): JsonReportItem {
   const value = Math.floor(Math.random() * 100).toString();
   const id = section.section_label.replaceAll(' ', '') + '_field_' + idx;
   return {
-    id: id,
     type: ItemType.N,
     description: field.field_label,
-    answer: [[value]],
-    validated: true,
-    valid: true,
-    errorMessage: '',
+    answer: [[value]]
   };
 }
 
@@ -152,6 +147,7 @@ export async function submitData(
   } else {
     return sleep(delayMillis).then(() => {
       const errorData = {
+        code: 400,
         message: 'Invalid data',
         data: { ...makeInvalid(data) },
       };

@@ -1,5 +1,5 @@
-import { FormProvider, useForm, useFormContext} from 'react-hook-form';
-import React, { useState} from 'react';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import React, { useState } from 'react';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,10 +16,10 @@ import * as ReportApiUtils from './ReportUtils';
 import * as JsonInterfaceUtitls from 'common/definitions/departments';
 import { InputGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
+import { toast } from 'react-toastify';
 
 export interface ReportData extends JsonReportDescriptor {
   reportItems: ReportItem[];
-  validated?: string;
 }
 export interface ReportItem extends JsonReportItem {
   id: string;
@@ -47,24 +47,48 @@ export function Report() {
   );
 }
 
+enum StateType {
+  loading,
+  ready,
+  error,
+}
+
+type ErrorData = {
+  code: string
+  message: string
+}
+
+type State = {
+  value: StateType;
+  data: ReportData | ErrorData;
+};
+
+function Loading(): State {return { value: StateType.loading, data: null }}
+function Ready(data: ReportData): State {return { value: StateType.ready, data: data }}
+function Error(data: ErrorData): State {return { value: StateType.error, data: data }}
+
+
 function FormContents(props: { path: string }) {
   const formHook = useForm();
   const { t, i18n } = useTranslation();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
-  const [data, setData] = useState<JsonReportDescriptor>();
   const [submitting, setSubmitting] = useState(false);
-  const pageTop = React.useRef(null)
+  const [state, setState] = useState<State>(Loading());
+  const pageTop = React.useRef(null);
   React.useEffect(() => {
-    MockApi.getDataDelay(1500).then((data) => {
-      setData(data);
+    MockApi.getDataDelay(1500, true).then((data) => {
+      const reportData = ReportApiUtils.toReportData(data)
+      setState({ value: StateType.ready, data: reportData});
+    }).catch(err => {
+      setState(Error(err))
     });
   }, []);
 
   // Whenever data changed, check for errors messages to give to react form hook
-  React.useEffect(() => {
-    if (!data) return;
-    data.items
+  React.useEffect(() => {    
+    if (state.value == StateType.loading || state.value == StateType.error) return;
+    (state.data as ReportData).items
       .filter((item) => !(item as ReportItem).valid)
       .forEach((invalidItem) => {
         const id = (invalidItem as ReportItem).id;
@@ -76,32 +100,50 @@ function FormContents(props: { path: string }) {
         //  This changes the analogous to a setState call, thus must be called here.
         formHook.setError(id, error);
       });
-  }, [data]);
+  }, [state]);
 
-  const loading = !data;
-  if (loading)
+  const editButtonHandler = () => setReadOnly(false);
+
+  const submitHandler = async (answers) => {
+    const submittingData = (state.data as ReportData)
+    let data, nextState
+    setSubmitting(true);
+    try{
+      data = await ReportApiUtils.submitData(answers, submittingData);
+      nextState = Ready(data)
+      setReadOnly(true);
+      toast.success("Data submitted")
+    }catch(err){
+      if(err.code < 500) nextState = Ready(err.data)
+      else nextState = Error({code:err.code, message:err.message})
+      toast.error(`Error ${err.code}: ${err.message}`)
+    }
+    setSubmitting(false);
+    setState(nextState)
+  };
+
+  const renderLoading = () => {
     return (
-      <div className="row justify-content-center">
-        <Spinner size='3rem' style={{marginTop:'25%'}}/>
+      <div className="row justify-content-center" style={{ marginTop: '25%' }}>
+        <Spinner size="3rem"/>
       </div>
     );
-  else {
-    // parse the items into groups marked by the first label found.
-    const sections = [];
-    data.items.forEach((item) => {
-      if (item.type == 'label') {
-        sections.push([item]);
-      } else {
-        const headSection = sections[sections.length - 1];
-        headSection.push(item);
-      }
-    });
+  };
 
-    // get labels from the groupings found
-    const labels: ReportItem[] = sections.map((section, idx) => {
-      return section[0];
-    });
+  const renderError = () => {
+    const errorData = (state.data as ErrorData)
+    return (
+      <div className="row justify-content-center text-center" style={{ marginTop: '25%' }}>
+        <h1 className='text-danger' >{`Error code: ${errorData.code}`}</h1>
+        <strong>{`${errorData.message}`}</strong>
+        <button type="button" className='btn btn-primary col-2 mt-3' onClick={()=> window.location.reload()}>Refresh</button>
+      </div>
+    );
+  };
 
+  const renderContent = () => {
+    const data = (state.data as ReportData)
+    const [labels, sections] = extractGroupings(data);
     const totalSections = labels.length;
     const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
       switch (name) {
@@ -116,22 +158,7 @@ function FormContents(props: { path: string }) {
           break;
         default:
       }
-      pageTop.current.scrollIntoView()
-    };
-
-    const editButtonHandler = (name: string) => {
-      switch (name) {
-        case 'edit':
-          setReadOnly(false);
-          break;
-        default:
-      }
-    };
-
-    const submitHandler = async (answers) => {
-      setSubmitting(true);
-      await ReportApiUtils.submitHandler(answers, data, setData, setReadOnly);
-      setSubmitting(false);
+      pageTop.current.scrollIntoView();
     };
 
     return (
@@ -144,8 +171,8 @@ function FormContents(props: { path: string }) {
           hideEditButton={!readOnly}
           onEditClick={editButtonHandler}
         />
+        <div ref={pageTop} />
         <FormProvider {...formHook}>
-        <div ref={pageTop}/>
           <form
             className="row p-3 needs-validation"
             onSubmit={formHook.handleSubmit(submitHandler)}
@@ -161,7 +188,35 @@ function FormContents(props: { path: string }) {
         </FormProvider>
       </>
     );
+  };
+
+  switch (state.value) {
+    case StateType.loading:
+      return renderLoading();
+      case StateType.error:
+        return renderError();
+    default:
+      return renderContent();
   }
+}
+
+function extractGroupings(data: ReportData): [ReportItem[], ReportItem[]] {
+  // parse the items into groups marked by the first label found.
+  const sections = [];
+  data.items.forEach((item) => {
+    if (item.type == 'label') {
+      sections.push([item]);
+    } else {
+      const headSection = sections[sections.length - 1];
+      headSection.push(item);
+    }
+  });
+
+  // get labels from the groupings found
+  const labels: ReportItem[] = sections.map((section, idx) => {
+    return section[0];
+  });
+  return [labels, sections];
 }
 
 function FormHeader(props: { reportMetadata: JsonReportMeta }) {
@@ -190,9 +245,6 @@ function FormHeader(props: { reportMetadata: JsonReportMeta }) {
     </div>
   );
 }
-
-type NavButtonClickedHandler = (name: string, section: number) => void;
-type ButtonClickedHandler = (name: string) => void;
 
 function Sections(props: {
   activeGroup: number;
@@ -250,21 +302,21 @@ function Sections(props: {
           disabled={disableButton}
           key={uuid()}
         >
-          {props.loading ? 
-          <span className="spinner-border spinner-border-sm"/>
-           : 'Submit'}
+          {props.loading ? <span className="spinner-border spinner-border-sm" /> : 'Submit'}
         </button>
       </div>
     </>
   );
 }
 
+type NavButtonClickedHandler = (name: string, section: number) => void;
+
 function NavBar(props: {
   labels: ReportItem[];
   activeLabel?: number;
   onNavClick: NavButtonClickedHandler;
   hideEditButton: boolean;
-  onEditClick: ButtonClickedHandler;
+  onEditClick: () => void;
 }) {
   return (
     <div className="list-group list-group-horizontal sticky-top justify-content-between bg-white p-2 ps-4 mt-3 shadow-sm">
@@ -292,7 +344,7 @@ function NavBar(props: {
           type="button"
           className="btn btn-primary bi bi-pencil-square"
           hidden={props.hideEditButton}
-          onClick={() => props.onEditClick('edit')}
+          onClick={() => props.onEditClick()}
         >
           &nbsp;&nbsp;Edit
         </button>
