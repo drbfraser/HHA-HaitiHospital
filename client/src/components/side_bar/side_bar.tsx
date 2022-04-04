@@ -6,7 +6,7 @@ import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
-import { Role, Department } from 'constants/interfaces';
+import { Role, Department, GeneralDepartment } from 'constants/interfaces';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 import initialDepartments from 'utils/json/departments.json';
 
@@ -139,7 +139,7 @@ const Sidebar = (props: SidebarProps) => {
             const deptName = dept.name;
             const deptId = dept.id;
 
-            if (renderDeptIfUserInDept(deptName) && deptName !== 'General')
+            if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
               return (
                 <li key={'department'.concat(index.toString())}>
                   <NavLink

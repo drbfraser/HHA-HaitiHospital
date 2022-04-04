@@ -5,7 +5,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
 import Api from '../../actions/Api';
-import { Department } from 'constants/interfaces';
+import { Department, GeneralDepartment } from 'constants/interfaces';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 import initialDepartments from 'utils/json/departments.json';
 import { setDepartmentMap } from 'utils/departmentMapper';
@@ -100,7 +100,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                 >
                   <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>
                   {Array.from(departments.values()).map((dept: Department, index: number) => {
-                    return dept.name !== 'General' ? (
+                    return dept.name !== GeneralDepartment ? (
                       <option key={index} value={dept.name}>
                         {dept.name}
                       </option>

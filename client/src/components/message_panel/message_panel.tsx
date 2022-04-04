@@ -8,7 +8,7 @@ import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
 import { renderBasedOnRole } from '../../actions/roleActions';
 import { useAuthState } from 'contexts';
-import { Role } from '../../constants/interfaces';
+import { Role, GeneralDepartment } from '../../constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 
@@ -62,7 +62,8 @@ const MessagePanel = (props: MessagePanelProps) => {
     const currentUserDepartment = authState.userDetails.department;
     const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter(
       (message) =>
-        message.department.name === 'General' || message.department.id === currentUserDepartment.id,
+        message.department.name === GeneralDepartment ||
+        message.department.id === currentUserDepartment.id,
     );
     return filteredMsgsBasedOnUserDepartment;
   };

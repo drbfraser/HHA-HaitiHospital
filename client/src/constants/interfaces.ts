@@ -13,6 +13,8 @@ export interface MessageProps {
   [index: string]: MessageEntry;
 }
 
+export const GeneralDepartment: string = 'General';
+
 export enum Role {
   Admin = 'Admin',
   MedicalDirector = 'Medical Director',

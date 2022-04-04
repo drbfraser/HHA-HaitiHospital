@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role, Department } from 'constants/interfaces';
+import { User, Role, Department, GeneralDepartment } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
@@ -46,7 +46,7 @@ export const AddUserForm = (props: AdminProps) => {
 
   const setGeneralDepartmentForAdminAndMedicalDir = (data: any): any => {
     if (data.role === Role.Admin || data.role === Role.MedicalDirector) {
-      data.department = departments.get('General');
+      data.department = departments.get(GeneralDepartment);
     } else {
       data.department = departments.get(data.department);
     }
@@ -164,7 +164,7 @@ export const AddUserForm = (props: AdminProps) => {
                     {t('adminAddUserSelectDepartment')}
                   </option>
                   {Array.from(departments.values()).map((dept: Department, index: number) => {
-                    return dept.name !== 'General' ? (
+                    return dept.name !== GeneralDepartment ? (
                       <option key={index} value={dept.name}>
                         {dept.name}
                       </option>
