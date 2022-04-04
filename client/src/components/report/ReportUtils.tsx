@@ -1,29 +1,18 @@
-import { JsonReportDescriptor, JsonItemAnswer } from 'common/definitions/json_report';
-import { toast } from 'react-toastify';
+import {
+  JsonReportDescriptor,
+  JsonReportItem,
+  JsonItemAnswer,
+} from 'common/definitions/json_report';
 import * as MockApi from './MockApi';
-import { ReportItem } from './Report';
+import { ReportItem, ReportData } from './Report';
 
-export const submitHandler = async (
-  answers: object,
-  data: JsonReportDescriptor,
-  setData: React.Dispatch<React.SetStateAction<JsonReportDescriptor>>,
-  setReadOnly: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
+export const submitData = async (answers: object, data: JsonReportDescriptor) => {
   /*
    * Here we make a request to server and handle the responses.
    * Todo: refactor
    */
-  try {
-    const assemData = assembleData(answers, data);
-    const result = await MockApi.submitData(assemData, 2000, true);
-    setData(result);
-    setReadOnly(true);
-    toast.success('Data submited');
-  } catch (errorData) {
-    setData(errorData.data);
-    setReadOnly(false);
-    toast.error(errorData.message);
-  }
+  const assemData = assembleData(answers, data);
+  return await MockApi.submitData(assemData, 2000, true);
 };
 
 const assembleData = (answers: object, data: JsonReportDescriptor): JsonReportDescriptor => {
@@ -36,3 +25,21 @@ const assembleData = (answers: object, data: JsonReportDescriptor): JsonReportDe
   });
   return copy;
 };
+
+export function toReportData(data: JsonReportDescriptor): ReportData {
+  const newItems = data.items.map((item: JsonReportItem, idx) => {
+    const id = item.type + '-' + idx;
+    return {
+      id: id,
+      type: item.type,
+      description: item.description,
+      answer: item.answer,
+      validated: true,
+      valid: true,
+      errorMessage: '',
+    };
+  });
+  const copy = { ...data };
+  copy.items = newItems;
+  return copy as ReportData;
+}
