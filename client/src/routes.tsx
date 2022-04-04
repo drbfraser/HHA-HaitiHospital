@@ -70,6 +70,15 @@ const routes = [
     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
     departmentsAllowed: [],
   },
+  // Explicitly setting department 0 (General) to be non-accessible
+  {
+    path: '/department/0',
+    component: Department,
+    loginRequired: true,
+    rolesAllowed: ['None'],
+    departmentsAllowed: ['None'],
+  },
+
   {
     path: '/department/:deptId/add',
     component: AddReport,
