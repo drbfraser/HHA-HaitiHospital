@@ -42,7 +42,7 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   if (!userDoc) {
     throw new IllegalState(`Message references to non-existing user with id ${this.userId}`);
   }
-  const userJson = userDoc.toJson();
+  const userJson = await userDoc.toJson();
 
   const json: MessageJson = {
     id: this._id,

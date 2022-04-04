@@ -58,7 +58,7 @@ bioMechSchema.methods.toJson = async function (): Promise<BioMechJson> {
   if (!userDoc) {
     throw new IllegalState(`Biomech references to non-existing user with id ${this.userId}`);
   }
-  const userJson = userDoc.toJson();
+  const userJson = await userDoc.toJson();
 
   const json: BioMechJson = {
     id: this._id,
