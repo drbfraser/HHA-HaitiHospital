@@ -25,7 +25,7 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 const setDepartment = (user: User): string => {
-  return user.role === 'Admin' || user.role === 'Medical Director' ? '5' : user.departmentId;
+  return user.role === 'Admin' || user.role === 'Medical Director' ? '0' : user.departmentId;
 };
 
 export const seedDb = async () => {
@@ -55,11 +55,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.departmentId = '5';
+            foundUser.departmentId = '0';
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.departmentId = '5';
+            foundUser.departmentId = '0';
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
@@ -95,11 +95,11 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.departmentId = '5';
+            user.departmentId = '0';
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.departmentId = '5';
+            user.departmentId = '0';
             break;
           case 2:
             user.role = Role.HeadOfDepartment;

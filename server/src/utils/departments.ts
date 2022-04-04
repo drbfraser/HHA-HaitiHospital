@@ -13,7 +13,7 @@ export enum DepartmentId {
   NicuPaeds = '2',
   CommunityHealth = '3',
   Maternity = '4',
-  General = '5'
+  General = '0'
 }
 export const GENERAL_DEPARTMENT_ID = DepartmentId.General;
 
