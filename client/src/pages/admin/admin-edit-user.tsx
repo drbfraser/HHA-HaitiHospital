@@ -84,7 +84,16 @@ export const EditUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
+    data = setGeneralDepartmentForAdminAndMedicalDir(data) as User;
     await Api.Put(ENDPOINT_ADMIN_PUT_BY_ID(id), data, onSubmitActions, TOAST_ADMIN_PUT, history);
+  };
+
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): User => {
+    data.department =
+      data.role === Role.Admin || data.role === Role.MedicalDirector
+        ? departments.get(GeneralDepartment)
+        : departments.get(data.department);
+    return data;
   };
 
   const onRoleChange = (value: string) => {

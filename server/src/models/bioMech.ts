@@ -39,7 +39,7 @@ export interface BioMechJson {
 }
 
 interface BioMechWithInstanceMethods extends BioMech {
-  toJson(): () => BioMechJson;
+  toJson(): () => Promise<BioMechJson>;
 }
 
 const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
