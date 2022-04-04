@@ -18,12 +18,12 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
       throw new NotFound(`No user with provided Id found`);
     }
 
-    const updatedUser = { 
-        name: req.body.name, 
-        username: req.body.username, 
-        password: req.body.password , 
-        role: req.body.role,
-        departmentId: req.body.department? req.body.department.id : GENERAL_DEPARTMENT_ID
+    const updatedUser = {
+      name: req.body.name,
+      username: req.body.username,
+      password: req.body.password,
+      role: req.body.role,
+      departmentId: req.body.department.id
     };
 
     const existingUser = await UserModel.findOne({ username: updatedUser.username }).lean();
