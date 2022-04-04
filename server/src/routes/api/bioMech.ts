@@ -12,7 +12,7 @@ const router = Router();
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const docs = await BioMechModel.find({}).sort({ createdOn: 'desc' });
+    const docs = await BioMechModel.find({}).sort({ createdAt: 'desc' });
     const jsons = await Promise.all(docs.map((post) => post.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
