@@ -9,7 +9,7 @@ describe('Test parsing from a report to a json report', () => {
       const demoJsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
@@ -43,7 +43,7 @@ describe('Test parsing from a report to a json report', () => {
       const demoJsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
@@ -81,7 +81,7 @@ describe('Test parsing from a report to a json report', () => {
       const demoJsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
@@ -132,7 +132,7 @@ describe('Test parsing json string to a report', () => {
       const jsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
@@ -165,7 +165,7 @@ describe('Test parsing json string to a report', () => {
       const jsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
@@ -210,7 +210,7 @@ describe('Test parsing json string to a report', () => {
       const jsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
@@ -304,7 +304,7 @@ describe('Test parsing json string to a report', () => {
       const jsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
@@ -347,7 +347,7 @@ describe('Test parsing json string to a report', () => {
       const jsonReport: JsonReportDescriptor = {
         meta: {
           id: '1234',
-          department: { id: '1', name: 'NICU/Paeds' },
+          department: { id: '2', name: 'NICU/Paeds' },
           submittedDate: 'March 3, 2022',
           submittedUserId: '123'
         },
