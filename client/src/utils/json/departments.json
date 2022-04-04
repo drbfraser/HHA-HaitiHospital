@@ -1,23 +1,23 @@
 {
   "departments": [
     {
-      "id": "0",
+      "id": "1",
       "name": "Rehab"
     },
     {
-      "id": "1",
+      "id": "2",
       "name": "NICU/Paeds"
     },
     {
-      "id": "2",
+      "id": "3",
       "name": "Community & Health"
     },
     {
-      "id": "3",
+      "id": "4",
       "name": "Maternity"
     },
     {
-      "id": "4",
+      "id": "5",
       "name": "General"
     }
   ]

@@ -62,15 +62,11 @@ const MessageForm = (props: MessageFormProps) => {
             onChange={(e) => setDepartment(e.target.value)}
           >
             <option value="">{t('addMessageSelect')} </option>
-            {Array.from(departments.values()).map((dept: Department, index: number) => {
-              return dept.name !== 'General' ? (
-                <option key={index} value={dept.name}>
-                  {dept.name}
-                </option>
-              ) : (
-                <></>
-              );
-            })}
+            {Array.from(departments.values()).map((dept: Department, index: number) => (
+              <option key={index} value={dept.name}>
+                {dept.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
