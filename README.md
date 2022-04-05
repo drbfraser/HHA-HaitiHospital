@@ -5,7 +5,7 @@ This is a web application made for Hope Health Action (HHA) with the goal to dig
 
 The project was originally created by team Haumea for CMPT 373 and is currently further developed by CMPT 415 team with the goal of deploying it for sumer 2022.
 
-#### [More information about the project is available here](https://docs.google.com/document/d/1JG4cK-soyS3thzk-ZJnUyMR3XHxJoLA5gg7Uk1v1aFk/edit?usp=sharing)
+#### [User Manual of the Project Available Here](https://docs.google.com/document/d/1bKT2Q21lIyYAJbpJq31XFoBt4bluEcVvMTcrcDx0mYY/edit?usp=sharing)
 
 ### Features
 
@@ -42,7 +42,9 @@ The project was originally created by team Haumea for CMPT 373 and is currently 
 
 ## Demo
 
-The Demo of the project can be viewed using this link: http://142.58.21.74:3000/ Please keep in mind that the VPN must be used to view the application.
+The development environment of the project can be viewed using this link: https://hhahaiti-dev.cmpt.sfu.ca/
+
+The staging environment: https://hhahaiti-stg.cmpt.sfu.ca/
 
 ## Directory Structure
 
@@ -62,7 +64,7 @@ These instructions are to setup a dev enviroment.
 
 ### Install Node.js
 
-- You can find it [here](https://nodejs.org/en/download/). LTS version is prefered.
+- You can find it [here](https://nodejs.org/en/download/). LTS version is preferred.
 
 ### Install MongoDB
 
