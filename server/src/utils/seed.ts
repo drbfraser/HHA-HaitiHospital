@@ -1,7 +1,7 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
 import Department from '../models/departments';
-import { DepartmentName } from './departments';
+import { DepartmentName, getDeptIdFromName } from './departments';
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
@@ -142,7 +142,7 @@ export const seedMessageBoard = async () => {
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
       const message = new MessageBody({
-        departmentId: 1,
+        departmentId: randomUser.departmentId,
         userId: randomUser._id,
         date: new Date(),
         messageBody: faker.lorem.words(),
