@@ -5,25 +5,30 @@ import { TemplateBase } from '../../models/template';
 import { ItemType, ItemTypeKeys } from "common/json_report";
 
 
-interface TemplateReport extends ReportDescriptor{};
 interface TemplateItem extends ReportItem{};
 interface TemplateNItem extends ReportNItem{};
 interface TemplateSumItem extends ReportSumItem{};
 export type TemplateItems = Array<TemplateItem>;
 type TemplateAnswer = ItemAnswer;
 
-export const getTemplateDocumentFromReport = (report: ReportDescriptor): TemplateBase => {
-    const reportTemplate = ItemToTemplate.getReportTemplate(report);
-    const doc = ItemToTemplate.buildTemplateDocument(reportTemplate);
-    return doc;
+export const getNewTemplateFromSubmittedReport = (report: ReportDescriptor): TemplateBase => {
+    const emptyItems = ItemToTemplate.getEmptyItems(report);
+    
+    let newDoc: TemplateBase = {
+        departmentId: report.meta.departmentId,
+        submittedByUserId: report.meta.submittedUserId,
+        items: emptyItems
+    }
+
+    return newDoc;
 }
 
-export const generateReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
+export const getNewReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
     let report: ReportDescriptor;
     let meta: ReportMeta = {
-        id: doc.id,
+        id: doc.id!,
         departmentId: doc.departmentId,
-        submittedDate: doc.submittedDate,
+        submittedDate: doc.submittedDate!,
         submittedUserId: doc.submittedByUserId
     }
     let items: ReportItems = doc.items;
@@ -35,28 +40,13 @@ export const generateReportFromTemplate = (doc: TemplateBase): ReportDescriptor 
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 namespace ItemToTemplate {
-export const getReportTemplate = (report: ReportDescriptor): TemplateReport => {
+export const getEmptyItems = (report: ReportDescriptor): TemplateItems => {
     const emptyItems: TemplateItems = report.items.map((item) => {
         const templateParser: ItemTemplateParser = getParserForType(item.type);
         return templateParser(item);
     })
 
-    const template: TemplateReport = {
-        meta: report.meta,
-        items: emptyItems
-    }
-    return template;
-}
-
-export const buildTemplateDocument = (template: TemplateReport): TemplateBase => {
-    let newDoc: TemplateBase = {
-        id: template.meta.id,
-        departmentId: template.meta.departmentId,
-        submittedByUserId: template.meta.submittedUserId,
-        submittedDate: template.meta.submittedDate,
-        items: template.items
-    }
-    return newDoc;
+    return emptyItems;
 }
 
 const mapToDefaultAnswer = new Map<ItemType, string>();
