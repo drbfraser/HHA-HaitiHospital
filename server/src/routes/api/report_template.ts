@@ -10,9 +10,11 @@ import { jsonStringToReport } from 'utils/parsers/parsers';
 import { getNewTemplateFromSubmittedReport } from 'utils/parsers/template';
 import { RequestWithUser } from 'utils/definitions/express';
 import { JsonReportDescriptor } from 'common/json_report';
-import { CallbackError, Error } from 'mongoose';
-import { MONGOOSE_VALIDATOR_ERROR_NAME } from 'utils/constants';
+import { CallbackError, Error, QueryOptions } from 'mongoose';
+import { MONGOOSE_VALIDATOR_ERROR_NAME, MONGOOSE_NO_DOCUMENT_ERROR_NAME } from 'utils/constants';
 import { CustomError } from 'exceptions/custom_exception';
+import { SystemException } from 'exceptions/systemException';
+import { mongooseErrorToMyError } from 'utils/utils';
 
 const router = Router();
 export default router;
@@ -89,8 +91,8 @@ router.route('/').post(
         let newTemplate: TemplateBase = getNewTemplateFromSubmittedReport(report);
         attemptToSaveNewTemplate(newTemplate, (err) => {
             if (!err) {
-                return res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(newTemplate.departmentId)}`);
-            };
+                return res.sendStatus(HTTP_CREATED_CODE);
+            }
             return next(err);
         });
 
@@ -111,23 +113,11 @@ router.route(`/:${TEMPLATE_ID_SLUG}`).put(
             report.meta.submittedUserId = req.user._id!;
         }
         const template: TemplateBase = getNewTemplateFromSubmittedReport(report);
+        template.id = req.params[TEMPLATE_ID_SLUG];
 
-        const existingDoc = await TemplateCollection.findOne({ id: req.params[TEMPLATE_ID_SLUG] });
-        if (existingDoc) {
-            // Update an existing template
-            await attemptToUpdateTemplate(template, existingDoc);
-            res.status(HTTP_NOCONTENT_CODE).send();
-        } else {
-            // Create a new template
-            attemptToSaveNewTemplate(template, (err) => {
-                if (!err) {
-                    return res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(template.departmentId)} is created`);
-                };
-
-                return next(err);
-            });
-        }   
-
+        await attemptToUpdateTemplateWithId(template);
+        res.sendStatus(HTTP_NOCONTENT_CODE);
+        
     } catch (e) { next(e); }
     }
 );
@@ -145,20 +135,29 @@ router.route(`/:${TEMPLATE_ID_SLUG}`).put(
 //     return hide;
 // }   
 
-async function attemptToUpdateTemplate(template: TemplateBase, existingDoc: TemplateBase & import("mongoose").Document<any, any, TemplateBase>) {
-    const submittedDeptId: string = template.departmentId;
-    const isDeptChanged = existingDoc.departmentId !== submittedDeptId;
-    if (isDeptChanged) {
-        const newDeptHasTemplate = await TemplateCollection.exists({ departmentId: submittedDeptId });
-        if (newDeptHasTemplate) {
-            throw new Conflict(`Failed to update. Deparment ${getDeptNameFromId(submittedDeptId)} already has a template`);
+async function attemptToUpdateTemplateWithId(template: TemplateBase) {
+    if (!template.id) {
+        throw new SystemException(`Expecting an id for template but got undefined`);
+    }   
+
+    // remove info not to be updated so model validators can pass
+    const templateId = template.id;
+    delete template.id;
+    const doc = await TemplateCollection.findOne({id: templateId});
+    if (!doc) {
+        throw new BadRequest(`No template with id ${templateId}`);
+    }
+
+    if (doc.departmentId !== template.departmentId) {
+        const existed = await TemplateCollection.exists({departmentId: template.departmentId});
+        if (existed) {
+            throw new Conflict(`Template for department id ${template.departmentId} is existed`);
         }
     }
     
-    delete template.id;
-    const result = await existingDoc.updateOne(template);
+    const result = await doc.updateOne(template);
     if (!result) {
-        throw new InternalError(`Failed to update template with id ${template.id}`);
+        throw new InternalError(`Failed to update template`);
     }
 }
 
@@ -168,16 +167,10 @@ function attemptToSaveNewTemplate(newTemplate: TemplateBase, callback: (err?: Cu
         if (!err) {
             return callback();
         }
-        if (err.name === MONGOOSE_VALIDATOR_ERROR_NAME) {
-            const castErr = (err as Error.ValidationError);
-            let msg = "";
-            for (let field in castErr.errors) {
-                msg += castErr.errors[field].message + '\n';
-            }
-            return callback(new BadRequest(msg));
-        } else {
-            return callback(new InternalError(err.message));
-        }
+
+        const myError: CustomError = mongooseErrorToMyError(err);
+        myError.message = `Attempt to save new template: ${myError.message}`;
+        callback(myError);
     });
 }
 

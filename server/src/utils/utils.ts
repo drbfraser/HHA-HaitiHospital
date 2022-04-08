@@ -28,6 +28,10 @@ export const isValidUrl = (str) => {
 import { InvalidInput } from 'exceptions/systemException';
 import crypto from "crypto";
 import { ItemType, ItemTypeKeys } from 'common/json_report';
+import { CustomError } from 'exceptions/custom_exception';
+import { CallbackError, Error, NativeError } from 'mongoose';
+import { BadRequest, InternalError } from 'exceptions/httpException';
+import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
 
 export const getEnumKeyByStringValue = function <T extends { [index: string]: any; }>(myEnum: T, enumValue: string): keyof T | null {
     let keys = Object.keys(myEnum).filter(x => myEnum[x].toString() == enumValue);
@@ -63,5 +67,24 @@ export const formatDateString = (date: Date): string => {
 export const generateUuid = (): string => {
     const id: string = crypto.randomBytes(16).toString("hex");
     return id;
+}
+
+export const mongooseErrorToMyError = (err: NativeError): CustomError => {
+    switch (err.name) {
+        case MONGOOSE_VALIDATOR_ERROR_NAME: {
+            const castErr = (err as Error.ValidationError);
+            let msg = "";
+            for (let field in castErr.errors) {
+            msg += castErr.errors[field].message + '\n';
+            }
+            return new BadRequest(msg);
+        }
+        case MONGOOSE_NO_DOCUMENT_ERROR_NAME: {
+            return new BadRequest(`No document found`);
+        }
+        default: {
+            return new InternalError(`No error available to convert mongoose error`);
+        }
+    }
 }
 // test
