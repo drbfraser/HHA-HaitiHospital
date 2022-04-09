@@ -1,5 +1,5 @@
 import { getDeptNameFromId, verifyDeptId} from 'utils/departments';
-import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { NextFunction, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
@@ -12,7 +12,6 @@ import { RequestWithUser } from 'utils/definitions/express';
 import { JsonReportDescriptor } from 'common/json_report';
 import { CallbackError } from 'mongoose';
 import { CustomError } from 'exceptions/custom_exception';
-import { SystemException } from 'exceptions/systemException';
 import { mongooseErrorToMyError } from 'utils/utils';
 import { DEPARTMENT_ID_URL_SLUG, TEMPLATE_ID_URL_SLUG } from 'utils/constants';
 import { updateSubmissionDate, setSubmittor } from 'utils/report/report';
@@ -87,10 +86,11 @@ router.route('/').post(
         setSubmittor(report, req.user);
         
         let newTemplate: Template = generateNewTemplate(report);
-        attemptToSaveNewTemplate(newTemplate, (err) => {
+        attemptToSaveTemplate(newTemplate, (err) => {
             if (!err) {
                 return res.sendStatus(HTTP_CREATED_CODE);
             }
+            err.message = `Failed to save template: ${err.message}`
             return next(err);
         });
 
@@ -98,6 +98,7 @@ router.route('/').post(
     }
 );
 
+// Replace template by id
 router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
@@ -106,16 +107,18 @@ router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
         const jsonReport: JsonReportDescriptor = req.body;
         const bodyStr: string = JSON.stringify(jsonReport);
         const report: ReportDescriptor = jsonStringToReport(bodyStr);
+        report.id = req.params[TEMPLATE_ID_URL_SLUG]
         updateSubmissionDate(report);
         setSubmittor(report, req.user);
 
         const template: Template = fromReportToTemplate(report);
-        if (template.id !== req.params[TEMPLATE_ID_URL_SLUG]) {
-            throw new BadRequest(`Expected id and provided id don't match`);
-        }
-
-        await attemptToUpdateTemplate(template);
-        res.sendStatus(HTTP_NOCONTENT_CODE);
+        await attemptToUpdateTemplate(template, (err) => {
+            if (!err) {
+                return res.sendStatus(HTTP_OK_CODE);
+            }
+            err.message = `Failed to update template: ${err.message}`
+            return next(err);
+        });
 
     } catch (e) { next(e); }
     }
@@ -134,24 +137,28 @@ router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
 //     return hide;
 // }   
 
-async function attemptToUpdateTemplate(template: Template) {
-    const templateId = template.id;
-    const doc = await TemplateCollection.findOne({id: templateId});
-    if (!doc) {
-        throw new NotFound(`No template with id ${templateId}`);
+async function attemptToUpdateTemplate(template: Template, callback: (err?: CustomError) => void) {
+    // Delete and save new to trigger validators
+    const oldDoc = await TemplateCollection.findOneAndRemove({id: template.id}, {lean: true});
+    if (!oldDoc) {
+        throw new NotFound(`No template with id ${template.id}`);
     }
 
-    if (doc.departmentId !== template.departmentId) {
-        const existed = await TemplateCollection.exists({departmentId: template.departmentId});
-        if (existed) {
-            throw new Conflict(`Template for department id ${template.departmentId} is existed`);
-        }
-    }
-    
-    await doc.updateOne(template);
+    attemptToSaveTemplate(template, (newTemplateError?: CustomError) => {
+        if (!newTemplateError)
+            return callback();
+        
+        // Recover old template
+        attemptToSaveTemplate(oldDoc, (oldTemplateError?: CustomError) => {
+            if (!oldTemplateError) {
+                return callback(newTemplateError);
+            }
+            callback(oldTemplateError);
+        });
+    });
 }
 
-function attemptToSaveNewTemplate(newTemplate: Template, callback: (err?: CustomError) => void) {
+function attemptToSaveTemplate(newTemplate: Template, callback: (err?: CustomError) => void) {
     const doc = new TemplateCollection(newTemplate);
     doc.save((err: CallbackError) => {
         if (!err) {
@@ -159,7 +166,6 @@ function attemptToSaveNewTemplate(newTemplate: Template, callback: (err?: Custom
         }
 
         const myError: CustomError = mongooseErrorToMyError(err);
-        myError.message = `Attempt to save new template: ${myError.message}`;
         callback(myError);
     });
 }

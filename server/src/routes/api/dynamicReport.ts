@@ -94,16 +94,17 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(
         const reportInString = JSON.stringify(req.body);
         const report = jsonStringToReport(reportInString);
         updateSubmissionDate(report);
-        setSubmittor(report, req.user);
-        if (report.id !== req.params[REPORT_ID_URL_SLUG])
-            throw new BadRequest(`Expected id and provided id don't match`);
-        
+        setSubmittor(report, req.user);        
         const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
         if (!authorized)
             throw new Unauthorized(`User not authorized`);
 
-        await doc.updateOne(report);
-        res.sendStatus(HTTP_NOCONTENT_CODE);
+        await attemptToUpdateReport(report, (err: CustomError) => {
+            if (!err)
+                return res.sendStatus(HTTP_OK_CODE);
+            err.message = `Update report failed: ${err.message}`;
+            next(err);
+        })    
     } catch (e) {
         next (e);
     }
@@ -133,9 +134,10 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).delete(
         }
 
         const substituteReport = await generateReportForMonth(doc.departmentId, doc.reportMonth!, req.user);
-        attemptToSaveNewReport(substituteReport, (err: CustomError) => {
+        attemptToSaveReport(substituteReport, (err: CustomError) => {
             if (!err)
                 return;
+            err.message = `Generate report failed: ${err.message}`
             next(err);
         });
 
@@ -170,9 +172,10 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
         const date = new Date(year, month);
         const newReport = await generateReportForMonth(req.params[DEPARTMENT_ID_URL_SLUG], date, req.user);
         
-        attemptToSaveNewReport(newReport, (err: CustomError) => {
+        attemptToSaveReport(newReport, (err: CustomError) => {
             if (!err)
                 return;
+            err.message = `Generate report failed: ${err.message}`
             next(err);
         });
 
@@ -187,7 +190,7 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
 
 // >>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 
-function attemptToSaveNewReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
+function attemptToSaveReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
     const doc = new ReportModel(report);
     doc.save((err: CallbackError) => {
         if (!err) {
@@ -195,28 +198,29 @@ function attemptToSaveNewReport(report: ReportDescriptor, callback: (err?: Custo
         }
 
         const myError: CustomError = mongooseErrorToMyError(err);
-        myError.message = `Attempt to save new template: ${myError.message}`;
         callback(myError);
     });
 }
 
-// async function attemptToUpdateReport(report: ReportDescriptor) {
-//     const doc = await ReportModel.findOne({id: report.id});
-//     if (!doc) {
-//         throw new NotFound(`No report with id ${report.id}`);
-//     }
+async function attemptToUpdateReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
+    const oldDoc = await ReportModel.findOneAndDelete({id: report.id}, {lean: true});
+    if (!oldDoc) {
+        throw new NotFound(`No report with provided id found`);
+    }
+    attemptToSaveReport(report, (newReportErr: CustomError) => {
+        if (!newReportErr) {
+            return callback();
+        }
 
-//     if (doc.departmentId !== report.departmentId) {
-//         const existed = await TemplateCollection.exists({departmentId: template.departmentId});
-//         if (existed) {
-//             throw new Conflict(`Template for department id ${template.departmentId} is existed`);
-//         }
-//     }
-    
-//     await doc.updateOne(template);
-// }
-
-
+        // Recover old report
+        attemptToSaveReport(oldDoc, (oldReportErr: CustomError) => {
+            if (!oldReportErr) {
+                return callback(newReportErr);
+            }
+            callback(oldReportErr);
+        })
+    })
+}
 
 // If no date query presented, returns today date
 function getToDateQuery(req: Request): Date {
