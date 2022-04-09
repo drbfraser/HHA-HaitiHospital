@@ -1,7 +1,7 @@
 import { verifyDeptId } from 'utils/departments';
 import { JsonReportDescriptor, JsonReportMeta } from 'common/json_report';
 import { InvalidInput } from 'exceptions/systemException';
-import { ReportDescriptor, ReportItems, ReportMeta } from "../definitions/report";
+import { ReportDescriptor, ReportItems } from "../definitions/report";
 import * as _JsonUtils  from '../report/json_report';
 import * as _ItemParser from './item';
 
@@ -10,13 +10,17 @@ import * as _ItemParser from './item';
  * each item type to parse items in jsonReport to actual items in ReportDescriptor.
  */
 export const parseToReport = (jsonReport: JsonReportDescriptor): ReportDescriptor => {
-    const meta: ReportMeta = parseToReportMeta(_JsonUtils.getReportMeta(jsonReport));
+    const {id, departmentId, submittedDate, submittedUserId} = parseToReportMeta(jsonReport.meta);
     const items: ReportItems = _JsonUtils.getReportItems(jsonReport).map((jsonItem) => {
         const itemConstructor = _ItemParser.getParserJsonToItem(_JsonUtils.getItemType(jsonItem));
         return itemConstructor(jsonItem);
     })
   
-    let report: ReportDescriptor = {meta: meta, 
+    let report: ReportDescriptor = {
+        id: id,
+        departmentId: departmentId,
+        submittedDate: submittedDate,
+        submittedUserId: submittedUserId, 
         items:items,
     };
     return report;
@@ -43,7 +47,7 @@ const parseToReportMeta = (jsonMeta: JsonReportMeta) => {
 
     }
 
-    let meta: ReportMeta = {
+    let meta = {
         id: jsonMeta.id,
         departmentId: jsonMeta.department.id,
         submittedDate: submittedDate,

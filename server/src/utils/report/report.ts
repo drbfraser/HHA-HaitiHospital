@@ -1,29 +1,25 @@
 import { SystemException } from "exceptions/systemException";
 import { TemplateCollection } from "models/template";
 import { User } from "models/user";
-import { ReportDescriptor, ReportItems, ReportMeta } from "utils/definitions/report";
+import { ReportDescriptor, ReportItems } from "utils/definitions/report";
 import { verifyDeptId } from "utils/departments";
 import { generateNewReportFromTemplate } from "utils/parsers/template";
 import { generateUuid } from "utils/utils";
-
-export const getReportMeta = (report: ReportDescriptor): ReportMeta => {
-    return report.meta;
-}
 
 export const getReportItems = (report: ReportDescriptor): ReportItems => {
     return report.items;
 }
 
 export const updateSubmissionDate = (report: ReportDescriptor) => {
-    report.meta.submittedDate = new Date();
+    report.submittedDate = new Date();
 }
 
 export const setSubmittor = (report: ReportDescriptor, user: User) => {
-    report.meta.submittedUserId = user._id!;
+    report.submittedUserId = user._id!;
 }
 
 export const setReportMonth = (report: ReportDescriptor, date: Date) => {
-    report.meta.createdDate = date;
+    report.createdDate = date;
 }
 
 export const generateReportForMonth = async (deptId: string, reportMonth: Date, requestor: User): Promise<ReportDescriptor> => {
@@ -35,13 +31,11 @@ export const generateReportForMonth = async (deptId: string, reportMonth: Date, 
     const deptTemplate = await TemplateCollection.findOne({ departmentId: deptId }).lean();
     if (!deptTemplate) {
         const newEmptyReport: ReportDescriptor = {
-            meta: {
-                id: generateUuid(),
-                departmentId: deptId,
-                submittedDate: new Date(),
-                submittedUserId: requestor._id!,
-                createdDate: reportMonth
-            },
+            id: generateUuid(),
+            departmentId: deptId,
+            submittedDate: new Date(),
+            submittedUserId: requestor._id!,
+            createdDate: reportMonth,
             items: []
         }
         return newEmptyReport;

@@ -20,13 +20,13 @@ import { ItemTypeKeys } from 'common/json_report';
 // initItemAnswerMap(mapItemTypeToAnswerType);
 
 
-export interface ReportMeta {
-    id: string;
-    departmentId: string;
-    submittedDate: Date;
-    createdDate?: Date;
-    submittedUserId: string;
-}
+// export interface ReportMeta {
+//     id: string;
+//     departmentId: string;
+//     submittedDate: Date;
+//     createdDate?: Date;
+//     submittedUserId: string;
+// }
 
 export type ItemAnswer = Array<string>;
 export interface ReportItem {
@@ -64,6 +64,11 @@ export interface ReportSumItem extends ReportItem {
 
 export type ReportItems = Array<ReportItem>;
 export interface ReportDescriptor {
-    meta: ReportMeta;
+    id: string;
+    departmentId: string;
+    submittedDate: Date;
+    createdDate?: Date;
+    submittedUserId: string;
+
     items: ReportItems;
 }

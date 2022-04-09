@@ -1,9 +1,8 @@
-import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
+import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportNItem, ReportSumItem } from "../definitions/report";
 import { generateUuid, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { TemplateBase } from '../../models/template';
 import { ItemType, ItemTypeKeys } from "common/json_report";
-import { randomUUID } from "crypto";
 
 
 interface TemplateItem extends ReportItem{};
@@ -16,10 +15,10 @@ export const fromReportToTemplate = (report: ReportDescriptor): TemplateBase => 
     const emptyItems = ItemToTemplate.getEmptyItems(report);
     
     let template: TemplateBase = {
-        id: report.meta.id,
-        departmentId: report.meta.departmentId,
-        submittedByUserId: report.meta.submittedUserId,
-        submittedDate: report.meta.submittedDate,
+        id: report.id,
+        departmentId: report.departmentId,
+        submittedByUserId: report.submittedUserId,
+        submittedDate: report.submittedDate,
         items: emptyItems
     }
 
@@ -34,22 +33,19 @@ export const generateNewTemplate = (report: ReportDescriptor): TemplateBase => {
 
 export const fromTemplateToReport = (doc: TemplateBase): ReportDescriptor => {
     let report: ReportDescriptor;
-    let meta: ReportMeta = {
+    let meta = {
         id: doc.id,
         departmentId: doc.departmentId,
         submittedDate: doc.submittedDate,
         submittedUserId: doc.submittedByUserId
     }
     let items: ReportItems = doc.items;
-    return report = {
-        meta: meta,
-        items: items
-    }
+    return report = {...meta, items: items};
 }
 
 export const generateNewReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
     let newReport = fromTemplateToReport(doc);
-    newReport.meta.id = generateUuid();
+    newReport.id = generateUuid();
     return newReport;
 }
 

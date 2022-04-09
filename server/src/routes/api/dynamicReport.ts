@@ -65,7 +65,7 @@ router.route(`/report/:${REPORT_ID_URL_SLUG}`).get(
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
         }
 
-        const authorized = checkUserIsDepartmentAuthed(req.user, doc.meta.departmentId);
+        const authorized = checkUserIsDepartmentAuthed(req.user, doc.departmentId);
         if (!authorized) {
             throw new Unauthorized(`User not authorized`);
         }
@@ -91,10 +91,10 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(
         const report = jsonStringToReport(reportInString);
         updateSubmissionDate(report);
         setSubmittor(report, req.user);
-        if (report.meta.id !== req.params[REPORT_ID_URL_SLUG])
+        if (report.id !== req.params[REPORT_ID_URL_SLUG])
             throw new BadRequest(`Expected id and provided id don't match`);
         
-        const authorized = checkUserIsDepartmentAuthed(req.user, report.meta.departmentId);
+        const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
         if (!authorized)
             throw new Unauthorized(`User not authorized`);
 
@@ -118,17 +118,17 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).delete(
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
         }
         
-        const deptAuth = checkUserIsDepartmentAuthed(req.user, doc.meta.departmentId);
+        const deptAuth = checkUserIsDepartmentAuthed(req.user, doc.departmentId);
         if (!deptAuth) {
             throw new Unauthorized(`User is not authorized`);
         }
 
-        const result = await ReportModel.deleteOne({ "meta.id": doc.meta.id });
+        const result = await ReportModel.deleteOne({ "meta.id": doc.id });
         if (result.deletedCount === 0) {
             throw new InternalError(`Delete report failed`);
         }
 
-        const substituteReport = await generateReportForMonth(doc.meta.departmentId, doc.meta.createdDate!, req.user);
+        const substituteReport = await generateReportForMonth(doc.departmentId, doc.createdDate!, req.user);
         const newDoc = new ReportModel(substituteReport);
         newDoc.save();
 
@@ -166,17 +166,13 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
         const newDoc = new ReportModel(newReport);
         newDoc.save();
         res.sendStatus(HTTP_CREATED_CODE);
-        
+
     } catch (e) {
         next(e);
     }
 
     }
 );
-
-
-
-
 
 
 
