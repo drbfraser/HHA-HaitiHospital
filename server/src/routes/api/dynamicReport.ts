@@ -1,11 +1,15 @@
+import { CustomError } from 'exceptions/custom_exception';
 import { NextFunction, Request, Response } from 'express';
 import { departmentAuth } from 'middleware/departmentAuth';
+import { CallbackError } from 'mongoose';
 import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
 import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
+import { ReportDescriptor } from 'utils/definitions/report';
 import { verifyDeptId } from 'utils/departments';
 import { jsonStringToReport } from 'utils/parsers/parsers';
 import { updateSubmissionDate, setSubmittor, generateReportForMonth } from 'utils/report/report';
+import { mongooseErrorToMyError } from 'utils/utils';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
@@ -21,7 +25,7 @@ router.route('/').get(
   roleAuth(Role.Admin, Role.MedicalDirector),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const docs = await ReportModel.find({}).sort({createdDate: 'desc'});
+    const docs = await ReportModel.find({}).sort({reportMonth: 'desc'});
     const jsons = docs.map((doc) => doc.toJson());
     
     if (jsons.length === 0)
@@ -42,7 +46,7 @@ router.route(`/department/:${DEPARTMENT_ID_URL_SLUG}`).get(
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
         const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
-        const docs = await ReportModel.find({ "meta.departmentId": deptId}).sort({ "meta.createdDate": "desc"});
+        const docs = await ReportModel.find({ departmentId: deptId}).sort({ reportMonth: "desc"});
         const jsons = docs.map(doc => doc.toJson());
 
         if (jsons.length)
@@ -60,7 +64,7 @@ router.route(`/report/:${REPORT_ID_URL_SLUG}`).get(
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
         const reportId = req.params[REPORT_ID_URL_SLUG];
-        const doc = await ReportModel.findOne({ "meta.id": reportId }).lean();
+        const doc = await ReportModel.findOne({ id: reportId }).lean();
         if (!doc) {
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
         }
@@ -83,7 +87,7 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(
     requireJwtAuth,
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-        const doc = await ReportModel.findOne({ "meta.id": req.params[REPORT_ID_URL_SLUG]});
+        const doc = await ReportModel.findOne({ id: req.params[REPORT_ID_URL_SLUG]});
         if (!doc) 
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
         
@@ -113,7 +117,7 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).delete(
     roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-        const doc = await ReportModel.findOne({ "meta.id": req.params[REPORT_ID_URL_SLUG]}).lean();
+        const doc = await ReportModel.findOne({ id: req.params[REPORT_ID_URL_SLUG]}).lean();
         if (!doc) {
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
         }
@@ -123,14 +127,17 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).delete(
             throw new Unauthorized(`User is not authorized`);
         }
 
-        const result = await ReportModel.deleteOne({ "meta.id": doc.id });
+        const result = await ReportModel.deleteOne({ id: doc.id });
         if (result.deletedCount === 0) {
             throw new InternalError(`Delete report failed`);
         }
 
-        const substituteReport = await generateReportForMonth(doc.departmentId, doc.createdDate!, req.user);
-        const newDoc = new ReportModel(substituteReport);
-        newDoc.save();
+        const substituteReport = await generateReportForMonth(doc.departmentId, doc.reportMonth!, req.user);
+        attemptToSaveNewReport(substituteReport, (err: CustomError) => {
+            if (!err)
+                return;
+            next(err);
+        });
 
         res.status(HTTP_CREATED_CODE).send(`Replace deleted report with an empty report`);
 
@@ -163,10 +170,13 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
         const date = new Date(year, month);
         const newReport = await generateReportForMonth(req.params[DEPARTMENT_ID_URL_SLUG], date, req.user);
         
-        const newDoc = new ReportModel(newReport);
-        newDoc.save();
-        res.sendStatus(HTTP_CREATED_CODE);
+        attemptToSaveNewReport(newReport, (err: CustomError) => {
+            if (!err)
+                return;
+            next(err);
+        });
 
+        res.sendStatus(HTTP_CREATED_CODE);
     } catch (e) {
         next(e);
     }
@@ -175,8 +185,38 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
 );
 
 
-
 // >>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
+
+function attemptToSaveNewReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
+    const doc = new ReportModel(report);
+    doc.save((err: CallbackError) => {
+        if (!err) {
+            return callback();
+        }
+
+        const myError: CustomError = mongooseErrorToMyError(err);
+        myError.message = `Attempt to save new template: ${myError.message}`;
+        callback(myError);
+    });
+}
+
+// async function attemptToUpdateReport(report: ReportDescriptor) {
+//     const doc = await ReportModel.findOne({id: report.id});
+//     if (!doc) {
+//         throw new NotFound(`No report with id ${report.id}`);
+//     }
+
+//     if (doc.departmentId !== report.departmentId) {
+//         const existed = await TemplateCollection.exists({departmentId: template.departmentId});
+//         if (existed) {
+//             throw new Conflict(`Template for department id ${template.departmentId} is existed`);
+//         }
+//     }
+    
+//     await doc.updateOne(template);
+// }
+
+
 
 // If no date query presented, returns today date
 function getToDateQuery(req: Request): Date {

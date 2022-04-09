@@ -67,7 +67,7 @@ export interface ReportDescriptor {
     id: string;
     departmentId: string;
     submittedDate: Date;
-    createdDate?: Date;
+    reportMonth?: Date;
     submittedUserId: string;
 
     items: ReportItems;

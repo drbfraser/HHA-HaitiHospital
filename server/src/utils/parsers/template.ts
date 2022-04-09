@@ -1,7 +1,7 @@
 import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportNItem, ReportSumItem } from "../definitions/report";
 import { generateUuid, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
-import { TemplateBase } from '../../models/template';
+import { Template } from '../../models/template';
 import { ItemType, ItemTypeKeys } from "common/json_report";
 
 
@@ -11,10 +11,10 @@ interface TemplateSumItem extends ReportSumItem{};
 export type TemplateItems = Array<TemplateItem>;
 type TemplateAnswer = ItemAnswer;
 
-export const fromReportToTemplate = (report: ReportDescriptor): TemplateBase => {
+export const fromReportToTemplate = (report: ReportDescriptor): Template => {
     const emptyItems = ItemToTemplate.getEmptyItems(report);
     
-    let template: TemplateBase = {
+    let template: Template = {
         id: report.id,
         departmentId: report.departmentId,
         submittedByUserId: report.submittedUserId,
@@ -25,13 +25,13 @@ export const fromReportToTemplate = (report: ReportDescriptor): TemplateBase => 
     return template;
 }
 
-export const generateNewTemplate = (report: ReportDescriptor): TemplateBase => {
-    let newDoc: TemplateBase = fromReportToTemplate(report); 
+export const generateNewTemplate = (report: ReportDescriptor): Template => {
+    let newDoc: Template = fromReportToTemplate(report); 
     newDoc.id = generateUuid();
     return newDoc;
 }
 
-export const fromTemplateToReport = (doc: TemplateBase): ReportDescriptor => {
+export const fromTemplateToReport = (doc: Template): ReportDescriptor => {
     let report: ReportDescriptor;
     let meta = {
         id: doc.id,
@@ -43,7 +43,7 @@ export const fromTemplateToReport = (doc: TemplateBase): ReportDescriptor => {
     return report = {...meta, items: items};
 }
 
-export const generateNewReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
+export const generateNewReportFromTemplate = (doc: Template): ReportDescriptor => {
     let newReport = fromTemplateToReport(doc);
     newReport.id = generateUuid();
     return newReport;

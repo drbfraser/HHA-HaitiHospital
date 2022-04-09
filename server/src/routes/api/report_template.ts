@@ -3,7 +3,7 @@ import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_C
 import { NextFunction, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
-import { TemplateCollection, TemplateBase } from 'models/template';
+import { TemplateCollection, Template } from 'models/template';
 import { Role } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/parsers/parsers';
@@ -86,7 +86,7 @@ router.route('/').post(
         updateSubmissionDate(report);
         setSubmittor(report, req.user);
         
-        let newTemplate: TemplateBase = generateNewTemplate(report);
+        let newTemplate: Template = generateNewTemplate(report);
         attemptToSaveNewTemplate(newTemplate, (err) => {
             if (!err) {
                 return res.sendStatus(HTTP_CREATED_CODE);
@@ -109,12 +109,12 @@ router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
         updateSubmissionDate(report);
         setSubmittor(report, req.user);
 
-        const template: TemplateBase = fromReportToTemplate(report);
+        const template: Template = fromReportToTemplate(report);
         if (template.id !== req.params[TEMPLATE_ID_URL_SLUG]) {
             throw new BadRequest(`Expected id and provided id don't match`);
         }
 
-        await attemptToUpdateTemplateWithId(template);
+        await attemptToUpdateTemplate(template);
         res.sendStatus(HTTP_NOCONTENT_CODE);
 
     } catch (e) { next(e); }
@@ -134,15 +134,11 @@ router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
 //     return hide;
 // }   
 
-async function attemptToUpdateTemplateWithId(template: TemplateBase) {
-    if (!template.id) {
-        throw new SystemException(`Expecting an id for template but got undefined`);
-    }   
-
+async function attemptToUpdateTemplate(template: Template) {
     const templateId = template.id;
     const doc = await TemplateCollection.findOne({id: templateId});
     if (!doc) {
-        throw new BadRequest(`No template with id ${templateId}`);
+        throw new NotFound(`No template with id ${templateId}`);
     }
 
     if (doc.departmentId !== template.departmentId) {
@@ -155,7 +151,7 @@ async function attemptToUpdateTemplateWithId(template: TemplateBase) {
     await doc.updateOne(template);
 }
 
-function attemptToSaveNewTemplate(newTemplate: TemplateBase, callback: (err?: CustomError) => void) {
+function attemptToSaveNewTemplate(newTemplate: Template, callback: (err?: CustomError) => void) {
     const doc = new TemplateCollection(newTemplate);
     doc.save((err: CallbackError) => {
         if (!err) {

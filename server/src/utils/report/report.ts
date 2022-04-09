@@ -19,7 +19,7 @@ export const setSubmittor = (report: ReportDescriptor, user: User) => {
 }
 
 export const setReportMonth = (report: ReportDescriptor, date: Date) => {
-    report.createdDate = date;
+    report.reportMonth = date;
 }
 
 export const generateReportForMonth = async (deptId: string, reportMonth: Date, requestor: User): Promise<ReportDescriptor> => {
@@ -35,7 +35,7 @@ export const generateReportForMonth = async (deptId: string, reportMonth: Date, 
             departmentId: deptId,
             submittedDate: new Date(),
             submittedUserId: requestor._id!,
-            createdDate: reportMonth,
+            reportMonth: reportMonth,
             items: []
         }
         return newEmptyReport;
