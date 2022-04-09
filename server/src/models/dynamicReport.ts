@@ -2,6 +2,7 @@ import { JsonReportDescriptor } from 'common/json_report';
 import { randomUUID } from 'crypto';
 import * as mongoose from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
+import { verifyDeptId } from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
 
 import UserModel, { USER_MODEL_NAME } from './user';
@@ -14,7 +15,7 @@ interface ReportWithInstanceMethods extends ReportDescriptor {
 
 const PATH_TO_ID = 'id';
 const PATH_TO_DEPARTMENT_ID = 'departmentId';
-const PATH_TO_USER_ID = 'submittedByUserId';
+const PATH_TO_USER_ID = 'submittedUserId';
 const PATH_TO_REPORT_MONTH = 'reportMonth';
 
 const reportSchema = new Schema<ReportWithInstanceMethods>({
@@ -76,12 +77,12 @@ reportSchema.path(`${PATH_TO_ID}`).validate({
     }
 });
 
-const verifyDepartmentId = async (value: string) => {
-    const valid = verifyDepartmentId(value);
+const validDepartment = async (value: string) => {
+    const valid = verifyDeptId(value);
     return valid;
 }
 reportSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
-    validator: verifyDepartmentId,
+    validator: validDepartment,
     message: function(props: mongoose.ValidatorProps) {
         return `Department id ${props.value} is invalid`;
     }

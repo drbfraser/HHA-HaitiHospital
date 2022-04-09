@@ -2,6 +2,7 @@ import { JsonReportDescriptor } from 'common/json_report';
 import { randomUUID } from 'crypto';
 import mongoose, { ValidatorProps } from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
+import { verifyDeptId } from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
 import { fromTemplateToReport, TemplateItems } from 'utils/parsers/template';
 import UserModel, { USER_MODEL_NAME } from './user';
@@ -62,8 +63,8 @@ const uniqueTemplateDepartment = async (value: string) => {
     return count === 0;
 }
 
-const verifyDepartmentId = async (value: string) => {
-    const valid = verifyDepartmentId(value);
+const validDepartment = async (value: string) => {
+    const valid = verifyDeptId(value);
     return valid;
 }
 
@@ -80,7 +81,7 @@ templateSchema.path(`${PATH_TO_ID}`).validate({
 });
 
 templateSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
-    validator: verifyDepartmentId,
+    validator: validDepartment,
     message: function(props: ValidatorProps) {
         return `Department id ${props.value} is invalid`;
     }
