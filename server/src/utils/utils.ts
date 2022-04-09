@@ -29,7 +29,7 @@ import { InvalidInput } from 'exceptions/systemException';
 import crypto from "crypto";
 import { ItemType, ItemTypeKeys } from 'common/json_report';
 import { CustomError } from 'exceptions/custom_exception';
-import { CallbackError, Error, NativeError } from 'mongoose';
+import { Error, NativeError } from 'mongoose';
 import { BadRequest, InternalError } from 'exceptions/httpException';
 import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
 

@@ -1,8 +1,9 @@
 import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportMeta, ReportNItem, ReportSumItem } from "../definitions/report";
-import { getLengthOfEnum } from '../utils';
+import { generateUuid, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { TemplateBase } from '../../models/template';
 import { ItemType, ItemTypeKeys } from "common/json_report";
+import { randomUUID } from "crypto";
 
 
 interface TemplateItem extends ReportItem{};
@@ -11,24 +12,32 @@ interface TemplateSumItem extends ReportSumItem{};
 export type TemplateItems = Array<TemplateItem>;
 type TemplateAnswer = ItemAnswer;
 
-export const getNewTemplateFromSubmittedReport = (report: ReportDescriptor): TemplateBase => {
+export const fromReportToTemplate = (report: ReportDescriptor): TemplateBase => {
     const emptyItems = ItemToTemplate.getEmptyItems(report);
     
-    let newDoc: TemplateBase = {
+    let template: TemplateBase = {
+        id: report.meta.id,
         departmentId: report.meta.departmentId,
         submittedByUserId: report.meta.submittedUserId,
+        submittedDate: report.meta.submittedDate,
         items: emptyItems
     }
 
+    return template;
+}
+
+export const generateNewTemplate = (report: ReportDescriptor): TemplateBase => {
+    let newDoc: TemplateBase = fromReportToTemplate(report); 
+    newDoc.id = generateUuid();
     return newDoc;
 }
 
-export const getNewReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
+export const fromTemplateToReport = (doc: TemplateBase): ReportDescriptor => {
     let report: ReportDescriptor;
     let meta: ReportMeta = {
-        id: doc.id!,
+        id: doc.id,
         departmentId: doc.departmentId,
-        submittedDate: doc.submittedDate!,
+        submittedDate: doc.submittedDate,
         submittedUserId: doc.submittedByUserId
     }
     let items: ReportItems = doc.items;
@@ -36,6 +45,12 @@ export const getNewReportFromTemplate = (doc: TemplateBase): ReportDescriptor =>
         meta: meta,
         items: items
     }
+}
+
+export const generateNewReportFromTemplate = (doc: TemplateBase): ReportDescriptor => {
+    let newReport = fromTemplateToReport(doc);
+    newReport.meta.id = generateUuid();
+    return newReport;
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

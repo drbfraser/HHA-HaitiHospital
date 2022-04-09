@@ -24,6 +24,7 @@ export interface ReportMeta {
     id: string;
     departmentId: string;
     submittedDate: Date;
+    createdDate?: Date;
     submittedUserId: string;
 }
 

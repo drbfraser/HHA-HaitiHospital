@@ -1,4 +1,10 @@
+import { SystemException } from "exceptions/systemException";
+import { TemplateCollection } from "models/template";
+import { User } from "models/user";
 import { ReportDescriptor, ReportItems, ReportMeta } from "utils/definitions/report";
+import { verifyDeptId } from "utils/departments";
+import { generateNewReportFromTemplate } from "utils/parsers/template";
+import { generateUuid } from "utils/utils";
 
 export const getReportMeta = (report: ReportDescriptor): ReportMeta => {
     return report.meta;
@@ -6,4 +12,44 @@ export const getReportMeta = (report: ReportDescriptor): ReportMeta => {
 
 export const getReportItems = (report: ReportDescriptor): ReportItems => {
     return report.items;
+}
+
+export const updateSubmissionDate = (report: ReportDescriptor) => {
+    report.meta.submittedDate = new Date();
+}
+
+export const setSubmittor = (report: ReportDescriptor, user: User) => {
+    report.meta.submittedUserId = user._id!;
+}
+
+export const setReportMonth = (report: ReportDescriptor, date: Date) => {
+    report.meta.createdDate = date;
+}
+
+export const generateReportForMonth = async (deptId: string, reportMonth: Date, requestor: User): Promise<ReportDescriptor> => {
+    const deptValid = verifyDeptId(deptId);
+    if (!deptValid) {
+        throw new SystemException(`Department id ${deptId} is invalid`);
+    }
+
+    const deptTemplate = await TemplateCollection.findOne({ departmentId: deptId }).lean();
+    if (!deptTemplate) {
+        const newEmptyReport: ReportDescriptor = {
+            meta: {
+                id: generateUuid(),
+                departmentId: deptId,
+                submittedDate: new Date(),
+                submittedUserId: requestor._id!,
+                createdDate: reportMonth
+            },
+            items: []
+        }
+        return newEmptyReport;
+    } else {
+        const newReport: ReportDescriptor = generateNewReportFromTemplate(deptTemplate);
+        updateSubmissionDate(newReport);
+        setSubmittor(newReport, requestor);
+        setReportMonth(newReport, reportMonth);
+        return newReport;
+    }
 }

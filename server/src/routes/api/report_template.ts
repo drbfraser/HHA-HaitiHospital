@@ -7,14 +7,15 @@ import { TemplateCollection, TemplateBase } from 'models/template';
 import { Role } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/parsers/parsers';
-import { getNewTemplateFromSubmittedReport } from 'utils/parsers/template';
+import { generateNewTemplate, fromReportToTemplate } from 'utils/parsers/template';
 import { RequestWithUser } from 'utils/definitions/express';
 import { JsonReportDescriptor } from 'common/json_report';
-import { CallbackError, Error, QueryOptions } from 'mongoose';
-import { MONGOOSE_VALIDATOR_ERROR_NAME, MONGOOSE_NO_DOCUMENT_ERROR_NAME } from 'utils/constants';
+import { CallbackError } from 'mongoose';
 import { CustomError } from 'exceptions/custom_exception';
 import { SystemException } from 'exceptions/systemException';
 import { mongooseErrorToMyError } from 'utils/utils';
+import { DEPARTMENT_ID_URL_SLUG, TEMPLATE_ID_URL_SLUG } from 'utils/constants';
+import { updateSubmissionDate, setSubmittor } from 'utils/report/report';
 
 const router = Router();
 export default router;
@@ -33,14 +34,13 @@ router.route('/').get(
     }
 );
 
-const DEPARTMENT_ID_URL_PARAM = 'departmentId';
-router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).get(
+router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
 
-        const deptId = req.params[DEPARTMENT_ID_URL_PARAM];
+        const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
         if (!verifyDeptId(deptId)) {
             throw new BadRequest(`Invalid department id ${deptId}`);
         }
@@ -55,13 +55,12 @@ router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).get(
     }
 );
 
-router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).delete(
+router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).delete(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-
-        const deptId = req.params[DEPARTMENT_ID_URL_PARAM];
+        const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
         if (!verifyDeptId(deptId)) {
             throw new BadRequest(`Invalid department id ${deptId}`);
         }
@@ -84,11 +83,10 @@ router.route('/').post(
         const jsonReport: JsonReportDescriptor = req.body;
         const bodyStr: string = JSON.stringify(jsonReport);
         const report: ReportDescriptor = jsonStringToReport(bodyStr);
-        if (!jsonReport.meta.submittedUserId) {
-            report.meta.submittedUserId = req.user._id!;
-        }
+        updateSubmissionDate(report);
+        setSubmittor(report, req.user);
         
-        let newTemplate: TemplateBase = getNewTemplateFromSubmittedReport(report);
+        let newTemplate: TemplateBase = generateNewTemplate(report);
         attemptToSaveNewTemplate(newTemplate, (err) => {
             if (!err) {
                 return res.sendStatus(HTTP_CREATED_CODE);
@@ -100,8 +98,7 @@ router.route('/').post(
     }
 );
 
-const TEMPLATE_ID_SLUG: string = "templateId";
-router.route(`/:${TEMPLATE_ID_SLUG}`).put(
+router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
@@ -109,15 +106,17 @@ router.route(`/:${TEMPLATE_ID_SLUG}`).put(
         const jsonReport: JsonReportDescriptor = req.body;
         const bodyStr: string = JSON.stringify(jsonReport);
         const report: ReportDescriptor = jsonStringToReport(bodyStr);
-        if (!jsonReport.meta.submittedUserId) {
-            report.meta.submittedUserId = req.user._id!;
+        updateSubmissionDate(report);
+        setSubmittor(report, req.user);
+
+        const template: TemplateBase = fromReportToTemplate(report);
+        if (template.id !== req.params[TEMPLATE_ID_URL_SLUG]) {
+            throw new BadRequest(`Expected id and provided id don't match`);
         }
-        const template: TemplateBase = getNewTemplateFromSubmittedReport(report);
-        template.id = req.params[TEMPLATE_ID_SLUG];
 
         await attemptToUpdateTemplateWithId(template);
         res.sendStatus(HTTP_NOCONTENT_CODE);
-        
+
     } catch (e) { next(e); }
     }
 );
@@ -140,9 +139,7 @@ async function attemptToUpdateTemplateWithId(template: TemplateBase) {
         throw new SystemException(`Expecting an id for template but got undefined`);
     }   
 
-    // remove info not to be updated so model validators can pass
     const templateId = template.id;
-    delete template.id;
     const doc = await TemplateCollection.findOne({id: templateId});
     if (!doc) {
         throw new BadRequest(`No template with id ${templateId}`);
@@ -155,10 +152,7 @@ async function attemptToUpdateTemplateWithId(template: TemplateBase) {
         }
     }
     
-    const result = await doc.updateOne(template);
-    if (!result) {
-        throw new InternalError(`Failed to update template`);
-    }
+    await doc.updateOne(template);
 }
 
 function attemptToSaveNewTemplate(newTemplate: TemplateBase, callback: (err?: CustomError) => void) {

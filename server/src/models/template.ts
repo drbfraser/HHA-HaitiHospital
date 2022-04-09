@@ -3,14 +3,14 @@ import { randomUUID } from 'crypto';
 import mongoose, { ValidatorProps } from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { parseToJson } from 'utils/parsers/json_report';
-import { getNewReportFromTemplate, TemplateItems } from 'utils/parsers/template';
+import { fromTemplateToReport, TemplateItems } from 'utils/parsers/template';
 import { USER_MODEL_NAME } from './user';
 const { Schema } = mongoose;
 
 export interface TemplateBase {
-    id?: string,
+    id: string,
     departmentId: string,
-    submittedDate?: Date,
+    submittedDate: Date,
     submittedByUserId: string,
     items: TemplateItems
 }
@@ -29,14 +29,14 @@ const templateSchema = new Schema<TemplateWithUtils>({
     submittedDate: {
         type: Date, 
         required: true, 
-        default: Date.now
+        default: new Date
     },
     items: {type: Object, required: true}
 });
 
 // Make sure that instance methods defined below are matched with template schema i.e TemplateWithUtils
 templateSchema.methods.toJsonReport = function(): JsonReportDescriptor {
-    const report: ReportDescriptor = getNewReportFromTemplate(this);
+    const report: ReportDescriptor = fromTemplateToReport(this);
     return parseToJson(report);
 }
 
