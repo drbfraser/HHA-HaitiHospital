@@ -83,7 +83,7 @@ export const mongooseErrorToMyError = (err: NativeError): CustomError => {
             return new BadRequest(`No document found`);
         }
         default: {
-            return new InternalError(`No error available to convert mongoose error`);
+            return new InternalError(`${err.message}`);
         }
     }
 }

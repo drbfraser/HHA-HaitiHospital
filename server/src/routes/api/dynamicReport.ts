@@ -64,7 +64,7 @@ router.route(`/report/:${REPORT_ID_URL_SLUG}`).get(
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
         const reportId = req.params[REPORT_ID_URL_SLUG];
-        const doc = await ReportModel.findOne({ id: reportId }).lean();
+        const doc = await ReportModel.findOne({ id: reportId });
         if (!doc) {
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
         }
@@ -87,23 +87,30 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(
     requireJwtAuth,
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-        const doc = await ReportModel.findOne({ id: req.params[REPORT_ID_URL_SLUG]});
+        const doc = await ReportModel.findOne({ id: req.params[REPORT_ID_URL_SLUG]}).lean();
         if (!doc) 
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
         
         const reportInString = JSON.stringify(req.body);
         const report = jsonStringToReport(reportInString);
+        report.id = req.params[REPORT_ID_URL_SLUG];
         updateSubmissionDate(report);
         setSubmittor(report, req.user);        
         const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
         if (!authorized)
             throw new Unauthorized(`User not authorized`);
 
+        // manually add report month 
+        // since the data send from FE does not have report month
+        // can rid of this check when allow report json to contain report month
+        report.reportMonth = doc.reportMonth;
+        // end
+
         await attemptToUpdateReport(report, (err: CustomError) => {
             if (!err)
                 return res.sendStatus(HTTP_OK_CODE);
             err.message = `Update report failed: ${err.message}`;
-            next(err);
+            return next(err);
         })    
     } catch (e) {
         next (e);
@@ -136,12 +143,10 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).delete(
         const substituteReport = await generateReportForMonth(doc.departmentId, doc.reportMonth!, req.user);
         attemptToSaveReport(substituteReport, (err: CustomError) => {
             if (!err)
-                return;
+                return res.status(HTTP_CREATED_CODE).send(`Replace deleted report with an empty report`);
             err.message = `Generate report failed: ${err.message}`
-            next(err);
+            return next(err);
         });
-
-        res.status(HTTP_CREATED_CODE).send(`Replace deleted report with an empty report`);
 
     } catch (e) {
         next(e);
@@ -167,23 +172,22 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
             throw new Unauthorized(`User is not authorized`);
         }
 
-        const month = parseInt(req.body.month);
+        // month is 0 index
+        const month = parseInt(req.body.month) - 1;
         const year = parseInt(req.body.year);
         const date = new Date(year, month);
         const newReport = await generateReportForMonth(req.params[DEPARTMENT_ID_URL_SLUG], date, req.user);
         
-        attemptToSaveReport(newReport, (err: CustomError) => {
+        attemptToSaveReport(newReport, (err?: CustomError) => {
             if (!err)
-                return;
+                return res.sendStatus(HTTP_CREATED_CODE);
             err.message = `Generate report failed: ${err.message}`
-            next(err);
+            return next(err);
         });
 
-        res.sendStatus(HTTP_CREATED_CODE);
     } catch (e) {
         next(e);
     }
-
     }
 );
 
@@ -207,6 +211,7 @@ async function attemptToUpdateReport(report: ReportDescriptor, callback: (err?: 
     if (!oldDoc) {
         throw new NotFound(`No report with provided id found`);
     }
+
     attemptToSaveReport(report, (newReportErr: CustomError) => {
         if (!newReportErr) {
             return callback();

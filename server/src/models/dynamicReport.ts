@@ -4,6 +4,7 @@ import * as mongoose from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { verifyDeptId } from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
+import { formatDateString } from 'utils/utils';
 
 import UserModel, { USER_MODEL_NAME } from './user';
 
@@ -99,14 +100,14 @@ reportSchema.path(`${PATH_TO_USER_ID}`).validate({
     }
 })
 
-const uniqueReportMonth = async (value: Date) => {
-    const count = await ReportModel.countDocuments({ reportMonth: value });
+const uniqueReportMonth = async function (value: Date) {
+    const count = await ReportModel.countDocuments({ reportMonth: value, departmentId: this.departmentId });
     return count === 0;
 };
 reportSchema.path(`${PATH_TO_REPORT_MONTH}`).validate({
     validator: uniqueReportMonth,
     message: function(props: mongoose.ValidatorProps) {
-        return `Report for date: ${props.value} already exists`;
+        return `Report for date: ${formatDateString(props.value)} already exists`;
     }
 })
 
