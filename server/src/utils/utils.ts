@@ -30,7 +30,7 @@ import crypto from "crypto";
 import { ItemType, ItemTypeKeys } from 'common/json_report';
 import { CustomError } from 'exceptions/custom_exception';
 import { Error, NativeError } from 'mongoose';
-import { BadRequest, InternalError } from 'exceptions/httpException';
+import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';
 import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
 
 export const getEnumKeyByStringValue = function <T extends { [index: string]: any; }>(myEnum: T, enumValue: string): keyof T | null {
@@ -80,7 +80,7 @@ export const mongooseErrorToMyError = (err: NativeError): CustomError => {
             return new BadRequest(msg);
         }
         case MONGOOSE_NO_DOCUMENT_ERROR_NAME: {
-            return new BadRequest(`No document found`);
+            return new NotFound(`No document found`);
         }
         default: {
             return new InternalError(`${err.message}`);

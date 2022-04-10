@@ -191,6 +191,29 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
     }
 );
 
+// A temporary endpoint to get a report month since current json report don't have
+// report month. May want to get rid of this once json supports this.
+router.route(`/date/:${REPORT_ID_URL_SLUG}`).get(
+    requireJwtAuth,
+    async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+        const report = await ReportModel.findOne({id: req.params[REPORT_ID_URL_SLUG]}).lean();
+        if (!report) {
+            throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+        }
+
+        res.status(HTTP_OK_CODE).json({
+            // month is 0 base
+            month: report.reportMonth!.getMonth() + 1,
+            year: report.reportMonth!.getFullYear()
+        })
+
+    } catch (e) {
+        next(e);
+    }
+    }
+)
+
 
 // >>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 
