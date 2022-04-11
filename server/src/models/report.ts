@@ -51,17 +51,6 @@ reportSchema.methods.toJson = function(): JsonReportDescriptor {
     return json;
 }
 
-reportSchema.virtual('name').get(function () {
-  const createdDate: Date = this.metadata.dateCreated;
-  const year: number = createdDate.getFullYear();
-
-  // getMonth() is 0 based
-  const month: number = createdDate.getMonth() + 1;
-  const name = `${year}-${month < 10 ? 0 : ''}${month}`;
-
-  return name;
-});
-
 export const REPORT_MODEL_NAME = "Report";
 export const ReportModel = mongoose.model<ReportWithInstanceMethods>(REPORT_MODEL_NAME, reportSchema);
 

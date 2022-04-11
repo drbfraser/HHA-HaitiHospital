@@ -26,7 +26,7 @@ router.route('/').get(
     try {
 
         const documents = await TemplateCollection.find();
-        const jsonReports = documents.map((doc) => doc.toJsonReport());
+        const jsonReports = documents.map((doc) => doc.toJson());
         res.status(HTTP_OK_CODE).json(jsonReports);
 
     } catch (e) { next(e); }
@@ -47,7 +47,7 @@ router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(
         if (!template) {
             throw new NotFound(`No template for department ${getDeptNameFromId(deptId)} found`);
         }
-        const jsonReport: JsonReportDescriptor = template.toJsonReport();
+        const jsonReport: JsonReportDescriptor = template.toJson();
         res.status(HTTP_OK_CODE).json(jsonReport);
 
     } catch (e) { next(e); } 

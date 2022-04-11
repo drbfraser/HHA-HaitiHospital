@@ -15,15 +15,15 @@ export interface Template {
     submittedByUserId: string,
     items: TemplateItems
 }
-export interface TemplateWithUtils extends Template {
-    toJsonReport: () => JsonReportDescriptor
+export interface TemplateWithInstanceMethods extends Template {
+    toJson: () => JsonReportDescriptor
 };
 
 const PATH_TO_ID = 'id';
 const PATH_TO_USER_ID = 'submittedByUserId';
 const PATH_TO_DEPARTMENT_ID = 'departmentId';
 
-const templateSchema = new Schema<TemplateWithUtils>({
+const templateSchema = new Schema<TemplateWithInstanceMethods>({
     id: {
         type: String, 
         unique: true, 
@@ -41,7 +41,7 @@ const templateSchema = new Schema<TemplateWithUtils>({
 });
 
 // Make sure that instance methods defined below are matched with template schema i.e TemplateWithUtils
-templateSchema.methods.toJsonReport = function(): JsonReportDescriptor {
+templateSchema.methods.toJson = function(): JsonReportDescriptor {
     const report: ReportDescriptor = fromTemplateToReport(this);
     return parseToJson(report);
 }
@@ -49,7 +49,7 @@ templateSchema.methods.toJsonReport = function(): JsonReportDescriptor {
 // <<<<<<<<<<<<<<<<<<<<<<<<<< instance methods <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 const TEMPLATE_COLLECTION_NAME = "Template";
-const TemplateCollection = mongoose.model<TemplateWithUtils>(TEMPLATE_COLLECTION_NAME, templateSchema);
+const TemplateCollection = mongoose.model<TemplateWithInstanceMethods>(TEMPLATE_COLLECTION_NAME, templateSchema);
 
 // >>>> VALIDATORS >>>>
 
