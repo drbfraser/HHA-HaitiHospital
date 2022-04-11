@@ -19,15 +19,6 @@ import { ItemTypeKeys } from 'common/json_report';
 // };
 // initItemAnswerMap(mapItemTypeToAnswerType);
 
-
-// export interface ReportMeta {
-//     id: string;
-//     departmentId: string;
-//     submittedDate: Date;
-//     createdDate?: Date;
-//     submittedUserId: string;
-// }
-
 export type ItemAnswer = Array<string>;
 export interface ReportItem {
     type: ItemTypeKeys;
