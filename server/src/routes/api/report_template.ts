@@ -124,8 +124,6 @@ router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
     }
 );
 
-// >>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 // To replace user id with name (may be desired in the future)
 // async function hideUserId(report: ReportDescriptor) {
 //     // const user = await UserModel.find({"username":report.submittedByUserId}).exec();
@@ -169,5 +167,3 @@ function attemptToSaveTemplate(newTemplate: Template, callback: (err?: CustomErr
         callback(myError);
     });
 }
-
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
