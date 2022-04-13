@@ -1,7 +1,5 @@
-// A hack to stringify an interface name
-// https://stackoverflow.com/questions/27945515/is-it-possible-to-get-name-of-the-interface-as-a-string#comment106146140_53431302
-// Interfaces property will be stringified so make sure the property name is identical to the interface name who is being stringified.
 import { nameof } from 'ts-simple-nameof';
+
 export enum ItemType {
   // SA = "short answer",
   NUMERIC = 'numeric',
@@ -14,6 +12,9 @@ export enum ItemType {
 }
 export type ItemTypeKeys = keyof typeof ItemType;
 
+// A hack to stringify an interface name
+// https://stackoverflow.com/questions/27945515/is-it-possible-to-get-name-of-the-interface-as-a-string#comment106146140_53431302
+// Interfaces property will be stringified so make sure the property name is identical to the interface name who is being stringified.
 interface Interfaces {
   JsonReportDescriptor: JsonReportDescriptor;
 }
