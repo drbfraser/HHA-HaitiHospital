@@ -151,5 +151,5 @@ export const validateUser = (user) => {
   return validateUserSchema.validate(user);
 };
 
-const UserModel = mongoose.model<UserWithInstanceMethods>('User', userSchema);
+const UserModel = mongoose.model<UserWithInstanceMethods>('User', userSchema, 'User');
 export default UserModel;

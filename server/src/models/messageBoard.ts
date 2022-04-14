@@ -58,5 +58,5 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   return json;
 };
 
-const MessageBody = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'Message Board');
+const MessageBody = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'MessageBoard');
 export default MessageBody;
