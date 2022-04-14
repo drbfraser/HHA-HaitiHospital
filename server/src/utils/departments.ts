@@ -8,7 +8,7 @@ export enum DepartmentName {
   General = 'General'
 }
 
-export enum DepartmentId {
+enum DepartmentId {
   Rehab = '1',
   NicuPaeds = '2',
   CommunityHealth = '3',

@@ -1,7 +1,7 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
 import Department from '../models/departments';
-import { DepartmentName, getDeptIdFromName } from './departments';
+import { DepartmentName } from './departments';
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
@@ -34,13 +34,19 @@ export const seedDb = async () => {
   await MessageBody.deleteMany({});
   await CaseStudy.deleteMany({});
 
+  await seedDepartments();
+  await seedTesting();
   await seedUsers();
-  await seedLeaderboard();
   await seedCaseStudies();
   await seedMessageBoard();
   await seedBioMech();
   await seedEmployeeOfTheMonth();
   console.log('Database seeding completed.');
+};
+
+const seedTesting = async () => {
+  const departments = await Department.find();
+  console.log(departments);
 };
 
 export const seedUsers = async () => {
@@ -49,7 +55,7 @@ export const seedUsers = async () => {
     // Delete seeded users on server start so we can reseed them.
     // await User.collection.dropIndexes();
 
-    [...Array(7).keys()].forEach(async (index, i) => {
+    [...Array(7).keys()].forEach(async (index) => {
       var foundUser = await UserModel.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
@@ -125,7 +131,7 @@ export const seedUsers = async () => {
             break;
         }
 
-        await user.registerUser(user, () => {});
+        user.registerUser(user, () => {});
       }
     });
     console.log('Users seeded');
@@ -198,12 +204,12 @@ export const seedCaseStudies = async () => {
   }
 };
 
-export const seedLeaderboard = async () => {
-  console.log('Seeding leaderboard...');
+export const seedDepartments = async () => {
+  console.log('Seeding departments...');
   try {
     await Department.deleteMany({});
     for (let key in DepartmentName) {
-      // We want do not want the General to be seeded as a leaderboard department
+      // We want do not want the General to be seeded as a department
       if (key === DepartmentName.General) {
         continue;
       }
@@ -213,7 +219,7 @@ export const seedLeaderboard = async () => {
       });
       await department.save();
     }
-    console.log('Leaderboard seeded');
+    console.log('Departments seeded');
   } catch (err: any) {
     console.error(err);
   }
