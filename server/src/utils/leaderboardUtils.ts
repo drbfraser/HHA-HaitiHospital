@@ -1,4 +1,4 @@
-import { getDeptNameFromId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import CaseStudy from '../models/caseStudies';
 import Department from '../models/departments';
@@ -14,7 +14,7 @@ export async function updateDepartmentPoints() {
     if (!user) {
       throw new IllegalState(`Case study has non-existing user id ${post.userId}`);
     }
-    const postDeptName = getDeptNameFromId(user.departmentId);
+    const postDeptName = Departments.Database.getDeptNameById(user.departmentId);
     await Department.findOneAndUpdate({ name: postDeptName }, { $inc: { points: pointsPerCaseStudy, nCaseStudies: 1 } });
   }
 }

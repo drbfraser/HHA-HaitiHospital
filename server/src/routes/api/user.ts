@@ -34,9 +34,9 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
     if (updatedUser.password && updatedUser.password !== '') {
       updatedUser.password = await hashPassword(updatedUser.password);
     }
-    // if (!verifyDeptId(updatedUser.departmentId)) {
-    //   throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
-    // }
+    if (!Departments.Database.validateDeptId(updatedUser.departmentId)) {
+      throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
+    }
 
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     await UserModel.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
@@ -104,9 +104,9 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
     if (existingUser) {
       throw new Conflict(`Username ${username} exists`);
     }
-    // if (!verifyDeptId(departmentId)) {
-    //   throw new BadRequest(`Invalid department id ${department.id}`);
-    // }
+    if (!Departments.Database.validateDeptId(departmentId)) {
+      throw new BadRequest(`Invalid department id ${department.id}`);
+    }
 
     const userInfo: User = {
       username: username,

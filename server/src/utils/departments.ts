@@ -52,31 +52,36 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
   return map.has(deptId);
 };
 
-const getDeptNameById = async (deptId: string): Promise<string | undefined> => {
+const getDeptNameById = async (deptId: string): Promise<string> => {
   try {
     const department: DepartmentModel = await Department.findById(deptId);
     if (Object.keys(department).length === 0) throw new Error(`Department Id ${deptId} does not have a name`);
     return department.name;
   } catch (error: any) {
-    console.error(error);
+    return 'Error: Unable to retrieve department name';
   }
 };
 
-const getDeptIdByName = async (deptName: string): Promise<string | undefined> => {
+const getDeptIdByName = async (deptName: string): Promise<string> => {
   try {
-    const department: DepartmentModel = await Department.findById({ name: deptName });
+    const department: DepartmentModel = await Department.findOne({ name: deptName });
     if (Object.keys(department).length === 0) throw new Error(`Department name ${deptName} does not have an id`);
     return department._id;
   } catch (error: any) {
-    console.error(error);
+    return 'Error: Unable to retrieve department name';
   }
+};
+
+const validateDeptId = async (deptId: string): Promise<boolean> => {
+  const department: DepartmentModel = await Department.findById(deptId);
+  return !(Object.keys(department).length === 0);
 };
 
 // Util functions using a hashtable data structure
 const Hashtable = { initIdToNameMap, initNameToId, getDeptNameFromId, getDeptIdFromName, verifyDeptId };
 
 // Util functions from database calls
-const Database = { getDeptNameById, getDeptIdByName };
+const Database = { getDeptNameById, getDeptIdByName, validateDeptId };
 
 /**
  * @param General

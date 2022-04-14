@@ -2,28 +2,25 @@ import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
-import EmployeeOfTheMonthModel, { EmployeeOfTheMonth } from 'models/employeeOfTheMonth';
+import EmployeeOfTheMonthModel, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../schema/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { BadRequest, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError } from 'exceptions/httpException';
-import { verifyDeptId } from 'utils/departments';
+import { BadRequest, HTTP_OK_CODE } from 'exceptions/httpException';
+import Departments from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
-router.get('/', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
-  EmployeeOfTheMonthModel.findOne()
-    .exec()
-    .then((data) => {
-      if (!data) {
-        return res.status(HTTP_NOCONTENT_CODE);
-      }
-
-      res.status(HTTP_OK_CODE).json(data.toJson());
-    })
-    .catch((err) => next(new InternalError(`get employee of the month posts failed: ${err}`)));
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const doc = await EmployeeOfTheMonthModel.findOne();
+    const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
+    res.status(HTTP_OK_CODE).json(json);
+  } catch (e) {
+    next(e);
+  }
 });
 
 router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
@@ -37,7 +34,7 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
-    if (!verifyDeptId(department.id)) {
+    if (!Departments.Database.validateDeptId(department.id)) {
       throw new BadRequest(`Invalid department id ${department}`);
     }
 

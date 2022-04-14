@@ -1,4 +1,4 @@
-import { getDeptNameFromId, verifyDeptId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { NextFunction, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
@@ -29,12 +29,12 @@ const DEPARTMENT_ID_URL_PARAM = 'departmentId';
 router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const deptId = req.params[DEPARTMENT_ID_URL_PARAM];
-    if (!verifyDeptId(deptId)) {
+    if (!Departments.Database.validateDeptId(deptId)) {
       throw new BadRequest(`Invalid department id ${deptId}`);
     }
     const template = await TemplateCollection.findOne({ departmentId: deptId });
     if (!template) {
-      throw new NotFound(`No template for department ${getDeptNameFromId(deptId)} found`);
+      throw new NotFound(`No template for department found`);
     }
     const jsonReport: JsonReportDescriptor = template.toJsonReport();
     res.status(HTTP_OK_CODE).json(jsonReport);
@@ -46,13 +46,13 @@ router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).get(requireJwtAuth, roleAuth(Role.A
 router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).delete(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const deptId = req.params[DEPARTMENT_ID_URL_PARAM];
-    if (!verifyDeptId(deptId)) {
+    if (!Departments.Database.validateDeptId(deptId)) {
       throw new BadRequest(`Invalid department id ${deptId}`);
     }
 
     const template = await TemplateCollection.findOneAndDelete({ departmentId: deptId });
     if (!template) {
-      throw new NotFound(`No template for department ${getDeptNameFromId(deptId)} found`);
+      throw new NotFound(`No template for department found`);
     }
     res.sendStatus(HTTP_NOCONTENT_CODE);
   } catch (e) {
@@ -63,12 +63,12 @@ router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).delete(requireJwtAuth, roleAuth(Rol
 router.route('/').post(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const bodyStr: string = JSON.stringify(req.body);
-    const report: ReportDescriptor = jsonStringToReport(bodyStr);
+    const report: ReportDescriptor = await jsonStringToReport(bodyStr);
 
     let newTemplate: TemplateBase = getTemplateDocumentFromReport(report);
     const submittedUser = req.user;
     await attemptToSaveNewTemplate(newTemplate, submittedUser);
-    res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(newTemplate.departmentId)}`);
+    res.status(HTTP_CREATED_CODE).send(`New template for department ${(await Departments.Database.getDeptNameById(newTemplate.departmentId)) as string}`);
   } catch (e) {
     next(e);
   }
@@ -77,7 +77,7 @@ router.route('/').post(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector
 router.route('/').put(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const bodyStr: string = JSON.stringify(req.body);
-    const report: ReportDescriptor = jsonStringToReport(bodyStr);
+    const report: ReportDescriptor = await jsonStringToReport(bodyStr);
     const template: TemplateBase = getTemplateDocumentFromReport(report);
 
     const existingDoc = await TemplateCollection.findOne({ id: template.id });
@@ -89,7 +89,7 @@ router.route('/').put(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector)
     } else {
       // Create a new template
       await attemptToSaveNewTemplate(template, submittedUser);
-      res.status(HTTP_CREATED_CODE).send(`New template for department ${getDeptNameFromId(template.departmentId)} is created`);
+      res.status(HTTP_CREATED_CODE).send(`New template for department ${(await Departments.Database.getDeptNameById(template.departmentId)) as string} is created`);
     }
   } catch (e) {
     next(e);
@@ -116,7 +116,7 @@ async function attemptToUpdateTemplate(template: TemplateBase, existingDoc: Temp
   if (changeDepartment) {
     const departmentHasTemplate = await TemplateCollection.exists({ departmentId: submittedDeptId });
     if (departmentHasTemplate) {
-      throw new Conflict(`Failed to update. Deparment ${getDeptNameFromId(submittedDeptId)} already has a template`);
+      throw new Conflict(`Failed to update. Department ${await Departments.Database.getDeptNameById(submittedDeptId)} already has a template`);
     }
   }
   template.submittedDate = new Date();
