@@ -1,5 +1,5 @@
 import { getDeptNameFromId } from 'utils/departments';
-import { IllegalState, SystemException } from 'exceptions/systemException';
+import { IllegalState } from 'exceptions/systemException';
 import CaseStudy from '../models/caseStudies';
 import Department from '../models/departments';
 import UserModel from 'models/user';

@@ -19,25 +19,24 @@ import { ItemTypeKeys } from 'common/json_report';
 // };
 // initItemAnswerMap(mapItemTypeToAnswerType);
 
-
 export interface ReportMeta {
-    id: string;
-    departmentId: string;
-    submittedDate: Date;
-    submittedUserId: string;
+  id: string;
+  departmentId: string;
+  submittedDate: Date;
+  submittedUserId: string;
 }
 
 export type ItemAnswer = Array<string>;
 export interface ReportItem {
-    type: ItemTypeKeys;
-    description: string;
-    answer: ItemAnswer;
+  type: ItemTypeKeys;
+  description: string;
+  answer: ItemAnswer;
 }
 //Short Answer Item
 // export interface ReportSaItem extends ReportItem<string> {};
 //Numeric Item
 
-export interface ReportNItem extends ReportItem { }
+export interface ReportNItem extends ReportItem {}
 //Yes No item
 // export interface ReportYnItem extends ReportItem<boolean> {};
 //Mcq item
@@ -54,7 +53,7 @@ export interface ReportNItem extends ReportItem { }
 // }
 //Sum item
 export interface ReportSumItem extends ReportItem {
-    children: Array<ReportNItem | ReportSumItem>;
+  children: Array<ReportNItem | ReportSumItem>;
 }
 //Survey Generator item
 // export interface JsonReportSurveyItem extends ReportItem<number> {
@@ -63,6 +62,6 @@ export interface ReportSumItem extends ReportItem {
 
 export type ReportItems = Array<ReportItem>;
 export interface ReportDescriptor {
-    meta: ReportMeta;
-    items: ReportItems;
+  meta: ReportMeta;
+  items: ReportItems;
 }
