@@ -7,17 +7,34 @@ export interface Department {
   name: string;
 }
 
-export interface Leaderboard {
+export interface DepartmentJson {
+  id: string;
+  name: string;
+}
+
+export interface LeaderboardJson {
   id: string;
   name: string;
   points: number;
   nCaseStudies: number;
 }
 
-const departmentSchema = new Schema({
+export interface DepartmentWithInstanceMethods extends Department {
+  toJson: () => DepartmentJson;
+}
+
+const departmentSchema = new Schema<DepartmentWithInstanceMethods>({
   name: { type: String, required: true }
 });
 
-const Department = mongoose.model('Department', departmentSchema, 'Department');
+departmentSchema.methods.toJson = async function (): Promise<DepartmentJson> {
+  let json: DepartmentJson = {
+    id: this._id,
+    name: this.name
+  };
+  return json;
+};
+
+const Department = mongoose.model<DepartmentWithInstanceMethods>('Department', departmentSchema, 'Department');
 
 export default Department;

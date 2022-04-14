@@ -45,7 +45,7 @@ const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethod
 );
 employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfTheMonthJson> {
   let json: EmployeeOfTheMonthJson = {
-    id: this.id,
+    id: this._id,
     name: this.name,
     department: {
       id: this.departmentId,
