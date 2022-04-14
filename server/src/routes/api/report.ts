@@ -1,4 +1,5 @@
 import { CustomError } from 'exceptions/custom_exception';
+import { InvalidInput } from 'exceptions/systemException';
 import { NextFunction, Response } from 'express';
 import { departmentAuth } from 'middleware/departmentAuth';
 import { CallbackError } from 'mongoose';

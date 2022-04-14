@@ -15,6 +15,7 @@ import { CustomError } from 'exceptions/custom_exception';
 import { mongooseErrorToMyError } from 'utils/utils';
 import { DEPARTMENT_ID_URL_SLUG, TEMPLATE_ID_URL_SLUG } from 'utils/constants';
 import { updateSubmissionDate, setSubmittor } from 'utils/report/report';
+import { InvalidInput } from 'exceptions/systemException';
 
 const router = Router();
 export default router;
