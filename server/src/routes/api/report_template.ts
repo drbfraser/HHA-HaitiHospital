@@ -107,7 +107,10 @@ router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
         const jsonReport: JsonReportDescriptor = req.body;
         const bodyStr: string = JSON.stringify(jsonReport);
         const report: ReportDescriptor = jsonStringToReport(bodyStr);
-        report.id = req.params[TEMPLATE_ID_URL_SLUG]
+
+        if (report.id !== req.params[TEMPLATE_ID_URL_SLUG])
+            throw new BadRequest(`Template id does not match expectation`);
+
         updateSubmissionDate(report);
         setSubmittor(report, req.user);
 

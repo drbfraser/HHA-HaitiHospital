@@ -92,7 +92,10 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(
         
         const reportInString = JSON.stringify(req.body);
         const report = jsonStringToReport(reportInString);
-        report.id = req.params[REPORT_ID_URL_SLUG];
+
+        if (report.id !== req.params[TEMPLATE_ID_URL_SLUG])
+            throw new BadRequest(`Report id does not match expectation`);
+
         updateSubmissionDate(report);
         setSubmittor(report, req.user);        
         const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
