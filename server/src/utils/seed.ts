@@ -44,7 +44,7 @@ export const seedDb = async () => {
 
 const setupDepartmentMap = async () => {
   const departments: DepartmentModel[] = await Department.find();
-  nameMapper = Departments.initNameToId(departments);
+  nameMapper = Departments.Hashtable.initNameToId(departments);
 };
 
 export const seedUsers = async () => {
@@ -59,31 +59,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           default:
             break;
@@ -99,31 +99,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           case 3:
             user.role = Role.User;
-            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
             break;
           case 4:
             user.role = Role.User;
-            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
             break;
           case 5:
             user.role = Role.User;
-            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
             break;
           case 6:
             user.role = Role.User;
-            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           default:
             break;
@@ -249,7 +249,7 @@ export const seedEmployeeOfTheMonth = async () => {
     await EmployeeOfTheMonth.deleteOne({});
     const employeeOfTheMonth = new EmployeeOfTheMonth({
       name: 'John Doe',
-      departmentId: Departments.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper),
+      departmentId: Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper),
       description: 'This is a placeholder',
       imgPath: 'public/images/default_user.png'
     });

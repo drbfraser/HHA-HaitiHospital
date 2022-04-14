@@ -1,4 +1,4 @@
-import { Department } from 'models/departments';
+import Department, { Department as DepartmentModel } from 'models/departments';
 
 export enum DefaultDepartments {
   General = 'General',
@@ -10,9 +10,9 @@ export enum DefaultDepartments {
 
 const General: string = DefaultDepartments.General;
 
-const initIdToNameMap = (departments: Department[]): Map<string, string> => {
+const initIdToNameMap = (departments: DepartmentModel[]): Map<string, string> => {
   let _departmentIdMapper = new Map<string, string>();
-  departments.forEach((dept: Department) => {
+  departments.forEach((dept: DepartmentModel) => {
     _departmentIdMapper.set(dept._id, dept.name as string);
   });
   return _departmentIdMapper;
@@ -29,9 +29,9 @@ const getDeptNameFromId = (deptId: string, map: Map<string, string>): string => 
   return name;
 };
 
-const initNameToId = (departments: Department[]): Map<string, string> => {
+const initNameToId = (departments: DepartmentModel[]): Map<string, string> => {
   let _departmentNameMapper = new Map<string, string>();
-  departments.forEach((dept: Department) => {
+  departments.forEach((dept: DepartmentModel) => {
     _departmentNameMapper.set(dept.name as string, dept._id);
   });
   return _departmentNameMapper;
@@ -52,6 +52,40 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
   return map.has(deptId);
 };
 
-const Departments = { General, initIdToNameMap, initNameToId, getDeptNameFromId, getDeptIdFromName, verifyDeptId };
+const getDeptNameById = async (deptId: string): Promise<string | undefined> => {
+  try {
+    const department: DepartmentModel = await Department.findById(deptId);
+    if (Object.keys(department).length === 0) throw new Error(`Department Id ${deptId} does not have a name`);
+    return department.name;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
+const getDeptIdByName = async (deptName: string): Promise<string | undefined> => {
+  try {
+    const department: DepartmentModel = await Department.findById({ name: deptName });
+    if (Object.keys(department).length === 0) throw new Error(`Department name ${deptName} does not have an id`);
+    return department._id;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
+// Util functions using a hashtable data structure
+const Hashtable = { initIdToNameMap, initNameToId, getDeptNameFromId, getDeptIdFromName, verifyDeptId };
+
+// Util functions from database calls
+const Database = { getDeptNameById, getDeptIdByName };
+
+/**
+ * @param General
+ * - Enum namespace for General Department
+ * @param Map
+ * - Util functions using a hashtable data structure
+ * @param Database
+ * - Util functions from database calls
+ */
+const Departments = { General, Hashtable, Database };
 
 export default Departments;
