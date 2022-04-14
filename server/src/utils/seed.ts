@@ -1,12 +1,14 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
-import Department from '../models/departments';
-import { DepartmentName } from './departments';
+import Department, { Department as DepartmentModel } from '../models/departments';
+import Departments, { DefaultDepartments } from './departments';
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from './processEnv';
+
+let nameMapper: Map<string, string>;
 
 const selectRandomUser = (users: User[]): User => {
   const randomUserIndex = Math.floor(Math.random() * users.length);
@@ -35,7 +37,7 @@ export const seedDb = async () => {
   await CaseStudy.deleteMany({});
 
   await seedDepartments();
-  await seedTesting();
+  await setupDepartmentMap();
   await seedUsers();
   await seedCaseStudies();
   await seedMessageBoard();
@@ -44,9 +46,9 @@ export const seedDb = async () => {
   console.log('Database seeding completed.');
 };
 
-const seedTesting = async () => {
-  const departments = await Department.find();
-  console.log(departments);
+const setupDepartmentMap = async () => {
+  const departments: DepartmentModel[] = await Department.find();
+  nameMapper = Departments.initNameToId(departments);
 };
 
 export const seedUsers = async () => {
@@ -56,36 +58,36 @@ export const seedUsers = async () => {
     // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index) => {
-      var foundUser = await UserModel.findOne({ username: `user${index}` }).exec();
+      const foundUser = await UserModel.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.departmentId = '0';
+            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.departmentId = '0';
+            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.departmentId = '2';
+            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.departmentId = '4';
+            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.departmentId = '1';
+            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.departmentId = '3';
+            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.departmentId = '2';
+            foundUser.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           default:
             break;
@@ -101,31 +103,31 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.departmentId = '0';
+            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.departmentId = '0';
+            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.General, nameMapper);
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.departmentId = '2';
+            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           case 3:
             user.role = Role.User;
-            user.departmentId = '4';
+            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
             break;
           case 4:
             user.role = Role.User;
-            user.departmentId = '1';
+            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
             break;
           case 5:
             user.role = Role.User;
-            user.departmentId = '3';
+            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
             break;
           case 6:
             user.role = Role.User;
-            user.departmentId = '2';
+            user.departmentId = Departments.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
             break;
           default:
             break;
@@ -208,14 +210,10 @@ export const seedDepartments = async () => {
   console.log('Seeding departments...');
   try {
     await Department.deleteMany({});
-    for (let key in DepartmentName) {
-      // We want do not want the General to be seeded as a department
-      if (key === DepartmentName.General) {
-        continue;
-      }
-      let departmentName = DepartmentName[key];
+    // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
+    for (let deptName in DefaultDepartments) {
       const department = new Department({
-        name: departmentName
+        name: DefaultDepartments[deptName]
       });
       await department.save();
     }

@@ -3,7 +3,7 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import UserModel, { hashPassword, Role, User, validateUserSchema } from '../../models/user';
 import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
-import { GENERAL_DEPARTMENT_ID, verifyDeptId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -34,9 +34,9 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
     if (updatedUser.password && updatedUser.password !== '') {
       updatedUser.password = await hashPassword(updatedUser.password);
     }
-    if (!verifyDeptId(updatedUser.departmentId)) {
-      throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
-    }
+    // if (!verifyDeptId(updatedUser.departmentId)) {
+    //   throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
+    // }
 
     Object.keys(updatedUser).forEach((k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k]);
     await UserModel.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
@@ -104,9 +104,9 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
     if (existingUser) {
       throw new Conflict(`Username ${username} exists`);
     }
-    if (!verifyDeptId(departmentId)) {
-      throw new BadRequest(`Invalid department id ${department.id}`);
-    }
+    // if (!verifyDeptId(departmentId)) {
+    //   throw new BadRequest(`Invalid department id ${department.id}`);
+    // }
 
     const userInfo: User = {
       username: username,
