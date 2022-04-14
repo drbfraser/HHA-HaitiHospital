@@ -1,4 +1,5 @@
 import { CustomError } from 'exceptions/custom_exception';
+import { InvalidInput } from 'exceptions/systemException';
 import { NextFunction, Response } from 'express';
 import { departmentAuth } from 'middleware/departmentAuth';
 import { CallbackError } from 'mongoose';
@@ -92,7 +93,10 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(
         
         const reportInString = JSON.stringify(req.body);
         const report = jsonStringToReport(reportInString);
-        report.id = req.params[REPORT_ID_URL_SLUG];
+
+        if (report.id !== req.params[REPORT_ID_URL_SLUG])
+            throw new InvalidInput(`Provided report ID is different than expectation`);
+
         updateSubmissionDate(report);
         setSubmittor(report, req.user);        
         const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);

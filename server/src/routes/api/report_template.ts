@@ -15,6 +15,7 @@ import { CustomError } from 'exceptions/custom_exception';
 import { mongooseErrorToMyError } from 'utils/utils';
 import { DEPARTMENT_ID_URL_SLUG, TEMPLATE_ID_URL_SLUG } from 'utils/constants';
 import { updateSubmissionDate, setSubmittor } from 'utils/report/report';
+import { InvalidInput } from 'exceptions/systemException';
 
 const router = Router();
 export default router;
@@ -107,7 +108,10 @@ router.route(`/:${TEMPLATE_ID_URL_SLUG}`).put(
         const jsonReport: JsonReportDescriptor = req.body;
         const bodyStr: string = JSON.stringify(jsonReport);
         const report: ReportDescriptor = jsonStringToReport(bodyStr);
-        report.id = req.params[TEMPLATE_ID_URL_SLUG]
+
+        if (report.id !== req.params[TEMPLATE_ID_URL_SLUG]) 
+            throw new InvalidInput(`Provided template Id is different than expectation`);
+
         updateSubmissionDate(report);
         setSubmittor(report, req.user);
 
