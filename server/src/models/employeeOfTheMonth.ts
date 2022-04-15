@@ -27,7 +27,7 @@ export interface EmployeeOfTheMonthJson {
 }
 
 export interface EmployeeOfTheMonthWithInstanceMethods extends EmployeeOfTheMonth {
-  toJson: () => EmployeeOfTheMonthJson;
+  toJson: () => Promise<EmployeeOfTheMonthJson>;
 }
 
 const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethods>(

@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import Department, { Department, DepartmentJson } from 'models/departments';
+import Department, { DepartmentJson } from 'models/departments';
 import { HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
 

@@ -54,7 +54,7 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
 
 const getDeptNameById = async (deptId: string): Promise<string> => {
   try {
-    const department: DepartmentModel = await Department.findById(deptId);
+    const department: DepartmentModel = (await Department.findById(deptId)) as DepartmentModel;
     if (Object.keys(department).length === 0) throw new Error(`Department Id ${deptId} does not have a name`);
     return department.name;
   } catch (error: any) {
@@ -64,7 +64,7 @@ const getDeptNameById = async (deptId: string): Promise<string> => {
 
 const getDeptIdByName = async (deptName: string): Promise<string> => {
   try {
-    const department: DepartmentModel = await Department.findOne({ name: deptName });
+    const department: DepartmentModel = (await Department.findOne({ name: deptName })) as DepartmentModel;
     if (Object.keys(department).length === 0) throw new Error(`Department name ${deptName} does not have an id`);
     return department._id;
   } catch (error: any) {
@@ -73,7 +73,7 @@ const getDeptIdByName = async (deptName: string): Promise<string> => {
 };
 
 const validateDeptId = async (deptId: string): Promise<boolean> => {
-  const department: DepartmentModel = await Department.findById(deptId);
+  const department: DepartmentModel = (await Department.findById(deptId)) as DepartmentModel;
   return !(Object.keys(department).length === 0);
 };
 

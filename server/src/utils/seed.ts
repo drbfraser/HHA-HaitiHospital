@@ -28,17 +28,19 @@ const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enu
 
 export const seedDb = async () => {
   // TODO: Remove delete many when in prod
-  //   await UserModel.deleteMany({});
-  await MessageBody.deleteMany({});
-  await CaseStudy.deleteMany({});
+  // await UserModel.deleteMany({});
 
   await seedDepartments();
   await setupDepartmentMap();
-  await seedUsers();
-  await seedCaseStudies();
-  await seedMessageBoard();
-  await seedBioMech();
-  await seedEmployeeOfTheMonth();
+
+  // Must ensure that user seed is done before moving on as these features require updated information from user
+  seedUsers().then(async () => {
+    await seedMessageBoard();
+    await seedBioMech();
+    await seedEmployeeOfTheMonth();
+    await seedCaseStudies();
+  });
+
   console.log('Database seeding completed.');
 };
 
@@ -141,6 +143,7 @@ export const seedUsers = async () => {
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   try {
+    await MessageBody.deleteMany({});
     const users: User[] = await UserModel.find();
     const numOfMessagesToGenerate: number = 100;
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
@@ -187,6 +190,7 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
 export const seedCaseStudies = async () => {
   console.log('Seeding case studies...');
   try {
+    await CaseStudy.deleteMany({});
     const users = await UserModel.find().lean();
     const randomDefaultUser = selectRandomUser(users);
     setDefaultFeaturedCaseStudy(randomDefaultUser);
