@@ -16,6 +16,7 @@ const router = Router();
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const doc = await EmployeeOfTheMonthModel.findOne();
+    // @ts-ignore
     const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
     res.status(HTTP_OK_CODE).json(json);
   } catch (e) {
