@@ -13,7 +13,7 @@ export enum DefaultDepartments {
 const initIdToNameMap = (departments: DepartmentModel[]): Map<string, string> => {
   let _departmentIdMapper = new Map<string, string>();
   departments.forEach((dept: DepartmentModel) => {
-    _departmentIdMapper.set(dept._id, dept.name as string);
+    _departmentIdMapper.set(dept._id, dept.name);
   });
   return _departmentIdMapper;
 };
@@ -32,7 +32,7 @@ const getDeptNameFromId = (deptId: string, map: Map<string, string>): string => 
 const initNameToId = (departments: DepartmentModel[]): Map<string, string> => {
   let _departmentNameMapper = new Map<string, string>();
   departments.forEach((dept: DepartmentModel) => {
-    _departmentNameMapper.set(dept.name as string, dept._id);
+    _departmentNameMapper.set(dept.name, dept._id);
   });
   return _departmentNameMapper;
 };
