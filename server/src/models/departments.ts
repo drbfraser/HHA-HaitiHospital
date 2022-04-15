@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import CaseStudy, { CaseStudy as CaseStudyModel } from './caseStudies';
-import { currYear, currMonth } from 'utils/dateFormatting';
+import { LeaderboardJson } from './leaderboard';
+import { leaderboardPointsCalculator } from 'utils/leaderboard';
 
 const { Schema } = mongoose;
 
@@ -14,19 +14,12 @@ export interface DepartmentJson {
   name: string;
 }
 
-export interface LeaderboardJson {
-  id: string;
-  name: string;
-  points: number;
-  nCaseStudies: number;
-}
-
 export interface DepartmentWithInstanceMethods extends Department {
   toJson: () => Promise<DepartmentJson>;
   toLeaderboard: (pointsFactor: number) => Promise<LeaderboardJson>;
 }
 
-const departmentSchema = new Schema<DepartmentWithInstanceMethods>({
+export const departmentSchema = new Schema<DepartmentWithInstanceMethods>({
   name: { type: String, required: true }
 });
 
@@ -39,23 +32,7 @@ departmentSchema.methods.toJson = async function (): Promise<DepartmentJson> {
 };
 
 departmentSchema.methods.toLeaderboard = async function (pointsFactor: number): Promise<LeaderboardJson> {
-  const numberOfCaseStudies: CaseStudyModel[] = await CaseStudy.find({
-    // Checks if the case study is created between YYYY-MM-01T00:00:00 and YYYY-(next month)-01T00:00:00
-    createdAt: {
-      $gte: new Date(currYear, currMonth, 1),
-      $lte: new Date(currYear, currMonth + 1, 1)
-    },
-    departmentId: this._id
-  });
-
-  // Eventually will need to add report points to this
-  const json: LeaderboardJson = {
-    id: this._id,
-    name: this.name,
-    points: pointsFactor * numberOfCaseStudies.length,
-    nCaseStudies: numberOfCaseStudies.length
-  };
-  return json;
+  return await leaderboardPointsCalculator(pointsFactor, this);
 };
 
 const Department = mongoose.model<DepartmentWithInstanceMethods>('Department', departmentSchema, 'Department');
