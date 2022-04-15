@@ -12,6 +12,11 @@ export const hasSumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
   return _JsonDefs.ItemType[typeKey] === _JsonDefs.ItemType.SUM;
 };
 
+export const hasEqualType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
+  const typeKey = getItemTypeFromValue(jsonItem.type);
+  return _JsonDefs.ItemType[typeKey] === _JsonDefs.ItemType.EQUAL;
+};
+
 export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _JsonDefs.ItemTypeKeys) => {
   const typeChecker = getAnswerTypeChecker(itemType);
   typeChecker(answer);
@@ -51,6 +56,7 @@ const initItemAnswerTypeCheckerMap = (map: Map<_JsonDefs.ItemType, AnswerTypeChe
   map.clear();
   map.set(_JsonDefs.ItemType.NUMERIC, numericAnswerTypeChecker);
   map.set(_JsonDefs.ItemType.SUM, numericAnswerTypeChecker);
+  map.set(_JsonDefs.ItemType.EQUAL, numericAnswerTypeChecker);
   //ToDo: fill out the rest later
   const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
   if (map.size != expectedSize) {

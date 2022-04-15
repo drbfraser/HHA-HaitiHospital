@@ -1,4 +1,5 @@
 import { JsonReportDescriptor } from 'common/json_report';
+import { InvalidInput } from 'exceptions/systemException';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport, reportToJsonReport } from 'utils/parsers/parsers';
 const chai = require('chai');
@@ -394,6 +395,116 @@ describe('Test parsing json string to a report', () => {
       done();
     } catch (e) {
       done(e);
+    }
+  });
+});
+
+var assert = require('chai').assert
+
+describe('Test Equal questions', () => {
+  const correctSchema: JsonReportDescriptor = {
+    meta: {
+      id: '0',
+      department: { id: '2', name: 'NICU/Paeds' }
+    },
+    items: [
+      {
+        type: 'equal',
+        description: 'equal item',
+        answer: [['10']],
+        items: [
+          {
+            type: 'numeric',
+            description: 'child 1',
+            answer: [['10']]
+          },
+          {
+            type: 'sum',
+            description: 'child 2',
+            answer: [['10']],
+            items: [
+              {
+                type: 'numeric',
+                description: 'child',
+                answer: [['5']]
+              },
+              {
+                type: 'numeric',
+                description: 'child',
+                answer: [['2']]
+              },
+              {
+                type: 'numeric',
+                description: 'child',
+                answer: [['3']]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+  const invalidChildrenAnswers: JsonReportDescriptor = {
+    meta: {
+      id: '0',
+      department: { id: '2', name: 'NICU/Paeds' }
+    },
+    items: [
+      {
+        type: 'equal',
+        description: 'equal item',
+        answer: [['10']],
+        items: [
+          {
+            type: 'numeric',
+            description: 'child 1',
+            answer: [['7']]
+          },
+          {
+            type: 'sum',
+            description: 'child 2',
+            answer: [['7']],
+            items: [
+              {
+                type: 'numeric',
+                description: 'child',
+                answer: [['5']]
+              },
+              {
+                type: 'numeric',
+                description: 'child',
+                answer: [['2']]
+              },
+              {
+                type: 'numeric',
+                description: 'child',
+                answer: [['3']]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+  it('should parse json equal item', (done) => {
+    try {
+      const report = jsonStringToReport(JSON.stringify(correctSchema))
+      chai.expect(report).to.not.be.empty;
+      done()
+    } catch (e) {
+      done(e);
+    }
+  });
+
+  it('should error parsing invalid children json equal item', (done) => {
+    try {
+      const report = jsonStringToReport(JSON.stringify(invalidChildrenAnswers))
+      done("Expected exception thrown")
+    } catch (e) {
+      assert(e instanceof InvalidInput)
+      done()
     }
   });
 });

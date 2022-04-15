@@ -1,4 +1,4 @@
-import { ItemAnswer, ReportDescriptor, ReportItem, ReportItems, ReportNItem, ReportSumItem } from '../definitions/report';
+import { ItemAnswer, ReportDescriptor, ReportEqualItem, ReportItem, ReportItems, ReportNItem, ReportSumItem } from '../definitions/report';
 import { generateUuid, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { Template } from '../../models/template';
@@ -7,6 +7,8 @@ import { ItemType, ItemTypeKeys } from 'common/json_report';
 interface TemplateItem extends ReportItem {}
 interface TemplateNItem extends ReportNItem {}
 interface TemplateSumItem extends ReportSumItem {}
+interface TemplateEqualItem extends ReportEqualItem {}
+
 export type TemplateItems = Array<TemplateItem>;
 type TemplateAnswer = ItemAnswer;
 
@@ -64,6 +66,7 @@ namespace ItemToTemplate {
     map.clear();
     map.set(ItemType.NUMERIC, '0');
     map.set(ItemType.SUM, '0');
+    map.set(ItemType.EQUAL, '0');
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);
     if (map.size != expectedSize) {
@@ -101,6 +104,7 @@ namespace ItemToTemplate {
     let numItem: TemplateNItem = base;
     return numItem;
   };
+
   const sumParser: ItemTemplateParser = (item: ReportSumItem): TemplateSumItem => {
     let base: TemplateItem = baseItemParser(item);
     let children: TemplateItem[] = item.children.map((child) => {
@@ -111,11 +115,22 @@ namespace ItemToTemplate {
     return sumItem;
   };
 
+  const equalParser: ItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
+    let base: TemplateItem = baseItemParser(item);
+    let children: TemplateItem[] = item.children.map((child) => {
+      const parser = getParserForType(child.type);
+      return parser(child);
+    });
+    let sumItem: TemplateEqualItem = { ...base, children: children };
+    return sumItem;
+  };
+
   const typeToParser = new Map<ItemType, ItemTemplateParser>();
   const initTypeToParserMap = (map: Map<ItemType, ItemTemplateParser>) => {
     map.clear();
     map.set(ItemType.NUMERIC, numericParser);
     map.set(ItemType.SUM, sumParser);
+    map.set(ItemType.EQUAL, equalParser);
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);
     if (map.size != expectedSize) {

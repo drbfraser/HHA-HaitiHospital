@@ -48,28 +48,30 @@ router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunctio
   }
 });
 
-router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
-  const departmentId: string = req.body.department.id;
-  if (!(await Departments.Database.validateDeptId(departmentId))) {
-    return next(new BadRequest(`Invalid department id ${departmentId}`));
+router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const departmentId: string = req.body.department.id;
+    if (!(await Departments.Database.validateDeptId(departmentId))) {
+      throw new BadRequest(`Invalid department id ${departmentId}`);
+    }
+
+    const date: Date = new Date();
+    const messageBody: string = req.body.messageBody;
+    const messageHeader: string = req.body.messageHeader;
+    const userId: string = req.user._id!;
+    const messageEntry = new MessageBody({
+      departmentId: departmentId,
+      userId: userId,
+      date: date,
+      messageBody: messageBody,
+      messageHeader: messageHeader
+    });
+
+    await messageEntry.save();
+    res.sendStatus(HTTP_CREATED_CODE);
+  } catch (e) {
+    next(e);
   }
-
-  const date: Date = new Date();
-  const messageBody: string = req.body.messageBody;
-  const messageHeader: string = req.body.messageHeader;
-  const userId: string = req.user._id!;
-  const messageEntry = new MessageBody({
-    departmentId: departmentId,
-    userId: userId,
-    date: date,
-    messageBody: messageBody,
-    messageHeader: messageHeader
-  });
-
-  messageEntry
-    .save()
-    .then(() => res.sendStatus(HTTP_CREATED_CODE))
-    .catch((err: any) => next(new InternalError(`Message submission failed: ${err}`)));
 });
 
 router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {

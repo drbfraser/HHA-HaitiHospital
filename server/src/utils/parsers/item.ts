@@ -3,7 +3,7 @@ import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as _JsonUtils from '../report/json_report';
 import * as _ReportDefs from '../definitions/report';
 import * as _JsonDefs from 'common/json_report';
-import { hasNumType, checkAnswerType, hasSumType } from '../report/json_item';
+import { hasNumType, checkAnswerType, hasSumType, hasEqualType } from '../report/json_item';
 import { isSumCorrect } from '../report/item';
 
 export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
@@ -45,6 +45,18 @@ namespace JsonToItem {
     return newItem;
   };
 
+  const parseNumericChildren = (childItem: _JsonDefs.JsonReportItem, parentItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportItem => {
+    const isChildTypeValid = hasNumType(childItem) || hasSumType(childItem);
+    const childType = _JsonUtils.getItemType(childItem);
+    if (!isChildTypeValid) {
+      throw new InvalidInput(`Item: ${parentItem.description} does not support a child of type ${childType}`);
+    }
+
+    const parser = getParserJsonToItem(childType);
+    const child = parser(childItem);
+    return child;
+  };
+
   const parseToSumItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportSumItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
     if (!hasSumType(jsonItem)) {
@@ -61,16 +73,8 @@ namespace JsonToItem {
     checkAnswerType(answerList, typeKey!);
 
     const jsonChildren = _JsonUtils.getChildren(jsonItem);
-    const children = jsonChildren.map((jsonChild) => {
-      const isChildTypeValid = hasNumType(jsonChild) || hasSumType(jsonChild);
-      const childType = _JsonUtils.getItemType(jsonChild);
-      if (!isChildTypeValid) {
-        throw new InvalidInput(`Item: ${jsonItem.description} does not support a child of type ${childType}`);
-      }
-
-      const parser = getParserJsonToItem(childType);
-      const child = parser(jsonChild);
-      return child;
+    const children = jsonChildren.map((child) => {
+      return parseNumericChildren(child, jsonItem);
     });
 
     const sum = Number(answerList[0]);
@@ -87,12 +91,95 @@ namespace JsonToItem {
     return newItem;
   };
 
+  const parseToEqualItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportEqualItem => {
+    const typeKey = getItemTypeFromValue(jsonItem.type);
+    if (!hasEqualType(jsonItem)) {
+      throw new InvalidInput(`Constructor for equal item but ${typeKey} was provided - item: ${jsonItem.description}`);
+    }
+    if (_JsonUtils.isInATable(jsonItem)) {
+      throw new InvalidInput(`An Equal item should not be in a table`);
+    }
+    if (_JsonUtils.getItemAnswerLength(jsonItem) > 1) {
+      throw new InvalidInput(`An Equal item: ${jsonItem.description} must have only 1 answer`);
+    }
+
+    const answerList = _JsonUtils.getAnswerList(jsonItem);
+    checkAnswerType(answerList, typeKey!);
+
+    const jsonChildren = _JsonUtils.getChildren(jsonItem);
+    const children = jsonChildren.map((child) => {
+      return parseNumericChildren(child, jsonItem);
+    });
+
+    const equalValue = Number(answerList[0]);
+    const corrects = Array<Value>();
+    const errors = Array<Value>();
+    const checkChildren = (child: _ReportDefs.ReportItem): void => {
+      const answer = Number(child.answer[0]);
+      if (equalValue - answer == 0) corrects.push(Correct(0));
+      else errors.push(Error(new ParsingError()));
+    };
+
+    children.forEach(checkChildren);
+
+    if (errors.length > 0)
+      // Todo: report detailed list of errors here and throw.
+      throw new InvalidInput(`Item: ${jsonItem.description} has invalid children`);
+
+    let newItem: _ReportDefs.ReportEqualItem = {
+      type: typeKey!,
+      description: jsonItem.description,
+      answer: answerList,
+      children: children
+    };
+    return newItem;
+  };
+
+  /* 
+    These type definitions just a prototype for a type structure to support error handling.
+    This is inspired on Scala's Either but it is no where near a complete implementation. 
+    Future dev are free to use any implementation they see fit.
+
+    The goal is to have the ability to parse over a collection of items and collect a list
+    of all the errors.
+
+    Ideally, our system should not throw exceptions since it is error prone. We should instead make it like a 'pipe' where 
+    values are transformed from one to another. More detail here: 
+    https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
+    That said, this maybe hard to achieve in javascript
+    */
+  type Either<L, R> = { value: Array<R>; error: Array<L> };
+
+  type Value = Either<ParsingError, number>;
+
+  class ParsingError {
+    protected message: string;
+
+    constructor() {
+      this.message = 'Generic parsing error.';
+    }
+
+    toString(): string {
+      return 'Paring Error: ' + this.message;
+    }
+  }
+
+  function Correct(value: number): Value {
+    return { value: [value], error: Array<any>() };
+  }
+
+  function Error<T>(error: ParsingError): Value {
+    return { value: Array<any>(), error: [error] };
+  }
+
   type ParserByType = Map<_JsonDefs.ItemType, ItemParser>;
   const parserByType: ParserByType = new Map<_JsonDefs.ItemType, ItemParser>();
   const initParserByType = (map: Map<_JsonDefs.ItemType, ItemParser>) => {
     map.clear();
     map.set(_JsonDefs.ItemType.NUMERIC, parseToNumericItem);
     map.set(_JsonDefs.ItemType.SUM, parseToSumItem);
+    map.set(_JsonDefs.ItemType.EQUAL, parseToEqualItem);
+
     const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
     if (map.size != expectedSize) {
       throw new IllegalState(`item type - constructor map must have length ${expectedSize}`);
@@ -150,6 +237,7 @@ namespace ItemToJson {
   const initParserByType = (map: ParserByType) => {
     map.set(_JsonDefs.ItemType.NUMERIC, parseFromNumericItem);
     map.set(_JsonDefs.ItemType.SUM, parseFromSumItem);
+    map.set(_JsonDefs.ItemType.EQUAL, parseFromSumItem);
 
     const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
     if (map.size != expectedSize) {
