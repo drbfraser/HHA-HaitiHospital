@@ -22,7 +22,7 @@ export interface LeaderboardJson {
 }
 
 export interface DepartmentWithInstanceMethods extends Department {
-  toJson: () => DepartmentJson;
+  toJson: () => Promise<DepartmentJson>;
   toLeaderboard: (pointsFactor: number) => Promise<LeaderboardJson>;
 }
 
