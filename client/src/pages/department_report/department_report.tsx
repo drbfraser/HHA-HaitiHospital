@@ -2,8 +2,10 @@ import { useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import Axios from 'axios';
-import MockDepartmentApi from 'actions/MockDepartmentApi';
-import { ReportProps } from 'constants/interfaces';
+import Api from 'actions/Api';
+import { ENDPOINT_DEPARTMENT_GET_BY_ID } from 'constants/endpoints';
+import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
+import { ReportProps, Department, emptyDepartment } from 'constants/interfaces';
 import { ReportDisplay } from 'components/report_display/report_display';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -26,6 +28,7 @@ interface UrlParams {
 const DepartmentReport = (props: DepartmentReportProps) => {
   const { t } = useTranslation();
   const { deptId, id } = useParams<UrlParams>();
+  const [department, setDepartment] = useState<Department>(emptyDepartment);
   const [report, setReport] = useState<ReportProps>({});
   const [csvData, setCsvData] = useState<Object[]>([]);
   const pdfExportComponent = useRef(null);
@@ -34,7 +37,14 @@ const DepartmentReport = (props: DepartmentReportProps) => {
   };
   const history: History = useHistory<History>();
 
+  const getDepartmentById = async () => {
+    setDepartment(
+      await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(deptId), TOAST_DEPARTMENT_GET, history),
+    );
+  };
+
   useEffect(() => {
+    getDepartmentById();
     let BreakException = {};
     let data: Object[] = [];
     if (report.formData !== undefined && report.formData !== null) {
@@ -144,7 +154,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
         <div className="mt-2">
           {/* Dept Title */}
           <section className="mt-3">
-            <h1 className="lead text-center">{MockDepartmentApi.getDepartmentById(deptId)}</h1>
+            <h1 className="lead text-center">{department.name}</h1>
           </section>
 
           {/* Utility buttons */}
