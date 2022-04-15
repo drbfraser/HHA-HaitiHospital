@@ -15,6 +15,9 @@ const TOAST_CASESTUDY_POST: string = 'Unable to add case study';
 const TOAST_CASESTUDY_PATCH: string = 'Unable to set new featured case study';
 const TOAST_CASESTUDY_DELETE: string = 'Unable to delete case study';
 
+// Department
+const TOAST_DEPARTMENT_GET: string = 'Unable to fetch department';
+
 // Employee of the month
 const TOAST_EMPLOYEE_OF_THE_MONTH_GET: string = 'Unable to fetch employee of the month';
 const TOAST_EMPLOYEE_OF_THE_MONTH_PUT: string = 'Unable to update employee of the month';
@@ -43,6 +46,7 @@ export {
   TOAST_CASESTUDY_POST,
   TOAST_CASESTUDY_PATCH,
   TOAST_CASESTUDY_DELETE,
+  TOAST_DEPARTMENT_GET,
   TOAST_EMPLOYEE_OF_THE_MONTH_GET,
   TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
   TOAST_IMAGE_BY_PATH,
