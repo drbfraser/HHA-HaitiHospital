@@ -1,6 +1,5 @@
-import { getDeptNameFromId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
-import { boolean } from 'joi';
 import mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
 import UserModel, { UserJson } from './user';
@@ -175,7 +174,7 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
     user: userJson,
     department: {
       id: this.departmentId,
-      name: getDeptNameFromId(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId)
     },
     imgPath: this.imgPath,
     featured: this.featured,
@@ -191,6 +190,6 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
   return json;
 };
 
-const CaseStudy = mongoose.model<CaseStudyWithInstanceMethods>('CaseStudy', caseStudySchema);
+const CaseStudy = mongoose.model<CaseStudyWithInstanceMethods>('CaseStudy', caseStudySchema, 'CaseStudy');
 
 export default CaseStudy;

@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { Message, emptyMessage } from 'constants/interfaces';
 import { Department } from 'constants/interfaces';
-import MockDepartmentApi from 'actions/MockDepartmentApi';
+import Api from '../../actions/Api';
+import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
+import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
+import { History } from 'history';
 import initialDepartments from 'utils/json/departments.json';
 import { setDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
@@ -17,17 +21,24 @@ const MessageForm = (props: MessageFormProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
     setDepartmentMap(initialDepartments.departments),
   );
+  const history: History = useHistory<History>();
   const { t } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
   const [department, setDepartment] = useState<string>('');
 
+  const getDepartments = async () => {
+    setDepartments(
+      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+    );
+  };
+
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
+      getDepartments();
       if (props.optionalMsg !== undefined) {
         setPrefilledMsg(props.optionalMsg);
-        setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
       }
     }
 

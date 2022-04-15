@@ -1,4 +1,4 @@
-import { getDeptNameFromId } from 'utils/departments';
+import Departments from 'utils/departments';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
 
@@ -27,7 +27,7 @@ export interface EmployeeOfTheMonthJson {
 }
 
 export interface EmployeeOfTheMonthWithInstanceMethods extends EmployeeOfTheMonth {
-  toJson: () => EmployeeOfTheMonthJson;
+  toJson: () => Promise<EmployeeOfTheMonthJson>;
 }
 
 const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethods>(
@@ -43,13 +43,13 @@ const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethod
     timestamps: true
   }
 );
-employeeOfTheMonthSchema.methods.toJson = function (): EmployeeOfTheMonthJson {
+employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfTheMonthJson> {
   let json: EmployeeOfTheMonthJson = {
-    id: this.id,
+    id: this._id,
     name: this.name,
     department: {
       id: this.departmentId,
-      name: getDeptNameFromId(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId)
     },
     description: this.description,
     imgPath: this.imgPath,

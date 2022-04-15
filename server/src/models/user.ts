@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import * as ENV from '../utils/processEnv';
-import { getDeptNameFromId } from 'utils/departments';
+import Departments from 'utils/departments';
 
 const { Schema } = mongoose;
 
@@ -70,14 +70,14 @@ const userSchema = new Schema<UserWithInstanceMethods>(
   { timestamps: true }
 );
 
-userSchema.methods.toJson = function (): UserJson {
+userSchema.methods.toJson = async function (): Promise<UserJson> {
   return {
     id: this._id,
     name: this.name,
     role: this.role,
     department: {
       id: this.departmentId,
-      name: getDeptNameFromId(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId)
     },
     createdAt: this.createdAt,
     updatedAt: this.updatedAt
@@ -151,5 +151,5 @@ export const validateUser = (user) => {
   return validateUserSchema.validate(user);
 };
 
-const UserModel = mongoose.model<UserWithInstanceMethods>('User', userSchema);
+const UserModel = mongoose.model<UserWithInstanceMethods>('User', userSchema, 'User');
 export default UserModel;

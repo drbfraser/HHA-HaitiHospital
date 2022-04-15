@@ -1,12 +1,12 @@
-import { getDeptNameFromId } from '../departments';
+import Departments from '../departments';
 import { JsonReportDescriptor, JsonReportItems, JsonReportMeta } from 'common/json_report';
 import { ReportDescriptor, ReportItems, ReportMeta } from 'utils/definitions/report';
 import { formatDateString } from 'utils/utils';
 import * as _ReportUtils from '../report/report';
 import { getParserItemToJson } from './item';
 
-export const parseToJson = (report: ReportDescriptor) => {
-  const meta: JsonReportMeta = parseToJsonMeta(_ReportUtils.getReportMeta(report));
+export const parseToJson = async (report: ReportDescriptor) => {
+  const meta: JsonReportMeta = await parseToJsonMeta(_ReportUtils.getReportMeta(report));
   const items: JsonReportItems = parseToJsonItems(_ReportUtils.getReportItems(report));
   const jsonReport: JsonReportDescriptor = {
     meta: meta,
@@ -16,7 +16,7 @@ export const parseToJson = (report: ReportDescriptor) => {
 };
 
 // >>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>
-const parseToJsonMeta = (meta: ReportMeta): JsonReportMeta => {
+const parseToJsonMeta = async (meta: ReportMeta): Promise<JsonReportMeta> => {
   const id: string = meta.id;
   const departmentId: string = meta.departmentId;
   const submittedDate: string = formatDateString(meta.submittedDate);
@@ -26,7 +26,7 @@ const parseToJsonMeta = (meta: ReportMeta): JsonReportMeta => {
     id: id,
     department: {
       id: departmentId,
-      name: getDeptNameFromId(departmentId)
+      name: (await Departments.Database.getDeptNameById(departmentId)) as string
     },
     submittedDate: submittedDate,
     submittedUserId: submittedUserId

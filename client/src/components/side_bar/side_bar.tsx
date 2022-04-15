@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
@@ -7,7 +7,10 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { Role, Department, GeneralDepartment } from 'constants/interfaces';
-import MockDepartmentApi from 'actions/MockDepartmentApi';
+import Api from '../../actions/Api';
+import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
+import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
+import { History } from 'history';
 import initialDepartments from 'utils/json/departments.json';
 
 interface SidebarProps {}
@@ -23,10 +26,14 @@ const Sidebar = (props: SidebarProps) => {
   const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
+  const history: History = useHistory<History>();
+
+  const getDepartments = async () => {
+    setDepartments(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history));
+  };
 
   useEffect(() => {
-    // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(MockDepartmentApi.getDepartments());
+    getDepartments();
   }, []);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {

@@ -6,78 +6,78 @@ import { generateReportFromTemplate, TemplateItems } from 'utils/parsers/templat
 const { Schema } = mongoose;
 
 export interface TemplateBase {
-    id: string,
-    departmentId: string,
-    submittedDate: Date,
-    submittedByUserId: string,
-    items: TemplateItems
+  id: string;
+  departmentId: string;
+  submittedDate: Date;
+  submittedByUserId: string;
+  items: TemplateItems;
 }
 export interface TemplateWithUtils extends TemplateBase {
-    toJsonReport: () => JsonReportDescriptor
-};
+  toJsonReport: () => Promise<JsonReportDescriptor>;
+}
 const templateSchema = new Schema<TemplateWithUtils>({
-    id: {
-        type: String, 
-        unique: true, 
-        required: true,
-    },
-    departmentId: {type: String, unique: true, required: true},
-    submittedByUserId: {type: String, required: true},
-    submittedDate: {type: Date, required: true},
-    items: {type: Object, required: true}
+  id: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  departmentId: { type: String, unique: true, required: true },
+  submittedByUserId: { type: String, required: true },
+  submittedDate: { type: Date, required: true },
+  items: { type: Object, required: true }
 });
 
 // Make sure that instance methods defined below are matched with template schema i.e TemplateWithUtils
-templateSchema.methods.toJsonReport = function(): JsonReportDescriptor {
-    const report: ReportDescriptor = generateReportFromTemplate(this);
-    return parseToJson(report);
-}
+templateSchema.methods.toJsonReport = function (): Promise<JsonReportDescriptor> {
+  const report: ReportDescriptor = generateReportFromTemplate(this);
+  return parseToJson(report);
+};
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<< instance methods <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-const TEMPLATE_COLLECTION_NAME = "Template";
+const TEMPLATE_COLLECTION_NAME = 'Template';
 const TemplateCollection = mongoose.model<TemplateWithUtils>(TEMPLATE_COLLECTION_NAME, templateSchema);
 
 // >>>> VALIDATORS >>>>
 const uniqueTemplateId = (value: string) => {
-    TemplateCollection.countDocuments({ id: value }, function(err, count: Number) {
-        if (err) {
-            return false;
-        }
-        // If more than 0 count, invalidate
-        if (!count) {
-            return false;
-        }
-    });
+  TemplateCollection.countDocuments({ id: value }, function (err, count: Number) {
+    if (err) {
+      return false;
+    }
+    // If more than 0 count, invalidate
+    if (!count) {
+      return false;
+    }
+  });
 
-    return true;
-}
+  return true;
+};
 
 const uniqueTemplateDepartment = (value: string) => {
-    TemplateCollection.countDocuments({ departmentId: value }, function(err, count: Number) {
-        if (err) {
-            return false;
-        }
-        // If more than 0 count, invalidate
-        if (count) {
-            return false;
-        }
+  TemplateCollection.countDocuments({ departmentId: value }, function (err, count: Number) {
+    if (err) {
+      return false;
+    }
+    // If more than 0 count, invalidate
+    if (count) {
+      return false;
+    }
 
-        return true;
-    });
-}
+    return true;
+  });
+};
 
 templateSchema.path('id').validate({
-    validator: uniqueTemplateId,
-    message: function(props: ValidatorProps) {
-        return `Template with id ${props.value} already exists`;
-    }
+  validator: uniqueTemplateId,
+  message: function (props: ValidatorProps) {
+    return `Template with id ${props.value} already exists`;
+  }
 });
 templateSchema.path('departmentId').validate({
-    validator: uniqueTemplateDepartment,
-    message: function(props: ValidatorProps) {
-        return `Template with department id ${props.value} already exists`;
-    }
+  validator: uniqueTemplateDepartment,
+  message: function (props: ValidatorProps) {
+    return `Template with department id ${props.value} already exists`;
+  }
 });
 
 // <<<< VALIDATORS <<<<<

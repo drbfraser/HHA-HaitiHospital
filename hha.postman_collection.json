@@ -343,6 +343,45 @@
       ]
     },
     {
+      "name": "Departments",
+      "item": [
+        {
+          "name": "Get all departments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/department",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "department"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a department by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/department/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "department", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Employee Of The Month",
       "item": [
         {
