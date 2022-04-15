@@ -12,7 +12,8 @@ import {
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
-import MockDepartmentApi from 'actions/MockDepartmentApi';
+import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
+import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import initialDepartments from 'utils/json/departments.json';
 import { setDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
@@ -48,6 +49,12 @@ export const EditUserForm = (props: AdminProps) => {
   const { t } = useTranslation();
   const id = useLocation().pathname.split('/')[3];
 
+  const getDepartments = async () => {
+    setDepartments(
+      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+    );
+  };
+
   useEffect(() => {
     const fetchAndSetUser = async () => {
       const retrievedUser: UserJson = await Api.Get(
@@ -63,9 +70,8 @@ export const EditUserForm = (props: AdminProps) => {
     fetchAndSetUser();
 
     // For Future Devs: Replace MockDepartmentApi with Api
-    const fetchAndSetDepartments = async () => {
-      const departments = await MockDepartmentApi.getDepartments();
-      setDepartments(setDepartmentMap(departments));
+    const fetchAndSetDepartments = () => {
+      getDepartments();
     };
     fetchAndSetDepartments();
   }, []);
