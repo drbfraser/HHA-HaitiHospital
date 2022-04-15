@@ -36,7 +36,7 @@ router.route(`/:${DEPARTMENT_ID_URL_PARAM}`).get(requireJwtAuth, roleAuth(Role.A
     if (!template) {
       throw new NotFound(`No template for department found`);
     }
-    const jsonReport: JsonReportDescriptor = template.toJsonReport();
+    const jsonReport: JsonReportDescriptor = await template.toJsonReport();
     res.status(HTTP_OK_CODE).json(jsonReport);
   } catch (e) {
     next(e);
