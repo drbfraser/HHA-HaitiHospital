@@ -5,7 +5,8 @@ import { User, Role, Department, GeneralDepartment } from 'constants/interfaces'
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
-import MockDepartmentApi from 'actions/MockDepartmentApi';
+import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
+import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import initialDepartments from 'utils/json/departments.json';
 import { setDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
@@ -28,9 +29,14 @@ export const AddUserForm = (props: AdminProps) => {
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
+  const getDepartments = async () => {
+    setDepartments(
+      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+    );
+  };
+
   useEffect(() => {
-    // For Future Devs: Replace MockDepartmentApi with Api
-    setDepartments(setDepartmentMap(MockDepartmentApi.getDepartments()));
+    getDepartments();
   }, []);
 
   const onSubmitActions = () => {

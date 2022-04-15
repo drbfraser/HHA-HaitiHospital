@@ -16,7 +16,6 @@ import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
 import { BrokenKitView } from 'pages/broken_kit_view/broken_kit_report_view';
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
-import AddReport from 'pages/add_report/add_report';
 import DepartmentReport from 'pages/department_report/department_report';
 import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employee_of_the_month_main';
 import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
@@ -77,14 +76,6 @@ const routes = [
     loginRequired: true,
     rolesAllowed: ['None'],
     departmentsAllowed: ['None'],
-  },
-
-  {
-    path: '/department/:deptId/add',
-    component: AddReport,
-    loginRequired: true,
-    rolesAllowed: [],
-    departmentsAllowed: [],
   },
   {
     path: '/department/:deptId/edit/:id',

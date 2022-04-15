@@ -48,16 +48,6 @@ export const Department = (props: DepartmentProps) => {
           {/* Nav buttons */}
           <section>
             <div className="row">
-              {authState.userDetails.role === Role.HeadOfDepartment &&
-              authState.userDetails.department !== department.name ? null : (
-                <div className="col-auto">
-                  <Link to={`/department/${deptId}/add`}>
-                    <button className=" btn btn-dark btn-sm rounded-bill">
-                      <div className="lead">{t('departmentPageSubmitData')}</div>
-                    </button>
-                  </Link>
-                </div>
-              )}
               <div className="col-auto">
                 <Link to={`/biomechanic`}>
                   <button className="btn btn-dark btn-sm rounded-bill">
