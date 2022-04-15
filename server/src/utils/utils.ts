@@ -65,25 +65,25 @@ export const formatDateString = (date: Date): string => {
 };
 
 export const generateUuid = (): string => {
-    const id: string = crypto.randomBytes(16).toString("hex");
-    return id;
-}
+  const id: string = crypto.randomBytes(16).toString('hex');
+  return id;
+};
 
 export const mongooseErrorToMyError = (err: NativeError): CustomError => {
-    switch (err.name) {
-        case MONGOOSE_VALIDATOR_ERROR_NAME: {
-            const castErr = (err as Error.ValidationError);
-            let msg = "";
-            for (let field in castErr.errors) {
-            msg += castErr.errors[field].message + '\n';
-            }
-            return new BadRequest(msg);
-        }
-        case MONGOOSE_NO_DOCUMENT_ERROR_NAME: {
-            return new NotFound(`No document found`);
-        }
-        default: {
-            return new InternalError(`${err.message}`);
-        }
+  switch (err.name) {
+    case MONGOOSE_VALIDATOR_ERROR_NAME: {
+      const castErr = err as Error.ValidationError;
+      let msg = '';
+      for (let field in castErr.errors) {
+        msg += castErr.errors[field].message + '\n';
+      }
+      return new BadRequest(msg);
     }
-}
+    case MONGOOSE_NO_DOCUMENT_ERROR_NAME: {
+      return new NotFound(`No document found`);
+    }
+    default: {
+      return new InternalError(`${err.message}`);
+    }
+  }
+};

@@ -18,7 +18,7 @@ const setFeatured = (flag: boolean): object => {
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const postDocs = await CaseStudyModel.find().sort({updatedAt: 'desc'});
+    const postDocs = await CaseStudyModel.find().sort({ updatedAt: 'desc' });
     const jsonPosts = await Promise.all(postDocs.map((post) => post.toJson()));
     res.status(HTTP_OK_CODE).json(jsonPosts);
   } catch (e) {

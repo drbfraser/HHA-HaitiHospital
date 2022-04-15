@@ -11,8 +11,8 @@ import UserModel, { USER_MODEL_NAME } from './user';
 const { Schema } = mongoose;
 
 interface ReportWithInstanceMethods extends ReportDescriptor {
-    toJson: () => JsonReportDescriptor
-};
+  toJson: () => JsonReportDescriptor;
+}
 
 const PATH_TO_ID = 'id';
 const PATH_TO_DEPARTMENT_ID = 'departmentId';
@@ -20,84 +20,84 @@ const PATH_TO_USER_ID = 'submittedUserId';
 const PATH_TO_REPORT_MONTH = 'reportMonth';
 
 const reportSchema = new Schema<ReportWithInstanceMethods>({
-    id: {
-        type: String,
-        required: true,
-        default: randomUUID
-    },
-    departmentId: {
-        type: String,
-        required: true
-    },
-    reportMonth: {
-        type: Date,
-        required: true
-    },
-    submittedDate: {
-        type: Date,
-        required: true,
-        default: Date.now
-    },
-    submittedUserId: {
-        type: String,
-        required: true,
-        ref: USER_MODEL_NAME
-    },
-    items: { type: Object, required: true }
+  id: {
+    type: String,
+    required: true,
+    default: randomUUID
+  },
+  departmentId: {
+    type: String,
+    required: true
+  },
+  reportMonth: {
+    type: Date,
+    required: true
+  },
+  submittedDate: {
+    type: Date,
+    required: true,
+    default: Date.now
+  },
+  submittedUserId: {
+    type: String,
+    required: true,
+    ref: USER_MODEL_NAME
+  },
+  items: { type: Object, required: true }
 });
 
-reportSchema.methods.toJson = function(): Promise<JsonReportDescriptor> {
-    const json = parseToJson(this);
-    return json;
-}
+reportSchema.methods.toJson = function (): Promise<JsonReportDescriptor> {
+  const json = parseToJson(this);
+  return json;
+};
 
-export const REPORT_MODEL_NAME = "Report";
+export const REPORT_MODEL_NAME = 'Report';
 export const ReportModel = mongoose.model<ReportWithInstanceMethods>(REPORT_MODEL_NAME, reportSchema);
 
 // >>>> VALIDATORS >>>>
 
 const uniqueId = async (value: string) => {
-    const count = await ReportModel.countDocuments({ id: value });
-    return count === 0;
-}
+  const count = await ReportModel.countDocuments({ id: value });
+  return count === 0;
+};
 reportSchema.path(`${PATH_TO_ID}`).validate({
-    validator: uniqueId,
-    message: function(props: mongoose.ValidatorProps) {
-        return `Report with id ${props.value} already exists`;
-    }
+  validator: uniqueId,
+  message: function (props: mongoose.ValidatorProps) {
+    return `Report with id ${props.value} already exists`;
+  }
 });
 
 const validDepartment = async (value: string) => {
-    const valid = await Departments.Database.validateDeptId(value);
-    return valid;
-}
+  const valid = await Departments.Database.validateDeptId(value);
+  return valid;
+};
 reportSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
-    validator: validDepartment,
-    message: function(props: mongoose.ValidatorProps) {
-        return `Department id ${props.value} is invalid`;
-    }
+  validator: validDepartment,
+  message: function (props: mongoose.ValidatorProps) {
+    return `Department id ${props.value} is invalid`;
+  }
 });
 
 const verifyUser = async (value: string) => {
-    const existed = await UserModel.exists({ _id: value});
-    return existed;
-}
+  const existed = await UserModel.exists({ _id: value });
+  return existed;
+};
 reportSchema.path(`${PATH_TO_USER_ID}`).validate({
-    validator: verifyUser,
-    message: function(props: mongoose.ValidatorProps) {
-        return `Report references to non-existing user`;
-    }
-})
+  validator: verifyUser,
+  message: function (props: mongoose.ValidatorProps) {
+    return `Report references to non-existing user`;
+  }
+});
 
 const uniqueReportMonth = async function (value: Date) {
-    const count = await ReportModel.countDocuments({ reportMonth: value, departmentId: this.departmentId });
-    return count === 0;
+  const count = await ReportModel.countDocuments({ reportMonth: value, departmentId: this.departmentId });
+  return count === 0;
 };
 reportSchema.path(`${PATH_TO_REPORT_MONTH}`).validate({
-    validator: uniqueReportMonth,
-    message: function(props: mongoose.ValidatorProps) {
-        return `Report for date: ${formatDateString(props.value)} already exists`;
-    }
-})
+  validator: uniqueReportMonth,
+  message: function (props: mongoose.ValidatorProps) {
+    return `Report for date: ${formatDateString(props.value)} already exists`;
+  }
+});
 
 // <<<< VALIDATORS <<<<<

@@ -13,13 +13,13 @@ export const parseToJson = async (report: ReportDescriptor) => {
 
   const jsonReport: JsonReportDescriptor = {
     meta: {
-        id: id,
-        department: {
-            id: departmentId,
-            name: await Departments.Database.getDeptNameById(departmentId)
-        },
-        submittedDate: submittedDate,
-        submittedUserId: submittedUserId
+      id: id,
+      department: {
+        id: departmentId,
+        name: await Departments.Database.getDeptNameById(departmentId)
+      },
+      submittedDate: submittedDate,
+      submittedUserId: submittedUserId
     },
     items: items
   };

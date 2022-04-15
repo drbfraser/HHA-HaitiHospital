@@ -3,10 +3,10 @@ import { Role } from '../models/user';
 
 // Make sure provied departmentId is valid
 export const checkUserIsDepartmentAuthed = (user: User, departmentId: string) => {
-    if (user.role === Role.Admin || user.role === Role.MedicalDirector) {
-        return true;
-    }
+  if (user.role === Role.Admin || user.role === Role.MedicalDirector) {
+    return true;
+  }
 
-    const userDepartment = user.departmentId;
-    return userDepartment === departmentId;
+  const userDepartment = user.departmentId;
+  return userDepartment === departmentId;
 };

@@ -37,11 +37,11 @@ export interface ReportSumItem extends ReportItem {
 
 export type ReportItems = Array<ReportItem>;
 export interface ReportDescriptor {
-    id: string;
-    departmentId: string;
-    submittedDate: Date;
-    reportMonth?: Date;
-    submittedUserId: string;
+  id: string;
+  departmentId: string;
+  submittedDate: Date;
+  reportMonth?: Date;
+  submittedUserId: string;
 
-    items: ReportItems;
+  items: ReportItems;
 }
