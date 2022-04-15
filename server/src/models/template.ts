@@ -13,7 +13,7 @@ export interface TemplateBase {
   items: TemplateItems;
 }
 export interface TemplateWithUtils extends TemplateBase {
-  toJsonReport: () => JsonReportDescriptor;
+  toJsonReport: () => Promise<JsonReportDescriptor>;
 }
 const templateSchema = new Schema<TemplateWithUtils>({
   id: {
