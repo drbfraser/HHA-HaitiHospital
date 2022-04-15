@@ -8,7 +8,7 @@ export enum DefaultDepartments {
   Community = 'Community & Health'
 }
 
-const General: string = DefaultDepartments.General;
+// ***************************************************** Utility functions for hashtable approach *****************************************************
 
 const initIdToNameMap = (departments: DepartmentModel[]): Map<string, string> => {
   let _departmentIdMapper = new Map<string, string>();
@@ -52,6 +52,8 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
   return map.has(deptId);
 };
 
+// ***************************************************** Utility functions for database approach ******************************************************
+
 const getDeptNameById = async (deptId: string): Promise<string> => {
   try {
     const department: DepartmentModel = (await Department.findById(deptId)) as DepartmentModel;
@@ -68,7 +70,7 @@ const getDeptIdByName = async (deptName: string): Promise<string> => {
     if (Object.keys(department).length === 0) throw new Error(`Department name ${deptName} does not have an id`);
     return department._id;
   } catch (error: any) {
-    return 'Error: Unable to retrieve department name';
+    return 'Error: Unable to retrieve department id';
   }
 };
 
@@ -77,6 +79,8 @@ const validateDeptId = async (deptId: string): Promise<boolean> => {
   return !(Object.keys(department).length === 0);
 };
 
+// ****************************************************************************************************************************************************
+
 // Util functions using a hashtable data structure
 const Hashtable = { initIdToNameMap, initNameToId, getDeptNameFromId, getDeptIdFromName, verifyDeptId };
 
@@ -84,13 +88,11 @@ const Hashtable = { initIdToNameMap, initNameToId, getDeptNameFromId, getDeptIdF
 const Database = { getDeptNameById, getDeptIdByName, validateDeptId };
 
 /**
- * @param General
- * - Enum namespace for General Department
- * @param Map
+ * @param Hashtable
  * - Util functions using a hashtable data structure
  * @param Database
  * - Util functions from database calls
  */
-const Departments = { General, Hashtable, Database };
+const Departments = { Hashtable, Database };
 
 export default Departments;
