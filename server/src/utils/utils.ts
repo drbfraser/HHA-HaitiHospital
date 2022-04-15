@@ -26,43 +26,43 @@ export const isValidUrl = (str) => {
 };
 
 import { InvalidInput } from 'exceptions/systemException';
-import crypto from "crypto";
+import crypto from 'crypto';
 import { ItemType, ItemTypeKeys } from 'common/json_report';
 import { CustomError } from 'exceptions/custom_exception';
 import { Error, NativeError } from 'mongoose';
 import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';
 import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
 
-export const getEnumKeyByStringValue = function <T extends { [index: string]: any; }>(myEnum: T, enumValue: string): keyof T | null {
-    let keys = Object.keys(myEnum).filter(x => myEnum[x].toString() == enumValue);
-    return keys.length > 0 ? keys[0] : null;
+export const getEnumKeyByStringValue = function <T extends { [index: string]: any }>(myEnum: T, enumValue: string): keyof T | null {
+  let keys = Object.keys(myEnum).filter((x) => myEnum[x].toString() == enumValue);
+  return keys.length > 0 ? keys[0] : null;
 };
 
-export const getLengthOfEnum = function<T extends {[index: string]: any;}>(myEnum: T): number {
-    let count = Object.keys(myEnum).filter((key) => isNaN(Number(key))).length;
-    return count;
-}
+export const getLengthOfEnum = function <T extends { [index: string]: any }>(myEnum: T): number {
+  let count = Object.keys(myEnum).filter((key) => isNaN(Number(key))).length;
+  return count;
+};
 
-export const getItemTypeFromValue = (type: string): ItemTypeKeys=> {
-    const key = getEnumKeyByStringValue(ItemType, type);
-    if (!key) {
-        throw new InvalidInput(`Item of type: ${type} is not supported`);
-    }
-    return key!;
+export const getItemTypeFromValue = (type: string): ItemTypeKeys => {
+  const key = getEnumKeyByStringValue(ItemType, type);
+  if (!key) {
+    throw new InvalidInput(`Item of type: ${type} is not supported`);
+  }
+  return key!;
 };
 
 export const formatDateString = (date: Date): string => {
-    // const myOptions = {year: "numeric", month: 'long', day: 'numeric'};
-    const result =  date.toLocaleDateString('en-US', {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric"
-    });
-    return result;
-}
+  // const myOptions = {year: "numeric", month: 'long', day: 'numeric'};
+  const result = date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  });
+  return result;
+};
 
 export const generateUuid = (): string => {
     const id: string = crypto.randomBytes(16).toString("hex");

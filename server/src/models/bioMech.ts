@@ -1,4 +1,4 @@
-import { getDeptNameFromId } from 'utils/departments';
+import Departments from 'utils/departments';
 import * as mongoose from 'mongoose';
 import { IllegalState } from 'exceptions/systemException';
 import { formatDateString } from 'utils/utils';
@@ -65,7 +65,7 @@ bioMechSchema.methods.toJson = async function (): Promise<BioMechJson> {
     user: userJson,
     department: {
       id: this.departmentId,
-      name: getDeptNameFromId(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId)
     },
     equipmentName: this.equipmentName,
     equipmentPriority: this.equipmentPriority,

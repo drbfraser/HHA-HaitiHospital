@@ -3,15 +3,15 @@ import { ItemTypeKeys } from 'common/json_report';
 
 export type ItemAnswer = Array<string>;
 export interface ReportItem {
-    type: ItemTypeKeys;
-    description: string;
-    answer: ItemAnswer;
+  type: ItemTypeKeys;
+  description: string;
+  answer: ItemAnswer;
 }
 //Short Answer Item
 // export interface ReportSaItem extends ReportItem<string> {};
 //Numeric Item
 
-export interface ReportNItem extends ReportItem { }
+export interface ReportNItem extends ReportItem {}
 //Yes No item
 // export interface ReportYnItem extends ReportItem<boolean> {};
 //Mcq item
@@ -28,7 +28,7 @@ export interface ReportNItem extends ReportItem { }
 // }
 //Sum item
 export interface ReportSumItem extends ReportItem {
-    children: Array<ReportNItem | ReportSumItem>;
+  children: Array<ReportNItem | ReportSumItem>;
 }
 //Survey Generator item
 // export interface JsonReportSurveyItem extends ReportItem<number> {

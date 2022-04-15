@@ -1,4 +1,4 @@
-import { getDeptNameFromId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
@@ -48,7 +48,7 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
     id: this._id,
     department: {
       id: this.departmentId,
-      name: getDeptNameFromId(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId)
     },
     user: userJson,
     date: formatDateString(this.date),
@@ -58,5 +58,5 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   return json;
 };
 
-const MessageBody = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'Message Board');
+const MessageBody = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'MessageBoard');
 export default MessageBody;

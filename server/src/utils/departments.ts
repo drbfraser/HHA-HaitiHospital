@@ -1,100 +1,98 @@
-import { getEnumKeyByStringValue, getLengthOfEnum } from 'utils/utils';
+import Department, { Department as DepartmentModel } from 'models/departments';
 
-export enum DepartmentName {
-  NicuPaeds = 'NICU/Paeds',
-  Maternity = 'Maternity',
+export enum DefaultDepartments {
+  General = 'General',
   Rehab = 'Rehab',
-  CommunityHealth = 'Community & Health',
-  General = 'General'
+  NICU = 'NICU/Paeds',
+  Maternity = 'Maternity',
+  Community = 'Community & Health'
 }
 
-export enum DepartmentId {
-  Rehab = '1',
-  NicuPaeds = '2',
-  CommunityHealth = '3',
-  Maternity = '4',
-  General = '0'
-}
-export const GENERAL_DEPARTMENT_ID = DepartmentId.General;
+// ***************************************************** Utility functions for hashtable approach *****************************************************
 
-const deptIdtoName = new Map<DepartmentId, DepartmentName>();
-const initIdToNameMap = (map: Map<DepartmentId, DepartmentName>) => {
-  map.clear();
-  map.set(DepartmentId.Rehab, DepartmentName.Rehab);
-  map.set(DepartmentId.NicuPaeds, DepartmentName.NicuPaeds);
-  map.set(DepartmentId.CommunityHealth, DepartmentName.CommunityHealth);
-  map.set(DepartmentId.Maternity, DepartmentName.Maternity);
-  map.set(DepartmentId.General, DepartmentName.General);
-
-  const expectedSize = getLengthOfEnum(DepartmentId);
-  if (map.size !== expectedSize) {
-    throw new Error(`Map size is not as expectation: ${expectedSize}`);
-  }
+const initIdToNameMap = (departments: DepartmentModel[]): Map<string, string> => {
+  let _departmentIdMapper = new Map<string, string>();
+  departments.forEach((dept: DepartmentModel) => {
+    _departmentIdMapper.set(dept._id, dept.name);
+  });
+  return _departmentIdMapper;
 };
-initIdToNameMap(deptIdtoName);
-export function getDeptNameFromId(deptId: string): string {
-  const idKey = getEnumKeyByStringValue(DepartmentId, deptId.toString());
-  if (!idKey) {
+
+const getDeptNameFromId = (deptId: string, map: Map<string, string>): string => {
+  if (!map.has(deptId)) {
     throw new Error(`Department Id ${deptId} is not supported`);
   }
-  const name: string | undefined = deptIdtoName.get(DepartmentId[idKey])?.toString();
+  const name: string | undefined = map.get(deptId);
   if (!name) {
     throw new Error(`Department Id ${deptId} does not have a name`);
   }
   return name;
-}
-
-const deptNameToId = new Map<DepartmentName, DepartmentId>();
-const initNameToId = (map: Map<DepartmentName, DepartmentId>) => {
-  map.set(DepartmentName.Rehab, DepartmentId.Rehab);
-  map.set(DepartmentName.NicuPaeds, DepartmentId.NicuPaeds);
-  map.set(DepartmentName.CommunityHealth, DepartmentId.CommunityHealth);
-  map.set(DepartmentName.Maternity, DepartmentId.Maternity);
-  map.set(DepartmentName.General, DepartmentId.General);
-
-  const expectedSize = getLengthOfEnum(DepartmentName);
-  if (map.size !== expectedSize) {
-    throw new Error(`Map size is not as expectation: ${expectedSize}`);
-  }
 };
-initNameToId(deptNameToId);
-export function getDeptIdFromName(deptName: string): string {
-  const nameKey = getEnumKeyByStringValue(DepartmentName, deptName);
-  if (!nameKey) {
+
+const initNameToId = (departments: DepartmentModel[]): Map<string, string> => {
+  let _departmentNameMapper = new Map<string, string>();
+  departments.forEach((dept: DepartmentModel) => {
+    _departmentNameMapper.set(dept.name, dept._id);
+  });
+  return _departmentNameMapper;
+};
+
+const getDeptIdFromName = (deptName: string, map: Map<string, string>): string => {
+  if (!map.has(deptName)) {
     throw new Error(`Department name ${deptName} is not supported`);
   }
-  const id: string | undefined = deptNameToId.get(DepartmentName[nameKey])?.toString();
+  const id: string | undefined = map.get(deptName)?.toString();
   if (!id) {
     throw new Error(`Department name ${deptName} does not have an id`);
   }
   return id;
-}
-
-export const verifyDeptId = (deptId: string): boolean => {
-  const idKey = getEnumKeyByStringValue(DepartmentId, deptId);
-  return idKey !== null;
 };
 
-export const verifyDeptName = (deptName: string): boolean => {
-  const nameKey = getEnumKeyByStringValue(DepartmentName, deptName);
-  return nameKey !== null;
+const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
+  return map.has(deptId);
 };
 
-export interface Departments {
-  [id: string]: string;
-}
-export const getAllDepartments = (): Departments => {
-  let depts: Departments = {};
-  for (let key in DepartmentId) {
-    if (isNaN(Number(key))) {
-      const deptId: string = DepartmentId[key];
-      depts[deptId] = getDeptNameFromId(deptId);
-    }
+// ***************************************************** Utility functions for database approach ******************************************************
+
+const getDeptNameById = async (deptId: string): Promise<string> => {
+  try {
+    const department: DepartmentModel = (await Department.findById(deptId)) as DepartmentModel;
+    if (Object.keys(department).length === 0) throw new Error(`Department Id ${deptId} does not have a name`);
+    return department.name;
+  } catch (error: any) {
+    return 'Error: Unable to retrieve department name';
   }
-
-  return depts;
 };
-// export const getDepartmentIdKeyFromValue = (idValue: string): DepartmentIdKeys | null=> {
-//     const key = getEnumKeyByStringValue(DepartmentId, idValue);
-//     return key;
-// }
+
+const getDeptIdByName = async (deptName: string): Promise<string> => {
+  try {
+    const department: DepartmentModel = (await Department.findOne({ name: deptName })) as DepartmentModel;
+    if (Object.keys(department).length === 0) throw new Error(`Department name ${deptName} does not have an id`);
+    return department._id;
+  } catch (error: any) {
+    return 'Error: Unable to retrieve department id';
+  }
+};
+
+const validateDeptId = async (deptId: string): Promise<boolean> => {
+  const department: DepartmentModel = (await Department.findById(deptId)) as DepartmentModel;
+  return !(Object.keys(department).length === 0);
+};
+
+// ****************************************************************************************************************************************************
+
+// Util functions using a hashtable data structure
+const Hashtable = { initIdToNameMap, initNameToId, getDeptNameFromId, getDeptIdFromName, verifyDeptId };
+
+// Util functions from database calls
+const Database = { getDeptNameById, getDeptIdByName, validateDeptId };
+
+/**
+ * @param Hashtable
+ * - Util functions using a hashtable data structure
+ * @param Database
+ * - Util functions from database calls
+ */
+const Departments = { Hashtable, Database };
+
+export default Departments;

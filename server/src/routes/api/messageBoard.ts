@@ -6,7 +6,7 @@ import { validateInput } from '../../middleware/inputSanitization';
 import { Role } from '../../models/user';
 import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
-import { verifyDeptId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 
@@ -23,7 +23,7 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const deptId = req.params.departmentId;
-    if (!verifyDeptId(deptId)) {
+    if (!Departments.Database.validateDeptId(deptId)) {
       throw new BadRequest(`Invalid department id: ${deptId}`);
     }
     const docs = await MessageBody.find({ departmentId: deptId }).sort({ date: 'desc' });
@@ -50,7 +50,7 @@ router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunctio
 
 router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const departmentId: string = req.body.department.id;
-  if (!verifyDeptId(departmentId)) {
+  if (!Departments.Database.validateDeptId(departmentId)) {
     return next(new BadRequest(`Invalid department id ${departmentId}`));
   }
 
@@ -75,7 +75,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreat
 router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const departmentId: string = req.body.department.id;
-    if (!verifyDeptId(departmentId)) {
+    if (!Departments.Database.validateDeptId(departmentId)) {
       throw new BadRequest(`Invalid department id ${departmentId}`);
     }
 

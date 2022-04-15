@@ -5,7 +5,6 @@ const blobToFile = (blob: any): File => {
 };
 
 const imageCompressor = (image: any, actions: any) => {
-  console.log(image);
   new Compressor(image, {
     quality: 0.8,
     success: (compressedBlob) => {

@@ -1,1070 +1,755 @@
 {
-	"info": {
-		"_postman_id": "0ef1c75c-1b0b-4b80-b129-718a5ef0440a",
-		"name": "hha",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Authentication",
-			"item": [
-				{
-					"name": "Step 1. CSRFToken",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const xsrf_token = postman.getResponseCookie('XSRF-Token')",
-									"pm.collectionVariables.set(\"xsrf_token\", xsrf_token.value);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/auth/csrftoken",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"auth",
-								"csrftoken"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Step 2. Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "csrf-token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"user0\", \r\n    \"password\": \"123456789\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/api/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"auth",
-								"login"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": "",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Step 3. Logout",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/auth/logout",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"auth",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Bio Mech",
-			"item": [
-				{
-					"name": "Get all bio mech kits",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/biomech",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"biomech"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get a bio mech kit by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/biomech/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"biomech",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add a bio mech kit",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "XSRF-TOKEN",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": []
-								},
-								{
-									"key": "document",
-									"value": "{\"equipmentName\":\"test\",\"equipmentFault\":\"test\",\"equipmentPriority\":\"Urgent\"}",
-									"type": "default"
-								}
-							]
-						},
-						"url": {
-							"raw": "localhost:5000/api/biomech",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"biomech"
-							],
-							"query": [
-								{
-									"key": "key",
-									"value": "",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a bio mech kit by id",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:5000/api/biomech/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"biomech",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Case Studies",
-			"item": [
-				{
-					"name": "Get all case studies",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/case-studies",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"case-studies"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get a case study by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/case-studies/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"case-studies",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get featured case study",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/case-studies/featured",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"case-studies",
-								"featured"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add a case study",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "XSRF-TOKEN",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": []
-								},
-								{
-									"key": "document",
-									"value": "{\"patientStory\":{\"patientsName\":\"f\",\"patientsAge\":\"2\",\"whereIsThePatientFrom\":\"f\",\"whyComeToHcbh\":\"f\",\"howLongWereTheyAtHcbh\":\"f\",\"diagnosis\":\"f\",\"caseStudyStory\":\"f\"},\"caseStudyType\":\"Patient Story\"}",
-									"type": "default"
-								}
-							]
-						},
-						"url": {
-							"raw": "localhost:5000/api/case-studies",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"case-studies"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Set a case study as featured by id",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "XSRF-TOKEN",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:5000/api/case-studies/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"case-studies",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a case study by id",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:5000/api/case-studies/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"case-studies",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Employee Of The Month",
-			"item": [
-				{
-					"name": "Get the employee of the month",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/employee-of-the-month",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"employee-of-the-month"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit the employee of the month",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": []
-								},
-								{
-									"key": "document",
-									"value": "{\"name\": \"Anderson McDonald\", \"department\": {\"id\": \"0\", \"name\": \"Rehab\"}, \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur mattis sed arcu rutrum porttitor. In dictum molestie auctor. Suspendisse potenti. Duis ut lacus non nunc volutpat tempus vitae nec elit. Morbi gravida dolor efficitur dolor consequat faucibus. Ut ac velit ac ante euismod viverra a pulvinar dui. In quis diam quis nunc convallis pretium. Phasellus in sagittis augue. Phasellus sed aliquet augue, nec ultricies nibh. Suspendisse nec mauris sed risus finibus suscipit. Donec efficitur elementum magna sit amet porttitor. Donec faucibus nibh ac ornare sagittis. Donec fringilla vestibulum felis. Proin posuere laoreet sem, vel luctus arcu sodales eget. \"}",
-									"type": "default"
-								}
-							]
-						},
-						"url": {
-							"raw": "localhost:5000/api/employee-of-the-month",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"employee-of-the-month"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Images",
-			"item": [
-				{
-					"name": "Get an image by image path",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/image/:imgPath",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"image",
-								":imgPath"
-							],
-							"variable": [
-								{
-									"key": "imgPath",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Leaderboard",
-			"item": [
-				{
-					"name": "Get leaderboard points",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/leaderboard",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"leaderboard"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Message Board",
-			"item": [
-				{
-					"name": "Get all messages",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/message-board",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"message-board"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get message by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/message-board/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"message-board",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add a message",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"department\": {\r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    },\r\n    \"messageBody\": \"Test\",\r\n    \"messageHeader\": \"Testing\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:5000/api/message-board",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"message-board"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit a message by id",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"department\": {\r\n        \"id\": \"2\",\r\n        \"name\": \"Community & Health\"\r\n    },\r\n    \"messageBody\": \"Test 2\",\r\n    \"messageHeader\": \"Testing 2\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:5000/api/message-board/6248cb3ab42b664364b9ddb5",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"message-board",
-								"6248cb3ab42b664364b9ddb5"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a message by id",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:5000/api/message-board/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"message-board",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Users",
-			"item": [
-				{
-					"name": "Get all users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/users",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get a user by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/users/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get current logged in user",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:5000/api/users/me",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"users",
-								"me"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add a user",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Bob\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:5000/api/users",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit a user by id",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"editeduser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Joe\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"3\",\r\n        \"name\": \"Maternity\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:5000/api/users/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove a user by id",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "XSRF-Token",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:5000/api/users/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Reports",
-			"item": [
-				{
-					"name": "Get all reports",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/report/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"report",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all reports in a department",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/report/department/4",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"report",
-								"department",
-								"4"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get report by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/report/report/2a5c293a4d18a189ae3216d0ca5af349",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"report",
-								"report",
-								"2a5c293a4d18a189ae3216d0ca5af349"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Generate a report",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "XSRF-TOKEN",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"month\": \"6\",\r\n    \"year\": \"2022\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/api/report/generate/2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"report",
-								"generate",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete a report",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "XSRF-TOKEN",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:5000/api/report/0708c27b746638607aba06578040270a",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"report",
-								"0708c27b746638607aba06578040270a"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "XSRF-TOKEN",
-								"value": "{{xsrf_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"meta\": {\r\n        \"id\": \"0708c27b746638607aba06578040270a\",\r\n        \"department\": {\r\n            \"id\": \"1\",\r\n            \"name\": \"Maternity\"\r\n        },\r\n        \"submittedDate\": \"April 9, 2022, 5:13:12 PM\",\r\n        \"submittedUserId\": \"624a6e2cbae332370ccd329f\"\r\n    },\r\n    \"items\": [\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 1\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        },\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 2\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/api/report/2a5c293a4d18a189ae3216d0ca5af349",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"report",
-								"2a5c293a4d18a189ae3216d0ca5af349"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Report Month",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/report/date/698644549bb0acb7f7e5d5aa3021c338",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"report",
-								"date",
-								"698644549bb0acb7f7e5d5aa3021c338"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	],
-	"variable": [
-		{
-			"key": "xsrf_token",
-			"value": ""
-		}
-	]
+  "info": {
+    "_postman_id": "64f47d17-d7ef-4cee-b2e5-1623f52a4c2b",
+    "name": "hha",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Step 1. CSRFToken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["const xsrf_token = postman.getResponseCookie('XSRF-Token')", "pm.collectionVariables.set(\"xsrf_token\", xsrf_token.value);"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/auth/csrftoken",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "csrftoken"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Step 2. Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "csrf-token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"user0\", \r\n    \"password\": \"123456789\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "login"],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Step 3. Logout",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/auth/logout",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "logout"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bio Mech",
+      "item": [
+        {
+          "name": "Get all bio mech kits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/biomech",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "biomech"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a bio mech kit by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/biomech/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "biomech", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a bio mech kit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "XSRF-TOKEN",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "document",
+                  "value": "{\"equipmentName\":\"test\",\"equipmentFault\":\"test\",\"equipmentPriority\":\"Urgent\"}",
+                  "type": "default"
+                }
+              ]
+            },
+            "url": {
+              "raw": "localhost:5000/api/biomech",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "biomech"],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove a bio mech kit by id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/biomech/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "biomech", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Case Studies",
+      "item": [
+        {
+          "name": "Get all case studies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/case-studies",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a case study by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/case-studies/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get featured case study",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/case-studies/featured",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies", "featured"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a case study",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "XSRF-TOKEN",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "document",
+                  "value": "{\"patientStory\":{\"patientsName\":\"f\",\"patientsAge\":\"2\",\"whereIsThePatientFrom\":\"f\",\"whyComeToHcbh\":\"f\",\"howLongWereTheyAtHcbh\":\"f\",\"diagnosis\":\"f\",\"caseStudyStory\":\"f\"},\"caseStudyType\":\"Patient Story\"}",
+                  "type": "default"
+                }
+              ]
+            },
+            "url": {
+              "raw": "localhost:5000/api/case-studies",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set a case study as featured by id",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "XSRF-TOKEN",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/case-studies/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove a case study by id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/case-studies/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "case-studies", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Departments",
+      "item": [
+        {
+          "name": "Get all departments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/department",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "department"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a department by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/department/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "department", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Employee Of The Month",
+      "item": [
+        {
+          "name": "Get the employee of the month",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/employee-of-the-month",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "employee-of-the-month"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit the employee of the month",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "document",
+                  "value": "{\"name\": \"Anderson McDonald\", \"department\": {\"id\": \"0\", \"name\": \"Rehab\"}, \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur mattis sed arcu rutrum porttitor. In dictum molestie auctor. Suspendisse potenti. Duis ut lacus non nunc volutpat tempus vitae nec elit. Morbi gravida dolor efficitur dolor consequat faucibus. Ut ac velit ac ante euismod viverra a pulvinar dui. In quis diam quis nunc convallis pretium. Phasellus in sagittis augue. Phasellus sed aliquet augue, nec ultricies nibh. Suspendisse nec mauris sed risus finibus suscipit. Donec efficitur elementum magna sit amet porttitor. Donec faucibus nibh ac ornare sagittis. Donec fringilla vestibulum felis. Proin posuere laoreet sem, vel luctus arcu sodales eget. \"}",
+                  "type": "default"
+                }
+              ]
+            },
+            "url": {
+              "raw": "localhost:5000/api/employee-of-the-month",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "employee-of-the-month"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "item": [
+        {
+          "name": "Get an image by image path",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/image/:imgPath",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "image", ":imgPath"],
+              "variable": [
+                {
+                  "key": "imgPath",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Leaderboard",
+      "item": [
+        {
+          "name": "Get leaderboard points",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/leaderboard",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "leaderboard"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Message Board",
+      "item": [
+        {
+          "name": "Get all messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/message-board",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "message-board"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get message by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/message-board/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "message-board", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"department\": {\r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    },\r\n    \"messageBody\": \"Test\",\r\n    \"messageHeader\": \"Testing\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/message-board",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "message-board"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit a message by id",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"department\": {\r\n        \"id\": \"2\",\r\n        \"name\": \"Community & Health\"\r\n    },\r\n    \"messageBody\": \"Test 2\",\r\n    \"messageHeader\": \"Testing 2\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/message-board/6248cb3ab42b664364b9ddb5",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "message-board", "6248cb3ab42b664364b9ddb5"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove a message by id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/message-board/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "message-board", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/users",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a user by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/users/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get current logged in user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/users/me",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Bob\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/users",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit a user by id",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"editeduser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Joe\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"3\",\r\n        \"name\": \"Maternity\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/users/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove a user by id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "XSRF-Token",
+                "value": "{{xsrf_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/users/:id",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "xsrf_token",
+      "value": ""
+    }
+  ]
 }

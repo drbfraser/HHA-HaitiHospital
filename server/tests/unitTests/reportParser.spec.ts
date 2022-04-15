@@ -4,7 +4,7 @@ import { jsonStringToReport, reportToJsonReport } from 'utils/parsers/parsers';
 const chai = require('chai');
 
 describe('Test parsing from a report to a json report', () => {
-  it('should parse sucessfully for a report with numeric items', (done) => {
+  it('should parse sucessfully for a report with numeric items', async (done) => {
     try {
       const demoJsonReport: JsonReportDescriptor = {
         meta: {
@@ -28,9 +28,9 @@ describe('Test parsing from a report to a json report', () => {
         ]
       };
       const stringJson = JSON.stringify(demoJsonReport);
-      const report: ReportDescriptor = jsonStringToReport(stringJson);
+      const report: ReportDescriptor = await jsonStringToReport(stringJson);
 
-      const jsonReport: JsonReportDescriptor = reportToJsonReport(report);
+      const jsonReport: JsonReportDescriptor = await reportToJsonReport(report);
       chai.expect(stringJson).to.eql(JSON.stringify(jsonReport));
       done();
     } catch (e) {
@@ -38,7 +38,7 @@ describe('Test parsing from a report to a json report', () => {
     }
   });
 
-  it('should parse sucessfully for a report with a sum, and a numeric items', (done) => {
+  it('should parse sucessfully for a report with a sum, and a numeric items', async (done) => {
     try {
       const demoJsonReport: JsonReportDescriptor = {
         meta: {
@@ -66,9 +66,9 @@ describe('Test parsing from a report to a json report', () => {
         ]
       };
       const stringJson = JSON.stringify(demoJsonReport);
-      const report: ReportDescriptor = jsonStringToReport(stringJson);
+      const report: ReportDescriptor = await jsonStringToReport(stringJson);
 
-      const jsonReport: JsonReportDescriptor = reportToJsonReport(report);
+      const jsonReport: JsonReportDescriptor = await reportToJsonReport(report);
       chai.expect(stringJson).to.eql(JSON.stringify(jsonReport));
       done();
     } catch (e) {
@@ -76,7 +76,7 @@ describe('Test parsing from a report to a json report', () => {
     }
   });
 
-  it('should parse sucessfully for a report with a sum having a sum', (done) => {
+  it('should parse sucessfully for a report with a sum having a sum', async (done) => {
     try {
       const demoJsonReport: JsonReportDescriptor = {
         meta: {
@@ -115,9 +115,9 @@ describe('Test parsing from a report to a json report', () => {
         ]
       };
       const stringJson = JSON.stringify(demoJsonReport);
-      const report: ReportDescriptor = jsonStringToReport(stringJson);
+      const report: ReportDescriptor = await jsonStringToReport(stringJson);
 
-      const jsonReport: JsonReportDescriptor = reportToJsonReport(report);
+      const jsonReport: JsonReportDescriptor = await reportToJsonReport(report);
       chai.expect(stringJson).to.eql(JSON.stringify(jsonReport));
       done();
     } catch (e) {
@@ -127,7 +127,7 @@ describe('Test parsing from a report to a json report', () => {
 });
 
 describe('Test parsing json string to a report', () => {
-  it('should parse sucessfully for numeric items', (done) => {
+  it('should parse sucessfully for numeric items', async (done) => {
     try {
       const jsonReport: JsonReportDescriptor = {
         meta: {
@@ -151,7 +151,7 @@ describe('Test parsing json string to a report', () => {
         ]
       };
       const stringJson = JSON.stringify(jsonReport);
-      const report: ReportDescriptor = jsonStringToReport(stringJson);
+      const report: ReportDescriptor = await jsonStringToReport(stringJson);
       chai.expect(report).to.not.be.empty;
 
       done();
@@ -160,7 +160,7 @@ describe('Test parsing json string to a report', () => {
     }
   });
 
-  it('should parse sucessfully for a sum, a numeric item', (done) => {
+  it('should parse sucessfully for a sum, a numeric item', async (done) => {
     try {
       const jsonReport: JsonReportDescriptor = {
         meta: {
@@ -196,7 +196,7 @@ describe('Test parsing json string to a report', () => {
         ]
       };
       const stringJson = JSON.stringify(jsonReport);
-      const report: ReportDescriptor = jsonStringToReport(stringJson);
+      const report: ReportDescriptor = await jsonStringToReport(stringJson);
       chai.expect(report).to.not.be.empty;
 
       done();
@@ -205,7 +205,7 @@ describe('Test parsing json string to a report', () => {
     }
   });
 
-  it('should parse sucessfully for a sum that has one sum and one numeric child', (done) => {
+  it('should parse sucessfully for a sum that has one sum and one numeric child', async (done) => {
     try {
       const jsonReport: JsonReportDescriptor = {
         meta: {
@@ -258,7 +258,7 @@ describe('Test parsing json string to a report', () => {
         ]
       };
       const stringJson = JSON.stringify(jsonReport);
-      const report: ReportDescriptor = jsonStringToReport(stringJson);
+      const report: ReportDescriptor = await jsonStringToReport(stringJson);
       chai.expect(report).to.not.be.empty;
 
       done();
@@ -291,7 +291,7 @@ describe('Test parsing json string to a report', () => {
         ]
       };
       const stringJson = JSON.stringify(jsonReport);
-      chai.expect(() => jsonStringToReport(stringJson)).to.throw('not valid');
+      chai.expect(async () => await jsonStringToReport(stringJson)).to.throw('not valid');
 
       done();
     } catch (e) {
@@ -335,7 +335,7 @@ describe('Test parsing json string to a report', () => {
         ]
       };
       const stringJson = JSON.stringify(jsonReport);
-      chai.expect(() => jsonStringToReport(stringJson)).to.throw('does not add up');
+      chai.expect(async () => await jsonStringToReport(stringJson)).to.throw('does not add up');
       done();
     } catch (e) {
       done(e);
@@ -378,7 +378,7 @@ describe('Test parsing json string to a report', () => {
         ]
       };
       const stringJson = JSON.stringify(jsonReport);
-      chai.expect(() => jsonStringToReport(stringJson)).to.throw('Item must have a numeric answer');
+      chai.expect(async () => await jsonStringToReport(stringJson)).to.throw('Item must have a numeric answer');
       done();
     } catch (e) {
       done(e);
@@ -389,7 +389,7 @@ describe('Test parsing json string to a report', () => {
     try {
       // a stringified json report meta
       const stringJson = '{"id":"123","departmentId":"1","submittedDate":"123","submittedUserId":"123"}';
-      chai.expect(() => jsonStringToReport(stringJson)).to.throw('malformed');
+      chai.expect(async () => await jsonStringToReport(stringJson)).to.throw('malformed');
 
       done();
     } catch (e) {

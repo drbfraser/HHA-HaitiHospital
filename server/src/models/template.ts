@@ -2,7 +2,6 @@ import { JsonReportDescriptor } from 'common/json_report';
 import { randomUUID } from 'crypto';
 import mongoose, { ValidatorProps } from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
-import { verifyDeptId } from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
 import { fromTemplateToReport, TemplateItems } from 'utils/parsers/template';
 import UserModel, { USER_MODEL_NAME } from './user';
@@ -16,7 +15,7 @@ export interface Template {
     items: TemplateItems
 }
 export interface TemplateWithInstanceMethods extends Template {
-    toJson: () => JsonReportDescriptor
+    toJson: () => Promise<JsonReportDescriptor>;
 };
 
 const PATH_TO_ID = 'id';
@@ -41,7 +40,7 @@ const templateSchema = new Schema<TemplateWithInstanceMethods>({
 });
 
 // Make sure that instance methods defined below are matched with template schema i.e TemplateWithUtils
-templateSchema.methods.toJson = function(): JsonReportDescriptor {
+templateSchema.methods.toJson = function(): Promise<JsonReportDescriptor> {
     const report: ReportDescriptor = fromTemplateToReport(this);
     return parseToJson(report);
 }
