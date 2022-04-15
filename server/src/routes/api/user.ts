@@ -34,7 +34,7 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, valid
     if (updatedUser.password && updatedUser.password !== '') {
       updatedUser.password = await hashPassword(updatedUser.password);
     }
-    if (!Departments.Database.validateDeptId(updatedUser.departmentId)) {
+    if (! await Departments.Database.validateDeptId(updatedUser.departmentId)) {
       throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
     }
 
@@ -104,7 +104,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
     if (existingUser) {
       throw new Conflict(`Username ${username} exists`);
     }
-    if (!Departments.Database.validateDeptId(departmentId)) {
+    if (! await Departments.Database.validateDeptId(departmentId)) {
       throw new BadRequest(`Invalid department id ${department.id}`);
     }
 

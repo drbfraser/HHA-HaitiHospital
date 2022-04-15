@@ -2,7 +2,7 @@ import { SystemException } from "exceptions/systemException";
 import { TemplateCollection } from "models/template";
 import { User } from "models/user";
 import { ReportDescriptor, ReportItems } from "utils/definitions/report";
-import { verifyDeptId } from "utils/departments";
+import Departments from "utils/departments";
 import { generateNewReportFromTemplate } from "utils/parsers/template";
 import { generateUuid } from "utils/utils";
 
@@ -23,7 +23,7 @@ export const setReportMonth = (report: ReportDescriptor, date: Date) => {
 }
 
 export const generateReportForMonth = async (deptId: string, reportMonth: Date, requestor: User): Promise<ReportDescriptor> => {
-    const deptValid = verifyDeptId(deptId);
+    const deptValid = await Departments.Database.validateDeptId(deptId);
     if (!deptValid) {
         throw new SystemException(`Department id ${deptId} is invalid`);
     }

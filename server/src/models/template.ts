@@ -2,6 +2,7 @@ import { JsonReportDescriptor } from 'common/json_report';
 import { randomUUID } from 'crypto';
 import mongoose, { ValidatorProps } from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
+import Departments from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
 import { fromTemplateToReport, TemplateItems } from 'utils/parsers/template';
 import UserModel, { USER_MODEL_NAME } from './user';
@@ -63,7 +64,7 @@ const uniqueTemplateDepartment = async (value: string) => {
 }
 
 const validDepartment = async (value: string) => {
-    const valid = verifyDeptId(value);
+    const valid = await Departments.Database.validateDeptId(value);
     return valid;
 }
 

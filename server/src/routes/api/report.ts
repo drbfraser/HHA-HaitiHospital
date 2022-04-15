@@ -1,5 +1,4 @@
 import { CustomError } from 'exceptions/custom_exception';
-import { InvalidInput } from 'exceptions/systemException';
 import { NextFunction, Response } from 'express';
 import { departmentAuth } from 'middleware/departmentAuth';
 import { CallbackError } from 'mongoose';
@@ -7,7 +6,7 @@ import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
 import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
 import { ReportDescriptor } from 'utils/definitions/report';
-import { verifyDeptId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { jsonStringToReport } from 'utils/parsers/parsers';
 import { updateSubmissionDate, setSubmittor, generateReportForMonth } from 'utils/report/report';
 import { mongooseErrorToMyError } from 'utils/utils';
@@ -92,7 +91,7 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(
             throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
         
         const reportInString = JSON.stringify(req.body);
-        const report = jsonStringToReport(reportInString);
+        const report = await jsonStringToReport(reportInString);
 
         if (report.id !== req.params[REPORT_ID_URL_SLUG])
             throw new BadRequest(`Report id does not match expectation`);
@@ -166,7 +165,7 @@ router.route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`).post(
     roleAuth(Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-        const valid = verifyDeptId(req.params[DEPARTMENT_ID_URL_SLUG]);
+        const valid = await Departments.Database.validateDeptId(req.params[DEPARTMENT_ID_URL_SLUG]);
         if (!valid) {
             throw new BadRequest(`Department id is invalid`);
         }

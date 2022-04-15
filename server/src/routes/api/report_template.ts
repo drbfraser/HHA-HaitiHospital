@@ -47,7 +47,7 @@ router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(
         if (!template) {
             throw new NotFound(`No template for department found`);
         }
-        const jsonReport: JsonReportDescriptor = template.toJson();
+        const jsonReport: JsonReportDescriptor = await template.toJson();
         res.status(HTTP_OK_CODE).json(jsonReport);
 
     } catch (e) { next(e); } 

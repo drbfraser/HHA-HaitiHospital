@@ -2,7 +2,7 @@ import { JsonReportDescriptor } from 'common/json_report';
 import { randomUUID } from 'crypto';
 import * as mongoose from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
-import { verifyDeptId } from 'utils/departments';
+import Departments from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
 import { formatDateString } from 'utils/utils';
 
@@ -46,7 +46,7 @@ const reportSchema = new Schema<ReportWithInstanceMethods>({
     items: { type: Object, required: true }
 });
 
-reportSchema.methods.toJson = function(): JsonReportDescriptor {
+reportSchema.methods.toJson = function(): Promise<JsonReportDescriptor> {
     const json = parseToJson(this);
     return json;
 }
@@ -68,7 +68,7 @@ reportSchema.path(`${PATH_TO_ID}`).validate({
 });
 
 const validDepartment = async (value: string) => {
-    const valid = verifyDeptId(value);
+    const valid = await Departments.Database.validateDeptId(value);
     return valid;
 }
 reportSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
