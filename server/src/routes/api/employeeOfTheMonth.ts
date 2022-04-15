@@ -6,7 +6,7 @@ import EmployeeOfTheMonthModel, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } f
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../schema/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { BadRequest, HTTP_OK_CODE } from 'exceptions/httpException';
+import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import Departments from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -16,7 +16,9 @@ const router = Router();
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const doc = await EmployeeOfTheMonthModel.findOne();
-    // @ts-ignore
+    if (!doc) {
+      throw new NotFound(`No employee of the month found`);
+    }
     const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
     res.status(HTTP_OK_CODE).json(json);
   } catch (e) {
