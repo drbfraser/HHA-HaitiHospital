@@ -55,6 +55,10 @@ export interface ReportNItem extends ReportItem {}
 export interface ReportSumItem extends ReportItem {
   children: Array<ReportNItem | ReportSumItem>;
 }
+
+export interface ReportEqualItem extends ReportItem {
+    children: Array<ReportNItem | ReportSumItem>;
+}
 //Survey Generator item
 // export interface JsonReportSurveyItem extends ReportItem<number> {
 //     items: Array<ReportItem<ItemAnswerTypes>>
