@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import MockDepartmentApi from 'actions/MockDepartmentApi';
+import Api from 'actions/Api';
+import { ENDPOINT_DEPARTMENT_GET_BY_ID } from 'constants/endpoints';
+import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import { Department as DepartmentModel, emptyDepartment, Role } from 'constants/interfaces';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
@@ -23,9 +25,15 @@ export const Department = (props: DepartmentProps) => {
     to: null,
   });
 
+  const getDepartmentById = async () => {
+    setDepartment(
+      await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(deptId), TOAST_DEPARTMENT_GET, history),
+    );
+  };
+
   React.useEffect(() => {
     try {
-      setDepartment(MockDepartmentApi.getDepartmentById(deptId) as DepartmentModel);
+      getDepartmentById();
     } catch (e) {
       history.push('/notFound');
     }

@@ -69,7 +69,6 @@ export const EditUserForm = (props: AdminProps) => {
     };
     fetchAndSetUser();
 
-    // For Future Devs: Replace MockDepartmentApi with Api
     const fetchAndSetDepartments = () => {
       getDepartments();
     };
