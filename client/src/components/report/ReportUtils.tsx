@@ -2,7 +2,7 @@ import {
   JsonReportDescriptor,
   JsonReportItem,
   JsonItemAnswer,
-} from 'common/definitions/json_report';
+} from 'common/json_report';
 import * as MockApi from './MockApi';
 import { ReportItem, ReportData } from './Report';
 

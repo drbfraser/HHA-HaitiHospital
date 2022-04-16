@@ -3,7 +3,7 @@ import { Strategy as PassportLocalStrategy } from 'passport-local';
 import Joi from 'joi';
 import { Request } from 'express';
 
-import UserModel, { User } from '../models/user';
+import UserCollection, { User } from '../models/user';
 import { loginSchema } from './validators';
 
 const passportLogin = new PassportLocalStrategy(
@@ -24,7 +24,7 @@ const passportLogin = new PassportLocalStrategy(
       });
 
     try {
-      const user = await UserModel.findOne({ username: username.trim() });
+      const user = await UserCollection.findOne({ username: username.trim() });
       if (!user) {
         return done(null, false, { message: 'Username does not exists.' });
       }
@@ -35,7 +35,7 @@ const passportLogin = new PassportLocalStrategy(
         if (!isMatch) {
           return done(null, false, { message: 'Incorrect password.' });
         }
-        const leanUser = await UserModel.findOne({username: username.trim()}).lean();
+        const leanUser = await UserCollection.findOne({username: username.trim()}).lean();
         return done(null, leanUser!);
       });
     } catch (err) {

@@ -2,7 +2,7 @@ import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
-import UserModel, { UserJson } from './user';
+import UserCollection, { UserJson } from './user';
 
 const { Schema } = mongoose;
 
@@ -38,7 +38,7 @@ const messageBodySchema = new Schema<MessageWithInstanceMethods>({
   messageHeader: { type: String, required: true, default: '' }
 });
 messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
-  const userDoc = await UserModel.findOne({ _id: this.userId }).exec();
+  const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
   if (!userDoc) {
     throw new IllegalState(`Message references to non-existing user with id ${this.userId}`);
   }
@@ -58,5 +58,5 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   return json;
 };
 
-const MessageBody = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'MessageBoard');
-export default MessageBody;
+const MessageCollection = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'MessageBoard');
+export default MessageCollection;

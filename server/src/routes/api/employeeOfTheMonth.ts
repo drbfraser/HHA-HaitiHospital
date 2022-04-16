@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
-import EmployeeOfTheMonthModel, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from 'models/employeeOfTheMonth';
+import EOTMCollection, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../schema/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
@@ -15,7 +15,7 @@ const router = Router();
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const doc = await EmployeeOfTheMonthModel.findOne();
+    const doc = await EOTMCollection.findOne();
     if (!doc) {
       throw new NotFound(`No employee of the month found`);
     }
@@ -28,7 +28,7 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 
 router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const previousEmployeeOfTheMonth = await EmployeeOfTheMonthModel.findOne();
+    const previousEmployeeOfTheMonth = await EOTMCollection.findOne();
     if (previousEmployeeOfTheMonth) {
       deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
     }
@@ -47,7 +47,7 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
       description: description,
       imgPath: imgPath
     };
-    await EmployeeOfTheMonthModel.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth?._id }, { $set: updatedEmployeeOfTheMonth }, { new: true });
+    await EOTMCollection.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth?._id }, { $set: updatedEmployeeOfTheMonth }, { new: true });
     res.sendStatus(HTTP_OK_CODE);
   } catch (e) {
     next(e);

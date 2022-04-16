@@ -1,207 +1,216 @@
-// import { seedDepartments } from '../../utils/seed';
-// const router = require('express').Router();
-// import FormEntry from '../../models/formEntry';
-// import requireJwtAuth from '../../middleware/requireJwtAuth';
-// import { checkUserIsDepartmentAuthed } from '../../utils/authUtils';
+import { CustomError } from 'exceptions/custom_exception';
+import { NextFunction, Response } from 'express';
+import { departmentAuth } from 'middleware/departmentAuth';
+import { CallbackError } from 'mongoose';
+import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
+import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
+import { RequestWithUser } from 'utils/definitions/express';
+import { ReportDescriptor } from 'utils/definitions/report';
+import Departments from 'utils/departments';
+import { jsonStringToReport } from 'utils/parsers/parsers';
+import { updateSubmissionDate, setSubmittor, generateReportForMonth } from 'utils/report/report';
+import { mongooseErrorToMyError } from 'utils/utils';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from '../../exceptions/httpException';
+import requireJwtAuth from '../../middleware/requireJwtAuth';
+import { roleAuth } from '../../middleware/roleAuth';
+import { ReportCollection } from '../../models/report';
+import { Role } from '../../models/user';
 
-// //---RESEED DATABASE---//
-// //GET - reseeds the department database with the base models(WARNING: WILL REMOVE CUSTOM DEPARTMENTS)
-// router.get('/seedDepartments', async (req, res) => {
-//   await seedDepartments()
-//     .then(() => res.json('Departments have been successfully reseeded'))
-//     .catch((err) => res.status(400).json('Departments did not reseed: ' + err));
-// });
+const router = require('express').Router();
 
-// //---ADD TO DATABASE---//
-// //GET - gets the form key value pairs and sends a JSON of that data(template of the department)
-// // router.route('/add/:Departmentid').get((req: any, res: any) => {
-// //     let departmentArg = 0;
-// //     try{
-// //         departmentArg = +req.params.Departmentid;
-// //     }
-// //     catch(error){
-// //         error => res.status(400).json('id is not a number: '+ error);
-// //     }
+//Fetch all reports
+router.route('/').get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const docs = await ReportCollection.find({}).sort({ reportMonth: 'desc' });
+    const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
+    res.status(HTTP_OK_CODE).json(jsons);
+  } catch (e) {
+    next(e);
+  }
+});
 
-// //     //TODO: VALIDATE THAT THE :ID DOES NOT RETURN AN EMPTY ARRAY
-// //     Departments.find({departmentId : departmentArg}).populate('createdByUserId').populate('lastUpdatedByUserId')
-// //     .then(Departments => res.json(Departments))
-// //     .catch(err => res.status(400).json('Could not find the Department: ' + err));
-// // });
+//Fetch reports of a department with department id
+router.route(`/department/:${DEPARTMENT_ID_URL_SLUG}`).get(requireJwtAuth, departmentAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
+    const docs = await ReportCollection.find({ departmentId: deptId }).sort({ reportMonth: 'desc' });
+    const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
 
-// //POST - sends user submitted form to the server as a JSON
-// router.route('/add').post(requireJwtAuth, async (req: any, res: any) => {
-//   const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, parseInt(req.body.departmentId), req.user.role);
-//   if (!isValidated) {
-//     return res.status(401).json('User is unauthorized in to make a post in current department.');
-//   }
+    res.status(HTTP_OK_CODE).json(jsons);
+  } catch (e) {
+    next(e);
+  }
+});
 
-//   let dateTime: Date = new Date();
-//   const createdByUserId = req.user.id as string;
-//   const createdOn = dateTime;
-//   const lastUpdatedByUserId = req.user.id;
-//   const lastUpdatedOn = dateTime;
-//   const departmentId = req.body.departmentId as string;
-//   const formData = req.body;
-//   const reportingMonth: Date = dateTime; //TODO: Modify Month to be able to be easily filtered by HHA Staff
+// Fetch report by id
+router.route(`/report/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const reportId = req.params[REPORT_ID_URL_SLUG];
+    const doc = await ReportCollection.findOne({ id: reportId });
+    if (!doc) {
+      throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+    }
 
-//   const formEntry = new FormEntry({
-//     departmentId: departmentId,
-//     createdByUserId: createdByUserId,
-//     reportingMonth: reportingMonth,
-//     createdOn: createdOn,
-//     lastUpdatedByUserId: lastUpdatedByUserId,
-//     lastUpdatedOn: lastUpdatedOn,
-//     formData: formData
-//   });
+    const authorized = checkUserIsDepartmentAuthed(req.user, doc.departmentId);
+    if (!authorized) {
+      throw new Unauthorized(`User not authorized`);
+    }
 
-//   formEntry
-//     .save()
-//     .then(() => res.json('Report has been successfully submitted'))
-//     .catch((err) => res.status(400).json('Report did not successfully submit: ' + err));
-// });
+    const json = await doc.toJson();
+    res.status(HTTP_OK_CODE).json(json);
+  } catch (e) {
+    next(e);
+  }
+});
 
-// //---VIEW DATABASE---//
-// //view all Reports in the database
-// // router.route('/view').get((req: any, res: any) => {
+// Update report by id
+router.route(`/:${REPORT_ID_URL_SLUG}`).put(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const doc = await ReportCollection.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
+    if (!doc) throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
 
-// //     FormEntry.find({}).populate('createdByUserId').populate('lastUpdatedByUserId').sort({createdOn: 'desc'})
-// //         .then(Reports => res.json(Reports))
-// //         .catch(err => res.status(400).json('Could not find any results: ' + err));
-// // });
+    const reportInString = JSON.stringify(req.body);
+    const report = await jsonStringToReport(reportInString);
 
-// //view all forms from a specific department
-// // router.route('/viewdepartment/:Departmentid').get((req: any, res: any) => {
+    if (report.id !== req.params[REPORT_ID_URL_SLUG]) throw new BadRequest(`Report id does not match expectation`);
 
-// //     FormEntry.find({departmentId : req.params.Departmentid}).populate('createdByUserId').populate('lastUpdatedByUserId')
-// //         .then(Reports => res.json(Reports))
-// //         .catch(err => res.status(400).json('Could not find any results: ' + err));
-// // });
+    updateSubmissionDate(report);
+    setSubmittor(report, req.user);
+    const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
+    if (!authorized) throw new Unauthorized(`User not authorized`);
 
-// //view specific Report by id
-// router.route('/viewreport/:Reportid').get((req: any, res: any) => {
-//   FormEntry.findById(req.params.Reportid)
-//     .populate('createdByUserId')
-//     .populate('lastUpdatedByUserId')
-//     .then((Report) => res.json(Report))
-//     .catch((err) => res.status(400).json('Could not find any results: ' + err));
-// });
+    // manually add report month
+    // since the data send from FE does not have report month
+    // can rid of this check when allow report json to contain report month
+    report.reportMonth = doc.reportMonth;
+    // end
 
-// //---EDIT REPORTS---//
-// //get specific report to display results before edit
-// // router.route('/edit/:Reportid').get((req: any, res: any) => {
-// //     FormEntry.findById(req.params.Reportid).populate('createdByUserId').populate('lastUpdatedByUserId')
-// //         .then(Report => res.json(Report))
-// //         .catch(err => res.status(400).json('Could not find any results: ' + err));
-// // });
+    await attemptToUpdateReport(report, (err: CustomError) => {
+      if (!err) return res.sendStatus(HTTP_OK_CODE);
+      err.message = `Update report failed: ${err.message}`;
+      return next(err);
+    });
+  } catch (e) {
+    next(e);
+  }
+});
 
-// //make the changes to report of id reportID
-// router.route('/edit/:Reportid').put(requireJwtAuth, async (req: any, res: any) => {
-//   const form = await FormEntry.findById(req.params.Reportid);
-//   const departmentId = form.departmentId;
-//   const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
-//   if (!isValidated) {
-//     return res.status(401).json('User is unauthorized in to delete the current department.');
-//   }
+// Delete a report, and auto generate a substitute report for department,
+// that month, using department template (if any)
+router.route(`/:${REPORT_ID_URL_SLUG}`).delete(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const doc = await ReportCollection.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
+    if (!doc) {
+      throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
+    }
 
-//   let updatedDateTime: Date = new Date();
-//   const lastUpdatedByUserId = req.user.id;
-//   const lastUpdatedOn = updatedDateTime;
-//   const formData = req.body;
+    const deptAuth = checkUserIsDepartmentAuthed(req.user, doc.departmentId);
+    if (!deptAuth) {
+      throw new Unauthorized(`User is not authorized`);
+    }
 
-//   const updatedFormEntry = {
-//     lastUpdatedByUserId,
-//     lastUpdatedOn,
-//     formData
-//   };
+    const result = await ReportCollection.deleteOne({ id: doc.id });
+    if (result.deletedCount === 0) {
+      throw new InternalError(`Delete report failed`);
+    }
 
-//   return FormEntry.findByIdAndUpdate({ _id: req.params.Reportid }, updatedFormEntry, { new: true })
-//     .populate('createdByUserId')
-//     .populate('lastUpdatedByUserId')
-//     .then((Report) => res.json(Report))
-//     .catch((err) => res.status(400).json('Could not successfully edit the report: ' + err));
-// });
+    const substituteReport = await generateReportForMonth(doc.departmentId, doc.reportMonth!, req.user);
+    attemptToSaveReport(substituteReport, (err: CustomError) => {
+      if (!err) return res.status(HTTP_CREATED_CODE).send(`Replace deleted report with an empty report`);
+      err.message = `Generate report failed: ${err.message}`;
+      return next(err);
+    });
+  } catch (e) {
+    next(e);
+  }
+});
 
-// //---DELETE REPORTS---//
-// //delete a single report with Reportid
-// router.route('/delete/:Reportid').delete(requireJwtAuth, async (req: any, res: any) => {
-//   const form = await FormEntry.findById(req.params.Reportid);
-//   const departmentId = form.departmentId;
-//   const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
-//   if (!isValidated) {
-//     return res.status(401).json('User is unauthorized in to delete the current department.');
-//   }
+// Create a new report for month-year for department id.
+// Want to create a scheduler to auto generate report for every month.
+// When scheduler is implemented, may want to remove this endpoint.
+// Expect body {month: MM, year: YYYY}
+router
+  .route(`/generate/:${DEPARTMENT_ID_URL_SLUG}`)
+  .post(requireJwtAuth, roleAuth(Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const valid = await Departments.Database.validateDeptId(req.params[DEPARTMENT_ID_URL_SLUG]);
+      if (!valid) {
+        throw new BadRequest(`Department id is invalid`);
+      }
+      const deptAuth = checkUserIsDepartmentAuthed(req.user, req.params[DEPARTMENT_ID_URL_SLUG]);
+      if (!deptAuth) {
+        throw new Unauthorized(`User is not authorized`);
+      }
 
-//   FormEntry.deleteOne({ _id: req.params.Reportid })
-//     .then(() => res.json('Succesfully deleted report'))
-//     .catch((err) => res.status(400).json('Could not delete: ' + err));
-// });
+      // month is 0 index
+      const month = parseInt(req.body.month) - 1;
+      const year = parseInt(req.body.year);
+      const date = new Date(year, month);
+      const newReport = await generateReportForMonth(req.params[DEPARTMENT_ID_URL_SLUG], date, req.user);
 
-// // retrieve reports with deparmentId param and/or dateRange param
-// // ?departmentId?from=YYYY-MM-DD?to=YYYY-MM-DD
-// router.route('/').get(requireJwtAuth, async (req, res) => {
-//   try {
-//     const departmentId: number = parseInt(req.query.departmentId);
+      attemptToSaveReport(newReport, (err?: CustomError) => {
+        if (!err) return res.sendStatus(HTTP_CREATED_CODE);
+        err.message = `Generate report failed: ${err.message}`;
+        return next(err);
+      });
+    } catch (e) {
+      next(e);
+    }
+  });
 
-//     const isValidated: boolean = await checkUserIsDepartmentAuthed(req.user.id, departmentId, req.user.role);
+// A temporary endpoint to get a report month since current json report don't have
+// report month. May want to get rid of this once json supports this.
+router.route(`/date/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const report = await ReportCollection.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
+    if (!report) {
+      throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+    }
 
-//     if (!isValidated) {
-//       return res.status(401).json('User is unauthorized in to view the current department.');
-//     }
+    res.status(HTTP_OK_CODE).json({
+      // month is 0 base
+      month: report.reportMonth!.getMonth() + 1,
+      year: report.reportMonth!.getFullYear()
+    });
+  } catch (e) {
+    next(e);
+  }
+});
 
-//     const strFrom = req.query.from;
-//     const strTo = req.query.to;
-//     const reportId = req.query.reportId;
+// >>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 
-//     let filterQuery = FormEntry.find({});
+function attemptToSaveReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
+  const doc = new ReportCollection(report);
+  doc.save((err: CallbackError) => {
+    if (!err) {
+      return callback();
+    }
 
-//     if (reportId !== undefined) {
-//       filterQuery.find({ _id: reportId });
-//     }
+    const myError: CustomError = mongooseErrorToMyError(err);
+    callback(myError);
+  });
+}
 
-//     if (strFrom !== undefined && strTo != undefined) {
-//       let fromDate = strToDate(strFrom);
-//       let toDate = strToDate(strTo);
-//       fromDate.setHours(0, 0, 0);
-//       toDate.setHours(23, 59, 59);
+async function attemptToUpdateReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
+  const oldDoc = await ReportCollection.findOneAndDelete({ id: report.id }, { lean: true });
+  if (!oldDoc) {
+    throw new NotFound(`No report with provided id found`);
+  }
 
-//       filterQuery = filterQuery.find({
-//         lastUpdatedOn: {
-//           $gte: fromDate,
-//           $lte: toDate
-//         }
-//       });
-//     }
+  attemptToSaveReport(report, (newReportErr: CustomError) => {
+    if (!newReportErr) {
+      return callback();
+    }
 
-//     if (Number.isNaN(departmentId) === false) {
-//       filterQuery = filterQuery.find({
-//         departmentId: departmentId
-//       });
-//     }
+    // Recover old report
+    attemptToSaveReport(oldDoc, (oldReportErr: CustomError) => {
+      if (!oldReportErr) {
+        return callback(newReportErr);
+      }
+      callback(oldReportErr);
+    });
+  });
+}
+// <<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<
 
-//     let result = await filterQuery.sort({ createdOn: 'desc' }).populate('lastUpdatedByUserId').exec();
-//     res.status(200).json(result);
-//   } catch (error) {
-//     return res.status(500).json({
-//       status: 'failure',
-//       error: error.messages
-//     });
-//   }
-// });
-
-// export = router;
-
-// // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. HELPERS >>>>>>>>>>>>>>>>>>>>>>>>
-// // string in format YYYY-MM-DD
-// function strToDate(strDate: string): Date {
-//   const substrs = strDate.split('-');
-
-//   // month is 0 based
-//   const year = parseInt(substrs[0]);
-//   const month = parseInt(substrs[1]);
-//   const day = parseInt(substrs[2]);
-
-//   return new Date(year, month - 1, day);
-// }
-
-// // <<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+export default router;

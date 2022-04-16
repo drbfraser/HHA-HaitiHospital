@@ -4,8 +4,9 @@ import { leaderboardPointsCalculator } from 'utils/leaderboard';
 
 const { Schema } = mongoose;
 
+// _id will be assigned by MongoDB
 export interface Department {
-  _id: string;
+  _id?: string;
   name: string;
 }
 
@@ -35,6 +36,6 @@ departmentSchema.methods.toLeaderboard = async function (pointsFactor: number): 
   return await leaderboardPointsCalculator(pointsFactor, this);
 };
 
-const Department = mongoose.model<DepartmentWithInstanceMethods>('Department', departmentSchema, 'Department');
+const DepartmentCollection = mongoose.model<DepartmentWithInstanceMethods>('Department', departmentSchema, 'Department');
 
-export default Department;
+export default DepartmentCollection;

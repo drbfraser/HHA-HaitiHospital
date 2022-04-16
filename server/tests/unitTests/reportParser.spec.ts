@@ -4,6 +4,7 @@ import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport, reportToJsonReport } from 'utils/parsers/parsers';
 const chai = require('chai');
 
+// Tests are now failing since it requires MongoDB to verify Department.
 describe('Test parsing from a report to a json report', () => {
   it('should parse sucessfully for a report with numeric items', async (done) => {
     try {
@@ -399,7 +400,7 @@ describe('Test parsing json string to a report', () => {
   });
 });
 
-var assert = require('chai').assert
+var assert = require('chai').assert;
 
 describe('Test Equal questions', () => {
   const correctSchema: JsonReportDescriptor = {
@@ -490,9 +491,9 @@ describe('Test Equal questions', () => {
 
   it('should parse json equal item', (done) => {
     try {
-      const report = jsonStringToReport(JSON.stringify(correctSchema))
+      const report = jsonStringToReport(JSON.stringify(correctSchema));
       chai.expect(report).to.not.be.empty;
-      done()
+      done();
     } catch (e) {
       done(e);
     }
@@ -500,11 +501,11 @@ describe('Test Equal questions', () => {
 
   it('should error parsing invalid children json equal item', (done) => {
     try {
-      const report = jsonStringToReport(JSON.stringify(invalidChildrenAnswers))
-      done("Expected exception thrown")
+      const report = jsonStringToReport(JSON.stringify(invalidChildrenAnswers));
+      done('Expected exception thrown');
     } catch (e) {
-      assert(e instanceof InvalidInput)
-      done()
+      assert(e instanceof InvalidInput);
+      done();
     }
   });
 });

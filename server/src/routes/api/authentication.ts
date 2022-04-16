@@ -1,7 +1,7 @@
 import { HTTP_OK_CODE } from 'exceptions/httpException';
 import { Router, Request, Response } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
-import UserModel from 'models/user';
+import UserCollection from 'models/user';
 import { RequestWithUser } from 'utils/definitions/express';
 import requireLocalAuth from '../../middleware/requireLocalAuth';
 
@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/login', requireLocalAuth, async (req: RequestWithUser, res: Response) => {
   const user = req.body;
-  const mongooseUser = await UserModel.findOne({ username: user.username });
+  const mongooseUser = await UserCollection.findOne({ username: user.username });
   const jsonUser = await mongooseUser!.toJson();
   const token = mongooseUser!.generateJWT();
   res.cookie('jwt', token, { httpOnly: true });

@@ -1,8 +1,8 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
 import { v4 as uuid } from 'uuid';
 import { ReportItem } from './Report';
-import { JsonReportDescriptor, JsonReportItem } from 'common/definitions/json_report';
-import { ItemType } from 'common/definitions/json_report';
+import { JsonReportDescriptor, JsonReportItem } from 'common/json_report';
+import { ItemType } from 'common/json_report';
 import { Department } from 'constants/interfaces';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-import MessageBody from '../../models/messageBoard';
+import MessageCollection from '../../models/messageBoard';
 import { NextFunction, Response } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
@@ -12,7 +12,7 @@ import { RequestWithUser } from 'utils/definitions/express';
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const docs = await MessageBody.find({}).sort({ date: 'desc' });
+    const docs = await MessageCollection.find({}).sort({ date: 'desc' });
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
@@ -23,10 +23,10 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const deptId = req.params.departmentId;
-    if (!Departments.Database.validateDeptId(deptId)) {
+    if (!(await Departments.Database.validateDeptId(deptId))) {
       throw new BadRequest(`Invalid department id: ${deptId}`);
     }
-    const docs = await MessageBody.find({ departmentId: deptId }).sort({ date: 'desc' });
+    const docs = await MessageCollection.find({ departmentId: deptId }).sort({ date: 'desc' });
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
@@ -37,7 +37,7 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
 router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const msgId = req.params.id;
-    const doc = await MessageBody.findById(msgId);
+    const doc = await MessageCollection.findById(msgId);
     if (!doc) {
       throw new NotFound(`No message with id ${msgId} available`);
     }
@@ -48,34 +48,36 @@ router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunctio
   }
 });
 
-router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
-  const departmentId: string = req.body.department.id;
-  if (!Departments.Database.validateDeptId(departmentId)) {
-    return next(new BadRequest(`Invalid department id ${departmentId}`));
+router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const departmentId: string = req.body.department.id;
+    if (!(await Departments.Database.validateDeptId(departmentId))) {
+      throw new BadRequest(`Invalid department id ${departmentId}`);
+    }
+
+    const date: Date = new Date();
+    const messageBody: string = req.body.messageBody;
+    const messageHeader: string = req.body.messageHeader;
+    const userId: string = req.user._id!;
+    const messageEntry = new MessageCollection({
+      departmentId: departmentId,
+      userId: userId,
+      date: date,
+      messageBody: messageBody,
+      messageHeader: messageHeader
+    });
+
+    await messageEntry.save();
+    res.sendStatus(HTTP_CREATED_CODE);
+  } catch (e) {
+    next(e);
   }
-
-  const date: Date = new Date();
-  const messageBody: string = req.body.messageBody;
-  const messageHeader: string = req.body.messageHeader;
-  const userId: string = req.user._id!;
-  const messageEntry = new MessageBody({
-    departmentId: departmentId,
-    userId: userId,
-    date: date,
-    messageBody: messageBody,
-    messageHeader: messageHeader
-  });
-
-  messageEntry
-    .save()
-    .then(() => res.sendStatus(HTTP_CREATED_CODE))
-    .catch((err: any) => next(new InternalError(`Message submission failed: ${err}`)));
 });
 
 router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreate, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const departmentId: string = req.body.department.id;
-    if (!Departments.Database.validateDeptId(departmentId)) {
+    if (!(await Departments.Database.validateDeptId(departmentId))) {
       throw new BadRequest(`Invalid department id ${departmentId}`);
     }
 
@@ -94,7 +96,7 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
 
     Object.keys(updatedMessage).forEach((k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k]);
 
-    const msg = await MessageBody.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true });
+    const msg = await MessageCollection.findByIdAndUpdate({ _id: req.params.id }, updatedMessage, { new: true });
     if (msg) {
       return res.sendStatus(HTTP_OK_CODE);
     }
@@ -107,7 +109,7 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const msgId: string = req.params.id;
-    const msg = await MessageBody.findByIdAndRemove(msgId);
+    const msg = await MessageCollection.findByIdAndRemove(msgId);
     if (!msg) {
       throw new NotFound(`No message with id ${msgId} found`);
     }
