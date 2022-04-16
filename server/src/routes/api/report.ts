@@ -10,7 +10,7 @@ import Departments from 'utils/departments';
 import { jsonStringToReport } from 'utils/parsers/parsers';
 import { updateSubmissionDate, setSubmittor, generateReportForMonth } from 'utils/report/report';
 import { mongooseErrorToMyError } from 'utils/utils';
-import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from '../../exceptions/httpException';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
 import { ReportModel } from '../../models/report';
@@ -22,10 +22,7 @@ const router = require('express').Router();
 router.route('/').get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const docs = await ReportModel.find({}).sort({ reportMonth: 'desc' });
-    const jsons = docs.map((doc) => doc.toJson());
-
-    if (jsons.length === 0) return res.sendStatus(HTTP_NOCONTENT_CODE);
-
+    const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
     next(e);
@@ -37,10 +34,9 @@ router.route(`/department/:${DEPARTMENT_ID_URL_SLUG}`).get(requireJwtAuth, depar
   try {
     const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
     const docs = await ReportModel.find({ departmentId: deptId }).sort({ reportMonth: 'desc' });
-    const jsons = docs.map((doc) => doc.toJson());
+    const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
 
-    if (jsons.length) return res.status(HTTP_OK_CODE).json(jsons);
-    return res.sendStatus(HTTP_NOCONTENT_CODE);
+    res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
     next(e);
   }
@@ -60,7 +56,7 @@ router.route(`/report/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: R
       throw new Unauthorized(`User not authorized`);
     }
 
-    const json = doc.toJson();
+    const json = await doc.toJson();
     res.status(HTTP_OK_CODE).json(json);
   } catch (e) {
     next(e);

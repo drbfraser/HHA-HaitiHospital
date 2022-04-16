@@ -10,12 +10,12 @@ export const leaderboardPointsCalculator = async (pointsFactor: number, departme
       $gte: new Date(currYear, currMonth, 1),
       $lte: new Date(currYear, currMonth + 1, 1)
     },
-    departmentId: department._id
+    departmentId: department.id
   });
 
   // Eventually will need to add report points to this
   const json: LeaderboardJson = {
-    id: department._id,
+    id: department.id,
     name: department.name,
     points: pointsFactor * numberOfCaseStudies.length,
     nCaseStudies: numberOfCaseStudies.length

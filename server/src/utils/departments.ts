@@ -1,4 +1,6 @@
-import Department, { Department as DepartmentModel } from 'models/departments';
+import { NotFound } from 'exceptions/httpException';
+import { IllegalState } from 'exceptions/systemException';
+import DepartmentModel, { Department } from 'models/departments';
 
 export enum DefaultDepartments {
   General = 'General',
@@ -10,40 +12,40 @@ export enum DefaultDepartments {
 
 // ***************************************************** Utility functions for hashtable approach *****************************************************
 
-const initIdToNameMap = (departments: DepartmentModel[]): Map<string, string> => {
+const initIdToNameMap = (departments: Department[]): Map<string, string> => {
   let _departmentIdMapper = new Map<string, string>();
-  departments.forEach((dept: DepartmentModel) => {
-    _departmentIdMapper.set(dept._id, dept.name);
+  departments.forEach((dept: Department) => {
+    _departmentIdMapper.set(dept._id!, dept.name);
   });
   return _departmentIdMapper;
 };
 
 const getDeptNameFromId = (deptId: string, map: Map<string, string>): string => {
   if (!map.has(deptId)) {
-    throw new Error(`Department Id ${deptId} is not supported`);
+    throw new NotFound(`Department Id ${deptId} is not supported`);
   }
   const name: string | undefined = map.get(deptId);
   if (!name) {
-    throw new Error(`Department Id ${deptId} does not have a name`);
+    throw new IllegalState(`Department Id ${deptId} does not have a name`);
   }
   return name;
 };
 
-const initNameToId = (departments: DepartmentModel[]): Map<string, string> => {
+const initNameToId = (departments: Department[]): Map<string, string> => {
   let _departmentNameMapper = new Map<string, string>();
-  departments.forEach((dept: DepartmentModel) => {
-    _departmentNameMapper.set(dept.name, dept._id);
+  departments.forEach((dept: Department) => {
+    _departmentNameMapper.set(dept.name, dept._id!);
   });
   return _departmentNameMapper;
 };
 
 const getDeptIdFromName = (deptName: string, map: Map<string, string>): string => {
   if (!map.has(deptName)) {
-    throw new Error(`Department name ${deptName} is not supported`);
+    throw new NotFound(`Department name ${deptName} is not supported`);
   }
   const id: string | undefined = map.get(deptName)?.toString();
   if (!id) {
-    throw new Error(`Department name ${deptName} does not have an id`);
+    throw new IllegalState(`Department name ${deptName} does not have an id`);
   }
   return id;
 };
@@ -55,28 +57,24 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
 // ***************************************************** Utility functions for database approach ******************************************************
 
 const getDeptNameById = async (deptId: string): Promise<string> => {
-  try {
-    const department: DepartmentModel = (await Department.findById(deptId)) as DepartmentModel;
-    if (Object.keys(department).length === 0) throw new Error(`Department Id ${deptId} does not have a name`);
-    return department.name;
-  } catch (error: any) {
-    return 'Error: Unable to retrieve department name';
+  const department: Department | null = await DepartmentModel.findById(deptId);
+  if (!department) {
+    throw new NotFound(`No department with id provided`);
   }
+  return department.name;
 };
 
 const getDeptIdByName = async (deptName: string): Promise<string> => {
-  try {
-    const department: DepartmentModel = (await Department.findOne({ name: deptName })) as DepartmentModel;
-    if (Object.keys(department).length === 0) throw new Error(`Department name ${deptName} does not have an id`);
-    return department._id;
-  } catch (error: any) {
-    return 'Error: Unable to retrieve department id';
+  const department: Department | null = await DepartmentModel.findOne({ name: deptName });
+  if (!department) {
+    throw new NotFound(`No department with id provided`);
   }
+  return department._id!;
 };
 
 const validateDeptId = async (deptId: string): Promise<boolean> => {
-  const department: DepartmentModel = (await Department.findById(deptId)) as DepartmentModel;
-  return !(Object.keys(department).length === 0);
+  const department: Department | null = await DepartmentModel.findById(deptId);
+  return department !== null;
 };
 
 // ****************************************************************************************************************************************************

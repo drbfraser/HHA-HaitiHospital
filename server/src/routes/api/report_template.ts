@@ -22,7 +22,7 @@ export default router;
 router.route('/').get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const documents = await TemplateCollection.find();
-    const jsonReports = documents.map((doc) => doc.toJson());
+    const jsonReports = await Promise.all(documents.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsonReports);
   } catch (e) {
     next(e);

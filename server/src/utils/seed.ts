@@ -1,12 +1,14 @@
 import faker from 'faker';
 import UserModel, { Role, User } from '../models/user';
-import Department, { Department as DepartmentModel } from '../models/departments';
+import DepartmentModel, { Department } from '../models/departments';
 import Departments, { DefaultDepartments } from './departments';
 import MessageBody from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from './processEnv';
+import { TemplateCollection } from 'models/template';
+import { ReportModel } from 'models/report';
 
 let nameMapper: Map<string, string>;
 
@@ -39,13 +41,15 @@ export const seedDb = async () => {
     await seedBioMech();
     await seedEmployeeOfTheMonth();
     await seedCaseStudies();
+    await seedTemplates();
+    await seedReports();
   });
 
   console.log('Database seeding completed.');
 };
 
 const setupDepartmentMap = async () => {
-  const departments: DepartmentModel[] = await Department.find();
+  const departments: Department[] = await DepartmentModel.find();
   nameMapper = Departments.Hashtable.initNameToId(departments);
 };
 
@@ -209,10 +213,10 @@ export const seedCaseStudies = async () => {
 export const seedDepartments = async () => {
   console.log('Seeding departments...');
   try {
-    await Department.deleteMany({});
+    await DepartmentModel.deleteMany({});
     // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
     for (let deptName in DefaultDepartments) {
-      const department = new Department({
+      const department = new DepartmentModel({
         name: DefaultDepartments[deptName]
       });
       await department.save();
@@ -359,5 +363,25 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
     }
   } catch (err: any) {
     console.error(err);
+  }
+};
+
+const seedTemplates = async () => {
+  console.log(`Seeding templates...`);
+  try {
+    await TemplateCollection.deleteMany({});
+    console.log(`Templates seeded`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const seedReports = async () => {
+  console.log(`Seeding reports...`);
+  try {
+    await ReportModel.deleteMany({});
+    console.log(`Reports seeded`);
+  } catch (err) {
+    console.log(err);
   }
 };
