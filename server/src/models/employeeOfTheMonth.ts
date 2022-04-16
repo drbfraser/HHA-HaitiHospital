@@ -59,6 +59,6 @@ employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfT
   return json;
 };
 
-const EmployeeOfTheMonth = mongoose.model<EmployeeOfTheMonthWithInstanceMethods>('EmployeeOfTheMonth', employeeOfTheMonthSchema, 'EmployeeOfTheMonth');
+const EmployeeOfTheMonthCollection = mongoose.model<EmployeeOfTheMonthWithInstanceMethods>('EmployeeOfTheMonth', employeeOfTheMonthSchema, 'EmployeeOfTheMonth');
 
-export default EmployeeOfTheMonth;
+export default EmployeeOfTheMonthCollection;

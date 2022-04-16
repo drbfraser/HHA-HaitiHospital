@@ -1,6 +1,6 @@
 import { NotFound } from 'exceptions/httpException';
 import { IllegalState } from 'exceptions/systemException';
-import DepartmentModel, { Department } from 'models/departments';
+import DepartmentCollection, { Department } from 'models/departments';
 
 export enum DefaultDepartments {
   General = 'General',
@@ -57,7 +57,7 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
 // ***************************************************** Utility functions for database approach ******************************************************
 
 const getDeptNameById = async (deptId: string): Promise<string> => {
-  const department: Department | null = await DepartmentModel.findById(deptId);
+  const department: Department | null = await DepartmentCollection.findById(deptId);
   if (!department) {
     throw new NotFound(`No department with id provided`);
   }
@@ -65,7 +65,7 @@ const getDeptNameById = async (deptId: string): Promise<string> => {
 };
 
 const getDeptIdByName = async (deptName: string): Promise<string> => {
-  const department: Department | null = await DepartmentModel.findOne({ name: deptName });
+  const department: Department | null = await DepartmentCollection.findOne({ name: deptName });
   if (!department) {
     throw new NotFound(`No department with id provided`);
   }
@@ -73,7 +73,7 @@ const getDeptIdByName = async (deptName: string): Promise<string> => {
 };
 
 const validateDeptId = async (deptId: string): Promise<boolean> => {
-  const department: Department | null = await DepartmentModel.findById(deptId);
+  const department: Department | null = await DepartmentCollection.findById(deptId);
   return department !== null;
 };
 

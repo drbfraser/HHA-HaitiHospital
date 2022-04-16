@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
-import BioMechModel, { BioMech } from '../../models/bioMech';
+import BioMechCollection, { BioMech } from '../../models/bioMech';
 import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
@@ -12,7 +12,7 @@ const router = Router();
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const docs = await BioMechModel.find({}).sort({ createdAt: 'desc' });
+    const docs = await BioMechCollection.find({}).sort({ createdAt: 'desc' });
     const jsons = await Promise.all(docs.map((post) => post.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
@@ -23,7 +23,7 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const bioId = req.params.id;
-    const doc = await BioMechModel.findById(bioId);
+    const doc = await BioMechCollection.findById(bioId);
     if (!doc) {
       throw new NotFound(`No biomech post with id ${bioId} available`);
     }
@@ -55,7 +55,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
     createdAt: new Date(),
     updatedAt: new Date()
   };
-  const doc = new BioMechModel(bioMech);
+  const doc = new BioMechCollection(bioMech);
   doc
     .save()
     .then(() => res.sendStatus(HTTP_CREATED_CODE))
@@ -64,7 +64,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
 
 router.delete('/:id', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const bioId = req.params.id;
-  BioMechModel.findByIdAndRemove(bioId)
+  BioMechCollection.findByIdAndRemove(bioId)
     .exec()
     .then((data) => {
       if (!data) {

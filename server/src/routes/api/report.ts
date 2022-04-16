@@ -13,7 +13,7 @@ import { mongooseErrorToMyError } from 'utils/utils';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from '../../middleware/roleAuth';
-import { ReportModel } from '../../models/report';
+import { ReportCollection } from '../../models/report';
 import { Role } from '../../models/user';
 
 const router = require('express').Router();
@@ -21,7 +21,7 @@ const router = require('express').Router();
 //Fetch all reports
 router.route('/').get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const docs = await ReportModel.find({}).sort({ reportMonth: 'desc' });
+    const docs = await ReportCollection.find({}).sort({ reportMonth: 'desc' });
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
@@ -33,7 +33,7 @@ router.route('/').get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector)
 router.route(`/department/:${DEPARTMENT_ID_URL_SLUG}`).get(requireJwtAuth, departmentAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
-    const docs = await ReportModel.find({ departmentId: deptId }).sort({ reportMonth: 'desc' });
+    const docs = await ReportCollection.find({ departmentId: deptId }).sort({ reportMonth: 'desc' });
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
 
     res.status(HTTP_OK_CODE).json(jsons);
@@ -46,7 +46,7 @@ router.route(`/department/:${DEPARTMENT_ID_URL_SLUG}`).get(requireJwtAuth, depar
 router.route(`/report/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const reportId = req.params[REPORT_ID_URL_SLUG];
-    const doc = await ReportModel.findOne({ id: reportId });
+    const doc = await ReportCollection.findOne({ id: reportId });
     if (!doc) {
       throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
     }
@@ -66,7 +66,7 @@ router.route(`/report/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: R
 // Update report by id
 router.route(`/:${REPORT_ID_URL_SLUG}`).put(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const doc = await ReportModel.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
+    const doc = await ReportCollection.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
     if (!doc) throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
 
     const reportInString = JSON.stringify(req.body);
@@ -99,7 +99,7 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).put(requireJwtAuth, async (req: RequestW
 // that month, using department template (if any)
 router.route(`/:${REPORT_ID_URL_SLUG}`).delete(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const doc = await ReportModel.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
+    const doc = await ReportCollection.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
     if (!doc) {
       throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]} available`);
     }
@@ -109,7 +109,7 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).delete(requireJwtAuth, roleAuth(Role.Adm
       throw new Unauthorized(`User is not authorized`);
     }
 
-    const result = await ReportModel.deleteOne({ id: doc.id });
+    const result = await ReportCollection.deleteOne({ id: doc.id });
     if (result.deletedCount === 0) {
       throw new InternalError(`Delete report failed`);
     }
@@ -162,7 +162,7 @@ router
 // report month. May want to get rid of this once json supports this.
 router.route(`/date/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const report = await ReportModel.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
+    const report = await ReportCollection.findOne({ id: req.params[REPORT_ID_URL_SLUG] }).lean();
     if (!report) {
       throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
     }
@@ -180,7 +180,7 @@ router.route(`/date/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: Req
 // >>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>
 
 function attemptToSaveReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
-  const doc = new ReportModel(report);
+  const doc = new ReportCollection(report);
   doc.save((err: CallbackError) => {
     if (!err) {
       return callback();
@@ -192,7 +192,7 @@ function attemptToSaveReport(report: ReportDescriptor, callback: (err?: CustomEr
 }
 
 async function attemptToUpdateReport(report: ReportDescriptor, callback: (err?: CustomError) => void) {
-  const oldDoc = await ReportModel.findOneAndDelete({ id: report.id }, { lean: true });
+  const oldDoc = await ReportCollection.findOneAndDelete({ id: report.id }, { lean: true });
   if (!oldDoc) {
     throw new NotFound(`No report with provided id found`);
   }

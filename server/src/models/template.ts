@@ -5,7 +5,7 @@ import { ReportDescriptor } from 'utils/definitions/report';
 import Departments from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
 import { fromTemplateToReport, TemplateItems } from 'utils/parsers/template';
-import UserModel, { USER_MODEL_NAME } from './user';
+import UserCollection, { USER_MODEL_NAME } from './user';
 const { Schema } = mongoose;
 
 export interface Template {
@@ -69,7 +69,7 @@ const validDepartment = async (value: string) => {
 };
 
 const verifyUser = async (value: string) => {
-  const existed = await UserModel.exists({ _id: value });
+  const existed = await UserCollection.exists({ _id: value });
   return existed;
 };
 

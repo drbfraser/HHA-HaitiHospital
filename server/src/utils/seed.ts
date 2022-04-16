@@ -1,14 +1,14 @@
 import faker from 'faker';
-import UserModel, { Role, User } from '../models/user';
-import DepartmentModel, { Department } from '../models/departments';
+import UserCollection, { Role, User } from '../models/user';
+import DepartmentCollection, { Department } from '../models/departments';
 import Departments, { DefaultDepartments } from './departments';
-import MessageBody from '../models/messageBoard';
+import MessageCollection from '../models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
 import BioMech, { bioMechEnum } from '../models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from './processEnv';
 import { TemplateCollection } from 'models/template';
-import { ReportModel } from 'models/report';
+import { ReportCollection } from 'models/report';
 
 let nameMapper: Map<string, string>;
 
@@ -49,7 +49,7 @@ export const seedDb = async () => {
 };
 
 const setupDepartmentMap = async () => {
-  const departments: Department[] = await DepartmentModel.find();
+  const departments: Department[] = await DepartmentCollection.find();
   nameMapper = Departments.Hashtable.initNameToId(departments);
 };
 
@@ -60,7 +60,7 @@ export const seedUsers = async () => {
     // await User.collection.dropIndexes();
 
     [...Array(7).keys()].forEach(async (index) => {
-      const foundUser = await UserModel.findOne({ username: `user${index}` }).exec();
+      const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
           case 0:
@@ -96,7 +96,7 @@ export const seedUsers = async () => {
         }
         foundUser.save();
       } else {
-        const user = new UserModel({
+        const user = new UserCollection({
           username: `user${index}`,
           password: ENV.PASSWORD_SEED,
           name: faker.name.findName()
@@ -147,12 +147,12 @@ export const seedUsers = async () => {
 export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   try {
-    await MessageBody.deleteMany({});
-    const users: User[] = await UserModel.find();
+    await MessageCollection.deleteMany({});
+    const users: User[] = await UserCollection.find();
     const numOfMessagesToGenerate: number = 100;
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
-      const message = new MessageBody({
+      const message = new MessageCollection({
         departmentId: randomUser.departmentId,
         userId: randomUser._id,
         date: new Date(),
@@ -195,7 +195,7 @@ export const seedCaseStudies = async () => {
   console.log('Seeding case studies...');
   try {
     await CaseStudy.deleteMany({});
-    const users = await UserModel.find().lean();
+    const users = await UserCollection.find().lean();
     const randomDefaultUser = selectRandomUser(users);
     setDefaultFeaturedCaseStudy(randomDefaultUser);
     const numCaseStudiesToGenerate: number = 100;
@@ -213,10 +213,10 @@ export const seedCaseStudies = async () => {
 export const seedDepartments = async () => {
   console.log('Seeding departments...');
   try {
-    await DepartmentModel.deleteMany({});
+    await DepartmentCollection.deleteMany({});
     // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
     for (let deptName in DefaultDepartments) {
-      const department = new DepartmentModel({
+      const department = new DepartmentCollection({
         name: DefaultDepartments[deptName]
       });
       await department.save();
@@ -231,7 +231,7 @@ export const seedBioMech = async () => {
   console.log('Seeding biomechanical support...');
   try {
     await BioMech.deleteMany({});
-    const users: User[] = await UserModel.find();
+    const users: User[] = await UserCollection.find();
     const numOfBioMechReportsToGenerate: number = 100;
     for (let i = 0; i < numOfBioMechReportsToGenerate; i++) {
       const randomUser = selectRandomUser(users);
@@ -379,7 +379,7 @@ const seedTemplates = async () => {
 const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
-    await ReportModel.deleteMany({});
+    await ReportCollection.deleteMany({});
     console.log(`Reports seeded`);
   } catch (err) {
     console.log(err);

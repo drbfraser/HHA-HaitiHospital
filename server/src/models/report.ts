@@ -6,7 +6,7 @@ import Departments from 'utils/departments';
 import { parseToJson } from 'utils/parsers/json_report';
 import { formatDateString } from 'utils/utils';
 
-import UserModel, { USER_MODEL_NAME } from './user';
+import UserCollection, { USER_MODEL_NAME } from './user';
 
 const { Schema } = mongoose;
 
@@ -52,12 +52,12 @@ reportSchema.methods.toJson = function (): Promise<JsonReportDescriptor> {
 };
 
 export const REPORT_MODEL_NAME = 'Report';
-export const ReportModel = mongoose.model<ReportWithInstanceMethods>(REPORT_MODEL_NAME, reportSchema);
+export const ReportCollection = mongoose.model<ReportWithInstanceMethods>(REPORT_MODEL_NAME, reportSchema);
 
 // >>>> VALIDATORS >>>>
 
 const uniqueId = async (value: string) => {
-  const count = await ReportModel.countDocuments({ id: value });
+  const count = await ReportCollection.countDocuments({ id: value });
   return count === 0;
 };
 reportSchema.path(`${PATH_TO_ID}`).validate({
@@ -79,7 +79,7 @@ reportSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
 });
 
 const verifyUser = async (value: string) => {
-  const existed = await UserModel.exists({ _id: value });
+  const existed = await UserCollection.exists({ _id: value });
   return existed;
 };
 reportSchema.path(`${PATH_TO_USER_ID}`).validate({
@@ -90,7 +90,7 @@ reportSchema.path(`${PATH_TO_USER_ID}`).validate({
 });
 
 const uniqueReportMonth = async function (value: Date) {
-  const count = await ReportModel.countDocuments({ reportMonth: value, departmentId: this.departmentId });
+  const count = await ReportCollection.countDocuments({ reportMonth: value, departmentId: this.departmentId });
   return count === 0;
 };
 reportSchema.path(`${PATH_TO_REPORT_MONTH}`).validate({
