@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "766b6828-4682-480a-896b-c7025645906e",
+		"_postman_id": "3152769b-06b8-47ce-826e-dabc91d24686",
 		"name": "hha",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -742,6 +742,73 @@
 			]
 		},
 		{
+			"name": "Message Board Comment",
+			"item": [
+				{
+					"name": "Add a comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "XSRF-Token",
+								"value": "{{xsrf_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"parentMessageId\": \"TestMessagePostId\",\n    \"messageComment\": \"Testing\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/message-board/comments",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"message-board",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comments by parent post id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/message-board/comments/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"message-board",
+								"comments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Users",
 			"item": [
 				{
@@ -919,22 +986,136 @@
 			]
 		},
 		{
-			"name": "Message Board Comment",
+			"name": "Template",
 			"item": [
 				{
-					"name": "Add a comment",
+					"name": "Get all templates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a template",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a template",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a template by department id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Get all reports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/report/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"report",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all reports in a department",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/report/department/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"report",
+								"department",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get report by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/report/report/2a5c293a4d18a189ae3216d0ca5af349",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"report",
+								"report",
+								"2a5c293a4d18a189ae3216d0ca5af349"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate a report",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
-								"key": "XSRF-Token",
+								"key": "XSRF-TOKEN",
 								"value": "{{xsrf_token}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"parentMessageId\": \"TestMessagePostId\",\n    \"messageComment\": \"Testing\"\n}",
+							"raw": "{\r\n    \"month\": \"6\",\r\n    \"year\": \"2022\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -942,42 +1123,102 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:5000/api/message-board/comments",
+							"raw": "http://localhost:5000/api/report/generate/2",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
 								"api",
-								"message-board",
-								"comments"
+								"report",
+								"generate",
+								"2"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get comments by parent post id",
+					"name": "Delete a report",
 					"request": {
-						"method": "GET",
-						"header": [],
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "XSRF-TOKEN",
+								"value": "{{xsrf_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:5000/api/message-board/comments/:id",
+							"raw": "http://localhost:5000/api/report/0708c27b746638607aba06578040270a",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
 								"api",
-								"message-board",
-								"comments",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
+								"report",
+								"0708c27b746638607aba06578040270a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "XSRF-TOKEN",
+								"value": "{{xsrf_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"meta\": {\r\n        \"id\": \"0708c27b746638607aba06578040270a\",\r\n        \"department\": {\r\n            \"id\": \"1\",\r\n            \"name\": \"Maternity\"\r\n        },\r\n        \"submittedDate\": \"April 9, 2022, 5:13:12 PM\",\r\n        \"submittedUserId\": \"624a6e2cbae332370ccd329f\"\r\n    },\r\n    \"items\": [\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 1\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        },\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 2\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/report/2a5c293a4d18a189ae3216d0ca5af349",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"report",
+								"2a5c293a4d18a189ae3216d0ca5af349"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Report Month",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/report/date/698644549bb0acb7f7e5d5aa3021c338",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"report",
+								"date",
+								"698644549bb0acb7f7e5d5aa3021c338"
 							]
 						}
 					},

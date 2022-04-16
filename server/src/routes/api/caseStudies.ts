@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
-import CaseStudyModel, { CaseStudy } from '../../models/caseStudies';
+import CaseStudyCollection, { CaseStudy } from '../../models/caseStudies';
 import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../schema/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
@@ -18,7 +18,7 @@ const setFeatured = (flag: boolean): object => {
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const postDocs = await CaseStudyModel.find().sort({updatedAt: 'desc'});
+    const postDocs = await CaseStudyCollection.find().sort({ updatedAt: 'desc' });
     const jsonPosts = await Promise.all(postDocs.map((post) => post.toJson()));
     res.status(HTTP_OK_CODE).json(jsonPosts);
   } catch (e) {
@@ -28,7 +28,7 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 
 router.get('/featured', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const postDoc = await CaseStudyModel.findOne({ featured: true });
+    const postDoc = await CaseStudyCollection.findOne({ featured: true });
     if (!postDoc) {
       return res.sendStatus(HTTP_NOCONTENT_CODE);
     }
@@ -42,7 +42,7 @@ router.get('/featured', requireJwtAuth, async (req: RequestWithUser, res: Respon
 router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const caseId = req.params.id;
-    const postDoc = await CaseStudyModel.findById(caseId);
+    const postDoc = await CaseStudyCollection.findById(caseId);
     if (!postDoc) {
       throw new NotFound(`No case study with id ${caseId} available`);
     }
@@ -63,7 +63,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
-    const featured: boolean = ((await CaseStudyModel.estimatedDocumentCount()) as number) === 0;
+    const featured: boolean = ((await CaseStudyCollection.estimatedDocumentCount()) as number) === 0;
     const newCaseStudy: CaseStudy = {
       caseStudyType: caseStudyType,
       userId: userId,
@@ -78,7 +78,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    const newCaseStudyDoc = new CaseStudyModel(newCaseStudy);
+    const newCaseStudyDoc = new CaseStudyCollection(newCaseStudy);
 
     newCaseStudyDoc
       .save()
@@ -93,7 +93,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
 
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), (req: RequestWithUser, res: Response, next: NextFunction) => {
   const caseId = req.params.id;
-  CaseStudyModel.findByIdAndRemove(caseId)
+  CaseStudyCollection.findByIdAndRemove(caseId)
     .exec()
     .then((data: any) => {
       if (!data) {
@@ -109,16 +109,16 @@ router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector)
 // Set feature case study
 router.patch('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const prevFeaturedCaseStudy = await CaseStudyModel.findOne({ featured: true });
+    const prevFeaturedCaseStudy = await CaseStudyCollection.findOne({ featured: true });
     if ((prevFeaturedCaseStudy!._id as string) === req.params.id) {
       return res.status(HTTP_NOCONTENT_CODE).send();
     }
 
-    CaseStudyModel.findByIdAndUpdate(prevFeaturedCaseStudy!._id, { $set: setFeatured(false) })
+    CaseStudyCollection.findByIdAndUpdate(prevFeaturedCaseStudy!._id, { $set: setFeatured(false) })
       .exec()
       .catch((err: any) => next(new InternalError(`Failed to unfeature previous case study: ${err}`)));
 
-    CaseStudyModel.findByIdAndUpdate(req.params.id, { $set: { featured: true } }, { new: true })
+    CaseStudyCollection.findByIdAndUpdate(req.params.id, { $set: { featured: true } }, { new: true })
       .exec()
       .then((data) => res.status(HTTP_OK_CODE).json(data!.toJson()))
       .catch((err: any) => next(new InternalError(`Failed to feature the new case study: ${err}`)));

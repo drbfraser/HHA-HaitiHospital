@@ -2,7 +2,7 @@ import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
-import UserModel, { UserJson } from './user';
+import UserCollection, { UserJson } from './user';
 
 const { Schema } = mongoose;
 
@@ -162,7 +162,7 @@ const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
   { timestamps: true }
 );
 caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
-  const userDoc = await UserModel.findById(this.userId);
+  const userDoc = await UserCollection.findById(this.userId);
   if (!userDoc) {
     throw new IllegalState(`Case study references to non-existing user id ${this.userId}`);
   }
@@ -190,6 +190,6 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
   return json;
 };
 
-const CaseStudy = mongoose.model<CaseStudyWithInstanceMethods>('CaseStudy', caseStudySchema, 'CaseStudy');
+const CaseStudyModel = mongoose.model<CaseStudyWithInstanceMethods>('CaseStudy', caseStudySchema, 'CaseStudy');
 
-export default CaseStudy;
+export default CaseStudyModel;

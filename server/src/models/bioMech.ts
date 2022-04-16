@@ -2,7 +2,7 @@ import Departments from 'utils/departments';
 import * as mongoose from 'mongoose';
 import { IllegalState } from 'exceptions/systemException';
 import { formatDateString } from 'utils/utils';
-import UserModel, { UserJson } from './user';
+import UserCollection, { UserJson } from './user';
 
 const { Schema } = mongoose;
 
@@ -54,7 +54,7 @@ const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
   { timestamps: true }
 );
 bioMechSchema.methods.toJson = async function (): Promise<BioMechJson> {
-  const userDoc = await UserModel.findOne({ _id: this.userId }).exec();
+  const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
   if (!userDoc) {
     throw new IllegalState(`Biomech references to non-existing user with id ${this.userId}`);
   }
@@ -77,5 +77,5 @@ bioMechSchema.methods.toJson = async function (): Promise<BioMechJson> {
   return json;
 };
 
-const BioMech = mongoose.model<BioMechWithInstanceMethods>('BioMech', bioMechSchema, 'BioMechReports');
-export default BioMech;
+const BioMechCollection = mongoose.model<BioMechWithInstanceMethods>('BioMech', bioMechSchema, 'BioMechReports');
+export default BioMechCollection;

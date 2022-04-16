@@ -10,7 +10,7 @@ import {
   JsonReportDescriptor,
   JsonReportItem,
   JsonReportMeta,
-} from 'common/definitions/json_report';
+} from 'common/json_report';
 import * as MockApi from './MockApi';
 import * as ReportApiUtils from './ReportUtils';
 import { InputGroup } from './ReportItems';

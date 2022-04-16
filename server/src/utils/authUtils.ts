@@ -1,16 +1,12 @@
-import { InvalidInput } from 'exceptions/systemException';
-import UserModel from '../models/user';
+import { User } from '../models/user';
 import { Role } from '../models/user';
 
-export const checkUserIsDepartmentAuthed = async (userId: string, reportDepartmentId: string, userRole: string) => {
-  // All roles other than a regular user role are authorized to do any departmental work
-  if (userRole != Role.User) {
+// Make sure provied departmentId is valid
+export const checkUserIsDepartmentAuthed = (user: User, departmentId: string) => {
+  if (user.role === Role.Admin || user.role === Role.MedicalDirector) {
     return true;
   }
-  const user = await UserModel.findById(userId).lean();
-  if (!user) {
-    throw new InvalidInput(`No user with provided id found`);
-  }
+
   const userDepartment = user.departmentId;
-  return userDepartment === reportDepartmentId;
+  return userDepartment === departmentId;
 };

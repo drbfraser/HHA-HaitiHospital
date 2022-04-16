@@ -1,31 +1,6 @@
 // import { IllegalState } from 'exceptions/systemException';
 import { ItemTypeKeys } from 'common/json_report';
 
-// export enum AnswerType {
-//     number,
-//     boolean,
-//     string
-// }
-// export type AnswerTypeKeys = keyof typeof AnswerType;
-
-// export const mapItemTypeToAnswerType = new Map<ItemTypeKeys, AnswerTypeKeys>();
-// const initItemAnswerMap = (map: Map<ItemTypeKeys, AnswerTypeKeys>) => {
-//     map.clear();
-//     map.set("N", "number");
-//     map.set("SUM", "number");
-//     // ToDo: fill out later
-//     if (map.size != Object.keys(ItemType).length)
-//         throw new IllegalState(`item type - answer type map must have length ${Object.keys(ItemType).length}`);
-// };
-// initItemAnswerMap(mapItemTypeToAnswerType);
-
-export interface ReportMeta {
-  id: string;
-  departmentId: string;
-  submittedDate: Date;
-  submittedUserId: string;
-}
-
 export type ItemAnswer = Array<string>;
 export interface ReportItem {
   type: ItemTypeKeys;
@@ -36,7 +11,7 @@ export interface ReportItem {
 // export interface ReportSaItem extends ReportItem<string> {};
 //Numeric Item
 
-export interface ReportNItem extends ReportItem {}
+export interface ReportNumericItem extends ReportItem {}
 //Yes No item
 // export interface ReportYnItem extends ReportItem<boolean> {};
 //Mcq item
@@ -53,7 +28,15 @@ export interface ReportNItem extends ReportItem {}
 // }
 //Sum item
 export interface ReportSumItem extends ReportItem {
-  children: Array<ReportNItem | ReportSumItem>;
+  children: Array<ReportNumericItem | ReportSumItem>;
+}
+
+export interface ReportEqualItem extends ReportItem {
+    children: Array<ReportNumericItem | ReportSumItem>;
+}
+
+export interface ReportGroupItem extends ReportItem {
+  children: Array<ReportItem>;
 }
 //Survey Generator item
 // export interface JsonReportSurveyItem extends ReportItem<number> {
@@ -62,6 +45,11 @@ export interface ReportSumItem extends ReportItem {
 
 export type ReportItems = Array<ReportItem>;
 export interface ReportDescriptor {
-  meta: ReportMeta;
+  id: string;
+  departmentId: string;
+  submittedDate: Date;
+  reportMonth?: Date;
+  submittedUserId: string;
+
   items: ReportItems;
 }

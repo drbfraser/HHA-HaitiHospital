@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import { useTranslation } from 'react-i18next';
-import { ItemType } from 'common/definitions/json_report';
+import { ItemType } from 'common/json_report';
 import { ReportItem } from './Report';
 
 type Label = {
