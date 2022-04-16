@@ -11,7 +11,7 @@ export interface ReportItem {
 // export interface ReportSaItem extends ReportItem<string> {};
 //Numeric Item
 
-export interface ReportNItem extends ReportItem {}
+export interface ReportNumericItem extends ReportItem {}
 //Yes No item
 // export interface ReportYnItem extends ReportItem<boolean> {};
 //Mcq item
@@ -28,11 +28,15 @@ export interface ReportNItem extends ReportItem {}
 // }
 //Sum item
 export interface ReportSumItem extends ReportItem {
-  children: Array<ReportNItem | ReportSumItem>;
+  children: Array<ReportNumericItem | ReportSumItem>;
 }
 
 export interface ReportEqualItem extends ReportItem {
-  children: Array<ReportNItem | ReportSumItem>;
+    children: Array<ReportNumericItem | ReportSumItem>;
+}
+
+export interface ReportGroupItem extends ReportItem {
+  children: Array<ReportItem>;
 }
 //Survey Generator item
 // export interface JsonReportSurveyItem extends ReportItem<number> {

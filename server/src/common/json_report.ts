@@ -8,7 +8,8 @@ export enum ItemType {
   // PO = "pick one",
   // MCQ_OPTION = "mcq option",
   SUM = 'sum',
-  EQUAL = 'equal'
+  EQUAL = 'equal',
+  GROUP = 'group'
   // SG = "survey generator"
 }
 export type ItemTypeKeys = keyof typeof ItemType;
