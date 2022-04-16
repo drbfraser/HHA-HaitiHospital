@@ -17,6 +17,11 @@ export const hasEqualType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
   return _JsonDefs.ItemType[typeKey] === _JsonDefs.ItemType.EQUAL;
 };
 
+export const hasGroupType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
+    const typeKey = getItemTypeFromValue(jsonItem.type);
+    return _JsonDefs.ItemType[typeKey] === _JsonDefs.ItemType.GROUP;
+};
+
 export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _JsonDefs.ItemTypeKeys) => {
   const typeChecker = getAnswerTypeChecker(itemType);
   typeChecker(answer);
@@ -53,15 +58,16 @@ const stringAnswerTypeChecker: AnswerTypeChecker = (answer: _JsonDefs.JsonItemAn
 };
 const mapItemTypeToAnswerTypeChecker = new Map<_JsonDefs.ItemType, AnswerTypeChecker>();
 const initItemAnswerTypeCheckerMap = (map: Map<_JsonDefs.ItemType, AnswerTypeChecker>) => {
-  map.clear();
-  map.set(_JsonDefs.ItemType.NUMERIC, numericAnswerTypeChecker);
-  map.set(_JsonDefs.ItemType.SUM, numericAnswerTypeChecker);
-  map.set(_JsonDefs.ItemType.EQUAL, numericAnswerTypeChecker);
-  //ToDo: fill out the rest later
-  const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
-  if (map.size != expectedSize) {
-    throw new IllegalState(`item - answer type checker map must have length ${expectedSize}`);
-  }
+    map.clear();
+    map.set(_JsonDefs.ItemType.NUMERIC, numericAnswerTypeChecker);
+    map.set(_JsonDefs.ItemType.SUM, numericAnswerTypeChecker);
+    map.set(_JsonDefs.ItemType.EQUAL, numericAnswerTypeChecker);
+    map.set(_JsonDefs.ItemType.GROUP, numericAnswerTypeChecker);
+    //ToDo: fill out the rest later
+    const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
+    if (map.size != expectedSize) {
+        throw new IllegalState(`item - answer type checker map must have length ${expectedSize}`);
+    }
 };
 initItemAnswerTypeCheckerMap(mapItemTypeToAnswerTypeChecker);
 const getAnswerTypeChecker = (typeKey: _JsonDefs.ItemTypeKeys): AnswerTypeChecker => {

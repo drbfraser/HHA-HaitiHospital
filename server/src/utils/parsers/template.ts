@@ -1,13 +1,20 @@
-import { ItemAnswer, ReportDescriptor, ReportEqualItem, ReportItem, ReportItems, ReportNItem, ReportSumItem } from '../definitions/report';
+import { ItemAnswer, ReportDescriptor, ReportEqualItem, ReportItem, ReportItems, ReportNumericItem, ReportSumItem, ReportGroupItem } from '../definitions/report';
 import { generateUuid, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from '../../exceptions/systemException';
 import { Template } from '../../models/template';
 import { ItemType, ItemTypeKeys } from 'common/json_report';
 
 interface TemplateItem extends ReportItem {}
-interface TemplateNItem extends ReportNItem {}
+interface TemplateNItem extends ReportNumericItem {}
 interface TemplateSumItem extends ReportSumItem {}
 interface TemplateEqualItem extends ReportEqualItem {}
+
+interface TemplateReport extends ReportDescriptor{};
+interface TemplateItem extends ReportItem{};
+interface TemplateNItem extends ReportNumericItem{};
+interface TemplateSumItem extends ReportSumItem{};
+interface TemplateEqualItem extends ReportEqualItem{};
+interface TemplateGroupItem extends ReportGroupItem{};
 
 export type TemplateItems = Array<TemplateItem>;
 type TemplateAnswer = ItemAnswer;
@@ -64,9 +71,10 @@ namespace ItemToTemplate {
   const mapToDefaultAnswer = new Map<ItemType, string>();
   const initToDefaultAnswerMap = (map: Map<ItemType, string>) => {
     map.clear();
-    map.set(ItemType.NUMERIC, '0');
-    map.set(ItemType.SUM, '0');
-    map.set(ItemType.EQUAL, '0');
+    map.set(ItemType.NUMERIC, "0");
+    map.set(ItemType.SUM, "0");
+    map.set(ItemType.EQUAL, "0");
+    map.set(ItemType.GROUP, "0");
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);
     if (map.size != expectedSize) {
@@ -98,8 +106,8 @@ namespace ItemToTemplate {
       answer: answer
     };
     return emptyItem;
-  };
-  const numericParser: ItemTemplateParser = (item: ReportNItem): TemplateNItem => {
+}
+const numericParser: ItemTemplateParser = (item: ReportNumericItem): TemplateNItem => {
     let base: TemplateItem = baseItemParser(item);
     let numItem: TemplateNItem = base;
     return numItem;
@@ -115,15 +123,14 @@ namespace ItemToTemplate {
     return sumItem;
   };
 
-  const equalParser: ItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
-    let base: TemplateItem = baseItemParser(item);
-    let children: TemplateItem[] = item.children.map((child) => {
-      const parser = getParserForType(child.type);
-      return parser(child);
-    });
-    let sumItem: TemplateEqualItem = { ...base, children: children };
-    return sumItem;
-  };
+const equalParser: ItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
+    return sumParser(item) as TemplateEqualItem
+
+}
+
+const groupParser: ItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
+    return sumParser(item) as TemplateGroupItem
+}
 
   const typeToParser = new Map<ItemType, ItemTemplateParser>();
   const initTypeToParserMap = (map: Map<ItemType, ItemTemplateParser>) => {
@@ -131,6 +138,7 @@ namespace ItemToTemplate {
     map.set(ItemType.NUMERIC, numericParser);
     map.set(ItemType.SUM, sumParser);
     map.set(ItemType.EQUAL, equalParser);
+    map.set(ItemType.GROUP, equalParser);
     //ToDo: fill out the rest
     const expectedSize = getLengthOfEnum(ItemType);
     if (map.size != expectedSize) {
