@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3c1af3cd-a254-4794-9e10-1f637bd3f72a",
+		"_postman_id": "3152769b-06b8-47ce-826e-dabc91d24686",
 		"name": "hha",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -742,6 +742,73 @@
 			]
 		},
 		{
+			"name": "Message Board Comment",
+			"item": [
+				{
+					"name": "Add a comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "XSRF-Token",
+								"value": "{{xsrf_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"parentMessageId\": \"TestMessagePostId\",\n    \"messageComment\": \"Testing\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/message-board/comments",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"message-board",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comments by parent post id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/message-board/comments/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"message-board",
+								"comments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Users",
 			"item": [
 				{
@@ -925,7 +992,10 @@
 					"name": "Get all templates",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -933,7 +1003,10 @@
 					"name": "Add a template",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -941,7 +1014,10 @@
 					"name": "Update a template",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -949,7 +1025,10 @@
 					"name": "Delete a template by department id",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}

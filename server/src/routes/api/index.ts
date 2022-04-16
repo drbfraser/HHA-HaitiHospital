@@ -10,6 +10,7 @@ import authRoutes from './authentication';
 import employeeOfTheMonthRoutes from './employeeOfTheMonth';
 import templateRoutes from './report_template';
 import departmentRoutes from './departments';
+import messageBoardCommentRoutes from './messageBoardComment';
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use('/message-board', messageBoardRoutes);
 router.use('/employee-of-the-month', employeeOfTheMonthRoutes);
 router.use('/template', templateRoutes);
 router.use('/department', departmentRoutes);
+router.use('/message-board/comments/', messageBoardCommentRoutes);
 
 export default router;
