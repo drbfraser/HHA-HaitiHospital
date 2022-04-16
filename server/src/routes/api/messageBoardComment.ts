@@ -24,7 +24,7 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
   }
 });
 
-router.post('/', requireJwtAuth, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.post('/', requireJwtAuth, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   const user = req.user;
   const userId = user._id!;
   const parentMessageId: string = req.body.parentMessageId;
