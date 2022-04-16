@@ -5,88 +5,101 @@ import './styles.css';
 import { useTranslation } from 'react-i18next';
 import { ItemType } from 'common/json_report';
 import { ReportItem } from './Report';
+import { isPrefixUnaryExpression } from 'typescript';
 
 type Label = {
   id: string;
   text?: string;
 };
 
-export function InputGroup(props: { items: ReportItem[]; readOnly: boolean; active: boolean }) {
+export function ItemGroup(props: { items: ReportItem[]; readOnly: boolean; active: boolean }) {
   return (
-    <div hidden={!props.active}>
-      {props.items.map((element, idx) => {
-        switch (element.type) {
-          case 'label':
-            const label: Label = { id: 'section' + idx, text: element.description };
-            return <SectionLabel key={label.id} id={label.id} text={label.text} />;
-          case ItemType.NUMERIC:
-            let value = element.answer[0][0];
-            return (
-              <NumberInputField
-                key={(element as ReportItem).id}
-                item={element as ReportItem}
-                readonly={props.readOnly}
-              />
-            );
-          default:
-            <Fragment />;
-        }
-      })}
-      <div className="row justify-content-center mt-3">
-        <div className="col-8 dropdown-divider" />
-      </div>
+    <div className="row justify-content-center " hidden={!props.active}>
+      {makeItems(props.items, props.readOnly, false)}
     </div>
   );
 }
 
-export type NumberInputFieldProps = {
-  id: string;
-  text?: string;
-  value: string;
-  weight?: string;
-  indent?: boolean;
-  isHeader?: boolean;
-  valid: boolean;
-  errorMessage?: string;
-  readOnly?: boolean;
-};
+function makeItems(items: ReportItem[], readonly: boolean, indent: boolean): JSX.Element[] {
+  return items.map((element, idx) => {
+    switch (element.type) {
+      case 'label':
+        const label: Label = { id: 'section' + idx, text: element.description };
+        return <SectionLabel key={label.id} id={label.id} text={label.text} />;
+      case ItemType.NUMERIC:
+        return (
+          <Field
+            key={(element as ReportItem).id}
+            item={element as ReportItem}
+            readonly={readonly}
+            indent={indent}
+            prefix={idx.toString()}
+          />
+        );
+      case ItemType.SUM:
+        return (
+          <Field
+            key={(element as ReportItem).id}
+            item={element as ReportItem}
+            readonly={readonly}
+            indent={indent}
+            prefix={idx.toString()}
+          />
+        );
+      case ItemType.EQUAL:
+        return (
+          <Field
+            key={(element as ReportItem).id}
+            item={element as ReportItem}
+            readonly={readonly}
+            indent={indent}
+            header={true}
+            prefix={''}
+          />
+        );
+      case ItemType.GROUP:
+        return (
+          <Group
+            key={(element as ReportItem).id}
+            item={element as ReportItem}
+            readonly={readonly}
+          />
+        );
+      default:
+    }
+  });
+}
 
-export function NumberInputField(props: {item: ReportItem, readonly: boolean}): JSX.Element {
+export function Field(props: {
+  item: ReportItem;
+  readonly: boolean;
+  prefix?: string;
+  indent?: boolean;
+  header?: boolean;
+}): JSX.Element {
   const { register, formState, clearErrors } = useFormContext();
   const { t, i18n } = useTranslation();
-  const item = props.item
-  const text = item.description ?? 'N/A';
-  const getWeightCss = (w: string) => {
-    switch (w) {
-      case 'light':
-        return ' font-weight-light';
-      case 'bold':
-        return ' font-weight-bold';
-      default:
-        return ' ';
-    }
-  };
+  const item = props.item;
+  const prefix = props.prefix + (props.prefix != undefined && props.prefix != '' ? '. ' : '');
+  const text = prefix + item.description ?? 'N/A';
+  const defaultValue = item.answer[0][0];
+  let children = []
+  if (props.item.items != undefined) children = props.item.items
+
   const invalid: boolean = formState.errors[item.id];
   const errorMessage = formState.errors[item.id]?.message;
-  const weight = ''
-  const indent = false
-  const isHeader = ''
-  const defaultValue = item.answer[0][0]
+
+  const indent = props.indent ? 'ps-5' : '';
+  const font = props.header ? 'font-weight-bold' : 'font-weight-normal';
+  const labelFormatting = ['col-xl-9 col-form-label align-middle', font, indent].join(' ');
   return (
-    <div className="row justify-content-center ">
-      <div className="form-group row col-sm-12 col-lg-6 col-xl-6 p-1 m-1">
-        <label
-          className={
-            'col-sm-8 col-form-label align-middle' +
-            getWeightCss(weight) +
-            (indent ? ' ps-5' : '')
-          }
-          htmlFor={item.id}
-        >
-          {isHeader ? <h5>{text}</h5> : text}
+    <>
+      <div className="form-group row col-sm-12 col-lg-6 col-xl-7 p-1 m-1">
+        <label className={labelFormatting} htmlFor={item.id}>
+          {text}
         </label>
 
-        <div className="col-sm-4">
+        <div className="col-xl-3">
           <input
             id={item.id}
             type={'number'}
@@ -103,17 +116,29 @@ export function NumberInputField(props: {item: ReportItem, readonly: boolean}): 
           <small className="invalid-feedback">{errorMessage}</small>
         </div>
       </div>
-    </div>
+      {makeItems(children, props.readonly, true)}
+    </>
+  );
+}
+
+function Group(props: { item: ReportItem; readonly: boolean; indent?: boolean }) {
+  const indent = props.indent ?? 'ps-5 fw-bold';
+  const formatting = [indent].join(' ');
+  return (
+    <>
+      <div className="col-sm-12 col-lg-6 col-xl-7 p-1 m-1">
+        <h6 className={formatting}>{props.item.description}</h6>
+      </div>
+      {makeItems(props.item.items as ReportItem[], props.readonly, true)}
+    </>
   );
 }
 
 export function SectionLabel(props: { id?: string; text?: string }) {
   return (
-    <div id={props.id} className="row justify-content-center">
-      <div className="col-8 mt-5">
-        <h1 style={{ paddingTop: '' }}>{props.text ?? 'Empty Label'}</h1>
-        <div className="dropdown-divider pb-4" />
-      </div>
+    <div className="col-8 mt-5">
+      <h1 style={{ paddingTop: '' }}>{props.text ?? 'Empty Label'}</h1>
+      <div className="dropdown-divider pb-4" />
     </div>
   );
 }

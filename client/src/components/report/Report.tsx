@@ -13,7 +13,7 @@ import {
 } from 'common/json_report';
 import * as MockApi from './MockApi';
 import * as ReportApiUtils from './ReportUtils';
-import { InputGroup } from './ReportItems';
+import {ItemGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
 
@@ -26,9 +26,10 @@ export interface ReportItem extends JsonReportItem {
   valid: boolean;
   errorMessage?: string;
 }
+
 export function Report() {
   return (
-    <div style={{ paddingBottom: '8%' }}>
+    <div className='bg-light' style={{ paddingBottom: '8%' }}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-1">
@@ -277,7 +278,7 @@ function Sections(props: {
     <>
       {props.itemGroups.map((item, idx) => {
         return (
-          <InputGroup
+          <ItemGroup
             key={'ig-' + idx}
             items={item}
             readOnly={props.readOnly}
@@ -285,6 +286,9 @@ function Sections(props: {
           />
         );
       })}
+      <div className="row justify-content-center mt-3">
+        <div className="col-8 dropdown-divider" />
+      </div>
       <div className="btn-group justify-content-center mt-3">
         <button
           className="btn btn-primary col-3"

@@ -1,4 +1,5 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
+import data from './newNicuData.json'
 import { v4 as uuid } from 'uuid';
 import { ReportItem } from './Report';
 import { JsonReportDescriptor, JsonReportItem } from 'common/json_report';
@@ -10,17 +11,20 @@ const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export async function getDataDelay(
-  millis: number,
-  success: boolean,
-): Promise<JsonReportDescriptor> {
-  await sleep(millis);
-  if (success) return getData();
-  // eslint-disable-next-line no-throw-literal
-  else throw { code: '500', message: 'Internal server error' };
+export async function getDataDelay(millis: number, success: boolean): Promise<JsonReportDescriptor> {
+  await sleep(millis)
+  if(success)
+    return getData();
+  else 
+    throw {code:'500', message:'Internal server error'}
 }
 
 function getData(): JsonReportDescriptor {
+  console.log(data);
+  return data
+}
+
+function getData2() {
   const date = new Date();
   const items: JsonReportItem[] = nicuJSON.flatMap((section, idx) => {
     const items: JsonReportItem[] = [];
