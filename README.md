@@ -5,7 +5,10 @@ This is a web application made for Hope Health Action (HHA) with the goal to dig
 
 The project was originally created by team Haumea for CMPT 373 and is currently further developed by CMPT 415 team with the goal of deploying it for sumer 2022.
 
-#### [User Manual of the Project Available Here](https://docs.google.com/document/d/1bKT2Q21lIyYAJbpJq31XFoBt4bluEcVvMTcrcDx0mYY/edit?usp=sharing)
+### Documents
+
+- See the project's [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q) for developer guides, user manuals, design docs, reports, and other useful documents beyond what is listed in this readme or elsewhere in the repo.
+- Please update this readme and the files/folders in the Google Drive to make them more useful, correct, and relevant!
 
 ### Features
 
