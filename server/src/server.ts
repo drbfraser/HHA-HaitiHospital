@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import routes from './routes/routes';
-import { seedDb } from './utils/seed';
 import * as ENV from './utils/processEnv';
 const path = require('path');
 
