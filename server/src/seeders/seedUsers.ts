@@ -39,7 +39,7 @@ export const seedDb = async () => {
   await setupDepartmentMap();
 
   // Must ensure that user seed is done before moving on as these features require updated information from user
-  seedUsers().then(async () => {
+  await seedUsers().then(async () => {
     await seedMessageBoard();
     await seedBioMech();
     await seedEmployeeOfTheMonth();
@@ -49,6 +49,8 @@ export const seedDb = async () => {
   });
 
   console.log('Database seeding completed.');
+
+  process.exit();
 };
 
 const setupDepartmentMap = async () => {
