@@ -1,7 +1,7 @@
 import Departments from '../departments';
-import { JsonReportDescriptor, JsonReportItems } from 'common/json_report';
-import { ReportDescriptor, ReportItems } from 'utils/definitions/report';
-import { formatDateString } from 'utils/utils';
+import { JsonReportDescriptor, JsonReportItems } from '../../common/json_report';
+import { ReportDescriptor, ReportItems } from '../../utils/definitions/report';
+import { formatDateString } from '../../utils/utils';
 import { getParserItemToJson } from './item';
 
 export const parseToJson = async (report: ReportDescriptor) => {

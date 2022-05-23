@@ -1,7 +1,7 @@
-import { IllegalState, InvalidInput } from 'exceptions/systemException';
+import { IllegalState, InvalidInput } from '../../exceptions/systemException';
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as _ReportDefs from '../definitions/report';
-import * as _JsonDefs from 'common/json_report';
+import * as _JsonDefs from '../../common/json_report';
 
 export const hasNumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
   const typeKey = getItemTypeFromValue(jsonItem.type);

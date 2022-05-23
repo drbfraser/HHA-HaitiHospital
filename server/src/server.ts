@@ -55,7 +55,7 @@ export const createServer = () => {
     })
     .then(() => {
       console.log('MongoDB Connected...');
-      seedDb();
+      // seedDb();
     })
     .catch((err) => console.log(err));
 

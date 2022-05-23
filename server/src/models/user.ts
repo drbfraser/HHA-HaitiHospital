@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import * as ENV from '../utils/processEnv';
-import Departments from 'utils/departments';
+import Departments from '../utils/departments';
 
 const { Schema } = mongoose;
 
