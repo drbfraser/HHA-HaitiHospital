@@ -104,6 +104,7 @@ PASSWORD_SEED=catdog
 ```
 $ npm install
 $ npm start
+$ npm run seed
 ```
 
 ### Client Setup
@@ -151,6 +152,12 @@ Our prettier config is set to format code on file save.
 ```
 $ sudo docker-compose build
 $ sudo docker-compose up
+```
+
+- To seed the database in the containerized deploymeny, run the following command from the `/src` folder in the server containerized
+
+```
+$npm run seed
 ```
 
 ### License
