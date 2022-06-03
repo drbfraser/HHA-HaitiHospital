@@ -77,6 +77,8 @@
   "messageBoardDelete": "Delete",
   "messageBoardPostedOn": "Posted On:",
   "messageBoardComments": "Comments",
+  "messageBoardCommentsMessage": "Message",
+  "messageBoardCommentsComment": "Comments",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
 

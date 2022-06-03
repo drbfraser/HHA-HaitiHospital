@@ -75,6 +75,8 @@
   "messageBoardTitle": "Titre",
   "messageBoardEdit": "Éditer",
   "messageBoardComments": "Commentaires",
+  "messageBoardCommentsMessage": "Message",
+  "messageBoardCommentsComment": "Commentaires",
   "messageBoardDelete": "Supprimer",
   "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
