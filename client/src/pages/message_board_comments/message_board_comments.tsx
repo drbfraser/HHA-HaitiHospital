@@ -6,9 +6,7 @@ import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID, ENDPOINT_MESSAGEBOARD_GET_BY_ID } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_COMMENTS_GET, TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
 import './message_board_comments.css';
-import { Message } from 'constants/interfaces';
-import { toast } from 'react-toastify';
-import MessageForm from '../../components/message_form/message_form';
+import { emptyMessage, Message } from 'constants/interfaces';
 import MessageDisplay from 'components/message_panel/message_display';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
@@ -16,7 +14,7 @@ import { timezone, language } from 'constants/timezones';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([])
-  const [msgJson, setMsgJson] = useState<Message>();
+  const [msgJson, setMsgJson] = useState<Message>(emptyMessage);
   const [rerender, setRerender] = useState<boolean>(false);
   const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();

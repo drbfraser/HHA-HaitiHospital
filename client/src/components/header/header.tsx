@@ -26,6 +26,11 @@ const HeaderView = (props: HeaderViewProps) => {
     return <h2 className="text-secondary">{`${t('headerOverview')} ${department}`}</h2>;
   } else if (location.pathname.slice(1) === 'message-board') {
     return <h4 className="text-secondary">{t('headerMessageBoard')}</h4>;
+  } else if (
+    location.pathname.split('/')[1] === 'message-board' &&
+    location.pathname.split('/')[2] === 'comments'
+  ) {
+    return <h4 className="text-secondary">{t('headerMessageComments')}</h4>;
   } else if (location.pathname.slice(1) === 'leaderboard') {
     return <h4 className="text-secondary">{t('headerLeaderBoard')}</h4>;
   } else if (location.pathname.slice(1) === 'case-study') {
