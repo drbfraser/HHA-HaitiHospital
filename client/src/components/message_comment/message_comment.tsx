@@ -21,27 +21,23 @@ const MessageComment = (props: MessageCommentProps) => {
   }, [props.commentJson]);
 
   return (
-    <div className="d-flex pt-2">
-      {/* Comment content */}
-      <div className="pb-3 mb-0 border-bottom flex-grow-1">
-        {/* Comment info */}
-        <p className="">
-          <small>
-            <strong>
-              {author.name}
-            </strong>
-            {" (" + parseEscapedCharacters(author.department.name) + ", "}
-            {author.role + ") "}
-            {translateText('messageBoardCommentPostedOn') + " "}
-            {readableDate}
-          </small>
-        </p>
-        <p>
-          <small>
-            {comment.messageComment}
-          </small>
-        </p>
-      </div>
+    <div className="pt-2 pb-2 border-bottom">
+      <p className="">
+        <small>
+          <strong>
+            {author.name}
+          </strong>
+          {" (" + parseEscapedCharacters(author.department.name) + ", "}
+          {author.role + ") "}
+          {translateText('messageBoardCommentPostedOn') + " "}
+          {readableDate}
+        </small>
+      </p>
+      <p>
+        <small>
+          {comment.messageComment}
+        </small>
+      </p>
     </div>
   );
 };
