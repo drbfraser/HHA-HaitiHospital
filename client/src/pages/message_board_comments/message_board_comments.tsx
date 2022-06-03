@@ -54,7 +54,7 @@ const MessageComments = () => {
           </div>
           <div>
           {comments.map((item, index) => (
-            <MessageComment commentJson={item}/>
+            <MessageComment key={index} commentJson={item}/>
           ))}
           </div>
         </div>
