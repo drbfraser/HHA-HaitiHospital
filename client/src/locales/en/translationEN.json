@@ -80,6 +80,7 @@
   "messageBoardComments": "Comments",
   "messageBoardCommentsMessage": "Message",
   "messageBoardCommentsComment": "Comments",
+  "messageBoardCommentPostedOn": "Posted On:",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
 

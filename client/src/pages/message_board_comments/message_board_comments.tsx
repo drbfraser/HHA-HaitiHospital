@@ -7,10 +7,10 @@ import { ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID, ENDPOINT_MESSAGEBOARD_GET_BY_
 import { TOAST_MESSAGEBOARD_COMMENTS_GET, TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
 import './message_board_comments.css';
 import { emptyMessage, Message } from 'constants/interfaces';
+import MessageComment from 'components/message_comment/message_comment';
 import MessageDisplay from 'components/message_panel/message_display';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
-import { timezone, language } from 'constants/timezones';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([])
@@ -51,6 +51,11 @@ const MessageComments = () => {
           <MessageDisplay msgJson={msgJson} notifyChange={toggleRerender}/>
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pt-5 pb-2 mb-0">{t('messageBoardCommentsComment')}</h6>
+          </div>
+          <div>
+          {comments.map((item, index) => (
+            <MessageComment commentJson={item}/>
+          ))}
           </div>
         </div>
       </main>
