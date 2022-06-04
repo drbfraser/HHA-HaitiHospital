@@ -27,13 +27,12 @@ const MessageForm = (props: MessageFormProps) => {
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
   const [department, setDepartment] = useState<string>('');
 
-  const getDepartments = async () => {
-    setDepartments(
-      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-    );
-  };
-
   useEffect(() => {
+    const getDepartments = async () => {
+      setDepartments(
+        setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+      );
+    };
     let isMounted = true;
     if (isMounted) {
       getDepartments();
@@ -45,7 +44,7 @@ const MessageForm = (props: MessageFormProps) => {
     return () => {
       isMounted = false;
     };
-  }, [props.optionalMsg, department]);
+  }, [props.optionalMsg, history]);
 
   const onSubmit = (data: any) => {
     if (data.department === '') {

@@ -26,14 +26,13 @@ export const CaseStudySummary = ({ caseStudy }) => {
     setImageModal(false);
   };
 
-  const getCaseStudyImage = async () => {
-    setCaseStudyImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(caseStudy.imgPath), history));
-  };
-
   useEffect(() => {
     // Only execute once case study data has been successfully passed to this component
+    const getCaseStudyImage = async () => {
+      setCaseStudyImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(caseStudy.imgPath), history));
+    };
     if (caseStudy.imgPath !== undefined) getCaseStudyImage();
-  }, [caseStudy]);
+  }, [caseStudy, history]);
 
   return (
     <div className="case-study-container mb-5">

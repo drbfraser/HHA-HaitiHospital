@@ -16,7 +16,7 @@ export async function getDataDelay(millis: number, success: boolean): Promise<Js
   if(success)
     return getData();
   else 
-    throw {code:'500', message:'Internal server error'}
+    throw {code:'500', message:'Internal server error'};
 }
 
 function getData(): JsonReportDescriptor {

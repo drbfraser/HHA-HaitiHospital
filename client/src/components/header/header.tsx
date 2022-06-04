@@ -90,13 +90,12 @@ const Header = (props: HeaderProps) => {
   const history: History = useHistory<History>();
   const [userInfo, setUserInfo] = useState(emptyUser as UserJson);
 
-  const getUserInfo = async () => {
-    setUserInfo(await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history));
-  };
-
   useEffect(() => {
+    const getUserInfo = async () => {
+      setUserInfo(await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history));
+    };
     getUserInfo();
-  }, []);
+  }, [history]);
 
   const { t, i18n } = useTranslation();
   return (

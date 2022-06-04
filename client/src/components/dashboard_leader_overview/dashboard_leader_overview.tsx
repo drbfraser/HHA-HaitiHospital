@@ -13,13 +13,12 @@ const DashboardLeaderOverview = (props: DashboardLeaderProps) => {
   const [leaderboard, setLeaderboard] = useState([]);
   const history: History = useHistory<History>();
 
-  const getLeaderboard = async () => {
-    setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
-  };
-
   useEffect(() => {
+    const getLeaderboard = async () => {
+        setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
+    };
     getLeaderboard();
-  }, []);
+  }, [history]);
 
   const { t } = useTranslation();
 
@@ -53,7 +52,7 @@ const DashboardLeaderOverview = (props: DashboardLeaderProps) => {
             <tbody>
               {leaderboard.map((item, index) => {
                 return (
-                  <tr key={item._id} className={`${index === 0 ? 'table-warning' : ''}`}>
+                  <tr key={index} className={`${index === 0 ? 'table-warning' : ''}`}>
                     <th scope="row" className="text-center">
                       {index + 1}
                     </th>
