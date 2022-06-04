@@ -29,15 +29,14 @@ export const AddUserForm = (props: AdminProps) => {
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
-  const getDepartments = async () => {
-    setDepartments(
-      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-    );
-  };
-
   useEffect(() => {
+    const getDepartments = async () => {
+      setDepartments(
+        setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+      );
+    };
     getDepartments();
-  }, []);
+  }, [history]);
 
   const onSubmitActions = () => {
     toast.success('Successfully created user');

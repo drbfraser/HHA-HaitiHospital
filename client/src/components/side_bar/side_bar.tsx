@@ -28,13 +28,12 @@ const Sidebar = (props: SidebarProps) => {
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
-  const getDepartments = async () => {
-    setDepartments(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history));
-  };
-
   useEffect(() => {
+    const getDepartments = async () => {
+      setDepartments(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history));
+    };
     getDepartments();
-  }, []);
+  }, [history]);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
@@ -135,12 +134,11 @@ const Sidebar = (props: SidebarProps) => {
                 exact
                 activeClassName="active"
               >
-            <i className="bi bi-folder-fill me-2" />
+                <i className="bi bi-folder-fill me-2" />
                 <span className="text text-light">{t('sidebarGeneral')}</span>
               </NavLink>
             </li>
-          ) : null    
-          }
+          ) : null}
 
           {departments.map((dept: Department, index: number) => {
             const deptName = dept.name;
@@ -160,6 +158,9 @@ const Sidebar = (props: SidebarProps) => {
                   </NavLink>
                 </li>
               );
+            else {
+              return null;
+            }
           })}
 
           <li key="report">
@@ -180,8 +181,7 @@ const Sidebar = (props: SidebarProps) => {
               </li>
               <li className="border-top my-2" key="border-3" />
             </>
-          ) : null
-          }
+          ) : null}
 
           <li className="btn-group-toggle" data-toggle="buttons" key="english">
             <button className="nav-link link-light" onClick={changeLanguage('en')}>

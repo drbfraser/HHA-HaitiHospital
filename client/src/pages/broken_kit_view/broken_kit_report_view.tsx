@@ -35,22 +35,26 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
     setImageModal(false);
   };
 
-  const getBioReport = async () => {
-    setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET_BY_ID(id), TOAST_BIOMECH_GET, history));
-  };
-
-  const getBioReportImage = async () => {
-    setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(BioReport.imgPath), history));
-  };
-
-  useEffect(() => {
+  useEffect(function fetchReportInitially() {
+    const getBioReport = async () => {
+      setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET_BY_ID(id), TOAST_BIOMECH_GET, history));
+    };
     getBioReport();
+  }, [history, id]);
 
-    // Only execute once biomech data has been successfully passed to this component
-    if (BioReport.imgPath !== undefined) {
-      getBioReportImage();
-    }
-  }, [BioReport]);
+  useEffect(
+    function fetchImage() {
+      const getBioReportImage = async () => {
+        setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(BioReport.imgPath), history));
+      };
+
+      // Only execute once biomech data has been successfully passed to this component
+      if (BioReport.imgPath !== undefined) {
+        getBioReportImage();
+      }
+    },
+    [BioReport, history],
+  );
 
   return (
     <div className="broken-kit-main">

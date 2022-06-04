@@ -47,13 +47,8 @@ export const EditUserForm = (props: AdminProps) => {
   const { register, handleSubmit, reset, unregister } = useForm<User>({});
   const history: History = useHistory<History>();
   const { t } = useTranslation();
+  //   Refactor: make url slugs
   const id = useLocation().pathname.split('/')[3];
-
-  const getDepartments = async () => {
-    setDepartments(
-      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-    );
-  };
 
   useEffect(() => {
     const fetchAndSetUser = async () => {
@@ -69,11 +64,14 @@ export const EditUserForm = (props: AdminProps) => {
     };
     fetchAndSetUser();
 
-    const fetchAndSetDepartments = () => {
-      getDepartments();
+    const fetchAndSetDepartments = async () => {
+      setDepartments(
+        setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+      );
     };
+
     fetchAndSetDepartments();
-  }, []);
+  }, [history, id]);
 
   useEffect(() => {
     if (fetch.isLoading === false) {
@@ -82,8 +80,8 @@ export const EditUserForm = (props: AdminProps) => {
     }
   }, [fetch]);
 
+  reset({});
   const onSubmitActions = () => {
-    reset({});
     history.push('/admin');
     toast.success('Successfully updated user');
   };
