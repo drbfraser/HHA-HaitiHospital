@@ -62,7 +62,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
               </thead>
               <tbody>
                 {leaderboard.map((item, index) => (
-                  <tr key={item._id} className={`${index === 0 ? 'table-warning' : ''}`}>
+                  <tr key={index} className={`${index === 0 ? 'table-warning' : ''}`}>
                     <th scope="row" className="text-center">
                       {index + 1}
                     </th>
