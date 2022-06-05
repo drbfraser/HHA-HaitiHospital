@@ -18,15 +18,14 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const [caseStudy, setCaseStudy] = useState({} as any);
   const history: History = useHistory<History>();
 
-  const getLeaderboard = async () => {
-    setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
-  };
-
-  const getCaseStudy = async () => {
-    setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_FEATURED, TOAST_CASESTUDY_GET, history));
-  };
-
   useEffect(() => {
+    const getLeaderboard = async () => {
+      setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
+    };
+
+    const getCaseStudy = async () => {
+      setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_FEATURED, TOAST_CASESTUDY_GET, history));
+    };
     getLeaderboard();
     getCaseStudy();
   }, [history]);

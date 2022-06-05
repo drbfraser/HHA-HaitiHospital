@@ -27,12 +27,6 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
   const history: History = useHistory<History>();
 
-  const getDepartments = async () => {
-    setDepartments(
-      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-    );
-  };
-
   const onImageUpload = (item: File) => {
     setSelectedFile(item);
   };
@@ -61,8 +55,13 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   };
 
   useEffect(() => {
+    const getDepartments = async () => {
+      setDepartments(
+        setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+      );
+    };
     getDepartments();
-  }, []);
+  }, [history]);
 
   return (
     <div className="employee-of-the-month-form">
