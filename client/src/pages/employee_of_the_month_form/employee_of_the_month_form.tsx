@@ -107,9 +107,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                       <option key={index} value={dept.name}>
                         {dept.name}
                       </option>
-                    ) : (
-                      <></>
-                    );
+                    ) : ( null );
                   })}
                 </select>
                 <label htmlFor="Employee Description" className="form-label">
