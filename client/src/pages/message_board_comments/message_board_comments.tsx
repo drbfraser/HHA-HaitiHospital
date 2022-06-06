@@ -1,22 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import Sidebar from '../../components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
-import { ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID, ENDPOINT_MESSAGEBOARD_GET_BY_ID } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_COMMENTS_GET, TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
+import { ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID, ENDPOINT_MESSAGEBOARD_GET_BY_ID, ENDPOINT_MESSAGEBOARD_COMMENTS_POST } from 'constants/endpoints';
+import { TOAST_MESSAGEBOARD_COMMENTS_GET, TOAST_MESSAGEBOARD_COMMENTS_POST, TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
 import './message_board_comments.css';
 import { emptyMessage, Message } from 'constants/interfaces';
 import MessageComment from 'components/message_comment/message_comment';
 import MessageDisplay from 'components/message_panel/message_display';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
+import { toast } from 'react-toastify';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([])
   const [msgJson, setMsgJson] = useState<Message>(emptyMessage);
   const [rerender, setRerender] = useState<boolean>(false);
   const history: History = useHistory<History>();
+  const { register, handleSubmit, reset } = useForm({});
   const { t, i18n } = useTranslation();
 
   const message_id = useLocation().pathname.split('/')[3];
@@ -39,6 +42,17 @@ const MessageComments = () => {
     getComments()
   }, [rerender]);
 
+  const onSubmitActions = () => {
+    toast.success('Successfully added comment');
+    reset({});
+    toggleRerender();
+  };
+
+  const onSubmit = (data: any) => {
+    data.parentMessageId = message_id;
+    Api.Post(ENDPOINT_MESSAGEBOARD_COMMENTS_POST, data, onSubmitActions, TOAST_MESSAGEBOARD_COMMENTS_POST, history);
+  };
+
   return (
     <div className="message_comments">
       <Sidebar />
@@ -47,15 +61,29 @@ const MessageComments = () => {
         <div className="container">
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pb-2 mb-0">{t('messageBoardCommentsMessage')}</h6>
-          </div>
+          </div>  
           <MessageDisplay msgJson={msgJson} notifyChange={toggleRerender}/>
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pt-5 pb-2 mb-0">{t('messageBoardCommentsComment')}</h6>
           </div>
           <div>
-          {comments.map((item, index) => (
-            <MessageComment key={index} commentJson={item}/>
-          ))}
+            {comments.map((item, index) => (
+              <MessageComment key={index} commentJson={item}/>
+            ))}
+          </div>
+          <div className="d-sm-flex align-items-center">
+            <h6 className="pt-5 pb-2 mb-2">{t('Add New Comment')}</h6>
+          </div>
+          <div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <input
+                className="form-control"
+                type="text"
+                {...register('messageComment', { required: true })}
+                defaultValue={''}
+              />
+              <button className="btn btn-primary mt-3 mb-5">{t('addMessageSubmit')}</button>
+            </form>
           </div>
         </div>
       </main>
