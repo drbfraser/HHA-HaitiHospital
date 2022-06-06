@@ -91,10 +91,18 @@ const Header = (props: HeaderProps) => {
   const [userInfo, setUserInfo] = useState(emptyUser as UserJson);
 
   useEffect(() => {
+    let isMounted: boolean = true;
+
     const getUserInfo = async () => {
-      setUserInfo(await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history));
+      const user: UserJson = await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history);
+      if (isMounted)
+        setUserInfo(user);
     };
     getUserInfo();
+
+    return function cleanUp() {
+        isMounted = false;
+    }
   }, [history]);
 
   const { t, i18n } = useTranslation();

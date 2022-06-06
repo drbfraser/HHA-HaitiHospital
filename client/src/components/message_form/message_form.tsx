@@ -8,7 +8,7 @@ import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import { History } from 'history';
 import initialDepartments from 'utils/json/departments.json';
-import { setDepartmentMap } from 'utils/departmentMapper';
+import { createDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -19,7 +19,7 @@ interface MessageFormProps {
 
 const MessageForm = (props: MessageFormProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
-    setDepartmentMap(initialDepartments.departments),
+    createDepartmentMap(initialDepartments.departments),
   );
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -30,7 +30,7 @@ const MessageForm = (props: MessageFormProps) => {
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
-        setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
       );
     };
     let isMounted = true;

@@ -7,7 +7,7 @@ import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMo
 import Api from '../../actions/Api';
 import { Department, GeneralDepartment } from 'constants/interfaces';
 import initialDepartments from 'utils/json/departments.json';
-import { setDepartmentMap } from 'utils/departmentMapper';
+import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT, ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT, TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import './employee_of_the_month_form.css';
@@ -20,7 +20,7 @@ interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
-    setDepartmentMap(initialDepartments.departments),
+    createDepartmentMap(initialDepartments.departments),
   );
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -57,7 +57,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
-        setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
       );
     };
     getDepartments();

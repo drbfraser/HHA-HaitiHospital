@@ -8,7 +8,7 @@ import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import initialDepartments from 'utils/json/departments.json';
-import { setDepartmentMap } from 'utils/departmentMapper';
+import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { TOAST_ADMIN_POST } from 'constants/toast_messages';
 import './admin.css';
@@ -21,7 +21,7 @@ interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
-    setDepartmentMap(initialDepartments.departments),
+    createDepartmentMap(initialDepartments.departments),
   );
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
@@ -32,7 +32,7 @@ export const AddUserForm = (props: AdminProps) => {
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
-        setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
       );
     };
     getDepartments();
@@ -172,9 +172,7 @@ export const AddUserForm = (props: AdminProps) => {
                       <option key={index} value={dept.name}>
                         {dept.name}
                       </option>
-                    ) : (
-                      <></>
-                    );
+                    ) : ( null );
                   })}
                 </select>
               </div>
