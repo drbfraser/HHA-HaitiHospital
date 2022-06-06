@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
-  User as UserEditForm,
+  UserInfoForm,
   Role,
   Department,
   UserJson,
@@ -42,7 +42,7 @@ export const EditUserForm = (props: UserEditProps) => {
 
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [showDepartment, setShowDepartment] = useState<boolean>(false);
-  const { register, handleSubmit, reset, unregister } = useForm<UserEditForm>({});
+  const { register, handleSubmit, reset, unregister } = useForm<UserInfoForm>({});
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
@@ -90,11 +90,11 @@ export const EditUserForm = (props: UserEditProps) => {
   };
 
   const onSubmit = async (data: any) => {
-    data = setGeneralDepartmentForAdminAndMedicalDir(data) as UserEditForm;
+    data = setGeneralDepartmentForAdminAndMedicalDir(data) as UserInfoForm;
     await Api.Put(ENDPOINT_ADMIN_PUT_BY_ID(id), data, onSubmitActions, TOAST_ADMIN_PUT, history);
   };
 
-  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): UserEditForm => {
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): UserInfoForm => {
     data.department =
       data.role === Role.Admin || data.role === Role.MedicalDirector
         ? departments.get(GeneralDepartment)

@@ -61,7 +61,7 @@ export const emptyMessage: Message = {
   messageHeader: '',
 };
 
-export interface User {
+export interface UserInfoForm {
   username: string;
   name: string;
   password: string;

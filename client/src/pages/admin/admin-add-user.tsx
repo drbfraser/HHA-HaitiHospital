@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role, Department, GeneralDepartment } from 'constants/interfaces';
+import { UserInfoForm, Role, Department, GeneralDepartment } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
@@ -25,7 +25,7 @@ export const AddUserForm = (props: AdminProps) => {
   );
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const { register, handleSubmit, reset, unregister } = useForm<User>({});
+  const { register, handleSubmit, reset, unregister } = useForm<UserInfoForm>({});
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
@@ -45,11 +45,11 @@ export const AddUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
-    data = setGeneralDepartmentForAdminAndMedicalDir(data) as User;
+    data = setGeneralDepartmentForAdminAndMedicalDir(data) as UserInfoForm;
     await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
   };
 
-  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): User => {
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): UserInfoForm => {
     data.department =
       data.role === Role.Admin || data.role === Role.MedicalDirector
         ? departments.get(GeneralDepartment)
