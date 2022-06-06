@@ -29,7 +29,7 @@ const MessageComment = (props: MessageCommentProps) => {
           </strong>
           {" (" + parseEscapedCharacters(author.department.name) + ", "}
           {author.role + ") "}
-          {translateText('messageBoardCommentPostedOn') + " "}
+          {translateText('messageBoardCommentCommentedOn') + " "}
           {readableDate}
         </small>
       </p>
