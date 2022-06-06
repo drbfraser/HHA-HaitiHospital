@@ -148,13 +148,13 @@ const MessageDisplay = (props: MessageDisplayProps) => {
           </div>
           <div className="mr-auto p-2">
             <p className="lh-sm message-body">{message.messageBody}</p>
-            <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
-              <button type="button" className="btn btn-link text-decoration-none admin-utils">
-                {useLocation().pathname.split('/').length < 4 
-                ? 
-                translateText('messageBoardComments') + '(' + commentCount + ')' : ''}
-              </button>
-            </Link>
+            {useLocation().pathname.split('/').length < 4 ?
+              <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
+                <button type="button" className="btn btn-link text-decoration-none admin-utils">
+                  {translateText('messageBoardComments') + '(' + commentCount + ')'}
+                </button>
+              </Link>
+            : null}
           </div>
         </div>
       </div>
