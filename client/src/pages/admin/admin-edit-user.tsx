@@ -42,7 +42,7 @@ export const EditUserForm = (props: UserEditProps) => {
 
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [showDepartment, setShowDepartment] = useState<boolean>(false);
-  const { register, handleSubmit, unregister } = useForm<UserEditForm>({});
+  const { register, handleSubmit, reset, unregister } = useForm<UserEditForm>({});
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
@@ -84,8 +84,9 @@ export const EditUserForm = (props: UserEditProps) => {
   useDidMountEffect(signalInitDataReady, [user]);
 
   const onSubmitActions = () => {
-    history.push('/admin');
     toast.success('Successfully updated user');
+    reset({});
+    history.push('/admin');
   };
 
   const onSubmit = async (data: any) => {
