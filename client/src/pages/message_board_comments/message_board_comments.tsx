@@ -59,6 +59,11 @@ const MessageComments = () => {
       <main className="main_container">
         <Header />
         <div className="container">
+          <div className="mb-3 d-flex justify-content-start">
+            <button type="button" className="btn btn-outline-dark" onClick={history.goBack}>
+              {t('messageBoardCommentsBack')}
+            </button>
+          </div>
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pb-2 mb-0">{t('messageBoardCommentsMessage')}</h6>
           </div>  
