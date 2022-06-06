@@ -1,3 +1,7 @@
+// Authentication
+const ENDPOINT_LOGIN: string = 'api/auth/login';
+const ENDPOINT_LOGOUT: string = 'api/auth/logout';
+
 // Admin
 const ENDPOINT_ADMIN_GET: string = '/api/users';
 const ENDPOINT_ADMIN_GET_BY_ID = (id: string) => {
@@ -68,6 +72,8 @@ const ENDPOINT_MESSAGEBOARD_DELETE_BY_ID = (id: string): string => {
 };
 
 export {
+  ENDPOINT_LOGIN,
+  ENDPOINT_LOGOUT,
   ENDPOINT_ADMIN_GET,
   ENDPOINT_ADMIN_GET_BY_ID,
   ENDPOINT_ADMIN_ME,

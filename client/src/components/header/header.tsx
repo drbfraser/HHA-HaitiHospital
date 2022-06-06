@@ -84,7 +84,7 @@ const HeaderView = (props: HeaderViewProps) => {
 const Header = (props: HeaderProps) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
   const onLogOut = () => {
-    logOutUser(dispatch);
+    logOutUser(dispatch, history);
     history.push('/login');
   };
   const history: History = useHistory<History>();
