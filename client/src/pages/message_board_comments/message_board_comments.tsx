@@ -72,7 +72,7 @@ const MessageComments = () => {
             ))}
           </div>
           <div className="d-sm-flex align-items-center">
-            <h6 className="pt-5 pb-2 mb-2">{t('Add New Comment')}</h6>
+            <h6 className="pt-5 pb-2 mb-2">{t('messageBoardAddComment')}</h6>
           </div>
           <div>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -82,7 +82,7 @@ const MessageComments = () => {
                 {...register('messageComment', { required: true })}
                 defaultValue={''}
               />
-              <button className="btn btn-primary mt-3 mb-5">{t('addMessageSubmit')}</button>
+              <button className="btn btn-primary mt-3 mb-5">{t('messageBoardAddCommentSubmit')}</button>
             </form>
           </div>
         </div>

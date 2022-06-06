@@ -79,6 +79,8 @@
   "messageBoardCommentsMessage": "Message",
   "messageBoardCommentsComment": "Commentaires",
   "messageBoardCommentPostedOn": "Posté Sur:",
+  "messageBoardAddComment":"Ajouter un commentaire",
+  "messageBoardAddCommentSubmit": "Soumettre",
   "messageBoardDelete": "Supprimer",
   "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",

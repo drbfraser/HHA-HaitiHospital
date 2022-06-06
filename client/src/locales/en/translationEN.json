@@ -81,6 +81,8 @@
   "messageBoardCommentsMessage": "Message",
   "messageBoardCommentsComment": "Comments",
   "messageBoardCommentPostedOn": "Posted On:",
+  "messageBoardAddComment":"Add Comment",
+  "messageBoardAddCommentSubmit": "Submit",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
 
