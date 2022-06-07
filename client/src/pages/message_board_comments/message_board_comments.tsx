@@ -7,12 +7,14 @@ import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID, ENDPOINT_MESSAGEBOARD_GET_BY_ID, ENDPOINT_MESSAGEBOARD_COMMENTS_POST } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_COMMENTS_GET, TOAST_MESSAGEBOARD_COMMENTS_POST, TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
 import './message_board_comments.css';
-import { emptyMessage, Message } from 'constants/interfaces';
+import { emptyMessage, GeneralDepartment, Message, Role } from 'constants/interfaces';
 import MessageComment from 'components/message_comment/message_comment';
 import MessageDisplay from 'components/message_panel/message_display';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
+import { useAuthState } from 'contexts';
+import { renderBasedOnRole } from 'actions/roleActions';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([])
@@ -21,6 +23,7 @@ const MessageComments = () => {
   const history: History = useHistory<History>();
   const { register, handleSubmit, reset } = useForm({});
   const { t, i18n } = useTranslation();
+  const authState = useAuthState();
 
   const message_id = useLocation().pathname.split('/')[3];
 
@@ -30,8 +33,28 @@ const MessageComments = () => {
 
   const getMessage = async () => {
       const message = await Api.Get(ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id), TOAST_MESSAGEBOARD_GET, history);
-      setMsgJson(message);
+      if (messageAccessible(message)) {
+        setMsgJson(message);
+      } else {
+        history.push('/notFound');
+      }
   };
+
+  const messageAccessible = (message: Message) => {
+    if (
+      renderBasedOnRole(authState.userDetails.role, [
+        Role.Admin,
+        Role.MedicalDirector,
+        Role.HeadOfDepartment,
+      ]) ||
+      message.department.name === GeneralDepartment ||
+      message.department.id === authState.userDetails.department.id
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const getComments = useCallback(async () => {
     setComments(await Api.Get(ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id), TOAST_MESSAGEBOARD_COMMENTS_GET, history));
