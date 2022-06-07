@@ -51,6 +51,7 @@ const MessageComments = () => {
   const onSubmit = (data: any) => {
     data.parentMessageId = message_id;
     Api.Post(ENDPOINT_MESSAGEBOARD_COMMENTS_POST, data, onSubmitActions, TOAST_MESSAGEBOARD_COMMENTS_POST, history);
+    reset();
   };
 
   return (
