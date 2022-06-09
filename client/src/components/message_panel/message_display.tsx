@@ -31,6 +31,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const readableDate = new Date(props.msgJson.date).toLocaleString();
   const [commentCount, setCommentCount] = useState<number>(0);
+  const is_comment_page: boolean = (useLocation().pathname.split('/')[2] === "comments");
   
 
   useEffect(() => {
@@ -52,6 +53,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
       TOAST_MESSAGEBOARD_DELETE,
       history,
     );
+    if (is_comment_page) {
+      history.push('/message-board');
+    }
     props.notifyChange();
   };
 
