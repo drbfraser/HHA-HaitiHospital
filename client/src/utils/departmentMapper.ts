@@ -1,6 +1,6 @@
 import { Department } from 'constants/interfaces';
 
-export const setDepartmentMap = (data: Department[]): Map<string, Department> => {
+export const createDepartmentMap = (data: Department[]): Map<string, Department> => {
   try {
     let departmentMap = new Map<string, Department>();
     Object.values(data).forEach((dept: Department) => {

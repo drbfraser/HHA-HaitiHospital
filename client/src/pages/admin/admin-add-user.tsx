@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { User, Role, Department, GeneralDepartment } from 'constants/interfaces';
+import { UserInfoForm, Role, Department, GeneralDepartment } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import initialDepartments from 'utils/json/departments.json';
-import { setDepartmentMap } from 'utils/departmentMapper';
+import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { TOAST_ADMIN_POST } from 'constants/toast_messages';
 import './admin.css';
@@ -21,23 +21,22 @@ interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
-    setDepartmentMap(initialDepartments.departments),
+    createDepartmentMap(initialDepartments.departments),
   );
   const [role, setRole] = useState(Role.User as string);
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const { register, handleSubmit, reset, unregister } = useForm<User>({});
+  const { register, handleSubmit, reset, unregister } = useForm<UserInfoForm>({});
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
-  const getDepartments = async () => {
-    setDepartments(
-      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-    );
-  };
-
   useEffect(() => {
+    const getDepartments = async () => {
+      setDepartments(
+        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+      );
+    };
     getDepartments();
-  }, []);
+  }, [history]);
 
   const onSubmitActions = () => {
     toast.success('Successfully created user');
@@ -46,11 +45,11 @@ export const AddUserForm = (props: AdminProps) => {
   };
 
   const onSubmit = async (data: any) => {
-    data = setGeneralDepartmentForAdminAndMedicalDir(data) as User;
+    data = setGeneralDepartmentForAdminAndMedicalDir(data) as UserInfoForm;
     await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
   };
 
-  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): User => {
+  const setGeneralDepartmentForAdminAndMedicalDir = (data: any): UserInfoForm => {
     data.department =
       data.role === Role.Admin || data.role === Role.MedicalDirector
         ? departments.get(GeneralDepartment)
@@ -173,9 +172,7 @@ export const AddUserForm = (props: AdminProps) => {
                       <option key={index} value={dept.name}>
                         {dept.name}
                       </option>
-                    ) : (
-                      <></>
-                    );
+                    ) : ( null );
                   })}
                 </select>
               </div>

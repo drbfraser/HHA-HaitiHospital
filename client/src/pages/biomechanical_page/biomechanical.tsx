@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
 import { Role } from 'constants/interfaces';
@@ -44,9 +44,12 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
     getBioReport();
   };
 
-  const getBioReport = async () => {
-    setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, TOAST_BIOMECH_GET, history));
-  };
+  const getBioReport = useCallback(
+    async () => {
+        setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, TOAST_BIOMECH_GET, history));
+    }, 
+    [history]
+  );
 
   const deleteBioMech = async (id: string) => {
     await Api.Delete(
@@ -77,7 +80,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   useEffect(() => {
     getBioReport();
-  }, [BioReport]);
+  }, [getBioReport]);
 
   return (
     <div className="biomechanical_page">

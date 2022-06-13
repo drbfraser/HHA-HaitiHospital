@@ -23,7 +23,7 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
       break;
     }
     case INTERNAL_CODE: {
-      toast.error(`Internal Error ${e.response}`);
+      toast.error(`Internal Error: ${toastMsg}`);
       break;
     }
     case BADREQUEST_CODE: {

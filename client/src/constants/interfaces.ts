@@ -50,6 +50,7 @@ export const emptyMessage: Message = {
   department: { id: '', name: '' },
   date: new Date(),
   user: {
+    id: '',
     name: '',
     role: Role.Admin,
     department: { id: '', name: '' },
@@ -60,7 +61,7 @@ export const emptyMessage: Message = {
   messageHeader: '',
 };
 
-export interface User {
+export interface UserInfoForm {
   username: string;
   name: string;
   password: string;
@@ -69,6 +70,7 @@ export interface User {
 }
 
 export interface UserJson {
+  id: string;
   name: string;
   role: Role;
   department: Department;
@@ -77,6 +79,7 @@ export interface UserJson {
 }
 
 export const emptyUser: UserJson = {
+  id: '',
   name: '',
   role: Role.User,
   department: { id: '', name: '' },

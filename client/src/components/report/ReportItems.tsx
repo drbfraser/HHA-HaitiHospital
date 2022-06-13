@@ -1,11 +1,9 @@
-import { FormProvider, useForm, useFormContext, UseFormReturn } from 'react-hook-form';
-import React, { useState, useEffect, Fragment } from 'react';
+import { useFormContext } from 'react-hook-form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { ItemType } from 'common/json_report';
 import { ReportItem } from './Report';
-import { isPrefixUnaryExpression } from 'typescript';
 
 type Label = {
   id: string;
@@ -66,6 +64,7 @@ function makeItems(items: ReportItem[], readonly: boolean, indent: boolean): JSX
           />
         );
       default:
+        throw new Error('Item is not supported');
     }
   });
 }
@@ -78,13 +77,14 @@ export function Field(props: {
   header?: boolean;
 }): JSX.Element {
   const { register, formState, clearErrors } = useFormContext();
-  const { t, i18n } = useTranslation();
+  //   Put back when translation is available
+  //   const { t, i18n } = useTranslation();
   const item = props.item;
-  const prefix = props.prefix + (props.prefix != undefined && props.prefix != '' ? '. ' : '');
+  const prefix = props.prefix + (props.prefix !== undefined && props.prefix !== '' ? '. ' : '');
   const text = prefix + item.description ?? 'N/A';
   const defaultValue = item.answer[0][0];
-  let children = []
-  if (props.item.items != undefined) children = props.item.items
+  let children = [];
+  if (props.item.items !== undefined) children = props.item.items;
 
   const invalid: boolean = formState.errors[item.id];
   const errorMessage = formState.errors[item.id]?.message;
