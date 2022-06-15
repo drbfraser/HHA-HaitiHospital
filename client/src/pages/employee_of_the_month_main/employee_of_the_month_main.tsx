@@ -26,15 +26,14 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
   const history: History = useHistory<History>();
   const { t: translateText } = useTranslation();
 
-  const getEmployeeOfTheMonth = async () => {
-    setEmployeeOfTheMonth(
-      await Api.Get(ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET, TOAST_EMPLOYEE_OF_THE_MONTH_GET, history),
-    );
-  };
-
   useEffect(() => {
+    const getEmployeeOfTheMonth = async () => {
+        setEmployeeOfTheMonth(
+            await Api.Get(ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET, TOAST_EMPLOYEE_OF_THE_MONTH_GET, history),
+        );
+    }; 
     getEmployeeOfTheMonth();
-  }, []);
+  }, [history]);
 
   return (
     <div className="employee-of-the-month-main">

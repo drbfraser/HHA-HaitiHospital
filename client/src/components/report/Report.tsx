@@ -4,7 +4,7 @@ import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import {
   JsonReportDescriptor,
@@ -75,7 +75,8 @@ function Error(data: ErrorData): State {
 
 function FormContents(props: { path: string }) {
   const formHook = useForm();
-  const { t, i18n } = useTranslation();
+// Commented out to avoid unused variable warning. May put it back once translation is supported.
+//   const { t, i18n } = useTranslation();
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -107,7 +108,7 @@ function FormContents(props: { path: string }) {
         //  This changes the analogous to a setState call, thus must be called here.
         formHook.setError(id, error);
       });
-  }, [state]);
+  }, [state, formHook]);
 
   const editButtonHandler = () => setReadOnly(false);
 

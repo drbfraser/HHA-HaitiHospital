@@ -12,8 +12,6 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.withCredentials = true;
 }
 
-// initAjvAsStandAlone();
-
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<div>Loading...</div>}>

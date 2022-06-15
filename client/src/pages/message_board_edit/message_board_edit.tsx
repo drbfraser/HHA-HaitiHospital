@@ -24,27 +24,26 @@ const EditMessage = () => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
-  const getMessage = async (id: string) => {
-    const msgData: Message = await Api.Get(
-      ENDPOINT_MESSAGEBOARD_GET_BY_ID(id),
-      TOAST_MESSAGEBOARD_GET,
-      history,
-    );
-    const msg: Message = {
-      id: msgData.id,
-      messageBody: msgData.messageBody,
-      messageHeader: msgData.messageHeader,
-      department: {
-        id: msgData.department.id,
-        name: parseEscapedCharacters(msgData.department.name),
-      },
-      user: msgData.user,
-      date: msgData.date,
-    };
-    setMsg(msg);
-  };
-
   useEffect(() => {
+    const getMessage = async (id: string) => {
+      const msgData: Message = await Api.Get(
+        ENDPOINT_MESSAGEBOARD_GET_BY_ID(id),
+        TOAST_MESSAGEBOARD_GET,
+        history,
+      );
+      const msg: Message = {
+        id: msgData.id,
+        messageBody: msgData.messageBody,
+        messageHeader: msgData.messageHeader,
+        department: {
+          id: msgData.department.id,
+          name: parseEscapedCharacters(msgData.department.name),
+        },
+        user: msgData.user,
+        date: msgData.date,
+      };
+      setMsg(msg);
+    };
     getMessage(id);
   }, [id, history]);
 

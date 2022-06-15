@@ -31,16 +31,16 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
     setImageModal(false);
   };
 
-  const getEmployeeOfTheMonthImage = async () => {
-    setEmployeeOfTheMonthImage(
-      await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.employeeOfTheMonth.imgPath), props.history),
-    );
-  };
-
   useEffect(() => {
+    const getEmployeeOfTheMonthImage = async () => {
+      setEmployeeOfTheMonthImage(
+        await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.employeeOfTheMonth.imgPath), props.history),
+      );
+    };
+
     // Only execute once employee of the month data has been successfully passed to this component
     if (props.employeeOfTheMonth !== null) getEmployeeOfTheMonthImage();
-  }, [props.employeeOfTheMonth]);
+  }, [props.employeeOfTheMonth, props.history]);
 
   const translateMonth = (monthIndicator: number): string => {
     switch (monthIndicator) {
