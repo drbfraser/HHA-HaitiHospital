@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { AuthProvider } from 'contexts';
 import routes from './routes';
 import AppRoute from './app-route';
@@ -8,15 +8,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css';
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+//   useEffect(() => {
+//     const script = document.createElement('script');
+//     script.src = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css';
+//     script.async = true;
+//     document.body.appendChild(script);
+//     return () => {
+//       document.body.removeChild(script);
+//     };
+//   }, []);
 
   return (
     <AuthProvider>

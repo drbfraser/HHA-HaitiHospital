@@ -8,7 +8,7 @@ import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import { History } from 'history';
 import initialDepartments from 'utils/json/departments.json';
-import { setDepartmentMap } from 'utils/departmentMapper';
+import { createDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -19,7 +19,7 @@ interface MessageFormProps {
 
 const MessageForm = (props: MessageFormProps) => {
   const [departments, setDepartments] = useState<Map<string, Department>>(
-    setDepartmentMap(initialDepartments.departments),
+    createDepartmentMap(initialDepartments.departments),
   );
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -27,13 +27,12 @@ const MessageForm = (props: MessageFormProps) => {
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
   const [department, setDepartment] = useState<string>('');
 
-  const getDepartments = async () => {
-    setDepartments(
-      setDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-    );
-  };
-
   useEffect(() => {
+    const getDepartments = async () => {
+      setDepartments(
+        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+      );
+    };
     let isMounted = true;
     if (isMounted) {
       getDepartments();
@@ -45,7 +44,7 @@ const MessageForm = (props: MessageFormProps) => {
     return () => {
       isMounted = false;
     };
-  }, [props.optionalMsg, department]);
+  }, [props.optionalMsg, history]);
 
   const onSubmit = (data: any) => {
     if (data.department === '') {

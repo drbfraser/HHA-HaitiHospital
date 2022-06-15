@@ -1,4 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { ENDPOINT_LOGIN, ENDPOINT_LOGOUT } from 'constants/endpoints';
+import Api from './Api';
+import { History } from 'history';
 
 interface FormData {
   username: string;
@@ -8,35 +11,36 @@ interface FormData {
 export const loginUser = async (dispatch, formData: FormData) => {
   try {
     dispatch({ type: 'REQUEST_LOGIN' });
-    const response = await axios.post('/api/auth/login', formData);
-    const data = await response.data;
-    if (data.success) {
-      dispatch({ type: 'LOGIN_SUCCESS', payload: data });
-      localStorage.setItem('currentUser', JSON.stringify(data));
-      return data;
-    }
-
-    dispatch({ type: 'LOGIN_ERROR', error: data.errors[0] });
-    return;
+    const response = await axios.post(ENDPOINT_LOGIN, formData);
+    const data = response.data;
+    dispatch({ type: 'LOGIN_SUCCESS', payload: data });
+    localStorage.setItem('currentUser', JSON.stringify(data));
+    return data;
   } catch (error) {
     dispatch({ type: 'LOGIN_ERROR', error: error });
-    console.error(error);
+    if (axios.isAxiosError(error)) {
+      const err: AxiosError = error as AxiosError;
+      if (err.response.status < 500) {
+        return { success: false, error: err.message };
+      } else {
+        throw new Error(`Internal Error: ${err.message}`);
+      }
+    } else {
+      throw new Error(`${error}`);
+    }
   }
 };
 
-export const logOutUser = async (dispatch) => {
+const onLogout = () => {
+  deleteAllCookies();
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+};
+
+export const logOutUser = async (dispatch, history: History) => {
   dispatch({ type: 'LOGOUT' });
-  axios
-    .get('/api/auth/logout')
-    .then(() => {
-      deleteAllCookies();
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-    })
-    .catch((error) => {
-      console.error('Error with logging out', error);
-    });
+  await Api.Post(ENDPOINT_LOGOUT, {}, onLogout, 'Logging out failed', history);
 };
 
 const deleteAllCookies = () => {

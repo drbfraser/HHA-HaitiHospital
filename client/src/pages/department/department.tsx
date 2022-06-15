@@ -6,17 +6,17 @@ import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET_BY_ID } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import { Department as DepartmentModel, emptyDepartment, Role } from 'constants/interfaces';
+import { Department as DepartmentModel, emptyDepartment } from 'constants/interfaces';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import { useAuthState } from 'contexts';
+// import { useAuthState } from 'contexts';
 import { History } from 'history';
 
 interface DepartmentProps {}
 
 export const Department = (props: DepartmentProps) => {
   const { t } = useTranslation();
-  const authState = useAuthState();
+  //   const authState = useAuthState();
   const { deptId } = useParams<{ deptId: string }>();
   const [department, setDepartment] = React.useState<DepartmentModel>(emptyDepartment);
   const history: History = useHistory<History>();
@@ -25,19 +25,19 @@ export const Department = (props: DepartmentProps) => {
     to: null,
   });
 
-  const getDepartmentById = async () => {
-    setDepartment(
-      await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(deptId), TOAST_DEPARTMENT_GET, history),
-    );
-  };
-
   React.useEffect(() => {
+    const getDepartmentById = async (id: string) => {
+      setDepartment(
+        await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(id), TOAST_DEPARTMENT_GET, history),
+      );
+    };
+
     try {
-      getDepartmentById();
+      getDepartmentById(deptId);
     } catch (e) {
       history.push('/notFound');
     }
-  }, [deptId, history]);
+  }, [history, deptId]);
 
   return (
     <div className="department">

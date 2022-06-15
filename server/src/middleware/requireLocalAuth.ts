@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Request, Response, NextFunction } from 'express';
 import { User } from 'models/user';
-import { HTTP_UNPROCESSABLE_ENTITY_CODE } from 'exceptions/httpException';
+import { HTTP_UNAUTHORIZED_CODE } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
 // import * as passport from 'passport';
 
@@ -14,7 +14,7 @@ const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
     }
     if (!user) {
       console.error('Cannot authenticate request, user does not exist.');
-      return res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send(info);
+      return res.status(HTTP_UNAUTHORIZED_CODE).send(info);
     }
     (req as RequestWithUser).user = user;
     next();
