@@ -61,6 +61,27 @@ export const emptyMessage: Message = {
   messageHeader: '',
 };
 
+export interface Comment {
+  id: string;
+  createdAt: Date;
+  user: UserJson;
+  messageComment: string;
+}
+
+export const emptyMessageComment: Comment = {
+  id: '',
+  createdAt: new Date(),
+  user: {
+    id: '',
+    name: '',
+    role: Role.Admin,
+    department: { id: '', name: '' },
+    createdAt: '',
+    updatedAt: '',
+  },
+  messageComment: '',
+};
+
 export interface UserInfoForm {
   username: string;
   name: string;

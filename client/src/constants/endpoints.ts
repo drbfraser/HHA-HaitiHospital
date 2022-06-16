@@ -70,6 +70,10 @@ const ENDPOINT_MESSAGEBOARD_PUT_BY_ID = (id: string): string => {
 const ENDPOINT_MESSAGEBOARD_DELETE_BY_ID = (id: string): string => {
   return ENDPOINT_MESSAGEBOARD_GET_BY_ID(id);
 };
+const ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID = (id: string) => {
+  return `/api/message-board/comments/${id}`;
+};
+const ENDPOINT_MESSAGEBOARD_COMMENTS_POST: string = '/api/message-board/comments';
 
 export {
   ENDPOINT_LOGIN,
@@ -101,4 +105,6 @@ export {
   ENDPOINT_MESSAGEBOARD_POST,
   ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
+  ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
+  ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
 };
