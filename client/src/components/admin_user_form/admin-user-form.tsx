@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const AdminUserForm = (props: Props) => {
-  const { register, handleSubmit, setValue } = useForm<UserInfoForm>({});
+  const { register, handleSubmit, setValue, reset } = useForm<UserInfoForm>({});
   const { t } = useTranslation();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const user: UserJson = props.data.userData ? props.data.userData : emptyUser;
@@ -40,8 +40,14 @@ export const AdminUserForm = (props: Props) => {
     }
   };
 
+  const submitForm = (data: any) => {
+    console.log(data);
+    props.onSubmit(data);
+    reset({});
+  };
+
   return (
-    <form onSubmit={handleSubmit(props.onSubmit)}>
+    <form onSubmit={handleSubmit(submitForm)}>
       <div className="mb-3">
         <label htmlFor="username" className="form-label">
           {t('adminAddUserUsername')}
@@ -138,14 +144,14 @@ export const AdminUserForm = (props: Props) => {
             id="department"
             defaultValue={user.department.name}
             required
-            {...register('department')}
+            {...register('department.id')}
           >
             <option value="" disabled hidden>
               {t('adminAddUserSelectDepartment')}
             </option>
             {Array.from(departments.values()).map((dept: Department, index: number) => {
               return dept.name !== GeneralDepartment ? (
-                <option key={index} value={dept.name}>
+                <option key={index} value={dept.id}>
                   {dept.name}
                 </option>
               ) : null;

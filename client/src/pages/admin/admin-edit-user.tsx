@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 import { Spinner } from 'components/spinner/Spinner';
 import useDidMountEffect from 'utils/custom_hooks';
 import { useCallback } from 'react';
-import { AdminUserForm } from './admin-user-form';
+import { AdminUserForm } from '../../components/admin_user_form/admin-user-form';
 
 interface UserEditProps {}
 
