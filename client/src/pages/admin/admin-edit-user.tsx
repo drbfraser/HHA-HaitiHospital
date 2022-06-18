@@ -21,12 +21,12 @@ import { AdminUserForm } from '../../components/admin_user_form/admin-user-form'
 interface UserEditProps {}
 
 export const EditUserForm = (props: UserEditProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>();
+  const [departments, setDepartments] = useState<Map<string, Department>>(undefined);
   const [fetch, setFetch] = useState<boolean>(false);
   const location = useLocation();
   //   Refactor: make url slugs
   const id = useMemo<string>(() => location.pathname.split('/')[3], [location.pathname]);
-  const [user, setUser] = useState<UserJson>(emptyUser);
+  const [user, setUser] = useState<UserJson>(undefined);
 
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -59,9 +59,10 @@ export const EditUserForm = (props: UserEditProps) => {
 
   useDidMountEffect(
     function signalInitDataReady() {
-      setFetch(true);
+      if (user !== undefined && departments !== undefined)
+        setFetch(true);
     },
-    [user],
+    [user, departments],
   );
 
   const onSubmit = () => {

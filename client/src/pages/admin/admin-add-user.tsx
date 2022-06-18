@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Department } from 'constants/interfaces';
-import { AdminUserFormData } from "constants/forms";
+import { AdminUserFormData } from 'constants/forms';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
@@ -15,11 +15,14 @@ import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import { AdminUserForm } from '../../components/admin_user_form/admin-user-form';
+import useDidMountEffect from 'utils/custom_hooks';
+import { Spinner } from 'components/spinner/Spinner';
 
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>();
+  const [departments, setDepartments] = useState<Map<string, Department>>(undefined);
+  const [fetch, setFetch] = useState<boolean>(false);
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
@@ -31,6 +34,13 @@ export const AddUserForm = (props: AdminProps) => {
     };
     getDepartments();
   }, [history]);
+
+  useDidMountEffect(
+    function signalInitDataReady() {
+      if (departments !== undefined) setFetch(true);
+    },
+    [departments],
+  );
 
   const onSubmit = () => {
     toast.success('Successfully created user');
@@ -44,22 +54,28 @@ export const AddUserForm = (props: AdminProps) => {
   return (
     <div className={'admin'}>
       <SideBar />
+      {fetch === false ? (
+        <Spinner></Spinner>
+      ) : (
+        <main className="container-fluid main-region">
+          <Header />
 
-      <main className="container-fluid main-region">
-        <Header />
+          <div className="ml-3 mb-3 d-flex justify-content-start">
+            <Link to="/admin">
+              <button type="button" className="btn btn-outline-dark">
+                {t('adminAddUserBack')}
+              </button>
+            </Link>
+          </div>
 
-        <div className="ml-3 mb-3 d-flex justify-content-start">
-          <Link to="/admin">
-            <button type="button" className="btn btn-outline-dark">
-              {t('adminAddUserBack')}
-            </button>
-          </Link>
-        </div>
-
-        <div className="col-md-6">
-          <AdminUserForm data={{ departments: departments }} onSubmit={submitForm}></AdminUserForm>
-        </div>
-      </main>
+          <div className="col-md-6">
+            <AdminUserForm
+              data={{ departments: departments }}
+              onSubmit={submitForm}
+            ></AdminUserForm>
+          </div>
+        </main>
+      )}
     </div>
   );
 };
