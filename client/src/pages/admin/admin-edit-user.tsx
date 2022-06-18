@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Department, UserJson, emptyUser } from 'constants/interfaces';
+import { AdminUserFormData } from "constants/forms";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import initialDepartments from 'utils/json/departments.json';
 import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
 import { TOAST_ADMIN_GET, TOAST_ADMIN_PUT } from 'constants/toast_messages';
@@ -16,15 +16,12 @@ import { History } from 'history';
 import { toast } from 'react-toastify';
 import { Spinner } from 'components/spinner/Spinner';
 import useDidMountEffect from 'utils/custom_hooks';
-import { useCallback } from 'react';
 import { AdminUserForm } from '../../components/admin_user_form/admin-user-form';
 
 interface UserEditProps {}
 
 export const EditUserForm = (props: UserEditProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>(
-    createDepartmentMap(initialDepartments.departments),
-  );
+  const [departments, setDepartments] = useState<Map<string, Department>>();
   const [fetch, setFetch] = useState<boolean>(false);
   const location = useLocation();
   //   Refactor: make url slugs
@@ -48,7 +45,7 @@ export const EditUserForm = (props: UserEditProps) => {
       fetchAndSetUser();
 
       const fetchAndSetDepartments = async () => {
-        const response = await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history);
+        const response: Department[] = await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history);
         if (isMounted) setDepartments(createDepartmentMap(response));
       };
       fetchAndSetDepartments();
@@ -60,17 +57,19 @@ export const EditUserForm = (props: UserEditProps) => {
     [history, id],
   );
 
-  const signalInitDataReady = useCallback(() => {
-    setFetch(true);
-  }, []);
-  useDidMountEffect(signalInitDataReady, [user]);
+  useDidMountEffect(
+    function signalInitDataReady() {
+      setFetch(true);
+    },
+    [user],
+  );
 
   const onSubmit = () => {
     toast.success('Successfully updated user');
     history.push('/admin');
   };
 
-  const submitForm = async (data: any) => {
+  const submitForm = async (data: AdminUserFormData) => {
     await Api.Put(ENDPOINT_ADMIN_PUT_BY_ID(id), data, onSubmit, TOAST_ADMIN_PUT, history);
   };
 

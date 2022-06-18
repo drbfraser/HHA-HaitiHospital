@@ -3,7 +3,6 @@ import {
   emptyUser,
   GeneralDepartment,
   Role,
-  UserInfoForm,
   UserJson,
 } from 'constants/interfaces';
 import { useState } from 'react';
@@ -11,17 +10,18 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { getEnumKeyByStringValue } from 'utils/utils';
+import { AdminUserFormData, ADMIN_USER_FORM_FIELDS } from 'constants/forms';
 
 interface Props {
   data: {
     userData?: UserJson;
     departments: Map<string, Department>;
   };
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: AdminUserFormData) => Promise<void>;
 }
 
 export const AdminUserForm = (props: Props) => {
-  const { register, handleSubmit, setValue, reset } = useForm<UserInfoForm>({});
+  const { register, handleSubmit, setValue, reset } = useForm<AdminUserFormData>({});
   const { t } = useTranslation();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const user: UserJson = props.data.userData ? props.data.userData : emptyUser;
@@ -36,12 +36,12 @@ export const AdminUserForm = (props: Props) => {
     const isShown = hasDepartment(newRole);
     setShowDepartment(isShown);
     if (!isShown) {
-      setValue('department', departments.get(GeneralDepartment));
+      setValue(ADMIN_USER_FORM_FIELDS.department.this, departments.get(GeneralDepartment));
     }
   };
 
-  const submitForm = (data: any) => {
-    console.log(data);
+  const submitForm = (data: AdminUserFormData) => {
+    data.department.id = departments.get(data.department.name).id;
     props.onSubmit(data);
     reset({});
   };
@@ -58,7 +58,7 @@ export const AdminUserForm = (props: Props) => {
             className="form-control"
             id="username"
             autoComplete="new-username"
-            {...register('username')}
+            {...register(ADMIN_USER_FORM_FIELDS.username)}
           ></input>
         </div>
         <div id="usernameHelp" className="form-text">
@@ -76,7 +76,7 @@ export const AdminUserForm = (props: Props) => {
             className="form-control"
             id="password"
             autoComplete="new-password"
-            {...register('password')}
+            {...register(ADMIN_USER_FORM_FIELDS.password)}
           ></input>
           <div className="input-group-text">
             <i
@@ -108,7 +108,7 @@ export const AdminUserForm = (props: Props) => {
           id="name"
           defaultValue={user.name}
           required
-          {...register('name')}
+          {...register(ADMIN_USER_FORM_FIELDS.name)}
         ></input>
       </div>
 
@@ -121,7 +121,7 @@ export const AdminUserForm = (props: Props) => {
           id="role"
           defaultValue={user.role}
           required
-          {...register('role')}
+          {...register(ADMIN_USER_FORM_FIELDS.role)}
           onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
         >
           <option value="" disabled hidden>
@@ -144,14 +144,14 @@ export const AdminUserForm = (props: Props) => {
             id="department"
             defaultValue={user.department.name}
             required
-            {...register('department.id')}
+            {...register(ADMIN_USER_FORM_FIELDS.department.name)}
           >
             <option value="" disabled hidden>
               {t('adminAddUserSelectDepartment')}
             </option>
             {Array.from(departments.values()).map((dept: Department, index: number) => {
               return dept.name !== GeneralDepartment ? (
-                <option key={index} value={dept.id}>
+                <option key={index} value={dept.name}>
                   {dept.name}
                 </option>
               ) : null;

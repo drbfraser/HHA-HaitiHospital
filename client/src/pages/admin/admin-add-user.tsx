@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Department } from 'constants/interfaces';
+import { AdminUserFormData } from "constants/forms";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import initialDepartments from 'utils/json/departments.json';
 import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { TOAST_ADMIN_POST } from 'constants/toast_messages';
@@ -19,9 +19,7 @@ import { AdminUserForm } from '../../components/admin_user_form/admin-user-form'
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>(
-    createDepartmentMap(initialDepartments.departments),
-  );
+  const [departments, setDepartments] = useState<Map<string, Department>>();
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
@@ -39,7 +37,7 @@ export const AddUserForm = (props: AdminProps) => {
     history.push('/admin');
   };
 
-  const submitForm = async (data: any) => {
+  const submitForm = async (data: AdminUserFormData) => {
     await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmit, TOAST_ADMIN_POST, history);
   };
 
