@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Department, UserJson, emptyUser } from 'constants/interfaces';
+import { Department, UserJson } from 'constants/interfaces';
 import { AdminUserFormData } from "constants/forms";
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
