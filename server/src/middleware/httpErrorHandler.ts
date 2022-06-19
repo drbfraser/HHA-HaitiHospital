@@ -4,16 +4,13 @@ import { NextFunction, Request, Response } from 'express';
 import { BadRequest, HttpError, InternalError } from '../exceptions/httpException';
 
 const httpErrorMiddleware = (error: Error | CustomError, request: Request, response: Response, next: NextFunction) => {
-  console.log(error);
   let httpError: HttpError;
   if (error instanceof HttpError) {
     httpError = error;
-  } else {
-    if (error instanceof InvalidInput) {
+  } else if (error instanceof InvalidInput) {
       httpError = new BadRequest(error.message);
-    } else {
+  } else {
       httpError = new InternalError(error.message || 'Something went wrong');
-    }
   }
   response.status(httpError.status).send(httpError.message);
 };
