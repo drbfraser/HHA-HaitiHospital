@@ -62,7 +62,7 @@ export const seedUsers = async () => {
   console.log('Seeding users...');
   try {
     // Delete seeded users on server start so we can reseed them.
-    // await User.collection.dropIndexes();
+    await UserCollection.deleteMany({});
 
     [...Array(7).keys()].forEach(async (index) => {
       const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
@@ -401,6 +401,19 @@ mongoose
   })
   .then(() => {
     console.log('MongoDB Connected...');
-    seedDb();
+    const readline = require('readline');
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question(`Confirm to reseed database (old data will be discarded) (Y to confirm): `, async function (answer) {
+      if (answer === 'Y') await seedDb();
+      rl.close();
+    });
+
+    rl.on('close', function () {
+      process.exit(0);
+    });
   })
   .catch((err) => console.log(err));
