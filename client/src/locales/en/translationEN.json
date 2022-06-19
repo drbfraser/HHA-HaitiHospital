@@ -30,6 +30,7 @@
 
   "headerOverview": "Overview",
   "headerMessageBoard": "Message Board",
+  "headerMessageComments": "Comments",
   "headerLeaderBoard": "Leaderboard",
   "headerCaseStudy": "Case Study",
   "headerCaseStudyForm": "Case Study Form",
@@ -76,6 +77,13 @@
   "messageBoardEdit": "Edit",
   "messageBoardDelete": "Delete",
   "messageBoardPostedOn": "Posted On:",
+  "messageBoardComments": "Comments",
+  "messageBoardCommentsMessage": "Message",
+  "messageBoardCommentsComment": "Comments",
+  "messageBoardCommentCommentedOn": "Commented On:",
+  "messageBoardAddComment":"Add Comment",
+  "messageBoardAddCommentSubmit": "Submit",
+  "messageBoardCommentsBack": "Back",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
 

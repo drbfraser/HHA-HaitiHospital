@@ -45,22 +45,24 @@ const Login = (props: LoginProps) => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      try {
-        getCSRFToken().then(() => {
+      getCSRFToken()
+        .then(() => {
           loginUser(dispatch, values)
             .then((res: any) => {
-              if (!res.success) return;
+              if (!res.success) {
+                setErrorMessage(i18n.t('signInInvalidLoginCredentials'));
+                return;
+              }
               setUsername(res.user.name);
               props.history.push('/home');
             })
             .catch((error) => {
-              setErrorMessage(i18n.t('signInInvalidLoginCredentials'));
-              console.error('Error with logging in: ', error);
+              console.error('Logging in failed: ', error);
             });
+        })
+        .catch((error) => {
+          console.log('Get CSRF Token failed');
         });
-      } catch (error) {
-        console.error('error with logging in: ', error);
-      }
     },
   });
 

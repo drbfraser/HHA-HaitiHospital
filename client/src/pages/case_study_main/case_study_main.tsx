@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
 import SideBar from 'components/side_bar/side_bar';
@@ -47,23 +47,25 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   }, [currentPage, caseStudies]);
   const caseStudyNumberIndex = currentPage * pageSize - pageSize;
 
-  const featureCaseStudyActions = () => {
+  const onFeatureCaseStudy = () => {
     toast.success('Featured case study has now changed!');
+    fetchCaseStudies();
   };
 
-  const deleteCaseStudyActions = () => {
+  const onDeleteCaseStudy = () => {
     toast.success('Case Study deleted!');
+    fetchCaseStudies();
   };
 
-  const getCaseStudies = async () => {
+  const fetchCaseStudies = useCallback(async () => {
     setCaseStudies(await Api.Get(ENDPOINT_CASESTUDY_GET, TOAST_CASESTUDY_GET, history));
-  };
+  }, [history]);
 
   const deleteCaseStudy = async (id: string) => {
     await Api.Delete(
       ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
       {},
-      deleteCaseStudyActions,
+      onDeleteCaseStudy,
       TOAST_CASESTUDY_DELETE,
       history,
     );
@@ -73,13 +75,13 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     await Api.Patch(
       ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
       {},
-      featureCaseStudyActions,
+      onFeatureCaseStudy,
       TOAST_CASESTUDY_PATCH,
       history,
     );
   };
 
-  const onDeleteCaseStudy = (event: any, item: any) => {
+  const onDeleteButton = (event: any, item: any) => {
     event.stopPropagation();
     event.preventDefault();
     setCurrentIndex(item.id);
@@ -96,14 +98,17 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     setDeleteModal(false);
   };
 
-  const onModalDelete = (id: string) => {
+  const onModalDeleteConfirm = (id: string) => {
     deleteCaseStudy(id);
     setDeleteModal(false);
   };
 
-  useEffect(() => {
-    getCaseStudies();
-  }, [caseStudies]);
+  useEffect(
+    function fetchCaseStudiesInitially() {
+      fetchCaseStudies();
+    },
+    [fetchCaseStudies],
+  );
 
   const { t: translateText } = useTranslation();
 
@@ -128,7 +133,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           show={deleteModal}
           item={'case study'}
           onModalClose={onModalDeleteClose}
-          onModalDelete={onModalDelete}
+          onModalDelete={onModalDeleteConfirm}
           history={history}
           location={undefined}
           match={undefined}
@@ -179,7 +184,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         <button
                           className="btn btn-link text-decoration-none"
                           onClick={(event) => {
-                            onDeleteCaseStudy(event, item);
+                            onDeleteButton(event, item);
                           }}
                         >
                           {translateText('caseStudyMainDelete').concat(' ')}

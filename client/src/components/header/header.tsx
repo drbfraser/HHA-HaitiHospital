@@ -26,6 +26,11 @@ const HeaderView = (props: HeaderViewProps) => {
     return <h2 className="text-secondary">{`${t('headerOverview')} ${department}`}</h2>;
   } else if (location.pathname.slice(1) === 'message-board') {
     return <h4 className="text-secondary">{t('headerMessageBoard')}</h4>;
+  } else if (
+    location.pathname.split('/')[1] === 'message-board' &&
+    location.pathname.split('/')[2] === 'comments'
+  ) {
+    return <h4 className="text-secondary">{t('headerMessageComments')}</h4>;
   } else if (location.pathname.slice(1) === 'leaderboard') {
     return <h4 className="text-secondary">{t('headerLeaderBoard')}</h4>;
   } else if (location.pathname.slice(1) === 'case-study') {
@@ -84,19 +89,26 @@ const HeaderView = (props: HeaderViewProps) => {
 const Header = (props: HeaderProps) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
   const onLogOut = () => {
-    logOutUser(dispatch);
+    logOutUser(dispatch, history);
     history.push('/login');
   };
   const history: History = useHistory<History>();
   const [userInfo, setUserInfo] = useState(emptyUser as UserJson);
 
-  const getUserInfo = async () => {
-    setUserInfo(await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history));
-  };
-
   useEffect(() => {
+    let isMounted: boolean = true;
+
+    const getUserInfo = async () => {
+      const user: UserJson = await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history);
+      if (isMounted)
+        setUserInfo(user);
+    };
     getUserInfo();
-  }, []);
+
+    return function cleanUp() {
+        isMounted = false;
+    }
+  }, [history]);
 
   const { t, i18n } = useTranslation();
   return (

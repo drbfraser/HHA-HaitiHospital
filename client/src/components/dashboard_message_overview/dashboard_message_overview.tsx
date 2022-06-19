@@ -17,13 +17,13 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const history: History = useHistory<History>();
 
-  const getMessages = async () => {
-    setMessages(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history));
-  };
-
   useEffect(() => {
+    const getMessages = async () => {
+      setMessages(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history));
+    };
+
     getMessages();
-  }, []);
+  }, [history]);
 
   const { t } = useTranslation();
 

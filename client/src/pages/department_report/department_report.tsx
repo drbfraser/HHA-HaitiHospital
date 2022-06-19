@@ -37,14 +37,13 @@ const DepartmentReport = (props: DepartmentReportProps) => {
   };
   const history: History = useHistory<History>();
 
-  const getDepartmentById = async () => {
-    setDepartment(
-      await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(deptId), TOAST_DEPARTMENT_GET, history),
-    );
-  };
-
   useEffect(() => {
-    getDepartmentById();
+    const getDepartmentById = async (id: string) => {
+      setDepartment(
+        await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(id), TOAST_DEPARTMENT_GET, history),
+      );
+    };
+    getDepartmentById(deptId);
     let BreakException = {};
     let data: Object[] = [];
     if (report.formData !== undefined && report.formData !== null) {
@@ -101,7 +100,7 @@ const DepartmentReport = (props: DepartmentReportProps) => {
     }
     console.log(data);
     setCsvData(data);
-  }, [report]);
+  }, [deptId, report, history]);
 
   // Get Report Id when Loaded
   useEffect(() => {

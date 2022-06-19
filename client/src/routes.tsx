@@ -11,6 +11,7 @@ import { LeaderBoardMain } from 'pages/leader_board_main/leader_board_main';
 import { MessageBoardMain } from 'pages/message_board_main/message_board_main';
 import AddMessage from 'pages/message_board_add/message_board_add';
 import EditMessage from 'pages/message_board_edit/message_board_edit';
+import MessageComments from 'pages/message_board_comments/message_board_comments';
 import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
 import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
 import { BrokenKitView } from 'pages/broken_kit_view/broken_kit_report_view';
@@ -159,6 +160,13 @@ const routes = [
     component: AddMessage,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/message-board/comments/:id',
+    component: MessageComments,
+    loginRequired: true,
+    rolesAllowed: [],
     departmentsAllowed: [],
   },
   {

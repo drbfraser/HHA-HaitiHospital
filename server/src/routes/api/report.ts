@@ -206,8 +206,6 @@ async function attemptToUpdateReport(report: ReportDescriptor, callback: (err?: 
     attemptToSaveReport(oldDoc, (oldReportErr: CustomError) => {
       if (!oldReportErr) {
         return callback(newReportErr);
-      }
-      callback(oldReportErr);
     });
   });
 }
