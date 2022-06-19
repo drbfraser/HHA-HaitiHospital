@@ -32,25 +32,22 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 export const seedDb = async () => {
-  // TODO: Remove delete many when in prod
-  // await UserModel.deleteMany({});
-
-  await seedDepartments();
-  await setupDepartmentMap();
-
-  // Must ensure that user seed is done before moving on as these features require updated information from user
-  await seedUsers().then(async () => {
+  try {
+    await seedDepartments();
+    await setupDepartmentMap();
+    await seedUsers();
     await seedMessageBoard();
     await seedBioMech();
     await seedEmployeeOfTheMonth();
     await seedCaseStudies();
     await seedTemplates();
     await seedReports();
-  });
 
-  console.log('Database seeding completed.');
-
-  process.exit();
+    console.log('Database seeding completed.');
+    process.exit();
+  } catch (e) {
+    console.log(`Database seeding failed: ${e}`);
+  }
 };
 
 const setupDepartmentMap = async () => {
