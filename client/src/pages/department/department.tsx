@@ -6,7 +6,7 @@ import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET_BY_ID } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import { Department as DepartmentModel, emptyDepartment } from 'constants/interfaces';
+import { Department as DepartmentModel, EMPTY_DEPARTMENT } from 'constants/interfaces';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
 // import { useAuthState } from 'contexts';
@@ -18,7 +18,7 @@ export const Department = (props: DepartmentProps) => {
   const { t } = useTranslation();
   //   const authState = useAuthState();
   const { deptId } = useParams<{ deptId: string }>();
-  const [department, setDepartment] = React.useState<DepartmentModel>(emptyDepartment);
+  const [department, setDepartment] = React.useState<DepartmentModel>(EMPTY_DEPARTMENT);
   const history: History = useHistory<History>();
   const [dateRange, setDayRange] = React.useState<DayRange>({
     from: null,

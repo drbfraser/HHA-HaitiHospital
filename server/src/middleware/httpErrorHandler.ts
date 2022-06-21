@@ -7,14 +7,10 @@ const httpErrorMiddleware = (error: Error | CustomError, request: Request, respo
   let httpError: HttpError;
   if (error instanceof HttpError) {
     httpError = error;
-  } else 
-  {
-    if (error instanceof InvalidInput) {
-        httpError = new BadRequest(error.message);
-    }
-    else {
-        httpError = new InternalError(error.message || "Something went wrong");
-    }
+  } else if (error instanceof InvalidInput) {
+      httpError = new BadRequest(error.message);
+  } else {
+      httpError = new InternalError(error.message || 'Something went wrong');
   }
   response.status(httpError.status).send(httpError.message);
 };
