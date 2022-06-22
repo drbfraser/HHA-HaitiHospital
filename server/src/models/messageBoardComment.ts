@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { IllegalState } from '../exceptions/systemException';
+import { IllegalState } from 'exceptions/systemException';
 import UserModel, { UserJson } from './user';
-import { formatDateString } from '../utils/utils';
+import { formatDateString } from 'utils/utils';
 
 const { Schema } = mongoose;
 

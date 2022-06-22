@@ -1,8 +1,8 @@
 import { ItemAnswer, ReportDescriptor, ReportEqualItem, ReportItem, ReportItems, ReportNumericItem, ReportSumItem, ReportGroupItem } from '../definitions/report';
 import { generateUuid, getLengthOfEnum } from '../utils';
-import { InvalidInput, IllegalState } from '../../exceptions/systemException';
-import { Template } from '../../models/template';
-import { ItemType, ItemTypeKeys } from '../../common/json_report';
+import { InvalidInput, IllegalState } from 'exceptions/systemException';
+import { Template } from 'models/template';
+import { ItemType, ItemTypeKeys } from 'common/json_report';
 
 interface TemplateItem extends ReportItem {}
 interface TemplateNItem extends ReportNumericItem {}

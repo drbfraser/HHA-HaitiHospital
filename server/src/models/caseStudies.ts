@@ -1,7 +1,7 @@
-import Departments from '../utils/departments';
-import { IllegalState } from '../exceptions/systemException';
+import Departments from 'utils/departments';
+import { IllegalState } from 'exceptions/systemException';
 import mongoose from 'mongoose';
-import { formatDateString } from '../utils/utils';
+import { formatDateString } from 'utils/utils';
 import UserCollection, { UserJson } from './user';
 
 const { Schema } = mongoose;

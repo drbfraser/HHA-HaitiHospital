@@ -1,17 +1,15 @@
 import mongoose from 'mongoose';
 import faker from 'faker';
-import UserCollection, { Role, User } from '../models/user';
-// import DepartmentCollection, { Department } from '../models/departments';
-// import Departments, { DefaultDepartments } from '../utils/departments';
-import MessageCollection from '../models/messageBoard';
-import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
-import BioMech, { bioMechEnum } from '../models/bioMech';
-import EmployeeOfTheMonth from '../models/employeeOfTheMonth';
-import * as ENV from '../utils/processEnv';
-import { TemplateCollection } from '../models/template';
-import { ReportCollection } from '../models/report';
-import Departments, { DefaultDepartments } from '../utils/departments';
-import DepartmentCollection, { Department } from '../models/departments';
+import UserCollection, { Role, User } from 'models/user';
+import MessageCollection from 'models/messageBoard';
+import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
+import BioMech, { bioMechEnum } from 'models/bioMech';
+import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
+import * as ENV from 'utils/processEnv';
+import { TemplateCollection } from 'models/template';
+import { ReportCollection } from 'models/report';
+import Departments, { DefaultDepartments } from 'utils/departments';
+import DepartmentCollection, { Department } from 'models/departments';
 
 let nameMapper: Map<string, string>;
 

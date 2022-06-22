@@ -1,4 +1,4 @@
-import { ItemType } from '../../common/json_report';
+import { ItemType } from 'common/json_report';
 import * as _ReportDefs from '../definitions/report';
 
 export const isSumCorrect = (sum: Number, children: _ReportDefs.ReportNumericItem[]) => {
