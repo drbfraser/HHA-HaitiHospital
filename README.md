@@ -106,8 +106,8 @@ PASSWORD_SEED=catdog
 
 ```
 $ npm install
-$ npm start
 $ npm run seed
+$ npm start
 ```
 
 ### Client Setup
