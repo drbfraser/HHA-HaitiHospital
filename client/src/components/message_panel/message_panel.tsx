@@ -29,34 +29,10 @@ const MessagePanel = (props: MessagePanelProps) => {
   }, [currentPage, msgsJson]);
 
   useEffect(() => {
-    const filterMessages = (msgs: Message[]): Message[] => {
-      if (
-        renderBasedOnRole(authState.userDetails.role, [
-          Role.Admin,
-          Role.MedicalDirector,
-          Role.HeadOfDepartment,
-        ])
-      ) {
-        return msgs;
-      }
-      return filterMessagesBasedOnDepartment(msgs);
-    };
-
-    const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Message[]): Message[] => {
-      const currentUserDepartment = authState.userDetails.department;
-      const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter(
-        (message) =>
-          message.department.name === GeneralDepartment ||
-          message.department.id === currentUserDepartment.id,
-      );
-      return filteredMsgsBasedOnUserDepartment;
-    };
-
     const getMessages = async (isMounted: boolean) => {
       if (isMounted) {
         const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history);
-        const filteredMessages = filterMessages(messages);
-        setMsgJson(filteredMessages);
+        setMsgJson(messages);
       }
     };
 
