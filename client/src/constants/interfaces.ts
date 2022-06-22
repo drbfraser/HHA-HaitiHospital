@@ -31,7 +31,7 @@ export interface DepartmentJson {
   departments: Department[];
 }
 
-export const emptyDepartment: Department = {
+export const EMPTY_DEPARTMENT: Department = {
   id: '',
   name: '',
 };
@@ -53,7 +53,7 @@ export const emptyMessage: Message = {
     id: '',
     name: '',
     role: Role.Admin,
-    department: { id: '', name: '' },
+    department: EMPTY_DEPARTMENT,
     createdAt: '',
     updatedAt: '',
   },
@@ -75,20 +75,12 @@ export const emptyMessageComment: Comment = {
     id: '',
     name: '',
     role: Role.Admin,
-    department: { id: '', name: '' },
+    department: EMPTY_DEPARTMENT,
     createdAt: '',
     updatedAt: '',
   },
   messageComment: '',
 };
-
-export interface UserInfoForm {
-  username: string;
-  name: string;
-  password: string;
-  role: Role;
-  department: Department;
-}
 
 export interface UserJson {
   id: string;
@@ -103,7 +95,7 @@ export const emptyUser: UserJson = {
   id: '',
   name: '',
   role: Role.User,
-  department: { id: '', name: '' },
+  department: EMPTY_DEPARTMENT,
   createdAt: '',
   updatedAt: '',
 };

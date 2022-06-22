@@ -5,7 +5,7 @@ import Axios from 'axios';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET_BY_ID } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import { ReportProps, Department, emptyDepartment } from 'constants/interfaces';
+import { ReportProps, Department, EMPTY_DEPARTMENT } from 'constants/interfaces';
 import { ReportDisplay } from 'components/report_display/report_display';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -28,7 +28,7 @@ interface UrlParams {
 const DepartmentReport = (props: DepartmentReportProps) => {
   const { t } = useTranslation();
   const { deptId, id } = useParams<UrlParams>();
-  const [department, setDepartment] = useState<Department>(emptyDepartment);
+  const [department, setDepartment] = useState<Department>(EMPTY_DEPARTMENT);
   const [report, setReport] = useState<ReportProps>({});
   const [csvData, setCsvData] = useState<Object[]>([]);
   const pdfExportComponent = useRef(null);
