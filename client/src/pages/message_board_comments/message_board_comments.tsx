@@ -40,32 +40,16 @@ const MessageComments = () => {
   };
 
   useEffect(() => {
-    const messageAccessible = (message: Message) => {
-      if (
-        renderBasedOnRole(authState.userDetails.role, [
-          Role.Admin,
-          Role.MedicalDirector,
-          Role.HeadOfDepartment,
-        ]) ||
-        message.department.name === GeneralDepartment ||
-        message.department.id === authState.userDetails.department.id
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    };
-
     const getMessage = async () => {
       const message = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
         TOAST_MESSAGEBOARD_GET,
         history,
       );
-      if (messageAccessible(message)) {
-        setMsgJson(message);
-      } else {
+      if (Object.keys(message).length === 0) {
         history.push('/notFound');
+      } else {
+        setMsgJson(message);
       }
     };
     getMessage();

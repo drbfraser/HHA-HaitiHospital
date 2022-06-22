@@ -43,10 +43,18 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
   }
 });
 
-router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const msgId = req.params.id;
-    const doc = await MessageCollection.findById(msgId);
+    let doc;
+    if (req.user.role == Role.User) {
+      const userDeptId = await req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName('General');
+      doc = await MessageCollection.findById(msgId).or([{ departmentId: userDeptId }, { departmentId: generalDeptId }]);
+    } else {
+      doc = await MessageCollection.findById(msgId);
+    }
+    console.log(doc);
     if (!doc) {
       throw new NotFound(`No message with id ${msgId} available`);
     }
