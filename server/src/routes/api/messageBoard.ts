@@ -12,19 +12,18 @@ import { RequestWithUser } from 'utils/definitions/express';
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
+    let docs;
     if (req.user.role == Role.User) {
-      const deptId = await req.user.departmentId;
-      const deptGeneralId = await Departments.Database.getDeptIdByName('General');
-      const docs = await MessageCollection.find()
-        .or([{ departmentId: deptId }, { departmentId: deptGeneralId }])
+      const userDeptId = await req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName('General');
+      docs = await MessageCollection.find()
+        .or([{ departmentId: userDeptId }, { departmentId: generalDeptId }])
         .sort({ date: 'desc' });
-      const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
-      res.status(HTTP_OK_CODE).json(jsons);
     } else {
-      const docs = await MessageCollection.find({}).sort({ date: 'desc' });
-      const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
-      res.status(HTTP_OK_CODE).json(jsons);
+      docs = await MessageCollection.find({}).sort({ date: 'desc' });
     }
+    const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
+    res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
     next(e);
   }
