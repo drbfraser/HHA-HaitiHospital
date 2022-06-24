@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
+import axios, { AxiosError } from 'axios';
 
 interface AdminProps {}
 
@@ -28,7 +29,12 @@ export const AddUserForm = (props: AdminProps) => {
   const { register, handleSubmit, reset, unregister } = useForm<UserInfoForm>({});
   const { t } = useTranslation();
   const history: History = useHistory<History>();
+  
+  const [userNameError, setUserNameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [nameError, setNameError] = useState('');
 
+  
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
@@ -44,9 +50,34 @@ export const AddUserForm = (props: AdminProps) => {
     history.push('/admin');
   };
 
+  const mapErrors = (errors: any[]) => {
+    errors.forEach(e => {
+      switch(e.param){
+        case('username'):
+          setUserNameError("*"+e.msg);
+          break;
+        case('password'):
+          setPasswordError("*"+e.msg);
+          break;
+        case('name'):
+          setNameError("*"+e.msg);
+          break;
+      }
+    });
+  }
+
   const onSubmit = async (data: any) => {
+    //await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
     data = setGeneralDepartmentForAdminAndMedicalDir(data) as UserInfoForm;
-    await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
+    try{
+      let resp = await axios.post(ENDPOINT_ADMIN_POST, data);
+    }catch(e){
+
+      if (axios.isAxiosError(e)) {
+        const err: AxiosError = e as AxiosError;
+        mapErrors(err.response.data.errors);
+      }
+    }
   };
 
   const setGeneralDepartmentForAdminAndMedicalDir = (data: any): UserInfoForm => {
@@ -86,6 +117,7 @@ export const AddUserForm = (props: AdminProps) => {
                 required
                 {...register('username', { required: true })}
               ></input>
+              <div className='errorMsg'>{userNameError}</div>
             </div>
             <div className="mb-3 form-group">
               <label htmlFor="password" className="form-label">
@@ -100,6 +132,8 @@ export const AddUserForm = (props: AdminProps) => {
                   required
                   {...register('password', { required: true })}
                 ></input>
+                
+
                 <div className="input-group-text">
                   <i
                     onClick={() => setPasswordShown(true)}
@@ -115,6 +149,7 @@ export const AddUserForm = (props: AdminProps) => {
                   ></i>
                 </div>
               </div>
+              <div className='errorMsg'>{passwordError}</div>
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
@@ -127,6 +162,8 @@ export const AddUserForm = (props: AdminProps) => {
                 required
                 {...register('name', { required: true })}
               ></input>
+              
+              <div className='errorMsg'>{nameError}</div>
             </div>
             <div className="mb-3">
               <label htmlFor="role" className="form-label">
