@@ -6,9 +6,11 @@ const BADREQUEST_CODE = 400;
 const UNAUTHORIZED_CODE = 401;
 const NOTFOUND_CODE = 404;
 const INTERNAL_CODE = 500;
+const UNPROCCESABLENTITY_CODE = 422;
 
-const DbErrorHandler = (e, history: History, toastMsg: string) => {
-  if ((e as AxiosError).isAxiosError === undefined) {
+const DbErrorHandler = (e, history: History, toastMsg: string, errorActions?: any) => {
+  const err = e as AxiosError;
+  if (err.isAxiosError === undefined) {
     console.log(e.message);
     return;
   }
@@ -28,6 +30,11 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
     }
     case BADREQUEST_CODE: {
       toast.error(toastMsg);
+      break;
+    }
+    case UNPROCCESABLENTITY_CODE: {
+      toast.error(toastMsg);
+      errorActions(err.response.data.errors);
       break;
     }
     default:

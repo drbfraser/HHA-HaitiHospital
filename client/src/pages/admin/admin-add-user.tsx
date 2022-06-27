@@ -67,17 +67,8 @@ export const AddUserForm = (props: AdminProps) => {
   }
 
   const onSubmit = async (data: any) => {
-    //await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history);
     data = setGeneralDepartmentForAdminAndMedicalDir(data) as UserInfoForm;
-    try{
-      let resp = await axios.post(ENDPOINT_ADMIN_POST, data);
-    }catch(e){
-
-      if (axios.isAxiosError(e)) {
-        const err: AxiosError = e as AxiosError;
-        mapErrors(err.response.data.errors);
-      }
-    }
+    await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmitActions, TOAST_ADMIN_POST, history, mapErrors);
   };
 
   const setGeneralDepartmentForAdminAndMedicalDir = (data: any): UserInfoForm => {
