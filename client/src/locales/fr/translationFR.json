@@ -79,7 +79,7 @@
   "messageBoardCommentsMessage": "Message",
   "messageBoardCommentsComment": "Commentaires",
   "messageBoardCommentCommentedOn": "Commenté sur:",
-  "messageBoardAddComment":"Ajouter un commentaire",
+  "messageBoardAddComment": "Ajouter un commentaire",
   "messageBoardAddCommentSubmit": "Soumettre",
   "messageBoardCommentsBack": "Arrière",
   "messageBoardDelete": "Supprimer",
@@ -300,6 +300,34 @@
   "adminEditUserLeaveBlank": "Laissez vide pour le garder inchangé",
   "adminAlertUserDeleted": "Utilisateur supprimé",
   "adminAreYouSureToDeleteTheUser": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+
+  "admin": {
+    "toast": {
+      "user_delete_ok": "L'utilisateur a été supprimé avec succès"
+    },
+    "main_page": {
+      "add_user_btn": "Ajouter un utilisateur",
+      "name_col": "Nom",
+      "role_col": "Rôle",
+      "department_col": "Département",
+      "created_col": "Créé",
+      "options_col": "Options",
+      "edit_btn": "Éditer",
+      "delete_btn": "Effacer"
+    }
+  },
+
+  "modal": {
+    "delete": {
+        "message": "Confirmer pour supprimer {{item}}?",
+        "confirm_btn": "Effacer",
+        "close_btn": "Annuler"
+    },
+    "item": {
+        "user_account": "compte d'utilisateur"
+    }, 
+    "title": "AVERTISSEMENT"
+  },
 
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",

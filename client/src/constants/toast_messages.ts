@@ -3,6 +3,8 @@ const TOAST_ADMIN_GET: string = 'Unable to fetch users';
 const TOAST_ADMIN_POST: string = 'Unable to add user';
 const TOAST_ADMIN_PUT: string = 'Unable to update user';
 const TOAST_ADMIN_DELETE: string = 'Unable to delete users';
+export const TOAST_ADMIN_ADD_NEW_USER_OK: string = 'New user created successfully';
+export const TOAST_ADMIN_UPDATE_USER_OK: string = 'User info updated successfully';
 
 // Biomechanical Reports
 const TOAST_BIOMECH_GET: string = 'Unable to fetch biomech reports';

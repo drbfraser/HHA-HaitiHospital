@@ -1,7 +1,8 @@
 import { useAuthDispatch } from '../../contexts';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { emptyUser, UserJson } from 'constants/interfaces';
+import { UserJson } from 'constants/interfaces';
+import { EMPTY_USER_JSON } from "constants/default_values";
 import { logOutUser } from '../../actions/authActions';
 import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
@@ -93,7 +94,7 @@ const Header = (props: HeaderProps) => {
     history.push('/login');
   };
   const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState(emptyUser as UserJson);
+  const [userInfo, setUserInfo] = useState(EMPTY_USER_JSON as UserJson);
 
   useEffect(() => {
     let isMounted: boolean = true;

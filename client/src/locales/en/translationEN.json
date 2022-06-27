@@ -81,7 +81,7 @@
   "messageBoardCommentsMessage": "Message",
   "messageBoardCommentsComment": "Comments",
   "messageBoardCommentCommentedOn": "Commented On:",
-  "messageBoardAddComment":"Add Comment",
+  "messageBoardAddComment": "Add Comment",
   "messageBoardAddCommentSubmit": "Submit",
   "messageBoardCommentsBack": "Back",
   "MessageAlertDeleteMessage": "Delete message?",
@@ -300,6 +300,34 @@
   "adminEditUserLeaveBlank": "Leave blank to keep it unchanged",
   "adminAlertUserDeleted": "User deleted",
   "adminAreYouSureToDeleteTheUser": "Are you sure you want to delete this user?",
+
+  "admin": {
+    "toast": {
+      "user_delete_ok": "User deleted successfully"
+    },
+    "main_page": {
+      "add_user_btn": "Add User",
+      "name_col": "Name",
+      "role_col": "Role",
+      "department_col": "Department",
+      "created_col": "Created",
+      "options_col": "Options",
+      "edit_btn": "Edit",
+      "delete_btn": "Delete"
+    }
+  },
+
+  "modal": {
+    "delete": {
+        "message": "Confirm to delete {{item}}?",
+        "confirm_btn": "Delete",
+        "close_btn": "Cancel"
+    },
+    "item": {
+        "user_account": "user account"
+    }, 
+    "title": "WARNING"
+  },
 
   "monthJanuary": "January",
   "monthFebruary": "February",

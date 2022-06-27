@@ -1,10 +1,10 @@
 import {
   Department,
-  emptyUser,
   GeneralDepartment,
   Role,
   UserJson,
 } from 'constants/interfaces';
+import { EMPTY_USER_JSON } from "constants/default_values";
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -21,15 +21,15 @@ interface Props {
 }
 
 export const AdminUserForm = (props: Props) => {
-  const { register, handleSubmit, setValue, reset } = useForm<AdminUserFormData>({});
+  const { register, handleSubmit, setValue } = useForm<AdminUserFormData>({});
   const { t } = useTranslation();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const user: UserJson = props.data.userData ? props.data.userData : emptyUser;
+  const userData: UserJson = props.data.userData ? props.data.userData : EMPTY_USER_JSON;
   const departments: Map<string, Department> = props.data.departments;
   const hasDepartment = (role: keyof typeof Role): boolean =>
     Role[role] === Role.User || Role[role] === Role.HeadOfDepartment;
   const [showDepartment, setShowDepartment] = useState<boolean>(
-    hasDepartment(getEnumKeyByStringValue(Role, user.role)),
+    hasDepartment(getEnumKeyByStringValue(Role, userData.role)),
   );
 
   const onRoleChange = (newRole: keyof typeof Role) => {
@@ -40,10 +40,9 @@ export const AdminUserForm = (props: Props) => {
     }
   };
 
-  const submitForm = (data: AdminUserFormData) => {
+  const submitForm = async (data: AdminUserFormData) => {
     data.department.id = departments.get(data.department.name).id;
-    props.onSubmit(data);
-    reset({});
+    await props.onSubmit(data);
   };
 
   return (
@@ -106,7 +105,7 @@ export const AdminUserForm = (props: Props) => {
           type="text"
           className="form-control"
           id="name"
-          defaultValue={user.name}
+          defaultValue={userData.name}
           required
           {...register(ADMIN_USER_FORM_FIELDS.name)}
         ></input>
@@ -119,7 +118,7 @@ export const AdminUserForm = (props: Props) => {
         <select
           className="form-select"
           id="role"
-          defaultValue={user.role}
+          defaultValue={userData.role}
           required
           {...register(ADMIN_USER_FORM_FIELDS.role)}
           onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
@@ -142,7 +141,7 @@ export const AdminUserForm = (props: Props) => {
           <select
             className="form-select"
             id="department"
-            defaultValue={user.department.name}
+            defaultValue={userData.department.name}
             required
             {...register(ADMIN_USER_FORM_FIELDS.department.name)}
           >

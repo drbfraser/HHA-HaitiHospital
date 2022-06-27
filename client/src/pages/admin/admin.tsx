@@ -8,7 +8,6 @@ import { ENDPOINT_ADMIN_GET, ENDPOINT_ADMIN_DELETE_BY_ID } from 'constants/endpo
 import { TOAST_ADMIN_GET, TOAST_ADMIN_DELETE } from 'constants/toast_messages';
 import './admin.css';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
@@ -25,7 +24,7 @@ const Admin = (props: AdminProps) => {
 
   const deleteUserActions = () => {
     getUsers();
-    toast.success(i18n.t('adminAlertUserDeleted'));
+    toast.success(t("admin.toast.user_delete_ok"));
   };
 
   const getUsers = useCallback(async () => {
@@ -71,7 +70,7 @@ const Admin = (props: AdminProps) => {
         <ModalDelete
           currentItem={currentIndex}
           show={deleteModal}
-          item={'user account'}
+          item={t('modal.item.user_account')}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
           history={history}
@@ -81,7 +80,7 @@ const Admin = (props: AdminProps) => {
         <div className="d-flex justify-content-start">
           <Link to="/admin/add-user">
             <button type="button" className="btn btn-outline-dark">
-              {t('adminAddUser')}
+              {t('admin.main_page.add_user_btn')}
             </button>
           </Link>
         </div>
@@ -91,12 +90,12 @@ const Admin = (props: AdminProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{t('adminName')}</th>
-                <th scope="col">{t('adminRole')}</th>
-                <th scope="col">{t('adminDepartment')}</th>
-                <th scope="col">{t('adminCreated')}</th>
+                <th scope="col">{t('admin.main_page.name_col')}</th>
+                <th scope="col">{t('admin.main_page.role_col')}</th>
+                <th scope="col">{t('admin.main_page.department_col')}</th>
+                <th scope="col">{t('admin.main_page.created_col')}</th>
                 <th scope="col" className="text-center">
-                  {t('adminOptions')}
+                  {t('admin.main_page.options_col')}
                 </th>
               </tr>
             </thead>
@@ -119,7 +118,7 @@ const Admin = (props: AdminProps) => {
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/admin/edit-user/${item.id}`)}
                       >
-                        {t('adminEdit')}
+                        {t('admin.main_page.edit_btn')}
                       </button>
 
                       <button
@@ -129,7 +128,7 @@ const Admin = (props: AdminProps) => {
                           onDeleteUser(event, item.id);
                         }}
                       >
-                        {t('adminDelete')}
+                        {t('admin.main_page.delete_btn')}
                       </button>
                     </div>
                   </td>

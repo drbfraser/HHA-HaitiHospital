@@ -6,7 +6,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
+import { TOAST_ADMIN_ADD_NEW_USER_OK, TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { TOAST_ADMIN_POST } from 'constants/toast_messages';
@@ -14,9 +14,10 @@ import './admin.css';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
-import { AdminUserForm } from '../../components/admin_user_form/admin-user-form';
+import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
+import { ADMIN_MAIN } from 'constants/paths';
 
 interface AdminProps {}
 
@@ -43,8 +44,8 @@ export const AddUserForm = (props: AdminProps) => {
   );
 
   const onSubmit = () => {
-    toast.success('Successfully created user');
-    history.push('/admin');
+    toast.success(TOAST_ADMIN_ADD_NEW_USER_OK);
+    history.push(ADMIN_MAIN);
   };
 
   const submitForm = async (data: AdminUserFormData) => {
@@ -61,7 +62,7 @@ export const AddUserForm = (props: AdminProps) => {
           <Header />
 
           <div className="ml-3 mb-3 d-flex justify-content-start">
-            <Link to="/admin">
+            <Link to={ADMIN_MAIN}>
               <button type="button" className="btn btn-outline-dark">
                 {t('adminAddUserBack')}
               </button>

@@ -1,6 +1,7 @@
 import { Button, Modal } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { History } from 'history';
+import { useTranslation } from 'react-i18next';
 
 interface ModalDeleteProps extends RouteComponentProps {
   onModalClose: any;
@@ -12,18 +13,22 @@ interface ModalDeleteProps extends RouteComponentProps {
 }
 
 const ModalDelete = (props: ModalDeleteProps) => {
+
+    const { t } = useTranslation();
   return (
     <Modal show={props.show} onHide={props.onModalClose}>
       <Modal.Header closeButton>
-        <Modal.Title>WARNING</Modal.Title>
+        <Modal.Title>{t('modal.title')}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{`Are you sure you want to delete this ${props.item}`}?</Modal.Body>
+      <Modal.Body>
+        {t('modal.delete.message', {item: props.item})}
+      </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-dark" onClick={() => props.onModalClose()}>
-          Cancel
+          {t('modal.delete.close_btn')}
         </Button>
         <Button variant="outline-danger" onClick={() => props.onModalDelete(props.currentItem)}>
-          Delete
+          {t('modal.delete.confirm_btn')}
         </Button>
       </Modal.Footer>
     </Modal>
