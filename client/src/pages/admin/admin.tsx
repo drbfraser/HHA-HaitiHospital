@@ -117,7 +117,7 @@ const Admin = (props: AdminProps) => {
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/admin/edit-user/${item.id}`)}
                       >
-                        {t('admin.main_page.edit_btn')}
+                        {t('button.edit')}
                       </button>
 
                       <button
@@ -127,7 +127,7 @@ const Admin = (props: AdminProps) => {
                           onDeleteUser(event, item.id);
                         }}
                       >
-                        {t('admin.main_page.delete_btn')}
+                        {t('button.delete')}
                       </button>
                     </div>
                   </td>

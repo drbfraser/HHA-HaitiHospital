@@ -21,14 +21,14 @@ const ModalDelete = (props: ModalDeleteProps) => {
         <Modal.Title>{t('modal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {t('modal.delete.message', {item: props.item})}
+        {t('modal.delete_msg', {item: props.item})}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-dark" onClick={() => props.onModalClose()}>
-          {t('modal.delete.close_btn')}
+          {t('button.cancel')}
         </Button>
         <Button variant="outline-danger" onClick={() => props.onModalDelete(props.currentItem)}>
-          {t('modal.delete.confirm_btn')}
+          {t('button.delete')}
         </Button>
       </Modal.Footer>
     </Modal>
