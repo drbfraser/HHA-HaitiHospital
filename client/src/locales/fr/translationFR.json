@@ -279,7 +279,7 @@
   "adminName": "Nom",
   "adminRole": "Rôle",
   "adminDepartment": "département",
-  "adminCreated": "Créé",
+  "adminCreated": "Créé à",
   "adminOptions": "Options",
 
   "adminAddUserBack": "Arrière",
@@ -303,14 +303,16 @@
 
   "admin": {
     "toast": {
-      "user_delete_ok": "L'utilisateur a été supprimé avec succès"
+      "user_delete_ok": "L'utilisateur a été supprimé avec succès",
+      "user_delete_failed": "Échec de la suppression de l'utilisateur",
+      "fetch_users_failed": "Échec de la récupération des utilisateurs"
     },
     "main_page": {
       "add_user_btn": "Ajouter un utilisateur",
       "name_col": "Nom",
       "role_col": "Rôle",
       "department_col": "Département",
-      "created_col": "Créé",
+      "created_col": "Créé à",
       "options_col": "Options",
       "edit_btn": "Éditer",
       "delete_btn": "Effacer"
@@ -319,13 +321,13 @@
 
   "modal": {
     "delete": {
-        "message": "Confirmer pour supprimer {{item}}?",
-        "confirm_btn": "Effacer",
-        "close_btn": "Annuler"
+      "message": "Confirmer pour supprimer {{item}}?",
+      "confirm_btn": "Effacer",
+      "close_btn": "Annuler"
     },
     "item": {
-        "user_account": "compte d'utilisateur"
-    }, 
+      "user_account": "compte d'utilisateur"
+    },
     "title": "AVERTISSEMENT"
   },
 

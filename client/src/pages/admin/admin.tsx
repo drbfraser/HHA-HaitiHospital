@@ -5,7 +5,6 @@ import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { Link, useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_GET, ENDPOINT_ADMIN_DELETE_BY_ID } from 'constants/endpoints';
-import { TOAST_ADMIN_GET, TOAST_ADMIN_DELETE } from 'constants/toast_messages';
 import './admin.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -28,7 +27,7 @@ const Admin = (props: AdminProps) => {
   };
 
   const getUsers = useCallback(async () => {
-    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, TOAST_ADMIN_GET, history));
+    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, t('admin.toast.fetch_users_failed'), history));
   }, [history]);
 
   const deleteUser = async (id: string) => {
@@ -36,7 +35,7 @@ const Admin = (props: AdminProps) => {
       ENDPOINT_ADMIN_DELETE_BY_ID(id),
       {},
       deleteUserActions,
-      TOAST_ADMIN_DELETE,
+      t('admin.toast.user_delete_failed'),
       history,
     );
   };

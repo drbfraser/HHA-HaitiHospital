@@ -303,7 +303,9 @@
 
   "admin": {
     "toast": {
-      "user_delete_ok": "User deleted successfully"
+      "user_delete_ok": "User deleted successfully",
+      "user_delete_failed": "Unable to delete user",
+      "fetch_users_failed": "Unable to fetch users"
     },
     "main_page": {
       "add_user_btn": "Add User",
