@@ -302,16 +302,6 @@
   "adminAreYouSureToDeleteTheUser": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
 
   "admin": {
-    "toast": {
-      "user_delete_ok": "L'utilisateur a été supprimé avec succès",
-      "user_delete_failed": "Échec de la suppression de l'utilisateur",
-      "fetch_users_failed": "Échec de la récupération des utilisateurs",
-      "fetch_user_failed": "Échec de la récupération de utilisateur",
-      "fetch_departments_failed": "Échec de la récupération des départements",
-      "update_user_ok": "Utilisateur mis à jour avec succès",
-      "update_user_failed": "Échec de la mise à jour de l'utilisateur"
-
-    },
     "main_page": {
       "name_col": "Nom",
       "role_col": "Rôle",
@@ -323,9 +313,6 @@
 
   "modal": {
     "delete_msg": "Confirmer pour supprimer {{item}}?",
-    "item": {
-      "user_account": "compte d'utilisateur"
-    },
     "title": "AVERTISSEMENT"
   },
 
@@ -333,7 +320,26 @@
     "add_user": "Ajouter un utilisateur",
     "edit": "Éditer",
     "delete": "Effacer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "back": "Arrière"
+  },
+
+  "request_response": {
+    "ok": "Avec succès {{action}} {{item}}",
+    "failed": "Échec de {{action}} {{item}}"
+  },
+
+  "request_action": {
+    "fetch": "la récupération de(s)",
+    "update": "la mise à jour de(s)",
+    "delete": "la suppression de(s)"
+  },
+
+  "item": {
+    "user": "l'utilisateur",
+    "users": "utilisateurs",
+    "department": "départment",
+    "departments": "départments"
   },
 
   "monthJanuary": "Janvier",

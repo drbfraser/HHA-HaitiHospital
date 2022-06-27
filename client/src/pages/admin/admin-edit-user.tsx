@@ -33,9 +33,13 @@ export const EditUserForm = (props: UserEditProps) => {
     function fetchInitData() {
       let isMounted = true;
       const fetchAndSetUser = async () => {
+        const failedMsg = t('request_response.failed', {
+          action: t('request_action.fetch'),
+          item: t('item.users'),
+        });
         const fetchedUser: UserJson = await Api.Get(
           ENDPOINT_ADMIN_GET_BY_ID(id),
-          t('admin.toast.fetch_user_failed'),
+          failedMsg,
           history,
         );
         if (isMounted) setUser(fetchedUser);
@@ -43,11 +47,11 @@ export const EditUserForm = (props: UserEditProps) => {
       fetchAndSetUser();
 
       const fetchAndSetDepartments = async () => {
-        const response: Department[] = await Api.Get(
-          ENDPOINT_DEPARTMENT_GET,
-          t('admin.toast.fetch_departments_failed'),
-          history,
-        );
+        const failedMsg = t('request_response.failed', {
+          action: t('request_action.fetch'),
+          item: t('item.departments'),
+        });
+        const response: Department[] = await Api.Get(ENDPOINT_DEPARTMENT_GET, failedMsg, history);
         if (isMounted) setDepartments(createDepartmentMap(response));
       };
       fetchAndSetDepartments();
@@ -56,7 +60,7 @@ export const EditUserForm = (props: UserEditProps) => {
         isMounted = false;
       };
     },
-    [history, id],
+    [history, id, t],
   );
 
   useDidMountEffect(
@@ -67,12 +71,26 @@ export const EditUserForm = (props: UserEditProps) => {
   );
 
   const onSubmit = () => {
-    toast.success(t('admin.toast.update_user_ok'));
+    const okMsg = t('request_response.ok', {
+      action: t('request_action.update'),
+      item: t('item.user'),
+    });
+    toast.success(okMsg);
     history.push(ADMIN_MAIN);
   };
 
   const submitForm = async (data: AdminUserFormData) => {
-    await Api.Put(ENDPOINT_ADMIN_PUT_BY_ID(id), data, onSubmit, t("admin.toast.update_user_failed"), history);
+    const failedMsg = t('request_response.failed', {
+      action: t('request_action.update'),
+      item: t('item.user'),
+    });
+    await Api.Put(
+      ENDPOINT_ADMIN_PUT_BY_ID(id),
+      data,
+      onSubmit,
+      failedMsg,
+      history,
+    );
   };
 
   return (

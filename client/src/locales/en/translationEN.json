@@ -302,37 +302,44 @@
   "adminAreYouSureToDeleteTheUser": "Are you sure you want to delete this user?",
 
   "admin": {
-    "toast": {
-      "user_delete_ok": "User deleted successfully",
-      "user_delete_failed": "Unable to delete user",
-      "fetch_users_failed": "Unable to fetch users",
-      "fetch_user_failed": "Unable to fetch user",
-      "fetch_departments_failed": "Unable to fetch departments",
-      "update_user_ok": "User updated successfully",
-      "update_user_failed": "Unable to update user"
-    },
     "main_page": {
-      "add_user_btn": "Add User",
       "name_col": "Name",
       "role_col": "Role",
       "department_col": "Department",
       "created_col": "Created",
-      "options_col": "Options",
-      "edit_btn": "Edit",
-      "delete_btn": "Delete"
+      "options_col": "Options"
     }
   },
 
   "modal": {
-    "delete": {
-        "message": "Confirm to delete {{item}}?",
-        "confirm_btn": "Delete",
-        "close_btn": "Cancel"
-    },
-    "item": {
-        "user_account": "user account"
-    }, 
+    "delete_msg": "Confirm to delete {{item}}?",
     "title": "WARNING"
+  },
+
+  "button": {
+    "add_user": "Add User",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+
+  "request_response": {
+    "ok": "Successfully {{action}} {{item}}",
+    "failed": "Unable to {{action}} {{item}}"
+  },
+
+  "request_action": {
+    "fetch": "fetch",
+    "update": "update",
+    "delete": "delete"
+  },
+
+  "item": {
+    "user": "user",
+    "users": "users",
+    "department": "department",
+    "departments": "departments"
   },
 
   "monthJanuary": "January",

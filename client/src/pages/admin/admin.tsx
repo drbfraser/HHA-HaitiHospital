@@ -23,21 +23,27 @@ const Admin = (props: AdminProps) => {
 
   const deleteUserActions = () => {
     getUsers();
-    toast.success(t("admin.toast.user_delete_ok"));
+    const okMsg = t('request_response.ok', {
+      action: t('request_action.delete'),
+      item: t('item.user'),
+    });
+    toast.success(okMsg);
   };
 
   const getUsers = useCallback(async () => {
-    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, t('admin.toast.fetch_users_failed'), history));
-  }, [history]);
+    const failedMsg = t('request_response.failed', {
+      action: t('request_action.fetch'),
+      item: t('item.users'),
+    });
+    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, failedMsg, history));
+  }, [history, t]);
 
   const deleteUser = async (id: string) => {
-    await Api.Delete(
-      ENDPOINT_ADMIN_DELETE_BY_ID(id),
-      {},
-      deleteUserActions,
-      t('admin.toast.user_delete_failed'),
-      history,
-    );
+    const failedMsg = t('request_response.failed', {
+      action: t('request_action.delete'),
+      item: t('item.user'),
+    });
+    await Api.Delete(ENDPOINT_ADMIN_DELETE_BY_ID(id), {}, deleteUserActions, failedMsg, history);
   };
 
   const onDeleteUser = (event: any, id: string) => {
@@ -69,7 +75,7 @@ const Admin = (props: AdminProps) => {
         <ModalDelete
           currentItem={currentIndex}
           show={deleteModal}
-          item={t('modal.item.user_account')}
+          item={t('item.user')}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
           history={history}
@@ -79,7 +85,7 @@ const Admin = (props: AdminProps) => {
         <div className="d-flex justify-content-start">
           <Link to="/admin/add-user">
             <button type="button" className="btn btn-outline-dark">
-              {t('admin.main_page.add_user_btn')}
+              {t('button.add_user')}
             </button>
           </Link>
         </div>
