@@ -10,7 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
-
+import { ResponseMessage } from 'utils/response_message';
+import { getAdminEditUser } from 'constants/paths';
 interface AdminProps {}
 
 const Admin = (props: AdminProps) => {
@@ -23,27 +24,21 @@ const Admin = (props: AdminProps) => {
 
   const deleteUserActions = () => {
     getUsers();
-    const okMsg = t('request_response.ok', {
-      action: t('request_action.delete'),
-      item: t('item.user'),
-    });
-    toast.success(okMsg);
+    toast.success(ResponseMessage.DELETE_USER_OK);
   };
 
   const getUsers = useCallback(async () => {
-    const failedMsg = t('request_response.failed', {
-      action: t('request_action.fetch'),
-      item: t('item.users'),
-    });
-    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, failedMsg, history));
-  }, [history, t]);
+    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, ResponseMessage.FETCH_USER_FAILED, history));
+  }, [history]);
 
   const deleteUser = async (id: string) => {
-    const failedMsg = t('request_response.failed', {
-      action: t('request_action.delete'),
-      item: t('item.user'),
-    });
-    await Api.Delete(ENDPOINT_ADMIN_DELETE_BY_ID(id), {}, deleteUserActions, failedMsg, history);
+    await Api.Delete(
+      ENDPOINT_ADMIN_DELETE_BY_ID(id),
+      {},
+      deleteUserActions,
+      ResponseMessage.DELETE_USER_FAILED,
+      history,
+    );
   };
 
   const onDeleteUser = (event: any, id: string) => {
@@ -121,7 +116,7 @@ const Admin = (props: AdminProps) => {
                       <button
                         type="button"
                         className="btn btn-link text-decoration-none"
-                        onClick={() => history.push(`/admin/edit-user/${item.id}`)}
+                        onClick={() => history.push(`${getAdminEditUser(item.id)}`)}
                       >
                         {t('button.edit')}
                       </button>
