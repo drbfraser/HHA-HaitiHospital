@@ -272,35 +272,6 @@
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
 
-  "adminAddUser": "Add User",
-  "adminEdit": "Edit",
-  "adminDelete": "Delete",
-  "adminUsername": "Username",
-  "adminName": "Name",
-  "adminRole": "Role",
-  "adminDepartment": "Department",
-  "adminCreated": "Created",
-  "adminOptions": "Options",
-
-  "adminAddUserBack": "Back",
-  "adminAddUserUsername": "Username",
-  "adminAddUserPassword": "Password",
-  "adminAddUserName": "Name",
-  "adminAddUserRole": "Role",
-  "adminAddUserSelectRole": "Select User's Role",
-  "adminAddUserUser": "User",
-  "adminAddUserAdmin": "Admin",
-  "adminAddUserMedicalDirector": "Medical Director",
-  "adminAddUserHeadOfDepartment": "Head of Department",
-  "adminAddUserDepartment": "Department",
-  "adminAddUserSelectDepartment": "Select User's Department",
-  "adminAddUserSubmit": "Submit",
-  "adminAddErrorOccurredDuringTheSubmission": "An error occurred during the submission!",
-
-  "adminEditUserLeaveBlank": "Leave blank to keep it unchanged",
-  "adminAlertUserDeleted": "User deleted",
-  "adminAreYouSureToDeleteTheUser": "Are you sure you want to delete this user?",
-
   "admin": {
     "main_page": {
       "name_col": "Name",

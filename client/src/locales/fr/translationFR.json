@@ -272,35 +272,6 @@
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
 
-  "adminAddUser": "Ajouter un utilisateur",
-  "adminEdit": "Éditer",
-  "adminDelete": "Effacer",
-  "adminUsername": "Nom d'utilisateur",
-  "adminName": "Nom",
-  "adminRole": "Rôle",
-  "adminDepartment": "département",
-  "adminCreated": "Créé à",
-  "adminOptions": "Options",
-
-  "adminAddUserBack": "Arrière",
-  "adminAddUserUsername": "Nom d'utilisateur",
-  "adminAddUserPassword": "Mot de passe",
-  "adminAddUserName": "Nom",
-  "adminAddUserRole": "Rôle",
-  "adminAddUserSelectRole": "Select User's Role",
-  "adminAddUserUser": "User",
-  "adminAddUserAdmin": "Admin",
-  "adminAddUserMedicalDirector": "Medical Director",
-  "adminAddUserHeadOfDepartment": "Head of Department",
-  "adminAddUserDepartment": "département",
-  "adminAddUserSelectDepartment": "Sélectionnez le service de l'utilisateur",
-  "adminAddUserSubmit": "Soumettre",
-  "adminAddErrorOccurredDuringTheSubmission": "Une erreur s'est produite lors de la soumission !",
-
-  "adminEditUserLeaveBlank": "Laissez vide pour le garder inchangé",
-  "adminAlertUserDeleted": "Utilisateur supprimé",
-  "adminAreYouSureToDeleteTheUser": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
-
   "admin": {
     "main_page": {
       "name_col": "Nom",
