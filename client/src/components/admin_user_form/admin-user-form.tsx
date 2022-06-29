@@ -135,7 +135,7 @@ export const AdminUserForm = (props: Props) => {
       {showDepartment ? (
         <div className="mb-3">
           <label htmlFor="department" className="form-label">
-            {t('admin.user_form.inquiry_role')}
+            {t('admin.user_form.department')}
           </label>
           <select
             className="form-select"

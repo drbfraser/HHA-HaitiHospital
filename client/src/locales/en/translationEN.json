@@ -350,6 +350,7 @@
   },
 
   "request_action": {
+    "create": "create",
     "fetch": "fetch",
     "update": "update",
     "delete": "delete"

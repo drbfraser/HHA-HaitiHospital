@@ -314,7 +314,7 @@
         "password": "Mot de passe",
         "name": "Nom",
         "role": "Rôle",
-        "inquiry_role": "Select User's Role",
+        "inquiry_role": "Sélectionnez le rôle de l'utilisateur",
         "department": "Départment",
         "inquiry_department": "Sélectionnez Départment",
         "hint": {
@@ -350,6 +350,7 @@
   },
 
   "request_action": {
+    "create": "créer",
     "fetch": "la récupération de(s)",
     "update": "la mise à jour de(s)",
     "delete": "la suppression de(s)"

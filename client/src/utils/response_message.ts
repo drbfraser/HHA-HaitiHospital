@@ -3,6 +3,7 @@ const { t } = i18n;
 
 // Make sure enum values match with i18-next translation JSON
 enum RequestAction {
+  CREATE = 'create',
   UPDATE = 'update',
   FETCH = 'fetch',
   DELETE = 'delete',
@@ -91,6 +92,21 @@ const getMsgDeleteUserFailed = (): string => {
   });
 };
 
+const getMsgCreateUserOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.USER,
+  });
+};
+
+const getMsgCreateUserFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USER,
+  });
+};
 
 const getMsgFetchDepartmentsFailed = (): string => {
   return getResponseMessage({
@@ -105,7 +121,9 @@ export const ResponseMessage = {
   getMsgFetchUserFailed,
   getMsgUpdateUserOk,
   getMsgUpdateUserFailed,
+  getMsgCreateUserOk,
+  getMsgCreateUserFailed,
   getMsgDeleteUserOk,
   getMsgDeleteUserFailed,
-  getMsgFetchDepartmentsFailed
+  getMsgFetchDepartmentsFailed,
 };
