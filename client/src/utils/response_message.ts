@@ -1,4 +1,5 @@
-import { t } from 'i18next';
+import i18n from 'i18n';
+const { t } = i18n;
 
 // Make sure enum values match with i18-next translation JSON
 enum RequestAction {
@@ -42,47 +43,69 @@ const getResponseMessage: (options: ResponseOptions) => string = (options) => {
   return msg;
 };
 
-const FETCH_USER_FAILED: string = getResponseMessage({
-  action: RequestAction.FETCH,
-  status: RequestStatus.FAILED,
-  item: RequestItem.USER,
-});
+const getMsgFetchUsersFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USERS,
+  });
+};
 
-const UPDATE_USER_OK: string = getResponseMessage({
-  action: RequestAction.UPDATE,
-  status: RequestStatus.OK,
-  item: RequestItem.USER,
-});
+const getMsgFetchUserFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USER,
+  });
+};
 
-const UPDATE_USER_FAILED: string = getResponseMessage({
-  action: RequestAction.UPDATE,
-  status: RequestStatus.FAILED,
-  item: RequestItem.USER,
-});
+const getMsgUpdateUserOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.OK,
+    item: RequestItem.USER,
+  });
+};
 
-const DELETE_USER_OK: string = getResponseMessage({
-  action: RequestAction.DELETE,
-  status: RequestStatus.OK,
-  item: RequestItem.USER,
-});
+const getMsgUpdateUserFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USER,
+  });
+};
 
-const DELETE_USER_FAILED: string = getResponseMessage({
-  action: RequestAction.DELETE,
-  status: RequestStatus.FAILED,
-  item: RequestItem.USER,
-});
+const getMsgDeleteUserOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.USER,
+  });
+};
 
-const FETCH_DEPARTMENTS_FAILED: string = getResponseMessage({
-  action: RequestAction.FETCH,
-  status: RequestStatus.FAILED,
-  item: RequestItem.DEPARTMENTS,
-});
+const getMsgDeleteUserFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USER,
+  });
+};
+
+
+const getMsgFetchDepartmentsFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.DEPARTMENTS,
+  });
+};
 
 export const ResponseMessage = {
-  FETCH_USER_FAILED,
-  UPDATE_USER_OK,
-  UPDATE_USER_FAILED,
-  DELETE_USER_OK,
-  DELETE_USER_FAILED,
-  FETCH_DEPARTMENTS_FAILED,
+  getMsgFetchUsersFailed,
+  getMsgFetchUserFailed,
+  getMsgUpdateUserOk,
+  getMsgUpdateUserFailed,
+  getMsgDeleteUserOk,
+  getMsgDeleteUserFailed,
+  getMsgFetchDepartmentsFailed
 };

@@ -36,7 +36,7 @@ export const EditUserForm = (props: UserEditProps) => {
       const fetchAndSetUser = async () => {
         const fetchedUser: UserJson = await Api.Get(
           ENDPOINT_ADMIN_GET_BY_ID(id),
-          ResponseMessage.FETCH_USER_FAILED,
+          ResponseMessage.getMsgFetchUserFailed(),
           history,
         );
         if (isMounted) setUser(fetchedUser);
@@ -46,7 +46,7 @@ export const EditUserForm = (props: UserEditProps) => {
       const fetchAndSetDepartments = async () => {
         const response: Department[] = await Api.Get(
           ENDPOINT_DEPARTMENT_GET,
-          ResponseMessage.FETCH_DEPARTMENTS_FAILED,
+          ResponseMessage.getMsgFetchDepartmentsFailed(),
           history,
         );
         if (isMounted) setDepartments(createDepartmentMap(response));
@@ -68,7 +68,7 @@ export const EditUserForm = (props: UserEditProps) => {
   );
 
   const onSubmit = () => {
-    toast.success(ResponseMessage.UPDATE_USER_OK);
+    toast.success(ResponseMessage.getMsgUpdateUserOk());
     history.push(ADMIN_MAIN);
   };
 
@@ -77,7 +77,7 @@ export const EditUserForm = (props: UserEditProps) => {
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       data,
       onSubmit,
-      ResponseMessage.UPDATE_USER_FAILED,
+      ResponseMessage.getMsgUpdateUserFailed(),
       history,
     );
   };

@@ -24,11 +24,11 @@ const Admin = (props: AdminProps) => {
 
   const deleteUserActions = () => {
     getUsers();
-    toast.success(ResponseMessage.DELETE_USER_OK);
+    toast.success(ResponseMessage.getMsgDeleteUserOk());
   };
 
   const getUsers = useCallback(async () => {
-    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, ResponseMessage.FETCH_USER_FAILED, history));
+    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, ResponseMessage.getMsgFetchUsersFailed(), history));
   }, [history]);
 
   const deleteUser = async (id: string) => {
@@ -36,7 +36,7 @@ const Admin = (props: AdminProps) => {
       ENDPOINT_ADMIN_DELETE_BY_ID(id),
       {},
       deleteUserActions,
-      ResponseMessage.DELETE_USER_FAILED,
+      ResponseMessage.getMsgDeleteUserFailed(),
       history,
     );
   };

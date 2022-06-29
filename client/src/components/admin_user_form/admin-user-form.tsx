@@ -8,7 +8,6 @@ import { EMPTY_USER_JSON } from "constants/default_values";
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 import { getEnumKeyByStringValue } from 'utils/utils';
 import { AdminUserFormData, ADMIN_USER_FORM_FIELDS } from 'constants/forms';
 
@@ -49,7 +48,7 @@ export const AdminUserForm = (props: Props) => {
     <form onSubmit={handleSubmit(submitForm)}>
       <div className="mb-3">
         <label htmlFor="username" className="form-label">
-          {t('adminAddUserUsername')}
+          {t(`admin.user_form.username`)}
         </label>
         <div className="input-group">
           <input
@@ -61,13 +60,13 @@ export const AdminUserForm = (props: Props) => {
           ></input>
         </div>
         <div id="usernameHelp" className="form-text">
-          {t('adminEditUserLeaveBlank')}
+          {t('admin.user_form.hint.leave_blank')}
         </div>
       </div>
 
       <div className="mb-3">
         <label htmlFor="password" className="form-label">
-          {t('adminAddUserPassword')}
+          {t('admin.user_form.password')}
         </label>
         <div className="input-group">
           <input
@@ -93,13 +92,13 @@ export const AdminUserForm = (props: Props) => {
           </div>
         </div>
         <div id="passwordHelp" className="form-text">
-          {t('adminEditUserLeaveBlank')}
+          {t('admin.user_form.hint.leave_blank')}
         </div>
       </div>
 
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
-          {t('adminAddUserName')}
+          {t('admin.user_form.name')}
         </label>
         <input
           type="text"
@@ -113,7 +112,7 @@ export const AdminUserForm = (props: Props) => {
 
       <div className="mb-3">
         <label htmlFor="role" className="form-label">
-          {t('adminAddUserRole')}
+          {t('admin.user_form.role')}
         </label>
         <select
           className="form-select"
@@ -124,19 +123,19 @@ export const AdminUserForm = (props: Props) => {
           onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
         >
           <option value="" disabled hidden>
-            {t('adminAddUserSelectRole')}
+            {t('admin.user_form.inquiry_role')}
           </option>
-          <option value={Role.User}>{i18n.t(Role.User)}</option>
-          <option value={Role.Admin}>{i18n.t(Role.Admin)}</option>
-          <option value={Role.MedicalDirector}>{i18n.t(Role.MedicalDirector)}</option>
-          <option value={Role.HeadOfDepartment}>{i18n.t(Role.HeadOfDepartment)}</option>
+          <option value={Role.User}>{t('role.user')}</option>
+          <option value={Role.Admin}>{t('role.admin')}</option>
+          <option value={Role.MedicalDirector}>{t('role.medical_director')}</option>
+          <option value={Role.HeadOfDepartment}>{t('role.head_department')}</option>
         </select>
       </div>
 
       {showDepartment ? (
         <div className="mb-3">
           <label htmlFor="department" className="form-label">
-            {t('adminAddUserDepartment')}
+            {t('admin.user_form.inquiry_role')}
           </label>
           <select
             className="form-select"
@@ -146,7 +145,7 @@ export const AdminUserForm = (props: Props) => {
             {...register(ADMIN_USER_FORM_FIELDS.department.name)}
           >
             <option value="" disabled hidden>
-              {t('adminAddUserSelectDepartment')}
+              {t('admin.user_form.inquiry_department')}
             </option>
             {Array.from(departments.values()).map((dept: Department, index: number) => {
               return dept.name !== GeneralDepartment ? (
@@ -161,7 +160,7 @@ export const AdminUserForm = (props: Props) => {
 
       <div className="mt-5 mb-3 d-flex justify-content-center">
         <button type="submit" className="btn btn-dark col-6">
-          {t('adminAddUserSubmit')}
+          {t('button.submit')}
         </button>
       </div>
     </form>

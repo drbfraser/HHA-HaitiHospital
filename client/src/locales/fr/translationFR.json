@@ -308,7 +308,26 @@
       "department_col": "Département",
       "created_col": "Créé à",
       "options_col": "Options"
+    },
+    "user_form": {
+        "username": "Nom d'utilisateur", 
+        "password": "Mot de passe",
+        "name": "Nom",
+        "role": "Rôle",
+        "inquiry_role": "Select User's Role",
+        "department": "Départment",
+        "inquiry_department": "Sélectionnez Départment",
+        "hint": {
+            "leave_blank": "Laissez vide pour le garder inchangé"
+        }
     }
+  },
+
+  "role": {
+    "user": "User",
+    "admin": "Admin",
+    "medical_director": "Medical Director",
+    "head_department": "Head of Department"
   },
 
   "modal": {
@@ -321,7 +340,8 @@
     "edit": "Éditer",
     "delete": "Effacer",
     "cancel": "Annuler",
-    "back": "Arrière"
+    "back": "Arrière",
+    "submit": "Soumettre"
   },
 
   "request_response": {
