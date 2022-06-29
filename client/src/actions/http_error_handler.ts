@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 const BADREQUEST_CODE = 400;
 const UNAUTHORIZED_CODE = 401;
 const NOTFOUND_CODE = 404;
+const CONFLICT_CODE = 409;
 const INTERNAL_CODE = 500;
 
 const DbErrorHandler = (e, history: History, toastMsg: string) => {
@@ -26,12 +27,13 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
       toast.error(`Internal Error: ${toastMsg}`);
       break;
     }
+    case CONFLICT_CODE:
     case BADREQUEST_CODE: {
       toast.error(toastMsg);
       break;
     }
     default:
-      console.log('Axios Error Needs a Handler');
+      console.log('Error Needs a Handler');
   }
 };
 
