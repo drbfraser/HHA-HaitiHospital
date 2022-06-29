@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
 import { ResponseMessage } from 'utils/response_message';
-import { getAdminEditUser } from 'constants/paths';
+import { Paths } from 'constants/paths';
 interface AdminProps {}
 
 const Admin = (props: AdminProps) => {
@@ -116,7 +116,7 @@ const Admin = (props: AdminProps) => {
                       <button
                         type="button"
                         className="btn btn-link text-decoration-none"
-                        onClick={() => history.push(`${getAdminEditUser(item.id)}`)}
+                        onClick={() => history.push(`${Paths.getAdminEditUser(item.id)}`)}
                       >
                         {t('button.edit')}
                       </button>

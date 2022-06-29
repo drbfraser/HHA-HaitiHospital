@@ -5,11 +5,29 @@ export type UserIdParams = {
 };
 
 // Patterns
-export const ADMIN_MAIN: string = '/admin';
-export const ADMIN_ADD_USER: string = `${ADMIN_MAIN}/add-user`;
-export const ADMIN_EDIT_USER: string = `${ADMIN_MAIN}/edit-user/:${USER_ID_SLUG}`;
+const ADMIN_MAIN: string = '/admin';
+const ADMIN_ADD_USER: string = `${ADMIN_MAIN}/add-user`;
+const ADMIN_EDIT_USER: string = `${ADMIN_MAIN}/edit-user/:${USER_ID_SLUG}`;
 
 // URL instances
-export const getAdminEditUser = (userId: string): string => {
+const getAdminEditUser = (userId: string): string => {
     return `${ADMIN_MAIN}/edit-user/${userId}`;
+}
+const getAdminMain = (): string => {
+    return `${ADMIN_MAIN}`;
+}
+const getAdminAddUser = (): string =>{
+    return `${ADMIN_ADD_USER}`;
+}
+
+export const Paths = {
+    getAdminMain,
+    getAdminAddUser,
+    getAdminEditUser
+}
+
+export const PathPatterns = {
+    ADMIN_MAIN,
+    ADMIN_ADD_USER,
+    ADMIN_EDIT_USER
 }

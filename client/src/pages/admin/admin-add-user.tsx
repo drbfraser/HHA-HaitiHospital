@@ -15,8 +15,8 @@ import { toast } from 'react-toastify';
 import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
-import { ADMIN_MAIN } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
+import { Paths } from 'constants/paths';
 
 interface AdminProps {}
 
@@ -50,7 +50,7 @@ export const AddUserForm = (props: AdminProps) => {
 
   const onSubmit = () => {
     toast.success(ResponseMessage.getMsgCreateUserOk());
-    history.push(ADMIN_MAIN);
+    history.push(Paths.getAdminMain());
   };
 
   const submitForm = async (data: AdminUserFormData) => {
@@ -73,7 +73,7 @@ export const AddUserForm = (props: AdminProps) => {
           <Header />
 
           <div className="ml-3 mb-3 d-flex justify-content-start">
-            <Link to={ADMIN_MAIN}>
+            <Link to={Paths.getAdminMain()}>
               <button type="button" className="btn btn-outline-dark">
                 {t('button.back')}
               </button>
