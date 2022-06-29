@@ -94,7 +94,7 @@ const Header = (props: HeaderProps) => {
     history.push('/login');
   };
   const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState(EMPTY_USER_JSON as UserJson);
+  const [userInfo, setUserInfo] = useState(EMPTY_USER_JSON);
 
   useEffect(() => {
     let isMounted: boolean = true;
