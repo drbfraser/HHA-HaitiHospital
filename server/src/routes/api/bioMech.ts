@@ -7,6 +7,8 @@ import { registerBioMechCreate } from '../../schema/registerBioMech';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
+import { roleAuth } from 'middleware/roleAuth';
+import { Role } from 'models/user';
 
 const router = Router();
 
@@ -62,7 +64,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
     .catch((err: any) => next(new InternalError(`BioMech Report submission failed: ${err}`)));
 });
 
-router.delete('/:id', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), (req: RequestWithUser, res: Response, next: NextFunction) => {
   const bioId = req.params.id;
   BioMechCollection.findByIdAndRemove(bioId)
     .exec()
