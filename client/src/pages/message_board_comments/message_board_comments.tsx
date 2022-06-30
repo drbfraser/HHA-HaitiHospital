@@ -39,30 +39,27 @@ const MessageComments = () => {
     setRerender(!rerender);
   };
 
-  useEffect(() => {
-    const getMessage = async () => {
-      const message = await Api.Get(
-        ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
-        TOAST_MESSAGEBOARD_GET,
-        history,
-      );
-      if (Object.keys(message).length === 0) {
-        history.push('/notFound');
-      } else {
-        setMsgJson(message);
-      }
-    };
-    getMessage();
+  const getMessage = async () => {
+    const message = await Api.Get(
+      ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
+      TOAST_MESSAGEBOARD_GET,
+      history,
+    );
+    setMsgJson(message);
+  };
 
-    async function getComments() {
-      setComments(
-        await Api.Get(
-          ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
-          TOAST_MESSAGEBOARD_COMMENTS_GET,
-          history,
-        ),
-      );
-    }
+  async function getComments() {
+    setComments(
+      await Api.Get(
+        ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
+        TOAST_MESSAGEBOARD_COMMENTS_GET,
+        history,
+      ),
+    );
+  }
+
+  useEffect(() => {
+    getMessage();
     getComments();
 
   }, [rerender, message_id, history, authState.userDetails]);
