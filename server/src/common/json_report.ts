@@ -23,13 +23,13 @@ interface Interfaces {
 export const JSON_REPORT_DESCRIPTOR_NAME = nameof<Interfaces>((o) => o.JsonReportDescriptor);
 
 export interface JsonReportMeta {
-  readonly id: string;
-  readonly department: {
+  id: string;
+  department: {
     id: string;
     name: string;
   };
-  readonly submittedDate?: string;
-  readonly submittedUserId?: string;
+  submittedDate?: string;
+  submittedUserId?: string;
 }
 
 export type JsonItemAnswer = Array<string>;
