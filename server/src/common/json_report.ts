@@ -57,8 +57,8 @@ export interface JsonReportItem {
 }
 
 export interface JsonMcqOption {
-  readonly description: string;
-  readonly value: string;
+  description: string;
+  value: string;
 }
 
 export type JsonReportItems = Array<JsonReportItem>;
