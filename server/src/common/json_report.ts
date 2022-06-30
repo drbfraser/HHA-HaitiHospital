@@ -38,22 +38,22 @@ export interface JsonReportItem {
   /**
    * Json structure of an item
    */
-  readonly type: string;
-  readonly description: string;
+  type: string;
+  description: string;
   // answer is an array of array to support table
   // the outer array is for table row (sharing 1 question which is the column)
   // the inner array is the actual answer to that 1 cell (row, col)
   // one cell/one question may have more than 1 entry for an answer.
-  readonly answer: Array<JsonItemAnswer>;
+  answer: Array<JsonItemAnswer>;
 
   // To suppport mcq (choices and selection)
-  readonly options?: Array<JsonMcqOption>;
-  readonly hasUserInput?: string;
-  readonly optionOther?: JsonMcqOption;
+  options?: Array<JsonMcqOption>;
+  hasUserInput?: string;
+  optionOther?: JsonMcqOption;
 
   // To support table
   // inner array contains the actual children of a cell.
-  readonly items?: JsonItemChildren;
+  items?: JsonItemChildren;
 }
 
 export interface JsonMcqOption {
