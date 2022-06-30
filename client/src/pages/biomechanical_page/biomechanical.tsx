@@ -17,6 +17,7 @@ import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 import { timezone, language } from 'constants/timezones';
+import { Paths } from 'constants/paths';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -30,7 +31,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const history: History = useHistory<History>();
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize: number = 10;
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
@@ -101,7 +102,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
         <section>
           <div className="row my-2 justify-items-center">
             <div className="col-sm-6 col-md-6 col-lg-6">
-              <Link to={'/biomechanic/report-broken-kit'}>
+              <Link to={`${Paths.getBioMechReport()}`}>
                 <button type="button" className="btn btn-outline-dark">
                   {t('bioSupportReportBrokenKit')}
                 </button>
@@ -139,7 +140,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         <td>
                           <button
                             className="btn btn-link text-decoration-none d-inline"
-                            onClick={() => history.push(`/biomechanic/view/${item.id}`)}
+                            onClick={() => history.push(`${Paths.getBioMechViewId(item.id)}`)}
                           >
                             {t('brokenKitReportView')}
                           </button>

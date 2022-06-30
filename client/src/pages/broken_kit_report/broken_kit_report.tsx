@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
+import { Paths } from 'constants/paths';
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 
@@ -29,7 +30,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
     toast.success('Biomechanic report successfully submitted!');
     reset({});
     setSelectedFile(null);
-    props.history.push('/biomechanic');
+    props.history.push(Paths.getBioMechMain());
   };
 
   const onSubmit = async (data: any) => {
@@ -46,7 +47,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
       <main className="container-fluid main-region">
         <Header />
         <div className="ml-3 mb-3 d-flex justify-content-start">
-          <Link to="/biomechanic">
+          <Link to={Paths.getBioMechMain()}>
             <button type="button" className="btn btn-outline-dark">
               {t('brokenKitReportBack')}
             </button>

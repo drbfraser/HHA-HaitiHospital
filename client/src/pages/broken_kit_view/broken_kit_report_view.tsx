@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { RouteComponentProps, Link, useParams } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -13,6 +13,7 @@ import './broken_kit_report_view.css';
 import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 import { timezone, language } from 'constants/timezones';
+import { BioReportIdParams, Paths } from 'constants/paths';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -22,7 +23,8 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const [BioReport, setBioReport] = useState({} as any);
   const [BioReportImage, setBioReportImage] = useState<string>('');
   const [imageModal, setImageModal] = useState<boolean>(false);
-  const id: string = useLocation().pathname.split('/')[3];
+  const params = useParams<BioReportIdParams>();
+  const id: string = useMemo(() => params.id, [params.id]); 
   const history: History = useHistory<History>();
 
   const onEnlargeImage = (event: any) => {
@@ -71,7 +73,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
       <main className="container-fluid main-region">
         <Header />
         <div className="d-flex justify-content-start">
-          <Link to="/biomechanic">
+          <Link to={Paths.getBioMechMain()}>
             <button type="button" className="btn btn-outline-dark">
               {t('brokenKitReportBack')}
             </button>
