@@ -49,13 +49,12 @@ const MessageComments = () => {
   };
 
   async function getComments() {
-    setComments(
-      await Api.Get(
-        ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
-        TOAST_MESSAGEBOARD_COMMENTS_GET,
-        history,
-      ),
+    const fetchedComments = await Api.Get(
+      ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
+      TOAST_MESSAGEBOARD_COMMENTS_GET,
+      history,
     );
+    setComments(fetchedComments);
   }
 
   useEffect(() => {
