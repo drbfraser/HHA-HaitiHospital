@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import routes from './routes/routes';
-import { seedDb } from './utils/seed';
 import * as ENV from './utils/processEnv';
 const path = require('path');
 
@@ -55,7 +54,6 @@ export const createServer = () => {
     })
     .then(() => {
       console.log('MongoDB Connected...');
-      seedDb();
     })
     .catch((err) => console.log(err));
 

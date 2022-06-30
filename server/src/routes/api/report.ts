@@ -207,7 +207,6 @@ async function attemptToUpdateReport(report: ReportDescriptor, callback: (err?: 
       if (!oldReportErr) {
         return callback(newReportErr);
       }
-      callback(oldReportErr);
     });
   });
 }
