@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import Sidebar from '../../components/side_bar/side_bar';
+import Sidebar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import {
@@ -22,7 +22,6 @@ import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
-import { renderBasedOnRole } from 'actions/roleActions';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);

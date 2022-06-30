@@ -6,9 +6,9 @@ import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
 import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
-import { renderBasedOnRole } from '../../actions/roleActions';
+import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
-import { Role, GeneralDepartment } from '../../constants/interfaces';
+import { Role, GeneralDepartment } from 'constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 
