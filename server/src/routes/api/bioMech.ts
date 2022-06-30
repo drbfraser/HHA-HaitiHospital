@@ -1,10 +1,10 @@
 import { Router, Response, NextFunction } from 'express';
-import requireJwtAuth from '../../middleware/requireJwtAuth';
-import upload from '../../middleware/upload';
-import { validateInput } from '../../middleware/inputSanitization';
-import BioMechCollection, { BioMech } from '../../models/bioMech';
-import { registerBioMechCreate } from '../../schema/registerBioMech';
-import { deleteUploadedImage } from '../../utils/unlinkImage';
+import requireJwtAuth from 'middleware/requireJwtAuth';
+import upload from 'middleware/upload';
+import { validateInput } from 'middleware/inputSanitization';
+import BioMechCollection, { BioMech } from 'models/bioMech';
+import { registerBioMechCreate } from 'schema/registerBioMech';
+import { deleteUploadedImage } from 'utils/unlinkImage';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
 import { roleAuth } from 'middleware/roleAuth';
