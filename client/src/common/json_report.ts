@@ -67,11 +67,11 @@ export interface JsonReportDescriptor {
    * Meta data for a submitted report.
    *
    */
-  readonly meta: JsonReportMeta;
+  meta: JsonReportMeta;
 
   /**
    * A collection of items in a submitted report.
    *
    */
-  readonly items: JsonReportItems;
+  items: JsonReportItems;
 }
