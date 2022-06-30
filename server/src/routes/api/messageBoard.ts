@@ -35,6 +35,13 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
     if (!(await Departments.Database.validateDeptId(deptId))) {
       throw new BadRequest(`Invalid department id: ${deptId}`);
     }
+    if (req.user.role == Role.User) {
+      const userDeptId = await req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName('General');
+      if (deptId != userDeptId && deptId != generalDeptId) {
+        throw new BadRequest(`Do not have access to messages from department id: ${deptId}`);
+      }
+    }
     const docs = await MessageCollection.find({ departmentId: deptId }).sort({ date: 'desc' });
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
@@ -54,7 +61,6 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
     } else {
       doc = await MessageCollection.findById(msgId);
     }
-    console.log(doc);
     if (!doc) {
       throw new NotFound(`No message with id ${msgId} available`);
     }
