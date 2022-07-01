@@ -83,14 +83,15 @@ function FormContents(props: { path: string }) {
   const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
   React.useEffect(() => {
-    MockApi.getDataDelay(1500, true)
-      .then((data) => {
+    (async () => {
+      try {
+        const data = await MockApi.getDataDelay(1500, true);
         const reportData = ReportApiUtils.toReportData(data);
         setState({ value: StateType.ready, data: reportData });
-      })
-      .catch((err) => {
+      } catch (err) {
         setState(Error(err));
-      });
+      }
+    })();
   }, []);
 
   // Whenever data changed, check for errors messages to give to react form hook
