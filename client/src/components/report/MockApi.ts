@@ -1,7 +1,7 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
 import data from './newNicuData.json'
 import { v4 as uuid } from 'uuid';
-import { ReportItem } from './Report';
+import { ItemField, ErrorData } from './Report';
 import { JsonReportDescriptor, JsonReportItem } from 'common/json_report';
 import { ItemType } from 'common/json_report';
 import { Department } from 'constants/interfaces';
@@ -127,41 +127,12 @@ function makeNumericItem(
   };
 }
 
-export function getInvalidData(): JsonReportDescriptor {
-  return makeInvalid(getData());
-}
-
-function makeInvalid(data) {
-  const invalidItems = [...data.items].map((item, idx) => {
-    const copy = { ...item };
-    if (idx > data.items.length - 5) {
-      (copy as ReportItem).valid = false;
-      (copy as ReportItem).errorMessage = 'Invalid input';
-    }
-    return copy;
-  });
-  const invalidData = { ...data };
-  invalidData.items = invalidItems;
-  return invalidData;
-}
-
 export async function submitData(
   data: JsonReportDescriptor,
   delayMillis: number,
   success: boolean,
 ): Promise<JsonReportDescriptor> {
-  if (success) {
-    return sleep(delayMillis).then(() => {
-      return { ...data };
-    });
-  } else {
-    return sleep(delayMillis).then(() => {
-      const errorData = {
-        code: 400,
-        message: 'Invalid data',
-        data: { ...makeInvalid(data) },
-      };
-      return Promise.reject(errorData);
-    });
-  }
+  return await sleep(delayMillis).then(() => {
+    return success ? Promise.resolve({ ...data }) : Promise.reject({ code: '400', message: "Intentional failure." });
+  });
 }

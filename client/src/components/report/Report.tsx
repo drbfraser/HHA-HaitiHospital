@@ -17,15 +17,29 @@ import {ItemGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
 
-export interface ReportData extends JsonReportDescriptor {
-  reportItems: ReportItem[];
+// Data structure containing additional properties pertinent to the front-end
+export class ReportForm {
+  readonly jsonDescriptor: JsonReportDescriptor;
+  readonly itemFields : Array<ItemField>
+
+  constructor(jsonDescriptor : JsonReportDescriptor, itemFields? : Array<ItemField>) {
+    this.jsonDescriptor = jsonDescriptor;
+    this.itemFields = new Array<ItemField>() ?? itemFields;
+  }
 }
-export interface ReportItem extends JsonReportItem {
-  id: string;
-  validated: boolean;
-  valid: boolean;
-  errorMessage?: string;
+
+export interface ItemField {
+  readonly reportItem: JsonReportItem;
+  readonly id: string;
+  readonly validated: boolean;
+  readonly valid: boolean;
+  readonly errorMessage?: string;
+  readonly items?: Array<ItemField>;
 }
+
+export const itemFieldToReportItem = (itemField: ItemField): JsonReportItem => {
+  return itemField.reportItem;
+};
 
 export function Report() {
   return (
@@ -53,20 +67,20 @@ enum StateType {
   error,
 }
 
-type ErrorData = {
+export type ErrorData = {
   code: string;
   message: string;
 };
 
 type State = {
   value: StateType;
-  data: ReportData | ErrorData;
+  data: ReportForm | ErrorData;
 };
 
 function Loading(): State {
   return { value: StateType.loading, data: null };
 }
-function Ready(data: ReportData): State {
+function Ready(data: ReportForm): State {
   return { value: StateType.ready, data: data };
 }
 function Error(data: ErrorData): State {
@@ -97,11 +111,11 @@ function FormContents(props: { path: string }) {
   // Whenever data changed, check for errors messages to give to react form hook
   React.useEffect(() => {
     if (state.value === StateType.loading || state.value === StateType.error) return;
-    (state.data as ReportData).items
-      .filter((item) => !(item as ReportItem).valid)
-      .forEach((invalidItem) => {
-        const id = (invalidItem as ReportItem).id;
-        const message = (invalidItem as ReportItem).errorMessage;
+    (state.data as ReportForm).itemFields
+      .filter((item) => !(item as ItemField).valid)
+      .forEach((invalidItem : ItemField) => {
+        const id = invalidItem.id;
+        const message = invalidItem.errorMessage;
         const error = {
           type: 'invalid-input',
           message: message,
@@ -114,21 +128,24 @@ function FormContents(props: { path: string }) {
   const editButtonHandler = () => setReadOnly(false);
 
   const submitHandler = async (answers) => {
-    const submittingData = state.data as ReportData;
-    let data, nextState;
+    const submittingData : ReportForm = state.data as ReportForm;
     setSubmitting(true);
     try {
-      data = await ReportApiUtils.submitData(answers, submittingData);
-      nextState = Ready(data);
+      const data = await ReportApiUtils.submitData(answers, submittingData);
+      const ReportFormWithAnswers: ReportForm = {
+        jsonDescriptor: data,
+        itemFields: submittingData.itemFields
+      };
+      const nextState = Ready(ReportFormWithAnswers);
       setReadOnly(true);
       toast.success('Data submitted');
+      setState(nextState);
     } catch (err) {
-      if (err.code < 500) nextState = Ready(err.data);
-      else nextState = Error({ code: err.code, message: err.message });
+      const nextState = err.code < 500 ? Ready(err.data) : Error({ code: err.code, message: err.message });
       toast.error(`Error ${err.code}: ${err.message}`);
+      setState(nextState);
     }
     setSubmitting(false);
-    setState(nextState);
   };
 
   const renderLoading = () => {
@@ -157,7 +174,7 @@ function FormContents(props: { path: string }) {
   };
 
   const renderContent = () => {
-    const data = state.data as ReportData;
+    const data = state.data as ReportForm;
     const [labels, sections] = extractGroupings(data);
     const totalSections = labels.length;
     const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
@@ -178,7 +195,7 @@ function FormContents(props: { path: string }) {
 
     return (
       <>
-        <FormHeader reportMetadata={data.meta} />
+        <FormHeader reportMetadata={data.jsonDescriptor.meta} />
         <NavBar
           labels={labels}
           activeLabel={sectionIdx}
@@ -215,11 +232,12 @@ function FormContents(props: { path: string }) {
   }
 }
 
-function extractGroupings(data: ReportData): [ReportItem[], ReportItem[]] {
+function extractGroupings(data: ReportForm): [ItemField[], ItemField[][]] {
   // parse the items into groups marked by the first label found.
-  const sections = [];
-  data.items.forEach((item) => {
-    if (item.type === 'label') {
+  const sections : ItemField[][] = [];
+  data.itemFields 
+    .forEach((item) => {
+    if (item.reportItem.type === 'label') {
       sections.push([item]);
     } else {
       const headSection = sections[sections.length - 1];
@@ -228,7 +246,7 @@ function extractGroupings(data: ReportData): [ReportItem[], ReportItem[]] {
   });
 
   // get labels from the groupings found
-  const labels: ReportItem[] = sections.map((section, idx) => {
+  const labels: ItemField[] = sections.map((section, idx) => {
     return section[0];
   });
   return [labels, sections];
@@ -262,7 +280,7 @@ function FormHeader(props: { reportMetadata: JsonReportMeta }) {
 
 function Sections(props: {
   activeGroup: number;
-  itemGroups: any[];
+  itemGroups: ItemField[][];
   onClick?: NavButtonClickedHandler;
   readOnly: boolean;
   loading: boolean;
@@ -329,7 +347,7 @@ function Sections(props: {
 type NavButtonClickedHandler = (name: string, section: number) => void;
 
 function NavBar(props: {
-  labels: ReportItem[];
+  labels: ItemField[];
   activeLabel?: number;
   onNavClick: NavButtonClickedHandler;
   hideEditButton: boolean;
@@ -340,8 +358,8 @@ function NavBar(props: {
       <div className="list-group list-group-horizontal">
         <div className="me-2 fs-4 ">Steps: </div>
         {props.labels.map((label, idx) => {
-          const id = (label as ReportItem).id;
-          const text = idx + 1 + '. ' + label.description;
+          const id = (label as ItemField).id;
+          const text = idx + 1 + '. ' + label.reportItem.description;
           return (
             <button
               key={id}
