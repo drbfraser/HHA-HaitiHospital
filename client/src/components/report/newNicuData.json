@@ -10,27 +10,23 @@
   },
   "items": [
     {
-      "id": "label0",
       "type": "label",
       "description": "MSPP Required",
       "answer": []
     },
     
     {
-      "id": "MSPPRequired_sum_3",
       "type": "sum",
       "description": "Total number of hospitalized patients",
       "answer": [["60"]],
       "items": [
         {
-          "id": "MSPPRequired_field_4",
           "type": "numeric",
           "description": "Number of hospitalized in NICU",
           "answer": [["29"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_5",
           "type": "numeric",
           "description": "Number of hospitalized in Paediatrics",
           "answer": [["10"]],
@@ -39,20 +35,17 @@
       ]
     },
     {
-      "id": "MSPPRequired_sum_6",
       "type": "sum",
       "description": "Total number of patients discharged alive",
       "answer": [["12"]],
       "items": [
         {
-          "id": "MSPPRequired_field_7",
           "type": "numeric",
           "description": "Number of discharged alive in NICU",
           "answer": [["33"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_8",
           "type": "numeric",
           "description": "Number of discharged alive in Paediatrics",
           "answer": [["47"]],
@@ -61,20 +54,17 @@
       ]
     },
     {
-      "id": "MSPPRequired_sum_9",
       "type": "sum",
       "description": "Total number of patients that died BEFORE 48hrs",
       "answer": [["91"]],
       "items": [
         {
-          "id": "MSPPRequired_field_10",
           "type": "numeric",
           "description": "Number that died BEFORE 48hrs in NICU",
           "answer": [["45"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_11",
           "type": "numeric",
           "description": "Number that died BEFORE 48hrs in Paediatrics",
           "answer": [["14"]],
@@ -83,20 +73,17 @@
       ]
     },
     {
-      "id": "MSPPRequired_sum_12",
       "type": "sum",
       "description": "Total number of patients that died AFTER 48hrs",
       "answer": [["15"]],
       "items": [
         {
-          "id": "MSPPRequired_field_13",
           "type": "numeric",
           "description": "Number that died AFTER 48hrs in NICU",
           "answer": [["40"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_14",
           "type": "numeric",
           "description": "Number that died AFTER 48hrs in Paeds",
           "answer": [["8"]],
@@ -105,62 +92,53 @@
       ]
     },
     {
-      "id": "MSPPRequired_field_15",
       "type": "numeric",
       "description": "Total number of days hospitalized between all patients",
       "answer": [["1"]],
       "items": []
     },
     {
-      "id": "MSPPRequired_field_16",
       "type": "numeric",
       "description": "Total number of referrals",
       "answer": [["92"]],
       "items": []
     },
     {
-      "id": "MSPPRequired_field_17",
       "type": "numeric",
       "description": "Total number of transfers",
       "answer": [["63"]],
       "items": []
     },
     {
-      "id": "MSPPRequired_sum_18",
       "type": "sum",
       "description": "Total number of self-discharged patients",
       "answer": [["15"]],
       "items": [
         {
-          "id": "MSPPRequired_field_19",
           "type": "numeric",
           "description": "Finance: Leave as cannot afford care",
           "answer": [["11"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_20",
           "type": "numeric",
           "description": "Finance: Left to avoid paying",
           "answer": [["24"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_21",
           "type": "numeric",
           "description": "Religious/Cultural",
           "answer": [["98"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_22",
           "type": "numeric",
           "description": "Personal/Family",
           "answer": [["13"]],
           "items": []
         },
         {
-          "id": "MSPPRequired_field_23",
           "type": "numeric",
           "description": "Other reason",
           "answer": [["42"]],
@@ -169,53 +147,45 @@
       ]
     },
     {
-      "id": "MSPPRequired_field_24",
       "type": "numeric",
       "description": "Number of patients that stayed in ward",
       "answer": [["32"]],
       "items": []
     },
     {
-      "id": "label1",
       "type": "label",
       "description": "Admissions",
       "answer": []
     },
     {
-      "id": "Admissions_bound_0",
       "type": "equal",
       "description": "Total Admissions",
       "answer": [["12"]],
       "items": [
         {
-          "id": "Admissions_group_1",
           "type": "group",
           "description": "Where do patients come from?",
           "answer": [[]],
           "items": [
             {
-              "id": "Admissions_field_1",
               "type": "numeric",
               "description": "Quarter Morin",
               "answer": [["18"]],
               "items": []
             },
             {
-              "id": "Admissions_field_2",
               "type": "numeric",
               "description": "Cap Haitian",
               "answer": [["94"]],
               "items": []
             },
             {
-              "id": "Admissions_field_3",
               "type": "numeric",
               "description": "Department Nord",
               "answer": [["56"]],
               "items": []
             },
             {
-              "id": "Admissions_field_4",
               "type": "numeric",
               "description": "If other, specify",
               "answer": [["69"]],
@@ -224,62 +194,53 @@
           ]
         },
         {
-          "id": "Admissions_group_5",
           "type": "group",
           "description": "Age",
           "answer": [[]],
           "items": [
             {
-              "id": "Admissions_field_5",
               "type": "numeric",
               "description": "Extremely preterm (less than 28 weeks)",
               "answer": [["58"]],
               "items": []
             },
             {
-              "id": "Admissions_field_6",
               "type": "numeric",
               "description": "Very preterm (28 to 32 weeks)",
               "answer": [["26"]],
               "items": []
             },
             {
-              "id": "Admissions_field_7",
               "type": "numeric",
               "description": "Moderate to late preterm (32 to 37 weeks)",
               "answer": [["7"]],
               "items": []
             },
             {
-              "id": "Admissions_field_8",
               "type": "numeric",
               "description": "Full term (37 weeks plus)",
               "answer": [["4"]],
               "items": []
             },
             {
-              "id": "Admissions_field_9",
               "type": "numeric",
               "description": "Older than neonate (>4 weeks old)",
               "answer": [["2"]],
               "items": []
             },
             {
-              "id": "Admissions_field_10",
               "type": "numeric",
               "description": "Age 4-5 weeks",
               "answer": [["43"]],
               "items": []
             },
             {
-              "id": "Admissions_field_11",
               "type": "numeric",
               "description": "Age 6-11 weeks",
               "answer": [["83"]],
               "items": []
             },
             {
-              "id": "Admissions_field_12",
               "type": "numeric",
               "description": "Age 12-18 weeks",
               "answer": [["59"]],
@@ -288,20 +249,17 @@
           ]
         },
         {
-          "id": "Admissions_group_13",
           "type": "group",
           "description": "Gender",
           "answer": [[]],
           "items": [
             {
-              "id": "Admissions_field_13",
               "type": "numeric",
               "description": "Male",
               "answer": [["75"]],
               "items": []
             },
             {
-              "id": "Admissions_field_14",
               "type": "numeric",
               "description": "Female",
               "answer": [["96"]],
@@ -310,139 +268,119 @@
           ]
         },
         {
-          "id": "Admissions_group_15",
           "type": "group",
           "description": "Main Condition",
           "answer": [[]],
           "items": [
             {
-              "id": "Admissions_field_15",
               "type": "numeric",
               "description": "Respiratory Arrest",
               "answer": [["26"]],
               "items": []
             },
             {
-              "id": "Admissions_field_16",
               "type": "numeric",
               "description": "Traumatic Injury",
               "answer": [["32"]],
               "items": []
             },
             {
-              "id": "Admissions_field_17",
               "type": "numeric",
               "description": "Septic Shock",
               "answer": [["9"]],
               "items": []
             },
             {
-              "id": "Admissions_field_18",
               "type": "numeric",
               "description": "Hypovolemic Shock",
               "answer": [["10"]],
               "items": []
             },
             {
-              "id": "Admissions_field_19",
               "type": "numeric",
               "description": "Seizures Or Convulsions",
               "answer": [["57"]],
               "items": []
             },
             {
-              "id": "Admissions_field_20",
               "type": "numeric",
               "description": "Poisoning",
               "answer": [["28"]],
               "items": []
             },
             {
-              "id": "Admissions_field_21",
               "type": "numeric",
               "description": "Altered Mental Status",
               "answer": [["10"]],
               "items": []
             },
             {
-              "id": "Admissions_field_22",
               "type": "numeric",
               "description": "Gastroenteritis",
               "answer": [["69"]],
               "items": []
             },
             {
-              "id": "Admissions_field_23",
               "type": "numeric",
               "description": "Hemorrhage",
               "answer": [["23"]],
               "items": []
             },
             {
-              "id": "Admissions_field_24",
               "type": "numeric",
               "description": "Hypothermia",
               "answer": [["75"]],
               "items": []
             },
             {
-              "id": "Admissions_field_25",
               "type": "numeric",
               "description": "Cardiac Congenital Anomaly",
               "answer": [["58"]],
               "items": []
             },
             {
-              "id": "Admissions_field_26",
               "type": "numeric",
               "description": "Other Congenital Anomaly",
               "answer": [["2"]],
               "items": []
             },
             {
-              "id": "Admissions_field_27",
               "type": "numeric",
               "description": "Malnutrition",
               "answer": [["63"]],
               "items": []
             },
             {
-              "id": "Admissions_field_28",
               "type": "numeric",
               "description": "Meningitis",
               "answer": [["29"]],
               "items": []
             },
             {
-              "id": "Admissions_field_29",
               "type": "numeric",
               "description": "Community Acquired Pneumonia",
               "answer": [["73"]],
               "items": []
             },
             {
-              "id": "Admissions_field_30",
               "type": "numeric",
               "description": "Aspiration Pneumonia",
               "answer": [["92"]],
               "items": []
             },
             {
-              "id": "Admissions_field_31",
               "type": "numeric",
               "description": "Moderate Prematurity",
               "answer": [["4"]],
               "items": []
             },
             {
-              "id": "Admissions_field_32",
               "type": "numeric",
               "description": "Severe Prematurity",
               "answer": [["70"]],
               "items": []
             },
             {
-              "id": "Admissions_field_33",
               "type": "numeric",
               "description": "Other Medical",
               "answer": [["78"]],
@@ -453,74 +391,63 @@
       ]
     },
     {
-      "id": "label2",
       "type": "label",
       "description": "Outpatients",
       "answer": []
     },
     {
-      "id": "Outpatients_bound_0",
       "type": "equal",
       "description": "Total number of outpatients",
       "answer": [["8"]],
       "items": [
         {
-          "id": "Outpatients_group_1",
           "type": "group",
           "description": "Age",
           "answer": [[]],
           "items": [
             {
-              "id": "Outpatients_field_1",
               "type": "numeric",
               "description": "Extremely preterm (less than 28 weeks)",
               "answer": [["10"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_2",
               "type": "numeric",
               "description": "Very preterm (28 to 32 weeks)",
               "answer": [["47"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_3",
               "type": "numeric",
               "description": "Moderate to late preterm (32 to 37 weeks)",
               "answer": [["69"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_4",
               "type": "numeric",
               "description": "Full term (37 weeks plus)",
               "answer": [["61"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_5",
               "type": "numeric",
               "description": "Older than neonate (>4 weeks old)",
               "answer": [["49"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_6",
               "type": "numeric",
               "description": "Age 4-5 weeks",
               "answer": [["24"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_7",
               "type": "numeric",
               "description": "Age 6-11 weeks",
               "answer": [["80"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_8",
               "type": "numeric",
               "description": "Age 12-18 weeks",
               "answer": [["98"]],
@@ -529,20 +456,17 @@
           ]
         },
         {
-          "id": "Outpatients_group_9",
           "type": "group",
           "description": "Gender",
           "answer": [[]],
           "items": [
             {
-              "id": "Outpatients_field_9",
               "type": "numeric",
               "description": "Male",
               "answer": [["66"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_10",
               "type": "numeric",
               "description": "Female",
               "answer": [["82"]],
@@ -551,139 +475,119 @@
           ]
         },
         {
-          "id": "Outpatients_group_11",
           "type": "group",
           "description": "Main Condition",
           "answer": [[]],
           "items": [
             {
-              "id": "Outpatients_field_11",
               "type": "numeric",
               "description": "Respiratory Arrest",
               "answer": [["70"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_12",
               "type": "numeric",
               "description": "Traumatic Injury",
               "answer": [["72"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_13",
               "type": "numeric",
               "description": "Septic Shock",
               "answer": [["32"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_14",
               "type": "numeric",
               "description": "Hypovolemic Shock",
               "answer": [["98"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_15",
               "type": "numeric",
               "description": "Seizures Or Convulsions",
               "answer": [["66"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_16",
               "type": "numeric",
               "description": "Poisoning",
               "answer": [["67"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_17",
               "type": "numeric",
               "description": "Altered Mental Status",
               "answer": [["34"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_18",
               "type": "numeric",
               "description": "Gastroenteritis",
               "answer": [["26"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_19",
               "type": "numeric",
               "description": "Hemorrhage",
               "answer": [["36"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_20",
               "type": "numeric",
               "description": "Hypothermia",
               "answer": [["66"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_21",
               "type": "numeric",
               "description": "Cardiac Congenital Anomaly",
               "answer": [["14"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_22",
               "type": "numeric",
               "description": "Other Congenital Anomaly",
               "answer": [["23"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_23",
               "type": "numeric",
               "description": "Malnutrition",
               "answer": [["11"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_24",
               "type": "numeric",
               "description": "Meningitis",
               "answer": [["88"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_25",
               "type": "numeric",
               "description": "Community Acquired Pneumonia",
               "answer": [["37"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_26",
               "type": "numeric",
               "description": "Aspiration Pneumonia",
               "answer": [["11"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_27",
               "type": "numeric",
               "description": "Moderate Prematurity",
               "answer": [["8"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_28",
               "type": "numeric",
               "description": "Severe Prematurity",
               "answer": [["5"]],
               "items": []
             },
             {
-              "id": "Outpatients_field_29",
               "type": "numeric",
               "description": "Other Medical",
               "answer": [["8"]],
