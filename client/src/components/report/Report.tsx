@@ -18,14 +18,9 @@ import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
 
 // Data structure containing additional properties pertinent to the front-end
-export class ReportForm {
+export interface ReportForm {
   readonly jsonDescriptor: JsonReportDescriptor;
   readonly itemFields : Array<ItemField>
-
-  constructor(jsonDescriptor : JsonReportDescriptor, itemFields? : Array<ItemField>) {
-    this.jsonDescriptor = jsonDescriptor;
-    this.itemFields = new Array<ItemField>() ?? itemFields;
-  }
 }
 
 export interface ItemField {
