@@ -6,7 +6,7 @@ import { validateInput } from 'middleware/inputSanitization';
 import { Role } from 'models/user';
 import { registerMessageBoardCreate } from 'schema/registerMessageBoard';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from 'exceptions/httpException';
-import Departments from 'utils/departments';
+import Departments, { DefaultDepartments } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 
@@ -14,8 +14,8 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
   try {
     let docs;
     if (req.user.role == Role.User) {
-      const userDeptId = await req.user.departmentId;
-      const generalDeptId = await Departments.Database.getDeptIdByName('General');
+      const userDeptId = req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
       docs = await MessageCollection.find()
         .or([{ departmentId: userDeptId }, { departmentId: generalDeptId }])
         .sort({ date: 'desc' });
@@ -36,8 +36,8 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
       throw new BadRequest(`Invalid department id: ${deptId}`);
     }
     if (req.user.role == Role.User) {
-      const userDeptId = await req.user.departmentId;
-      const generalDeptId = await Departments.Database.getDeptIdByName('General');
+      const userDeptId = req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
       if (deptId != userDeptId && deptId != generalDeptId) {
         throw new Unauthorized(`Do not have access to messages from department id: ${deptId}`);
       }
@@ -55,8 +55,8 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
     const msgId = req.params.id;
     let doc;
     if (req.user.role == Role.User) {
-      const userDeptId = await req.user.departmentId;
-      const generalDeptId = await Departments.Database.getDeptIdByName('General');
+      const userDeptId = req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
       doc = await MessageCollection.findById(msgId).or([{ departmentId: userDeptId }, { departmentId: generalDeptId }]);
     } else {
       doc = await MessageCollection.findById(msgId);
