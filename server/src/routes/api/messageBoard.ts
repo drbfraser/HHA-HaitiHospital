@@ -53,16 +53,16 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
 router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const msgId = req.params.id;
-    let doc;
+    const doc = await MessageCollection.findById(msgId);
+    if (!doc) {
+      throw new NotFound(`No message with id ${msgId} available`);
+    }
     if (req.user.role == Role.User) {
       const userDeptId = req.user.departmentId;
       const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
-      doc = await MessageCollection.findById(msgId).or([{ departmentId: userDeptId }, { departmentId: generalDeptId }]);
-    } else {
-      doc = await MessageCollection.findById(msgId);
-    }
-    if (!doc) {
-      throw new NotFound(`No message with id ${msgId} available`);
+      if (doc.departmentId != userDeptId && doc.departmentId != generalDeptId) {
+        throw new Unauthorized(`Do not have access to message with id: ${msgId}`);
+      }
     }
     const json = await doc.toJson();
     res.status(HTTP_OK_CODE).json(json);
