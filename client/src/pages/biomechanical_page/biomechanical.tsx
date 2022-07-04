@@ -127,7 +127,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         <td>
                           {
                             <Badge bg={setPriority(item.equipmentPriority)}>
-                              {t(`status.${item.equipmentPriority}`)}
+                              {t(`biomech.priority.${item.equipmentPriority}`)}
                             </Badge>
                           }
                         </td>

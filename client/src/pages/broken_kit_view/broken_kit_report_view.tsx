@@ -112,7 +112,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                   <p className="fs-6 lh-base text-break">
                     {
                       <Badge bg={setPriority(BioReport.equipmentPriority)}>
-                        {t(`status.${BioReport.equipmentPriority}`)}
+                        {t(`biomech.priority.${BioReport.equipmentPriority}`)}
                       </Badge>
                     }
                   </p>

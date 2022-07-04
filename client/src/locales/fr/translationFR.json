@@ -307,10 +307,7 @@
   },
 
   "status": {
-    "not_available": "N/A",
-    "urgent": "Urgent",
-    "important": "Important",
-    "non-urgent": "Non-Urgent"
+    "not_available": "N/A"
   },
 
   "role": {
