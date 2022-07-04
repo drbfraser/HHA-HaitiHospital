@@ -3,10 +3,10 @@ const USER_ID_SLUG: string = 'userId';
 export type UserIdParams = {
   userId: string;
 };
-const BIO_REPORT_ID_SLUG: string = 'id'; //fix to bioId
+const BIO_REPORT_ID_SLUG: string = 'bioId';
 export type BioReportIdParams = {
-    id: string;
-}
+  bioId: string;
+};
 
 // Patterns
 const ADMIN_MAIN: string = '/admin';
@@ -19,39 +19,39 @@ const BIOMECH_VIEW: string = `${BIOMECH_MAIN}/view/:${BIO_REPORT_ID_SLUG}`;
 
 // URL instances
 const getAdminEditUser = (userId: string): string => {
-    return `${ADMIN_MAIN}/edit-user/${userId}`;
-}
+  return `${ADMIN_MAIN}/edit-user/${userId}`;
+};
 const getAdminMain = (): string => {
-    return `${ADMIN_MAIN}`;
-}
-const getAdminAddUser = (): string =>{
-    return `${ADMIN_ADD_USER}`;
-}
+  return `${ADMIN_MAIN}`;
+};
+const getAdminAddUser = (): string => {
+  return `${ADMIN_ADD_USER}`;
+};
 
 const getBioMechMain = (): string => {
-    return `${BIOMECH_MAIN}`;
-}
+  return `${BIOMECH_MAIN}`;
+};
 const getBioMechReport = (): string => {
-    return `${BIOMECH_REPORT}`;
-}
+  return `${BIOMECH_REPORT}`;
+};
 const getBioMechViewId = (reportId: string): string => {
-    return `${BIOMECH_MAIN}/view/${reportId}`;
-}
+  return `${BIOMECH_MAIN}/view/${reportId}`;
+};
 
 export const Paths = {
-    getAdminMain,
-    getAdminAddUser,
-    getAdminEditUser,
-    getBioMechMain,
-    getBioMechReport,
-    getBioMechViewId
-}
+  getAdminMain,
+  getAdminAddUser,
+  getAdminEditUser,
+  getBioMechMain,
+  getBioMechReport,
+  getBioMechViewId,
+};
 
 export const PathPatterns = {
-    ADMIN_MAIN,
-    ADMIN_ADD_USER,
-    ADMIN_EDIT_USER,
-    BIOMECH_MAIN,
-    BIOMECH_REPORT,
-    BIOMECH_VIEW
-}
+  ADMIN_MAIN,
+  ADMIN_ADD_USER,
+  ADMIN_EDIT_USER,
+  BIOMECH_MAIN,
+  BIOMECH_REPORT,
+  BIOMECH_VIEW,
+};
