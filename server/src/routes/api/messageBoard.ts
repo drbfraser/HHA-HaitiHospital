@@ -5,7 +5,7 @@ import requireJwtAuth from 'middleware/requireJwtAuth';
 import { validateInput } from 'middleware/inputSanitization';
 import { Role } from 'models/user';
 import { registerMessageBoardCreate } from 'schema/registerMessageBoard';
-import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from 'exceptions/httpException';
 import Departments from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -39,7 +39,7 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
       const userDeptId = await req.user.departmentId;
       const generalDeptId = await Departments.Database.getDeptIdByName('General');
       if (deptId != userDeptId && deptId != generalDeptId) {
-        throw new BadRequest(`Do not have access to messages from department id: ${deptId}`);
+        throw new Unauthorized(`Do not have access to messages from department id: ${deptId}`);
       }
     }
     const docs = await MessageCollection.find({ departmentId: deptId }).sort({ date: 'desc' });
