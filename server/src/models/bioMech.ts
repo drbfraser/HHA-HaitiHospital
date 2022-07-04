@@ -7,9 +7,9 @@ import UserCollection, { UserJson } from './user';
 const { Schema } = mongoose;
 
 export enum bioMechEnum {
-  Urgent = 'Urgent',
-  Important = 'Important',
-  NonUrgent = 'Non-Urgent'
+  Urgent = 'urgent',
+  Important = 'important',
+  NonUrgent = 'non-urgent'
 }
 
 export interface BioMech {

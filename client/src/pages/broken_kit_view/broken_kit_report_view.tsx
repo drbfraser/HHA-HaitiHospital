@@ -5,7 +5,6 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from '../../actions/Api';
 import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
-import { TOAST_BIOMECH_GET } from 'constants/toast_messages';
 import ModalImage from 'components/popup_modal/popup_modal_image';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -14,6 +13,7 @@ import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 import { timezone, language } from 'constants/timezones';
 import { BioReportIdParams, Paths } from 'constants/paths';
+import { ResponseMessage } from 'utils/response_message';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -24,7 +24,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const [BioReportImage, setBioReportImage] = useState<string>('');
   const [imageModal, setImageModal] = useState<boolean>(false);
   const params = useParams<BioReportIdParams>();
-  const id: string = useMemo(() => params.id, [params.id]); 
+  const id: string = useMemo(() => params.id, [params.id]);
   const history: History = useHistory<History>();
 
   const onEnlargeImage = (event: any) => {
@@ -37,12 +37,21 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
     setImageModal(false);
   };
 
-  useEffect(function fetchReportInitially() {
-    const getBioReport = async () => {
-      setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET_BY_ID(id), TOAST_BIOMECH_GET, history));
-    };
-    getBioReport();
-  }, [history, id]);
+  useEffect(
+    function fetchReportInitially() {
+      const getBioReport = async () => {
+        setBioReport(
+          await Api.Get(
+            ENDPOINT_BIOMECH_GET_BY_ID(id),
+            ResponseMessage.getMsgFetchReportFailed(),
+            history,
+          ),
+        );
+      };
+      getBioReport();
+    },
+    [history, id],
+  );
 
   useEffect(
     function fetchImage() {
@@ -75,7 +84,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         <div className="d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
             <button type="button" className="btn btn-outline-dark">
-              {t('brokenKitReportBack')}
+              {t('button.back')}
             </button>
           </Link>
         </div>
@@ -86,8 +95,8 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                 <div className="w-100 pr-2">
                   <h2 className="mt-3 mb-3 fw-bold">{t('brokenKitReportBrokenKitReport')}</h2>
                   <h6 className="fs-6 lh-base">
-                    {t('brokenKitReportAuthor')}{' '}
-                    {BioReport.user ? BioReport.user.name : '[deleted]'}
+                    {`${t('biomech.view_report.author')}: `}
+                    {BioReport.user ? BioReport.user.name : 'status.not_available'}
                   </h6>
                   <h6 className="fs-6 mb-3 lh-base">
                     Date:{' '}
@@ -98,16 +107,16 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                   <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportNameOfEquipment')}</h6>
                   <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
                   <h6 className="fs-6 fw-bold lh-base">
-                    {t('brokenKitReportPriorityOfEquipment')}
+                    {t('biomech.view_report.priority')}
                   </h6>
                   <p className="fs-6 lh-base text-break">
                     {
                       <Badge bg={setPriority(BioReport.equipmentPriority)}>
-                        {BioReport.equipmentPriority}
+                        {t(`status.${BioReport.equipmentPriority}`)}
                       </Badge>
                     }
                   </p>
-                  <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportFaultWithEquipment')}</h6>
+                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.issue')}</h6>
                   <p className="fs-6 lh-base text-break">{BioReport.equipmentFault}</p>
                 </div>
                 <div className="w-100 pl-2">

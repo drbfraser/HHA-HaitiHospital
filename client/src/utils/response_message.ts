@@ -21,6 +21,9 @@ enum RequestItem {
   USERS = 'users',
   DEPARTMENT = 'department',
   DEPARTMENTS = 'departments',
+  REPORT = 'report',
+  REPORTS = 'reports',
+  IMAGE = 'image',
 }
 
 // Make sure these keys match with i18-next translation JSON
@@ -116,6 +119,46 @@ const getMsgFetchDepartmentsFailed = (): string => {
   });
 };
 
+const getMsgDeleteReportOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.REPORT,
+  });
+};
+
+const getMsgDeleteReportFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.REPORT,
+  });
+};
+
+const getMsgFetchReportFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.REPORT,
+  });
+};
+
+const getMsgFetchReportsFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.REPORTS,
+  });
+};
+
+const getMsgFetchImageFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.IMAGE,
+  });
+};
+
 export const ResponseMessage = {
   getMsgFetchUsersFailed,
   getMsgFetchUserFailed,
@@ -125,5 +168,13 @@ export const ResponseMessage = {
   getMsgCreateUserFailed,
   getMsgDeleteUserOk,
   getMsgDeleteUserFailed,
+
   getMsgFetchDepartmentsFailed,
+
+  getMsgDeleteReportOk,
+  getMsgDeleteReportFailed,
+  getMsgFetchReportFailed,
+  getMsgFetchReportsFailed,
+
+  getMsgFetchImageFailed
 };

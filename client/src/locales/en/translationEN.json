@@ -301,6 +301,27 @@
     }
   },
 
+  "biomech": {
+    "main_page": {
+        "priority_col": "Priority",
+        "author_col": "Author",
+        "created_col": "Created",
+        "options_col": "Options"        
+    },
+    "view_report": {
+        "author": "Author",
+        "priority": "Priority",        
+        "issue": "Issue"
+    }
+  },
+
+  "status": {
+    "not_available": "N/A",
+    "urgent": "Urgent",
+    "important": "Important",
+    "non-urgent": "Non-Urgent"
+  },
+
   "role": {
     "user": "User",
     "admin": "Admin",
@@ -319,7 +340,9 @@
     "delete": "Delete",
     "cancel": "Cancel",
     "back": "Back",
-    "submit": "Submit"
+    "submit": "Submit",
+    "report": "Report",
+    "view": "View"
   },
 
   "request_response": {
@@ -338,7 +361,10 @@
     "user": "user",
     "users": "users",
     "department": "department",
-    "departments": "departments"
+    "departments": "departments",
+    "report": "report",
+    "reports": "reports",
+    "image": "image"
   },
 
   "monthJanuary": "January",

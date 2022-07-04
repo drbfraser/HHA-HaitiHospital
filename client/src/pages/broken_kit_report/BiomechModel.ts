@@ -1,7 +1,7 @@
 export enum bioMechEnum {
-  Urgent = 'Urgent',
-  Important = 'Important',
-  NonUrgent = 'Non-Urgent',
+  Urgent = 'urgent',
+  Important = 'important',
+  NonUrgent = 'non-urgent',
 }
 
 export enum bioMechBadge {
