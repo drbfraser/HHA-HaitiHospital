@@ -1,18 +1,27 @@
 const router = require('express').Router();
-import MessageCollection from '../../models/messageBoard';
+import MessageCollection from 'models/messageBoard';
 import { NextFunction, Response } from 'express';
-import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { validateInput } from '../../middleware/inputSanitization';
-import { Role } from '../../models/user';
-import { registerMessageBoardCreate } from '../../schema/registerMessageBoard';
-import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
-import Departments from 'utils/departments';
+import requireJwtAuth from 'middleware/requireJwtAuth';
+import { validateInput } from 'middleware/inputSanitization';
+import { Role } from 'models/user';
+import { registerMessageBoardCreate } from 'schema/registerMessageBoard';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from 'exceptions/httpException';
+import Departments, { DefaultDepartments } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const docs = await MessageCollection.find({}).sort({ date: 'desc' });
+    let docs;
+    if (req.user.role == Role.User) {
+      const userDeptId = req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
+      docs = await MessageCollection.find()
+        .or([{ departmentId: userDeptId }, { departmentId: generalDeptId }])
+        .sort({ date: 'desc' });
+    } else {
+      docs = await MessageCollection.find({}).sort({ date: 'desc' });
+    }
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
   } catch (e) {
@@ -26,6 +35,13 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
     if (!(await Departments.Database.validateDeptId(deptId))) {
       throw new BadRequest(`Invalid department id: ${deptId}`);
     }
+    if (req.user.role == Role.User) {
+      const userDeptId = req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
+      if (deptId != userDeptId && deptId != generalDeptId) {
+        throw new Unauthorized(`Do not have access to messages from department id: ${deptId}`);
+      }
+    }
     const docs = await MessageCollection.find({ departmentId: deptId }).sort({ date: 'desc' });
     const jsons = await Promise.all(docs.map((doc) => doc.toJson()));
     res.status(HTTP_OK_CODE).json(jsons);
@@ -34,12 +50,19 @@ router.get('/department/:departmentId', requireJwtAuth, async (req: RequestWithU
   }
 });
 
-router.get('/:id', async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const msgId = req.params.id;
     const doc = await MessageCollection.findById(msgId);
     if (!doc) {
       throw new NotFound(`No message with id ${msgId} available`);
+    }
+    if (req.user.role == Role.User) {
+      const userDeptId = req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
+      if (doc.departmentId != userDeptId && doc.departmentId != generalDeptId) {
+        throw new Unauthorized(`Do not have access to message with id: ${msgId}`);
+      }
     }
     const json = await doc.toJson();
     res.status(HTTP_OK_CODE).json(json);

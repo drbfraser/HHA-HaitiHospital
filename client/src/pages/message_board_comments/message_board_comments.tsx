@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import Sidebar from '../../components/side_bar/side_bar';
+import Sidebar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import {
@@ -22,7 +22,6 @@ import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
-import { renderBasedOnRole } from 'actions/roleActions';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);
@@ -39,46 +38,26 @@ const MessageComments = () => {
     setRerender(!rerender);
   };
 
+  const getMessage = async () => {
+    const message = await Api.Get(
+      ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
+      TOAST_MESSAGEBOARD_GET,
+      history,
+    );
+    setMsgJson(message);
+  };
+
+  async function getComments() {
+    const fetchedComments = await Api.Get(
+      ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
+      TOAST_MESSAGEBOARD_COMMENTS_GET,
+      history,
+    );
+    setComments(fetchedComments);
+  }
+
   useEffect(() => {
-    const messageAccessible = (message: Message) => {
-      if (
-        renderBasedOnRole(authState.userDetails.role, [
-          Role.Admin,
-          Role.MedicalDirector,
-          Role.HeadOfDepartment,
-        ]) ||
-        message.department.name === GeneralDepartment ||
-        message.department.id === authState.userDetails.department.id
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    };
-
-    const getMessage = async () => {
-      const message = await Api.Get(
-        ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
-        TOAST_MESSAGEBOARD_GET,
-        history,
-      );
-      if (messageAccessible(message)) {
-        setMsgJson(message);
-      } else {
-        history.push('/notFound');
-      }
-    };
     getMessage();
-
-    async function getComments() {
-      setComments(
-        await Api.Get(
-          ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
-          TOAST_MESSAGEBOARD_COMMENTS_GET,
-          history,
-        ),
-      );
-    }
     getComments();
 
   }, [rerender, message_id, history, authState.userDetails]);

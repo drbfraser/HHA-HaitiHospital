@@ -6,9 +6,9 @@ import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
 import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
-import { renderBasedOnRole } from '../../actions/roleActions';
+import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
-import { Role, GeneralDepartment } from '../../constants/interfaces';
+import { Role, GeneralDepartment } from 'constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 
@@ -29,34 +29,10 @@ const MessagePanel = (props: MessagePanelProps) => {
   }, [currentPage, msgsJson]);
 
   useEffect(() => {
-    const filterMessages = (msgs: Message[]): Message[] => {
-      if (
-        renderBasedOnRole(authState.userDetails.role, [
-          Role.Admin,
-          Role.MedicalDirector,
-          Role.HeadOfDepartment,
-        ])
-      ) {
-        return msgs;
-      }
-      return filterMessagesBasedOnDepartment(msgs);
-    };
-
-    const filterMessagesBasedOnDepartment = (messagesToBeFiltered: Message[]): Message[] => {
-      const currentUserDepartment = authState.userDetails.department;
-      const filteredMsgsBasedOnUserDepartment = messagesToBeFiltered.filter(
-        (message) =>
-          message.department.name === GeneralDepartment ||
-          message.department.id === currentUserDepartment.id,
-      );
-      return filteredMsgsBasedOnUserDepartment;
-    };
-
     const getMessages = async (isMounted: boolean) => {
       if (isMounted) {
         const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history);
-        const filteredMessages = filterMessages(messages);
-        setMsgJson(filteredMessages);
+        setMsgJson(messages);
       }
     };
 
