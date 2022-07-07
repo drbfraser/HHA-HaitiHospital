@@ -10,976 +10,592 @@
   },
   "items": [
     {
-      "id": "label0",
       "type": "label",
       "description": "MSPP Required",
-      "answer": [],
-      "validated": true,
-      "valid": true,
-      "errorMessage": ""
+      "answer": []
     },
     
     {
-      "id": "MSPPRequired_sum_3",
       "type": "sum",
       "description": "Total number of hospitalized patients",
       "answer": [["60"]],
-      "validated": true,
-      "valid": true,
       "items": [
         {
-          "id": "MSPPRequired_field_4",
           "type": "numeric",
           "description": "Number of hospitalized in NICU",
           "answer": [["29"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_5",
           "type": "numeric",
           "description": "Number of hospitalized in Paediatrics",
           "answer": [["10"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         }
-      ],
-      "errorMessage": ""
+      ]
     },
     {
-      "id": "MSPPRequired_sum_6",
       "type": "sum",
       "description": "Total number of patients discharged alive",
       "answer": [["12"]],
-      "validated": true,
-      "valid": true,
       "items": [
         {
-          "id": "MSPPRequired_field_7",
           "type": "numeric",
           "description": "Number of discharged alive in NICU",
           "answer": [["33"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_8",
           "type": "numeric",
           "description": "Number of discharged alive in Paediatrics",
           "answer": [["47"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         }
-      ],
-      "errorMessage": ""
+      ]
     },
     {
-      "id": "MSPPRequired_sum_9",
       "type": "sum",
       "description": "Total number of patients that died BEFORE 48hrs",
       "answer": [["91"]],
-      "validated": true,
-      "valid": true,
       "items": [
         {
-          "id": "MSPPRequired_field_10",
           "type": "numeric",
           "description": "Number that died BEFORE 48hrs in NICU",
           "answer": [["45"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_11",
           "type": "numeric",
           "description": "Number that died BEFORE 48hrs in Paediatrics",
           "answer": [["14"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         }
-      ],
-      "errorMessage": ""
+      ]
     },
     {
-      "id": "MSPPRequired_sum_12",
       "type": "sum",
       "description": "Total number of patients that died AFTER 48hrs",
       "answer": [["15"]],
-      "validated": true,
-      "valid": true,
       "items": [
         {
-          "id": "MSPPRequired_field_13",
           "type": "numeric",
           "description": "Number that died AFTER 48hrs in NICU",
           "answer": [["40"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_14",
           "type": "numeric",
           "description": "Number that died AFTER 48hrs in Paeds",
           "answer": [["8"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         }
-      ],
-      "errorMessage": ""
+      ]
     },
     {
-      "id": "MSPPRequired_field_15",
       "type": "numeric",
       "description": "Total number of days hospitalized between all patients",
       "answer": [["1"]],
-      "validated": true,
-      "valid": true,
-      "items": [],
-      "errorMessage": ""
+      "items": []
     },
     {
-      "id": "MSPPRequired_field_16",
       "type": "numeric",
       "description": "Total number of referrals",
       "answer": [["92"]],
-      "validated": true,
-      "valid": true,
-      "items": [],
-      "errorMessage": ""
+      "items": []
     },
     {
-      "id": "MSPPRequired_field_17",
       "type": "numeric",
       "description": "Total number of transfers",
       "answer": [["63"]],
-      "validated": true,
-      "valid": true,
-      "items": [],
-      "errorMessage": ""
+      "items": []
     },
     {
-      "id": "MSPPRequired_sum_18",
       "type": "sum",
       "description": "Total number of self-discharged patients",
       "answer": [["15"]],
-      "validated": true,
-      "valid": true,
       "items": [
         {
-          "id": "MSPPRequired_field_19",
           "type": "numeric",
           "description": "Finance: Leave as cannot afford care",
           "answer": [["11"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_20",
           "type": "numeric",
           "description": "Finance: Left to avoid paying",
           "answer": [["24"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_21",
           "type": "numeric",
           "description": "Religious/Cultural",
           "answer": [["98"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_22",
           "type": "numeric",
           "description": "Personal/Family",
           "answer": [["13"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         },
         {
-          "id": "MSPPRequired_field_23",
           "type": "numeric",
           "description": "Other reason",
           "answer": [["42"]],
-          "validated": true,
-          "valid": true,
-          "items": [],
-          "errorMessage": ""
+          "items": []
         }
-      ],
-      "errorMessage": ""
+      ]
     },
     {
-      "id": "MSPPRequired_field_24",
       "type": "numeric",
       "description": "Number of patients that stayed in ward",
       "answer": [["32"]],
-      "validated": true,
-      "valid": true,
-      "items": [],
-      "errorMessage": ""
+      "items": []
     },
     {
-      "id": "label1",
       "type": "label",
       "description": "Admissions",
-      "answer": [],
-      "validated": true,
-      "valid": true,
-      "errorMessage": ""
+      "answer": []
     },
     {
-      "id": "Admissions_bound_0",
       "type": "equal",
       "description": "Total Admissions",
       "answer": [["12"]],
-      "validated": true,
-      "valid": true,
       "items": [
         {
-          "id": "Admissions_group_1",
           "type": "group",
           "description": "Where do patients come from?",
           "answer": [[]],
-          "validated": true,
-          "valid": true,
           "items": [
             {
-              "id": "Admissions_field_1",
               "type": "numeric",
               "description": "Quarter Morin",
               "answer": [["18"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_2",
               "type": "numeric",
               "description": "Cap Haitian",
               "answer": [["94"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_3",
               "type": "numeric",
               "description": "Department Nord",
               "answer": [["56"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_4",
               "type": "numeric",
               "description": "If other, specify",
               "answer": [["69"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             }
-          ],
-          "errorMessage": ""
+          ]
         },
         {
-          "id": "Admissions_group_5",
           "type": "group",
           "description": "Age",
           "answer": [[]],
-          "validated": true,
-          "valid": true,
           "items": [
             {
-              "id": "Admissions_field_5",
               "type": "numeric",
               "description": "Extremely preterm (less than 28 weeks)",
               "answer": [["58"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_6",
               "type": "numeric",
               "description": "Very preterm (28 to 32 weeks)",
               "answer": [["26"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_7",
               "type": "numeric",
               "description": "Moderate to late preterm (32 to 37 weeks)",
               "answer": [["7"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_8",
               "type": "numeric",
               "description": "Full term (37 weeks plus)",
               "answer": [["4"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_9",
               "type": "numeric",
               "description": "Older than neonate (>4 weeks old)",
               "answer": [["2"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_10",
               "type": "numeric",
               "description": "Age 4-5 weeks",
               "answer": [["43"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_11",
               "type": "numeric",
               "description": "Age 6-11 weeks",
               "answer": [["83"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_12",
               "type": "numeric",
               "description": "Age 12-18 weeks",
               "answer": [["59"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             }
-          ],
-          "errorMessage": ""
+          ]
         },
         {
-          "id": "Admissions_group_13",
           "type": "group",
           "description": "Gender",
           "answer": [[]],
-          "validated": true,
-          "valid": true,
           "items": [
             {
-              "id": "Admissions_field_13",
               "type": "numeric",
               "description": "Male",
               "answer": [["75"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_14",
               "type": "numeric",
               "description": "Female",
               "answer": [["96"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             }
-          ],
-          "errorMessage": ""
+          ]
         },
         {
-          "id": "Admissions_group_15",
           "type": "group",
           "description": "Main Condition",
           "answer": [[]],
-          "validated": true,
-          "valid": true,
           "items": [
             {
-              "id": "Admissions_field_15",
               "type": "numeric",
               "description": "Respiratory Arrest",
               "answer": [["26"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_16",
               "type": "numeric",
               "description": "Traumatic Injury",
               "answer": [["32"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_17",
               "type": "numeric",
               "description": "Septic Shock",
               "answer": [["9"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_18",
               "type": "numeric",
               "description": "Hypovolemic Shock",
               "answer": [["10"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_19",
               "type": "numeric",
               "description": "Seizures Or Convulsions",
               "answer": [["57"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_20",
               "type": "numeric",
               "description": "Poisoning",
               "answer": [["28"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_21",
               "type": "numeric",
               "description": "Altered Mental Status",
               "answer": [["10"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_22",
               "type": "numeric",
               "description": "Gastroenteritis",
               "answer": [["69"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_23",
               "type": "numeric",
               "description": "Hemorrhage",
               "answer": [["23"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_24",
               "type": "numeric",
               "description": "Hypothermia",
               "answer": [["75"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_25",
               "type": "numeric",
               "description": "Cardiac Congenital Anomaly",
               "answer": [["58"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_26",
               "type": "numeric",
               "description": "Other Congenital Anomaly",
               "answer": [["2"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_27",
               "type": "numeric",
               "description": "Malnutrition",
               "answer": [["63"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_28",
               "type": "numeric",
               "description": "Meningitis",
               "answer": [["29"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_29",
               "type": "numeric",
               "description": "Community Acquired Pneumonia",
               "answer": [["73"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_30",
               "type": "numeric",
               "description": "Aspiration Pneumonia",
               "answer": [["92"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_31",
               "type": "numeric",
               "description": "Moderate Prematurity",
               "answer": [["4"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_32",
               "type": "numeric",
               "description": "Severe Prematurity",
               "answer": [["70"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Admissions_field_33",
               "type": "numeric",
               "description": "Other Medical",
               "answer": [["78"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             }
-          ],
-          "errorMessage": ""
+          ]
         }
-      ],
-      "errorMessage": ""
+      ]
     },
     {
-      "id": "label2",
       "type": "label",
       "description": "Outpatients",
-      "answer": [],
-      "validated": true,
-      "valid": true,
-      "errorMessage": ""
+      "answer": []
     },
     {
-      "id": "Outpatients_bound_0",
       "type": "equal",
       "description": "Total number of outpatients",
       "answer": [["8"]],
-      "validated": true,
-      "valid": true,
       "items": [
         {
-          "id": "Outpatients_group_1",
           "type": "group",
           "description": "Age",
           "answer": [[]],
-          "validated": true,
-          "valid": true,
           "items": [
             {
-              "id": "Outpatients_field_1",
               "type": "numeric",
               "description": "Extremely preterm (less than 28 weeks)",
               "answer": [["10"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_2",
               "type": "numeric",
               "description": "Very preterm (28 to 32 weeks)",
               "answer": [["47"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_3",
               "type": "numeric",
               "description": "Moderate to late preterm (32 to 37 weeks)",
               "answer": [["69"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_4",
               "type": "numeric",
               "description": "Full term (37 weeks plus)",
               "answer": [["61"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_5",
               "type": "numeric",
               "description": "Older than neonate (>4 weeks old)",
               "answer": [["49"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_6",
               "type": "numeric",
               "description": "Age 4-5 weeks",
               "answer": [["24"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_7",
               "type": "numeric",
               "description": "Age 6-11 weeks",
               "answer": [["80"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_8",
               "type": "numeric",
               "description": "Age 12-18 weeks",
               "answer": [["98"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             }
-          ],
-          "errorMessage": ""
+          ]
         },
         {
-          "id": "Outpatients_group_9",
           "type": "group",
           "description": "Gender",
           "answer": [[]],
-          "validated": true,
-          "valid": true,
           "items": [
             {
-              "id": "Outpatients_field_9",
               "type": "numeric",
               "description": "Male",
               "answer": [["66"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_10",
               "type": "numeric",
               "description": "Female",
               "answer": [["82"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             }
-          ],
-          "errorMessage": ""
+          ]
         },
         {
-          "id": "Outpatients_group_11",
           "type": "group",
           "description": "Main Condition",
           "answer": [[]],
-          "validated": true,
-          "valid": true,
           "items": [
             {
-              "id": "Outpatients_field_11",
               "type": "numeric",
               "description": "Respiratory Arrest",
               "answer": [["70"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_12",
               "type": "numeric",
               "description": "Traumatic Injury",
               "answer": [["72"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_13",
               "type": "numeric",
               "description": "Septic Shock",
               "answer": [["32"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_14",
               "type": "numeric",
               "description": "Hypovolemic Shock",
               "answer": [["98"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_15",
               "type": "numeric",
               "description": "Seizures Or Convulsions",
               "answer": [["66"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_16",
               "type": "numeric",
               "description": "Poisoning",
               "answer": [["67"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_17",
               "type": "numeric",
               "description": "Altered Mental Status",
               "answer": [["34"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_18",
               "type": "numeric",
               "description": "Gastroenteritis",
               "answer": [["26"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_19",
               "type": "numeric",
               "description": "Hemorrhage",
               "answer": [["36"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_20",
               "type": "numeric",
               "description": "Hypothermia",
               "answer": [["66"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_21",
               "type": "numeric",
               "description": "Cardiac Congenital Anomaly",
               "answer": [["14"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_22",
               "type": "numeric",
               "description": "Other Congenital Anomaly",
               "answer": [["23"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_23",
               "type": "numeric",
               "description": "Malnutrition",
               "answer": [["11"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_24",
               "type": "numeric",
               "description": "Meningitis",
               "answer": [["88"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_25",
               "type": "numeric",
               "description": "Community Acquired Pneumonia",
               "answer": [["37"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_26",
               "type": "numeric",
               "description": "Aspiration Pneumonia",
               "answer": [["11"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_27",
               "type": "numeric",
               "description": "Moderate Prematurity",
               "answer": [["8"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_28",
               "type": "numeric",
               "description": "Severe Prematurity",
               "answer": [["5"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             },
             {
-              "id": "Outpatients_field_29",
               "type": "numeric",
               "description": "Other Medical",
               "answer": [["8"]],
-              "validated": true,
-              "valid": true,
-              "items": [],
-              "errorMessage": ""
+              "items": []
             }
-          ],
-          "errorMessage": ""
+          ]
         }
-      ],
-      "errorMessage": ""
+      ]
     }
   ]
 }

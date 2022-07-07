@@ -1,9 +1,10 @@
-import { JsonReportDescriptor, JsonReportItem } from 'common/json_report';
+import { JsonReportDescriptor, JsonReportItem, JsonReportItems, JsonItemAnswer } from 'common/json_report';
 import { uniqueId } from 'lodash';
+import { type } from 'os';
 import * as MockApi from './MockApi';
-import { ReportItem, ReportData } from './Report';
+import { ItemField, ReportForm, itemFieldToReportItem } from './Report';
 
-export const submitData = async (answers: object, data: JsonReportDescriptor) => {
+export const submitData = async (answers: object, data: ReportForm) : Promise<JsonReportDescriptor> => {
   /*
    * Here we make a request to server and handle the responses.
    * Todo: refactor
@@ -12,32 +13,30 @@ export const submitData = async (answers: object, data: JsonReportDescriptor) =>
   return await MockApi.submitData(assemData, 2000, true);
 };
 
-const assembleData = (answers: object, data: JsonReportDescriptor): JsonReportDescriptor => {
-  const copy = { ...data };
-  copy.items = copy.items.map((item) => {
-    const answer = answers[(item as ReportItem).id];
-    const itemCopy = { ...item };
-    itemCopy.answer = [[answer]];
-    return itemCopy;
-  });
-  return copy;
+const assembleData = (answers: object, data: ReportForm): JsonReportDescriptor => {
+  const reportItemsWithAnswers : JsonReportItems = data.itemFields
+    .map((itemField: ItemField): JsonReportItem => {
+    const answer : Array<JsonItemAnswer> = answers[itemField.id];
+    const jsonReportItem : JsonReportItem = { ...itemField.reportItem, answer };
+    return jsonReportItem;
+  }); 
+  const reportDescriptor = { ...data.jsonDescriptor, reportItemsWithAnswers };
+  return reportDescriptor;
 };
 
-export function toReportData(data: JsonReportDescriptor): ReportData {
-  const newItems = data.items.map((item: JsonReportItem) => {
+export function toReportData(data: JsonReportDescriptor): ReportForm {
+  const jsonReportItemToItemField = (item: JsonReportItem): ItemField => {
     return {
       // parse from json to id when server supports id for item.
+      reportItem: item,
       id: uniqueId(),
-      type: item.type,
-      description: item.description,
-      answer: item.answer,
       validated: true,
       valid: true,
-      items: item.items,
       errorMessage: '',
+      items: item.items?.map(jsonReportItemToItemField) ?? undefined
     };
-  });
-  const copy = { ...data };
-  copy.items = newItems;
-  return copy as ReportData;
+  }
+  const itemFields : Array<ItemField> = data.items.map(jsonReportItemToItemField);
+  const reportForm: ReportForm = { jsonDescriptor: data, itemFields: itemFields};
+  return reportForm;
 }
