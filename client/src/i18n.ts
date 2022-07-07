@@ -22,7 +22,7 @@ i18n.use(initReactI18next).init({
   resources,
   lng: 'en',
 
-  keySeparator: false,
+  keySeparator: '.',
 
   interpolation: {
     escapeValue: false,

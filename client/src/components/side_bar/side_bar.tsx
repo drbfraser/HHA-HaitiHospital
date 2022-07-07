@@ -4,7 +4,6 @@ import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { Role, Department, GeneralDepartment } from 'constants/interfaces';
 import Api from '../../actions/Api';
@@ -15,7 +14,7 @@ import initialDepartments from 'utils/json/departments.json';
 
 interface SidebarProps {}
 
-export const changeLanguage = (ln) => {
+export const changeLanguage = (ln, i18n) => {
   return () => {
     console.log(`Language changed to ${ln}`);
     i18n.changeLanguage(ln);
@@ -154,7 +153,7 @@ const Sidebar = (props: SidebarProps) => {
                     activeClassName="active"
                   >
                     <i className="bi bi-brightness-high-fill me-2" />
-                    <span className="text text-light">{i18n.t(deptName)}</span>
+                    <span className="text text-light">{t(deptName)}</span>
                   </NavLink>
                 </li>
               );
@@ -184,14 +183,14 @@ const Sidebar = (props: SidebarProps) => {
           ) : null}
 
           <li className="btn-group-toggle" data-toggle="buttons" key="english">
-            <button className="nav-link link-light" onClick={changeLanguage('en')}>
+            <button className="nav-link link-light" onClick={changeLanguage('en', i18n)}>
               <i className="bi bi-gear-fill me-2" />
               <span className="text text-light">{t('sidebarEnglish')}</span>
             </button>
           </li>
 
           <li key="french">
-            <button className="nav-link link-light" id="fc" onClick={changeLanguage('fr')}>
+            <button className="nav-link link-light" id="fc" onClick={changeLanguage('fr', i18n)}>
               <i className="bi bi-gear me-2" />
               <span className="text text-light">{t('sidebarFrench')}</span>
             </button>

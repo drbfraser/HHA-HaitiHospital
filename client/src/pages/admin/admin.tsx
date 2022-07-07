@@ -5,14 +5,13 @@ import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { Link, useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_GET, ENDPOINT_ADMIN_DELETE_BY_ID } from 'constants/endpoints';
-import { TOAST_ADMIN_GET, TOAST_ADMIN_DELETE } from 'constants/toast_messages';
 import './admin.css';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
-
+import { ResponseMessage } from 'utils/response_message';
+import { Paths } from 'constants/paths';
 interface AdminProps {}
 
 const Admin = (props: AdminProps) => {
@@ -25,11 +24,11 @@ const Admin = (props: AdminProps) => {
 
   const deleteUserActions = () => {
     getUsers();
-    toast.success(i18n.t('adminAlertUserDeleted'));
+    toast.success(ResponseMessage.getMsgDeleteUserOk());
   };
 
   const getUsers = useCallback(async () => {
-    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, TOAST_ADMIN_GET, history));
+    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, ResponseMessage.getMsgFetchUsersFailed(), history));
   }, [history]);
 
   const deleteUser = async (id: string) => {
@@ -37,7 +36,7 @@ const Admin = (props: AdminProps) => {
       ENDPOINT_ADMIN_DELETE_BY_ID(id),
       {},
       deleteUserActions,
-      TOAST_ADMIN_DELETE,
+      ResponseMessage.getMsgDeleteUserFailed(),
       history,
     );
   };
@@ -71,7 +70,7 @@ const Admin = (props: AdminProps) => {
         <ModalDelete
           currentItem={currentIndex}
           show={deleteModal}
-          item={'user account'}
+          item={t('item.user')}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
           history={history}
@@ -81,7 +80,7 @@ const Admin = (props: AdminProps) => {
         <div className="d-flex justify-content-start">
           <Link to="/admin/add-user">
             <button type="button" className="btn btn-outline-dark">
-              {t('adminAddUser')}
+              {t('button.add_user')}
             </button>
           </Link>
         </div>
@@ -91,12 +90,12 @@ const Admin = (props: AdminProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{t('adminName')}</th>
-                <th scope="col">{t('adminRole')}</th>
-                <th scope="col">{t('adminDepartment')}</th>
-                <th scope="col">{t('adminCreated')}</th>
+                <th scope="col">{t('admin.main_page.name_col')}</th>
+                <th scope="col">{t('admin.main_page.role_col')}</th>
+                <th scope="col">{t('admin.main_page.department_col')}</th>
+                <th scope="col">{t('admin.main_page.created_col')}</th>
                 <th scope="col" className="text-center">
-                  {t('adminOptions')}
+                  {t('admin.main_page.options_col')}
                 </th>
               </tr>
             </thead>
@@ -117,9 +116,9 @@ const Admin = (props: AdminProps) => {
                       <button
                         type="button"
                         className="btn btn-link text-decoration-none"
-                        onClick={() => history.push(`/admin/edit-user/${item.id}`)}
+                        onClick={() => history.push(`${Paths.getAdminEditUser(item.id)}`)}
                       >
-                        {t('adminEdit')}
+                        {t('button.edit')}
                       </button>
 
                       <button
@@ -129,7 +128,7 @@ const Admin = (props: AdminProps) => {
                           onDeleteUser(event, item.id);
                         }}
                       >
-                        {t('adminDelete')}
+                        {t('button.delete')}
                       </button>
                     </div>
                   </td>
