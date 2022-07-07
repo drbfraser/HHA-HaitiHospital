@@ -175,7 +175,7 @@ const getMsgFetchImageFailed = (): string => {
   });
 };
 
-export const ResponseMessage = {
+const ResponseMessage = {
   getMsgFetchUsersFailed,
   getMsgFetchUserFailed,
   getMsgUpdateUserOk,
@@ -196,3 +196,5 @@ export const ResponseMessage = {
 
   getMsgFetchImageFailed
 };
+
+export default ResponseMessage;

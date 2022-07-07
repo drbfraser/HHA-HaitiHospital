@@ -3,7 +3,7 @@ import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import { BiomechModel, bioMechEnum } from './BiomechModel';
+import { BiomechModel, BioMechPriority } from './BiomechModel';
 import Api from '../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
 import './broken_kit_report.css';
@@ -12,7 +12,9 @@ import { toast } from 'react-toastify';
 import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
 import { Paths } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
+import { Translator } from 'utils/internationalization/internationalization';
+
+const { Content, ResponseMessage } = Translator;
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 
@@ -94,9 +96,15 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   defaultValue=""
                 >
                   <option value="">{t('biomech.report.inquiry_priority')}</option>
-                  <option value={bioMechEnum.Urgent}>{t(`biomech.priority.${bioMechEnum.Urgent}`)}</option>
-                  <option value={bioMechEnum.Important}>{t(`biomech.priority.${bioMechEnum.Important}`)}</option>
-                  <option value={bioMechEnum.NonUrgent}>{t(`biomech.priority.${bioMechEnum.NonUrgent}`)}</option>
+                  <option value={BioMechPriority.URGENT}>
+                    {t(`biomech.priority.${BioMechPriority.URGENT}`)}
+                  </option>
+                  <option value={BioMechPriority.IMPORTANT}>
+                    {t(`biomech.priority.${BioMechPriority.IMPORTANT}`)}
+                  </option>
+                  <option value={BioMechPriority.NONURGENT}>
+                    {t(`biomech.priority.${BioMechPriority.NONURGENT}`)}
+                  </option>
                 </select>
                 <label htmlFor="customFile" className="form-label mt-2">
                   {t('button.add_image')}

@@ -16,7 +16,9 @@ import { Spinner } from 'components/spinner/Spinner';
 import useDidMountEffect from 'utils/custom_hooks';
 import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import { Paths, UserIdParams } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
+import { Translator } from 'utils/internationalization/internationalization';
+
+const { Content, ResponseMessage } = Translator;
 
 interface UserEditProps {}
 

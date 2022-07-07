@@ -17,7 +17,9 @@ import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 import { timezone, language } from 'constants/timezones';
 import { Paths } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
+import { Translator } from 'utils/internationalization/internationalization';
+
+const { Content, ResponseMessage } = Translator;
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -45,12 +47,11 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
     getBioReport();
   };
 
-  const getBioReport = useCallback(
-    async () => {
-        setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, ResponseMessage.getMsgFetchReportsFailed(), history));
-    }, 
-    [history]
-  );
+  const getBioReport = useCallback(async () => {
+    setBioReport(
+      await Api.Get(ENDPOINT_BIOMECH_GET, ResponseMessage.getMsgFetchReportsFailed(), history),
+    );
+  }, [history]);
 
   const deleteBioMech = async (id: string) => {
     await Api.Delete(

@@ -1,13 +1,13 @@
-export enum bioMechEnum {
-  Urgent = 'urgent',
-  Important = 'important',
-  NonUrgent = 'non-urgent',
+export enum BioMechPriority {
+  URGENT = 'urgent',
+  IMPORTANT = 'important',
+  NONURGENT = 'non-urgent',
 }
 
-export enum bioMechBadge {
-  Urgent = 'danger',
-  Important = 'warning',
-  NonUrgent = 'success',
+export enum BioMechBadge {
+  URGENT = 'danger',
+  IMPORTANT = 'warning',
+  NONURGENT = 'success',
 }
 
 export interface BiomechModel {
@@ -16,7 +16,7 @@ export interface BiomechModel {
   createdOn: { type: Date; required: true };
   equipmentName: { type: String; required: true };
   equipmentFault: { type: String; required: true };
-  equipmentPriority: { type: bioMechEnum; required: true };
+  equipmentPriority: { type: BioMechPriority; required: true };
 
   //image data
   image: {
@@ -26,13 +26,13 @@ export interface BiomechModel {
   };
 }
 
-export const setPriority = (priority: bioMechEnum): string => {
+export const setPriority = (priority: BioMechPriority): string => {
   switch (priority) {
-    case bioMechEnum.Urgent:
-      return bioMechBadge.Urgent;
-    case bioMechEnum.Important:
-      return bioMechBadge.Important;
-    case bioMechEnum.NonUrgent:
-      return bioMechBadge.NonUrgent;
+    case BioMechPriority.URGENT:
+      return BioMechBadge.URGENT;
+    case BioMechPriority.IMPORTANT:
+      return BioMechBadge.IMPORTANT;
+    case BioMechPriority.NONURGENT:
+      return BioMechBadge.NONURGENT;
   }
 };

@@ -13,7 +13,9 @@ import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 import { timezone, language } from 'constants/timezones';
 import { BioReportIdParams, Paths } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
+import { Translator } from 'utils/internationalization/internationalization';
+
+const { Content, ResponseMessage } = Translator;
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -92,7 +94,8 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
           <div className="broken-kit-container mb-5">
             <div className="broken-kit-subcontainer">
               <div style={{ display: 'flex', flex: '1 1 auto' }}>
-                <div className="w-100 pr-2">kkk
+                <div className="w-100 pr-2">
+                  kkk
                   <h2 className="mt-3 mb-3 fw-bold">{t('biomech.view_report.title')}</h2>
                   <h6 className="fs-6 lh-base">
                     {`${t('biomech.view_report.author')}: `}
@@ -104,11 +107,11 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                       timeZone: timezone,
                     })}
                   </h6>
-                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.equipment_name')}</h6>
-                  <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
                   <h6 className="fs-6 fw-bold lh-base">
-                    {t('biomech.view_report.priority')}
+                    {t('biomech.view_report.equipment_name')}
                   </h6>
+                  <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
+                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.priority')}</h6>
                   <p className="fs-6 lh-base text-break">
                     {
                       <Badge bg={setPriority(BioReport.equipmentPriority)}>

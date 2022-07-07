@@ -16,8 +16,10 @@ import axios, { AxiosError } from 'axios';
 import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
-import { ResponseMessage } from 'utils/response_message';
+import { Translator } from 'utils/internationalization/internationalization';
 import { Paths } from 'constants/paths';
+
+const { Content, ResponseMessage } = Translator;
 
 interface AdminProps {}
 
