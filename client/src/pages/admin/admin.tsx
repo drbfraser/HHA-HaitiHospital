@@ -10,11 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
-import { Translator } from 'utils/internationalization/internationalization';
+import { ResponseMessage } from 'utils/response_message';
 import { Paths } from 'constants/paths';
-
-const { Content, ResponseMessage } = Translator;
-
 interface AdminProps {}
 
 const Admin = (props: AdminProps) => {

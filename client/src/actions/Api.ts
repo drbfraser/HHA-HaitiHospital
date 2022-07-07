@@ -2,9 +2,8 @@ import axios from 'axios';
 import { History } from 'history';
 import * as Error from './ApiError';
 import DbErrorHandler from './http_error_handler';
-import { Translator } from 'utils/internationalization/internationalization';
+import { ResponseMessage } from 'utils/response_message';
 
-const { ResponseMessage } = Translator;
 /**
  *
  * @param url

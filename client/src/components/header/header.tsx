@@ -8,9 +8,7 @@ import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
-import { Translator } from 'utils/internationalization/internationalization';
-
-const { ResponseMessage } = Translator;
+import { ResponseMessage } from 'utils/response_message';
 
 interface HeaderProps {}
 interface HeaderViewProps {
