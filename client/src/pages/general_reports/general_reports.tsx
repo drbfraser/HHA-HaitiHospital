@@ -76,7 +76,7 @@ const GeneralReports = () => {
                     <td>
                       <Link to="/general-reports">
                         <button type="button" className="btn btn-link text-decoration-none">
-                          {t('Open Report')}
+                          {t('reportsOpenReport')}
                         </button>
                       </Link>
                     </td>

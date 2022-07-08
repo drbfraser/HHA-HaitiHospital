@@ -244,6 +244,7 @@
   "reportsSubmissionDate": "Date de soumission",
   "reportsUserId": "ID de l'utilisateur",
   "reportsOptions": "Options",
+  "reportsOpenReport": "Rapport ouvert",
 
   "bioSupportReportBrokenKit": "Signaler un kit cassé",
   "bioSupportReportPriority": "Priorité",
