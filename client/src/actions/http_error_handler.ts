@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { History } from 'history';
 import { toast } from 'react-toastify';
+import { ErrorListToast } from '../components/Errors/ErrorToast';
 
 const BADREQUEST_CODE = 400;
 const UNAUTHORIZED_CODE = 401;
@@ -33,8 +34,10 @@ const DbErrorHandler = (e, history: History, toastMsg: string, errorActions?: an
       break;
     }
     case UNPROCCESABLENTITY_CODE: {
-      toast.error(toastMsg);
-      errorActions(err.response.data.errors);
+      toast.error(ErrorListToast(toastMsg, err.response.data.errors), {
+        closeOnClick: true,
+        autoClose: false,
+      });
       break;
     }
     default:

@@ -1,14 +1,15 @@
+import mongoose from 'mongoose';
 import faker from 'faker';
-import UserCollection, { Role, User } from '../models/user';
-import DepartmentCollection, { Department } from '../models/departments';
-import Departments, { DefaultDepartments } from './departments';
-import MessageCollection from '../models/messageBoard';
-import CaseStudy, { CaseStudyOptions } from '../models/caseStudies';
-import BioMech, { bioMechEnum } from '../models/bioMech';
+import UserCollection, { Role, User } from 'models/user';
+import MessageCollection from 'models/messageBoard';
+import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
+import BioMech, { bioMechEnum } from 'models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-import * as ENV from './processEnv';
+import * as ENV from 'utils/processEnv';
 import { TemplateCollection } from 'models/template';
 import { ReportCollection } from 'models/report';
+import Departments, { DefaultDepartments } from 'utils/departments';
+import DepartmentCollection, { Department } from 'models/departments';
 
 let nameMapper: Map<string, string>;
 
@@ -29,23 +30,22 @@ const randomEnumKey = (enumeration: any): any => {
 const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 export const seedDb = async () => {
-  // TODO: Remove delete many when in prod
-  // await UserModel.deleteMany({});
-
-  await seedDepartments();
-  await setupDepartmentMap();
-
-  // Must ensure that user seed is done before moving on as these features require updated information from user
-  seedUsers().then(async () => {
+  try {
+    await seedDepartments();
+    await setupDepartmentMap();
+    await seedUsers();
     await seedMessageBoard();
     await seedBioMech();
     await seedEmployeeOfTheMonth();
     await seedCaseStudies();
     await seedTemplates();
     await seedReports();
-  });
 
-  console.log('Database seeding completed.');
+    console.log('Database seeding completed.');
+    process.exit();
+  } catch (e) {
+    console.log(`Database seeding failed: ${e}`);
+  }
 };
 
 const setupDepartmentMap = async () => {
@@ -57,7 +57,7 @@ export const seedUsers = async () => {
   console.log('Seeding users...');
   try {
     // Delete seeded users on server start so we can reseed them.
-    // await User.collection.dropIndexes();
+    await UserCollection.deleteMany({});
 
     [...Array(7).keys()].forEach(async (index) => {
       const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
@@ -385,3 +385,30 @@ const seedReports = async () => {
     console.log(err);
   }
 };
+
+// Connect to Mongo
+mongoose
+  .connect(ENV.MONGO_DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
+  .then(() => {
+    console.log('MongoDB Connected...');
+    const readline = require('readline');
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question(`Confirm to reseed database (old data will be discarded) (Y to confirm): `, async function (answer) {
+      if (answer === 'Y') await seedDb();
+      rl.close();
+    });
+
+    rl.on('close', function () {
+      process.exit(0);
+    });
+  })
+  .catch((err) => console.log(err));

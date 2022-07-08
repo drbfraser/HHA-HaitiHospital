@@ -1,24 +1,6 @@
 import { check } from 'express-validator';
 import { msgString, msgStringMulti } from '../utils/sanitizationMessages';
-const mongoose = require('mongoose');
-
-const checkDepartment = () => {
-  return check('department')
-      .custom((department) => {
-          if ((department)) {
-              [
-                  check('department.id')
-                      .notEmpty()
-                      .custom(id => mongoose.isValidObjectId(id))
-                      .withMessage("Department Id must be non empty and a valid mongoose Id")
-                  ,
-                  check('department.name')
-                      .notEmpty()
-                      .trim()
-                      .withMessage("Department name must be non empty")
-              ]
-          }
-      })}
+import { checkDepartment } from './checkDepartment';
 
 const userCreate = [
   check('username').exists().trim().escape().isLength({ min: 2, max: 20 }).withMessage(msgStringMulti(2, 20)),

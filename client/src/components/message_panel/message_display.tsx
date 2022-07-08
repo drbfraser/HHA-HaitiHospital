@@ -1,11 +1,17 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { UserJson, Role, Message, emptyMessage } from 'constants/interfaces';
 import Api from 'actions/Api';
-import { ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID, ENDPOINT_MESSAGEBOARD_DELETE_BY_ID } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_COMMENTS_GET, TOAST_MESSAGEBOARD_DELETE } from 'constants/toast_messages';
+import {
+  ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
+  ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
+} from 'constants/endpoints';
+import {
+  TOAST_MESSAGEBOARD_COMMENTS_GET,
+  TOAST_MESSAGEBOARD_DELETE,
+} from 'constants/toast_messages';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { toast } from 'react-toastify';
@@ -31,15 +37,26 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const readableDate = new Date(props.msgJson.date).toLocaleString();
   const [commentCount, setCommentCount] = useState<number>(0);
-  const is_comment_page: boolean = (useLocation().pathname.split('/')[2] === "comments");
-  
+  const is_comment_page: boolean = useLocation().pathname.split('/')[2] === 'comments';
 
   useEffect(() => {
     const retrievedUser = props.msgJson.user as unknown;
     setAuthor(retrievedUser as UserJson);
     setMessage(props.msgJson);
+
+    const getCommentCount = async (id: string) => {
+      if (id) {
+        let comments = await Api.Get(
+          ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(id),
+          TOAST_MESSAGEBOARD_COMMENTS_GET,
+          history,
+        );
+        setCommentCount(comments.length);
+      }
+    };
+
     getCommentCount(props.msgJson.id);
-  }, [props.msgJson]);
+  }, [props.msgJson, history]);
 
   const deleteMessageActions = () => {
     toast.success(i18n.t('MessageAlertMessageDeleted'));
@@ -74,13 +91,6 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const onModalDelete = (id: string) => {
     deleteMessage(id);
     setDeleteModal(false);
-  };
-
-  const getCommentCount = async (id: string) => {
-    if (id) {
-      let comments = await Api.Get(ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(id), TOAST_MESSAGEBOARD_COMMENTS_GET, history);
-      setCommentCount(comments.length);
-    }
   };
 
   return (
@@ -152,13 +162,13 @@ const MessageDisplay = (props: MessageDisplayProps) => {
           </div>
           <div className="mr-auto p-2">
             <p className="lh-sm message-body">{message.messageBody}</p>
-            {useLocation().pathname.split('/').length < 4 ?
+            {useLocation().pathname.split('/').length < 4 ? (
               <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
                 <button type="button" className="btn btn-link text-decoration-none admin-utils">
                   {translateText('messageBoardComments') + '(' + commentCount + ')'}
                 </button>
               </Link>
-            : null}
+            ) : null}
           </div>
         </div>
       </div>
