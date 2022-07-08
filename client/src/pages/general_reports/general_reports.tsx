@@ -33,14 +33,14 @@ const GeneralReports = () => {
   }, [getReports]);
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize: number = 10;
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
+  const currentTableData: JsonReportDescriptor[] = useMemo(() => {
+    const firstPageIndex: number = (currentPage - 1) * pageSize;
+    const lastPageIndex: number = firstPageIndex + pageSize;
     return reports.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, reports]);
-  const reportNumberIndex = currentPage * pageSize - pageSize;
+  const reportNumberIndex: number = currentPage * pageSize - pageSize;
 
   return (
     <>
@@ -74,10 +74,8 @@ const GeneralReports = () => {
                     <td>{item.meta.submittedDate}</td>
                     <td>{item.meta.submittedUserId}</td>
                     <td>
-                      <Link to="/general-reports">
-                        <button type="button" className="btn btn-link text-decoration-none">
-                          {t('reportsOpenReport')}
-                        </button>
+                      <Link to="/general-reports" className="btn-link text-decoration-none">
+                        {t('reportsOpenReport')}
                       </Link>
                     </td>
                   </tr>
