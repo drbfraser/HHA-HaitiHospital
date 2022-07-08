@@ -86,7 +86,6 @@ const GeneralReports = () => {
             </tbody>
           </table>
 
-
           {/* <Pagination
             className="pagination-bar"
             currentPage={currentPage}
