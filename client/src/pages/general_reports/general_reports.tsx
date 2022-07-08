@@ -24,8 +24,7 @@ const GeneralReports = () => {
   const history = useHistory<History>();
   const [reports, setReports] = useState<JsonReportDescriptor[]>([]);
   const getReports = useCallback(async () => {
-    let fetchedReports: JsonReportDescriptor[] = [];
-    fetchedReports = await Api.Get(ENDPOINT_REPORTS_GET, TOAST_REPORTS_GET, history);
+    const fetchedReports: JsonReportDescriptor[] = await Api.Get(ENDPOINT_REPORTS_GET, TOAST_REPORTS_GET, history);
     setReports(fetchedReports);
   }, [history]);
 
