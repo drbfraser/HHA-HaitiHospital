@@ -239,6 +239,12 @@
   "reportAlertDeleteReportsFailed": "Delete report(s) failed",
   "reportAlertReportsDeleted": "Report(s) deleted",
 
+  "reportsReportId": "Report ID",
+  "reportsDepartment": "Department",
+  "reportsSubmissionDate": "Submission Date",
+  "reportsUserId": "User ID",
+  "reportsOptions": "Options",
+
   "bioSupportReportBrokenKit": "Report Broken Kit",
   "bioSupportReportPriority": "Priority",
   "bioSupportReportAuthor": "Author",

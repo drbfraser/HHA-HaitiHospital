@@ -57,11 +57,11 @@ const GeneralReports = () => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{t('Report ID')}</th>
-                <th scope="col">{t('Department')}</th>
-                <th scope="col">{t('Submission Date')}</th>
-                <th scope="col">{t('User ID')}</th>
-                <th scope="col">{t('Options')}</th>
+                <th scope="col">{t('reportsReportId')}</th>
+                <th scope="col">{t('reportsDepartment')}</th>
+                <th scope="col">{t('reportsSubmissionDate')}</th>
+                <th scope="col">{t('reportsUserId')}</th>
+                <th scope="col">{t('reportsOptions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -69,7 +69,7 @@ const GeneralReports = () => {
                 return (
                   <tr key={item.id}>
                     <th scope="row">{index + 1}</th>
-                    <td>{t(item.meta.id)}</td>
+                    <td>{item.meta.id}</td>
                     <td>{t(item.meta.department.name)}</td>
                     <td>{item.meta.submittedDate}</td>
                     <td>{item.meta.submittedUserId}</td>

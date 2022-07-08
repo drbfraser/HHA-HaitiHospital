@@ -239,6 +239,12 @@
   "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",
   "reportAlertReportsDeleted": "Rapport(s) supprimé(s)",
 
+  "reportsReportId": "ID de rapport",
+  "reportsDepartment": "Département",
+  "reportsSubmissionDate": "Date de soumission",
+  "reportsUserId": "ID de l'utilisateur",
+  "reportsOptions": "Options",
+
   "bioSupportReportBrokenKit": "Signaler un kit cassé",
   "bioSupportReportPriority": "Priorité",
   "bioSupportReportAuthor": "Auteur",
