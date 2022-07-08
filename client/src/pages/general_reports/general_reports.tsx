@@ -5,9 +5,9 @@ import Sidebar from 'components/side_bar/side_bar';
 //https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './general_reports_styles.css';
-import { Pagination } from 'react-bootstrap';
+import Pagination from 'components/pagination/Pagination';
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS_GET } from 'constants/endpoints';
 import { TOAST_REPORTS_GET } from 'constants/toast_messages';
@@ -32,15 +32,15 @@ const GeneralReports = () => {
     getReports();
   }, [reports]);
 
-  // // Pagination
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const pageSize: number = 10;
-  // const currentTableData = useMemo(() => {
-  //   const firstPageIndex = (currentPage - 1) * pageSize;
-  //   const lastPageIndex = firstPageIndex + pageSize;
-  //   return caseStudies.slice(firstPageIndex, lastPageIndex);
-  // }, [currentPage, caseStudies]);
-  // const caseStudyNumberIndex = currentPage * pageSize - pageSize;
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize: number = 10;
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
+    return reports.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, reports]);
+  const reportNumberIndex = currentPage * pageSize - pageSize;
 
   return (
     <>
@@ -65,10 +65,10 @@ const GeneralReports = () => {
               </tr>
             </thead>
             <tbody>
-              {reports.map((item, index) => {
+              {currentTableData.map((item, index) => {
                 return (
                   <tr key={item.id}>
-                    <th scope="row">{index + 1}</th>
+                    <th scope="row">{reportNumberIndex + index + 1}</th>
                     <td>{item.meta.id}</td>
                     <td>{t(item.meta.department.name)}</td>
                     <td>{item.meta.submittedDate}</td>
@@ -86,13 +86,13 @@ const GeneralReports = () => {
             </tbody>
           </table>
 
-          {/* <Pagination
+          <Pagination
             className="pagination-bar"
             currentPage={currentPage}
-            totalCount={caseStudies.length}
+            totalCount={reports.length}
             pageSize={pageSize}
             onPageChange={(page) => setCurrentPage(page)}
-          /> */}
+          />
         </main>
       </div>
     </>
