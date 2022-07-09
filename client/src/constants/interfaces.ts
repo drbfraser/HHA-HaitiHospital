@@ -90,12 +90,3 @@ export interface UserJson {
   createdAt: string;
   updatedAt: string;
 }
-
-export const emptyUser: UserJson = {
-  id: '',
-  name: '',
-  role: Role.User,
-  department: EMPTY_DEPARTMENT,
-  createdAt: '',
-  updatedAt: '',
-};

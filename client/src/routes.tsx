@@ -23,6 +23,7 @@ import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employe
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 import Report from 'components/report/Report';
+import { PathPatterns } from 'constants/paths';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -36,21 +37,21 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/admin/add-user',
+    path: `${PathPatterns.ADMIN_ADD_USER}`,
     component: AddUserForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
     departmentsAllowed: [],
   },
   {
-    path: '/admin/edit-user/:id',
+    path: `${PathPatterns.ADMIN_EDIT_USER}`,
     component: EditUserForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
     departmentsAllowed: [],
   },
   {
-    path: '/admin',
+    path: `${PathPatterns.ADMIN_MAIN}`,
     component: Admin,
     loginRequired: true,
     rolesAllowed: [Role.Admin],

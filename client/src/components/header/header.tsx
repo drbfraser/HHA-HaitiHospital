@@ -1,13 +1,14 @@
 import { useAuthDispatch } from '../../contexts';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { emptyUser, UserJson } from 'constants/interfaces';
+import { UserJson } from 'constants/interfaces';
+import { EMPTY_USER_JSON } from 'constants/default_values';
 import { logOutUser } from '../../actions/authActions';
 import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
-import { TOAST_ADMIN_GET } from 'constants/toast_messages';
+import { ResponseMessage } from 'utils/response_message';
 
 interface HeaderProps {}
 interface HeaderViewProps {
@@ -93,21 +94,24 @@ const Header = (props: HeaderProps) => {
     history.push('/login');
   };
   const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState(emptyUser as UserJson);
+  const [userInfo, setUserInfo] = useState(EMPTY_USER_JSON);
 
   useEffect(() => {
     let isMounted: boolean = true;
 
     const getUserInfo = async () => {
-      const user: UserJson = await Api.Get(ENDPOINT_ADMIN_ME, TOAST_ADMIN_GET, history);
-      if (isMounted)
-        setUserInfo(user);
+      const user: UserJson = await Api.Get(
+        ENDPOINT_ADMIN_ME,
+        ResponseMessage.getMsgFetchUserFailed(),
+        history,
+      );
+      if (isMounted) setUserInfo(user);
     };
     getUserInfo();
 
     return function cleanUp() {
-        isMounted = false;
-    }
+      isMounted = false;
+    };
   }, [history]);
 
   const { t, i18n } = useTranslation();

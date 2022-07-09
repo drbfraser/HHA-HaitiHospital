@@ -79,7 +79,7 @@
   "messageBoardCommentsMessage": "Message",
   "messageBoardCommentsComment": "Commentaires",
   "messageBoardCommentCommentedOn": "Commenté sur:",
-  "messageBoardAddComment":"Ajouter un commentaire",
+  "messageBoardAddComment": "Ajouter un commentaire",
   "messageBoardAddCommentSubmit": "Soumettre",
   "messageBoardCommentsBack": "Arrière",
   "messageBoardDelete": "Supprimer",
@@ -272,34 +272,67 @@
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
 
-  "adminAddUser": "Ajouter un utilisateur",
-  "adminEdit": "Éditer",
-  "adminDelete": "Effacer",
-  "adminUsername": "Nom d'utilisateur",
-  "adminName": "Nom",
-  "adminRole": "Rôle",
-  "adminDepartment": "département",
-  "adminCreated": "Créé",
-  "adminOptions": "Options",
+  "admin": {
+    "main_page": {
+      "name_col": "Nom",
+      "role_col": "Rôle",
+      "department_col": "Département",
+      "created_col": "Créé à",
+      "options_col": "Options"
+    },
+    "user_form": {
+        "username": "Nom d'utilisateur", 
+        "password": "Mot de passe",
+        "name": "Nom",
+        "role": "Rôle",
+        "inquiry_role": "Sélectionnez le rôle de l'utilisateur",
+        "department": "Départment",
+        "inquiry_department": "Sélectionnez Départment",
+        "hint": {
+            "leave_blank": "Laissez vide pour le garder inchangé"
+        }
+    }
+  },
 
-  "adminAddUserBack": "Arrière",
-  "adminAddUserUsername": "Nom d'utilisateur",
-  "adminAddUserPassword": "Mot de passe",
-  "adminAddUserName": "Nom",
-  "adminAddUserRole": "Rôle",
-  "adminAddUserSelectRole": "Select User's Role",
-  "adminAddUserUser": "User",
-  "adminAddUserAdmin": "Admin",
-  "adminAddUserMedicalDirector": "Medical Director",
-  "adminAddUserHeadOfDepartment": "Head of Department",
-  "adminAddUserDepartment": "département",
-  "adminAddUserSelectDepartment": "Sélectionnez le service de l'utilisateur",
-  "adminAddUserSubmit": "Soumettre",
-  "adminAddErrorOccurredDuringTheSubmission": "Une erreur s'est produite lors de la soumission !",
+  "role": {
+    "user": "User",
+    "admin": "Admin",
+    "medical_director": "Medical Director",
+    "head_department": "Head of Department"
+  },
 
-  "adminEditUserLeaveBlank": "Laissez vide pour le garder inchangé",
-  "adminAlertUserDeleted": "Utilisateur supprimé",
-  "adminAreYouSureToDeleteTheUser": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+  "modal": {
+    "delete_msg": "Confirmer pour supprimer {{item}}?",
+    "title": "AVERTISSEMENT"
+  },
+
+  "button": {
+    "add_user": "Ajouter un utilisateur",
+    "edit": "Éditer",
+    "delete": "Effacer",
+    "cancel": "Annuler",
+    "back": "Arrière",
+    "submit": "Soumettre"
+  },
+
+  "request_response": {
+    "ok": "Avec succès {{action}} {{item}}",
+    "failed": "Échec de {{action}} {{item}}"
+  },
+
+  "request_action": {
+    "create": "créer",
+    "fetch": "la récupération de(s)",
+    "update": "la mise à jour de(s)",
+    "delete": "la suppression de(s)"
+  },
+
+  "item": {
+    "user": "l'utilisateur",
+    "users": "utilisateurs",
+    "department": "départment",
+    "departments": "départments"
+  },
 
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",

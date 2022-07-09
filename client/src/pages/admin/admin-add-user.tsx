@@ -6,18 +6,18 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
-import { TOAST_ADMIN_POST } from 'constants/toast_messages';
 import './admin.css';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import axios, { AxiosError } from 'axios';
-import { AdminUserForm } from '../../components/admin_user_form/admin-user-form';
+import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
+import { ResponseMessage } from 'utils/response_message';
+import { Paths } from 'constants/paths';
 
 interface AdminProps {}
 
@@ -35,7 +35,13 @@ export const AddUserForm = (props: AdminProps) => {
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
-        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
+        createDepartmentMap(
+          await Api.Get(
+            ENDPOINT_DEPARTMENT_GET,
+            ResponseMessage.getMsgFetchDepartmentsFailed(),
+            history,
+          ),
+        ),
       );
     };
     getDepartments();
@@ -49,8 +55,8 @@ export const AddUserForm = (props: AdminProps) => {
   );
 
   const onSubmit = () => {
-    toast.success('Successfully created user');
-    history.push('/admin');
+    toast.success(ResponseMessage.getMsgCreateUserOk());
+    history.push(Paths.getAdminMain());
   };
 
   const mapErrors = (errors: any[]) => {
@@ -70,7 +76,13 @@ export const AddUserForm = (props: AdminProps) => {
   }
 
   const submitForm = async (data: AdminUserFormData) => {
-    await Api.Post(ENDPOINT_ADMIN_POST, data, onSubmit, TOAST_ADMIN_POST, history);
+    await Api.Post(
+      ENDPOINT_ADMIN_POST,
+      data,
+      onSubmit,
+      ResponseMessage.getMsgCreateUserFailed(),
+      history,
+    );
   };
 
   return (
@@ -82,12 +94,12 @@ export const AddUserForm = (props: AdminProps) => {
         <main className="container-fluid main-region">
           <Header />
           <div className="ml-3 mb-3 d-flex justify-content-start">
-          <Link to="/admin">
-            <button type="button" className="btn btn-outline-dark">
-              {t('adminAddUserBack')}
-            </button>
-          </Link>
-        </div>
+            <Link to={Paths.getAdminMain()}>
+              <button type="button" className="btn btn-outline-dark">
+                {t('button.back')}
+              </button>
+            </Link>
+          </div>
 
           <div className="col-md-6">
             <AdminUserForm
