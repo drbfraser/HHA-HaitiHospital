@@ -1,5 +1,5 @@
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import React, { useState } from 'react';
+import React, { EffectCallback, useState } from 'react';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,6 +16,7 @@ import * as ReportApiUtils from './ReportUtils';
 import {ItemGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
+import { setConstantValue } from 'typescript';
 
 // Data structure containing additional properties pertinent to the front-end
 export interface ReportForm {
@@ -82,6 +83,20 @@ function Error(data: ErrorData): State {
   return { value: StateType.error, data: data };
 }
 
+const fetchMockReportData = (setState: React.Dispatch<React.SetStateAction<State>>): EffectCallback => {
+  return () => {
+    (async (): Promise<void> => {
+      try {
+        const data = await MockApi.getDataDelay(1500, true);
+        const reportData = ReportApiUtils.toReportData(data);
+        setState({ value: StateType.ready, data: reportData });
+      } catch (err) {
+        setState(Error(err));
+      }
+    })()
+  };
+}
+
 function FormContents(props: { path: string }) {
   const formHook = useForm();
 // Commented out to avoid unused variable warning. May put it back once translation is supported.
@@ -91,17 +106,10 @@ function FormContents(props: { path: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const data = await MockApi.getDataDelay(1500, true);
-        const reportData = ReportApiUtils.toReportData(data);
-        setState({ value: StateType.ready, data: reportData });
-      } catch (err) {
-        setState(Error(err));
-      }
-    })();
-  }, []);
+
+  const fetchReportData: EffectCallback = fetchMockReportData(setState);
+
+  React.useEffect(fetchReportData, []);
 
   // Whenever data changed, check for errors messages to give to react form hook
   React.useEffect(() => {
