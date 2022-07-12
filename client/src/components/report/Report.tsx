@@ -100,6 +100,8 @@ function FormContents(props: { path: string }) {
   const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
 
+  // Effect Generators
+  //----------------------------------------------------------------------------
   const reportDataFetchingEffectGenerator:
     (fetcher: () => Promise<ReportForm>) => EffectCallback = (fetcher) =>
     () => {
@@ -124,6 +126,8 @@ function FormContents(props: { path: string }) {
       .forEach(handler);
   };
 
+  // Effect Routines
+  //----------------------------------------------------------------------------
   // Give error messages to react hook
   const mockErrorHandling: (invalidItem: ItemField) => void = (invalidItem) => {
     const id = invalidItem.id;
@@ -135,11 +139,15 @@ function FormContents(props: { path: string }) {
     formHook.setError(id, error);
   }
   
+  // Get Effects
+  //----------------------------------------------------------------------------
   const fetchReportDataEfect: EffectCallback =
     reportDataFetchingEffectGenerator(fetchMockReportData);
   const errorHandlingEffect: EffectCallback =
     errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
 
+  // Set Effects
+  //----------------------------------------------------------------------------
   React.useEffect(fetchReportDataEfect);
   // Whenever data changed, check for errors messages to give to react form hook
   React.useEffect(errorHandlingEffect);
