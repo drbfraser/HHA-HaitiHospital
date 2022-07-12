@@ -14,6 +14,7 @@ const passportLogin = new PassportLocalStrategy(
     passReqToCallback: true
   },
   async (req: Request, username: string, password: string, done) => {
+    // TODO: validate with express-validator
     loginSchema
       .validateAsync({ username, password })
       .then((val) => {

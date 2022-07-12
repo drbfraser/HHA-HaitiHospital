@@ -78,7 +78,7 @@ const Admin = (props: AdminProps) => {
           match={undefined}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
-          <Link to="/admin/add-user">
+          <Link to={Paths.getAdminAddUser()}>
             <button type="button" className="btn btn-outline-dark">
               {t('button.add_user')}
             </button>

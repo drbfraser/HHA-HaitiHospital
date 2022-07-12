@@ -9,6 +9,7 @@ import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, Inter
 import { RequestWithUser } from 'utils/definitions/express';
 import { roleAuth } from 'middleware/roleAuth';
 import { Role } from 'models/user';
+import { BiomechApiIn } from './jsons/biomech';
 
 const router = Router();
 
@@ -36,24 +37,23 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
   }
 });
 
-router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single('file'), (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single(`${BiomechApiIn.FILE_FIELD}`), (req: RequestWithUser, res: Response, next: NextFunction) => {
   const user = req.user;
   const userId = user._id!;
   const department = user.departmentId;
-  const { equipmentName, equipmentFault, equipmentPriority } = JSON.parse(req.body.document);
-
-  let imgPath: string = '';
+  const submitData: BiomechApiIn.BiomechPost = req.body;
   if (req.file) {
-    imgPath = req.file.path.replace(/\\/g, '/');
+    submitData.file = req.file;
+    submitData.file.path = req.file.path.replace(/\\/g, '/');
   }
 
   const bioMech: BioMech = {
     userId: userId,
     departmentId: department,
-    equipmentName: equipmentName,
-    equipmentFault: equipmentFault,
-    equipmentPriority: equipmentPriority,
-    imgPath: imgPath,
+    equipmentName: submitData.equipmentName,
+    equipmentFault: submitData.equipmentFault,
+    equipmentPriority: submitData.equipmentPriority,
+    imgPath: submitData.file.path,
     createdAt: new Date(),
     updatedAt: new Date()
   };
