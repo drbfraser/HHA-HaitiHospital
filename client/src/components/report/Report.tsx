@@ -90,6 +90,7 @@ const fetchMockReportData = async (): Promise<ReportForm> => {
     return ReportApiUtils.toReportData(data);
 }
 
+
 function FormContents(props: { path: string }) {
   const formHook = useForm();
 // Commented out to avoid unused variable warning. May put it back once translation is supported.
@@ -113,28 +114,37 @@ function FormContents(props: { path: string }) {
         }
       })();
     };
+
+  const errorHandlerEffectGenerator: <T extends unknown>(
+    condition: (item: ItemField) => boolean,
+    handler: (item: ItemField) => void
+  ) => EffectCallback = (condition, handler) => () => {
+    if (state.value !== StateType.ready) return;
+    console.assert(state.data, "Invalid state: in error handler with null data.");
+    state.data.itemFields
+      .filter(condition)
+      .forEach(handler);
+  };
+
+  // Give error messages to react hook
+  const mockErrorHandling: (invalidItem: ItemField) => void = (invalidItem) => {
+    const id = invalidItem.id;
+    const error = {
+      type: 'invlaid-input',
+      message: invalidItem.errorMessage,
+    };
+    //  This changes the analogous to a setState call, thus must be called here.
+    formHook.setError(id, error);
+  }
   
   const fetchReportDataEfect: EffectCallback =
     reportDataFetchingEffectGenerator(fetchMockReportData);
+  const errorHandlingEffect: EffectCallback =
+    errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
 
-  React.useEffect(fetchReportDataEfect, []);
-
+  React.useEffect(fetchReportDataEfect);
   // Whenever data changed, check for errors messages to give to react form hook
-  React.useEffect(() => {
-    if (state.value === StateType.loading || state.value === StateType.error) return;
-    (state.data as ReportForm).itemFields
-      .filter((item) => !(item as ItemField).valid)
-      .forEach((invalidItem : ItemField) => {
-        const id = invalidItem.id;
-        const message = invalidItem.errorMessage;
-        const error = {
-          type: 'invalid-input',
-          message: message,
-        };
-        //  This changes the analogous to a setState call, thus must be called here.
-        formHook.setError(id, error);
-      });
-  }, [state, formHook]);
+  React.useEffect(errorHandlingEffect);
 
   const editButtonHandler = () => setReadOnly(false);
 
