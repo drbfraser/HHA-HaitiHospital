@@ -17,6 +17,7 @@ import {ItemGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
 import { setConstantValue } from 'typescript';
+import { stat } from 'fs';
 
 // Data structure containing additional properties pertinent to the front-end
 export interface ReportForm {
@@ -70,7 +71,8 @@ export type ErrorData = {
 
 type State = {
   value: StateType;
-  data: ReportForm | ErrorData;
+  data: ReportForm;
+  errorData?: ErrorData;
 };
 
 function Loading(): State {
@@ -79,8 +81,8 @@ function Loading(): State {
 function Ready(data: ReportForm): State {
   return { value: StateType.ready, data: data };
 }
-function Error(data: ErrorData): State {
-  return { value: StateType.error, data: data };
+function Error(errorData: ErrorData): State {
+  return { value: StateType.error, data: null, errorData: errorData };
 }
 
 const fetchMockReportData = async (): Promise<ReportForm> => {
@@ -100,8 +102,8 @@ function FormContents(props: { path: string }) {
   const pageTop = React.useRef(null);
 
   const reportDataFetchingEffectGenerator:
-    (fetcher: () => Promise<ReportForm>) => EffectCallback = (fetcher) => {
-    return () => {
+    (fetcher: () => Promise<ReportForm>) => EffectCallback = (fetcher) =>
+    () => {
       (async () => {
         try {
           const reportData: ReportForm = await fetcher();
@@ -111,8 +113,7 @@ function FormContents(props: { path: string }) {
         }
       })();
     };
-  }
-
+  
   const fetchReportDataEfect: EffectCallback =
     reportDataFetchingEffectGenerator(fetchMockReportData);
 
@@ -167,7 +168,10 @@ function FormContents(props: { path: string }) {
   };
 
   const renderError = () => {
-    const errorData = state.data as ErrorData;
+    console.assert(
+      state.errorData,
+      `Invalid state: Calling renderError() with errorData set to ${state.errorData}.`)
+    const errorData = state.errorData;
     return (
       <div className="row justify-content-center text-center" style={{ marginTop: '25%' }}>
         <h1 className="text-danger">{`Error code: ${errorData.code}`}</h1>
