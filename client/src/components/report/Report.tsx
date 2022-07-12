@@ -83,33 +83,40 @@ function Error(data: ErrorData): State {
   return { value: StateType.error, data: data };
 }
 
-const fetchMockReportData = (setState: React.Dispatch<React.SetStateAction<State>>): EffectCallback => {
-  return () => {
-    (async (): Promise<void> => {
-      try {
-        const data = await MockApi.getDataDelay(1500, true);
-        const reportData = ReportApiUtils.toReportData(data);
-        setState({ value: StateType.ready, data: reportData });
-      } catch (err) {
-        setState(Error(err));
-      }
-    })()
-  };
+const fetchMockReportData = async (): Promise<ReportForm> => {
+    const data = await MockApi.getDataDelay(1500, true);
+    return ReportApiUtils.toReportData(data);
 }
 
 function FormContents(props: { path: string }) {
   const formHook = useForm();
 // Commented out to avoid unused variable warning. May put it back once translation is supported.
 //   const { t, i18n } = useTranslation();
+
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
 
-  const fetchReportData: EffectCallback = fetchMockReportData(setState);
+  const reportDataFetchingEffectGenerator:
+    (fetcher: () => Promise<ReportForm>) => EffectCallback = (fetcher) => {
+    return () => {
+      (async () => {
+        try {
+          const reportData: ReportForm = await fetcher();
+          setState({ value: StateType.ready, data: reportData });
+        } catch (err) {
+          setState(Error(err));
+        }
+      })();
+    };
+  }
 
-  React.useEffect(fetchReportData, []);
+  const fetchReportDataEfect: EffectCallback =
+    reportDataFetchingEffectGenerator(fetchMockReportData);
+
+  React.useEffect(fetchReportDataEfect, []);
 
   // Whenever data changed, check for errors messages to give to react form hook
   React.useEffect(() => {
