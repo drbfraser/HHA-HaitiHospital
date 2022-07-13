@@ -16,6 +16,7 @@ import * as ReportApiUtils from './ReportUtils';
 import {ItemGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
+import assert from 'assert';
 
 // Data structure containing additional properties pertinent to the front-end
 export interface ReportForm {
@@ -120,7 +121,7 @@ function FormContents(props: { path: string }) {
     handler: (item: ItemField) => void
   ) => EffectCallback = (condition, handler) => () => {
     if (state.value !== StateType.ready) return;
-    console.assert(state.data, "Invalid state: in error handler with null data.");
+    assert(state.data, "Invalid state: in error handler with null data.");
     state.data.itemFields
       .filter(condition)
       .forEach(handler);
@@ -138,13 +139,52 @@ function FormContents(props: { path: string }) {
     //  This changes the analogous to a setState call, thus must be called here.
     formHook.setError(id, error);
   }
-  
+
+  // Handler Generators
+  //----------------------------------------------------------------------------
+  const submitHandlerGenerator: (
+    formAssembler: (report: ReportForm, answers: ReportApiUtils.Answers) => JsonReportDescriptor,
+    formSubmitter: (jsonReport: JsonReportDescriptor) => Promise<void>,
+    onSuccess?: (report: ReportForm) => void,
+    onError?: (error: any) => void
+  ) => (answers: ReportApiUtils.Answers) => Promise<void> =
+  (formAssembler, formSubmitter, onSuccess?, errorHandler?) => async (answers) => {
+    assert(state.data, "Invalid state: No report form has been assigned to state");
+    setSubmitting(true);
+    try {
+      const jsonDescriptor = await formAssembler(state.data, answers);
+      await formSubmitter(jsonDescriptor);
+      const reportFormWithAnswers: ReportForm = {
+        jsonDescriptor: jsonDescriptor,
+        itemFields: state.data.itemFields
+      }
+      const nextState = Ready(reportFormWithAnswers);
+      setReadOnly(true);
+      onSuccess?.(reportFormWithAnswers);
+      setState(nextState);
+    } catch (err: any) {
+      errorHandler?.(err)
+      const nextState = err.code < 500 ? Ready(err.data) : Error({ code: err.code, message: err.message });
+      setState(nextState);
+    }
+    setSubmitting(false);
+  }
+
   // Get Effects
   //----------------------------------------------------------------------------
   const fetchReportDataEfect: EffectCallback =
     reportDataFetchingEffectGenerator(fetchMockReportData);
   const errorHandlingEffect: EffectCallback =
     errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
+
+  // Get Handlers
+  //----------------------------------------------------------------------------
+  const submitHandler = submitHandlerGenerator(
+    ReportApiUtils.assembleData,
+    async (data) => { MockApi.submitData(data, 2000, true) },
+    () => toast.success('Data submitted'),
+    (err) => toast.error(`Error ${err.code}: ${err.message}`)
+  )
 
   // Set Effects
   //----------------------------------------------------------------------------
@@ -153,27 +193,6 @@ function FormContents(props: { path: string }) {
   React.useEffect(errorHandlingEffect);
 
   const editButtonHandler = () => setReadOnly(false);
-
-  const submitHandler : (answers: ReportApiUtils.Answers) => void = async (answers) => {
-    const submittingData : ReportForm = state.data as ReportForm;
-    setSubmitting(true);
-    try {
-      const data = await ReportApiUtils.submitData(answers, submittingData);
-      const ReportFormWithAnswers: ReportForm = {
-        jsonDescriptor: data,
-        itemFields: submittingData.itemFields
-      };
-      const nextState = Ready(ReportFormWithAnswers);
-      setReadOnly(true);
-      toast.success('Data submitted');
-      setState(nextState);
-    } catch (err) {
-      const nextState = err.code < 500 ? Ready(err.data) : Error({ code: err.code, message: err.message });
-      toast.error(`Error ${err.code}: ${err.message}`);
-      setState(nextState);
-    }
-    setSubmitting(false);
-  };
 
   const renderLoading = () => {
     return (
@@ -184,7 +203,7 @@ function FormContents(props: { path: string }) {
   };
 
   const renderError = () => {
-    console.assert(
+    assert(
       state.errorData,
       `Invalid state: Calling renderError() with errorData set to ${state.errorData}.`)
     const errorData = state.errorData;

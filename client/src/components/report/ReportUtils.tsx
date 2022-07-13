@@ -13,12 +13,11 @@ export const submitData = async (answers: Answers, data: ReportForm) : Promise<J
    * Here we make a request to server and handle the responses.
    * Todo: refactor
    */
-
-  const assemData = assembleData(answers, data);
+  const assemData = assembleData(data, answers);
   return await MockApi.submitData(assemData, 2000, true);
 };
 
-const assembleData = (answers: Answers, data: ReportForm): JsonReportDescriptor => {
+export const assembleData = (data: ReportForm, answers: Answers): JsonReportDescriptor => {
   const reportItemsWithAnswers : JsonReportItems = data.itemFields
     .map((itemField: ItemField): JsonReportItem => {
     const answer : Array<JsonItemAnswer> = answers[itemField.id];
