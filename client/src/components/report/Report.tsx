@@ -122,7 +122,7 @@ function FormContents(props: { path: string }) {
 
   const editButtonHandler = () => setReadOnly(false);
 
-  const submitHandler = async (answers) => {
+  const submitHandler : (answers: ReportApiUtils.Answers) => void = async (answers) => {
     const submittingData : ReportForm = state.data as ReportForm;
     setSubmitting(true);
     try {

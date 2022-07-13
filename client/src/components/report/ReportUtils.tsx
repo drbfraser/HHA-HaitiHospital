@@ -4,6 +4,10 @@ import { type } from 'os';
 import * as MockApi from './MockApi';
 import { ItemField, ReportForm, itemFieldToReportItem } from './Report';
 
+export interface Answers {
+  [id: number]: string;
+}
+
 export const submitData = async (answers: object, data: ReportForm) : Promise<JsonReportDescriptor> => {
   /*
    * Here we make a request to server and handle the responses.
