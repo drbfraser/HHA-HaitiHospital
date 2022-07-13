@@ -31,6 +31,7 @@ const ReportView = () => {
         <main>
           <Header />
 
+          {/* this is just a skeleton, showing the raw json at the moment, as suggested by Dr. Fraser */}
           <div>{JSON.stringify(report)}</div>
 
         </main>
