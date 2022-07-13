@@ -27,11 +27,6 @@ export const AddUserForm = (props: AdminProps) => {
   const { t } = useTranslation();
   const history: History = useHistory<History>();
   
-  const [userNameError, setUserNameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [nameError, setNameError] = useState('');
-
-  
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
@@ -58,22 +53,6 @@ export const AddUserForm = (props: AdminProps) => {
     toast.success(ResponseMessage.getMsgCreateUserOk());
     history.push(Paths.getAdminMain());
   };
-
-  const mapErrors = (errors: any[]) => {
-    errors.forEach(e => {
-      switch(e.param){
-        case('username'):
-          setUserNameError("*"+e.msg);
-          break;
-        case('password'):
-          setPasswordError("*"+e.msg);
-          break;
-        case('name'):
-          setNameError("*"+e.msg);
-          break;
-      }
-    });
-  }
 
   const submitForm = async (data: AdminUserFormData) => {
     await Api.Post(
