@@ -37,7 +37,8 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
   }
 });
 
-router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single(`${BiomechApiIn.FILE_FIELD}`), (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single(BiomechApiIn.FILE_FIELD), (req: RequestWithUser, res: Response, next: NextFunction) => {
+    console.log(req);
   const user = req.user;
   const userId = user._id!;
   const department = user.departmentId;
@@ -46,7 +47,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
     submitData.file = req.file;
     submitData.file.path = req.file.path.replace(/\\/g, '/');
   }
-
+//   console.log(submitData);
   const bioMech: BioMech = {
     userId: userId,
     departmentId: department,

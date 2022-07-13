@@ -27,8 +27,12 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
   };
 
   const onSubmit = async (data: BiomechForm) => {
+    console.log(data);
+    // const formData = new FormData();
+    // Object.keys(data).forEach(key => formData.append(key, data[key])) 
     await Api.Post(
       ENDPOINT_BIOMECH_POST,
+    //   formData,
       data,
       onSubmitOk,
       ResponseMessage.getMsgCreateReportFailed(),
@@ -50,7 +54,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
         </div>
 
         <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
             <div className="form-group col-md-6">
               <label className="font-weight-bold">{t('biomech.report.title')}</label>
               <div>
@@ -62,7 +66,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   type="text"
                   id="Equipment Name"
                   required
-                  {...register(`${BIOMECH_REPORT_FIELDS.equipmentName}`)}
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentName)}
                 ></input>
                 <label htmlFor="Equipment Fault" className="form-label">
                   {t('biomech.report.issue')}
@@ -71,7 +75,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   className="form-control mb-2 mt-0"
                   id="Equipment Fault"
                   required
-                  {...register(`${BIOMECH_REPORT_FIELDS.equipmentFault}`)}
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentFault)}
                 ></textarea>
                 <label htmlFor="Equipment Priority" className="form-label">
                   {t('biomech.report.priority')}
@@ -81,9 +85,12 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   id="Equipment Priority"
                   aria-label="Default select example"
                   required
-                  {...register(`${BIOMECH_REPORT_FIELDS.equipmentPriority}`)}
+                  defaultValue=""
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentPriority)}
                 >
-                  <option value="" disabled hidden>{t('biomech.report.inquiry_priority')}</option>
+                  <option value="" disabled hidden>
+                    {t('biomech.report.inquiry_priority')}
+                  </option>
                   <option value={BiomechPriority.URGENT}>
                     {t(`biomech.priority.${BiomechPriority.URGENT}`)}
                   </option>
@@ -103,8 +110,12 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   className="form-control"
                   id="customFile"
                   required
-                  {...register(`${BIOMECH_REPORT_FIELDS.file}`, {
-                    onChange: (e) => imageCompressor(e.target.files[0], setValue) 
+                  {...(register(BIOMECH_REPORT_FIELDS.file),
+                  {
+                    onChange: (e) =>
+                      imageCompressor(e.target.files.item(0), (result) =>
+                        setValue(BIOMECH_REPORT_FIELDS.file, result)
+                      )
                   })}
                 />
               </div>
@@ -114,10 +125,8 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   {t('button.submit')}
                 </button>
               </div>
-
             </div>
           </form>
-
         </div>
       </main>
     </div>

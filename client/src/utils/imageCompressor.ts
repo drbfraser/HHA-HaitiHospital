@@ -1,15 +1,17 @@
 import Compressor from 'compressorjs';
 
-const blobToFile = (blob: any): File => {
-  return new File([blob], blob.name, { type: blob.type });
+const blobToFile = (blob: Blob, name: string): File => {
+  return new File([blob], name, { type: blob.type });
 };
 
-const imageCompressor = (image: any, actions: any) => {
+const imageCompressor = (image: File, okActions: (result: File) => void) => {
   new Compressor(image, {
     quality: 0.8,
-    success: (compressedBlob) => {
-      actions(blobToFile(compressedBlob));
+    success: (result) => {
+      if (result instanceof File) okActions(result)
+      else okActions(blobToFile(result, image.name));
     },
+    error: (e: Error) => { console.log(e); }
   });
 };
 
