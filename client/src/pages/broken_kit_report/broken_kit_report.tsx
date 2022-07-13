@@ -27,13 +27,12 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
   };
 
   const onSubmit = async (data: BiomechForm) => {
-    console.log(data);
-    // const formData = new FormData();
-    // Object.keys(data).forEach(key => formData.append(key, data[key])) 
+    // Parse to FormData() to support multipart/data-form form
+    const formData = new FormData();
+    Object.keys(data).forEach(key => formData.append(key, data[key])) 
     await Api.Post(
       ENDPOINT_BIOMECH_POST,
-    //   formData,
-      data,
+      formData,
       onSubmitOk,
       ResponseMessage.getMsgCreateReportFailed(),
       history,

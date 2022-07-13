@@ -92,7 +92,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
           <div className="broken-kit-container mb-5">
             <div className="broken-kit-subcontainer">
               <div style={{ display: 'flex', flex: '1 1 auto' }}>
-                <div className="w-100 pr-2">kkk
+                <div className="w-100 pr-2">
                   <h2 className="mt-3 mb-3 fw-bold">{t('biomech.view_report.title')}</h2>
                   <h6 className="fs-6 lh-base">
                     {`${t('biomech.view_report.author')}: `}
