@@ -184,7 +184,8 @@ function FormContents(props: { path: string }) {
     async (data) => { MockApi.submitData(data, 2000, true) },
     () => toast.success('Data submitted'),
     (err) => toast.error(`Error ${err.code}: ${err.message}`)
-  )
+  );
+  const editButtonHandler = () => setReadOnly(false);
 
   // Set Effects
   //----------------------------------------------------------------------------
@@ -192,7 +193,6 @@ function FormContents(props: { path: string }) {
   // Whenever data changed, check for errors messages to give to react form hook
   React.useEffect(errorHandlingEffect);
 
-  const editButtonHandler = () => setReadOnly(false);
 
   const renderLoading = () => {
     return (
