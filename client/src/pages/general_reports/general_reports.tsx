@@ -74,7 +74,7 @@ const GeneralReports = () => {
                     <td>{item.meta.submittedDate}</td>
                     <td>{item.meta.submittedUserId}</td>
                     <td>
-                      <Link to="/general-reports" className="btn-link text-decoration-none">
+                      <Link to={"/report-view/" + item.meta.id} className="btn-link text-decoration-none">
                         {t('reportsOpenReport')}
                       </Link>
                     </td>
