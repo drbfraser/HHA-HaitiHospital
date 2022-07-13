@@ -239,18 +239,14 @@ function FormContents(props: { path: string }) {
     const [labels, sections] = extractGroupings(data);
     const totalSections = labels.length;
     const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
-      switch (name) {
-        case 'next':
-          setSectionIdx((section + 1) % totalSections);
-          break;
-        case 'prev':
-          setSectionIdx((section - 1) % totalSections);
-          break;
-        case 'section-clicked':
-          setSectionIdx(section);
-          break;
-        default:
-      }
+      const getSectionNumber: { [command: string]: number } =
+      {
+        'next': (section + 1) % totalSections,
+        'prev': (section - 1) % totalSections,
+        'section-clicked': section
+      };
+
+      setSectionIdx(getSectionNumber[name]);
       pageTop.current.scrollIntoView();
     };
 
