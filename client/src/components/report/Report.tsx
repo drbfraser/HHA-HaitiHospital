@@ -91,6 +91,8 @@ const fetchMockReportData = async (): Promise<ReportForm> => {
 
 
 function FormContents(props: { path: string }) {
+  // Get React States
+  //----------------------------------------------------------------------------
   const formHook = useForm();
 // Commented out to avoid unused variable warning. May put it back once translation is supported.
 //   const { t, i18n } = useTranslation();
@@ -100,6 +102,10 @@ function FormContents(props: { path: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<State>(Loading());
   const pageTop = React.useRef(null);
+
+  //============================================================================
+  // Effects
+  //============================================================================
 
   // Effect Generators
   //----------------------------------------------------------------------------
@@ -140,6 +146,22 @@ function FormContents(props: { path: string }) {
     formHook.setError(id, error);
   }
 
+  // Get Effects
+  //----------------------------------------------------------------------------
+  const fetchReportDataEfect: EffectCallback =
+    reportDataFetchingEffectGenerator(fetchMockReportData);
+  const errorHandlingEffect: EffectCallback =
+    errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
+
+  // Set Effects
+  //----------------------------------------------------------------------------
+  React.useEffect(fetchReportDataEfect);
+  React.useEffect(errorHandlingEffect);
+
+  //============================================================================
+  // Handlers
+  //============================================================================
+
   // Handler Generators
   //----------------------------------------------------------------------------
   const submitHandlerGenerator: (
@@ -170,13 +192,6 @@ function FormContents(props: { path: string }) {
     setSubmitting(false);
   }
 
-  // Get Effects
-  //----------------------------------------------------------------------------
-  const fetchReportDataEfect: EffectCallback =
-    reportDataFetchingEffectGenerator(fetchMockReportData);
-  const errorHandlingEffect: EffectCallback =
-    errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
-
   // Get Handlers
   //----------------------------------------------------------------------------
   const submitHandler = submitHandlerGenerator(
@@ -187,13 +202,12 @@ function FormContents(props: { path: string }) {
   );
   const editButtonHandler = () => setReadOnly(false);
 
-  // Set Effects
-  //----------------------------------------------------------------------------
-  React.useEffect(fetchReportDataEfect);
-  // Whenever data changed, check for errors messages to give to react form hook
-  React.useEffect(errorHandlingEffect);
+  //============================================================================
+  // Rendering
+  //============================================================================
 
-
+  // Rendering Functions
+  // ----------------------------------------------------------------------------
   const renderLoading = () => {
     return (
       <div className="row justify-content-center" style={{ marginTop: '25%' }}>
@@ -271,6 +285,8 @@ function FormContents(props: { path: string }) {
     );
   };
 
+  // State-to-Render Mapping
+  //----------------------------------------------------------------------------
   switch (state.value) {
     case StateType.loading:
       return renderLoading();
