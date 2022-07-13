@@ -46,14 +46,13 @@ const Post = async (
   actions: any,
   errorMsg: string,
   history: History,
-  errorActions?: any
 ): Promise<void> => {
   try {
     await axios.post(url, obj);
     actions();
     return;
   } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg, errorActions);
+    DbErrorHandler(error, history, errorMsg);
     return;
   }
 };
