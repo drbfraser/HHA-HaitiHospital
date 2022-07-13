@@ -17,6 +17,7 @@ import {ItemGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
 import assert from 'assert';
+import { JsxEmit } from 'typescript';
 
 // Data structure containing additional properties pertinent to the front-end
 export interface ReportForm {
@@ -91,11 +92,12 @@ const fetchMockReportData = async (): Promise<ReportForm> => {
 
 
 function FormContents(props: { path: string }) {
-  // Get React States
-  //----------------------------------------------------------------------------
+  //============================================================================
+  // React State Definitions
+  //============================================================================
   const formHook = useForm();
-// Commented out to avoid unused variable warning. May put it back once translation is supported.
-//   const { t, i18n } = useTranslation();
+  // Commented out to avoid unused variable warning. May put it back once translation is supported.
+  //   const { t, i18n } = useTranslation();
 
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
@@ -104,7 +106,7 @@ function FormContents(props: { path: string }) {
   const pageTop = React.useRef(null);
 
   //============================================================================
-  // Effects
+  // Effect Definitions
   //============================================================================
 
   // Effect Generators
@@ -153,13 +155,8 @@ function FormContents(props: { path: string }) {
   const errorHandlingEffect: EffectCallback =
     errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
 
-  // Set Effects
-  //----------------------------------------------------------------------------
-  React.useEffect(fetchReportDataEfect);
-  React.useEffect(errorHandlingEffect);
-
   //============================================================================
-  // Handlers
+  // Handler Definitions
   //============================================================================
 
   // Handler Generators
@@ -200,10 +197,11 @@ function FormContents(props: { path: string }) {
     () => toast.success('Data submitted'),
     (err) => toast.error(`Error ${err.code}: ${err.message}`)
   );
+
   const editButtonHandler = () => setReadOnly(false);
 
   //============================================================================
-  // Rendering
+  // Rendering Definitions (Depends on Handlers)
   //============================================================================
 
   // Rendering Functions
@@ -287,14 +285,21 @@ function FormContents(props: { path: string }) {
 
   // State-to-Render Mapping
   //----------------------------------------------------------------------------
-  switch (state.value) {
-    case StateType.loading:
-      return renderLoading();
-    case StateType.error:
-      return renderError();
-    default:
-      return renderContent();
-  }
+  const stateRenders: Map<StateType, () => JSX.Element> = new Map([
+    [StateType.loading, renderLoading],
+    [StateType.error, renderError],
+    [StateType.ready, renderContent]
+  ]);
+
+
+  //============================================================================
+  // Execution
+  //============================================================================
+
+  React.useEffect(fetchReportDataEfect);
+  React.useEffect(errorHandlingEffect);
+
+  return stateRenders.get(state.value)();
 }
 
 function extractGroupings(data: ReportForm): [ItemField[], ItemField[][]] {
