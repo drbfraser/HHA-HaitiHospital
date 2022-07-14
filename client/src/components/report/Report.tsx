@@ -124,7 +124,7 @@ function FormContents(props: { path: string }) {
       })();
     };
 
-  const errorHandlerEffectGenerator: <T extends unknown>(
+  const errorHandlerEffectGenerator: (
     condition: (item: ItemField) => boolean,
     handler: (item: ItemField) => void
   ) => EffectCallback = (condition, handler) => () => {
