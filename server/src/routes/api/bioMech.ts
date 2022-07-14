@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
-import { singleFileUploader } from 'middleware/upload';
+import { oneImageUploader } from 'middleware/upload';
 import { validateInput } from 'middleware/inputSanitization';
 import BioMechCollection, { BioMech } from 'models/bioMech';
 import { registerBioMechCreate } from 'schema/registerBioMech';
@@ -37,12 +37,11 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
   }
 });
 
-router.post('/', requireJwtAuth, singleFileUploader(BiomechApiIn.FILE_FIELD), registerBioMechCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.post('/', requireJwtAuth, oneImageUploader(BiomechApiIn.FILE_FIELD), registerBioMechCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const user = req.user;
   const userId = user._id!;
   const department = user.departmentId;
-  let submitData: BiomechApiIn.BiomechPost = { ...req.body, file: req.file };
-  submitData.file.path = req.file!.path.replace(/\\/g, '/');
+  let submitData: BiomechApiIn.BiomechPost = req.body;
 
   const bioMech: BioMech = {
     userId: userId,
