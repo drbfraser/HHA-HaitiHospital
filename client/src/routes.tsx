@@ -73,7 +73,7 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/report-view',
+    path: '/report-view/:id',
     component: ReportView,
     loginRequired: true,
     rolesAllowed: [],
