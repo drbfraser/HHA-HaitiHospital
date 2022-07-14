@@ -293,7 +293,7 @@ function FormContents(props: { path: string }) {
   //============================================================================
 
   React.useEffect(fetchReportDataEfect);
-  React.useEffect(errorHandlingEffect);
+  React.useEffect(errorHandlingEffect, [state, formHook]);
 
   return stateRenders.get(state.value)();
 }
