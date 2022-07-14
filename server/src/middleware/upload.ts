@@ -37,6 +37,7 @@ export const oneImageUploader = (inputField: string) => {
     multerSingle(req, res, (error) => {
       if (error) next(error);
       else {
+        req.file!.path = req.file!.path.replace(/\\/g, '/');
         req.body.file = req.file;
         next();
       }

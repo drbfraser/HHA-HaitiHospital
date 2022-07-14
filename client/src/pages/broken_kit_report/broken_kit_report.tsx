@@ -105,7 +105,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                 </label>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/png,image/jpeg,image/jpg"
                   className="form-control"
                   id="customFile"
                   required
