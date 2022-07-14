@@ -162,11 +162,11 @@ function FormContents(props: { path: string }) {
   // Handler Generators
   //----------------------------------------------------------------------------
   const submitHandlerGenerator: (
-    formAssembler: (report: ReportForm, answers: ReportApiUtils.Answers) => JsonReportDescriptor,
+    formAssembler: (report: ReportForm, answers: any) => JsonReportDescriptor,
     formSubmitter: (jsonReport: JsonReportDescriptor) => Promise<void>,
     onSuccess?: (report: ReportForm) => void,
     onError?: (error: any) => void
-  ) => (answers: ReportApiUtils.Answers) => Promise<void> =
+  ) => (answers: any) => Promise<void> =
   (formAssembler, formSubmitter, onSuccess?, errorHandler?) => async (answers) => {
     assert(state.data, "Invalid state: No report form has been assigned to state");
     setSubmitting(true);
