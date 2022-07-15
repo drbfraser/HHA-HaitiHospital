@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
-import upload from 'middleware/upload';
+import { singleFileUploader } from 'middleware/upload';
 import { validateInput } from 'middleware/inputSanitization';
 import BioMechCollection, { BioMech } from 'models/bioMech';
 import { registerBioMechCreate } from 'schema/registerBioMech';
@@ -37,15 +37,13 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
   }
 });
 
-router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.single(BiomechApiIn.FILE_FIELD), (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.post('/', requireJwtAuth, singleFileUploader(BiomechApiIn.FILE_FIELD), registerBioMechCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const user = req.user;
   const userId = user._id!;
   const department = user.departmentId;
-  const submitData: BiomechApiIn.BiomechPost = req.body;
-  if (req.file) {
-    submitData.file = req.file;
-    submitData.file.path = req.file.path.replace(/\\/g, '/');
-  }
+  let submitData: BiomechApiIn.BiomechPost = { ...req.body, file: req.file };
+  submitData.file.path = req.file!.path.replace(/\\/g, '/');
+
   const bioMech: BioMech = {
     userId: userId,
     departmentId: department,
@@ -60,7 +58,7 @@ router.post('/', requireJwtAuth, registerBioMechCreate, validateInput, upload.si
   doc
     .save()
     .then(() => res.sendStatus(HTTP_CREATED_CODE))
-    .catch((err: any) => next(new InternalError(`BioMech Report submission failed: ${err}`)));
+    .catch((err: any) => next(new InternalError(`Mongoose: Save biomech report failed: ${err}`)));
 });
 
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), (req: RequestWithUser, res: Response, next: NextFunction) => {

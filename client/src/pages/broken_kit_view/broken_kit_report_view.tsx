@@ -104,11 +104,11 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                       timeZone: timezone,
                     })}
                   </h6>
-                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.equipment_name')}</h6>
-                  <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
                   <h6 className="fs-6 fw-bold lh-base">
-                    {t('biomech.view_report.priority')}
+                    {t('biomech.view_report.equipment_name')}
                   </h6>
+                  <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
+                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.priority')}</h6>
                   <p className="fs-6 lh-base text-break">
                     {
                       <Badge bg={setPriority(BioReport.equipmentPriority)}>
