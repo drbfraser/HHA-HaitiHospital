@@ -14,3 +14,7 @@
     width: calc(100% - 70px);
   }
 }
+
+.errorMsg {
+  color: red;
+}

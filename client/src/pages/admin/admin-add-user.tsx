@@ -12,6 +12,7 @@ import './admin.css';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
+import axios, { AxiosError } from 'axios';
 import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
@@ -25,7 +26,7 @@ export const AddUserForm = (props: AdminProps) => {
   const [fetch, setFetch] = useState<boolean>(false);
   const { t } = useTranslation();
   const history: History = useHistory<History>();
-
+  
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
@@ -71,7 +72,6 @@ export const AddUserForm = (props: AdminProps) => {
       ) : (
         <main className="container-fluid main-region">
           <Header />
-
           <div className="ml-3 mb-3 d-flex justify-content-start">
             <Link to={Paths.getAdminMain()}>
               <button type="button" className="btn btn-outline-dark">
