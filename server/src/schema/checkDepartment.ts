@@ -6,7 +6,9 @@ export const checkDepartment = () => {
     if (department) {
       [
         check('department.id')
-          .notEmpty()
+          .not()
+          .isEmpty()
+          .withMessage('Department Id must be non empty')
           .custom((id) => mongoose.isValidObjectId(id))
           .withMessage('Department Id must be non empty and a valid mongoose Id'),
         check('department.name').notEmpty().trim().withMessage('Department name must be non empty')
