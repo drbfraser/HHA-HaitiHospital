@@ -93,7 +93,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
             <div className="broken-kit-subcontainer">
               <div style={{ display: 'flex', flex: '1 1 auto' }}>
                 <div className="w-100 pr-2">
-                  <h2 className="mt-3 mb-3 fw-bold">{t('brokenKitReportBrokenKitReport')}</h2>
+                  <h2 className="mt-3 mb-3 fw-bold">{t('biomech.view_report.title')}</h2>
                   <h6 className="fs-6 lh-base">
                     {`${t('biomech.view_report.author')}: `}
                     {BioReport.user ? BioReport.user.name : 'status.not_available'}
@@ -104,7 +104,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                       timeZone: timezone,
                     })}
                   </h6>
-                  <h6 className="fs-6 fw-bold lh-base">{t('brokenKitReportNameOfEquipment')}</h6>
+                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.equipment_name')}</h6>
                   <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
                   <h6 className="fs-6 fw-bold lh-base">
                     {t('biomech.view_report.priority')}

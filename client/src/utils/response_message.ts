@@ -151,6 +151,22 @@ const getMsgFetchReportsFailed = (): string => {
   });
 };
 
+const getMsgCreateReportOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.REPORT,
+  });
+};
+
+const getMsgCreateReportFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.REPORT,
+  });
+};
+
 const getMsgFetchImageFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.FETCH,
@@ -175,6 +191,8 @@ export const ResponseMessage = {
   getMsgDeleteReportFailed,
   getMsgFetchReportFailed,
   getMsgFetchReportsFailed,
+  getMsgCreateReportOk,
+  getMsgCreateReportFailed,
 
   getMsgFetchImageFailed
 };
