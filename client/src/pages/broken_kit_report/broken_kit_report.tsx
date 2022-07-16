@@ -29,7 +29,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
   const onSubmit = async (data: BiomechForm) => {
     // Parse to FormData() to support multipart/data-form form
     const formData = new FormData();
-    Object.keys(data).forEach(key => formData.append(key, data[key])) 
+    Object.keys(data).forEach((key) => formData.append(key, data[key]));
     await Api.Post(
       ENDPOINT_BIOMECH_POST,
       formData,
@@ -53,7 +53,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
         </div>
 
         <div>
-          <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group col-md-6">
               <label className="font-weight-bold">{t('biomech.report.title')}</label>
               <div>
@@ -111,10 +111,21 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   required
                   {...(register(BIOMECH_REPORT_FIELDS.file),
                   {
-                    onChange: (e) =>
-                      imageCompressor(e.target.files.item(0), (result) =>
-                        setValue(BIOMECH_REPORT_FIELDS.file, result)
-                      )
+                    onChange: (e) => {
+                      if (e.target.files.length === 0) return;
+                      return imageCompressor(
+                        e.target.files.item(0),
+                        (result) => {
+                          setValue(BIOMECH_REPORT_FIELDS.file, result);
+                        },
+                        (error) => {
+                          e.target.files = null;
+                          e.target.value = '';
+                          setValue(BIOMECH_REPORT_FIELDS.file, ''); 
+                          toast.error(error.message);
+                        },
+                      );
+                    },
                   })}
                 />
               </div>

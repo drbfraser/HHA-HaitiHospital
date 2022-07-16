@@ -356,6 +356,12 @@
     "image": "image"
   },
 
+  "error_message": {
+    "compress": {
+        "image": "Impossible de compresser ce fichier image"
+    }
+  },
+
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",
   "monthMarch": "Mars",

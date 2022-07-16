@@ -1,3 +1,4 @@
+import { BadRequest } from 'exceptions/httpException';
 import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 
@@ -32,15 +33,18 @@ const upload = multer({
 // since they only look for input fields inside
 // req.body, req.param, req.query, req.header, ... (by convention)
 export const oneImageUploader = (inputField: string) => {
-  const multerSingle = upload.single(inputField);
-  return (req: Request, res: Response, next: NextFunction) =>
+  return (req: Request, res: Response, next: NextFunction) => {
+    const multerSingle = upload.single(inputField);
     multerSingle(req, res, (error) => {
-      if (error) next(error);
-      else {
+      if (error) {
+        next(new BadRequest(error.message))
+      } else {
+        if (!req.file) next(new BadRequest(`Expecting an image`));
         req.file!.path = req.file!.path.replace(/\\/g, '/');
         req.body.file = req.file;
         next();
       }
     });
+  };
 };
 export default upload;

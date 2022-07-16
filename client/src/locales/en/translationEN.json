@@ -357,6 +357,12 @@
     "image": "image"
   },
 
+  "error_message": {
+    "compress": {
+        "image": "Can't compress this image file"
+    }
+  },
+
   "monthJanuary": "January",
   "monthFebruary": "February",
   "monthMarch": "March",

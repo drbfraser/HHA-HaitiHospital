@@ -32,7 +32,7 @@ const DbErrorHandler = (e, history: History, toastMsg: string, errorActions?: an
     }
     case CONFLICT_CODE:
     case BADREQUEST_CODE: {
-      toast.error(toastMsg);
+      toast.error(`${toastMsg}: Invalid input`);
       break;
     }
     case UNPROCCESABLENTITY_CODE: {
