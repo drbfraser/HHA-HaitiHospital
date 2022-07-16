@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import UserCollection, { hashPassword, Role, User, validateUserSchema } from '../../models/user';
-import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
+import { registerUserCreate, registerUserEdit } from '../../sanitization/registerUser';
 import Departments from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';

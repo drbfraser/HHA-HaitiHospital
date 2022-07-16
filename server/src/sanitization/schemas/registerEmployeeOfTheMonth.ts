@@ -1,5 +1,5 @@
 import { check } from 'express-validator';
-import { msgString, msgDate } from '../utils/sanitizationMessages';
+import { msgString, msgDate } from '../messages';
 
 const employeeOfTheMonthEdit = [
   // check('document.*.name').trim().escape().isLength({ min: 1 }).withMessage(msgString),

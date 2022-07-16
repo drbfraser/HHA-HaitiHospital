@@ -1,5 +1,5 @@
 import { check } from 'express-validator';
-import { msgString, msgStringMulti } from '../utils/sanitizationMessages';
+import { msgString, msgStringMulti } from '../messages';
 import { checkDepartment } from './checkDepartment';
 const mongoose = require('mongoose');
 

@@ -1,6 +1,6 @@
 import { check } from 'express-validator';
-import { msgString } from '../utils/sanitizationMessages';
-import { isImage, MUST_BE_AN_IMAGE_FILE } from './validators/is_image';
+import { msgString } from '../messages';
+import { isImage, MUST_BE_AN_IMAGE_FILE } from '../validators/isImage';
 
 const bioMechCreate = [
   check('equipmentName').trim().escape().isLength({ min: 1 }).withMessage(msgString),
