@@ -129,7 +129,9 @@ function FormContents(props: { path: string }) {
     handler: (item: ItemField) => void
   ) => EffectCallback = (condition, handler) => () => {
     if (state.value !== StateType.ready) return;
-    assert(state.data, "Invalid state: in error handler with null data.");
+    if (!state.data) {
+      throw new Error("Invalid state: in error handler with null data.");
+    }
     state.data.itemFields
       .filter(condition)
       .forEach(handler);
@@ -168,7 +170,9 @@ function FormContents(props: { path: string }) {
     onError?: (error: any) => void
   ) => (answers: any) => Promise<void> =
   (formAssembler, formSubmitter, onSuccess?, errorHandler?) => async (answers) => {
-    assert(state.data, "Invalid state: No report form has been assigned to state");
+    if (!state.data) {
+      throw new Error("Invalid state: No report form has been assigned to state");
+    }
 
     setSubmitting(true);
     try {
@@ -216,9 +220,9 @@ function FormContents(props: { path: string }) {
   };
 
   const renderError = () => {
-    assert(
-      state.errorData,
-      `Invalid state: Calling renderError() with errorData set to ${state.errorData}.`)
+    if (!state.errorData) {
+      throw new Error(`Invalid state: Calling renderError() with errorData set to ${state.errorData}.`);
+    }
     const errorData = state.errorData;
     return (
       <div className="row justify-content-center text-center" style={{ marginTop: '25%' }}>
