@@ -75,13 +75,13 @@ type State = {
   errorData?: ErrorData;
 };
 
-function Loading(): State {
+function stateLoading(): State {
   return { value: StateType.loading, data: null };
 }
-function Ready(data: ReportForm): State {
+function stateReady(data: ReportForm): State {
   return { value: StateType.ready, data: data };
 }
-function Error(errorData: ErrorData): State {
+function stateError(errorData: ErrorData): State {
   return { value: StateType.error, data: null, errorData: errorData };
 }
 
@@ -102,7 +102,7 @@ function FormContents(props: { path: string }) {
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [state, setState] = useState<State>(Loading());
+  const [state, setState] = useState<State>(stateLoading());
   const pageTop = React.useRef(null);
 
   //============================================================================
@@ -119,7 +119,7 @@ function FormContents(props: { path: string }) {
           const reportData: ReportForm = await fetcher();
           setState({ value: StateType.ready, data: reportData });
         } catch (err) {
-          setState(Error(err));
+          setState(stateError(err));
         }
       })();
     };
@@ -178,13 +178,13 @@ function FormContents(props: { path: string }) {
         jsonDescriptor: jsonDescriptor,
         itemFields: state.data.itemFields
       }
-      const nextState = Ready(reportFormWithAnswers);
+      const nextState = stateReady(reportFormWithAnswers);
       setReadOnly(true);
       onSuccess?.(reportFormWithAnswers);
       setState(nextState);
     } catch (err: any) {
       errorHandler?.(err)
-      const nextState = err.code < 500 ? Ready(err.data) : Error({ code: err.code, message: err.message });
+      const nextState = err.code < 500 ? stateReady(err.data) : stateError({ code: err.code, message: err.message });
       setState(nextState);
     }
     setSubmitting(false);
