@@ -30,6 +30,10 @@ const TOAST_MESSAGEBOARD_DELETE: string = 'Unable to delete message';
 const TOAST_MESSAGEBOARD_COMMENTS_GET: string = 'Unable to fetch comments';
 const TOAST_MESSAGEBOARD_COMMENTS_POST: string = 'Unable to post comment';
 
+// Reports
+const TOAST_REPORTS_GET: string = 'Unable to fetch reports';
+const TOAST_REPORT_GET: string = 'Unable to fetch report';
+
 export {
   TOAST_BIOMECH_GET,
   TOAST_BIOMECH_POST,
@@ -49,4 +53,6 @@ export {
   TOAST_MESSAGEBOARD_DELETE,
   TOAST_MESSAGEBOARD_COMMENTS_GET,
   TOAST_MESSAGEBOARD_COMMENTS_POST,
+  TOAST_REPORTS_GET,
+  TOAST_REPORT_GET,
 };

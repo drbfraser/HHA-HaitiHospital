@@ -118,6 +118,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
       updatedAt: new Date()
     };
     const newUser = new UserCollection(userInfo);
+    console.log("Validating user schema using joi");
     const validationResult = validateUserSchema.validate({
       username,
       password,

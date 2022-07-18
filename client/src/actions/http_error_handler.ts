@@ -1,15 +1,18 @@
 import { AxiosError } from 'axios';
 import { History } from 'history';
 import { toast } from 'react-toastify';
+import { ErrorListToast } from '../components/Errors/ErrorToast';
 
 const BADREQUEST_CODE = 400;
 const UNAUTHORIZED_CODE = 401;
 const NOTFOUND_CODE = 404;
 const CONFLICT_CODE = 409;
 const INTERNAL_CODE = 500;
+const UNPROCCESABLENTITY_CODE = 422;
 
-const DbErrorHandler = (e, history: History, toastMsg: string) => {
-  if ((e as AxiosError).isAxiosError === undefined) {
+const DbErrorHandler = (e, history: History, toastMsg: string, errorActions?: any) => {
+  const err = e as AxiosError;
+  if (err.isAxiosError === undefined) {
     console.log(e.message);
     return;
   }
@@ -30,6 +33,13 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
     case CONFLICT_CODE:
     case BADREQUEST_CODE: {
       toast.error(toastMsg);
+      break;
+    }
+    case UNPROCCESABLENTITY_CODE: {
+      toast.error(ErrorListToast(toastMsg, err.response.data.errors), {
+        closeOnClick: true,
+        autoClose: false,
+      });
       break;
     }
     default:
