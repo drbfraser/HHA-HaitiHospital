@@ -2,8 +2,7 @@ import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import { BiomechPriority } from './BiomechModel';
-import Api from '../../actions/Api';
+import Api from '../../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
 import './broken_kit_report.css';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +11,7 @@ import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { BiomechForm, BIOMECH_REPORT_FIELDS } from 'constants/forms';
+import { BiomechForm, BiomechPriority, BIOMECH_REPORT_FIELDS } from '../typing';
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 
