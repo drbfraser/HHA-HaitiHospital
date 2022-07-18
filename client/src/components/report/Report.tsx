@@ -16,8 +16,6 @@ import * as ReportApiUtils from './ReportUtils';
 import {ItemGroup } from './ReportItems';
 import { Spinner } from 'components/spinner/Spinner';
 import { toast } from 'react-toastify';
-import assert from 'assert';
-import { JsxEmit } from 'typescript';
 
 // Data structure containing additional properties pertinent to the front-end
 export interface ReportForm {
