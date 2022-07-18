@@ -1,9 +1,9 @@
 import Login from 'pages/login/login';
 import Home from 'pages/home/home';
 import NotFound from 'pages/not_found/not_found';
-import Admin from 'pages/admin/admin';
-import { AddUserForm } from 'pages/admin/admin-add-user';
-import { EditUserForm } from 'pages/admin/admin-edit-user';
+import Admin from 'pages/admin/main/main';
+import { AddUserForm } from 'pages/admin/add/add';
+import { EditUserForm } from 'pages/admin/edit/edit';
 import { CaseStudyMain } from 'pages/case_study_main/case_study_main';
 import { CaseStudyForm } from 'pages/case_study_forms/case_study_forms';
 import { CaseStudyView } from 'pages/case_study_view/case_study_view';

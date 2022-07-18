@@ -8,16 +8,16 @@ import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
-import './admin.css';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
-import axios, { AxiosError } from 'axios';
 import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
 import { ResponseMessage } from 'utils/response_message';
 import { Paths } from 'constants/paths';
+
+import './add.css';
 
 interface AdminProps {}
 

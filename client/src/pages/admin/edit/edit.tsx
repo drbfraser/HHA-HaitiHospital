@@ -8,7 +8,6 @@ import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
-import './admin.css';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
@@ -17,6 +16,8 @@ import useDidMountEffect from 'utils/custom_hooks';
 import { AdminUserForm } from 'components/admin_user_form/admin-user-form';
 import { Paths, UserIdParams } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
+
+import './edit.css';
 
 interface UserEditProps {}
 
