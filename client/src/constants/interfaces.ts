@@ -91,19 +91,3 @@ export interface UserJson {
   updatedAt: string;
 }
 
-export namespace BiomechResponse {
-  export interface BiomechGet {
-    id: string;
-    user: UserJson;
-    department: {
-      id: string;
-      name: string;
-    };
-    equipmentName: string;
-    equipmentFault: string;
-    equipmentPriority: string;
-    createdAt: string;
-    updatedAt: string;
-    imgPath: string;
-  }
-}
