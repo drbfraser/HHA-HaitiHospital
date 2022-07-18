@@ -109,7 +109,7 @@ function FormContents(props: { path: string }) {
   // Effect Definitions
   //============================================================================
 
-  // Effect Generators
+  // React Effects HOF (Higher-Order Functions)
   //----------------------------------------------------------------------------
   const reportDataFetchingEffectGenerator:
     (fetcher: () => Promise<ReportForm>) => EffectCallback = (fetcher) =>
@@ -135,7 +135,7 @@ function FormContents(props: { path: string }) {
       .forEach(handler);
   };
 
-  // Effect Routines
+  // React Effects Definitions
   //----------------------------------------------------------------------------
   // Give error messages to react hook
   const mockErrorHandling: (invalidItem: ItemField) => void = (invalidItem) => {
@@ -148,7 +148,7 @@ function FormContents(props: { path: string }) {
     formHook.setError(id, error);
   }
 
-  // Get Effects
+  // React Effects Function Composition 
   //----------------------------------------------------------------------------
   const fetchReportDataEfect: EffectCallback =
     reportDataFetchingEffectGenerator(fetchMockReportData);
@@ -156,10 +156,10 @@ function FormContents(props: { path: string }) {
     errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
 
   //============================================================================
-  // Handler Definitions
+  // React Handler Definitions
   //============================================================================
 
-  // Handler Generators
+  // Handler HOFs 
   //----------------------------------------------------------------------------
   const submitHandlerGenerator: (
     formAssembler: (report: ReportForm, answers: any) => JsonReportDescriptor,
@@ -169,6 +169,7 @@ function FormContents(props: { path: string }) {
   ) => (answers: any) => Promise<void> =
   (formAssembler, formSubmitter, onSuccess?, errorHandler?) => async (answers) => {
     assert(state.data, "Invalid state: No report form has been assigned to state");
+
     setSubmitting(true);
     try {
       const jsonDescriptor = await formAssembler(state.data, answers);
@@ -189,7 +190,7 @@ function FormContents(props: { path: string }) {
     setSubmitting(false);
   }
 
-  // Get Handlers
+  // React Handlers Function Compositions
   //----------------------------------------------------------------------------
   const submitHandler = submitHandlerGenerator(
     ReportApiUtils.assembleData,
