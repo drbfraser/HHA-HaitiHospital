@@ -8,12 +8,13 @@ import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/en
 import ModalImage from 'components/popup_modal/popup_modal_image';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import './broken_kit_report_view.css';
 import { History } from 'history';
 import { setPriority } from 'pages/biomech/utils';
 import { timezone, language } from 'constants/timezones';
 import { BioReportIdParams, Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
+
+import './view.css';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 

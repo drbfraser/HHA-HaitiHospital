@@ -13,7 +13,7 @@ import AddMessage from 'pages/message_board_add/message_board_add';
 import EditMessage from 'pages/message_board_edit/message_board_edit';
 import MessageComments from 'pages/message_board_comments/message_board_comments';
 import { BiomechanicalPage } from 'pages/biomech/main/main';
-import { BrokenKitReport } from 'pages/biomech/form/form';
+import { BrokenKitReport } from 'pages/biomech/report/report';
 import { BrokenKitView } from 'pages/biomech/view/view';
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
