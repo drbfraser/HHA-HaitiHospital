@@ -7,7 +7,6 @@ import Header from 'components/header/header';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import Api from 'actions/Api';
 import { ENDPOINT_BIOMECH_GET, ENDPOINT_BIOMECH_DELETE_BY_ID } from 'constants/endpoints';
-import { TOAST_BIOMECH_GET, TOAST_BIOMECH_DELETE } from 'constants/toast_messages';
 import { toast } from 'react-toastify';
 import { renderBasedOnRole } from 'actions/roleActions';
 import './biomechanical.css';
@@ -17,6 +16,8 @@ import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 import { setPriority } from 'pages/broken_kit_report/BiomechModel';
 import { timezone, language } from 'constants/timezones';
+import { Paths } from 'constants/paths';
+import { ResponseMessage } from 'utils/response_message';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
@@ -30,7 +31,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const history: History = useHistory<History>();
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize: number = 10;
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
@@ -40,13 +41,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   const bioReportNumberIndex = currentPage * pageSize - pageSize;
 
   const deleteBioMechActions = () => {
-    toast.success('Bio Mech request deleted!');
+    toast.success(ResponseMessage.getMsgDeleteReportOk());
     getBioReport();
   };
 
   const getBioReport = useCallback(
     async () => {
-        setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, TOAST_BIOMECH_GET, history));
+        setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, ResponseMessage.getMsgFetchReportsFailed(), history));
     }, 
     [history]
   );
@@ -56,7 +57,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
       ENDPOINT_BIOMECH_DELETE_BY_ID(id),
       {},
       deleteBioMechActions,
-      TOAST_BIOMECH_DELETE,
+      ResponseMessage.getMsgDeleteReportFailed(),
       history,
     );
   };
@@ -90,7 +91,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
         <ModalDelete
           currentItem={currentIndex}
           show={deleteModal}
-          item={'biomech report'}
+          item={t('item.report')}
           onModalClose={onModalClose}
           onModalDelete={onModalDelete}
           history={history}
@@ -101,9 +102,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
         <section>
           <div className="row my-2 justify-items-center">
             <div className="col-sm-6 col-md-6 col-lg-6">
-              <Link to={'/biomechanic/report-broken-kit'}>
+              <Link to={`${Paths.getBioMechReport()}`}>
                 <button type="button" className="btn btn-outline-dark">
-                  {t('bioSupportReportBrokenKit')}
+                  {t(`button.report`)}
                 </button>
               </Link>
             </div>
@@ -112,10 +113,10 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">{t('bioSupportReportPriority')}</th>
-                    <th scope="col">{t('bioSupportReportAuthor')}</th>
-                    <th scope="col">{t('bioSupportReportCreated')}</th>
-                    <th scope="col">{t('bioSupportReportOptions')}</th>
+                    <th scope="col">{t('biomech.main_page.priority_col')}</th>
+                    <th scope="col">{t('biomech.main_page.author_col')}</th>
+                    <th scope="col">{t('biomech.main_page.created_col')}</th>
+                    <th scope="col">{t('biomech.main_page.options_col')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -126,11 +127,11 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         <td>
                           {
                             <Badge bg={setPriority(item.equipmentPriority)}>
-                              {item.equipmentPriority}
+                              {t(`biomech.priority.${item.equipmentPriority}`)}
                             </Badge>
                           }
                         </td>
-                        <td>{item.user ? item.user.name : '[deleted]'}</td>
+                        <td>{item.user ? item.user.name : t('status.not_available')} </td>
                         <td>
                           {new Date(item.createdAt).toLocaleString(language, {
                             timeZone: timezone,
@@ -139,9 +140,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         <td>
                           <button
                             className="btn btn-link text-decoration-none d-inline"
-                            onClick={() => history.push(`/biomechanic/view/${item.id}`)}
+                            onClick={() => history.push(`${Paths.getBioMechViewId(item.id)}`)}
                           >
-                            {t('brokenKitReportView')}
+                            {t(`button.view`)}
                           </button>
                           {renderBasedOnRole(authState.userDetails.role, [
                             Role.Admin,
@@ -153,7 +154,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                                 onDeleteBioMech(event, item.id);
                               }}
                             >
-                              {t('brokenKitReportDelete')}
+                              {t(`button.delete`)}
                             </button>
                           ) : (
                             <></>

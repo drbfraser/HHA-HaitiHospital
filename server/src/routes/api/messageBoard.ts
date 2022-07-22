@@ -4,7 +4,7 @@ import { NextFunction, Response } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { validateInput } from 'middleware/inputSanitization';
 import { Role } from 'models/user';
-import { registerMessageBoardCreate } from 'schema/registerMessageBoard';
+import { registerMessageBoardCreate } from 'sanitization/schemas/registerMessageBoard';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound, Unauthorized } from 'exceptions/httpException';
 import Departments, { DefaultDepartments } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';

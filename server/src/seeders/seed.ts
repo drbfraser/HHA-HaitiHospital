@@ -3,7 +3,7 @@ import faker from 'faker';
 import UserCollection, { Role, User } from 'models/user';
 import MessageCollection from 'models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
-import BioMech, { bioMechEnum } from 'models/bioMech';
+import BioMech, { BiomechPriority } from 'models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from 'utils/processEnv';
 import { TemplateCollection } from 'models/template';
@@ -240,7 +240,7 @@ export const seedBioMech = async () => {
         departmentId: randomUser.departmentId,
         equipmentName: faker.lorem.words(),
         equipmentFault: faker.lorem.words(),
-        equipmentPriority: randomEnumValue(bioMechEnum),
+        equipmentPriority: randomEnumValue(BiomechPriority),
         imgPath: 'public/images/bioMech0.jpeg'
       });
       bioMechReport.save();

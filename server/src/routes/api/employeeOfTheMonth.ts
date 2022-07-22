@@ -4,7 +4,7 @@ import upload from '../../middleware/upload';
 import { validateInput } from '../../middleware/inputSanitization';
 import EOTMCollection, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';
-import { registerEmployeeOfTheMonthEdit } from '../../schema/registerEmployeeOfTheMonth';
+import { registerEmployeeOfTheMonthEdit } from '../../sanitization/schemas/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import Departments from 'utils/departments';

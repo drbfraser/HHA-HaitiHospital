@@ -1,43 +1,42 @@
-import { useState } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import { BiomechModel, bioMechEnum } from './BiomechModel';
+import { BiomechPriority } from './BiomechModel';
 import Api from '../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
-import { TOAST_BIOMECH_POST } from 'constants/toast_messages';
 import './broken_kit_report.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
+import { Paths } from 'constants/paths';
+import { ResponseMessage } from 'utils/response_message';
+import { BiomechForm, BIOMECH_REPORT_FIELDS } from 'constants/forms';
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 
 export const BrokenKitReport = (props: BrokenKitReportProps) => {
   const { t } = useTranslation();
-  const [selectedFile, setSelectedFile] = useState(null);
-  const { register, handleSubmit, reset } = useForm<BiomechModel>({});
+  const { register, handleSubmit, setValue } = useForm<BiomechForm>({});
   const history: History = useHistory<History>();
 
-  const onImageUpload = (item: File) => {
-    setSelectedFile(item);
+  const onSubmitOk = () => {
+    toast.success(ResponseMessage.getMsgCreateReportOk());
+    props.history.push(Paths.getBioMechMain());
   };
 
-  const onSubmitActions = () => {
-    toast.success('Biomechanic report successfully submitted!');
-    reset({});
-    setSelectedFile(null);
-    props.history.push('/biomechanic');
-  };
-
-  const onSubmit = async (data: any) => {
-    let formData = new FormData();
-    let postData = JSON.stringify(data);
-    formData.append('document', postData);
-    formData.append('file', selectedFile);
-    await Api.Post(ENDPOINT_BIOMECH_POST, formData, onSubmitActions, TOAST_BIOMECH_POST, history);
+  const onSubmit = async (data: BiomechForm) => {
+    // Parse to FormData() to support multipart/data-form form
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => formData.append(key, data[key]));
+    await Api.Post(
+      ENDPOINT_BIOMECH_POST,
+      formData,
+      onSubmitOk,
+      ResponseMessage.getMsgCreateReportFailed(),
+      history,
+    );
   };
 
   return (
@@ -46,67 +45,94 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
       <main className="container-fluid main-region">
         <Header />
         <div className="ml-3 mb-3 d-flex justify-content-start">
-          <Link to="/biomechanic">
+          <Link to={Paths.getBioMechMain()}>
             <button type="button" className="btn btn-outline-dark">
-              {t('brokenKitReportBack')}
+              {t('button.back')}
             </button>
           </Link>
         </div>
+
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group col-md-6">
-              <label className="font-weight-bold">{t('brokenKitReportBrokenKitReport')}</label>
+              <label className="font-weight-bold">{t('biomech.report.title')}</label>
               <div>
                 <label htmlFor="Equipment Name" className="form-label">
-                  {t('brokenKitReportNameOfEquipment')}
+                  {t('biomech.report.equipment_name')}
                 </label>
                 <input
                   className="form-control mb-2 mt-0"
                   type="text"
                   id="Equipment Name"
                   required
-                  {...register('equipmentName', { required: true })}
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentName)}
                 ></input>
                 <label htmlFor="Equipment Fault" className="form-label">
-                  {t('brokenKitReportFaultWithEquipment')}
+                  {t('biomech.report.issue')}
                 </label>
                 <textarea
                   className="form-control mb-2 mt-0"
                   id="Equipment Fault"
                   required
-                  {...register('equipmentFault', { required: true })}
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentFault)}
                 ></textarea>
                 <label htmlFor="Equipment Priority" className="form-label">
-                  {t('brokenKitReportPriorityOfEquipment')}
+                  {t('biomech.report.priority')}
                 </label>
                 <select
                   className="form-select"
                   id="Equipment Priority"
                   aria-label="Default select example"
                   required
-                  {...register('equipmentPriority', { required: true })}
                   defaultValue=""
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentPriority)}
                 >
-                  <option value="">{t('brokenKitReportClickToSelectPriority')}</option>
-                  <option value={bioMechEnum.Urgent}>{t('brokenKitReportUrgent')}</option>
-                  <option value={bioMechEnum.Important}>{t('brokenKitReportImportant')}</option>
-                  <option value={bioMechEnum.NonUrgent}>{t('brokenKitReportNonUrgent')}</option>
+                  <option value="" disabled hidden>
+                    {t('biomech.report.inquiry_priority')}
+                  </option>
+                  <option value={BiomechPriority.URGENT}>
+                    {t(`biomech.priority.${BiomechPriority.URGENT}`)}
+                  </option>
+                  <option value={BiomechPriority.IMPORTANT}>
+                    {t(`biomech.priority.${BiomechPriority.IMPORTANT}`)}
+                  </option>
+                  <option value={BiomechPriority.NONURGENT}>
+                    {t(`biomech.priority.${BiomechPriority.NONURGENT}`)}
+                  </option>
                 </select>
                 <label htmlFor="customFile" className="form-label mt-2">
-                  {t('brokenKitReportUploadImage')}
+                  {t('button.add_image')}
                 </label>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/png,image/jpeg,image/jpg"
                   className="form-control"
                   id="customFile"
                   required
-                  onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
+                  {...(register(BIOMECH_REPORT_FIELDS.file),
+                  {
+                    onChange: (e) => {
+                      if (e.target.files.length === 0) return;
+                      return imageCompressor(
+                        e.target.files.item(0),
+                        (result) => {
+                          setValue(BIOMECH_REPORT_FIELDS.file, result);
+                        },
+                        (error) => {
+                          e.target.files = null;
+                          e.target.value = '';
+                          setValue(BIOMECH_REPORT_FIELDS.file, ''); 
+                          toast.error(error.message);
+                        },
+                      );
+                    },
+                  })}
                 />
               </div>
+
               <div>
                 <button className="btn btn-primary mt-4 " type="submit">
-                  {t('brokenKitReportSubmitForm')}
+                  {t('button.submit')}
                 </button>
               </div>
             </div>

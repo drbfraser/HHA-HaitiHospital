@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { History } from 'history';
 import * as Error from './ApiError';
-import { TOAST_IMAGE_BY_PATH } from 'constants/toast_messages';
 import DbErrorHandler from './http_error_handler';
+import { ResponseMessage } from 'utils/response_message';
 
 /**
  *
@@ -168,7 +168,7 @@ const Image = async (url: string, history: History): Promise<string> => {
     });
     return URL.createObjectURL(response.data);
   } catch (error: any) {
-    DbErrorHandler(error, history, TOAST_IMAGE_BY_PATH);
+    DbErrorHandler(error, history, ResponseMessage.getMsgFetchImageFailed());
     return Error.ERROR_IMG;
   }
 };
