@@ -4,16 +4,16 @@ import { type } from 'os';
 import * as MockApi from './MockApi';
 import { ItemField, ReportForm, itemFieldToReportItem } from './Report';
 
-export const submitData = async (answers: object, data: ReportForm) : Promise<JsonReportDescriptor> => {
+export const submitData = async (answers: any, data: ReportForm) : Promise<JsonReportDescriptor> => {
   /*
    * Here we make a request to server and handle the responses.
    * Todo: refactor
    */
-  const assemData = assembleData(answers, data);
+  const assemData = assembleData(data, answers);
   return await MockApi.submitData(assemData, 2000, true);
 };
 
-const assembleData = (answers: object, data: ReportForm): JsonReportDescriptor => {
+export const assembleData = (data: ReportForm, answers: any): JsonReportDescriptor => {
   const reportItemsWithAnswers : JsonReportItems = data.itemFields
     .map((itemField: ItemField): JsonReportItem => {
     const answer : Array<JsonItemAnswer> = answers[itemField.id];
