@@ -1,7 +1,6 @@
 import mongoose, { Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import Joi from 'joi';
 import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
 
@@ -129,26 +128,6 @@ export async function hashPassword(password) {
   });
 
   return hashedPassword;
-}
-
-export const validateUserSchema = Joi.object().keys({
-  username: Joi.string().alphanum().min(2).max(20).required(),
-  password: Joi.string().min(6).max(20).required(),
-  name: Joi.string().min(2).max(30).required(),
-  role: Joi.string().required(),
-  departmentId: Joi.string()
-});
-
-export const validateUpdatedUserSchema = Joi.object().keys({
-  username: Joi.string().alphanum().min(2).max(20).allow(''),
-  password: Joi.string().min(6).max(20).allow(''),
-  name: Joi.string().min(2).max(30).allow(''),
-  role: Joi.string().allow(''),
-  departmentId: Joi.string().allow('')
-});
-
-export const validateUser = (user) => {
-  return validateUserSchema.validate(user);
 };
 
 export const USER_MODEL_NAME = "User";

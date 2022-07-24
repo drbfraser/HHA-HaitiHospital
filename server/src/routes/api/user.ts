@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
-import UserCollection, { hashPassword, Role, User, validateUserSchema } from '../../models/user';
+import UserCollection, { hashPassword, Role, User } from '../../models/user';
 import Departments from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
@@ -118,21 +118,6 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
       updatedAt: new Date()
     };
     const newUser = new UserCollection(userInfo);
-    console.log('Validating user schema using joi');
-    const validationResult = validateUserSchema.validate({
-      username,
-      password,
-      name,
-      role,
-      departmentId
-    });
-
-    if (validationResult.error) {
-      let errorMessage = validationResult.error.details[0].message.replace(/["]+/g, '');
-      errorMessage = errorMessage[0].toUpperCase() + errorMessage.slice(1);
-      throw new BadRequest(errorMessage);
-    }
-
     newUser.registerUser(newUser, (err: any) => {
       if (err) throw new InternalError(`Failed to register new user: ${err}`);
       res.status(HTTP_CREATED_CODE).send(`New user created`);
