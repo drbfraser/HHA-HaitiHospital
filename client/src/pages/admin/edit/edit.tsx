@@ -74,7 +74,6 @@ export const EditUserForm = (props: UserEditProps) => {
   };
 
   const submitForm = async (data: AdminUserFormData) => {
-    console.log(data);
     await Api.Put(
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       data,
