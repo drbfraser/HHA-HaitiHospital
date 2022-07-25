@@ -78,6 +78,7 @@
     "@types/yup": "^0.29.13",
     "chai": "^4.3.6",
     "mocha": "^10.0.0",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "sinon": "^14.0.0"
   }
 }
