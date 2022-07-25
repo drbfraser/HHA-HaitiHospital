@@ -48,7 +48,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "ts-mocha -p tsconfig.json ./tests/**/*.spec.ts",
+    "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
