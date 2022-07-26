@@ -10,7 +10,7 @@ const PW_SIZE_MIN: number = 6;
 const PW_SIZE_MAX: number = 60;
 
 const userCreate = [
-  body('username', msgStringMulti(PW_SIZE_MIN, PW_SIZE_MAX))
+  body('username', msgStringMulti(UNAME_SIZE_MIN, UNAME_SIZE_MAX))
     .exists({
       checkNull: true
     })
