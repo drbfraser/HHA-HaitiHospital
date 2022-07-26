@@ -20,29 +20,58 @@ export class ObjectSerializer {
         this.constructorMapper[constructor.name] = constructor;
     }
 
-    public readonly serialize = (object: Object): string => {
+    private readonly addClassProperty = (object: Object): Object => {
+        if (!this.constructorMapper[object.constructor.name]) {
+            return object;
+        }
+
         let newObject = Object.create(object);
         Object.assign(newObject, object);
         newObject.__class__ = object.constructor.name;
+        return newObject;
+    }
+
+    private readonly recursiveAddClassProperty = (object: any): any => {
+        if (!(object instanceof Object) || object instanceof Function) {
+            return object;
+        }
+
+        Object.entries(object)
+            .forEach(([key, value]) => {
+                object[key] = this.recursiveAddClassProperty(value);
+            });
+
+        let newObject: Object = this.addClassProperty(object);
+        return newObject;
+    }
+
+    public readonly serialize = (object: Object): string => {
+        let newObject: Object = this.recursiveAddClassProperty(object);
         return JSON.stringify(newObject);
     }
 
-    public readonly deserialize = <T>(json: string): T => {
-        let jsonObject: any = JSON.parse(json);
-        let className: string = jsonObject.__class__;
-        if (!jsonObject.__class__) {
-            throw new Error('No class name specified in JSON');
+    private readonly reviver = (key: string, value: any) => {
+        if (!(value instanceof Object) || !value.__class__) {
+            return value;
         }
 
-        delete jsonObject.__class__;
-        let returnObject: T = new this.constructorMapper[className]() as T;
+        let className = value.__class__;
+        let returnObject: Object = new this.constructorMapper[className]();        
 
         if (!returnObject) {
-            throw new Error('Attempting to deserialize un-serializable class');
+            console.error(`Object ${JSON.stringify(value)} has field __class__, but is not serializable.`);
+            return value;
         }
 
-        Object.assign(returnObject, jsonObject);
+        delete value.__class__;
+
+        Object.assign(returnObject, value);
         return returnObject;
+    }
+
+    public readonly deserialize = <T>(json: string): T => {
+        let deserializedObject: T = JSON.parse(json, this.reviver);
+        return deserializedObject;
     }
 }
 

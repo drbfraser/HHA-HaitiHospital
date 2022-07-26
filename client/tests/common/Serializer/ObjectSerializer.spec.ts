@@ -14,6 +14,42 @@ class NonSerializable {
     public property4: string;
 }
 
+class SemiRealisticObject {
+    public serializables: Array<Serializable>;
+    public nonSerializable: NonSerializable;
+
+    public constructor() {
+        this.serializables = new Array<Serializable>();
+        this.nonSerializable = new NonSerializable();
+        this.nonSerializable.property3 = 33;
+        this.nonSerializable.property4 = "Fear is how I fall; confusing what is real ~";
+    }
+
+    public readonly addSerializable = (serializableObject: Serializable): void => {
+        this.serializables.push(serializableObject);
+    }
+
+    public readonly getSerializable = (index: number): Serializable => {
+        return this.serializables[index];
+    }
+}
+
+class ASerializable extends Serializable {
+    public subProperty1: boolean;
+
+    constructor() {
+        super();
+    }
+}
+
+class BSerializable extends Serializable {
+    public subProperty1: string;
+
+    constructor() {
+        super();
+    }
+}
+
 should();
 describe('Serializer', function () {
     describe("ObjectSerializer", function () {
@@ -40,23 +76,23 @@ describe('Serializer', function () {
                 // Act
                 serializable(Serializable);
 
-                let a: Serializable = new Serializable();
-                a.property1 = 42;
-                a.property2 = "The cake is a lie.";
+                let serializableObject: Serializable = new Serializable();
+                serializableObject.property1 = 42;
+                serializableObject.property2 = "The cake is a lie.";
 
-                let json: string = objectSerializer.serialize(a);
+                let json: string = objectSerializer.serialize(serializableObject);
                 let a2: Serializable = objectSerializer.deserialize(json);
 
                 // Assert
                 Object.entries(a2)
                     .map(([key, value]) => {
-                        return a[key] == value;
+                        return serializableObject[key] == value;
                     })
                     .length.should.be.above(0);
 
             });
 
-            it.only('Non-serializable serialized objects should fail upon deserialization', function () {
+            it.skip('Non-serializable serialized objects should fail upon deserialization', function () {
                 // Arrange
                 let nonSerializable: NonSerializable = new NonSerializable();
                 nonSerializable.property3 = 7;
@@ -66,12 +102,51 @@ describe('Serializer', function () {
 
                 // Act
                 let json: string = objectSerializer.serialize(nonSerializable);
+
+                // Assert
                 expect(() => objectSerializer.deserialize(json)).to.throw();
             });
 
-            it.skip('Serialized non-serializable objects should fail upon deserialization', function () {
-                // TODO: Implement
-            })
+            it.only('Should properly deserialize serializable object and all its serializable members', function () {
+                // Arrange
+                let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+
+                let aSerializable: ASerializable = new ASerializable();
+                aSerializable.property1 = 5;
+                aSerializable.property2 = "WHERE'S THE LAMB SAAAAAUCE?";
+                aSerializable.subProperty1 = false;
+
+                let bSerializable: BSerializable = new BSerializable();
+                bSerializable.property1 = 6;
+                bSerializable.property2 = "I used to be an adventurer like you,";
+                bSerializable.subProperty1 = "then I took an arrow in the knee";
+
+                let semiRealisticObject: SemiRealisticObject = new SemiRealisticObject();
+                semiRealisticObject.addSerializable(aSerializable);
+                semiRealisticObject.addSerializable(bSerializable);
+
+                objectSerializer.addSerializable(Serializable);
+                objectSerializer.addSerializable(ASerializable);
+                objectSerializer.addSerializable(BSerializable);
+                objectSerializer.addSerializable(SemiRealisticObject);
+
+                // Act
+                let json: string = objectSerializer.serialize(semiRealisticObject);
+                let deserializedObject: SemiRealisticObject = objectSerializer.deserialize(json);
+            
+                // Assert
+                expect(deserializedObject.getSerializable(0))
+                    .to.be.instanceof(ASerializable);
+                expect(deserializedObject.getSerializable(1))
+                    .to.be.instanceof(BSerializable);
+
+                /*  This last one might be counterintuitive, but think carefully:
+                    if it is non-serializable, then there's no way to tell what
+                    type of object it is from the JSON. So that should fail.
+                */
+                expect(deserializedObject.nonSerializable)
+                    .to.not.be.instanceof(NonSerializable);
+            });
         });
     });
 
