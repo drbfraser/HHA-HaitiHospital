@@ -16,13 +16,9 @@ class NonSerializable {
 
 class SemiRealisticObject {
     public serializables: Array<Serializable>;
-    public nonSerializable: NonSerializable;
 
     public constructor() {
         this.serializables = new Array<Serializable>();
-        this.nonSerializable = new NonSerializable();
-        this.nonSerializable.property3 = 33;
-        this.nonSerializable.property4 = "Fear is how I fall; confusing what is real ~";
     }
 
     public readonly addSerializable = (serializableObject: Serializable): void => {
@@ -92,7 +88,7 @@ describe('Serializer', function () {
 
             });
 
-            it.skip('Non-serializable serialized objects should fail upon deserialization', function () {
+            it('Non-serializable serialized objects should lose type information', function () {
                 // Arrange
                 let nonSerializable: NonSerializable = new NonSerializable();
                 nonSerializable.property3 = 7;
@@ -102,12 +98,13 @@ describe('Serializer', function () {
 
                 // Act
                 let json: string = objectSerializer.serialize(nonSerializable);
+                let deserialized: NonSerializable = objectSerializer.deserialize(json);
 
                 // Assert
-                expect(() => objectSerializer.deserialize(json)).to.throw();
+                deserialized.should.not.be.instanceof(NonSerializable);
             });
 
-            it.only('Should properly deserialize serializable object and all its serializable members', function () {
+            it('Should properly deserialize serializable object and all its serializable members', function () {
                 // Arrange
                 let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
 
@@ -139,13 +136,6 @@ describe('Serializer', function () {
                     .to.be.instanceof(ASerializable);
                 expect(deserializedObject.getSerializable(1))
                     .to.be.instanceof(BSerializable);
-
-                /*  This last one might be counterintuitive, but think carefully:
-                    if it is non-serializable, then there's no way to tell what
-                    type of object it is from the JSON. So that should fail.
-                */
-                expect(deserializedObject.nonSerializable)
-                    .to.not.be.instanceof(NonSerializable);
             });
         });
     });
