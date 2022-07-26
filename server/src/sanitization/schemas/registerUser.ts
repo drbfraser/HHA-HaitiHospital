@@ -1,7 +1,7 @@
 import { body, check } from 'express-validator';
 import { isDepartment } from 'sanitization/validators/isDepartment';
 import { isRole } from 'sanitization/validators/isRole';
-import { EXPECTING_DEPARTMENT, EXPECTING_NAME, EXPECTING_ROLE, INVALID_DEPARTMENT, INVALID_ROLE, msgString, msgStringMulti } from '../messages';
+import { EXPECTING_NAME, msgStringMulti } from '../messages';
 const mongoose = require('mongoose');
 
 const UNAME_SIZE_MIN: number = 2;
@@ -10,23 +10,35 @@ const PW_SIZE_MIN: number = 6;
 const PW_SIZE_MAX: number = 60;
 
 const userCreate = [
-  body('username').exists().trim().escape().isLength({ min: UNAME_SIZE_MIN, max: UNAME_SIZE_MAX }).withMessage(msgStringMulti(UNAME_SIZE_MIN, UNAME_SIZE_MAX)),
-  body('password').exists().trim().escape().isLength({ min: PW_SIZE_MIN, max: PW_SIZE_MAX }).withMessage(msgStringMulti(PW_SIZE_MIN, PW_SIZE_MAX)),
+  body('username', msgStringMulti(PW_SIZE_MIN, PW_SIZE_MAX))
+    .exists({
+      checkNull: true
+    })
+    .withMessage(EXPECTING_NAME)
+    .isString()
+    .trim()
+    .escape()
+    .isLength({ min: UNAME_SIZE_MIN, max: UNAME_SIZE_MAX }),
+  body('password', msgStringMulti(PW_SIZE_MIN, PW_SIZE_MAX))
+    .exists({
+      checkNull: true
+    })
+    .isString()
+    .trim()
+    .escape()
+    .isLength({ min: PW_SIZE_MIN, max: PW_SIZE_MAX }),
   body('department')
     .exists({
       checkNull: true,
       checkFalsy: true
     })
-    .withMessage(EXPECTING_DEPARTMENT)
     .isObject()
-    .custom(isDepartment)
-    .withMessage(INVALID_DEPARTMENT),
+    .custom(isDepartment),
   body('name')
     .exists({
       checkNull: true,
       checkFalsy: true
     })
-    .withMessage(EXPECTING_NAME)
     .trim()
     .escape(),
   body('role')
@@ -34,11 +46,10 @@ const userCreate = [
       checkNull: true,
       checkFalsy: true
     })
-    .withMessage(EXPECTING_ROLE)
+    .isString()
     .trim()
     .escape()
     .custom(isRole)
-    .withMessage(INVALID_ROLE)
 ];
 
 const userEdit = [

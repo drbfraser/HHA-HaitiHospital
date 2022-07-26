@@ -8,9 +8,3 @@ const msgDate = 'Must be in format yyyy:mm:dd hh:mm:ss';
 const msgCatchError = { message: 'Something went wrong.' };
 
 export { msgBoolean, msgNumber, msgStringMulti, msgString, msgDate, msgCatchError };
-
-export const EXPECTING_DEPARTMENT: string = "Expecting department information";
-export const INVALID_DEPARTMENT: string = `Department information is invalid`;
-export const EXPECTING_NAME: string = `Expecting user name`;
-export const INVALID_ROLE: string = `Role information is invalid`;
-export const EXPECTING_ROLE: string = `Expecting role information`;
