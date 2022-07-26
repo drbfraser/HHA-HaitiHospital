@@ -76,7 +76,7 @@ describe('Serializer', function () {
             it('Serialized serializable objects should be deserialized', function () {
                 // Arrange
                 let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-                sinon.spy(objectSerializer, 'addSerializable');
+                sinon.spy(objectSerializer, 'registerSerializable');
                 
                 // Act
                 serializable(Serializable);
@@ -131,10 +131,10 @@ describe('Serializer', function () {
                 semiRealisticObject.addSerializable(aSerializable);
                 semiRealisticObject.addSerializable(bSerializable);
 
-                objectSerializer.addSerializable(Serializable);
-                objectSerializer.addSerializable(ASerializable);
-                objectSerializer.addSerializable(BSerializable);
-                objectSerializer.addSerializable(SemiRealisticObject);
+                objectSerializer.registerSerializable(Serializable);
+                objectSerializer.registerSerializable(ASerializable);
+                objectSerializer.registerSerializable(BSerializable);
+                objectSerializer.registerSerializable(SemiRealisticObject);
 
                 // Act
                 let json: string = objectSerializer.serialize(semiRealisticObject);
