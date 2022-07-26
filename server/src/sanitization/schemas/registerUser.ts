@@ -65,4 +65,46 @@ const userEdit = [
   check('password').if(check('password').exists().notEmpty()).escape().isLength({ min: 6, max: 20 }).withMessage(msgStringMulti(6, 20))
 ];
 
+// const userEdit = [
+//   body('username', msgStringMulti(UNAME_SIZE_MIN, UNAME_SIZE_MAX))
+//     .exists({
+//       checkNull: true
+//     })
+//     .isString()
+//     .trim()
+//     .escape()
+//     .isLength({ min: UNAME_SIZE_MIN, max: UNAME_SIZE_MAX }),
+//   body('password', msgStringMulti(PW_SIZE_MIN, PW_SIZE_MAX))
+//     .exists({
+//       checkNull: true
+//     })
+//     .isString()
+//     .trim()
+//     .escape()
+//     .isLength({ min: PW_SIZE_MIN, max: PW_SIZE_MAX }),
+//   body('department')
+//     .exists({
+//       checkNull: true,
+//       checkFalsy: true
+//     })
+//     .isObject()
+//     .custom(isDepartment),
+//   body('name')
+//     .exists({
+//       checkNull: true,
+//       checkFalsy: true
+//     })
+//     .trim()
+//     .escape(),
+//   body('role')
+//     .exists({
+//       checkNull: true,
+//       checkFalsy: true
+//     })
+//     .isString()
+//     .trim()
+//     .escape()
+//     .custom(isRole)
+// ];
+
 export { userCreate as registerUserCreate, userEdit as registerUserEdit };

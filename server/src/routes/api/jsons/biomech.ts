@@ -1,5 +1,5 @@
 import { BiomechPriority } from 'models/bioMech';
-import { UserJson } from 'models/user';
+import { UserApiOut } from 'routes/api/jsons/user';
 
 export namespace BiomechApiIn {
   export interface BiomechPost {
@@ -15,7 +15,7 @@ export namespace BiomechApiIn {
 export namespace BiomechApiOut {
   export interface BiomechGet {
     id: string;
-    user: UserJson;
+    user: UserApiOut.UserJson;
     department: {
       id: string;
       name: string;

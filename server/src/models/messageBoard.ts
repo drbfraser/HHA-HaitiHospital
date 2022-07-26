@@ -2,7 +2,8 @@ import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
-import UserCollection, { UserJson } from './user';
+import UserCollection from './user';
+import { UserApiOut } from '../routes/api/jsons/user';
 
 const { Schema } = mongoose;
 
@@ -20,7 +21,7 @@ interface MessageJson {
     id: string;
     name: string;
   };
-  user: UserJson;
+  user: UserApiOut.UserJson;
   date: string;
   messageBody: string;
   messageHeader: string;

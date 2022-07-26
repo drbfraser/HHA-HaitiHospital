@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { IllegalState } from 'exceptions/systemException';
-import UserModel, { UserJson } from './user';
+import UserModel from './user';
+import { UserApiOut } from '../routes/api/jsons/user';
 import { formatDateString } from 'utils/utils';
 
 const { Schema } = mongoose;
@@ -15,7 +16,7 @@ export interface MessageBoardComment {
 
 export interface MessageBoardCommentJson {
   id: string;
-  user: UserJson;
+  user: UserApiOut.UserJson;
   parentMessageId: string;
   messageComment: string;
   createdAt: string;

@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
+import { UserApiOut } from '../routes/api/jsons/user';
 
 const { Schema } = mongoose;
 
@@ -26,21 +27,8 @@ export interface User {
   updatedAt: Date;
 }
 
-// UserJson is used when ready to be send in response
-export interface UserJson {
-  id: string;
-  name: string;
-  role: string;
-  department: {
-    id: string;
-    name: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 interface UserWithInstanceMethods extends User {
-  toJson: () => Promise<UserJson>;
+  toJson: () => Promise<UserApiOut.UserJson>;
   generateJWT: () => any;
   registerUser: (newUser: any, callback: Function) => void;
   comparePassword: (otherPw: any, callback: Function) => void;
@@ -69,7 +57,7 @@ const userSchema = new Schema<UserWithInstanceMethods>(
   { timestamps: true }
 );
 
-userSchema.methods.toJson = async function (): Promise<UserJson> {
+userSchema.methods.toJson = async function (): Promise<UserApiOut.UserJson> {
   return {
     id: this._id,
     name: this.name,
@@ -128,8 +116,8 @@ export async function hashPassword(password) {
   });
 
   return hashedPassword;
-};
+}
 
-export const USER_MODEL_NAME = "User";
+export const USER_MODEL_NAME = 'User';
 const UserCollection = mongoose.model<UserWithInstanceMethods>(USER_MODEL_NAME, userSchema);
 export default UserCollection;
