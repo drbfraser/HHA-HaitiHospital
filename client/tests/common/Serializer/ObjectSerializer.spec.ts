@@ -46,6 +46,15 @@ class BSerializable extends Serializable {
     }
 }
 
+@serializable
+class SkyrimGuard {
+    hasArrowInTheKnee: boolean;
+
+    constructor() {
+        this.hasArrowInTheKnee = true;
+    }
+}
+
 should();
 describe('Serializer', function () {
     describe("ObjectSerializer", function () {
@@ -80,11 +89,11 @@ describe('Serializer', function () {
                 let a2: Serializable = objectSerializer.deserialize(json);
 
                 // Assert
-                Object.entries(a2)
+                expect(Object.entries(a2)
                     .map(([key, value]) => {
                         return serializableObject[key] == value;
                     })
-                    .length.should.be.above(0);
+                    .length).to.be.above(0);
 
             });
 
@@ -101,7 +110,7 @@ describe('Serializer', function () {
                 let deserialized: NonSerializable = objectSerializer.deserialize(json);
 
                 // Assert
-                deserialized.should.not.be.instanceof(NonSerializable);
+                expect(deserialized).to.not.be.instanceof(NonSerializable);
             });
 
             it('Should properly deserialize serializable object and all its serializable members', function () {
@@ -141,8 +150,17 @@ describe('Serializer', function () {
     });
 
     describe(`Serializable decorator `, function () {
-        it.skip('Should pass the class constructor to ObjectSerializer.addSerializable', function () {
-            // TODO: Implement
+        it('Should be able to serialize and deserialize classes with serializable decorator', function () {
+            // Arrange
+            let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+            let skyrimGuard: SkyrimGuard = new SkyrimGuard();
+
+            // Act
+            let json: string = objectSerializer.serialize(skyrimGuard);
+            let newSkyrimGuard: SkyrimGuard = objectSerializer.deserialize(json);
+
+            // Assert
+            expect(newSkyrimGuard).to.be.instanceof(SkyrimGuard);
         });
     });
 })
