@@ -1,7 +1,7 @@
 import { body, check } from 'express-validator';
 import { isDepartment } from 'sanitization/validators/isDepartment';
 import { isRole } from 'sanitization/validators/isRole';
-import { EXPECTING_NAME, msgStringMulti } from '../messages';
+import { msgStringMulti } from '../messages';
 const mongoose = require('mongoose');
 
 const UNAME_SIZE_MIN: number = 2;
@@ -14,7 +14,6 @@ const userCreate = [
     .exists({
       checkNull: true
     })
-    .withMessage(EXPECTING_NAME)
     .isString()
     .trim()
     .escape()
