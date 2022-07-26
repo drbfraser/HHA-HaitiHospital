@@ -7,11 +7,11 @@ import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_C
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 import { IllegalState } from 'exceptions/systemException';
-import { registerUserCreate, registerUserEdit } from 'sanitization/schemas/registerUser';
+import { user as inputValidator } from 'sanitization/schemas/registerUser';
 
 const router = Router();
 
-router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerUserEdit, validateInput, async (req: Request, res: Response, next: NextFunction) => {
+router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), inputValidator.post, validateInput, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const targetUser = await UserCollection.findById(req.params.id);
     if (!targetUser) {
@@ -96,7 +96,7 @@ router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), async (req: Request,
   }
 });
 
-router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, validateInput, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', requireJwtAuth, roleAuth(Role.Admin), inputValidator.post, validateInput, async (req: Request, res: Response, next: NextFunction) => {
   try {
     let { username, password, name, role, department } = req.body;
     let departmentId = department.id;
