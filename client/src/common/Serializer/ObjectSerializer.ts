@@ -22,6 +22,7 @@ export class ObjectSerializer {
 
     public readonly serialize = (object: Object): string => {
         let newObject = Object.create(object);
+        Object.assign(newObject, object);
         newObject.__class__ = object.constructor.name;
         return JSON.stringify(newObject);
     }
