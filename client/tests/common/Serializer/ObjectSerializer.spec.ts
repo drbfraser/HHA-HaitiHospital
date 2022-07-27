@@ -102,20 +102,6 @@ describe('Serializer', function () {
     });
 
     describe("ObjectSerializer", function () {
-        describe("Get singleton", function () {
-            afterEach(function () {
-                sinon.restore();
-            })
-
-            it.skip('Should instantiate object on first call', function () {
-                // Was unable to mock/spy on constructor.
-            });
-
-            it.skip('Should not instantiate object on second call and so forth', function () {
-                // Was unable to mock/spy on constructor.
-            });
-        });
-
         describe('Serialization and Deserialization', function () {
             it('Serialized serializable objects should be deserialized', function () {
                 // Arrange
