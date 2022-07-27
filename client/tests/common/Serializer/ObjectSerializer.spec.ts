@@ -1,4 +1,4 @@
-import { ObjectSerializer, ObjectSerializer, ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
+import { ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
 import { object } from 'yup';
