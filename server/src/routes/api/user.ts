@@ -7,7 +7,7 @@ import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_C
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 import { IllegalState } from 'exceptions/systemException';
-import { user as inputValidator } from 'sanitization/schemas/registerUser';
+import { user as inputValidator } from 'sanitization/schemas/user';
 
 const router = Router();
 
