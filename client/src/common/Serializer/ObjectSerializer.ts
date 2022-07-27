@@ -98,8 +98,18 @@ export class ObjectSerializer {
         return deserializedObject;
     }
 }
-// IMPORTANT: If the serializable class being deserialized has
-// side-effects, those side-effects will occur during deserialization!
+
+/*  Registers a class as serializable/deserializable by the ObjectSerializer.
+    
+    The decorator takes in a variable number of arguments which should
+    correspond to the arguments that would be passed to the constructor for
+    the succesfull instantiation of a "mock" object. The constructor is called
+    with these arguments every time the corresponding object's deserialization
+    is performed.
+
+    IMPORTANT: If the serializable class being deserialized has
+    side-effects, those side-effects will occur during deserialization!
+*/
 export function serializable(...args: any[]) {
     return (constructor: Function)   => {
         let objectSerializer = ObjectSerializer.getObjectSerializer();
