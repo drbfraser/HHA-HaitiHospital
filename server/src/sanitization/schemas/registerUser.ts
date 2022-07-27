@@ -57,7 +57,7 @@ const userEdit = [
     })
     .isString()
     .trim()
-    .if((value: string) => value)
+    .if((value: string) => value.length !== 0)
     .escape()
     .isLength({ min: UNAME_SIZE_MIN, max: UNAME_SIZE_MAX })
     .withMessage(msgStringMulti(UNAME_SIZE_MIN, UNAME_SIZE_MAX)),
@@ -68,7 +68,7 @@ const userEdit = [
     })
     .isString()
     .trim()
-    .if((value: string) => value)
+    .if((value: string) => value.length !== 0)
     .escape()
     .isLength({ min: PW_SIZE_MIN, max: PW_SIZE_MAX })
     .withMessage(msgStringMulti(PW_SIZE_MIN, PW_SIZE_MAX)),

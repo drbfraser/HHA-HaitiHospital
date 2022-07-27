@@ -11,7 +11,7 @@ import { user as inputValidator } from 'sanitization/schemas/registerUser';
 
 const router = Router();
 
-router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), inputValidator.post, validateInput, async (req: Request, res: Response, next: NextFunction) => {
+router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), inputValidator.put, validateInput, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const targetUser = await UserCollection.findById(req.params.id);
     if (!targetUser) {
