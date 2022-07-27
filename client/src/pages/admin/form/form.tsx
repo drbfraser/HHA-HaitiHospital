@@ -1,15 +1,11 @@
-import {
-  Department,
-  GeneralDepartment,
-  Role,
-  UserJson,
-} from 'constants/interfaces';
-import { EMPTY_USER_JSON } from "constants/default_values";
+import { Department, GeneralDepartment, Role, UserJson } from 'constants/interfaces';
+import { EMPTY_USER_JSON } from 'constants/default_values';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getEnumKeyByStringValue } from 'utils/utils';
 import { AdminUserFormData, ADMIN_USER_FORM_FIELDS } from 'pages/admin/typing';
+import { initAdminForm } from '../utils';
 
 interface Props {
   data: {
@@ -20,10 +16,12 @@ interface Props {
 }
 
 export const AdminUserForm = (props: Props) => {
-  const { register, handleSubmit, setValue } = useForm<AdminUserFormData>({});
   const { t } = useTranslation();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const userData: UserJson = props.data.userData ? props.data.userData : EMPTY_USER_JSON;
+  const { register, handleSubmit, setValue } = useForm<AdminUserFormData>({
+    defaultValues: initAdminForm(userData),
+  });
   const departments: Map<string, Department> = props.data.departments;
   const hasDepartment = (role: keyof typeof Role): boolean =>
     Role[role] === Role.User || Role[role] === Role.HeadOfDepartment;
