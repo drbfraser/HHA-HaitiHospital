@@ -105,7 +105,6 @@ describe('Serializer', function () {
 
             // Act
             let json: string = objectSerializer.serialize(skyrimGuard);
-            //console.log(json);
             let newSkyrimGuard: IsBandLegendary = objectSerializer.deserialize(json);
 
             // Assert
