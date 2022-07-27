@@ -38,7 +38,7 @@ export class ObjectSerializer {
         return this.objectSerializer;
     }
 
-    private readonly registerSerializable = (name: string, constructor: Constructor): void => {
+    public readonly registerSerializable = (name: string, constructor: Constructor): void => {
         this.constructorMapper[name] = constructor;
     }
 
