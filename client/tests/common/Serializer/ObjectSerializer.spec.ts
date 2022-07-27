@@ -46,12 +46,23 @@ class BSerializable extends Serializable {
     }
 }
 
-@serializable
+@serializable()
 class SkyrimGuard {
     hasArrowInTheKnee: boolean;
 
     constructor() {
         this.hasArrowInTheKnee = true;
+    }
+}
+
+@serializable("Generic Band", false)
+class IsBandLegendary {
+    band: string;
+    isLegendary: boolean;
+
+    constructor(band: string, isLegendary: boolean) {
+        this.band = band;
+        this.isLegendary = isLegendary;
     }
 }
 
@@ -131,10 +142,10 @@ describe('Serializer', function () {
                 semiRealisticObject.addSerializable(aSerializable);
                 semiRealisticObject.addSerializable(bSerializable);
 
-                objectSerializer.registerSerializable(Serializable);
-                objectSerializer.registerSerializable(ASerializable);
-                objectSerializer.registerSerializable(BSerializable);
-                objectSerializer.registerSerializable(SemiRealisticObject);
+                objectSerializer.registerSerializable(Serializable.name, Serializable);
+                objectSerializer.registerSerializable(ASerializable.name, ASerializable);
+                objectSerializer.registerSerializable(BSerializable.name, BSerializable);
+                objectSerializer.registerSerializable(SemiRealisticObject.name, SemiRealisticObject);
 
                 // Act
                 let json: string = objectSerializer.serialize(semiRealisticObject);
@@ -150,7 +161,7 @@ describe('Serializer', function () {
     });
 
     describe(`Serializable decorator `, function () {
-        it('Should be able to serialize and deserialize classes with serializable decorator', function () {
+        it('Should be able to serialize and deserialize classes with zero-args constructor', function () {
             // Arrange
             let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
             let skyrimGuard: SkyrimGuard = new SkyrimGuard();
@@ -162,5 +173,21 @@ describe('Serializer', function () {
             // Assert
             expect(newSkyrimGuard).to.be.instanceof(SkyrimGuard);
         });
+
+        it('Should be able to serialize and deserialize classes with multiple args constructors', function () {
+            // Arrange
+            let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+            let skyrimGuard: IsBandLegendary = new IsBandLegendary("Linkin Park", true);
+
+            // Act
+            let json: string = objectSerializer.serialize(skyrimGuard);
+            //console.log(json);
+            let newSkyrimGuard: IsBandLegendary = objectSerializer.deserialize(json);
+
+            // Assert
+            expect(newSkyrimGuard).to.be.instanceof(IsBandLegendary);
+        });
     });
+
+
 })

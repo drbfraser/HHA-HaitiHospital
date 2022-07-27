@@ -11,14 +11,16 @@
     types preserved after deserialization.
 
     The @serializable decorator provides with an alternative to programatically
-    registering classes. Classes having this decorator will be automatically
-    registered to ObjectSerializer. IMPORTANT: Classes with the decorator MUST
-    have a no-argument constructor (may be private).
+    registering classes. "Default" arguments should be provided to this decorator
+    which will be used to construct a "mock" class from which the deserialized object
+    will be built.
+
+    Refer to ObjectSerializer.spec.ts in tests for usage demonstration.
 
     This code was adapted from jcalz answer in the post
     https://stackoverflow.com/questions/54427218/parsing-complex-json-objects-with-inheritance.
 */
-type Constructor = { new(): {} };
+type Constructor = { new(...args: any[]): {} };
 
 export class ObjectSerializer {
     private constructorMapper: { [className: string]: Constructor };
@@ -36,8 +38,8 @@ export class ObjectSerializer {
         return this.objectSerializer;
     }
 
-    public readonly registerSerializable = (constructor: Constructor): void => {
-        this.constructorMapper[constructor.name] = constructor;
+    public readonly registerSerializable = (name: string, constructor: Constructor): void => {
+        this.constructorMapper[name] = constructor;
     }
 
     private readonly addClassNameProperty = (object: Object): Object => {
@@ -96,9 +98,12 @@ export class ObjectSerializer {
         return deserializedObject;
     }
 }
-
-// The decorator function
-export function serializable(defaultConstructor: Constructor) {
-    let objectSerializer = ObjectSerializer.getObjectSerializer();
-    objectSerializer.registerSerializable(defaultConstructor);
+// IMPORTANT: If the serializable class being deserialized has
+// side-effects, those side-effects will occur during deserialization!
+export function serializable(...args: any[]) {
+    return (constructor: Function)   => {
+        let objectSerializer = ObjectSerializer.getObjectSerializer();
+        let constr = constructor.bind(null, args)
+        objectSerializer.registerSerializable(constructor.name, constr);
+    }
 }
