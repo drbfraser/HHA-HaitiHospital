@@ -7,7 +7,7 @@ export interface ValidationResult<ErrorType> {
 }
 
 @serializable(undefined, "")
-export class Question<ID, T> extends QuestionItem<ID> {
+export abstract class Question<ID, T> extends QuestionItem<ID> {
     private readonly prompt: string;
     private answer?: T;
 

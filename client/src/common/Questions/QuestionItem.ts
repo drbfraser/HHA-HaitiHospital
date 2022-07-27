@@ -1,7 +1,7 @@
 import { serializable } from "common/Serializer/ObjectSerializer";
 
 @serializable(undefined)
-export class QuestionItem<ID> {
+export abstract class QuestionItem<ID> {
     private readonly id: ID;
 
     constructor(id: ID) {
