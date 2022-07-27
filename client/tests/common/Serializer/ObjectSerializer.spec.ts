@@ -1,6 +1,7 @@
-import { ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
+import { ObjectSerializer, ObjectSerializer, ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
+import { object } from 'yup';
 
 @serializable()
 class Serializable {
@@ -13,6 +14,17 @@ class Serializable {
 class NonSerializable {
     public property3: number;
     public property4: string;
+}
+
+@serializable()
+class UndefinedProperty {
+    definedProp: string;
+    undefinedProp?: Object;
+
+    constructor() {
+        this.definedProp = "A string";
+        this.undefinedProp = undefined;
+    }
 }
 
 @serializable()
@@ -171,6 +183,20 @@ describe('Serializer', function () {
                 expect(deserializedObject.getSerializable(1))
                     .to.be.instanceof(BSerializable);
             });
+
+            it('Should serialize and deserialize classes with undefined properties', function () {
+                // Arrange
+                let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+
+                // Act
+                let objectWithUndefined: UndefinedProperty = new UndefinedProperty();
+                let json: string = objectSerializer.serialize(objectWithUndefined);
+                let newObject: UndefinedProperty = objectSerializer.deserialize(json);
+
+                // Assert
+                expect(newObject).to.be.instanceof(UndefinedProperty);
+                expect(newObject).to.deep.equal(objectWithUndefined);
+            })
         });
     });
 
