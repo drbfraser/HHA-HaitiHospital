@@ -1,17 +1,15 @@
 import { QuestionItem } from "./QuestionItem";
+import { MapperValues, QuestionTypeMap } from "./QuestionTypeMapper";
 import { NumericQuestion, TextQuestion } from "./SimpleQuestionTypes";
 
-export class QuestionCollection<ID> extends QuestionItem<ID> {
+type Handler = <ID>(question: QuestionItem<ID>) => void;
+
+export abstract class QuestionCollection<ID> extends QuestionItem<ID> {
     private readonly questionItems: Array<QuestionItem<ID>>;
 
     constructor(id: ID) {
         super(id);
         this.questionItems = new Array<QuestionItem<ID>>();
-    }
-
-    public static readonly of = <ID>(id: ID, ...args: Array<QuestionItem<ID>>): QuestionCollection<ID> => {
-        return new QuestionCollection<ID>(id)
-            .addAll(...args);
     }
 
     public readonly add = (questionItem: QuestionItem<ID>): QuestionCollection<ID> => {
@@ -24,4 +22,21 @@ export class QuestionCollection<ID> extends QuestionItem<ID> {
         return this;
     }
 
+    public readonly buildHandler = (handlers: MapperValues<Handler>): QuestionHandler<ID> => {
+        return new QuestionHandler<ID>(this.questionItems, handlers);
+    }
+}
+
+export class QuestionHandler<ID> extends QuestionTypeMap<Handler> {
+
+    private readonly questions: Array<QuestionItem<ID>>;
+
+    constructor(questions: Array<QuestionItem<ID>>, handlers: MapperValues<Handler>) {
+        super(handlers);
+        this.questions = questions;
+    }
+
+    public readonly apply = (): void =>  {
+        this.questions.forEach(question => this.map(question)(question));
+    }
 }
