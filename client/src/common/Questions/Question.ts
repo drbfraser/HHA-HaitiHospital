@@ -1,4 +1,3 @@
-import { serializable } from "common/Serializer/ObjectSerializer";
 import { QuestionItem } from "./QuestionItem";
 
 export interface ValidationResult<ErrorType> {
