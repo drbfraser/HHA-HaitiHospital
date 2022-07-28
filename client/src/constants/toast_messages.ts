@@ -34,6 +34,10 @@ const TOAST_MESSAGEBOARD_COMMENTS_POST: string = 'Unable to post comment';
 const TOAST_REPORTS_GET: string = 'Unable to fetch reports';
 const TOAST_REPORT_GET: string = 'Unable to fetch report';
 
+// Template
+const TOAST_TEMPLATE_GET: string = 'Unable to fetch template';
+const TOAST_TEMPLATE_PUT: string = 'Unable to update template';
+
 export {
   TOAST_BIOMECH_GET,
   TOAST_BIOMECH_POST,
@@ -55,4 +59,6 @@ export {
   TOAST_MESSAGEBOARD_COMMENTS_POST,
   TOAST_REPORTS_GET,
   TOAST_REPORT_GET,
+  TOAST_TEMPLATE_GET,
+  TOAST_TEMPLATE_PUT,
 };
