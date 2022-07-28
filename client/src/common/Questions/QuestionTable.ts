@@ -2,7 +2,6 @@ import { serializable } from "common/Serializer/ObjectSerializer";
 import { Question } from "./Question";
 import { QuestionCollection } from "./QuestionCollection";
 import { QuestionItem } from "./QuestionItem";
-import { NumericQuestion, TextQuestion } from "./SimpleQuestionTypes";
 
 type table<T> = Array<Array<T>>;
 
@@ -46,4 +45,10 @@ export class QuestionTable<ID, T, QuestionType extends Question<ID, T>> extends 
     public readonly getRowHeaders = (): Array<string> => [...this.rowHeaders];
 
     public readonly getColumnHeaders = (): Array<string> => [...this.columnHeaders];
+
+    public readonly searchById = (id: ID): QuestionItem<ID> | undefined => {
+        return this.questionTable
+            .reduce((questions1, questions2) => [...questions1, ...questions2])
+            .filter((questionItem) => questionItem.getId() == id)[0];
+    }
 }
