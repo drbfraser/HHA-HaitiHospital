@@ -10,4 +10,3 @@ export abstract class QuestionItem<ID> {
 
     public readonly getId = (): ID => this.id;
 }
-
