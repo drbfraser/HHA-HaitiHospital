@@ -28,12 +28,9 @@ export class QuestionGroup<ID> extends QuestionCollection<ID> {
         return new QuestionHandler<ID>(this.questionItems, handlers);
     }
 
-    public readonly searchById = (searcher: (ids: Array<ID>) => number): QuestionItem<ID> | undefined => {
-        let idArray: Array<ID> = this.questionItems
-            .map(question => question.getId());
-        let index: number = searcher(idArray);
-        return index < 0 && index > this.questionItems.length ?
-            this.questionItems[index] : undefined;
+    public readonly searchById = (id: ID): QuestionItem<ID> | undefined => {
+        return this.questionItems
+            .filter((questionItem) => questionItem.getId() == id)[0];
     }
 }
 
