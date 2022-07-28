@@ -1,6 +1,8 @@
+import { serializable } from "common/Serializer/ObjectSerializer";
 import { Question } from "./Question";
 
 // Choice for multiple choice questions
+serializable("")
 class Choice {
     private readonly description: string;
     private chosen: boolean;
@@ -48,6 +50,7 @@ abstract class MultipleChoiceQuestion<ID, T> extends Question<ID, T> {
 
 // Multiple choice questions in which the user is only allowed to select one
 // choice
+@serializable(undefined, "")
 export class SingleSelectionQuestion<ID> extends MultipleChoiceQuestion<ID, number> {
     // Won't do anything if answer index is greater than the number of choices
     public readonly setAnswer = (answer: number): void => {
@@ -63,6 +66,7 @@ export class SingleSelectionQuestion<ID> extends MultipleChoiceQuestion<ID, numb
 
 // Multiple choice questions in which the user is allowed to select multiple
 // choices.
+@serializable(undefined, "")
 export class MultipleSelectionQuestion<ID> extends MultipleChoiceQuestion<ID, Array<number>> {
     // Will ignore indexes whose value are greater than the number of choices
     public readonly setAnswer = (answer: Array<number>): void => {
