@@ -1,33 +1,39 @@
+import { Id } from "react-toastify";
+import { Question } from "./Question";
 import { QuestionItem } from "./QuestionItem";
 import { NumericQuestion, TextQuestion } from "./SimpleQuestionTypes";
 
-interface ClassMapEntry<R> {
+export type Handler<ID> = (question: QuestionItem<ID>) => void;
+
+interface HandlerEntry<ID> {
     readonly className: string,
-    readonly value: R
+    readonly handler: Handler<ID> 
 }
 
-interface QuestionMapper<R> {
-    readonly textQuestion: ClassMapEntry<R>,
-    readonly numericQuestion: ClassMapEntry<R>
+interface HandlerMap<ID> {
+    readonly textQuestion: HandlerEntry<ID>,
+    readonly numericQuestion: HandlerEntry<ID>
 }
 
-export interface MapperValues<R> {
-    readonly textQuestion: R;
-    readonly numericQuestion: R
+export interface HandlerArgs<ID> {
+    readonly textQuestion: (textQuestion: TextQuestion<ID>) => void;
+    readonly numericQuestion: (numericQuestion: NumericQuestion<ID>) => void;
 }
 
-export abstract class QuestionTypeMap<R> {
-    private readonly questionMapper: QuestionMapper<R>;
+export class QuestionTypeMap<ID> {
+    private readonly questionMapper: HandlerMap<ID>;
 
-    constructor(questionMapper: MapperValues<R>) {
+    constructor(questionMapper: HandlerArgs<ID>) {
         this.questionMapper = {
-            textQuestion: { className: TextQuestion.name, value: questionMapper.textQuestion },
-            numericQuestion: { className: NumericQuestion.name, value: questionMapper.numericQuestion }
+            textQuestion: { className: TextQuestion.name, handler: questionMapper.textQuestion },
+            numericQuestion: { className: NumericQuestion.name, handler: questionMapper.numericQuestion }
         };
     }
 
-    public readonly map = (question: QuestionItem<unknown>): R => {
+    public readonly getHandler = (question: QuestionItem<unknown>): Handler<ID> => {
         return Object.values(this.questionMapper)
             .find(classNameMap => classNameMap.className === question.constructor.name);
     }
 }
+
+

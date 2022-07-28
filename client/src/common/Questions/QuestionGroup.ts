@@ -1,7 +1,8 @@
 import { serializable } from "common/Serializer/ObjectSerializer";
 import { QuestionCollection } from "./QuestionCollection";
 import { QuestionItem } from "./QuestionItem";
-import { MapperValues, QuestionTypeMap } from "./QuestionTypeMapper";
+import { HandlerArgs, QuestionTypeMap } from "./QuestionTypeMapper";
+import { NumericQuestion, TextQuestion } from "./SimpleQuestionTypes";
 
 type Handler = <ID>(question: QuestionItem<ID>) => void;
 
@@ -24,7 +25,7 @@ export class QuestionGroup<ID> extends QuestionCollection<ID> {
         return this;
     }
 
-    public readonly buildHandler = (handlers: MapperValues<Handler>): QuestionHandler<ID> => {
+    public readonly buildHandler = (handlers: HandlerArgs<ID>): QuestionHandler<ID> => {
         return new QuestionHandler<ID>(this.questionItems, handlers);
     }
 
@@ -34,16 +35,16 @@ export class QuestionGroup<ID> extends QuestionCollection<ID> {
     }
 }
 
-export class QuestionHandler<ID> extends QuestionTypeMap<Handler> {
+export class QuestionHandler<ID> extends QuestionTypeMap<ID> {
 
     private readonly questions: Array<QuestionItem<ID>>;
 
-    constructor(questions: Array<QuestionItem<ID>>, handlers: MapperValues<Handler>) {
+    constructor(questions: Array<QuestionItem<ID>>, handlers: HandlerArgs<ID>) {
         super(handlers);
         this.questions = questions;
     }
 
     public readonly apply = (): void =>  {
-        this.questions.forEach(question => this.map(question)(question));
+        this.questions.forEach(question => this.getHandler(question)(question));
     }
 }
