@@ -36,8 +36,9 @@ export class CompositionQuestion<ID> extends QuestionCollection<ID> {
 
     public readonly getAnswer = (): number | undefined => this.answer;
 
+    // Changes answer if given a non-negative number
     public readonly setAnswer = (answer: number): void => {
-        this.answer = answer;
+        this.answer = answer >= 0 ? answer : this.answer;
     }
 
     public readonly sumsUp = (): boolean => {
