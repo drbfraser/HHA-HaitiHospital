@@ -1,4 +1,3 @@
-import { serializable } from "common/Serializer/ObjectSerializer";
 import { Question } from "./Question";
 import { QuestionCollection } from "./QuestionCollection";
 import { QuestionItem } from "./QuestionItem";
@@ -32,8 +31,7 @@ class TableCell<ID, T, QuestionType extends Question<ID, T>> {
     }
 }
 
-@serializable(undefined, [], [], (row, col) => undefined)
-export class QuestionTable<ID, T, QuestionType extends Question<ID, T>> extends QuestionCollection<ID> {
+export abstract class QuestionTable<ID, T, QuestionType extends Question<ID, T>> extends QuestionCollection<ID> {
 
     private readonly rowHeaders: Array<string>;
     private readonly columnHeaders: Array<string>;
