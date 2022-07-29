@@ -10,7 +10,7 @@ export class CompositionQuestion<ID> extends QuestionCollection<ID> {
 
     constructor(id: ID, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID>>) {
         super(id);
-        this.answer = defaultAnswer;
+        this.setAnswer(defaultAnswer);
         questions ? this.addAll(...questions) : undefined;
     }
 
