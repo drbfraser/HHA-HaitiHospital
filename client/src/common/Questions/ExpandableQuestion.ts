@@ -61,6 +61,8 @@ export class ExpandableQuestion<ID> extends QuestionCollection<ID> {
         this.answer = answer;
         this.expand();
     }
+
+    public readonly getAnswer = (): number => this.answer;
 }
 
 let a: ExpandableQuestion<number> = new ExpandableQuestion<number>(5, n => 5);
