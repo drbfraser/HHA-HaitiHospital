@@ -49,9 +49,15 @@ export class ExpandableQuestion<ID> extends QuestionCollection<ID> {
             .fill(undefined)
             .map((x, index) => new QuestionGroup(this.idGenerator(index)))
             .map(questionGroup => {
+                let handler = () => questionItemAdder(questionGroup);
                 this.questionsTemplate.buildHandler({
-                    textQuestion: questionItemAdder(questionGroup),
-                    numericQuestion: questionItemAdder(questionGroup)
+                    textQuestion: handler,
+                    numericQuestion: handler,
+                    singleSelectionQuestion: handler,
+                    multipleSelectionQuestion: handler,
+                    questionGroup: handler,
+                    compositionQuestion: handler,
+                    expandableQuestion: handler
                 }).apply();
                 return questionGroup;
             });
