@@ -49,7 +49,7 @@ export class ExpandableQuestion<ID> extends QuestionCollection<ID> {
             .fill(undefined)
             .map((x, index) => new QuestionGroup(this.idGenerator(index)))
             .map(questionGroup => {
-                questionGroup.buildHandler({
+                this.questionsTemplate.buildHandler({
                     textQuestion: questionItemAdder(questionGroup),
                     numericQuestion: questionItemAdder(questionGroup)
                 }).apply();
