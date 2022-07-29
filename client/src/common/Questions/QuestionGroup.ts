@@ -2,7 +2,6 @@ import { serializable } from "common/Serializer/ObjectSerializer";
 import { QuestionCollection } from "./QuestionCollection";
 import { QuestionItem } from "./QuestionItem";
 import { HandlerArgs, QuestionTypeMap } from "./QuestionTypeMapper";
-import { NumericQuestion, TextQuestion } from "./SimpleQuestionTypes";
 
 type Handler = <ID>(question: QuestionItem<ID>) => void;
 
@@ -11,16 +10,17 @@ export class QuestionGroup<ID> extends QuestionCollection<ID> {
 
     private readonly questionItems: Array<QuestionItem<ID>>;
 
-    constructor(id: ID) {
+    constructor(id: ID, ...questions: Array<QuestionItem<ID>>) {
         super(id);
+        questions ? this.addAll(...questions): undefined;
     }
 
-    public readonly add = (questionItem: QuestionItem<ID>): QuestionCollection<ID> => {
+    public readonly add = (questionItem: QuestionItem<ID>): QuestionGroup<ID> => {
         this.questionItems.push(questionItem);
         return this;
     }
 
-    public readonly addAll = (...questions: Array<QuestionItem<ID>>): QuestionCollection<ID> => {
+    public readonly addAll = (...questions: Array<QuestionItem<ID>>): QuestionGroup<ID> => {
         questions.forEach((question) => this.add(question));
         return this;
     }
