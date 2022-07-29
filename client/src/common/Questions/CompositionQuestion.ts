@@ -1,6 +1,8 @@
+import { serializable } from "common/Serializer/ObjectSerializer";
 import { QuestionCollection } from "./QuestionCollection";
 import { NumericQuestion } from "./SimpleQuestionTypes";
 
+@serializable(undefined)
 export class CompositionQuestion<ID> extends QuestionCollection<ID> {
 
     private answer?: number;
