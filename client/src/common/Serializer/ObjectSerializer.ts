@@ -72,9 +72,16 @@ export class ObjectSerializer {
         return JSON.stringify(newObject);
     }
 
-    // JSON parse will call this function upon each field of the JSON string
-    // while it traverses through the fields in preorder order.
-    private readonly reviver = (key: string, value: any) => {
+    /*  JSON parse will call this function upon each field of the JSON string
+        while it traverses through the fields in preorder order.
+
+        It takes in a key-value pair, allowing the value to be modified. It
+        returns an object or value that is going to be assigned to the given
+        key in the newly-parsed object.
+
+        For more info, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter
+    */
+    private readonly reviver = (key: string, value: any): any => {
         if (!(value instanceof Object) || !value.__class__) {
             return value;
         }
