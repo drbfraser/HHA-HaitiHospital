@@ -1,8 +1,10 @@
-import { ObjectSerializer, ObjectSerializer, ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
+import { ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
-import { object } from 'yup';
 
+// This last import seems to make some incorrect error highlights go away in
+// some of the devs IDEs. 
+import '@types/jest'; 
 @serializable()
 class Serializable {
     public property1: number;
@@ -195,7 +197,36 @@ describe('Serializer', function () {
                 // Assert
                 expect(newObject).to.be.instanceof(UndefinedProperty);
                 expect(newObject).to.deep.equal(objectWithUndefined);
-            })
+            });
+
+            it('Mantain mock value for missing key from malformed json', function () {
+                // Arrange
+                let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+                let malformed: any = new IsBandLegendary("Shadow of Intent", true);
+                delete malformed.band;
+
+                // Act
+                let json: string = objectSerializer.serialize(malformed);
+                let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(json);
+
+                // Assert
+                expect(malformedDeserialized.band).to.be.equal("Generic Band");
+                expect(malformedDeserialized.isLegendary).to.be.true;
+            });
+
+            it('Will keep extra fields during deserialization', function () {
+                // Arrange
+                let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+                let malformed: any = new IsBandLegendary("Lorna Shore", true);
+                malformed.extra = "";
+
+                // Act
+                let json: string = objectSerializer.serialize(malformed);
+                let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(json);
+
+                // Assert
+                expect((malformedDeserialized as any).extra).to.equal(malformed.extra);;
+            });
         });
     });
 
