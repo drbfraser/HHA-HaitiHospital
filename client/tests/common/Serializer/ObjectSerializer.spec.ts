@@ -1,9 +1,10 @@
 import { ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
-import { object } from 'yup';
-import { json } from 'stream/consumers';
 
+// This last import seems to make some incorrect error highlights go away in
+// some of the devs IDEs. 
+import '@types/jest'; 
 @serializable()
 class Serializable {
     public property1: number;
