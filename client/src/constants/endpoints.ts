@@ -80,7 +80,7 @@ const ENDPOINT_REPORTS_GET: string = '/api/report';
 const ENDPOINT_REPORTS_GET_BY_ID = (id: string) => `/api/report/report/${id}`;
 
 // template
-const ENDPOINT_TEMPLATE_GET: string = '/api/template';
+const ENDPOINT_TEMPLATE_GET: string = '';
 const ENDPOINT_TEMPLATE_PUT: string = ENDPOINT_TEMPLATE_GET;
 
 export {
