@@ -1,6 +1,5 @@
-import { Role, Department } from './interfaces';
+import { Role, Department } from '../../constants/interfaces';
 import { Path } from 'react-hook-form';
-// >>>>>>>>>>>>>>>>>>>>>>>>>> FORMS BY useForm() >>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 export interface AdminUserFormData {
   username: string;
