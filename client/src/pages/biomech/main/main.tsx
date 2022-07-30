@@ -9,15 +9,16 @@ import Api from 'actions/Api';
 import { ENDPOINT_BIOMECH_GET, ENDPOINT_BIOMECH_DELETE_BY_ID } from 'constants/endpoints';
 import { toast } from 'react-toastify';
 import { renderBasedOnRole } from 'actions/roleActions';
-import './biomechanical.css';
 import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
-import { setPriority } from 'pages/broken_kit_report/BiomechModel';
+import { setPriority } from 'pages/biomech/utils';
 import { timezone, language } from 'constants/timezones';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
+
+import './main.css';
 
 interface BiomechanicalPageProps extends RouteComponentProps {}
 
