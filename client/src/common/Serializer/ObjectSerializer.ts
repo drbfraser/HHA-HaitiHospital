@@ -120,7 +120,7 @@ export class ObjectSerializer {
 export function serializable(...args: any[]) {
     return (constructor: Function)   => {
         let objectSerializer = ObjectSerializer.getObjectSerializer();
-        let constr = constructor.bind(null, args)
+        let constr = constructor.bind(null, ...args)
         objectSerializer.registerSerializable(constructor.name, constr);
     }
 }

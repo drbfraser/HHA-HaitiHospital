@@ -2,6 +2,7 @@ import { ObjectSerializer, serializable } from '../../../src/common/Serializer/O
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
 import { object } from 'yup';
+import { json } from 'stream/consumers';
 
 @serializable()
 class Serializable {
@@ -195,6 +196,21 @@ describe('Serializer', function () {
                 // Assert
                 expect(newObject).to.be.instanceof(UndefinedProperty);
                 expect(newObject).to.deep.equal(objectWithUndefined);
+            });
+
+            it('Mantain mock value for missing key from malformed json', function () {
+                // Arrange
+                let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+                let malformed: any = new IsBandLegendary("Shadow of Intent", true);
+                delete malformed.band;
+
+                // Act
+                let json: string = objectSerializer.serialize(malformed);
+                let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(json);
+
+                // Assert
+                expect(malformedDeserialized.band).to.be.equal("Generic Band");
+                expect(malformedDeserialized.isLegendary).to.be.true;
             })
         });
     });
