@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getEnumKeyByStringValue } from 'utils/utils';
-import { AdminUserFormData, ADMIN_USER_FORM_FIELDS } from 'constants/forms';
+import { AdminUserFormData, ADMIN_USER_FORM_FIELDS } from 'pages/admin/typing';
 
 interface Props {
   data: {
