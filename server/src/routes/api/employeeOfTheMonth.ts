@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import upload from '../../middleware/upload';
+import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
 import EOTMCollection, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';

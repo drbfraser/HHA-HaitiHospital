@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
-import { oneImageUploader } from 'middleware/upload';
+import { oneImageUploader } from 'middleware/multer';
 import { validateInput } from 'middleware/inputSanitization';
 import BioMechCollection, { BioMech } from 'models/bioMech';
 import { registerBioMechCreate } from 'sanitization/schemas/biomech';

@@ -1,6 +1,6 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import upload from '../../middleware/upload';
+import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
 import CaseStudyCollection, { CaseStudy } from '../../models/caseStudies';
 import { Role } from '../../models/user';
