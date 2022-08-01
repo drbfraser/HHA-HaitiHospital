@@ -32,6 +32,9 @@ const upload = multer({
 // req.body.file as to accomodate express-validator validators
 // since they only look for input fields inside
 // req.body, req.param, req.query, req.header, ... (by convention)
+/**
+ * @param inputField - is a field of a multipart form with which multer parses the media
+ */
 export const oneImageUploader = (inputField: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const multerSingle = upload.single(inputField);
