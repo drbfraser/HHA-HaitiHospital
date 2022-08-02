@@ -3,7 +3,7 @@ import requireJwtAuth from 'middleware/requireJwtAuth';
 import { oneImageUploader } from 'middleware/multer';
 import { validateInput } from 'middleware/inputSanitization';
 import BioMechCollection, { BioMech } from 'models/bioMech';
-import { registerBioMechCreate } from 'sanitization/schemas/biomech';
+import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
 import { deleteUploadedImage } from 'utils/unlinkImage';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -37,7 +37,7 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
   }
 });
 
-router.post('/', requireJwtAuth, oneImageUploader(BiomechApiIn.FILE_FIELD), registerBioMechCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.post('/', requireJwtAuth, oneImageUploader(BiomechApiIn.FILE_FIELD), InputSchema.post, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const user = req.user;
   const userId = user._id!;
   const department = user.departmentId;

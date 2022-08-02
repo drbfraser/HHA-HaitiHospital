@@ -1,4 +1,4 @@
-import { body, check } from 'express-validator';
+import { body } from 'express-validator';
 import { INVALID_BIOMECH_PRIORITY, isBiomechPriority } from 'sanitization/validators/is_biomech_priority';
 import { msgString } from '../messages';
 import { isImage, MUST_BE_AN_IMAGE_FILE } from '../validators/isImage';
@@ -40,4 +40,6 @@ const bioMechCreate = [
     .withMessage(MUST_BE_AN_IMAGE_FILE)
 ];
 
-export { bioMechCreate as registerBioMechCreate };
+export const Biomech = {
+    post: bioMechCreate
+}
