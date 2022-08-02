@@ -40,12 +40,12 @@ export const oneImageUploader = (inputField: string) => {
     const multerSingle = upload.single(inputField);
     multerSingle(req, res, (error) => {
       if (error) {
-        next(new BadRequest(error.message))
+        return next(new BadRequest(error.message));
       } else {
-        if (!req.file) next(new BadRequest(`Expecting an image`));
+        if (!req.file) return next(new BadRequest(`Expecting an image`));
         req.file!.path = req.file!.path.replace(/\\/g, '/');
         req.body.file = req.file;
-        next();
+        return next();
       }
     });
   };
