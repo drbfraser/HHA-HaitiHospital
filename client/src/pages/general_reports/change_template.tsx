@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 // import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
@@ -38,12 +38,14 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
     getDepartments();
   }, [history]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const fileContent : string = await templateFile.text()
     const fileContentObject : object = JSON.parse(fileContent)
 
+    // not connected to the backend API at the moment as we haven't figured out the API implementation
+    // and what to do with the old implementation
     // TODO: to connect to the backend after we figure out how the backend should work
     // await Api.Put(
     //   ENDPOINT_TEMPLATE_PUT,
@@ -73,7 +75,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
             </button>
           </Link>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className={`form-group col-md-6`}>
             <div className="mb-3">
               <label htmlFor="department" className="form-label">
