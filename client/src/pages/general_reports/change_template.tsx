@@ -42,9 +42,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
     e.preventDefault();
 
     const fileContent : string = await templateFile.text()
-    console.log(fileContent)
     const fileContentObject : object = JSON.parse(fileContent)
-    console.log(fileContentObject)
 
     // TODO: to connect to the backend after we figure out how the backend should work
     // await Api.Put(
