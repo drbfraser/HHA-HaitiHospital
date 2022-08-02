@@ -1,13 +1,38 @@
-import { check } from 'express-validator';
+import { body, check } from 'express-validator';
+import { INVALID_BIOMECH_PRIORITY, isBiomechPriority } from 'sanitization/validators/is_biomech_priority';
 import { msgString } from '../messages';
 import { isImage, MUST_BE_AN_IMAGE_FILE } from '../validators/isImage';
 
 const bioMechCreate = [
-  check('equipmentName').trim().escape().isLength({ min: 1 }).withMessage(msgString),
-  check('equipmentFault').trim().escape().isLength({ min: 1 }).withMessage(msgString),
-  check('equipmentPriority').trim().escape().isLength({ min: 1 }).withMessage(msgString),
-  check('file')
+  body('equipmentName', msgString)
     .exists({
+      checkNull: true,
+      checkFalsy: true
+    })
+    .isString()
+    .trim()
+    .escape(),
+  body('equipmentFault', msgString)
+    .exists({
+      checkNull: true,
+      checkFalsy: true
+    })
+    .isString()
+    .trim()
+    .escape(),
+  body('equipmentPriority', msgString)
+    .exists({
+      checkNull: true,
+      checkFalsy: true
+    })
+    .isString()
+    .trim()
+    .escape()
+    .custom(isBiomechPriority)
+    .withMessage(INVALID_BIOMECH_PRIORITY),
+  body('file')
+    .exists({
+      checkNull: true,
       checkFalsy: true
     })
     .isObject()
