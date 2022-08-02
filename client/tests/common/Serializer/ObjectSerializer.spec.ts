@@ -2,9 +2,6 @@ import { ObjectSerializer, serializable } from '../../../src/common/Serializer/O
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
 
-// This last import seems to make some incorrect error highlights go away in
-// some of the devs IDEs. 
-import '@types/jest'; 
 @serializable()
 class Serializable {
     public property1: number;
