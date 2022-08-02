@@ -69,7 +69,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to="/general-reports">
             <button type="button" className="btn btn-outline-dark">
-              {t('Back')}
+              {t('button.back')}
             </button>
           </Link>
         </div>
@@ -77,7 +77,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
           <div className={`form-group col-md-6`}>
             <div className="mb-3">
               <label htmlFor="department" className="form-label">
-                {t('Department')}
+                {t('template.department')}
               </label>
               <select
                 className="form-select"
@@ -87,7 +87,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
                 onChange={(e) => setDepartment(departments.get(e.target.value))}
               >
                 <option value="" hidden>
-                  {"Select Department"}
+                  {t("template.select_department")}
                 </option>
                 {departments && Array.from(departments.values()).map((dept: Department, index: number) => {
                   return dept.name !== GeneralDepartment && (
@@ -98,7 +98,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
                 })}
               </select>
             </div>
-            <label className="form-label">{t('Upload New Template')}</label>
+            <label className="form-label">{t('template.upload_template')}</label>
             <input
               type="file"
               accept=".json"
@@ -109,7 +109,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
             />
             <div className="mt-3 mb-5">
               <button className="btn btn-primary" type="submit">
-                {t('Submit Template')}
+                {t('button.submit')}
               </button>
             </div>
           </div>

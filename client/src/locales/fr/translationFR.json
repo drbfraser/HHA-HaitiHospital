@@ -279,6 +279,12 @@
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
 
+  "template" : {
+    "department": "Département",
+    "select_department": "Sélectionner le département",
+    "upload_template": "Télécharger un nouveau modèle"
+  },
+
   "admin": {
     "main_page": {
       "name_col": "Nom",

@@ -279,6 +279,12 @@
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
 
+  "template" : {
+    "department": "Department",
+    "select_department": "Select Department",
+    "upload_template": "Upload New Template"
+  },
+
   "admin": {
     "main_page": {
       "name_col": "Name",
