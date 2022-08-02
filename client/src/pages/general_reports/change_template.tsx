@@ -44,8 +44,8 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
     const fileContent : string = await templateFile.text()
     const fileContentObject : object = JSON.parse(fileContent)
 
-    // not connected to the backend API at the moment as we haven't figured out the API implementation
-    // and what to do with the old implementation
+    // not connected to the backend API at the moment as we haven't figured out 
+    // the API implementation and what to do with the old implementation
     // TODO: to connect to the backend after we figure out how the backend should work
     // await Api.Put(
     //   ENDPOINT_TEMPLATE_PUT,
