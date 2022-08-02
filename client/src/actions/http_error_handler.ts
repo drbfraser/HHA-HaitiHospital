@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { History } from 'history';
 import { toast } from 'react-toastify';
-import { ErrorListToast } from '../components/Errors/ErrorToast';
+import { ErrorListToast } from '../components/error/error_list';
 
 const BADREQUEST_CODE = 400;
 const UNAUTHORIZED_CODE = 401;
@@ -17,7 +17,7 @@ const DbErrorHandler = (e, history: History, toastMsg: string, errorActions?: an
     return;
   }
 
-  switch (e.response.status) {
+  switch (err.response.status) {
     case UNAUTHORIZED_CODE: {
       history.push('/unauthorized');
       break;
@@ -32,7 +32,7 @@ const DbErrorHandler = (e, history: History, toastMsg: string, errorActions?: an
     }
     case CONFLICT_CODE:
     case BADREQUEST_CODE: {
-      toast.error(toastMsg);
+      toast.error(`${toastMsg}: Invalid input`);
       break;
     }
     case UNPROCCESABLENTITY_CODE: {

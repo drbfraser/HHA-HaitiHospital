@@ -90,3 +90,4 @@ export interface UserJson {
   createdAt: string;
   updatedAt: string;
 }
+

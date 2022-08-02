@@ -1,5 +1,5 @@
 import { check, oneOf } from 'express-validator';
-import { msgNumber, msgString, msgDate } from '../utils/sanitizationMessages';
+import { msgNumber, msgString, msgDate } from '../messages';
 
 const caseStudiesCreate = [
   // check('document').exists(),

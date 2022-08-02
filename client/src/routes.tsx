@@ -1,9 +1,9 @@
 import Login from 'pages/login/login';
 import Home from 'pages/home/home';
 import NotFound from 'pages/not_found/not_found';
-import Admin from 'pages/admin/admin';
-import { AddUserForm } from 'pages/admin/admin-add-user';
-import { EditUserForm } from 'pages/admin/admin-edit-user';
+import Admin from 'pages/admin/main/main';
+import { AddUserForm } from 'pages/admin/add/add';
+import { EditUserForm } from 'pages/admin/edit/edit';
 import { CaseStudyMain } from 'pages/case_study_main/case_study_main';
 import { CaseStudyForm } from 'pages/case_study_forms/case_study_forms';
 import { CaseStudyView } from 'pages/case_study_view/case_study_view';
@@ -12,9 +12,9 @@ import { MessageBoardMain } from 'pages/message_board_main/message_board_main';
 import AddMessage from 'pages/message_board_add/message_board_add';
 import EditMessage from 'pages/message_board_edit/message_board_edit';
 import MessageComments from 'pages/message_board_comments/message_board_comments';
-import { BiomechanicalPage } from 'pages/biomechanical_page/biomechanical';
-import { BrokenKitReport } from 'pages/broken_kit_report/broken_kit_report';
-import { BrokenKitView } from 'pages/broken_kit_view/broken_kit_report_view';
+import { BiomechanicalPage } from 'pages/biomech/main/main';
+import { BrokenKitReport } from 'pages/biomech/report/report';
+import { BrokenKitView } from 'pages/biomech/view/view';
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
 import DepartmentReport from 'pages/department_report/department_report';
@@ -110,21 +110,21 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/biomechanic/report-broken-kit',
+    path: `${PathPatterns.BIOMECH_REPORT}`,
     component: BrokenKitReport,
     isPrivate: true,
     rolesAllowed: [],
     departmentsAllowed: [],
   },
   {
-    path: '/biomechanic/view/:id',
+    path: `${PathPatterns.BIOMECH_VIEW}`,
     component: BrokenKitView,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
   },
   {
-    path: '/biomechanic',
+    path: `${PathPatterns.BIOMECH_MAIN}`,
     component: BiomechanicalPage,
     isPrivate: true,
     rolesAllowed: [],

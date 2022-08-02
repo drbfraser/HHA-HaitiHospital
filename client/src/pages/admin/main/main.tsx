@@ -5,13 +5,15 @@ import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { Link, useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_GET, ENDPOINT_ADMIN_DELETE_BY_ID } from 'constants/endpoints';
-import './admin.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
 import { ResponseMessage } from 'utils/response_message';
 import { Paths } from 'constants/paths';
+
+import './main.css';
+
 interface AdminProps {}
 
 const Admin = (props: AdminProps) => {
@@ -78,7 +80,7 @@ const Admin = (props: AdminProps) => {
           match={undefined}
         ></ModalDelete>
         <div className="d-flex justify-content-start">
-          <Link to="/admin/add-user">
+          <Link to={Paths.getAdminAddUser()}>
             <button type="button" className="btn btn-outline-dark">
               {t('button.add_user')}
             </button>

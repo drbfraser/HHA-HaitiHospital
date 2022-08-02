@@ -1,5 +1,5 @@
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import React, { useState } from 'react';
+import React, { EffectCallback, useState } from 'react';
 import SideBar from '../side_bar/side_bar';
 import Header from 'components/header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -69,80 +69,146 @@ export type ErrorData = {
 
 type State = {
   value: StateType;
-  data: ReportForm | ErrorData;
+  data: ReportForm;
+  errorData?: ErrorData;
 };
 
-function Loading(): State {
+function stateLoading(): State {
   return { value: StateType.loading, data: null };
 }
-function Ready(data: ReportForm): State {
+function stateReady(data: ReportForm): State {
   return { value: StateType.ready, data: data };
 }
-function Error(data: ErrorData): State {
-  return { value: StateType.error, data: data };
+function stateError(errorData: ErrorData): State {
+  return { value: StateType.error, data: null, errorData: errorData };
 }
 
+const fetchMockReportData = async (): Promise<ReportForm> => {
+    const data = await MockApi.getDataDelay(1500, true);
+    return ReportApiUtils.toReportData(data);
+}
+
+
 function FormContents(props: { path: string }) {
+  //============================================================================
+  // React State Definitions
+  //============================================================================
   const formHook = useForm();
-// Commented out to avoid unused variable warning. May put it back once translation is supported.
-//   const { t, i18n } = useTranslation();
+  // Commented out to avoid unused variable warning. May put it back once translation is supported.
+  //   const { t, i18n } = useTranslation();
+
   const [sectionIdx, setSectionIdx] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [state, setState] = useState<State>(Loading());
+  const [state, setState] = useState<State>(stateLoading());
   const pageTop = React.useRef(null);
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const data = await MockApi.getDataDelay(1500, true);
-        const reportData = ReportApiUtils.toReportData(data);
-        setState({ value: StateType.ready, data: reportData });
-      } catch (err) {
-        setState(Error(err));
-      }
-    })();
-  }, []);
 
-  // Whenever data changed, check for errors messages to give to react form hook
-  React.useEffect(() => {
-    if (state.value === StateType.loading || state.value === StateType.error) return;
-    (state.data as ReportForm).itemFields
-      .filter((item) => !(item as ItemField).valid)
-      .forEach((invalidItem : ItemField) => {
-        const id = invalidItem.id;
-        const message = invalidItem.errorMessage;
-        const error = {
-          type: 'invalid-input',
-          message: message,
-        };
-        //  This changes the analogous to a setState call, thus must be called here.
-        formHook.setError(id, error);
-      });
-  }, [state, formHook]);
+  //============================================================================
+  // Effect Definitions
+  //============================================================================
 
-  const editButtonHandler = () => setReadOnly(false);
+  // React Effects HOF (Higher-Order Functions)
+  //----------------------------------------------------------------------------
+  const reportDataFetchingEffectGenerator:
+    (fetcher: () => Promise<ReportForm>) => EffectCallback = (fetcher) =>
+    () => {
+      (async () => {
+        try {
+          const reportData: ReportForm = await fetcher();
+          setState({ value: StateType.ready, data: reportData });
+        } catch (err) {
+          setState(stateError(err));
+        }
+      })();
+    };
 
-  const submitHandler = async (answers) => {
-    const submittingData : ReportForm = state.data as ReportForm;
+  const errorHandlerEffectGenerator: (
+    condition: (item: ItemField) => boolean,
+    handler: (item: ItemField) => void
+  ) => EffectCallback = (condition, handler) => () => {
+    if (state.value !== StateType.ready) return;
+    if (!state.data) {
+      throw new Error("Invalid state: in error handler with null data.");
+    }
+    state.data.itemFields
+      .filter(condition)
+      .forEach(handler);
+  };
+
+  // React Effects Definitions
+  //----------------------------------------------------------------------------
+  // Give error messages to react hook
+  const mockErrorHandling: (invalidItem: ItemField) => void = (invalidItem) => {
+    const id = invalidItem.id;
+    const error = {
+      type: 'invlaid-input',
+      message: invalidItem.errorMessage,
+    };
+    //  This changes the analogous to a setState call, thus must be called here.
+    formHook.setError(id, error);
+  }
+
+  // React Effects Function Composition 
+  //----------------------------------------------------------------------------
+  const fetchReportDataEfect: EffectCallback =
+    reportDataFetchingEffectGenerator(fetchMockReportData);
+  const errorHandlingEffect: EffectCallback =
+    errorHandlerEffectGenerator(item => !item.valid, mockErrorHandling);
+
+  //============================================================================
+  // React Handler Definitions
+  //============================================================================
+
+  // Handler HOFs 
+  //----------------------------------------------------------------------------
+  const submitHandlerGenerator: (
+    formAssembler: (report: ReportForm, answers: any) => JsonReportDescriptor,
+    formSubmitter: (jsonReport: JsonReportDescriptor) => Promise<void>,
+    onSuccess?: (report: ReportForm) => void,
+    onError?: (error: any) => void
+  ) => (answers: any) => Promise<void> =
+  (formAssembler, formSubmitter, onSuccess?, errorHandler?) => async (answers) => {
+    if (!state.data) {
+      throw new Error("Invalid state: No report form has been assigned to state");
+    }
+
     setSubmitting(true);
     try {
-      const data = await ReportApiUtils.submitData(answers, submittingData);
-      const ReportFormWithAnswers: ReportForm = {
-        jsonDescriptor: data,
-        itemFields: submittingData.itemFields
-      };
-      const nextState = Ready(ReportFormWithAnswers);
+      const jsonDescriptor = await formAssembler(state.data, answers);
+      await formSubmitter(jsonDescriptor);
+      const reportFormWithAnswers: ReportForm = {
+        jsonDescriptor: jsonDescriptor,
+        itemFields: state.data.itemFields
+      }
+      const nextState = stateReady(reportFormWithAnswers);
       setReadOnly(true);
-      toast.success('Data submitted');
+      onSuccess?.(reportFormWithAnswers);
       setState(nextState);
-    } catch (err) {
-      const nextState = err.code < 500 ? Ready(err.data) : Error({ code: err.code, message: err.message });
-      toast.error(`Error ${err.code}: ${err.message}`);
+    } catch (err: any) {
+      errorHandler?.(err)
+      const nextState = err.code < 500 ? stateReady(err.data) : stateError({ code: err.code, message: err.message });
       setState(nextState);
     }
     setSubmitting(false);
-  };
+  }
 
+  // React Handlers Function Compositions
+  //----------------------------------------------------------------------------
+  const submitHandler = submitHandlerGenerator(
+    ReportApiUtils.assembleData,
+    async (data) => { MockApi.submitData(data, 2000, true) },
+    () => toast.success('Data submitted'),
+    (err) => toast.error(`Error ${err.code}: ${err.message}`)
+  );
+
+  const editButtonHandler = () => setReadOnly(false);
+
+  //============================================================================
+  // Rendering Definitions (Depends on Handlers)
+  //============================================================================
+
+  // Rendering Functions
+  // ----------------------------------------------------------------------------
   const renderLoading = () => {
     return (
       <div className="row justify-content-center" style={{ marginTop: '25%' }}>
@@ -152,7 +218,10 @@ function FormContents(props: { path: string }) {
   };
 
   const renderError = () => {
-    const errorData = state.data as ErrorData;
+    if (!state.errorData) {
+      throw new Error(`Invalid state: Calling renderError() with errorData set to ${state.errorData}.`);
+    }
+    const errorData = state.errorData;
     return (
       <div className="row justify-content-center text-center" style={{ marginTop: '25%' }}>
         <h1 className="text-danger">{`Error code: ${errorData.code}`}</h1>
@@ -173,18 +242,14 @@ function FormContents(props: { path: string }) {
     const [labels, sections] = extractGroupings(data);
     const totalSections = labels.length;
     const navButtonClickHandler: NavButtonClickedHandler = (name: string, section: number) => {
-      switch (name) {
-        case 'next':
-          setSectionIdx((section + 1) % totalSections);
-          break;
-        case 'prev':
-          setSectionIdx((section - 1) % totalSections);
-          break;
-        case 'section-clicked':
-          setSectionIdx(section);
-          break;
-        default:
-      }
+      const getSectionNumber: { [command: string]: number } =
+      {
+        'next': (section + 1) % totalSections,
+        'prev': (section - 1) % totalSections,
+        'section-clicked': section
+      };
+
+      setSectionIdx(getSectionNumber[name]);
       pageTop.current.scrollIntoView();
     };
 
@@ -217,14 +282,23 @@ function FormContents(props: { path: string }) {
     );
   };
 
-  switch (state.value) {
-    case StateType.loading:
-      return renderLoading();
-    case StateType.error:
-      return renderError();
-    default:
-      return renderContent();
-  }
+  // State-to-Render Mapping
+  //----------------------------------------------------------------------------
+  const stateRenders: Map<StateType, () => JSX.Element> = new Map([
+    [StateType.loading, renderLoading],
+    [StateType.error, renderError],
+    [StateType.ready, renderContent]
+  ]);
+
+
+  //============================================================================
+  // Execution
+  //============================================================================
+
+  React.useEffect(fetchReportDataEfect);
+  React.useEffect(errorHandlingEffect, [state, formHook]);
+
+  return stateRenders.get(state.value)();
 }
 
 function extractGroupings(data: ReportForm): [ItemField[], ItemField[][]] {

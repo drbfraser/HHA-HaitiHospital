@@ -2,12 +2,12 @@ import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import UserCollection, { hashPassword, Role, User, validateUserSchema } from '../../models/user';
-import { registerUserCreate, registerUserEdit } from '../../schema/registerUser';
 import Departments from 'utils/departments';
 import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 import { IllegalState } from 'exceptions/systemException';
+import { registerUserCreate, registerUserEdit } from 'sanitization/schemas/registerUser';
 
 const router = Router();
 
@@ -118,7 +118,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerUserCreate, valid
       updatedAt: new Date()
     };
     const newUser = new UserCollection(userInfo);
-    console.log("Validating user schema using joi");
+    console.log('Validating user schema using joi');
     const validationResult = validateUserSchema.validate({
       username,
       password,
