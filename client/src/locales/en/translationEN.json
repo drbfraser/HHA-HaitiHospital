@@ -280,6 +280,7 @@
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
 
   "template" : {
+    "change_template": "Change template",
     "department": "Department",
     "select_department": "Select Department",
     "upload_template": "Upload New Template"

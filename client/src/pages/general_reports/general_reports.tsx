@@ -56,7 +56,7 @@ const GeneralReports = () => {
           <div className="d-flex justify-content-start">
             <Link to="/change-template">
               <button type="button" className="btn btn-outline-dark">
-                {t('Change template')}
+                {t('template.change_template')}
               </button>
             </Link>
           </div>

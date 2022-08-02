@@ -280,6 +280,7 @@
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
 
   "template" : {
+    "change_template": "Changer de modèle",
     "department": "Département",
     "select_department": "Sélectionner le département",
     "upload_template": "Télécharger un nouveau modèle"
