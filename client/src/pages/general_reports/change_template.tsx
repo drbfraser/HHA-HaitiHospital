@@ -18,9 +18,9 @@ interface ChangeTemplateProps extends RouteComponentProps {}
 
 export const ChangeTemplate = (props: ChangeTemplateProps) => {
   const { t } = useTranslation();
-  const [selectedFile, setSelectedFile] = useState<File>(null);
+  const [templateFile, setTemplateFile] = useState<File>(null);
   const history: History = useHistory<History>();
-  const [department, setDepartment] = useState(null);
+  const [department, setDepartment] = useState<Department>(null);
   const [departments, setDepartments] = useState<Map<string, Department>>(undefined);
 
   useEffect(() => {
@@ -40,16 +40,16 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let formData : FormData = new FormData();
-    let body : Object = { "department" : department }
-    let data = JSON.stringify(body);
-    formData.append('document', data);
-    formData.append('file', selectedFile);
+
+    const fileContent : string = await templateFile.text()
+    console.log(fileContent)
+    const fileContentObject : object = JSON.parse(fileContent)
+    console.log(fileContentObject)
 
     // TODO: to connect to the backend after we figure out how the backend should work
     // await Api.Put(
     //   ENDPOINT_TEMPLATE_PUT,
-    //   formData,
+    //   data,
     //   onSubmitActions,
     //   TOAST_TEMPLATE_PUT,
     //   props.history,
@@ -58,7 +58,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
 
   const onSubmitActions = () => {
     toast.success('Template successfully updated!');
-    setSelectedFile(null);
+    setTemplateFile(null);
     props.history.push('/general-reports');
   };
 
@@ -86,7 +86,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
                 id="department"
                 defaultValue={null}
                 required
-                onChange={(e) => setDepartment(e.target.value)}
+                onChange={(e) => setDepartment(departments.get(e.target.value))}
               >
                 <option value="" hidden>
                   {"Select Department"}
@@ -107,7 +107,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
               className="form-control"
               id="customFile"
               required
-              onChange={(e) => setSelectedFile(e.target.files[0])}
+              onChange={(e) => setTemplateFile(e.target.files[0])}
             />
             <div className="mt-3 mb-5">
               <button className="btn btn-primary" type="submit">
