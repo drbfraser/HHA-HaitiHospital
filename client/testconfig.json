@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "target": "es6",
-    "module": "esnext",
+    "module": "CommonJS",
     "baseUrl": "./src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -20,5 +20,5 @@
     "noImplicitAny": false,
     "experimentalDecorators": true
   },
-  "include": ["src"]
+  "include": ["tests/**/*.spec.ts"]
 }
