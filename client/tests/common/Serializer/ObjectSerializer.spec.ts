@@ -1,11 +1,6 @@
 import { ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
-import { QuestionGroup } from '../../../src/common/Questions/QuestionGroup';
-import { NumericQuestion, TextQuestion } from '../../../src/common/Questions/SimpleQuestionTypes';
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
-import { object } from 'yup';
-import { QuestionItem } from '../../../src/common/Questions/QuestionItem';
-import '@types/jest';
 
 @serializable()
 class Serializable {
@@ -85,27 +80,6 @@ class IsBandLegendary {
     this.isLegendary = isLegendary;
   }
 }
-
-// should();
-// describe('Serializer', function () {
-//   describe('Serializable decorator', function () {
-//     it('Should be able to Serialize and Deserialize Numeric Questions', function () {
-//       //Arrange
-//       let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-//       let numericQuestion: NumericQuestion<number> = new NumericQuestion<number>(
-//         1,
-//         'What is Age of Patient?',
-//       );
-
-//       //Act
-//       let json: string = objectSerializer.serialize(numericQuestion);
-//       let newNumericQuestion: NumericQuestion<number> = objectSerializer.deserialize(json);
-
-//       //Assert
-//       expect(newNumericQuestion).to.be.instanceof(NumericQuestion);
-//     });
-//   });
-// });
 
 should();
 describe('Serializer', function () {
