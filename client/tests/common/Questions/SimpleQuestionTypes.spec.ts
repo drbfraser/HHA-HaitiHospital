@@ -1,12 +1,19 @@
 import { expect } from 'chai';
 import { NumericQuestion, TextQuestion } from '../../../src/common/Questions/SimpleQuestionTypes';
 import { ObjectSerializer } from '../../../src/common/Serializer/ObjectSerializer';
+import { IdTest } from './TemplateQuestionTests';
 
 describe('SimpleQuestions', function () {
   describe('NumericQuestion', function () {
     const DEFAULT_ID: number = 1;
     const DEFAULT_QUESTION_PROMPT: string = 'What is Age of Patient?';
     const DEFAULT_ANSWER: number = 19;
+
+    IdTest(
+      DEFAULT_ID,
+      (id: number): NumericQuestion<number> =>
+        new NumericQuestion<number>(DEFAULT_ID, DEFAULT_QUESTION_PROMPT),
+    );
 
     it('Should be able to Serialize and Deserialize Numeric Questions', function () {
       //Arrange
