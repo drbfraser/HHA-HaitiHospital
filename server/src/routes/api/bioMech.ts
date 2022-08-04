@@ -58,7 +58,10 @@ router.post('/', requireJwtAuth, oneImageUploader(FILE_FIELD), InputSchema.post,
   doc
     .save()
     .then(() => res.sendStatus(HTTP_CREATED_CODE))
-    .catch((err: any) => next(new InternalError(`Mongoose: Save biomech report failed: ${err}`)));
+    .catch((err: any) => {
+        deleteUploadedImage(bioMech.imgPath);
+        return next(new InternalError(`Mongoose: Save biomech report failed: ${err}`));
+    })
 });
 
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), (req: RequestWithUser, res: Response, next: NextFunction) => {
