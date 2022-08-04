@@ -4,18 +4,29 @@ import { ObjectSerializer } from '../../../src/common/Serializer/ObjectSerialize
 
 describe('SimpleQuestions', function () {
   describe('NumericQuestion', function () {
+    const DEFAULT_ID: number = 1;
+    const DEFAULT_QUESTION_PROMPT: string = 'What is Age of Patient?';
+    const DEFAULT_ANSWER: number = 19;
+
     it('Should be able to Serialize and Deserialize Numeric Questions', function () {
       //Arrange
+
       let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
       let numericQuestion: NumericQuestion<number> = new NumericQuestion<number>(
-        1,
-        'What is Age of Patient?',
+        DEFAULT_ID,
+        DEFAULT_QUESTION_PROMPT,
       );
+      numericQuestion.setAnswer(DEFAULT_ANSWER);
+
       //Act
       let json: string = objectSerializer.serialize(numericQuestion);
       let newNumericQuestion: NumericQuestion<number> = objectSerializer.deserialize(json);
+
       //Assert
       expect(newNumericQuestion).to.be.instanceof(NumericQuestion);
+      expect(newNumericQuestion.getId()).to.be.equal(1);
+      expect(newNumericQuestion.getPrompt()).to.be.equal(DEFAULT_QUESTION_PROMPT);
+      expect(newNumericQuestion.getAnswer()).to.be.equal(DEFAULT_ANSWER);
     });
   });
 
