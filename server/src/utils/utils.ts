@@ -87,3 +87,18 @@ export const mongooseErrorToMyError = (err: NativeError): CustomError => {
     }
   }
 };
+
+// To extract a TS type's properties to string
+// Ref: https://stackoverflow.com/a/42516869
+export const proxiedPropertyOf = <IObj>() =>
+  new Proxy(
+    {},
+    {
+      get: (_, prop) => prop,
+      set: () => {
+        throw new Error(`Setter not supported`);
+      }
+    }
+  ) as {
+    [P in keyof IObj]: P;
+  };
