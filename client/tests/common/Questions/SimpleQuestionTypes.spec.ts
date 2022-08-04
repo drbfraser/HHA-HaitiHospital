@@ -1,4 +1,4 @@
-import { expect } from 'sinon';
+import { expect } from 'chai';
 import { NumericQuestion, TextQuestion } from '../../../src/common/Questions/SimpleQuestionTypes';
 import { ObjectSerializer } from '../../../src/common/Serializer/ObjectSerializer';
 
