@@ -50,7 +50,7 @@ export const validationTest = <T, QuestionType extends Question<unknown, T, stri
   questionCreator: () => QuestionType,
   sampleAnswer: T,
 ): void => {
-  const MAX_VALIDATION_ARRAY_SIZE = 5;
+  const MAX_VALIDATION_ARRAY_SIZE = 100;
 
   const getRandomSize = Math.floor(Math.random() * MAX_VALIDATION_ARRAY_SIZE);
 
@@ -67,9 +67,12 @@ export const validationTest = <T, QuestionType extends Question<unknown, T, stri
     size: number,
   ): Array<(answer?: T) => ValidationResult<string>> => {
     return new Array(size).fill({ isValid: false }).map((validator, index) => (answer?: T) => {
-      validator.error = getDefaultErrorType(index);
-      validator.message = getDefaultMessage(index);
-      return validator;
+      let newValidator: ValidationResult<string> = {
+        ...validator,
+        error: getDefaultErrorType(index),
+        message: getDefaultMessage(index),
+      };
+      return newValidator;
     });
   };
 
@@ -125,7 +128,7 @@ export const validationTest = <T, QuestionType extends Question<unknown, T, stri
     expect(question.isValid()).to.be.true;
   });
 
-  it.only(`Validation should preserve error type and message`, function () {
+  it(`Validation should preserve error type and message`, function () {
     // Arrange/Act
     const question = questionCreator();
     addValidators(question, 0, getRandomSize);
