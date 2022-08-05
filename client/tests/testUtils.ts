@@ -3,7 +3,7 @@ import { expect } from 'chai';
 interface TestSetAndGetHOFArgs<Property, Obj> {
   testName: string;
   setter: (prop: Property) => Obj;
-  getter: (obj: Obj) => Property;
+  getter: (obj: Obj) => Property | undefined;
   mapping: (prop: Property) => Property;
   prop: Property;
 }
