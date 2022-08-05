@@ -11,13 +11,6 @@ describe('SimpleQuestions', function () {
     const DEFAULT_PROMPT: string = 'What is Age of Patient?';
     const DEFAULT_ANSWER: number = 19;
 
-    interface DefaultExpectations {
-      defaultInstanceOf: () => void;
-      defaultId: () => void;
-      defaultPrompt: () => void;
-      defaultAnswer: () => void;
-    }
-
     idTest(
       DEFAULT_ID,
       (id: number): NumericQuestion<number> => new NumericQuestion<number>(id, DEFAULT_PROMPT),
@@ -47,18 +40,5 @@ describe('SimpleQuestions', function () {
   });
 
   describe('TextQuestion', function () {
-    it('Should be able to Serialize and Deserialize Text Questions', function () {
-      //Arrange
-      let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-      let textQuestion: TextQuestion<number> = new TextQuestion<number>(
-        1,
-        'What is Age of Patient?',
-      );
-      //Act
-      let json: string = objectSerializer.serialize(textQuestion);
-      let newNumericQuestion: TextQuestion<number> = objectSerializer.deserialize(json);
-      //Assert
-      expect(newNumericQuestion).to.be.instanceof(TextQuestion);
-    });
-  });
+    
 });
