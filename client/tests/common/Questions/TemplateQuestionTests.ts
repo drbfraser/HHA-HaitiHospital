@@ -4,7 +4,7 @@ import { Question } from '../../../src/common/Questions/Question';
 import { QuestionItem } from '../../../src/common/Questions/QuestionItem';
 import { testSetAndGetHOF } from '../../testUtils';
 
-export const IdTest = <ID, QuestionType extends QuestionItem<ID>>(
+export const idTest = <ID, QuestionType extends QuestionItem<ID>>(
   id: ID,
   questionCreator: (id: ID) => QuestionType,
 ): void => {
@@ -17,7 +17,7 @@ export const IdTest = <ID, QuestionType extends QuestionItem<ID>>(
   });
 };
 
-export const PromptTest = <T, QuestionType extends Question<unknown, T>>(
+export const promptTest = <T, QuestionType extends Question<unknown, T>>(
   prompt: string,
   questionCreator: (prompt: string) => QuestionType,
 ): void => {
@@ -30,7 +30,7 @@ export const PromptTest = <T, QuestionType extends Question<unknown, T>>(
   });
 };
 
-export const AnswerTest = <T, QuestionType extends Question<unknown, T>>(
+export const answerTest = <T, QuestionType extends Question<unknown, T>>(
   answer: T,
   questionCreator: () => QuestionType,
 ): void => {

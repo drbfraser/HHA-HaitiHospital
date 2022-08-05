@@ -3,7 +3,7 @@ import { number } from 'yup';
 import { Question } from '../../../src/common/Questions/Question';
 import { NumericQuestion, TextQuestion } from '../../../src/common/Questions/SimpleQuestionTypes';
 import { ObjectSerializer } from '../../../src/common/Serializer/ObjectSerializer';
-import { AnswerTest, IdTest, PromptTest } from './TemplateQuestionTests';
+import { answerTest, idTest, promptTest } from './TemplateQuestionTests';
 
 describe('SimpleQuestions', function () {
   describe('NumericQuestion', function () {
@@ -11,18 +11,18 @@ describe('SimpleQuestions', function () {
     const DEFAULT_QUESTION_PROMPT: string = 'What is Age of Patient?';
     const DEFAULT_ANSWER: number = 19;
 
-    IdTest(
+    idTest(
       DEFAULT_ID,
       (id: number): NumericQuestion<number> =>
         new NumericQuestion<number>(id, DEFAULT_QUESTION_PROMPT),
     );
 
-    PromptTest<number, NumericQuestion<number>>(
+    promptTest<number, NumericQuestion<number>>(
       DEFAULT_QUESTION_PROMPT,
       (prompt: string) => new NumericQuestion<number>(DEFAULT_ID, prompt),
     );
 
-    AnswerTest<number, NumericQuestion<number>>(
+    answerTest<number, NumericQuestion<number>>(
       DEFAULT_ANSWER,
       () => new NumericQuestion<number>(DEFAULT_ID, DEFAULT_QUESTION_PROMPT),
     );
