@@ -2,7 +2,7 @@ import { kStringMaxLength } from 'buffer';
 import { string } from 'yup';
 import { Question } from '../../../src/common/Questions/Question';
 import { QuestionItem } from '../../../src/common/Questions/QuestionItem';
-import { testSetAndGetHOF } from '../../testUtils';
+import { serializableTest, testSetAndGetHOF } from '../../testUtils';
 
 export const idTest = <ID, QuestionType extends QuestionItem<ID>>(
   id: ID,
@@ -46,3 +46,13 @@ export const answerTest = <T, QuestionType extends Question<unknown, T>>(
     prop: answer,
   });
 };
+
+export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<ID>>(
+  questionCreator: () => QuestionType,
+  ...expectations: Array<(deserialized: QuestionType) => void>
+): void =>
+  serializableTest({
+    testName: `Serialization and deserialization should work`,
+    getObj: questionCreator,
+    expectations: expectations,
+  });

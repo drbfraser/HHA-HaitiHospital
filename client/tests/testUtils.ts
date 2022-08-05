@@ -1,4 +1,6 @@
 import { expect } from 'chai';
+import { object } from 'yup';
+import { ObjectSerializer } from '../src/common/Serializer/ObjectSerializer';
 
 interface TestSetAndGetHOFArgs<Property, Obj> {
   testName: string;
@@ -17,5 +19,26 @@ export const testSetAndGetHOF = <Property, Obj>(
 
     // Assert
     expect(args.getter(object)).to.be.equal(args.mapping(args.prop));
+  });
+};
+
+interface SerializableTestArgs<Obj> {
+  testName: string;
+  getObj: () => Obj;
+  expectations: Array<(deserialized: Obj) => void>;
+}
+
+export const serializableTest = <Obj>(args: SerializableTestArgs<Obj>): void => {
+  it(args.testName, function () {
+    // Arrange
+    let obj: Obj = args.getObj();
+    let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+
+    // Act
+    let json: string = objectSerializer.serialize(obj);
+    let newObj: Obj = objectSerializer.deserialize(json);
+
+    // Arrange
+    args.expectations.forEach((expectation) => expectation(newObj));
   });
 };
