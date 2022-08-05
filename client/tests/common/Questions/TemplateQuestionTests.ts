@@ -29,3 +29,20 @@ export const PromptTest = <T, QuestionType extends Question<unknown, T>>(
     prop: prompt,
   });
 };
+
+export const AnswerTest = <T, QuestionType extends Question<unknown, T>>(
+  answer: T,
+  questionCreator: () => QuestionType,
+): void => {
+  testSetAndGetHOF<T, QuestionType>({
+    testName: `Should be able to set and get question answer`,
+    setter: (answerArg) => {
+      let question = questionCreator();
+      question.setAnswer(answer);
+      return question;
+    },
+    getter: (question) => question.getAnswer(),
+    mapping: (answer) => answer,
+    prop: answer,
+  });
+};

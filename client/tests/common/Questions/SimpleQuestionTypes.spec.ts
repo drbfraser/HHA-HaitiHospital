@@ -1,8 +1,9 @@
 import { expect } from 'chai';
+import { number } from 'yup';
 import { Question } from '../../../src/common/Questions/Question';
 import { NumericQuestion, TextQuestion } from '../../../src/common/Questions/SimpleQuestionTypes';
 import { ObjectSerializer } from '../../../src/common/Serializer/ObjectSerializer';
-import { IdTest, PromptTest } from './TemplateQuestionTests';
+import { AnswerTest, IdTest, PromptTest } from './TemplateQuestionTests';
 
 describe('SimpleQuestions', function () {
   describe('NumericQuestion', function () {
@@ -19,6 +20,11 @@ describe('SimpleQuestions', function () {
     PromptTest<number, NumericQuestion<number>>(
       DEFAULT_QUESTION_PROMPT,
       (prompt: string) => new NumericQuestion<number>(DEFAULT_ID, prompt),
+    );
+
+    AnswerTest<number, NumericQuestion<number>>(
+      DEFAULT_ANSWER,
+      () => new NumericQuestion<number>(DEFAULT_ID, DEFAULT_QUESTION_PROMPT),
     );
 
     it('Should be able to Serialize and Deserialize Numeric Questions', function () {
