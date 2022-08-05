@@ -6,17 +6,17 @@ export interface ValidationResult<ErrorType> {
   readonly message?: string;
 }
 
-export abstract class Question<ID, T> extends QuestionItem<ID> {
+export abstract class Question<ID, T, ErrorType> extends QuestionItem<ID> {
   private readonly prompt: string;
   private answer?: T;
 
-  private readonly validators: Array<(answer?: T) => ValidationResult<unknown>>;
+  private readonly validators: Array<(answer?: T) => ValidationResult<ErrorType>>;
 
   constructor(id: ID, prompt: string, defaultAnswer?: T) {
     super(id);
     this.prompt = prompt;
     this.answer = defaultAnswer;
-    this.validators = new Array<(answer: T) => ValidationResult<unknown>>();
+    this.validators = new Array<(answer: T) => ValidationResult<ErrorType>>();
   }
 
   public readonly getPrompt = (): string => this.prompt;
@@ -27,7 +27,7 @@ export abstract class Question<ID, T> extends QuestionItem<ID> {
     this.answer = answer;
   };
 
-  public readonly addValidator = (validator: (answer?: T) => ValidationResult<unknown>): void => {
+  public readonly addValidator = (validator: (answer?: T) => ValidationResult<ErrorType>): void => {
     this.validators.push(validator);
   };
 
@@ -37,8 +37,8 @@ export abstract class Question<ID, T> extends QuestionItem<ID> {
       .reduce((isValid1, isValid2) => isValid1 && isValid2);
   };
 
-  public readonly getValidationResults = (): Array<ValidationResult<unknown>> => {
-    return this.validators.map((validator: (answer?: T) => ValidationResult<unknown>) =>
+  public readonly getValidationResults = (): Array<ValidationResult<ErrorType>> => {
+    return this.validators.map((validator: (answer?: T) => ValidationResult<ErrorType>) =>
       validator(this.answer),
     );
   };
