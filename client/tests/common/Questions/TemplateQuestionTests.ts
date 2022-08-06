@@ -3,6 +3,8 @@ import { Question, ValidationResult } from '../../../src/common/Questions/Questi
 import { QuestionItem } from '../../../src/common/Questions/QuestionItem';
 import { serializableTest, testSetAndGetHOF } from '../../testUtils';
 
+// Method Test HOF
+// ----------------------------------------------------------------------------
 export interface IdTestArgs<ID, QuestionType extends QuestionItem<ID>> {
   id: ID;
   questionCreator: (id: ID) => QuestionType;
@@ -169,6 +171,9 @@ export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionI
   expectations: Array<(deserialized: QuestionType) => void>;
 }
 
+// Serialization Testing HOF
+// ----------------------------------------------------------------------------
+
 export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<ID>>(
   args: SerializableQuestionTestArgs<ID, QuestionType>,
 ): void =>
@@ -186,6 +191,8 @@ export interface SimpleQuestionTestsArgs<ID, T, ErrorType> {
   serializableQuestionTestArgs: SerializableQuestionTestArgs<ID, Question<ID, T, unknown>>;
 }
 
+// Comprehensive Testing Templates
+// ----------------------------------------------------------------------------
 export const simpleQuestionDefaultTests = <ID, T, ErrorType>(
   args: SimpleQuestionTestsArgs<ID, T, ErrorType>,
 ): void => {
