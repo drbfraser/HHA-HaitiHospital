@@ -1,9 +1,5 @@
 import { expect } from 'chai';
-import { deserialize } from 'v8';
-import { number, string } from 'yup';
-import { Question } from '../../../src/common/Questions/Question';
 import { NumericQuestion, TextQuestion } from '../../../src/common/Questions/SimpleQuestionTypes';
-import { ObjectSerializer } from '../../../src/common/Serializer/ObjectSerializer';
 import {
   answerTest,
   idTest,
