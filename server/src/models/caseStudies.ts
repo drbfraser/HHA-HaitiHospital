@@ -2,7 +2,8 @@ import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
-import UserCollection, { UserJson } from './user';
+import UserCollection from './user';
+import { UserApiOut } from '../routes/api/jsons/user';
 
 const { Schema } = mongoose;
 
@@ -126,7 +127,7 @@ export interface CaseStudy {
 export interface CaseStudyJson {
   id: string;
   caseStudyType: CaseStudyOptions;
-  user: UserJson;
+  user: UserApiOut.UserJson;
   department: {
     id: string;
     name: string;

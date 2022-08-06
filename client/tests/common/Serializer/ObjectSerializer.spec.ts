@@ -192,6 +192,35 @@ describe('Serializer', function () {
         expect(newObject).to.be.instanceof(UndefinedProperty);
         expect(newObject).to.deep.equal(objectWithUndefined);
       });
+
+      it('Mantain mock value for missing key from malformed json', function () {
+        // Arrange
+        let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+        let malformed: any = new IsBandLegendary('Shadow of Intent', true);
+        delete malformed.band;
+
+        // Act
+        let json: string = objectSerializer.serialize(malformed);
+        let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(json);
+
+        // Assert
+        expect(malformedDeserialized.band).to.be.equal('Generic Band');
+        expect(malformedDeserialized.isLegendary).to.be.true;
+      });
+
+      it('Will keep extra fields during deserialization', function () {
+        // Arrange
+        let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+        let malformed: any = new IsBandLegendary('Lorna Shore', true);
+        malformed.extra = '';
+
+        // Act
+        let json: string = objectSerializer.serialize(malformed);
+        let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(json);
+
+        // Assert
+        expect((malformedDeserialized as any).extra).to.equal(malformed.extra);
+      });
     });
   });
 });
