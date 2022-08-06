@@ -37,6 +37,19 @@ describe('SimpleQuestions', function () {
         getDefaultErrorType: (number) => `ErrorType${number}`,
         getDefaultErrorMessage: (number) => `Error Message ${number}`,
       },
+      serializableQuestionTestArgs: {
+        questionArranger: () => {
+          let question = new NumericQuestion(DEFAULT_ID, DEFAULT_PROMPT);
+          question.setAnswer(DEFAULT_ANSWER);
+          return question;
+        },
+        expectations: [
+          (deserialized) => expect(deserialized).to.be.instanceof(NumericQuestion),
+          (deserialized) => expect(deserialized.getId()).to.be.equal(DEFAULT_ID),
+          (deserialized) => expect(deserialized.getPrompt()).to.be.equal(DEFAULT_PROMPT),
+          (deserialized) => expect(deserialized.getAnswer()).to.be.equal(DEFAULT_ANSWER),
+        ],
+      },
     });
   });
 

@@ -160,7 +160,12 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
 };
 
 export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionItem<ID>> {
-  questionCreator: () => QuestionType;
+  /*  Here the name is QuestionArranger rather than the default QuestionCreator
+      because in this case, it is not sufficient to simply create the question,
+      but also to perform any necessary setup so that it can meet the
+      expectations under normal conditions.
+  */
+  questionArranger: () => QuestionType;
   expectations: Array<(deserialized: QuestionType) => void>;
 }
 
@@ -169,7 +174,7 @@ export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<I
 ): void =>
   serializableTest({
     testName: `Serialization and deserialization should work`,
-    getObj: args.questionCreator,
+    getObj: args.questionArranger,
     expectations: args.expectations,
   });
 
@@ -178,6 +183,7 @@ export interface SimpleQuestionTestsArgs<ID, T, ErrorType> {
   promptTestArgs: PromptTestArgs<T, Question<ID, T, unknown>>;
   answerTestArgs: AnswerTestArgs<T, Question<ID, T, unknown>>;
   validationTestArgs: ValidationTestArgs<T, ErrorType, Question<ID, T, ErrorType>>;
+  serializableQuestionTestArgs: SerializableQuestionTestArgs<ID, Question<ID, T, unknown>>;
 }
 
 export const simpleQuestionDefaultTests = <ID, T, ErrorType>(
@@ -187,4 +193,5 @@ export const simpleQuestionDefaultTests = <ID, T, ErrorType>(
   promptTest(args.promptTestArgs);
   answerTest(args.answerTestArgs);
   validationTest(args.validationTestArgs);
+  serializableQuestionTest(args.serializableQuestionTestArgs);
 };
