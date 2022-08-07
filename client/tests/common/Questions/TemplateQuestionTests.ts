@@ -5,12 +5,12 @@ import { serializableTest, testSetAndGetHOF } from '../../testUtils';
 
 // Method Test HOF
 // ----------------------------------------------------------------------------
-export interface IdTestArgs<ID, QuestionType extends QuestionItem<ID>> {
+export interface IdTestArgs<ID, QuestionType extends QuestionItem<ID, unknown>> {
   id: ID;
   questionCreator: (id: ID) => QuestionType;
 }
 
-export const idTest = <ID, QuestionType extends QuestionItem<ID>>(
+export const idTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(
   args: IdTestArgs<ID, QuestionType>,
 ): void => {
   testSetAndGetHOF({
@@ -161,7 +161,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
   });
 };
 
-export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionItem<ID>> {
+export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionItem<ID, unknown>> {
   /*  Here the name is QuestionArranger rather than the default QuestionCreator
       because in this case, it is not sufficient to simply create the question,
       but also to perform any necessary setup so that it can meet the
@@ -174,7 +174,7 @@ export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionI
 // Serialization Testing HOF
 // ----------------------------------------------------------------------------
 
-export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<ID>>(
+export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(
   args: SerializableQuestionTestArgs<ID, QuestionType>,
 ): void =>
   serializableTest({

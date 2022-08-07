@@ -6,7 +6,7 @@ export interface ValidationResult<ErrorType> {
   readonly message?: string;
 }
 
-export abstract class Question<ID, T, ErrorType> extends QuestionItem<ID> {
+export abstract class Question<ID, T, ErrorType> extends QuestionItem<ID, ErrorType> {
   private readonly prompt: string;
   private answer?: T;
 
