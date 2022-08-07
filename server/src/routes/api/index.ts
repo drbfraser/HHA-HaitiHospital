@@ -4,7 +4,7 @@ import newReportRoutes from './report';
 import messageBoardRoutes from './messageBoard';
 import caseStudiesRoutes from './caseStudies';
 import leaderboardRoutes from './leaderboard';
-import biomechRoutes from './bioMech';
+import biomechRoutes from './biomech';
 import imageRoutes from './image';
 import authRoutes from './authentication';
 import employeeOfTheMonthRoutes from './employeeOfTheMonth';

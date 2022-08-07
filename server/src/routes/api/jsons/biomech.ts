@@ -1,5 +1,6 @@
 import { BiomechPriority } from 'models/bioMech';
 import { UserApiOut } from 'routes/api/jsons/user';
+import { proxiedPropertyOf } from 'utils/utils';
 
 export namespace BiomechApiIn {
   export interface BiomechPost {
@@ -9,7 +10,7 @@ export namespace BiomechApiIn {
     file: Express.Multer.File;
   }
 
-  export const FILE_FIELD = 'file';
+  export const BIOMECH_POST_PROPERTIES = proxiedPropertyOf<BiomechPost>();
 }
 
 export namespace BiomechApiOut {
