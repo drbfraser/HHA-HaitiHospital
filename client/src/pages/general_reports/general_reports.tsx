@@ -53,7 +53,7 @@ const GeneralReports = () => {
             <DatePicker value={dayRange} onChange={setDayRange} />
             {/* <ReportSummary dateRange={dayRange} /> */}
           </section>
-          <div className="d-flex justify-content-start">
+          <div className="d-flex justify-content-start mt-3 mb-3">
             <Link to="/change-template">
               <button type="button" className="btn btn-outline-dark">
                 {t('template.change_template')}
