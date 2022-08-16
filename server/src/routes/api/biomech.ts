@@ -1,9 +1,9 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
-import { oneImageUploader } from 'middleware/upload';
+import { oneImageUploader } from 'middleware/multer';
 import { validateInput } from 'middleware/inputSanitization';
 import BioMechCollection, { BioMech } from 'models/bioMech';
-import { registerBioMechCreate } from 'sanitization/schemas/postBiomech';
+import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
 import { deleteUploadedImage } from 'utils/unlinkImage';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -37,7 +37,8 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
   }
 });
 
-router.post('/', requireJwtAuth, oneImageUploader(BiomechApiIn.FILE_FIELD), registerBioMechCreate, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
+const FILE_FIELD = BiomechApiIn.BIOMECH_POST_PROPERTIES.file;
+router.post('/', requireJwtAuth, oneImageUploader(FILE_FIELD), InputSchema.post, validateInput, (req: RequestWithUser, res: Response, next: NextFunction) => {
   const user = req.user;
   const userId = user._id!;
   const department = user.departmentId;
@@ -57,7 +58,10 @@ router.post('/', requireJwtAuth, oneImageUploader(BiomechApiIn.FILE_FIELD), regi
   doc
     .save()
     .then(() => res.sendStatus(HTTP_CREATED_CODE))
-    .catch((err: any) => next(new InternalError(`Mongoose: Save biomech report failed: ${err}`)));
+    .catch((err: any) => {
+        deleteUploadedImage(bioMech.imgPath);
+        return next(new InternalError(`Mongoose: Save biomech report failed: ${err}`));
+    })
 });
 
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), (req: RequestWithUser, res: Response, next: NextFunction) => {
