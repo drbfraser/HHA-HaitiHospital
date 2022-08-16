@@ -1,50 +1,54 @@
-import { serializable } from "common/Serializer/ObjectSerializer";
-import { QuestionCollection } from "./QuestionCollection";
-import { NumericQuestion } from "./SimpleQuestionTypes";
+import { serializable } from 'common/Serializer/ObjectSerializer';
+import { QuestionCollection } from './QuestionCollection';
+import { NumericQuestion } from './SimpleQuestionTypes';
 
 @serializable(undefined)
-export class CompositionQuestion<ID> extends QuestionCollection<ID> {
+export class CompositionQuestion<ID, ErrorType> extends QuestionCollection<ID, ErrorType> {
+  private answer?: number;
+  private readonly questions: Array<NumericQuestion<ID, ErrorType>>;
 
-    private answer?: number;
-    private readonly questions: Array<NumericQuestion<ID>>;
+  constructor(id: ID, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID, ErrorType>>) {
+    super(id);
+    this.setAnswer(defaultAnswer);
+    questions ? this.addAll(...questions) : undefined;
+  }
 
-    constructor(id: ID, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID>>) {
-        super(id);
-        this.setAnswer(defaultAnswer);
-        questions ? this.addAll(...questions) : undefined;
-    }
+  public readonly searchById = (id: ID): NumericQuestion<ID, ErrorType> | undefined => {
+    return this.questions.find((question) => question.getId() === id);
+  };
 
-    public readonly searchById = (id: ID): NumericQuestion<ID> | undefined => {
-        return this.questions
-            .find(question => question.getId() === id);
-    }
+  public readonly add = (
+    numericQuestion: NumericQuestion<ID, ErrorType>,
+  ): CompositionQuestion<ID, ErrorType> => {
+    this.questions.push(numericQuestion);
+    return this;
+  };
 
-    public readonly add = (numericQuestion: NumericQuestion<ID>): CompositionQuestion<ID> => {
-        this.questions.push(numericQuestion);
-        return this;
-    }
+  public readonly addAll = (
+    ...questions: Array<NumericQuestion<ID, ErrorType>>
+  ): QuestionCollection<ID, ErrorType> => {
+    questions.forEach((question) => this.add(question));
+    return this;
+  };
 
-    public readonly addAll = (...questions: Array<NumericQuestion<ID>>): QuestionCollection<ID> => {
-        questions.forEach((question) => this.add(question));
-        return this;
-    }
+  public readonly handleNumericQuestions = (
+    handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void,
+  ): void => {
+    this.questions.forEach((question) => handler(question));
+  };
 
-    public readonly handleNumericQuestions = (handler: (numericQuestion: NumericQuestion<ID>) => void): void => {
-        this.questions
-            .forEach(question => handler(question));
-    }
+  public readonly getAnswer = (): number | undefined => this.answer;
 
-    public readonly getAnswer = (): number | undefined => this.answer;
+  // Changes answer if given a non-negative number
+  public readonly setAnswer = (answer: number): void => {
+    this.answer = answer >= 0 ? answer : this.answer;
+  };
 
-    // Changes answer if given a non-negative number
-    public readonly setAnswer = (answer: number): void => {
-        this.answer = answer >= 0 ? answer : this.answer;
-    }
-
-    public readonly sumsUp = (): boolean => {
-        return this.answer ? this.questions
-            .map(question => question.getAnswer())
-            .reduce((answer1, answer2) => answer1 + answer2) === this.answer :
-            false;
-    }
+  public readonly sumsUp = (): boolean => {
+    return this.answer
+      ? this.questions
+          .map((question) => question.getAnswer())
+          .reduce((answer1, answer2) => answer1 + answer2) === this.answer
+      : false;
+  };
 }

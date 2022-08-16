@@ -1,6 +1,11 @@
-import { serializable } from "common/Serializer/ObjectSerializer";
-import { QuestionTable } from "./QuestionTable";
-import { TextQuestion } from "./SimpleQuestionTypes";
+import { serializable } from 'common/Serializer/ObjectSerializer';
+import { QuestionTable } from './QuestionTable';
+import { TextQuestion } from './SimpleQuestionTypes';
 
 @serializable(undefined, [], [], () => undefined)
-export class TextTable<ID> extends QuestionTable<ID, string, TextQuestion<ID>> {}
+export class TextTable<ID, ErrorType> extends QuestionTable<
+  ID,
+  string,
+  ErrorType,
+  TextQuestion<ID, ErrorType>
+> {}
