@@ -8,7 +8,7 @@ import App from 'app';
 import axios from 'axios';
 
 if (process.env.NODE_ENV === 'development') {
-  axios.defaults.baseURL = `http://${window.location.hostname}:5000`;
+  axios.defaults.baseURL = `http://${window.location.hostname}:8000`;
   axios.defaults.withCredentials = true;
 }
 
