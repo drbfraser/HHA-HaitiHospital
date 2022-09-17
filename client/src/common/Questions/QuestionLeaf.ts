@@ -1,3 +1,4 @@
+// Should represent a single question and have no nested questions.
 import { QuestionNode } from './QuestionNode';
 
 export interface ValidationResult<ErrorType> {
