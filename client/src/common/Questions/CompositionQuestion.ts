@@ -1,3 +1,6 @@
+/*  A composition question represents a question whose answer must be equal
+    to the sum of its numeric children questions.
+*/
 import { serializable } from 'common/Serializer/ObjectSerializer';
 import { QuestionCollection } from './QuestionCollection';
 import { NumericQuestion } from './SimpleQuestionTypes';
