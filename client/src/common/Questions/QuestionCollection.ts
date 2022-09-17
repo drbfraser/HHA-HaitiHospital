@@ -1,3 +1,6 @@
+/*  QuestionCollection has QuestionItems, so that it allows for individual
+    questions as much as nested collections of questions.
+*/
 import { QuestionItem } from './QuestionItem';
 
 export abstract class QuestionCollection<ID, ErrorType> extends QuestionItem<ID, ErrorType> {
