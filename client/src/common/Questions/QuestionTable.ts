@@ -1,3 +1,12 @@
+/*  Meant to represent a table with columns and rows. The table can also be
+  regarded as a question matrix where each coordinate corresponds to a single
+  question whose prompt is the union of the prompts in the corresponding row and
+  column's headers.
+
+  In the context of the question tree containing all questions, the
+  QuestionTable is a parent node whose children are the questions formed by the
+  process described above.
+*/
 import { QuestionLeaf } from './QuestionLeaf';
 import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
