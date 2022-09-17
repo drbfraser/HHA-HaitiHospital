@@ -1,3 +1,4 @@
+//  A question table where all answers are numbers.
 import { serializable } from 'common/Serializer/ObjectSerializer';
 import { QuestionTable } from './QuestionTable';
 import { NumericQuestion } from './SimpleQuestionTypes';
