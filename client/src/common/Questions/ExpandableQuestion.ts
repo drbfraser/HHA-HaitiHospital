@@ -1,3 +1,11 @@
+/*  An expandable question represents a question whose answer determines how
+    many groups of questions should be "expanded". One example of an expandable
+    question is "How many people were hospitalized?". If the answer to this
+    question is "3", then 3 groups of questions relating to the hospitalized
+    patients are expanded (questions such as "Cause of hospitalization", or 
+    "Age"), where each expanded group of questions might relate to each
+    hospitalized person.
+*/
 import { QuestionCollection } from './QuestionCollection';
 import { QuestionGroup } from './QuestionGroup';
 import { QuestionItem } from './QuestionItem';
