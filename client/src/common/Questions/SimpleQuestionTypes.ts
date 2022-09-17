@@ -1,8 +1,8 @@
 import { serializable } from '../Serializer/ObjectSerializer';
-import { Question } from './Question';
+import { QuestionLeaf } from './QuestionLeaf';
 
 @serializable(undefined, '')
-export class TextQuestion<ID, ErrorType> extends Question<ID, string, ErrorType> {}
+export class TextQuestion<ID, ErrorType> extends QuestionLeaf<ID, string, ErrorType> {}
 
 @serializable(undefined, '')
-export class NumericQuestion<ID, ErrorType> extends Question<ID, number, ErrorType> {}
+export class NumericQuestion<ID, ErrorType> extends QuestionLeaf<ID, number, ErrorType> {}

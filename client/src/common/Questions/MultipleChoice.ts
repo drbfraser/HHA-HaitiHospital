@@ -3,7 +3,7 @@
     selection MCQ or a single selection MCQ.
 */
 import { serializable } from 'common/Serializer/ObjectSerializer';
-import { Question } from './Question';
+import { QuestionLeaf } from './QuestionLeaf';
 
 // Choice for multiple choice questions
 serializable('');
@@ -32,7 +32,7 @@ class Choice {
   };
 }
 
-abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends Question<ID, T, ErrorType> {
+abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
   protected readonly choices: Array<Choice>;
 
   constructor(id: ID, prompt: string, defaultAnswer?: T) {

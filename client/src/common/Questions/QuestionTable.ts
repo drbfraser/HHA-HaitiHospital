@@ -1,11 +1,11 @@
-import { Question } from './Question';
-import { QuestionCollection } from './QuestionCollection';
-import { QuestionItem } from './QuestionItem';
+import { QuestionLeaf } from './QuestionLeaf';
+import { QuestionParent } from './QuestionParent';
+import { QuestionNode } from './QuestionNode';
 
 type table<T> = Array<Array<T>>;
 
 // The cell must be gray if no question is defined.
-class TableCell<ID, T, ErrorType, QuestionType extends Question<ID, T, ErrorType>> {
+class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, ErrorType>> {
   private readonly question?: QuestionType;
   private gray: boolean;
 
@@ -35,8 +35,8 @@ export abstract class QuestionTable<
   ID,
   T,
   ErrorType,
-  QuestionType extends Question<ID, T, ErrorType>,
-> extends QuestionCollection<ID, ErrorType> {
+  QuestionType extends QuestionLeaf<ID, T, ErrorType>,
+> extends QuestionParent<ID, ErrorType> {
   private readonly rowHeaders: Array<string>;
   private readonly columnHeaders: Array<string>;
 
@@ -77,7 +77,7 @@ export abstract class QuestionTable<
 
   public readonly getColumnHeaders = (): Array<string> => [...this.columnHeaders];
 
-  public readonly searchById = (id: ID): QuestionItem<ID, ErrorType> | undefined => {
+  public readonly searchById = (id: ID): QuestionNode<ID, ErrorType> | undefined => {
     return this.questionTable
       .reduce((questions1, questions2) => [...questions1, ...questions2])
       .map((questionCell) => questionCell.getQuestion())

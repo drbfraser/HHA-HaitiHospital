@@ -1,28 +1,28 @@
 import { serializable } from 'common/Serializer/ObjectSerializer';
-import { QuestionCollection } from './QuestionCollection';
-import { QuestionItem } from './QuestionItem';
+import { QuestionParent } from './QuestionParent';
+import { QuestionNode } from './QuestionNode';
 import { HandlerArgs, QuestionTypeMap } from './QuestionTypeMapper';
 
-type Handler = <ID, ErrorType>(question: QuestionItem<ID, ErrorType>) => void;
+type Handler = <ID, ErrorType>(question: QuestionNode<ID, ErrorType>) => void;
 
 @serializable(undefined)
-export class QuestionGroup<ID, ErrorType> extends QuestionCollection<ID, ErrorType> {
-  private readonly questionItems: Array<QuestionItem<ID, ErrorType>>;
+export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
+  private readonly questionItems: Array<QuestionNode<ID, ErrorType>>;
 
-  constructor(id: ID, ...questions: Array<QuestionItem<ID, ErrorType>>) {
+  constructor(id: ID, ...questions: Array<QuestionNode<ID, ErrorType>>) {
     super(id);
     questions ? this.addAll(...questions) : undefined;
   }
 
   public readonly add = (
-    questionItem: QuestionItem<ID, ErrorType>,
+    questionItem: QuestionNode<ID, ErrorType>,
   ): QuestionGroup<ID, ErrorType> => {
     this.questionItems.push(questionItem);
     return this;
   };
 
   public readonly addAll = (
-    ...questions: Array<QuestionItem<ID, ErrorType>>
+    ...questions: Array<QuestionNode<ID, ErrorType>>
   ): QuestionGroup<ID, ErrorType> => {
     questions.forEach((question) => this.add(question));
     return this;
@@ -34,15 +34,15 @@ export class QuestionGroup<ID, ErrorType> extends QuestionCollection<ID, ErrorTy
     return new QuestionHandler<ID, ErrorType>(this.questionItems, handlers);
   };
 
-  public readonly searchById = (id: ID): QuestionItem<ID, ErrorType> | undefined => {
+  public readonly searchById = (id: ID): QuestionNode<ID, ErrorType> | undefined => {
     return this.questionItems.filter((questionItem) => questionItem.getId() == id)[0];
   };
 }
 
 export class QuestionHandler<ID, ErrorType> extends QuestionTypeMap<ID, ErrorType> {
-  private readonly questions: Array<QuestionItem<ID, ErrorType>>;
+  private readonly questions: Array<QuestionNode<ID, ErrorType>>;
 
-  constructor(questions: Array<QuestionItem<ID, ErrorType>>, handlers: HandlerArgs<ID, ErrorType>) {
+  constructor(questions: Array<QuestionNode<ID, ErrorType>>, handlers: HandlerArgs<ID, ErrorType>) {
     super(handlers);
     this.questions = questions;
   }

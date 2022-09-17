@@ -2,10 +2,10 @@ import { CompositionQuestion } from './CompositionQuestion';
 import { ExpandableQuestion } from './ExpandableQuestion';
 import { MultipleSelectionQuestion, SingleSelectionQuestion } from './MultipleChoice';
 import { QuestionGroup } from './QuestionGroup';
-import { QuestionItem } from './QuestionItem';
+import { QuestionNode } from './QuestionNode';
 import { NumericQuestion, TextQuestion } from './SimpleQuestionTypes';
 
-export type Handler<ID, ErrorType> = (question: QuestionItem<ID, ErrorType>) => void;
+export type Handler<ID, ErrorType> = (question: QuestionNode<ID, ErrorType>) => void;
 
 interface HandlerEntry<ID, ErrorType> {
   readonly className: string;
@@ -65,7 +65,7 @@ export class QuestionTypeMap<ID, ErrorType> {
   }
 
   public readonly getHandler = (
-    question: QuestionItem<unknown, ErrorType>,
+    question: QuestionNode<unknown, ErrorType>,
   ): Handler<ID, ErrorType> => {
     return Object.values(this.questionMapper).find(
       (classNameMap) => classNameMap.className === question.constructor.name,

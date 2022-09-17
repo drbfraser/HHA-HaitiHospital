@@ -1,4 +1,4 @@
-import { QuestionItem } from './QuestionItem';
+import { QuestionNode } from './QuestionNode';
 
 export interface ValidationResult<ErrorType> {
   readonly isValid: boolean;
@@ -6,7 +6,7 @@ export interface ValidationResult<ErrorType> {
   readonly message?: string;
 }
 
-export abstract class Question<ID, T, ErrorType> extends QuestionItem<ID, ErrorType> {
+export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, ErrorType> {
   private readonly prompt: string;
   private answer?: T;
 
