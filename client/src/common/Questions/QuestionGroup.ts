@@ -1,9 +1,7 @@
 import { serializable } from 'common/Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
-import { HandlerArgs, QuestionTypeMap } from './QuestionTypeMapper';
-
-type Handler = <ID, ErrorType>(question: QuestionNode<ID, ErrorType>) => void;
+import { HandlerArgs, QuestionHandler } from './QuestionHandler';
 
 @serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
@@ -28,26 +26,17 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
     return this;
   };
 
-  public readonly buildHandler = (
+  public readonly genericForEach = (handler: (question: QuestionNode<ID, ErrorType>) => void): void => {
+    QuestionHandler.buildGenericHandler(handler).applyForEach(this.questionItems);
+  }
+
+  public readonly forEach = (
     handlers: HandlerArgs<ID, ErrorType>,
-  ): QuestionHandler<ID, ErrorType> => {
-    return new QuestionHandler<ID, ErrorType>(this.questionItems, handlers);
+  ): void => {
+    QuestionHandler.buildHandler(handlers).applyForEach(this.questionItems);
   };
 
   public readonly searchById = (id: ID): QuestionNode<ID, ErrorType> | undefined => {
     return this.questionItems.filter((questionItem) => questionItem.getId() == id)[0];
-  };
-}
-
-export class QuestionHandler<ID, ErrorType> extends QuestionTypeMap<ID, ErrorType> {
-  private readonly questions: Array<QuestionNode<ID, ErrorType>>;
-
-  constructor(questions: Array<QuestionNode<ID, ErrorType>>, handlers: HandlerArgs<ID, ErrorType>) {
-    super(handlers);
-    this.questions = questions;
-  }
-
-  public readonly apply = (): void => {
-    this.questions.forEach((question) => this.getHandler(question)(question));
   };
 }

@@ -63,16 +63,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
       .map((questionGroup) => {
         let handler = () => questionItemAdder(questionGroup);
         this.questionsTemplate
-          .buildHandler({
-            textQuestion: handler,
-            numericQuestion: handler,
-            singleSelectionQuestion: handler,
-            multipleSelectionQuestion: handler,
-            questionGroup: handler,
-            compositionQuestion: handler,
-            expandableQuestion: handler,
-          })
-          .apply();
+          .genericForEach(handler);
         return questionGroup;
       });
   };

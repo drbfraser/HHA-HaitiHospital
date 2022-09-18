@@ -37,10 +37,10 @@ export interface HandlerArgs<ID, ErrorType> {
   readonly expandableQuestion: (expandableQuestion: ExpandableQuestion<ID, ErrorType>) => void;
 }
 
-export class QuestionTypeMap<ID, ErrorType> {
+export class QuestionHandler<ID, ErrorType> {
   private readonly questionMapper: HandlerMap<ID, ErrorType>;
 
-  constructor(questionMapper: HandlerArgs<ID, ErrorType>) {
+  private constructor(questionMapper: HandlerArgs<ID, ErrorType>) {
     this.questionMapper = {
       textQuestion: { className: TextQuestion.name, handler: questionMapper.textQuestion },
       numericQuestion: { className: NumericQuestion.name, handler: questionMapper.numericQuestion },
@@ -64,11 +64,37 @@ export class QuestionTypeMap<ID, ErrorType> {
     };
   }
 
+  public static readonly buildHandler = <ID, ErrorType>(handlers: HandlerArgs<ID, ErrorType>): QuestionHandler<ID, ErrorType> => {
+    return new QuestionHandler<ID, ErrorType>(handlers);
+  }
+
+  public static readonly buildGenericHandler = <ID, ErrorType>(handler: (question: QuestionNode<ID, ErrorType>) => void): QuestionHandler<ID, ErrorType> => {
+    return new QuestionHandler<ID, ErrorType>({
+      textQuestion: handler,
+      numericQuestion: handler,
+      singleSelectionQuestion: handler,
+      multipleSelectionQuestion: handler,
+      questionGroup: handler,
+      compositionQuestion: handler,
+      expandableQuestion: handler
+    });
+  }
+
   public readonly getHandler = (
-    question: QuestionNode<unknown, ErrorType>,
+    question: QuestionNode<ID, ErrorType>,
   ): Handler<ID, ErrorType> => {
     return Object.values(this.questionMapper).find(
       (classNameMap) => classNameMap.className === question.constructor.name,
     );
   };
+
+  public readonly apply = (
+    question: QuestionNode<ID, ErrorType>): void => {
+    this.getHandler(question)(question);
+  };
+  
+  public readonly applyForEach = (
+    questions: QuestionNode<ID, ErrorType>[]): void => {
+    questions.forEach((question) => this.apply(question));
+    }
 }
