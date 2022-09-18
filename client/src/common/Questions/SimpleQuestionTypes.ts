@@ -1,3 +1,5 @@
+// Leaf questions in the question tree for questions with simple data types as
+// answers.
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
 
