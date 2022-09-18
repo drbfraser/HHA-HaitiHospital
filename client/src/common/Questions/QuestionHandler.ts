@@ -1,3 +1,25 @@
+/*  A handler that enforces exhaustively handling all types of questions.
+
+    The purpose of this module is to help the developer by enforcing proper
+    handling (routine definition) of all question types at compile-time. The 
+    current design leverages types to define the question semantics and
+    capabilities, and because there are currently multiple question types, and
+    question types might be changed or added in the future, there is a high risk
+    that code that acts upon (handles) these questions might not be updated to
+    properly handle the new changes. In such case, the errors are probably going
+    to be caught at runtime and significant time might be spent identifying the
+    problem.
+
+    The QuestionHandler class below will enforce handling of all question types
+    by not transpiling if all question types are not exhaustively handled. This
+    is accomplished by having QuestionHandler's constructor which takes in a
+    handler for every question type, thus leveraging the question type full
+    capabilities and also not transpiling if the proper handler is not provided.
+
+    **Any modifications to the question types must be reflected in the
+    constructs defined in this module for the exhaustive handling enforcement to
+    take effect**
+*/
 import { CompositionQuestion } from './CompositionQuestion';
 import { ExpandableQuestion } from './ExpandableQuestion';
 import { MultipleSelectionQuestion, SingleSelectionQuestion } from './MultipleChoice';
@@ -64,10 +86,12 @@ export class QuestionHandler<ID, ErrorType> {
     };
   }
 
+  // Used to construct type-specific handlers
   public static readonly buildHandler = <ID, ErrorType>(handlers: HandlerArgs<ID, ErrorType>): QuestionHandler<ID, ErrorType> => {
     return new QuestionHandler<ID, ErrorType>(handlers);
   }
 
+  // Used when the handler is the same for all question types.
   public static readonly buildGenericHandler = <ID, ErrorType>(handler: (question: QuestionNode<ID, ErrorType>) => void): QuestionHandler<ID, ErrorType> => {
     return new QuestionHandler<ID, ErrorType>({
       textQuestion: handler,
