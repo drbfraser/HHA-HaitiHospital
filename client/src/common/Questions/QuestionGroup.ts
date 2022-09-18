@@ -1,3 +1,4 @@
+//  A parent node in the question tree that supports any question type as child.
 import { serializable } from 'common/Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
