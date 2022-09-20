@@ -1,5 +1,5 @@
 /*  A multiple choice question (MCQ) where you may choose only one or multiple
-    alternatives. A class exists for a question representing a multiple
+    alternative answers. A class exists for a question representing a multiple
     selection MCQ or a single selection MCQ.
 */
 import { serializable } from 'common/Serializer/ObjectSerializer';
