@@ -1,8 +1,16 @@
-import { QuestionCollection } from './QuestionCollection';
+/*  An expandable question represents a question whose answer determines how
+    many groups of questions should be "expanded". One example of an expandable
+    question is "How many people were hospitalized?". If the answer to this
+    question is "3", then 3 groups of questions relating to the hospitalized
+    patients are expanded (questions such as "Cause of hospitalization", or 
+    "Age"), where each expanded group of questions might relate to each
+    hospitalized person.
+*/
+import { QuestionParent } from './QuestionParent';
 import { QuestionGroup } from './QuestionGroup';
-import { QuestionItem } from './QuestionItem';
+import { QuestionNode } from './QuestionNode';
 
-export class ExpandableQuestion<ID, ErrorType> extends QuestionCollection<ID, ErrorType> {
+export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private questionGroups: Array<QuestionGroup<ID, ErrorType>>;
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
   private readonly idGenerator: (questionGroupIndex: number) => ID;
@@ -12,7 +20,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionCollection<ID, Er
     id: ID,
     idGenerator: (questionGroupIndex: number) => ID,
     defaultAnswer?: number,
-    ...questions: Array<QuestionItem<ID, ErrorType>>
+    ...questions: Array<QuestionNode<ID, ErrorType>>
   ) {
     super(id);
     this.idGenerator = idGenerator;
@@ -21,20 +29,20 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionCollection<ID, Er
   }
 
   public readonly addToTemplate = (
-    questionItem: QuestionItem<ID, ErrorType>,
+    questionItem: QuestionNode<ID, ErrorType>,
   ): ExpandableQuestion<ID, ErrorType> => {
     this.questionsTemplate.add(questionItem);
     return this;
   };
 
   public readonly addAllToTemplate = (
-    ...questions: Array<QuestionItem<ID, ErrorType>>
+    ...questions: Array<QuestionNode<ID, ErrorType>>
   ): ExpandableQuestion<ID, ErrorType> => {
     this.questionsTemplate.addAll(...questions);
     return this;
   };
 
-  public readonly searchById = (id: ID): QuestionItem<ID, ErrorType> | undefined => {
+  public readonly searchById = (id: ID): QuestionNode<ID, ErrorType> | undefined => {
     return this.questionGroups
       .map((questionGroup) => questionGroup.searchById(id))
       .find((question) => question !== undefined);
@@ -43,8 +51,8 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionCollection<ID, Er
   private readonly expand = (): void => {
     let questionItemAdder = (
       questionGroup: QuestionGroup<ID, ErrorType>,
-    ): ((questionItem: QuestionItem<ID, ErrorType>) => void) => {
-      return (questionItem: QuestionItem<ID, ErrorType>) => {
+    ): ((questionItem: QuestionNode<ID, ErrorType>) => void) => {
+      return (questionItem: QuestionNode<ID, ErrorType>) => {
         questionGroup.add(questionItem);
       };
     };
@@ -55,16 +63,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionCollection<ID, Er
       .map((questionGroup) => {
         let handler = () => questionItemAdder(questionGroup);
         this.questionsTemplate
-          .buildHandler({
-            textQuestion: handler,
-            numericQuestion: handler,
-            singleSelectionQuestion: handler,
-            multipleSelectionQuestion: handler,
-            questionGroup: handler,
-            compositionQuestion: handler,
-            expandableQuestion: handler,
-          })
-          .apply();
+          .genericForEach(handler);
         return questionGroup;
       });
   };
