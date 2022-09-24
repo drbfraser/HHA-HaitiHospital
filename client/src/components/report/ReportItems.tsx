@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 // import { useTranslation } from 'react-i18next';
-import { ItemType } from 'common/json_report';
+import { ItemType } from '@hha/common';
 import { ItemField } from './Report';
 
 type Label = {
@@ -57,11 +57,7 @@ function makeItems(items: ItemField[], readonly: boolean, indent: boolean): JSX.
         );
       case ItemType.GROUP:
         return (
-          <Group
-            key={(element as ItemField).id}
-            item={element as ItemField}
-            readonly={readonly}
-          />
+          <Group key={(element as ItemField).id} item={element as ItemField} readonly={readonly} />
         );
       default:
         throw new Error('Item is not supported');
@@ -86,7 +82,7 @@ export function Field(props: {
   let children = [];
   if (props.item.reportItem.items !== undefined) children = props.item.items;
 
-  const invalid: boolean = formState.errors[item.id];
+  const invalid: boolean = Boolean(formState.errors[item.id]);
   const errorMessage = formState.errors[item.id]?.message;
 
   const indent = props.indent ? 'ps-5' : '';

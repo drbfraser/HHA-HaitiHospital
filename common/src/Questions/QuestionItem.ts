@@ -1,4 +1,4 @@
-import { serializable } from 'common/Serializer/ObjectSerializer';
+import { serializable } from '../Serializer/ObjectSerializer';
 
 export abstract class QuestionItem<ID, ErrorType> {
   private readonly id: ID;

@@ -2,3 +2,5 @@
 .idea/
 .env
 .vscode/launch.json
+node_modules/
+hha-common-1.0.0.tgz

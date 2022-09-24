@@ -2,9 +2,9 @@ import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as _JsonUtils from '../report/json_report';
 import * as _ReportDefs from '../definitions/report';
-import * as _JsonDefs from 'common/json_report';
-import { hasNumType, checkAnswerType, hasSumType, hasEqualType, hasGroupType } from "../report/json_item";
-import { isSumCorrect } from "../report/item";
+import * as _JsonDefs from '@hha/common';
+import { hasNumType, checkAnswerType, hasSumType, hasEqualType, hasGroupType } from '../report/json_item';
+import { isSumCorrect } from '../report/item';
 
 export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
   const typeKey = getItemTypeFromValue(type);
@@ -117,7 +117,7 @@ namespace JsonToItem {
     const checkChildren = (child: _ReportDefs.ReportItem): void => {
       const answer = Number(child.answer[0]);
       if (equalValue - answer == 0) corrects.push(Correct(0));
-      else errors.push(Error(new ParsingError("")));
+      else errors.push(Error(new ParsingError('')));
     };
 
     children.forEach(checkChildren);
@@ -155,12 +155,14 @@ namespace JsonToItem {
   class ParsingError {
     protected message: string;
 
-        constructor(msg: string) {
-            this.message = msg
-        }
-
-        toString(): string {return "Paring Error: " + this.message}
+    constructor(msg: string) {
+      this.message = msg;
     }
+
+    toString(): string {
+      return 'Paring Error: ' + this.message;
+    }
+  }
 
   function Correct(value: number): Value {
     return { value: [value], error: Array<any>() };
@@ -173,28 +175,28 @@ namespace JsonToItem {
   const parseToGroupItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportGroupItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
     if (!hasGroupType(jsonItem)) {
-        throw new InvalidInput(`Constructor for Group item but ${typeKey} was provided - item: ${jsonItem.description}`);
+      throw new InvalidInput(`Constructor for Group item but ${typeKey} was provided - item: ${jsonItem.description}`);
     }
     if (_JsonUtils.isInATable(jsonItem)) {
-        throw new InvalidInput(`A Group type item should not be in a table`);
+      throw new InvalidInput(`A Group type item should not be in a table`);
     }
 
     const jsonChildren = _JsonUtils.getChildren(jsonItem);
-    const children = jsonChildren.map(child => {return parseNumericChildren(child, jsonItem)})
+    const children = jsonChildren.map((child) => {
+      return parseNumericChildren(child, jsonItem);
+    });
 
-    const sum = children
-      .map((item) => Number(item.answer[0]))
-      .reduce((prev, curr) => prev + curr);
-   
+    const sum = children.map((item) => Number(item.answer[0])).reduce((prev, curr) => prev + curr);
+
     let newItem: _ReportDefs.ReportGroupItem = {
-        type: typeKey!,
-        description: jsonItem.description,
-        answer: [sum.toString()],
-        children: children
+      type: typeKey!,
+      description: jsonItem.description,
+      answer: [sum.toString()],
+      children: children
     };
 
     return newItem;
-  }
+  };
 
   type ParserByType = Map<_JsonDefs.ItemType, ItemParser>;
   const parserByType: ParserByType = new Map<_JsonDefs.ItemType, ItemParser>();

@@ -9,7 +9,7 @@ import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/parsers/parsers';
 import { generateNewTemplate, fromReportToTemplate } from 'utils/parsers/template';
 import { RequestWithUser } from 'utils/definitions/express';
-import { JsonReportDescriptor } from 'common/json_report';
+import { JsonReportDescriptor } from '@hha/common';
 import { CallbackError } from 'mongoose';
 import { CustomError } from 'exceptions/custom_exception';
 import { mongooseErrorToMyError } from 'utils/utils';

@@ -1,4 +1,4 @@
-import { serializable } from 'common/Serializer/ObjectSerializer';
+import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionCollection } from './QuestionCollection';
 import { QuestionItem } from './QuestionItem';
 import { HandlerArgs, QuestionTypeMap } from './QuestionTypeMapper';
@@ -14,23 +14,17 @@ export class QuestionGroup<ID, ErrorType> extends QuestionCollection<ID, ErrorTy
     questions ? this.addAll(...questions) : undefined;
   }
 
-  public readonly add = (
-    questionItem: QuestionItem<ID, ErrorType>,
-  ): QuestionGroup<ID, ErrorType> => {
+  public readonly add = (questionItem: QuestionItem<ID, ErrorType>): QuestionGroup<ID, ErrorType> => {
     this.questionItems.push(questionItem);
     return this;
   };
 
-  public readonly addAll = (
-    ...questions: Array<QuestionItem<ID, ErrorType>>
-  ): QuestionGroup<ID, ErrorType> => {
+  public readonly addAll = (...questions: Array<QuestionItem<ID, ErrorType>>): QuestionGroup<ID, ErrorType> => {
     questions.forEach((question) => this.add(question));
     return this;
   };
 
-  public readonly buildHandler = (
-    handlers: HandlerArgs<ID, ErrorType>,
-  ): QuestionHandler<ID, ErrorType> => {
+  public readonly buildHandler = (handlers: HandlerArgs<ID, ErrorType>): QuestionHandler<ID, ErrorType> => {
     return new QuestionHandler<ID, ErrorType>(this.questionItems, handlers);
   };
 

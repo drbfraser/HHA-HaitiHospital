@@ -11,7 +11,7 @@ import Pagination from 'components/pagination/Pagination';
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS_GET } from 'constants/endpoints';
 import { TOAST_REPORTS_GET } from 'constants/toast_messages';
-import { JsonReportDescriptor } from 'common/json_report'
+import { JsonReportDescriptor } from '@hha/common';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -24,7 +24,11 @@ const GeneralReports = () => {
   const history = useHistory<History>();
   const [reports, setReports] = useState<JsonReportDescriptor[]>([]);
   const getReports = useCallback(async () => {
-    const fetchedReports: JsonReportDescriptor[] = await Api.Get(ENDPOINT_REPORTS_GET, TOAST_REPORTS_GET, history);
+    const fetchedReports: JsonReportDescriptor[] = await Api.Get(
+      ENDPOINT_REPORTS_GET,
+      TOAST_REPORTS_GET,
+      history,
+    );
     setReports(fetchedReports);
   }, [history]);
 
@@ -81,12 +85,15 @@ const GeneralReports = () => {
                     <td>{item.meta.submittedDate}</td>
                     <td>{item.meta.submittedUserId}</td>
                     <td>
-                      <Link to={"/report-view/" + item.meta.id} className="btn-link text-decoration-none">
+                      <Link
+                        to={'/report-view/' + item.meta.id}
+                        className="btn-link text-decoration-none"
+                      >
                         {t('reportsOpenReport')}
                       </Link>
                     </td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>

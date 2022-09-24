@@ -1,4 +1,4 @@
-import { serializable } from 'common/Serializer/ObjectSerializer';
+import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionCollection } from './QuestionCollection';
 import { NumericQuestion } from './SimpleQuestionTypes';
 
@@ -17,23 +17,17 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionCollection<ID, E
     return this.questions.find((question) => question.getId() === id);
   };
 
-  public readonly add = (
-    numericQuestion: NumericQuestion<ID, ErrorType>,
-  ): CompositionQuestion<ID, ErrorType> => {
+  public readonly add = (numericQuestion: NumericQuestion<ID, ErrorType>): CompositionQuestion<ID, ErrorType> => {
     this.questions.push(numericQuestion);
     return this;
   };
 
-  public readonly addAll = (
-    ...questions: Array<NumericQuestion<ID, ErrorType>>
-  ): QuestionCollection<ID, ErrorType> => {
+  public readonly addAll = (...questions: Array<NumericQuestion<ID, ErrorType>>): QuestionCollection<ID, ErrorType> => {
     questions.forEach((question) => this.add(question));
     return this;
   };
 
-  public readonly handleNumericQuestions = (
-    handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void,
-  ): void => {
+  public readonly handleNumericQuestions = (handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void): void => {
     this.questions.forEach((question) => handler(question));
   };
 
@@ -45,10 +39,6 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionCollection<ID, E
   };
 
   public readonly sumsUp = (): boolean => {
-    return this.answer
-      ? this.questions
-          .map((question) => question.getAnswer())
-          .reduce((answer1, answer2) => answer1 + answer2) === this.answer
-      : false;
+    return this.answer ? this.questions.map((question) => question.getAnswer()).reduce((answer1, answer2) => answer1 + answer2) === this.answer : false;
   };
 }

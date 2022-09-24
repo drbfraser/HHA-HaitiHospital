@@ -6,7 +6,7 @@ import './report_view.css';
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS_GET_BY_ID } from 'constants/endpoints';
 import { TOAST_REPORT_GET } from 'constants/toast_messages';
-import { JsonReportDescriptor } from 'common/json_report'
+import { JsonReportDescriptor } from '@hha/common';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 const ReportView = () => {
@@ -16,7 +16,11 @@ const ReportView = () => {
   const report_id = useLocation().pathname.split('/')[2];
 
   const getReport = useCallback(async () => {
-    const fetchedReport: JsonReportDescriptor = await Api.Get(ENDPOINT_REPORTS_GET_BY_ID(report_id), TOAST_REPORT_GET, history);
+    const fetchedReport: JsonReportDescriptor = await Api.Get(
+      ENDPOINT_REPORTS_GET_BY_ID(report_id),
+      TOAST_REPORT_GET,
+      history,
+    );
     setReport(fetchedReport);
   }, [history]);
 
@@ -33,7 +37,6 @@ const ReportView = () => {
 
           {/* this is just a skeleton, showing the raw json at the moment, as suggested by Dr. Fraser */}
           <div>{JSON.stringify(report)}</div>
-
         </main>
       </div>
     </>
