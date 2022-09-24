@@ -7,7 +7,8 @@ The project was originally created by team Haumea for CMPT 373 and is currently 
 
 ### Documents
 
-- See the project's [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q) for developer guides, user manuals, design docs, reports, and other useful documents beyond what is listed in this readme or elsewhere in the repo.
+- See the project's [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q) for developer guides, user manuals, design docs, reports, and other useful
+  documents beyond what is listed in this readme or elsewhere in the repo.
 - Please update this readme and the files/folders in the Google Drive to make them more useful, correct, and relevant!
 
 ### Features
@@ -132,6 +133,11 @@ Now that everything is up, visit http://localhost:3000 and login with the seeded
   - Username: user3 to user 6
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
+
+### Common package
+
+Whenever changes are made to `common` folder, you should run `npm run update-common` on root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common` and reinstalls
+it in `client` and `server`.
 
 ### Prettier Setup
 

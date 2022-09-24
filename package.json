@@ -4,7 +4,7 @@
   "description": "This is a web application made for Hope Health Action (HHA) with the goal to digitize its data collection process at field hospitals. The project uses the MERN stack and is based on a [boiler plate](https://github.com/nemanjam/mern-boilerplate).",
   "main": "index.js",
   "scripts": {
-    "setup": "npm install --prefix common && npm install --prefix client && npm install --prefix server && npm install --prefix server",
+    "setup": "npm install --prefix common && npm install --prefix client && npm install --prefix server && npm install --prefix server && npm run ",
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "dev": "npm run server & npm run client",
