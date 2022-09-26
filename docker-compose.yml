@@ -7,7 +7,7 @@ services:
       - mongodb
     environment:
       - MONGO_URI=mongodb://mongodb:27017/
-      - SERVER_PORT=5000
+      - SERVER_PORT=8000
   mongodb:
     container_name: hhahaiti_mongodb
     image: mongo:5.0.6-focal
