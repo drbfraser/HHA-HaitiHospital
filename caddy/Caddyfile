@@ -8,7 +8,7 @@
     }
 
     handle /api/* {
-        reverse_proxy {$API_HOSTNAME}:5000
+        reverse_proxy {$API_HOSTNAME}:8000
     }
 
     handle {

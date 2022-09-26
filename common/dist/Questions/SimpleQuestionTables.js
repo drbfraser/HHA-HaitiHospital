@@ -6,20 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NumericQuestion = exports.TextQuestion = void 0;
-// Leaf questions in the question tree for questions with simple data types as
+exports.NumericTable = exports.TextTable = void 0;
+// Module containing question tables that have simple data as their question
 // answers.
 const ObjectSerializer_1 = require("../Serializer/ObjectSerializer");
-const QuestionLeaf_1 = require("./QuestionLeaf");
-let TextQuestion = class TextQuestion extends QuestionLeaf_1.QuestionLeaf {
+const QuestionTable_1 = require("./QuestionTable");
+let TextTable = class TextTable extends QuestionTable_1.QuestionTable {
 };
-TextQuestion = __decorate([
-    (0, ObjectSerializer_1.serializable)(undefined, '')
-], TextQuestion);
-exports.TextQuestion = TextQuestion;
-let NumericQuestion = class NumericQuestion extends QuestionLeaf_1.QuestionLeaf {
+TextTable = __decorate([
+    (0, ObjectSerializer_1.serializable)(undefined, [], [], () => undefined)
+], TextTable);
+exports.TextTable = TextTable;
+let NumericTable = class NumericTable extends QuestionTable_1.QuestionTable {
 };
-NumericQuestion = __decorate([
-    (0, ObjectSerializer_1.serializable)(undefined, '')
-], NumericQuestion);
-exports.NumericQuestion = NumericQuestion;
+NumericTable = __decorate([
+    (0, ObjectSerializer_1.serializable)(undefined, [], [], () => undefined)
+], NumericTable);
+exports.NumericTable = NumericTable;

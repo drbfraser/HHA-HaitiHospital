@@ -7,9 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompositionQuestion = void 0;
+/*  A composition question represents a question whose answer must be equal
+    to the sum of its numeric children questions.
+*/
 const ObjectSerializer_1 = require("../Serializer/ObjectSerializer");
-const QuestionCollection_1 = require("./QuestionCollection");
-let CompositionQuestion = class CompositionQuestion extends QuestionCollection_1.QuestionCollection {
+const QuestionParent_1 = require("./QuestionParent");
+let CompositionQuestion = class CompositionQuestion extends QuestionParent_1.QuestionParent {
     constructor(id, defaultAnswer, ...questions) {
         super(id);
         this.searchById = (id) => {

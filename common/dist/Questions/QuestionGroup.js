@@ -6,11 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QuestionHandler = exports.QuestionGroup = void 0;
+exports.QuestionGroup = void 0;
+//  A parent node in the question tree that supports any question type as child.
 const ObjectSerializer_1 = require("../Serializer/ObjectSerializer");
-const QuestionCollection_1 = require("./QuestionCollection");
-const QuestionTypeMapper_1 = require("./QuestionTypeMapper");
-let QuestionGroup = class QuestionGroup extends QuestionCollection_1.QuestionCollection {
+const QuestionParent_1 = require("./QuestionParent");
+const QuestionHandler_1 = require("./QuestionHandler");
+let QuestionGroup = class QuestionGroup extends QuestionParent_1.QuestionParent {
     constructor(id, ...questions) {
         super(id);
         this.add = (questionItem) => {
@@ -21,8 +22,11 @@ let QuestionGroup = class QuestionGroup extends QuestionCollection_1.QuestionCol
             questions.forEach((question) => this.add(question));
             return this;
         };
-        this.buildHandler = (handlers) => {
-            return new QuestionHandler(this.questionItems, handlers);
+        this.genericForEach = (handler) => {
+            QuestionHandler_1.QuestionHandler.buildGenericHandler(handler).applyForEach(this.questionItems);
+        };
+        this.forEach = (handlers) => {
+            QuestionHandler_1.QuestionHandler.buildHandler(handlers).applyForEach(this.questionItems);
         };
         this.searchById = (id) => {
             return this.questionItems.filter((questionItem) => questionItem.getId() == id)[0];
@@ -34,13 +38,3 @@ QuestionGroup = __decorate([
     (0, ObjectSerializer_1.serializable)(undefined)
 ], QuestionGroup);
 exports.QuestionGroup = QuestionGroup;
-class QuestionHandler extends QuestionTypeMapper_1.QuestionTypeMap {
-    constructor(questions, handlers) {
-        super(handlers);
-        this.apply = () => {
-            this.questions.forEach((question) => this.getHandler(question)(question));
-        };
-        this.questions = questions;
-    }
-}
-exports.QuestionHandler = QuestionHandler;

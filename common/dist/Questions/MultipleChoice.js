@@ -7,8 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MultipleSelectionQuestion = exports.SingleSelectionQuestion = void 0;
+/*  A multiple choice question (MCQ) where you may choose only one or multiple
+    alternative answers. A class exists for a question representing a multiple
+    selection MCQ or a single selection MCQ.
+*/
 const ObjectSerializer_1 = require("../Serializer/ObjectSerializer");
-const Question_1 = require("./Question");
+const QuestionLeaf_1 = require("./QuestionLeaf");
 // Choice for multiple choice questions
 (0, ObjectSerializer_1.serializable)('');
 class Choice {
@@ -28,7 +32,7 @@ class Choice {
         this.description = description;
     }
 }
-class MultipleChoiceQuestion extends Question_1.Question {
+class MultipleChoiceQuestion extends QuestionLeaf_1.QuestionLeaf {
     constructor(id, prompt, defaultAnswer) {
         super(id, prompt, defaultAnswer);
         this.addChoice = (choiceDescription) => {

@@ -93,7 +93,7 @@ JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
 CORS=http://localhost:3000
 # Port for server
-SERVER_PORT=5000
+SERVER_PORT=8000
 # Port for unit test server
 TEST_SERVER_PORT=5001
 # Password for seeding users
@@ -119,6 +119,12 @@ $ npm start
 ```
 $ npm install
 $ npm start
+```
+
+Alternatively, you can run this command on root directory to run client and server concurrently:
+
+```
+$ npm run dev
 ```
 
 Now that everything is up, visit http://localhost:3000 and login with the seeded users:

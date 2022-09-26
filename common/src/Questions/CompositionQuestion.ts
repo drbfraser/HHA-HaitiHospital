@@ -1,9 +1,12 @@
+/*  A composition question represents a question whose answer must be equal
+    to the sum of its numeric children questions.
+*/
 import { serializable } from '../Serializer/ObjectSerializer';
-import { QuestionCollection } from './QuestionCollection';
+import { QuestionParent } from './QuestionParent';
 import { NumericQuestion } from './SimpleQuestionTypes';
 
 @serializable(undefined)
-export class CompositionQuestion<ID, ErrorType> extends QuestionCollection<ID, ErrorType> {
+export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private answer?: number;
   private readonly questions: Array<NumericQuestion<ID, ErrorType>>;
 
@@ -22,7 +25,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionCollection<ID, E
     return this;
   };
 
-  public readonly addAll = (...questions: Array<NumericQuestion<ID, ErrorType>>): QuestionCollection<ID, ErrorType> => {
+  public readonly addAll = (...questions: Array<NumericQuestion<ID, ErrorType>>): QuestionParent<ID, ErrorType> => {
     questions.forEach((question) => this.add(question));
     return this;
   };

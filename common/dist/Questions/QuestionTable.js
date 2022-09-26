@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionTable = void 0;
-const QuestionCollection_1 = require("./QuestionCollection");
+const QuestionParent_1 = require("./QuestionParent");
 // The cell must be gray if no question is defined.
 class TableCell {
     constructor(question) {
@@ -21,7 +21,7 @@ class TableCell {
         this.gray = !question;
     }
 }
-class QuestionTable extends QuestionCollection_1.QuestionCollection {
+class QuestionTable extends QuestionParent_1.QuestionParent {
     /*  The questionCreator is a callback that takes in the row and column index
           for where the question will be placed and may return a question.
       */

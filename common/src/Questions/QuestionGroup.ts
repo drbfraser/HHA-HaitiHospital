@@ -1,47 +1,37 @@
+//  A parent node in the question tree that supports any question type as child.
 import { serializable } from '../Serializer/ObjectSerializer';
-import { QuestionCollection } from './QuestionCollection';
-import { QuestionItem } from './QuestionItem';
-import { HandlerArgs, QuestionTypeMap } from './QuestionTypeMapper';
-
-type Handler = <ID, ErrorType>(question: QuestionItem<ID, ErrorType>) => void;
+import { QuestionParent } from './QuestionParent';
+import { QuestionNode } from './QuestionNode';
+import { HandlerArgs, QuestionHandler } from './QuestionHandler';
 
 @serializable(undefined)
-export class QuestionGroup<ID, ErrorType> extends QuestionCollection<ID, ErrorType> {
-  private readonly questionItems: Array<QuestionItem<ID, ErrorType>>;
+export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
+  private readonly questionItems: Array<QuestionNode<ID, ErrorType>>;
 
-  constructor(id: ID, ...questions: Array<QuestionItem<ID, ErrorType>>) {
+  constructor(id: ID, ...questions: Array<QuestionNode<ID, ErrorType>>) {
     super(id);
     questions ? this.addAll(...questions) : undefined;
   }
 
-  public readonly add = (questionItem: QuestionItem<ID, ErrorType>): QuestionGroup<ID, ErrorType> => {
+  public readonly add = (questionItem: QuestionNode<ID, ErrorType>): QuestionGroup<ID, ErrorType> => {
     this.questionItems.push(questionItem);
     return this;
   };
 
-  public readonly addAll = (...questions: Array<QuestionItem<ID, ErrorType>>): QuestionGroup<ID, ErrorType> => {
+  public readonly addAll = (...questions: Array<QuestionNode<ID, ErrorType>>): QuestionGroup<ID, ErrorType> => {
     questions.forEach((question) => this.add(question));
     return this;
   };
 
-  public readonly buildHandler = (handlers: HandlerArgs<ID, ErrorType>): QuestionHandler<ID, ErrorType> => {
-    return new QuestionHandler<ID, ErrorType>(this.questionItems, handlers);
+  public readonly genericForEach = (handler: (question: QuestionNode<ID, ErrorType>) => void): void => {
+    QuestionHandler.buildGenericHandler(handler).applyForEach(this.questionItems);
   };
 
-  public readonly searchById = (id: ID): QuestionItem<ID, ErrorType> | undefined => {
+  public readonly forEach = (handlers: HandlerArgs<ID, ErrorType>): void => {
+    QuestionHandler.buildHandler(handlers).applyForEach(this.questionItems);
+  };
+
+  public readonly searchById = (id: ID): QuestionNode<ID, ErrorType> | undefined => {
     return this.questionItems.filter((questionItem) => questionItem.getId() == id)[0];
-  };
-}
-
-export class QuestionHandler<ID, ErrorType> extends QuestionTypeMap<ID, ErrorType> {
-  private readonly questions: Array<QuestionItem<ID, ErrorType>>;
-
-  constructor(questions: Array<QuestionItem<ID, ErrorType>>, handlers: HandlerArgs<ID, ErrorType>) {
-    super(handlers);
-    this.questions = questions;
-  }
-
-  public readonly apply = (): void => {
-    this.questions.forEach((question) => this.getHandler(question)(question));
   };
 }
