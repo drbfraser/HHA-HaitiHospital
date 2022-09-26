@@ -1,7 +1,19 @@
 import { QuestionLeaf, ValidationResult } from "../../../src/common/Questions/QuestionLeaf";
-import { QuestionNodeTest } from "./QuestionNode.spec";
+import { QuestionNodeTest, QuestionNodeTestArgs } from "./QuestionNode.spec";
 import { expect } from 'chai';
 import { TEST_ARGS_MSG, TEST_CLASS_MSG } from "../../Constants";
+
+export interface QuestionLeafTestArgs<ID, T, ErrorType> extends QuestionNodeTestArgs<ID, ErrorType> {
+  defaultPrompt: string,
+
+  answerEqual: (answer1: T, answer2: T) => boolean,
+  defaultAnswer: T,
+  alternativeAnswer: T
+
+  sampleValidator: (answer?: T) => ValidationResult<ErrorType>;
+  validAnswer: T;
+  invalidAnswer: T;
+}
 
 export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTest<ID, ErrorType> {
 
@@ -18,29 +30,16 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
   private readonly invalidAnswer: T;
   private readonly alternativeAnswer: T;
 
-  constructor(args: {
+  constructor(
     questionLeafConstructor: (id: ID, prompt: string, defaultAnswer?: T) => QuestionLeaf<ID, T, ErrorType>,
+    args: QuestionLeafTestArgs<ID, T, ErrorType>
+  ) {
+    super(
+      (id: ID) => questionLeafConstructor(id, args.defaultPrompt),
+      args
+    );
 
-    defaultId: ID,
-    idEqual: (id1: ID, id2: ID) => boolean,
-
-    defaultPrompt: string,
-
-    answerEqual: (answer1: T, answer2: T) => boolean,
-    defaultAnswer: T,
-    alternativeAnswer: T
-
-    sampleValidator: (answer?: T) => ValidationResult<ErrorType>;
-    validAnswer: T;
-    invalidAnswer: T;
-  }) {
-    super({
-      questionNodeConstructor: (id: ID) => args.questionLeafConstructor(id, args.defaultPrompt),
-      idEqual: args.idEqual,
-      defaultId: args.defaultId
-    });
-
-    this.questionLeafConstructor = args.questionLeafConstructor;
+    this.questionLeafConstructor = questionLeafConstructor;
     this.answerEqual = args.answerEqual;
     this.sampleValidator = args.sampleValidator;
 
