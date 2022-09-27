@@ -1,14 +1,14 @@
 /*  A composition question represents a question whose answer must be equal
     to the sum of its numeric children questions.
 */
-import { serializable } from 'common/Serializer/ObjectSerializer';
+import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { NumericQuestion } from './SimpleQuestionTypes';
 
 @serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private answer?: number;
-  private readonly questions: Array<NumericQuestion<ID, ErrorType>>;
+  private readonly questions: Array<NumericQuestion<ID, ErrorType>> = [];
 
   constructor(id: ID, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID, ErrorType>>) {
     super(id);
@@ -23,6 +23,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   public readonly add = (
     numericQuestion: NumericQuestion<ID, ErrorType>,
   ): CompositionQuestion<ID, ErrorType> => {
+    console.log(this.questions);
     this.questions.push(numericQuestion);
     return this;
   };
