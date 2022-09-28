@@ -11,41 +11,17 @@ interface NumericQuestionProps {
   defaultAnswer?: number;
 }
 
+// Question types in the mock NICU JSON report data
 enum QuestionTypes {
   label = 'label',
   sum = 'sum',
   numeric = 'numeric',
 }
 
-const buildReportFromJSON = (): QuestionNode<any, any>[] => {
-  const questions: QuestionNode<any, any>[] = [];
+// Extracts the answer from a question in the NICU JSON as a number type
+const getAnswer = (answer) => parseInt(answer[0][0]);
 
-  newNicuData.items.forEach((question, i) => {
-    if (question.type === QuestionTypes.sum) {
-      const compositionQuestion = compositionQuestionBuilder(
-        i.toString(),
-        parseInt(question.answer[0][0]),
-        ...(question.items?.map(({ type, description, answer }, j) => ({
-          id: j,
-          prompt: description,
-          defaultAnswer: parseInt(answer[0][0]),
-        })) || []),
-      );
-      questions.push(compositionQuestion);
-    } else if (question.type === QuestionTypes.numeric) {
-      const numericQuestion = new NumericQuestion(
-        i,
-        question.description,
-        parseInt(question.answer[0][0]),
-      );
-      questions.push(numericQuestion);
-    }
-  });
-
-  console.log(questions);
-  return questions;
-};
-
+// Returns a CompositionQuestion object using the given arguments
 const compositionQuestionBuilder = (
   id: string,
   defaultAnswer?: number,
@@ -62,109 +38,57 @@ const compositionQuestionBuilder = (
   return compositionQuestion;
 };
 
+// Returns a mock report (array) of question from the mock NICU JSON report data
+// This function builds this array using the question data structures in common/Questions
+const buildMockNICUReport = (): QuestionNode<any, any>[] => {
+  const questions: QuestionNode<any, any>[] = [];
+
+  // Go through each question item and create the appopriate question object
+  newNicuData.items.forEach((currentQuestion, i) => {
+    switch (currentQuestion.type) {
+      // Label
+      case QuestionTypes.label:
+        break;
+
+      // Composition Question
+      case QuestionTypes.sum:
+        const compositionQuestion = compositionQuestionBuilder(
+          i.toString(),
+          getAnswer(currentQuestion.answer),
+          ...(currentQuestion.items?.map(({ type, description, answer }, j) => ({
+            id: j,
+            prompt: description,
+            defaultAnswer: getAnswer(answer),
+          })) || []),
+        );
+
+        questions.push(compositionQuestion);
+        break;
+
+      // Numeric Question
+      case QuestionTypes.numeric:
+        const numericQuestion = new NumericQuestion(
+          i.toString(),
+          currentQuestion.description,
+          getAnswer(currentQuestion.answer),
+        );
+        questions.push(numericQuestion);
+        break;
+
+      default:
+        break;
+    }
+  });
+
+  console.log(questions.length);
+
+  return questions;
+};
+
 describe('Report', function () {
   describe('Mock report', function () {
     it('should create a mock report equivalent to the Nicu data', function () {
-      buildReportFromJSON();
-
-      // /**
-      //  * MSPP Required
-      //  * Questions 1 to 9
-      //  */
-      // const q1 = compositionQuestionBuilder(
-      //   '1',
-      //   60,
-      //   {
-      //     id: '1.1',
-      //     prompt: 'Number of hospitalized in NICU',
-      //     defaultAnswer: 29,
-      //   },
-      //   {
-      //     id: '1.2',
-      //     prompt: 'Number of hospitalized in Paediatrics',
-      //     defaultAnswer: 10,
-      //   },
-      // );
-
-      // const q2 = compositionQuestionBuilder(
-      //   '2',
-      //   12,
-      //   {
-      //     id: '2.1',
-      //     prompt: 'Number of discharged alive in NICU',
-      //     defaultAnswer: 33,
-      //   },
-      //   {
-      //     id: '2.2',
-      //     prompt: 'Number of discharged alive in Paediatrics',
-      //     defaultAnswer: 47,
-      //   },
-      // );
-
-      // const q3 = compositionQuestionBuilder(
-      //   '3',
-      //   91,
-      //   {
-      //     id: '3.1',
-      //     prompt: 'Number that died BEFORE 48hrs in NICU',
-      //     defaultAnswer: 45,
-      //   },
-      //   {
-      //     id: '3.2',
-      //     prompt: 'Number that died BEFORE 48hrs in Paediatrics',
-      //     defaultAnswer: 14,
-      //   },
-      // );
-
-      // const q4 = compositionQuestionBuilder(
-      //   '4',
-      //   91,
-      //   {
-      //     id: '4.1',
-      //     prompt: 'Number that died BEFORE 48hrs in NICU',
-      //     defaultAnswer: 45,
-      //   },
-      //   {
-      //     id: '3.2',
-      //     prompt: 'Number that died BEFORE 48hrs in Paediatrics',
-      //     defaultAnswer: 14,
-      //   },
-      // );
-
-      // /**
-      //  * Question 1:
-      //  * Total number of hospitalized patients
-      //  */
-      // const q1_1: NumericQuestion<string, unknown> = new NumericQuestion(
-      //   '1.1',
-      //   'Number of hospitalized in NICU',
-      //   29,
-      // );
-      // const q1_2: NumericQuestion<string, unknown> = new NumericQuestion<string, unknown>(
-      //   '1.2',
-      //   'Number of hospitalized in Paediatrics',
-      //   10,
-      // );
-      // const q1 = new CompositionQuestion('1', 60, q1_1, q1_2);
-
-      // /**
-      //  * Question 2:
-      //  * Total number of patients discharged alive
-      //  */
-      // const q2_1 = new NumericQuestion('2.1', 'Number of discharged alive in NICU', 33);
-      // const q2_2 = new NumericQuestion('2.2', 'Number of discharged alive in Paediatrics', 47);
-      // const q2 = new CompositionQuestion('2', 12, q2_1, q2_2);
-
-      // /**
-      //  * Question 3:
-      //  * Total number of patients that died BEFORE 48hrs
-      //  */
-      // const q3_1 = new NumericQuestion('3.1', 'Number that died BEFORE 48hrs in NICU', 45);
-      // const q3_2 = new NumericQuestion('3.2', 'Number that died BEFORE 48hrs in Paediatrics', 14);
-      // const q3 = new CompositionQuestion('3', 91, q2_1, q2_2);
-
-      // const
-
+      buildMockNICUReport();
       expect(1).to.equal(1);
     });
   });
