@@ -16,6 +16,7 @@ enum QuestionTypes {
   label = 'label',
   sum = 'sum',
   numeric = 'numeric',
+  equal = 'equal',
 }
 
 // Extracts the answer from a question in the NICU JSON as a number type
@@ -51,6 +52,7 @@ const buildMockNICUReport = (): QuestionNode<any, any>[] => {
         break;
 
       // Composition Question
+      case QuestionTypes.equal:
       case QuestionTypes.sum:
         const compositionQuestion = compositionQuestionBuilder(
           i.toString(),
