@@ -40,7 +40,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
         <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
           <CaseStudySummary caseStudy={caseStudy} />
         </div>
-        {caseStudy !== {} && document.documentElement.scrollHeight > window.innerHeight ? (
+        {document.documentElement.scrollHeight > window.innerHeight ? (
           <div className="ml-3 mb-5 d-flex justify-content-start">
             <Link to="/case-study">
               <button type="button" className="btn btn-outline-dark">

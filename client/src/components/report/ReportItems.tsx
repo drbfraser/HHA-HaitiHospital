@@ -86,7 +86,7 @@ export function Field(props: {
   let children = [];
   if (props.item.reportItem.items !== undefined) children = props.item.items;
 
-  const invalid: boolean = formState.errors[item.id];
+  const invalid: boolean = Boolean(formState.errors[item.id]);
   const errorMessage = formState.errors[item.id]?.message;
 
   const indent = props.indent ? 'ps-5' : '';

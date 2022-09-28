@@ -6,12 +6,14 @@
     "target": "es5",
     "rootDir": "./",
     "baseUrl": "./src/",
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": false,
     "noImplicitAny": false,
     "strictNullChecks": true,
-    "downlevelIteration": true,
+    "downlevelIteration": true
   },
-  "include": ["./src/**/*", "./security/*", "./tests/**/*"]
+  "include": ["./src/**/*", "./security/*", "./tests/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
