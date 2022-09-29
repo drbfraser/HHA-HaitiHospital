@@ -1,16 +1,16 @@
 import { expect } from 'chai';
-import { Question, ValidationResult } from '../../../src/common/Questions/Question';
-import { QuestionItem } from '../../../src/common/Questions/QuestionItem';
+import { QuestionLeaf, ValidationResult } from '../../../src/common/Questions/QuestionLeaf';
+import { QuestionNode } from '../../../src/common/Questions/QuestionNode';
 import { serializableTest, testSetAndGetHOF } from '../../testUtils';
 
 // Method Test HOF
 // ----------------------------------------------------------------------------
-export interface IdTestArgs<ID, QuestionType extends QuestionItem<ID, unknown>> {
+export interface IdTestArgs<ID, QuestionType extends QuestionNode<ID, unknown>> {
   id: ID;
   questionCreator: (id: ID) => QuestionType;
 }
 
-export const idTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(
+export const idTest = <ID, QuestionType extends QuestionNode<ID, unknown>>(
   args: IdTestArgs<ID, QuestionType>,
 ): void => {
   testSetAndGetHOF({
@@ -22,12 +22,12 @@ export const idTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(
   });
 };
 
-export interface PromptTestArgs<T, QuestionType extends Question<unknown, T, unknown>> {
+export interface PromptTestArgs<T, QuestionType extends QuestionLeaf<unknown, T, unknown>> {
   prompt: string;
   questionCreator: (prompt: string) => QuestionType;
 }
 
-export const promptTest = <T, QuestionType extends Question<unknown, T, unknown>>(
+export const promptTest = <T, QuestionType extends QuestionLeaf<unknown, T, unknown>>(
   args: PromptTestArgs<T, QuestionType>,
 ): void => {
   testSetAndGetHOF({
@@ -39,12 +39,12 @@ export const promptTest = <T, QuestionType extends Question<unknown, T, unknown>
   });
 };
 
-export interface AnswerTestArgs<T, QuestionType extends Question<unknown, T, unknown>> {
+export interface AnswerTestArgs<T, QuestionType extends QuestionLeaf<unknown, T, unknown>> {
   answer: T;
   questionCreator: () => QuestionType;
 }
 
-export const answerTest = <T, QuestionType extends Question<unknown, T, unknown>>(
+export const answerTest = <T, QuestionType extends QuestionLeaf<unknown, T, unknown>>(
   args: AnswerTestArgs<T, QuestionType>,
 ): void => {
   testSetAndGetHOF<T, QuestionType>({
@@ -63,15 +63,15 @@ export const answerTest = <T, QuestionType extends Question<unknown, T, unknown>
 export interface ValidationTestArgs<
   T,
   ErrorType,
-  QuestionType extends Question<unknown, T, ErrorType>,
-> {
+  QuestionType extends QuestionLeaf<unknown, T, ErrorType>,
+  > {
   sampleAnswer: T;
   questionCreator: () => QuestionType;
   getDefaultErrorType: (index: number) => ErrorType;
   getDefaultErrorMessage: (index: number) => string;
 }
 
-export const validationTest = <T, ErrorType, QuestionType extends Question<unknown, T, ErrorType>>(
+export const validationTest = <T, ErrorType, QuestionType extends QuestionLeaf<unknown, T, ErrorType>>(
   args: ValidationTestArgs<T, ErrorType, QuestionType>,
 ): void => {
   const MAX_VALIDATION_ARRAY_SIZE = 100;
@@ -108,7 +108,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
     return question;
   };
 
-  it(`Should be valid if all validators return valid results`, function () {
+  it(`Should be valid if all validators return valid results`, function() {
     // Arrange/Act
     const validQuestion = args.questionCreator();
     addValidators(validQuestion, getRandomSize, 0);
@@ -117,7 +117,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
     expect(validQuestion.isValid()).to.be.true;
   });
 
-  it(`Should be invalid if one or more validators return invalid results`, function () {
+  it(`Should be invalid if one or more validators return invalid results`, function() {
     // Arrange/Act
     const invalidQuestion = args.questionCreator();
     addValidators(invalidQuestion, getRandomSize, getRandomSize);
@@ -126,7 +126,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
     expect(invalidQuestion.isValid()).to.be.false;
   });
 
-  it(`Should act upon undefined if answer has not been set`, function () {
+  it(`Should act upon undefined if answer has not been set`, function() {
     // Arrange/Act
     const question = args.questionCreator();
     question.addValidator((answer?: T) =>
@@ -137,7 +137,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
     expect(question.isValid()).to.be.true;
   });
 
-  it(`Validation should act upon set answer`, function () {
+  it(`Validation should act upon set answer`, function() {
     // Arrange/Act
     const question = args.questionCreator();
     question.setAnswer(args.sampleAnswer);
@@ -149,7 +149,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
     expect(question.isValid()).to.be.true;
   });
 
-  it(`Validation should preserve error type and message`, function () {
+  it(`Validation should preserve error type and message`, function() {
     // Arrange/Act
     const question = args.questionCreator();
     addValidators(question, 0, getRandomSize);
@@ -161,7 +161,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
   });
 };
 
-export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionItem<ID, unknown>> {
+export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionNode<ID, unknown>> {
   /*  Here the name is QuestionArranger rather than the default QuestionCreator
       because in this case, it is not sufficient to simply create the question,
       but also to perform any necessary setup so that it can meet the
@@ -174,7 +174,7 @@ export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionI
 // Serialization Testing HOF
 // ----------------------------------------------------------------------------
 
-export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(
+export const serializableQuestionTest = <ID, QuestionType extends QuestionNode<ID, unknown>>(
   args: SerializableQuestionTestArgs<ID, QuestionType>,
 ): void =>
   serializableTest({
@@ -184,11 +184,11 @@ export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<I
   });
 
 export interface SimpleQuestionTestsArgs<ID, T, ErrorType> {
-  idTestArgs: IdTestArgs<ID, Question<ID, T, unknown>>;
-  promptTestArgs: PromptTestArgs<T, Question<ID, T, unknown>>;
-  answerTestArgs: AnswerTestArgs<T, Question<ID, T, unknown>>;
-  validationTestArgs: ValidationTestArgs<T, ErrorType, Question<ID, T, ErrorType>>;
-  serializableQuestionTestArgs: SerializableQuestionTestArgs<ID, Question<ID, T, unknown>>;
+  idTestArgs: IdTestArgs<ID, QuestionLeaf<ID, T, unknown>>;
+  promptTestArgs: PromptTestArgs<T, QuestionLeaf<ID, T, unknown>>;
+  answerTestArgs: AnswerTestArgs<T, QuestionLeaf<ID, T, unknown>>;
+  validationTestArgs: ValidationTestArgs<T, ErrorType, QuestionLeaf<ID, T, ErrorType>>;
+  serializableQuestionTestArgs: SerializableQuestionTestArgs<ID, QuestionLeaf<ID, T, unknown>>;
 }
 
 // Comprehensive Testing Templates
