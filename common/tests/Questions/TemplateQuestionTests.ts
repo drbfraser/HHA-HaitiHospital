@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import { Question, ValidationResult, QuestionItem } from '../../src';
+import { QuestionLeaf, ValidationResult, QuestionNode } from '../../src';
 import { serializableTest, testSetAndGetHOF } from '../testUtils';
 
 // Method Test HOF
 // ----------------------------------------------------------------------------
-export interface IdTestArgs<ID, QuestionType extends QuestionItem<ID, unknown>> {
+export interface IdTestArgs<ID, QuestionType extends QuestionNode<ID, unknown>> {
   id: ID;
   questionCreator: (id: ID) => QuestionType;
 }
 
-export const idTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(args: IdTestArgs<ID, QuestionType>): void => {
+export const idTest = <ID, QuestionType extends QuestionNode<ID, unknown>>(args: IdTestArgs<ID, QuestionType>): void => {
   testSetAndGetHOF({
     testName: `Should be able to create and get question ID`,
     setter: args.questionCreator,
@@ -19,12 +19,12 @@ export const idTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(args:
   });
 };
 
-export interface PromptTestArgs<T, QuestionType extends Question<unknown, T, unknown>> {
+export interface PromptTestArgs<T, QuestionType extends QuestionLeaf<unknown, T, unknown>> {
   prompt: string;
   questionCreator: (prompt: string) => QuestionType;
 }
 
-export const promptTest = <T, QuestionType extends Question<unknown, T, unknown>>(args: PromptTestArgs<T, QuestionType>): void => {
+export const promptTest = <T, QuestionType extends QuestionLeaf<unknown, T, unknown>>(args: PromptTestArgs<T, QuestionType>): void => {
   testSetAndGetHOF({
     testName: `Should be able to create and get question prompt`,
     setter: args.questionCreator,
@@ -34,12 +34,12 @@ export const promptTest = <T, QuestionType extends Question<unknown, T, unknown>
   });
 };
 
-export interface AnswerTestArgs<T, QuestionType extends Question<unknown, T, unknown>> {
+export interface AnswerTestArgs<T, QuestionType extends QuestionLeaf<unknown, T, unknown>> {
   answer: T;
   questionCreator: () => QuestionType;
 }
 
-export const answerTest = <T, QuestionType extends Question<unknown, T, unknown>>(args: AnswerTestArgs<T, QuestionType>): void => {
+export const answerTest = <T, QuestionType extends QuestionLeaf<unknown, T, unknown>>(args: AnswerTestArgs<T, QuestionType>): void => {
   testSetAndGetHOF<T, QuestionType>({
     testName: `Should be able to set and get question answer`,
     setter: (answerArg) => {
@@ -53,14 +53,14 @@ export const answerTest = <T, QuestionType extends Question<unknown, T, unknown>
   });
 };
 
-export interface ValidationTestArgs<T, ErrorType, QuestionType extends Question<unknown, T, ErrorType>> {
+export interface ValidationTestArgs<T, ErrorType, QuestionType extends QuestionLeaf<unknown, T, ErrorType>> {
   sampleAnswer: T;
   questionCreator: () => QuestionType;
   getDefaultErrorType: (index: number) => ErrorType;
   getDefaultErrorMessage: (index: number) => string;
 }
 
-export const validationTest = <T, ErrorType, QuestionType extends Question<unknown, T, ErrorType>>(args: ValidationTestArgs<T, ErrorType, QuestionType>): void => {
+export const validationTest = <T, ErrorType, QuestionType extends QuestionLeaf<unknown, T, ErrorType>>(args: ValidationTestArgs<T, ErrorType, QuestionType>): void => {
   const MAX_VALIDATION_ARRAY_SIZE = 100;
 
   const getRandomSize = Math.floor(Math.random() * MAX_VALIDATION_ARRAY_SIZE);
@@ -136,7 +136,7 @@ export const validationTest = <T, ErrorType, QuestionType extends Question<unkno
   });
 };
 
-export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionItem<ID, unknown>> {
+export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionNode<ID, unknown>> {
   /*  Here the name is QuestionArranger rather than the default QuestionCreator
       because in this case, it is not sufficient to simply create the question,
       but also to perform any necessary setup so that it can meet the
@@ -149,7 +149,7 @@ export interface SerializableQuestionTestArgs<ID, QuestionType extends QuestionI
 // Serialization Testing HOF
 // ----------------------------------------------------------------------------
 
-export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<ID, unknown>>(args: SerializableQuestionTestArgs<ID, QuestionType>): void =>
+export const serializableQuestionTest = <ID, QuestionType extends QuestionNode<ID, unknown>>(args: SerializableQuestionTestArgs<ID, QuestionType>): void =>
   serializableTest({
     testName: `Serialization and deserialization should work`,
     getObj: args.questionArranger,
@@ -157,11 +157,11 @@ export const serializableQuestionTest = <ID, QuestionType extends QuestionItem<I
   });
 
 export interface SimpleQuestionTestsArgs<ID, T, ErrorType> {
-  idTestArgs: IdTestArgs<ID, Question<ID, T, unknown>>;
-  promptTestArgs: PromptTestArgs<T, Question<ID, T, unknown>>;
-  answerTestArgs: AnswerTestArgs<T, Question<ID, T, unknown>>;
-  validationTestArgs: ValidationTestArgs<T, ErrorType, Question<ID, T, ErrorType>>;
-  serializableQuestionTestArgs: SerializableQuestionTestArgs<ID, Question<ID, T, unknown>>;
+  idTestArgs: IdTestArgs<ID, QuestionLeaf<ID, T, unknown>>;
+  promptTestArgs: PromptTestArgs<T, QuestionLeaf<ID, T, unknown>>;
+  answerTestArgs: AnswerTestArgs<T, QuestionLeaf<ID, T, unknown>>;
+  validationTestArgs: ValidationTestArgs<T, ErrorType, QuestionLeaf<ID, T, ErrorType>>;
+  serializableQuestionTestArgs: SerializableQuestionTestArgs<ID, QuestionLeaf<ID, T, unknown>>;
 }
 
 // Comprehensive Testing Templates

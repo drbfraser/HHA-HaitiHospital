@@ -4,6 +4,7 @@ export * from './MultipleChoice';
 export * from './NumericTable';
 export * from './QuestionLeaf';
 export * from './QuestionGroup';
+export * from './QuestionNode';
 export * from './QuestionTable';
 export * from './QuestionHandler';
 export * from './SimpleQuestionTypes';

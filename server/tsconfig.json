@@ -2,18 +2,22 @@
   "compilerOptions": {
     "outDir": "./dist",
     "allowJs": true,
+    "noEmit": true,
     "module": "commonjs",
     "target": "es5",
     "rootDir": "./",
     "baseUrl": "./src/",
     "moduleResolution": "node",
-    "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": false,
     "noImplicitAny": false,
     "strictNullChecks": true,
-    "downlevelIteration": true
+    "skipLibCheck": true,
+    "downlevelIteration": true,
   },
-  "include": ["./src/**/*", "./security/*", "./tests/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "./src/**/*",
+    "./security/*",
+    "./tests/**/*"
+  ]
 }
