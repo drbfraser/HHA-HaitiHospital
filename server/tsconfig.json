@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "allowJs": true,
+    "noEmit": true,
     "module": "commonjs",
     "target": "es5",
     "rootDir": "./",
@@ -11,7 +12,12 @@
     "strict": false,
     "noImplicitAny": false,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "downlevelIteration": true,
   },
-  "include": ["./src/**/*", "./security/*", "./tests/**/*"]
+  "include": [
+    "./src/**/*",
+    "./security/*",
+    "./tests/**/*"
+  ]
 }
