@@ -18,11 +18,7 @@ router.post('/login', requireLocalAuth, async (req: RequestWithUser, res: Respon
 
 router.post('/logout', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
   res.cookie('jwt', 'invalidated-jwt-token');
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-  });
+  req.logout();
   console.log('User successfully logged out');
   res.send(true);
 });
