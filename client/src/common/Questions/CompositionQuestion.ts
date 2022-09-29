@@ -23,7 +23,6 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   public readonly add = (
     numericQuestion: NumericQuestion<ID, ErrorType>,
   ): CompositionQuestion<ID, ErrorType> => {
-    // console.log(this.questions);
     this.questions.push(numericQuestion);
     return this;
   };
