@@ -1,11 +1,11 @@
-import { JsonReportDescriptor } from 'common/json_report';
+import { JsonReportDescriptor } from '@hha/common';
 import { InvalidInput } from 'exceptions/systemException';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport, reportToJsonReport } from 'utils/parsers/parsers';
 import * as ItemParsers from 'utils/parsers/item';
 const chai = require('chai');
 
-var assert = require('chai').assert
+var assert = require('chai').assert;
 
 describe('Test Equal questions', () => {
   const correctSchema: JsonReportDescriptor = {
@@ -73,7 +73,6 @@ describe('Test Equal questions', () => {
     ]
   };
 
-  
   const invalidChildrenAnswers: JsonReportDescriptor = {
     meta: {
       id: '0',
@@ -136,10 +135,10 @@ describe('Test Equal questions', () => {
 
   it('should parse json equal item', (done) => {
     try {
-      const parser = ItemParsers.getParserJsonToItem(correctSchema.items[0].type)
-      const item = parser(correctSchema.items[0])
-      chai.expect(item).to.not.be.empty
-      done()
+      const parser = ItemParsers.getParserJsonToItem(correctSchema.items[0].type);
+      const item = parser(correctSchema.items[0]);
+      chai.expect(item).to.not.be.empty;
+      done();
     } catch (e) {
       console.log(e);
       done(e);
@@ -148,13 +147,13 @@ describe('Test Equal questions', () => {
 
   it('should error parsing invalid children json equal item', (done) => {
     try {
-      const parser = ItemParsers.getParserJsonToItem(invalidChildrenAnswers.items[0].type)
-      const item = parser(invalidChildrenAnswers.items[0])
-      done("Expected exception thrown")
+      const parser = ItemParsers.getParserJsonToItem(invalidChildrenAnswers.items[0].type);
+      const item = parser(invalidChildrenAnswers.items[0]);
+      done('Expected exception thrown');
     } catch (e) {
       console.log(e.message);
-      assert(e instanceof InvalidInput)
-      done()
+      assert(e instanceof InvalidInput);
+      done();
     }
   });
 });

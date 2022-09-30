@@ -140,6 +140,11 @@ Now that everything is up, visit http://localhost:3000 and login with the seeded
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
 
+### Common package
+
+Whenever changes are made to `common` folder, you should run `npm run update-common` on root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common` and reinstalls
+it in `client` and `server`.
+
 ### Prettier Setup
 
 We use prettier as our code formatter. The repo provide a prettier config to unify our styles.

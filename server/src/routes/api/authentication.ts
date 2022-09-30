@@ -1,5 +1,5 @@
 import { HTTP_OK_CODE } from 'exceptions/httpException';
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import UserCollection from 'models/user';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -16,9 +16,13 @@ router.post('/login', requireLocalAuth, async (req: RequestWithUser, res: Respon
   res.status(HTTP_OK_CODE).json({ success: true, isAuth: true, user: jsonUser, csrfToken: req.body._csrf });
 });
 
-router.post('/logout', requireJwtAuth, (req: RequestWithUser, res: Response) => {
+router.post('/logout', requireJwtAuth, (req: RequestWithUser, res: Response, next: NextFunction) => {
   res.cookie('jwt', 'invalidated-jwt-token');
-  req.logout();
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+  });
   console.log('User successfully logged out');
   res.send(true);
 });

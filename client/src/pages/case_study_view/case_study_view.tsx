@@ -16,12 +16,15 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
   const id: string = useLocation().pathname.split('/')[3];
   const history: History = useHistory<History>();
 
-  useEffect(function fetchCaseStudyInitially() {
-    const getCaseStudy = async () => {
-      setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_GET_BY_ID(id), TOAST_CASESTUDY_GET, history));
-    };
-    getCaseStudy();
-  }, [history, id]);
+  useEffect(
+    function fetchCaseStudyInitially() {
+      const getCaseStudy = async () => {
+        setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_GET_BY_ID(id), TOAST_CASESTUDY_GET, history));
+      };
+      getCaseStudy();
+    },
+    [history, id],
+  );
 
   const { t: translateText } = useTranslation();
 

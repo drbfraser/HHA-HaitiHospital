@@ -1,5 +1,5 @@
 // import { IllegalState } from 'exceptions/systemException';
-import { ItemTypeKeys } from 'common/json_report';
+import { ItemTypeKeys } from '@hha/common';
 
 export type ItemAnswer = Array<string>;
 export interface ReportItem {
@@ -32,7 +32,7 @@ export interface ReportSumItem extends ReportItem {
 }
 
 export interface ReportEqualItem extends ReportItem {
-    children: Array<ReportNumericItem | ReportSumItem>;
+  children: Array<ReportNumericItem | ReportSumItem>;
 }
 
 export interface ReportGroupItem extends ReportItem {

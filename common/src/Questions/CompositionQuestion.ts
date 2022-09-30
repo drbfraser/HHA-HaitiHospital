@@ -1,7 +1,7 @@
 /*  A composition question represents a question whose answer must be equal
     to the sum of its numeric children questions.
 */
-import { serializable } from 'common/Serializer/ObjectSerializer';
+import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { NumericQuestion } from './SimpleQuestionTypes';
 
@@ -20,23 +20,17 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
     return this.questions.find((question) => question.getId() === id);
   };
 
-  public readonly add = (
-    numericQuestion: NumericQuestion<ID, ErrorType>,
-  ): CompositionQuestion<ID, ErrorType> => {
+  public readonly add = (numericQuestion: NumericQuestion<ID, ErrorType>): CompositionQuestion<ID, ErrorType> => {
     this.questions.push(numericQuestion);
     return this;
   };
 
-  public readonly addAll = (
-    ...questions: Array<NumericQuestion<ID, ErrorType>>
-  ): QuestionParent<ID, ErrorType> => {
+  public readonly addAll = (...questions: Array<NumericQuestion<ID, ErrorType>>): QuestionParent<ID, ErrorType> => {
     questions.forEach((question) => this.add(question));
     return this;
   };
 
-  public readonly handleNumericQuestions = (
-    handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void,
-  ): void => {
+  public readonly handleNumericQuestions = (handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void): void => {
     this.questions.forEach((question) => handler(question));
   };
 
@@ -48,10 +42,6 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   };
 
   public readonly sumsUp = (): boolean => {
-    return this.answer
-      ? this.questions
-          .map((question) => question.getAnswer())
-          .reduce((answer1, answer2) => answer1 + answer2) === this.answer
-      : false;
+    return this.answer ? this.questions.map((question) => question.getAnswer()).reduce((answer1, answer2) => answer1 + answer2) === this.answer : false;
   };
 }

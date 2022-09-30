@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { object } from 'yup';
-import { ObjectSerializer } from '../src/common/Serializer/ObjectSerializer';
+import { ObjectSerializer } from '../src';
 
 interface TestSetAndGetHOFArgs<Property, Obj> {
   testName: string;
@@ -10,9 +9,7 @@ interface TestSetAndGetHOFArgs<Property, Obj> {
   prop: Property;
 }
 
-export const testSetAndGetHOF = <Property, Obj>(
-  args: TestSetAndGetHOFArgs<Property, Obj>,
-): void => {
+export const testSetAndGetHOF = <Property, Obj>(args: TestSetAndGetHOFArgs<Property, Obj>): void => {
   it(args.testName, function () {
     // Arrange/Act
     let object: Obj = args.setter(args.prop);

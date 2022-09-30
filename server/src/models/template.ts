@@ -1,4 +1,4 @@
-import { JsonReportDescriptor } from 'common/json_report';
+import { JsonReportDescriptor } from '@hha/common';
 import { randomUUID } from 'crypto';
 import mongoose, { ValidatorProps } from 'mongoose';
 import { ReportDescriptor } from 'utils/definitions/report';
