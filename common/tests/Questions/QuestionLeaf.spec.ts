@@ -1,7 +1,7 @@
-import { QuestionLeaf, ValidationResult } from "../../../src/common/Questions/QuestionLeaf";
-import { QuestionNodeTest, QuestionNodeTestArgs } from "./QuestionNode.spec";
 import { expect } from 'chai';
-import { TEST_ARGS_MSG, TEST_CLASS_MSG } from "../../Constants";
+import { QuestionLeaf, ValidationResult } from "../../src";
+import { QuestionNodeTest, QuestionNodeTestArgs } from "./QuestionNode.spec";
+import { TEST_ARGS_MSG, TEST_CLASS_MSG } from "../Constants";
 
 export interface QuestionLeafTestArgs<ID, T, ErrorType> extends QuestionNodeTestArgs<ID, ErrorType> {
   defaultPrompt: string,

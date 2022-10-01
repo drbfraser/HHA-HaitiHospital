@@ -2,7 +2,7 @@
     alternative answers. A class exists for a question representing a multiple
     selection MCQ or a single selection MCQ.
 */
-import { serializable } from 'common/Serializer/ObjectSerializer';
+import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
 
 // Choice for multiple choice questions
@@ -53,11 +53,7 @@ abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID,
 // Multiple choice questions in which the user is only allowed to select one
 // choice
 @serializable(undefined, '')
-export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<
-  ID,
-  number,
-  ErrorType
-> {
+export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, number, ErrorType> {
   // Won't do anything if answer index is greater than the number of choices
   public readonly setAnswer = (answer: number): void => {
     if (answer < 0 || answer >= this.choices.length) {
@@ -73,11 +69,7 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
 // Multiple choice questions in which the user is allowed to select multiple
 // choices.
 @serializable(undefined, '')
-export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<
-  ID,
-  Array<number>,
-  ErrorType
-> {
+export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, Array<number>, ErrorType> {
   // Will ignore indexes whose value are greater than the number of choices
   public readonly setAnswer = (answer: Array<number>): void => {
     this.getAnswer()?.forEach((index) => this.choices[index].unchoose());

@@ -1,4 +1,4 @@
-import { ObjectSerializer, serializable } from '../../../src/common/Serializer/ObjectSerializer';
+import { ObjectSerializer, serializable } from '../../src';
 import { should, expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -132,7 +132,7 @@ describe('Serializer', function () {
         expect(
           Object.entries(a2).map(([key, value]) => {
             return serializableObject[key] == value;
-          }).length,
+          }).length
         ).to.be.above(0);
       });
 

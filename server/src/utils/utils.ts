@@ -27,7 +27,7 @@ export const isValidUrl = (str) => {
 
 import { InvalidInput } from 'exceptions/systemException';
 import crypto from 'crypto';
-import { ItemType, ItemTypeKeys } from 'common/json_report';
+import { ItemType, ItemTypeKeys } from '@hha/common';
 import { CustomError } from 'exceptions/custom_exception';
 import { Error, NativeError } from 'mongoose';
 import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';

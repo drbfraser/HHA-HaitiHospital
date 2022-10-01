@@ -1,5 +1,5 @@
 //  A parent node in the question tree that supports any question type as child.
-import { serializable } from 'common/Serializer/ObjectSerializer';
+import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
 import { HandlerArgs, QuestionHandler } from './QuestionHandler';
@@ -13,27 +13,21 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
     questions ? this.addAll(...questions) : undefined;
   }
 
-  public readonly add = (
-    questionItem: QuestionNode<ID, ErrorType>,
-  ): QuestionGroup<ID, ErrorType> => {
+  public readonly add = (questionItem: QuestionNode<ID, ErrorType>): QuestionGroup<ID, ErrorType> => {
     this.questionItems.push(questionItem);
     return this;
   };
 
-  public readonly addAll = (
-    ...questions: Array<QuestionNode<ID, ErrorType>>
-  ): QuestionGroup<ID, ErrorType> => {
+  public readonly addAll = (...questions: Array<QuestionNode<ID, ErrorType>>): QuestionGroup<ID, ErrorType> => {
     questions.forEach((question) => this.add(question));
     return this;
   };
 
   public readonly genericForEach = (handler: (question: QuestionNode<ID, ErrorType>) => void): void => {
     QuestionHandler.buildGenericHandler(handler).applyForEach(this.questionItems);
-  }
+  };
 
-  public readonly forEach = (
-    handlers: HandlerArgs<ID, ErrorType>,
-  ): void => {
+  public readonly forEach = (handlers: HandlerArgs<ID, ErrorType>): void => {
     QuestionHandler.buildHandler(handlers).applyForEach(this.questionItems);
   };
 

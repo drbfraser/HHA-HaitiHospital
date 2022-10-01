@@ -1,9 +1,8 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
-import data from './newNicuData.json'
+import data from './newNicuData.json';
 import { v4 as uuid } from 'uuid';
 import { ItemField, ErrorData } from './Report';
-import { JsonReportDescriptor, JsonReportItem } from 'common/json_report';
-import { ItemType } from 'common/json_report';
+import { JsonReportDescriptor, JsonReportItem, ItemType } from '@hha/common';
 import { Department } from 'constants/interfaces';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
 
@@ -11,17 +10,18 @@ const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-export async function getDataDelay(millis: number, success: boolean): Promise<JsonReportDescriptor> {
-  await sleep(millis)
-  if(success)
-    return getData();
-  else 
-    throw {code:'500', message:'Internal server error'};
+export async function getDataDelay(
+  millis: number,
+  success: boolean,
+): Promise<JsonReportDescriptor> {
+  await sleep(millis);
+  if (success) return getData();
+  else throw { code: '500', message: 'Internal server error' };
 }
 
 function getData(): JsonReportDescriptor {
   console.log(data);
-  return data
+  return data;
 }
 
 function getData2() {
@@ -133,6 +133,8 @@ export async function submitData(
   success: boolean,
 ): Promise<JsonReportDescriptor> {
   return await sleep(delayMillis).then(() => {
-    return success ? Promise.resolve({ ...data }) : Promise.reject({ code: '400', message: "Intentional failure." });
+    return success
+      ? Promise.resolve({ ...data })
+      : Promise.reject({ code: '400', message: 'Intentional failure.' });
   });
 }

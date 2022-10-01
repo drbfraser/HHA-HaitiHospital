@@ -1,10 +1,10 @@
-import { JsonReportDescriptor, JsonReportItem, JsonReportItems, JsonItemAnswer } from 'common/json_report';
+import { JsonReportDescriptor, JsonReportItem, JsonReportItems, JsonItemAnswer } from '@hha/common';
 import { uniqueId } from 'lodash';
 import { type } from 'os';
 import * as MockApi from './MockApi';
 import { ItemField, ReportForm, itemFieldToReportItem } from './Report';
 
-export const submitData = async (answers: any, data: ReportForm) : Promise<JsonReportDescriptor> => {
+export const submitData = async (answers: any, data: ReportForm): Promise<JsonReportDescriptor> => {
   /*
    * Here we make a request to server and handle the responses.
    * Todo: refactor
@@ -14,12 +14,13 @@ export const submitData = async (answers: any, data: ReportForm) : Promise<JsonR
 };
 
 export const assembleData = (data: ReportForm, answers: any): JsonReportDescriptor => {
-  const reportItemsWithAnswers : JsonReportItems = data.itemFields
-    .map((itemField: ItemField): JsonReportItem => {
-    const answer : Array<JsonItemAnswer> = answers[itemField.id];
-    const jsonReportItem : JsonReportItem = { ...itemField.reportItem, answer };
-    return jsonReportItem;
-  }); 
+  const reportItemsWithAnswers: JsonReportItems = data.itemFields.map(
+    (itemField: ItemField): JsonReportItem => {
+      const answer: Array<JsonItemAnswer> = answers[itemField.id];
+      const jsonReportItem: JsonReportItem = { ...itemField.reportItem, answer };
+      return jsonReportItem;
+    },
+  );
   const reportDescriptor = { ...data.jsonDescriptor, reportItemsWithAnswers };
   return reportDescriptor;
 };
@@ -33,10 +34,10 @@ export function toReportData(data: JsonReportDescriptor): ReportForm {
       validated: true,
       valid: true,
       errorMessage: '',
-      items: item.items?.map(jsonReportItemToItemField) ?? undefined
+      items: item.items?.map(jsonReportItemToItemField) ?? undefined,
     };
-  }
-  const itemFields : Array<ItemField> = data.items.map(jsonReportItemToItemField);
-  const reportForm: ReportForm = { jsonDescriptor: data, itemFields: itemFields};
+  };
+  const itemFields: Array<ItemField> = data.items.map(jsonReportItemToItemField);
+  const reportForm: ReportForm = { jsonDescriptor: data, itemFields: itemFields };
   return reportForm;
 }

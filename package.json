@@ -6,7 +6,8 @@
   "scripts": {
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
-    "dev": "npm run server & npm run client"
+    "dev": "npm run server & npm run client",
+    "update-common": "cd scripts && ./update_common.sh"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,6 @@
-import { TextQuestion, NumericQuestion } from " ../../../src/common/Questions/SimpleQuestionTypes";
-import { QuestionLeafTest } from "./QuestionLeaf.spec";
+import { expect } from 'chai';
+import { NumericQuestion, TextQuestion } from '../../src';
+import { QuestionLeafTest } from './QuestionLeaf.spec';
 
 export class TextQuestionTest extends QuestionLeafTest<number, string, string> {
   constructor() {

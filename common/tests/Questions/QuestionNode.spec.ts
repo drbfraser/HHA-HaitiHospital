@@ -1,7 +1,7 @@
-import { QuestionNode } from "../../../src/common/Questions/QuestionNode"
 import { expect } from 'chai';
-import { TEST_CLASS_MSG } from "../../Constants";
-import { TestTemplate } from "../../TestTemplate";
+import { QuestionNode } from "../../src";
+import { TEST_CLASS_MSG } from "../Constants";
+import { TestTemplate } from "../TestTemplate";
 
 export interface QuestionNodeTestArgs<ID, ErrorType> {
   idEqual: (id1: ID, id2: ID) => boolean,
