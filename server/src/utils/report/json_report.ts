@@ -1,4 +1,4 @@
-import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '../../common/json_report';
+import { JsonItemAnswer, JsonItemChildren, JsonReportDescriptor, JsonReportItem, JsonReportMeta } from '@hha/common';
 
 export const hasChildren = (jsonItem: JsonReportItem): boolean => {
   if (jsonItem.items) {

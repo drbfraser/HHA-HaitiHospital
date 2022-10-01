@@ -1,7 +1,7 @@
 import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as _ReportDefs from '../definitions/report';
-import * as _JsonDefs from 'common/json_report';
+import * as _JsonDefs from '@hha/common';
 
 export const hasNumType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
   const typeKey = getItemTypeFromValue(jsonItem.type);
@@ -18,8 +18,8 @@ export const hasEqualType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
 };
 
 export const hasGroupType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
-    const typeKey = getItemTypeFromValue(jsonItem.type);
-    return _JsonDefs.ItemType[typeKey] === _JsonDefs.ItemType.GROUP;
+  const typeKey = getItemTypeFromValue(jsonItem.type);
+  return _JsonDefs.ItemType[typeKey] === _JsonDefs.ItemType.GROUP;
 };
 
 export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _JsonDefs.ItemTypeKeys) => {
@@ -58,16 +58,16 @@ const stringAnswerTypeChecker: AnswerTypeChecker = (answer: _JsonDefs.JsonItemAn
 };
 const mapItemTypeToAnswerTypeChecker = new Map<_JsonDefs.ItemType, AnswerTypeChecker>();
 const initItemAnswerTypeCheckerMap = (map: Map<_JsonDefs.ItemType, AnswerTypeChecker>) => {
-    map.clear();
-    map.set(_JsonDefs.ItemType.NUMERIC, numericAnswerTypeChecker);
-    map.set(_JsonDefs.ItemType.SUM, numericAnswerTypeChecker);
-    map.set(_JsonDefs.ItemType.EQUAL, numericAnswerTypeChecker);
-    map.set(_JsonDefs.ItemType.GROUP, numericAnswerTypeChecker);
-    //ToDo: fill out the rest later
-    const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
-    if (map.size != expectedSize) {
-        throw new IllegalState(`item - answer type checker map must have length ${expectedSize}`);
-    }
+  map.clear();
+  map.set(_JsonDefs.ItemType.NUMERIC, numericAnswerTypeChecker);
+  map.set(_JsonDefs.ItemType.SUM, numericAnswerTypeChecker);
+  map.set(_JsonDefs.ItemType.EQUAL, numericAnswerTypeChecker);
+  map.set(_JsonDefs.ItemType.GROUP, numericAnswerTypeChecker);
+  //ToDo: fill out the rest later
+  const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
+  if (map.size != expectedSize) {
+    throw new IllegalState(`item - answer type checker map must have length ${expectedSize}`);
+  }
 };
 initItemAnswerTypeCheckerMap(mapItemTypeToAnswerTypeChecker);
 const getAnswerTypeChecker = (typeKey: _JsonDefs.ItemTypeKeys): AnswerTypeChecker => {

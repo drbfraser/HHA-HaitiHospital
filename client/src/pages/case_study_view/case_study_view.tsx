@@ -16,12 +16,15 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
   const id: string = useLocation().pathname.split('/')[3];
   const history: History = useHistory<History>();
 
-  useEffect(function fetchCaseStudyInitially() {
-    const getCaseStudy = async () => {
-      setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_GET_BY_ID(id), TOAST_CASESTUDY_GET, history));
-    };
-    getCaseStudy();
-  }, [history, id]);
+  useEffect(
+    function fetchCaseStudyInitially() {
+      const getCaseStudy = async () => {
+        setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_GET_BY_ID(id), TOAST_CASESTUDY_GET, history));
+      };
+      getCaseStudy();
+    },
+    [history, id],
+  );
 
   const { t: translateText } = useTranslation();
 
@@ -40,7 +43,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
         <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
           <CaseStudySummary caseStudy={caseStudy} />
         </div>
-        {caseStudy !== {} && document.documentElement.scrollHeight > window.innerHeight ? (
+        {document.documentElement.scrollHeight > window.innerHeight ? (
           <div className="ml-3 mb-5 d-flex justify-content-start">
             <Link to="/case-study">
               <button type="button" className="btn btn-outline-dark">

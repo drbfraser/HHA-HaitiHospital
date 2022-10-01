@@ -46,7 +46,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
         match={undefined}
       ></ModalImage>
       <div className="case-study-subcontainer">
-        {caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.PatientStory ? (
+        {caseStudy.caseStudyType === CaseStudyOptions.PatientStory ? (
           <div style={{ display: 'flex', flex: '1 1 auto' }}>
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">
@@ -108,7 +108,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           </div>
         ) : null}
 
-        {caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.StaffRecognition ? (
+        {caseStudy.caseStudyType === CaseStudyOptions.StaffRecognition ? (
           <div style={{ display: 'flex', flex: '1 1 auto' }}>
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">
@@ -163,7 +163,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           </div>
         ) : null}
 
-        {caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.TrainingSession ? (
+        {caseStudy.caseStudyType === CaseStudyOptions.TrainingSession ? (
           <div style={{ display: 'flex', flex: '1 1 auto' }}>
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">
@@ -224,7 +224,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           </div>
         ) : null}
 
-        {caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.EquipmentReceived ? (
+        {caseStudy.caseStudyType === CaseStudyOptions.EquipmentReceived ? (
           <div style={{ display: 'flex', flex: '1 1 auto' }}>
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">
@@ -293,7 +293,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           </div>
         ) : null}
 
-        {caseStudy !== {} && caseStudy.caseStudyType === CaseStudyOptions.OtherStory ? (
+        {caseStudy.caseStudyType === CaseStudyOptions.OtherStory ? (
           <div style={{ display: 'flex', flex: '1 1 auto' }}>
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">

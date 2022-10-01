@@ -4,11 +4,16 @@
     "target": "es6",
     "module": "esnext",
     "baseUrl": "./src",
+    "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
@@ -19,7 +24,9 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "experimentalDecorators": true
-    
   },
-  "include": ["src"]
+  "include": [
+    "./src/**/*",
+    "./tests/**/*"
+  ]
 }
