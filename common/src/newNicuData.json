@@ -1,0 +1,601 @@
+{
+  "meta": {
+    "id": "SomeId",
+    "department" : {
+      "id" :"2",
+      "name" : " Nicu/Paeds"
+    },
+    "submittedDate": "2022-04-02",
+    "submittedUserId": "0"
+  },
+  "items": [
+    {
+      "type": "label",
+      "description": "MSPP Required",
+      "answer": []
+    },
+    
+    {
+      "type": "sum",
+      "description": "Total number of hospitalized patients",
+      "answer": [["60"]],
+      "items": [
+        {
+          "type": "numeric",
+          "description": "Number of hospitalized in NICU",
+          "answer": [["29"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Number of hospitalized in Paediatrics",
+          "answer": [["10"]],
+          "items": []
+        }
+      ]
+    },
+    {
+      "type": "sum",
+      "description": "Total number of patients discharged alive",
+      "answer": [["12"]],
+      "items": [
+        {
+          "type": "numeric",
+          "description": "Number of discharged alive in NICU",
+          "answer": [["33"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Number of discharged alive in Paediatrics",
+          "answer": [["47"]],
+          "items": []
+        }
+      ]
+    },
+    {
+      "type": "sum",
+      "description": "Total number of patients that died BEFORE 48hrs",
+      "answer": [["91"]],
+      "items": [
+        {
+          "type": "numeric",
+          "description": "Number that died BEFORE 48hrs in NICU",
+          "answer": [["45"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Number that died BEFORE 48hrs in Paediatrics",
+          "answer": [["14"]],
+          "items": []
+        }
+      ]
+    },
+    {
+      "type": "sum",
+      "description": "Total number of patients that died AFTER 48hrs",
+      "answer": [["15"]],
+      "items": [
+        {
+          "type": "numeric",
+          "description": "Number that died AFTER 48hrs in NICU",
+          "answer": [["40"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Number that died AFTER 48hrs in Paeds",
+          "answer": [["8"]],
+          "items": []
+        }
+      ]
+    },
+    {
+      "type": "numeric",
+      "description": "Total number of days hospitalized between all patients",
+      "answer": [["1"]],
+      "items": []
+    },
+    {
+      "type": "numeric",
+      "description": "Total number of referrals",
+      "answer": [["92"]],
+      "items": []
+    },
+    {
+      "type": "numeric",
+      "description": "Total number of transfers",
+      "answer": [["63"]],
+      "items": []
+    },
+    {
+      "type": "sum",
+      "description": "Total number of self-discharged patients",
+      "answer": [["15"]],
+      "items": [
+        {
+          "type": "numeric",
+          "description": "Finance: Leave as cannot afford care",
+          "answer": [["11"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Finance: Left to avoid paying",
+          "answer": [["24"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Religious/Cultural",
+          "answer": [["98"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Personal/Family",
+          "answer": [["13"]],
+          "items": []
+        },
+        {
+          "type": "numeric",
+          "description": "Other reason",
+          "answer": [["42"]],
+          "items": []
+        }
+      ]
+    },
+    {
+      "type": "numeric",
+      "description": "Number of patients that stayed in ward",
+      "answer": [["32"]],
+      "items": []
+    },
+    {
+      "type": "label",
+      "description": "Admissions",
+      "answer": []
+    },
+    {
+      "type": "equal",
+      "description": "Total Admissions",
+      "answer": [["12"]],
+      "items": [
+        {
+          "type": "group",
+          "description": "Where do patients come from?",
+          "answer": [[]],
+          "items": [
+            {
+              "type": "numeric",
+              "description": "Quarter Morin",
+              "answer": [["18"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Cap Haitian",
+              "answer": [["94"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Department Nord",
+              "answer": [["56"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "If other, specify",
+              "answer": [["69"]],
+              "items": []
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "description": "Age",
+          "answer": [[]],
+          "items": [
+            {
+              "type": "numeric",
+              "description": "Extremely preterm (less than 28 weeks)",
+              "answer": [["58"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Very preterm (28 to 32 weeks)",
+              "answer": [["26"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Moderate to late preterm (32 to 37 weeks)",
+              "answer": [["7"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Full term (37 weeks plus)",
+              "answer": [["4"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Older than neonate (>4 weeks old)",
+              "answer": [["2"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Age 4-5 weeks",
+              "answer": [["43"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Age 6-11 weeks",
+              "answer": [["83"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Age 12-18 weeks",
+              "answer": [["59"]],
+              "items": []
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "description": "Gender",
+          "answer": [[]],
+          "items": [
+            {
+              "type": "numeric",
+              "description": "Male",
+              "answer": [["75"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Female",
+              "answer": [["96"]],
+              "items": []
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "description": "Main Condition",
+          "answer": [[]],
+          "items": [
+            {
+              "type": "numeric",
+              "description": "Respiratory Arrest",
+              "answer": [["26"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Traumatic Injury",
+              "answer": [["32"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Septic Shock",
+              "answer": [["9"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Hypovolemic Shock",
+              "answer": [["10"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Seizures Or Convulsions",
+              "answer": [["57"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Poisoning",
+              "answer": [["28"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Altered Mental Status",
+              "answer": [["10"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Gastroenteritis",
+              "answer": [["69"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Hemorrhage",
+              "answer": [["23"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Hypothermia",
+              "answer": [["75"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Cardiac Congenital Anomaly",
+              "answer": [["58"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Other Congenital Anomaly",
+              "answer": [["2"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Malnutrition",
+              "answer": [["63"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Meningitis",
+              "answer": [["29"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Community Acquired Pneumonia",
+              "answer": [["73"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Aspiration Pneumonia",
+              "answer": [["92"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Moderate Prematurity",
+              "answer": [["4"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Severe Prematurity",
+              "answer": [["70"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Other Medical",
+              "answer": [["78"]],
+              "items": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "label",
+      "description": "Outpatients",
+      "answer": []
+    },
+    {
+      "type": "equal",
+      "description": "Total number of outpatients",
+      "answer": [["8"]],
+      "items": [
+        {
+          "type": "group",
+          "description": "Age",
+          "answer": [[]],
+          "items": [
+            {
+              "type": "numeric",
+              "description": "Extremely preterm (less than 28 weeks)",
+              "answer": [["10"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Very preterm (28 to 32 weeks)",
+              "answer": [["47"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Moderate to late preterm (32 to 37 weeks)",
+              "answer": [["69"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Full term (37 weeks plus)",
+              "answer": [["61"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Older than neonate (>4 weeks old)",
+              "answer": [["49"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Age 4-5 weeks",
+              "answer": [["24"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Age 6-11 weeks",
+              "answer": [["80"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Age 12-18 weeks",
+              "answer": [["98"]],
+              "items": []
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "description": "Gender",
+          "answer": [[]],
+          "items": [
+            {
+              "type": "numeric",
+              "description": "Male",
+              "answer": [["66"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Female",
+              "answer": [["82"]],
+              "items": []
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "description": "Main Condition",
+          "answer": [[]],
+          "items": [
+            {
+              "type": "numeric",
+              "description": "Respiratory Arrest",
+              "answer": [["70"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Traumatic Injury",
+              "answer": [["72"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Septic Shock",
+              "answer": [["32"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Hypovolemic Shock",
+              "answer": [["98"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Seizures Or Convulsions",
+              "answer": [["66"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Poisoning",
+              "answer": [["67"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Altered Mental Status",
+              "answer": [["34"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Gastroenteritis",
+              "answer": [["26"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Hemorrhage",
+              "answer": [["36"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Hypothermia",
+              "answer": [["66"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Cardiac Congenital Anomaly",
+              "answer": [["14"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Other Congenital Anomaly",
+              "answer": [["23"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Malnutrition",
+              "answer": [["11"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Meningitis",
+              "answer": [["88"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Community Acquired Pneumonia",
+              "answer": [["37"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Aspiration Pneumonia",
+              "answer": [["11"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Moderate Prematurity",
+              "answer": [["8"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Severe Prematurity",
+              "answer": [["5"]],
+              "items": []
+            },
+            {
+              "type": "numeric",
+              "description": "Other Medical",
+              "answer": [["8"]],
+              "items": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
