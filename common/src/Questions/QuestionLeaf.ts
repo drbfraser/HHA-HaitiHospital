@@ -35,7 +35,7 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
   public readonly isValid = (): boolean => {
     return this.validators
       .map((validator) => validator(this.answer).isValid)
-      .reduce((isValid1, isValid2) => isValid1 && isValid2);
+      .reduce((isValid1, isValid2) => isValid1 && isValid2, true);
   };
 
   public readonly getValidationResults = (): Array<ValidationResult<ErrorType>> => {

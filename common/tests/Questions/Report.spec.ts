@@ -1,7 +1,8 @@
-import { CompositionQuestion } from '../../../src/common/Questions/CompositionQuestion';
-import { NumericQuestion } from '../../../src/common/Questions/SimpleQuestionTypes';
-import { QuestionNode } from '../../../src/common/Questions/QuestionNode';
-import newNicuData from '../../../src/components/report/newNicuData.json';
+import { CompositionQuestion } from '../../src';
+
+import { NumericQuestion } from '../../src';
+import { QuestionNode } from '../../src';
+import newNicuData from '../../src/newNicuData.json';
 
 import { expect } from 'chai';
 

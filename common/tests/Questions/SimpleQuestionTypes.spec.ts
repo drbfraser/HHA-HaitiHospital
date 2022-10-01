@@ -1,85 +1,60 @@
 import { expect } from 'chai';
 import { NumericQuestion, TextQuestion } from '../../src';
-import { answerTest, idTest, promptTest, serializableQuestionTest, simpleQuestionDefaultTests, validationTest } from './TemplateQuestionTests';
+import { QuestionLeafTest } from './QuestionLeaf.spec';
 
-describe('SimpleQuestions', function () {
-  describe('NumericQuestion', function () {
-    const DEFAULT_ID: number = 1;
-    const DEFAULT_PROMPT: string = 'What is Age of Patient?';
-    const DEFAULT_ANSWER: number = 19;
+export class TextQuestionTest extends QuestionLeafTest<number, string, string> {
+  constructor() {
+    super(
+      (id: number, prompt: string, defaultAnswer?: string) => new TextQuestion(id, prompt, defaultAnswer),
+      {
+        defaultId: 0,
+        idEqual: (id1: number, id2: number) => id1 === id2,
 
-    simpleQuestionDefaultTests<number, number, string>({
-      idTestArgs: {
-        id: DEFAULT_ID,
-        questionCreator: (id) => new NumericQuestion(id, DEFAULT_PROMPT)
-      },
-      promptTestArgs: {
-        prompt: DEFAULT_PROMPT,
-        questionCreator: (prompt) => new NumericQuestion(DEFAULT_ID, prompt)
-      },
-      answerTestArgs: {
-        answer: DEFAULT_ANSWER,
-        questionCreator: () => new NumericQuestion(DEFAULT_ID, DEFAULT_PROMPT)
-      },
-      validationTestArgs: {
-        sampleAnswer: DEFAULT_ANSWER,
-        questionCreator: () => new NumericQuestion(DEFAULT_ID, DEFAULT_PROMPT),
-        getDefaultErrorType: (number) => `ErrorType${number}`,
-        getDefaultErrorMessage: (number) => `Error Message ${number}`
-      },
-      serializableQuestionTestArgs: {
-        questionArranger: () => {
-          let question = new NumericQuestion(DEFAULT_ID, DEFAULT_PROMPT);
-          question.setAnswer(DEFAULT_ANSWER);
-          return question;
+        defaultPrompt: 'What is the best OS?',
+
+        answerEqual: (answer1: string, answer2: string) => answer1 === answer2,
+        defaultAnswer: 'Linux',
+        alternativeAnswer: 'Temple OS',
+
+        sampleValidator: (answer?: string) => {
+          return {
+            isValid: answer?.startsWith('L') ?? true
+          }
         },
-        expectations: [
-          (deserialized) => expect(deserialized).to.be.instanceof(NumericQuestion),
-          (deserialized) => expect(deserialized.getId()).to.be.equal(DEFAULT_ID),
-          (deserialized) => expect(deserialized.getPrompt()).to.be.equal(DEFAULT_PROMPT),
-          (deserialized) => expect(deserialized.getAnswer()).to.be.equal(DEFAULT_ANSWER)
-        ]
+        validAnswer: 'Linux',
+        invalidAnswer: 'Windows'
       }
-    });
-  });
+    );
+  };
+}
 
-  describe('TextQuestion', function () {
-    const DEFAULT_ID: number = 3;
-    const DEFAULT_PROMPT: string = "What's the magic word?";
-    const DEFAULT_ANSWER: string = 'sudo';
+export class NumericQuestionTest extends QuestionLeafTest<number, number, string> {
+  constructor() {
+    super(
+      (id: number, prompt: string, defaultAnswer?: number) => new NumericQuestion(id, prompt, defaultAnswer),
+      {
+        defaultId: 0,
+        idEqual: (id1: number, id2: number) => id1 === id2,
 
-    simpleQuestionDefaultTests<number, string, string>({
-      idTestArgs: {
-        id: DEFAULT_ID,
-        questionCreator: (id) => new TextQuestion(id, DEFAULT_PROMPT)
-      },
-      promptTestArgs: {
-        prompt: DEFAULT_PROMPT,
-        questionCreator: (prompt) => new TextQuestion(DEFAULT_ID, prompt)
-      },
-      answerTestArgs: {
-        answer: DEFAULT_ANSWER,
-        questionCreator: () => new TextQuestion(DEFAULT_ID, DEFAULT_PROMPT)
-      },
-      validationTestArgs: {
-        sampleAnswer: DEFAULT_ANSWER,
-        questionCreator: () => new TextQuestion(DEFAULT_ID, DEFAULT_PROMPT),
-        getDefaultErrorType: (number) => `ErrorType${number}`,
-        getDefaultErrorMessage: (number) => `Error Message ${number}`
-      },
-      serializableQuestionTestArgs: {
-        questionArranger: () => {
-          let question = new TextQuestion(DEFAULT_ID, DEFAULT_PROMPT);
-          question.setAnswer(DEFAULT_ANSWER);
-          return question;
+        defaultPrompt: 'Is the number even?',
+
+        answerEqual: (answer1: number, answer2: number) => answer1 === answer2,
+        defaultAnswer: 2,
+        alternativeAnswer: 4,
+
+        sampleValidator: (answer?: number) => {
+          return {
+            isValid: answer % 2 === 0
+          }
         },
-        expectations: [
-          (deserialized) => expect(deserialized).to.be.instanceof(TextQuestion),
-          (deserialized) => expect(deserialized.getId()).to.be.equal(DEFAULT_ID),
-          (deserialized) => expect(deserialized.getPrompt()).to.be.equal(DEFAULT_PROMPT),
-          (deserialized) => expect(deserialized.getAnswer()).to.be.equal(DEFAULT_ANSWER)
-        ]
+        validAnswer: 2,
+        invalidAnswer: 3
       }
-    });
-  });
-});
+    );
+  }
+}
+
+describe("TextQuestion", function() {
+  (new TextQuestionTest()).testAll();
+  (new NumericQuestionTest()).testAll();
+})
