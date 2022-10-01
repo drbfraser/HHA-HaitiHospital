@@ -8,7 +8,7 @@ import { NumericQuestion } from './SimpleQuestionTypes';
 @serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private answer?: number;
-  private readonly questions: Array<NumericQuestion<ID, ErrorType>>;
+  private readonly questions: Array<NumericQuestion<ID, ErrorType>> = [];
 
   constructor(id: ID, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID, ErrorType>>) {
     super(id);
