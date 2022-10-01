@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { QuestionLeaf, ValidationResult } from "../../src";
 import { QuestionNodeTest, QuestionNodeTestArgs } from "./QuestionNode.spec";
-import { TEST_ARGS_MSG, TEST_CLASS_MSG } from "../Constants";
+import { TEST_ARGS_STR, TEST_CLASS_STR } from "../Constants";
 
 export interface QuestionLeafTestArgs<ID, T, ErrorType> extends QuestionNodeTestArgs<ID, ErrorType> {
   defaultPrompt: string,
@@ -58,7 +58,7 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
   }
 
   public readonly testGetPrompt = (): void => {
-    describe(TEST_ARGS_MSG, () => {
+    describe(TEST_ARGS_STR, () => {
       it('Should get prompt that was passed during object instantiation', () => {
         let questionLeaf = this.questionLeafConstructor(this.questionLeafDefaultId, this.defaultPrompt);
         expect(questionLeaf.getPrompt()).to.equal(this.defaultPrompt);
@@ -68,13 +68,13 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
 
   public readonly testGetAndSetAnswer = (): void => {
 
-    describe(TEST_ARGS_MSG, () => {
+    describe(TEST_ARGS_STR, () => {
       it('Default answer and alternative answer for testing should be different', () => {
         expect(this.defaultAnswer).to.not.equal(this.alternativeAnswer);
       });
     });
 
-    describe(TEST_CLASS_MSG, () => {
+    describe(TEST_CLASS_STR, () => {
       it('Should get undefined if no answer has been passed during object instantiation', () => {
         let questionLeaf = this.questionLeafConstructor(this.questionLeafDefaultId, this.defaultPrompt);
         expect(questionLeaf.getAnswer()).to.be.undefined;
@@ -95,7 +95,7 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
 
   public readonly testIsValid = (): void => {
 
-    describe(TEST_ARGS_MSG, () => {
+    describe(TEST_ARGS_STR, () => {
       it('Validator should be valid if answer is valid', () => {
         expect(this.sampleValidator(this.validAnswer).isValid).to.be.true;
       });
@@ -105,7 +105,7 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
       });
     });
 
-    describe(TEST_CLASS_MSG, () => {
+    describe(TEST_CLASS_STR, () => {
       it('isValid() should cause validators to act on answer', () => {
         let questionLeaf = this.questionLeafConstructor(this.questionLeafDefaultId, this.defaultPrompt, this.defaultAnswer);
         questionLeaf.setAnswer(this.validAnswer);
@@ -153,7 +153,7 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
         .map((num) => generateValidator());
     };
 
-    describe(TEST_CLASS_MSG, () => {
+    describe(TEST_CLASS_STR, () => {
       it('There should be one item in the validation result array for each validator', () => {
         const questionLeaf = this.questionLeafConstructor(this.questionLeafDefaultId, this.defaultPrompt, this.defaultAnswer);
         const validators = generateValidators();
