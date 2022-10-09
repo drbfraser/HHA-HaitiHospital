@@ -24,7 +24,7 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
 
   public readonly getAnswer = (): T | undefined => this.answer;
 
-  public readonly setAnswer = (answer: T): void => {
+  public setAnswer(answer: T): void {
     this.answer = answer;
   };
 
