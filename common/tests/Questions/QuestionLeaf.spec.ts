@@ -17,7 +17,7 @@ export interface QuestionLeafTestArgs<ID, T, ErrorType> extends QuestionNodeTest
 
 export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTest<ID, ErrorType> {
 
-  private readonly args: QuestionLeafTestArgs<ID, T, ErrorType>;
+  private readonly questionLeafTestArgs: QuestionLeafTestArgs<ID, T, ErrorType>;
   private readonly questionLeafConstructor: (id: ID, prompt: string, defaultAnswer?: T) => QuestionLeaf<ID, T, ErrorType>    
   constructor(
     questionLeafConstructor: (id: ID, prompt: string, defaultAnswer?: T) => QuestionLeaf<ID, T, ErrorType>,
@@ -29,7 +29,7 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
     );
 
     this.questionLeafConstructor = questionLeafConstructor;
-    this.args = args;
+    this.questionLeafTestArgs = args;
     
     this.addTests(
       this.testGetPrompt,
@@ -42,8 +42,8 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
   public readonly testGetPrompt = (): void => {
     describe(TEST_ARGS_STR, () => {
       it('Should get prompt that was passed during object instantiation', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt);
-        expect(questionLeaf.getPrompt()).to.equal(this.args.defaultPrompt);
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt);
+        expect(questionLeaf.getPrompt()).to.equal(this.questionLeafTestArgs.defaultPrompt);
       });
     });
   };
@@ -52,25 +52,25 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
 
     describe(TEST_ARGS_STR, () => {
       it('Default answer and alternative answer for testing should be different', () => {
-        expect(this.args.defaultAnswer).to.not.equal(this.args.alternativeAnswer);
+        expect(this.questionLeafTestArgs.defaultAnswer).to.not.equal(this.questionLeafTestArgs.alternativeAnswer);
       });
     });
 
     describe(TEST_CLASS_STR, () => {
       it('Should get undefined if no answer has been passed during object instantiation', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt);
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt);
         expect(questionLeaf.getAnswer()).to.be.undefined;
       });
 
       it('Should get default answer if default answer has been passed during object instantiation and another answer has not been set', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt, this.args.defaultAnswer);
-        expect(this.args.answerEqual(questionLeaf.getAnswer(), this.args.defaultAnswer)).to.be.true;
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt, this.questionLeafTestArgs.defaultAnswer);
+        expect(this.questionLeafTestArgs.answerEqual(questionLeaf.getAnswer(), this.questionLeafTestArgs.defaultAnswer)).to.be.true;
       });
 
       it('Should get alternative answer if alternative answer has been set after object instantiation', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt, this.args.defaultAnswer);
-        questionLeaf.setAnswer(this.args.alternativeAnswer);
-        expect(this.args.answerEqual(questionLeaf.getAnswer(), this.args.alternativeAnswer)).to.be.true;
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt, this.questionLeafTestArgs.defaultAnswer);
+        questionLeaf.setAnswer(this.questionLeafTestArgs.alternativeAnswer);
+        expect(this.questionLeafTestArgs.answerEqual(questionLeaf.getAnswer(), this.questionLeafTestArgs.alternativeAnswer)).to.be.true;
       });
     });
   };
@@ -79,39 +79,39 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
 
     describe(TEST_ARGS_STR, () => {
       it('Validator should be valid if answer is valid', () => {
-        expect(this.args.sampleValidator(this.args.validAnswer).isValid).to.be.true;
+        expect(this.questionLeafTestArgs.sampleValidator(this.questionLeafTestArgs.validAnswer).isValid).to.be.true;
       });
 
       it('Validator should be invalid if answer is invalid', () => {
-        expect(this.args.sampleValidator(this.args.invalidAnswer).isValid).to.be.false;
+        expect(this.questionLeafTestArgs.sampleValidator(this.questionLeafTestArgs.invalidAnswer).isValid).to.be.false;
       });
     });
 
     describe(TEST_CLASS_STR, () => {
       it('isValid() should cause validators to act on answer', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt, this.args.defaultAnswer);
-        questionLeaf.setAnswer(this.args.validAnswer);
-        questionLeaf.addValidator(this.args.sampleValidator);
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt, this.questionLeafTestArgs.defaultAnswer);
+        questionLeaf.setAnswer(this.questionLeafTestArgs.validAnswer);
+        questionLeaf.addValidator(this.questionLeafTestArgs.sampleValidator);
         expect(questionLeaf.isValid()).to.be.true;
 
-        questionLeaf.setAnswer(this.args.invalidAnswer);
+        questionLeaf.setAnswer(this.questionLeafTestArgs.invalidAnswer);
         expect(questionLeaf.isValid()).to.be.false;
       });
 
       it('isValid() should return true if there are no validators', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt, this.args.defaultAnswer);
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt, this.questionLeafTestArgs.defaultAnswer);
         expect(questionLeaf.isValid()).to.be.true;
       });
 
       it('isValid() should return true iff all validators are valid', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt, this.args.defaultAnswer);
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt, this.questionLeafTestArgs.defaultAnswer);
         questionLeaf.addValidator((answer?: T) => { return { isValid: true } });
         questionLeaf.addValidator((answer?: T) => { return { isValid: true } });
         expect(questionLeaf.isValid()).to.be.true;
       });
 
       it('isValid() should return false iff at least one validator is invalid', () => {
-        let questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt, this.args.defaultAnswer);
+        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt, this.questionLeafTestArgs.defaultAnswer);
         questionLeaf.addValidator((answer?: T) => { return { isValid: true } });
         questionLeaf.addValidator((answer?: T) => { return { isValid: false } });
         expect(questionLeaf.isValid()).to.be.false;
@@ -137,7 +137,7 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
 
     describe(TEST_CLASS_STR, () => {
       it('There should be one item in the validation result array for each validator', () => {
-        const questionLeaf = this.questionLeafConstructor(this.args.defaultId, this.args.defaultPrompt, this.args.defaultAnswer);
+        const questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt, this.questionLeafTestArgs.defaultAnswer);
         const validators = generateValidators();
         validators.forEach((validator) => questionLeaf.addValidator(validator));
         expect(questionLeaf.getValidationResults()).to.have.lengthOf(validators.length);
