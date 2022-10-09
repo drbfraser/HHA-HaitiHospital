@@ -32,16 +32,16 @@ class Choice {
   };
 }
 
-abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
-  protected readonly choices: Array<Choice>;
+export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
+  protected readonly choices: Array<Choice> = new Array<Choice>();
 
-  constructor(id: ID, prompt: string, defaultAnswer?: T) {
-    super(id, prompt, defaultAnswer);
-    this.choices = new Array<Choice>();
+  constructor(id: ID, prompt: string, ...choices: string[]) {
+    super(id, prompt);
+    this.addChoices(...choices);
   }
 
-  public readonly addChoice = (choiceDescription: string): void => {
-    this.choices.push(new Choice(choiceDescription));
+  private readonly addChoices = (...choicesDescriptions: string[]): void => {
+    choicesDescriptions.forEach((choiceDescription) => this.choices.push(new Choice(choiceDescription)));
   };
 
   // Return the choice descriptions in their respective order.
