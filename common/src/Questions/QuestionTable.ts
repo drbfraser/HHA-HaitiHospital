@@ -23,19 +23,21 @@ class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, Error
     this.gray = !question;
   }
 
-  public readonly makeGrey = (): TableCell<ID, T, ErrorType, QuestionType> => {
+  public makeGrey(): TableCell<ID, T, ErrorType, QuestionType> {
     this.gray = true;
     return this;
   };
 
-  public readonly ungrey = (): TableCell<ID, T, ErrorType, QuestionType> => {
+  public ungrey(): TableCell<ID, T, ErrorType, QuestionType> {
     this.gray = !this.question;
     return this;
   };
 
-  public readonly isGray = (): boolean => this.gray;
+  public isGray(): boolean {
+    return this.gray;
+  }
 
-  public readonly getQuestion = (): QuestionType | undefined => {
+  public getQuestion(): QuestionType | undefined {
     return this.question;
   };
 }
@@ -73,7 +75,7 @@ export abstract class QuestionTable<
 
   // Returns undefined if given numbers are out of bound OR if no question has
   // been defined in the given cell.
-  public readonly getQuestionAt = (row: number, col: number): QuestionType | undefined => {
+  public getQuestionAt(row: number, col: number): QuestionType | undefined {
     return row >= 0 &&
       row < this.questionTable.length &&
       col >= 0 &&
@@ -82,11 +84,15 @@ export abstract class QuestionTable<
       : undefined;
   };
 
-  public readonly getRowHeaders = (): Array<string> => [...this.rowHeaders];
+  public getRowHeaders(): Array<string> {
+    return [...this.rowHeaders];
+  }
 
-  public readonly getColumnHeaders = (): Array<string> => [...this.columnHeaders];
+  public getColumnHeaders(): Array<string> {
+    return [...this.columnHeaders];
+  }
 
-  public readonly searchById = (id: ID): QuestionNode<ID, ErrorType> | undefined => {
+  public searchById(id: ID): QuestionNode<ID, ErrorType> | undefined {
     return this.questionTable
       .reduce((questions1, questions2) => [...questions1, ...questions2])
       .map((questionCell) => questionCell.getQuestion())

@@ -15,19 +15,19 @@ class Choice {
     this.description = description;
   }
 
-  public readonly getDescription = (): string => {
+  public getDescription(): string {
     return this.description;
   };
 
-  public readonly choose = (): void => {
+  public choose(): void {
     this.chosen = true;
   };
 
-  public readonly unchoose = (): void => {
+  public unchoose(): void {
     this.chosen = false;
   };
 
-  public readonly wasChosen = (): boolean => {
+  public wasChosen(): boolean {
     return this.chosen;
   };
 }
@@ -41,12 +41,12 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
     this.setAnswer(defaultAnswer);
   }
 
-  private readonly addChoices = (choicesDescriptions: string[]): void => {
+  private addChoices(choicesDescriptions: string[]): void {
     choicesDescriptions.forEach((choiceDescription) => this.choices.push(new Choice(choiceDescription)));
   };
 
   // Return the choice descriptions in their respective order.
-  public readonly getChoices = (): Array<string> => {
+  public getChoices(): Array<string> {
     return this.choices.map((choice) => choice.getDescription());
   };
  }
@@ -56,7 +56,7 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
 @serializable(undefined, '')
 export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, number, ErrorType> {
   // Won't do anything if answer index is greater than the number of choices
-  public readonly setAnswer = (answer: number): void => {
+  public setAnswer(answer: number): void {
     if (answer < 0 || answer >= this.choices.length) {
       return;
     }
@@ -72,7 +72,7 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
 @serializable(undefined, '')
 export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, Array<number>, ErrorType> {
   // Will ignore indexes whose value are greater than the number of choices
-  public readonly setAnswer = (answer: Array<number>): void => {
+  public setAnswer(answer: Array<number>): void {
     this.getAnswer()?.forEach((index) => this.choices[index].unchoose());
 
     let filteredAnswer = answer.filter((index) => index >= 0 && index < this.choices.length);
