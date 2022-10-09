@@ -35,12 +35,13 @@ class Choice {
 export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
   protected readonly choices: Array<Choice> = new Array<Choice>();
 
-  constructor(id: ID, prompt: string, ...choices: string[]) {
+  constructor(id: ID, prompt: string, choices: string[], defaultAnswer?: T) {
     super(id, prompt);
-    this.addChoices(...choices);
+    this.addChoices(choices);
+    this.setAnswer(defaultAnswer);
   }
 
-  private readonly addChoices = (...choicesDescriptions: string[]): void => {
+  private readonly addChoices = (choicesDescriptions: string[]): void => {
     choicesDescriptions.forEach((choiceDescription) => this.choices.push(new Choice(choiceDescription)));
   };
 
@@ -48,7 +49,7 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
   public readonly getChoices = (): Array<string> => {
     return this.choices.map((choice) => choice.getDescription());
   };
-}
+ }
 
 // Multiple choice questions in which the user is only allowed to select one
 // choice
