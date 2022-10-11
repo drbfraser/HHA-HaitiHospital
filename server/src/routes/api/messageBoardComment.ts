@@ -1,9 +1,9 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
-import MessageBoardCommentModel, { MessageBoardComment } from 'models/messageBoardComment';
-import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
-import { RequestWithUser } from 'utils/definitions/express';
+import MessageBoardCommentModel, { MessageBoardComment } from '../../models/messageBoardComment';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from '../../exceptions/httpException';
+import { RequestWithUser } from '../../utils/definitions/express';
 
 const router = Router();
 

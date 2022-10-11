@@ -25,12 +25,12 @@ export const isValidUrl = (str) => {
   return str.length < 2083 && url.test(str);
 };
 
-import { InvalidInput } from 'exceptions/systemException';
+import { InvalidInput } from '../exceptions/systemException';
 import crypto from 'crypto';
 import { ItemType, ItemTypeKeys } from '@hha/common';
-import { CustomError } from 'exceptions/custom_exception';
+import { CustomError } from '../exceptions/custom_exception';
 import { Error, NativeError } from 'mongoose';
-import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';
+import { BadRequest, InternalError, NotFound } from '../exceptions/httpException';
 import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
 
 export const getEnumKeyByStringValue = function <T extends { [index: string]: any }>(myEnum: T, enumValue: string): keyof T | null {

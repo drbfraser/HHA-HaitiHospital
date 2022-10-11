@@ -1,10 +1,10 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { HTTP_OK_CODE } from 'exceptions/httpException';
-import { RequestWithUser } from 'utils/definitions/express';
-import { DefaultDepartments } from 'utils/departments';
-import Department from 'models/departments';
-import { LeaderboardJson } from 'models/leaderboard';
+import { HTTP_OK_CODE } from '../../exceptions/httpException';
+import { RequestWithUser } from '../../utils/definitions/express';
+import { DefaultDepartments } from '../../utils/departments';
+import Department from '../../models/departments';
+import { LeaderboardJson } from '../../models/leaderboard';
 
 const router = Router();
 const POINTS_PER_CASE_STUDY: number = 10;

@@ -1,10 +1,10 @@
-import { SystemException } from 'exceptions/systemException';
-import { TemplateCollection } from 'models/template';
-import { User } from 'models/user';
-import { ReportDescriptor, ReportItems } from 'utils/definitions/report';
-import Departments from 'utils/departments';
-import { generateNewReportFromTemplate } from 'utils/parsers/template';
-import { generateUuid } from 'utils/utils';
+import { SystemException } from '../../exceptions/systemException';
+import { TemplateCollection } from '../../models/template';
+import { User } from '../../models/user';
+import { ReportDescriptor, ReportItems } from '../../utils/definitions/report';
+import Departments from '../departments';
+import { generateNewReportFromTemplate } from '../parsers/template';
+import { generateUuid } from '../utils';
 
 export const getReportItems = (report: ReportDescriptor): ReportItems => {
   return report.items;

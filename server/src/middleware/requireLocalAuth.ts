@@ -1,8 +1,8 @@
 import passport from 'passport';
 import { Request, Response, NextFunction } from 'express';
-import { User } from 'models/user';
-import { HTTP_UNAUTHORIZED_CODE } from 'exceptions/httpException';
-import { RequestWithUser } from 'utils/definitions/express';
+import { User } from '../models/user';
+import { HTTP_UNAUTHORIZED_CODE } from '../exceptions/httpException';
+import { RequestWithUser } from '../utils/definitions/express';
 // import * as passport from 'passport';
 
 // const somePassport : passport = passport;

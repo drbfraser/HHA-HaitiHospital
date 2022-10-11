@@ -1,8 +1,8 @@
 import mongoose, { Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import * as ENV from 'utils/processEnv';
-import Departments from 'utils/departments';
+import * as ENV from '../utils/processEnv';
+import Departments from '../utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
 
 const { Schema } = mongoose;

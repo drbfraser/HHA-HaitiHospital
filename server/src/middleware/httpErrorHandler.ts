@@ -1,5 +1,5 @@
-import { CustomError } from 'exceptions/custom_exception';
-import { InvalidInput } from 'exceptions/systemException';
+import { CustomError } from '../exceptions/custom_exception';
+import { InvalidInput } from '../exceptions/systemException';
 import { NextFunction, Request, Response } from 'express';
 import { BadRequest, HttpError, InternalError } from '../exceptions/httpException';
 

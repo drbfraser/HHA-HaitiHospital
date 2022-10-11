@@ -4,10 +4,10 @@ import { PATH_TO_JSON_REPORT_TYPES } from '../constants';
 import Ajv, { ValidateFunction } from 'ajv';
 import path from 'path';
 import ts from 'typescript';
-import { ReportDescriptor } from 'utils/definitions/report';
+import { ReportDescriptor } from '../definitions/report';
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from '@hha/common';
-import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
-import { parseToReport } from 'utils/parsers/report';
+import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from '../../exceptions/systemException';
+import { parseToReport } from './report';
 import { parseToJson } from './json_report';
 
 /**

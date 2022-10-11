@@ -1,6 +1,6 @@
-import Departments from 'utils/departments';
+import Departments from '../departments';
 import { JsonReportDescriptor, JsonReportMeta } from '@hha/common';
-import { InvalidInput } from 'exceptions/systemException';
+import { InvalidInput } from '../../exceptions/systemException';
 import { ReportDescriptor, ReportItems } from '../definitions/report';
 import * as _JsonUtils from '../report/json_report';
 import * as _ItemParser from './item';

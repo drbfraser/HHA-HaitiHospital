@@ -1,10 +1,10 @@
 import { JsonReportDescriptor } from '@hha/common';
 import { randomUUID } from 'crypto';
 import * as mongoose from 'mongoose';
-import { ReportDescriptor } from 'utils/definitions/report';
-import Departments from 'utils/departments';
-import { parseToJson } from 'utils/parsers/json_report';
-import { formatDateString } from 'utils/utils';
+import { ReportDescriptor } from '../utils/definitions/report';
+import Departments from '../utils/departments';
+import { parseToJson } from '../utils/parsers/json_report';
+import { formatDateString } from '../utils/utils';
 
 import UserCollection, { USER_MODEL_NAME } from './user';
 

@@ -1,6 +1,6 @@
-import Departments from 'utils/departments';
+import Departments from '../utils/departments';
 import * as mongoose from 'mongoose';
-import { formatDateString } from 'utils/utils';
+import { formatDateString } from '../utils/utils';
 
 const { Schema } = mongoose;
 

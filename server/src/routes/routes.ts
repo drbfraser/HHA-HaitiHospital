@@ -1,4 +1,4 @@
-import { NotFound } from 'exceptions/httpException';
+import { NotFound } from '../../src/exceptions/httpException';
 import { Router } from 'express';
 import apiRoutes from './api';
 const router = Router();

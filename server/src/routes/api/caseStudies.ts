@@ -6,9 +6,9 @@ import CaseStudyCollection, { CaseStudy } from '../../models/caseStudies';
 import { Role } from '../../models/user';
 import { registerCaseStudiesCreate } from '../../sanitization/schemas/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
-import { roleAuth } from 'middleware/roleAuth';
-import { RequestWithUser } from 'utils/definitions/express';
+import { HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from '../../exceptions/httpException';
+import { roleAuth } from '../../middleware/roleAuth';
+import { RequestWithUser } from '../../utils/definitions/express';
 
 const router = Router();
 

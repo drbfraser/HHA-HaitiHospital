@@ -1,4 +1,4 @@
-import { HTTP_UNPROCESSABLE_ENTITY_CODE } from 'exceptions/httpException';
+import { HTTP_UNPROCESSABLE_ENTITY_CODE } from '../../src/exceptions/httpException';
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 

@@ -1,6 +1,6 @@
-import { NotFound } from 'exceptions/httpException';
-import { IllegalState } from 'exceptions/systemException';
-import DepartmentCollection, { Department } from 'models/departments';
+import { NotFound } from '../exceptions/httpException';
+import { IllegalState } from '../exceptions/systemException';
+import DepartmentCollection, { Department } from '../models/departments';
 
 export enum DefaultDepartments {
   General = 'General',
