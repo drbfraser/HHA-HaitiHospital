@@ -1,96 +1,76 @@
-import { CompositionQuestion } from '../../src';
+import { CompositionQuestion, QuestionGroup, NumericQuestion, QuestionNode, ExpandableQuestion, SingleSelectionQuestion, MultipleSelectionQuestion } from '../../src';
 
-import { NumericQuestion } from '../../src';
-import { QuestionNode } from '../../src';
-import newNicuData from '../../src/newNicuData.json';
+const buildRehabMockReport = () => {
+  const reportID: string = 'rehab-report_1';
+  const rehabReport: QuestionGroup<string, string> = new QuestionGroup<string, string>(reportID);
 
-import { expect } from 'chai';
+  // Questions 1 to 4
+  const q1: NumericQuestion<string, string> = new NumericQuestion<string, string>('1', 'Beds available', 19);
+  const q2: NumericQuestion<string, string> = new NumericQuestion<string, string>('2', 'Beds days', 434);
+  const q3: NumericQuestion<string, string> = new NumericQuestion<string, string>('3', 'Patient days', 377);
+  const q4: NumericQuestion<string, string> = new NumericQuestion<string, string>('4', 'Hospitalized', 17);
 
-interface NumericQuestionProps {
-  id: string;
-  prompt: string;
-  defaultAnswer?: number;
-}
+  // Question 5
+  let q5_patient_count: number = 2;
+  let q5: QuestionGroup<string, string>[] = [];
 
-// Question types in the mock NICU JSON report data
-enum QuestionTypes {
-  label = 'label',
-  sum = 'sum',
-  numeric = 'numeric',
-  equal = 'equal',
-}
+  for (let i: number = 0; i < q5_patient_count; i++) {
+    const q5_patient: QuestionGroup<string, string> = new QuestionGroup<string, string>(`5_${i + 1}`);
+    const q5_1: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>(`5_1_${i + 1}`, 'Discharged diagnosis', 0);
+    const q5_1_choices: string[] = ['SCI', 'Stroke', 'Other'];
+    for (const choice in q5_1_choices) {
+      q5_1.addChoice(choice);
+    }
 
-// Extracts the answer from a question in the NICU JSON as a number type
-const getAnswer = (answer: string[][]): number => parseInt(answer[0][0]);
+    const q5_2: NumericQuestion<string, string> = new NumericQuestion<string, string>(`5_2_${i + 1}`, 'No. Days in Rehab Unit from admission to discharge', 230);
 
-// Returns a CompositionQuestion object using the given arguments
-const compositionQuestionBuilder = (
-  id: string,
-  defaultAnswer?: number,
-  ...questions: NumericQuestionProps[]
-): CompositionQuestion<string, string> => {
-  const compositionQuestion: CompositionQuestion<string, string> = new CompositionQuestion<
-    string,
-    string
-  >(id, defaultAnswer);
+    const q5_3: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>(`5_3_${i + 1}`, 'Discharged reason', 0);
+    const q5_3_choices: string[] = ['All goals met', 'Goals partially met, sufficient for discharge', 'Goals not met, discharged for alternate reason'];
+    for (const choice in q5_3_choices) {
+      q5_3.addChoice(choice);
+    }
 
-  for (const question of questions) {
-    compositionQuestion.add(
-      new NumericQuestion(question.id, question.prompt, question.defaultAnswer || undefined),
-    );
+    const q5_4: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>(`5_4_${i + 1}`, 'Discharge Outcome (ADLs/Self-Care)', 0);
+    const q5_4_choices: string[] = ['Independent', 'Modified Independent', 'Supervision', 'Minimum Assistance', 'Moderate Assistance', 'Maximum Assistance', 'Dependent'];
+    for (const choice in q5_4_choices) {
+      q5_4.addChoice(choice);
+    }
+
+    const q5_5: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>(`5_5_${i + 1}`, 'Discharge Outcome (Transfers and Mobility)', 0);
+    const q5_5_choices: string[] = ['Independent', 'Modified Independent', 'Supervision', 'Minimum Assistance', 'Moderate Assistance', 'Maximum Assistance', 'Dependent'];
+    for (const choice in q5_5_choices) {
+      q5_5.addChoice(choice);
+    }
+
+    const q5_6: MultipleSelectionQuestion<string, string> = new MultipleSelectionQuestion<string, string>(`5_6_${i + 1}`, 'Mobility Aid/Assistive Device Given?', [0, 2]);
+    const q5_6_choices: string[] = ['Wheelchair', 'Walker', 'Cane', 'Crutches'];
+    for (const choice in q5_6_choices) {
+      q5_6.addChoice(choice);
+    }
+
+    const q5_7: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>(`5_7_${i + 1}`, 'Discharge Location', 0);
+    const q5_7_choices: string[] = ['Return home, alone', 'Return home, with family/caregiver(s)', 'Admitted to hospital'];
+    for (const choice in q5_7_choices) {
+      q5_7.addChoice(choice);
+    }
+
+    const q5_8: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>(`5_8_${i + 1}`, 'Discharge Employment Status', 0);
+    const q5_8_choices: string[] = ['Employed', 'Unemployed, unable to find work', 'Unemployed, due to condition', 'Retired, not working due to age'];
+    for (const choice in q5_8_choices) {
+      q5_8.addChoice(choice);
+    }
+
+    q5_patient.addAll(q5_1, q5_2, q5_3, q5_4, q5_5, q5_6, q5_7, q5_8);
+    q5.push(q5_patient);
   }
 
-  return compositionQuestion;
-};
-
-// Returns a mock report (array) of question from the mock NICU JSON report data
-// This function builds this array using the question data structures in common/Questions
-const buildMockNICUReport = (): QuestionNode<any, any>[] => {
-  const questions: QuestionNode<any, any>[] = [];
-
-  // Go through each question item and create the appopriate question object
-  newNicuData.items.forEach((currentQuestion, i) => {
-    switch (currentQuestion.type) {
-      // Composition Question
-      case QuestionTypes.equal:
-      case QuestionTypes.sum:
-        const compositionQuestion = compositionQuestionBuilder(
-          i.toString(),
-          getAnswer(currentQuestion.answer),
-          ...(currentQuestion.items?.map(({ type, description, answer }, j) => ({
-            id: `${i}-${j + 1}`,
-            prompt: description,
-            defaultAnswer: getAnswer(answer),
-          })) || []),
-        );
-
-        questions.push(compositionQuestion);
-        break;
-
-      // Numeric Question
-      case QuestionTypes.numeric:
-        const numericQuestion = new NumericQuestion(
-          i.toString(),
-          currentQuestion.description,
-          getAnswer(currentQuestion.answer),
-        );
-        questions.push(numericQuestion);
-        break;
-
-      default:
-        break;
-    }
-  });
-
-  return questions;
+  rehabReport.addAll(q1, q2, q3, q4, ...q5);
 };
 
 describe('Report', function () {
   describe('Mock report', function () {
-    it('should create a mock report equivalent to the Nicu data', function () {
-      const report: QuestionNode<any, any>[] = buildMockNICUReport();
-
-      expect(report[0].getId()).to.equal('1');
+    it('Should create a mock rehab report', function () {
+      buildRehabMockReport();
     });
   });
 });
