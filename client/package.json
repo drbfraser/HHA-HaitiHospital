@@ -49,7 +49,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "update-common": "cd ../scripts && ./update_common.sh client"
   },
   "eslintConfig": {
     "extends": "react-app"
