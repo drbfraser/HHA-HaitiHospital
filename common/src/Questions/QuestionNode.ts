@@ -11,5 +11,7 @@ export abstract class QuestionNode<ID, ErrorType> {
     this.id = id;
   }
 
-  public readonly getId = (): ID => this.id;
+  public getId(): ID {
+    return this.id;
+  }
 }

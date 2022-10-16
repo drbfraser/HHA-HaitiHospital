@@ -10,5 +10,5 @@ export abstract class QuestionParent<ID, ErrorType> extends QuestionNode<ID, Err
         found. If more than one QuestionItem with the same ID exists, then this
         function might return either QuestionItem.
     */
-  abstract searchById: (id: ID) => QuestionNode<ID, ErrorType> | undefined;
+  abstract searchById(id: ID): QuestionNode<ID, ErrorType> | undefined;
 }
