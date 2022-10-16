@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { QuestionNode } from "../../src";
-import { TEST_CLASS_MSG } from "../Constants";
+import { TEST_CLASS_STR } from "../Constants";
 import { TestTemplate } from "../TestTemplate";
 
 export interface QuestionNodeTestArgs<ID, ErrorType> {
@@ -28,7 +28,7 @@ export abstract class QuestionNodeTest<ID, ErrorType> extends TestTemplate {
   }
 
   public readonly testGetId = (): void => {
-    describe(TEST_CLASS_MSG, () => {
+    describe(TEST_CLASS_STR, () => {
       it('Should get the same ID that has been passed during object instantiation', () => {
         let questionNode = this.questionNodeConstructor(this.defaultId);
         expect(this.idEqual(questionNode.getId(), this.defaultId)).to.be.true;
