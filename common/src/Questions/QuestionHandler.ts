@@ -87,12 +87,12 @@ export class QuestionHandler<ID, ErrorType> {
   }
 
   // Used to construct type-specific handlers
-  public static readonly buildHandler = <ID, ErrorType>(handlers: HandlerArgs<ID, ErrorType>): QuestionHandler<ID, ErrorType> => {
+  public static buildHandler<ID, ErrorType>(handlers: HandlerArgs<ID, ErrorType>): QuestionHandler<ID, ErrorType> {
     return new QuestionHandler<ID, ErrorType>(handlers);
   }
 
   // Used when the handler is the same for all question types.
-  public static readonly buildGenericHandler = <ID, ErrorType>(handler: (question: QuestionNode<ID, ErrorType>) => void): QuestionHandler<ID, ErrorType> => {
+  public static buildGenericHandler<ID, ErrorType>(handler: (question: QuestionNode<ID, ErrorType>) => void): QuestionHandler<ID, ErrorType> {
     return new QuestionHandler<ID, ErrorType>({
       textQuestion: handler,
       numericQuestion: handler,
@@ -104,21 +104,21 @@ export class QuestionHandler<ID, ErrorType> {
     });
   }
 
-  public readonly getHandler = (
+  public getHandler(
     question: QuestionNode<ID, ErrorType>,
-  ): Handler<ID, ErrorType> => {
+  ): Handler<ID, ErrorType> {
     return Object.values(this.questionMapper).find(
       (classNameMap) => classNameMap.className === question.constructor.name,
     );
   };
 
-  public readonly apply = (
-    question: QuestionNode<ID, ErrorType>): void => {
+  public apply(
+    question: QuestionNode<ID, ErrorType>): void {
     this.getHandler(question)(question);
   };
   
-  public readonly applyForEach = (
-    questions: QuestionNode<ID, ErrorType>[]): void => {
+  public applyForEach(
+    questions: QuestionNode<ID, ErrorType>[]): void {
     questions.forEach((question) => this.apply(question));
     }
 }

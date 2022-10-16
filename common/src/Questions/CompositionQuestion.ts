@@ -16,32 +16,34 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
     questions ? this.addAll(...questions) : undefined;
   }
 
-  public readonly searchById = (id: ID): NumericQuestion<ID, ErrorType> | undefined => {
+  public searchById(id: ID): NumericQuestion<ID, ErrorType> | undefined {
     return this.questions.find((question) => question.getId() === id);
   };
 
-  public readonly add = (numericQuestion: NumericQuestion<ID, ErrorType>): CompositionQuestion<ID, ErrorType> => {
+  public add(numericQuestion: NumericQuestion<ID, ErrorType>): CompositionQuestion<ID, ErrorType> {
     this.questions.push(numericQuestion);
     return this;
   };
 
-  public readonly addAll = (...questions: Array<NumericQuestion<ID, ErrorType>>): QuestionParent<ID, ErrorType> => {
+  public addAll(...questions: Array<NumericQuestion<ID, ErrorType>>): QuestionParent<ID, ErrorType> {
     questions.forEach((question) => this.add(question));
     return this;
   };
 
-  public readonly handleNumericQuestions = (handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void): void => {
+  public handleNumericQuestions(handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void): void {
     this.questions.forEach((question) => handler(question));
   };
 
-  public readonly getAnswer = (): number | undefined => this.answer;
+  public getAnswer(): number | undefined {
+    return this.answer;
+  }
 
   // Changes answer if given a non-negative number
-  public readonly setAnswer = (answer: number): void => {
+  public setAnswer(answer: number): void {
     this.answer = answer >= 0 ? answer : this.answer;
   };
 
-  public readonly sumsUp = (): boolean => {
+  public sumsUp(): boolean {
     return this.answer ? this.questions.map((question) => question.getAnswer()).reduce((answer1, answer2) => answer1 + answer2) === this.answer : false;
   };
 }
