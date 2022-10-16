@@ -74,7 +74,7 @@ export class SingleSelectionQuestionTest extends MultipleChoiceQuestionTest<numb
 			});
 			
 			it('Alternative answer should be within choices range', () => {
-				expect(this.args.alternativeAnswer).to.be.below(this.args)
+				expect(this.args.alternativeAnswer).to.be.within(0, this.args.choices.length - 1);
 			});
 		});
 		
