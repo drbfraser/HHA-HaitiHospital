@@ -58,11 +58,12 @@ export abstract class QuestionTable<
     */
   constructor(
     id: ID,
+    prompt: string,
     rowHeaders: Array<string>,
     columnHeaders: Array<string>,
     questionCreator: (row: number, col: number) => QuestionType | undefined,
   ) {
-    super(id);
+    super(id, prompt);
     this.rowHeaders = [...rowHeaders];
     this.columnHeaders = [...columnHeaders];
 

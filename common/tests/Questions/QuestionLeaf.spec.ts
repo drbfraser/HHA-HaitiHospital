@@ -4,8 +4,6 @@ import { QuestionNodeTest, QuestionNodeTestArgs } from "./QuestionNode.spec";
 import { TEST_ARGS_STR, TEST_CLASS_STR } from "../Constants";
 
 export interface QuestionLeafTestArgs<ID, T, ErrorType> extends QuestionNodeTestArgs<ID, ErrorType> {
-  defaultPrompt: string,
-
   answerEqual: (answer1: T, answer2: T) => boolean,
   defaultAnswer: T,
   alternativeAnswer: T
@@ -38,15 +36,6 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
       this.testValidationResults
     );
   }
-
-  public readonly testGetPrompt = (): void => {
-    describe(TEST_ARGS_STR, () => {
-      it('Should get prompt that was passed during object instantiation', () => {
-        let questionLeaf = this.questionLeafConstructor(this.questionLeafTestArgs.defaultId, this.questionLeafTestArgs.defaultPrompt);
-        expect(questionLeaf.getPrompt()).to.equal(this.questionLeafTestArgs.defaultPrompt);
-      });
-    });
-  };
 
   public readonly testGetAndSetAnswer = (): void => {
 

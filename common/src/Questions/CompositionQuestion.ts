@@ -10,8 +10,8 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   private answer?: number;
   private readonly questions: Array<NumericQuestion<ID, ErrorType>> = [];
 
-  constructor(id: ID, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID, ErrorType>>) {
-    super(id);
+  constructor(id: ID, prompt: string, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID, ErrorType>>) {
+    super(id, prompt);
     this.setAnswer(defaultAnswer);
     questions ? this.addAll(...questions) : undefined;
   }

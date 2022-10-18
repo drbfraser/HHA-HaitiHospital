@@ -6,10 +6,10 @@ import { HandlerArgs, QuestionHandler } from './QuestionHandler';
 
 @serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
-  private readonly questionItems: Array<QuestionNode<ID, ErrorType>> = [];
-
-  constructor(id: ID, ...questions: Array<QuestionNode<ID, ErrorType>>) {
-    super(id);
+  private readonly questionItems: Array<QuestionNode<ID, ErrorType>>;
+  
+  constructor(id: ID, prompt: string, ...questions: Array<QuestionNode<ID, ErrorType>>) {
+    super(id, prompt);
     questions ? this.addAll(...questions) : undefined;
   }
 
