@@ -143,10 +143,36 @@ const buildRehabMockReport = () => {
   rehabReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13);
 };
 
+const buildNicuPaedsReport = () => {
+  const reportID: string = 'nicu-paeds-report_1';
+  const nicuPaedsReport: QuestionGroup<string, string> = new QuestionGroup<string, string>(reportID);
+
+  // Questions 1 to 3
+  const q1: NumericQuestion<string, string> = new NumericQuestion<string, string>('1', 'Beds available', 19);
+  const q2: NumericQuestion<string, string> = new NumericQuestion<string, string>('2', 'Beds days', 434);
+  const q3: NumericQuestion<string, string> = new NumericQuestion<string, string>('3', 'Patient days', 377);
+
+  // Question 4
+  const q4: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('4');
+  const q4_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('4_1', 'Hospitalized NICU');
+  const q4_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('4_2', 'Hospitalised Paed');
+  q4.addAll(q4_1, q4_2);
+
+  // Question 5
+  const q5: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('5');
+  const q5_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('5_1', '# Discharged from NICU');
+  const q5_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('5_2', '# Discharged from elsewhere');
+  q5.addAll(q5_1, q5_2);
+};
+
 describe('Report', function () {
   describe('Mock report', function () {
     it('Should create a mock rehab report', function () {
       buildRehabMockReport();
+    });
+
+    it('Should create a mock NICUPaeds report', function () {
+      buildNicuPaedsReport();
     });
   });
 });
