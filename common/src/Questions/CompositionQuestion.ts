@@ -4,34 +4,21 @@
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { NumericQuestion } from './SimpleQuestionTypes';
+import { SpecializedGroup } from './SpecializedGroup';
 
 @serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private answer?: number;
-  private readonly questions: Array<NumericQuestion<ID, ErrorType>> = [];
+  private readonly compositionGroups: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>;
 
-  constructor(id: ID, prompt: string, defaultAnswer?: number, ...questions: Array<NumericQuestion<ID, ErrorType>>) {
+  constructor(id: ID, prompt: string, defaultAnswer?: number, ...questions: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>) {
     super(id, prompt);
     this.setAnswer(defaultAnswer);
-    questions ? this.addAll(...questions) : undefined;
+    this.compositionGroups = questions;
   }
 
-  public searchById(id: ID): NumericQuestion<ID, ErrorType> | undefined {
-    return this.questions.find((question) => question.getId() === id);
-  };
-
-  public add(numericQuestion: NumericQuestion<ID, ErrorType>): CompositionQuestion<ID, ErrorType> {
-    this.questions.push(numericQuestion);
-    return this;
-  };
-
-  public addAll(...questions: Array<NumericQuestion<ID, ErrorType>>): QuestionParent<ID, ErrorType> {
-    questions.forEach((question) => this.add(question));
-    return this;
-  };
-
-  public handleNumericQuestions(handler: (numericQuestion: NumericQuestion<ID, ErrorType>) => void): void {
-    this.questions.forEach((question) => handler(question));
+  public searchById(id: ID): SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>> | undefined {
+    return this.compositionGroups.find((question) => question.getId() === id);
   };
 
   public getAnswer(): number | undefined {
@@ -42,8 +29,23 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   public setAnswer(answer: number): void {
     this.answer = answer >= 0 ? answer : this.answer;
   };
+  
+  private compositionGroupSumsUp(compositionGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>): boolean {
+    return compositionGroup.getQuestions()
+      .map((question) => question.getAnswer())
+      .reduce((answer1, answer2) => answer1 + answer2) === this.getAnswer();
+  }
+  
+  public getCompositionQuestionsBySumsUp(sumsUp: boolean): 
+    Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>> {
+    return this.compositionGroups
+      .filter((compositionGroup) => this.compositionGroupSumsUp(compositionGroup) === sumsUp);    
+  }
+  
+  public allSumUp(): boolean {
+    return this.compositionGroups
+      .map((compositionGroup) => this.compositionGroupSumsUp(compositionGroup))
+      .reduce((bool1, bool2) => bool1 && bool2);
+  }
 
-  public sumsUp(): boolean {
-    return this.answer ? this.questions.map((question) => question.getAnswer()).reduce((answer1, answer2) => answer1 + answer2) === this.answer : false;
-  };
-}
+ }
