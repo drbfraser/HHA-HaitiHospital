@@ -119,6 +119,7 @@ const Login = (props: LoginProps) => {
 
         <div className="text-center mb-5">
           <button
+            data-testid="signin-button"
             className="w-100 btn btn-lg btn-success mb-5 fw-bold"
             type="submit"
             disabled={loading}
