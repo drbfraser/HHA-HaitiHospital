@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run update-common && react-scripts build",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
     "eject": "react-scripts eject",
     "update-common": "cd ../scripts && ./update_common.sh client"

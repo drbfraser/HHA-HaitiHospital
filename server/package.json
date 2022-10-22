@@ -7,7 +7,7 @@
     "node": "16"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "npm run update-common && tsc -p tsconfig.json",
     "clean": "rm -rf ./dist",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --trace-warnings --transpile-only src/app.ts",
     "seed": "ts-node -r tsconfig-paths/register src/seeders/seed.ts",
