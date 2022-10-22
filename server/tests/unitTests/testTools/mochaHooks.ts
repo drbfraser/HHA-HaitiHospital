@@ -10,7 +10,7 @@ interface UserAccount {
 
 const AdminUser: UserAccount = {
   username: 'user0',
-  password: '123456789'
+  password: 'catdog'
 };
 
 const IncorrectPasswordUser: UserAccount = {
@@ -35,10 +35,14 @@ export const setupHttpServer = (testApp: Application) => {
 
 export const attemptAuthentication = (agent: any, done: Mocha.Done, userAccount: UserAccount = AdminUser) => {
   // Something weird going on with content type, explicitly using a different content type to make it https://stackoverflow.com/questions/38078569/seem-to-have-the-wrong-content-type-when-posting-with-chai-http
-  agent
-    .post('/api/auth/login')
-    .set('content-type', 'application/json')
-    .send(userAccount)
-    .then((res: any) => {});
+  try {
+    agent
+      .post('/api/auth/login')
+      .send(userAccount)
+      .set('content-type', 'application/json')
+      .then((res: any) => {})
+  } catch (error: any) {
+    console.log(error);
+  }
   console.log('here 0');
 };
