@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install --prefix common && npm install --prefix client && npm install --prefix server && npm run update-common",
+    "build": "npm run build --prefix client & npm run build --prefix server",
+    "test": "npm run test --prefix client; npm run test --prefix server; npm run test --prefix common",
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "dev": "npm run server & npm run client",
+    "build-common": "npm run build-common --prefix client && npm run build-common --prefix server",
     "update-common": "npm run update-common --prefix client && npm run update-common --prefix server"
   },
   "repository": {
