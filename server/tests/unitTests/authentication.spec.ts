@@ -2,43 +2,51 @@ import http, { request } from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts } from './testTools/mochaHooks';
 import { doesNotMatch } from 'assert';
+import { ADDRGETNETWORKPARAMS } from 'dns';
+import { setServerPort } from '../../src/server';
+import PORT from './testTools/serverPort';
+
 const expect = require('chai').expect;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-let testApp: Application;
-let httpServer: http.Server;
+let app: Application;
 let agent: any;
+let csrf: String;
 
 describe('Test Admin Authorization', () => {
-  it('Create a working server', async () => {
-    // return new Promise((resolve) => {
-    // setTimeout(() => {
-    testApp = setupApp();
-    httpServer = setupHttpServer(testApp);
+  before('Create a Working Server and Login With Admin', (done) => {
+    app = setupApp();
+    agent = chai.request.agent(app);
 
-    agent = chai.request.agent(testApp);
+    agent.get('/api/auth/csrftoken').end((error, res) => {
+      if (error) done(error);
+      csrf = res?.body?.CSRFToken;
 
-    const response: Response = await chai.request.agent(testApp).post('/api/auth/login').set('content-type', 'application/json').send({ username: 'user0', password: 'catdog' });
-    expect(response).to.have.status(200);
-
-    // }, 200);
-    // }).catch((err) => {
-    //   console.log(err);
-    // });
+      agent
+        .post('/api/auth/login')
+        .set('Content-Type', 'application/json')
+        .set('CSRF-Token', csrf)
+        .send(Accounts.AdminUser)
+        .end((error: any, response: any) => {
+          if (error) return done(error);
+          done();
+        });
+    });
   });
 
-  // after('Close a working server', () => {
-  //   httpServer.close();
-  // });
+  after('Close a Working Server', () => {
+    // httpServer.close();
+    agent.close();
+  });
 
-  // it('should allow admin to get users', (done) => {
-  //   agent.get('/api/users').end((err: any, res: any) => {
-  //     console.log('TEST WE ARE HERE');
-  //     expect(err).to.be.null;
-  //     expect(res).to.have.status(200);
-  //     done();
-  //   });
-  // });
+  it('Should Fetch the Users', (done) => {
+    agent.get('/api/users').end((error: any, res: any) => {
+      if (error) done(error);
+      expect(error).to.be.null;
+      expect(res).to.have.status(200);
+      done();
+    });
+  });
 });
