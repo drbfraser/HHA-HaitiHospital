@@ -1,4 +1,4 @@
-import { CompositionQuestion, QuestionGroup, NumericQuestion, QuestionNode, ExpandableQuestion, SingleSelectionQuestion, MultipleSelectionQuestion, TextQuestion } from '../../src';
+import { CompositionQuestion, QuestionGroup, NumericQuestion, QuestionNode, ExpandableQuestion, SingleSelectionQuestion, MultipleSelectionQuestion, TextQuestion, NumericTable } from '../../src';
 
 const questionIdGeneratorBuilder =
   (questionId: string) =>
@@ -110,7 +110,7 @@ const buildRehabMockReport = () => {
   rehabReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13);
 };
 
-const buildNicuPaedsReport = () => {
+const buildNicuPaedsMockReport = () => {
   const reportID: string = 'nicu-paeds-report_1';
   const nicuPaedsReport: QuestionGroup<string, string> = new QuestionGroup<string, string>(reportID);
 
@@ -270,6 +270,68 @@ const buildNicuPaedsReport = () => {
   nicuPaedsReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
 };
 
+const buildMaternityMockReport = () => {
+  const reportID: string = 'maternity-report_1';
+  const maternityReport: QuestionGroup<string, string> = new QuestionGroup<string, string>(reportID);
+
+  // Questions 1 to 5
+  const q1: NumericQuestion<string, string> = new NumericQuestion<string, string>('1', 'Beds available');
+  const q2: NumericQuestion<string, string> = new NumericQuestion<string, string>('2', 'Beds days');
+  const q3: NumericQuestion<string, string> = new NumericQuestion<string, string>('3', 'Patient days');
+  const q4: NumericQuestion<string, string> = new NumericQuestion<string, string>('4', 'Hospitalized');
+  const q5: NumericQuestion<string, string> = new NumericQuestion<string, string>('5', 'Discharged alive');
+
+  // Question 6 "Died before 48h"
+  const q6: ExpandableQuestion<string, string> = new ExpandableQuestion<string, string>('6', questionIdGeneratorBuilder('6'));
+  const q6_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('6_1', 'Age');
+  const q6_2: TextQuestion<string, string> = new TextQuestion<string, string>('6_2', 'Cause of death');
+  q6.addAllToTemplate(q6_1, q6_2);
+
+  // Question 7 "Died after 48h"
+  const q7: ExpandableQuestion<string, string> = new ExpandableQuestion<string, string>('7', questionIdGeneratorBuilder('7'));
+  const q7_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('7_1', 'Age');
+  const q7_2: TextQuestion<string, string> = new TextQuestion<string, string>('7_2', 'Cause of death');
+  q7.addAllToTemplate(q7_1, q7_2);
+
+  // Questions 8 to 10
+  const q8: NumericQuestion<string, string> = new NumericQuestion<string, string>('8', 'Days hospitalised');
+  const q9: NumericQuestion<string, string> = new NumericQuestion<string, string>('9', 'Referrals');
+  const q10: NumericQuestion<string, string> = new NumericQuestion<string, string>('10', 'Transfers');
+
+  // Question 11 "Self-discharged"
+  const q11: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('11');
+
+  // 11_1 "Reason for self-discharged"
+  const q11_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('11_1');
+  const q11_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_1', 'Finance: Leave as cannot afford care');
+  const q11_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_2', 'Finance: Left to avoid paying');
+  const q11_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_3', 'Religious/Cultural');
+  const q11_1_4: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_4', 'Personal/ Family');
+  const q11_1_5: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_5', 'Other');
+  q11_1.addAll(q11_1_1, q11_1_2, q11_1_3, q11_1_4, q11_1_5);
+  // TODO: add q11_1 to q11
+
+  // Question 12
+  const q12: NumericQuestion<string, string> = new NumericQuestion<string, string>('12', 'Stayed in the ward');
+
+  // Question 13 "Admissions"
+  const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('11');
+
+  // 13_1 "Where do patients come from?"
+  const q13_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('11_3');
+  const q13_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_3_1', 'Quarter Morin');
+  const q13_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_3_2', 'Cap Haitian');
+  const q13_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_3_3', 'Department Nord');
+  const q13_1_4: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_3_4', 'Other departments');
+  q13_1.addAll(q13_1_1, q13_1_2, q13_1_3, q13_1_4);
+  // TODO: add q13_1 to q13
+
+  // Question 14 Table
+  const q14_rows: string[] = ['Weight <1.5kg', '1.5kg ≤ Weight <2.5kg', '2.5kg and over', 'Not weighed'];
+  const q14_columns: string[] = ['Births', 'Normal', 'Césarienne', 'Instrumentalsé'];
+  const q14: NumericTable<string, string> = new NumericTable<string, string>('14', q14_rows, q14_columns, () => NumericQuestion<string, string>);
+};
+
 describe('Report', function () {
   describe('Mock report', function () {
     it('Should create a mock rehab report', function () {
@@ -277,7 +339,11 @@ describe('Report', function () {
     });
 
     it('Should create a mock NICUPaeds report', function () {
-      buildNicuPaedsReport();
+      buildNicuPaedsMockReport();
+    });
+
+    it('Should create a mock Maternity report', function () {
+      buildMaternityMockReport();
     });
   });
 });
