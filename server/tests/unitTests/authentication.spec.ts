@@ -1,6 +1,6 @@
 import http, { request } from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts } from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { doesNotMatch } from 'assert';
 import { ADDRGETNETWORKPARAMS } from 'dns';
 import { setServerPort } from '../../src/server';
@@ -13,11 +13,13 @@ chai.use(chaiHttp);
 
 let app: Application;
 let agent: any;
+let httpServer: http.Server;
 let csrf: String;
 
 describe('Test Admin Authorization', () => {
   before('Create a Working Server and Login With Admin', (done) => {
     app = setupApp();
+    httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
     agent.get('/api/auth/csrftoken').end((error, res) => {
@@ -37,8 +39,7 @@ describe('Test Admin Authorization', () => {
   });
 
   after('Close a Working Server', () => {
-    // httpServer.close();
-    agent.close();
+    closeServer(agent, httpServer);
   });
 
   it('Should Fetch the Users', (done) => {

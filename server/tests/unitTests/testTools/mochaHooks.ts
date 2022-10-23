@@ -26,7 +26,6 @@ export const Accounts = {
 
 export const setupApp = () => {
   const app: Application = createServer();
-  setServerPort(app, PORT);
   return app;
 };
 
@@ -36,6 +35,11 @@ export const setupHttpServer = (testApp: Application) => {
     console.log(`Server is Running on Port ${PORT}`);
   });
   return httpServer;
+};
+
+export const closeServer = (agent: any, httpServer: http.Server) => {
+  agent.close();
+  httpServer.close();
 };
 
 const getCSRFToken = (agent: any) => {
