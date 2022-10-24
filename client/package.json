@@ -47,11 +47,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run build-common && react-scripts build",
+    "clean": "rm hha-common-1.0.0.tgz",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
     "eject": "react-scripts eject",
-    "update-common": "cd ../scripts && ./update_common.sh client",
-    "e2e": "cypress open"
+    "update-common": "../scripts/update_common.sh",
+    "build-common": "../scripts/build_common.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
