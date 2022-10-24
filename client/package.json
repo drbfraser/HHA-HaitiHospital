@@ -81,6 +81,8 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/yup": "^0.29.13",
     "chai": "^4.3.6",
+    "cypress": "^10.10.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "mocha": "^10.0.0",
     "redux-devtools-extension": "^2.13.9",
     "sinon": "^14.0.0"
