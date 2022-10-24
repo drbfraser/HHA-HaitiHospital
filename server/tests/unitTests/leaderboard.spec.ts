@@ -1,6 +1,8 @@
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
+import { CSRF, LOGIN } from './testTools/endPoints';
+
 const expect = require('chai').expect;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -17,14 +19,13 @@ describe('getLeaderboard', () => {
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get('/api/auth/csrftoken').end((error, res) => {
+    agent.get(CSRF).end((error, res) => {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
       agent
-        .post('/api/auth/login')
-        .set('Content-Type', 'application/json')
-        .set('CSRF-Token', csrf)
+        .post(LOGIN)
+        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
         .send(Accounts.AdminUser)
         .end((error: any, response: any) => {
           if (error) return done(error);

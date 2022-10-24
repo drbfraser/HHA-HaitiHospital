@@ -1,6 +1,8 @@
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
+import { CSRF, LOGIN } from './testTools/endPoints';
+
 const expect = require('chai').expect;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -17,14 +19,13 @@ describe('getCaseStudies', () => {
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get('/api/auth/csrftoken').end((error, res) => {
+    agent.get(CSRF).end((error, res) => {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
       agent
-        .post('/api/auth/login')
-        .set('Content-Type', 'application/json')
-        .set('CSRF-Token', csrf)
+        .post(LOGIN)
+        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
         .send(Accounts.AdminUser)
         .end((error: any, response: any) => {
           if (error) return done(error);
@@ -37,10 +38,20 @@ describe('getCaseStudies', () => {
     closeServer(agent, httpServer);
   });
 
-  it('should get all caseStudy reports successfully', (done) => {
-    agent.get('/api/case-studies').end((err: any, res: any) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(200);
+  it('Should Get All Featured Case Studies', (done) => {
+    agent.get('/api/case-studies/featured').end((error: any, response: any) => {
+      if (error) return done(error);
+      expect(error).to.be.null;
+      expect(response).to.have.status(200);
+
+      done();
+    });
+  });
+
+  it('Should Get All Case Studies', (done) => {
+    agent.get('/api/case-studies/').end((error: any, response: any) => {
+      expect(error).to.be.null;
+      expect(response).to.have.status(200);
       done();
     });
   });

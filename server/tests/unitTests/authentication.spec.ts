@@ -1,10 +1,7 @@
 import http, { request } from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { doesNotMatch } from 'assert';
-import { ADDRGETNETWORKPARAMS } from 'dns';
-import { setServerPort } from '../../src/server';
-import PORT from './testTools/serverPort';
+import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer, getCSRFToken } from './testTools/mochaHooks';
+import { CSRF, LOGIN, USERS, LOGOUT } from './testTools/endPoints';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -22,14 +19,13 @@ describe('Test Admin Authorization', () => {
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get('/api/auth/csrftoken').end((error, res) => {
+    agent.get(CSRF).end((error, res) => {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
       agent
-        .post('/api/auth/login')
-        .set('Content-Type', 'application/json')
-        .set('CSRF-Token', csrf)
+        .post(LOGIN)
+        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
         .send(Accounts.AdminUser)
         .end((error: any, response: any) => {
           if (error) return done(error);
@@ -43,11 +39,25 @@ describe('Test Admin Authorization', () => {
   });
 
   it('Should Fetch the Users', (done) => {
-    agent.get('/api/users').end((error: any, res: any) => {
+    agent.get(USERS).end((error: any, res: any) => {
       if (error) done(error);
       expect(error).to.be.null;
       expect(res).to.have.status(200);
       done();
     });
+  });
+
+  it('Should Logout Admin User', (done) => {
+    agent
+      .post(LOGOUT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send({})
+      .end((error: any, response: any) => {
+        if (error) done(error);
+
+        expect(error).to.be.null;
+        expect(response.body).to.be.true;
+        done();
+      });
   });
 });
