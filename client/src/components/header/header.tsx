@@ -126,6 +126,7 @@ const Header = (props: HeaderProps) => {
         <div className="col-auto">
           <div className="dropdown">
             <button
+              data-testid="user-dropdown"
               className="btn dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
@@ -155,7 +156,12 @@ const Header = (props: HeaderProps) => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <button className="dropdown-item" type="button" onClick={onLogOut}>
+                <button
+                  data-testid="signout-button"
+                  className="dropdown-item"
+                  type="button"
+                  onClick={onLogOut}
+                >
                   <i className="fa fa-sign-out" aria-hidden="true"></i>
                   {t('headerSignOut')}
                 </button>
