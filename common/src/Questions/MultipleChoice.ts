@@ -43,13 +43,14 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
 
   private addChoices(choicesDescriptions: string[]): void {
     choicesDescriptions.forEach((choiceDescription) => this.choices.push(new Choice(choiceDescription)));
-  }
-
+  };
+  
   // Return the choice descriptions in their respective order.
   public getChoices(): Array<string> {
     return this.choices.map((choice) => choice.getDescription());
-  }
-}
+  };
+  
+ }
 
 // Multiple choice questions in which the user is only allowed to select one
 // choice

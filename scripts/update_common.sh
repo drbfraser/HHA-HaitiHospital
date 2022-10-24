@@ -1,11 +1,6 @@
 #!/bin/sh
 
-cd ../common
-npm install
-npm run build
+BASEDIR=$(dirname $0)
 
-cd ../${1}
-npm uninstall @hha/common
-npm pack ../common
-npm install hha-common-1.0.0.tgz
-
+${BASEDIR}/build_common.sh
+rm hha-common-1.0.0.tgz
