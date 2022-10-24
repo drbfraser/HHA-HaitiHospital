@@ -18,13 +18,15 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
 
   constructor(
     id: ID,
+    prompt: string,
     idGenerator: (questionGroupIndex: number) => ID,
     defaultAnswer?: number,
     ...questions: Array<QuestionNode<ID, ErrorType>>
   ) {
-    super(id);
+    super(id, prompt);
     this.idGenerator = idGenerator;
-    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(undefined).addAll(...questions);
+    // TODO: Allow multiple "templates to be added"
+    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(undefined, `${prompt}-template`).addAll(...questions);
     this.setAnswer(defaultAnswer);
   }
 
@@ -59,7 +61,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
 
     this.questionGroups = new Array(this.answer ?? 0)
       .fill(undefined)
-      .map((x, index) => new QuestionGroup(this.idGenerator(index)))
+      .map((x, index) => new QuestionGroup(this.idGenerator(index), `${prompt}-${index}`))
       .map((questionGroup) => {
         let handler = () => questionItemAdder(questionGroup);
         this.questionsTemplate
