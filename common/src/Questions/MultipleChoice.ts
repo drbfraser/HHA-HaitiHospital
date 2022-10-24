@@ -72,8 +72,8 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
 @serializable(undefined, '')
 export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, Array<number>, ErrorType> {
   // Will ignore indexes whose value are greater than the number of choices
-  public setAnswer(answer: Array<number>): void {
-    if (answer === undefined || answer.length === 0) {
+  public setAnswer(answer: Array<number> = []): void {
+    if (answer.length === 0) {
       return;
     }
 
