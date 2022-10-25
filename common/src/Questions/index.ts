@@ -9,3 +9,4 @@ export * from './QuestionTable';
 export * from './QuestionHandler';
 export * from './SimpleQuestionTypes';
 export * from './TextTable';
+export * from './SpecializedGroup';
