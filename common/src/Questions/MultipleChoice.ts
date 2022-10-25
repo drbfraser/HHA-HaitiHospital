@@ -17,19 +17,19 @@ class Choice {
 
   public getDescription(): string {
     return this.description;
-  };
+  }
 
   public choose(): void {
     this.chosen = true;
-  };
+  }
 
   public unchoose(): void {
     this.chosen = false;
-  };
+  }
 
   public wasChosen(): boolean {
     return this.chosen;
-  };
+  }
 }
 
 export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
@@ -65,7 +65,7 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
     this.choices[this.getAnswer()]?.unchoose();
     this.choices[answer]?.choose();
     super.setAnswer(answer);
-  };
+  }
 }
 
 // Multiple choice questions in which the user is allowed to select multiple
@@ -73,11 +73,15 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
 @serializable(undefined, '')
 export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, Array<number>, ErrorType> {
   // Will ignore indexes whose value are greater than the number of choices
-  public setAnswer(answer: Array<number>): void {
+  public setAnswer(answer: Array<number> = []): void {
+    if (answer.length === 0) {
+      return;
+    }
+
     this.getAnswer()?.forEach((index) => this.choices[index].unchoose());
 
     let filteredAnswer = answer.filter((index) => index >= 0 && index < this.choices.length);
     filteredAnswer.forEach((index) => this.choices[index].choose());
     super.setAnswer(filteredAnswer);
-  };
+  }
 }
