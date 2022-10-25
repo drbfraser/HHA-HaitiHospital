@@ -14,7 +14,8 @@
     "start-prod": "ts-node -r tsconfig-paths/register --transpile-only dist/src/app.js",
     "test": "ts-mocha --exit --timeout 10000 -p tsconfig.json tests/unitTests/*.spec.ts",
     "report-parser": "ts-mocha --paths --exit --timeout 10000 -p tsconfig.json tests/unitTests/reportParser.spec.ts",
-    "update-common": "cd ../scripts && ./update_common.sh server"
+    "update-common": "../scripts/update_common.sh",
+    "build-common": "../scripts/build_common.sh"
   },
   "license": "ISC",
   "dependencies": {
