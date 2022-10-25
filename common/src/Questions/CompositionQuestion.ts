@@ -11,9 +11,8 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   private answer?: number;
   private readonly compositionGroups: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>;
 
-  constructor(id: ID, prompt: string, defaultAnswer?: number, ...questions: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>) {
+  constructor(id: ID, prompt: string, ...questions: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>) {
     super(id, prompt);
-    this.setAnswer(defaultAnswer);
     this.compositionGroups = questions;
   }
 
