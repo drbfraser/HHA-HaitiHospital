@@ -364,8 +364,9 @@ export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   // Question 14 Table
   const q14_rows: string[] = ['Weight <1.5kg', '1.5kg ≤ Weight <2.5kg', '2.5kg and over', 'Not weighed'];
   const q14_columns: string[] = ['Births', 'Normal', 'Césarienne', 'Instrumentalsé'];
-  const q14: NumericTable<string, string> = new NumericTable<string, string>('Deliveries', '14', q14_rows, q14_columns, () => NumericQuestion<string, string>);
+  // TODO: Create question table
+  //const q14: NumericTable<string, string> = new NumericTable<string, string>('Deliveries', '14', q14_rows, q14_columns, () => NumericQuestion<string, string>);
 
-  maternityReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
+  maternityReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13);
   return maternityReport;
 };
