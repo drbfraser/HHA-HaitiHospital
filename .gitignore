@@ -4,3 +4,5 @@
 .vscode/launch.json
 node_modules/
 dist/
+client/hha-common-1.0.0.tgz
+server/hha-common-1.0.0.tgz

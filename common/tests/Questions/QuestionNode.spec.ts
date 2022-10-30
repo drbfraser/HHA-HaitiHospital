@@ -1,18 +1,19 @@
 import { expect } from 'chai';
 import { QuestionNode } from "../../src";
-import { TEST_CLASS_MSG } from "../Constants";
+import { TEST_ARGS_STR, TEST_CLASS_STR } from "../Constants";
 import { TestTemplate } from "../TestTemplate";
 
 export interface QuestionNodeTestArgs<ID, ErrorType> {
   idEqual: (id1: ID, id2: ID) => boolean,
-  defaultId: ID
+
+  defaultId: ID,
+  defaultPrompt: string
 }
 
 export abstract class QuestionNodeTest<ID, ErrorType> extends TestTemplate {
 
-  private readonly questionNodeConstructor: (id: ID) => QuestionNode<ID, ErrorType>;
-  private readonly idEqual: (id1: ID, id2: ID) => boolean;
-  private readonly defaultId: ID;
+  private readonly questionNodeConstructor: (id: ID, prompt: string) => QuestionNode<ID, ErrorType>;
+  private readonly questionNodeTestArgs: QuestionNodeTestArgs<ID, ErrorType>;
 
   constructor(
     questionNodeConstructor: (id: ID) => QuestionNode<ID, ErrorType>,
@@ -21,19 +22,27 @@ export abstract class QuestionNodeTest<ID, ErrorType> extends TestTemplate {
 
     super();
     this.questionNodeConstructor = questionNodeConstructor;
-    this.idEqual = args.idEqual;
-    this.defaultId = args.defaultId;
+    this.questionNodeTestArgs = args;
 
     this.addTest(this.testGetId);
   }
 
   public readonly testGetId = (): void => {
-    describe(TEST_CLASS_MSG, () => {
+    describe(TEST_CLASS_STR, () => {
       it('Should get the same ID that has been passed during object instantiation', () => {
-        let questionNode = this.questionNodeConstructor(this.defaultId);
-        expect(this.idEqual(questionNode.getId(), this.defaultId)).to.be.true;
+        let questionNode = this.questionNodeConstructor(this.questionNodeTestArgs.defaultId, this.questionNodeTestArgs.defaultPrompt);
+        expect(this.questionNodeTestArgs.idEqual(questionNode.getId(), this.questionNodeTestArgs.defaultId)).to.be.true;
       });
     });
   }
+    
+  public readonly testGetPrompt = (): void => {
+    describe(TEST_ARGS_STR, () => {
+      it('Should get prompt that was passed during object instantiation', () => {
+        let questionLeaf = this.questionNodeConstructor(this.questionNodeTestArgs.defaultId, this.questionNodeTestArgs.defaultPrompt);
+        expect(questionLeaf.getPrompt()).to.equal(this.questionNodeTestArgs.defaultPrompt);
+      });
+    });
+  };
 }
 

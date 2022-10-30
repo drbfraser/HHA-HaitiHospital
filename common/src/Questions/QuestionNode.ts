@@ -6,10 +6,18 @@
 */
 export abstract class QuestionNode<ID, ErrorType> {
   private readonly id: ID;
+  private readonly prompt: string;
 
-  constructor(id: ID) {
+  constructor(id: ID, prompt: string) {
     this.id = id;
+    this.prompt = prompt;
+  }
+  
+  public getPrompt(): string {
+    return this.prompt;
   }
 
-  public readonly getId = (): ID => this.id;
+  public getId(): ID {
+    return this.id;
+  }
 }

@@ -18,37 +18,39 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
 
   constructor(
     id: ID,
+    prompt: string,
     idGenerator: (questionGroupIndex: number) => ID,
     defaultAnswer?: number,
     ...questions: Array<QuestionNode<ID, ErrorType>>
   ) {
-    super(id);
+    super(id, prompt);
     this.idGenerator = idGenerator;
-    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(undefined).addAll(...questions);
+    // TODO: Allow multiple "templates to be added"
+    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(undefined, `${prompt}-template`).addAll(...questions);
     this.setAnswer(defaultAnswer);
   }
 
-  public readonly addToTemplate = (
+  public addToTemplate(
     questionItem: QuestionNode<ID, ErrorType>,
-  ): ExpandableQuestion<ID, ErrorType> => {
+  ): ExpandableQuestion<ID, ErrorType> {
     this.questionsTemplate.add(questionItem);
     return this;
   };
 
-  public readonly addAllToTemplate = (
+  public addAllToTemplate(
     ...questions: Array<QuestionNode<ID, ErrorType>>
-  ): ExpandableQuestion<ID, ErrorType> => {
+  ): ExpandableQuestion<ID, ErrorType> {
     this.questionsTemplate.addAll(...questions);
     return this;
   };
 
-  public readonly searchById = (id: ID): QuestionNode<ID, ErrorType> | undefined => {
+  public searchById(id: ID): QuestionNode<ID, ErrorType> | undefined {
     return this.questionGroups
       .map((questionGroup) => questionGroup.searchById(id))
       .find((question) => question !== undefined);
   };
 
-  private readonly expand = (): void => {
+  private expand(): void {
     let questionItemAdder = (
       questionGroup: QuestionGroup<ID, ErrorType>,
     ): ((questionItem: QuestionNode<ID, ErrorType>) => void) => {
@@ -59,7 +61,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
 
     this.questionGroups = new Array(this.answer ?? 0)
       .fill(undefined)
-      .map((x, index) => new QuestionGroup(this.idGenerator(index)))
+      .map((x, index) => new QuestionGroup(this.idGenerator(index), `${prompt}-${index}`))
       .map((questionGroup) => {
         let handler = () => questionItemAdder(questionGroup);
         this.questionsTemplate
@@ -68,10 +70,12 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
       });
   };
 
-  public readonly setAnswer = (answer: number): void => {
+  public setAnswer(answer: number): void {
     this.answer = answer;
     this.expand();
   };
 
-  public readonly getAnswer = (): number => this.answer;
+  public getAnswer(): number {
+   return this.answer;
+  }
 }
