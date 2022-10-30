@@ -13,13 +13,13 @@ let agent: any;
 let httpServer: http.Server;
 let csrf: String;
 
-describe('Test Admin Authorization', () => {
-  before('Create a Working Server and Login With Admin', (done) => {
+describe('Test Admin Authorization', function () {
+  before('Create a Working Server and Login With Admin', function (done) {
     app = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF).end((error, res) => {
+    agent.get(CSRF).end(function (error, res) {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
@@ -34,12 +34,12 @@ describe('Test Admin Authorization', () => {
     });
   });
 
-  after('Close a Working Server', () => {
+  after('Close a Working Server', function () {
     closeServer(agent, httpServer);
   });
 
-  it('Should Fetch the Users', (done) => {
-    agent.get(USERS).end((error: any, res: any) => {
+  it.only('Should Fetch the Users', function (done) {
+    agent.get(USERS).end(function (error: any, res: any) {
       if (error) done(error);
       expect(error).to.be.null;
       expect(res).to.have.status(200);
