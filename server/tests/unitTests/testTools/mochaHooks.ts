@@ -3,6 +3,8 @@ import { Application } from 'express';
 import PORT from './serverPort';
 import { createServer, setServerPort } from '../../../src/server';
 import { endianness } from 'os';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT } from './endPoints';
+import { TEST_SERVER_PORT } from 'utils/processEnv';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -28,15 +30,12 @@ export const Accounts = {
 };
 
 export const setupApp = () => {
-  const app: Application = createServer();
-  return app;
+  return createServer();
 };
 
 export const setupHttpServer = (testApp: Application) => {
   const httpServer = http.createServer(testApp);
-  httpServer.listen(PORT, () => {
-    console.log(`Server is Running on Port ${PORT}`);
-  });
+  httpServer.listen(TEST_SERVER_PORT, () => {});
   return httpServer;
 };
 
@@ -50,7 +49,7 @@ export const getCSRFToken = (app: Application, done: Mocha.Done) => {
 
   chai.request
     .agent(app)
-    .get('/api/auth/csrftoken')
+    .get(CSRF_ENDPOINT)
     .end((error, res) => {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
@@ -65,7 +64,7 @@ export function attemptAuthentication(app: Application, csrf: String, done: Moch
 
   chai.request
     .agent(app)
-    .post('/api/auth/login')
+    .post(LOGIN_ENDPOINT)
     .send(userAccount)
     .set('Content-Type', 'application/json')
     .set('CSRF-Token', csrf)
@@ -73,5 +72,4 @@ export function attemptAuthentication(app: Application, csrf: String, done: Moch
       if (error) done(error);
       done();
     });
-  console.log('here 0');
 }

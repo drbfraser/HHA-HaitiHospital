@@ -1,7 +1,7 @@
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF, LOGIN } from './testTools/endPoints';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT } from './testTools/endPoints';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -13,38 +13,38 @@ let httpServer: http.Server;
 let agent: any;
 let csrf: String;
 
-describe('getUsers', () => {
-  before('Create a Working Server and Login With Admin', (done) => {
+describe('getUsers', function () {
+  before('Create a Working Server and Login With Admin', function (done) {
     app = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF).end((error, res) => {
+    agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
       agent
-        .post(LOGIN)
+        .post(LOGIN_ENDPOINT)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
         .send(Accounts.AdminUser)
-        .end((error: any, response: any) => {
+        .end(function (error: any, response: any) {
           if (error) return done(error);
           done();
         });
     });
   });
 
-  after('Close a Working Server', () => {
+  after('Close a Working Server', function () {
     closeServer(agent, httpServer);
   });
-  it('should get all users successfully', (done) => {
+  it('should get all users successfully', function (done) {
     // There is probably a better way to auth before calling APIs that require auth
     agent
-      .post('/api/auth/login')
+      .post(LOGIN_ENDPOINT)
       .set('content-type', 'application/json')
       .send(Accounts.AdminUser)
       .then(function (res: any) {
-        agent.get('/api/users').end((err: any, res: any) => {
+        agent.get(USERS_ENDPOINT).end(function (err: any, res: any) {
           expect(err).to.be.null;
           expect(res).to.have.status(200);
           done();

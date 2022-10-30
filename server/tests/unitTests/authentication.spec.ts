@@ -1,7 +1,7 @@
 import http, { request } from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer, getCSRFToken } from './testTools/mochaHooks';
-import { CSRF, LOGIN, USERS, LOGOUT } from './testTools/endPoints';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT, LOGOUT_ENDPOINT } from './testTools/endPoints';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -19,15 +19,15 @@ describe('Test Admin Authorization', function () {
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF).end(function (error, res) {
+    agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
       agent
-        .post(LOGIN)
+        .post(LOGIN_ENDPOINT)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
         .send(Accounts.AdminUser)
-        .end((error: any, response: any) => {
+        .end(function (error: any, response: any) {
           if (error) return done(error);
           done();
         });
@@ -38,8 +38,8 @@ describe('Test Admin Authorization', function () {
     closeServer(agent, httpServer);
   });
 
-  it.only('Should Fetch the Users', function (done) {
-    agent.get(USERS).end(function (error: any, res: any) {
+  it('Should Fetch the Users', function (done) {
+    agent.get(USERS_ENDPOINT).end(function (error: any, res: any) {
       if (error) done(error);
       expect(error).to.be.null;
       expect(res).to.have.status(200);
@@ -47,14 +47,13 @@ describe('Test Admin Authorization', function () {
     });
   });
 
-  it('Should Logout Admin User', (done) => {
+  it('Should Logout Admin User', function (done) {
     agent
-      .post(LOGOUT)
+      .post(LOGOUT_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .send({})
-      .end((error: any, response: any) => {
+      .end(function (error: any, response: any) {
         if (error) done(error);
-
         expect(error).to.be.null;
         expect(response.body).to.be.true;
         done();

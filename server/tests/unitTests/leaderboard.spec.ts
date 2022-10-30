@@ -1,7 +1,7 @@
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF, LOGIN } from './testTools/endPoints';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT, LEADERBOARD_ENDPOINT } from './testTools/endPoints';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -13,33 +13,33 @@ let httpServer: http.Server;
 let agent: any;
 let csrf: String;
 
-describe('getLeaderboard', () => {
-  before('Create a Working Server and Login With Admin', (done) => {
+describe('getLeaderboard', function () {
+  before('Create a Working Server and Login With Admin', function (done) {
     app = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF).end((error, res) => {
+    agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
       agent
-        .post(LOGIN)
+        .post(LOGIN_ENDPOINT)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
         .send(Accounts.AdminUser)
-        .end((error: any, response: any) => {
+        .end(function (error: any, response: any) {
           if (error) return done(error);
           done();
         });
     });
   });
 
-  after('Close a Working Server', () => {
+  after('Close a Working Server', function () {
     closeServer(agent, httpServer);
   });
 
-  it('should get all leaderboard points', (done) => {
-    agent.get('/api/leaderboard').end((err: any, res: any) => {
+  it('should get all leaderboard points', function (done) {
+    agent.get(LEADERBOARD_ENDPOINT).end(function (err: any, res: any) {
       expect(err).to.be.null;
       expect(res).to.have.status(200);
       done();
