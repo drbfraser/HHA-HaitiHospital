@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { IllegalState } from '../exceptions/systemException';
+import { IllegalState } from 'exceptions/systemException';
 import UserModel from './user';
 import { UserApiOut } from '../routes/api/jsons/user';
-import { formatDateString } from '../utils/utils';
+import { formatDateString } from 'utils/utils';
 
 const { Schema } = mongoose;
 

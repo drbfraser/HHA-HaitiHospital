@@ -1,6 +1,6 @@
-import { BiomechPriority } from '../../../models/bioMech';
-import { UserApiOut } from '../../../routes/api/jsons/user';
-import { proxiedPropertyOf } from '../../../utils/utils';
+import { BiomechPriority } from 'models/bioMech';
+import { UserApiOut } from 'routes/api/jsons/user';
+import { proxiedPropertyOf } from 'utils/utils';
 
 export namespace BiomechApiIn {
   export interface BiomechPost {

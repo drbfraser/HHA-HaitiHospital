@@ -1,10 +1,10 @@
 import { JsonReportDescriptor } from '@hha/common';
 import { randomUUID } from 'crypto';
 import mongoose, { ValidatorProps } from 'mongoose';
-import { ReportDescriptor } from '../utils/definitions/report';
-import Departments from '../utils/departments';
-import { parseToJson } from '../utils/parsers/json_report';
-import { fromTemplateToReport, TemplateItems } from '../utils/parsers/template';
+import { ReportDescriptor } from 'utils/definitions/report';
+import Departments from 'utils/departments';
+import { parseToJson } from 'utils/parsers/json_report';
+import { fromTemplateToReport, TemplateItems } from 'utils/parsers/template';
 import UserCollection, { USER_MODEL_NAME } from './user';
 const { Schema } = mongoose;
 

@@ -2,14 +2,14 @@ import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
-import EOTMCollection, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from '../../models/employeeOfTheMonth';
+import EOTMCollection, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../sanitization/schemas/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { BadRequest, HTTP_OK_CODE, NotFound } from '../../exceptions/httpException';
-import Departments from '../../utils/departments';
-import { roleAuth } from '../../middleware/roleAuth';
-import { RequestWithUser } from '../../utils/definitions/express';
+import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
+import Departments from 'utils/departments';
+import { roleAuth } from 'middleware/roleAuth';
+import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 

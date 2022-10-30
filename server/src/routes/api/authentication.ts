@@ -1,8 +1,8 @@
-import { HTTP_OK_CODE } from '../../exceptions/httpException';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
 import { Router, Request, Response, NextFunction } from 'express';
-import requireJwtAuth from '../../middleware/requireJwtAuth';
-import UserCollection from '../../models/user';
-import { RequestWithUser } from '../../utils/definitions/express';
+import requireJwtAuth from 'middleware/requireJwtAuth';
+import UserCollection from 'models/user';
+import { RequestWithUser } from 'utils/definitions/express';
 import requireLocalAuth from '../../middleware/requireLocalAuth';
 
 const router = Router();

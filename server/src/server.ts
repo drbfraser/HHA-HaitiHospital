@@ -8,7 +8,7 @@ import * as ENV from './utils/processEnv';
 const path = require('path');
 
 import csrf from 'csurf';
-import httpErrorHandler from './middleware/httpErrorHandler';
+import httpErrorHandler from 'middleware/httpErrorHandler';
 
 export const createServer = () => {
   const app = express();

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { LeaderboardJson } from './leaderboard';
-import { leaderboardPointsCalculator } from '../utils/leaderboard';
+import { leaderboardPointsCalculator } from 'utils/leaderboard';
 
 const { Schema } = mongoose;
 

@@ -1,4 +1,4 @@
-import { IllegalState, InvalidInput } from '../../exceptions/systemException';
+import { IllegalState, InvalidInput } from 'exceptions/systemException';
 import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as _JsonUtils from '../report/json_report';
 import * as _ReportDefs from '../definitions/report';

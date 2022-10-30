@@ -1,10 +1,10 @@
-import { RequestWithUser } from '../utils/definitions/express';
+import { RequestWithUser } from 'utils/definitions/express';
 import { Response, NextFunction } from 'express';
-import { InvalidInput } from '../exceptions/systemException';
-import { Unauthorized } from '../exceptions/httpException';
-import { DEPARTMENT_ID_URL_SLUG } from '../utils/constants';
-import { checkUserIsDepartmentAuthed } from '../utils/authUtils';
-import Departments from '../utils/departments';
+import { InvalidInput } from 'exceptions/systemException';
+import { Unauthorized } from 'exceptions/httpException';
+import { DEPARTMENT_ID_URL_SLUG } from 'utils/constants';
+import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
+import Departments from 'utils/departments';
 
 type Middleware = (req: RequestWithUser, res: Response, next: NextFunction) => void | Promise<void>;
 

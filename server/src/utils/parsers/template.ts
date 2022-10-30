@@ -1,7 +1,7 @@
 import { ItemAnswer, ReportDescriptor, ReportEqualItem, ReportItem, ReportItems, ReportNumericItem, ReportSumItem, ReportGroupItem } from '../definitions/report';
 import { generateUuid, getLengthOfEnum } from '../utils';
-import { InvalidInput, IllegalState } from '../../exceptions/systemException';
-import { Template } from '../../models/template';
+import { InvalidInput, IllegalState } from 'exceptions/systemException';
+import { Template } from 'models/template';
 import { ItemType, ItemTypeKeys } from '@hha/common';
 
 interface TemplateItem extends ReportItem {}

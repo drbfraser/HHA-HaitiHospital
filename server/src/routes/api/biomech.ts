@@ -1,14 +1,14 @@
 import { Router, Response, NextFunction } from 'express';
-import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { oneImageUploader } from '../../middleware/multer';
-import { validateInput } from '../../middleware/inputSanitization';
-import BioMechCollection, { BioMech } from '../../models/bioMech';
-import { Biomech as InputSchema } from '../../sanitization/schemas/biomech';
-import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from '../../exceptions/httpException';
-import { RequestWithUser } from '../../utils/definitions/express';
-import { roleAuth } from '../../middleware/roleAuth';
-import { Role } from '../../models/user';
+import requireJwtAuth from 'middleware/requireJwtAuth';
+import { oneImageUploader } from 'middleware/multer';
+import { validateInput } from 'middleware/inputSanitization';
+import BioMechCollection, { BioMech } from 'models/bioMech';
+import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
+import { deleteUploadedImage } from 'utils/unlinkImage';
+import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { RequestWithUser } from 'utils/definitions/express';
+import { roleAuth } from 'middleware/roleAuth';
+import { Role } from 'models/user';
 import { BiomechApiIn } from './jsons/biomech';
 
 const router = Router();

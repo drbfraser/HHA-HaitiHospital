@@ -2,12 +2,12 @@ import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
 import UserCollection, { hashPassword, Role, User } from '../../models/user';
-import Departments from '../../utils/departments';
-import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from '../../exceptions/httpException';
-import { roleAuth } from '../../middleware/roleAuth';
-import { RequestWithUser } from '../../utils/definitions/express';
-import { IllegalState } from '../../exceptions/systemException';
-import { user as inputValidator } from '../../sanitization/schemas/user';
+import Departments from 'utils/departments';
+import { BadRequest, Conflict, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
+import { roleAuth } from 'middleware/roleAuth';
+import { RequestWithUser } from 'utils/definitions/express';
+import { IllegalState } from 'exceptions/systemException';
+import { user as inputValidator } from 'sanitization/schemas/user';
 
 const router = Router();
 

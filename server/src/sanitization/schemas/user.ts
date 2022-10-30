@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
-import { isDepartment } from '../../sanitization/validators/isDepartment';
-import { isRole } from '../../sanitization/validators/isRole';
+import { isDepartment } from 'sanitization/validators/isDepartment';
+import { isRole } from 'sanitization/validators/isRole';
 import { msgStringMulti } from '../messages';
 
 const UNAME_SIZE_MIN: number = 2;

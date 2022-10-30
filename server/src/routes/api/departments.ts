@@ -1,8 +1,8 @@
 import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import DepartmentCollection, { DepartmentJson } from '../../models/departments';
-import { HTTP_OK_CODE, NotFound } from '../../exceptions/httpException';
-import { RequestWithUser } from '../../utils/definitions/express';
+import DepartmentCollection, { DepartmentJson } from 'models/departments';
+import { HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
+import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 

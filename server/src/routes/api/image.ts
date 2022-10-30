@@ -1,6 +1,6 @@
-import { HTTP_OK_CODE } from '../../exceptions/httpException';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
 import { Router, Response, NextFunction } from 'express';
-import { RequestWithUser } from '../../utils/definitions/express';
+import { RequestWithUser } from 'utils/definitions/express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 const path = require('path');
 

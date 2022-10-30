@@ -1,6 +1,6 @@
 import { CustomValidator } from "express-validator";
-import { BiomechPriority } from "../../models/bioMech";
-import { getEnumKeyByStringValue } from "../../utils/utils";
+import { BiomechPriority } from "models/bioMech";
+import { getEnumKeyByStringValue } from "utils/utils";
 
 export const isBiomechPriority: CustomValidator = (input: string) => {
     return getEnumKeyByStringValue(BiomechPriority, input) !== null;

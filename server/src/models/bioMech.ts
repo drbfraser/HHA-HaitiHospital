@@ -1,7 +1,7 @@
-import Departments from '../utils/departments';
+import Departments from 'utils/departments';
 import * as mongoose from 'mongoose';
-import { IllegalState } from '../exceptions/systemException';
-import { formatDateString } from '../utils/utils';
+import { IllegalState } from 'exceptions/systemException';
+import { formatDateString } from 'utils/utils';
 import UserCollection from './user';
 import { BiomechApiOut } from 'routes/api/jsons/biomech';
 

@@ -1,7 +1,7 @@
 import Departments from '../departments'; 
 import { JsonReportDescriptor, JsonReportItems } from '@hha/common';
-import { ReportDescriptor, ReportItems } from '../definitions/report';
-import { formatDateString } from '../utils';
+import { ReportDescriptor, ReportItems } from 'utils/definitions/report';
+import { formatDateString } from 'utils/utils';
 import { getParserItemToJson } from './item';
 
 export const parseToJson = async (report: ReportDescriptor) => {
