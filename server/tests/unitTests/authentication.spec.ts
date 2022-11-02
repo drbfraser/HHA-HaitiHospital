@@ -8,14 +8,13 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-let app: Application;
 let agent: any;
 let httpServer: http.Server;
 let csrf: String;
 
 describe('Test Admin Authorization', function () {
   before('Create a Working Server and Login With Admin', function (done) {
-    app = setupApp();
+    let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 

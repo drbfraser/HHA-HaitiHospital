@@ -8,20 +8,18 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-let app: Application;
 let httpServer: http.Server;
 let agent: any;
-let csrf: String;
 
 describe('getLeaderboard', function () {
   before('Create a Working Server and Login With Admin', function (done) {
-    app = setupApp();
+    let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
-      csrf = res?.body?.CSRFToken;
+      let csrf: String = res?.body?.CSRFToken;
 
       agent
         .post(LOGIN_ENDPOINT)
