@@ -1,3 +1,5 @@
+import { recursiveConsumeObjectHOF } from '../Utils';
+
 /*  Support for object serialization/deserialization without loss of typing
     information.
 
@@ -59,28 +61,11 @@ export class ObjectSerializer {
         delete object['__class__'];
     }
     
-    private readonly recursiveIterateObjectHOF = 
-        (consumer: (something: any) => void): 
-        (object:any) => void => {
-        return (object: any): void => {
-            if (!(object instanceof Object) || object instanceof Function) {
-                return;
-            }
-            
-            Object.entries(object)
-                .forEach(([key, value]) => {
-                    this.recursiveIterateObjectHOF(consumer)(value); 
-            });
-            
-            consumer(object);
-        }
-    }
-
     private readonly recursiveAddClassNameProperty = 
-        this.recursiveIterateObjectHOF(this.addClassNameProperty);    
+        recursiveConsumeObjectHOF(this.addClassNameProperty);    
 
     private readonly recursiveRemoveClassNameProperty = 
-        this.recursiveIterateObjectHOF(this.removeClassNameProperty);
+        recursiveConsumeObjectHOF(this.removeClassNameProperty);
     
     public readonly serialize = (object: Object): string => {
         this.recursiveAddClassNameProperty(object);
