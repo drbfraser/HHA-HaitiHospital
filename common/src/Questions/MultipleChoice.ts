@@ -6,7 +6,7 @@ import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
 
 // Choice for multiple choice questions
-serializable('');
+@serializable('')
 class Choice {
   private readonly description: string;
   private chosen: boolean;

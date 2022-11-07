@@ -9,7 +9,9 @@
 import { QuestionParent } from './QuestionParent';
 import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
+import { serializable } from '../Serializer/ObjectSerializer';
 
+@serializable(undefined, '', (arg) => undefined)
 export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private questionGroups: Array<QuestionGroup<ID, ErrorType>>;
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
@@ -20,14 +22,12 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
     id: ID,
     prompt: string,
     idGenerator: (questionGroupIndex: number) => ID,
-    defaultAnswer?: number,
     ...questions: Array<QuestionNode<ID, ErrorType>>
   ) {
     super(id, prompt);
     this.idGenerator = idGenerator;
     // TODO: Allow multiple "templates to be added"
     this.questionsTemplate = new QuestionGroup<ID, ErrorType>(undefined, `${prompt}-template`).addAll(...questions);
-    this.setAnswer(defaultAnswer);
   }
 
   public addToTemplate(
