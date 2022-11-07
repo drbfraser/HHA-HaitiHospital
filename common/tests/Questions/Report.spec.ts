@@ -1,6 +1,7 @@
 import { buildRehabMockReport, buildNicuPaedsMockReport, buildMaternityMockReport, oneQuestionMockReport } from '../../src/MockReports';
 import { QuestionGroup } from '../../src/Questions';
 import { ObjectSerializer } from '../../src/Serializer';
+import { verifySerialized } from '../../tests/Utils'
 import { expect } from 'chai';
 
 describe('Mock Reports', function () {
@@ -16,13 +17,22 @@ describe('Mock Reports', function () {
       let json: string = objectSerializer.serialize(report);
       let deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(json);
       
-      expect(deserialized).to.deep.equal(report);
+      expect(verifySerialized(report, deserialized)).to.be.true;
     });
   });
 
   describe('Rehab mock report', function() {
     it('Should create a mock rehab report', function () {
       buildRehabMockReport();
+    });
+    
+    it('Should be able to serialize rehab mock report', function () {
+      const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+      const report: QuestionGroup<string, string> = buildRehabMockReport();
+      const json: string = objectSerializer.serialize(report);
+      const deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(json);
+      
+      expect(verifySerialized(report, deserialized)).to.be.true;
     });
   });
 
