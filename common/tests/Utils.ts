@@ -1,12 +1,25 @@
 export function verifySerialized(original: any, deserialized: any): boolean {
-	if (!(original instanceof Object) || original instanceof Function) {
+	if (deserialized === undefined && original != undefined && !(original instanceof Function)) {
+		 return false;
+	}
+	
+	if (deserialized === undefined && original instanceof Function) {
+		return true;
+	}
+	
+	if (!(original instanceof Object)) {
 		return typeof(original) === typeof(deserialized) && original === deserialized;
 	}
 	
+	let accumulator = true;	
 	Object.entries(original)
 		.forEach(([key, value]) => {
-		verifySerialized(value, deserialized[key])
-	});
+		if (!accumulator) {
+			return;
+		};
+
+		accumulator &&= verifySerialized(value, deserialized[key]);
+		});
 	
-	return original.constructor === deserialized.constructor;
+	return accumulator && original.constructor === deserialized.constructor;
 }		
