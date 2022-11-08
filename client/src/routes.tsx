@@ -22,7 +22,7 @@ import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employe
 import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
-import Report from 'components/report/Report';
+import { Report } from 'components/report/Report';
 import { PathPatterns } from 'constants/paths';
 import ReportView from 'pages/report_view/report_view';
 import { ChangeTemplate } from 'pages/general_reports/change_template';

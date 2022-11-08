@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 // import { useTranslation } from 'react-i18next';
 import { ItemType } from '@hha/common';
-import { ItemField } from './Report';
+import { ItemField } from './OldReport';
 
 type Label = {
   id: string;

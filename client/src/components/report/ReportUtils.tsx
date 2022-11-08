@@ -2,7 +2,7 @@ import { JsonReportDescriptor, JsonReportItem, JsonReportItems, JsonItemAnswer }
 import { uniqueId } from 'lodash';
 import { type } from 'os';
 import * as MockApi from './MockApi';
-import { ItemField, ReportForm, itemFieldToReportItem } from './Report';
+import { ItemField, ReportForm, itemFieldToReportItem } from './OldReport';
 
 export const submitData = async (answers: any, data: ReportForm): Promise<JsonReportDescriptor> => {
   /*
