@@ -125,7 +125,6 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
     }
     return res.sendStatus(HTTP_CREATED_CODE);
   } catch (e) {
-    console.log("NAURRRRRRR")
     next(e);
   }
 });

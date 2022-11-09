@@ -35,6 +35,7 @@ describe('getUsers', function () {
   after('Close a Working Server', function () {
     closeServer(agent, httpServer);
   });
+
   it('should get all users successfully', function (done) {
     // There is probably a better way to auth before calling APIs that require auth
     agent

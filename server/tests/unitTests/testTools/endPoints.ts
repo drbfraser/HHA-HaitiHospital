@@ -8,3 +8,5 @@ export const CASE_STUDIES_ENDPOINT: string = '/api/case-studies';
 export const LEADERBOARD_ENDPOINT: string = '/api/leaderboard';
 export const MESSAGEBOARD_ENDPOINT: string = '/api/message-board';
 export const DEPARTMENT_ENDPOINT: string = '/api/department';
+
+

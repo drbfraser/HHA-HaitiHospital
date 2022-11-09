@@ -147,7 +147,6 @@ describe('Messageboard Tests', function () {
     postMessage(newMessage, done, 201, function () {
       agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
         if (error) done(error);
-        const messageId: String = response.body[0].id;
         done();
       });
     });
@@ -169,7 +168,6 @@ describe('Messageboard Tests', function () {
         // Check that the most recent message uploaded is the one sent
         // Note that there is no way to set the message ID during the POST request, so it is unknown
         const message = response.body[0]; // Server sorts messages in descending order during GET, so grab the first one
-        const messageId: String = message.id;
 
         expect(response).to.have.status(200);
         expect(message.department.id).to.equal(departmentId);
