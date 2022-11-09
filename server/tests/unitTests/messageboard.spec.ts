@@ -201,7 +201,7 @@ describe('Messageboard Tests', function () {
     postMessage(newMessage, done, 201, function () {
       agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
         if (error) done(error);
-        const message: Object = response.body[0];
+        const message = response.body[0];
         const messageId: String = message.id; // Server sorts messages in descending order during GET, so grab the first one
 
         agent
@@ -235,7 +235,7 @@ describe('Messageboard Tests', function () {
       // Retrieve the ID of the message in order to upate it
       agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
         if (error) done(error);
-        const oldMessage: Object = response.body[0];
+        const oldMessage = response.body[0];
         const messageId = oldMessage.id;
 
         const newMessage: MessageObject = {
