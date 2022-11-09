@@ -30,7 +30,7 @@ function postCaseStudy(document: String, imgPath: String, done: Done, expectedSt
     });
 }
 
-describe('getCaseStudies', function () {
+describe('Case Study Tests', function () {
   before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);

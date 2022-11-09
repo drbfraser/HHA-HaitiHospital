@@ -18,7 +18,6 @@ interface MessageObject {
   department: { id: String };
   messageHeader: String;
   messageBody: String;
-  user: { _id: String };
 }
 
 function postMessage(message: MessageObject, done: Done, expectedStatus: Number, next?: Function) {
@@ -126,8 +125,7 @@ describe('Messageboard Tests', function () {
     const newMessage: MessageObject = {
       department: { id: 'invalid department id' },
       messageHeader: 'test header',
-      messageBody: 'test body',
-      user: { _id: 'test id' }
+      messageBody: 'test body'
     };
 
     postMessage(newMessage, done, 500);
@@ -138,8 +136,7 @@ describe('Messageboard Tests', function () {
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
-      messageBody: 'test body',
-      user: { _id: 'test id' }
+      messageBody: 'test body'
     };
 
     postMessage(newMessage, done, 201, function () {
@@ -155,8 +152,7 @@ describe('Messageboard Tests', function () {
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
-      messageBody: 'test body',
-      user: { _id: 'test id' }
+      messageBody: 'test body'
     };
 
     postMessage(newMessage, done, 201, function () {
@@ -192,8 +188,7 @@ describe('Messageboard Tests', function () {
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',
-      messageBody: 'test body msg',
-      user: { _id: 'test id' }
+      messageBody: 'test body msg'
     };
 
     postMessage(newMessage, done, 201, function () {
@@ -225,8 +220,7 @@ describe('Messageboard Tests', function () {
     const message: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',
-      messageBody: 'test body msg',
-      user: { _id: 'test id' }
+      messageBody: 'test body msg'
     };
 
     postMessage(message, done, 201, function () {
@@ -239,8 +233,7 @@ describe('Messageboard Tests', function () {
         const newMessage: MessageObject = {
           department: { id: departmentId },
           messageHeader: 'test header msg UPDATED',
-          messageBody: 'test body msg UPDATED',
-          user: { _id: 'test id' }
+          messageBody: 'test body msg UPDATED'
         };
 
         agent

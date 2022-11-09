@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 let httpServer: http.Server;
 let agent: any;
 
-describe('getLeaderboard', function () {
+describe('Leaderboard Tests', function () {
   before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
