@@ -3,8 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CASE_STUDIES_ENDPOINT, CASE_STUDIES_FEATURED_ENDPOINT, CSRF_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
-import { CaseStudy } from 'models/caseStudies';
-import { clear } from 'console';
+
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -32,7 +31,7 @@ function postCaseStudy(document: String, imgPath: String, done: Done, expectedSt
 }
 
 describe('getCaseStudies', function () {
-  before('Create a Working Server and Login With Admin', function (done) {
+  before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
@@ -56,7 +55,7 @@ describe('getCaseStudies', function () {
     closeServer(agent, httpServer);
   });
 
-  it('Should Get Featured Case Study', function (done) {
+  it('Should Get Featured Case Study', function (done: Done) {
     agent.get(CASE_STUDIES_FEATURED_ENDPOINT).end(function (error: any, response: any) {
       if (error) return done(error);
       expect(error).to.be.null;
@@ -65,7 +64,7 @@ describe('getCaseStudies', function () {
     });
   });
 
-  it('Should Get All Case Studies', function (done) {
+  it('Should Get All Case Studies', function (done: Done) {
     agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
       expect(error).to.be.null;
       expect(response).to.have.status(200);
@@ -73,9 +72,9 @@ describe('getCaseStudies', function () {
     });
   });
 
-  it('Should Successfully GET a case study via ID', function (done) {
+  it('Should Successfully GET a case study via ID', function (done: Done) {
     // Need to perform a GET to get a case Study's ID
-    agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+    agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
 
       const caseStudy = response.body[0];
@@ -83,7 +82,7 @@ describe('getCaseStudies', function () {
       const featured: Boolean = caseStudy?.featured;
       const imgPath: String = caseStudy?.imgPath;
 
-      agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error, response) {
+      agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: any, response: any) {
         if (error) done(error);
         expect(response).to.have.status(200);
 
@@ -96,7 +95,7 @@ describe('getCaseStudies', function () {
     });
   });
 
-  it('Should Successfully Post a New Case Patient Story', function (done) {
+  it('Should Successfully Post a New Case Patient Story', function (done: Done) {
     const imgPath: String = 'public/images/avatar0.jpg';
     const document: String = `{"patientStory":
         {"patientsName":"John",
@@ -110,7 +109,7 @@ describe('getCaseStudies', function () {
 
     postCaseStudy(document, imgPath, done, 201, function () {
       // Verify that the correct information is stored
-      agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+      agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
 
         const caseStudy = response.body[0]; // Sorted in decesending order, so grab the first one
@@ -128,7 +127,7 @@ describe('getCaseStudies', function () {
     });
   });
 
-  it('Should Successfully Post a New Staff Recognition Story', function (done) {
+  it('Should Successfully Post a New Staff Recognition Story', function (done: Done) {
     const imgPath: String = 'public/images/avatar1.jpg';
     const document: String = `{"staffRecognition":
       {"staffName":"John",
@@ -141,7 +140,7 @@ describe('getCaseStudies', function () {
 
     postCaseStudy(document, imgPath, done, 201, function () {
       // Verify that the correct information is stored
-      agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+      agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
 
         const caseStudy = response.body[0]; // Sorted in decesending order, so grab the first one
@@ -158,7 +157,7 @@ describe('getCaseStudies', function () {
     });
   });
 
-  it('Should Successfully Post a New Training Session Story', function (done) {
+  it('Should Successfully Post a New Training Session Story', function (done: Done) {
     const imgPath: String = 'public/images/avatar1.jpg';
     const document: String = `{"trainingSession":
       {"trainingDate":"01-01-2000",
@@ -174,7 +173,7 @@ describe('getCaseStudies', function () {
 
     postCaseStudy(document, imgPath, done, 201, function () {
       // Verify that the correct information is stored
-      agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+      agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
 
         const caseStudy = response.body[0]; // Sorted in decesending order, so grab the first one
@@ -191,7 +190,7 @@ describe('getCaseStudies', function () {
     });
   });
 
-  it('Should Successfuly Post a new Equipment Received Case Study', function (done) {
+  it('Should Successfuly Post a new Equipment Received Case Study', function (done: Done) {
     const imgPath: String = 'public/images/avatar1.jpg';
     const document: String = `{"equipmentReceived":
       {"equipmentReceived":"MRI Machine",
@@ -220,7 +219,7 @@ describe('getCaseStudies', function () {
     });
   });
 
-  it("Should Successfully Post an 'Other' Case Study", function (done) {
+  it("Should Successfully Post an 'Other' Case Study", function (done: Done) {
     const imgPath: String = 'public/images/avatar1.jpg';
     const document: String = `{"otherStory":
       {"caseStudyStory":"This is a Story in the \'Other\' Category"},
@@ -228,7 +227,7 @@ describe('getCaseStudies', function () {
 
     postCaseStudy(document, imgPath, done, 201, function () {
       // Verify that the correct information is stored
-      agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+      agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
 
         const caseStudy = response.body[0]; // Sorted in decesending order, so grab the first one

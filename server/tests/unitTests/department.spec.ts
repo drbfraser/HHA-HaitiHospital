@@ -1,7 +1,8 @@
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT } from './testTools/endPoints';
+import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
+import { Done } from 'mocha';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -12,7 +13,7 @@ let httpServer: http.Server;
 let agent: any;
 
 describe('Department Tests', function () {
-  before('Create a Working Server and Login With Admin', function (done) {
+  before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
@@ -36,8 +37,8 @@ describe('Department Tests', function () {
     closeServer(agent, httpServer);
   });
 
-  it('Should Successfully Get All Departments', function (done) {
-    agent.get(DEPARTMENT_ENDPOINT).end(function (error, response) {
+  it('Should Successfully Get All Departments', function (done: Done) {
+    agent.get(DEPARTMENT_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
       expect(error).to.be.null;
       expect(response).to.have.status(200);

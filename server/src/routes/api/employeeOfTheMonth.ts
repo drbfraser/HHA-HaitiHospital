@@ -33,14 +33,15 @@ router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonth
       deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
     }
     const { name, department, description } = JSON.parse(req.body.document);
+
     let imgPath: string = '';
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
+
     if (!Departments.Database.validateDeptId(department.id)) {
       throw new BadRequest(`Invalid department id ${department}`);
     }
-
     const updatedEmployeeOfTheMonth: EmployeeOfTheMonth = {
       name: name,
       departmentId: department.id,

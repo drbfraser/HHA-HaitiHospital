@@ -3,8 +3,6 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, MESSAGEBOARD_ENDPOINT, DEPARTMENT_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
-import { NotFound } from 'exceptions/httpException';
-import { doesNotMatch, doesNotReject } from 'assert';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -39,7 +37,7 @@ function postMessage(message: MessageObject, done: Done, expectedStatus: Number,
 }
 
 function getDepartmentIds(done: Done) {
-  agent.get(DEPARTMENT_ENDPOINT).end(function (error, response) {
+  agent.get(DEPARTMENT_ENDPOINT).end(function (error: any, response: any) {
     if (error) done(error);
     departmentIds = response.body.map((department) => department.id);
     done();
@@ -135,7 +133,7 @@ describe('Messageboard Tests', function () {
     postMessage(newMessage, done, 500);
   });
 
-  it('Should Successfully Post a New Message', function (done) {
+  it('Should Successfully Post a New Message', function (done: Done) {
     const departmentId: String = departmentIds[0]; // Get department id for the General Department
     const newMessage: MessageObject = {
       department: { id: departmentId },
@@ -145,14 +143,14 @@ describe('Messageboard Tests', function () {
     };
 
     postMessage(newMessage, done, 201, function () {
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
+      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
         done();
       });
     });
   });
 
-  it('Should Successfully Post a New Message and Get it', function (done) {
+  it('Should Successfully Post a New Message and Get it', function (done: Done) {
     const departmentId: String = departmentIds[1];
     const newMessage: MessageObject = {
       department: { id: departmentId },
@@ -162,7 +160,7 @@ describe('Messageboard Tests', function () {
     };
 
     postMessage(newMessage, done, 201, function () {
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
+      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
 
         // Check that the most recent message uploaded is the one sent
@@ -199,7 +197,7 @@ describe('Messageboard Tests', function () {
     };
 
     postMessage(newMessage, done, 201, function () {
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
+      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
         const message = response.body[0];
         const messageId: String = message.id; // Server sorts messages in descending order during GET, so grab the first one
@@ -212,7 +210,7 @@ describe('Messageboard Tests', function () {
             expect(response).to.have.status(204);
 
             // Check that the message does not exist anymore
-            agent.get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).end(function (error, response) {
+            agent.get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).end(function (error: any, response: any) {
               if (error) done(error);
               expect(response).to.have.status(404);
               done();
@@ -233,7 +231,7 @@ describe('Messageboard Tests', function () {
 
     postMessage(message, done, 201, function () {
       // Retrieve the ID of the message in order to upate it
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
+      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
         const oldMessage = response.body[0];
         const messageId = oldMessage.id;
