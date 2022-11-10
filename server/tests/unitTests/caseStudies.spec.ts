@@ -4,7 +4,6 @@ import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer
 import { CASE_STUDIES_ENDPOINT, CASE_STUDIES_FEATURED_ENDPOINT, CSRF_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
 
-
 const expect = require('chai').expect;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -79,17 +78,13 @@ describe('Case Study Tests', function () {
 
       const caseStudy = response.body[0];
       const id: String = caseStudy?.id;
-      const featured: Boolean = caseStudy?.featured;
-      const imgPath: String = caseStudy?.imgPath;
 
       agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: any, response: any) {
         if (error) done(error);
         expect(response).to.have.status(200);
 
         const fetchedCaseStudy = response.body;
-        expect(fetchedCaseStudy.id).to.equal(id);
-        expect(fetchedCaseStudy.featured).to.equal(featured);
-        expect(fetchedCaseStudy.imgPath).to.equal(imgPath);
+        expect(fetchedCaseStudy).to.deep.equal(caseStudy);
         done();
       });
     });

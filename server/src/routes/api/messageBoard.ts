@@ -77,7 +77,7 @@ router.post('/', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCreat
     if (!(await Departments.Database.validateDeptId(departmentId))) {
       throw new BadRequest(`Invalid department id ${departmentId}`);
     }
-   
+
     const date: Date = new Date();
     const messageBody: string = req.body.messageBody;
     const messageHeader: string = req.body.messageHeader;
