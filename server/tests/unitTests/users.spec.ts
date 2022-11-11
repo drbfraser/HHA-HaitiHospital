@@ -12,6 +12,7 @@ chai.use(chaiHttp);
 let httpServer: http.Server;
 let agent: any;
 let csrf: String;
+let userIds: String[];
 
 interface User {
   username: String;
@@ -21,11 +22,17 @@ interface User {
   department: { id: String; name: String };
 }
 
+async function updatePostedUserIds() {
+  const response = await agent.get(USERS_ENDPOINT);
+  userIds.push(response.body[0].id);
+}
+
 describe('Users Test', function () {
   before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
+    userIds = Array<String>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -42,7 +49,15 @@ describe('Users Test', function () {
     });
   });
 
-  after('Close a Working Server', function () {
+  after('Close a Working Server', async function () {
+    // Cleaning up created users not deleted during testing
+    for await (const userId of userIds) {
+      try {
+        await agent.delete(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
     closeServer(agent, httpServer);
   });
 
@@ -100,6 +115,7 @@ describe('Users Test', function () {
     expect(getResponse).to.have.status(200);
     expect(getResponse.body[0].name).to.equal('John');
     expect(getResponse.body[0].role).to.equal('User');
+    updatePostedUserIds();
   });
 
   it('Should Unsuccessfully Post a New User Due to Existing Username', async function () {

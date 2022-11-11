@@ -12,6 +12,7 @@ chai.use(chaiHttp);
 let httpServer: http.Server;
 let agent: any;
 let csrf: String;
+let caseStudyIds: String[];
 
 function postCaseStudy(document: String, imgPath: String, done: Done, expectedStatus: Number, next?: Function) {
   agent
@@ -20,7 +21,6 @@ function postCaseStudy(document: String, imgPath: String, done: Done, expectedSt
     .field('document', document)
     .attach('file', imgPath)
     .end(function (error, response) {
-      // console.log(response);
       if (error) done(error);
       expect(error).to.be.null;
       expect(response).to.have.status(expectedStatus);
@@ -29,11 +29,20 @@ function postCaseStudy(document: String, imgPath: String, done: Done, expectedSt
     });
 }
 
+function updateCaseStudyIds(done: Done) {
+  agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
+    if (error) done(error);
+    caseStudyIds.push(response.body[0].id);
+    done();
+  });
+}
+
 describe('Case Study Tests', function () {
   before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
+    caseStudyIds = new Array<String>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -50,7 +59,15 @@ describe('Case Study Tests', function () {
     });
   });
 
-  after('Close a Working Server', function () {
+  after('Close a Working Server', async function () {
+    // Cleaning up created case studies that were not deleted during testing
+    for await (const caseStudyid of caseStudyIds) {
+      try {
+        await agent.delete(`${CASE_STUDIES_ENDPOINT}/${caseStudyid}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
     closeServer(agent, httpServer);
   });
 
@@ -117,7 +134,7 @@ describe('Case Study Tests', function () {
         expect(caseStudy.patientStory.howLongWereTheyAtHcbh).to.equal('3 years');
         expect(caseStudy.patientStory.diagnosis).to.equal('Flu');
         expect(caseStudy.patientStory.caseStudyStory).to.equal('John recovered!');
-        done();
+        updateCaseStudyIds(done);
       });
     });
   });
@@ -147,13 +164,13 @@ describe('Case Study Tests', function () {
         expect(caseStudy.staffRecognition.howLongWorkingAtHcbh).to.equal('5 years');
         expect(caseStudy.staffRecognition.mostEnjoy).to.equal('Working with patients');
         expect(caseStudy.staffRecognition.caseStudyStory).to.equal('John is amazing!');
-        done();
+        updateCaseStudyIds(done);
       });
     });
   });
 
   it('Should Successfully Post a New Training Session Story', function (done: Done) {
-    const imgPath: String = 'public/images/avatar1.jpg';
+    const imgPath: String = 'public/images/avatar2.jpg';
     const document: String = `{"trainingSession":
       {"trainingDate":"01-01-2000",
       "trainingOn":"MRI",
@@ -180,13 +197,13 @@ describe('Case Study Tests', function () {
         expect(caseStudy.trainingSession.whoAttended).to.equal('Seraphine');
         expect(caseStudy.trainingSession.benefitsFromTraining).to.equal('John is more knowledgeable now');
         expect(caseStudy.trainingSession.caseStudyStory).to.equal('A successful training session!');
-        done();
+        updateCaseStudyIds(done);
       });
     });
   });
 
   it('Should Successfuly Post a new Equipment Received Case Study', function (done: Done) {
-    const imgPath: String = 'public/images/avatar1.jpg';
+    const imgPath: String = 'public/images/avatar0.jpg';
     const document: String = `{"equipmentReceived":
       {"equipmentReceived":"MRI Machine",
       "departmentReceived":"General",
@@ -198,7 +215,7 @@ describe('Case Study Tests', function () {
 
     postCaseStudy(document, imgPath, done, 201, function () {
       // Verify that the correct information is stored
-      agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+      agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
 
         const caseStudy = response.body[0]; // Sorted in decesending order, so grab the first one
@@ -209,7 +226,7 @@ describe('Case Study Tests', function () {
         expect(caseStudy.equipmentReceived.purchasedOrDonated).to.equal('Donated');
         expect(caseStudy.equipmentReceived.whatDoesEquipmentDo).to.equal('Brain Imaging');
         expect(caseStudy.equipmentReceived.caseStudyStory).to.equal('Received a new MRI Machine');
-        done();
+        updateCaseStudyIds(done);
       });
     });
   });
@@ -228,7 +245,7 @@ describe('Case Study Tests', function () {
         const caseStudy = response.body[0]; // Sorted in decesending order, so grab the first one
         expect(caseStudy.caseStudyType).to.equal('Other Story');
         expect(caseStudy.otherStory.caseStudyStory).to.equal("This is a Story in the 'Other' Category");
-        done();
+        updateCaseStudyIds(done);
       });
     });
   });
@@ -259,12 +276,13 @@ describe('Case Study Tests', function () {
     });
   });
 
-  it('Should Successfully Change the Featured Case Study', function (done) {
+  it('Should Successfully Change the Featured Case Study', function (done: Done) {
     // Need to perform a GET to get a case Study's ID
-    agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+    agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
-
-      const caseStudy = response.body[0];
+      // Selecting the last one because new case studies created for the sake of testing are discarded after
+      // If the first one was used, then running the test suite a second time would fail previous tests because the featured case study was deleted
+      const caseStudy = response.body[response.body.length - 1];
       const id: String = caseStudy?.id;
 
       agent
@@ -275,7 +293,7 @@ describe('Case Study Tests', function () {
           expect(response).to.have.status(200);
 
           // Check that the featured case study is updated
-          agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error, response) {
+          agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: any, response: any) {
             if (error) done(error);
 
             expect(response).to.have.status(200);
@@ -285,39 +303,4 @@ describe('Case Study Tests', function () {
         });
     });
   });
-
-  // it('Should Fail to Post a New Case Patient Story', function (done) {
-  //   const imgPath: String = 'public/images/avatar0.jpg';
-  //   const document: String = `{"patientStory":
-  //       {"patientsName":"John",
-  //       "patientsAge":"ff",
-  //       "whereIsThePatientFrom":"Canada",
-  //       "whyComeToHcbh":"Illness",
-  //       "howLongWereTheyAtHcbh":"3 years",
-  //       "diagnosis":"Flu",
-  //       "caseStudyStory":"John recovered!"},
-  //       "caseStudyType":"Patient"}`;
-
-  //   postCaseStudy(document, imgPath, done, 500);
-  // });
-
-  // THIS TEST IS FAILING! ERROR IS NOT BEING THROWN
-  // it.only('Should Throw an Error due to Invalid Age', async function () {
-  //   const imgPath: String = 'public/images/avatar0.jpg';
-
-  //   const document: String = `{"patientStory":
-  //     {"patientsName":"asdf",
-  //     "patientsAge":"asdf",
-  //     "whereIsThePatientFrom":"asdf",
-  //     "whyComeToHcbh":"asdf",
-  //     "howLongWereTheyAtHcbh":"asdf",
-  //     "diagnosis":"asdf",
-  //     "caseStudyStory":"asdf"},
-  //     "caseStudyType":"Patient Story"}`;
-  //   try {
-  //     await agent.post(CASE_STUDIES_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).field('document', document).attach('file', imgPath);
-  //   } catch (error) {
-  //     expect(error).to.be.an('error');
-  //   }
-  // });
 });

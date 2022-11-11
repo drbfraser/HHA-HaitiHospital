@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, EMPLOYEE_OF_THE_MONTH_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { deleteUploadedImage } from 'utils/unlinkImage';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -38,7 +39,10 @@ describe('Employee of the Month Tests', function () {
     });
   });
 
-  after('Close a Working Server', function () {
+  after('Close a Working Server', async function () {
+    // Delete the image uploaded when EOTM is changed
+    const response = await agent.get(EMPLOYEE_OF_THE_MONTH_ENDPOINT);
+    deleteUploadedImage(response.body.imgPath);
     closeServer(agent, httpServer);
   });
 
@@ -59,17 +63,13 @@ describe('Employee of the Month Tests', function () {
 
     const imgPath: String = 'public/images/avatar1.jpg';
     const document: String = `{"name":"John","department":{"id":"${generalDepartment.id}","name":"${generalDepartment.name}"},"description":"John is incredible!"}`;
-    const putResponse = await agent
-                            .put(EMPLOYEE_OF_THE_MONTH_ENDPOINT)
-                            .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-                            .field('document', document)
-                            .attach('file', imgPath);
+    const putResponse = await agent.put(EMPLOYEE_OF_THE_MONTH_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).field('document', document).attach('file', imgPath);
     expect(putResponse).to.have.status(200);
 
     const getResponse = await agent.get(EMPLOYEE_OF_THE_MONTH_ENDPOINT);
-    expect(getResponse).to.have.status(200); 
-    expect(getResponse.body.name).to.equal("John")
-    expect(getResponse.body.department).to.deep.equal(generalDepartment)
-    expect(getResponse.body.description).to.equal("John is incredible!");                            
+    expect(getResponse).to.have.status(200);
+    expect(getResponse.body.name).to.equal('John');
+    expect(getResponse.body.department).to.deep.equal(generalDepartment);
+    expect(getResponse.body.description).to.equal('John is incredible!');
   });
 });

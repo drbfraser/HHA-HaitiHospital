@@ -13,6 +13,7 @@ let httpServer: http.Server;
 let agent: any;
 let csrf: String;
 let departmentIds: String[];
+let messageIds: String[];
 
 interface MessageObject {
   department: { id: String };
@@ -25,13 +26,13 @@ function postMessage(message: MessageObject, done: Done, expectedStatus: Number,
     .post(MESSAGEBOARD_ENDPOINT)
     .send(message)
     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-    .end(function (error, response) {
+    .end(function (error: any, response: any) {
       if (error) done(error);
       // console.log(`${message.department.id}'s error is: ${response.error.text}`);
       expect(error).to.be.null;
       expect(response).to.have.status(expectedStatus);
       if (!next) done();
-      else next();
+      else next(done);
     });
 }
 
@@ -43,11 +44,20 @@ function getDepartmentIds(done: Done) {
   });
 }
 
+function updatePostedMessageIds(done: Done) {
+  agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
+    if (error) done(error);
+    messageIds.push(response.body[0].id);
+    done();
+  });
+}
+
 describe('Messageboard Tests', function () {
   before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
+    messageIds = new Array<String>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -64,34 +74,17 @@ describe('Messageboard Tests', function () {
     });
   });
 
-  after('Close a Working Server', function () {
-    // messageIds.forEach((id) => {
-    //   agent
-    //     .delete(`${MESSAGEBOARD_ENDPOINT}/${id}`)
-    //     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-    //     .end(function (error, response) {
-    //       console.log(`Deleting Id: ${id}`);
-    //     });
-    // });
+  after('Close a Working Server', async function () {
+    // Cleaning up posted messages that were not removed during testing
+    for await (const messageId of messageIds) {
+      try {
+        await agent.delete(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
     closeServer(agent, httpServer);
   });
-
-  // afterEach('Delete Comments Added During Testing', function (done: Done) {
-  //   agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
-  //     if (error) done(error);
-
-  //     agent
-  //       .delete(`${MESSAGEBOARD_ENDPOINT}/${id}`)
-  //       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-  //       .end(function (error, response) {
-  //         if (error) done(error);
-  //         console.log(`Deleting Id: ${id}`);
-  //         console.log(`Deleting messageBody: ${messageBody}`);
-
-  //         done();
-  //       });
-  //   });
-  // });
 
   it('Should Get All Messages from the Messageboard', function (done: Done) {
     agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
@@ -139,12 +132,7 @@ describe('Messageboard Tests', function () {
       messageBody: 'test body'
     };
 
-    postMessage(newMessage, done, 201, function () {
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-        if (error) done(error);
-        done();
-      });
-    });
+    postMessage(newMessage, done, 201, updatePostedMessageIds);
   });
 
   it('Should Successfully Post a New Message and Get it', function (done: Done) {
@@ -167,7 +155,8 @@ describe('Messageboard Tests', function () {
         expect(message.department.id).to.equal(departmentId);
         expect(message.messageHeader).to.equal('test header');
         expect(message.messageBody).to.equal('test body');
-        done();
+
+        updatePostedMessageIds(done);
       });
     });
   });
@@ -243,21 +232,9 @@ describe('Messageboard Tests', function () {
           .end(function (error, response) {
             if (error) done(error);
             expect(response).to.have.status(200);
-            done();
+            updatePostedMessageIds(done);
           });
       });
     });
   });
-
-  // it.only('test to see if newly created messages are deleted', function (done) {
-  //   agent.get(MESSAGEBOARD_ENDPOINT).end(function (error, response) {
-  //     if (error) done(error);
-
-  //     // let entries = Object.entries(response.body);
-  //     // entries = entries.filter((element) => element[1]?.user.id === 'test id');
-  //     // entries = entries.filter((element) => element[1]?.user == 'test id');
-  //     console.log(response.body[50]);
-  //     done();
-  //   });
-  // });
 });

@@ -12,6 +12,7 @@ chai.use(chaiHttp);
 let httpServer: http.Server;
 let agent: any;
 let csrf: String;
+let bioMechIds: String[];
 
 interface BioMechReport {
   equipmentName: String;
@@ -42,8 +43,16 @@ function postBioMech(bioMechReport: BioMechReport, imgPath: String, done: Done, 
       expect(error).to.be.null;
       expect(response).to.have.status(expectedStatus);
       if (!next) done();
-      else next();
+      else next(done);
     });
+}
+
+function updatePostedBioMechIds(done: Done) {
+  agent.get(BIOMECH_ENDPOINT).end(function (error: any, response: any) {
+    if (error) done(error);
+    bioMechIds.push(response.body[0].id);
+    done();
+  });
 }
 
 describe('Bio Mech Tests', function () {
@@ -51,6 +60,7 @@ describe('Bio Mech Tests', function () {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
+    bioMechIds = Array<String>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -67,7 +77,15 @@ describe('Bio Mech Tests', function () {
     });
   });
 
-  after('Close a Working Server', function () {
+  after('Close a Working Server', async function () {
+    // Clean up created bio mechs that were not deleted during testing
+    for await (const bioMechId of bioMechIds) {
+      try {
+        await agent.delete(`${BIOMECH_ENDPOINT}/${bioMechId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
     closeServer(agent, httpServer);
   });
 
@@ -106,7 +124,7 @@ describe('Bio Mech Tests', function () {
       equipmentPriority: 'urgent',
       file: { path: imgPath }
     };
-    postBioMech(bioMechReport, imgPath, done, 201);
+    postBioMech(bioMechReport, imgPath, done, 201, updatePostedBioMechIds);
   });
 
   it('Should Successfully Delete a Biomech Report', function (done: Done) {

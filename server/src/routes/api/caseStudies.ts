@@ -56,7 +56,6 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
 router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, upload.single('file'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const { caseStudyType, patientStory, staffRecognition, trainingSession, equipmentReceived, otherStory } = JSON.parse(req.body.document);
-
     const user = req.user;
     const userId = user._id!;
     const userDepartment = user.departmentId;
