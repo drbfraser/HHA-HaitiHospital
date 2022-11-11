@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CASE_STUDIES_ENDPOINT, CASE_STUDIES_FEATURED_ENDPOINT, CSRF_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { formatDateString } from 'utils/utils';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -191,7 +192,9 @@ describe('Case Study Tests', function () {
         const caseStudy = response.body[0]; // Sorted in decesending order, so grab the first one
 
         expect(caseStudy.caseStudyType).to.equal('Training Session');
-        // expect(caseStudy.trainingSession.trainingDate).to.equal(`${new Date('01-01-2000')}`); // Date format is not equal, this fails
+
+        const trainingDate: Date = new Date(caseStudy.trainingSession.trainingDate);
+        expect(formatDateString(trainingDate)).to.equal(`${formatDateString(new Date('01-01-2000'))}`); 
         expect(caseStudy.trainingSession.trainingOn).to.equal('MRI');
         expect(caseStudy.trainingSession.whoConducted).to.equal('John');
         expect(caseStudy.trainingSession.whoAttended).to.equal('Seraphine');
@@ -264,6 +267,7 @@ describe('Case Study Tests', function () {
         .end(function (error, response) {
           if (error) done(error);
           expect(response).to.have.status(204);
+          caseStudyIds = caseStudyIds.filter((caseStudyId) => caseStudyId !== id);
 
           // Check that the case study is no longer in the database
           agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error, response) {
