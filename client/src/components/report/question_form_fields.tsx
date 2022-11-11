@@ -1,11 +1,7 @@
-import SideBar from '../side_bar/side_bar';
-import Header from 'components/header/header';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.css';
-import { buildRehabMockReport, QuestionGroup, QuestionNode, NumericQuestion, ExpandableQuestion, TextQuestion } from "@hha/common"
+import {  QuestionNode, NumericQuestion, ExpandableQuestion, TextQuestion } from "@hha/common"
 import { ReactElement, useState } from 'react';
 
-const buildQuestionFormField = (question: QuestionNode): ReactElement => {
+export const buildQuestionFormField = (question: QuestionNode): ReactElement => {
   if (question instanceof NumericQuestion) {
     return <NumericQuestionFormField key={question.id} question={question} />
   } else if (question instanceof ExpandableQuestion) {
@@ -13,7 +9,7 @@ const buildQuestionFormField = (question: QuestionNode): ReactElement => {
   } else if (question instanceof TextQuestion) {
     return <TextQuestionFormField key={question.id} question={question} />
   } else {
-    return <p>(WIP) Non-supported question type</p>
+    return <p key={question.id}>(WIP) Non-supported question type</p>
   }
 }
 
@@ -63,7 +59,7 @@ const ExpandableQuestionFormField = ({question}: ExpandableQuestion) => {
     <div>
       {Array.from({length: numberOfItems}, (_, index) => {
         return (
-          <fieldset className='mt-3'>
+          <fieldset key={index} className='mt-3'>
             <h6 className='uppercase text-lg'>Item {index + 1}</h6>
             {question.questionsTemplate.questionItems.map((q) => buildQuestionFormField(q))}
           </fieldset>
@@ -71,26 +67,4 @@ const ExpandableQuestionFormField = ({question}: ExpandableQuestion) => {
       })}
     </div>
   </FormField>
-}
-
-
-export const Report = () => {
-
-  const report: QuestionGroup<string, string> = buildRehabMockReport()
-  const questions: Array<QuestionNode> = report.questionItems
-
-  return (
-    <div className="department">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
-        <div className="mt-3">
-          <section><h1 className="text-start">Rehab Report</h1></section>
-          <form className='col-md-6'>
-            {questions.map((q) => buildQuestionFormField(q))}
-          </form>
-        </div>
-      </main>
-    </div>
-  )
 }
