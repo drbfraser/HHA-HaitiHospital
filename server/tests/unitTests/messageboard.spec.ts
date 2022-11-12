@@ -11,14 +11,14 @@ chai.use(chaiHttp);
 
 let httpServer: http.Server;
 let agent: any;
-let csrf: String;
-let departmentIds: String[];
-let messageIds: String[];
+let csrf: string;
+let departmentIds: string[];
+let messageIds: string[];
 
 interface MessageObject {
-  department: { id: String };
-  messageHeader: String;
-  messageBody: String;
+  department: { id: string };
+  messageHeader: string;
+  messageBody: string;
 }
 
 function postMessage(message: MessageObject, done: Done, expectedStatus: Number, next?: Function) {
@@ -57,7 +57,7 @@ describe('Messageboard Tests', function () {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
-    messageIds = new Array<String>();
+    messageIds = new Array<string>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -94,6 +94,20 @@ describe('Messageboard Tests', function () {
     });
   });
 
+  it('Should Get a Message Via Message ID', function (done: Done) {
+    agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
+      if (error) done(error);
+      const message = response.body[0];
+      const id: string = message.id;
+      agent.get(`${MESSAGEBOARD_ENDPOINT}/${id}`).end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(response).to.have.status(200);
+        expect(response.body).to.deep.equal(message);
+        done();
+      });
+    });
+  });
+
   it('Should Fail to Get Messages Due To Invalid Department', function (done: Done) {
     agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`).end(function (error: any, response: any) {
       expect(response).to.have.status(500);
@@ -102,7 +116,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Get Messages From General Department', function (done: Done) {
-    const generalDeptId: String = departmentIds[0];
+    const generalDeptId: string = departmentIds[0];
     agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${generalDeptId}`).end(function (error: any, response: any) {
       expect(error).to.be.null;
       expect(response).to.have.status(200);
@@ -125,7 +139,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message', function (done: Done) {
-    const departmentId: String = departmentIds[0]; // Get department id for the General Department
+    const departmentId: string = departmentIds[0]; // Get department id for the General Department
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
@@ -136,7 +150,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message and Get it', function (done: Done) {
-    const departmentId: String = departmentIds[1];
+    const departmentId: string = departmentIds[1];
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
@@ -173,7 +187,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message and Delete it', function (done: Done) {
-    const departmentId: String = departmentIds[1];
+    const departmentId: string = departmentIds[1];
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',
@@ -184,7 +198,7 @@ describe('Messageboard Tests', function () {
       agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
         const message = response.body[0];
-        const messageId: String = message.id; // Server sorts messages in descending order during GET, so grab the first one
+        const messageId: string = message.id; // Server sorts messages in descending order during GET, so grab the first one
 
         agent
           .delete(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
@@ -205,7 +219,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message and Update It', function (done: Done) {
-    const departmentId: String = departmentIds[1];
+    const departmentId: string = departmentIds[1];
     const message: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',

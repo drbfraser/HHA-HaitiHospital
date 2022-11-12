@@ -11,11 +11,11 @@ chai.use(chaiHttp);
 
 let httpServer: http.Server;
 let agent: any;
-let csrf: String;
+let csrf: string;
 
 interface MessageComment {
-  parentMessageId: String;
-  messageComment: String;
+  parentMessageId: string;
+  messageComment: string;
 }
 
 describe('Message Board Comments Test', function () {
@@ -67,7 +67,7 @@ describe('Message Board Comments Test', function () {
       expect(error).to.be.null;
       expect(response).to.have.status(200);
 
-      const messageId: String = response.body[0].id;
+      const messageId: string = response.body[0].id;
       const messageComment: MessageComment = { parentMessageId: messageId, messageComment: 'Sample Test' };
 
       agent

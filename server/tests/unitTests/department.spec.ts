@@ -20,7 +20,7 @@ describe('Department Tests', function () {
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
-      let csrf: String = res?.body?.CSRFToken;
+      let csrf: string = res?.body?.CSRFToken;
 
       agent
         .post(LOGIN_ENDPOINT)
@@ -53,11 +53,11 @@ describe('Department Tests', function () {
 
   it('Should Successfully Get All Departments By Their IDs', async function () {
     const departments = await agent.get(DEPARTMENT_ENDPOINT);
-    const generalId: String = departments.body[0].id;
-    const rehabId: String = departments.body[1].id;
-    const nicuId: String = departments.body[2].id;
-    const maternityId: String = departments.body[3].id;
-    const communityHealthId: String = departments.body[4].id;
+    const generalId: string = departments.body[0].id;
+    const rehabId: string = departments.body[1].id;
+    const nicuId: string = departments.body[2].id;
+    const maternityId: string = departments.body[3].id;
+    const communityHealthId: string = departments.body[4].id;
 
     const general = await agent.get(`${DEPARTMENT_ENDPOINT}/${generalId}`);
     const rehab = await agent.get(`${DEPARTMENT_ENDPOINT}/${rehabId}`);

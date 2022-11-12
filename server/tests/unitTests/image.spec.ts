@@ -20,7 +20,7 @@ describe('Image Tests', function () {
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
-      let csrf: String = res?.body?.CSRFToken;
+      let csrf: string = res?.body?.CSRFToken;
 
       agent
         .post(LOGIN_ENDPOINT)
@@ -38,7 +38,7 @@ describe('Image Tests', function () {
   });
 
   it('Should Successfully Get an Image', function (done: Done) {
-    const imgPath: String = 'avatar1.jpg';
+    const imgPath: string = 'avatar1.jpg';
     agent.get(`${IMAGE_ENDPOINT}/${imgPath}`).end(function (error: any, response: any) {
       if (error) done(error);
       expect(error).to.be.null;

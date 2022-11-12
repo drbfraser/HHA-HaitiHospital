@@ -12,10 +12,10 @@ chai.use(chaiHttp);
 
 let httpServer: http.Server;
 let agent: any;
-let csrf: String;
-let caseStudyIds: String[];
+let csrf: string;
+let caseStudyIds: string[];
 
-function postCaseStudy(document: String, imgPath: String, done: Done, expectedStatus: Number, next?: Function) {
+function postCaseStudy(document: string, imgPath: string, done: Done, expectedStatus: Number, next?: Function) {
   agent
     .post(CASE_STUDIES_ENDPOINT)
     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
@@ -43,7 +43,7 @@ describe('Case Study Tests', function () {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
-    caseStudyIds = new Array<String>();
+    caseStudyIds = new Array<string>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -74,7 +74,7 @@ describe('Case Study Tests', function () {
 
   it('Should Get Featured Case Study', function (done: Done) {
     agent.get(CASE_STUDIES_FEATURED_ENDPOINT).end(function (error: any, response: any) {
-      if (error) return done(error);
+      if (error) done(error);
       expect(error).to.be.null;
       expect(response).to.have.status(200);
       done();
@@ -95,7 +95,7 @@ describe('Case Study Tests', function () {
       if (error) done(error);
 
       const caseStudy = response.body[0];
-      const id: String = caseStudy?.id;
+      const id: string = caseStudy?.id;
 
       agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: any, response: any) {
         if (error) done(error);
@@ -109,8 +109,8 @@ describe('Case Study Tests', function () {
   });
 
   it('Should Successfully Post a New Case Patient Story', function (done: Done) {
-    const imgPath: String = 'public/images/avatar0.jpg';
-    const document: String = `{"patientStory":
+    const imgPath: string = 'public/images/avatar0.jpg';
+    const document: string = `{"patientStory":
         {"patientsName":"John",
         "patientsAge":"22",
         "whereIsThePatientFrom":"Canada",
@@ -141,8 +141,8 @@ describe('Case Study Tests', function () {
   });
 
   it('Should Successfully Post a New Staff Recognition Story', function (done: Done) {
-    const imgPath: String = 'public/images/avatar1.jpg';
-    const document: String = `{"staffRecognition":
+    const imgPath: string = 'public/images/avatar1.jpg';
+    const document: string = `{"staffRecognition":
       {"staffName":"John",
       "jobTitle":"Doctor",
       "department":"General",
@@ -171,8 +171,8 @@ describe('Case Study Tests', function () {
   });
 
   it('Should Successfully Post a New Training Session Story', function (done: Done) {
-    const imgPath: String = 'public/images/avatar2.jpg';
-    const document: String = `{"trainingSession":
+    const imgPath: string = 'public/images/avatar2.jpg';
+    const document: string = `{"trainingSession":
       {"trainingDate":"01-01-2000",
       "trainingOn":"MRI",
       "whoConducted":"John",
@@ -180,9 +180,6 @@ describe('Case Study Tests', function () {
       "benefitsFromTraining":"John is more knowledgeable now",
       "caseStudyStory":"A successful training session!"},
       "caseStudyType":"Training Session"}`;
-
-    const timezone: string = 'America/Cancun';
-    const language: string = 'en-US';
 
     postCaseStudy(document, imgPath, done, 201, function () {
       // Verify that the correct information is stored
@@ -194,7 +191,7 @@ describe('Case Study Tests', function () {
         expect(caseStudy.caseStudyType).to.equal('Training Session');
 
         const trainingDate: Date = new Date(caseStudy.trainingSession.trainingDate);
-        expect(formatDateString(trainingDate)).to.equal(`${formatDateString(new Date('01-01-2000'))}`); 
+        expect(formatDateString(trainingDate)).to.equal(`${formatDateString(new Date('01-01-2000'))}`);
         expect(caseStudy.trainingSession.trainingOn).to.equal('MRI');
         expect(caseStudy.trainingSession.whoConducted).to.equal('John');
         expect(caseStudy.trainingSession.whoAttended).to.equal('Seraphine');
@@ -206,8 +203,8 @@ describe('Case Study Tests', function () {
   });
 
   it('Should Successfuly Post a new Equipment Received Case Study', function (done: Done) {
-    const imgPath: String = 'public/images/avatar0.jpg';
-    const document: String = `{"equipmentReceived":
+    const imgPath: string = 'public/images/avatar0.jpg';
+    const document: string = `{"equipmentReceived":
       {"equipmentReceived":"MRI Machine",
       "departmentReceived":"General",
       "whoSentEquipment":"John",
@@ -235,8 +232,8 @@ describe('Case Study Tests', function () {
   });
 
   it("Should Successfully Post an 'Other' Case Study", function (done: Done) {
-    const imgPath: String = 'public/images/avatar1.jpg';
-    const document: String = `{"otherStory":
+    const imgPath: string = 'public/images/avatar1.jpg';
+    const document: string = `{"otherStory":
       {"caseStudyStory":"This is a Story in the \'Other\' Category"},
       "caseStudyType":"Other Story"}`;
 
@@ -259,7 +256,7 @@ describe('Case Study Tests', function () {
       if (error) done(error);
 
       const caseStudy = response.body[0];
-      const id: String = caseStudy?.id;
+      const id: string = caseStudy?.id;
 
       agent
         .delete(`${CASE_STUDIES_ENDPOINT}/${id}`)
@@ -280,6 +277,25 @@ describe('Case Study Tests', function () {
     });
   });
 
+  it('Should Unsuccessfully Delete a Case Study due to Invalid ID', function (done) {
+    // Need to perform a GET to get a case Study's ID
+    agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+      if (error) done(error);
+
+      const caseStudy = response.body[0];
+      const id: string = caseStudy?.id;
+
+      agent
+        .delete(`${CASE_STUDIES_ENDPOINT}/${'Invalid ID'}`)
+        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+        .end(function (error, response) {
+          if (error) done(error);
+          expect(response).to.have.status(500);
+          done();
+        });
+    });
+  });
+
   it('Should Successfully Change the Featured Case Study', function (done: Done) {
     // Need to perform a GET to get a case Study's ID
     agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
@@ -287,8 +303,7 @@ describe('Case Study Tests', function () {
       // Selecting the last one because new case studies created for the sake of testing are discarded after
       // If the first one was used, then running the test suite a second time would fail previous tests because the featured case study was deleted
       const caseStudy = response.body[response.body.length - 1];
-      const id: String = caseStudy?.id;
-
+      const id: string = caseStudy?.id;
       agent
         .patch(`${CASE_STUDIES_ENDPOINT}/${id}`)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
@@ -301,10 +316,37 @@ describe('Case Study Tests', function () {
             if (error) done(error);
 
             expect(response).to.have.status(200);
-            expect(response.body.featured).to.equal(true);
+            expect(response.body.featured).to.be.true;
             done();
           });
         });
     });
+  });
+
+  it('Should Successfully Retain the Featured Case Study (Changing it to the Same One)', function (done: Done) {
+    agent.get(CASE_STUDIES_FEATURED_ENDPOINT).end(function (error: any, response: any) {
+      if (error) done(error);
+      const id: string = response.body.id;
+
+      agent
+        .patch(`${CASE_STUDIES_ENDPOINT}/${id}`)
+        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+        .end(function (error, response) {
+          if (error) done(error);
+          expect(response).to.have.status(204);
+          done();
+        });
+    });
+  });
+
+  it('Should Unsuccessfully Change the Featured Case Study Due To Invalid Id', function (done: Done) {
+    agent
+      .patch(`${CASE_STUDIES_ENDPOINT}/${'Invalid Id'}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .end(function (error, response) {
+        if (error) done(error);
+        expect(response).to.have.status(500);
+        done();
+      });
   });
 });

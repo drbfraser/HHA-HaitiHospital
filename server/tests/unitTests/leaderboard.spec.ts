@@ -20,7 +20,7 @@ describe('Leaderboard Tests', function () {
 
     agent.get(CSRF_ENDPOINT).end(function (error: any, res: any) {
       if (error) done(error);
-      let csrf: String = res?.body?.CSRFToken;
+      let csrf: string = res?.body?.CSRFToken;
 
       agent
         .post(LOGIN_ENDPOINT)

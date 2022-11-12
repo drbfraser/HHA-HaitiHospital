@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 let agent: any;
 let httpServer: http.Server;
-let csrf: String;
+let csrf: string;
 
 describe('Test Admin Authorization', function () {
   before('Create a Working Server and Login With Admin', function (done) {

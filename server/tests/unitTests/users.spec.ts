@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { _ } from 'ajv';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -11,15 +12,15 @@ chai.use(chaiHttp);
 
 let httpServer: http.Server;
 let agent: any;
-let csrf: String;
-let userIds: String[];
+let csrf: string;
+let userIds: string[];
 
 interface User {
-  username: String;
-  password: String;
-  name: String;
-  role: String;
-  department: { id: String; name: String };
+  username: string;
+  password: string;
+  name: string;
+  role: string;
+  department: { id: string; name: string };
 }
 
 async function updatePostedUserIds() {
@@ -32,7 +33,7 @@ describe('Users Test', function () {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
-    userIds = Array<String>();
+    userIds = Array<string>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -73,7 +74,7 @@ describe('Users Test', function () {
     // First grab all users to locate an ID
     agent.get(USERS_ENDPOINT).end(function (error: any, response: any) {
       const user = response.body[0];
-      const id: String = user.id;
+      const id: string = user.id;
 
       agent.get(`${USERS_ENDPOINT}/${id}`).end(function (error: any, response: any) {
         if (error) done(error);
@@ -118,7 +119,7 @@ describe('Users Test', function () {
     updatePostedUserIds();
   });
 
-  it('Should Unsuccessfully Post a New User Due to Existing Username', async function () {
+  it('Should Unsuccessfully Post a New User Due to Existing Username Conflict', async function () {
     // Grab a valid department id
     const departmentResponse = await agent.get(DEPARTMENT_ENDPOINT);
     const departmentName: string = departmentResponse.body[0].name;
@@ -148,7 +149,7 @@ describe('Users Test', function () {
     expect(postResponse).to.have.status(422);
   });
 
-  it('Should Successfuly Update a User', async function () {
+  it('Should Successfully Update a User', async function () {
     const departmentResponse = await agent.get(DEPARTMENT_ENDPOINT);
     const departmentName: string = departmentResponse.body[0].name;
     const departmentId: string = departmentResponse.body[0].id;
@@ -162,7 +163,7 @@ describe('Users Test', function () {
     };
 
     const userResponse = await agent.get(USERS_ENDPOINT);
-    const userId: String = userResponse.body[0].id;
+    const userId: string = userResponse.body[0].id;
 
     const updatedResponse = await agent.put(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
     expect(updatedResponse).to.have.status(204);
@@ -172,7 +173,43 @@ describe('Users Test', function () {
     expect(updatedGetResponse.body.name).to.equal('JohnUPDATED');
   });
 
-  it('Should Unsuccessfuly Update a User Due to Invalid User ID', async function () {
+  it('Should Unsuccessfully Update a User Due to Username Conflicts', async function () {
+    const departmentResponse = await agent.get(DEPARTMENT_ENDPOINT);
+    const departmentName: string = departmentResponse.body[0].name;
+    const departmentId: string = departmentResponse.body[0].id;
+
+    const newUser: User = {
+      username: 'JohnUsernameUPDATED',
+      password: 'JohnPasswordUPDATED',
+      name: 'JohnUPDATED',
+      role: 'User',
+      department: { id: departmentId, name: departmentName }
+    };
+
+    const userResponse = await agent.get(USERS_ENDPOINT);
+    const userId: string = userResponse.body[1].id; // Grab the second user because the first user was updated in the previous test
+
+    const updatedResponse = await agent.put(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    expect(updatedResponse).to.have.status(409);
+  });
+
+  it('Should Unsuccessfully Update a User Due to Invalid Department Id', async function () {
+    const newUser: User = {
+      username: 'JohnUsernameUPDATED',
+      password: 'JohnPasswordUPDATED',
+      name: 'JohnUPDATED',
+      role: 'User',
+      department: { id: 'Invalid Id', name: 'Invalid Name' }
+    };
+
+    const userResponse = await agent.get(USERS_ENDPOINT);
+    const userId: string = userResponse.body[0].id;
+
+    const updatedResponse = await agent.put(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    expect(updatedResponse).to.have.status(422);
+  });
+
+  it('Should Unsuccessfully Update a User Due to Invalid User ID', async function () {
     const departmentResponse = await agent.get(DEPARTMENT_ENDPOINT);
     const departmentName: string = departmentResponse.body[0].name;
     const departmentId: string = departmentResponse.body[0].id;
@@ -189,10 +226,10 @@ describe('Users Test', function () {
     expect(updatedResponse).to.have.status(500);
   });
 
-  it('Should Successfuly Delete a User', function (done: Done) {
+  it('Should Successfully Delete a User', function (done: Done) {
     agent.get(USERS_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
-      const id: String = response.body[0].id; // The first User is not Admin
+      const id: string = response.body[0].id; // The first User is not Admin
       agent
         .delete(`${USERS_ENDPOINT}/${id}`)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
@@ -208,5 +245,16 @@ describe('Users Test', function () {
           });
         });
     });
+  });
+
+  it('Should Unsuccessfully Delete a User Due to Invalid User Id', function (done: Done) {
+    agent
+      .delete(`${USERS_ENDPOINT}/${'Invalid Id'}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(response).to.have.status(500);
+        done();
+      });
   });
 });

@@ -11,22 +11,22 @@ chai.use(chaiHttp);
 
 let httpServer: http.Server;
 let agent: any;
-let csrf: String;
-let bioMechIds: String[];
+let csrf: string;
+let bioMechIds: string[];
 
 interface BioMechReport {
-  equipmentName: String;
-  equipmentFault: String;
+  equipmentName: string;
+  equipmentFault: string;
   equipmentPriority: 'urgent' | 'non-urgent' | 'important';
   file: {
-    fieldname?: String;
-    originalname?: String;
-    encoding?: String;
-    mimetype?: String;
-    destination?: String;
-    filename?: String;
-    path: String;
-    size?: Number;
+    fieldname?: string;
+    originalname?: string;
+    encoding?: string;
+    mimetype?: string;
+    destination?: string;
+    filename?: string;
+    path: string;
+    size?: number;
   };
 }
 
@@ -60,7 +60,7 @@ describe('Bio Mech Tests', function () {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
-    bioMechIds = Array<String>();
+    bioMechIds = Array<string>();
 
     agent.get(CSRF_ENDPOINT).end(function (error, res) {
       if (error) done(error);
@@ -105,7 +105,7 @@ describe('Bio Mech Tests', function () {
       expect(error).to.be.null;
 
       const bioMechReport = response.body[0];
-      const id: String = bioMechReport.id;
+      const id: string = bioMechReport.id;
       agent.get(`${BIOMECH_ENDPOINT}/${id}`).end(function (error: any, response: any) {
         if (error) done(error);
         expect(response).to.have.status(200);
@@ -116,7 +116,7 @@ describe('Bio Mech Tests', function () {
   });
 
   it('Should Successfully Post a New Biomech Report', function (done: Done) {
-    const imgPath: String = 'public/images/bioMech0.jpeg';
+    const imgPath: string = 'public/images/bioMech0.jpeg';
 
     const bioMechReport: BioMechReport = {
       equipmentName: 'Test Equipment',
@@ -133,7 +133,7 @@ describe('Bio Mech Tests', function () {
       expect(error).to.be.null;
 
       const bioMechReport = response.body[0];
-      const id: String = bioMechReport.id;
+      const id: string = bioMechReport.id;
       agent
         .delete(`${BIOMECH_ENDPOINT}/${id}`)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
