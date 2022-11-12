@@ -66,12 +66,14 @@ describe('Employee of the Month Tests', function () {
   });
 
   it('Should Successfully Change the Employee of the Month', async function () {
-    // TODO: Prevent image from being deleted when test fails
     // Get a department because it is needed in the PUT request
     const departments = await getDepartments();
     const generalDepartment = departments.body[0];
 
     const imgPath: string = 'public/images/avatar1.jpg';
+    console.log('imgpath before: ' + imgPath);
+    console.log('imgpath after: ' + imgPath.replace(/\\/g, '/'));
+
     const document: string = `{"name":"John","department":{"id":"${generalDepartment.id}","name":"${generalDepartment.name}"},"description":"John is incredible!"}`;
     const putResponse = await agent.put(EMPLOYEE_OF_THE_MONTH_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).field('document', document).attach('file', imgPath);
     expect(putResponse).to.have.status(HTTP_OK_CODE);
@@ -83,19 +85,4 @@ describe('Employee of the Month Tests', function () {
     expect(getResponse.body.description).to.equal('John is incredible!');
     updatePostedImgPaths(getResponse.body.imgPath);
   });
-
-  // it.only('Should Unsuccessfully Change the Employee of the Month Due To Invalid Department Id', async function () {
-  //   // TODO: Prevent image from being deleted when test fails
-  //   // Get a department because it is needed in the PUT request
-  //   const departments = await getDepartments();
-  //   const generalDepartment = departments.body[0];
-
-  //   const imgPath: string = 'public/images/avatar1.jpg';
-  //   const document: string = `{"name":"John","department":{"id":"Invalid Id","name":"${generalDepartment.name}"},"description":"John is incredible!"}`;
-  //   const putResponse = await agent.put(EMPLOYEE_OF_THE_MONTH_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).field('document', document).attach('file', imgPath);
-  //   expect(putResponse).to.have.status(HTTP_INTERNALERROR_CODE);
-  //   console.log('putResponse: ' + JSON.stringify(putResponse));
-  //   const getResponse = await agent.get(EMPLOYEE_OF_THE_MONTH_ENDPOINT);
-  //   updatePostedImgPaths(getResponse.body.imgPath);
-  // });
 });
