@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, MESSAGEBOARD_ENDPOINT, DEPARTMENT_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_NOCONTENT_CODE, HTTP_NOTFOUND_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -28,7 +29,6 @@ function postMessage(message: MessageObject, done: Done, expectedStatus: Number,
     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
     .end(function (error: any, response: any) {
       if (error) done(error);
-      // console.log(`${message.department.id}'s error is: ${response.error.text}`);
       expect(error).to.be.null;
       expect(response).to.have.status(expectedStatus);
       if (!next) done();
@@ -89,7 +89,7 @@ describe('Messageboard Tests', function () {
   it('Should Get All Messages from the Messageboard', function (done: Done) {
     agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
       expect(error).to.be.null;
-      expect(response).to.have.status(200);
+      expect(response).to.have.status(HTTP_OK_CODE);
       done();
     });
   });
@@ -101,7 +101,7 @@ describe('Messageboard Tests', function () {
       const id: string = message.id;
       agent.get(`${MESSAGEBOARD_ENDPOINT}/${id}`).end(function (error: any, response: any) {
         if (error) done(error);
-        expect(response).to.have.status(200);
+        expect(response).to.have.status(HTTP_OK_CODE);
         expect(response.body).to.deep.equal(message);
         done();
       });
@@ -110,7 +110,7 @@ describe('Messageboard Tests', function () {
 
   it('Should Fail to Get Messages Due To Invalid Department', function (done: Done) {
     agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`).end(function (error: any, response: any) {
-      expect(response).to.have.status(500);
+      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
       done();
     });
   });
@@ -119,7 +119,7 @@ describe('Messageboard Tests', function () {
     const generalDeptId: string = departmentIds[0];
     agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${generalDeptId}`).end(function (error: any, response: any) {
       expect(error).to.be.null;
-      expect(response).to.have.status(200);
+      expect(response).to.have.status(HTTP_OK_CODE);
       const entries: Array<Object> = Object.entries(response.body);
       const results: boolean = entries.every((element) => element[1].department.id === generalDeptId);
       expect(results).to.be.true;
@@ -135,7 +135,7 @@ describe('Messageboard Tests', function () {
       messageBody: 'test body'
     };
 
-    postMessage(newMessage, done, 500);
+    postMessage(newMessage, done, HTTP_INTERNALERROR_CODE);
   });
 
   it('Should Successfully Post a New Message', function (done: Done) {
@@ -146,7 +146,7 @@ describe('Messageboard Tests', function () {
       messageBody: 'test body'
     };
 
-    postMessage(newMessage, done, 201, updatePostedMessageIds);
+    postMessage(newMessage, done, HTTP_CREATED_CODE, updatePostedMessageIds);
   });
 
   it('Should Successfully Post a New Message and Get it', function (done: Done) {
@@ -157,7 +157,7 @@ describe('Messageboard Tests', function () {
       messageBody: 'test body'
     };
 
-    postMessage(newMessage, done, 201, function () {
+    postMessage(newMessage, done, HTTP_CREATED_CODE, function () {
       agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
 
@@ -165,7 +165,7 @@ describe('Messageboard Tests', function () {
         // Note that there is no way to set the message ID during the POST request, so it is unknown
         const message = response.body[0]; // Server sorts messages in descending order during GET, so grab the first one
 
-        expect(response).to.have.status(200);
+        expect(response).to.have.status(HTTP_OK_CODE);
         expect(message.department.id).to.equal(departmentId);
         expect(message.messageHeader).to.equal('test header');
         expect(message.messageBody).to.equal('test body');
@@ -181,7 +181,7 @@ describe('Messageboard Tests', function () {
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .end(function (error, response) {
         // Cannot check if a particular type of error has been thrown: https://stackoverflow.com/questions/53140856/how-to-throw-error-in-node-js-and-catch-it-mocha
-        expect(response).to.have.status(500);
+        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
         done();
       });
   });
@@ -194,7 +194,7 @@ describe('Messageboard Tests', function () {
       messageBody: 'test body msg'
     };
 
-    postMessage(newMessage, done, 201, function () {
+    postMessage(newMessage, done, HTTP_CREATED_CODE, function () {
       agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
         const message = response.body[0];
@@ -205,12 +205,12 @@ describe('Messageboard Tests', function () {
           .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
           .end(function (error, response) {
             if (error) done(error);
-            expect(response).to.have.status(204);
+            expect(response).to.have.status(HTTP_NOCONTENT_CODE);
 
             // Check that the message does not exist anymore
             agent.get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).end(function (error: any, response: any) {
               if (error) done(error);
-              expect(response).to.have.status(404);
+              expect(response).to.have.status(HTTP_NOTFOUND_CODE);
               done();
             });
           });
@@ -226,7 +226,7 @@ describe('Messageboard Tests', function () {
       messageBody: 'test body msg'
     };
 
-    postMessage(message, done, 201, function () {
+    postMessage(message, done, HTTP_CREATED_CODE, function () {
       // Retrieve the ID of the message in order to upate it
       agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
         if (error) done(error);
@@ -245,7 +245,7 @@ describe('Messageboard Tests', function () {
           .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
           .end(function (error, response) {
             if (error) done(error);
-            expect(response).to.have.status(200);
+            expect(response).to.have.status(HTTP_OK_CODE);
             updatePostedMessageIds(done);
           });
       });

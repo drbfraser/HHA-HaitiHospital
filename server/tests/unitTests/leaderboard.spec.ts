@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, LEADERBOARD_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -40,7 +41,7 @@ describe('Leaderboard Tests', function () {
   it('should get all leaderboard points', function (done: Done) {
     agent.get(LEADERBOARD_ENDPOINT).end(function (err: any, res: any) {
       expect(err).to.be.null;
-      expect(res).to.have.status(200);
+      expect(res).to.have.status(HTTP_OK_CODE);
       done();
     });
   });

@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -41,7 +42,7 @@ describe('Department Tests', function () {
     agent.get(DEPARTMENT_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
       expect(error).to.be.null;
-      expect(response).to.have.status(200);
+      expect(response).to.have.status(HTTP_OK_CODE);
       expect(response.body[0].name).to.equal('General');
       expect(response.body[1].name).to.equal('Rehab');
       expect(response.body[2].name).to.equal('NICU/Paeds');
@@ -65,10 +66,10 @@ describe('Department Tests', function () {
     const maternity = await agent.get(`${DEPARTMENT_ENDPOINT}/${maternityId}`);
     const communityHealth = await agent.get(`${DEPARTMENT_ENDPOINT}/${communityHealthId}`);
 
-    expect(general).to.have.status(200);
-    expect(rehab).to.have.status(200);
-    expect(nicu).to.have.status(200);
-    expect(maternity).to.have.status(200);
-    expect(communityHealth).to.have.status(200);
+    expect(general).to.have.status(HTTP_OK_CODE);
+    expect(rehab).to.have.status(HTTP_OK_CODE);
+    expect(nicu).to.have.status(HTTP_OK_CODE);
+    expect(maternity).to.have.status(HTTP_OK_CODE);
+    expect(communityHealth).to.have.status(HTTP_OK_CODE);
   });
 });

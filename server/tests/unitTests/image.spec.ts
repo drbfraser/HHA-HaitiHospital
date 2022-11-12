@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, IMAGE_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -18,9 +19,9 @@ describe('Image Tests', function () {
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF_ENDPOINT).end(function (error, res) {
+    agent.get(CSRF_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
-      let csrf: string = res?.body?.CSRFToken;
+      let csrf: string = response?.body?.CSRFToken;
 
       agent
         .post(LOGIN_ENDPOINT)
@@ -42,7 +43,7 @@ describe('Image Tests', function () {
     agent.get(`${IMAGE_ENDPOINT}/${imgPath}`).end(function (error: any, response: any) {
       if (error) done(error);
       expect(error).to.be.null;
-      expect(response).to.have.status(200);
+      expect(response).to.have.status(HTTP_OK_CODE);
       done();
     });
   });

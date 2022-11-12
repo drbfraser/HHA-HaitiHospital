@@ -3,6 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, BIOMECH_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
+import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -93,7 +94,7 @@ describe('Bio Mech Tests', function () {
     agent.get(BIOMECH_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
       expect(error).to.be.null;
-      expect(response).to.have.status(200);
+      expect(response).to.have.status(HTTP_OK_CODE);
       done();
     });
   });
@@ -108,7 +109,7 @@ describe('Bio Mech Tests', function () {
       const id: string = bioMechReport.id;
       agent.get(`${BIOMECH_ENDPOINT}/${id}`).end(function (error: any, response: any) {
         if (error) done(error);
-        expect(response).to.have.status(200);
+        expect(response).to.have.status(HTTP_OK_CODE);
         expect(response.body).to.deep.equal(bioMechReport);
         done();
       });
@@ -124,7 +125,7 @@ describe('Bio Mech Tests', function () {
       equipmentPriority: 'urgent',
       file: { path: imgPath }
     };
-    postBioMech(bioMechReport, imgPath, done, 201, updatePostedBioMechIds);
+    postBioMech(bioMechReport, imgPath, done, HTTP_CREATED_CODE, updatePostedBioMechIds);
   });
 
   it('Should Successfully Delete a Biomech Report', function (done: Done) {
@@ -139,7 +140,7 @@ describe('Bio Mech Tests', function () {
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
         .end(function (error: any, response: any) {
           if (error) done(error);
-          expect(response).to.have.status(204);
+          expect(response).to.have.status(HTTP_NOCONTENT_CODE);
           done();
         });
     });
@@ -151,7 +152,7 @@ describe('Bio Mech Tests', function () {
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .end(function (error: any, response: any) {
         if (error) done(error);
-        expect(response).to.have.status(500);
+        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
         done();
       });
   });
