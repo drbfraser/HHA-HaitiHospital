@@ -108,7 +108,6 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
     const messageBody: string = req.body.messageBody;
     const messageHeader: string = req.body.messageHeader;
     const userId: string = req.user._id!;
-
     const updatedMessage = {
       departmentId: departmentId,
       userId: userId,
@@ -123,6 +122,7 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
     if (msg) {
       return res.sendStatus(HTTP_OK_CODE);
     }
+
     return res.sendStatus(HTTP_CREATED_CODE);
   } catch (e) {
     next(e);
