@@ -7,7 +7,7 @@ import BioMech, { BiomechPriority } from 'models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from 'utils/processEnv';
 import { TemplateCollection } from 'models/template';
-import { ReportCollection } from 'models/report';
+import { ReportCollection } from 'models/old_report';
 import Departments, { DefaultDepartments } from 'utils/departments';
 import DepartmentCollection, { Department } from 'models/departments';
 
