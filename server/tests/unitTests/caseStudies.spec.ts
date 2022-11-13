@@ -297,31 +297,21 @@ describe('Case Study Tests', function () {
     });
   });
 
-  it('Should Successfully Change the Featured Case Study', function (done: Done) {
-    // Need to perform a GET to get a case Study's ID
-    agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
-      // Selecting the last one because new case studies created for the sake of testing are discarded after
-      // If the first one was used, then running the test suite a second time would fail previous tests because the featured case study was deleted
-      const caseStudy = response.body[response.body.length - 1];
-      const id: string = caseStudy?.id;
-      agent
-        .patch(`${CASE_STUDIES_ENDPOINT}/${id}`)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .end(function (error, response) {
-          if (error) done(error);
-          expect(response).to.have.status(HTTP_OK_CODE);
+  it('Should Successfully Change the Featured Case Study', async function () {
+    const getResponse = await agent.get(CASE_STUDIES_ENDPOINT);
 
-          // Check that the featured case study is updated
-          agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: any, response: any) {
-            if (error) done(error);
+    // Selecting the last one because new case studies created for the sake of testing are discarded after
+    // If the first one was used, then running the test suite a second time would fail previous tests because the featured case study was deleted
+    const caseStudy = getResponse.body[getResponse.body.length - 1];
+    const id: string = caseStudy?.id;
 
-            expect(response).to.have.status(HTTP_OK_CODE);
-            expect(response.body.featured).to.be.true;
-            done();
-          });
-        });
-    });
+    const putResponse = await agent.patch(`${CASE_STUDIES_ENDPOINT}/${id}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+    caseStudy.featured ? expect(putResponse).to.have.status(HTTP_NOCONTENT_CODE) : expect(putResponse).to.have.status(HTTP_OK_CODE);
+
+    // Check that the featured case study is updated
+    const checkResponse = await agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`);
+    expect(checkResponse).to.have.status(HTTP_OK_CODE);
+    expect(checkResponse.body.featured).to.be.true;
   });
 
   it('Should Successfully Retain the Featured Case Study (Changing it to the Same One)', function (done: Done) {

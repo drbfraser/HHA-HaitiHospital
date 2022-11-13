@@ -3,7 +3,8 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, MESSAGEBOARD_COMMENT_ENDPOINT, MESSAGEBOARD_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
-import { HTTP_CREATED_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import MessageCollection from 'models/messageBoard';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -62,7 +63,6 @@ describe('Message Board Comments Test', function () {
   });
 
   it('Should Successfully Post a Comment', function (done: Done) {
-    // TODO: Prevent Message from being posted if parent ID is not valid
     // Get a message first to get an ID
     agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
       expect(error).to.be.null;
@@ -82,5 +82,20 @@ describe('Message Board Comments Test', function () {
           done();
         });
     });
+  });
+
+  it('Should Unsuccessfully Post a Comment Due To Invalid Parent Message Id', function (done: Done) {
+    const messageComment: MessageComment = { parentMessageId: 'Invalid Id', messageComment: 'Sample Test' };
+
+    agent
+      .post(MESSAGEBOARD_COMMENT_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(messageComment)
+      .end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(error).to.be.null;
+        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+        done();
+      });
   });
 });

@@ -108,6 +108,14 @@ describe('Messageboard Tests', function () {
     });
   });
 
+  it('Should Fail to Get Message Due to Invalid Message ID', function (done: Done) {
+    agent.get(`${MESSAGEBOARD_ENDPOINT}/${'Invalid Id'}`).end(function (error: any, response: any) {
+      if (error) done(error);
+      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+      done();
+    });
+  });
+
   it('Should Fail to Get Messages Due To Invalid Department', function (done: Done) {
     agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`).end(function (error: any, response: any) {
       expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
