@@ -1,5 +1,6 @@
 import {  QuestionNode, NumericQuestion, ExpandableQuestion, TextQuestion } from "@hha/common"
 import { ReactElement, useState } from 'react';
+import './styles.css';
 
 export const buildQuestionFormField = (question: QuestionNode): ReactElement => {
   if (question instanceof NumericQuestion) {
@@ -29,7 +30,7 @@ const NumericQuestionFormField = ({question}: NumericQuestion) => {
   return <FormField>
     <FormFieldLabel id={question.id} prompt={question.prompt} />
     <input
-      className="form-control"
+      className="form-control w-fit"
       type="number"
       min="0"
       defaultValue={question.answer}
@@ -42,7 +43,7 @@ const TextQuestionFormField = ({question}: TextQuestion) => {
   return <FormField>
     <FormFieldLabel id={question.id} prompt={question.prompt} />
     <input
-      className="form-control"
+      className="form-control w-fit"
       type="text"
       defaultValue={question.answer}
     />
@@ -55,7 +56,7 @@ const ExpandableQuestionFormField = ({question}: ExpandableQuestion) => {
 
   return <FormField>
     <FormFieldLabel id={question.id} prompt={question.prompt} />
-    <input className='form-control' type='number' min="0" defaultValue={numberOfItems} onChange={(e) => setNumberOfItems(parseInt(e.target.value))} />
+    <input className='col-sm form-control w-fit' type='number' min="0" defaultValue={numberOfItems} onChange={(e) => setNumberOfItems(parseInt(e.target.value))} />
     <div>
       {Array.from({length: numberOfItems}, (_, index) => {
         return (
