@@ -41,34 +41,27 @@ const validDepartment = async (value: string) => {
   const valid = await Departments.Database.validateDeptId(value);
   return valid;
 };
-reportSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
-  validator: validDepartment,
-  message: function (props: mongoose.ValidatorProps) {
-    return `Department id ${props.value} is invalid`;
-  }
-});
 
 const verifyUser = async (value: string) => {
   const existed = await UserCollection.exists({ _id: value });
   return existed;
 };
-reportSchema.path(`${PATH_TO_USER_ID}`).validate({
-  validator: verifyUser,
-  message: function (props: mongoose.ValidatorProps) {
-    return `Report references to non-existing user`;
-  }
-});
 
-const uniqueReportMonth = async function (value: Date) {
-  const count = await ReportCollection.countDocuments({ reportMonth: value, departmentId: this.departmentId });
-  return count === 0;
-};
+// don't validate in test environment
+if (process.env.NODE_ENV !== 'test') {
+  reportSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
+    validator: validDepartment,
+    message: function (props: mongoose.ValidatorProps) {
+      return `Department id ${props.value} is invalid`;
+    }
+  });
 
-reportSchema.path(`${PATH_TO_REPORT_MONTH}`).validate({
-  validator: uniqueReportMonth,
-  message: function (props: mongoose.ValidatorProps) {
-    return `Report for date: ${formatDateString(props.value)} already exists`;
-  }
-});
+  reportSchema.path(`${PATH_TO_USER_ID}`).validate({
+    validator: verifyUser,
+    message: function (props: mongoose.ValidatorProps) {
+      return `Report references to non-existing user`;
+    }
+  });
+}
 
 // <<<< VALIDATORS <<<<<

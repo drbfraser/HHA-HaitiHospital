@@ -46,8 +46,8 @@ describe('report tests', function () {
       .post(SAVE_REPORT_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .send({
-        departmentId: '6324f6be9ff2276b8f5647d1',
-        submittedUserId: '6324f6be9ff2276b8f5647e5',
+        departmentId: '123',
+        submittedUserId: '123',
         reportMonth: new Date(),
         serializedReport
       })
