@@ -6,7 +6,7 @@ import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
 
 // Choice for multiple choice questions
-serializable('');
+@serializable('')
 class Choice {
   private readonly description: string;
   private chosen: boolean;
@@ -54,7 +54,7 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
 
 // Multiple choice questions in which the user is only allowed to select one
 // choice
-@serializable(undefined, '')
+@serializable(undefined, '', [])
 export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, number, ErrorType> {
   // Won't do anything if answer index is greater than the number of choices
   public setAnswer(answer: number): void {
@@ -70,7 +70,7 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
 
 // Multiple choice questions in which the user is allowed to select multiple
 // choices.
-@serializable(undefined, '')
+@serializable(undefined, '', [])
 export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, Array<number>, ErrorType> {
   // Will ignore indexes whose value are greater than the number of choices
   public setAnswer(answer: Array<number> = []): void {

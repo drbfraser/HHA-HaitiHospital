@@ -11,3 +11,4 @@ export const MESSAGEBOARD_COMMENT_ENDPOINT: string = '/api/message-board/comment
 export const DEPARTMENT_ENDPOINT: string = '/api/department';
 export const IMAGE_ENDPOINT: string = '/api/image';
 export const EMPLOYEE_OF_THE_MONTH_ENDPOINT: string = '/api/employee-of-the-month';
+export const SAVE_REPORT_ENDPOINT: string = '/api/report';

@@ -2,7 +2,9 @@
 // questions to be inserted
 import { QuestionNode } from ".";
 import { QuestionParent } from "./QuestionParent";
+import { serializable } from "../Serializer"
 
+@serializable(undefined, '')
 export class SpecializedGroup<ID, ErrorType, QuestionType extends QuestionNode<ID, ErrorType>> extends QuestionParent<ID, ErrorType> {
 		
 	private readonly questions: Array<QuestionType>; 
