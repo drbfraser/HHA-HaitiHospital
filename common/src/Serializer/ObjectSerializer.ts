@@ -1,3 +1,5 @@
+import { recursiveConsumeObjectHOF } from '../Utils';
+
 /*  Support for object serialization/deserialization without loss of typing
     information.
 
@@ -42,34 +44,34 @@ export class ObjectSerializer {
         this.constructorMapper[name] = constructor;
     }
 
-    private readonly addClassNameProperty = (object: Object): Object => {
+    private readonly addClassNameProperty = (object: Object): void => {
         if (!this.constructorMapper[object.constructor.name]) {
-            return object;
+            return;
         }
 
-        let newObject = Object.create(object);
-        Object.assign(newObject, object);
-        newObject.__class__ = object.constructor.name;
-        return newObject;
+        object['__class__'] = object.constructor.name;
     }
-
-    private readonly recursiveAddClassNameProperty = (object: any): any => {
-        if (!(object instanceof Object) || object instanceof Function) {
-            return object;
+    
+    
+    private readonly removeClassNameProperty = (object: Object): void => {
+        if (!this.constructorMapper[object.constructor.name]) {
+            return;
         }
 
-        Object.entries(object)
-            .forEach(([key, value]) => {
-                object[key] = this.recursiveAddClassNameProperty(value);
-            });
-
-        let newObject: Object = this.addClassNameProperty(object);
-        return newObject;
+        delete object['__class__'];
     }
+    
+    private readonly recursiveAddClassNameProperty = 
+        recursiveConsumeObjectHOF(this.addClassNameProperty);    
 
+    private readonly recursiveRemoveClassNameProperty = 
+        recursiveConsumeObjectHOF(this.removeClassNameProperty);
+    
     public readonly serialize = (object: Object): string => {
-        let newObject: Object = this.recursiveAddClassNameProperty(object);
-        return JSON.stringify(newObject);
+        this.recursiveAddClassNameProperty(object);
+        const ret: string = JSON.stringify(object);
+        this.recursiveRemoveClassNameProperty(object);
+        return ret;
     }
 
     /*  JSON parse will call this function upon each field of the JSON string
