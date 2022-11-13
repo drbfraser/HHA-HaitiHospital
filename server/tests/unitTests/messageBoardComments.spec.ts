@@ -62,6 +62,14 @@ describe('Message Board Comments Test', function () {
     });
   });
 
+  it('Should Unsuccessfully Get Message Comments Due to Invalid Message Parent Id', function (done: Done) {
+    agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${'Invalid'}`).end(function (error: any, response: any) {
+      if (error) done(error);
+      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+      done();
+    });
+  });
+
   it('Should Successfully Post a Comment', function (done: Done) {
     // Get a message first to get an ID
     agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {

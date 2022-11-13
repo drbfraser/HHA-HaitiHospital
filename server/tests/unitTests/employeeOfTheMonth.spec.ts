@@ -71,8 +71,6 @@ describe('Employee of the Month Tests', function () {
     const generalDepartment = departments.body[0];
 
     const imgPath: string = 'public/images/avatar1.jpg';
-    console.log('imgpath before: ' + imgPath);
-    console.log('imgpath after: ' + imgPath.replace(/\\/g, '/'));
 
     const document: string = `{"name":"John","department":{"id":"${generalDepartment.id}","name":"${generalDepartment.name}"},"description":"John is incredible!"}`;
     const putResponse = await agent.put(EMPLOYEE_OF_THE_MONTH_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).field('document', document).attach('file', imgPath);

@@ -109,6 +109,14 @@ describe('Case Study Tests', function () {
     });
   });
 
+  it('Should Unsuccesfully GET a case study via ID Due to Invalid Id', function (done: Done) {
+    agent.get(`${CASE_STUDIES_ENDPOINT}/${'Invalid'}`).end(function (error: any, response: any) {
+      if (error) done(error);
+      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+      done();
+    });
+  });
+
   it('Should Successfully Post a New Case Patient Story', function (done: Done) {
     const imgPath: string = 'public/images/avatar0.jpg';
     const document: string = `{"patientStory":

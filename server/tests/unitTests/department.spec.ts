@@ -3,7 +3,7 @@ import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
-import { HTTP_OK_CODE } from 'exceptions/httpException';
+import { HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -71,5 +71,10 @@ describe('Department Tests', function () {
     expect(nicu).to.have.status(HTTP_OK_CODE);
     expect(maternity).to.have.status(HTTP_OK_CODE);
     expect(communityHealth).to.have.status(HTTP_OK_CODE);
+  });
+
+  it('Should Unsuccessfully Get a Department Due to Invalid Id', async function () {
+    const general = await agent.get(`${DEPARTMENT_ENDPOINT}/${'Invalid Id'}`);
+    expect(general).to.have.status(HTTP_INTERNALERROR_CODE);
   });
 });

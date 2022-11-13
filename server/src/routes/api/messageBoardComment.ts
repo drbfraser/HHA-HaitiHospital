@@ -15,6 +15,10 @@ const router = Router();
 router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const parentMessageId = req.params.id;
+    if (!(await MessageBoard.validateMessageId(parentMessageId))) {
+      throw new BadRequest(`Invalid Message Id ${parentMessageId}`);
+    }
+    
     const docs = await MessageBoardCommentModel.find({ parentMessageId: parentMessageId }).sort({ date: 'desc' });
     if (!docs) {
       throw new NotFound(`No message board parent comments post with id ${parentMessageId} available`);

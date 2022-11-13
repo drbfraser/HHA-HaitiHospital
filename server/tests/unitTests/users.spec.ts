@@ -88,6 +88,15 @@ describe('Users Test', function () {
     });
   });
 
+  it('Should Unsuccessfully Get a User Due to Invalid User Id', function (done: Done) {
+    agent.get(`${USERS_ENDPOINT}/${'Invalid'}`).end(function (error: any, response: any) {
+      if (error) done(error);
+      expect(error).to.be.null;
+      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+      done();
+    });
+  });
+
   it('Should Successfully Get My User', function (done: Done) {
     agent.get(`${USERS_ENDPOINT}/me`).end(function (error: any, response: any) {
       expect(error).to.be.null;

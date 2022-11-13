@@ -116,6 +116,14 @@ describe('Bio Mech Tests', function () {
     });
   });
 
+  it('Should Unsuccessfully Get a Biomech Report due to Invalid Id', function (done: Done) {
+    agent.get(`${BIOMECH_ENDPOINT}/${'Invalid Id'}`).end(function (error: any, response: any) {
+      if (error) done(error);
+      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+      done();
+    });
+  });
+
   it('Should Successfully Post a New Biomech Report', function (done: Done) {
     const imgPath: string = 'public/images/bioMech0.jpeg';
 
