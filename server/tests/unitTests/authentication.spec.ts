@@ -1,39 +1,61 @@
-import http from 'http';
+import http, { request } from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts } from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer, getCSRFToken } from './testTools/mochaHooks';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT, LOGOUT_ENDPOINT } from './testTools/endPoints';
+
 const expect = require('chai').expect;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-let testApp: Application;
-let httpServer: http.Server;
 let agent: any;
+let httpServer: http.Server;
+let csrf: String;
 
-describe('Test Admin Authorization', () => {
-  before('Create a working server', async (done) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        testApp = setupApp();
-        httpServer = setupHttpServer(testApp);
-        agent = chai.request.agent(testApp);
-        attemptAuthentication(agent, done, Accounts.AdminUser);
-      }, 200);
-    }).catch((err) => {
-      console.log(err);
+describe('Test Admin Authorization', function () {
+  before('Create a Working Server and Login With Admin', function (done) {
+    let app: Application = setupApp();
+    httpServer = setupHttpServer(app);
+    agent = chai.request.agent(app);
+
+    agent.get(CSRF_ENDPOINT).end(function (error, res) {
+      if (error) done(error);
+      csrf = res?.body?.CSRFToken;
+
+      agent
+        .post(LOGIN_ENDPOINT)
+        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+        .send(Accounts.AdminUser)
+        .end(function (error: any, response: any) {
+          if (error) return done(error);
+          done();
+        });
     });
   });
 
-  after('Close a working server', () => {
-    httpServer.close();
+  after('Close a Working Server', function () {
+    closeServer(agent, httpServer);
   });
 
-  it('should allow admin to get users', (done) => {
-    agent.get('/api/users').end((err: any, res: any) => {
-      console.log('TEST WE ARE HERE');
-      expect(err).to.be.null;
+  it('Should Fetch the Users', function (done) {
+    agent.get(USERS_ENDPOINT).end(function (error: any, res: any) {
+      if (error) done(error);
+      expect(error).to.be.null;
       expect(res).to.have.status(200);
       done();
     });
+  });
+
+  it('Should Logout Admin User', function (done) {
+    agent
+      .post(LOGOUT_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send({})
+      .end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(error).to.be.null;
+        expect(response.body).to.be.true;
+        done();
+      });
   });
 });
