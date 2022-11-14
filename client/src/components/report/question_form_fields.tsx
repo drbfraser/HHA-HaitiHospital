@@ -49,7 +49,6 @@ const NumericQuestionFormField = ({question}: NumericQuestion): JSX.Element => {
 }
 
 const TextQuestionFormField = ({question}: TextQuestion): JSX.Element => {
-
   return <FormField>
     <FormFieldLabel id={question.id} prompt={question.prompt} />
     <input
@@ -80,6 +79,31 @@ const ExpandableQuestionFormField = ({question}: ExpandableQuestion): JSX.Elemen
   </FormField>
 }
 
+const SingleSelectionQuestionFormField = ({question}: SingleSelectionQuestion) => {
+  const [currentSelection, setCurrentSelection] = useState(question.answer || 0)
+
+  return <FormField>
+    <FormFieldLabel id={question.id} prompt={question.prompt} />
+    {question.choices.map(({chosen, description}, index) =>
+      <div key={`${question.id}-${index}`}>
+        <input 
+          id={`${question.id}-${index}`} 
+          className='radio' 
+          name={question.prompt} 
+          key={question.id + index} 
+          type="radio" 
+          checked={index === currentSelection} 
+          onChange={() => {
+            question.setAnswer(index)
+            setCurrentSelection(index)}
+          } 
+        /> 
+        &nbsp;<label htmlFor={`${question.id}-${index}`}>{description}</label>
+      </div>
+    )}
+  </FormField>
+}
+
 const questionFormFieldMapper: QuestionFormFieldHandlerMap<string, string> = {
   textQuestion: {
     className: TextQuestion.name,
@@ -91,7 +115,7 @@ const questionFormFieldMapper: QuestionFormFieldHandlerMap<string, string> = {
   },
   singleSelectionQuestion: {
     className: SingleSelectionQuestion.name,
-    FormFieldComponent: PlaceholderFormField
+    FormFieldComponent: SingleSelectionQuestionFormField
   },
   multipleSelectionQuestion: {
     className: MultipleSelectionQuestion.name,
