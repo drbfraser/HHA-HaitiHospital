@@ -1,8 +1,8 @@
 import {  QuestionNode, NumericQuestion, ExpandableQuestion, TextQuestion } from "@hha/common"
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import './styles.css';
 
-export const buildQuestionFormField = (question: QuestionNode): ReactElement => {
+export const buildQuestionFormField = (question: QuestionNode): JSX.Element => {
   if (question instanceof NumericQuestion) {
     return <NumericQuestionFormField key={question.id} question={question} />
   } else if (question instanceof ExpandableQuestion) {
@@ -14,19 +14,19 @@ export const buildQuestionFormField = (question: QuestionNode): ReactElement => 
   }
 }
 
-const FormField = ({children}) => {
+const FormField = ({children}): JSX.Element => {
   return <fieldset className="mb-3">
     {children}
   </fieldset>
 }
 
-const FormFieldLabel = ({id, prompt}) => {
+const FormFieldLabel = ({id, prompt}): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.')
 
   return <label htmlFor={id} className='form-label'>{orderedLabel}. {prompt}</label>
 }
 
-const NumericQuestionFormField = ({question}: NumericQuestion) => {
+const NumericQuestionFormField = ({question}: NumericQuestion): JSX.Element => {
   return <FormField>
     <FormFieldLabel id={question.id} prompt={question.prompt} />
     <input
@@ -38,7 +38,7 @@ const NumericQuestionFormField = ({question}: NumericQuestion) => {
   </FormField>
 }
 
-const TextQuestionFormField = ({question}: TextQuestion) => {
+const TextQuestionFormField = ({question}: TextQuestion): JSX.Element => {
 
   return <FormField>
     <FormFieldLabel id={question.id} prompt={question.prompt} />
@@ -51,7 +51,7 @@ const TextQuestionFormField = ({question}: TextQuestion) => {
 }
 
 
-const ExpandableQuestionFormField = ({question}: ExpandableQuestion) => {
+const ExpandableQuestionFormField = ({question}: ExpandableQuestion): JSX.Element => {
   const [numberOfItems, setNumberOfItems] = useState(0)
 
   return <FormField>
