@@ -18,3 +18,7 @@
 table {
   width: 100%;
 }
+
+.form-control.w-fit {
+  width: fit-content;
+}

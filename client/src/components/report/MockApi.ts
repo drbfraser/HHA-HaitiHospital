@@ -1,7 +1,7 @@
 import nicuJSON from '../../pages/form/models/nicuModel.json';
 import data from './newNicuData.json';
 import { v4 as uuid } from 'uuid';
-import { ItemField, ErrorData } from './Report';
+import { ItemField, ErrorData } from './OldReport';
 import { JsonReportDescriptor, JsonReportItem, ItemType } from '@hha/common';
 import { Department } from 'constants/interfaces';
 import MockDepartmentApi from 'actions/MockDepartmentApi';
