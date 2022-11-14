@@ -90,7 +90,6 @@ const SingleSelectionQuestionFormField = ({question}: SingleSelectionQuestion) =
           id={`${question.id}-${index}`} 
           className='form-check-input' 
           name={question.prompt} 
-          key={question.id + index} 
           type="radio" 
           checked={index === currentSelection} 
           onChange={() => {
@@ -115,7 +114,6 @@ const MultiSelectionQuestionFormField = ({question}: SingleSelectionQuestion) =>
           id={`${question.id}-${index}`} 
           className='form-check-input' 
           name={question.prompt} 
-          key={question.id + index} 
           type="checkbox" 
           checked={currentSelections.includes(index)} 
           onChange={() => {
