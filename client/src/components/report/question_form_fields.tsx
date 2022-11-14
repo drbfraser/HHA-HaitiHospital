@@ -88,7 +88,7 @@ const SingleSelectionQuestionFormField = ({question}: SingleSelectionQuestion) =
       <div key={`${question.id}-${index}`}>
         <input 
           id={`${question.id}-${index}`} 
-          className='radio' 
+          className='form-check-input' 
           name={question.prompt} 
           key={question.id + index} 
           type="radio" 
@@ -97,6 +97,37 @@ const SingleSelectionQuestionFormField = ({question}: SingleSelectionQuestion) =
             question.setAnswer(index)
             setCurrentSelection(index)}
           } 
+        /> 
+        &nbsp;<label htmlFor={`${question.id}-${index}`}>{description}</label>
+      </div>
+    )}
+  </FormField>
+}
+
+const MultiSelectionQuestionFormField = ({question}: SingleSelectionQuestion) => {
+  const [currentSelections, setCurrentSelections] = useState(question.answer || [])
+
+  return <FormField>
+    <FormFieldLabel id={question.id} prompt={question.prompt} />
+    {question.choices.map(({chosen, description}, index) =>
+      <div key={`${question.id}-${index}`}>
+        <input 
+          id={`${question.id}-${index}`} 
+          className='form-check-input' 
+          name={question.prompt} 
+          key={question.id + index} 
+          type="checkbox" 
+          checked={currentSelections.includes(index)} 
+          onChange={() => {
+            let newSelections = []
+            if (currentSelections.includes(index)) {
+              newSelections = currentSelections.filter(s => s !== index)
+            } else {
+              newSelections = [...currentSelections, index]
+            }
+            question.setAnswer(newSelections)
+            setCurrentSelections(newSelections)
+          }} 
         /> 
         &nbsp;<label htmlFor={`${question.id}-${index}`}>{description}</label>
       </div>
@@ -119,7 +150,7 @@ const questionFormFieldMapper: QuestionFormFieldHandlerMap<string, string> = {
   },
   multipleSelectionQuestion: {
     className: MultipleSelectionQuestion.name,
-    FormFieldComponent: PlaceholderFormField
+    FormFieldComponent: MultiSelectionQuestionFormField
   },
   questionGroup: {
     className: QuestionGroup.name,
