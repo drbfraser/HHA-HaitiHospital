@@ -1,7 +1,8 @@
 import http, { request } from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer, getCSRFToken } from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT, LOGOUT_ENDPOINT } from './testTools/endPoints';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -10,7 +11,7 @@ chai.use(chaiHttp);
 
 let agent: any;
 let httpServer: http.Server;
-let csrf: String;
+let csrf: string;
 
 describe('Test Admin Authorization', function () {
   before('Create a Working Server and Login With Admin', function (done) {
@@ -41,7 +42,7 @@ describe('Test Admin Authorization', function () {
     agent.get(USERS_ENDPOINT).end(function (error: any, res: any) {
       if (error) done(error);
       expect(error).to.be.null;
-      expect(res).to.have.status(200);
+      expect(res).to.have.status(HTTP_OK_CODE);
       done();
     });
   });

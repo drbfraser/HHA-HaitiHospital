@@ -43,7 +43,6 @@ router.post('/', requireJwtAuth, oneImageUploader(FILE_FIELD), InputSchema.post,
   const userId = user._id!;
   const department = user.departmentId;
   let submitData: BiomechApiIn.BiomechPost = req.body;
-
   const bioMech: BioMech = {
     userId: userId,
     departmentId: department,
@@ -59,9 +58,9 @@ router.post('/', requireJwtAuth, oneImageUploader(FILE_FIELD), InputSchema.post,
     .save()
     .then(() => res.sendStatus(HTTP_CREATED_CODE))
     .catch((err: any) => {
-        deleteUploadedImage(bioMech.imgPath);
-        return next(new InternalError(`Mongoose: Save biomech report failed: ${err}`));
-    })
+      deleteUploadedImage(bioMech.imgPath);
+      return next(new InternalError(`Mongoose: Save biomech report failed: ${err}`));
+    });
 });
 
 router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), (req: RequestWithUser, res: Response, next: NextFunction) => {
@@ -75,7 +74,7 @@ router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin), (req: RequestWithUse
       deleteUploadedImage(data.imgPath);
       res.sendStatus(HTTP_NOCONTENT_CODE);
     })
-    .catch((err: any) => next(new InternalError(`Failed to delete biomech post: ${err}`)));
+    .catch((err: any) => {next(new InternalError(`Failed to delete biomech post: ${err}`))});
 });
 
 export default router;

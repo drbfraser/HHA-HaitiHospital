@@ -4,6 +4,8 @@ import { validateInput } from '../../middleware/inputSanitization';
 import MessageBoardCommentModel, { MessageBoardComment } from 'models/messageBoardComment';
 import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, InternalError, NotFound } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
+import MessageBoard from 'utils/messageboard';
+import MessageCollection from 'models/messageBoard';
 
 const router = Router();
 
@@ -13,6 +15,10 @@ const router = Router();
 router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const parentMessageId = req.params.id;
+    if (!(await MessageBoard.validateMessageId(parentMessageId))) {
+      throw new BadRequest(`Invalid Message Id ${parentMessageId}`);
+    }
+    
     const docs = await MessageBoardCommentModel.find({ parentMessageId: parentMessageId }).sort({ date: 'desc' });
     if (!docs) {
       throw new NotFound(`No message board parent comments post with id ${parentMessageId} available`);
@@ -25,23 +31,32 @@ router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, n
 });
 
 router.post('/', requireJwtAuth, validateInput, async (req: RequestWithUser, res: Response, next: NextFunction) => {
-  const user = req.user;
-  const userId = user._id!;
-  const parentMessageId: string = req.body.parentMessageId;
-  const messageComment: string = req.body.messageComment;
-  const messageBoardComment: MessageBoardComment = {
-    userId: userId,
-    parentMessageId: parentMessageId,
-    messageComment: messageComment,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
+  try {
+    const user = req.user;
+    const userId = user._id!;
+    const parentMessageId: string = req.body.parentMessageId;
 
-  const doc = new MessageBoardCommentModel(messageBoardComment);
-  doc
-    .save()
-    .then(() => res.sendStatus(HTTP_CREATED_CODE))
-    .catch((err: any) => next(new InternalError(`Message board comment submission failed: ${err}`)));
+    if (!(await MessageBoard.validateMessageId(parentMessageId))) {
+      throw new BadRequest(`Invalid Message Id ${parentMessageId}`);
+    }
+
+    const messageComment: string = req.body.messageComment;
+    const messageBoardComment: MessageBoardComment = {
+      userId: userId,
+      parentMessageId: parentMessageId,
+      messageComment: messageComment,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    const doc = new MessageBoardCommentModel(messageBoardComment);
+    doc
+      .save()
+      .then(() => res.sendStatus(HTTP_CREATED_CODE))
+      .catch((err: any) => next(new InternalError(`Message board comment submission failed: ${err}`)));
+  } catch (error) {
+    next(error);
+  }
 });
 
 export = router;

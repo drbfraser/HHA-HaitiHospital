@@ -63,7 +63,9 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
     if (req.file) {
       imgPath = req.file.path.replace(/\\/g, '/');
     }
+
     const featured: boolean = ((await CaseStudyCollection.estimatedDocumentCount()) as number) === 0;
+
     const newCaseStudy: CaseStudy = {
       caseStudyType: caseStudyType,
       userId: userId,
@@ -84,6 +86,7 @@ router.post('/', requireJwtAuth, registerCaseStudiesCreate, validateInput, uploa
       .save()
       .then(() => res.status(HTTP_CREATED_CODE).send('Case Study Submitted successfully'))
       .catch((err: any) => {
+        // return res.status(500).json(err);
         throw new InternalError(`Case study submission failed: ${err}`);
       });
   } catch (e) {
@@ -109,19 +112,25 @@ router.delete('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector)
 // Set feature case study
 router.patch('/:id', requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
+    const caseId = req.params.id;
+    const postDoc = await CaseStudyCollection.findById(caseId);
+    if (!postDoc) {
+      throw new NotFound(`No case study with id ${caseId} available`);
+    }
     const prevFeaturedCaseStudy = await CaseStudyCollection.findOne({ featured: true });
-    if ((prevFeaturedCaseStudy!._id as string) === req.params.id) {
+
+    if ((prevFeaturedCaseStudy!.id as string) === req.params.id) {
       return res.status(HTTP_NOCONTENT_CODE).send();
     }
-
-    CaseStudyCollection.findByIdAndUpdate(prevFeaturedCaseStudy!._id, { $set: setFeatured(false) })
-      .exec()
-      .catch((err: any) => next(new InternalError(`Failed to unfeature previous case study: ${err}`)));
 
     CaseStudyCollection.findByIdAndUpdate(req.params.id, { $set: { featured: true } }, { new: true })
       .exec()
       .then((data) => res.status(HTTP_OK_CODE).json(data!.toJson()))
       .catch((err: any) => next(new InternalError(`Failed to feature the new case study: ${err}`)));
+
+    CaseStudyCollection.findByIdAndUpdate(prevFeaturedCaseStudy!.id, { $set: setFeatured(false) })
+      .exec()
+      .catch((err: any) => next(new InternalError(`Failed to unfeature previous case study: ${err}`)));
   } catch (e) {
     next(e);
   }

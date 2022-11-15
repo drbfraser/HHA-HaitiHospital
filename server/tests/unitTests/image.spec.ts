@@ -1,7 +1,7 @@
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, LEADERBOARD_ENDPOINT } from './testTools/endPoints';
+import { CSRF_ENDPOINT, IMAGE_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
 import { HTTP_OK_CODE } from 'exceptions/httpException';
 
@@ -13,15 +13,15 @@ chai.use(chaiHttp);
 let httpServer: http.Server;
 let agent: any;
 
-describe('Leaderboard Tests', function () {
+describe('Image Tests', function () {
   before('Create a Working Server and Login With Admin', function (done: Done) {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF_ENDPOINT).end(function (error: any, res: any) {
+    agent.get(CSRF_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
-      let csrf: string = res?.body?.CSRFToken;
+      let csrf: string = response?.body?.CSRFToken;
 
       agent
         .post(LOGIN_ENDPOINT)
@@ -38,10 +38,12 @@ describe('Leaderboard Tests', function () {
     closeServer(agent, httpServer);
   });
 
-  it('should get all leaderboard points', function (done: Done) {
-    agent.get(LEADERBOARD_ENDPOINT).end(function (err: any, res: any) {
-      expect(err).to.be.null;
-      expect(res).to.have.status(HTTP_OK_CODE);
+  it('Should Successfully Get an Image', function (done: Done) {
+    const imgPath: string = 'avatar1.jpg';
+    agent.get(`${IMAGE_ENDPOINT}/${imgPath}`).end(function (error: any, response: any) {
+      if (error) done(error);
+      expect(error).to.be.null;
+      expect(response).to.have.status(HTTP_OK_CODE);
       done();
     });
   });

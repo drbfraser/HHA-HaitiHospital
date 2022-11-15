@@ -9,6 +9,7 @@ import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, Inter
 import Departments, { DefaultDepartments } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
+import MessageBoard from 'utils/messageboard';
 
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
@@ -108,7 +109,6 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
     const messageBody: string = req.body.messageBody;
     const messageHeader: string = req.body.messageHeader;
     const userId: string = req.user._id!;
-
     const updatedMessage = {
       departmentId: departmentId,
       userId: userId,
@@ -123,6 +123,7 @@ router.put('/:id', requireJwtAuth, roleAuth(Role.Admin), registerMessageBoardCre
     if (msg) {
       return res.sendStatus(HTTP_OK_CODE);
     }
+
     return res.sendStatus(HTTP_CREATED_CODE);
   } catch (e) {
     next(e);
