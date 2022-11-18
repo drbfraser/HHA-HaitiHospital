@@ -83,6 +83,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
     return this.questionsTemplate;
   }
 
+  // Use this method to interact with the groups which are expanded by this question
    public forEach(groupHandler: (groupInstance: QuestionGroup<ID, ErrorType>) => void): void {
     this.questionGroups
       .forEach(groupHandler);
