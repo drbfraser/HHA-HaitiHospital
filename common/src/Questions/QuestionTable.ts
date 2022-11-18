@@ -100,10 +100,6 @@ export abstract class QuestionTable<
       .filter((questionItem) => questionItem.getId() == id)[0];
   };
   
-  public getQuestionTable(): TableCell<ID, T, ErrorType, QuestionType>[][] {
-    return this.questionTable;
-  }
-  
   public forEach(tableCellHandler: (tableCell:  TableCell<ID, T, ErrorType, QuestionType>, row: number, col: number) => void): void {
     this.questionTable.forEach((row: TableCell<ID, T, ErrorType, QuestionType>[], rowNumber: number) => {
       row.forEach((tableCell: TableCell<ID, T, ErrorType, QuestionType>, colNumber: number) => {
