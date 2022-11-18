@@ -14,12 +14,12 @@ export class SpecializedGroup<ID, ErrorType, QuestionType extends QuestionNode<I
 		this.questions = questions;
 	}
 	
-	getQuestions(): Array<QuestionType> {
-		return this.questions;
-	}	
-	
   searchById(id: ID): QuestionNode<ID, ErrorType> | undefined {
 		return this.questions.find((question) => question.getId() === id);
   }
 	
+	public forEach(handler: (question: QuestionType) => void): void {
+		this.questions
+			.forEach(handler);
+	}
 }
