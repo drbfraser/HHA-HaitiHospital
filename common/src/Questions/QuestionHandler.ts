@@ -20,6 +20,7 @@
     constructs defined in this module for the exhaustive handling enforcement to
     take effect**
 */
+import { SpecializedGroup } from '.';
 import { CompositionQuestion } from './CompositionQuestion';
 import { ExpandableQuestion } from './ExpandableQuestion';
 import { MultipleSelectionQuestion, SingleSelectionQuestion } from './MultipleChoice';
@@ -40,6 +41,7 @@ interface HandlerMap<ID, ErrorType> {
   readonly singleSelectionQuestion: HandlerEntry<ID, ErrorType>;
   readonly multipleSelectionQuestion: HandlerEntry<ID, ErrorType>;
   readonly questionGroup: HandlerEntry<ID, ErrorType>;
+  readonly specializedQuestionGroup: HandlerEntry<ID, ErrorType>;
   readonly compositionQuestion: HandlerEntry<ID, ErrorType>;
   readonly expandableQuestion: HandlerEntry<ID, ErrorType>;
 }
@@ -55,6 +57,7 @@ export interface HandlerArgs<ID, ErrorType> {
     multipleSelectionQuestion: MultipleSelectionQuestion<ID, ErrorType>,
   ) => void;
   readonly questionGroup: (questionGroup: QuestionGroup<ID, ErrorType>) => void;
+  readonly specializedQuestionGroup: (specializedQuestionGroup: SpecializedGroup<ID, ErrorType>) => void;
   readonly compositionQuestion: (compositionQuestion: CompositionQuestion<ID, ErrorType>) => void;
   readonly expandableQuestion: (expandableQuestion: ExpandableQuestion<ID, ErrorType>) => void;
 }

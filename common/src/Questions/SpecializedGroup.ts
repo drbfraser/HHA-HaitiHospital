@@ -22,4 +22,9 @@ export class SpecializedGroup<ID, ErrorType, QuestionType extends QuestionNode<I
 		this.questions
 			.forEach(handler);
 	}
+	
+	public map<T>(mapper: (question: QuestionType) => T): T[] {
+		return this.questions
+			.map(mapper);
+	}
 }

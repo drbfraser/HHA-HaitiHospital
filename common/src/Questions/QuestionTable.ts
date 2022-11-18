@@ -108,5 +108,11 @@ export abstract class QuestionTable<
     });
   }
   
+  public map<T2>(mapper: (tableCell: TableCell<ID, T, ErrorType, QuestionType>) => T2): T2[][] {
+    return this.questionTable
+      .map((row: TableCell<ID, T, ErrorType, QuestionType>[]) => {
+        return row.map(mapper);
+      });
+  }
   
 }
