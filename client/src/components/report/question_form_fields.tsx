@@ -49,6 +49,7 @@ const NumericQuestionFormField = ({question}: NumericQuestion): JSX.Element => {
 }
 
 const TextQuestionFormField = ({question}: TextQuestion): JSX.Element => {
+
   return <FormField>
     <FormFieldLabel id={question.id} prompt={question.prompt} />
     <input
@@ -79,60 +80,6 @@ const ExpandableQuestionFormField = ({question}: ExpandableQuestion): JSX.Elemen
   </FormField>
 }
 
-const SingleSelectionQuestionFormField = ({question}: SingleSelectionQuestion) => {
-  const [currentSelection, setCurrentSelection] = useState(question.answer || 0)
-
-  return <FormField>
-    <FormFieldLabel id={question.id} prompt={question.prompt} />
-    {question.choices.map(({chosen, description}, index) =>
-      <div key={`${question.id}-${index}`}>
-        <input 
-          id={`${question.id}-${index}`} 
-          className='form-check-input' 
-          name={question.prompt} 
-          type="radio" 
-          checked={index === currentSelection} 
-          onChange={() => {
-            question.setAnswer(index)
-            setCurrentSelection(index)}
-          } 
-        /> 
-        &nbsp;<label htmlFor={`${question.id}-${index}`}>{description}</label>
-      </div>
-    )}
-  </FormField>
-}
-
-const MultiSelectionQuestionFormField = ({question}: SingleSelectionQuestion) => {
-  const [currentSelections, setCurrentSelections] = useState(question.answer || [])
-
-  return <FormField>
-    <FormFieldLabel id={question.id} prompt={question.prompt} />
-    {question.choices.map(({chosen, description}, index) =>
-      <div key={`${question.id}-${index}`}>
-        <input 
-          id={`${question.id}-${index}`} 
-          className='form-check-input' 
-          name={question.prompt} 
-          type="checkbox" 
-          checked={currentSelections.includes(index)} 
-          onChange={() => {
-            let newSelections = []
-            if (currentSelections.includes(index)) {
-              newSelections = currentSelections.filter(s => s !== index)
-            } else {
-              newSelections = [...currentSelections, index]
-            }
-            question.setAnswer(newSelections)
-            setCurrentSelections(newSelections)
-          }} 
-        /> 
-        &nbsp;<label htmlFor={`${question.id}-${index}`}>{description}</label>
-      </div>
-    )}
-  </FormField>
-}
-
 const questionFormFieldMapper: QuestionFormFieldHandlerMap<string, string> = {
   textQuestion: {
     className: TextQuestion.name,
@@ -144,11 +91,11 @@ const questionFormFieldMapper: QuestionFormFieldHandlerMap<string, string> = {
   },
   singleSelectionQuestion: {
     className: SingleSelectionQuestion.name,
-    FormFieldComponent: SingleSelectionQuestionFormField
+    FormFieldComponent: PlaceholderFormField
   },
   multipleSelectionQuestion: {
     className: MultipleSelectionQuestion.name,
-    FormFieldComponent: MultiSelectionQuestionFormField
+    FormFieldComponent: PlaceholderFormField
   },
   questionGroup: {
     className: QuestionGroup.name,
