@@ -47,12 +47,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run build-common && react-scripts build",
-    "clean": "rm hha-common-1.0.0.tgz",
+    "build": "react-scripts build",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
-    "eject": "react-scripts eject",
-    "update-common": "../scripts/update_common.sh",
-    "build-common": "../scripts/build_common.sh"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
