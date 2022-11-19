@@ -3,7 +3,6 @@
     further specialized to determine the constraints on how to operate upon
     its children questions and what kinds of children questions it can have.
 */
-import { HandlerArgs } from './QuestionHandler';
 import { QuestionNode } from './QuestionNode';
 
 export abstract class QuestionParent<ID, ErrorType> extends QuestionNode<ID, ErrorType> {
