@@ -18,8 +18,7 @@ export const Report = () => {
         <div className="mt-3">
           <section><h1 className="text-start">Rehab Report</h1></section>
           <form className='col-md-6'>
-            {/* Resolve in a follow-up MR */}
-            {/*questions.map((q) => buildQuestionFormField(q))*/}
+            {buildQuestionFormField(report)}
           </form>
         </div>
       </main>
