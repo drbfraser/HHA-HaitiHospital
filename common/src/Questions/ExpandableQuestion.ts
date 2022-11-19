@@ -13,7 +13,7 @@ import { serializable } from '../Serializer/ObjectSerializer';
 
 @serializable(undefined, '', (arg) => undefined)
 export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
-  private questionGroups: Array<QuestionGroup<ID, ErrorType>>;
+  private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
   private readonly idGenerator: (questionGroupIndex: number) => ID;
   private answer?: number;
@@ -51,23 +51,9 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
   };
 
   private expand(): void {
-    let questionItemAdder = (
-      questionGroup: QuestionGroup<ID, ErrorType>,
-    ): ((questionItem: QuestionNode<ID, ErrorType>) => void) => {
-      return (questionItem: QuestionNode<ID, ErrorType>) => {
-        questionGroup.add(questionItem);
-      };
-    };
-
     this.questionGroups = new Array(this.answer ?? 0)
       .fill(undefined)
-      .map((x, index) => new QuestionGroup(this.idGenerator(index), `${prompt}-${index}`))
-      .map((questionGroup) => {
-        let handler = () => questionItemAdder(questionGroup);
-        this.questionsTemplate
-          .genericForEach(handler);
-        return questionGroup;
-      });
+      .map((x, index) => new QuestionGroup(this.idGenerator(index), `${this.getPrompt()}-${index}`, ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {return q})))
   };
 
   public setAnswer(answer: number): void {
