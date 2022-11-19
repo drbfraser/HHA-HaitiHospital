@@ -2,7 +2,7 @@
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
-import { HandlerArgs, QuestionHandler } from './QuestionHandler';
+import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
 
 @serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
@@ -23,12 +23,12 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
     return this;
   };
 
-  public genericForEach(handler: (question: QuestionNode<ID, ErrorType>) => void): void {
-    QuestionHandler.buildGenericHandler(handler).applyForEach(this.questionItems);
+  public genericForEach(consumer: (question: QuestionNode<ID, ErrorType>) => void): void {
+    QuestionMapper.buildGenericMapper(consumer).mapEach(this.questionItems);
   };
 
-  public forEach(handlers: HandlerArgs<ID, ErrorType>): void {
-    QuestionHandler.buildHandler(handlers).applyForEach(this.questionItems);
+  public forEach(consumers: MapperArgs<ID, ErrorType, void>): void {
+    QuestionMapper.buildMapper(consumers).mapEach(this.questionItems);
   };
 
   public searchById(id: ID): QuestionNode<ID, ErrorType> | undefined {
