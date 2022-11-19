@@ -13,13 +13,11 @@ build server:
     - merge_requests
   before_script:
     - cd server
-    - npm run build-common
     - npm ci
   script:
     - npm run build
   after_script:
     - cd server && tar -czf ../server_build.tar.gz .
-    - npm run clean
   artifacts:
     expire_in: 1 week
     paths:
@@ -36,14 +34,12 @@ build client:
     - merge_requests
   before_script:
     - cd client
-    - npm run build-common
     - npm ci
   script:
     # TODO: remove "CI=false", temporarily required because the project has warnings during the build
     - CI=false GENERATE_SOURCEMAP=false npm run build
   after_script:
     - cd client/build && tar -czvf ../../client_build.tar.gz .
-    - npm run clean
   artifacts:
     expire_in: 1 week
     paths:
