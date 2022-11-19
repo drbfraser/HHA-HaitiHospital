@@ -13,7 +13,6 @@ build server:
     - merge_requests
   before_script:
     - cd server
-    - npm run build-common
     - npm ci
   script:
     - npm run build
@@ -36,7 +35,6 @@ build client:
     - merge_requests
   before_script:
     - cd client
-    - npm run build-common
     - npm ci
   script:
     # TODO: remove "CI=false", temporarily required because the project has warnings during the build
