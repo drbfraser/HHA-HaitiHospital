@@ -36,6 +36,7 @@ build server:
   before_script:
     - cd server
     - npm ci
+    - npm install ../common_build.tar.gz
   script:
     - npm run build
   after_script:
@@ -57,6 +58,7 @@ build client:
   before_script:
     - cd client
     - npm ci
+    - npm install ../common_build.tar.gz
   script:
     # TODO: remove "CI=false", temporarily required because the project has warnings during the build
     - CI=false GENERATE_SOURCEMAP=false npm run build
