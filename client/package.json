@@ -7,7 +7,7 @@
     "**/@typescript-eslint/parser": "^4.1.1"
   },
   "dependencies": {
-    "@hha/common": "file:hha-common-1.0.0.tgz",
+    "@hha/common": "file:../common",
     "@progress/kendo-drawing": "^1.16.2",
     "@progress/kendo-licensing": "^1.2.2",
     "@progress/kendo-react-pdf": "^4.14.1",
