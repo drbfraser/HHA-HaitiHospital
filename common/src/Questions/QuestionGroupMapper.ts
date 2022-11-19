@@ -31,7 +31,7 @@ export type Mapper<ID, ErrorType, T> = (question: QuestionNode<ID, ErrorType>) =
 
 interface MapEntry<ID, ErrorType, T> {
   readonly className: string;
-  readonly handler: Mapper<ID, ErrorType, T>;
+  readonly mapper: Mapper<ID, ErrorType, T>;
 }
 
 interface MapperQuestions<ID, ErrorType, T> {
@@ -64,24 +64,24 @@ export class QuestionMapper<ID, ErrorType, T> {
 
   private constructor(questionMapper: MapperArgs<ID, ErrorType, T>) {
     this.questionMapper = {
-      textQuestion: { className: TextQuestion.name, handler: questionMapper.textQuestion },
-      numericQuestion: { className: NumericQuestion.name, handler: questionMapper.numericQuestion },
+      textQuestion: { className: TextQuestion.name, mapper: questionMapper.textQuestion },
+      numericQuestion: { className: NumericQuestion.name, mapper: questionMapper.numericQuestion },
       singleSelectionQuestion: {
         className: SingleSelectionQuestion.name,
-        handler: questionMapper.singleSelectionQuestion,
+        mapper: questionMapper.singleSelectionQuestion,
       },
       multipleSelectionQuestion: {
         className: MultipleSelectionQuestion.name,
-        handler: questionMapper.multipleSelectionQuestion,
+        mapper: questionMapper.multipleSelectionQuestion,
       },
-      questionGroup: { className: QuestionGroup.name, handler: questionMapper.questionGroup },
+      questionGroup: { className: QuestionGroup.name, mapper: questionMapper.questionGroup },
       compositionQuestion: {
         className: CompositionQuestion.name,
-        handler: questionMapper.compositionQuestion,
+        mapper: questionMapper.compositionQuestion,
       },
       expandableQuestion: {
         className: ExpandableQuestion.name,
-        handler: questionMapper.expandableQuestion,
+        mapper: questionMapper.expandableQuestion,
       },
     };
   }
@@ -109,7 +109,7 @@ export class QuestionMapper<ID, ErrorType, T> {
   ): Mapper<ID, ErrorType, T> {
     return Object.values(this.questionMapper).find(
       (classNameMap) => classNameMap.className === question.constructor.name,
-    );
+    ).mapper;
   };
 
   public map(
@@ -117,7 +117,7 @@ export class QuestionMapper<ID, ErrorType, T> {
     return this.getMapper(question)(question);
   };
   
-  public mapEach(
+  public mapAll(
     questions: QuestionNode<ID, ErrorType>[]): T[] {
       return questions.map((question) => this.map(question));
     }
