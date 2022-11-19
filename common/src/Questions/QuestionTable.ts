@@ -99,4 +99,20 @@ export abstract class QuestionTable<
       .map((questionCell) => questionCell.getQuestion())
       .filter((questionItem) => questionItem.getId() == id)[0];
   };
+  
+  public forEach(tableCellHandler: (tableCell:  TableCell<ID, T, ErrorType, QuestionType>, row: number, col: number) => void): void {
+    this.questionTable.forEach((row: TableCell<ID, T, ErrorType, QuestionType>[], rowNumber: number) => {
+      row.forEach((tableCell: TableCell<ID, T, ErrorType, QuestionType>, colNumber: number) => {
+        tableCellHandler(tableCell, rowNumber, colNumber);
+      });
+    });
+  }
+  
+  public map<T2>(mapper: (tableCell: TableCell<ID, T, ErrorType, QuestionType>) => T2): T2[][] {
+    return this.questionTable
+      .map((row: TableCell<ID, T, ErrorType, QuestionType>[]) => {
+        return row.map(mapper);
+      });
+  }
+  
 }

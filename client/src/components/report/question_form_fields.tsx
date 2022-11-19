@@ -18,8 +18,9 @@ interface QuestionFormFieldHandlerMap<ID, ErrorType> {
 }
 
 // Temporary placeholders
+// TODO: Decide on an appropriate types for those
 type ID = string;
-type ErrorType = string;
+type ErrorType = string; 
 
 const FormField = ({children}): JSX.Element => {
   return <fieldset className="mb-3">
