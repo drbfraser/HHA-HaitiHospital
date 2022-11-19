@@ -24,12 +24,16 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
   };
 
   public genericForEach(consumer: (question: QuestionNode<ID, ErrorType>) => void): void {
-    QuestionMapper.buildGenericMapper(consumer).mapEach(this.questionItems);
+    QuestionMapper.buildGenericMapper(consumer).mapAll(this.questionItems);
   };
 
   public forEach(consumers: MapperArgs<ID, ErrorType, void>): void {
-    QuestionMapper.buildMapper(consumers).mapEach(this.questionItems);
+    QuestionMapper.buildMapper(consumers).mapAll(this.questionItems);
   };
+  
+  public map<T>(mappers: MapperArgs<ID, ErrorType, T>): T[] {
+    return QuestionMapper.buildMapper(mappers).mapAll(this.questionItems);
+  }
 
   public searchById(id: ID): QuestionNode<ID, ErrorType> | undefined {
     return this.questionItems.filter((questionItem) => questionItem.getId() == id)[0];

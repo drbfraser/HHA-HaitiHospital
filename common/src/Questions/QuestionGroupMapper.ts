@@ -113,12 +113,12 @@ export class QuestionMapper<ID, ErrorType, T> {
   };
 
   public map(
-    question: QuestionNode<ID, ErrorType>): void {
-    this.getMapper(question)(question);
+    question: QuestionNode<ID, ErrorType>): T {
+    return this.getMapper(question)(question);
   };
   
   public mapEach(
-    questions: QuestionNode<ID, ErrorType>[]): void {
-    questions.forEach((question) => this.map(question));
+    questions: QuestionNode<ID, ErrorType>[]): T[] {
+      return questions.map((question) => this.map(question));
     }
 }
