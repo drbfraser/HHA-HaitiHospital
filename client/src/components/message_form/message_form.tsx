@@ -22,7 +22,7 @@ const MessageForm = (props: MessageFormProps) => {
     createDepartmentMap(initialDepartments.departments),
   );
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
   const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
   const [department, setDepartment] = useState<string>('');
@@ -48,7 +48,7 @@ const MessageForm = (props: MessageFormProps) => {
 
   const onSubmit = (data: any) => {
     if (data.department === '') {
-      toast.error('Must select a department');
+      toast.error(i18n.t('addMessageAlertMustSelectDepartment'));
       return;
     }
     data.department = departments.get(data.department);
@@ -65,6 +65,7 @@ const MessageForm = (props: MessageFormProps) => {
             {t('addMessageDepartment')}
           </label>
           <select
+            data-testid="add-message-department-dropdown"
             className="form-select"
             id="select-menu"
             value={department}
@@ -86,6 +87,7 @@ const MessageForm = (props: MessageFormProps) => {
           {t('addMessageTitle')}
         </label>
         <input
+          data-testid='add-message-title-input'
           className="form-control"
           type="text"
           {...register('messageHeader')}
@@ -98,6 +100,7 @@ const MessageForm = (props: MessageFormProps) => {
           {t('addMessageBody')}
         </label>
         <textarea
+          data-testid='add-message-body'
           className="form-control"
           {...register('messageBody')}
           cols={30}
@@ -106,7 +109,7 @@ const MessageForm = (props: MessageFormProps) => {
         ></textarea>
       </div>
 
-      <button className="btn btn-primary">{t('addMessageSubmit')}</button>
+      <button data-testid="add-message-add-message-button" className="btn btn-primary">{t('addMessageSubmit')}</button>
     </form>
   );
 };
