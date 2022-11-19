@@ -1,6 +1,28 @@
 stages:
+  - build-dependencies
   - build
   - deploy
+
+build common:
+  stage: build-dependencies
+  image: node:16
+  tags:
+    - docker
+  only:
+    - master
+    - staging
+    - merge_requests
+  before_script:
+    - cd common
+    - npm ci
+  script:
+    - npm run build
+  after_script:
+    - cd common && tar -czf ../common_build.tar.gz .
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - common_build.tar.gz  
 
 build server:
   stage: build
