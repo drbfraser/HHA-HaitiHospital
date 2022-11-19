@@ -40,7 +40,7 @@ describe('report tests', function () {
   });
 
   it('should save report correctly', function (done) {
-    const objectSerializer = new ObjectSerializer();
+    const objectSerializer = ObjectSerializer.getObjectSerializer();
     const serializedReport = objectSerializer.serialize(buildRehabMockReport());
     agent
       .post(SAVE_REPORT_ENDPOINT)
