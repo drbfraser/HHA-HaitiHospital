@@ -49,7 +49,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
         {caseStudy.caseStudyType === CaseStudyOptions.PatientStory ? (
           <div style={{ display: 'flex', flex: '1 1 auto' }}>
             <div className="w-100 pr-2">
-              <h2 className="mt-3 mb-3 fw-bold">
+              <h2 data-testid="case-study-patient-title" className="mt-3 mb-3 fw-bold">
                 {translateText('caseStudyFormPatientStoryCaseStudy')}
               </h2>
               <h6 className="fs-6 lh-base">
@@ -63,33 +63,43 @@ export const CaseStudySummary = ({ caseStudy }) => {
                 })}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormPatientName')}</h6>
-              <p className="fs-6 lh-base text-break">{caseStudy.patientStory.patientsName}</p>
+              <p data-testid="case-study-patient-name" className="fs-6 lh-base text-break">
+                {caseStudy.patientStory.patientsName}
+              </p>
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormPatientAge')}</h6>
-              <p className="fs-6 lh-base text-break">{caseStudy.patientStory.patientsAge}</p>
+              <p data-testid="case-study-patient-age" className="fs-6 lh-base text-break">
+                {caseStudy.patientStory.patientsAge}
+              </p>
               <h6 className="fs-6 fw-bold lh-base">
                 {translateText('caseStudyFormWherePatientFrom')}
               </h6>
-              <p className="fs-6 lh-base text-break">
+              <p data-testid="case-study-patient-from" className="fs-6 lh-base text-break">
                 {caseStudy.patientStory.whereIsThePatientFrom}
               </p>
               <h6 className="fs-6 fw-bold lh-base">
                 {translateText('caseStudyFormWhyPatientChooseHCBH')}
               </h6>
-              <p className="fs-6 lh-base text-break">{caseStudy.patientStory.whyComeToHcbh}</p>
+              <p data-testid="case-study-patient-why-come" className="fs-6 lh-base text-break">
+                {caseStudy.patientStory.whyComeToHcbh}
+              </p>
               <h6 className="fs-6 fw-bold lh-base">
                 {translateText('caseStudyFormHowLongAtHCBH')}
               </h6>
-              <p className="fs-6 lh-base text-break">
+              <p data-testid="case-study-patient-how-long" className="fs-6 lh-base text-break">
                 {caseStudy.patientStory.howLongWereTheyAtHcbh}
               </p>
               <h6 className="fs-6 fw-bold lh-base">
                 {translateText('caseStudyFormWhatWasTheirDiagnosis')}
               </h6>
-              <p className="fs-6 lh-base text-break">{caseStudy.patientStory.diagnosis}</p>
+              <p data-testid="case-study-patient-diagnosis" className="fs-6 lh-base text-break">
+                {caseStudy.patientStory.diagnosis}
+              </p>
               <h6 className="fs-6 fw-bold lh-base">
                 {translateText('caseStudyFormCaseStudy/Story')}
               </h6>
-              <p className="fs-6 lh-base text-break">{caseStudy.patientStory.caseStudyStory}</p>
+              <p data-testid="case-study-patient-case-story" className="fs-6 lh-base text-break">
+                {caseStudy.patientStory.caseStudyStory}
+              </p>
             </div>
             <div className="w-100 pl-2">
               <div className="case-study-image-container">

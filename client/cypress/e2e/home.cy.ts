@@ -47,7 +47,7 @@ describe('Admin Home Page Tests', function () {
   });
 
   it('Should Navigate to the Leaderboard Page', function () {
-    homePage.clickLeaderboardPageButton();
+    homePage.clickLeaderBoardPageButton();
     cy.url().should('include', '/leaderBoard');
   });
 

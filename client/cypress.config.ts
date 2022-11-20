@@ -7,6 +7,7 @@ export default defineConfig({
         ...config,
         baseUrl: 'http://localhost:3000',
         env: {
+          baseUrl: 'http://localhost:3000',
           serverUrl: 'http://localhost:8000',
           Admin: { username: 'user0', password: 'catdog' },
           MedicalDirector: { username: 'user1', password: 'catdog' },

@@ -140,7 +140,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/case-study/form">
-            <button type="button" className="btn btn-outline-dark">
+            <button data-testid="add-case-study-button" type="button" className="btn btn-outline-dark">
               {translateText('caseStudyMainAddCaseStudy')}
             </button>
           </Link>
@@ -171,6 +171,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     </td>
                     <td>
                       <button
+                        data-testid="view-case-study-button"
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/case-study/view/${item.id}`)}
                       >

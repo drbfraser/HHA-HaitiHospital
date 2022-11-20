@@ -15,7 +15,7 @@ export class HomePage {
     return this;
   }
 
-  clickLeaderboardPageButton() {
+  clickLeaderBoardPageButton() {
     cy.get('[data-testid="go-to-leaderboard-button"]').click();
     return this; 
   }
