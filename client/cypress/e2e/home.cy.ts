@@ -8,8 +8,8 @@ describe('Home Page Tests', function () {
   const loginPage = new LoginPage();
   const homePage = new HomePage();
 
-  const username = Cypress.env('username');
-  const password = Cypress.env('password');
+  const username = Cypress.env('Admin').username;
+  const password = Cypress.env('Admin').password;
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
