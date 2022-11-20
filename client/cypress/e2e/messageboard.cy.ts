@@ -113,7 +113,7 @@ describe('Messageboard Tests', function () {
   });
 });
 
-describe('Messageboard Test for Non-Admin User', function () {
+describe('Messageboard Test for User', function () {
   const username = Cypress.env('User').username;
   const password = Cypress.env('User').password;
 
