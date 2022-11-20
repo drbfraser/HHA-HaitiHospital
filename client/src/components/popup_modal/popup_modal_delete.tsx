@@ -27,7 +27,7 @@ const ModalDelete = (props: ModalDeleteProps) => {
         <Button variant="outline-dark" onClick={() => props.onModalClose()}>
           {t('button.cancel')}
         </Button>
-        <Button variant="outline-danger" onClick={() => props.onModalDelete(props.currentItem)}>
+        <Button data-testid="confirm-delete-message-button" variant="outline-danger" onClick={() => props.onModalDelete(props.currentItem)}>
           {t('button.delete')}
         </Button>
       </Modal.Footer>

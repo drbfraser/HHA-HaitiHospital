@@ -35,16 +35,45 @@ describe('Messageboard Tests', function () {
     messageboardPage.inputMessageBody('Test Body');
     messageboardPage.addMessage();
 
-    // Check that the correct toast is fired
-    cy.get('div.Toastify__toast')
-      .invoke('text')
-      .then(function (toastText) {
-        expect(toastText).to.equal('Message is successfully added!');
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', 'Message is successfully added!');
+    toast.click();
+  });
 
-        // Check that the message has been added to the messageboard
-        cy.contains('p', 'Test Title')
-        cy.contains('p', 'Test Body');
-      });
+  it('Should Edit a Message', function () {
+    // messageboardPage.clickEditMessageButton();
+    // cy.url().should('include', '/message-board/edit');
+
+    // messageboardPage.selectDepartment('General');
+    // messageboardPage.inputMessageTitle('Test Title EDITED');
+    // messageboardPage.inputMessageBody('Test Body EDITED');
+    // messageboardPage.addMessage();
+
+    // const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    // toast.should('include.text', 'Must select a department');
+    // toast.click();
+  });
+
+  it('Should Delete a New Message', function () {
+    messageboardPage.clickAddMessageButton();
+    cy.url().should('include', '/message-board/add-message');
+
+    messageboardPage.selectDepartment('General');
+    messageboardPage.inputMessageTitle('Test Title TO BE DELETED');
+    messageboardPage.inputMessageBody('Test Body TO BE DELETED');
+    messageboardPage.addMessage();
+
+    const messageAddedtoast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    messageAddedtoast.click();
+    cy.wait(1000); // Wait one second for the toast to disappear before proceeding
+
+    messageboardPage.clickDeleteMessageButtons();
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', 'Message deleted!');
+    toast.click();
+
+    cy.contains('div.message-panel', 'Test Title TO BE DELETED').should('not.exist');
+    cy.contains('div.message-panel', 'Test Body TO BE DELETED').should('not.exist');
   });
 
   it('Should Fail to Add a New Message Due to Invalid Department', function () {
@@ -55,12 +84,9 @@ describe('Messageboard Tests', function () {
     messageboardPage.inputMessageBody('Test Body');
     messageboardPage.addMessage();
 
-    // Check that the correct toast is fired
-    cy.get('div.Toastify__toast')
-      .invoke('text')
-      .then(function (toastText) {
-        expect(toastText).to.equal('Must select a department');
-      });
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', 'Must select a department');
+    toast.click();
   });
 
   it('Should Fail to Add a New Message Due to Empty Message', function () {
@@ -70,11 +96,8 @@ describe('Messageboard Tests', function () {
     messageboardPage.selectDepartment('General');
     messageboardPage.addMessage();
 
-    // Check that the correct toast is fired
-    cy.get('div.Toastify__toast')
-      .invoke('text')
-      .then(function (toastText) {
-        expect(toastText).to.equal('Internal Error: Unable to add message');
-      });
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', 'Internal Error: Unable to add message');
+    toast.click();
   });
 });
