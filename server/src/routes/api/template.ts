@@ -1,5 +1,5 @@
 import { DEPARTMENT_ID_URL_SLUG } from './../../utils/constants';
-import { NextFunction, Response } from 'express';
+import { IRouter, NextFunction, Response } from 'express';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 import { HTTP_OK_CODE, NotFound } from '../../exceptions/httpException';
@@ -9,7 +9,7 @@ import { TemplateCollection } from 'models/template';
 import { Role } from 'models/user';
 import { serializeTemplateReportObject } from 'utils/serializer';
 
-const router = require('express').Router();
+const router: IRouter = require('express').Router();
 
 //get template by department id
 router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(requireJwtAuth, roleAuth(Role.Admin, Role.MedicalDirector), async (req: RequestWithUser, res: Response, next: NextFunction) => {

@@ -1,5 +1,5 @@
 import { ObjectSerializer } from '@hha/common';
-import { NextFunction, Response } from 'express';
+import { IRouter, NextFunction, Response } from 'express';
 import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
 import { REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -8,7 +8,7 @@ import { HTTP_CREATED_CODE, HTTP_OK_CODE, NotFound, Unauthorized } from '../../e
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { ReportCollection } from '../../models/report';
 
-const router = require('express').Router();
+const router: IRouter = require('express').Router();
 
 //Save report
 router.route('/').post(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
