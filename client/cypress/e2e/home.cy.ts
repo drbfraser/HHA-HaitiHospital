@@ -88,9 +88,7 @@ describe('User Home Page Tests', function () {
     cy.get('@Sidebar Items').eq(7).should('include.text', 'Report');
     cy.get('@Sidebar Items').eq(8).should('include.text', 'Old Report');
     // 9th item is a divider
-    cy.get('@Sidebar Items').eq(10).should('include.text', 'Admin');
-    // 11th item is a divider
-    cy.get('@Sidebar Items').eq(12).should('include.text', 'English');
-    cy.get('@Sidebar Items').eq(13).should('include.text', 'Français');
+    cy.get('@Sidebar Items').eq(10).should('include.text', 'English');
+    cy.get('@Sidebar Items').eq(11).should('include.text', 'Français');
   });
 });

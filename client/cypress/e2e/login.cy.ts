@@ -52,7 +52,7 @@ describe('User Login Tests', () => {
     cy.contains(en.signInSignIn).should('be.visible');
   });
 
-  it('Should Login Successfully As Admin', () => {
+  it('Should Login Successfully As User', () => {
     loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
     cy.url().should('include', '/home');
   });
