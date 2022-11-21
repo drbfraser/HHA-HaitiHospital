@@ -1,4 +1,4 @@
-import { NumericQuestion, ExpandableQuestion, TextQuestion, CompositionQuestion, MultipleSelectionQuestion, SingleSelectionQuestion, QuestionGroup, QuestionNode } from "@hha/common"
+import {  QuestionNode, NumericQuestion, ExpandableQuestion, TextQuestion, CompositionQuestion, MultipleSelectionQuestion, SingleSelectionQuestion, QuestionGroup, ImmutableChoice } from "@hha/common"
 import { useState } from 'react';
 import './styles.css';
 
@@ -52,24 +52,6 @@ const TextQuestionFormField = ({question}: {question: TextQuestion<ID, ErrorType
   </FormField>
 }
 
-
-export const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.Element => {
-  return <FormField> {questions.map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
-    textQuestion: (q) => [q, TextQuestionFormField],
-    numericQuestion: (q) => [q, NumericQuestionFormField],
-    singleSelectionQuestion: (q) => [q, PlaceholderFormField],
-    multipleSelectionQuestion: (q) => [q, PlaceholderFormField],
-    questionGroup: (q) => [q, buildQuestionFormField],
-    compositionQuestion: (q) => [q, PlaceholderFormField],
-    expandableQuestion: (q) => [q, ExpandableQuestionFormField],
-  }).map((tuple) => {
-    const question: QuestionNode<ID, ErrorType> = tuple[0];
-    const FormFieldComponent: any = tuple[1];
-    
-    return <FormFieldComponent key={question.getId()} question={question} />
-  })} </FormField>;
-}
-
 const ExpandableQuestionFormField = ({question} : {question: ExpandableQuestion<ID, ErrorType>}): JSX.Element => {
   const [elements, setElements] = useState([])
 
@@ -92,3 +74,67 @@ const ExpandableQuestionFormField = ({question} : {question: ExpandableQuestion<
     </div>
   </FormField>
 }
+
+const SingleSelectionQuestionFormField = ({question}: {question: SingleSelectionQuestion<ID, ErrorType>}) => {
+  const [currentSelection, setCurrentSelection] = useState(question.getAnswer() || 0)
+
+  return <FormField>
+    <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+    {question.getChoices().map((choice: ImmutableChoice, index) => {
+      return <div key={`${question.getId()}-${index}`}>
+        <input 
+          id={`${question.getId()}-${index}`} 
+          className='form-check-input' 
+          name={question.getPrompt()} 
+          type="radio" 
+          checked={choice.wasChosen()} 
+          onChange={() => {question.setAnswer(index);}
+          } 
+        /> 
+        &nbsp;<label htmlFor={`${question.getId()}-${index}`}>{choice.getDescription()}</label>
+      </div>
+    })}
+  </FormField>
+}
+
+const MultiSelectionQuestionFormField = ({question}: {question: MultipleSelectionQuestion<ID, ErrorType>}) => {
+  return <FormField>
+    <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+    {question.getChoices().map((choice: ImmutableChoice, index) =>
+      <div key={`${question.getId()}-${index}`}>
+        <input 
+          id={`${question.getId()}-${index}`} 
+          className='form-check-input' 
+          name={question.getPrompt()} 
+          type="checkbox" 
+          checked={choice.wasChosen()} 
+          onChange={() => {
+            question.setAnswer(choice.wasChosen() ?
+              question.getAnswer().filter((choiceIndex) => choiceIndex !== index) :
+              question.getAnswer().concat(index) 
+            );
+          }} 
+        /> 
+        &nbsp;<label htmlFor={`${question.getId()}-${index}`}>{choice.getDescription()}</label>
+      </div>
+    )}
+  </FormField>
+}
+
+export const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.Element => {
+  return <FormField> {questions.map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
+    textQuestion: (q) => [q, TextQuestionFormField],
+    numericQuestion: (q) => [q, NumericQuestionFormField],
+    singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
+    multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
+    questionGroup: (q) => [q, buildQuestionFormField],
+    compositionQuestion: (q) => [q, PlaceholderFormField],
+    expandableQuestion: (q) => [q, ExpandableQuestionFormField],
+  }).map((tuple) => {
+    const question: QuestionNode<ID, ErrorType> = tuple[0];
+    const FormFieldComponent: any = tuple[1];
+    
+    return <FormFieldComponent key={question.getId()} question={question} />
+  })} </FormField>;
+}
+

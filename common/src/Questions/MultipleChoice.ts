@@ -32,6 +32,25 @@ class Choice {
   }
 }
 
+export class ImmutableChoice {
+  private readonly description: string;
+  private readonly chosen: boolean;
+  
+  constructor(choice: Choice) {
+    this.description = choice.getDescription();
+    this.chosen = choice.wasChosen();
+  }
+  
+  public getDescription() {
+    return this.description;
+  }
+  
+  public wasChosen() {
+    return this.chosen;
+  }
+}
+
+
 export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
   protected readonly choices: Array<Choice> = new Array<Choice>();
 
@@ -46,8 +65,8 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
   };
   
   // Return the choice descriptions in their respective order.
-  public getChoices(): Array<string> {
-    return this.choices.map((choice) => choice.getDescription());
+  public getChoices(): Array<ImmutableChoice> {
+    return this.choices.map((choice) => new ImmutableChoice(choice));
   };
   
  }
