@@ -203,6 +203,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         Role.MedicalDirector,
                       ]) ? (
                         <button
+                          data-testid="feature-case-study-button"
                           className="btn btn-link text-decoration-none"
                           disabled={item.featured}
                           style={item.featured ? { fontStyle: 'italic' } : {}}

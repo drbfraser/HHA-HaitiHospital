@@ -22,8 +22,14 @@ export class CaseStudyPage {
   }
 
   clickDeleteCaseStudyModalConfirm() {
-    cy.get('[data-testid="confirm-delete-case-study-button"]').click(); 
-    return this; 
+    cy.get('[data-testid="confirm-delete-case-study-button"]').click();
+    return this;
+  }
+
+  clickFeatureCaseStudyButton(index: number) {
+    // Feature the index-th case study
+    cy.get('[data-testid="feature-case-study-button"]').eq(index).click();
+    return this;
   }
 
   selectCaseStudyType(type: string) {

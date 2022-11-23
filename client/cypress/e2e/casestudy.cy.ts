@@ -6,6 +6,7 @@ import { CaseStudyPage } from '../support/pages/CaseStudyPage';
 import {
   CASE_STUDY_ADDED_SUCCESSFULLY,
   CASE_STUDY_DELETED_SUCCESSFULLY,
+  CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY,
 } from '../support/constants/toasts';
 
 describe('Case Study Tests', function () {
@@ -78,6 +79,15 @@ describe('Case Study Tests', function () {
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', CASE_STUDY_DELETED_SUCCESSFULLY);
+    toast.click();
+  });
+
+  it('Should Successfully Feature a New Case Study', function () {
+    caseStudyPage.clickFeatureCaseStudyButton(0);
+    cy.get('[data-testid="feature-case-study-button"]').should('include.text', 'Currently Featured');
+
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY);
     toast.click();
   });
 });
