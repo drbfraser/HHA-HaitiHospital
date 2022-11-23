@@ -6,7 +6,7 @@ export * from './QuestionLeaf';
 export * from './QuestionGroup';
 export * from './QuestionNode';
 export * from './QuestionTable';
-export * from './QuestionHandler';
+export * from './QuestionGroupMapper';
 export * from './SimpleQuestionTypes';
 export * from './TextTable';
 export * from './SpecializedGroup';

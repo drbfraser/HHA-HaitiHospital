@@ -30,7 +30,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   };
   
   private compositionGroupSumsUp(compositionGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>): boolean {
-    return compositionGroup.getQuestions()
+    return compositionGroup
       .map((question) => question.getAnswer())
       .reduce((answer1, answer2) => answer1 + answer2) === this.getAnswer();
   }
@@ -46,5 +46,14 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
       .map((compositionGroup) => this.compositionGroupSumsUp(compositionGroup))
       .reduce((bool1, bool2) => bool1 && bool2);
   }
-
+  
+  public forEach(numberGroupHandler: (numberGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>) => void): void {
+    this.compositionGroups
+      .forEach(numberGroupHandler);
+  }
+  
+  public map<T>(mapper: (numberGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>) => T): T[] {
+    return this.compositionGroups
+      .map(mapper);
+  }
  }
