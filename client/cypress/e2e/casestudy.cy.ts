@@ -84,10 +84,23 @@ describe('Case Study Tests', function () {
 
   it('Should Successfully Feature a New Case Study', function () {
     caseStudyPage.clickFeatureCaseStudyButton(0);
-    cy.get('[data-testid="feature-case-study-button"]').should('include.text', 'Currently Featured');
+    cy.get('[data-testid="feature-case-study-button"]').should(
+      'include.text',
+      'Currently Featured',
+    );
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY);
     toast.click();
+  });
+
+  it('Should Unsuccesfully Delete the Current Case Study Because It is Featured', function () {
+    caseStudyPage.clickFeatureCaseStudyButton(0);
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.click();
+    cy.wait(100); // Wait for toast to disappear to click
+
+    caseStudyPage.clickDeleteCaseStudyButton(0);
+    cy.get('[data-testid="reminder-to-change-featured-before-deleting"]').should('be.visible');
   });
 });

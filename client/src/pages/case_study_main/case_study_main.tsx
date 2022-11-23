@@ -118,6 +118,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <main className="container-fluid main-region">
         <Header />
         <ModalGeneric
+          dataTestId="reminder-to-change-featured-before-deleting"
           show={genericModal}
           item={'case study'}
           message={
