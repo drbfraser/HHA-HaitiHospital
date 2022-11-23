@@ -4,6 +4,7 @@ import { History } from 'history';
 import { useTranslation } from 'react-i18next';
 
 interface ModalDeleteProps extends RouteComponentProps {
+  dataTestId: string; 
   onModalClose: any;
   onModalDelete: any;
   currentItem: string;
@@ -27,7 +28,7 @@ const ModalDelete = (props: ModalDeleteProps) => {
         <Button variant="outline-dark" onClick={() => props.onModalClose()}>
           {t('button.cancel')}
         </Button>
-        <Button data-testid="confirm-delete-message-button" variant="outline-danger" onClick={() => props.onModalDelete(props.currentItem)}>
+        <Button data-testid={props.dataTestId} variant="outline-danger" onClick={() => props.onModalDelete(props.currentItem)}>
           {t('button.delete')}
         </Button>
       </Modal.Footer>

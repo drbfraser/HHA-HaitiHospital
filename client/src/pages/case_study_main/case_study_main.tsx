@@ -129,6 +129,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           match={undefined}
         ></ModalGeneric>
         <ModalDelete
+          dataTestId="confirm-delete-case-study-button"
           currentItem={currentIndex}
           show={deleteModal}
           item={'case study'}
@@ -140,7 +141,11 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/case-study/form">
-            <button data-testid="add-case-study-button" type="button" className="btn btn-outline-dark">
+            <button
+              data-testid="add-case-study-button"
+              type="button"
+              className="btn btn-outline-dark"
+            >
               {translateText('caseStudyMainAddCaseStudy')}
             </button>
           </Link>
@@ -183,6 +188,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         Role.MedicalDirector,
                       ]) ? (
                         <button
+                          data-testid="delete-case-study-button"
                           className="btn btn-link text-decoration-none"
                           onClick={(event) => {
                             onDeleteButton(event, item);

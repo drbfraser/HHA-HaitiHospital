@@ -70,6 +70,7 @@ const Admin = (props: AdminProps) => {
       <main className="container-fluid main-region">
         <Header />
         <ModalDelete
+          dataTestId=""
           currentItem={currentIndex}
           show={deleteModal}
           item={t('item.user')}

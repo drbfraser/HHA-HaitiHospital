@@ -9,9 +9,21 @@ export class CaseStudyPage {
     return this;
   }
 
-  clickViewCaseStudyButton() {
-    cy.get('[data-testid="view-case-study-button"]').eq(0).click();
+  clickViewCaseStudyButton(index: number) {
+    // View the index-th case study
+    cy.get('[data-testid="view-case-study-button"]').eq(index).click();
     return this;
+  }
+
+  clickDeleteCaseStudyButton(index: number) {
+    // Delete the index-th case study
+    cy.get('[data-testid="delete-case-study-button"]').eq(index).click();
+    return this;
+  }
+
+  clickDeleteCaseStudyModalConfirm() {
+    cy.get('[data-testid="confirm-delete-case-study-button"]').click(); 
+    return this; 
   }
 
   selectCaseStudyType(type: string) {

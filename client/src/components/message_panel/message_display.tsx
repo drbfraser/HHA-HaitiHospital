@@ -96,6 +96,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   return (
     <div className="d-flex text-muted pt-2">
       <ModalDelete
+        dataTestId="confirm-delete-message-button"
         currentItem={currentIndex}
         show={deleteModal}
         item={'message'}
@@ -163,7 +164,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             </div>
           </div>
           <div className="mr-auto p-2">
-            <p data-testid="message-body" className="lh-sm message-body">{message.messageBody}</p>
+            <p data-testid="message-body" className="lh-sm message-body">
+              {message.messageBody}
+            </p>
             {useLocation().pathname.split('/').length < 4 ? (
               <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
                 <button type="button" className="btn btn-link text-decoration-none admin-utils">
