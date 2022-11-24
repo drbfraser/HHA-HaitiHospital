@@ -120,8 +120,8 @@ export interface CaseStudy {
   otherStory?: OtherStory;
   imgPath: string;
   featured: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CaseStudyJson {
@@ -179,8 +179,8 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
     },
     imgPath: this.imgPath,
     featured: this.featured,
-    createdAt: formatDateString(this.createdAt),
-    updatedAt: formatDateString(this.updatedAt),
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
     patientStory: this.patientStory ? this.patientStory : undefined,
     staffRecognition: this.staffRecognition ? this.staffRecognition : undefined,
     trainingSession: this.trainingSession ? this.trainingSession : undefined,

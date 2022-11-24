@@ -9,8 +9,8 @@ export interface EmployeeOfTheMonth {
   departmentId: string;
   description: string;
   imgPath: string;
-  updatedAt?: Date;
-  createdAt?: Date;
+  updatedAt?: string;
+  createdAt?: string;
 }
 
 export interface EmployeeOfTheMonthJson {
@@ -53,8 +53,8 @@ employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfT
     },
     description: this.description,
     imgPath: this.imgPath,
-    updatedAt: formatDateString(this.updatedAt!),
-    createdAt: formatDateString(this.createdAt!)
+    updatedAt: this.updatedAt!,
+    createdAt: this.createdAt!
   };
   return json;
 };
