@@ -10,7 +10,7 @@ const { Schema } = mongoose;
 interface Message {
   departmentId: string;
   userId: string;
-  date: string;
+  date: Date;
   messageBody: string;
   messageHeader: string;
 }
@@ -52,7 +52,7 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
       name: await Departments.Database.getDeptNameById(this.departmentId)
     },
     user: userJson,
-    date: this.date,
+    date: formatDateString(this.date),
     messageBody: this.messageBody,
     messageHeader: this.messageHeader
   };
