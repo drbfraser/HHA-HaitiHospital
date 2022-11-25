@@ -11,9 +11,10 @@
     "esModuleInterop": true,
     "strict": false,
     "noImplicitAny": false,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "skipLibCheck": true,
     "downlevelIteration": true,
+    "experimentalDecorators": true
   },
   "include": [
     "./src/**/*",

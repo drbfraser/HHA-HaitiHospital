@@ -7,7 +7,7 @@
     "**/@typescript-eslint/parser": "^4.1.1"
   },
   "dependencies": {
-    "@hha/common": "file:hha-common-1.0.0.tgz",
+    "@hha/common": "file:../common",
     "@progress/kendo-drawing": "^1.16.2",
     "@progress/kendo-licensing": "^1.2.2",
     "@progress/kendo-react-pdf": "^4.14.1",
@@ -47,12 +47,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run build-common && react-scripts build",
-    "clean": "rm hha-common-1.0.0.tgz",
+    "build": "react-scripts build",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
-    "eject": "react-scripts eject",
-    "update-common": "../scripts/update_common.sh",
-    "build-common": "../scripts/build_common.sh"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
