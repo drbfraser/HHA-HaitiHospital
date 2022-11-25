@@ -3,11 +3,11 @@ import { BadRequest, HTTP_CREATED_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE, NotFo
 import { NextFunction, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
-import { TemplateCollection, Template } from 'models/template';
+import { TemplateCollection, Template } from 'models/old_template';
 import { Role } from 'models/user';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { jsonStringToReport } from 'utils/parsers/parsers';
-import { generateNewTemplate, fromReportToTemplate } from 'utils/parsers/template';
+import { generateNewTemplate, fromReportToTemplate } from 'utils/parsers/old_template';
 import { RequestWithUser } from 'utils/definitions/express';
 import { JsonReportDescriptor } from '@hha/common';
 import { CallbackError } from 'mongoose';
