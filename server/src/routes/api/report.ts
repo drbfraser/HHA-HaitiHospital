@@ -11,7 +11,7 @@ const router = require('express').Router();
 router.route('/').post(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const { departmentId, reportMonth, submittedUserId, serializedReport } = req.body;
-    const objectSerializer = new ObjectSerializer();
+    const objectSerializer = ObjectSerializer.getObjectSerializer();
     const reportObject = objectSerializer.deserialize(serializedReport);
     // NOTE: May need to sanitize the reportObject before saving
     const newReport = new ReportCollection({

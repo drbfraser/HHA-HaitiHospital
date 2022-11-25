@@ -7,19 +7,16 @@
     "node": "16"
   },
   "scripts": {
-    "build": "npm run build-common && tsc -p tsconfig.json",
-    "clean": "rm -rf ./dist hha-common-1.0.0.tgz",
+    "build": "tsc -p tsconfig.json",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --trace-warnings --transpile-only src/app.ts",
     "seed": "ts-node -r tsconfig-paths/register src/seeders/seed.ts",
     "start-prod": "ts-node -r tsconfig-paths/register --transpile-only dist/src/app.js",
     "test": "NODE_ENV=test ts-mocha -r tsconfig-paths/register --exit --timeout 10000 -p tsconfig.json tests/unitTests/*.spec.ts",
-    "report-parser": "ts-mocha --paths --exit --timeout 10000 -p tsconfig.json tests/unitTests/reportParser.spec.ts",
-    "update-common": "../scripts/update_common.sh",
-    "build-common": "../scripts/build_common.sh"
+    "report-parser": "ts-mocha --paths --exit --timeout 10000 -p tsconfig.json tests/unitTests/reportParser.spec.ts"
   },
   "license": "ISC",
   "dependencies": {
-    "@hha/common": "file:hha-common-1.0.0.tgz",
+    "@hha/common": "file:../common",
     "@types/multer": "^1.4.7",
     "@types/passport": "^1.0.7",
     "ajv": "^8.10.0",
