@@ -50,8 +50,6 @@
     "build": "react-scripts build",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
     "eject": "react-scripts eject",
-    "update-common": "../scripts/update_common.sh",
-    "build-common": "../scripts/build_common.sh",
     "e2e": "npx cypress open"
   },
   "eslintConfig": {

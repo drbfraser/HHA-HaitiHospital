@@ -10,8 +10,6 @@
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "dev": "npm run server & npm run client",
-    "build-common": "npm run build-common --prefix client && npm run build-common --prefix server",
-    "update-common": "npm run update-common --prefix client && npm run update-common --prefix server",
     "e2e": "cypress open"
   },
   "repository": {
