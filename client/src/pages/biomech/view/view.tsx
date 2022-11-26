@@ -84,7 +84,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         <Header />
         <div className="d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
-            <button type="button" className="btn btn-outline-dark">
+            <button data-testid="biomech-view-back-button" type="button" className="btn btn-outline-dark">
               {t('button.back')}
             </button>
           </Link>
@@ -94,7 +94,9 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
             <div className="broken-kit-subcontainer">
               <div style={{ display: 'flex', flex: '1 1 auto' }}>
                 <div className="w-100 pr-2">
-                  <h2 className="mt-3 mb-3 fw-bold">{t('biomech.view_report.title')}</h2>
+                  <h2 data-testid="biomech-title" className="mt-3 mb-3 fw-bold">
+                    {t('biomech.view_report.title')}
+                  </h2>
                   <h6 className="fs-6 lh-base">
                     {`${t('biomech.view_report.author')}: `}
                     {BioReport.user ? BioReport.user.name : 'status.not_available'}
@@ -108,9 +110,11 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                   <h6 className="fs-6 fw-bold lh-base">
                     {t('biomech.view_report.equipment_name')}
                   </h6>
-                  <p className="fs-6 lh-base text-break">{BioReport.equipmentName}</p>
+                  <p data-testid="biomech-equipment-name" className="fs-6 lh-base text-break">
+                    {BioReport.equipmentName}
+                  </p>
                   <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.priority')}</h6>
-                  <p className="fs-6 lh-base text-break">
+                  <p data-testid="biomech-priority" className="fs-6 lh-base text-break">
                     {
                       <Badge bg={setPriority(BioReport.equipmentPriority)}>
                         {t(`biomech.priority.${BioReport.equipmentPriority}`)}
@@ -118,7 +122,9 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                     }
                   </p>
                   <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.issue')}</h6>
-                  <p className="fs-6 lh-base text-break">{BioReport.equipmentFault}</p>
+                  <p data-testid="biomech-issue" className="fs-6 lh-base text-break">
+                    {BioReport.equipmentFault}
+                  </p>
                 </div>
                 <div className="w-100 pl-2">
                   <div className="broken-kit-image-container">

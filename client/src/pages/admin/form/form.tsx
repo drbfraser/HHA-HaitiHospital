@@ -66,7 +66,7 @@ export const AdminUserForm = (props: Props) => {
         <label htmlFor="password" className="form-label">
           {t('admin.user_form.password')}
         </label>
-        <div className="input-group">
+        <div data-testid="password-outer-div" className="input-group">
           <input
             type={passwordShown ? 'text' : 'password'}
             className="form-control"
@@ -74,7 +74,7 @@ export const AdminUserForm = (props: Props) => {
             autoComplete="new-password"
             {...register(ADMIN_USER_FORM_FIELDS.password)}
           ></input>
-          <div className="input-group-text">
+          <div data-testid="toggle-password-shown" className="input-group-text">
             <i
               onClick={() => setPasswordShown(true)}
               className={`${
@@ -157,7 +157,7 @@ export const AdminUserForm = (props: Props) => {
       ) : null}
 
       <div className="mt-5 mb-3 d-flex justify-content-center">
-        <button type="submit" className="btn btn-dark col-6">
+        <button data-testid="add-user-submit-button" type="submit" className="btn btn-dark col-6">
           {t('button.submit')}
         </button>
       </div>

@@ -70,7 +70,7 @@ const Admin = (props: AdminProps) => {
       <main className="container-fluid main-region">
         <Header />
         <ModalDelete
-          dataTestId=""
+          dataTestId="confirm-delete-user-button"
           currentItem={currentIndex}
           show={deleteModal}
           item={t('item.user')}
@@ -82,7 +82,7 @@ const Admin = (props: AdminProps) => {
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to={Paths.getAdminAddUser()}>
-            <button type="button" className="btn btn-outline-dark">
+            <button data-testid="add-user-button" type="button" className="btn btn-outline-dark">
               {t('button.add_user')}
             </button>
           </Link>
@@ -117,6 +117,7 @@ const Admin = (props: AdminProps) => {
                   <td>
                     <div className="text-center">
                       <button
+                        data-testid="edit-user-button"
                         type="button"
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`${Paths.getAdminEditUser(item.id)}`)}
@@ -125,6 +126,7 @@ const Admin = (props: AdminProps) => {
                       </button>
 
                       <button
+                        data-testid="view-user-button"
                         type="button"
                         className="btn btn-link text-decoration-none"
                         onClick={(event) => {

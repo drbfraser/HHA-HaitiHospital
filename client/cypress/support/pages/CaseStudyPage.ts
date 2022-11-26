@@ -21,7 +21,7 @@ export class CaseStudyPage {
     return this;
   }
 
-  clickDeleteCaseStudyModalConfirm() {
+  clickDeleteCaseStudyConfirmButton() {
     cy.get('[data-testid="confirm-delete-case-study-button"]').click();
     return this;
   }

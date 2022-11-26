@@ -26,7 +26,7 @@ export const AddUserForm = (props: AdminProps) => {
   const [fetch, setFetch] = useState<boolean>(false);
   const { t } = useTranslation();
   const history: History = useHistory<History>();
-  
+
   useEffect(() => {
     const getDepartments = async () => {
       setDepartments(
@@ -74,7 +74,11 @@ export const AddUserForm = (props: AdminProps) => {
           <Header />
           <div className="ml-3 mb-3 d-flex justify-content-start">
             <Link to={Paths.getAdminMain()}>
-              <button type="button" className="btn btn-outline-dark">
+              <button
+                data-testid="add-user-back-button"
+                type="button"
+                className="btn btn-outline-dark"
+              >
                 {t('button.back')}
               </button>
             </Link>
