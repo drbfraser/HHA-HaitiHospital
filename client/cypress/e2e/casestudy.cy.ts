@@ -56,7 +56,7 @@ describe('Case Study Tests', function () {
     toast.should('include.text', CASE_STUDY_ADDED_SUCCESSFULLY);
     toast.click();
 
-    caseStudyPage.clickViewCaseStudyButton(0);
+    caseStudyPage.clickViewCaseStudyButton(1);
     cy.url().should('include', '/case-study/view');
     cy.url().then(function (url) {
       const caseStudyId: string = url.split('/')[3];
