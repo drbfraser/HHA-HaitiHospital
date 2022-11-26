@@ -31,12 +31,8 @@ function postCaseStudy(document: string, imgPath: string, done: Done, expectedSt
     });
 }
 
-function updateCaseStudyIds(done: Done) {
-  agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
-    if (error) done(error);
-    caseStudyIds.push(response.body[1].id);
-    done();
-  });
+function updateCaseStudyIds(caseStudyId: string) {
+  caseStudyIds.push(caseStudyId)
 }
 
 describe('Case Study Tests', function () {
@@ -144,7 +140,8 @@ describe('Case Study Tests', function () {
         expect(caseStudy.patientStory.howLongWereTheyAtHcbh).to.equal('3 years');
         expect(caseStudy.patientStory.diagnosis).to.equal('Flu');
         expect(caseStudy.patientStory.caseStudyStory).to.equal('John recovered!');
-        updateCaseStudyIds(done);
+        updateCaseStudyIds(caseStudy.id);
+        done();
       });
     });
   });
@@ -174,7 +171,8 @@ describe('Case Study Tests', function () {
         expect(caseStudy.staffRecognition.howLongWorkingAtHcbh).to.equal('5 years');
         expect(caseStudy.staffRecognition.mostEnjoy).to.equal('Working with patients');
         expect(caseStudy.staffRecognition.caseStudyStory).to.equal('John is amazing!');
-        updateCaseStudyIds(done);
+        updateCaseStudyIds(caseStudy.id);
+        done();
       });
     });
   });
@@ -206,7 +204,8 @@ describe('Case Study Tests', function () {
         expect(caseStudy.trainingSession.whoAttended).to.equal('Seraphine');
         expect(caseStudy.trainingSession.benefitsFromTraining).to.equal('John is more knowledgeable now');
         expect(caseStudy.trainingSession.caseStudyStory).to.equal('A successful training session!');
-        updateCaseStudyIds(done);
+        updateCaseStudyIds(caseStudy.id);
+        done(); 
       });
     });
   });
@@ -235,7 +234,8 @@ describe('Case Study Tests', function () {
         expect(caseStudy.equipmentReceived.purchasedOrDonated).to.equal('Donated');
         expect(caseStudy.equipmentReceived.whatDoesEquipmentDo).to.equal('Brain Imaging');
         expect(caseStudy.equipmentReceived.caseStudyStory).to.equal('Received a new MRI Machine');
-        updateCaseStudyIds(done);
+        updateCaseStudyIds(caseStudy.id);
+        done();
       });
     });
   });
@@ -254,7 +254,8 @@ describe('Case Study Tests', function () {
         const caseStudy = response.body[1]; // Sorted in decesending order, so grab the first one
         expect(caseStudy.caseStudyType).to.equal('Other Story');
         expect(caseStudy.otherStory.caseStudyStory).to.equal("This is a Story in the 'Other' Category");
-        updateCaseStudyIds(done);
+        updateCaseStudyIds(caseStudy.id);
+        done();
       });
     });
   });
