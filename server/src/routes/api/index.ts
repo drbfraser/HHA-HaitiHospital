@@ -8,7 +8,7 @@ import biomechRoutes from './biomech';
 import imageRoutes from './image';
 import authRoutes from './authentication';
 import employeeOfTheMonthRoutes from './employeeOfTheMonth';
-import templateRoutes from './report_template';
+import templateRoutes from './template';
 import departmentRoutes from './departments';
 import messageBoardCommentRoutes from './messageBoardComment';
 

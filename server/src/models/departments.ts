@@ -36,6 +36,7 @@ departmentSchema.methods.toLeaderboard = async function (pointsFactor: number): 
   return await leaderboardPointsCalculator(pointsFactor, this);
 };
 
-const DepartmentCollection = mongoose.model<DepartmentWithInstanceMethods>('Department', departmentSchema, 'Department');
+export const DEPARTMENT_MODEL_NAME = 'Department';
+const DepartmentCollection = mongoose.model<DepartmentWithInstanceMethods>(DEPARTMENT_MODEL_NAME, departmentSchema, 'Department');
 
 export default DepartmentCollection;
