@@ -27,21 +27,21 @@ import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
 import { NumericQuestion, TextQuestion } from './SimpleQuestionTypes';
 
-export type Mapper<ID, ErrorType, T> = (question: QuestionNode<ID, ErrorType>) => T;
+export type Mapper<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, T> = (question: Question) => T;
 
-interface MapEntry<ID, ErrorType, T> {
+interface MapEntry<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, T> {
   readonly className: string;
-  readonly mapper: Mapper<ID, ErrorType, T>;
+  readonly mapper: Mapper<Question, ID, ErrorType, T>;
 }
 
 interface MapperQuestions<ID, ErrorType, T> {
-  readonly textQuestion: MapEntry<ID, ErrorType, T>;
-  readonly numericQuestion: MapEntry<ID, ErrorType, T>;
-  readonly singleSelectionQuestion: MapEntry<ID, ErrorType, T>;
-  readonly multipleSelectionQuestion: MapEntry<ID, ErrorType, T>;
-  readonly questionGroup: MapEntry<ID, ErrorType, T>;
-  readonly compositionQuestion: MapEntry<ID, ErrorType, T>;
-  readonly expandableQuestion: MapEntry<ID, ErrorType, T>;
+  readonly textQuestion: MapEntry<TextQuestion<ID, ErrorType>, ID, ErrorType, T>;
+  readonly numericQuestion: MapEntry<NumericQuestion<ID, ErrorType>, ID, ErrorType, T>;
+  readonly singleSelectionQuestion: MapEntry<SingleSelectionQuestion<ID, ErrorType>, ID, ErrorType, T>;
+  readonly multipleSelectionQuestion: MapEntry<MultipleSelectionQuestion<ID, ErrorType>, ID, ErrorType, T>;
+  readonly questionGroup: MapEntry<QuestionGroup<ID, ErrorType>, ID, ErrorType, T>;
+  readonly compositionQuestion: MapEntry<CompositionQuestion<ID, ErrorType>, ID, ErrorType, T>;
+  readonly expandableQuestion: MapEntry<ExpandableQuestion<ID, ErrorType>, ID, ErrorType, T>;
 }
 
 // TODO: Update
@@ -106,7 +106,7 @@ export class QuestionMapper<ID, ErrorType, T> {
 
   public getMapper(
     question: QuestionNode<ID, ErrorType>,
-  ): Mapper<ID, ErrorType, T> {
+  ): Mapper<QuestionNode<ID, ErrorType>, ID, ErrorType, T> {
     return Object.values(this.questionMapper).find(
       (classNameMap) => classNameMap.className === question.constructor.name,
     ).mapper;
