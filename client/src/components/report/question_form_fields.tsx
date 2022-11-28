@@ -118,13 +118,13 @@ const SingleSelectionQuestionFormField = ({
 }: {
   question: SingleSelectionQuestion<ID, ErrorType>;
 }) => {
-  const [currentSelection, setCurrentSelection] = useState(question.getAnswer() || 0);
+  const [choices, setChoices] = useState(question.getChoices());
   const nameId = `${uuid()}-${question.getPrompt()}`;
 
   return (
     <FormField>
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
-      {question.getChoices().map((choice: ImmutableChoice, index) => {
+      {choices.map((choice: ImmutableChoice, index) => {
         return (
           <div key={`${question.getId()}-${index}`}>
             <input
@@ -135,6 +135,7 @@ const SingleSelectionQuestionFormField = ({
               checked={choice.wasChosen()}
               onChange={() => {
                 question.setAnswer(index);
+                setChoices(question.getChoices());
               }}
             />
             &nbsp;<label htmlFor={`${question.getId()}-${index}`}>{choice.getDescription()}</label>
