@@ -35,7 +35,7 @@ export abstract class MultipleChoiceQuestionTest<ID, T, ErrorType> extends Quest
 			it('Should get the same choices that have been passed during construction', () => {
 				let multipleChoice = 
 					this.multipleChoiceConstructor(this.multipleChoiceQuestionTestArgs.defaultId, this.multipleChoiceQuestionTestArgs.defaultPrompt, this.multipleChoiceQuestionTestArgs.choices);
-				expect(multipleChoice.getChoices()).to.have.members(this.multipleChoiceQuestionTestArgs.choices);
+				expect(multipleChoice.getChoices().map((choice) => choice.getDescription())).to.have.members(this.multipleChoiceQuestionTestArgs.choices);
 			});
 		});
 	}
