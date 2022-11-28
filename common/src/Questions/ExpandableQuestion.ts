@@ -11,12 +11,12 @@ import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
 import { ObjectSerializer, serializable } from '../Serializer/ObjectSerializer';
 
-@serializable(undefined, '', (arg) => undefined)
+@serializable(undefined, '', (arg: any) => undefined)
 export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
   private readonly idGenerator: (questionGroupIndex: number) => ID;
-  private answer?: number;
+  private answer: number | undefined;
 
   constructor(
     id: ID,
@@ -27,7 +27,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
     super(id, prompt);
     this.idGenerator = idGenerator;
     // TODO: Allow multiple "templates to be added"
-    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(undefined, `${prompt}-template`).addAll(...questions);
+    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(idGenerator(0), `${prompt}-template`).addAll(...questions);
   }
 
   public addToTemplate(
@@ -53,7 +53,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
   private expand(): void {
     this.questionGroups = new Array(this.answer ?? 0)
       .fill(undefined)
-      .map((x, index) => new QuestionGroup(this.idGenerator(index), `${this.getPrompt()}-${index}`, ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
+      .map((x, index) => new QuestionGroup(this.idGenerator(index + 1), `${this.getPrompt()}-${index}`, ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
         let serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
         return serializer.deserialize(serializer.serialize(q));
     })))
@@ -64,7 +64,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
     this.expand();
   };
 
-  public getAnswer(): number {
+  public getAnswer(): number | undefined {
    return this.answer;
   }
   

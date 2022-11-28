@@ -15,7 +15,7 @@ type table<T> = Array<Array<T>>;
 
 // The cell must be gray if no question is defined.
 class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, ErrorType>> {
-  private readonly question?: QuestionType;
+  private readonly question: QuestionType | undefined;
   private gray: boolean;
 
   constructor(question?: QuestionType) {
@@ -80,8 +80,8 @@ export abstract class QuestionTable<
     return row >= 0 &&
       row < this.questionTable.length &&
       col >= 0 &&
-      col < this.questionTable[0].length
-      ? this.questionTable[row][col].getQuestion()
+      col < (this.questionTable[0]?.length ?? 0)
+      ? this.questionTable[row]?.[col]?.getQuestion()
       : undefined;
   };
 
@@ -97,7 +97,7 @@ export abstract class QuestionTable<
     return this.questionTable
       .reduce((questions1, questions2) => [...questions1, ...questions2])
       .map((questionCell) => questionCell.getQuestion())
-      .filter((questionItem) => questionItem.getId() == id)[0];
+      .filter((questionItem) => questionItem?.getId() == id)[0];
   };
   
   public forEach(tableCellHandler: (tableCell:  TableCell<ID, T, ErrorType, QuestionType>, row: number, col: number) => void): void {
