@@ -1,6 +1,6 @@
 /*  A multiple choice question (MCQ) where you may choose only one or multiple
     alternative answers. A class exists for a question representing a multiple
-    selection MCQ orQ a single selection MCQ.
+    selection MCQ or a single selection MCQ.
 */
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
@@ -9,7 +9,7 @@ import { QuestionLeaf } from './QuestionLeaf';
 @serializable('')
 class Choice {
   private readonly description: string;
-  private chosen: boolean = false;
+  private chosen: boolean;
 
   constructor(description: string) {
     this.description = description;
@@ -57,9 +57,7 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
   constructor(id: ID, prompt: string, choices: string[], defaultAnswer?: T) {
     super(id, prompt);
     this.addChoices(choices);
-    if (defaultAnswer !== undefined) {
-      this.setAnswer(defaultAnswer);
-    }
+    this.setAnswer(defaultAnswer);
   }
 
   private addChoices(choicesDescriptions: string[]): void {
@@ -78,17 +76,13 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
 @serializable(undefined, '', [])
 export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, number, ErrorType> {
   // Won't do anything if answer index is greater than the number of choices
-  override setAnswer(answer: number): void {
+  public setAnswer(answer: number): void {
     if (answer < 0 || answer >= this.choices.length) {
       return;
     }
 
-    let oldAnswer: number | undefined = this.getAnswer();
-    if (typeof oldAnswer === 'number') {
-      this.choices[oldAnswer]?.unchoose();
-    }
+    this.choices[this.getAnswer()]?.unchoose();
     this.choices[answer]?.choose();
-
     super.setAnswer(answer);
   }
 }
@@ -98,15 +92,15 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
 @serializable(undefined, '', [])
 export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, Array<number>, ErrorType> {
   // Will ignore indexes whose value are greater than the number of choices
-  override setAnswer(answer: Array<number> = []): void {
+  public setAnswer(answer: Array<number> = []): void {
     if (answer.length === 0) {
       return;
     }
 
-    this.getAnswer()?.forEach((index) => this.choices[index]?.unchoose());
+    this.getAnswer()?.forEach((index) => this.choices[index].unchoose());
 
     let filteredAnswer = answer.filter((index) => index >= 0 && index < this.choices.length);
-    filteredAnswer.forEach((index) => this.choices[index]?.choose());
+    filteredAnswer.forEach((index) => this.choices[index].choose());
     super.setAnswer(filteredAnswer);
   }
 }
