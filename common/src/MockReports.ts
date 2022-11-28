@@ -1,4 +1,4 @@
-import { CompositionQuestion, QuestionGroup, NumericQuestion, ExpandableQuestion, SingleSelectionQuestion, MultipleSelectionQuestion, TextQuestion, NumericTable, SpecializedGroup } from './Questions';
+import { CompositionQuestion, QuestionGroup, NumericQuestion, ExpandableQuestion, SingleSelectionQuestion, MultipleSelectionQuestion, TextQuestion, SpecializedGroup } from './Questions';
 
 const questionIdGeneratorBuilder =
   (questionId: string) =>
@@ -13,6 +13,7 @@ export const oneQuestionMockReport = (): QuestionGroup<string, string> => {
   return report;
 }
 
+// TODO: Finish report
 export const buildRehabMockReport = (): QuestionGroup<string, string> => {
   const reportID: string = 'rehab-report_1';
   const rehabReport: QuestionGroup<string, string> = new QuestionGroup<string, string>(reportID, 'Rehab Report');
@@ -100,13 +101,14 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
 
   // Question 11
   const q11: NumericQuestion<string, string> = new NumericQuestion<string, string>('11', 'Self-discharged');
+  /* UNUSED
   const q11_1: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>('11_1', 'Reason for self-discharge', [
     'Finance: Left as cannot afford care',
     'Finance: Left to avoid paying',
     'Religious/Cultural',
     'Personal/Family',
     'Other'
-  ]);
+  ]);*/
 
   // Question 12
   const q12: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('12', 'Stayed in the ward');
@@ -114,7 +116,7 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
   const q12_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_1', 'Not ready from therapy standpoint');
   const q12_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_2', 'Wound Care');
   const q12_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_3', 'Other medical reason (such as IV medication)');
-  const q12_1_4: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_4', 'Financial/no place to discharge to');
+  // const q12_1_4: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_4', 'Financial/no place to discharge to');
 
   q12_1.addAll(q12_1_1, q12_1_2, q12_1_3);
 
@@ -224,7 +226,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   // TODO: Add q13_2 to q13
 
   // 13_3 "Gender"
-  const q13_3: QuestionGroup<string, string> = new QuestionGroup<string, string>('Gender', '13_3');
+  // const q13_3: QuestionGroup<string, string> = new QuestionGroup<string, string>('Gender', '13_3');
   const q13_3_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_3_1', 'Male');
   const q13_3_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_3_2', 'Female');
   q13_1.addAll(q13_3_1, q13_3_2);
@@ -362,8 +364,8 @@ export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   // TODO: add q13_1 to q13
 
   // Question 14 Table
-  const q14_rows: string[] = ['Weight <1.5kg', '1.5kg ≤ Weight <2.5kg', '2.5kg and over', 'Not weighed'];
-  const q14_columns: string[] = ['Births', 'Normal', 'Césarienne', 'Instrumentalsé'];
+  // const q14_rows: string[] = ['Weight <1.5kg', '1.5kg ≤ Weight <2.5kg', '2.5kg and over', 'Not weighed'];
+  // const q14_columns: string[] = ['Births', 'Normal', 'Césarienne', 'Instrumentalsé'];
   // TODO: Create question table
   //const q14: NumericTable<string, string> = new NumericTable<string, string>('Deliveries', '14', q14_rows, q14_columns, () => NumericQuestion<string, string>);
 
