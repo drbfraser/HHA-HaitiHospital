@@ -80,8 +80,7 @@ const ENDPOINT_REPORTS_GET: string = '/api/report';
 const ENDPOINT_REPORTS_GET_BY_ID = (id: string) => `/api/report/report/${id}`;
 
 // template
-const ENDPOINT_TEMPLATE_GET: string = '';
-const ENDPOINT_TEMPLATE_PUT: string = ENDPOINT_TEMPLATE_GET;
+const ENDPOINT_TEMPLATE: string = '/api/template';
 
 export {
   ENDPOINT_LOGIN,
@@ -117,6 +116,5 @@ export {
   ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
   ENDPOINT_REPORTS_GET,
   ENDPOINT_REPORTS_GET_BY_ID,
-  ENDPOINT_TEMPLATE_GET,
-  ENDPOINT_TEMPLATE_PUT,
+  ENDPOINT_TEMPLATE,
 };
