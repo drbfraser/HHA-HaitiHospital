@@ -19,20 +19,24 @@ export const Report = () => {
 
   useEffect(() => {
     const getMessages = async (isMounted: boolean) => {
-      const fetchedTemplateObject = await Api.Get(
-        `${ENDPOINT_TEMPLATE}/${rehabDepartmentId}`,
-        '',
-        history,
-      );
-      const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-      // The JSON returned is inccorrect as it does not include class names
-      const reportTemplateJson = fetchedTemplateObject.template.reportObject;
+      if (isMounted) {
+        const fetchedTemplateObject = await Api.Get(
+          `${ENDPOINT_TEMPLATE}/${rehabDepartmentId}`,
+          '',
+          history,
+        );
+        const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+        // The JSON returned is inccorrect as it does not include class names
+        const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
-      const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
-        objectSerializer.deserialize(JSON.stringify(reportTemplateJson));
-      setReportTemplate(deserializedReportTemplate);
-    }
+        const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
+          objectSerializer.deserialize(JSON.stringify(reportTemplateJson));
+        setReportTemplate(deserializedReportTemplate);
+      }
+    };
 
+    let isMounted: boolean = true;
+    getMessages(isMounted);
   });
 
   return (
