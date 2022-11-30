@@ -8,6 +8,7 @@ import Departments from 'utils/departments';
 import { TemplateCollection } from 'models/template';
 import { Role } from 'models/user';
 import { serializeTemplateReportObject } from 'utils/serializer';
+import { buildMaternityMockReport, ObjectSerializer } from '@hha/common';
 
 const router: IRouter = require('express').Router();
 
@@ -18,11 +19,11 @@ router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(requireJwtAuth, roleAuth(Role.Ad
     if (!(await Departments.Database.validateDeptId(deptId))) {
       throw new NotFound(`Invalid department id ${deptId}`);
     }
-    let template = await TemplateCollection.findOne({ departmentId: deptId }).lean();
-    if (!template) {
+    let serializedTemplate = await TemplateCollection.findOne({ departmentId: deptId }).lean();
+    if (!serializedTemplate) {
       throw new NotFound(`No template for department found`);
     }
-    res.status(HTTP_OK_CODE).json({ template: serializeTemplateReportObject(template) });
+    res.status(HTTP_OK_CODE).json({ template: serializedTemplate});
   } catch (e) {
     next(e);
   }

@@ -15,28 +15,24 @@ export const Report = () => {
   const history: History = useHistory<History>();
   const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType>>();
   // Hard coded, please change for your own seeded department ID
-  const rehabDepartmentId: string = '6385aebff09ad125bf592108';
+  const rehabDepartmentId: string = '6386fe7529b8791e510fefef';
 
   useEffect(() => {
     const getMessages = async (isMounted: boolean) => {
-      if (isMounted) {
-        const fetchedTemplateObject = await Api.Get(
-          `${ENDPOINT_TEMPLATE}/${rehabDepartmentId}`,
-          '',
-          history,
-        );
-        const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-        // The JSON returned is inccorrect as it does not include class names
-        const reportTemplateJson = fetchedTemplateObject.template.reportObject;
+      const fetchedTemplateObject = await Api.Get(
+        `${ENDPOINT_TEMPLATE}/${rehabDepartmentId}`,
+        '',
+        history,
+      );
+      const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+      // The JSON returned is inccorrect as it does not include class names
+      const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
-        const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
-          objectSerializer.deserialize(reportTemplateJson);
-        setReportTemplate(deserializedReportTemplate);
-      }
-    };
+      const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
+        objectSerializer.deserialize(JSON.stringify(reportTemplateJson));
+      setReportTemplate(deserializedReportTemplate);
+    }
 
-    let isMounted: boolean = true;
-    getMessages(isMounted);
   });
 
   return (
