@@ -171,7 +171,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{item.user ? item.user.name : '[deleted]'}</td>
                     <td>
-                      {new Date(item.createdAt).toLocaleString(language, {
+                      {item.createdAt.toLocaleString(language, {
                         timeZone: timezone,
                       })}
                     </td>

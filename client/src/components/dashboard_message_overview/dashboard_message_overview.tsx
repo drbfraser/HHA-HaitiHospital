@@ -53,7 +53,7 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
                       </th>
                       <td className="text-secondary">{message.user.name}</td>
                       <td className="text-secondary">
-                        {new Date(message.date).toLocaleString(language, {
+                        {message.date.toLocaleString(language, {
                           timeZone: timezone,
                         })}
                       </td>

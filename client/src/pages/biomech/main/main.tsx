@@ -138,7 +138,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         </td>
                         <td>{item.user ? item.user.name : t('status.not_available')} </td>
                         <td>
-                          {new Date(item.createdAt).toLocaleString(language, {
+                          {item.createdAt.toLocaleString(language, {
                             timeZone: timezone,
                           })}
                         </td>
