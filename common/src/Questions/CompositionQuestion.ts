@@ -8,7 +8,7 @@ import { SpecializedGroup } from './SpecializedGroup';
 
 @serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
-  private answer?: number;
+  private answer: number | undefined;
   private readonly compositionGroups: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>;
 
   constructor(id: ID, prompt: string, ...questions: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>) {
@@ -31,7 +31,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   
   private compositionGroupSumsUp(compositionGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>): boolean {
     return compositionGroup
-      .map((question) => question.getAnswer())
+      .map((question) => question.getAnswer() ?? 0)
       .reduce((answer1, answer2) => answer1 + answer2) === this.getAnswer();
   }
   

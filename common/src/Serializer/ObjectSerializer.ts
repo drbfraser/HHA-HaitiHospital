@@ -44,7 +44,7 @@ export class ObjectSerializer {
         this.constructorMapper[name] = constructor;
     }
 
-    private readonly addClassNameProperty = (object: Object): void => {
+    private readonly addClassNameProperty = (object: any): void => {
         if (!this.constructorMapper[object.constructor.name]) {
             return;
         }
@@ -53,7 +53,7 @@ export class ObjectSerializer {
     }
     
     
-    private readonly removeClassNameProperty = (object: Object): void => {
+    private readonly removeClassNameProperty = (object: any): void => {
         if (!this.constructorMapper[object.constructor.name]) {
             return;
         }
@@ -88,8 +88,15 @@ export class ObjectSerializer {
             return value;
         }
 
-        let className = value.__class__;
-        let returnObject: Object = new this.constructorMapper[className]();        
+        let className: string = value.__class__;
+        let constructor: Constructor | undefined = this.constructorMapper[className];
+        let returnObject: Object = {};
+        if (typeof constructor == "undefined") {
+            console.log(`Trying to deserialize ${className}, but ${className} has not been annotated with a @serializable decorator.`);
+            return undefined;
+        } else {
+            returnObject = new constructor();        
+        }
 
         if (!returnObject) {
             console.error(`Object ${JSON.stringify(value)} has field __class__, but is not serializable.`);
