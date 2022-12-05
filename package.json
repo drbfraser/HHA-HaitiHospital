@@ -9,7 +9,8 @@
     "test": "npm run test --prefix client; npm run test --prefix server; npm run test --prefix common",
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
-    "dev": "npm run server & npm run client"
+    "dev": "npm run server & npm run client",
+    "e2e": "cypress open"
   },
   "repository": {
     "type": "git",

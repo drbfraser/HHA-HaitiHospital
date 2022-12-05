@@ -193,12 +193,13 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               type="file"
               accept="image/*"
               className="form-control"
-              id="customFile"
+              id="customFilePatientStory"
               required
               onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
             <div className="form-check mt-2 mb-2">
               <input
+                data-testid="case-study-patient-consent-check"
                 className="form-check-input"
                 type="checkbox"
                 value=""
@@ -210,7 +211,11 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               </label>
             </div>
             <div className="mt-3 mb-5">
-              <button className="btn btn-primary" type="submit">
+              <button
+                data-testid="case-study-patient-submit-button"
+                className="btn btn-primary"
+                type="submit"
+              >
                 {t('caseStudyFormSubmitForm')}
               </button>
             </div>
@@ -284,7 +289,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               type="file"
               accept="image/*"
               className="form-control"
-              id="customFile"
+              id="customFileStaffRecognition"
               required
               onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
@@ -372,7 +377,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               type="file"
               accept="image/*"
               className="form-control"
-              id="customFile"
+              id="customFileTrainingSession"
               required
               onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
@@ -472,7 +477,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
               type="file"
               accept="image/*"
               className="form-control"
-              id="customFile"
+              id="customFileEquipmentReceived"
               required
               onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
@@ -517,7 +522,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 type="file"
                 accept="image/*"
                 className="form-control"
-                id="customFile"
+                id="customFileOtherCaseStudy"
                 required
                 onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
               />

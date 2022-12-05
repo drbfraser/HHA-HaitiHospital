@@ -118,6 +118,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
       <main className="container-fluid main-region">
         <Header />
         <ModalGeneric
+          dataTestId="reminder-to-change-featured-before-deleting"
           show={genericModal}
           item={'case study'}
           message={
@@ -129,6 +130,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           match={undefined}
         ></ModalGeneric>
         <ModalDelete
+          dataTestId="confirm-delete-case-study-button"
           currentItem={currentIndex}
           show={deleteModal}
           item={'case study'}
@@ -140,7 +142,11 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
         ></ModalDelete>
         <div className="d-flex justify-content-start">
           <Link to="/case-study/form">
-            <button type="button" className="btn btn-outline-dark">
+            <button
+              data-testid="add-case-study-button"
+              type="button"
+              className="btn btn-outline-dark"
+            >
               {translateText('caseStudyMainAddCaseStudy')}
             </button>
           </Link>
@@ -171,6 +177,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                     </td>
                     <td>
                       <button
+                        data-testid="view-case-study-button"
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/case-study/view/${item.id}`)}
                       >
@@ -182,6 +189,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         Role.MedicalDirector,
                       ]) ? (
                         <button
+                          data-testid="delete-case-study-button"
                           className="btn btn-link text-decoration-none"
                           onClick={(event) => {
                             onDeleteButton(event, item);
@@ -196,6 +204,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         Role.MedicalDirector,
                       ]) ? (
                         <button
+                          data-testid="feature-case-study-button"
                           className="btn btn-link text-decoration-none"
                           disabled={item.featured}
                           style={item.featured ? { fontStyle: 'italic' } : {}}

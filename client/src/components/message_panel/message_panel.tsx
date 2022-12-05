@@ -49,7 +49,7 @@ const MessagePanel = (props: MessagePanelProps) => {
       <div className="ml-3 d-flex justify-content-start">
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
           <Link to="/message-board/add-message">
-            <button className="btn btn-md btn-outline-secondary">
+            <button data-testid="add-message-button" className="btn btn-md btn-outline-secondary">
               {t('messageBoardAddMessage')}
             </button>
           </Link>
