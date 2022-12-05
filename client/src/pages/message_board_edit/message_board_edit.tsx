@@ -65,10 +65,10 @@ const EditMessage = () => {
   return (
     <div className="edit-message">
       <Sidebar />
-      <main>
+      <main className="main_container">
         <Header />
         <div className="container">
-          <h1 className="">{t('editMessage')}</h1>
+          <h1 className="h1">{t('editMessage')}</h1>
           <MessageForm optionalMsg={msg} submitAction={updateMessage} />
           <div className="edit-msg-back-btn">
             <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>

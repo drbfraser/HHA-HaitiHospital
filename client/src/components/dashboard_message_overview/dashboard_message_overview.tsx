@@ -75,7 +75,7 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
 
         <div className="d-flex justify-content-end">
           <NavLink to="/message-board">
-            <button type="button" className="btn btn-secondary btn-block col-auto">
+            <button data-testid="see-more-messages-button" type="button" className="btn btn-secondary btn-block col-auto">
               {t('dashboardMessageOverviewSeeMore')}
             </button>
           </NavLink>
