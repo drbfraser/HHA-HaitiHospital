@@ -1,6 +1,6 @@
 /*  A multiple choice question (MCQ) where you may choose only one or multiple
     alternative answers. A class exists for a question representing a multiple
-    selection MCQ orQ a single selection MCQ.
+    selection MCQ or a single selection MCQ.
 */
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
