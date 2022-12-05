@@ -179,7 +179,7 @@ const MultiSelectionQuestionFormField = ({
   );
 };
 
-export const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.Element => {
+const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.Element => {
   return (
     <FormField>
       {' '}
@@ -200,5 +200,13 @@ export const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>):
           return <FormFieldComponent key={question.getId()} question={question} />;
         })}{' '}
     </FormField>
+  );
+};
+
+export const ReportForm = ({ reportTemplate }): JSX.Element => {
+  return (
+    <div className="mt-3">
+      <form className="col-md-6">{buildQuestionFormField(reportTemplate)}</form>
+    </div>
   );
 };
