@@ -96,6 +96,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   return (
     <div className="d-flex text-muted pt-2">
       <ModalDelete
+        dataTestId="confirm-delete-message-button"
         currentItem={currentIndex}
         show={deleteModal}
         item={'message'}
@@ -113,7 +114,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
           <div className="text-gray-dark">
             <div className="d-flex">
               <div className="mr-auto p-2">
-                <p className="title-info">
+                <p data-testid="message-title" className="title-info">
                   <strong>{message.messageHeader}</strong>
                 </p>
                 <p className="department-info">{parseEscapedCharacters(message.department.name)}</p>
@@ -127,6 +128,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   ]) ? (
                     <Link className="align-self-center" to={`/message-board/edit/${message.id}`}>
                       <button
+                        data-testid="edit-message-button"
                         type="button"
                         className="btn btn-link text-decoration-none admin-utils"
                       >
@@ -142,6 +144,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                     Role.MedicalDirector,
                   ]) ? (
                     <button
+                      data-testid="delete-message-button"
                       type="button"
                       className="btn btn-link text-decoration-none admin-utils"
                       onClick={(event) => {
@@ -161,7 +164,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             </div>
           </div>
           <div className="mr-auto p-2">
-            <p className="lh-sm message-body">{message.messageBody}</p>
+            <p data-testid="message-body" className="lh-sm message-body">
+              {message.messageBody}
+            </p>
             {useLocation().pathname.split('/').length < 4 ? (
               <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
                 <button type="button" className="btn btn-link text-decoration-none admin-utils">

@@ -65,7 +65,7 @@ const Sidebar = (props: SidebarProps) => {
               activeClassName="active"
             >
               <i className="bi bi-chat-right-text-fill me-2" />
-              <span className="text text-light">{t('sidebarMessageBoard')}</span>
+              <span data-testid="message-board-side-bar" className="text text-light">{t('sidebarMessageBoard')}</span>
             </NavLink>
           </li>
           <li key="leaderboard">
@@ -76,7 +76,7 @@ const Sidebar = (props: SidebarProps) => {
               activeClassName="active"
             >
               <i className="bi bi-bar-chart-fill me-2" />
-              <span className="text text-light">{t('sidebarLeaderBoard')}</span>
+              <span data-testid="leaderboard-side-bar" className="text text-light">{t('sidebarLeaderBoard')}</span>
             </NavLink>
           </li>
           <li key="case-study">

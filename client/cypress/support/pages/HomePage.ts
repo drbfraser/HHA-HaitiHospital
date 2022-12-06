@@ -14,4 +14,14 @@ export class HomePage {
     cy.get('[data-testid="signout-button"]').click();
     return this;
   }
+
+  clickLeaderBoardPageButton() {
+    cy.get('[data-testid="go-to-leaderboard-button"]').click();
+    return this; 
+  }
+
+  clickSeeMoreMessagesButton() {
+    cy.get('[data-testid="see-more-messages-button"]').click();
+    return this; 
+  }
 }

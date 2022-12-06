@@ -38,7 +38,11 @@ const AddMessage = () => {
           <h1 className="h1">{t('addMessageAddMessage')}</h1>
           <MessageForm submitAction={onSubmit} />
           <div className="add-msg-back-btn">
-            <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
+            <button
+              data-testid="add-message-back-button"
+              className="btn btn-md btn-outline-secondary"
+              onClick={history.goBack}
+            >
               {t('addMessageBack')}
             </button>
           </div>

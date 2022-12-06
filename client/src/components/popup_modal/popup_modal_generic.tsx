@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { History } from 'history';
 
 interface ModalGenericProps extends RouteComponentProps {
+  dataTestId: string;
   onModalClose: any;
   show: boolean;
   message: string;
@@ -16,7 +17,7 @@ const ModalGeneric = (props: ModalGenericProps) => {
       <Modal.Header closeButton>
         <Modal.Title>REMINDER</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{props.message}</Modal.Body>
+      <Modal.Body data-testid={props.dataTestId}>{props.message}</Modal.Body>
       <Modal.Footer>
         <Button variant="outline-primary" onClick={() => props.onModalClose()}>
           Ok

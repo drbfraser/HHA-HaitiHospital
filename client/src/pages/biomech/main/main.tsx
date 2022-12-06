@@ -90,6 +90,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
       <main className="container-fluid main-region">
         <Header />
         <ModalDelete
+          dataTestId="confirm-delete-biomech-button"
           currentItem={currentIndex}
           show={deleteModal}
           item={t('item.report')}
