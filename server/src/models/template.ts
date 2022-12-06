@@ -17,6 +17,7 @@ const templateSchema = new Schema({
   departmentId: {
     type: String,
     required: [true, "can't be blank"],
+    index: true,
     ref: DEPARTMENT_MODEL_NAME
   },
   reportObject: { type: Object, required: true }

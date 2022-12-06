@@ -376,7 +376,6 @@ const seedTemplates = async () => {
     await TemplateCollection.deleteMany({});
 
     const serializer = ObjectSerializer.getObjectSerializer();
-    await mongoose.connection.collection('templates').dropIndexes();
 
     const reportDepartmentMap: [Report, string][] = [
       [buildRehabMockReport(), DefaultDepartments.Rehab],
