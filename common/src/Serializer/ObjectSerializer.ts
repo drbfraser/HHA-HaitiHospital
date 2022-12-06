@@ -67,9 +67,9 @@ export class ObjectSerializer {
     private readonly recursiveRemoveClassNameProperty = 
         recursiveConsumeObjectHOF(this.removeClassNameProperty);
     
-    public readonly serialize = (object: Object): string => {
+    public readonly serialize = (object: Object): Object => {
         this.recursiveAddClassNameProperty(object);
-        const ret: string = JSON.stringify(object);
+        const ret: Object= JSON.parse(JSON.stringify(object));
         this.recursiveRemoveClassNameProperty(object);
         return ret;
     }
@@ -109,8 +109,8 @@ export class ObjectSerializer {
         return returnObject;
     }
 
-    public readonly deserialize = <T>(json: string): T => {
-        let deserializedObject: T = JSON.parse(json, this.reviver);
+    public readonly deserialize = <T>(serializedObject: Object): T => {
+        let deserializedObject: T = JSON.parse(JSON.stringify(serializedObject), this.reviver);
         return deserializedObject;
     }
 }

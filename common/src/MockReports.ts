@@ -159,25 +159,25 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   const q4_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('4_1_1', 'Hospitalized NICU');
   const q4_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('4_1_2', 'Hospitalised Paed');
   const q4_1: SpecializedGroup<string, string, NumericQuestion<string, string>> = new SpecializedGroup<string, string, NumericQuestion<string, string>>('4_1', 'Departments', q4_1_1, q4_1_2);
-  const q4: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Hospitalized', '4', q4_1);
+  const q4: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('4', 'Hospitalized', q4_1);
 
   // Question 5 "Discharged alive"
   const q5_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('5_1_1', '# Discharged from NICU');
   const q5_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('5_1_2', '# Discharged from elsewhere');
   const q5_1: SpecializedGroup<string, string, NumericQuestion<string, string>> = new SpecializedGroup<string, string, NumericQuestion<string, string>>('5_1', 'By Department', q5_1_1, q5_1_2);
-  const q5: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Discharged Alive', '5', q5_1);
+  const q5: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('5', 'Discharged Alive', q5_1);
 
   // Question 6 "Died before 48h"
   const q6_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('6_1_1', 'Died in NICU');
   const q6_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('6_1_2', 'Died in Paed');
   const q6_1: SpecializedGroup<string, string, NumericQuestion<string, string>> = new SpecializedGroup<string, string, NumericQuestion<string, string>>('6_1', 'By Department', q6_1_1, q6_1_2);
-  const q6: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Died before 48h', '6', q6_1);
+  const q6: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('6', 'Died before 48h', q6_1);
 
   // Question 7 "Died after 48h"
   const q7_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('7_1_1', 'Died in NICU');
   const q7_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('7_1_2', 'Died in Paed');
   const q7_1: SpecializedGroup<string, string, NumericQuestion<string, string>> = new SpecializedGroup<string, string, NumericQuestion<string, string>>('7_1', 'By Department', q7_1_1, q7_1_2);
-  const q7: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Died after 48h', '7', q7_1);
+  const q7: CompositionQuestion<string, string> = new CompositionQuestion<string, string>( '7', 'Died after 48h', q7_1);
 
   // Questions 8 to 10
   const q8: NumericQuestion<string, string> = new NumericQuestion<string, string>('8', 'Days hospitalised');
@@ -185,10 +185,10 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   const q10: NumericQuestion<string, string> = new NumericQuestion<string, string>('10', 'Transfers');
 
   // Question 11 "Self-discharged"
-  const q11: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Reason for self-discharge', '11');
+  const q11: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('11', 'Reason for self-discharge');
 
   // 11_1 "Reason for self-discharge"
-  const q11_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('Reason for self-discharge (Group 1)', '11_1');
+  const q11_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('11_1', 'Reason for self-discharge (Group 1)');
   const q11_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_1', 'Finance: Leave as cannot afford care');
   const q11_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_2', 'Finance: Left to avoid paying');
   const q11_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_3', 'Religious/Cultural');
@@ -201,10 +201,10 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   const q12: NumericQuestion<string, string> = new NumericQuestion<string, string>('12', 'Stayed in the ward');
 
   // Question 13 "Admissions"
-  const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Where do patients come from?', '13');
+  const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('13', 'Where do patients come from?');
 
   // 13_1 "Where do patients come from?"
-  const q13_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('Where do patients come from? (Group 1)', '13_1');
+  const q13_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('13_1', 'Where do patients come from? (Group 1)');
   const q13_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_1_1', 'Quarter Morin');
   const q13_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_1_2', 'Cap Haitian');
   const q13_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_1_3', 'Department Nord');
@@ -213,7 +213,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   // TODO: Add q13_1 to q13
 
   // 13_2 "Age of infant admitted"
-  const q13_2: QuestionGroup<string, string> = new QuestionGroup<string, string>('Age of infant admitted', '13_2');
+  const q13_2: QuestionGroup<string, string> = new QuestionGroup<string, string>('13_2', 'Age of infant admitted');
   const q13_2_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_2_1', 'Extremely preterm (less than 28 weeks)');
   const q13_2_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_2_2', 'Very preterm (28 to 32 weeks)');
   const q13_2_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_2_3', 'Moderate to late preterm (32 to 37 weeks)');
@@ -233,7 +233,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   // TODO: Add q13_3 to q13
 
   // 13_4 "Main Condition"
-  const q13_4: QuestionGroup<string, string> = new QuestionGroup<string, string>('Main condition', '13_4');
+  const q13_4: QuestionGroup<string, string> = new QuestionGroup<string, string>('13_4', 'Main condition');
   const q13_4_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_4_1', 'Respiratory arrest');
   const q13_4_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_4_2', 'Traumatic injury');
   const q13_4_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('13_4_3', 'Septic Shock');
@@ -257,10 +257,10 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   // TODO: Add q13_4 to q13
 
   // Question 14 "Number of outpatients"
-  const q14: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Number of outpatients', '14');
+  const q14: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('14', 'Number of outpatients');
 
   // 14_1 "Age"
-  const q14_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('Age', '14_1');
+  const q14_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('14_1', 'Age');
   const q14_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_1_1,', 'Extremely preterm (less than 28 weeks)');
   const q14_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_1_2,', 'Very preterm (28 to 32 weeks)');
   const q14_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_1_3,', 'Moderate to late preterm (32 to 37 weeks)');
@@ -273,7 +273,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   // TODO: Add q14_1 to q14
 
   // 14_2 "Main Condition"
-  const q14_2: QuestionGroup<string, string> = new QuestionGroup<string, string>('Main condition', '14_2');
+  const q14_2: QuestionGroup<string, string> = new QuestionGroup<string, string>('14_2', 'Main condition');
   const q14_2_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_2_1', 'Respiratory arrest');
   const q14_2_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_2_2', 'Traumatic injury');
   const q14_2_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_2_3', 'Septic Shock');
@@ -297,7 +297,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
   // TODO: Add q14_2 to q14
 
   // 14_3 "Gender"
-  const q14_3: QuestionGroup<string, string> = new QuestionGroup<string, string>('Gender', '14_3');
+  const q14_3: QuestionGroup<string, string> = new QuestionGroup<string, string>('14_3', 'Gender');
   const q14_3_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_3_1', 'Male');
   const q14_3_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('14_3_2', 'Female');
   q14_3.addAll(q14_3_1, q14_3_2);
@@ -309,7 +309,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<string, string> => {
 
 export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   const reportID: string = 'maternity-report_1';
-  const maternityReport: QuestionGroup<string, string> = new QuestionGroup<string, string>('Maternity Report', reportID);
+  const maternityReport: QuestionGroup<string, string> = new QuestionGroup<string, string>(reportID, 'Maternity Report');
 
   // Questions 1 to 5
   const q1: NumericQuestion<string, string> = new NumericQuestion<string, string>('1', 'Beds available');
@@ -319,13 +319,13 @@ export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   const q5: NumericQuestion<string, string> = new NumericQuestion<string, string>('5', 'Discharged alive');
 
   // Question 6 "Died before 48h"
-  const q6: ExpandableQuestion<string, string> = new ExpandableQuestion<string, string>('Died before 48h', '6', questionIdGeneratorBuilder('6'));
+  const q6: ExpandableQuestion<string, string> = new ExpandableQuestion<string, string>('6', 'Died before 48h', questionIdGeneratorBuilder('6'));
   const q6_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('6_1', 'Age');
   const q6_2: TextQuestion<string, string> = new TextQuestion<string, string>('6_2', 'Cause of death');
   q6.addAllToTemplate(q6_1, q6_2);
 
   // Question 7 "Died after 48h"
-  const q7: ExpandableQuestion<string, string> = new ExpandableQuestion<string, string>('Died after 48h', '7', questionIdGeneratorBuilder('7'));
+  const q7: ExpandableQuestion<string, string> = new ExpandableQuestion<string, string>('7', 'Died after 48h', questionIdGeneratorBuilder('7'));
   const q7_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('7_1', 'Age');
   const q7_2: TextQuestion<string, string> = new TextQuestion<string, string>('7_2', 'Cause of death');
   q7.addAllToTemplate(q7_1, q7_2);
@@ -336,10 +336,10 @@ export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   const q10: NumericQuestion<string, string> = new NumericQuestion<string, string>('10', 'Transfers');
 
   // Question 11 "Self-discharged"
-  const q11: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Self-discharged', '11');
+  const q11: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('11', 'Self-discharged');
 
   // 11_1 "Reason for self-discharged"
-  const q11_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('Reason for self-discharged', '11_1');
+  const q11_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('11_1', 'Reason for self-discharged');
   const q11_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_1', 'Finance: Leave as cannot afford care');
   const q11_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_2', 'Finance: Left to avoid paying');
   const q11_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_1_3', 'Religious/Cultural');
@@ -352,10 +352,10 @@ export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   const q12: NumericQuestion<string, string> = new NumericQuestion<string, string>('12', 'Stayed in the ward');
 
   // Question 13 "Admissions"
-  const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('Admissions', '11');
+  const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('11', 'Admissions');
 
   // 13_1 "Where do patients come from?"
-  const q13_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('Where do patients come from?', '11_3');
+  const q13_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('11_3', 'Where do patients come from?');
   const q13_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_3_1', 'Quarter Morin');
   const q13_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_3_2', 'Cap Haitian');
   const q13_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('11_3_3', 'Department Nord');

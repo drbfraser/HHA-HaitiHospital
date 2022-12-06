@@ -377,7 +377,7 @@ const seedTemplates = async () => {
     let template = new TemplateCollection({
       departmentId: user?.departmentId,
       submittedUserId: user?._id,
-      reportObject: serializer.deserialize(serialized)
+      reportObject: serialized
     });
     await template.save();
     console.log(`Templates seeded`);
