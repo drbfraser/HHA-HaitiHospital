@@ -5,10 +5,8 @@ import UserCollection, { USER_MODEL_NAME } from './user';
 const { Schema } = mongoose;
 
 export interface ITemplate {
-  _id: string;
+  _id?: string;
   departmentId: string;
-  submittedDate: Date;
-  submittedUserId: string;
   reportObject: object;
 }
 
@@ -18,18 +16,8 @@ const PATH_TO_DEPARTMENT_ID = 'departmentId';
 const templateSchema = new Schema({
   departmentId: {
     type: String,
-    required: true,
+    required: [true, "can't be blank"],
     ref: DEPARTMENT_MODEL_NAME
-  },
-  submittedDate: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  submittedUserId: {
-    type: String,
-    required: true,
-    ref: USER_MODEL_NAME
   },
   reportObject: { type: Object, required: true }
 });
@@ -68,13 +56,6 @@ if (process.env.NODE_ENV !== 'test') {
     validator: uniqueTemplateDepartment,
     message: function (props: ValidatorProps) {
       return `Template with department id ${props.value} already exists`;
-    }
-  });
-
-  templateSchema.path(`${PATH_TO_USER_ID}`).validate({
-    validator: verifyUser,
-    message: function (props: ValidatorProps) {
-      return `Template references to non-existing user`;
     }
   });
 }
