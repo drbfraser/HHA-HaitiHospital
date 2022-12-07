@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 import initialDepartments from 'utils/json/departments.json';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-import { v4 as uuid } from 'uuid';
 
 type ID = string;
 type ErrorType = string;
@@ -30,27 +29,26 @@ export const Report = () => {
       );
       setDepartments(fetchedDepartments);
     };
-
-    const getTemplates = async (isMounted: boolean) => {
-      if (isMounted && currentDepartment) {
-        const fetchedTemplateObject = await Api.Get(
-          `${ENDPOINT_TEMPLATE}/${currentDepartment.id}`,
-          '',
-          history,
-        );
-        const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-        const reportTemplateJson = fetchedTemplateObject.template.reportObject;
-
-        const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
-          objectSerializer.deserialize(JSON.stringify(reportTemplateJson));
-        setReportTemplate(deserializedReportTemplate);
-      }
-    };
-
-    let isMounted: boolean = true;
     getDepartments();
-    getTemplates(isMounted);
-  }, [currentDepartment, history]);
+  }, [history]);
+
+  useEffect(() => {
+    const getTemplates = async () => {
+      const fetchedTemplateObject = await Api.Get(
+        `${ENDPOINT_TEMPLATE}/${currentDepartment.id}`,
+        '',
+        history,
+      );
+      const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+      const reportTemplateJson = fetchedTemplateObject.template.reportObject;
+
+      const deserializedReportTemplate: QuestionGroup<ID, ErrorType> = objectSerializer.deserialize(
+        JSON.stringify(reportTemplateJson),
+      );
+      setReportTemplate(deserializedReportTemplate);
+    };
+    currentDepartment && getTemplates();
+  }, [currentDepartment]);
 
   return (
     <div className="department">
@@ -73,7 +71,7 @@ export const Report = () => {
                 <option value="">Choose a department</option>
                 {departments &&
                   departments.map(({ id, name }) => (
-                    <option key={uuid()} value={id}>
+                    <option key={id} value={id}>
                       {name}
                     </option>
                   ))}
