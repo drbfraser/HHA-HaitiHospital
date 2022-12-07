@@ -205,7 +205,8 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.El
 
 export const ReportForm = ({ reportTemplate }): JSX.Element => {
   return (
-    <div className="mt-3">
+    <div className="mt-3 report-form">
+      <h2>{reportTemplate.prompt}</h2>
       <form className="col-md-6">{buildQuestionFormField(reportTemplate)}</form>
     </div>
   );

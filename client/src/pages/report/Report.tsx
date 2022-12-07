@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import initialDepartments from 'utils/json/departments.json';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
+import './styles.css';
 
 type ID = string;
 type ErrorType = string;
@@ -19,6 +20,11 @@ export const Report = () => {
   const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType>>();
   const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
+
+  const clearCurrentDepartment = (): void => {
+    setCurrentDepartment(undefined);
+    setReportTemplate(undefined);
+  };
 
   useEffect(() => {
     const getDepartments = async () => {
@@ -48,7 +54,7 @@ export const Report = () => {
 
         setReportTemplate(deserializedReportTemplate);
       } catch (e) {
-        console.error(e);
+        clearCurrentDepartment();
       }
     };
     currentDepartment && getTemplates();
@@ -59,7 +65,7 @@ export const Report = () => {
       <SideBar />
       <main className="container-fluid main-region">
         <Header />
-        {departments && (
+        {!reportTemplate && departments && (
           <div className="col-md-6">
             <h1 className="text-start">Submit a report</h1>
             <fieldset>
@@ -83,7 +89,14 @@ export const Report = () => {
             </fieldset>
           </div>
         )}
-        {reportTemplate && <ReportForm reportTemplate={reportTemplate} />}
+        {reportTemplate && (
+          <>
+            <button className="btn btn-outline-secondary" onClick={clearCurrentDepartment}>
+              Choose Different Department
+            </button>
+            <ReportForm reportTemplate={reportTemplate} />
+          </>
+        )}
       </main>
     </div>
   );

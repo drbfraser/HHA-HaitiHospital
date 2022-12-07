@@ -22,3 +22,7 @@ table {
 .form-control.w-fit {
   width: fit-content;
 }
+
+.col-md-6 {
+  padding-left: 0;
+}
