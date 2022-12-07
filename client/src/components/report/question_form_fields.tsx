@@ -86,55 +86,57 @@ const ExpandableQuestionFormField = ({
   const [elements, setElements] = useState([]);
 
   return (
-    <FormField>
-      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
-      <input
-        className="col-sm form-control w-fit"
-        type="number"
-        min="0"
-        defaultValue={0}
-        onChange={(e) => {
-          question.setAnswer(parseInt(e.target.value));
-          let index = 1;
-          setElements(
-            question.map<JSX.Element>((questions) => {
-              const itemId: string = 'e' + uuid();
+    <>
+      <FormField>
+        <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+        <input
+          className="col-sm form-control w-fit"
+          type="number"
+          min="0"
+          defaultValue={0}
+          onChange={(e) => {
+            question.setAnswer(parseInt(e.target.value));
+            let index = 1;
+            setElements(
+              question.map<JSX.Element>((questions) => {
+                const itemId: string = 'e' + uuid();
 
-              return (
-                <div className="accordion-item">
-                  <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
-                    <button
-                      className="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target={`#${itemId}`}
-                      aria-expanded="false"
-                      aria-controls={itemId}
+                return (
+                  <div className="accordion-item">
+                    <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#${itemId}`}
+                        aria-expanded="false"
+                        aria-controls={itemId}
+                      >
+                        Item {index++}
+                      </button>
+                    </h6>
+                    <div
+                      id={itemId}
+                      className="accordion-collapse collapse"
+                      aria-labelledby={`${itemId}-header`}
                     >
-                      Item {index++}
-                    </button>
-                  </h6>
-                  <div
-                    id={itemId}
-                    className="accordion-collapse collapse"
-                    aria-labelledby={`${itemId}-header`}
-                  >
-                    <div className="accordion-body">
-                      <fieldset key={index} className="mt-3">
-                        {buildQuestionFormField(questions)}
-                      </fieldset>
+                      <div className="accordion-body">
+                        <fieldset key={index} className="mt-3">
+                          {buildQuestionFormField(questions)}
+                        </fieldset>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            }),
-          );
-        }}
-      />
-      <div className="accordion" id={question.getId()}>
+                );
+              }),
+            );
+          }}
+        />
+      </FormField>
+      <div className="mt-3 mb-3 accordion" id={question.getId()}>
         {elements}
       </div>
-    </FormField>
+    </>
   );
 };
 
@@ -144,7 +146,7 @@ const SingleSelectionQuestionFormField = ({
   question: SingleSelectionQuestion<ID, ErrorType>;
 }) => {
   const [choices, setChoices] = useState(question.getChoices());
-  const nameId = `${uuid()}-${question.getPrompt()}`;
+  const [nameId, setNameId] = useState(`${uuid()}-${question.getPrompt()}`);
 
   return (
     <FormField>
@@ -176,7 +178,7 @@ const MultiSelectionQuestionFormField = ({
 }: {
   question: MultipleSelectionQuestion<ID, ErrorType>;
 }) => {
-  const nameId = `${uuid()}-${question.getPrompt()}`;
+  const [nameId, setNameId] = useState(`${uuid()}-${question.getPrompt()}`);
 
   return (
     <FormField>

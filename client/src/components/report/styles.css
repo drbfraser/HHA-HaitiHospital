@@ -20,9 +20,20 @@ table {
 }
 
 .form-control.w-fit {
-  width: fit-content;
+  max-width: fit-content;
 }
 
 .col-md-6 {
   padding-left: 0;
+}
+
+form > fieldset > fieldset {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+form fieldset label.form-label {
+  margin-bottom: 0;
 }
