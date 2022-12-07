@@ -98,17 +98,42 @@ const ExpandableQuestionFormField = ({
           let index = 1;
           setElements(
             question.map<JSX.Element>((questions) => {
+              const itemId: string = 'e' + uuid();
+
               return (
-                <fieldset key={index} className="mt-3">
-                  <h6 className="uppercase text-lg">Item {index++}</h6>
-                  {buildQuestionFormField(questions)}
-                </fieldset>
+                <div className="accordion-item">
+                  <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
+                    <button
+                      className="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target={`#${itemId}`}
+                      aria-expanded="false"
+                      aria-controls={itemId}
+                    >
+                      Item {index++}
+                    </button>
+                  </h6>
+                  <div
+                    id={itemId}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={`${itemId}-header`}
+                  >
+                    <div className="accordion-body">
+                      <fieldset key={index} className="mt-3">
+                        {buildQuestionFormField(questions)}
+                      </fieldset>
+                    </div>
+                  </div>
+                </div>
               );
             }),
           );
         }}
       />
-      <div>{elements}</div>
+      <div className="accordion" id={question.getId()}>
+        {elements}
+      </div>
     </FormField>
   );
 };

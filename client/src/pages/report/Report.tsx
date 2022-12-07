@@ -92,6 +92,7 @@ export const Report = () => {
         {reportTemplate && (
           <>
             <button className="btn btn-outline-secondary" onClick={clearCurrentDepartment}>
+              <i className="bi bi-chevron-left me-2" />
               Choose Different Department
             </button>
             <ReportForm reportTemplate={reportTemplate} />
