@@ -34,21 +34,25 @@ export const Report = () => {
 
   useEffect(() => {
     const getTemplates = async () => {
-      const fetchedTemplateObject = await Api.Get(
-        `${ENDPOINT_TEMPLATE}/${currentDepartment.id}`,
-        '',
-        history,
-      );
-      const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-      const reportTemplateJson = fetchedTemplateObject.template.reportObject;
+      try {
+        const fetchedTemplateObject = await Api.Get(
+          `${ENDPOINT_TEMPLATE}/${currentDepartment.id}`,
+          '',
+          history,
+        );
+        const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+        const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
-      const deserializedReportTemplate: QuestionGroup<ID, ErrorType> = objectSerializer.deserialize(
-        JSON.stringify(reportTemplateJson),
-      );
-      setReportTemplate(deserializedReportTemplate);
+        const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
+          objectSerializer.deserialize(reportTemplateJson);
+
+        setReportTemplate(deserializedReportTemplate);
+      } catch (e) {
+        console.error(e);
+      }
     };
     currentDepartment && getTemplates();
-  }, [currentDepartment]);
+  }, [currentDepartment, history]);
 
   return (
     <div className="department">
