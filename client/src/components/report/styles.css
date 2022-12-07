@@ -37,3 +37,8 @@ form > fieldset > fieldset {
 form fieldset label.form-label {
   margin-bottom: 0;
 }
+
+.form-check-input {
+  position: static;
+  margin-left: 0;
+}

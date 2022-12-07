@@ -63,10 +63,10 @@ export const Report = () => {
   return (
     <div className="department">
       <SideBar />
-      <main className="container-fluid main-region">
+      <main className="container-fluid main-region bg-light h-screen">
         <Header />
         {!reportTemplate && departments && (
-          <div className="col-md-6">
+          <div className="col-md-6 mb-5">
             <h1 className="text-start">Submit a report</h1>
             <fieldset>
               <label htmlFor="">Department Type</label>
