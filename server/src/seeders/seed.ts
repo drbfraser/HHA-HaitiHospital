@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import faker from 'faker';
-import { ObjectSerializer, buildMaternityMockReport } from '@hha/common';
+import { ObjectSerializer, buildMaternityMockReport, buildRehabMockReport, buildNicuPaedsMockReport, QuestionGroup } from '@hha/common';
 import UserCollection, { Role, User } from 'models/user';
 import MessageCollection from 'models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
@@ -367,19 +367,33 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
   }
 };
 
+
+type Report = QuestionGroup<string, string>
 const seedTemplates = async () => {
+
   console.log(`Seeding templates...`);
   try {
     await TemplateCollection.deleteMany({});
-    const user = await UserCollection.findOne({ username: 'user0' });
+
     const serializer = ObjectSerializer.getObjectSerializer();
-    const serialized = serializer.serialize(buildMaternityMockReport());
-    let template = new TemplateCollection({
-      departmentId: user?.departmentId,
-      submittedUserId: user?._id,
-      reportObject: serialized
-    });
-    await template.save();
+
+    const reportDepartmentMap: [Report, string][] = [
+      [buildRehabMockReport(), DefaultDepartments.Rehab],
+      [buildNicuPaedsMockReport(), DefaultDepartments.NICU],
+      [buildMaternityMockReport(), DefaultDepartments.Maternity]];
+
+    for (const tuple of reportDepartmentMap) {
+        const report: Report = tuple[0];
+        const departmentName: string = tuple[1];
+      
+        const departmentId: string = await Departments.Database.getDeptIdByName(departmentName);
+        const serialized = serializer.serialize(report);
+        let template = new TemplateCollection({
+          departmentId: departmentId,
+          reportObject:  serialized
+        });
+        await template.save();
+    }
     console.log(`Templates seeded`);
   } catch (err) {
     console.log(err);
