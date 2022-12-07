@@ -9,5 +9,6 @@ export const BIO_MECH_ADDED_SUCCESSFULLY: string = 'Successfully create report';
 export const BIO_MECH_DELETED_SUCCESSFULLY: string = 'Successfully delete report';
 export const USER_ADDED_SUCCESSFULLY: string = 'Successfully create user';
 export const USER_DELETED_SUCCESSFULLY: string = 'Successfully delete user';
+export const EOTM_UPDATED_SUCCESSFULLY: string = 'Employee of the month successfully updated!';
 
 

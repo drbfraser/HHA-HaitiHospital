@@ -70,7 +70,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
         <Header />
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to="/employee-of-the-month">
-            <button type="button" className="btn btn-outline-dark">
+            <button data-testid="back-eotm-button" type="button" className="btn btn-outline-dark">
               {t('employeeOfTheMonthBack')}
             </button>
           </Link>
@@ -84,6 +84,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   {t('employeeOfTheMonthName')}
                 </label>
                 <input
+                  data-testid="eotm-name"
                   className="form-control mb-2 mt-0"
                   type="text"
                   id="employee-name"
@@ -94,6 +95,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                   {t('employeeOfTheMonthDepartment')}
                 </label>
                 <select
+                  data-testid="eotm-department"
                   className="form-select mb-2 mt-0"
                   id="employee-department"
                   aria-label="Default select example"
@@ -107,7 +109,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                       <option key={index} value={dept.name}>
                         {dept.name}
                       </option>
-                    ) : ( null );
+                    ) : null;
                   })}
                 </select>
                 <label htmlFor="Employee Description" className="form-label">
@@ -132,7 +134,11 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
                 />
               </div>
               <div>
-                <button className="btn btn-primary mt-4 " type="submit">
+                <button
+                  data-testid="eotm-submit-button"
+                  className="btn btn-primary mt-4 "
+                  type="submit"
+                >
                   {t('employeeOfTheMonthSubmitForm')}
                 </button>
               </div>

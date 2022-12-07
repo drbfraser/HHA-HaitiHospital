@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 
 import { LoginPage } from '../support/pages/LoginPage';
-import en from '../../src/locales/en/translationEN.json';
 import { MessageboardPage } from '../support/pages/MessageboardPage';
 import {
   MESSAGE_ADDED_SUCCESSFULLY,
