@@ -1,9 +1,10 @@
+import { ReportCollection, IReport } from 'models/report';
 import { QuestionGroup } from '@hha/common';
 import { ObjectSerializer, buildRehabMockReport } from '@hha/common';
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, SAVE_REPORT_ENDPOINT } from './testTools/endPoints';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT, REPORT_ENDPOINT } from './testTools/endPoints';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -13,6 +14,7 @@ chai.use(chaiHttp);
 let httpServer: http.Server;
 let agent: any;
 let csrf: String;
+let testReport: IReport;
 
 describe('report tests', function () {
   before('Create a Working Server and Login With Admin', function (done) {
@@ -32,6 +34,11 @@ describe('report tests', function () {
           if (error) return done(error);
           done();
         });
+      ReportCollection.find({})
+        .lean()
+        .then((reports: IReport[]) => {
+          testReport = reports[0];
+        });
     });
   });
 
@@ -39,11 +46,24 @@ describe('report tests', function () {
     closeServer(agent, httpServer);
   });
 
+  it('should fetch report correctly', function (done) {
+    agent
+      .get(`${REPORT_ENDPOINT}/${testReport._id}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .end(function (err: any, res: any) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('report');
+        expect(new QuestionGroup<string, string>('ROOT', res.body.report.reportObject) instanceof QuestionGroup).to.be.true;
+        done();
+      });
+  });
+
   it('should save report correctly', function (done) {
     const objectSerializer = ObjectSerializer.getObjectSerializer();
     const serializedReport = objectSerializer.serialize(buildRehabMockReport());
     agent
-      .post(SAVE_REPORT_ENDPOINT)
+      .post(REPORT_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .send({
         departmentId: '123',

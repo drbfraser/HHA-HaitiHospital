@@ -8,14 +8,14 @@ export interface ValidationResult<ErrorType> {
 }
 
 export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, ErrorType> {
-  private answer?: T;
+  private answer: T | undefined;
 
   private readonly validators: Array<(answer?: T) => ValidationResult<ErrorType>>;
 
   constructor(id: ID, prompt: string, defaultAnswer?: T) {
     super(id, prompt);
     this.answer = defaultAnswer;
-    this.validators = new Array<(answer: T) => ValidationResult<ErrorType>>();
+    this.validators = new Array<(answer?: T) => ValidationResult<ErrorType>>();
   }
 
   public getAnswer(): T | undefined {

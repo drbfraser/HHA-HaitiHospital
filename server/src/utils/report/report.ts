@@ -1,9 +1,9 @@
 import { SystemException } from 'exceptions/systemException';
-import { TemplateCollection } from 'models/template';
+import { TemplateCollection } from 'models/old_template';
 import { User } from 'models/user';
 import { ReportDescriptor, ReportItems } from 'utils/definitions/report';
 import Departments from 'utils/departments';
-import { generateNewReportFromTemplate } from 'utils/parsers/template';
+import { generateNewReportFromTemplate } from 'utils/parsers/old_template';
 import { generateUuid } from 'utils/utils';
 
 export const getReportItems = (report: ReportDescriptor): ReportItems => {

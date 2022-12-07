@@ -6,12 +6,25 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "experimentalDecorators": true,
-    "strict": false,
     "esModuleInterop": true,
-    "noImplicitAny": false,
+
+    "alwaysStrict": true,
+    "allowUnusedLabels": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "strict": true,
+
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+
+    "experimentalDecorators": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "tests"]

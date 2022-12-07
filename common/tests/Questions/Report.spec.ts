@@ -13,8 +13,8 @@ describe('Mock Reports', function () {
     it('Should be able to serialize one question mock report', function() {
       const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
       const report: QuestionGroup<string, string> = oneQuestionMockReport();
-      let json: string = objectSerializer.serialize(report);
-      let deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(json);
+      let serializedObject: Object = objectSerializer.serialize(report);
+      let deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(serializedObject);
       
       expect(verifySerialized(report, deserialized)).to.be.true;
     });
@@ -28,8 +28,8 @@ describe('Mock Reports', function () {
     it('Should be able to serialize rehab mock report', function () {
       const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
       const report: QuestionGroup<string, string> = buildRehabMockReport();
-      const json: string = objectSerializer.serialize(report);
-      const deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(json);
+      const serializedObject: Object = objectSerializer.serialize(report);
+      const deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(serializedObject);
       
       expect(verifySerialized(report, deserialized)).to.be.true;
     });
@@ -43,8 +43,8 @@ describe('Mock Reports', function () {
     it('Should be able to serialize NICUPaeds report', function() {
       const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
       const report: QuestionGroup<string, string> = buildNicuPaedsMockReport();
-      const json: string = objectSerializer.serialize(report);
-      const deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(json);
+      const serializedObject: Object = objectSerializer.serialize(report);
+      const deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(serializedObject);
       
       expect(verifySerialized(report, deserialized)).to.be.true;
     });
@@ -58,8 +58,8 @@ describe('Mock Reports', function () {
     it('Should be able to serialize maternity report', function() {
       const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
       const report: QuestionGroup<string, string> = buildMaternityMockReport();
-      const json: string = objectSerializer.serialize(report);
-      const deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(json);
+      const serializedObject: Object = objectSerializer.serialize(report);
+      const deserialized: QuestionGroup<string, string> = objectSerializer.deserialize(serializedObject);
       
       expect(verifySerialized(report, deserialized)).to.be.true;
     });
@@ -69,13 +69,14 @@ describe('Mock Reports', function () {
     const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
     const NICUReport: QuestionGroup<string, string> = buildNicuPaedsMockReport();
     const maternityReport: QuestionGroup<string, string> = buildMaternityMockReport();
-    const nicuJson: string = objectSerializer.serialize(NICUReport);
-    const maternityJson: string = objectSerializer.serialize(maternityReport);
-    const deserializedNICUReport = objectSerializer.deserialize(nicuJson);
-    const deserializedMaternityReport = objectSerializer.deserialize(maternityJson);
+    const nicuSerialized: Object = objectSerializer.serialize(NICUReport);
+    const maternitySerialized: Object = objectSerializer.serialize(maternityReport);
+    const deserializedNICUReport = objectSerializer.deserialize(nicuSerialized);
+    const deserializedMaternityReport = objectSerializer.deserialize(maternitySerialized);
     
     expect(verifySerialized(deserializedNICUReport, deserializedMaternityReport))
     .to.be.false;
     
   });
+ 
 });

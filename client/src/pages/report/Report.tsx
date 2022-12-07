@@ -3,10 +3,6 @@ import Header from 'components/header/header';
 import { buildRehabMockReport, QuestionGroup, QuestionNode } from "@hha/common"
 import { buildQuestionFormField } from 'components/report/question_form_fields';
 
-// Temporary placeholders
-type ID = string;
-type ErrorType = string;
-
 export const Report = () => {
   const report: QuestionGroup<string, string> = buildRehabMockReport()
 
@@ -18,8 +14,7 @@ export const Report = () => {
         <div className="mt-3">
           <section><h1 className="text-start">Rehab Report</h1></section>
           <form className='col-md-6'>
-            {/* Resolve in a follow-up MR */}
-            {/*questions.map((q) => buildQuestionFormField(q))*/}
+            {buildQuestionFormField(report)}
           </form>
         </div>
       </main>

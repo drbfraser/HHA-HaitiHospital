@@ -90,8 +90,8 @@ describe('Serializer', function () {
       let skyrimGuard: SkyrimGuard = new SkyrimGuard();
 
       // Act
-      let json: string = objectSerializer.serialize(skyrimGuard);
-      let newSkyrimGuard: SkyrimGuard = objectSerializer.deserialize(json);
+      let serialized: Object = objectSerializer.serialize(skyrimGuard);
+      let newSkyrimGuard: SkyrimGuard = objectSerializer.deserialize(serialized);
 
       // Assert
       expect(newSkyrimGuard).to.be.instanceof(SkyrimGuard);
@@ -103,8 +103,8 @@ describe('Serializer', function () {
       let skyrimGuard: IsBandLegendary = new IsBandLegendary('Linkin Park', true);
 
       // Act
-      let json: string = objectSerializer.serialize(skyrimGuard);
-      let newSkyrimGuard: IsBandLegendary = objectSerializer.deserialize(json);
+      let serialized: Object = objectSerializer.serialize(skyrimGuard);
+      let newSkyrimGuard: IsBandLegendary = objectSerializer.deserialize(serialized);
 
       // Assert
       expect(newSkyrimGuard).to.be.instanceof(IsBandLegendary);
@@ -125,8 +125,8 @@ describe('Serializer', function () {
         serializableObject.property1 = 42;
         serializableObject.property2 = 'The cake is a lie.';
 
-        let json: string = objectSerializer.serialize(serializableObject);
-        let a2: Serializable = objectSerializer.deserialize(json);
+        let serialized: Object = objectSerializer.serialize(serializableObject);
+        let a2: Serializable = objectSerializer.deserialize(serialized);
 
         // Assert
         expect(
@@ -145,8 +145,8 @@ describe('Serializer', function () {
         let objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
 
         // Act
-        let json: string = objectSerializer.serialize(nonSerializable);
-        let deserialized: NonSerializable = objectSerializer.deserialize(json);
+        let serialized: Object = objectSerializer.serialize(nonSerializable);
+        let deserialized: NonSerializable = objectSerializer.deserialize(serialized);
 
         // Assert
         expect(deserialized).to.not.be.instanceof(NonSerializable);
@@ -171,8 +171,8 @@ describe('Serializer', function () {
         semiRealisticObject.addSerializable(bSerializable);
 
         // Act
-        let json: string = objectSerializer.serialize(semiRealisticObject);
-        let deserializedObject: SemiRealisticObject = objectSerializer.deserialize(json);
+        let serialized: Object = objectSerializer.serialize(semiRealisticObject);
+        let deserializedObject: SemiRealisticObject = objectSerializer.deserialize(serialized);
 
         // Assert
         expect(deserializedObject.getSerializable(0)).to.be.instanceof(ASerializable);
@@ -185,8 +185,8 @@ describe('Serializer', function () {
 
         // Act
         let objectWithUndefined: UndefinedProperty = new UndefinedProperty();
-        let json: string = objectSerializer.serialize(objectWithUndefined);
-        let newObject: UndefinedProperty = objectSerializer.deserialize(json);
+        let serializedObject: Object = objectSerializer.serialize(objectWithUndefined);
+        let newObject: UndefinedProperty = objectSerializer.deserialize(serializedObject);
 
         // Assert
         expect(newObject).to.be.instanceof(UndefinedProperty);
@@ -200,8 +200,8 @@ describe('Serializer', function () {
         delete malformed.band;
 
         // Act
-        let json: string = objectSerializer.serialize(malformed);
-        let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(json);
+        let serialized: Object = objectSerializer.serialize(malformed);
+        let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(serialized);
 
         // Assert
         expect(malformedDeserialized.band).to.be.equal('Generic Band');
@@ -215,8 +215,8 @@ describe('Serializer', function () {
         malformed.extra = '';
 
         // Act
-        let json: string = objectSerializer.serialize(malformed);
-        let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(json);
+        let serialized: Object = objectSerializer.serialize(malformed);
+        let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(serialized);
 
         // Assert
         expect((malformedDeserialized as any).extra).to.equal(malformed.extra);

@@ -1,19 +1,28 @@
 import * as mongoose from 'mongoose';
 import Departments from 'utils/departments';
-import { formatDateString } from 'utils/utils';
+import { DEPARTMENT_MODEL_NAME } from './departments';
 
 import UserCollection, { USER_MODEL_NAME } from './user';
 
 const { Schema } = mongoose;
 
+export interface IReport {
+  _id: string;
+  departmentId: string;
+  reportMonth: Date;
+  submittedDate: Date;
+  submittedUserId: string;
+  reportObject: object;
+}
+
 const PATH_TO_DEPARTMENT_ID = 'departmentId';
 const PATH_TO_USER_ID = 'submittedUserId';
-const PATH_TO_REPORT_MONTH = 'reportMonth';
 
 const reportSchema = new Schema({
   departmentId: {
     type: String,
-    required: true
+    required: true,
+    ref: DEPARTMENT_MODEL_NAME
   },
   reportMonth: {
     type: Date,

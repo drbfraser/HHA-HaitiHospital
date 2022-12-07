@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import faker from 'faker';
+import { ObjectSerializer, buildMaternityMockReport, buildRehabMockReport, buildNicuPaedsMockReport, QuestionGroup } from '@hha/common';
 import UserCollection, { Role, User } from 'models/user';
 import MessageCollection from 'models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
@@ -7,7 +8,7 @@ import BioMech, { BiomechPriority } from 'models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from 'utils/processEnv';
 import { TemplateCollection } from 'models/template';
-import { ReportCollection } from 'models/old_report';
+import { ReportCollection } from 'models/report';
 import Departments, { DefaultDepartments } from 'utils/departments';
 import DepartmentCollection, { Department } from 'models/departments';
 
@@ -366,10 +367,33 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
   }
 };
 
+
+type Report = QuestionGroup<string, string>
 const seedTemplates = async () => {
+
   console.log(`Seeding templates...`);
   try {
     await TemplateCollection.deleteMany({});
+
+    const serializer = ObjectSerializer.getObjectSerializer();
+
+    const reportDepartmentMap: [Report, string][] = [
+      [buildRehabMockReport(), DefaultDepartments.Rehab],
+      [buildNicuPaedsMockReport(), DefaultDepartments.NICU],
+      [buildMaternityMockReport(), DefaultDepartments.Maternity]];
+
+    for (const tuple of reportDepartmentMap) {
+        const report: Report = tuple[0];
+        const departmentName: string = tuple[1];
+      
+        const departmentId: string = await Departments.Database.getDeptIdByName(departmentName);
+        const serialized = serializer.serialize(report);
+        let template = new TemplateCollection({
+          departmentId: departmentId,
+          reportObject:  serialized
+        });
+        await template.save();
+    }
     console.log(`Templates seeded`);
   } catch (err) {
     console.log(err);
@@ -380,6 +404,16 @@ const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
     await ReportCollection.deleteMany({});
+    const user = await UserCollection.findOne({ username: 'user0' });
+    const serializer = ObjectSerializer.getObjectSerializer();
+    const serialized = serializer.serialize(buildMaternityMockReport());
+    let report = new ReportCollection({
+      departmentId: user?.departmentId,
+      submittedUserId: user?._id,
+      reportMonth: new Date(),
+      reportObject: serializer.deserialize(serialized)
+    });
+    await report.save();
     console.log(`Reports seeded`);
   } catch (err) {
     console.log(err);
