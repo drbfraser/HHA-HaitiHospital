@@ -57,10 +57,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
                 {caseStudy.user ? caseStudy.user.name : '[deleted]'}
               </h6>
               <h6 className="fs-6 lh-base">
-                {translateText('caseStudyViewDate')}{' '}
-                {new Date(caseStudy.createdAt).toLocaleDateString(language, {
-                  timeZone: timezone,
-                })}
+                {translateText('caseStudyViewDate')} {caseStudy.createdAt}
               </h6>
               <h6 className="fs-6 fw-bold lh-base">{translateText('caseStudyFormPatientName')}</h6>
               <p data-testid="case-study-patient-name" className="fs-6 lh-base text-break">

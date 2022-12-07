@@ -84,7 +84,11 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         <Header />
         <div className="d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
-            <button data-testid="biomech-view-back-button" type="button" className="btn btn-outline-dark">
+            <button
+              data-testid="biomech-view-back-button"
+              type="button"
+              className="btn btn-outline-dark"
+            >
               {t('button.back')}
             </button>
           </Link>
@@ -101,12 +105,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                     {`${t('biomech.view_report.author')}: `}
                     {BioReport.user ? BioReport.user.name : 'status.not_available'}
                   </h6>
-                  <h6 className="fs-6 mb-3 lh-base">
-                    Date:{' '}
-                    {new Date(BioReport.createdAt).toLocaleDateString(language, {
-                      timeZone: timezone,
-                    })}
-                  </h6>
+                  <h6 className="fs-6 mb-3 lh-base">Date: {BioReport.createdAt}</h6>
                   <h6 className="fs-6 fw-bold lh-base">
                     {t('biomech.view_report.equipment_name')}
                   </h6>
