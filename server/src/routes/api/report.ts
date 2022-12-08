@@ -26,7 +26,6 @@ router.route('/').post(requireJwtAuth, async (req: RequestWithUser, res: Respons
     const saved = await newReport.save();
     return res.status(HTTP_CREATED_CODE).json({ message: 'Report saved', report: saved });
   } catch (e) {
-    console.log(e);
     next(e);
   }
 });

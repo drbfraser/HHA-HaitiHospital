@@ -1,5 +1,7 @@
 import fs from 'fs';
 import { promisify } from 'util';
+import { logger } from '../logger';
+
 const readdir = promisify(fs.readdir);
 const unlink = promisify(fs.unlink);
 
@@ -8,13 +10,13 @@ export const deleteAllAvatars = async (absoluteFolderPath) => {
     const files = await readdir(absoluteFolderPath);
     const unlinkPromises = files.map((filename) => {
       if (!['avatar0.jpg', 'avatar1.jpg', 'avatar2.jpg'].includes(filename)) {
-        console.log('Deleting avatar: ', filename);
+        logger.debug('Deleting avatar: ', filename);
         unlink(`${absoluteFolderPath}/${filename}`);
       }
     });
     return Promise.all(unlinkPromises);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 };
 

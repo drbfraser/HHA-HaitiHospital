@@ -17,7 +17,6 @@ export const roleAuth =
     const reqUserRole = userInfo.role;
     const hasPermission = roles.includes(reqUserRole);
     if (!hasPermission) {
-      //   console.log('User with role ' + reqUserRole + 'does not have sufficient permissions');
       return next(new Unauthorized(`User with role ${reqUserRole} is not privileged`));
     }
 

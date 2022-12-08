@@ -9,6 +9,7 @@ import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from '@hha/common';
 import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
 import { parseToReport } from 'utils/parsers/report';
 import { parseToJson } from './json_report';
+import { logger } from '../../logger';
 
 /**
  * Parse a json string to a ReportDescriptor. Throws 400 on invalid structure or semantic.
@@ -42,7 +43,7 @@ const getTsCompilerOptions = function (): {} {
     return compilerOptions;
   } catch (e) {
     if (e instanceof SystemException) {
-      console.log(e);
+      logger.error(e);
       return {};
     }
     throw e;
