@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { User } from 'models/user';
 import { HTTP_UNAUTHORIZED_CODE } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
+import { logger } from 'logger';
 // import * as passport from 'passport';
 
 // const somePassport : passport = passport;
@@ -13,7 +14,7 @@ const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
       return next(err);
     }
     if (!user) {
-      console.error('Cannot authenticate request, user does not exist.');
+      logger.error('Cannot authenticate request, user does not exist.');
       return res.status(HTTP_UNAUTHORIZED_CODE).send(info);
     }
     (req as RequestWithUser).user = user;

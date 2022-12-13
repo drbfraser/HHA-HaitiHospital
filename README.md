@@ -140,10 +140,38 @@ Now that everything is up, visit http://localhost:3000 and login with the seeded
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
 
-### Common package
+### Common package (Outdated)
 
 Whenever changes are made to `common` folder, you should run `npm run update-common` on root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common` and reinstalls
 it in `client` and `server`.
+
+### Logging
+
+Log levels:
+
+```
+    levels {
+        error: 0,
+        warn: 1,
+        info: 2,
+        http: 3,
+        verbose: 4,
+        debug: 5,
+        silly: 6
+    }
+```
+
+For prod env:
+
+- log level is set to `info`, meaning only `error`, `warn` and `info` will show up in the log files.
+- saves logs to logs/hha-info-%DATE%.log and logs/hha-errors-%DATE%.log files which are then rotated every day or whenever the file limit is exceeded
+- see `logger/prod.logger.ts`
+
+For non-prod env
+
+- log level is set to `debug`
+- logs will not be exported into a file but only to the console.
+- see `logger/dev.logger.ts`
 
 ### Prettier Setup
 

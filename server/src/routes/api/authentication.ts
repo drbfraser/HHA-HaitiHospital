@@ -4,6 +4,7 @@ import requireJwtAuth from 'middleware/requireJwtAuth';
 import UserCollection from 'models/user';
 import { RequestWithUser } from 'utils/definitions/express';
 import requireLocalAuth from '../../middleware/requireLocalAuth';
+import { logger } from '../../logger';
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.post('/logout', requireJwtAuth, (req: RequestWithUser, res: Response, nex
       return next(err);
     }
   });
-  console.log('User successfully logged out');
+  logger.debug('User successfully logged out');
   res.send(true);
 });
 

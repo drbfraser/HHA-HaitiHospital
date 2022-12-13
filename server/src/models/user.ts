@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
+import { logger } from '../logger';
 
 const { Schema } = mongoose;
 
@@ -89,7 +90,7 @@ userSchema.methods.registerUser = (newUser, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if (err) {
-        console.log(err);
+        logger.error(err);
       }
       // set pasword to hash
       newUser.password = hash;

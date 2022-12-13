@@ -5,6 +5,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import routes from './routes/routes';
 import * as ENV from './utils/processEnv';
+import { logger } from './logger';
 const path = require('path');
 
 import csrf from 'csurf';
@@ -53,9 +54,9 @@ export const createServer = () => {
       useFindAndModify: false
     })
     .then(() => {
-      console.log('MongoDB Connected...');
+      logger.info('Connect to MongDB');
     })
-    .catch((err) => console.log(err));
+    .catch((err) => logger.error(err));
 
   // Use Routes
   app.use('/', routes);
@@ -68,5 +69,5 @@ export const createServer = () => {
 export const setServerPort = (app: Application, PORT: number) => {
   // Start listening to PORT
   const httpServer = http.createServer(app);
-  httpServer.listen(ENV.SERVER_PORT, () => console.log(`Server started on port ${PORT}`));
+  httpServer.listen(ENV.SERVER_PORT, () => logger.info(`Server started on port ${PORT}`));
 };
