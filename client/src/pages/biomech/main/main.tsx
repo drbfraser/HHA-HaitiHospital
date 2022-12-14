@@ -46,12 +46,11 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
     getBioReport();
   };
 
-  const getBioReport = useCallback(
-    async () => {
-        setBioReport(await Api.Get(ENDPOINT_BIOMECH_GET, ResponseMessage.getMsgFetchReportsFailed(), history));
-    }, 
-    [history]
-  );
+  const getBioReport = useCallback(async () => {
+    setBioReport(
+      await Api.Get(ENDPOINT_BIOMECH_GET, ResponseMessage.getMsgFetchReportsFailed(), history),
+    );
+  }, [history]);
 
   const deleteBioMech = async (id: string) => {
     await Api.Delete(
@@ -105,7 +104,11 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
           <div className="row my-2 justify-items-center">
             <div className="col-sm-6 col-md-6 col-lg-6">
               <Link to={`${Paths.getBioMechReport()}`}>
-                <button type="button" className="btn btn-outline-dark">
+                <button
+                  data-testid="add-biomech-button"
+                  type="button"
+                  className="btn btn-outline-dark"
+                >
                   {t(`button.report`)}
                 </button>
               </Link>
@@ -135,12 +138,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         </td>
                         <td>{item.user ? item.user.name : t('status.not_available')} </td>
                         <td>
-                          {new Date(item.createdAt).toLocaleString(language, {
+                          {item.createdAt.toLocaleString(language, {
                             timeZone: timezone,
                           })}
                         </td>
                         <td>
                           <button
+                            data-testid="view-biomech-button"
                             className="btn btn-link text-decoration-none d-inline"
                             onClick={() => history.push(`${Paths.getBioMechViewId(item.id)}`)}
                           >
@@ -151,6 +155,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                             Role.MedicalDirector,
                           ]) ? (
                             <button
+                              data-testid="delete-biomech-button"
                               className="btn btn-link text-decoration-none d-inline"
                               onClick={(event) => {
                                 onDeleteBioMech(event, item.id);

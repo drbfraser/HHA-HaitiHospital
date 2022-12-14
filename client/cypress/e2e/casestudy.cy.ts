@@ -75,7 +75,7 @@ describe('Case Study Tests', function () {
 
   it('Should Successfully Delete a Case Study', function () {
     caseStudyPage.clickDeleteCaseStudyButton(1);
-    caseStudyPage.clickDeleteCaseStudyModalConfirm();
+    caseStudyPage.clickDeleteCaseStudyConfirmButton();
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', CASE_STUDY_DELETED_SUCCESSFULLY);

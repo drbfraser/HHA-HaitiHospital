@@ -46,7 +46,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
         <Header />
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
-            <button type="button" className="btn btn-outline-dark">
+            <button data-testid="biomech-add-back-button" type="button" className="btn btn-outline-dark">
               {t('button.back')}
             </button>
           </Link>
@@ -107,7 +107,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   type="file"
                   accept="image/png,image/jpeg,image/jpg"
                   className="form-control"
-                  id="customFile"
+                  id="customFileBioMech"
                   required
                   {...(register(BIOMECH_REPORT_FIELDS.file),
                   {
@@ -131,7 +131,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
               </div>
 
               <div>
-                <button className="btn btn-primary mt-4 " type="submit">
+                <button data-testid="submit-biomech-button" className="btn btn-primary mt-4 " type="submit">
                   {t('button.submit')}
                 </button>
               </div>

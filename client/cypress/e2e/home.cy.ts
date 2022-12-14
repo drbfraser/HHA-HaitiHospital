@@ -24,26 +24,26 @@ describe('Admin Home Page Tests', function () {
     cy.get('.sidebar_logo').should('be.visible');
     cy.get('.Sidebar').find('ul li').as('Sidebar Items');
 
-    // Check that the sidebar links correspond to the admin role
-    cy.get('@Sidebar Items').eq(0).should('include.text', 'Home');
-    cy.get('@Sidebar Items').eq(1).should('include.text', 'Message Board');
-    cy.get('@Sidebar Items').eq(2).should('include.text', 'Leaderboard');
-    cy.get('@Sidebar Items').eq(3).should('include.text', 'Case Study');
-    cy.get('@Sidebar Items').eq(4).should('include.text', 'Bio Support');
-    cy.get('@Sidebar Items').eq(5).should('include.text', 'Employee of the Month');
+    // Check that the sidebar links correspond to the User role
+    cy.get('@Sidebar Items').eq(0).should('include.text', en.sidebarHome);
+    cy.get('@Sidebar Items').eq(1).should('include.text', en.sidebarMessageBoard);
+    cy.get('@Sidebar Items').eq(2).should('include.text', en.sidebarLeaderBoard);
+    cy.get('@Sidebar Items').eq(3).should('include.text', en.sidebarCaseStudy);
+    cy.get('@Sidebar Items').eq(4).should('include.text', en.sidebarBioSupport);
+    cy.get('@Sidebar Items').eq(5).should('include.text', en.sidebarEmployeeOfTheMonth);
     // 6th item is a divider
-    cy.get('@Sidebar Items').eq(7).should('include.text', 'General');
-    cy.get('@Sidebar Items').eq(8).should('include.text', 'Rehab');
-    cy.get('@Sidebar Items').eq(9).should('include.text', 'NICU/Paeds');
-    cy.get('@Sidebar Items').eq(10).should('include.text', 'Maternity');
-    cy.get('@Sidebar Items').eq(11).should('include.text', 'Com & Health');
+    cy.get('@Sidebar Items').eq(7).should('include.text', en.sidebarGeneral);
+    cy.get('@Sidebar Items').eq(8).should('include.text', en.Rehab);
+    cy.get('@Sidebar Items').eq(9).should('include.text', en['NICU/Paeds']);
+    cy.get('@Sidebar Items').eq(10).should('include.text', en.Maternity);
+    cy.get('@Sidebar Items').eq(11).should('include.text', en['Community & Health']);
     cy.get('@Sidebar Items').eq(12).should('include.text', 'Report');
     cy.get('@Sidebar Items').eq(13).should('include.text', 'Old Report');
     // 14th item is a divider
-    cy.get('@Sidebar Items').eq(15).should('include.text', 'Admin');
+    cy.get('@Sidebar Items').eq(15).should('include.text', en.sidebarAdmin);
     // 16th item is a divider
-    cy.get('@Sidebar Items').eq(17).should('include.text', 'English');
-    cy.get('@Sidebar Items').eq(18).should('include.text', 'Français');
+    cy.get('@Sidebar Items').eq(17).should('include.text', en.sidebarEnglish);
+    cy.get('@Sidebar Items').eq(18).should('include.text', en.sidebarFrench);
   });
 
   it('Should Navigate to the Leaderboard Page', function () {
@@ -78,17 +78,17 @@ describe('User Home Page Tests', function () {
     cy.get('.Sidebar').find('ul li').as('Sidebar Items');
 
     // Check that the sidebar links correspond to the User role
-    cy.get('@Sidebar Items').eq(0).should('include.text', 'Home');
-    cy.get('@Sidebar Items').eq(1).should('include.text', 'Message Board');
-    cy.get('@Sidebar Items').eq(2).should('include.text', 'Leaderboard');
-    cy.get('@Sidebar Items').eq(3).should('include.text', 'Case Study');
-    cy.get('@Sidebar Items').eq(4).should('include.text', 'Bio Support');
-    cy.get('@Sidebar Items').eq(5).should('include.text', 'Employee of the Month');
+    cy.get('@Sidebar Items').eq(0).should('include.text', en.sidebarHome);
+    cy.get('@Sidebar Items').eq(1).should('include.text', en.sidebarMessageBoard);
+    cy.get('@Sidebar Items').eq(2).should('include.text', en.sidebarLeaderBoard);
+    cy.get('@Sidebar Items').eq(3).should('include.text', en.sidebarCaseStudy);
+    cy.get('@Sidebar Items').eq(4).should('include.text', en.sidebarBioSupport);
+    cy.get('@Sidebar Items').eq(5).should('include.text', en.sidebarEmployeeOfTheMonth);
     // 6th item is a divider
     cy.get('@Sidebar Items').eq(7).should('include.text', 'Report');
     cy.get('@Sidebar Items').eq(8).should('include.text', 'Old Report');
     // 9th item is a divider
-    cy.get('@Sidebar Items').eq(10).should('include.text', 'English');
-    cy.get('@Sidebar Items').eq(11).should('include.text', 'Français');
+    cy.get('@Sidebar Items').eq(10).should('include.text', en.sidebarEnglish);
+    cy.get('@Sidebar Items').eq(11).should('include.text', en.sidebarFrench);
   });
 });

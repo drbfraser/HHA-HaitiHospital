@@ -20,6 +20,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
   const { t: translateText } = useTranslation();
   const [imageModal, setImageModal] = useState<boolean>(false);
   const [employeeOfTheMonthImage, setEmployeeOfTheMonthImage] = useState<string>('');
+  const updatedDate = props.employeeOfTheMonth.updatedAt;
 
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
@@ -92,9 +93,11 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
             </h2>
             <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
             <p className="fs-6 lh-base text-break">
-              {new Date(props.employeeOfTheMonth.updatedAt).toLocaleDateString(language, {
-                timeZone: timezone,
-              })}
+              {(Date.parse(updatedDate) &&
+                new Date(updatedDate).toLocaleDateString(language, {
+                  timeZone: timezone,
+                })) || // If Date is already coverted, do not covert again on rerender (causes Invalid Date Error)
+                updatedDate}
             </p>
             <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>
             <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>

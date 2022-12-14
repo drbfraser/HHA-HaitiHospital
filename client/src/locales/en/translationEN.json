@@ -257,7 +257,7 @@
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
 
-  "template" : {
+  "template": {
     "change_template": "Change template",
     "department": "Department",
     "select_department": "Select Department",
@@ -273,44 +273,44 @@
       "options_col": "Options"
     },
     "user_form": {
-        "username": "Username",
-        "password": "Password",
-        "name": "Name",
-        "role": "Role",
-        "inquiry_role": "Select User's Role",
-        "department": "Department",
-        "inquiry_department": "Select Department",
-        "hint": {
-            "leave_blank": "Leave blank to keep it unchanged"
-        }
+      "username": "Username",
+      "password": "Password",
+      "name": "Name",
+      "role": "Role",
+      "inquiry_role": "Select User's Role",
+      "department": "Department",
+      "inquiry_department": "Select Department",
+      "hint": {
+        "leave_blank": "Leave blank to keep it unchanged"
+      }
     }
   },
 
   "biomech": {
     "main_page": {
-        "priority_col": "Priority",
-        "author_col": "Author",
-        "created_col": "Created",
-        "options_col": "Options"        
+      "priority_col": "Priority",
+      "author_col": "Author",
+      "created_col": "Created",
+      "options_col": "Options"
     },
     "view_report": {
-        "title":"Broken Kit Report",
-        "equipment_name": "Name of Equipment",
-        "author": "Author",
-        "priority": "Priority",        
-        "issue": "Issue"
+      "title": "Broken Kit Report",
+      "equipment_name": "Name of Equipment",
+      "author": "Author",
+      "priority": "Priority",
+      "issue": "Issue"
     },
     "report": {
-        "title": "Broken Kit Report",
-        "equipment_name": "Name of Equipment",
-        "issue": "Issue",
-        "priority": "Priority",
-        "inquiry_priority": "Pick a Priority"
+      "title": "Broken Kit Report",
+      "equipment_name": "Name of Equipment",
+      "issue": "Issue",
+      "priority": "Priority",
+      "inquiry_priority": "Pick a Priority"
     },
     "priority": {
-        "urgent": "Urgent",
-        "important": "Important",
-        "non-urgent": "Non-Urgent"
+      "urgent": "Urgent",
+      "important": "Important",
+      "non-urgent": "Non-Urgent"
     }
   },
 
@@ -366,7 +366,7 @@
 
   "error_message": {
     "compress": {
-        "image": "Can't compress this image file"
+      "image": "Can't compress this image file"
     }
   },
 

@@ -29,8 +29,12 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const previousEmployeeOfTheMonth = await EOTMCollection.findOne();
+    const defaultImgPath: string = 'public/images/avatar0.jpg';
     if (previousEmployeeOfTheMonth) {
-      deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
+      const imgPath: string = previousEmployeeOfTheMonth.imgPath;
+      if (imgPath != defaultImgPath) {
+        deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
+      }
     }
     const { name, department, description } = JSON.parse(req.body.document);
 

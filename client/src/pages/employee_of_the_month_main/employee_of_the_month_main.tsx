@@ -43,7 +43,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
           <div className="d-flex justify-content-start">
             <Link to="/employee-of-the-month/form">
-              <button type="button" className="btn btn-outline-dark">
+              <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
                 {translateText('employeeOfTheMonthEdit')}
               </button>
             </Link>

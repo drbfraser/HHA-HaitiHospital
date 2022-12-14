@@ -260,7 +260,7 @@ export const seedEmployeeOfTheMonth = async () => {
       name: 'John Doe',
       departmentId: Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper),
       description: 'This is a placeholder',
-      imgPath: 'public/images/default_user.png'
+      imgPath: 'public/images/avatar0.jpg'
     });
     employeeOfTheMonth.save();
     console.log('Employee of the month seeded');
