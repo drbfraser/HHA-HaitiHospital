@@ -100,6 +100,19 @@ TEST_SERVER_PORT=5001
 PASSWORD_SEED=catdog
 ```
 
+### Common package
+
+- Navigate to the /common folder from the root directory
+- Run the following commands to install dependencies and build the files
+
+```
+$ npm install
+$ npm build
+```
+
+_(Outdated)_ Whenever changes are made to `common` folder, you should run `npm run update-common` on root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common`
+and reinstalls it in `client` and `server`.
+
 ### Server Setup
 
 - navigate into into /server folder from the root directory
@@ -139,11 +152,6 @@ Now that everything is up, visit http://localhost:3000 and login with the seeded
   - Username: user3 to user 6
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
-
-### Common package (Outdated)
-
-Whenever changes are made to `common` folder, you should run `npm run update-common` on root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common` and reinstalls
-it in `client` and `server`.
 
 ### Logging
 
