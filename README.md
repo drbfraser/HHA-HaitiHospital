@@ -88,13 +88,8 @@ Before starting the server, you will need to define process environment variable
 under the `server` folder. You can use the following example `.env` configurations:
 
 ```
-
 # Your MongoDB URI (local or remote). Defaults to localhost:27017
-
 MONGO_URI=mongodb://localhost:27017/
-
-
-
 # Secret use to generate JWT tokens (You can generate the secret via 'openssl rand -base64 32'on Linux)
 JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
@@ -105,7 +100,6 @@ SERVER_PORT=8000
 TEST_SERVER_PORT=5001
 # Password for seeding users
 PASSWORD_SEED=catdog
-
 ```
 
 ### Common package
