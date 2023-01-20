@@ -111,25 +111,21 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
   ]);*/
 
   // Question 12
-  const q12: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('12', 'Stayed in the ward');
-  const q12_1: QuestionGroup<string, string> = new QuestionGroup<string, string>('12_1', 'Reason Not Yet Discharged');
   const q12_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_1', 'Not ready from therapy standpoint');
   const q12_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_2', 'Wound Care');
   const q12_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_3', 'Other medical reason (such as IV medication)');
   // const q12_1_4: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_1_4', 'Financial/no place to discharge to');
+  const q12_1: SpecializedGroup<string, string, NumericQuestion<string, string>> = new SpecializedGroup<string, string, NumericQuestion<string, string>>('12_1', 'Reason Not Yet Discharged', q12_1_1, q12_1_2, q12_1_3);
 
-  q12_1.addAll(q12_1_1, q12_1_2, q12_1_3);
-
-  const q12_2: QuestionGroup<string, string> = new QuestionGroup<string, string>('12_2', 'Length of Stay of Current Inpatients');
   const q12_2_1: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_2_1', '1-3 months');
   const q12_2_2: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_2_2', '3-6 months');
   const q12_2_3: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_2_3', '6 months - 1 year');
   const q12_2_4: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_2_4', '1-2 years');
   const q12_2_5: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_2_5', '2-3 years ');
   const q12_2_6: NumericQuestion<string, string> = new NumericQuestion<string, string>('12_2_6', '3+ years ');
+  const q12_2: SpecializedGroup<string, string, NumericQuestion<string, string>> = new SpecializedGroup<string, string, NumericQuestion<string, string>>('12_2', 'Length of Stay of Current Inpatients', q12_2_1, q12_2_2, q12_2_3, q12_2_4, q12_2_5, q12_2_6);
 
-  q12_2.addAll(q12_2_1, q12_2_2, q12_2_3, q12_2_4, q12_2_5, q12_2_6);
-  // TODO: Add q12_1 and q12_2 to q12
+  const q12: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('12', 'Stayed in the ward', q12_1, q12_2);
 
   // Question 13
   const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>('13', 'Admissions');

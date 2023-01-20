@@ -34,7 +34,7 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   );
 };
 
-const PlaceholderFormField = ({
+/*const PlaceholderFormField = ({
   question,
 }: {
   question: QuestionNode<ID, ErrorType>;
@@ -45,7 +45,7 @@ const PlaceholderFormField = ({
       <p>(WIP) Non-supported question type</p>
     </FormField>
   );
-};
+};*/
 
 const NumericQuestionFormField = ({
   question,
@@ -78,6 +78,50 @@ const TextQuestionFormField = ({
   );
 };
 
+const CompositionQuestionFormField = ({question}: {question: CompositionQuestion<ID, ErrorType>}): JSX.Element => {
+  //console.log(question);
+  //const elements: JSX.Element[] = [];
+  //question.compositionGroups.forEach((group) => elements.push(
+  //  <FormField>
+  //    <FormFieldLabel id={group.getId()} prompt={group.getPrompt()}/>
+  //  </FormField>
+  //));
+
+  return (
+    <>
+      <FormField>
+        <FormFieldLabel id={question.getId()} prompt={question.getPrompt()}/>
+        <input
+          className="col-sm form-control w-fit"
+          type="number"
+          min="0"
+          defaultValue={0}
+          onChange={(e) => {}}
+        />
+      </FormField>
+      {question.map<JSX.Element>((group) => {
+        return (<div key={group.getId()}>
+          <FormField>
+            <FormFieldLabel id={group.getId()} prompt={group.getPrompt()}/>
+          </FormField>
+          {group.map((elem) => {
+            return (<FormField key={elem.getId()}>
+              <FormFieldLabel id={elem.getId()} prompt={elem.getPrompt()}/>
+              <input
+                className="col-sm form-control w-fit"
+                type="number"
+                min="0"
+                defaultValue={0}
+                onChange={(e) => {}}
+              />
+            </FormField>);
+          })}
+        </div>);
+      })}
+    </>
+  );
+};
+
 const ExpandableQuestionFormField = ({
   question,
 }: {
@@ -102,7 +146,7 @@ const ExpandableQuestionFormField = ({
                 const itemId: string = 'e' + uuid();
 
                 return (
-                  <div className="accordion-item">
+                  <div className="accordion-item" key={index}>
                     <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
                       <button
                         className="accordion-button collapsed"
@@ -112,7 +156,7 @@ const ExpandableQuestionFormField = ({
                         aria-expanded="false"
                         aria-controls={itemId}
                       >
-                        Item {index++}
+                        Patient {index++}
                       </button>
                     </h6>
                     <div
@@ -121,7 +165,7 @@ const ExpandableQuestionFormField = ({
                       aria-labelledby={`${itemId}-header`}
                     >
                       <div className="accordion-body">
-                        <fieldset key={index} className="mt-3">
+                        <fieldset className="mt-3">
                           {buildQuestionFormField(questions)}
                         </fieldset>
                       </div>
@@ -209,7 +253,7 @@ const MultiSelectionQuestionFormField = ({
 const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.Element => {
   return (
     <FormField>
-      {' '}
+      {' ' /* TODO: use better ways to add margins or pad components */}
       {questions
         .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
           textQuestion: (q) => [q, TextQuestionFormField],
@@ -217,7 +261,7 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.El
           singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
           questionGroup: (q) => [q, buildQuestionFormField],
-          compositionQuestion: (q) => [q, PlaceholderFormField],
+          compositionQuestion: (q) => [q, CompositionQuestionFormField],
           expandableQuestion: (q) => [q, ExpandableQuestionFormField],
         })
         .map((tuple) => {
@@ -225,7 +269,8 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.El
           const FormFieldComponent: any = tuple[1];
 
           return <FormFieldComponent key={question.getId()} question={question} />;
-        })}{' '}
+        })}
+      {' '}
     </FormField>
   );
 };
