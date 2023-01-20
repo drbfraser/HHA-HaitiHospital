@@ -96,23 +96,14 @@ MONGO_URI=mongodb://localhost:27017/
 
 
 # Secret use to generate JWT tokens
-
 JWT_SECRET=secret
-
 # CORS origin. Currently only support one and will be re evaluated in the future.
-
 CORS=http://localhost:3000
-
 # Port for server
-
 SERVER_PORT=8000
-
 # Port for unit test server
-
 TEST_SERVER_PORT=5001
-
 # Password for seeding users
-
 PASSWORD_SEED=catdog
 
 ```
@@ -151,7 +142,7 @@ $ npm install
 $ npm start
 ```
 
-Alternatively, you can run this command on the root directory to run the client and server concurrently:
+Alternatively, you can run this command inside the root directory to run the client and server concurrently:
 
 ```
 $ npm run dev
@@ -176,13 +167,13 @@ Log levels:
 
 ```
 levels {
-error: 0,
-warn 1,
-info: 2,
-HTTP: 3,
-verbose: 4,
-debug 5,
-silly: 6
+    error: 0,
+    warn 1,
+    info: 2,
+    http: 3,
+    verbose: 4,
+    debug 5,
+    silly: 6
 }
 ```
 
