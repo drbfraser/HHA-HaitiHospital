@@ -95,7 +95,7 @@ MONGO_URI=mongodb://localhost:27017/
 
 
 
-# Secret use to generate JWT tokens
+# Secret use to generate JWT tokens (You can generate the secret via 'openssl rand -base64 32'on Linux)
 JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
 CORS=http://localhost:3000
