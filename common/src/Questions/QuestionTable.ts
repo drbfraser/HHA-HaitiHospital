@@ -26,12 +26,12 @@ class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, Error
   public makeGrey(): TableCell<ID, T, ErrorType, QuestionType> {
     this.gray = true;
     return this;
-  };
+  }
 
   public ungrey(): TableCell<ID, T, ErrorType, QuestionType> {
     this.gray = !this.question;
     return this;
-  };
+  }
 
   public isGray(): boolean {
     return this.gray;
@@ -39,7 +39,7 @@ class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, Error
 
   public getQuestion(): QuestionType | undefined {
     return this.question;
-  };
+  }
 }
 
 export abstract class QuestionTable<
@@ -83,7 +83,7 @@ export abstract class QuestionTable<
       col < (this.questionTable[0]?.length ?? 0)
       ? this.questionTable[row]?.[col]?.getQuestion()
       : undefined;
-  };
+  }
 
   public getRowHeaders(): Array<string> {
     return [...this.rowHeaders];
@@ -98,21 +98,27 @@ export abstract class QuestionTable<
       .reduce((questions1, questions2) => [...questions1, ...questions2])
       .map((questionCell) => questionCell.getQuestion())
       .filter((questionItem) => questionItem?.getId() == id)[0];
-  };
-  
-  public forEach(tableCellHandler: (tableCell:  TableCell<ID, T, ErrorType, QuestionType>, row: number, col: number) => void): void {
-    this.questionTable.forEach((row: TableCell<ID, T, ErrorType, QuestionType>[], rowNumber: number) => {
-      row.forEach((tableCell: TableCell<ID, T, ErrorType, QuestionType>, colNumber: number) => {
-        tableCellHandler(tableCell, rowNumber, colNumber);
-      });
+  }
+
+  public forEach(
+    tableCellHandler: (
+      tableCell: TableCell<ID, T, ErrorType, QuestionType>,
+      row: number,
+      col: number,
+    ) => void,
+  ): void {
+    this.questionTable.forEach(
+      (row: TableCell<ID, T, ErrorType, QuestionType>[], rowNumber: number) => {
+        row.forEach((tableCell: TableCell<ID, T, ErrorType, QuestionType>, colNumber: number) => {
+          tableCellHandler(tableCell, rowNumber, colNumber);
+        });
+      },
+    );
+  }
+
+  public map<T2>(mapper: (tableCell: TableCell<ID, T, ErrorType, QuestionType>) => T2): T2[][] {
+    return this.questionTable.map((row: TableCell<ID, T, ErrorType, QuestionType>[]) => {
+      return row.map(mapper);
     });
   }
-  
-  public map<T2>(mapper: (tableCell: TableCell<ID, T, ErrorType, QuestionType>) => T2): T2[][] {
-    return this.questionTable
-      .map((row: TableCell<ID, T, ErrorType, QuestionType>[]) => {
-        return row.map(mapper);
-      });
-  }
-  
 }

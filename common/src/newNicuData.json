@@ -1,9 +1,9 @@
 {
   "meta": {
     "id": "SomeId",
-    "department" : {
-      "id" :"2",
-      "name" : " Nicu/Paeds"
+    "department": {
+      "id": "2",
+      "name": " Nicu/Paeds"
     },
     "submittedDate": "2022-04-02",
     "submittedUserId": "0"
@@ -14,7 +14,7 @@
       "description": "MSPP Required",
       "answer": []
     },
-    
+
     {
       "type": "sum",
       "description": "Total number of hospitalized patients",

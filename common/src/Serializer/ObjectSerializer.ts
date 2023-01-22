@@ -22,59 +22,60 @@ import { recursiveConsumeObjectHOF } from '../Utils';
     This code was adapted from jcalz answer in the post
     https://stackoverflow.com/questions/54427218/parsing-complex-json-objects-with-inheritance.
 */
-type Constructor = { new(...args: any[]): {} };
+type Constructor = { new (...args: any[]): {} };
 
 export class ObjectSerializer {
-    private constructorMapper: { [className: string]: Constructor };
-    private static objectSerializer: ObjectSerializer;
+  private constructorMapper: { [className: string]: Constructor };
+  private static objectSerializer: ObjectSerializer;
 
-    private constructor() {
-        this.constructorMapper = {};
+  private constructor() {
+    this.constructorMapper = {};
+  }
+
+  public static readonly getObjectSerializer = (): ObjectSerializer => {
+    if (!this.objectSerializer) {
+      this.objectSerializer = new ObjectSerializer();
     }
 
-    public static readonly getObjectSerializer = (): ObjectSerializer => {
-        if (!this.objectSerializer) {
-            this.objectSerializer = new ObjectSerializer();
-        }
+    return this.objectSerializer;
+  };
 
-        return this.objectSerializer;
+  public readonly registerSerializable = (name: string, constructor: Constructor): void => {
+    this.constructorMapper[name] = constructor;
+  };
+
+  private readonly addClassNameProperty = (object: any): void => {
+    if (!this.constructorMapper[object.constructor.name]) {
+      return;
     }
 
-    public readonly registerSerializable = (name: string, constructor: Constructor): void => {
-        this.constructorMapper[name] = constructor;
+    object['__class__'] = object.constructor.name;
+  };
+
+  private readonly removeClassNameProperty = (object: any): void => {
+    if (!this.constructorMapper[object.constructor.name]) {
+      return;
     }
 
-    private readonly addClassNameProperty = (object: any): void => {
-        if (!this.constructorMapper[object.constructor.name]) {
-            return;
-        }
+    delete object['__class__'];
+  };
 
-        object['__class__'] = object.constructor.name;
-    }
-    
-    
-    private readonly removeClassNameProperty = (object: any): void => {
-        if (!this.constructorMapper[object.constructor.name]) {
-            return;
-        }
+  private readonly recursiveAddClassNameProperty = recursiveConsumeObjectHOF(
+    this.addClassNameProperty,
+  );
 
-        delete object['__class__'];
-    }
-    
-    private readonly recursiveAddClassNameProperty = 
-        recursiveConsumeObjectHOF(this.addClassNameProperty);    
+  private readonly recursiveRemoveClassNameProperty = recursiveConsumeObjectHOF(
+    this.removeClassNameProperty,
+  );
 
-    private readonly recursiveRemoveClassNameProperty = 
-        recursiveConsumeObjectHOF(this.removeClassNameProperty);
-    
-    public readonly serialize = (object: Object): Object => {
-        this.recursiveAddClassNameProperty(object);
-        const ret: Object= JSON.parse(JSON.stringify(object));
-        this.recursiveRemoveClassNameProperty(object);
-        return ret;
-    }
+  public readonly serialize = (object: Object): Object => {
+    this.recursiveAddClassNameProperty(object);
+    const ret: Object = JSON.parse(JSON.stringify(object));
+    this.recursiveRemoveClassNameProperty(object);
+    return ret;
+  };
 
-    /*  JSON parse will call this function upon each field of the JSON string
+  /*  JSON parse will call this function upon each field of the JSON string
         while it traverses through the fields in preorder order.
 
         It takes in a key-value pair, allowing the value to be modified. It
@@ -83,36 +84,40 @@ export class ObjectSerializer {
 
         For more info, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter
     */
-    private readonly reviver = (key: string, value: any): any => {
-        if (!(value instanceof Object) || !value.__class__) {
-            return value;
-        }
-
-        let className: string = value.__class__;
-        let constructor: Constructor | undefined = this.constructorMapper[className];
-        let returnObject: Object = {};
-        if (typeof constructor == "undefined") {
-            console.log(`Trying to deserialize ${className}, but ${className} has not been annotated with a @serializable decorator.`);
-            return undefined;
-        } else {
-            returnObject = new constructor();        
-        }
-
-        if (!returnObject) {
-            console.error(`Object ${JSON.stringify(value)} has field __class__, but is not serializable.`);
-            return value;
-        }
-
-        delete value.__class__;
-
-        Object.assign(returnObject, value);
-        return returnObject;
+  private readonly reviver = (key: string, value: any): any => {
+    if (!(value instanceof Object) || !value.__class__) {
+      return value;
     }
 
-    public readonly deserialize = <T>(serializedObject: Object): T => {
-        let deserializedObject: T = JSON.parse(JSON.stringify(serializedObject), this.reviver);
-        return deserializedObject;
+    let className: string = value.__class__;
+    let constructor: Constructor | undefined = this.constructorMapper[className];
+    let returnObject: Object = {};
+    if (typeof constructor == 'undefined') {
+      console.log(
+        `Trying to deserialize ${className}, but ${className} has not been annotated with a @serializable decorator.`,
+      );
+      return undefined;
+    } else {
+      returnObject = new constructor();
     }
+
+    if (!returnObject) {
+      console.error(
+        `Object ${JSON.stringify(value)} has field __class__, but is not serializable.`,
+      );
+      return value;
+    }
+
+    delete value.__class__;
+
+    Object.assign(returnObject, value);
+    return returnObject;
+  };
+
+  public readonly deserialize = <T>(serializedObject: Object): T => {
+    let deserializedObject: T = JSON.parse(JSON.stringify(serializedObject), this.reviver);
+    return deserializedObject;
+  };
 }
 
 /*  Registers a class as serializable/deserializable by the ObjectSerializer.
@@ -127,9 +132,9 @@ export class ObjectSerializer {
     side-effects, those side-effects will occur during deserialization!
 */
 export function serializable(...args: any[]) {
-    return (constructor: Function)   => {
-        let objectSerializer = ObjectSerializer.getObjectSerializer();
-        let constr = constructor.bind(null, ...args)
-        objectSerializer.registerSerializable(constructor.name, constr);
-    }
+  return (constructor: Function) => {
+    let objectSerializer = ObjectSerializer.getObjectSerializer();
+    let constr = constructor.bind(null, ...args);
+    objectSerializer.registerSerializable(constructor.name, constr);
+  };
 }

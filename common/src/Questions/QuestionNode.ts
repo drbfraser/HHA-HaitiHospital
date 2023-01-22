@@ -12,7 +12,7 @@ export abstract class QuestionNode<ID, ErrorType> {
     this.id = id;
     this.prompt = prompt;
   }
-  
+
   public getPrompt(): string {
     return this.prompt;
   }
