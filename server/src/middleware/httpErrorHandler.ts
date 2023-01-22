@@ -4,7 +4,12 @@ import { NextFunction, Request, Response } from 'express';
 import { logger } from '../logger';
 import { BadRequest, HttpError, InternalError } from '../exceptions/httpException';
 
-const httpErrorMiddleware = (error: Error | CustomError, request: Request, response: Response, next: NextFunction) => {
+const httpErrorMiddleware = (
+  error: Error | CustomError,
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) => {
   let httpError: HttpError;
   if (error instanceof HttpError) {
     httpError = error;

@@ -59,7 +59,6 @@ const MessageComments = () => {
   useEffect(() => {
     getMessage();
     getComments();
-
   }, [rerender, message_id, history, authState.userDetails]);
 
   const onSubmitActions = () => {

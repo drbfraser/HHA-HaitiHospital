@@ -12,7 +12,7 @@ export enum CaseStudyOptions {
   StaffRecognition = 'Staff Recognition',
   TrainingSession = 'Training Session',
   EquipmentReceived = 'Equipment Received',
-  OtherStory = 'Other Story'
+  OtherStory = 'Other Story',
 }
 
 export interface PatientStory {
@@ -33,9 +33,9 @@ const patientStorySchema = new Schema<PatientStory>(
     whyComeToHcbh: { type: String, required: true },
     howLongWereTheyAtHcbh: { type: String, required: true },
     diagnosis: { type: String, required: true },
-    caseStudyStory: { type: String, required: true }
+    caseStudyStory: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export interface StaffRecognition {
@@ -54,9 +54,9 @@ const staffRecognitionSchema = new Schema<StaffRecognition>(
     department: { type: String, required: true },
     howLongWorkingAtHcbh: { type: String, required: true },
     mostEnjoy: { type: String, required: true },
-    caseStudyStory: { type: String, required: true }
+    caseStudyStory: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export interface TrainingSession {
@@ -74,9 +74,9 @@ const trainingSessionSchema = new Schema<TrainingSession>(
     whoConducted: { type: String, required: true },
     whoAttended: { type: String, required: true },
     benefitsFromTraining: { type: String, required: true },
-    caseStudyStory: { type: String, required: true }
+    caseStudyStory: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export interface EquipmentReceived {
@@ -94,9 +94,9 @@ const equipmentReceivedSchema = new Schema<EquipmentReceived>(
     whoSentEquipment: { type: String, required: true },
     purchasedOrDonated: { type: String, required: true },
     whatDoesEquipmentDo: { type: String, required: true },
-    caseStudyStory: { type: String, required: true }
+    caseStudyStory: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export interface OtherStory {
@@ -104,9 +104,9 @@ export interface OtherStory {
 }
 const otherStorySchema = new Schema<OtherStory>(
   {
-    caseStudyStory: { type: String, required: true }
+    caseStudyStory: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export interface CaseStudy {
@@ -158,9 +158,9 @@ const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
     equipmentReceived: equipmentReceivedSchema,
     otherStory: otherStorySchema,
     imgPath: { type: String, required: true },
-    featured: { type: Boolean, required: true }
+    featured: { type: Boolean, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
   const userDoc = await UserCollection.findById(this.userId);
@@ -175,7 +175,7 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
     user: userJson,
     department: {
       id: this.departmentId,
-      name: await Departments.Database.getDeptNameById(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId),
     },
     imgPath: this.imgPath,
     featured: this.featured,
@@ -185,12 +185,16 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
     staffRecognition: this.staffRecognition ? this.staffRecognition : undefined,
     trainingSession: this.trainingSession ? this.trainingSession : undefined,
     equipmentReceived: this.equipmentReceived,
-    otherStory: this.otherStory ? this.otherStory : undefined
+    otherStory: this.otherStory ? this.otherStory : undefined,
   };
 
   return json;
 };
 
-const CaseStudyModel = mongoose.model<CaseStudyWithInstanceMethods>('CaseStudy', caseStudySchema, 'CaseStudy');
+const CaseStudyModel = mongoose.model<CaseStudyWithInstanceMethods>(
+  'CaseStudy',
+  caseStudySchema,
+  'CaseStudy',
+);
 
 export default CaseStudyModel;

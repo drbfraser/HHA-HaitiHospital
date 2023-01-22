@@ -1,4 +1,4 @@
-import Departments from '../departments'; 
+import Departments from '../departments';
 import { JsonReportDescriptor, JsonReportItems } from '@hha/common';
 import { ReportDescriptor, ReportItems } from 'utils/definitions/report';
 import { formatDateString } from 'utils/utils';
@@ -16,12 +16,12 @@ export const parseToJson = async (report: ReportDescriptor) => {
       id: id,
       department: {
         id: departmentId,
-        name: await Departments.Database.getDeptNameById(departmentId)
+        name: await Departments.Database.getDeptNameById(departmentId),
       },
       submittedDate: submittedDate,
-      submittedUserId: submittedUserId
+      submittedUserId: submittedUserId,
     },
-    items: items
+    items: items,
   };
   return jsonReport;
 };

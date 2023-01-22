@@ -31,9 +31,9 @@ const messageBoardCommentSchema = new Schema<MessageBoardCommentWithInstanceMeth
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
     messageComment: { type: String, required: true },
-    parentMessageId: { type: String, required: true }
+    parentMessageId: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 messageBoardCommentSchema.methods.toJson = async function (): Promise<MessageBoardCommentJson> {
@@ -49,11 +49,15 @@ messageBoardCommentSchema.methods.toJson = async function (): Promise<MessageBoa
     parentMessageId: this.parentMessageId,
     messageComment: this.messageComment,
     createdAt: formatDateString(this.createdAt),
-    updatedAt: formatDateString(this.createdAt)
+    updatedAt: formatDateString(this.createdAt),
   };
 
   return json;
 };
 
-const MessageBoardComment = mongoose.model<MessageBoardCommentWithInstanceMethods>('MessageBoardComment', messageBoardCommentSchema, 'MessageBoardComment');
+const MessageBoardComment = mongoose.model<MessageBoardCommentWithInstanceMethods>(
+  'MessageBoardComment',
+  messageBoardCommentSchema,
+  'MessageBoardComment',
+);
 export default MessageBoardComment;

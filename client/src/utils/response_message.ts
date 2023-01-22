@@ -194,5 +194,5 @@ export const ResponseMessage = {
   getMsgCreateReportOk,
   getMsgCreateReportFailed,
 
-  getMsgFetchImageFailed
+  getMsgFetchImageFailed,
 };

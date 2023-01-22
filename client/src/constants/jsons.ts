@@ -1,6 +1,6 @@
 // JSONS responed by the server
 
-import { UserJson } from "./interfaces";
+import { UserJson } from './interfaces';
 
 export interface BiomechGet {
   id: string;

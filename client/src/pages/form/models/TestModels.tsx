@@ -27,5 +27,3 @@ export const FORM_1_JSON = JSON.stringify({
     },
   ],
 });
-
-
