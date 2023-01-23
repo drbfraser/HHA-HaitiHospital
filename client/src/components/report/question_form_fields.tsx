@@ -1,13 +1,13 @@
 import {
-  QuestionNode,
-  NumericQuestion,
-  ExpandableQuestion,
-  TextQuestion,
   CompositionQuestion,
-  MultipleSelectionQuestion,
-  SingleSelectionQuestion,
-  QuestionGroup,
+  ExpandableQuestion,
   ImmutableChoice,
+  MultipleSelectionQuestion,
+  NumericQuestion,
+  QuestionGroup,
+  QuestionNode,
+  SingleSelectionQuestion,
+  TextQuestion,
 } from '@hha/common';
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
@@ -34,59 +34,36 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   );
 };
 
-/*const PlaceholderFormField = ({
-  question,
-}: {
-  question: QuestionNode<ID, ErrorType>;
-}): JSX.Element => {
-  return (
-    <FormField>
-      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
-      <p>(WIP) Non-supported question type</p>
-    </FormField>
-  );
-};*/
-
-const NumericQuestionFormField = ({
-  question,
-}: {
-  question: NumericQuestion<ID, ErrorType>;
-}): JSX.Element => {
+const NumericQuestionFormField = ({question}: {question: NumericQuestion<ID, ErrorType>}): JSX.Element => {
   return (
     <FormField>
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
       <input
         className="form-control w-fit"
+        //defaultValue={question.getAnswer()}
         type="number"
         min="0"
-        defaultValue={question.getAnswer()}
+        name={question.getId()}
       />
     </FormField>
   );
 };
 
-const TextQuestionFormField = ({
-  question,
-}: {
-  question: TextQuestion<ID, ErrorType>;
-}): JSX.Element => {
+const TextQuestionFormField = ({question}: {question: TextQuestion<ID, ErrorType>}): JSX.Element => {
   return (
     <FormField>
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
-      <input className="form-control w-fit" type="text" defaultValue={question.getAnswer()} />
+      <input
+        className="form-control w-fit"
+        //defaultValue={question.getAnswer()}
+        name={question.getId()}
+        type="text"
+      />
     </FormField>
   );
 };
 
 const CompositionQuestionFormField = ({question}: {question: CompositionQuestion<ID, ErrorType>}): JSX.Element => {
-  //console.log(question);
-  //const elements: JSX.Element[] = [];
-  //question.compositionGroups.forEach((group) => elements.push(
-  //  <FormField>
-  //    <FormFieldLabel id={group.getId()} prompt={group.getPrompt()}/>
-  //  </FormField>
-  //));
-
   return (
     <>
       <FormField>
@@ -95,7 +72,7 @@ const CompositionQuestionFormField = ({question}: {question: CompositionQuestion
           className="col-sm form-control w-fit"
           type="number"
           min="0"
-          defaultValue={0}
+          name={question.getId()}
           onChange={(e) => {}}
         />
       </FormField>
@@ -111,7 +88,6 @@ const CompositionQuestionFormField = ({question}: {question: CompositionQuestion
                 className="col-sm form-control w-fit"
                 type="number"
                 min="0"
-                defaultValue={0}
                 onChange={(e) => {}}
               />
             </FormField>);
@@ -122,11 +98,7 @@ const CompositionQuestionFormField = ({question}: {question: CompositionQuestion
   );
 };
 
-const ExpandableQuestionFormField = ({
-  question,
-}: {
-  question: ExpandableQuestion<ID, ErrorType>;
-}): JSX.Element => {
+const ExpandableQuestionFormField = ({question}: {question: NumericQuestion<ID, ErrorType>}): JSX.Element => {
   const [elements, setElements] = useState([]);
 
   return (
@@ -137,7 +109,7 @@ const ExpandableQuestionFormField = ({
           className="col-sm form-control w-fit"
           type="number"
           min="0"
-          defaultValue={0}
+          name={question.getId()}
           onChange={(e) => {
             question.setAnswer(parseInt(e.target.value));
             let index = 1;
@@ -184,13 +156,9 @@ const ExpandableQuestionFormField = ({
   );
 };
 
-const SingleSelectionQuestionFormField = ({
-  question,
-}: {
-  question: SingleSelectionQuestion<ID, ErrorType>;
-}) => {
+const SingleSelectionQuestionFormField = ({question}: {question: SingleSelectionQuestion<ID, ErrorType>}) => {
   const [choices, setChoices] = useState(question.getChoices());
-  const [nameId, setNameId] = useState(`${uuid()}-${question.getPrompt()}`);
+  const [nameId, setNameId] = useState(`${question.getId()}-${uuid()}`);
 
   return (
     <FormField>
@@ -217,12 +185,8 @@ const SingleSelectionQuestionFormField = ({
   );
 };
 
-const MultiSelectionQuestionFormField = ({
-  question,
-}: {
-  question: MultipleSelectionQuestion<ID, ErrorType>;
-}) => {
-  const [nameId, setNameId] = useState(`${uuid()}-${question.getPrompt()}`);
+const MultiSelectionQuestionFormField = ({question}: {question: MultipleSelectionQuestion<ID, ErrorType>}) => {
+  const [nameId, setNameId] = useState(`${question.getId()}-${uuid()}`);
 
   return (
     <FormField>
@@ -236,11 +200,7 @@ const MultiSelectionQuestionFormField = ({
             type="checkbox"
             checked={choice.wasChosen()}
             onChange={() => {
-              question.setAnswer(
-                choice.wasChosen()
-                  ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index)
-                  : question.getAnswer().concat(index),
-              );
+              question.setAnswer(choice.wasChosen() ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index) : question.getAnswer().concat(index));
             }}
           />
           &nbsp;<label htmlFor={`${question.getId()}-${index}`}>{choice.getDescription()}</label>
@@ -264,22 +224,30 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.El
           compositionQuestion: (q) => [q, CompositionQuestionFormField],
           expandableQuestion: (q) => [q, ExpandableQuestionFormField],
         })
-        .map((tuple) => {
-          const question: QuestionNode<ID, ErrorType> = tuple[0];
-          const FormFieldComponent: any = tuple[1];
-
-          return <FormFieldComponent key={question.getId()} question={question} />;
+        .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
+          const [question, FormFieldComponent] = tuple;
+          return <FormFieldComponent key={question.getId()} question={question}/>;
         })}
       {' '}
     </FormField>
   );
 };
 
+const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  console.log(formData);
+};
+
 export const ReportForm = ({ reportTemplate }): JSX.Element => {
   return (
     <div className="mt-3 report-form">
       <h2>{reportTemplate.prompt}</h2>
-      <form className="col-md-6">{buildQuestionFormField(reportTemplate)}</form>
+      <form className="col-md-6" onSubmit={submitReport}>
+        <input type="submit" value="Submit"/>
+        {buildQuestionFormField(reportTemplate)}
+        <input type="submit" value="Submit"/>
+      </form>
     </div>
   );
 };
