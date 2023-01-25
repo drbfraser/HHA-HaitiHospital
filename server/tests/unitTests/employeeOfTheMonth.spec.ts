@@ -1,7 +1,18 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, EMPLOYEE_OF_THE_MONTH_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
+import {
+  setupApp,
+  setupHttpServer,
+  attemptAuthentication,
+  Accounts,
+  closeServer,
+} from './testTools/mochaHooks';
+import {
+  CSRF_ENDPOINT,
+  DEPARTMENT_ENDPOINT,
+  EMPLOYEE_OF_THE_MONTH_ENDPOINT,
+  LOGIN_ENDPOINT,
+} from './testTools/endPoints';
 import { Done } from 'mocha';
 import { deleteUploadedImage } from 'utils/unlinkImage';
 import { HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
@@ -73,7 +84,11 @@ describe('Employee of the Month Tests', function () {
     const imgPath: string = 'public/images/avatar1.jpg';
 
     const document: string = `{"name":"John","department":{"id":"${generalDepartment.id}","name":"${generalDepartment.name}"},"description":"John is incredible!"}`;
-    const putResponse = await agent.put(EMPLOYEE_OF_THE_MONTH_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).field('document', document).attach('file', imgPath);
+    const putResponse = await agent
+      .put(EMPLOYEE_OF_THE_MONTH_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .field('document', document)
+      .attach('file', imgPath);
     expect(putResponse).to.have.status(HTTP_OK_CODE);
 
     const getResponse = await agent.get(EMPLOYEE_OF_THE_MONTH_ENDPOINT);

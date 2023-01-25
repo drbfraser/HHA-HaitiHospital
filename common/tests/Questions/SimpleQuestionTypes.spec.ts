@@ -5,7 +5,8 @@ import { QuestionLeafTest } from './QuestionLeaf.spec';
 export class TextQuestionTest extends QuestionLeafTest<number, string, string> {
   constructor() {
     super(
-      (id: number, prompt: string, defaultAnswer?: string) => new TextQuestion(id, prompt, defaultAnswer),
+      (id: number, prompt: string, defaultAnswer?: string) =>
+        new TextQuestion(id, prompt, defaultAnswer),
       {
         defaultId: 0,
         idEqual: (id1: number, id2: number) => id1 === id2,
@@ -18,20 +19,21 @@ export class TextQuestionTest extends QuestionLeafTest<number, string, string> {
 
         sampleValidator: (answer?: string) => {
           return {
-            isValid: answer?.startsWith('L') ?? true
-          }
+            isValid: answer?.startsWith('L') ?? true,
+          };
         },
         validAnswer: 'Linux',
-        invalidAnswer: 'Windows'
-      }
+        invalidAnswer: 'Windows',
+      },
     );
-  };
+  }
 }
 
 export class NumericQuestionTest extends QuestionLeafTest<number, number, string> {
   constructor() {
     super(
-      (id: number, prompt: string, defaultAnswer?: number) => new NumericQuestion(id, prompt, defaultAnswer),
+      (id: number, prompt: string, defaultAnswer?: number) =>
+        new NumericQuestion(id, prompt, defaultAnswer),
       {
         defaultId: 0,
         idEqual: (id1: number, id2: number) => id1 === id2,
@@ -44,17 +46,17 @@ export class NumericQuestionTest extends QuestionLeafTest<number, number, string
 
         sampleValidator: (answer?: number) => {
           return {
-            isValid: answer % 2 === 0
-          }
+            isValid: answer % 2 === 0,
+          };
         },
         validAnswer: 2,
-        invalidAnswer: 3
-      }
+        invalidAnswer: 3,
+      },
     );
   }
 }
 
-describe("TextQuestion", function() {
-  (new TextQuestionTest()).testAll();
-  (new NumericQuestionTest()).testAll();
-})
+describe('TextQuestion', function () {
+  new TextQuestionTest().testAll();
+  new NumericQuestionTest().testAll();
+});

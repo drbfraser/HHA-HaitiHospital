@@ -53,7 +53,10 @@ describe('template tests', function () {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('template');
-        expect(new QuestionGroup<string, string>('', res.body.template.reportObject) instanceof QuestionGroup).to.be.true;
+        expect(
+          new QuestionGroup<string, string>('', res.body.template.reportObject) instanceof
+            QuestionGroup,
+        ).to.be.true;
         done();
       });
   });

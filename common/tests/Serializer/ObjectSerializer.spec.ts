@@ -132,7 +132,7 @@ describe('Serializer', function () {
         expect(
           Object.entries(a2).map(([key, value]) => {
             return serializableObject[key] == value;
-          }).length
+          }).length,
         ).to.be.above(0);
       });
 

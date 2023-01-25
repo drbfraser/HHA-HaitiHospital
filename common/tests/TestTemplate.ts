@@ -11,5 +11,5 @@ export abstract class TestTemplate {
 
   public readonly testAll = () => {
     this.tests.forEach((test: () => void) => test());
-  }
+  };
 }

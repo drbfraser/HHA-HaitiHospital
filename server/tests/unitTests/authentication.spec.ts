@@ -1,7 +1,18 @@
 import http, { request } from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT, LOGOUT_ENDPOINT } from './testTools/endPoints';
+import {
+  setupApp,
+  setupHttpServer,
+  attemptAuthentication,
+  Accounts,
+  closeServer,
+} from './testTools/mochaHooks';
+import {
+  CSRF_ENDPOINT,
+  LOGIN_ENDPOINT,
+  USERS_ENDPOINT,
+  LOGOUT_ENDPOINT,
+} from './testTools/endPoints';
 import { HTTP_OK_CODE } from 'exceptions/httpException';
 
 const expect = require('chai').expect;

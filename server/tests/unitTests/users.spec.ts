@@ -1,10 +1,29 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT, USERS_ENDPOINT } from './testTools/endPoints';
+import {
+  setupApp,
+  setupHttpServer,
+  attemptAuthentication,
+  Accounts,
+  closeServer,
+} from './testTools/mochaHooks';
+import {
+  CSRF_ENDPOINT,
+  DEPARTMENT_ENDPOINT,
+  LOGIN_ENDPOINT,
+  USERS_ENDPOINT,
+} from './testTools/endPoints';
 import { Done } from 'mocha';
 import { _ } from 'ajv';
-import { HTTP_CONFLICT_CODE, HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_NOCONTENT_CODE, HTTP_NOTFOUND_CODE, HTTP_OK_CODE, HTTP_UNPROCESSABLE_ENTITY_CODE } from 'exceptions/httpException';
+import {
+  HTTP_CONFLICT_CODE,
+  HTTP_CREATED_CODE,
+  HTTP_INTERNALERROR_CODE,
+  HTTP_NOCONTENT_CODE,
+  HTTP_NOTFOUND_CODE,
+  HTTP_OK_CODE,
+  HTTP_UNPROCESSABLE_ENTITY_CODE,
+} from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -55,7 +74,9 @@ describe('Users Test', function () {
     // Cleaning up created users not deleted during testing
     for await (const userId of userIds) {
       try {
-        await agent.delete(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+        await agent
+          .delete(`${USERS_ENDPOINT}/${userId}`)
+          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
       } catch (error: any) {
         console.log(error);
       }
@@ -117,9 +138,12 @@ describe('Users Test', function () {
       password: 'JohnPassword',
       name: 'John',
       role: 'User',
-      department: { id: departmentId, name: departmentName }
+      department: { id: departmentId, name: departmentName },
     };
-    const postResponse = await agent.post(USERS_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    const postResponse = await agent
+      .post(USERS_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
     expect(postResponse).to.have.status(HTTP_CREATED_CODE);
 
     const getResponse = await agent.get(USERS_ENDPOINT);
@@ -140,9 +164,12 @@ describe('Users Test', function () {
       password: 'JohnPassword',
       name: 'John',
       role: 'User',
-      department: { id: departmentId, name: departmentName }
+      department: { id: departmentId, name: departmentName },
     };
-    const postResponse = await agent.post(USERS_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    const postResponse = await agent
+      .post(USERS_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
     expect(postResponse).to.have.status(HTTP_CONFLICT_CODE);
   });
 
@@ -153,9 +180,12 @@ describe('Users Test', function () {
       password: 'JohnPassword',
       name: 'John',
       role: 'User',
-      department: { id: 'Invalid', name: 'Invalid Name' }
+      department: { id: 'Invalid', name: 'Invalid Name' },
     };
-    const postResponse = await agent.post(USERS_ENDPOINT).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    const postResponse = await agent
+      .post(USERS_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
     expect(postResponse).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
   });
 
@@ -169,13 +199,16 @@ describe('Users Test', function () {
       password: 'JohnPasswordUPDATED',
       name: 'JohnUPDATED',
       role: 'User',
-      department: { id: departmentId, name: departmentName }
+      department: { id: departmentId, name: departmentName },
     };
 
     const userResponse = await agent.get(USERS_ENDPOINT);
     const userId: string = userResponse.body[0].id;
 
-    const updatedResponse = await agent.put(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    const updatedResponse = await agent
+      .put(`${USERS_ENDPOINT}/${userId}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
     expect(updatedResponse).to.have.status(HTTP_NOCONTENT_CODE);
 
     const updatedGetResponse = await agent.get(`${USERS_ENDPOINT}/${userId}`);
@@ -193,13 +226,16 @@ describe('Users Test', function () {
       password: 'JohnPasswordUPDATED',
       name: 'JohnUPDATED',
       role: 'User',
-      department: { id: departmentId, name: departmentName }
+      department: { id: departmentId, name: departmentName },
     };
 
     const userResponse = await agent.get(USERS_ENDPOINT);
     const userId: string = userResponse.body[1].id; // Grab the second user because the first user was updated in the previous test
 
-    const updatedResponse = await agent.put(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    const updatedResponse = await agent
+      .put(`${USERS_ENDPOINT}/${userId}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
     expect(updatedResponse).to.have.status(HTTP_CONFLICT_CODE);
   });
 
@@ -209,13 +245,16 @@ describe('Users Test', function () {
       password: 'JohnPasswordUPDATED',
       name: 'JohnUPDATED',
       role: 'User',
-      department: { id: 'Invalid Id', name: 'Invalid Name' }
+      department: { id: 'Invalid Id', name: 'Invalid Name' },
     };
 
     const userResponse = await agent.get(USERS_ENDPOINT);
     const userId: string = userResponse.body[0].id;
 
-    const updatedResponse = await agent.put(`${USERS_ENDPOINT}/${userId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    const updatedResponse = await agent
+      .put(`${USERS_ENDPOINT}/${userId}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
     expect(updatedResponse).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
   });
 
@@ -229,10 +268,13 @@ describe('Users Test', function () {
       password: 'JohnPasswordUPDATED',
       name: 'JohnUPDATED',
       role: 'User',
-      department: { id: departmentId, name: departmentName }
+      department: { id: departmentId, name: departmentName },
     };
 
-    const updatedResponse = await agent.put(`${USERS_ENDPOINT}/${'Invalid'}}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf }).send(newUser);
+    const updatedResponse = await agent
+      .put(`${USERS_ENDPOINT}/${'Invalid'}}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
     expect(updatedResponse).to.have.status(HTTP_INTERNALERROR_CODE);
   });
 
