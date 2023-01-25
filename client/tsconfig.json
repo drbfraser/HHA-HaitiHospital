@@ -9,11 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
@@ -25,8 +21,5 @@
     "noImplicitAny": false,
     "experimentalDecorators": true
   },
-  "include": [
-    "./src/**/*",
-    "./tests/**/*"
-  ]
+  "include": ["./src/**/*", "./tests/**/*"]
 }

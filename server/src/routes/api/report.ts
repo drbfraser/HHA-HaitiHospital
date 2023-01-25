@@ -60,13 +60,15 @@ router
   });
 
 // Fetch all reports
-router.route(`/`).get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
-  try {
-    const reports = await ReportCollection.find();
-    res.status(HTTP_OK_CODE).json(reports);
-  } catch (e) {
-    next(e);
-  }
-});
+router
+  .route(`/`)
+  .get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const reports = await ReportCollection.find();
+      res.status(HTTP_OK_CODE).json(reports);
+    } catch (e) {
+      next(e);
+    }
+  });
 
 export default router;

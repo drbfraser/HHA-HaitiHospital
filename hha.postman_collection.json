@@ -14,7 +14,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": ["const xsrf_token = postman.getResponseCookie('XSRF-Token')", "pm.collectionVariables.set(\"xsrf_token\", xsrf_token.value);"],
+                "exec": [
+                  "const xsrf_token = postman.getResponseCookie('XSRF-Token')",
+                  "pm.collectionVariables.set(\"xsrf_token\", xsrf_token.value);"
+                ],
                 "type": "text/javascript"
               }
             }

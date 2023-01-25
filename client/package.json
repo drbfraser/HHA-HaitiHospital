@@ -25,7 +25,6 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
-    "prettier": "^2.8.3",
     "react": "^16.14.0",
     "react-bootstrap": "^2.0.2",
     "react-csv": "^2.2.2",
@@ -51,8 +50,7 @@
     "build": "react-scripts build",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
     "eject": "react-scripts eject",
-    "e2e": "npx cypress open",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss}\""
+    "e2e": "npx cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,9 +1,20 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
+import {
+  setupApp,
+  setupHttpServer,
+  attemptAuthentication,
+  Accounts,
+  closeServer,
+} from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, BIOMECH_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
-import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_NOCONTENT_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import {
+  HTTP_CREATED_CODE,
+  HTTP_INTERNALERROR_CODE,
+  HTTP_NOCONTENT_CODE,
+  HTTP_OK_CODE,
+} from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -31,7 +42,13 @@ interface BioMechReport {
   };
 }
 
-function postBioMech(bioMechReport: BioMechReport, imgPath: String, done: Done, expectedStatus: Number, next?: Function) {
+function postBioMech(
+  bioMechReport: BioMechReport,
+  imgPath: String,
+  done: Done,
+  expectedStatus: Number,
+  next?: Function,
+) {
   agent
     .post(BIOMECH_ENDPOINT)
     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
@@ -82,7 +99,9 @@ describe('Bio Mech Tests', function () {
     // Clean up created bio mechs that were not deleted during testing
     for await (const bioMechId of bioMechIds) {
       try {
-        await agent.delete(`${BIOMECH_ENDPOINT}/${bioMechId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+        await agent
+          .delete(`${BIOMECH_ENDPOINT}/${bioMechId}`)
+          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
       } catch (error: any) {
         console.log(error);
       }
@@ -131,7 +150,7 @@ describe('Bio Mech Tests', function () {
       equipmentName: 'Test Equipment',
       equipmentFault: 'It is broken',
       equipmentPriority: 'urgent',
-      file: { path: imgPath }
+      file: { path: imgPath },
     };
     postBioMech(bioMechReport, imgPath, done, HTTP_CREATED_CODE, updatePostedBioMechIds);
   });

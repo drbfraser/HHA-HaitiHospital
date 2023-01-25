@@ -1,17 +1,22 @@
 # CMPT 373 Haumea: HHA Internal Project
 
-This is a web application made for Hope Health Action (HHA) to digitize its data collection process at field hospitals. The project uses the MERN stack and used the following as an initial template.
+This is a web application made for Hope Health Action (HHA) to digitize its data collection process
+at field hospitals. The project uses the MERN stack and used the following as an initial template.
 
 [boiler plate](https://github.com/nemanjam/mern-boilerplate).
 
-Team Haumea created this project for CMPT 373. It is currently being further developed by CMPT 415 team to deploy it for summer 2022.
+Team Haumea created this project for CMPT 373. It is currently being further developed by CMPT 415
+team to deploy it for summer 2022.
 
 ### Documents
 
-- See the project's [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q) for developer guides, user manuals, design docs, reports, and other useful
-  documents beyond what is listed in this readme or elsewhere in the repo.
+- See the project's
+  [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q)
+  for developer guides, user manuals, design docs, reports, and other useful documents beyond what
+  is listed in this readme or elsewhere in the repo.
 
-- Please update this readme and the files/folders in Google Drive to make them more useful, correct, and relevant!
+- Please update this readme and the files/folders in Google Drive to make them more useful, correct,
+  and relevant!
 
 ### Features
 
@@ -48,7 +53,8 @@ Team Haumea created this project for CMPT 373. It is currently being further dev
 
 ## Demo
 
-The development environment of the project can be viewed using this link: https://hhahaiti-dev.cmpt.sfu.ca/
+The development environment of the project can be viewed using this link:
+https://hhahaiti-dev.cmpt.sfu.ca/
 
 The staging environment: https://hhahaiti-stg.cmpt.sfu.ca/
 
@@ -58,11 +64,13 @@ The Directory splits into client and server sides. Here are a few important loca
 
 #### Serverside
 
-- /server/src contains resources to database models(/models), routes and API calls(/routes), JSON test entries(/tests), and other backend code.
+- /server/src contains resources to database models(/models), routes and API calls(/routes), JSON
+  test entries(/tests), and other backend code.
 
 #### Clientside
 
-- /server/src contains resources to react components(/components), index file(index.ts), and other frontend code
+- /server/src contains resources to react components(/components), index file(index.ts), and other
+  frontend code
 
 ## Build instructions for Devs
 
@@ -70,7 +78,8 @@ These instructions are to set up a dev environment.
 
 ### Install Node.js
 
-- You can find it [here](https://nodejs.org/en/download/). Use the LTS version described in the .nvrmc (Please keep this updated to the LTS version of node)
+- You can find it [here](https://nodejs.org/en/download/). Use the LTS version described in the
+  .nvrmc (Please keep this updated to the LTS version of node)
 
 ### Install MongoDB
 
@@ -84,7 +93,8 @@ You can use [MongoDB Compass](https://www.mongodb.com/try/download/compass) for 
 
 ### Process Environment
 
-Before starting the server, you will need to define process environment variables specific to your setup. Environment Variables configure the server. You can configure them by creating a `.env` file
+Before starting the server, you will need to define process environment variables specific to your
+setup. Environment Variables configure the server. You can configure them by creating a `.env` file
 under the `server` folder. You can use the following example `.env` configurations:
 
 ```
@@ -112,8 +122,9 @@ $ npm install
 $ npm build
 ```
 
-_(Outdated)_ Whenever changes are made to `common` folder, you should run `npm run update-common` on root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common`
-and reinstalls it in `client` and `server`.
+_(Outdated)_ Whenever changes are made to `common` folder, you should run `npm run update-common` on
+root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common` and
+reinstalls it in `client` and `server`.
 
 ### Server Setup
 
@@ -136,7 +147,8 @@ $ npm install
 $ npm start
 ```
 
-Alternatively, you can run this command inside the root directory to run the client and server concurrently:
+Alternatively, you can run this command inside the root directory to run the client and server
+concurrently:
 
 ```
 $ npm run dev
@@ -174,7 +186,8 @@ levels {
 For prod env:
 
 - log level is set to `info`, meaning only `error`, `warn` and `info` will show up in the log files.
-- saves logs to logs/hha-info-%DATE%.log and logs/hha-errors-%DATE%.log files which are then rotated every day or whenever the file limit is exceeded
+- saves logs to logs/hha-info-%DATE%.log and logs/hha-errors-%DATE%.log files which are then rotated
+  every day or whenever the file limit is exceeded
 - see `logger/prod.logger.ts`
 
 For non-prod env
@@ -207,7 +220,8 @@ $ sudo docker-compose build
 $ sudo docker-compose up
 ```
 
-- To seed the database in the containerized deployment, run the following command from the `/src` folder in the server containerized
+- To seed the database in the containerized deployment, run the following command from the `/src`
+  folder in the server containerized
 
 ```
 $npm run seed

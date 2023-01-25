@@ -54,7 +54,10 @@ describe('report tests', function () {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('report');
-        expect(new QuestionGroup<string, string>('ROOT', res.body.report.reportObject) instanceof QuestionGroup).to.be.true;
+        expect(
+          new QuestionGroup<string, string>('ROOT', res.body.report.reportObject) instanceof
+            QuestionGroup,
+        ).to.be.true;
         done();
       });
   });
@@ -69,14 +72,17 @@ describe('report tests', function () {
         departmentId: '123',
         submittedUserId: '123',
         reportMonth: new Date(),
-        serializedReport
+        serializedReport,
       })
       .end(function (err: any, res: any) {
         expect(err).to.be.null;
         expect(res).to.have.status(201);
         expect(res.body).to.have.property('message');
         expect(res.body).to.have.property('report');
-        expect(new QuestionGroup<string, string>('ROOT', res.body.report.reportObject) instanceof QuestionGroup).to.be.true;
+        expect(
+          new QuestionGroup<string, string>('ROOT', res.body.report.reportObject) instanceof
+            QuestionGroup,
+        ).to.be.true;
         done();
       });
   });
