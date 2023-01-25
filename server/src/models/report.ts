@@ -22,23 +22,23 @@ const reportSchema = new Schema({
   departmentId: {
     type: String,
     required: true,
-    ref: DEPARTMENT_MODEL_NAME
+    ref: DEPARTMENT_MODEL_NAME,
   },
   reportMonth: {
     type: Date,
-    required: true
+    required: true,
   },
   submittedDate: {
     type: Date,
     required: true,
-    default: Date.now
+    default: Date.now,
   },
   submittedUserId: {
     type: String,
     required: true,
-    ref: USER_MODEL_NAME
+    ref: USER_MODEL_NAME,
   },
-  reportObject: { type: Object, required: true }
+  reportObject: { type: Object, required: true },
 });
 
 export const REPORT_MODEL_NAME = 'Report';
@@ -62,14 +62,14 @@ if (process.env.NODE_ENV !== 'test') {
     validator: validDepartment,
     message: function (props: mongoose.ValidatorProps) {
       return `Department id ${props.value} is invalid`;
-    }
+    },
   });
 
   reportSchema.path(`${PATH_TO_USER_ID}`).validate({
     validator: verifyUser,
     message: function (props: mongoose.ValidatorProps) {
       return `Report references to non-existing user`;
-    }
+    },
   });
 }
 

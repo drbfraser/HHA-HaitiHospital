@@ -24,39 +24,79 @@ const HeaderView = (props: HeaderViewProps) => {
       ? ''
       : `- ${user.department.name !== undefined ? user.department.name : user.role}`;
   if (location.pathname.slice(1) === 'home') {
-    return <h2 data-testid="home-header" className="text-secondary">{`${t('headerOverview')} ${department}`}</h2>;
+    return (
+      <h2 data-testid="home-header" className="text-secondary">{`${t(
+        'headerOverview',
+      )} ${department}`}</h2>
+    );
   } else if (location.pathname.slice(1) === 'message-board') {
-    return <h4 data-testid="messageboard-header" className="text-secondary">{t('headerMessageBoard')}</h4>;
+    return (
+      <h4 data-testid="messageboard-header" className="text-secondary">
+        {t('headerMessageBoard')}
+      </h4>
+    );
   } else if (
     location.pathname.split('/')[1] === 'message-board' &&
     location.pathname.split('/')[2] === 'comments'
   ) {
-    return <h4 data-testid="messageboard-comments-header" className="text-secondary">{t('headerMessageComments')}</h4>;
+    return (
+      <h4 data-testid="messageboard-comments-header" className="text-secondary">
+        {t('headerMessageComments')}
+      </h4>
+    );
   } else if (location.pathname.slice(1) === 'leaderboard') {
-    return <h4 data-testid="leaderboard-header" className="text-secondary">{t('headerLeaderBoard')}</h4>;
+    return (
+      <h4 data-testid="leaderboard-header" className="text-secondary">
+        {t('headerLeaderBoard')}
+      </h4>
+    );
   } else if (location.pathname.slice(1) === 'case-study') {
-    return <h4 data-testid="case-study-header" className="text-secondary">{t('headerCaseStudy')}</h4>;
+    return (
+      <h4 data-testid="case-study-header" className="text-secondary">
+        {t('headerCaseStudy')}
+      </h4>
+    );
   } else if (
     location.pathname.split('/')[1] === 'case-study' &&
     location.pathname.split('/')[2] === 'form'
   ) {
     return <h4 className="text-secondary">{t('headerCaseStudyForm')}</h4>;
   } else if (location.pathname.slice(1) === 'employee-of-the-month') {
-    return <h4 data-testid="eotm-header" className="text-secondary">{t('headerEmployeeOfTheMonth')}</h4>;
+    return (
+      <h4 data-testid="eotm-header" className="text-secondary">
+        {t('headerEmployeeOfTheMonth')}
+      </h4>
+    );
   } else if (
     location.pathname.split('/')[1] === 'employee-of-the-month' &&
     location.pathname.split('/')[2] === 'form'
   ) {
-    return <h4 data-testid="eotm-form-header" className="text-secondary">{t('headerEmployeeOfTheMonthForm')}</h4>;
+    return (
+      <h4 data-testid="eotm-form-header" className="text-secondary">
+        {t('headerEmployeeOfTheMonthForm')}
+      </h4>
+    );
   } else if (location.pathname.slice(1) === 'biomechanic') {
-    return <h4 data-testid="biomech-header" className="text-secondary">{t('headerBiomechanicalSupport')}</h4>;
+    return (
+      <h4 data-testid="biomech-header" className="text-secondary">
+        {t('headerBiomechanicalSupport')}
+      </h4>
+    );
   } else if (
     location.pathname.split('/')[1] === 'biomechanic' &&
     location.pathname.split('/')[2] === 'report-broken-kit'
   ) {
-    return <h4 data-testid="biomech-form-header" className="text-secondary">{t('headerBiomechanicalSupportForm')}</h4>;
+    return (
+      <h4 data-testid="biomech-form-header" className="text-secondary">
+        {t('headerBiomechanicalSupportForm')}
+      </h4>
+    );
   } else if (location.pathname.slice(1) === 'brokenkit') {
-    return <h4 data-testid="case-study-view-header" className="text-secondary">{t('headerBrokenKitReport')}</h4>;
+    return (
+      <h4 data-testid="case-study-view-header" className="text-secondary">
+        {t('headerBrokenKitReport')}
+      </h4>
+    );
   } else if (location.pathname.split('/')[1] === 'caseStudyView') {
     return <h4 className="text-secondary">{t('headerCaseStudyForm')}</h4>;
   } else if (location.pathname.slice(1) === 'Department1NICU') {
@@ -68,7 +108,11 @@ const HeaderView = (props: HeaderViewProps) => {
   } else if (location.pathname.slice(1) === 'Department4ComHealth') {
     return <h4 className="text-secondary">{t('headerDepartmentCom')}</h4>;
   } else if (location.pathname.slice(1) === 'admin') {
-    return <h4 data-testid="admin-header" className="text-secondary">{t('headerAdmin')}</h4>;
+    return (
+      <h4 data-testid="admin-header" className="text-secondary">
+        {t('headerAdmin')}
+      </h4>
+    );
   } else if (location.pathname.slice(1) === 'general_reports') {
     // Need translation
     return <h4 className="text-secondary">{t('headerGeneralReports')}</h4>;

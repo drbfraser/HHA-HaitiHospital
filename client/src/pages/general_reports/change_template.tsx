@@ -38,13 +38,13 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
     getDepartments();
   }, [history]);
 
-  const handleSubmit = async (e : FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const fileContent : string = await templateFile.text()
-    const fileContentObject : object = JSON.parse(fileContent)
+    const fileContent: string = await templateFile.text();
+    const fileContentObject: object = JSON.parse(fileContent);
 
-    // not connected to the backend API at the moment as we haven't figured out 
+    // not connected to the backend API at the moment as we haven't figured out
     // the API implementation and what to do with the old implementation
     // TODO: to connect to the backend after we figure out how the backend should work
     // await Api.Put(
@@ -89,15 +89,18 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
                 onChange={(e) => setDepartment(departments.get(e.target.value))}
               >
                 <option value="" hidden>
-                  {t("template.select_department")}
+                  {t('template.select_department')}
                 </option>
-                {departments && Array.from(departments.values()).map((dept: Department, index: number) => {
-                  return dept.name !== GeneralDepartment && (
-                    <option key={index} value={dept.name}>
-                      {dept.name}
-                    </option>
-                  );
-                })}
+                {departments &&
+                  Array.from(departments.values()).map((dept: Department, index: number) => {
+                    return (
+                      dept.name !== GeneralDepartment && (
+                        <option key={index} value={dept.name}>
+                          {dept.name}
+                        </option>
+                      )
+                    );
+                  })}
               </select>
             </div>
             <label className="form-label">{t('template.upload_template')}</label>

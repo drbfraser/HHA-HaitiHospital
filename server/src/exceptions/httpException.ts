@@ -1,4 +1,4 @@
-import { CustomError } from "./custom_exception";
+import { CustomError } from './custom_exception';
 
 export const HTTP_OK_CODE = 200;
 export const HTTP_CREATED_CODE = 201;
@@ -43,13 +43,13 @@ export class UnprocessableEntity extends HttpError {
 }
 
 export class NotFound extends HttpError {
-    constructor(message: string) {
-        super(HTTP_NOTFOUND_CODE, message);
-    }
+  constructor(message: string) {
+    super(HTTP_NOTFOUND_CODE, message);
+  }
 }
 
 export class Conflict extends HttpError {
-    constructor(message: string) {
-        super(HTTP_CONFLICT_CODE, message);
-    }
+  constructor(message: string) {
+    super(HTTP_CONFLICT_CODE, message);
+  }
 }

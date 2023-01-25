@@ -36,7 +36,7 @@ const messageBodySchema = new Schema<MessageWithInstanceMethods>({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   date: { type: Date, required: true, default: new Date() },
   messageBody: { type: String, required: true, default: '' },
-  messageHeader: { type: String, required: true, default: '' }
+  messageHeader: { type: String, required: true, default: '' },
 });
 messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
@@ -49,15 +49,19 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
     id: this._id,
     department: {
       id: this.departmentId,
-      name: await Departments.Database.getDeptNameById(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId),
     },
     user: userJson,
     date: formatDateString(this.date),
     messageBody: this.messageBody,
-    messageHeader: this.messageHeader
+    messageHeader: this.messageHeader,
   };
   return json;
 };
 
-const MessageCollection = mongoose.model<MessageWithInstanceMethods>('MessageBody', messageBodySchema, 'MessageBoard');
+const MessageCollection = mongoose.model<MessageWithInstanceMethods>(
+  'MessageBody',
+  messageBodySchema,
+  'MessageBoard',
+);
 export default MessageCollection;

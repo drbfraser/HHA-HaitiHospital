@@ -18,9 +18,9 @@ const templateSchema = new Schema({
     type: String,
     required: [true, "can't be blank"],
     index: true,
-    ref: DEPARTMENT_MODEL_NAME
+    ref: DEPARTMENT_MODEL_NAME,
   },
-  reportObject: { type: Object, required: true }
+  reportObject: { type: Object, required: true },
 });
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<< instance methods <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -51,13 +51,13 @@ if (process.env.NODE_ENV !== 'test') {
     validator: validDepartment,
     message: function (props: ValidatorProps) {
       return `Department id ${props.value} is invalid`;
-    }
+    },
   });
   templateSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
     validator: uniqueTemplateDepartment,
     message: function (props: ValidatorProps) {
       return `Template with department id ${props.value} already exists`;
-    }
+    },
   });
 }
 

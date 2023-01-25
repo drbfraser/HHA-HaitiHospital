@@ -24,21 +24,21 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
 
   public setAnswer(answer: T): void {
     this.answer = answer;
-  };
+  }
 
   public addValidator(validator: (answer?: T) => ValidationResult<ErrorType>): void {
     this.validators.push(validator);
-  };
+  }
 
   public isValid(): boolean {
     return this.validators
       .map((validator) => validator(this.answer).isValid)
       .reduce((isValid1, isValid2) => isValid1 && isValid2, true);
-  };
+  }
 
   public getValidationResults(): Array<ValidationResult<ErrorType>> {
     return this.validators.map((validator: (answer?: T) => ValidationResult<ErrorType>) =>
       validator(this.answer),
     );
-  };
+  }
 }

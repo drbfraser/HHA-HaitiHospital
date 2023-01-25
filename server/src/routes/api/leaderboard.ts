@@ -13,10 +13,18 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
   try {
     // Find all departments except for General
     const departments = await Department.find({ name: { $ne: DefaultDepartments.General } });
-    const leaderboardJson: LeaderboardJson[] = await Promise.all(departments.map(async (dept) => await dept.toLeaderboard(POINTS_PER_CASE_STUDY)));
+    const leaderboardJson: LeaderboardJson[] = await Promise.all(
+      departments.map(async (dept) => await dept.toLeaderboard(POINTS_PER_CASE_STUDY)),
+    );
 
     // Return sorted leaderboard by points (Highest to lowest)
-    res.status(HTTP_OK_CODE).json(leaderboardJson.sort((deptFormer, deptLatter) => (deptFormer.points > deptLatter.points ? 1 : -1)).reverse());
+    res
+      .status(HTTP_OK_CODE)
+      .json(
+        leaderboardJson
+          .sort((deptFormer, deptLatter) => (deptFormer.points > deptLatter.points ? 1 : -1))
+          .reverse(),
+      );
   } catch (e) {
     next(e);
   }

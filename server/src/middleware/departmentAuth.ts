@@ -9,7 +9,11 @@ import Departments from 'utils/departments';
 type Middleware = (req: RequestWithUser, res: Response, next: NextFunction) => void | Promise<void>;
 
 // This middleware requires department id slug in url
-export const departmentAuth: Middleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+export const departmentAuth: Middleware = async (
+  req: RequestWithUser,
+  res: Response,
+  next: NextFunction,
+) => {
   const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
   const valid = await Departments.Database.validateDeptId(deptId);
   if (!valid) {

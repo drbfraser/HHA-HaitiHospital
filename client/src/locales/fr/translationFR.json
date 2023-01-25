@@ -256,7 +256,7 @@
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
 
-  "template" : {
+  "template": {
     "change_template": "Changer de modèle",
     "department": "Département",
     "select_department": "Sélectionner le département",
@@ -272,44 +272,44 @@
       "options_col": "Options"
     },
     "user_form": {
-        "username": "Nom d'utilisateur", 
-        "password": "Mot de passe",
-        "name": "Nom",
-        "role": "Rôle",
-        "inquiry_role": "Sélectionnez le rôle de l'utilisateur",
-        "department": "Départment",
-        "inquiry_department": "Sélectionnez Départment",
-        "hint": {
-            "leave_blank": "Laissez vide pour le garder inchangé"
-        }
+      "username": "Nom d'utilisateur",
+      "password": "Mot de passe",
+      "name": "Nom",
+      "role": "Rôle",
+      "inquiry_role": "Sélectionnez le rôle de l'utilisateur",
+      "department": "Départment",
+      "inquiry_department": "Sélectionnez Départment",
+      "hint": {
+        "leave_blank": "Laissez vide pour le garder inchangé"
+      }
     }
   },
 
   "biomech": {
     "main_page": {
-        "priority_col": "Priorité",
-        "author_col": "Auteur",
-        "created_col":"Créé à",
-        "options_col": "Options"        
+      "priority_col": "Priorité",
+      "author_col": "Auteur",
+      "created_col": "Créé à",
+      "options_col": "Options"
     },
     "view_report": {
-        "title": "Rapport de Kit Cassé",
-        "equipment_name": "Nom de L'équipement",
-        "author": "Auteur",
-        "priority": "Priorité",        
-        "issue": "Problème"
+      "title": "Rapport de Kit Cassé",
+      "equipment_name": "Nom de L'équipement",
+      "author": "Auteur",
+      "priority": "Priorité",
+      "issue": "Problème"
     },
     "report": {
-        "title": "Rapport de Kit Cassé",
-        "equipment_name": "Nom de L'équipement",
-        "issue": "Issue",
-        "priority": "Priorité",
-        "inquiry_priority": "Choisissez une Priorité"
+      "title": "Rapport de Kit Cassé",
+      "equipment_name": "Nom de L'équipement",
+      "issue": "Issue",
+      "priority": "Priorité",
+      "inquiry_priority": "Choisissez une Priorité"
     },
     "priority": {
-        "urgent": "Urgent",
-        "important": "Important",
-        "non-urgent": "Non-Urgent"
+      "urgent": "Urgent",
+      "important": "Important",
+      "non-urgent": "Non-Urgent"
     }
   },
 
@@ -365,7 +365,7 @@
 
   "error_message": {
     "compress": {
-        "image": "Impossible de compresser ce fichier image"
+      "image": "Impossible de compresser ce fichier image"
     }
   },
 

@@ -5,7 +5,7 @@ export const nonFalsyBodyField = <IObj>(field: keyof IObj): ValidationChain => {
   return body(field as string)
     .exists({
       checkFalsy: true,
-      checkNull: true
+      checkNull: true,
     })
     .withMessage(`Expecting a value`)
     .if((value) => value);

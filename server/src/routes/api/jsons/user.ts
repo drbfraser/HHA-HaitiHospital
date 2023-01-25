@@ -35,9 +35,9 @@ export namespace UserApiOut {
     };
     createdAt: Date;
     updatedAt: Date;
-  };
+  }
 
-  export interface GetMe extends UserJson {};
-  export interface GetId extends UserJson {};
-  export interface GetAll extends Array<UserJson> {};
+  export interface GetMe extends UserJson {}
+  export interface GetId extends UserJson {}
+  export interface GetAll extends Array<UserJson> {}
 }

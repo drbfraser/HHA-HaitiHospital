@@ -10,7 +10,7 @@ const { Schema } = mongoose;
 export enum BiomechPriority {
   URGENT = 'urgent',
   IMPORTANT = 'important',
-  NONURGENT = 'non-urgent'
+  NONURGENT = 'non-urgent',
 }
 
 export interface BioMech {
@@ -36,9 +36,9 @@ const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
     equipmentName: { type: String, required: true },
     equipmentFault: { type: String, required: true },
     equipmentPriority: { type: BiomechPriority, required: true },
-    imgPath: { type: String, required: true }
+    imgPath: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 bioMechSchema.methods.toJson = async function (): Promise<BiomechJson> {
   const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
@@ -52,17 +52,21 @@ bioMechSchema.methods.toJson = async function (): Promise<BiomechJson> {
     user: userJson,
     department: {
       id: this.departmentId,
-      name: await Departments.Database.getDeptNameById(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId),
     },
     equipmentName: this.equipmentName,
     equipmentPriority: this.equipmentPriority,
     equipmentFault: this.equipmentFault,
     createdAt: formatDateString(this.createdAt),
     updatedAt: formatDateString(this.createdAt),
-    imgPath: this.imgPath
+    imgPath: this.imgPath,
   };
   return json;
 };
 
-const BioMechCollection = mongoose.model<BioMechWithInstanceMethods>('BioMech', bioMechSchema, 'BioMechReports');
+const BioMechCollection = mongoose.model<BioMechWithInstanceMethods>(
+  'BioMech',
+  bioMechSchema,
+  'BioMechReports',
+);
 export default BioMechCollection;
