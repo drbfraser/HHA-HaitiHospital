@@ -295,6 +295,7 @@ function FormContents(props: { path: string }) {
   //============================================================================
 
   React.useEffect(fetchReportDataEfect);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(errorHandlingEffect, [state, formHook]);
 
   return stateRenders.get(state.value)();

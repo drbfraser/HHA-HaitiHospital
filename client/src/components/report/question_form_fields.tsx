@@ -3,7 +3,6 @@ import {
   NumericQuestion,
   ExpandableQuestion,
   TextQuestion,
-  CompositionQuestion,
   MultipleSelectionQuestion,
   SingleSelectionQuestion,
   QuestionGroup,
