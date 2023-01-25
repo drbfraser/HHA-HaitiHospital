@@ -53,7 +53,8 @@ router.route(`/:${REPORT_ID_URL_SLUG}`).get(requireJwtAuth, async (req: RequestW
 // Fetch all reports
 router.route(`/`).get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    res.status(HTTP_OK_CODE).json([]);
+    const reports = await ReportCollection.find();
+    res.status(HTTP_OK_CODE).json(reports);
   } catch (e) {
     next(e);
   }
