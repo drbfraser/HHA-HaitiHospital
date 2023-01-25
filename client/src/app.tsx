@@ -10,7 +10,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <ToastContainer style={{width :"700px"}} />
+        <ToastContainer style={{ width: '700px' }} />
         <Switch>
           {routes.map((route) => (
             <AppRoute
