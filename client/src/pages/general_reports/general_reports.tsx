@@ -39,7 +39,8 @@ const GeneralReports = () => {
   // Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize: number = 10;
-  const currentTableData: JsonReportDescriptor[] = useMemo(() => {
+  // TODO: add type
+  const currentTableData: any[] = useMemo(() => {
     const firstPageIndex: number = (currentPage - 1) * pageSize;
     const lastPageIndex: number = firstPageIndex + pageSize;
     return reports.slice(firstPageIndex, lastPageIndex);
@@ -78,15 +79,15 @@ const GeneralReports = () => {
             <tbody>
               {currentTableData.map((item, index) => {
                 return (
-                  <tr key={item.meta.id}>
+                  <tr key={item.reportObject.id}>
                     <th scope="row">{reportNumberIndex + index + 1}</th>
-                    <td>{item.meta.id}</td>
-                    <td>{t(item.meta.department.name)}</td>
-                    <td>{item.meta.submittedDate}</td>
-                    <td>{item.meta.submittedUserId}</td>
+                    <td>{item.reportObject.id}</td>
+                    <td>{t(item.departmentId)}</td>
+                    <td>{item.submittedDate}</td>
+                    <td>{item.submittedUserId}</td>
                     <td>
                       <Link
-                        to={'/report-view/' + item.meta.id}
+                        to={'/report-view/' + item.reportObject.id}
                         className="btn-link text-decoration-none"
                       >
                         {t('reportsOpenReport')}

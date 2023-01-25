@@ -1,15 +1,22 @@
 # CMPT 373 Haumea: HHA Internal Project
 
-This is a web application made for Hope Health Action (HHA) with the goal to digitize its data collection process at field hospitals. The project uses the MERN stack and is based on a
+This is a web application made for Hope Health Action (HHA) to digitize its data collection process
+at field hospitals. The project uses the MERN stack and used the following as an initial template.
+
 [boiler plate](https://github.com/nemanjam/mern-boilerplate).
 
-The project was originally created by team Haumea for CMPT 373 and is currently further developed by CMPT 415 team with the goal of deploying it for sumer 2022.
+Team Haumea created this project for CMPT 373. It is currently being further developed by CMPT 415
+team to deploy it for summer 2022.
 
 ### Documents
 
-- See the project's [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q) for developer guides, user manuals, design docs, reports, and other useful
-  documents beyond what is listed in this readme or elsewhere in the repo.
-- Please update this readme and the files/folders in the Google Drive to make them more useful, correct, and relevant!
+- See the project's
+  [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q)
+  for developer guides, user manuals, design docs, reports, and other useful documents beyond what
+  is listed in this readme or elsewhere in the repo.
+
+- Please update this readme and the files/folders in Google Drive to make them more useful, correct,
+  and relevant!
 
 ### Features
 
@@ -17,7 +24,7 @@ The project was originally created by team Haumea for CMPT 373 and is currently 
 - Clean User Interface
 - Sidebar Navigation
 - Page Route Protection based on Role and Department of User
-  - Dynamic Page Rendering based on Role and Department of User
+- Dynamic Page Rendering based on Role and Department of User
 - API JWT Authentication/Authorization
 - Account Management and Admin Dashboard for User Management
 - French Translation
@@ -46,49 +53,54 @@ The project was originally created by team Haumea for CMPT 373 and is currently 
 
 ## Demo
 
-The development environment of the project can be viewed using this link: https://hhahaiti-dev.cmpt.sfu.ca/
+The development environment of the project can be viewed using this link:
+https://hhahaiti-dev.cmpt.sfu.ca/
 
 The staging environment: https://hhahaiti-stg.cmpt.sfu.ca/
 
 ## Directory Structure
 
-The Directory can be split into client and serverside. Here are a few important locations:
+The Directory splits into client and server sides. Here are a few important locations:
 
 #### Serverside
 
-- /server/src contains resources to database models(/models), routes and API calls(/routes), JSON test entries(/tests), and other backend code.
+- /server/src contains resources to database models(/models), routes and API calls(/routes), JSON
+  test entries(/tests), and other backend code.
 
 #### Clientside
 
-- /server/src contains resources to react components(/components), index file(index.ts), and other frontend code
+- /server/src contains resources to react components(/components), index file(index.ts), and other
+  frontend code
 
 ## Build instructions for Devs
 
-These instructions are to setup a dev enviroment.
+These instructions are to set up a dev environment.
 
 ### Install Node.js
 
-- You can find it [here](https://nodejs.org/en/download/). LTS version is preferred.
+- You can find it [here](https://nodejs.org/en/download/). Use the LTS version described in the
+  .nvrmc (Please keep this updated to the LTS version of node)
 
 ### Install MongoDB
 
 Install Mongo for your system:
 
 - For [MacOS](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
+
 - For [Windows](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
 You can use [MongoDB Compass](https://www.mongodb.com/try/download/compass) for a GUI of Mongo.
 
-### Process Enviroments
+### Process Environment
 
-Prior to starting the server, you will need to define process enviroments varibles specific to your setup as they are used to configure the server. You can configure them by creating a `.env` file
-under `server` folder. You can use the following example `.env` configurations:
+Before starting the server, you will need to define process environment variables specific to your
+setup. Environment Variables configure the server. You can configure them by creating a `.env` file
+under the `server` folder. You can use the following example `.env` configurations:
 
 ```
 # Your MongoDB URI (local or remote). Defaults to localhost:27017
 MONGO_URI=mongodb://localhost:27017/
-
-# Secret use to generate JWT tokens
+# Secret use to generate JWT tokens (You can generate the secret via 'openssl rand -base64 32'on Linux)
 JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
 CORS=http://localhost:3000
@@ -110,12 +122,13 @@ $ npm install
 $ npm build
 ```
 
-_(Outdated)_ Whenever changes are made to `common` folder, you should run `npm run update-common` on root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common`
-and reinstalls it in `client` and `server`.
+_(Outdated)_ Whenever changes are made to `common` folder, you should run `npm run update-common` on
+root dir. This will run a shell script inside `scripts/update-common.sh` which rebuilds `common` and
+reinstalls it in `client` and `server`.
 
 ### Server Setup
 
-- navigate into into /server folder from the root directory
+- navigate into/server folder from the root directory
 - run the following:
 
 ```
@@ -134,22 +147,23 @@ $ npm install
 $ npm start
 ```
 
-Alternatively, you can run this command on root directory to run client and server concurrently:
+Alternatively, you can run this command inside the root directory to run the client and server
+concurrently:
 
 ```
 $ npm run dev
 ```
 
-Now that everything is up, visit http://localhost:3000 and login with the seeded users:
+Now that everything is up, visit http://localhost:3000 and log in with the seeded users:
 
 - Role: Admin
-  - Username: user0
+- Username: user0
 - Role: Medical Director
-  - Username: user1
+- Username: user1
 - Role: Head of Department
-  - Username: user2
+- Username: user2
 - Role: User
-  - Username: user3 to user 6
+- Username: user3 to user 6
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
 
@@ -158,21 +172,22 @@ The password will be `PASSWORD_SEED` as defined in your `.env`
 Log levels:
 
 ```
-    levels {
-        error: 0,
-        warn: 1,
-        info: 2,
-        http: 3,
-        verbose: 4,
-        debug: 5,
-        silly: 6
-    }
+levels {
+    error: 0,
+    warn 1,
+    info: 2,
+    http: 3,
+    verbose: 4,
+    debug 5,
+    silly: 6
+}
 ```
 
 For prod env:
 
 - log level is set to `info`, meaning only `error`, `warn` and `info` will show up in the log files.
-- saves logs to logs/hha-info-%DATE%.log and logs/hha-errors-%DATE%.log files which are then rotated every day or whenever the file limit is exceeded
+- saves logs to logs/hha-info-%DATE%.log and logs/hha-errors-%DATE%.log files which are then rotated
+  every day or whenever the file limit is exceeded
 - see `logger/prod.logger.ts`
 
 For non-prod env
@@ -183,7 +198,7 @@ For non-prod env
 
 ### Prettier Setup
 
-We use prettier as our code formatter. The repo provide a prettier config to unify our styles.
+We use prettier as our code formatter. The repo provides a prettier config to unify our styles.
 
 - Install Prettier as a VSCode extension
 - Navigate to the root directory
@@ -205,7 +220,8 @@ $ sudo docker-compose build
 $ sudo docker-compose up
 ```
 
-- To seed the database in the containerized deploymeny, run the following command from the `/src` folder in the server containerized
+- To seed the database in the containerized deployment, run the following command from the `/src`
+  folder in the server containerized
 
 ```
 $npm run seed

@@ -22,7 +22,10 @@ export const hasGroupType = (jsonItem: _JsonDefs.JsonReportItem): boolean => {
   return _JsonDefs.ItemType[typeKey] === _JsonDefs.ItemType.GROUP;
 };
 
-export const checkAnswerType = (answer: _JsonDefs.JsonItemAnswer, itemType: _JsonDefs.ItemTypeKeys) => {
+export const checkAnswerType = (
+  answer: _JsonDefs.JsonItemAnswer,
+  itemType: _JsonDefs.ItemTypeKeys,
+) => {
   const typeChecker = getAnswerTypeChecker(itemType);
   typeChecker(answer);
 };

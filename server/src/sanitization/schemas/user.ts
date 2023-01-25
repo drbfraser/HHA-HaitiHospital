@@ -11,7 +11,7 @@ const PW_SIZE_MAX: number = 60;
 const userCreate = [
   body('username', msgStringMulti(UNAME_SIZE_MIN, UNAME_SIZE_MAX))
     .exists({
-      checkNull: true
+      checkNull: true,
     })
     .isString()
     .trim()
@@ -19,7 +19,7 @@ const userCreate = [
     .isLength({ min: UNAME_SIZE_MIN, max: UNAME_SIZE_MAX }),
   body('password', msgStringMulti(PW_SIZE_MIN, PW_SIZE_MAX))
     .exists({
-      checkNull: true
+      checkNull: true,
     })
     .isString()
     .trim()
@@ -28,32 +28,32 @@ const userCreate = [
   body('department')
     .exists({
       checkNull: true,
-      checkFalsy: true
+      checkFalsy: true,
     })
     .isObject()
     .custom(isDepartment),
   body('name')
     .exists({
       checkNull: true,
-      checkFalsy: true
+      checkFalsy: true,
     })
     .trim()
     .escape(),
   body('role')
     .exists({
       checkNull: true,
-      checkFalsy: true
+      checkFalsy: true,
     })
     .isString()
     .trim()
     .escape()
-    .custom(isRole)
+    .custom(isRole),
 ];
 
 const userEdit = [
   body('username')
     .exists({
-      checkNull: true
+      checkNull: true,
     })
     .isString()
     .trim()
@@ -64,7 +64,7 @@ const userEdit = [
 
   body('password')
     .exists({
-      checkNull: true
+      checkNull: true,
     })
     .isString()
     .trim()
@@ -76,29 +76,29 @@ const userEdit = [
   body('department')
     .exists({
       checkNull: true,
-      checkFalsy: true
+      checkFalsy: true,
     })
     .isObject()
     .custom(isDepartment),
   body('name')
     .exists({
       checkNull: true,
-      checkFalsy: true
+      checkFalsy: true,
     })
     .trim()
     .escape(),
   body('role')
     .exists({
       checkNull: true,
-      checkFalsy: true
+      checkFalsy: true,
     })
     .isString()
     .trim()
     .escape()
-    .custom(isRole)
+    .custom(isRole),
 ];
 
 export const user = {
   post: userCreate,
-  put: userEdit
+  put: userEdit,
 };

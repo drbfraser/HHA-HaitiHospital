@@ -25,7 +25,7 @@ export const createServer = () => {
     optionSuccessStatus: 200,
     methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Cookie', 'x-xsrf-token', 'X-CSRF-TOKEN'],
-    exposedHeaders: ['Content-Type']
+    exposedHeaders: ['Content-Type'],
   };
   app.use(cors(corsOptions));
 
@@ -51,7 +51,7 @@ export const createServer = () => {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     })
     .then(() => {
       logger.info('Connect to MongDB');

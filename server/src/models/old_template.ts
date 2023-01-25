@@ -28,16 +28,16 @@ const templateSchema = new Schema<TemplateWithInstanceMethods>({
     type: String,
     unique: true,
     required: true,
-    default: randomUUID
+    default: randomUUID,
   },
   departmentId: { type: String, unique: true, required: true },
   submittedByUserId: { type: String, required: true, ref: USER_MODEL_NAME },
   submittedDate: {
     type: Date,
     required: true,
-    default: new Date()
+    default: new Date(),
   },
-  items: { type: Object, required: true }
+  items: { type: Object, required: true },
 });
 
 // Make sure that instance methods defined below are matched with template schema i.e TemplateWithUtils
@@ -49,7 +49,10 @@ templateSchema.methods.toJson = function (): Promise<JsonReportDescriptor> {
 // <<<<<<<<<<<<<<<<<<<<<<<<<< instance methods <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 const TEMPLATE_COLLECTION_NAME = 'Template';
-const TemplateCollection = mongoose.model<TemplateWithInstanceMethods>(TEMPLATE_COLLECTION_NAME, templateSchema);
+const TemplateCollection = mongoose.model<TemplateWithInstanceMethods>(
+  TEMPLATE_COLLECTION_NAME,
+  templateSchema,
+);
 
 // >>>> VALIDATORS >>>>
 
@@ -77,27 +80,27 @@ templateSchema.path(`${PATH_TO_ID}`).validate({
   validator: uniqueTemplateId,
   message: function (props: ValidatorProps) {
     return `Template with id ${props.value} already exists`;
-  }
+  },
 });
 
 templateSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
   validator: validDepartment,
   message: function (props: ValidatorProps) {
     return `Department id ${props.value} is invalid`;
-  }
+  },
 });
 templateSchema.path(`${PATH_TO_DEPARTMENT_ID}`).validate({
   validator: uniqueTemplateDepartment,
   message: function (props: ValidatorProps) {
     return `Template with department id ${props.value} already exists`;
-  }
+  },
 });
 
 templateSchema.path(`${PATH_TO_USER_ID}`).validate({
   validator: verifyUser,
   message: function (props: ValidatorProps) {
     return `Template references to non-existing user`;
-  }
+  },
 });
 
 // <<<< VALIDATORS <<<<<

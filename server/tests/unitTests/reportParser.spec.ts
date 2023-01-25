@@ -11,7 +11,7 @@ describe('Test Equal questions', () => {
   const correctSchema: JsonReportDescriptor = {
     meta: {
       id: '0',
-      department: { id: '2', name: 'NICU/Paeds' }
+      department: { id: '2', name: 'NICU/Paeds' },
     },
     items: [
       {
@@ -22,7 +22,7 @@ describe('Test Equal questions', () => {
           {
             type: 'numeric',
             description: 'child 1',
-            answer: [['10']]
+            answer: [['10']],
           },
           {
             type: 'sum',
@@ -32,19 +32,19 @@ describe('Test Equal questions', () => {
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['5']]
+                answer: [['5']],
               },
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['2']]
+                answer: [['2']],
               },
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['3']]
-              }
-            ]
+                answer: [['3']],
+              },
+            ],
           },
           {
             type: 'group',
@@ -54,29 +54,29 @@ describe('Test Equal questions', () => {
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['5']]
+                answer: [['5']],
               },
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['2']]
+                answer: [['2']],
               },
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['3']]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                answer: [['3']],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   };
 
   const invalidChildrenAnswers: JsonReportDescriptor = {
     meta: {
       id: '0',
-      department: { id: '2', name: 'NICU/Paeds' }
+      department: { id: '2', name: 'NICU/Paeds' },
     },
     items: [
       {
@@ -87,7 +87,7 @@ describe('Test Equal questions', () => {
           {
             type: 'numeric',
             description: 'child 1',
-            answer: [['7']]
+            answer: [['7']],
           },
           {
             type: 'sum',
@@ -97,14 +97,14 @@ describe('Test Equal questions', () => {
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['5']]
+                answer: [['5']],
               },
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['2']]
-              }
-            ]
+                answer: [['2']],
+              },
+            ],
           },
           {
             type: 'group',
@@ -114,23 +114,23 @@ describe('Test Equal questions', () => {
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['100']]
+                answer: [['100']],
               },
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['100']]
+                answer: [['100']],
               },
               {
                 type: 'numeric',
                 description: 'child',
-                answer: [['100']]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                answer: [['100']],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   };
 
   it('should parse json equal item', (done) => {

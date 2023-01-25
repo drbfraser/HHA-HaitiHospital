@@ -22,7 +22,11 @@ export const setReportMonth = (report: ReportDescriptor, date: Date) => {
   report.reportMonth = date;
 };
 
-export const generateReportForMonth = async (deptId: string, reportMonth: Date, requestor: User): Promise<ReportDescriptor> => {
+export const generateReportForMonth = async (
+  deptId: string,
+  reportMonth: Date,
+  requestor: User,
+): Promise<ReportDescriptor> => {
   const deptValid = await Departments.Database.validateDeptId(deptId);
   if (!deptValid) {
     throw new SystemException(`Department id ${deptId} is invalid`);
@@ -36,7 +40,7 @@ export const generateReportForMonth = async (deptId: string, reportMonth: Date, 
       submittedDate: new Date(),
       submittedUserId: requestor._id!,
       reportMonth: reportMonth,
-      items: []
+      items: [],
     };
     return newEmptyReport;
   } else {

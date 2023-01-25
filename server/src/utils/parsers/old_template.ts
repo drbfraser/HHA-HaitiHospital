@@ -1,4 +1,13 @@
-import { ItemAnswer, ReportDescriptor, ReportEqualItem, ReportItem, ReportItems, ReportNumericItem, ReportSumItem, ReportGroupItem } from '../definitions/report';
+import {
+  ItemAnswer,
+  ReportDescriptor,
+  ReportEqualItem,
+  ReportItem,
+  ReportItems,
+  ReportNumericItem,
+  ReportSumItem,
+  ReportGroupItem,
+} from '../definitions/report';
 import { generateUuid, getLengthOfEnum } from '../utils';
 import { InvalidInput, IllegalState } from 'exceptions/systemException';
 import { Template } from 'models/old_template';
@@ -27,7 +36,7 @@ export const fromReportToTemplate = (report: ReportDescriptor): Template => {
     departmentId: report.departmentId,
     submittedByUserId: report.submittedUserId,
     submittedDate: report.submittedDate,
-    items: emptyItems
+    items: emptyItems,
   };
 
   return template;
@@ -45,7 +54,7 @@ export const fromTemplateToReport = (doc: Template): ReportDescriptor => {
     id: doc.id,
     departmentId: doc.departmentId,
     submittedDate: doc.submittedDate,
-    submittedUserId: doc.submittedByUserId
+    submittedUserId: doc.submittedByUserId,
   };
   let items: ReportItems = doc.items;
   return (report = { ...meta, items: items });
@@ -103,7 +112,7 @@ namespace ItemToTemplate {
     const emptyItem: TemplateItem = {
       type: item.type,
       description: item.description,
-      answer: answer
+      answer: answer,
     };
     return emptyItem;
   };

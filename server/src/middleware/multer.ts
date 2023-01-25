@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const fileName = file.originalname.toLowerCase().split(' ').join('-');
     cb(null, `case-study-${Date.now()}-${fileName}`);
-  }
+  },
 });
 
 const upload = multer({
@@ -25,7 +25,7 @@ const upload = multer({
     } else {
       cb(null, true);
     }
-  }
+  },
 });
 
 // Take req.file assigned by multer.single() and assign it to

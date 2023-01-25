@@ -10,7 +10,8 @@
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "dev": "npm run server & npm run client",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^2.8.3"
+  }
 }

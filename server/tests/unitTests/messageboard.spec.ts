@@ -1,9 +1,26 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, MESSAGEBOARD_ENDPOINT, DEPARTMENT_ENDPOINT } from './testTools/endPoints';
+import {
+  setupApp,
+  setupHttpServer,
+  attemptAuthentication,
+  Accounts,
+  closeServer,
+} from './testTools/mochaHooks';
+import {
+  CSRF_ENDPOINT,
+  LOGIN_ENDPOINT,
+  MESSAGEBOARD_ENDPOINT,
+  DEPARTMENT_ENDPOINT,
+} from './testTools/endPoints';
 import { Done } from 'mocha';
-import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_NOCONTENT_CODE, HTTP_NOTFOUND_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import {
+  HTTP_CREATED_CODE,
+  HTTP_INTERNALERROR_CODE,
+  HTTP_NOCONTENT_CODE,
+  HTTP_NOTFOUND_CODE,
+  HTTP_OK_CODE,
+} from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -78,7 +95,9 @@ describe('Messageboard Tests', function () {
     // Cleaning up posted messages that were not removed during testing
     for await (const messageId of messageIds) {
       try {
-        await agent.delete(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+        await agent
+          .delete(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
+          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
       } catch (error: any) {
         console.log(error);
       }
@@ -117,30 +136,36 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Fail to Get Messages Due To Invalid Department', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`).end(function (error: any, response: any) {
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-      done();
-    });
+    agent
+      .get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`)
+      .end(function (error: any, response: any) {
+        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+        done();
+      });
   });
 
   it('Should Get Messages From General Department', function (done: Done) {
     const generalDeptId: string = departmentIds[0];
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${generalDeptId}`).end(function (error: any, response: any) {
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      const entries: Array<Object> = Object.entries(response.body);
-      const results: boolean = entries.every((element) => element[1].department.id === generalDeptId);
-      expect(results).to.be.true;
+    agent
+      .get(`${MESSAGEBOARD_ENDPOINT}/department/${generalDeptId}`)
+      .end(function (error: any, response: any) {
+        expect(error).to.be.null;
+        expect(response).to.have.status(HTTP_OK_CODE);
+        const entries: Array<Object> = Object.entries(response.body);
+        const results: boolean = entries.every(
+          (element) => element[1].department.id === generalDeptId,
+        );
+        expect(results).to.be.true;
 
-      done();
-    });
+        done();
+      });
   });
 
   it('Should Fail Posting a New Message due to Invalid Department ID', function (done: Done) {
     const newMessage: MessageObject = {
       department: { id: 'invalid department id' },
       messageHeader: 'test header',
-      messageBody: 'test body'
+      messageBody: 'test body',
     };
 
     postMessage(newMessage, done, HTTP_INTERNALERROR_CODE);
@@ -151,7 +176,7 @@ describe('Messageboard Tests', function () {
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
-      messageBody: 'test body'
+      messageBody: 'test body',
     };
 
     postMessage(newMessage, done, HTTP_CREATED_CODE, updatePostedMessageIds);
@@ -162,7 +187,7 @@ describe('Messageboard Tests', function () {
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
-      messageBody: 'test body'
+      messageBody: 'test body',
     };
 
     postMessage(newMessage, done, HTTP_CREATED_CODE, function () {
@@ -199,7 +224,7 @@ describe('Messageboard Tests', function () {
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',
-      messageBody: 'test body msg'
+      messageBody: 'test body msg',
     };
 
     postMessage(newMessage, done, HTTP_CREATED_CODE, function () {
@@ -216,11 +241,13 @@ describe('Messageboard Tests', function () {
             expect(response).to.have.status(HTTP_NOCONTENT_CODE);
 
             // Check that the message does not exist anymore
-            agent.get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).end(function (error: any, response: any) {
-              if (error) done(error);
-              expect(response).to.have.status(HTTP_NOTFOUND_CODE);
-              done();
-            });
+            agent
+              .get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
+              .end(function (error: any, response: any) {
+                if (error) done(error);
+                expect(response).to.have.status(HTTP_NOTFOUND_CODE);
+                done();
+              });
           });
       });
     });
@@ -231,7 +258,7 @@ describe('Messageboard Tests', function () {
     const message: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',
-      messageBody: 'test body msg'
+      messageBody: 'test body msg',
     };
 
     postMessage(message, done, HTTP_CREATED_CODE, function () {
@@ -244,7 +271,7 @@ describe('Messageboard Tests', function () {
         const newMessage: MessageObject = {
           department: { id: departmentId },
           messageHeader: 'test header msg UPDATED',
-          messageBody: 'test body msg UPDATED'
+          messageBody: 'test body msg UPDATED',
         };
 
         agent

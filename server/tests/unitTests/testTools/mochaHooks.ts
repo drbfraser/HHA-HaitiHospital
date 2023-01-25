@@ -16,17 +16,17 @@ interface UserAccount {
 
 const AdminUser: UserAccount = {
   username: 'user0',
-  password: 'catdog'
+  password: 'catdog',
 };
 
 const IncorrectPasswordUser: UserAccount = {
   username: 'user0',
-  password: 'INCORRECT PASSWORD'
+  password: 'INCORRECT PASSWORD',
 };
 
 export const Accounts = {
   AdminUser,
-  IncorrectPasswordUser
+  IncorrectPasswordUser,
 };
 
 export const setupApp = () => {
@@ -59,7 +59,12 @@ export const getCSRFToken = (app: Application, done: Mocha.Done) => {
   return csrf;
 };
 
-export function attemptAuthentication(app: Application, csrf: String, done: Mocha.Done, userAccount: UserAccount = AdminUser) {
+export function attemptAuthentication(
+  app: Application,
+  csrf: String,
+  done: Mocha.Done,
+  userAccount: UserAccount = AdminUser,
+) {
   // Something weird going on with content type, explicitly using a different content type to make it https://stackoverflow.com/questions/38078569/seem-to-have-the-wrong-content-type-when-posting-with-chai-http
 
   chai.request

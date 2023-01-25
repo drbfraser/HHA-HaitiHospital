@@ -87,7 +87,7 @@ const MessageForm = (props: MessageFormProps) => {
           {t('addMessageTitle')}
         </label>
         <input
-          data-testid='add-message-title-input'
+          data-testid="add-message-title-input"
           className="form-control"
           type="text"
           {...register('messageHeader')}
@@ -100,7 +100,7 @@ const MessageForm = (props: MessageFormProps) => {
           {t('addMessageBody')}
         </label>
         <textarea
-          data-testid='add-message-body'
+          data-testid="add-message-body"
           className="form-control"
           {...register('messageBody')}
           cols={30}
@@ -109,7 +109,9 @@ const MessageForm = (props: MessageFormProps) => {
         ></textarea>
       </div>
 
-      <button data-testid="add-message-add-message-button" className="btn btn-primary">{t('addMessageSubmit')}</button>
+      <button data-testid="add-message-add-message-button" className="btn btn-primary">
+        {t('addMessageSubmit')}
+      </button>
     </form>
   );
 };

@@ -6,7 +6,13 @@ import path from 'path';
 import ts from 'typescript';
 import { ReportDescriptor } from 'utils/definitions/report';
 import { JsonReportDescriptor, JSON_REPORT_DESCRIPTOR_NAME } from '@hha/common';
-import { FileNotFound, IllegalState, InvalidInput, IOException, SystemException } from 'exceptions/systemException';
+import {
+  FileNotFound,
+  IllegalState,
+  InvalidInput,
+  IOException,
+  SystemException,
+} from 'exceptions/systemException';
 import { parseToReport } from 'utils/parsers/report';
 import { parseToJson } from './json_report';
 import { logger } from '../../logger';
@@ -17,12 +23,17 @@ import { logger } from '../../logger';
  * @returns return a jsonReport object if sucessful
  */
 export const jsonStringToReport = async function (jsonString: string): Promise<ReportDescriptor> {
-  const jsonReport: JsonReportDescriptor = validateStructure(jsonString, JSON_REPORT_DESCRIPTOR_NAME);
+  const jsonReport: JsonReportDescriptor = validateStructure(
+    jsonString,
+    JSON_REPORT_DESCRIPTOR_NAME,
+  );
   const report = await parseToReport(jsonReport);
   return report;
 };
 
-export const reportToJsonReport = async (report: ReportDescriptor): Promise<JsonReportDescriptor> => {
+export const reportToJsonReport = async (
+  report: ReportDescriptor,
+): Promise<JsonReportDescriptor> => {
   const jsonReport: JsonReportDescriptor = await parseToJson(report);
   return jsonReport;
 };
@@ -39,7 +50,11 @@ const getTsCompilerOptions = function (): {} {
       throw new IOException("Can't read ts config file. Using default configuration");
     }
 
-    const compilerOptions = ts.parseJsonConfigFileContent(configFile!.config, ts.sys, path.dirname(configFileName));
+    const compilerOptions = ts.parseJsonConfigFileContent(
+      configFile!.config,
+      ts.sys,
+      path.dirname(configFileName),
+    );
     return compilerOptions;
   } catch (e) {
     if (e instanceof SystemException) {
@@ -64,7 +79,7 @@ const getSchemaGenerator = function () {
   // optionally pass argument to schema generator
   const settings: TJS.PartialArgs = {
     required: true,
-    strictNullChecks: true
+    strictNullChecks: true,
   };
 
   const generator = TJS.buildGenerator(program, settings);

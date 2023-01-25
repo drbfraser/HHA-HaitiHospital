@@ -27,7 +27,9 @@ import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
 import { NumericQuestion, TextQuestion } from './SimpleQuestionTypes';
 
-export type Mapper<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, T> = (question: Question) => T;
+export type Mapper<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, T> = (
+  question: Question,
+) => T;
 
 interface MapEntry<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, T> {
   readonly className: string;
@@ -37,8 +39,18 @@ interface MapEntry<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, 
 interface MapperQuestions<ID, ErrorType, T> {
   readonly textQuestion: MapEntry<TextQuestion<ID, ErrorType>, ID, ErrorType, T>;
   readonly numericQuestion: MapEntry<NumericQuestion<ID, ErrorType>, ID, ErrorType, T>;
-  readonly singleSelectionQuestion: MapEntry<SingleSelectionQuestion<ID, ErrorType>, ID, ErrorType, T>;
-  readonly multipleSelectionQuestion: MapEntry<MultipleSelectionQuestion<ID, ErrorType>, ID, ErrorType, T>;
+  readonly singleSelectionQuestion: MapEntry<
+    SingleSelectionQuestion<ID, ErrorType>,
+    ID,
+    ErrorType,
+    T
+  >;
+  readonly multipleSelectionQuestion: MapEntry<
+    MultipleSelectionQuestion<ID, ErrorType>,
+    ID,
+    ErrorType,
+    T
+  >;
   readonly questionGroup: MapEntry<QuestionGroup<ID, ErrorType>, ID, ErrorType, T>;
   readonly compositionQuestion: MapEntry<CompositionQuestion<ID, ErrorType>, ID, ErrorType, T>;
   readonly expandableQuestion: MapEntry<ExpandableQuestion<ID, ErrorType>, ID, ErrorType, T>;
@@ -87,12 +99,16 @@ export class QuestionMapper<ID, ErrorType, T> {
   }
 
   // Used to construct type-specific handlers
-  public static buildMapper<ID, ErrorType, T>(handlers: MapperArgs<ID, ErrorType, T>): QuestionMapper<ID, ErrorType, T> {
+  public static buildMapper<ID, ErrorType, T>(
+    handlers: MapperArgs<ID, ErrorType, T>,
+  ): QuestionMapper<ID, ErrorType, T> {
     return new QuestionMapper<ID, ErrorType, T>(handlers);
   }
 
   // Used when the handler is the same for all question types.
-  public static buildGenericMapper<ID, ErrorType, T>(handler: (question: QuestionNode<ID, ErrorType>) => T): QuestionMapper<ID, ErrorType, T> {
+  public static buildGenericMapper<ID, ErrorType, T>(
+    handler: (question: QuestionNode<ID, ErrorType>) => T,
+  ): QuestionMapper<ID, ErrorType, T> {
     return new QuestionMapper<ID, ErrorType, T>({
       textQuestion: handler,
       numericQuestion: handler,
@@ -100,7 +116,7 @@ export class QuestionMapper<ID, ErrorType, T> {
       multipleSelectionQuestion: handler,
       questionGroup: handler,
       compositionQuestion: handler,
-      expandableQuestion: handler
+      expandableQuestion: handler,
     });
   }
 
@@ -110,15 +126,13 @@ export class QuestionMapper<ID, ErrorType, T> {
     return Object.values(this.questionMapper).find(
       (classNameMap) => classNameMap.className === question.constructor.name,
     ).mapper;
-  };
+  }
 
-  public map(
-    question: QuestionNode<ID, ErrorType>): T {
+  public map(question: QuestionNode<ID, ErrorType>): T {
     return this.getMapper(question)(question);
-  };
-  
-  public mapAll(
-    questions: QuestionNode<ID, ErrorType>[]): T[] {
-      return questions.map((question) => this.map(question));
-    }
+  }
+
+  public mapAll(questions: QuestionNode<ID, ErrorType>[]): T[] {
+    return questions.map((question) => this.map(question));
+  }
 }

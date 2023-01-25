@@ -1,11 +1,11 @@
-import { BiomechPriority } from "./typing";
+import { BiomechPriority } from './typing';
 
 export const setPriority = (priority: BiomechPriority): string => {
   enum BiomechBadge {
     URGENT = 'danger',
     IMPORTANT = 'warning',
     NONURGENT = 'success',
-  };
+  }
 
   switch (priority) {
     case BiomechPriority.URGENT:

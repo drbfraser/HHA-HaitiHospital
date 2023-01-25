@@ -37,11 +37,11 @@ const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethod
     description: { type: String, required: true },
     imgPath: { type: String, required: true },
     updatedAt: { type: Date },
-    createdAt: { type: Date }
+    createdAt: { type: Date },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfTheMonthJson> {
   let json: EmployeeOfTheMonthJson = {
@@ -49,16 +49,20 @@ employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfT
     name: this.name,
     department: {
       id: this.departmentId,
-      name: await Departments.Database.getDeptNameById(this.departmentId)
+      name: await Departments.Database.getDeptNameById(this.departmentId),
     },
     description: this.description,
     imgPath: this.imgPath,
     updatedAt: formatDateString(this.updatedAt!),
-    createdAt: formatDateString(this.createdAt!)
+    createdAt: formatDateString(this.createdAt!),
   };
   return json;
 };
 
-const EmployeeOfTheMonthCollection = mongoose.model<EmployeeOfTheMonthWithInstanceMethods>('EmployeeOfTheMonth', employeeOfTheMonthSchema, 'EmployeeOfTheMonth');
+const EmployeeOfTheMonthCollection = mongoose.model<EmployeeOfTheMonthWithInstanceMethods>(
+  'EmployeeOfTheMonth',
+  employeeOfTheMonthSchema,
+  'EmployeeOfTheMonth',
+);
 
 export default EmployeeOfTheMonthCollection;
