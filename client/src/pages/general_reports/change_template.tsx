@@ -1,13 +1,10 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
-// import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import './general_reports_styles.css';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { TOAST_TEMPLATE_PUT } from 'constants/toast_messages';
 import { Department, GeneralDepartment } from 'constants/interfaces';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { createDepartmentMap } from 'utils/departmentMapper';
@@ -41,8 +38,8 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const fileContent: string = await templateFile.text();
-    const fileContentObject: object = JSON.parse(fileContent);
+    // const fileContent: string = await templateFile.text();
+    // const fileContentObject: object = JSON.parse(fileContent);
 
     // not connected to the backend API at the moment as we haven't figured out
     // the API implementation and what to do with the old implementation
@@ -56,11 +53,11 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
     // );
   };
 
-  const onSubmitActions = () => {
-    toast.success('Template successfully updated!');
-    setTemplateFile(null);
-    props.history.push('/general-reports');
-  };
+  // const onSubmitActions = () => {
+  //   toast.success('Template successfully updated!');
+  //   setTemplateFile(null);
+  //   props.history.push('/general-reports');
+  // };
 
   return (
     <div className={'general-reports'}>

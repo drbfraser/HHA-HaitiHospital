@@ -1,16 +1,14 @@
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './report_view.css';
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS_GET_BY_ID } from 'constants/endpoints';
 import { TOAST_REPORT_GET } from 'constants/toast_messages';
 import { JsonReportDescriptor } from '@hha/common';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 const ReportView = () => {
-  const { t } = useTranslation();
   const history = useHistory<History>();
   const [report, setReport] = useState<JsonReportDescriptor>(null);
   const report_id = useLocation().pathname.split('/')[2];
@@ -22,6 +20,7 @@ const ReportView = () => {
       history,
     );
     setReport(fetchedReport);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
 
   useEffect(() => {

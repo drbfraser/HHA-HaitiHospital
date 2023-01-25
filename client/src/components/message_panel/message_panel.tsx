@@ -8,7 +8,7 @@ import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
-import { Role, GeneralDepartment } from 'constants/interfaces';
+import { Role } from 'constants/interfaces';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 

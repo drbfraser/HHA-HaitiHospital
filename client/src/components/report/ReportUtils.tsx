@@ -1,8 +1,7 @@
 import { JsonReportDescriptor, JsonReportItem, JsonReportItems, JsonItemAnswer } from '@hha/common';
 import { uniqueId } from 'lodash';
-import { type } from 'os';
 import * as MockApi from './MockApi';
-import { ItemField, ReportForm, itemFieldToReportItem } from './OldReport';
+import { ItemField, ReportForm } from './OldReport';
 
 export const submitData = async (answers: any, data: ReportForm): Promise<JsonReportDescriptor> => {
   /*

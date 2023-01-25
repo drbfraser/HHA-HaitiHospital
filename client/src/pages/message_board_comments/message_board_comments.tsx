@@ -15,7 +15,7 @@ import {
   TOAST_MESSAGEBOARD_GET,
 } from 'constants/toast_messages';
 import './message_board_comments.css';
-import { emptyMessage, GeneralDepartment, Message, Role } from 'constants/interfaces';
+import { emptyMessage, Message } from 'constants/interfaces';
 import MessageComment from 'components/message_comment/message_comment';
 import MessageDisplay from 'components/message_panel/message_display';
 import { useTranslation } from 'react-i18next';
@@ -59,6 +59,7 @@ const MessageComments = () => {
   useEffect(() => {
     getMessage();
     getComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rerender, message_id, history, authState.userDetails]);
 
   const onSubmitActions = () => {
