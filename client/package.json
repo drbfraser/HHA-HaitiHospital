@@ -50,7 +50,7 @@
     "build": "react-scripts build",
     "test": "ts-mocha -p testconfig.json ./tests/**/*.spec.ts",
     "eject": "react-scripts eject",
-    "e2e": "npx cypress open",
+    "e2e": "npx cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -7,7 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "ts-mocha -p tsconfig.json ./tests/**/*.spec.ts",
-    "build": "tsc --build",
+    "build": "tsc --build"
   },
   "keywords": [],
   "author": "",
