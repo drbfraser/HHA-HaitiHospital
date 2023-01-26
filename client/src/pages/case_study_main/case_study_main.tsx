@@ -157,10 +157,18 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th data-testid="case-study-type-title" scope="col">{translateText('caseStudyMainCaseStudyType')}</th>
-                <th data-testid="case-study-author-title" scope="col">{translateText('caseStudyMainAuthor')}</th>
-                <th data-testid="case-study-created-title" scope="col">{translateText('caseStudyMainCreated')}</th>
-                <th data-testid="case-study-options-title" scope="col">{translateText('caseStudyMainLink')}</th>
+                <th data-testid="case-study-type-title" scope="col">
+                  {translateText('caseStudyMainCaseStudyType')}
+                </th>
+                <th data-testid="case-study-author-title" scope="col">
+                  {translateText('caseStudyMainAuthor')}
+                </th>
+                <th data-testid="case-study-created-title" scope="col">
+                  {translateText('caseStudyMainCreated')}
+                </th>
+                <th data-testid="case-study-options-title" scope="col">
+                  {translateText('caseStudyMainLink')}
+                </th>
               </tr>
             </thead>
             <tbody>

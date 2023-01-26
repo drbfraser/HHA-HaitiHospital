@@ -24,19 +24,15 @@ const MessageComment = (props: MessageCommentProps) => {
     <div className="pt-2 pb-2 border-bottom">
       <p className="">
         <small>
-          <strong>
-            {author.name}
-          </strong>
-          {" (" + parseEscapedCharacters(author.department.name) + ", "}
-          {author.role + ") "}
-          {translateText('messageBoardCommentCommentedOn') + " "}
+          <strong>{author.name}</strong>
+          {' (' + parseEscapedCharacters(author.department.name) + ', '}
+          {author.role + ') '}
+          {translateText('messageBoardCommentCommentedOn') + ' '}
           {readableDate}
         </small>
       </p>
       <p>
-        <small>
-          {comment.messageComment}
-        </small>
+        <small>{comment.messageComment}</small>
       </p>
     </div>
   );

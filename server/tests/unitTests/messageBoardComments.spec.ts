@@ -1,7 +1,18 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, MESSAGEBOARD_COMMENT_ENDPOINT, MESSAGEBOARD_ENDPOINT } from './testTools/endPoints';
+import {
+  setupApp,
+  setupHttpServer,
+  attemptAuthentication,
+  Accounts,
+  closeServer,
+} from './testTools/mochaHooks';
+import {
+  CSRF_ENDPOINT,
+  LOGIN_ENDPOINT,
+  MESSAGEBOARD_COMMENT_ENDPOINT,
+  MESSAGEBOARD_ENDPOINT,
+} from './testTools/endPoints';
 import { Done } from 'mocha';
 import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
 import MessageCollection from 'models/messageBoard';
@@ -53,21 +64,25 @@ describe('Message Board Comments Test', function () {
 
       const messageId = response.body[0].id;
 
-      agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${messageId}`).end(function (error: any, response: any) {
-        if (error) done(error);
+      agent
+        .get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${messageId}`)
+        .end(function (error: any, response: any) {
+          if (error) done(error);
 
-        expect(response).to.have.status(HTTP_OK_CODE);
-        done();
-      });
+          expect(response).to.have.status(HTTP_OK_CODE);
+          done();
+        });
     });
   });
 
   it('Should Unsuccessfully Get Message Comments Due to Invalid Message Parent Id', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${'Invalid'}`).end(function (error: any, response: any) {
-      if (error) done(error);
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-      done();
-    });
+    agent
+      .get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${'Invalid'}`)
+      .end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+        done();
+      });
   });
 
   it('Should Successfully Post a Comment', function (done: Done) {
@@ -77,7 +92,10 @@ describe('Message Board Comments Test', function () {
       expect(response).to.have.status(HTTP_OK_CODE);
 
       const messageId: string = response.body[0].id;
-      const messageComment: MessageComment = { parentMessageId: messageId, messageComment: 'Sample Test' };
+      const messageComment: MessageComment = {
+        parentMessageId: messageId,
+        messageComment: 'Sample Test',
+      };
 
       agent
         .post(MESSAGEBOARD_COMMENT_ENDPOINT)
@@ -93,7 +111,10 @@ describe('Message Board Comments Test', function () {
   });
 
   it('Should Unsuccessfully Post a Comment Due To Invalid Parent Message Id', function (done: Done) {
-    const messageComment: MessageComment = { parentMessageId: 'Invalid Id', messageComment: 'Sample Test' };
+    const messageComment: MessageComment = {
+      parentMessageId: 'Invalid Id',
+      messageComment: 'Sample Test',
+    };
 
     agent
       .post(MESSAGEBOARD_COMMENT_ENDPOINT)

@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';
 import { setPriority } from 'pages/biomech/utils';
-import { timezone, language } from 'constants/timezones';
 import { BioReportIdParams, Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 

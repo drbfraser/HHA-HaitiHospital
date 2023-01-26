@@ -156,7 +156,7 @@ const Login = (props: LoginProps) => {
         </a>
       </div>
       <div className="text-muted d-flex justify-content-center user-select-none">
-        <p>&copy; 2021-2022</p>
+        <p>&copy; 2021-{new Date().getFullYear()}</p>
       </div>
     </div>
   );

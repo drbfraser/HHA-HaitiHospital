@@ -35,23 +35,26 @@ class Choice {
 export class ImmutableChoice {
   private readonly description: string;
   private readonly chosen: boolean;
-  
+
   constructor(choice: Choice) {
     this.description = choice.getDescription();
     this.chosen = choice.wasChosen();
   }
-  
+
   public getDescription() {
     return this.description;
   }
-  
+
   public wasChosen() {
     return this.chosen;
   }
 }
 
-
-export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
+export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<
+  ID,
+  T,
+  ErrorType
+> {
   protected readonly choices: Array<Choice> = new Array<Choice>();
 
   constructor(id: ID, prompt: string, choices: string[], defaultAnswer?: T) {
@@ -63,20 +66,25 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
   }
 
   private addChoices(choicesDescriptions: string[]): void {
-    choicesDescriptions.forEach((choiceDescription) => this.choices.push(new Choice(choiceDescription)));
-  };
-  
+    choicesDescriptions.forEach((choiceDescription) =>
+      this.choices.push(new Choice(choiceDescription)),
+    );
+  }
+
   // Return the choice descriptions in their respective order.
   public getChoices(): Array<ImmutableChoice> {
     return this.choices.map((choice) => new ImmutableChoice(choice));
-  };
-  
- }
+  }
+}
 
 // Multiple choice questions in which the user is only allowed to select one
 // choice
 @serializable(undefined, '', [])
-export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, number, ErrorType> {
+export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<
+  ID,
+  number,
+  ErrorType
+> {
   // Won't do anything if answer index is greater than the number of choices
   override setAnswer(answer: number): void {
     if (answer < 0 || answer >= this.choices.length) {
@@ -95,7 +103,11 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
 // Multiple choice questions in which the user is allowed to select multiple
 // choices.
 @serializable(undefined, '', [])
-export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<ID, Array<number>, ErrorType> {
+export class MultipleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuestion<
+  ID,
+  Array<number>,
+  ErrorType
+> {
   // Will ignore indexes whose value are greater than the number of choices
   override setAnswer(answer: Array<number> = []): void {
     if (answer.length === 0) {

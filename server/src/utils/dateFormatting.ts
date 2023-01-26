@@ -11,7 +11,7 @@ enum Month {
   'September',
   'October',
   'November',
-  'December'
+  'December',
 }
 
 const currDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Cancun' }));

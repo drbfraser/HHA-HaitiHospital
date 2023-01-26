@@ -3,7 +3,13 @@ import { getItemTypeFromValue, getLengthOfEnum } from '../utils';
 import * as _JsonUtils from '../report/json_report';
 import * as _ReportDefs from '../definitions/report';
 import * as _JsonDefs from '@hha/common';
-import { hasNumType, checkAnswerType, hasSumType, hasEqualType, hasGroupType } from '../report/json_item';
+import {
+  hasNumType,
+  checkAnswerType,
+  hasSumType,
+  hasEqualType,
+  hasGroupType,
+} from '../report/json_item';
 import { isSumCorrect } from '../report/item';
 
 export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
@@ -24,10 +30,14 @@ namespace JsonToItem {
     (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportItem;
   }
 
-  const parseToNumericItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportNumericItem => {
+  const parseToNumericItem: ItemParser = (
+    jsonItem: _JsonDefs.JsonReportItem,
+  ): _ReportDefs.ReportNumericItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
     if (!hasNumType(jsonItem)) {
-      throw new InvalidInput(`Constructor for numeric item but ${jsonItem.type} was provided - item: ${jsonItem.description}`);
+      throw new InvalidInput(
+        `Constructor for numeric item but ${jsonItem.type} was provided - item: ${jsonItem.description}`,
+      );
     }
 
     if (_JsonUtils.getItemAnswerLength(jsonItem) !== 1) {
@@ -39,17 +49,23 @@ namespace JsonToItem {
     let newItem: _ReportDefs.ReportNumericItem = {
       type: typeKey,
       description: jsonItem.description,
-      answer: answerList
+      answer: answerList,
     };
 
     return newItem;
   };
 
-  const parseNumericChildren = (childItem: _JsonDefs.JsonReportItem, parentItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportItem => {
-    const isChildTypeValid = hasNumType(childItem) || hasSumType(childItem) || hasGroupType(childItem);
+  const parseNumericChildren = (
+    childItem: _JsonDefs.JsonReportItem,
+    parentItem: _JsonDefs.JsonReportItem,
+  ): _ReportDefs.ReportItem => {
+    const isChildTypeValid =
+      hasNumType(childItem) || hasSumType(childItem) || hasGroupType(childItem);
     const childType = _JsonUtils.getItemType(childItem);
     if (!isChildTypeValid) {
-      throw new InvalidInput(`Item: ${parentItem.description} does not support a child of type ${childType}`);
+      throw new InvalidInput(
+        `Item: ${parentItem.description} does not support a child of type ${childType}`,
+      );
     }
 
     const parser = getParserJsonToItem(childType);
@@ -57,10 +73,14 @@ namespace JsonToItem {
     return child;
   };
 
-  const parseToSumItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportSumItem => {
+  const parseToSumItem: ItemParser = (
+    jsonItem: _JsonDefs.JsonReportItem,
+  ): _ReportDefs.ReportSumItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
     if (!hasSumType(jsonItem)) {
-      throw new InvalidInput(`Constructor for sum item but ${typeKey} was provided - item: ${jsonItem.description}`);
+      throw new InvalidInput(
+        `Constructor for sum item but ${typeKey} was provided - item: ${jsonItem.description}`,
+      );
     }
     if (_JsonUtils.isInATable(jsonItem)) {
       throw new InvalidInput(`A Sum type item should not be in a table`);
@@ -86,15 +106,19 @@ namespace JsonToItem {
       type: typeKey!,
       description: jsonItem.description,
       answer: answerList,
-      children: children
+      children: children,
     };
     return newItem;
   };
 
-  const parseToEqualItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportEqualItem => {
+  const parseToEqualItem: ItemParser = (
+    jsonItem: _JsonDefs.JsonReportItem,
+  ): _ReportDefs.ReportEqualItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
     if (!hasEqualType(jsonItem)) {
-      throw new InvalidInput(`Constructor for equal item but ${typeKey} was provided - item: ${jsonItem.description}`);
+      throw new InvalidInput(
+        `Constructor for equal item but ${typeKey} was provided - item: ${jsonItem.description}`,
+      );
     }
     if (_JsonUtils.isInATable(jsonItem)) {
       throw new InvalidInput(`An Equal item should not be in a table`);
@@ -130,7 +154,7 @@ namespace JsonToItem {
       type: typeKey!,
       description: jsonItem.description,
       answer: answerList,
-      children: children
+      children: children,
     };
     return newItem;
   };
@@ -172,10 +196,14 @@ namespace JsonToItem {
     return { value: Array<any>(), error: [error] };
   }
 
-  const parseToGroupItem: ItemParser = (jsonItem: _JsonDefs.JsonReportItem): _ReportDefs.ReportGroupItem => {
+  const parseToGroupItem: ItemParser = (
+    jsonItem: _JsonDefs.JsonReportItem,
+  ): _ReportDefs.ReportGroupItem => {
     const typeKey = getItemTypeFromValue(jsonItem.type);
     if (!hasGroupType(jsonItem)) {
-      throw new InvalidInput(`Constructor for Group item but ${typeKey} was provided - item: ${jsonItem.description}`);
+      throw new InvalidInput(
+        `Constructor for Group item but ${typeKey} was provided - item: ${jsonItem.description}`,
+      );
     }
     if (_JsonUtils.isInATable(jsonItem)) {
       throw new InvalidInput(`A Group type item should not be in a table`);
@@ -192,7 +220,7 @@ namespace JsonToItem {
       type: typeKey!,
       description: jsonItem.description,
       answer: [sum.toString()],
-      children: children
+      children: children,
     };
 
     return newItem;
@@ -238,17 +266,21 @@ namespace ItemToJson {
     const jsonItem: _JsonDefs.JsonReportItem = {
       type: jsonType,
       description: jsonDescription,
-      answer: jsonAnswer
+      answer: jsonAnswer,
     };
     return jsonItem;
   };
 
-  const parseFromNumericItem: ItemParser = (item: _ReportDefs.ReportNumericItem): _JsonDefs.JsonReportItem => {
+  const parseFromNumericItem: ItemParser = (
+    item: _ReportDefs.ReportNumericItem,
+  ): _JsonDefs.JsonReportItem => {
     const jsonItem: _JsonDefs.JsonReportItem = baseParser(item);
     return jsonItem;
   };
 
-  const parseFromSumItem: ItemParser = (item: _ReportDefs.ReportSumItem): _JsonDefs.JsonReportItem => {
+  const parseFromSumItem: ItemParser = (
+    item: _ReportDefs.ReportSumItem,
+  ): _JsonDefs.JsonReportItem => {
     const base: _JsonDefs.JsonReportItem = baseParser(item);
     const jsonChildren: _JsonDefs.JsonItemChildren = item.children.map((child) => {
       const parser = getParserByType(child.type);
@@ -269,7 +301,9 @@ namespace ItemToJson {
 
     const expectedSize = getLengthOfEnum(_JsonDefs.ItemType);
     if (map.size != expectedSize) {
-      throw new IllegalState(`Item type - parser map must have size of ${expectedSize} but have size ${map.size}`);
+      throw new IllegalState(
+        `Item type - parser map must have size of ${expectedSize} but have size ${map.size}`,
+      );
     }
   };
   initParserByType(parserByType);

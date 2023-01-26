@@ -12,7 +12,7 @@ export const buildProdLogger = (): Logger => {
     zippedArchive: true,
     maxSize: '10m', // 10MB
     maxFiles: '3d', // keep for 3 days
-    level: 'info'
+    level: 'info',
   });
 
   const errorTransport = new DailyRotateFile({
@@ -21,7 +21,7 @@ export const buildProdLogger = (): Logger => {
     zippedArchive: true,
     maxSize: '10m', // 10MB
     maxFiles: '3d', // keep for 3 days
-    level: 'error'
+    level: 'error',
   });
 
   infoTransport.on('rotate', function (oldFilename, newFilename) {
@@ -35,6 +35,6 @@ export const buildProdLogger = (): Logger => {
   return createLogger({
     level: 'info',
     format: combine(timestamp(), errors({ stack: true }), json()),
-    transports: [errorTransport, infoTransport]
+    transports: [errorTransport, infoTransport],
   });
 };

@@ -35,7 +35,10 @@ import { Error, NativeError } from 'mongoose';
 import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';
 import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
 
-export const getEnumKeyByStringValue = function <T extends { [index: string]: any }>(myEnum: T, enumValue: string): keyof T | null {
+export const getEnumKeyByStringValue = function <T extends { [index: string]: any }>(
+  myEnum: T,
+  enumValue: string,
+): keyof T | null {
   let keys = Object.keys(myEnum).filter((x) => myEnum[x].toString() == enumValue);
   return keys.length > 0 ? keys[0] : null;
 };
@@ -61,7 +64,7 @@ export const formatDateString = (date: Date): string => {
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
-    second: 'numeric'
+    second: 'numeric',
   });
   return result;
 };
@@ -99,8 +102,8 @@ export const proxiedPropertyOf = <IObj>() =>
       get: (_, prop) => prop,
       set: () => {
         throw new Error(`Setter not supported`);
-      }
-    }
+      },
+    },
   ) as {
     [P in keyof IObj]: P;
   };

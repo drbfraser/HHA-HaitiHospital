@@ -11,7 +11,7 @@ const passportLogin = new PassportLocalStrategy(
     usernameField: 'username',
     passwordField: 'password',
     session: false,
-    passReqToCallback: true
+    passReqToCallback: true,
   },
   async (req: Request, username: string, password: string, done) => {
     // TODO: validate with express-validator
@@ -36,13 +36,13 @@ const passportLogin = new PassportLocalStrategy(
         if (!isMatch) {
           return done(null, false, { message: 'Incorrect password.' });
         }
-        const leanUser = await UserCollection.findOne({username: username.trim()}).lean();
+        const leanUser = await UserCollection.findOne({ username: username.trim() }).lean();
         return done(null, leanUser!);
       });
     } catch (err) {
       return done(err);
     }
-  }
+  },
 );
 
 // Serializing required for sessions

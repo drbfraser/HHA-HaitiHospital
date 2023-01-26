@@ -28,10 +28,10 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
 
   useEffect(() => {
     const getEmployeeOfTheMonth = async () => {
-        setEmployeeOfTheMonth(
-            await Api.Get(ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET, TOAST_EMPLOYEE_OF_THE_MONTH_GET, history),
-        );
-    }; 
+      setEmployeeOfTheMonth(
+        await Api.Get(ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET, TOAST_EMPLOYEE_OF_THE_MONTH_GET, history),
+      );
+    };
     getEmployeeOfTheMonth();
   }, [history]);
 
@@ -43,7 +43,11 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
           <div className="d-flex justify-content-start">
             <Link to="/employee-of-the-month/form">
-              <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+              <button
+                data-testid="update-eotm-button"
+                type="button"
+                className="btn btn-outline-dark"
+              >
                 {translateText('employeeOfTheMonthEdit')}
               </button>
             </Link>

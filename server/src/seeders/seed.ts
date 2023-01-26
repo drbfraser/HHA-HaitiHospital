@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 import faker from 'faker';
-import { ObjectSerializer, buildMaternityMockReport, buildRehabMockReport, buildNicuPaedsMockReport, QuestionGroup } from '@hha/common';
+import {
+  ObjectSerializer,
+  buildMaternityMockReport,
+  buildRehabMockReport,
+  buildNicuPaedsMockReport,
+  QuestionGroup,
+} from '@hha/common';
 import UserCollection, { Role, User } from 'models/user';
 import MessageCollection from 'models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
@@ -66,31 +72,52 @@ export const seedUsers = async () => {
         switch (index) {
           case 0:
             foundUser.role = Role.Admin;
-            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
-            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
-            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
             break;
           case 3:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Community,
+              nameMapper,
+            );
             break;
           case 4:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Rehab,
+              nameMapper,
+            );
             break;
           case 5:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Maternity,
+              nameMapper,
+            );
             break;
           case 6:
             foundUser.role = Role.User;
-            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
             break;
           default:
             break;
@@ -100,37 +127,58 @@ export const seedUsers = async () => {
         const user = new UserCollection({
           username: `user${index}`,
           password: ENV.PASSWORD_SEED,
-          name: faker.name.findName()
+          name: faker.name.findName(),
         });
 
         switch (index) {
           case 0:
             user.role = Role.Admin;
-            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
             break;
           case 1:
             user.role = Role.MedicalDirector;
-            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
-            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
             break;
           case 3:
             user.role = Role.User;
-            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Community, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Community,
+              nameMapper,
+            );
             break;
           case 4:
             user.role = Role.User;
-            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Rehab, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Rehab,
+              nameMapper,
+            );
             break;
           case 5:
             user.role = Role.User;
-            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Maternity,
+              nameMapper,
+            );
             break;
           case 6:
             user.role = Role.User;
-            user.departmentId = Departments.Hashtable.getDeptIdFromName(DefaultDepartments.NICU, nameMapper);
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
             break;
           default:
             break;
@@ -158,7 +206,7 @@ export const seedMessageBoard = async () => {
         userId: randomUser._id,
         date: new Date(),
         messageBody: faker.lorem.words(),
-        messageHeader: faker.lorem.words()
+        messageHeader: faker.lorem.words(),
       });
       message.save();
     }
@@ -183,8 +231,8 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
         whyComeToHcbh: faker.lorem.sentences(),
         howLongWereTheyAtHcbh: faker.lorem.words(),
         diagnosis: faker.lorem.sentences(),
-        caseStudyStory: faker.lorem.paragraph(10)
-      }
+        caseStudyStory: faker.lorem.paragraph(10),
+      },
     });
     caseStudy.save();
   } catch (err: any) {
@@ -218,7 +266,7 @@ export const seedDepartments = async () => {
     // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
     for (let deptName in DefaultDepartments) {
       const department = new DepartmentCollection({
-        name: DefaultDepartments[deptName]
+        name: DefaultDepartments[deptName],
       });
       await department.save();
     }
@@ -242,7 +290,7 @@ export const seedBioMech = async () => {
         equipmentName: faker.lorem.words(),
         equipmentFault: faker.lorem.words(),
         equipmentPriority: randomEnumValue(BiomechPriority),
-        imgPath: 'public/images/bioMech0.jpeg'
+        imgPath: 'public/images/bioMech0.jpeg',
       });
       bioMechReport.save();
     }
@@ -258,9 +306,12 @@ export const seedEmployeeOfTheMonth = async () => {
     await EmployeeOfTheMonth.deleteOne({});
     const employeeOfTheMonth = new EmployeeOfTheMonth({
       name: 'John Doe',
-      departmentId: Departments.Hashtable.getDeptIdFromName(DefaultDepartments.Maternity, nameMapper),
+      departmentId: Departments.Hashtable.getDeptIdFromName(
+        DefaultDepartments.Maternity,
+        nameMapper,
+      ),
       description: 'This is a placeholder',
-      imgPath: 'public/images/avatar0.jpg'
+      imgPath: 'public/images/avatar0.jpg',
     });
     employeeOfTheMonth.save();
     console.log('Employee of the month seeded');
@@ -287,8 +338,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
             whyComeToHcbh: faker.lorem.sentences(),
             howLongWereTheyAtHcbh: faker.lorem.words(),
             diagnosis: faker.lorem.sentences(),
-            caseStudyStory: faker.lorem.paragraph(10)
-          }
+            caseStudyStory: faker.lorem.paragraph(10),
+          },
         });
         caseStudy.save();
         break;
@@ -305,8 +356,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
             department: faker.lorem.words(),
             howLongWorkingAtHcbh: faker.lorem.words(),
             mostEnjoy: faker.lorem.sentences(),
-            caseStudyStory: faker.lorem.paragraph(10)
-          }
+            caseStudyStory: faker.lorem.paragraph(10),
+          },
         });
         caseStudy.save();
         break;
@@ -323,8 +374,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
             whoConducted: faker.name.findName(),
             whoAttended: faker.name.findName(),
             benefitsFromTraining: faker.lorem.sentences(),
-            caseStudyStory: faker.lorem.paragraph(10)
-          }
+            caseStudyStory: faker.lorem.paragraph(10),
+          },
         });
         caseStudy.save();
         break;
@@ -341,8 +392,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
             whoSentEquipment: faker.name.findName(),
             purchasedOrDonated: faker.lorem.words(),
             whatDoesEquipmentDo: faker.lorem.sentences(),
-            caseStudyStory: faker.lorem.paragraph(10)
-          }
+            caseStudyStory: faker.lorem.paragraph(10),
+          },
         });
         caseStudy.save();
         break;
@@ -354,8 +405,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
           imgPath: 'public/images/case2.jpg',
           featured: false,
           otherStory: {
-            caseStudyStory: faker.lorem.paragraph(10)
-          }
+            caseStudyStory: faker.lorem.paragraph(10),
+          },
         });
         caseStudy.save();
         break;
@@ -367,10 +418,8 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
   }
 };
 
-
-type Report = QuestionGroup<string, string>
+type Report = QuestionGroup<string, string>;
 const seedTemplates = async () => {
-
   console.log(`Seeding templates...`);
   try {
     await TemplateCollection.deleteMany({});
@@ -380,19 +429,20 @@ const seedTemplates = async () => {
     const reportDepartmentMap: [Report, string][] = [
       [buildRehabMockReport(), DefaultDepartments.Rehab],
       [buildNicuPaedsMockReport(), DefaultDepartments.NICU],
-      [buildMaternityMockReport(), DefaultDepartments.Maternity]];
+      [buildMaternityMockReport(), DefaultDepartments.Maternity],
+    ];
 
     for (const tuple of reportDepartmentMap) {
-        const report: Report = tuple[0];
-        const departmentName: string = tuple[1];
-      
-        const departmentId: string = await Departments.Database.getDeptIdByName(departmentName);
-        const serialized = serializer.serialize(report);
-        let template = new TemplateCollection({
-          departmentId: departmentId,
-          reportObject:  serialized
-        });
-        await template.save();
+      const report: Report = tuple[0];
+      const departmentName: string = tuple[1];
+
+      const departmentId: string = await Departments.Database.getDeptIdByName(departmentName);
+      const serialized = serializer.serialize(report);
+      let template = new TemplateCollection({
+        departmentId: departmentId,
+        reportObject: serialized,
+      });
+      await template.save();
     }
     console.log(`Templates seeded`);
   } catch (err) {
@@ -411,7 +461,7 @@ const seedReports = async () => {
       departmentId: user?.departmentId,
       submittedUserId: user?._id,
       reportMonth: new Date(),
-      reportObject: serializer.deserialize(serialized)
+      reportObject: serializer.deserialize(serialized),
     });
     await report.save();
     console.log(`Reports seeded`);
@@ -426,20 +476,23 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(() => {
     console.log('MongoDB Connected...');
     const readline = require('readline');
     const rl = readline.createInterface({
       input: process.stdin,
-      output: process.stdout
+      output: process.stdout,
     });
 
-    rl.question(`Confirm to reseed database (old data will be discarded) (Y to confirm): `, async function (answer) {
-      if (answer === 'Y') await seedDb();
-      rl.close();
-    });
+    rl.question(
+      `Confirm to reseed database (old data will be discarded) (Y to confirm): `,
+      async function (answer) {
+        if (answer === 'Y') await seedDb();
+        rl.close();
+      },
+    );
 
     rl.on('close', function () {
       process.exit(0);

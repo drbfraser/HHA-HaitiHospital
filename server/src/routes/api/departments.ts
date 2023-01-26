@@ -16,18 +16,22 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
   }
 });
 
-router.get('/:id', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
-  try {
-    const deptId: string = req.params.id;
-    const doc = await DepartmentCollection.findById(deptId);
-    if (!doc) {
-      throw new NotFound(`No department with id ${deptId} found`);
+router.get(
+  '/:id',
+  requireJwtAuth,
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const deptId: string = req.params.id;
+      const doc = await DepartmentCollection.findById(deptId);
+      if (!doc) {
+        throw new NotFound(`No department with id ${deptId} found`);
+      }
+      const json: DepartmentJson = await doc.toJson();
+      res.status(HTTP_OK_CODE).json(json);
+    } catch (e) {
+      next(e);
     }
-    const json: DepartmentJson = await doc.toJson();
-    res.status(HTTP_OK_CODE).json(json);
-  } catch (e) {
-    next(e);
-  }
-});
+  },
+);
 
 export default router;

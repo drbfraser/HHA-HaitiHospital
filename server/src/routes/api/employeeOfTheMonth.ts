@@ -2,7 +2,10 @@ import { Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
-import EOTMCollection, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from 'models/employeeOfTheMonth';
+import EOTMCollection, {
+  EmployeeOfTheMonth,
+  EmployeeOfTheMonthJson,
+} from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../sanitization/schemas/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
@@ -26,37 +29,49 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
   }
 });
 
-router.put('/', requireJwtAuth, roleAuth(Role.Admin), registerEmployeeOfTheMonthEdit, validateInput, upload.single('file'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
-  try {
-    const previousEmployeeOfTheMonth = await EOTMCollection.findOne();
-    const defaultImgPath: string = 'public/images/avatar0.jpg';
-    if (previousEmployeeOfTheMonth) {
-      const imgPath: string = previousEmployeeOfTheMonth.imgPath;
-      if (imgPath != defaultImgPath) {
-        deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
+router.put(
+  '/',
+  requireJwtAuth,
+  roleAuth(Role.Admin),
+  registerEmployeeOfTheMonthEdit,
+  validateInput,
+  upload.single('file'),
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const previousEmployeeOfTheMonth = await EOTMCollection.findOne();
+      const defaultImgPath: string = 'public/images/avatar0.jpg';
+      if (previousEmployeeOfTheMonth) {
+        const imgPath: string = previousEmployeeOfTheMonth.imgPath;
+        if (imgPath != defaultImgPath) {
+          deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
+        }
       }
-    }
-    const { name, department, description } = JSON.parse(req.body.document);
+      const { name, department, description } = JSON.parse(req.body.document);
 
-    let imgPath: string = '';
-    if (req.file) {
-      imgPath = req.file.path.replace(/\\/g, '/');
-    }
+      let imgPath: string = '';
+      if (req.file) {
+        imgPath = req.file.path.replace(/\\/g, '/');
+      }
 
-    if (!Departments.Database.validateDeptId(department.id)) {
-      throw new BadRequest(`Invalid department id ${department}`);
+      if (!Departments.Database.validateDeptId(department.id)) {
+        throw new BadRequest(`Invalid department id ${department}`);
+      }
+      const updatedEmployeeOfTheMonth: EmployeeOfTheMonth = {
+        name: name,
+        departmentId: department.id,
+        description: description,
+        imgPath: imgPath,
+      };
+      await EOTMCollection.findByIdAndUpdate(
+        { _id: previousEmployeeOfTheMonth?._id },
+        { $set: updatedEmployeeOfTheMonth },
+        { new: true },
+      );
+      res.sendStatus(HTTP_OK_CODE);
+    } catch (e) {
+      next(e);
     }
-    const updatedEmployeeOfTheMonth: EmployeeOfTheMonth = {
-      name: name,
-      departmentId: department.id,
-      description: description,
-      imgPath: imgPath
-    };
-    await EOTMCollection.findByIdAndUpdate({ _id: previousEmployeeOfTheMonth?._id }, { $set: updatedEmployeeOfTheMonth }, { new: true });
-    res.sendStatus(HTTP_OK_CODE);
-  } catch (e) {
-    next(e);
-  }
-});
+  },
+);
 
 export default router;

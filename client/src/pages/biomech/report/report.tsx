@@ -46,7 +46,11 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
         <Header />
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
-            <button data-testid="biomech-add-back-button" type="button" className="btn btn-outline-dark">
+            <button
+              data-testid="biomech-add-back-button"
+              type="button"
+              className="btn btn-outline-dark"
+            >
               {t('button.back')}
             </button>
           </Link>
@@ -121,7 +125,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                         (error) => {
                           e.target.files = null;
                           e.target.value = '';
-                          setValue(BIOMECH_REPORT_FIELDS.file, ''); 
+                          setValue(BIOMECH_REPORT_FIELDS.file, '');
                           toast.error(error.message);
                         },
                       );
@@ -131,7 +135,11 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
               </div>
 
               <div>
-                <button data-testid="submit-biomech-button" className="btn btn-primary mt-4 " type="submit">
+                <button
+                  data-testid="submit-biomech-button"
+                  className="btn btn-primary mt-4 "
+                  type="submit"
+                >
                   {t('button.submit')}
                 </button>
               </div>

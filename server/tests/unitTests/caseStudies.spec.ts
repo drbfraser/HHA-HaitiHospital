@@ -1,10 +1,27 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, attemptAuthentication, Accounts, closeServer } from './testTools/mochaHooks';
-import { CASE_STUDIES_ENDPOINT, CASE_STUDIES_FEATURED_ENDPOINT, CSRF_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
+import {
+  setupApp,
+  setupHttpServer,
+  attemptAuthentication,
+  Accounts,
+  closeServer,
+} from './testTools/mochaHooks';
+import {
+  CASE_STUDIES_ENDPOINT,
+  CASE_STUDIES_FEATURED_ENDPOINT,
+  CSRF_ENDPOINT,
+  LOGIN_ENDPOINT,
+} from './testTools/endPoints';
 import { Done } from 'mocha';
 import { formatDateString } from 'utils/utils';
-import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_NOCONTENT_CODE, HTTP_NOTFOUND_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import {
+  HTTP_CREATED_CODE,
+  HTTP_INTERNALERROR_CODE,
+  HTTP_NOCONTENT_CODE,
+  HTTP_NOTFOUND_CODE,
+  HTTP_OK_CODE,
+} from 'exceptions/httpException';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -16,7 +33,13 @@ let agent: any;
 let csrf: string;
 let caseStudyIds: string[];
 
-function postCaseStudy(document: string, imgPath: string, done: Done, expectedStatus: Number, next?: Function) {
+function postCaseStudy(
+  document: string,
+  imgPath: string,
+  done: Done,
+  expectedStatus: Number,
+  next?: Function,
+) {
   agent
     .post(CASE_STUDIES_ENDPOINT)
     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
@@ -32,7 +55,7 @@ function postCaseStudy(document: string, imgPath: string, done: Done, expectedSt
 }
 
 function updateCaseStudyIds(caseStudyId: string) {
-  caseStudyIds.push(caseStudyId)
+  caseStudyIds.push(caseStudyId);
 }
 
 describe('Case Study Tests', function () {
@@ -61,7 +84,9 @@ describe('Case Study Tests', function () {
     // Cleaning up created case studies that were not deleted during testing
     for await (const caseStudyid of caseStudyIds) {
       try {
-        await agent.delete(`${CASE_STUDIES_ENDPOINT}/${caseStudyid}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+        await agent
+          .delete(`${CASE_STUDIES_ENDPOINT}/${caseStudyid}`)
+          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
       } catch (error: any) {
         console.log(error);
       }
@@ -198,14 +223,18 @@ describe('Case Study Tests', function () {
         expect(caseStudy.caseStudyType).to.equal('Training Session');
 
         const trainingDate: Date = new Date(caseStudy.trainingSession.trainingDate);
-        expect(formatDateString(trainingDate)).to.equal(`${formatDateString(new Date('01-01-2000'))}`);
+        expect(formatDateString(trainingDate)).to.equal(
+          `${formatDateString(new Date('01-01-2000'))}`,
+        );
         expect(caseStudy.trainingSession.trainingOn).to.equal('MRI');
         expect(caseStudy.trainingSession.whoConducted).to.equal('John');
         expect(caseStudy.trainingSession.whoAttended).to.equal('Seraphine');
-        expect(caseStudy.trainingSession.benefitsFromTraining).to.equal('John is more knowledgeable now');
+        expect(caseStudy.trainingSession.benefitsFromTraining).to.equal(
+          'John is more knowledgeable now',
+        );
         expect(caseStudy.trainingSession.caseStudyStory).to.equal('A successful training session!');
         updateCaseStudyIds(caseStudy.id);
-        done(); 
+        done();
       });
     });
   });
@@ -253,7 +282,9 @@ describe('Case Study Tests', function () {
 
         const caseStudy = response.body[1]; // Sorted in decesending order, so grab the first one
         expect(caseStudy.caseStudyType).to.equal('Other Story');
-        expect(caseStudy.otherStory.caseStudyStory).to.equal("This is a Story in the 'Other' Category");
+        expect(caseStudy.otherStory.caseStudyStory).to.equal(
+          "This is a Story in the 'Other' Category",
+        );
         updateCaseStudyIds(caseStudy.id);
         done();
       });
@@ -306,8 +337,12 @@ describe('Case Study Tests', function () {
     const caseStudy = getResponse.body[getResponse.body.length - 1];
     const id: string = caseStudy?.id;
 
-    const putResponse = await agent.patch(`${CASE_STUDIES_ENDPOINT}/${id}`).set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
-    caseStudy.featured ? expect(putResponse).to.have.status(HTTP_NOCONTENT_CODE) : expect(putResponse).to.have.status(HTTP_OK_CODE);
+    const putResponse = await agent
+      .patch(`${CASE_STUDIES_ENDPOINT}/${id}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+    caseStudy.featured
+      ? expect(putResponse).to.have.status(HTTP_NOCONTENT_CODE)
+      : expect(putResponse).to.have.status(HTTP_OK_CODE);
 
     // Check that the featured case study is updated
     const checkResponse = await agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`);

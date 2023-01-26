@@ -17,11 +17,11 @@ export class HomePage {
 
   clickLeaderBoardPageButton() {
     cy.get('[data-testid="go-to-leaderboard-button"]').click();
-    return this; 
+    return this;
   }
 
   clickSeeMoreMessagesButton() {
     cy.get('[data-testid="see-more-messages-button"]').click();
-    return this; 
+    return this;
   }
 }

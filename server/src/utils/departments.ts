@@ -7,7 +7,7 @@ export enum DefaultDepartments {
   Rehab = 'Rehab',
   NICU = 'NICU/Paeds',
   Maternity = 'Maternity',
-  Community = 'Community & Health'
+  Community = 'Community & Health',
 }
 
 // ***************************************************** Utility functions for hashtable approach *****************************************************
@@ -80,7 +80,13 @@ const validateDeptId = async (deptId: string): Promise<boolean> => {
 // ****************************************************************************************************************************************************
 
 // Util functions using a hashtable data structure
-const Hashtable = { initIdToNameMap, initNameToId, getDeptNameFromId, getDeptIdFromName, verifyDeptId };
+const Hashtable = {
+  initIdToNameMap,
+  initNameToId,
+  getDeptNameFromId,
+  getDeptIdFromName,
+  verifyDeptId,
+};
 
 // Util functions from database calls
 const Database = { getDeptNameById, getDeptIdByName, validateDeptId };

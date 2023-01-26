@@ -9,8 +9,12 @@ import * as _ItemParser from './item';
  * A parser from a jsonReport to a ReportDescriptor. It uses an item parser corresponding to
  * each item type to parse items in jsonReport to actual items in ReportDescriptor.
  */
-export const parseToReport = async (jsonReport: JsonReportDescriptor): Promise<ReportDescriptor> => {
-  const { id, departmentId, submittedDate, submittedUserId } = await parseToReportMeta(jsonReport.meta);
+export const parseToReport = async (
+  jsonReport: JsonReportDescriptor,
+): Promise<ReportDescriptor> => {
+  const { id, departmentId, submittedDate, submittedUserId } = await parseToReportMeta(
+    jsonReport.meta,
+  );
   const items: ReportItems = _JsonUtils.getReportItems(jsonReport).map((jsonItem) => {
     const itemConstructor = _ItemParser.getParserJsonToItem(_JsonUtils.getItemType(jsonItem));
     return itemConstructor(jsonItem);
@@ -21,7 +25,7 @@ export const parseToReport = async (jsonReport: JsonReportDescriptor): Promise<R
     departmentId: departmentId,
     submittedDate: submittedDate,
     submittedUserId: submittedUserId,
-    items: items
+    items: items,
   };
   return report;
 };
@@ -50,7 +54,7 @@ const parseToReportMeta = async (jsonMeta: JsonReportMeta) => {
     id: jsonMeta.id,
     departmentId: jsonMeta.department.id,
     submittedDate: submittedDate,
-    submittedUserId: submittedUserId
+    submittedUserId: submittedUserId,
   };
   return meta;
 };
