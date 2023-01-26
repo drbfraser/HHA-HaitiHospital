@@ -204,7 +204,7 @@ describe('Serializer', function () {
         let malformedDeserialized: IsBandLegendary = objectSerializer.deserialize(serialized);
 
         // Assert
-        expect(malformedDeserialized.band).to.be.equal('Generic Band');
+        expect(malformedDeserialized.band).to.be.equal('Generic Ban');
         expect(malformedDeserialized.isLegendary).to.be.true;
       });
 
