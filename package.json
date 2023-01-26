@@ -21,6 +21,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tanstack/react-query": "^4.23.0",
+    "@tanstack/react-query-devtools": "^4.23.0",
     "prettier": "^2.8.3"
   }
 }
