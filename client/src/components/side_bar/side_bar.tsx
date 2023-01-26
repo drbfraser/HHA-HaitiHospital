@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
@@ -11,6 +11,8 @@ import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import { History } from 'history';
 import initialDepartments from 'utils/json/departments.json';
+import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEY } from 'constants/queryKeys';
 
 interface SidebarProps {}
 
@@ -27,12 +29,19 @@ const Sidebar = (props: SidebarProps) => {
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
-  useEffect(() => {
-    const getDepartments = async () => {
-      setDepartments(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history));
-    };
-    getDepartments();
-  }, [history]);
+  const getDepartments = async () => {
+    const data = await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history);
+    return data;
+  };
+
+  useQuery({
+    queryKey: QUERY_KEY.department,
+    queryFn: getDepartments,
+    staleTime: 60000,
+    onSuccess(data) {
+      setDepartments(data);
+    },
+  });
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
