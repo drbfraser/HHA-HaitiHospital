@@ -1,3 +1,3 @@
-import getDepartments from './getDepartments';
+import { getDepartments } from './getDepartments';
 
 export { getDepartments };
