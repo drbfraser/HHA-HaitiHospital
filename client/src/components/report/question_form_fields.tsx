@@ -3,16 +3,28 @@ import {
   NumericQuestion,
   ExpandableQuestion,
   TextQuestion,
+  CompositionQuestion,
   MultipleSelectionQuestion,
   SingleSelectionQuestion,
   QuestionGroup,
   ImmutableChoice,
+  ValidationResult,
 } from '@hha/common';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import './styles.css';
 
+const useMountEffect = (fun) => useEffect(fun, [])
 type FunctionalComponent = (object: Object) => JSX.Element;
+
+const nonNegativeValidator: (answer?: number) => ValidationResult<ErrorType> = (answer) => {
+  if (answer !== undefined && answer < 0) {
+      return {isValid: false, error: 'NEGATIVE_NUMBER', message: 'Answer cannot be negative'}
+  } else {
+      return {isValid: true}
+  }
+};
+
 
 // Temporary placeholders
 // TODO: Decide on an appropriate types for those
@@ -27,9 +39,9 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
   return (
-    <label htmlFor={id} className="form-label">
-      {orderedLabel}. {prompt}
-    </label>
+      <label htmlFor={id} className="form-label">
+        {orderedLabel}. {prompt}
+      </label>
   );
 };
 
@@ -51,15 +63,31 @@ const NumericQuestionFormField = ({
 }: {
   question: NumericQuestion<ID, ErrorType>;
 }): JSX.Element => {
+  useMountEffect(()=>{question.addValidator(nonNegativeValidator)})
+  const [error, setError] = useState(!question.isValid());
+  const [inputValue, setInputValue] = useState(question.getAnswer());
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    const {isValid}=nonNegativeValidator(newValue);
+    setError(!isValid);
+  };
+
   return (
     <FormField>
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+      <div className="col-md-6">
       <input
-        className="form-control w-fit"
+        className={error ? 'form-control w-fit is-invalid' : 'form-control w-fit'}
         type="number"
         min="0"
-        defaultValue={question.getAnswer()}
+        id={question.getId()}
+        value={inputValue}
+        onChange={handleChange}
       />
+      {error && <div className="invalid-feedback">Please input a non-negative number</div>}
+      </div>
     </FormField>
   );
 };
@@ -233,7 +261,9 @@ export const ReportForm = ({ reportTemplate }): JSX.Element => {
   return (
     <div className="mt-3 report-form">
       <h2>{reportTemplate.prompt}</h2>
-      <form className="col-md-6">{buildQuestionFormField(reportTemplate)}</form>
+      <form className="col-md-6" noValidate>
+        {buildQuestionFormField(reportTemplate)}
+      </form>
     </div>
   );
 };
