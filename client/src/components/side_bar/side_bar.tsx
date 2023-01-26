@@ -29,14 +29,9 @@ const Sidebar = (props: SidebarProps) => {
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
-  const getDepartments = async () => {
-    const data = await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history);
-    return data;
-  };
-
   useQuery({
     queryKey: QUERY_KEY.department,
-    queryFn: getDepartments,
+    queryFn: async () => await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history),
     staleTime: 60000,
     onSuccess(data) {
       setDepartments(data);

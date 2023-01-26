@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Department } from 'constants/interfaces';
 import { AdminUserFormData } from 'pages/admin/typing';
@@ -16,7 +16,8 @@ import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
 import { ResponseMessage } from 'utils/response_message';
 import { Paths } from 'constants/paths';
-
+import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEY } from 'constants/queryKeys';
 import './add.css';
 
 interface AdminProps {}
@@ -27,20 +28,19 @@ export const AddUserForm = (props: AdminProps) => {
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
-  useEffect(() => {
-    const getDepartments = async () => {
-      setDepartments(
-        createDepartmentMap(
-          await Api.Get(
-            ENDPOINT_DEPARTMENT_GET,
-            ResponseMessage.getMsgFetchDepartmentsFailed(),
-            history,
-          ),
-        ),
-      );
-    };
-    getDepartments();
-  }, [history]);
+  useQuery({
+    queryKey: QUERY_KEY.department,
+    queryFn: async () =>
+      await Api.Get(
+        ENDPOINT_DEPARTMENT_GET,
+        ResponseMessage.getMsgFetchDepartmentsFailed(),
+        history,
+      ),
+    staleTime: 60000,
+    onSuccess(data) {
+      setDepartments(createDepartmentMap(data));
+    },
+  });
 
   useDidMountEffect(
     function signalInitDataReady() {

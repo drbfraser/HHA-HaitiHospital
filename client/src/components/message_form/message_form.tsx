@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import { Message, emptyMessage } from 'constants/interfaces';
+import { Message } from 'constants/interfaces';
 import { Department } from 'constants/interfaces';
 import Api from '../../actions/Api';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
@@ -11,6 +11,8 @@ import initialDepartments from 'utils/json/departments.json';
 import { createDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEY } from 'constants/queryKeys';
 
 interface MessageFormProps {
   optionalMsg?: Message;
@@ -24,27 +26,16 @@ const MessageForm = (props: MessageFormProps) => {
   const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
-  const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
   const [department, setDepartment] = useState<string>('');
 
-  useEffect(() => {
-    const getDepartments = async () => {
-      setDepartments(
-        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-      );
-    };
-    let isMounted = true;
-    if (isMounted) {
-      getDepartments();
-      if (props.optionalMsg !== undefined) {
-        setPrefilledMsg(props.optionalMsg);
-      }
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [props.optionalMsg, history]);
+  useQuery({
+    queryKey: QUERY_KEY.department,
+    queryFn: async () => await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history),
+    staleTime: 60000,
+    onSuccess(data) {
+      setDepartments(createDepartmentMap(data));
+    },
+  });
 
   const onSubmit = (data: any) => {
     if (data.department === '') {
@@ -91,7 +82,7 @@ const MessageForm = (props: MessageFormProps) => {
           className="form-control"
           type="text"
           {...register('messageHeader')}
-          defaultValue={prefilledMsg['messageHeader']}
+          defaultValue={props?.optionalMsg?.messageHeader || ''}
         />
       </div>
 
@@ -105,7 +96,7 @@ const MessageForm = (props: MessageFormProps) => {
           {...register('messageBody')}
           cols={30}
           rows={10}
-          defaultValue={prefilledMsg['messageBody']}
+          defaultValue={props?.optionalMsg?.messageBody || ''}
         ></textarea>
       </div>
 
