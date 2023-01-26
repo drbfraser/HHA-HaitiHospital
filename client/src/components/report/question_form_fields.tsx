@@ -7,7 +7,7 @@ import {
   QuestionGroup,
   QuestionNode,
   SingleSelectionQuestion,
-  TextQuestion,
+  TextQuestion
 } from '@hha/common';
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
@@ -34,46 +34,51 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   );
 };
 
-const NumericQuestionFormField = ({question}: {question: NumericQuestion<ID, ErrorType>}): JSX.Element => {
+const NumericQuestionFormField = ({question, suffixName}: {question: NumericQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+  const [nameId] = useState(`${question.getId()}${suffixName}`);
+
   return (
     <FormField>
-      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       <input
         className="form-control w-fit"
-        //defaultValue={question.getAnswer()}
+        defaultValue={0}
         type="number"
         min="0"
-        name={question.getId()}
+        name={nameId}
       />
     </FormField>
   );
 };
 
-const TextQuestionFormField = ({question}: {question: TextQuestion<ID, ErrorType>}): JSX.Element => {
+const TextQuestionFormField = ({question, suffixName}: {question: TextQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+  const [nameId] = useState(`${question.getId()}${suffixName}`);
+
   return (
     <FormField>
-      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       <input
         className="form-control w-fit"
-        //defaultValue={question.getAnswer()}
-        name={question.getId()}
+        defaultValue={0}
+        name={nameId}
         type="text"
       />
     </FormField>
   );
 };
 
-const CompositionQuestionFormField = ({question}: {question: CompositionQuestion<ID, ErrorType>}): JSX.Element => {
+const CompositionQuestionFormField = ({question, suffixName}: {question: CompositionQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+  const [nameId] = useState(`${question.getId()}${suffixName}`);
+
   return (
     <>
       <FormField>
-        <FormFieldLabel id={question.getId()} prompt={question.getPrompt()}/>
+        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
         <input
           className="col-sm form-control w-fit"
           type="number"
           min="0"
-          name={question.getId()}
-          onChange={(e) => {}}
+          name={nameId}
         />
       </FormField>
       {question.map<JSX.Element>((group) => {
@@ -98,27 +103,27 @@ const CompositionQuestionFormField = ({question}: {question: CompositionQuestion
   );
 };
 
-const ExpandableQuestionFormField = ({question}: {question: NumericQuestion<ID, ErrorType>}): JSX.Element => {
+const ExpandableQuestionFormField = ({question, suffixName}: {question: ExpandableQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
   const [elements, setElements] = useState([]);
+  const [nameId] = useState(`${question.getId()}${suffixName}`);
 
   return (
     <>
       <FormField>
-        <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
           className="col-sm form-control w-fit"
           type="number"
           min="0"
-          name={question.getId()}
+          name={nameId}
           onChange={(e) => {
             question.setAnswer(parseInt(e.target.value));
-            let index = 1;
             setElements(
               question.map<JSX.Element>((questions) => {
-                const itemId: string = 'e' + uuid();
+                const itemId: string = `e${uuid()}`;
 
                 return (
-                  <div className="accordion-item" key={index}>
+                  <div className="accordion-item" key={itemId}>
                     <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
                       <button
                         className="accordion-button collapsed"
@@ -128,7 +133,7 @@ const ExpandableQuestionFormField = ({question}: {question: NumericQuestion<ID, 
                         aria-expanded="false"
                         aria-controls={itemId}
                       >
-                        Patient {index++}
+                        Patient {itemId}
                       </button>
                     </h6>
                     <div
@@ -138,7 +143,7 @@ const ExpandableQuestionFormField = ({question}: {question: NumericQuestion<ID, 
                     >
                       <div className="accordion-body">
                         <fieldset className="mt-3">
-                          {buildQuestionFormField(questions)}
+                          {buildQuestionFormField(questions, `-${itemId}`)}
                         </fieldset>
                       </div>
                     </div>
@@ -149,25 +154,25 @@ const ExpandableQuestionFormField = ({question}: {question: NumericQuestion<ID, 
           }}
         />
       </FormField>
-      <div className="mt-3 mb-3 accordion" id={question.getId()}>
+      <div className="mt-3 mb-3 accordion" id={nameId}>
         {elements}
       </div>
     </>
   );
 };
 
-const SingleSelectionQuestionFormField = ({question}: {question: SingleSelectionQuestion<ID, ErrorType>}) => {
+const SingleSelectionQuestionFormField = ({question, suffixName}: {question: SingleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
   const [choices, setChoices] = useState(question.getChoices());
-  const [nameId, setNameId] = useState(`${question.getId()}-${uuid()}`);
+  const [nameId] = useState(`${question.getId()}-${uuid()}${suffixName}`);
 
   return (
     <FormField>
-      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       {choices.map((choice: ImmutableChoice, index) => {
         return (
-          <div key={`${question.getId()}-${index}`}>
+          <div key={`${nameId}-${index}`}>
             <input
-              id={`${question.getId()}-${index}`}
+              id={`${nameId}-${index}`}
               className="form-check-input"
               name={nameId}
               type="radio"
@@ -177,7 +182,7 @@ const SingleSelectionQuestionFormField = ({question}: {question: SingleSelection
                 setChoices(question.getChoices());
               }}
             />
-            &nbsp;<label htmlFor={`${question.getId()}-${index}`}>{choice.getDescription()}</label>
+            &nbsp;<label htmlFor={`${nameId}-${index}`}>{choice.getDescription()}</label>
           </div>
         );
       })}
@@ -185,32 +190,32 @@ const SingleSelectionQuestionFormField = ({question}: {question: SingleSelection
   );
 };
 
-const MultiSelectionQuestionFormField = ({question}: {question: MultipleSelectionQuestion<ID, ErrorType>}) => {
-  const [nameId, setNameId] = useState(`${question.getId()}-${uuid()}`);
+const MultiSelectionQuestionFormField = ({question, suffixName}: {question: MultipleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
+  const [nameId] = useState(`${question.getId()}-${uuid()}${suffixName}`);
 
   return (
     <FormField>
-      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       {question.getChoices().map((choice: ImmutableChoice, index) => (
-        <div key={`${question.getId()}-${index}`}>
+        <div key={`${nameId}-${index}`}>
           <input
-            id={`${question.getId()}-${index}`}
+            id={`${nameId}-${index}`}
             className="form-check-input"
-            name={nameId}
+            name={`${nameId}-${index}`}
             type="checkbox"
             checked={choice.wasChosen()}
             onChange={() => {
               question.setAnswer(choice.wasChosen() ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index) : question.getAnswer().concat(index));
             }}
           />
-          &nbsp;<label htmlFor={`${question.getId()}-${index}`}>{choice.getDescription()}</label>
+          &nbsp;<label htmlFor={`${nameId}-${index}`}>{choice.getDescription()}</label>
         </div>
       ))}
     </FormField>
   );
 };
 
-const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.Element => {
+const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>, suffixName: string): JSX.Element => {
   return (
     <FormField>
       {' ' /* TODO: use better ways to add margins or pad components */}
@@ -226,7 +231,7 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.El
         })
         .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
           const [question, FormFieldComponent] = tuple;
-          return <FormFieldComponent key={question.getId()} question={question}/>;
+          return <FormFieldComponent key={question.getId()} question={question} suffixName={suffixName}/>;
         })}
       {' '}
     </FormField>
@@ -244,7 +249,7 @@ export const ReportForm = ({ reportTemplate, submitReport }: ReportFormProps): J
       <h2>{reportTemplate.prompt}</h2>
       <form className="col-md-6" onSubmit={submitReport}>
         <input type="submit" value="Submit"/>
-        {buildQuestionFormField(reportTemplate)}
+        {buildQuestionFormField(reportTemplate, "")}
         <input type="submit" value="Submit"/>
       </form>
     </div>

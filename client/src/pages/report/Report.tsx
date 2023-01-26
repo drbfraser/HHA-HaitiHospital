@@ -43,7 +43,8 @@ export const Report = () => {
       serializedReport: reportObject,
       submittedUserId: currentUser
     };
-    Api.Post(ENDPOINT_REPORTS_POST, report, () => {}, "", history);
+    console.log(report);
+    //Api.Post(ENDPOINT_REPORTS_POST, report, () => {}, "", history);
   };
 
   useEffect(() => {
