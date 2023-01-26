@@ -233,13 +233,12 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>): JSX.El
   );
 };
 
-const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  console.log(formData);
-};
+interface ReportFormProps {
+  reportTemplate: QuestionGroup<string, string>;
+  submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
+}
 
-export const ReportForm = ({ reportTemplate }): JSX.Element => {
+export const ReportForm = ({ reportTemplate, submitReport }: ReportFormProps): JSX.Element => {
   return (
     <div className="mt-3 report-form">
       <h2>{reportTemplate.prompt}</h2>

@@ -1,7 +1,7 @@
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/question_form_fields';
-import { ENDPOINT_TEMPLATE, ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
+import { ENDPOINT_ADMIN_ME, ENDPOINT_DEPARTMENT_GET, ENDPOINT_REPORTS_POST, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
 import Api from 'actions/Api';
 import { useHistory } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { History } from 'history';
 import { useEffect, useState } from 'react';
 import initialDepartments from 'utils/json/departments.json';
 import { Department } from 'constants/interfaces';
-import { ObjectSerializer, QuestionGroup } from '@hha/common';
+import { JsonReportItems, ObjectSerializer, QuestionGroup } from '@hha/common';
 import './styles.css';
 
 type ID = string;
@@ -20,13 +20,41 @@ export const Report = () => {
   const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType>>();
   const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
+  const [currentUser, setCurrentUser] = useState<ID>();
 
   const clearCurrentDepartment = (): void => {
     setCurrentDepartment(undefined);
     setReportTemplate(undefined);
   };
 
+  const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    console.log(formData);
+
+    const reportObject: JsonReportItems = []
+    formData.forEach((value, key) => reportObject.push({
+      answer: [[value]],
+      description: key,
+      type: ""
+    }));
+    const report = {
+      departmentId: currentDepartment.id,
+      serializedReport: reportObject,
+      submittedUserId: currentUser
+    };
+    Api.Post(ENDPOINT_REPORTS_POST, report, () => {}, "", history);
+  };
+
   useEffect(() => {
+    const getCurrentUser = async () => {
+      const fetchedUser = await Api.Get(
+        ENDPOINT_ADMIN_ME,
+        "",
+        history,
+      );
+      setCurrentUser(fetchedUser.id);
+    }
     const getDepartments = async () => {
       const fetchedDepartments = await Api.Get(
         ENDPOINT_DEPARTMENT_GET,
@@ -35,6 +63,8 @@ export const Report = () => {
       );
       setDepartments(fetchedDepartments);
     };
+
+    getCurrentUser();
     getDepartments();
   }, [history]);
 
@@ -95,7 +125,7 @@ export const Report = () => {
               <i className="bi bi-chevron-left me-2" />
               Choose Different Department
             </button>
-            <ReportForm reportTemplate={reportTemplate} />
+            <ReportForm reportTemplate={reportTemplate} submitReport={submitReport}/>
           </>
         )}
       </main>
