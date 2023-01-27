@@ -130,29 +130,28 @@ const Sidebar = (props: SidebarProps) => {
             </li>
           ) : null}
 
-          {!!departments &&
-            departments.map((dept: Department, index: number) => {
-              const deptName = dept.name;
-              const deptId = dept.id;
+          {departments?.map((dept: Department, index: number) => {
+            const deptName = dept.name;
+            const deptId = dept.id;
 
-              if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
-                return (
-                  <li key={'department'.concat(index.toString())}>
-                    <NavLink
-                      to={`/department/${deptId}`}
-                      className="nav-link link-light"
-                      exact
-                      activeClassName="active"
-                    >
-                      <i className="bi bi-brightness-high-fill me-2" />
-                      <span className="text text-light">{t(deptName)}</span>
-                    </NavLink>
-                  </li>
-                );
-              else {
-                return null;
-              }
-            })}
+            if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
+              return (
+                <li key={'department'.concat(index.toString())}>
+                  <NavLink
+                    to={`/department/${deptId}`}
+                    className="nav-link link-light"
+                    exact
+                    activeClassName="active"
+                  >
+                    <i className="bi bi-brightness-high-fill me-2" />
+                    <span className="text text-light">{t(deptName)}</span>
+                  </NavLink>
+                </li>
+              );
+            else {
+              return null;
+            }
+          })}
 
           <li key="report">
             <NavLink to="/report" className="nav-link link-light" exact activeClassName="active">

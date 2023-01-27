@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import { AdminUserForm } from 'pages/admin/form/form';
-import { Spinner } from 'components/spinner/Spinner';
 import { ResponseMessage } from 'utils/response_message';
 import { Paths } from 'constants/paths';
 import './add.css';
@@ -40,31 +39,25 @@ export const AddUserForm = (props: AdminProps) => {
   return (
     <div className={'admin'}>
       <SideBar />
-      {!departments ? (
-        <Spinner />
-      ) : (
-        <main className="container-fluid main-region">
-          <Header />
-          <div className="ml-3 mb-3 d-flex justify-content-start">
-            <Link to={Paths.getAdminMain()}>
-              <button
-                data-testid="add-user-back-button"
-                type="button"
-                className="btn btn-outline-dark"
-              >
-                {t('button.back')}
-              </button>
-            </Link>
-          </div>
 
-          <div className="col-md-6">
-            <AdminUserForm
-              data={{ departments: departments }}
-              onSubmit={submitForm}
-            ></AdminUserForm>
-          </div>
-        </main>
-      )}
+      <main className="container-fluid main-region">
+        <Header />
+        <div className="ml-3 mb-3 d-flex justify-content-start">
+          <Link to={Paths.getAdminMain()}>
+            <button
+              data-testid="add-user-back-button"
+              type="button"
+              className="btn btn-outline-dark"
+            >
+              {t('button.back')}
+            </button>
+          </Link>
+        </div>
+
+        <div className="col-md-6">
+          <AdminUserForm data={{ departments: departments }} onSubmit={submitForm}></AdminUserForm>
+        </div>
+      </main>
     </div>
   );
 };

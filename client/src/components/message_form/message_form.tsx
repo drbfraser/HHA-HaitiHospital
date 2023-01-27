@@ -5,7 +5,6 @@ import { Department } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
-import { Spinner } from 'components/spinner/Spinner';
 
 interface MessageFormProps {
   optionalMsg?: Message;
@@ -31,67 +30,61 @@ const MessageForm = (props: MessageFormProps) => {
   };
 
   return (
-    <>
-      {!departments ? (
-        <Spinner />
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="row">
-            <div className="col-md-3 mb-3">
-              <label htmlFor="select-menu" className="form-label">
-                {t('addMessageDepartment')}
-              </label>
-              <select
-                data-testid="add-message-department-dropdown"
-                className="form-select"
-                id="select-menu"
-                value={department}
-                {...register('department')}
-                onChange={(e) => setDepartment(e.target.value)}
-              >
-                <option value="">{t('addMessageSelect')} </option>
-                {Array.from(departments.values()).map((dept: Department, index: number) => (
-                  <option key={index} value={dept.name}>
-                    {dept.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="row">
+        <div className="col-md-3 mb-3">
+          <label htmlFor="select-menu" className="form-label">
+            {t('addMessageDepartment')}
+          </label>
+          <select
+            data-testid="add-message-department-dropdown"
+            className="form-select"
+            id="select-menu"
+            value={department}
+            {...register('department')}
+            onChange={(e) => setDepartment(e.target.value)}
+          >
+            <option value="">{t('addMessageSelect')} </option>
+            {Array.from(departments?.values()).map((dept: Department, index: number) => (
+              <option key={index} value={dept.name}>
+                {dept.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
-          <div className="mb-3">
-            <label htmlFor="" className="form-label">
-              {t('addMessageTitle')}
-            </label>
-            <input
-              data-testid="add-message-title-input"
-              className="form-control"
-              type="text"
-              {...register('messageHeader')}
-              defaultValue={props?.optionalMsg?.messageHeader || ''}
-            />
-          </div>
+      <div className="mb-3">
+        <label htmlFor="" className="form-label">
+          {t('addMessageTitle')}
+        </label>
+        <input
+          data-testid="add-message-title-input"
+          className="form-control"
+          type="text"
+          {...register('messageHeader')}
+          defaultValue={props?.optionalMsg?.messageHeader || ''}
+        />
+      </div>
 
-          <div className="mb-3">
-            <label htmlFor="" className="form-label">
-              {t('addMessageBody')}
-            </label>
-            <textarea
-              data-testid="add-message-body"
-              className="form-control"
-              {...register('messageBody')}
-              cols={30}
-              rows={10}
-              defaultValue={props?.optionalMsg?.messageBody || ''}
-            ></textarea>
-          </div>
+      <div className="mb-3">
+        <label htmlFor="" className="form-label">
+          {t('addMessageBody')}
+        </label>
+        <textarea
+          data-testid="add-message-body"
+          className="form-control"
+          {...register('messageBody')}
+          cols={30}
+          rows={10}
+          defaultValue={props?.optionalMsg?.messageBody || ''}
+        ></textarea>
+      </div>
 
-          <button data-testid="add-message-add-message-button" className="btn btn-primary">
-            {t('addMessageSubmit')}
-          </button>
-        </form>
-      )}
-    </>
+      <button data-testid="add-message-add-message-button" className="btn btn-primary">
+        {t('addMessageSubmit')}
+      </button>
+    </form>
   );
 };
 
