@@ -40,7 +40,7 @@ export const AddUserForm = (props: AdminProps) => {
     <div className={'admin'}>
       <SideBar />
       {!departments ? (
-        <Spinner></Spinner>
+        <Spinner />
       ) : (
         <main className="container-fluid main-region">
           <Header />

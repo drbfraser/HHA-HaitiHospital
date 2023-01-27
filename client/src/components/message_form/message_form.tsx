@@ -1,18 +1,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 import { Message } from 'constants/interfaces';
 import { Department } from 'constants/interfaces';
-import Api from '../../actions/Api';
-import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import { History } from 'history';
-import initialDepartments from 'utils/json/departments.json';
-import { createDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useQuery } from '@tanstack/react-query';
-import { QUERY_KEY } from 'constants/queryKeys';
+import { useDepartmentMap } from 'hooks';
+import { Spinner } from 'components/spinner/Spinner';
 
 interface MessageFormProps {
   optionalMsg?: Message;
@@ -20,22 +13,10 @@ interface MessageFormProps {
 }
 
 const MessageForm = (props: MessageFormProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>(
-    createDepartmentMap(initialDepartments.departments),
-  );
-  const history: History = useHistory<History>();
+  const departments = useDepartmentMap();
   const { t, i18n } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
   const [department, setDepartment] = useState<string>('');
-
-  useQuery({
-    queryKey: QUERY_KEY.department,
-    queryFn: async () => await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history),
-    staleTime: 60000,
-    onSuccess(data) {
-      setDepartments(createDepartmentMap(data));
-    },
-  });
 
   const onSubmit = (data: any) => {
     if (data.department === '') {
@@ -49,61 +30,67 @@ const MessageForm = (props: MessageFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="row">
-        <div className="col-md-3 mb-3">
-          <label htmlFor="select-menu" className="form-label">
-            {t('addMessageDepartment')}
-          </label>
-          <select
-            data-testid="add-message-department-dropdown"
-            className="form-select"
-            id="select-menu"
-            value={department}
-            {...register('department')}
-            onChange={(e) => setDepartment(e.target.value)}
-          >
-            <option value="">{t('addMessageSelect')} </option>
-            {Array.from(departments.values()).map((dept: Department, index: number) => (
-              <option key={index} value={dept.name}>
-                {dept.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+    <>
+      {!departments ? (
+        <Spinner />
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="row">
+            <div className="col-md-3 mb-3">
+              <label htmlFor="select-menu" className="form-label">
+                {t('addMessageDepartment')}
+              </label>
+              <select
+                data-testid="add-message-department-dropdown"
+                className="form-select"
+                id="select-menu"
+                value={department}
+                {...register('department')}
+                onChange={(e) => setDepartment(e.target.value)}
+              >
+                <option value="">{t('addMessageSelect')} </option>
+                {Array.from(departments.values()).map((dept: Department, index: number) => (
+                  <option key={index} value={dept.name}>
+                    {dept.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-      <div className="mb-3">
-        <label htmlFor="" className="form-label">
-          {t('addMessageTitle')}
-        </label>
-        <input
-          data-testid="add-message-title-input"
-          className="form-control"
-          type="text"
-          {...register('messageHeader')}
-          defaultValue={props?.optionalMsg?.messageHeader || ''}
-        />
-      </div>
+          <div className="mb-3">
+            <label htmlFor="" className="form-label">
+              {t('addMessageTitle')}
+            </label>
+            <input
+              data-testid="add-message-title-input"
+              className="form-control"
+              type="text"
+              {...register('messageHeader')}
+              defaultValue={props?.optionalMsg?.messageHeader || ''}
+            />
+          </div>
 
-      <div className="mb-3">
-        <label htmlFor="" className="form-label">
-          {t('addMessageBody')}
-        </label>
-        <textarea
-          data-testid="add-message-body"
-          className="form-control"
-          {...register('messageBody')}
-          cols={30}
-          rows={10}
-          defaultValue={props?.optionalMsg?.messageBody || ''}
-        ></textarea>
-      </div>
+          <div className="mb-3">
+            <label htmlFor="" className="form-label">
+              {t('addMessageBody')}
+            </label>
+            <textarea
+              data-testid="add-message-body"
+              className="form-control"
+              {...register('messageBody')}
+              cols={30}
+              rows={10}
+              defaultValue={props?.optionalMsg?.messageBody || ''}
+            ></textarea>
+          </div>
 
-      <button data-testid="add-message-add-message-button" className="btn btn-primary">
-        {t('addMessageSubmit')}
-      </button>
-    </form>
+          <button data-testid="add-message-add-message-button" className="btn btn-primary">
+            {t('addMessageSubmit')}
+          </button>
+        </form>
+      )}
+    </>
   );
 };
 
