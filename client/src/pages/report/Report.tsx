@@ -9,7 +9,7 @@ import { History } from 'history';
 import { useEffect, useState } from 'react';
 import initialDepartments from 'utils/json/departments.json';
 import { Department } from 'constants/interfaces';
-import { JsonReportItems, ObjectSerializer, QuestionGroup } from '@hha/common';
+import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import './styles.css';
 
 type ID = string;
@@ -17,39 +17,32 @@ type ErrorType = string;
 
 export const Report = () => {
   const history: History = useHistory<History>();
-  const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType>>();
+  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
   const [currentUser, setCurrentUser] = useState<ID>();
 
   const applyReportChanges = () => {
     const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-    setReportTemplate(serializer.deserialize(serializer.serialize(reportTemplate)));
+    setReport(serializer.deserialize(serializer.serialize(report)));
   };
 
   const clearCurrentDepartment = (): void => {
     setCurrentDepartment(undefined);
-    setReportTemplate(undefined);
+    setReport(undefined);
   };
 
   const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    console.log(formData);
-
-    const reportObject: JsonReportItems = []
-    formData.forEach((value, key) => reportObject.push({
-      answer: [[value]],
-      description: key,
-      type: ""
-    }));
-    const report = {
+    const today = new Date();
+    const reportObject = {
       departmentId: currentDepartment.id,
-      serializedReport: reportObject,
+      reportMonth: new Date(today.getFullYear(), today.getMonth()),
+      serializedReport: report,
       submittedUserId: currentUser
     };
-    console.log(report);
-    //Api.Post(ENDPOINT_REPORTS_POST, report, () => {}, "", history);
+    console.log(reportObject);
+    Api.Post(ENDPOINT_REPORTS_POST, reportObject, () => {}, "", history);
   };
 
   useEffect(() => {
@@ -88,7 +81,7 @@ export const Report = () => {
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
           objectSerializer.deserialize(reportTemplateJson);
 
-        setReportTemplate(deserializedReportTemplate);
+        setReport(deserializedReportTemplate);
       } catch (e) {
         clearCurrentDepartment();
       }
@@ -101,7 +94,7 @@ export const Report = () => {
       <SideBar />
       <main className="container-fluid main-region bg-light h-screen">
         <Header />
-        {!reportTemplate && departments && (
+        {!report && departments && (
           <div className="col-md-6 mb-5">
             <h1 className="text-start">Submit a report</h1>
             <fieldset>
@@ -125,7 +118,7 @@ export const Report = () => {
             </fieldset>
           </div>
         )}
-        {reportTemplate && (
+        {report && (
           <>
             <button className="btn btn-outline-secondary" onClick={clearCurrentDepartment}>
               <i className="bi bi-chevron-left me-2" />
@@ -133,7 +126,7 @@ export const Report = () => {
             </button>
             <ReportForm
               applyReportChanges={applyReportChanges}
-              reportTemplate={reportTemplate}
+              reportData={report}
               submitReport={submitReport}
             />
           </>

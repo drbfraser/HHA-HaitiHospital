@@ -262,11 +262,11 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>, applyRe
 
 interface ReportFormProps {
   applyReportChanges: () => void;
-  reportTemplate: QuestionGroup<string, string>;
+  reportData: QuestionGroup<string, string>;
   submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export const ReportForm = ({ applyReportChanges, reportTemplate, submitReport }: ReportFormProps): JSX.Element => {
+export const ReportForm = ({ applyReportChanges, reportData: reportTemplate, submitReport }: ReportFormProps): JSX.Element => {
   return (
     <div className="mt-3 report-form">
       <h2>{reportTemplate.prompt}</h2>
