@@ -1,18 +1,11 @@
-import { useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { Role, Department, GeneralDepartment } from 'constants/interfaces';
-import Api from '../../actions/Api';
-import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import { History } from 'history';
-import initialDepartments from 'utils/json/departments.json';
-import { useQuery } from '@tanstack/react-query';
-import { QUERY_KEY } from 'constants/queryKeys';
+import { useDepartmentData } from 'hooks';
 
 interface SidebarProps {}
 
@@ -24,19 +17,9 @@ export const changeLanguage = (ln, i18n) => {
 };
 
 const Sidebar = (props: SidebarProps) => {
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
+  const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
-  const history: History = useHistory<History>();
-
-  useQuery({
-    queryKey: QUERY_KEY.department,
-    queryFn: async () => await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history),
-    staleTime: 60000,
-    onSuccess(data) {
-      setDepartments(data);
-    },
-  });
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
@@ -147,28 +130,29 @@ const Sidebar = (props: SidebarProps) => {
             </li>
           ) : null}
 
-          {departments.map((dept: Department, index: number) => {
-            const deptName = dept.name;
-            const deptId = dept.id;
+          {!!departments &&
+            departments.map((dept: Department, index: number) => {
+              const deptName = dept.name;
+              const deptId = dept.id;
 
-            if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
-              return (
-                <li key={'department'.concat(index.toString())}>
-                  <NavLink
-                    to={`/department/${deptId}`}
-                    className="nav-link link-light"
-                    exact
-                    activeClassName="active"
-                  >
-                    <i className="bi bi-brightness-high-fill me-2" />
-                    <span className="text text-light">{t(deptName)}</span>
-                  </NavLink>
-                </li>
-              );
-            else {
-              return null;
-            }
-          })}
+              if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
+                return (
+                  <li key={'department'.concat(index.toString())}>
+                    <NavLink
+                      to={`/department/${deptId}`}
+                      className="nav-link link-light"
+                      exact
+                      activeClassName="active"
+                    >
+                      <i className="bi bi-brightness-high-fill me-2" />
+                      <span className="text text-light">{t(deptName)}</span>
+                    </NavLink>
+                  </li>
+                );
+              else {
+                return null;
+              }
+            })}
 
           <li key="report">
             <NavLink to="/report" className="nav-link link-light" exact activeClassName="active">

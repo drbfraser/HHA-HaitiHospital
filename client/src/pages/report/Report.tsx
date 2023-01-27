@@ -11,6 +11,7 @@ import initialDepartments from 'utils/json/departments.json';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import './styles.css';
+import { useDepartmentData } from 'hooks';
 
 type ID = string;
 type ErrorType = string;
@@ -18,25 +19,13 @@ type ErrorType = string;
 export const Report = () => {
   const history: History = useHistory<History>();
   const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType>>();
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
+  const { departments } = useDepartmentData();
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
 
   const clearCurrentDepartment = (): void => {
     setCurrentDepartment(undefined);
     setReportTemplate(undefined);
   };
-
-  useEffect(() => {
-    const getDepartments = async () => {
-      const fetchedDepartments = await Api.Get(
-        ENDPOINT_DEPARTMENT_GET,
-        TOAST_DEPARTMENT_GET,
-        history,
-      );
-      setDepartments(fetchedDepartments);
-    };
-    getDepartments();
-  }, [history]);
 
   useEffect(() => {
     const getTemplates = async () => {
