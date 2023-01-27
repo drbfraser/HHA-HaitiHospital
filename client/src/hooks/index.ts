@@ -1,3 +1,3 @@
-import useDepartmentMap from './useDepartmentMap';
+import useDepartmentData from './useDepartmentData';
 
-export { useDepartmentMap };
+export { useDepartmentData };

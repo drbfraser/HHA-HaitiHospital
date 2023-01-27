@@ -4,7 +4,7 @@ import { Message } from 'constants/interfaces';
 import { Department } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useDepartmentMap } from 'hooks';
+import { useDepartmentData } from 'hooks';
 import { Spinner } from 'components/spinner/Spinner';
 
 interface MessageFormProps {
@@ -13,7 +13,8 @@ interface MessageFormProps {
 }
 
 const MessageForm = (props: MessageFormProps) => {
-  const departments = useDepartmentMap();
+  const { departmentMap: departments } = useDepartmentData();
+
   const { t, i18n } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
   const [department, setDepartment] = useState<string>('');

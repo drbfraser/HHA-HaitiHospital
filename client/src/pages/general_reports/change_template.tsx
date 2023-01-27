@@ -6,7 +6,7 @@ import './general_reports_styles.css';
 import { useTranslation } from 'react-i18next';
 import { Department, GeneralDepartment } from 'constants/interfaces';
 import { History } from 'history';
-import { useDepartmentMap } from 'hooks';
+import { useDepartmentData } from 'hooks';
 
 interface ChangeTemplateProps extends RouteComponentProps {}
 
@@ -15,7 +15,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
   const [templateFile, setTemplateFile] = useState<File>(null);
   const history: History = useHistory<History>();
   const [department, setDepartment] = useState<Department>(null);
-  const departments = useDepartmentMap();
+  const { departments } = useDepartmentData();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

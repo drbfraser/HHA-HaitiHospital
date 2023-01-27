@@ -7,7 +7,7 @@ import { createDepartmentMap } from 'utils/departmentMapper';
 import { useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 
-const useDepartmentMap = () => {
+const useDepartmentData = () => {
   const history: History = useHistory<History>();
 
   const { data } = useQuery({
@@ -15,7 +15,7 @@ const useDepartmentMap = () => {
     queryFn: async () => await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history),
     staleTime: 60000, // 1 Hour
   });
-  return createDepartmentMap(data);
+  return { departmentMap: createDepartmentMap(data), departments: data };
 };
 
-export default useDepartmentMap;
+export default useDepartmentData;

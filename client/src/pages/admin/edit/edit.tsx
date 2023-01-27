@@ -14,14 +14,14 @@ import useDidMountEffect from 'utils/custom_hooks';
 import { AdminUserForm } from 'pages/admin/form/form';
 import { Paths, UserIdParams } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { useDepartmentMap } from 'hooks';
+import { useDepartmentData } from 'hooks';
 
 import './edit.css';
 
 interface UserEditProps {}
 
 export const EditUserForm = (props: UserEditProps) => {
-  const departments = useDepartmentMap();
+  const { departmentMap: departments } = useDepartmentData();
   const [fetch, setFetch] = useState<boolean>(false);
   const [user, setUser] = useState<UserJson>(undefined);
   const params = useParams<UserIdParams>();

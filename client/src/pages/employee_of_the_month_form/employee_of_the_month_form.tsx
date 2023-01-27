@@ -18,7 +18,7 @@ import { useDepartmentMap } from 'hooks';
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
-  const departments = useDepartmentMap();
+  const { departmentMap: departments } = useDepartmentMap();
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});

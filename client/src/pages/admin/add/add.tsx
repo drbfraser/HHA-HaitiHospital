@@ -12,12 +12,13 @@ import { Spinner } from 'components/spinner/Spinner';
 import { ResponseMessage } from 'utils/response_message';
 import { Paths } from 'constants/paths';
 import './add.css';
-import { useDepartmentMap } from 'hooks';
+import { useDepartmentData } from 'hooks';
 
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
-  const departments = useDepartmentMap();
+  const { departmentMap: departments } = useDepartmentData();
+
   const { t } = useTranslation();
   const history: History = useHistory<History>();
 
