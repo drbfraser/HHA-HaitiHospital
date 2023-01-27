@@ -4,7 +4,6 @@ import {
   ImmutableChoice,
   MultipleSelectionQuestion,
   NumericQuestion,
-  ObjectSerializer,
   QuestionGroup,
   QuestionNode,
   SingleSelectionQuestion,
@@ -35,14 +34,12 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   );
 };
 
-const NumericQuestionFormField = ({question, suffixName}: {question: NumericQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formData.setAnswer(parseInt(e.target.value));
-    setFormData(serializer.deserialize(serializer.serialize(formData)));
-  };
-  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-  const [formData, setFormData] = useState<NumericQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
+const NumericQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: NumericQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    question.setAnswer(parseInt(e.target.value));
+    applyReportChanges();
+  };
 
   return (
     <FormField>
@@ -53,29 +50,34 @@ const NumericQuestionFormField = ({question, suffixName}: {question: NumericQues
         name={nameId}
         onChange={handleChange}
         type="number"
-        value={formData.getAnswer()}
+        value={question.getAnswer()}
       />
     </FormField>
   );
 };
 
-const TextQuestionFormField = ({question, suffixName}: {question: TextQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+const TextQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: TextQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    question.setAnswer(parseInt(e.target.value));
+    applyReportChanges();
+  };
 
   return (
     <FormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       <input
         className="form-control w-fit"
-        defaultValue={0}
         name={nameId}
+        onChange={handleChange}
         type="text"
+        value={question.getAnswer()}
       />
     </FormField>
   );
 };
 
-const CompositionQuestionFormField = ({question, suffixName}: {question: CompositionQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+const CompositionQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: CompositionQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
 
   return (
@@ -111,15 +113,12 @@ const CompositionQuestionFormField = ({question, suffixName}: {question: Composi
   );
 };
 
-const ExpandableQuestionFormField = ({question, suffixName}: {question: ExpandableQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formData.setAnswer(parseInt(e.target.value));
-    setFormData(serializer.deserialize(serializer.serialize(formData)));
-  };
-  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-  const [elements, setElements] = useState([]);
-  const [formData, setFormData] = useState<ExpandableQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
+const ExpandableQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: ExpandableQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    question.setAnswer(parseInt(e.target.value));
+    applyReportChanges();
+  };
 
   return (
     <>
@@ -129,66 +128,61 @@ const ExpandableQuestionFormField = ({question, suffixName}: {question: Expandab
           className="col-sm form-control w-fit"
           min="0"
           name={nameId}
-          onChange={(e) => {
-            handleChange(e);
-            setElements(
-              formData.map<JSX.Element>((questionGroup) => {
-                const itemId: string = `_${uuid()}`;
-
-                return (
-                  <div className="accordion-item" key={itemId}>
-                    <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#${itemId}`}
-                        aria-expanded="false"
-                        aria-controls={itemId}
-                      >
-                        Patient {itemId}
-                      </button>
-                    </h6>
-                    <div
-                      id={itemId}
-                      className="accordion-collapse collapse"
-                      aria-labelledby={`${itemId}-header`}
-                    >
-                      <div className="accordion-body">
-                        <fieldset className="mt-3">
-                          {buildQuestionFormField(questionGroup, itemId)}
-                        </fieldset>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }),
-            );
-          }}
+          onChange={handleChange}
           type="number"
-          value={formData.getAnswer()}
+          value={question.getAnswer()}
         />
       </FormField>
       <div className="mt-3 mb-3 accordion" id={nameId}>
-        {elements}
+        {question.map<JSX.Element>((questionGroup, index) => {
+          //const itemId: string = `_${uuid()}`;
+          const itemId: string = `_${index}`;
+
+          return (
+            <div className="accordion-item" key={itemId}>
+              <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
+                <button
+                  //className="accordion-button collapsed"
+                  className="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target={`#${itemId}`}
+                  aria-expanded={true}
+                  aria-controls={itemId}
+                >
+                  Patient {itemId}
+                </button>
+              </h6>
+              <div
+                id={itemId}
+                className="accordion-collapse collapse show"
+                aria-labelledby={`${itemId}-header`}
+              >
+                <div className="accordion-body">
+                  <fieldset className="mt-3">
+                    {buildQuestionFormField(questionGroup, applyReportChanges, itemId)}
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   );
 };
 
-const SingleSelectionQuestionFormField = ({question, suffixName}: {question: SingleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
-  const getChangeHandler = (index: number) => () => {
-    formData.setAnswer(index);
-    setFormData(serializer.deserialize(serializer.serialize(formData)));
-  };
-  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-  const [formData, setFormData] = useState<SingleSelectionQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
+const SingleSelectionQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: SingleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
+  const getChangeHandler = (index: number) => () => {
+    question.setAnswer(index);
+    applyReportChanges();
+  };
 
   return (
     <FormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      {formData.getChoices().map((choice: ImmutableChoice, index) => {
+      {question.getChoices().map((choice: ImmutableChoice, index) => {
         return (
           <div key={`${nameId}_${index}`}>
             <input
@@ -208,19 +202,17 @@ const SingleSelectionQuestionFormField = ({question, suffixName}: {question: Sin
   );
 };
 
-const MultiSelectionQuestionFormField = ({question, suffixName}: {question: MultipleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
-  const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
-    formData.setAnswer(choice.wasChosen() ? formData.getAnswer().filter((choiceIndex) => choiceIndex !== index) : formData.getAnswer().concat(index));
-    setFormData(serializer.deserialize(serializer.serialize(formData)));
-  };
-  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-  const [formData, setFormData] = useState<MultipleSelectionQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
+const MultiSelectionQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: MultipleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
+  const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
+    question.setAnswer(choice.wasChosen() ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index) : question.getAnswer().concat(index));
+    applyReportChanges();
+  };
 
   return (
     <FormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      {formData.getChoices().map((choice: ImmutableChoice, index) => (
+      {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div key={`${nameId}_${index}`}>
           <input
             checked={choice.wasChosen()}
@@ -238,7 +230,7 @@ const MultiSelectionQuestionFormField = ({question, suffixName}: {question: Mult
   );
 };
 
-const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>, suffixName: string): JSX.Element => {
+const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>, applyReportChanges: () => void, suffixName: string): JSX.Element => {
   return (
     <FormField>
       {' ' /* TODO: use better ways to add margins or pad components */}
@@ -254,7 +246,14 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>, suffixN
         })
         .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
           const [question, FormFieldComponent] = tuple;
-          return <FormFieldComponent key={question.getId()} question={question} suffixName={suffixName}/>;
+          return (
+            <FormFieldComponent
+              applyReportChanges={applyReportChanges}
+              key={question.getId()}
+              question={question}
+              suffixName={suffixName}
+            />
+          );
         })}
       {' '}
     </FormField>
@@ -262,17 +261,18 @@ const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>, suffixN
 };
 
 interface ReportFormProps {
+  applyReportChanges: () => void;
   reportTemplate: QuestionGroup<string, string>;
   submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export const ReportForm = ({ reportTemplate, submitReport }: ReportFormProps): JSX.Element => {
+export const ReportForm = ({ applyReportChanges, reportTemplate, submitReport }: ReportFormProps): JSX.Element => {
   return (
     <div className="mt-3 report-form">
       <h2>{reportTemplate.prompt}</h2>
       <form className="col-md-6" onSubmit={submitReport}>
         <input type="submit" value="Submit"/>
-        {buildQuestionFormField(reportTemplate, "")}
+        {buildQuestionFormField(reportTemplate, applyReportChanges, "")}
         <input type="submit" value="Submit"/>
       </form>
     </div>

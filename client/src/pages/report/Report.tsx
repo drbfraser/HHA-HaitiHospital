@@ -22,6 +22,11 @@ export const Report = () => {
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
   const [currentUser, setCurrentUser] = useState<ID>();
 
+  const applyReportChanges = () => {
+    const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+    setReportTemplate(serializer.deserialize(serializer.serialize(reportTemplate)));
+  };
+
   const clearCurrentDepartment = (): void => {
     setCurrentDepartment(undefined);
     setReportTemplate(undefined);
@@ -126,7 +131,11 @@ export const Report = () => {
               <i className="bi bi-chevron-left me-2" />
               Choose Different Department
             </button>
-            <ReportForm reportTemplate={reportTemplate} submitReport={submitReport}/>
+            <ReportForm
+              applyReportChanges={applyReportChanges}
+              reportTemplate={reportTemplate}
+              submitReport={submitReport}
+            />
           </>
         )}
       </main>
