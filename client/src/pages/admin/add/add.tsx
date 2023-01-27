@@ -1,53 +1,25 @@
-import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Department } from 'constants/interfaces';
 import { AdminUserFormData } from 'pages/admin/typing';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
-import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { createDepartmentMap } from 'utils/departmentMapper';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { useTranslation } from 'react-i18next';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import { AdminUserForm } from 'pages/admin/form/form';
-import useDidMountEffect from 'utils/custom_hooks';
 import { Spinner } from 'components/spinner/Spinner';
 import { ResponseMessage } from 'utils/response_message';
 import { Paths } from 'constants/paths';
-import { useQuery } from '@tanstack/react-query';
-import { QUERY_KEY } from 'constants/queryKeys';
 import './add.css';
+import { useDepartmentMap } from 'hooks';
 
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>(undefined);
-  const [fetch, setFetch] = useState<boolean>(false);
+  const departments = useDepartmentMap();
   const { t } = useTranslation();
   const history: History = useHistory<History>();
-
-  useQuery({
-    queryKey: QUERY_KEY.department,
-    queryFn: async () =>
-      await Api.Get(
-        ENDPOINT_DEPARTMENT_GET,
-        ResponseMessage.getMsgFetchDepartmentsFailed(),
-        history,
-      ),
-    staleTime: 60000,
-    onSuccess(data) {
-      setDepartments(createDepartmentMap(data));
-    },
-  });
-
-  useDidMountEffect(
-    function signalInitDataReady() {
-      if (departments !== undefined) setFetch(true);
-    },
-    [departments],
-  );
 
   const onSubmit = () => {
     toast.success(ResponseMessage.getMsgCreateUserOk());
@@ -67,7 +39,7 @@ export const AddUserForm = (props: AdminProps) => {
   return (
     <div className={'admin'}>
       <SideBar />
-      {fetch === false ? (
+      {!departments ? (
         <Spinner></Spinner>
       ) : (
         <main className="container-fluid main-region">
