@@ -13,12 +13,12 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
-import { useDepartmentMap } from 'hooks';
+import { useDepartmentData } from 'hooks';
 
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
-  const { departmentMap: departments } = useDepartmentMap();
+  const { departmentMap: departments } = useDepartmentData();
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
