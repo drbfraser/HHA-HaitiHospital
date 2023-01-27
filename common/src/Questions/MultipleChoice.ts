@@ -92,10 +92,8 @@ export class SingleSelectionQuestion<ID, ErrorType> extends MultipleChoiceQuesti
     }
 
     let oldAnswer: number | undefined = this.getAnswer();
-    if (typeof oldAnswer === 'number') {
-      this.choices[oldAnswer]?.unchoose();
-      this.choices[answer]?.choose();
-    }
+    typeof oldAnswer === 'number' && this.choices[oldAnswer]?.unchoose();
+    this.choices[answer]?.choose();
     super.setAnswer(answer);
   }
 }

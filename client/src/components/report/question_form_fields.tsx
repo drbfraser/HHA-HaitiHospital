@@ -4,6 +4,7 @@ import {
   ImmutableChoice,
   MultipleSelectionQuestion,
   NumericQuestion,
+  ObjectSerializer,
   QuestionGroup,
   QuestionNode,
   SingleSelectionQuestion,
@@ -29,12 +30,18 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
 
   return (
     <label htmlFor={id} className="form-label">
-      {orderedLabel}. {prompt}
+      {orderedLabel}.{prompt}
     </label>
   );
 };
 
 const NumericQuestionFormField = ({question, suffixName}: {question: NumericQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    formData.setAnswer(parseInt(e.target.value));
+    setFormData(serializer.deserialize(serializer.serialize(formData)));
+  };
+  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const [formData, setFormData] = useState<NumericQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
   const [nameId] = useState(`${question.getId()}${suffixName}`);
 
   return (
@@ -42,10 +49,11 @@ const NumericQuestionFormField = ({question, suffixName}: {question: NumericQues
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       <input
         className="form-control w-fit"
-        defaultValue={0}
-        type="number"
         min="0"
         name={nameId}
+        onChange={handleChange}
+        type="number"
+        value={formData.getAnswer()}
       />
     </FormField>
   );
@@ -76,19 +84,19 @@ const CompositionQuestionFormField = ({question, suffixName}: {question: Composi
         <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
         <input
           className="col-sm form-control w-fit"
-          type="number"
           min="0"
           name={nameId}
+          type="number"
         />
       </FormField>
       {question.map<JSX.Element>((group) => {
-        return (<div key={group.getId()}>
+        return (<div key={`${nameId}_${group.getId()}`}>
           <FormField>
-            <FormFieldLabel id={group.getId()} prompt={group.getPrompt()}/>
+            <FormFieldLabel id={`${nameId}_${group.getId()}`} prompt={group.getPrompt()}/>
           </FormField>
           {group.map((elem) => {
-            return (<FormField key={elem.getId()}>
-              <FormFieldLabel id={elem.getId()} prompt={elem.getPrompt()}/>
+            return (<FormField key={`${nameId}_${group.getId()}_${elem.getId()}`}>
+              <FormFieldLabel id={`${nameId}_${group.getId()}_${elem.getId()}`} prompt={elem.getPrompt()}/>
               <input
                 className="col-sm form-control w-fit"
                 type="number"
@@ -104,7 +112,13 @@ const CompositionQuestionFormField = ({question, suffixName}: {question: Composi
 };
 
 const ExpandableQuestionFormField = ({question, suffixName}: {question: ExpandableQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    formData.setAnswer(parseInt(e.target.value));
+    setFormData(serializer.deserialize(serializer.serialize(formData)));
+  };
+  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const [elements, setElements] = useState([]);
+  const [formData, setFormData] = useState<ExpandableQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
   const [nameId] = useState(`${question.getId()}${suffixName}`);
 
   return (
@@ -113,14 +127,13 @@ const ExpandableQuestionFormField = ({question, suffixName}: {question: Expandab
         <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
           className="col-sm form-control w-fit"
-          type="number"
           min="0"
           name={nameId}
           onChange={(e) => {
-            question.setAnswer(parseInt(e.target.value));
+            handleChange(e);
             setElements(
-              question.map<JSX.Element>((questions) => {
-                const itemId: string = `e${uuid()}`;
+              formData.map<JSX.Element>((questionGroup) => {
+                const itemId: string = `_${uuid()}`;
 
                 return (
                   <div className="accordion-item" key={itemId}>
@@ -143,7 +156,7 @@ const ExpandableQuestionFormField = ({question, suffixName}: {question: Expandab
                     >
                       <div className="accordion-body">
                         <fieldset className="mt-3">
-                          {buildQuestionFormField(questions, `-${itemId}`)}
+                          {buildQuestionFormField(questionGroup, itemId)}
                         </fieldset>
                       </div>
                     </div>
@@ -152,6 +165,8 @@ const ExpandableQuestionFormField = ({question, suffixName}: {question: Expandab
               }),
             );
           }}
+          type="number"
+          value={formData.getAnswer()}
         />
       </FormField>
       <div className="mt-3 mb-3 accordion" id={nameId}>
@@ -162,27 +177,30 @@ const ExpandableQuestionFormField = ({question, suffixName}: {question: Expandab
 };
 
 const SingleSelectionQuestionFormField = ({question, suffixName}: {question: SingleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
-  const [choices, setChoices] = useState(question.getChoices());
-  const [nameId] = useState(`${question.getId()}-${uuid()}${suffixName}`);
+  const getChangeHandler = (index: number) => () => {
+    formData.setAnswer(index);
+    setFormData(serializer.deserialize(serializer.serialize(formData)));
+  };
+  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const [formData, setFormData] = useState<SingleSelectionQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
+  const [nameId] = useState(`${question.getId()}${suffixName}`);
 
   return (
     <FormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      {choices.map((choice: ImmutableChoice, index) => {
+      {formData.getChoices().map((choice: ImmutableChoice, index) => {
         return (
-          <div key={`${nameId}-${index}`}>
+          <div key={`${nameId}_${index}`}>
             <input
-              id={`${nameId}-${index}`}
-              className="form-check-input"
-              name={nameId}
-              type="radio"
               checked={choice.wasChosen()}
-              onChange={() => {
-                question.setAnswer(index);
-                setChoices(question.getChoices());
-              }}
+              className="form-check-input"
+              id={`${nameId}_${index}`}
+              name={nameId}
+              onChange={getChangeHandler(index)}
+              type="radio"
             />
-            &nbsp;<label htmlFor={`${nameId}-${index}`}>{choice.getDescription()}</label>
+            &nbsp;
+            <label htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
           </div>
         );
       })}
@@ -191,24 +209,29 @@ const SingleSelectionQuestionFormField = ({question, suffixName}: {question: Sin
 };
 
 const MultiSelectionQuestionFormField = ({question, suffixName}: {question: MultipleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
-  const [nameId] = useState(`${question.getId()}-${uuid()}${suffixName}`);
+  const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
+    formData.setAnswer(choice.wasChosen() ? formData.getAnswer().filter((choiceIndex) => choiceIndex !== index) : formData.getAnswer().concat(index));
+    setFormData(serializer.deserialize(serializer.serialize(formData)));
+  };
+  const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const [formData, setFormData] = useState<MultipleSelectionQuestion<ID, ErrorType>>(serializer.deserialize(serializer.serialize(question)));
+  const [nameId] = useState(`${question.getId()}${suffixName}`);
 
   return (
     <FormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      {question.getChoices().map((choice: ImmutableChoice, index) => (
-        <div key={`${nameId}-${index}`}>
+      {formData.getChoices().map((choice: ImmutableChoice, index) => (
+        <div key={`${nameId}_${index}`}>
           <input
-            id={`${nameId}-${index}`}
-            className="form-check-input"
-            name={`${nameId}-${index}`}
-            type="checkbox"
             checked={choice.wasChosen()}
-            onChange={() => {
-              question.setAnswer(choice.wasChosen() ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index) : question.getAnswer().concat(index));
-            }}
+            className="form-check-input"
+            id={`${nameId}_${index}`}
+            name={`${nameId}_${index}`}
+            onChange={getChangeHandler(choice, index)}
+            type="checkbox"
           />
-          &nbsp;<label htmlFor={`${nameId}-${index}`}>{choice.getDescription()}</label>
+          &nbsp;
+          <label htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
         </div>
       ))}
     </FormField>

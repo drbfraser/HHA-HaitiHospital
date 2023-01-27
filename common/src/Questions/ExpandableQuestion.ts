@@ -16,7 +16,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
   private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
   private readonly idGenerator: (questionGroupIndex: number) => ID;
-  private answer: number | undefined;
+  private answer: number | undefined = 0;
 
   constructor(
     id: ID,

@@ -193,17 +193,20 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
   const q8: NumericQuestion<string, string> = new NumericQuestion<string, string>(
     '8',
     'Days hospitalised',
+    0
   );
   const q9: NumericQuestion<string, string> = new NumericQuestion<string, string>('9', 'Referrals');
   const q10: NumericQuestion<string, string> = new NumericQuestion<string, string>(
     '10',
     'Transfers',
+    0
   );
 
   // Question 11
   const q11: NumericQuestion<string, string> = new NumericQuestion<string, string>(
     '11',
     'Self-discharged',
+    0
   );
   /* UNUSED
   const q11_1: SingleSelectionQuestion<string, string> = new SingleSelectionQuestion<string, string>('11_1', 'Reason for self-discharge', [
