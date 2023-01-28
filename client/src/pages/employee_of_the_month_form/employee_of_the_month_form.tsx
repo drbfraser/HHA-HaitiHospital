@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SideBar from 'components/side_bar/side_bar';
@@ -6,22 +6,19 @@ import Header from 'components/header/header';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
 import Api from '../../actions/Api';
 import { Department, GeneralDepartment } from 'constants/interfaces';
-import initialDepartments from 'utils/json/departments.json';
-import { createDepartmentMap } from 'utils/departmentMapper';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT, ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT, TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toast_messages';
 import './employee_of_the_month_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
+import { useDepartmentData } from 'hooks';
 
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>(
-    createDepartmentMap(initialDepartments.departments),
-  );
+  const { departmentMap: departments } = useDepartmentData();
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
@@ -53,15 +50,6 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
       history,
     );
   };
-
-  useEffect(() => {
-    const getDepartments = async () => {
-      setDepartments(
-        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-      );
-    };
-    getDepartments();
-  }, [history]);
 
   return (
     <div className="employee-of-the-month-form">

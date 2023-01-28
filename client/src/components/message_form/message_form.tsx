@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
-import { Message, emptyMessage } from 'constants/interfaces';
+import { Message } from 'constants/interfaces';
 import { Department } from 'constants/interfaces';
-import Api from '../../actions/Api';
-import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import { History } from 'history';
-import initialDepartments from 'utils/json/departments.json';
-import { createDepartmentMap } from 'utils/departmentMapper';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useDepartmentData } from 'hooks';
 
 interface MessageFormProps {
   optionalMsg?: Message;
@@ -18,33 +12,11 @@ interface MessageFormProps {
 }
 
 const MessageForm = (props: MessageFormProps) => {
-  const [departments, setDepartments] = useState<Map<string, Department>>(
-    createDepartmentMap(initialDepartments.departments),
-  );
-  const history: History = useHistory<History>();
+  const { departmentMap: departments } = useDepartmentData();
+
   const { t, i18n } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
-  const [prefilledMsg, setPrefilledMsg] = useState<Message>(props.optionalMsg || emptyMessage);
   const [department, setDepartment] = useState<string>('');
-
-  useEffect(() => {
-    const getDepartments = async () => {
-      setDepartments(
-        createDepartmentMap(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history)),
-      );
-    };
-    let isMounted = true;
-    if (isMounted) {
-      getDepartments();
-      if (props.optionalMsg !== undefined) {
-        setPrefilledMsg(props.optionalMsg);
-      }
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [props.optionalMsg, history]);
 
   const onSubmit = (data: any) => {
     if (data.department === '') {
@@ -73,7 +45,7 @@ const MessageForm = (props: MessageFormProps) => {
             onChange={(e) => setDepartment(e.target.value)}
           >
             <option value="">{t('addMessageSelect')} </option>
-            {Array.from(departments.values()).map((dept: Department, index: number) => (
+            {Array.from(departments?.values()).map((dept: Department, index: number) => (
               <option key={index} value={dept.name}>
                 {dept.name}
               </option>
@@ -91,7 +63,7 @@ const MessageForm = (props: MessageFormProps) => {
           className="form-control"
           type="text"
           {...register('messageHeader')}
-          defaultValue={prefilledMsg['messageHeader']}
+          defaultValue={props?.optionalMsg?.messageHeader || ''}
         />
       </div>
 
@@ -105,7 +77,7 @@ const MessageForm = (props: MessageFormProps) => {
           {...register('messageBody')}
           cols={30}
           rows={10}
-          defaultValue={prefilledMsg['messageBody']}
+          defaultValue={props?.optionalMsg?.messageBody || ''}
         ></textarea>
       </div>
 
