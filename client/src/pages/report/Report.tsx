@@ -38,10 +38,10 @@ export const Report = () => {
       departmentId: currentDepartment.id,
       reportMonth: new Date(today.getFullYear(), today.getMonth()),
       serializedReport: report,
-      submittedUserId: currentUser
+      submittedUserId: currentUser,
     };
     console.log(reportObject);
-    Api.Post(ENDPOINT_REPORTS_POST, reportObject, () => {}, "", history);
+    Api.Post(ENDPOINT_REPORTS_POST, reportObject, () => {}, '', history);
   };
 
   useEffect(() => {

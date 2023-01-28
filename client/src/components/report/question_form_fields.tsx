@@ -7,7 +7,7 @@ import {
   QuestionGroup,
   QuestionNode,
   SingleSelectionQuestion,
-  TextQuestion
+  TextQuestion,
 } from '@hha/common';
 import { useState } from 'react';
 import './styles.css';
@@ -33,7 +33,15 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   );
 };
 
-const NumericQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: NumericQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+const NumericQuestionFormField = ({
+  applyReportChanges,
+  question,
+  suffixName,
+}: {
+  applyReportChanges: () => void;
+  question: NumericQuestion<ID, ErrorType>;
+  suffixName: string;
+}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(e.target.value));
@@ -55,7 +63,15 @@ const NumericQuestionFormField = ({applyReportChanges, question, suffixName}: {a
   );
 };
 
-const TextQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: TextQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+const TextQuestionFormField = ({
+  applyReportChanges,
+  question,
+  suffixName,
+}: {
+  applyReportChanges: () => void;
+  question: TextQuestion<ID, ErrorType>;
+  suffixName: string;
+}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(e.target.value);
@@ -76,43 +92,71 @@ const TextQuestionFormField = ({applyReportChanges, question, suffixName}: {appl
   );
 };
 
-const CompositionQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: CompositionQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+const CompositionQuestionFormField = ({
+  applyReportChanges,
+  question,
+  suffixName,
+}: {
+  applyReportChanges: () => void;
+  question: CompositionQuestion<ID, ErrorType>;
+  suffixName: string;
+}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    question.setAnswer(parseInt(e.target.value));
+    applyReportChanges();
+  };
 
   return (
     <>
       <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
           className="col-sm form-control w-fit"
           min="0"
           name={nameId}
+          onChange={handleChange}
           type="number"
         />
       </FormField>
       {question.map<JSX.Element>((group) => {
-        return (<div key={`${nameId}_${group.getId()}`}>
-          <FormField>
-            <FormFieldLabel id={`${nameId}_${group.getId()}`} prompt={group.getPrompt()}/>
-          </FormField>
-          {group.map((elem) => {
-            return (<FormField key={`${nameId}_${group.getId()}_${elem.getId()}`}>
-              <FormFieldLabel id={`${nameId}_${group.getId()}_${elem.getId()}`} prompt={elem.getPrompt()}/>
-              <input
-                className="col-sm form-control w-fit"
-                type="number"
-                min="0"
-                onChange={(e) => {}}
-              />
-            </FormField>);
-          })}
-        </div>);
+        return (
+          <div key={`${nameId}_${group.getId()}`}>
+            <FormField>
+              <FormFieldLabel id={`${nameId}_${group.getId()}`} prompt={group.getPrompt()} />
+            </FormField>
+            {group.map((elem) => {
+              return (
+                <FormField key={`${nameId}_${group.getId()}_${elem.getId()}`}>
+                  <FormFieldLabel
+                    id={`${nameId}_${group.getId()}_${elem.getId()}`}
+                    prompt={elem.getPrompt()}
+                  />
+                  <input
+                    className="col-sm form-control w-fit"
+                    type="number"
+                    min="0"
+                    onChange={(e) => {}}
+                  />
+                </FormField>
+              );
+            })}
+          </div>
+        );
       })}
     </>
   );
 };
 
-const ExpandableQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: ExpandableQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
+const ExpandableQuestionFormField = ({
+  applyReportChanges,
+  question,
+  suffixName,
+}: {
+  applyReportChanges: () => void;
+  question: ExpandableQuestion<ID, ErrorType>;
+  suffixName: string;
+}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(e.target.value));
@@ -162,7 +206,7 @@ const ExpandableQuestionFormField = ({applyReportChanges, question, suffixName}:
                     {buildQuestionFormField({
                       applyReportChanges: applyReportChanges,
                       questions: questionGroup,
-                      suffixName: itemId
+                      suffixName: itemId,
                     })}
                   </fieldset>
                 </div>
@@ -175,7 +219,15 @@ const ExpandableQuestionFormField = ({applyReportChanges, question, suffixName}:
   );
 };
 
-const SingleSelectionQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: SingleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
+const SingleSelectionQuestionFormField = ({
+  applyReportChanges,
+  question,
+  suffixName,
+}: {
+  applyReportChanges: () => void;
+  question: SingleSelectionQuestion<ID, ErrorType>;
+  suffixName: string;
+}) => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
   const getChangeHandler = (index: number) => () => {
     question.setAnswer(index);
@@ -205,10 +257,22 @@ const SingleSelectionQuestionFormField = ({applyReportChanges, question, suffixN
   );
 };
 
-const MultiSelectionQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: MultipleSelectionQuestion<ID, ErrorType>, suffixName: string}) => {
+const MultiSelectionQuestionFormField = ({
+  applyReportChanges,
+  question,
+  suffixName,
+}: {
+  applyReportChanges: () => void;
+  question: MultipleSelectionQuestion<ID, ErrorType>;
+  suffixName: string;
+}) => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
   const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
-    question.setAnswer(choice.wasChosen() ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index) : question.getAnswer().concat(index));
+    question.setAnswer(
+      choice.wasChosen()
+        ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index)
+        : question.getAnswer().concat(index),
+    );
     applyReportChanges();
   };
 
@@ -233,7 +297,15 @@ const MultiSelectionQuestionFormField = ({applyReportChanges, question, suffixNa
   );
 };
 
-const buildQuestionFormField = ({applyReportChanges, questions, suffixName}: {applyReportChanges: () => void, questions: QuestionGroup<ID, ErrorType>, suffixName: string}): JSX.Element => {
+const buildQuestionFormField = ({
+  applyReportChanges,
+  questions,
+  suffixName,
+}: {
+  applyReportChanges: () => void;
+  questions: QuestionGroup<ID, ErrorType>;
+  suffixName: string;
+}): JSX.Element => {
   return (
     <FormField>
       {' ' /* TODO: use better ways to add margins or pad components */}
@@ -257,8 +329,7 @@ const buildQuestionFormField = ({applyReportChanges, questions, suffixName}: {ap
               suffixName={suffixName}
             />
           );
-        })}
-      {' '}
+        })}{' '}
     </FormField>
   );
 };
@@ -269,18 +340,22 @@ interface ReportFormProps {
   submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export const ReportForm = ({ applyReportChanges, reportData, submitReport }: ReportFormProps): JSX.Element => {
+export const ReportForm = ({
+  applyReportChanges,
+  reportData,
+  submitReport,
+}: ReportFormProps): JSX.Element => {
   return (
     <div className="mt-3 report-form">
       <h2>{reportData.getPrompt()}</h2>
       <form className="col-md-6" onSubmit={submitReport}>
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Submit" />
         {buildQuestionFormField({
           applyReportChanges: applyReportChanges,
           questions: reportData,
-          suffixName: ""
+          suffixName: '',
         })}
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Submit" />
       </form>
     </div>
   );
