@@ -159,7 +159,11 @@ const ExpandableQuestionFormField = ({applyReportChanges, question, suffixName}:
               >
                 <div className="accordion-body">
                   <fieldset className="mt-3">
-                    {buildQuestionFormField(questionGroup, applyReportChanges, itemId)}
+                    {buildQuestionFormField({
+                      applyReportChanges: applyReportChanges,
+                      questions: questionGroup,
+                      suffixName: itemId
+                    })}
                   </fieldset>
                 </div>
               </div>
@@ -229,7 +233,7 @@ const MultiSelectionQuestionFormField = ({applyReportChanges, question, suffixNa
   );
 };
 
-const buildQuestionFormField = (questions: QuestionGroup<ID, ErrorType>, applyReportChanges: () => void, suffixName: string): JSX.Element => {
+const buildQuestionFormField = ({applyReportChanges, questions, suffixName}: {applyReportChanges: () => void, questions: QuestionGroup<ID, ErrorType>, suffixName: string}): JSX.Element => {
   return (
     <FormField>
       {' ' /* TODO: use better ways to add margins or pad components */}
@@ -265,13 +269,17 @@ interface ReportFormProps {
   submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export const ReportForm = ({ applyReportChanges, reportData: reportTemplate, submitReport }: ReportFormProps): JSX.Element => {
+export const ReportForm = ({ applyReportChanges, reportData, submitReport }: ReportFormProps): JSX.Element => {
   return (
     <div className="mt-3 report-form">
-      <h2>{reportTemplate.prompt}</h2>
+      <h2>{reportData.getPrompt()}</h2>
       <form className="col-md-6" onSubmit={submitReport}>
         <input type="submit" value="Submit"/>
-        {buildQuestionFormField(reportTemplate, applyReportChanges, "")}
+        {buildQuestionFormField({
+          applyReportChanges: applyReportChanges,
+          questions: reportData,
+          suffixName: ""
+        })}
         <input type="submit" value="Submit"/>
       </form>
     </div>

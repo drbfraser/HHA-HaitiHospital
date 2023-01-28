@@ -84,7 +84,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
     this.questionGroups.forEach(groupHandler);
   }
 
-  public map<T>(mapper: (groupInstance: QuestionGroup<ID, ErrorType>) => T): T[] {
+  public map<T>(mapper: (groupInstance: QuestionGroup<ID, ErrorType>, index: number) => T): T[] {
     return this.questionGroups.map(mapper);
   }
 }
