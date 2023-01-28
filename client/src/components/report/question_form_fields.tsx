@@ -10,7 +10,6 @@ import {
   TextQuestion
 } from '@hha/common';
 import { useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import './styles.css';
 
 type FunctionalComponent = (object: Object) => JSX.Element;
@@ -59,7 +58,7 @@ const NumericQuestionFormField = ({applyReportChanges, question, suffixName}: {a
 const TextQuestionFormField = ({applyReportChanges, question, suffixName}: {applyReportChanges: () => void, question: TextQuestion<ID, ErrorType>, suffixName: string}): JSX.Element => {
   const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(parseInt(e.target.value));
+    question.setAnswer(e.target.value);
     applyReportChanges();
   };
 
