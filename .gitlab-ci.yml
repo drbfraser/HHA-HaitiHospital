@@ -3,7 +3,9 @@ stages:
   - test-dependencies
   - build
   - deploy
-
+services:
+  - mongo:5.0.6-focal
+  - alias db-mongo
 test-build common:
   stage: build-dependencies
   image: node:16
