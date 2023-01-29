@@ -1,7 +1,7 @@
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/question_form_fields';
-import { ENDPOINT_REPORTS_POST, ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { ENDPOINT_ADMIN_ME, ENDPOINT_REPORTS_POST, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import Api from 'actions/Api';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
@@ -19,7 +19,7 @@ export const Report = () => {
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const { departments } = useDepartmentData();
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
-  const [currentUser] = useState<ID>();
+  const [currentUser, setCurrentUser] = useState<ID>();
 
   const applyReportChanges = () => {
     const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
@@ -43,6 +43,18 @@ export const Report = () => {
     console.log(reportObject);
     Api.Post(ENDPOINT_REPORTS_POST, reportObject, () => {}, '', history);
   };
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const fetchedUser = await Api.Get(
+        ENDPOINT_ADMIN_ME,
+        "",
+        history,
+      );
+      setCurrentUser(fetchedUser.id);
+    }
+    getCurrentUser();
+  }, [history]);
 
   useEffect(() => {
     const getTemplates = async () => {
