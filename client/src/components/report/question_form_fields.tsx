@@ -10,21 +10,12 @@ import {
   ImmutableChoice,
   ValidationResult,
 } from '@hha/common';
-import { useEffect, useState } from 'react';
+import { isNumber } from 'lodash';
+import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import './styles.css';
 
-const useMountEffect = (fun) => useEffect(fun, [])
 type FunctionalComponent = (object: Object) => JSX.Element;
-
-const nonNegativeValidator: (answer?: number) => ValidationResult<ErrorType> = (answer) => {
-  if (answer !== undefined && answer < 0) {
-      return {isValid: false, error: 'NEGATIVE_NUMBER', message: 'Answer cannot be negative'}
-  } else {
-      return {isValid: true}
-  }
-};
-
 
 // Temporary placeholders
 // TODO: Decide on an appropriate types for those
@@ -39,9 +30,9 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
   return (
-      <label htmlFor={id} className="form-label">
-        {orderedLabel}. {prompt}
-      </label>
+    <label htmlFor={id} className="form-label">
+      {orderedLabel}. {prompt}
+    </label>
   );
 };
 
@@ -63,30 +54,40 @@ const NumericQuestionFormField = ({
 }: {
   question: NumericQuestion<ID, ErrorType>;
 }): JSX.Element => {
-  useMountEffect(()=>{question.addValidator(nonNegativeValidator)})
-  const [error, setError] = useState(!question.isValid());
+  const [error, setError] = useState({ isValid: true, message: '', error: '' });
+  const [validator, setValidator] = useState(question.getValidator());
   const [inputValue, setInputValue] = useState(question.getAnswer());
 
   const handleChange = (event) => {
     const newValue = event.target.value;
     setInputValue(newValue);
-    const {isValid}=nonNegativeValidator(newValue);
-    setError(!isValid);
+
+    if (!isNaN(parseInt(newValue))) {
+      if (validator !== undefined) {
+        setError(Function('x', validator)(newValue));
+        console.log(error);
+      } else {
+        setError({ isValid: true, message: '', error: '' });
+      }
+    } else {
+      setError({ isValid: false, message: 'Please input an integer', error: 'NOT_A_INTEGER' });
+    }
   };
 
   return (
     <FormField>
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
       <div className="col-md-6">
-      <input
-        className={error ? 'form-control w-fit is-invalid' : 'form-control w-fit'}
-        type="number"
-        min="0"
-        id={question.getId()}
-        value={inputValue}
-        onChange={handleChange}
-      />
-      {error && <div className="invalid-feedback">Please input a non-negative number</div>}
+        <input
+          className={error.isValid ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+          type="number"
+          min="0"
+          id={question.getId()}
+          value={inputValue}
+          onChange={handleChange}
+        />
+
+        {error.isValid ? null : <div className="invalid-feedback">{error.message}</div>}
       </div>
     </FormField>
   );
