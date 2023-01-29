@@ -1,9 +1,10 @@
 stages:
   - build-dependencies
+  - test-dependencies
   - build
   - deploy
 
-build common:
+test-build common:
   stage: build-dependencies
   image: node:16
   tags:
@@ -16,14 +17,14 @@ build common:
     - cd common
     - npm ci
   script:
+    - npm run test
     - npm run build
   after_script:
     - cd common && tar -czf ../common_build.tar.gz .
   artifacts:
     expire_in: 1 week
     paths:
-      - common_build.tar.gz  
-
+      - common_build.tar.gz
 build server:
   stage: build
   image: node:16

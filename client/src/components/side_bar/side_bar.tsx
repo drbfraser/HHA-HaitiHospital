@@ -1,16 +1,11 @@
-import { useState, useEffect } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { Role, Department, GeneralDepartment } from 'constants/interfaces';
-import Api from '../../actions/Api';
-import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
-import { History } from 'history';
-import initialDepartments from 'utils/json/departments.json';
+import { useDepartmentData } from 'hooks';
 
 interface SidebarProps {}
 
@@ -22,17 +17,9 @@ export const changeLanguage = (ln, i18n) => {
 };
 
 const Sidebar = (props: SidebarProps) => {
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments.departments);
+  const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
-  const history: History = useHistory<History>();
-
-  useEffect(() => {
-    const getDepartments = async () => {
-      setDepartments(await Api.Get(ENDPOINT_DEPARTMENT_GET, TOAST_DEPARTMENT_GET, history));
-    };
-    getDepartments();
-  }, [history]);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
@@ -143,7 +130,7 @@ const Sidebar = (props: SidebarProps) => {
             </li>
           ) : null}
 
-          {departments.map((dept: Department, index: number) => {
+          {departments?.map((dept: Department, index: number) => {
             const deptName = dept.name;
             const deptId = dept.id;
 

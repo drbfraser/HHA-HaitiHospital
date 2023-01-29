@@ -1,15 +1,12 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import Api from 'actions/Api';
 import './general_reports_styles.css';
 import { useTranslation } from 'react-i18next';
 import { Department, GeneralDepartment } from 'constants/interfaces';
-import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { createDepartmentMap } from 'utils/departmentMapper';
-import { ResponseMessage } from 'utils/response_message';
 import { History } from 'history';
+import { useDepartmentData } from 'hooks';
 
 interface ChangeTemplateProps extends RouteComponentProps {}
 
@@ -18,22 +15,7 @@ export const ChangeTemplate = (props: ChangeTemplateProps) => {
   const [templateFile, setTemplateFile] = useState<File>(null);
   const history: History = useHistory<History>();
   const [department, setDepartment] = useState<Department>(null);
-  const [departments, setDepartments] = useState<Map<string, Department>>(undefined);
-
-  useEffect(() => {
-    const getDepartments = async () => {
-      setDepartments(
-        createDepartmentMap(
-          await Api.Get(
-            ENDPOINT_DEPARTMENT_GET,
-            ResponseMessage.getMsgFetchDepartmentsFailed(),
-            history,
-          ),
-        ),
-      );
-    };
-    getDepartments();
-  }, [history]);
+  const { departments } = useDepartmentData();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
