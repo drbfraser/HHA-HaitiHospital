@@ -28,5 +28,4 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
   public getValidator(): string | undefined {
     return this.validator;
   }
-
 }
