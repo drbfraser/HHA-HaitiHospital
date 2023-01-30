@@ -9,6 +9,7 @@ import {
   QuestionGroup,
   ImmutableChoice,
   ValidationResult,
+  runValidators,
 } from '@hha/common';
 import { isNumber } from 'lodash';
 import { useState } from 'react';
@@ -55,7 +56,7 @@ const NumericQuestionFormField = ({
   question: NumericQuestion<ID, ErrorType>;
 }): JSX.Element => {
   const [inputState, setInputState] = useState({ isValid: true, message: '', error: '' });
-  const [validator, setValidator] = useState(question.getValidator());
+  const [validators, setValidators] = useState(question.getValidators());
   const [inputValue, setInputValue] = useState(question.getAnswer());
 
   const handleChange = (event) => {
@@ -63,8 +64,15 @@ const NumericQuestionFormField = ({
     setInputValue(newValue);
 
     if (!isNaN(parseInt(newValue))) {
-      if (validator !== undefined) {
-        setInputState(Function('x', validator)(newValue));
+      if (validators !== undefined) {
+        for (let i = 0; i < validators.length; i++) {
+          const validatorName = validators[i];
+          const validationResult = runValidators[validatorName](newValue);
+          setInputState(validationResult);
+          if (!validationResult.isValid) {
+            break;
+          }
+        }
       } else {
         setInputState({ isValid: true, message: '', error: '' });
       }

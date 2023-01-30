@@ -10,11 +10,12 @@ export interface ValidationResult<ErrorType> {
 export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, ErrorType> {
   private answer: T | undefined;
 
-  private readonly validator: string | undefined;
+  private readonly validators: string[] | undefined;
 
   constructor(id: ID, prompt: string, defaultAnswer?: T) {
     super(id, prompt);
     this.answer = defaultAnswer;
+    this.validators = [];
   }
 
   public getAnswer(): T | undefined {
@@ -25,7 +26,11 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
     this.answer = answer;
   }
 
-  public getValidator(): string | undefined {
-    return this.validator;
+  public getValidators(): string[] | undefined {
+    return this.validators;
+  }
+
+  public addValidator(validator: string): void {
+    this.validators?.push(validator);
   }
 }
