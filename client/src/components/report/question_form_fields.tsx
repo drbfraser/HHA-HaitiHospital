@@ -54,7 +54,7 @@ const NumericQuestionFormField = ({
 }: {
   question: NumericQuestion<ID, ErrorType>;
 }): JSX.Element => {
-  const [error, setError] = useState({ isValid: true, message: '', error: '' });
+  const [inputState, setInputState] = useState({ isValid: true, message: '', error: '' });
   const [validator, setValidator] = useState(question.getValidator());
   const [inputValue, setInputValue] = useState(question.getAnswer());
 
@@ -64,13 +64,12 @@ const NumericQuestionFormField = ({
 
     if (!isNaN(parseInt(newValue))) {
       if (validator !== undefined) {
-        setError(Function('x', validator)(newValue));
-        console.log(error);
+        setInputState(Function('x', validator)(newValue));
       } else {
-        setError({ isValid: true, message: '', error: '' });
+        setInputState({ isValid: true, message: '', error: '' });
       }
     } else {
-      setError({ isValid: false, message: 'Please input an integer', error: 'NOT_A_INTEGER' });
+      setInputState({ isValid: false, message: 'Please input an integer', error: 'NOT_A_INTEGER' });
     }
   };
 
@@ -79,7 +78,7 @@ const NumericQuestionFormField = ({
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
       <div className="col-md-6">
         <input
-          className={error.isValid ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+          className={inputState.isValid ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
           type="number"
           min="0"
           id={question.getId()}
@@ -87,7 +86,7 @@ const NumericQuestionFormField = ({
           onChange={handleChange}
         />
 
-        {error.isValid ? null : <div className="invalid-feedback">{error.message}</div>}
+        {inputState.isValid ? null : <div className="invalid-feedback">{inputState.message}</div>}
       </div>
     </FormField>
   );
