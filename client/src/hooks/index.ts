@@ -1,3 +1,4 @@
+import useCurrentUserData from './useCurrentUserData';
 import useDepartmentData from './useDepartmentData';
 
-export { useDepartmentData };
+export { useCurrentUserData, useDepartmentData };
