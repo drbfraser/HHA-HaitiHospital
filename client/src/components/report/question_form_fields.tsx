@@ -9,7 +9,6 @@ import {
   SingleSelectionQuestion,
   TextQuestion,
 } from '@hha/common';
-import { useState } from 'react';
 import './styles.css';
 
 type FunctionalComponent = (object: Object) => JSX.Element;
@@ -33,6 +32,7 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   );
 };
 
+// TODO: Refactor the below components since they're all similar
 const NumericQuestionFormField = ({
   applyReportChanges,
   question,
@@ -42,11 +42,11 @@ const NumericQuestionFormField = ({
   question: NumericQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(e.target.value));
     applyReportChanges();
   };
+  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <FormField>
@@ -72,11 +72,11 @@ const TextQuestionFormField = ({
   question: TextQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(e.target.value);
     applyReportChanges();
   };
+  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <FormField>
@@ -101,11 +101,11 @@ const CompositionQuestionFormField = ({
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(e.target.value));
     applyReportChanges();
   };
+  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <>
@@ -117,30 +117,25 @@ const CompositionQuestionFormField = ({
           name={nameId}
           onChange={handleChange}
           type="number"
+          value={question.getAnswer()}
         />
       </FormField>
       {question.map<JSX.Element>((group) => {
+        const groupId = `${group.getId()}${suffixName}`;
+
         return (
-          <div key={`${nameId}_${group.getId()}`}>
+          <div key={groupId}>
             <FormField>
-              <FormFieldLabel id={`${nameId}_${group.getId()}`} prompt={group.getPrompt()} />
+              <FormFieldLabel id={groupId} prompt={group.getPrompt()} />
             </FormField>
-            {group.map((elem) => {
-              return (
-                <FormField key={`${nameId}_${group.getId()}_${elem.getId()}`}>
-                  <FormFieldLabel
-                    id={`${nameId}_${group.getId()}_${elem.getId()}`}
-                    prompt={elem.getPrompt()}
-                  />
-                  <input
-                    className="col-sm form-control w-fit"
-                    type="number"
-                    min="0"
-                    onChange={(e) => {}}
-                  />
-                </FormField>
-              );
-            })}
+            {group.map((elem) => (
+              <NumericQuestionFormField
+                applyReportChanges={applyReportChanges}
+                key={`${elem.getId()}${suffixName}`}
+                question={elem}
+                suffixName={suffixName}
+              />
+            ))}
           </div>
         );
       })}
@@ -157,11 +152,11 @@ const ExpandableQuestionFormField = ({
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [nameId] = useState(`${question.getId()}${suffixName}`);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(e.target.value));
     applyReportChanges();
   };
+  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <>
@@ -178,14 +173,12 @@ const ExpandableQuestionFormField = ({
       </FormField>
       <div className="mt-3 mb-3 accordion" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          //const itemId: string = `_${uuid()}`;
           const itemId: string = `_${index}`;
 
           return (
             <div className="accordion-item" key={itemId}>
               <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
                 <button
-                  //className="accordion-button collapsed"
                   className="accordion-button"
                   type="button"
                   data-bs-toggle="collapse"
@@ -228,11 +221,11 @@ const SingleSelectionQuestionFormField = ({
   question: SingleSelectionQuestion<ID, ErrorType>;
   suffixName: string;
 }) => {
-  const [nameId] = useState(`${question.getId()}${suffixName}`);
   const getChangeHandler = (index: number) => () => {
     question.setAnswer(index);
     applyReportChanges();
   };
+  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <FormField>
@@ -266,7 +259,6 @@ const MultiSelectionQuestionFormField = ({
   question: MultipleSelectionQuestion<ID, ErrorType>;
   suffixName: string;
 }) => {
-  const [nameId] = useState(`${question.getId()}${suffixName}`);
   const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
     question.setAnswer(
       choice.wasChosen()
@@ -275,6 +267,7 @@ const MultiSelectionQuestionFormField = ({
     );
     applyReportChanges();
   };
+  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <FormField>
@@ -324,7 +317,7 @@ const buildQuestionFormField = ({
           return (
             <FormFieldComponent
               applyReportChanges={applyReportChanges}
-              key={question.getId()}
+              key={`${question.getId()}${suffixName}`}
               question={question}
               suffixName={suffixName}
             />
