@@ -8,7 +8,7 @@ import { SpecializedGroup } from './SpecializedGroup';
 
 @serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
-  private answer: number | undefined;
+  private answer: number | undefined = 0;
   private readonly compositionGroups: Array<
     SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>
   >;
