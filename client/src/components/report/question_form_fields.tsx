@@ -73,15 +73,17 @@ const NumericQuestionFormField = ({
   return (
     <FormField>
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
-      <input
-        className={inputState.isValid ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
-        min="0"
-        name={nameId}
-        onChange={handleChange}
-        type="number"
-        value={question.getAnswer()}
-      />
-      {inputState.isValid ? null : <div className="invalid-feedback">{inputState.message}</div>}
+      <div className="col-md-6">
+        <input
+          className={inputState.isValid ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+          min="0"
+          name={nameId}
+          onChange={handleChange}
+          type="number"
+          value={question.getAnswer()}
+        />
+        {inputState.isValid ? null : <div className="invalid-feedback">{inputState.message}</div>}
+      </div>
     </FormField>
   );
 };
