@@ -2,7 +2,6 @@ import { IRouter, NextFunction, Response } from 'express';
 import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
 import { REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
-import { serializeReportObject } from 'utils/serializer';
 import {
   HTTP_CREATED_CODE,
   HTTP_OK_CODE,
@@ -50,7 +49,7 @@ router
         throw new Unauthorized(`User not authorized`);
       }
 
-      res.status(HTTP_OK_CODE).json({ report: serializeReportObject(report) });
+      res.status(HTTP_OK_CODE).json({ report: report });
     } catch (e) {
       next(e);
     }

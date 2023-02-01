@@ -33,7 +33,6 @@ const GeneralReports = () => {
     setReports(fetchedReports);
   }, [history]);
   const { departmentIdKeyMap } = useDepartmentData();
-  console.log(departmentIdKeyMap);
   useEffect(() => {
     getReports();
   }, [getReports]);
@@ -89,7 +88,7 @@ const GeneralReports = () => {
                     <td>{item.submittedUserId}</td>
                     <td>
                       <Link
-                        to={'/report-view/' + item.reportObject.id}
+                        to={'/report-view/' + item._id}
                         className="btn-link text-decoration-none"
                       >
                         {t('reportsOpenReport')}
