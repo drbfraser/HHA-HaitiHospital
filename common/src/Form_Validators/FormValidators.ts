@@ -1,7 +1,13 @@
-type Validator = (x: number) => { isValid: boolean; error?: string; message?: string };
+import { ValidationResult } from '../Questions';
 
-export const runValidators: { [key: string]: Validator } = {
-  isEven: (x) =>
+export interface Validator<T> {
+  (x: T): ValidationResult<string>;
+}
+
+export const runNumericValidators: { [key: string]: Validator<number> } = {
+  isEven: (
+    x, 
+  ) =>
     x % 2 === 0
       ? { isValid: true, message: '', error: '' }
       : { isValid: false, error: 'ODD_NUMBER', message: 'Please input an even number' },

@@ -45,7 +45,6 @@ const NumericQuestionFormField = ({
   suffixName: string;
 }): JSX.Element => {
   const [inputState, setInputState] = useState({ isValid: true, message: '', error: '' });
-  const validators = question.getValidators();
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event) => {
@@ -53,18 +52,7 @@ const NumericQuestionFormField = ({
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
     if (!isNaN(parseInt(newValue))) {
-      if (validators !== undefined) {
-        for (let i = 0; i < validators.length; i++) {
-          const validatorName = validators[i];
-          const validationResult = runValidators[validatorName](newValue);
-          setInputState(validationResult);
-          if (!validationResult.isValid) {
-            break;
-          }
-        }
-      } else {
-        setInputState({ isValid: true, message: '', error: '' });
-      }
+      setInputState(question.getValidationResults());
     } else {
       setInputState({ isValid: false, message: 'Please input an integer', error: 'NOT_A_INTEGER' });
     }
