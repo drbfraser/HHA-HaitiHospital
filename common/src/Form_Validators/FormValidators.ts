@@ -5,9 +5,7 @@ export interface Validator<T> {
 }
 
 export const runNumericValidators: { [key: string]: Validator<number> } = {
-  isEven: (
-    x, 
-  ) =>
+  isEven: (x) =>
     x % 2 === 0
       ? { isValid: true, message: '', error: '' }
       : { isValid: false, error: 'ODD_NUMBER', message: 'Please input an even number' },
@@ -20,3 +18,16 @@ export const runNumericValidators: { [key: string]: Validator<number> } = {
       ? { isValid: true, message: '', error: '' }
       : { isValid: false, error: 'NEGATIVE_NUMBER', message: 'Please input a non-negative number' },
 };
+
+//Error messages for different types of questions
+export const ERROR_NOT_A_INTEGER: ValidationResult<string> = {
+  isValid: false,
+  message: 'Please input an integer',
+  error: 'NOT_A_INTEGER',
+};
+
+//Validators for different types of questions
+export const isNumber = (x: any): boolean => {
+  return !isNaN(parseInt(x));
+};
+

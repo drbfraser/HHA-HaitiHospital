@@ -8,7 +8,9 @@ import {
   QuestionNode,
   SingleSelectionQuestion,
   TextQuestion,
-  ValidationResult
+  ValidationResult,
+  isNumber,
+  ERROR_NOT_A_INTEGER,
 } from '@hha/common';
 import { useState } from 'react';
 import './styles.css';
@@ -44,17 +46,21 @@ const NumericQuestionFormField = ({
   question: NumericQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [inputState, setInputState] = useState<ValidationResult<string>>({ isValid: true, message: '', error: '' });
+  const [inputState, setInputState] = useState<ValidationResult<string>>({
+    isValid: true,
+    message: '',
+    error: '',
+  });
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
-    if (!isNaN(parseInt(newValue))) {
+    if (isNumber(newValue)) {
       setInputState(question.getValidationResults());
     } else {
-      setInputState({ isValid: false, message: 'Please input an integer', error: 'NOT_A_INTEGER' });
+      setInputState(ERROR_NOT_A_INTEGER);
     }
   };
 
@@ -70,7 +76,7 @@ const NumericQuestionFormField = ({
           type="number"
           value={question.getAnswer()}
         />
-        {inputState.isValid ? null : <div className="invalid-feedback">{inputState.message}</div>}
+        {!inputState.isValid && <div className="invalid-feedback">{inputState.message}</div>}
       </div>
     </FormField>
   );
