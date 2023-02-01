@@ -43,7 +43,7 @@ const NumericQuestionFormField = ({
   question: NumericQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [inputState, setInputState] = useState({ isValid: true, message: '', error: '' });
+  const [inputState, setInputState] = useState<{ isValid: boolean; message: string | undefined; error: string; }>({ isValid: true, message: '', error: '' });
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event) => {
