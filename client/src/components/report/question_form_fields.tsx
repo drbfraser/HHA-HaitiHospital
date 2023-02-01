@@ -8,6 +8,7 @@ import {
   QuestionNode,
   SingleSelectionQuestion,
   TextQuestion,
+  ValidationResult
 } from '@hha/common';
 import { useState } from 'react';
 import './styles.css';
@@ -43,7 +44,7 @@ const NumericQuestionFormField = ({
   question: NumericQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [inputState, setInputState] = useState<{ isValid: boolean; message: string | undefined; error: string; }>({ isValid: true, message: '', error: '' });
+  const [inputState, setInputState] = useState<ValidationResult<string>>({ isValid: true, message: '', error: '' });
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event) => {
