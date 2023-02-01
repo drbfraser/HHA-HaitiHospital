@@ -96,11 +96,7 @@ export abstract class QuestionLeafTest<ID, T, ErrorType> extends QuestionNodeTes
           this.questionLeafTestArgs.defaultAnswer,
         );
         validatorsSucess.forEach((validator) => questionLeaf.addValidator(validator));
-        expect(questionLeaf.getValidationResults()).to.deep.equal({
-          isValid: true,
-          message: '',
-          error: '',
-        });
+        expect(questionLeaf.getValidationResults()).equal(true);
       });
     });
   };
