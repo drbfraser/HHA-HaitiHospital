@@ -46,11 +46,8 @@ const NumericQuestionFormField = ({
   question: NumericQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [inputState, setInputState] = useState<ValidationResult<string>>({
-    isValid: true,
-    message: '',
-    error: '',
-  });
+  //insputState has a value of true if the input is valid or it is of type ValidationResult<string> when the input is invalid
+  const [inputState, setInputState] = useState<ValidationResult<string>|true>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event) => {
@@ -69,14 +66,14 @@ const NumericQuestionFormField = ({
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
       <div className="col-md-6">
         <input
-          className={inputState.isValid ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+          className={inputState==true ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
           min="0"
           name={nameId}
           onChange={handleChange}
           type="number"
           value={question.getAnswer()}
         />
-        {!inputState.isValid && <div className="invalid-feedback">{inputState.message}</div>}
+        {inputState!==true && <div className="invalid-feedback">{inputState.message}</div>}
       </div>
     </FormField>
   );

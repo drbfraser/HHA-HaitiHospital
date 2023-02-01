@@ -3,7 +3,6 @@ import { QuestionNode } from './QuestionNode';
 import { runNumericValidators } from '../Form_Validators';
 
 export interface ValidationResult<ErrorType> {
-  readonly isValid: boolean;
   readonly error?: ErrorType;
   readonly message?: string;
 }
@@ -35,8 +34,10 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
     this.validators?.push(validator);
   }
 
-  public getValidationResults(): ValidationResult<string> {
-    const defaultValidationResult = { isValid: true, message: '', error: '' };
+
+  //The following function is used to check if the answer is valid for all the validators, it returns true if the answer is valid for all the validators, otherwise it returns the error message for the first validator that the answer is invalid for.
+  public getValidationResults(): ValidationResult<string>|true {
+    const defaultValidationResult = true;
 
     if (this.validators === undefined) return defaultValidationResult;
 
@@ -50,18 +51,18 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
         return defaultValidationResult;
       const res = this.validateResult(this.answer, validatorName);
 
-      if (!res.isValid) return res;
+      if (res!==true) return res;
     }
     return defaultValidationResult;
   }
 
-  private validateResult(answer: any, validatorName: string): ValidationResult<string> {
+  private validateResult(answer: any, validatorName: string): ValidationResult<string>|true {
     const answerType = typeof answer;
     switch (answerType) {
       case 'number':
         return runNumericValidators[validatorName]!(answer);
       default:
-        return { isValid: true, message: '', error: '' };
+        return true;
     }
   }
 }
