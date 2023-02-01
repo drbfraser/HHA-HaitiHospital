@@ -21,7 +21,7 @@ import './edit.css';
 interface UserEditProps {}
 
 export const EditUserForm = (props: UserEditProps) => {
-  const { departmentMap: departments } = useDepartmentData();
+  const { departmentNameKeyMap: departments } = useDepartmentData();
   const [fetch, setFetch] = useState<boolean>(false);
   const [user, setUser] = useState<UserJson>(undefined);
   const params = useParams<UserIdParams>();
