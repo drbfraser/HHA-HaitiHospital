@@ -40,7 +40,9 @@ const ReportView = () => {
                 <h1>Report ID: {report._id}</h1>
                 <h2>Department: {departmentIdKeyMap.get(report.departmentId)}</h2>
               </header>
-              <div>{JSON.stringify(report)}</div>
+              <div>
+                <pre>{JSON.stringify(report, null, 2)}</pre>
+              </div>
             </>
           )}
         </main>
