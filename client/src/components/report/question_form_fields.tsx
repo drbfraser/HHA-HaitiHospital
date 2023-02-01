@@ -8,7 +8,6 @@ import {
   QuestionNode,
   SingleSelectionQuestion,
   TextQuestion,
-  runValidators,
 } from '@hha/common';
 import { useState } from 'react';
 import './styles.css';
