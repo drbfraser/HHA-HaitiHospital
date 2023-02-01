@@ -20,10 +20,10 @@ export const Report = () => {
   const { departments } = useDepartmentData();
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
   const [currentUser, setCurrentUser] = useState<ID>();
+  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
 
   const applyReportChanges = () => {
-    const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-    setReport(serializer.deserialize(serializer.serialize(report)));
+    setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
   const clearCurrentDepartment = (): void => {
@@ -34,25 +34,21 @@ export const Report = () => {
   const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const today = new Date();
+    const serializedReport = objectSerializer.serialize(report);
     const reportObject = {
       departmentId: currentDepartment.id,
       reportMonth: new Date(today.getFullYear(), today.getMonth()),
-      serializedReport: report,
+      serializedReport,
       submittedUserId: currentUser,
     };
-    console.log(reportObject);
     Api.Post(ENDPOINT_REPORTS_POST, reportObject, () => {}, '', history);
   };
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      const fetchedUser = await Api.Get(
-        ENDPOINT_ADMIN_ME,
-        "",
-        history,
-      );
+      const fetchedUser = await Api.Get(ENDPOINT_ADMIN_ME, '', history);
       setCurrentUser(fetchedUser.id);
-    }
+    };
     getCurrentUser();
   }, [history]);
 
@@ -64,7 +60,6 @@ export const Report = () => {
           '',
           history,
         );
-        const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
@@ -76,7 +71,7 @@ export const Report = () => {
       }
     };
     currentDepartment && getTemplates();
-  }, [currentDepartment, history]);
+  }, [currentDepartment, history, objectSerializer]);
 
   return (
     <div className="department">

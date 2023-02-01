@@ -1,4 +1,3 @@
-import { ObjectSerializer } from '@hha/common';
 import { IRouter, NextFunction, Response } from 'express';
 import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
 import { REPORT_ID_URL_SLUG } from 'utils/constants';
@@ -21,14 +20,12 @@ router
   .post(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { departmentId, reportMonth, submittedUserId, serializedReport } = req.body;
-      const objectSerializer = ObjectSerializer.getObjectSerializer();
-      const reportObject = objectSerializer.deserialize(serializedReport);
       // NOTE: May need to sanitize the reportObject before saving
       const newReport = new ReportCollection({
         departmentId,
         submittedUserId,
         reportMonth,
-        reportObject,
+        reportObject: serializedReport,
       });
       const saved = await newReport.save();
       return res.status(HTTP_CREATED_CODE).json({ message: 'Report saved', report: saved });
