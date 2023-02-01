@@ -45,8 +45,7 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
       const validatorName = this.validators[i];
       if (validatorName === undefined || typeof validatorName !== 'string') continue;
       if (
-        runNumericValidators[validatorName] === undefined ||
-        typeof runNumericValidators[validatorName] !== 'function'
+        runNumericValidators[validatorName] === undefined
       )
         return defaultValidationResult;
       const res = this.validateResult(this.answer, validatorName);
