@@ -8,7 +8,11 @@ import {
   QuestionNode,
   SingleSelectionQuestion,
   TextQuestion,
+  ValidationResult,
+  ERROR_NOT_A_INTEGER,
+  isNumber,
 } from '@hha/common';
+import { useState } from 'react';
 import './styles.css';
 
 type FunctionalComponent = (object: Object) => JSX.Element;
@@ -41,23 +45,36 @@ const NumericQuestionFormField = ({
   question: NumericQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(parseInt(e.target.value));
-    applyReportChanges();
-  };
+  // inputState has a value of true if the input is valid or
+  // if it is of type ValidationResult<string> when the input is invalid
+  const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    question.setAnswer(parseInt(newValue));
+    applyReportChanges();
+    if (isNumber(newValue)) {
+      setInputState(question.getValidationResults());
+    } else {
+      setInputState(ERROR_NOT_A_INTEGER);
+    }
+  };
 
   return (
     <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      <input
-        className="form-control w-fit"
-        min="0"
-        name={nameId}
-        onChange={handleChange}
-        type="number"
-        value={question.getAnswer()}
-      />
+      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+      <div className="col-md-6">
+        <input
+          className={inputState === true ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+          min="0"
+          name={nameId}
+          onChange={handleChange}
+          type="number"
+          value={question.getAnswer()}
+        />
+        {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
+      </div>
     </FormField>
   );
 };
@@ -341,7 +358,7 @@ export const ReportForm = ({
   return (
     <div className="mt-3 report-form">
       <h2>{reportData.getPrompt()}</h2>
-      <form className="col-7" onSubmit={submitReport}>
+      <form className="col-7" onSubmit={submitReport} noValidate>
         <input type="submit" value="Submit" />
         {buildQuestionFormField({
           applyReportChanges: applyReportChanges,
