@@ -15,22 +15,17 @@ import {
 import { useState } from 'react';
 import './styles.css';
 
-type FunctionalComponent = (object: Object) => JSX.Element;
-
-// Temporary placeholders
-// TODO: Decide on an appropriate types for those
-type ID = string;
 type ErrorType = string;
+type FunctionalComponent = (object: Object) => JSX.Element;
+type ID = string;
 
-const FormField = ({children}): JSX.Element => <fieldset className="form-field mb-3">{children}</fieldset>;
-const MultiChoiceFormField = ({children}): JSX.Element => <fieldset className="mb-3">{children}</fieldset>;
-
+const FormField = ({children}): JSX.Element => <fieldset className={"form-field mb-3"}>{children}</fieldset>;
 const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
   return (
-    <label htmlFor={id} className="form-label">
-      {orderedLabel}. {prompt}
+    <label className="form-label" htmlFor={id}>
+      {`${orderedLabel}. ${prompt}`}
     </label>
   );
 };
@@ -54,9 +49,11 @@ const NumericQuestionFormField = ({
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
+
     if (isNumber(newValue)) {
       setInputState(question.getValidationResults());
-    } else {
+    }
+    else {
       setInputState(ERROR_NOT_A_INTEGER);
     }
   };
@@ -64,17 +61,15 @@ const NumericQuestionFormField = ({
   return (
     <FormField>
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
-      <div className="col-md-6">
-        <input
-          className={inputState === true ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
-          min="0"
-          name={nameId}
-          onChange={handleChange}
-          type="number"
-          value={question.getAnswer()}
-        />
-        {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
-      </div>
+      <input
+        className={inputState === true ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+        min="0"
+        name={nameId}
+        onChange={handleChange}
+        type="number"
+        value={question.getAnswer()}
+      />
+      {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
     </FormField>
   );
 };
@@ -145,10 +140,9 @@ const CompositionQuestionFormField = ({
               <FormFieldLabel id={groupId} prompt={group.getPrompt()} />
             </FormField>
             {group.map((elem) => (
-              <div className="sub-question">
+              <div className="sub-question" key={`${elem.getId()}${suffixName}`}>
                 <NumericQuestionFormField
                   applyReportChanges={applyReportChanges}
-                  key={`${elem.getId()}${suffixName}`}
                   question={elem}
                   suffixName={suffixName}
                 />
@@ -192,7 +186,7 @@ const ExpandableQuestionFormField = ({
       <div className="mt-3 mb-3 accordion" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
           const itemId: string = `_${index}`;
-
+          
           return (
             <div className="accordion-item" key={itemId}>
               <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
@@ -246,7 +240,7 @@ const SingleSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <MultiChoiceFormField>
+    <FormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       {question.getChoices().map((choice: ImmutableChoice, index) => {
         return (
@@ -264,7 +258,7 @@ const SingleSelectionQuestionFormField = ({
           </div>
         );
       })}
-    </MultiChoiceFormField>
+    </FormField>
   );
 };
 
@@ -288,7 +282,7 @@ const MultiSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <MultiChoiceFormField>
+    <FormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div key={`${nameId}_${index}`}>
@@ -304,7 +298,7 @@ const MultiSelectionQuestionFormField = ({
           <label htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
         </div>
       ))}
-    </MultiChoiceFormField>
+    </FormField>
   );
 };
 
@@ -358,14 +352,14 @@ export const ReportForm = ({
   return (
     <div className="mt-3 report-form">
       <h2>{reportData.getPrompt()}</h2>
-      <form className="col-7" onSubmit={submitReport} noValidate>
-        <input type="submit" value="Submit" />
+      <form className="col" onSubmit={submitReport} noValidate>
+        <input className="mb-3" type="submit" value="Submit"/>
         {buildQuestionFormField({
           applyReportChanges: applyReportChanges,
           questions: reportData,
           suffixName: '',
         })}
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit"/>
       </form>
     </div>
   );

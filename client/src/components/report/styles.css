@@ -8,10 +8,6 @@
 }
 
 .form-field {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 }
 
 .form-field label.form-label {
