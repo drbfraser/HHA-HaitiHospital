@@ -46,13 +46,9 @@ export const Report = () => {
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      const fetchedUser = await Api.Get(
-        ENDPOINT_ADMIN_ME,
-        "",
-        history,
-      );
+      const fetchedUser = await Api.Get(ENDPOINT_ADMIN_ME, '', history);
       setCurrentUser(fetchedUser.id);
-    }
+    };
     getCurrentUser();
   }, [history]);
 

@@ -66,14 +66,14 @@ const NumericQuestionFormField = ({
       <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
       <div className="col-md-6">
         <input
-          className={inputState==true ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+          className={inputState == true ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
           min="0"
           name={nameId}
           onChange={handleChange}
           type="number"
           value={question.getAnswer()}
         />
-        {inputState!==true && <div className="invalid-feedback">{inputState.message}</div>}
+        {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
       </div>
     </FormField>
   );
