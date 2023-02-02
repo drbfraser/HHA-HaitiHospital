@@ -4,8 +4,8 @@ import { initReactI18next } from 'react-i18next';
 import translationEN from './locales/en/translationEN.json';
 import translationFR from './locales/fr/translationFR.json';
 
-import nicuModelEn from './pages/form/models/nicuModel.json';
-import nicuModelFr from './pages/form/models/nicuModelFr.json';
+import nicuModelEn from './models/nicuModel.json';
+import nicuModelFr from './models/nicuModelFr.json';
 
 const resources = {
   en: {

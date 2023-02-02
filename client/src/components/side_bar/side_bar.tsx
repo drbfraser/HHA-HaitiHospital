@@ -117,7 +117,7 @@ const Sidebar = (props: SidebarProps) => {
             Role.MedicalDirector,
             Role.HeadOfDepartment,
           ]) ? (
-            <li key='general-rports"'>
+            <li key='general-reports"'>
               <NavLink
                 to="/general-reports"
                 className="nav-link link-light"
@@ -157,18 +157,6 @@ const Sidebar = (props: SidebarProps) => {
             <NavLink to="/report" className="nav-link link-light" exact activeClassName="active">
               <i className="bi bi-exclamation-square me-2" />
               <span className="text text-light">Report</span>
-            </NavLink>
-          </li>
-
-          <li key="old-report">
-            <NavLink
-              to="/old-report"
-              className="nav-link link-light"
-              exact
-              activeClassName="active"
-            >
-              <i className="bi bi-exclamation-square me-2" />
-              <span className="text text-light">Old Report</span>
             </NavLink>
           </li>
 
