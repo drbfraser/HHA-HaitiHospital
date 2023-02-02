@@ -18,16 +18,15 @@ type FunctionalComponent = (object: Object) => JSX.Element;
 type ID = string;
 type ErrorType = string;
 
-const FormField = ({ children }): JSX.Element => {
-  return <fieldset className="mb-3">{children}</fieldset>;
-};
+const FormField = ({children}): JSX.Element => <fieldset className="form-field mb-3">{children}</fieldset>;
+const MultiChoiceFormField = ({children}): JSX.Element => <fieldset className="mb-3">{children}</fieldset>;
 
 const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
   return (
     <label htmlFor={id} className="form-label">
-      {orderedLabel}.{prompt}
+      {orderedLabel}. {prompt}
     </label>
   );
 };
@@ -124,17 +123,19 @@ const CompositionQuestionFormField = ({
         const groupId = `${group.getId()}${suffixName}`;
 
         return (
-          <div key={groupId}>
+          <div className="sub-question" key={groupId}>
             <FormField>
               <FormFieldLabel id={groupId} prompt={group.getPrompt()} />
             </FormField>
             {group.map((elem) => (
-              <NumericQuestionFormField
-                applyReportChanges={applyReportChanges}
-                key={`${elem.getId()}${suffixName}`}
-                question={elem}
-                suffixName={suffixName}
-              />
+              <div className="sub-question">
+                <NumericQuestionFormField
+                  applyReportChanges={applyReportChanges}
+                  key={`${elem.getId()}${suffixName}`}
+                  question={elem}
+                  suffixName={suffixName}
+                />
+              </div>
             ))}
           </div>
         );
@@ -228,7 +229,7 @@ const SingleSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <FormField>
+    <MultiChoiceFormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       {question.getChoices().map((choice: ImmutableChoice, index) => {
         return (
@@ -246,7 +247,7 @@ const SingleSelectionQuestionFormField = ({
           </div>
         );
       })}
-    </FormField>
+    </MultiChoiceFormField>
   );
 };
 
@@ -270,7 +271,7 @@ const MultiSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <FormField>
+    <MultiChoiceFormField>
       <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div key={`${nameId}_${index}`}>
@@ -286,7 +287,7 @@ const MultiSelectionQuestionFormField = ({
           <label htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
         </div>
       ))}
-    </FormField>
+    </MultiChoiceFormField>
   );
 };
 
@@ -300,17 +301,16 @@ const buildQuestionFormField = ({
   suffixName: string;
 }): JSX.Element => {
   return (
-    <FormField>
-      {' ' /* TODO: use better ways to add margins or pad components */}
+    <>
       {questions
         .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
-          textQuestion: (q) => [q, TextQuestionFormField],
-          numericQuestion: (q) => [q, NumericQuestionFormField],
-          singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
-          multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
-          questionGroup: (q) => [q, buildQuestionFormField],
           compositionQuestion: (q) => [q, CompositionQuestionFormField],
           expandableQuestion: (q) => [q, ExpandableQuestionFormField],
+          multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
+          numericQuestion: (q) => [q, NumericQuestionFormField],
+          questionGroup: (q) => [q, buildQuestionFormField],
+          singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
+          textQuestion: (q) => [q, TextQuestionFormField]
         })
         .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
           const [question, FormFieldComponent] = tuple;
@@ -322,8 +322,8 @@ const buildQuestionFormField = ({
               suffixName={suffixName}
             />
           );
-        })}{' '}
-    </FormField>
+        })}
+    </>
   );
 };
 
@@ -341,7 +341,7 @@ export const ReportForm = ({
   return (
     <div className="mt-3 report-form">
       <h2>{reportData.getPrompt()}</h2>
-      <form className="col-md-6" onSubmit={submitReport}>
+      <form className="col-7" onSubmit={submitReport}>
         <input type="submit" value="Submit" />
         {buildQuestionFormField({
           applyReportChanges: applyReportChanges,
