@@ -8,7 +8,6 @@ import { History } from 'history';
 import { useEffect, useState } from 'react';
 import { Department, UserJson } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-import './styles.css';
 import { useCurrentUserData, useDepartmentData } from 'hooks';
 
 type ID = string;

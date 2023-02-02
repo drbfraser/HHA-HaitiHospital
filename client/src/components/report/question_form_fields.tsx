@@ -19,12 +19,12 @@ type ErrorType = string;
 type FunctionalComponent = (object: Object) => JSX.Element;
 type ID = string;
 
-const FormField = ({children}): JSX.Element => <fieldset className={"form-field mb-3"}>{children}</fieldset>;
+const FormField = ({children}): JSX.Element => <div className="form-group ml-3">{children}</div>;
 const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
   return (
-    <label className="form-label" htmlFor={id}>
+    <label className="mb-0" htmlFor={id}>
       {`${orderedLabel}. ${prompt}`}
     </label>
   );
@@ -123,7 +123,7 @@ const CompositionQuestionFormField = ({
       <FormField>
         <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
-          className="col-sm form-control w-fit"
+          className="form-control w-fit"
           min="0"
           name={nameId}
           onChange={handleChange}
@@ -175,7 +175,7 @@ const ExpandableQuestionFormField = ({
       <FormField>
         <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
-          className="col-sm form-control w-fit"
+          className="form-control w-fit"
           min="0"
           name={nameId}
           onChange={handleChange}
@@ -350,16 +350,16 @@ export const ReportForm = ({
   submitReport,
 }: ReportFormProps): JSX.Element => {
   return (
-    <div className="mt-3 report-form">
-      <h2>{reportData.getPrompt()}</h2>
-      <form className="col" onSubmit={submitReport} noValidate>
-        <input className="mb-3" type="submit" value="Submit"/>
+    <div className="mt-3 p-3">
+      <h2 className="mb-3">{reportData.getPrompt()}</h2>
+      <form onSubmit={submitReport} noValidate>
+        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit"/>
         {buildQuestionFormField({
           applyReportChanges: applyReportChanges,
           questions: reportData,
-          suffixName: '',
+          suffixName: "",
         })}
-        <input type="submit" value="Submit"/>
+        <input className="btn btn-outline-primary" type="submit" value="Submit"/>
       </form>
     </div>
   );
