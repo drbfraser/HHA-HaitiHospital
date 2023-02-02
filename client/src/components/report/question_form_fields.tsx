@@ -47,7 +47,7 @@ const NumericQuestionFormField = ({
   suffixName: string;
 }): JSX.Element => {
   //insputState has a value of true if the input is valid or it is of type ValidationResult<string> when the input is invalid
-  const [inputState, setInputState] = useState<ValidationResult<string>|true>(true);
+  const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event) => {

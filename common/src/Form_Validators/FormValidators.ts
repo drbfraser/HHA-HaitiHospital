@@ -1,7 +1,7 @@
 import { ValidationResult } from '../Questions';
 
 export interface Validator<T> {
-  (x: T): ValidationResult<string>|true;
+  (x: T): ValidationResult<string>;
 }
 
 export const runNumericValidators: { [key: string]: Validator<number> } = {

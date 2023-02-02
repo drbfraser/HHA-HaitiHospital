@@ -2,10 +2,12 @@
 import { QuestionNode } from './QuestionNode';
 import { runNumericValidators } from '../Form_Validators';
 
-export interface ValidationResult<ErrorType> {
+interface ValidationError<ErrorType> {
   readonly error?: ErrorType;
   readonly message?: string;
 }
+
+export type ValidationResult<ErrorType> = ValidationError<ErrorType> | true;
 
 export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, ErrorType> {
   private answer: T | undefined;
@@ -34,9 +36,8 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
     this.validators?.push(validator);
   }
 
-
   //The following function is used to check if the answer is valid for all the validators, it returns true if the answer is valid for all the validators, otherwise it returns the error message for the first validator that the answer is invalid for.
-  public getValidationResults(): ValidationResult<string>|true {
+  public getValidationResults(): ValidationResult<string> {
     const defaultValidationResult = true;
 
     if (this.validators === undefined) return defaultValidationResult;
@@ -44,18 +45,15 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
     for (let i = 0; i < this.validators.length; i++) {
       const validatorName = this.validators[i];
       if (validatorName === undefined || typeof validatorName !== 'string') continue;
-      if (
-        runNumericValidators[validatorName] === undefined
-      )
-        return defaultValidationResult;
+      if (runNumericValidators[validatorName] === undefined) return defaultValidationResult;
       const res = this.validateResult(this.answer, validatorName);
 
-      if (res!==true) return res;
+      if (res !== true) return res;
     }
     return defaultValidationResult;
   }
 
-  private validateResult(answer: any, validatorName: string): ValidationResult<string>|true {
+  private validateResult(answer: any, validatorName: string): ValidationResult<string> {
     const answerType = typeof answer;
     switch (answerType) {
       case 'number':
