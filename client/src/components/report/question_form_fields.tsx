@@ -19,7 +19,7 @@ type ErrorType = string;
 type FunctionalComponent = (object: Object) => JSX.Element;
 type ID = string;
 
-const FormField = ({children}): JSX.Element => <div className="form-group ml-3">{children}</div>;
+const FormField = ({children}): JSX.Element => <div className="form-group">{children}</div>;
 const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
@@ -29,6 +29,7 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
     </label>
   );
 };
+const Group = ({children}): JSX.Element => <div className="pl-3">{children}</div>;
 
 // TODO: Refactor the below components since they're all similar
 const NumericQuestionFormField = ({
@@ -135,20 +136,21 @@ const CompositionQuestionFormField = ({
         const groupId = `${group.getId()}${suffixName}`;
 
         return (
-          <div className="sub-question" key={groupId}>
-            <FormField>
-              <FormFieldLabel id={groupId} prompt={group.getPrompt()} />
-            </FormField>
-            {group.map((elem) => (
-              <div className="sub-question" key={`${elem.getId()}${suffixName}`}>
+          <fieldset className="form-group mb-0 pl-3" key={groupId}>
+            <legend className="col-form-label mb-3 p-0">
+              {`${groupId.replaceAll("_", ".")}. ${group.getPrompt()}`}
+            </legend>
+            <Group>
+              {group.map((elem) => (
                 <NumericQuestionFormField
                   applyReportChanges={applyReportChanges}
+                  key={`${elem.getId()}${suffixName}`}
                   question={elem}
                   suffixName={suffixName}
                 />
-              </div>
-            ))}
-          </div>
+              ))}
+            </Group>
+          </fieldset>
         );
       })}
     </>
@@ -206,14 +208,12 @@ const ExpandableQuestionFormField = ({
                 className="accordion-collapse collapse show"
                 aria-labelledby={`${itemId}-header`}
               >
-                <div className="accordion-body">
-                  <fieldset className="mt-3">
-                    {buildQuestionFormField({
-                      applyReportChanges: applyReportChanges,
-                      questions: questionGroup,
-                      suffixName: itemId,
-                    })}
-                  </fieldset>
+                <div className="accordion-body pb-0">
+                  {buildQuestionFormField({
+                    applyReportChanges: applyReportChanges,
+                    questions: questionGroup,
+                    suffixName: itemId,
+                  })}
                 </div>
               </div>
             </div>
@@ -311,31 +311,29 @@ const buildQuestionFormField = ({
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  return (
-    <>
-      {questions
-        .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
-          compositionQuestion: (q) => [q, CompositionQuestionFormField],
-          expandableQuestion: (q) => [q, ExpandableQuestionFormField],
-          multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
-          numericQuestion: (q) => [q, NumericQuestionFormField],
-          questionGroup: (q) => [q, buildQuestionFormField],
-          singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
-          textQuestion: (q) => [q, TextQuestionFormField]
-        })
-        .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
-          const [question, FormFieldComponent] = tuple;
-          return (
-            <FormFieldComponent
-              applyReportChanges={applyReportChanges}
-              key={`${question.getId()}${suffixName}`}
-              question={question}
-              suffixName={suffixName}
-            />
-          );
-        })}
-    </>
-  );
+  return (<>
+    {questions
+      .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
+        compositionQuestion: (q) => [q, CompositionQuestionFormField],
+        expandableQuestion: (q) => [q, ExpandableQuestionFormField],
+        multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
+        numericQuestion: (q) => [q, NumericQuestionFormField],
+        questionGroup: (q) => [q, buildQuestionFormField],
+        singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
+        textQuestion: (q) => [q, TextQuestionFormField]
+      })
+      .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
+        const [question, FormFieldComponent] = tuple;
+        return (
+          <FormFieldComponent
+            applyReportChanges={applyReportChanges}
+            key={`${question.getId()}${suffixName}`}
+            question={question}
+            suffixName={suffixName}
+          />
+        );
+      })}
+  </>);
 };
 
 interface ReportFormProps {
@@ -354,11 +352,13 @@ export const ReportForm = ({
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={submitReport} noValidate>
         <input className="btn btn-outline-primary mb-3" type="submit" value="Submit"/>
-        {buildQuestionFormField({
-          applyReportChanges: applyReportChanges,
-          questions: reportData,
-          suffixName: "",
-        })}
+        <Group>
+          {buildQuestionFormField({
+            applyReportChanges: applyReportChanges,
+            questions: reportData,
+            suffixName: "",
+          })}
+        </Group>
         <input className="btn btn-outline-primary" type="submit" value="Submit"/>
       </form>
     </div>
