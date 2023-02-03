@@ -13,7 +13,6 @@ import {
   isNumber,
 } from '@hha/common';
 import { useState } from 'react';
-import './styles.css';
 
 type ErrorType = string;
 type FunctionalComponent = (object: Object) => JSX.Element;
@@ -24,7 +23,7 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
   return (
-    <label className="mb-0" htmlFor={id}>
+    <label className="fs-6 m-0 text-secondary" htmlFor={id}>
       {`${orderedLabel}. ${prompt}`}
     </label>
   );
@@ -46,7 +45,7 @@ const NumericQuestionFormField = ({
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
@@ -61,9 +60,10 @@ const NumericQuestionFormField = ({
 
   return (
     <FormField>
-      <FormFieldLabel id={question.getId()} prompt={question.getPrompt()} />
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
       <input
-        className={inputState === true ? 'form-control w-fit' : 'form-control w-fit is-invalid'}
+        className={`form-control w-50 ${inputState === true ? "" : "is-invalid"}`}
+        id={nameId}
         min="0"
         name={nameId}
         onChange={handleChange}
@@ -84,17 +84,18 @@ const TextQuestionFormField = ({
   question: TextQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(e.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    question.setAnswer(event.target.value);
     applyReportChanges();
   };
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
       <input
-        className="form-control w-fit"
+        className="form-control w-50"
+        id={nameId}
         name={nameId}
         onChange={handleChange}
         type="text"
@@ -113,8 +114,8 @@ const CompositionQuestionFormField = ({
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(parseInt(e.target.value));
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
   const nameId = `${question.getId()}${suffixName}`;
@@ -122,9 +123,10 @@ const CompositionQuestionFormField = ({
   return (
     <>
       <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
+        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
         <input
-          className="form-control w-fit"
+          className="form-control w-50"
+          id={nameId}
           min="0"
           name={nameId}
           onChange={handleChange}
@@ -137,7 +139,7 @@ const CompositionQuestionFormField = ({
 
         return (
           <fieldset className="form-group mb-0 pl-3" key={groupId}>
-            <legend className="col-form-label mb-3 p-0">
+            <legend className="fs-6 mb-3 mt-0 text-secondary">
               {`${groupId.replaceAll("_", ".")}. ${group.getPrompt()}`}
             </legend>
             <Group>
@@ -157,6 +159,7 @@ const CompositionQuestionFormField = ({
   );
 };
 
+// TODO: Save the user's progress when the user adds/deletes patients
 const ExpandableQuestionFormField = ({
   applyReportChanges,
   question,
@@ -166,8 +169,8 @@ const ExpandableQuestionFormField = ({
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(parseInt(e.target.value));
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
   const nameId = `${question.getId()}${suffixName}`;
@@ -175,9 +178,10 @@ const ExpandableQuestionFormField = ({
   return (
     <>
       <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
+        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
         <input
-          className="form-control w-fit"
+          className="form-control w-50"
+          id={nameId}
           min="0"
           name={nameId}
           onChange={handleChange}
@@ -185,10 +189,10 @@ const ExpandableQuestionFormField = ({
           value={question.getAnswer()}
         />
       </FormField>
-      <div className="mt-3 mb-3 accordion" id={nameId}>
+      <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          const itemId: string = `_${index}`;
-          
+          const itemId: string = `_${index + 1}`;
+
           return (
             <div className="accordion-item" key={itemId}>
               <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
@@ -200,7 +204,7 @@ const ExpandableQuestionFormField = ({
                   aria-expanded={true}
                   aria-controls={itemId}
                 >
-                  Patient {itemId}
+                  {`Patient ${index + 1}`}
                 </button>
               </h6>
               <div
@@ -240,25 +244,24 @@ const SingleSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      {question.getChoices().map((choice: ImmutableChoice, index) => {
-        return (
-          <div key={`${nameId}_${index}`}>
-            <input
-              checked={choice.wasChosen()}
-              className="form-check-input"
-              id={`${nameId}_${index}`}
-              name={nameId}
-              onChange={getChangeHandler(index)}
-              type="radio"
-            />
-            &nbsp;
-            <label htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
-          </div>
-        );
-      })}
-    </FormField>
+    <fieldset className="form-group">
+      <legend className="fs-6 m-0 text-secondary">
+        {`${nameId.replaceAll("_", ".")}. ${question.getPrompt()}`}
+      </legend>
+      {question.getChoices().map((choice: ImmutableChoice, index) => (
+        <div className="form-check" key={`${nameId}_${index}`}>
+          <input
+            checked={choice.wasChosen()}
+            className="form-check-input"
+            id={`${nameId}_${index}`}
+            name={nameId}
+            onChange={getChangeHandler(index)}
+            type="radio"
+          />
+          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
+        </div>
+      ))}
+    </fieldset>
   );
 };
 
@@ -282,10 +285,12 @@ const MultiSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
+    <fieldset className="form-group">
+      <legend className="fs-6 m-0 text-secondary">
+        {`${nameId.replaceAll("_", ".")}. ${question.getPrompt()}`}
+      </legend>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
-        <div key={`${nameId}_${index}`}>
+        <div className="form-check" key={`${nameId}_${index}`}>
           <input
             checked={choice.wasChosen()}
             className="form-check-input"
@@ -294,11 +299,10 @@ const MultiSelectionQuestionFormField = ({
             onChange={getChangeHandler(choice, index)}
             type="checkbox"
           />
-          &nbsp;
-          <label htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
+          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
         </div>
       ))}
-    </FormField>
+    </fieldset>
   );
 };
 
