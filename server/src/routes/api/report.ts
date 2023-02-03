@@ -1,6 +1,6 @@
 import { IRouter, NextFunction, Response } from 'express';
 import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
-import { REPORT_ID_URL_SLUG } from 'utils/constants';
+import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
 import {
   HTTP_CREATED_CODE,
@@ -10,6 +10,7 @@ import {
 } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { ReportCollection } from '../../models/report';
+import { departmentAuth } from 'middleware/departmentAuth';
 
 const router: IRouter = require('express').Router();
 
@@ -68,3 +69,23 @@ router
   });
 
 export default router;
+
+//Fetch reports of a department with department id
+router
+  .route(`/department/:${DEPARTMENT_ID_URL_SLUG}`)
+  .get(
+    requireJwtAuth,
+    departmentAuth,
+    async (req: RequestWithUser, res: Response, next: NextFunction) => {
+      try {
+        const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
+        const reports = await ReportCollection.find({ departmentId: deptId }).sort({
+          reportMonth: 'desc',
+        });
+
+        res.status(HTTP_OK_CODE).json(reports);
+      } catch (e) {
+        next(e);
+      }
+    },
+  );
