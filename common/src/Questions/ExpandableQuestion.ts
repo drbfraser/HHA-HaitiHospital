@@ -16,7 +16,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
   private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
   private readonly idGenerator: (questionGroupIndex: number) => ID;
-  private answer: number | undefined = 0;
+  private answer: number = 0;
 
   constructor(
     id: ID,
@@ -26,7 +26,6 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
   ) {
     super(id, prompt);
     this.idGenerator = idGenerator;
-    // TODO: Allow multiple "templates to be added"
     this.questionsTemplate = new QuestionGroup<ID, ErrorType>(
       idGenerator(0),
       `${prompt}-template`,
@@ -54,7 +53,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
   }
 
   private expand(): void {
-    this.questionGroups = new Array(this.answer ?? 0).fill(undefined).map(
+    /*this.questionGroups = new Array<QuestionGroup<ID, ErrorType>>(this.answer ?? 0).fill(undefined).map(
       (x, index) =>
         new QuestionGroup(
           this.idGenerator(index + 1),
@@ -64,15 +63,40 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
             return serializer.deserialize(serializer.serialize(q));
           }),
         ),
-    );
+    );*/
+
+    if (this.getAnswer() > this.questionGroups.length) {
+      for (let i = this.questionGroups.length; i < this.getAnswer(); i++) {
+        this.questionGroups.push(new QuestionGroup(
+          this.idGenerator(i + 1),
+          `${this.getPrompt()}-${i}`,
+          ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
+            let serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+            return serializer.deserialize(serializer.serialize(q));
+          })
+        ));
+      }
+    }
+  }
+
+  private shrink(): void {
+    if (this.getAnswer() < this.questionGroups.length) {
+      this.questionGroups = this.questionGroups.slice(0, this.getAnswer());
+    }
   }
 
   public setAnswer(answer: number): void {
     this.answer = answer;
-    this.expand();
+
+    if (answer < this.questionGroups.length) {
+      this.shrink();
+    }
+    else if (answer > this.questionGroups.length) {
+      this.expand();
+    }
   }
 
-  public getAnswer(): number | undefined {
+  public getAnswer(): number {
     return this.answer;
   }
 
