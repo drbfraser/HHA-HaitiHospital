@@ -78,7 +78,7 @@ build-client:
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
   - docker image prune -f # remove unused images since we just built new ones
 
-deploy development:
+deploy-development:
   stage: deploy
   environment:
     name: development
@@ -90,7 +90,7 @@ deploy development:
   script:
     - *deploy-script
 
-deploy staging:
+deploy-staging:
   stage: deploy
   environment:
     name: staging
