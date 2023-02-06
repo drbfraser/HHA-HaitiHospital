@@ -56,8 +56,8 @@ test-build-server:
   before_script:
     - cd server
     - npm ci
-    - npm run seed
     - npm install ../common_build.tar.gz
+    - npm run seed
   script:
     - npm run test
     - npm run build
