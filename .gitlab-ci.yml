@@ -1,4 +1,5 @@
 stages:
+  - validate
   - build-dependencies
   - test-dependencies
   - build
@@ -6,6 +7,19 @@ stages:
 services:
   - mongo:5.0.6-focal
   - alias db-mongo
+validate-prettier:
+  stage: validate
+  image: node:16
+  tags:
+    - docker
+  only:
+    - master
+    - staging
+    - merge_requests
+  before_script:
+    - npm ci
+  script:
+    - npm run check-format
 test-build-common:
   stage: build-dependencies
   image: node:16
