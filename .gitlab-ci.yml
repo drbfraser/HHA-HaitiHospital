@@ -1,5 +1,5 @@
 variables:
-  MONGO_URI: 'mongodb://db-mongo:27017/hhahaiti'
+  MONGO_URI: 'mongodb://mongo:27017/hhahaiti'
   PASSWORD_SEED: 'catdog'
 stages:
   - validate
@@ -44,7 +44,6 @@ test-build-common:
 test-build-server:
   services:
     - mongo:5.0.6-focal
-    - alias db-mongo
   stage: build
   image: node:16
   tags:
