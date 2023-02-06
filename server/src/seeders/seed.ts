@@ -199,6 +199,7 @@ export const seedMessageBoard = async () => {
   try {
     await MessageCollection.deleteMany({});
     let users: User[] = await UserCollection.find();
+    // Wait for users to be seeded before creating messages.
     while (users.length < 7) {
       users = await UserCollection.find();
     }
@@ -250,7 +251,6 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
     const users = await UserCollection.find().lean();
     const randomDefaultUser = selectRandomUser(users);
-    console.log(randomDefaultUser);
     setDefaultFeaturedCaseStudy(randomDefaultUser);
     const numCaseStudiesToGenerate: number = 100;
     for (let i = 0; i < numCaseStudiesToGenerate; i++) {
