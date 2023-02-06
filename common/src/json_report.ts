@@ -75,3 +75,11 @@ export interface JsonReportDescriptor {
    */
   items: JsonReportItems;
 }
+
+export interface ReportMetaData {
+  departmentId: string;
+  reportMonth: string;
+  _id: string;
+  submittedDate?: string;
+  submittedUserId?: string;
+}
