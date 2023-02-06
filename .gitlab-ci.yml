@@ -6,7 +6,7 @@ stages:
 services:
   - mongo:5.0.6-focal
   - alias db-mongo
-test-build common:
+test-build-common:
   stage: build-dependencies
   image: node:16
   tags:
@@ -27,7 +27,7 @@ test-build common:
     expire_in: 1 week
     paths:
       - common_build.tar.gz
-build server:
+build-server:
   stage: build
   image: node:16
   tags:
@@ -49,7 +49,7 @@ build server:
     paths:
       - server_build.tar.gz
 
-build client:
+build-client:
   stage: build
   image: node:16
   tags:
