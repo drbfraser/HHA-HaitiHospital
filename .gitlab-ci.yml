@@ -1,3 +1,6 @@
+variables:
+  MONGO_URI: 'mongodb://db-mongo:27017/hhahaiti'
+  PASSWORD_SEED: 'catdog'
 stages:
   - validate
   - build-dependencies
@@ -41,7 +44,7 @@ test-build-common:
     expire_in: 1 week
     paths:
       - common_build.tar.gz
-build-server:
+test-build-server:
   stage: build
   image: node:16
   tags:
@@ -53,8 +56,10 @@ build-server:
   before_script:
     - cd server
     - npm ci
+    - npm run seed
     - npm install ../common_build.tar.gz
   script:
+    - npm run test
     - npm run build
   after_script:
     - cd server && tar -czf ../server_build.tar.gz .
