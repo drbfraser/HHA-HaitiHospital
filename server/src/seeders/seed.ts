@@ -198,8 +198,10 @@ export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   try {
     await MessageCollection.deleteMany({});
-    const users: User[] = await UserCollection.find();
-    console.log('number of users found', users.length);
+    let users: User[] = await UserCollection.find();
+    while (users.length < 7) {
+      users = await UserCollection.find();
+    }
     const numOfMessagesToGenerate: number = 100;
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
