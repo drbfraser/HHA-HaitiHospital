@@ -199,10 +199,10 @@ export const seedMessageBoard = async () => {
   try {
     await MessageCollection.deleteMany({});
     const users: User[] = await UserCollection.find();
+    console.log('number of users found', users.length);
     const numOfMessagesToGenerate: number = 100;
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
-      console.log('random user for message', randomUser);
       const message = new MessageCollection({
         departmentId: randomUser.departmentId,
         userId: randomUser._id,
