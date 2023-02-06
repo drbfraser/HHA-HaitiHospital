@@ -247,6 +247,7 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
     const users = await UserCollection.find().lean();
     const randomDefaultUser = selectRandomUser(users);
+    console.log(randomDefaultUser);
     setDefaultFeaturedCaseStudy(randomDefaultUser);
     const numCaseStudiesToGenerate: number = 100;
     for (let i = 0; i < numCaseStudiesToGenerate; i++) {

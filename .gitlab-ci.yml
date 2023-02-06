@@ -44,7 +44,7 @@ test-build-common:
       - common_build.tar.gz
 test-build-server:
   services:
-    - mongo:5.0.6-focal
+    - mongo:5.0.14-focal
   stage: build
   image: node:16
   tags:
