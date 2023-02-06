@@ -1,6 +1,7 @@
 variables:
   MONGO_URI: 'mongodb://mongo:27017/hhahaiti'
   PASSWORD_SEED: 'catdog'
+  IS_GITLAB_CI: 'true'
 stages:
   - validate
   - build-dependencies

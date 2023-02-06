@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import faker from 'faker';
+
 import {
   ObjectSerializer,
   buildMaternityMockReport,
@@ -481,21 +482,26 @@ mongoose
   .then(() => {
     console.log('MongoDB Connected...');
     const readline = require('readline');
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
+    const IS_GITLAB_CI = process.env.IS_GITLAB_CI ?? 'false';
+    if (process.env.IS_GITLAB_CI === 'true') {
+      (async () => await seedDb())(); // anonymous async function
+    } else {
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
 
-    rl.question(
-      `Confirm to reseed database (old data will be discarded) (Y to confirm): `,
-      async function (answer) {
-        if (answer === 'Y') await seedDb();
-        rl.close();
-      },
-    );
+      rl.question(
+        `Confirm to reseed database (old data will be discarded) (Y to confirm): `,
+        async function (answer) {
+          if (answer === 'Y') await seedDb();
+          rl.close();
+        },
+      );
 
-    rl.on('close', function () {
-      process.exit(0);
-    });
+      rl.on('close', function () {
+        process.exit(0);
+      });
+    }
   })
   .catch((err) => console.log(err));
