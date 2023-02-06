@@ -202,6 +202,7 @@ export const seedMessageBoard = async () => {
     const numOfMessagesToGenerate: number = 100;
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
+      console.log('random user for message', randomUser);
       const message = new MessageCollection({
         departmentId: randomUser.departmentId,
         userId: randomUser._id,
