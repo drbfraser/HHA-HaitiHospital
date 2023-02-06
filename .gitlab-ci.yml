@@ -7,9 +7,6 @@ stages:
   - test-dependencies
   - build
   - deploy
-services:
-  - mongo:5.0.6-focal
-  - alias db-mongo
 validate-prettier:
   stage: validate
   image: node:16
@@ -45,6 +42,9 @@ test-build-common:
     paths:
       - common_build.tar.gz
 test-build-server:
+  services:
+    - mongo:5.0.6-focal
+    - alias db-mongo
   stage: build
   image: node:16
   tags:
