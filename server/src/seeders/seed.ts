@@ -184,7 +184,7 @@ export const seedUsers = async () => {
           default:
             break;
         }
-
+        console.log(user);
         user.registerUser(user, () => {});
       }
     });
