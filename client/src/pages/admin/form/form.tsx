@@ -1,4 +1,4 @@
-import { Department, GeneralDepartment, Role, UserJson } from 'constants/interfaces';
+import { Department, GeneralDepartment, Role, UserDetails } from 'constants/interfaces';
 import { EMPTY_USER_JSON } from 'constants/default_values';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,7 +9,7 @@ import { initAdminForm } from '../utils';
 
 interface Props {
   data: {
-    userData?: UserJson;
+    userData?: UserDetails;
     departments: Map<string, Department>;
   };
   onSubmit: (data: AdminUserFormData) => Promise<void>;
@@ -18,7 +18,7 @@ interface Props {
 export const AdminUserForm = (props: Props) => {
   const { t } = useTranslation();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const userData: UserJson = props.data.userData ? props.data.userData : EMPTY_USER_JSON;
+  const userData: UserDetails = props.data.userData ? props.data.userData : EMPTY_USER_JSON;
   const { register, handleSubmit, setValue } = useForm<AdminUserFormData>({
     defaultValues: initAdminForm(userData),
   });

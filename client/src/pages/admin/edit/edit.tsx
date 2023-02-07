@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { UserJson } from 'constants/interfaces';
+import { UserDetails } from 'constants/interfaces';
 import { AdminUserFormData } from 'pages/admin/typing';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
@@ -23,7 +23,7 @@ interface UserEditProps {}
 export const EditUserForm = (props: UserEditProps) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const [fetch, setFetch] = useState<boolean>(false);
-  const [user, setUser] = useState<UserJson>(undefined);
+  const [user, setUser] = useState<UserDetails>(undefined);
   const params = useParams<UserIdParams>();
   const id = useMemo<string>(() => params.userId, [params.userId]);
   const history: History = useHistory<History>();
@@ -31,7 +31,7 @@ export const EditUserForm = (props: UserEditProps) => {
 
   useEffect(() => {
     const fetchAndSetUser = async () => {
-      const fetchedUser: UserJson = await Api.Get(
+      const fetchedUser: UserDetails = await Api.Get(
         ENDPOINT_ADMIN_GET_BY_ID(id),
         ResponseMessage.getMsgFetchUserFailed(),
         history,

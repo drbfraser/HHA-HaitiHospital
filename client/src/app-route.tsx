@@ -34,7 +34,7 @@ const AppRoutes = ({
   if (![Role.Admin, Role.MedicalDirector].includes(currentUserRole)) {
     if (isDepartmentRequired(departmentsAllowed)) {
       departmentAccess = false;
-      if (isDepartmentAllowed(departmentsAllowed, currentUserDepartment)) {
+      if (isDepartmentAllowed(departmentsAllowed, currentUserDepartment.name)) {
         departmentAccess = true;
       }
     }
@@ -50,7 +50,7 @@ const AppRoutes = ({
       // If the user is logged in, and trying to access a department page
       if (
         isDepartmentRequired(departmentsAllowed) &&
-        isDepartmentAllowed(departmentsAllowed, currentUserDepartment)
+        isDepartmentAllowed(departmentsAllowed, currentUserDepartment.name)
       ) {
         return <Component {...props} />;
       }

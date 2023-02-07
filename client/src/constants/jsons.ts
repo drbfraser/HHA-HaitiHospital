@@ -1,10 +1,10 @@
 // JSONS responed by the server
 
-import { UserJson } from './interfaces';
+import { UserDetails } from './interfaces';
 
 export interface BiomechGet {
   id: string;
-  user: UserJson;
+  user: UserDetails;
   department: {
     id: string;
     name: string;

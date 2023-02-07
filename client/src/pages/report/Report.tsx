@@ -8,7 +8,6 @@ import { History } from 'history';
 import { useEffect, useState } from 'react';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-import './styles.css';
 import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
 
@@ -22,6 +21,7 @@ export const Report = () => {
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
+
   const applyReportChanges = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };

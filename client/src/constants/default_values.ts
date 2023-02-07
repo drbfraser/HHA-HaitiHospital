@@ -1,6 +1,6 @@
-import { UserJson, Role, EMPTY_DEPARTMENT } from './interfaces';
+import { UserDetails, Role, EMPTY_DEPARTMENT } from './interfaces';
 
-export const EMPTY_USER_JSON: UserJson = {
+export const EMPTY_USER_JSON: UserDetails = {
   id: '',
   name: '',
   role: Role.User,
