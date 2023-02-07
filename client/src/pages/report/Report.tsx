@@ -103,7 +103,7 @@ export const Report = () => {
             <ReportForm
               applyReportChanges={applyReportChanges}
               reportData={report}
-              submitReport={submitReport}
+              formHandler={submitReport}
             />
           </>
         )}

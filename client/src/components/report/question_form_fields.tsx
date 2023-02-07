@@ -343,21 +343,19 @@ const buildQuestionFormField = ({
   );
 };
 
-interface ReportFormProps {
-  applyReportChanges: () => void;
-  reportData: QuestionGroup<string, string>;
-  submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
 export const ReportForm = ({
   applyReportChanges,
   reportData,
-  submitReport,
-}: ReportFormProps): JSX.Element => {
+  formHandler,
+}: {
+  applyReportChanges: () => void;
+  reportData: QuestionGroup<string, string>;
+  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+}): JSX.Element => {
   return (
     <div className="mt-3 report-form">
-      <h2>{reportData.getPrompt()}</h2>
-      <form className="col-md-6" onSubmit={submitReport} noValidate>
+      {/* <h2>{reportData.getPrompt()}</h2> */}
+      <form className="col-md-6" onSubmit={formHandler} noValidate>
         <input type="submit" value="Submit" />
         {buildQuestionFormField({
           applyReportChanges: applyReportChanges,
