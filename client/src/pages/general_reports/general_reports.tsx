@@ -14,6 +14,7 @@ import { TOAST_REPORTS_GET } from 'constants/toast_messages';
 import { JsonReportDescriptor } from '@hha/common';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDepartmentData } from 'hooks';
 
 const GeneralReports = () => {
   const [dayRange, setDayRange] = useState<DayRange>({
@@ -31,7 +32,7 @@ const GeneralReports = () => {
     );
     setReports(fetchedReports);
   }, [history]);
-
+  const { departmentIdKeyMap } = useDepartmentData();
   useEffect(() => {
     getReports();
   }, [getReports]);
@@ -82,12 +83,12 @@ const GeneralReports = () => {
                   <tr key={item.reportObject.id}>
                     <th scope="row">{reportNumberIndex + index + 1}</th>
                     <td>{item.reportObject.id}</td>
-                    <td>{t(item.departmentId)}</td>
+                    <td>{t(departmentIdKeyMap.get(item.departmentId))}</td>
                     <td>{item.submittedDate}</td>
                     <td>{item.submittedUserId}</td>
                     <td>
                       <Link
-                        to={'/report-view/' + item.reportObject.id}
+                        to={'/report-view/' + item._id}
                         className="btn-link text-decoration-none"
                       >
                         {t('reportsOpenReport')}

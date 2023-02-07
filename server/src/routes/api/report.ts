@@ -1,9 +1,7 @@
-import { ObjectSerializer } from '@hha/common';
 import { IRouter, NextFunction, Response } from 'express';
 import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
-import { REPORT_ID_URL_SLUG } from 'utils/constants';
+import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
-import { serializeReportObject } from 'utils/serializer';
 import {
   HTTP_CREATED_CODE,
   HTTP_OK_CODE,
@@ -12,6 +10,7 @@ import {
 } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { ReportCollection } from '../../models/report';
+import { departmentAuth } from 'middleware/departmentAuth';
 
 const router: IRouter = require('express').Router();
 
@@ -21,14 +20,12 @@ router
   .post(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { departmentId, reportMonth, submittedUserId, serializedReport } = req.body;
-      const objectSerializer = ObjectSerializer.getObjectSerializer();
-      const reportObject = objectSerializer.deserialize(serializedReport);
       // NOTE: May need to sanitize the reportObject before saving
       const newReport = new ReportCollection({
         departmentId,
         submittedUserId,
         reportMonth,
-        reportObject,
+        reportObject: serializedReport,
       });
       const saved = await newReport.save();
       return res.status(HTTP_CREATED_CODE).json({ message: 'Report saved', report: saved });
@@ -53,7 +50,7 @@ router
         throw new Unauthorized(`User not authorized`);
       }
 
-      res.status(HTTP_OK_CODE).json({ report: serializeReportObject(report) });
+      res.status(HTTP_OK_CODE).json({ report: report });
     } catch (e) {
       next(e);
     }
@@ -72,3 +69,23 @@ router
   });
 
 export default router;
+
+//Fetch reports of a department with department id
+router
+  .route(`/department/:${DEPARTMENT_ID_URL_SLUG}`)
+  .get(
+    requireJwtAuth,
+    departmentAuth,
+    async (req: RequestWithUser, res: Response, next: NextFunction) => {
+      try {
+        const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
+        const reports = await ReportCollection.find({ departmentId: deptId }).sort({
+          reportMonth: 'desc',
+        });
+
+        res.status(HTTP_OK_CODE).json(reports);
+      } catch (e) {
+        next(e);
+      }
+    },
+  );

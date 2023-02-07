@@ -1,7 +1,7 @@
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/question_form_fields';
-import { ENDPOINT_ADMIN_ME, ENDPOINT_REPORTS_POST, ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { ENDPOINT_REPORTS_POST, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import Api from 'actions/Api';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
@@ -10,6 +10,7 @@ import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import './styles.css';
 import { useDepartmentData } from 'hooks';
+import { useAuthState } from 'contexts';
 
 type ID = string;
 type ErrorType = string;
@@ -19,11 +20,10 @@ export const Report = () => {
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const { departments } = useDepartmentData();
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
-  const [currentUser, setCurrentUser] = useState<ID>();
-
+  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const user = useAuthState();
   const applyReportChanges = () => {
-    const serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-    setReport(serializer.deserialize(serializer.serialize(report)));
+    setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
   const clearCurrentDepartment = (): void => {
@@ -34,23 +34,15 @@ export const Report = () => {
   const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const today = new Date();
+    const serializedReport = objectSerializer.serialize(report);
     const reportObject = {
       departmentId: currentDepartment.id,
       reportMonth: new Date(today.getFullYear(), today.getMonth()),
-      serializedReport: report,
-      submittedUserId: currentUser,
+      serializedReport,
+      submittedUserId: user?.userDetails?.id,
     };
-    console.log(reportObject);
     Api.Post(ENDPOINT_REPORTS_POST, reportObject, () => {}, '', history);
   };
-
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      const fetchedUser = await Api.Get(ENDPOINT_ADMIN_ME, '', history);
-      setCurrentUser(fetchedUser.id);
-    };
-    getCurrentUser();
-  }, [history]);
 
   useEffect(() => {
     const getTemplates = async () => {
@@ -60,7 +52,6 @@ export const Report = () => {
           '',
           history,
         );
-        const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
@@ -72,7 +63,7 @@ export const Report = () => {
       }
     };
     currentDepartment && getTemplates();
-  }, [currentDepartment, history]);
+  }, [currentDepartment, history, objectSerializer]);
 
   return (
     <div className="department">

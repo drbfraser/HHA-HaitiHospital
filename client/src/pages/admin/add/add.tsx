@@ -16,7 +16,7 @@ import { useDepartmentData } from 'hooks';
 interface AdminProps {}
 
 export const AddUserForm = (props: AdminProps) => {
-  const { departmentMap: departments } = useDepartmentData();
+  const { departmentNameKeyMap: departments } = useDepartmentData();
 
   const { t } = useTranslation();
   const history: History = useHistory<History>();

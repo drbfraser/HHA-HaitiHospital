@@ -12,7 +12,7 @@ interface MessageFormProps {
 }
 
 const MessageForm = (props: MessageFormProps) => {
-  const { departmentMap: departments } = useDepartmentData();
+  const { departmentNameKeyMap: departments } = useDepartmentData();
 
   const { t, i18n } = useTranslation();
   const { register, handleSubmit, reset } = useForm({});
