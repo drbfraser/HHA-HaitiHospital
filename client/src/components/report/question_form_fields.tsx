@@ -24,7 +24,7 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
 
   return (
     <label className="fs-6 m-0 text-secondary" htmlFor={id}>
-      {`${orderedLabel}. ${prompt}`}
+      {orderedLabel}. {prompt}
     </label>
   );
 };
@@ -140,7 +140,7 @@ const CompositionQuestionFormField = ({
         return (
           <fieldset className="form-group mb-0 pl-3" key={groupId}>
             <legend className="fs-6 mb-3 mt-0 text-secondary">
-              {`${groupId.replaceAll("_", ".")}. ${group.getPrompt()}`}
+              {groupId.replaceAll("_", ".")}. {group.getPrompt()}
             </legend>
             <Group>
               {group.map((elem) => (
@@ -159,7 +159,6 @@ const CompositionQuestionFormField = ({
   );
 };
 
-// TODO: Save the user's progress when the user adds/deletes patients
 const ExpandableQuestionFormField = ({
   applyReportChanges,
   question,
@@ -246,7 +245,7 @@ const SingleSelectionQuestionFormField = ({
   return (
     <fieldset className="form-group">
       <legend className="fs-6 m-0 text-secondary">
-        {`${nameId.replaceAll("_", ".")}. ${question.getPrompt()}`}
+        {nameId.replaceAll("_", ".")}. {question.getPrompt()}
       </legend>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div className="form-check" key={`${nameId}_${index}`}>
