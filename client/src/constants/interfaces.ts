@@ -40,7 +40,7 @@ export interface Message {
   id: string;
   department: Department;
   date: Date;
-  user: UserJson;
+  user: UserDetails;
   messageBody: string;
   messageHeader: string;
 }
@@ -64,7 +64,7 @@ export const emptyMessage: Message = {
 export interface Comment {
   id: string;
   createdAt: Date;
-  user: UserJson;
+  user: UserDetails;
   messageComment: string;
 }
 
@@ -83,6 +83,12 @@ export const emptyMessageComment: Comment = {
 };
 
 export interface UserJson {
+  errorMessage: string;
+  isAuth: boolean;
+  loading: boolean;
+  userDetails: UserDetails
+}
+export interface UserDetails {
   id: string;
   name: string;
   role: Role;

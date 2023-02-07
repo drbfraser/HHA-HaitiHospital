@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
-import { UserJson, Role, Message, emptyMessage } from 'constants/interfaces';
+import { UserDetails, Role, Message, emptyMessage } from 'constants/interfaces';
 import Api from 'actions/Api';
 import {
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
@@ -29,7 +29,7 @@ interface MessageDisplayProps {
 const MessageDisplay = (props: MessageDisplayProps) => {
   const { t: translateText } = useTranslation();
   const [message, setMessage] = useState<Message>(emptyMessage);
-  const [author, setAuthor] = useState<UserJson>(initialUserJson as unknown as UserJson);
+  const [author, setAuthor] = useState<UserDetails>(initialUserJson as unknown as UserDetails);
   const history: History = useHistory<History>();
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
@@ -41,7 +41,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
 
   useEffect(() => {
     const retrievedUser = props.msgJson.user as unknown;
-    setAuthor(retrievedUser as UserJson);
+    setAuthor(retrievedUser as UserDetails);
     setMessage(props.msgJson);
 
     const getCommentCount = async (id: string) => {

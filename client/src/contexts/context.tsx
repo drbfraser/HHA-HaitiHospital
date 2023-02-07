@@ -1,12 +1,13 @@
 import React, { useReducer } from 'react';
 import { initialState, AuthReducer } from './reducer';
+import { UserJson } from 'constants/interfaces';
 
 const AuthStateContext = React.createContext<any>({} as any);
 
 const AuthDispatchContext = React.createContext<React.Dispatch<any>>({} as React.Dispatch<any>);
 
 export function useAuthState() {
-  const context = React.useContext(AuthStateContext);
+  const context = React.useContext<UserJson>(AuthStateContext);
   if (context === undefined) {
     throw new Error('useAuthState must be used within a AuthProvider');
   }

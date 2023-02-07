@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { UserJson, Comment, emptyMessageComment } from 'constants/interfaces';
+import { UserDetails, Comment, emptyMessageComment } from 'constants/interfaces';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useTranslation } from 'react-i18next';
 import initialUserJson from '../message_panel/initialUserJson.json';
@@ -11,12 +11,12 @@ interface MessageCommentProps {
 const MessageComment = (props: MessageCommentProps) => {
   const { t: translateText } = useTranslation();
   const [comment, setComment] = useState<Comment>(emptyMessageComment);
-  const [author, setAuthor] = useState<UserJson>(initialUserJson as unknown as UserJson);
+  const [author, setAuthor] = useState<UserDetails>(initialUserJson as unknown as UserDetails);
   const readableDate = new Date(props.commentJson.createdAt).toLocaleString();
 
   useEffect(() => {
     const retrievedUser = props.commentJson.user as unknown;
-    setAuthor(retrievedUser as UserJson);
+    setAuthor(retrievedUser as UserDetails);
     setComment(props.commentJson);
   }, [props.commentJson]);
 

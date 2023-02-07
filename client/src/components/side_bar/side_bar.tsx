@@ -23,7 +23,7 @@ const Sidebar = (props: SidebarProps) => {
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
-      return isUserInDepartment(authState.userDetails.department, departmentName);
+      return isUserInDepartment(authState.userDetails.department.name, departmentName);
     }
     return true;
   };

@@ -1,7 +1,7 @@
 import { useAuthDispatch } from '../../contexts';
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { UserJson } from 'constants/interfaces';
+import { UserDetails } from 'constants/interfaces';
 import { EMPTY_USER_JSON } from 'constants/default_values';
 import { logOutUser } from '../../actions/authActions';
 import Api from 'actions/Api';
@@ -12,7 +12,7 @@ import { ResponseMessage } from 'utils/response_message';
 
 interface HeaderProps {}
 interface HeaderViewProps {
-  user: UserJson;
+  user: UserDetails;
 }
 
 const HeaderView = (props: HeaderViewProps) => {
@@ -144,7 +144,7 @@ const Header = (props: HeaderProps) => {
     let isMounted: boolean = true;
 
     const getUserInfo = async () => {
-      const user: UserJson = await Api.Get(
+      const user: UserDetails = await Api.Get(
         ENDPOINT_ADMIN_ME,
         ResponseMessage.getMsgFetchUserFailed(),
         history,
