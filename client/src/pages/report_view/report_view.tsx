@@ -1,7 +1,7 @@
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, MouseEvent } from 'react';
 import './report_view.css';
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS_GET_BY_ID } from 'constants/endpoints';
@@ -17,9 +17,15 @@ const ReportView = () => {
   const history = useHistory<History>();
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
+  const [editForm, setEditForm] = useState<boolean>(false);
   const report_id = useLocation().pathname.split('/')[2];
   const { departmentIdKeyMap } = useDepartmentData();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+
+  const handler = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setEditForm((prev) => !prev);
+  };
 
   const getReport = useCallback(async () => {
     const fetchedReport: any = await Api.Get(
@@ -45,17 +51,18 @@ const ReportView = () => {
         <Sidebar />
         <main>
           <Header />
-          {!!report && (
-            <>
-              <header>
-                <h1>Report ID: {metaData?._id}</h1>
-                <h2>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h2>
-              </header>
-              <div>
-                <pre>{JSON.stringify(report, null, 2)}</pre>
-              </div>
-            </>
-          )}
+          <>
+            <header>
+              <h1>Report ID: {metaData?._id}</h1>
+              <h2>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h2>
+              <button className="btn btn-primary" onClick={handler}>
+                {editForm ? 'View Form' : 'Edit Form'}
+              </button>
+            </header>
+            <div>
+              <pre>{JSON.stringify(report, null, 2)}</pre>
+            </div>
+          </>
         </main>
       </div>
     </>
