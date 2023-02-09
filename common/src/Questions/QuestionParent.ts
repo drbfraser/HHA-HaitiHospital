@@ -1,4 +1,4 @@
-/*  QuestionParent represents a parent node in the question three. A parent
+/*  QuestionParent represents a parent node in the question tree. A parent
     question can have multiple children question. This type is meant to be
     further specialized to determine the constraints on how to operate upon
     its children questions and what kinds of children questions it can have.

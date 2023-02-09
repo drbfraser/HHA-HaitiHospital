@@ -12,20 +12,13 @@ import {
   ERROR_NOT_A_INTEGER,
   isNumber,
 } from '@hha/common';
-import {
-  ChangeEvent,
-  FormEvent,
-  HTMLInputTypeAttribute,
-  ReactNode,
-  useState
-} from 'react';
+import { ChangeEvent, FormEvent, HTMLInputTypeAttribute, ReactNode, useState } from 'react';
 
 type ErrorType = string;
 type FunctionalComponent = (object: Object) => JSX.Element;
 type ID = string;
 
 type FormFieldProps = {
-  children?: ReactNode;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   inputState: ValidationResult<string>;
   min?: number | string;
@@ -44,32 +37,37 @@ type GroupProps = {
 };
 
 const FormField = (props: FormFieldProps) => {
-  return <div className="form-group">
-    <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>
-      {props.nameId.replaceAll("_", ".")}. {props.prompt}
-    </label>
-    <input
-      className={`form-control w-50 ${props.inputState === true ? "" : "is-invalid"}`}
-      id={props.nameId}
-      min={props.min}
-      name={props.nameId}
-      onChange={props.handleChange}
-      type={props.type}
-      value={props.value}
-    />
-    {props.inputState !== true && <div className="invalid-feedback">{props.inputState.message}</div>}
-    {props.children}
-  </div>;
+  return (
+    <div className="form-group">
+      <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>
+        {props.nameId.replaceAll('_', '.')}. {props.prompt}
+      </label>
+      <input
+        className={`form-control w-50 ${props.inputState === true ? '' : 'is-invalid'}`}
+        id={props.nameId}
+        min={props.min}
+        name={props.nameId}
+        onChange={props.handleChange}
+        type={props.type}
+        value={props.value}
+      />
+      {props.inputState !== true && (
+        <div className="invalid-feedback">{props.inputState.message}</div>
+      )}
+    </div>
+  );
 };
-const FormFieldCheck = ({children, nameId, prompt}: FormFieldCheckProps) => {
-  return <fieldset className="form-group">
-    <legend className="fs-6 m-0 text-secondary">
-      {nameId.replaceAll("_", ".")}. {prompt}
-    </legend>
-    {children}
-  </fieldset>;
+const FormFieldCheck = ({ children, nameId, prompt }: FormFieldCheckProps) => {
+  return (
+    <fieldset className="form-group">
+      <legend className="fs-6 m-0 text-secondary">
+        {nameId.replaceAll('_', '.')}. {prompt}
+      </legend>
+      {children}
+    </fieldset>
+  );
 };
-const Group = ({children}: GroupProps): JSX.Element => <div className="pl-3">{children}</div>;
+const Group = ({ children }: GroupProps): JSX.Element => <div className="pl-3">{children}</div>;
 
 const NumericQuestionFormField = ({
   applyReportChanges,
@@ -92,21 +90,22 @@ const NumericQuestionFormField = ({
 
     if (isNumber(newValue)) {
       setInputState(question.getValidationResults());
-    }
-    else {
+    } else {
       setInputState(ERROR_NOT_A_INTEGER);
     }
   };
 
-  return <FormField
-    handleChange={handleChange}
-    inputState={inputState}
-    min={0}
-    nameId={nameId}
-    prompt={question.getPrompt()}
-    type="number"
-    value={question.getAnswer()}
-  />;
+  return (
+    <FormField
+      handleChange={handleChange}
+      inputState={inputState}
+      min={0}
+      nameId={nameId}
+      prompt={question.getPrompt()}
+      type="number"
+      value={question.getAnswer()}
+    />
+  );
 };
 
 const TextQuestionFormField = ({
@@ -126,14 +125,16 @@ const TextQuestionFormField = ({
     applyReportChanges();
   };
 
-  return <FormField
-    handleChange={handleChange}
-    inputState={inputState}
-    nameId={nameId}
-    prompt={question.getPrompt()}
-    type="text"
-    value={question.getAnswer()}
-  />;
+  return (
+    <FormField
+      handleChange={handleChange}
+      inputState={inputState}
+      nameId={nameId}
+      prompt={question.getPrompt()}
+      type="text"
+      value={question.getAnswer()}
+    />
+  );
 };
 
 const CompositionQuestionFormField = ({
@@ -170,7 +171,7 @@ const CompositionQuestionFormField = ({
         return (
           <fieldset className="form-group mb-0 pl-3" key={groupId}>
             <legend className="fs-6 mb-3 mt-0 text-secondary">
-              {groupId.replaceAll("_", ".")}. {group.getPrompt()}
+              {groupId.replaceAll('_', '.')}. {group.getPrompt()}
             </legend>
             <Group>
               {group.map((elem) => (
@@ -244,7 +245,7 @@ const ExpandableQuestionFormField = ({
                   {buildQuestionFormField({
                     applyReportChanges: applyReportChanges,
                     questions: questionGroup,
-                    suffixName: `_${index + 1}`
+                    suffixName: `_${index + 1}`,
                   })}
                 </div>
               </div>
@@ -305,7 +306,7 @@ const MultiSelectionQuestionFormField = ({
     question.setAnswer(
       choice.wasChosen()
         ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index)
-        : question.getAnswer().concat(index)
+        : question.getAnswer().concat(index),
     );
     applyReportChanges();
   };
@@ -341,29 +342,31 @@ const buildQuestionFormField = ({
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  return (<>
-    {questions
-      .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
-        compositionQuestion: (q) => [q, CompositionQuestionFormField],
-        expandableQuestion: (q) => [q, ExpandableQuestionFormField],
-        multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
-        numericQuestion: (q) => [q, NumericQuestionFormField],
-        questionGroup: (q) => [q, buildQuestionFormField],
-        singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
-        textQuestion: (q) => [q, TextQuestionFormField]
-      })
-      .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
-        const [question, FormFieldComponent] = tuple;
-        return (
-          <FormFieldComponent
-            applyReportChanges={applyReportChanges}
-            key={`${question.getId()}${suffixName}`}
-            question={question}
-            suffixName={suffixName}
-          />
-        );
-      })}
-  </>);
+  return (
+    <>
+      {questions
+        .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
+          compositionQuestion: (q) => [q, CompositionQuestionFormField],
+          expandableQuestion: (q) => [q, ExpandableQuestionFormField],
+          multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
+          numericQuestion: (q) => [q, NumericQuestionFormField],
+          questionGroup: (q) => [q, buildQuestionFormField],
+          singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
+          textQuestion: (q) => [q, TextQuestionFormField],
+        })
+        .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
+          const [question, FormFieldComponent] = tuple;
+          return (
+            <FormFieldComponent
+              applyReportChanges={applyReportChanges}
+              key={`${question.getId()}${suffixName}`}
+              question={question}
+              suffixName={suffixName}
+            />
+          );
+        })}
+    </>
+  );
 };
 
 interface ReportFormProps {
@@ -381,15 +384,15 @@ export const ReportForm = ({
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={submitReport} noValidate>
-        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit Report"/>
+        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit Report" />
         <Group>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,
-            suffixName: "",
+            suffixName: '',
           })}
         </Group>
-        <input className="btn btn-outline-primary" type="submit" value="Submit Report"/>
+        <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
       </form>
     </div>
   );
