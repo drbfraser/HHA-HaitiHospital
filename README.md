@@ -202,11 +202,11 @@ We use prettier as our code formatter. The repo provides a prettier config to un
 
 - Install Prettier as a VSCode extension
 - Navigate to the root directory
-- Run the following commands to install and use prettier on the whole directory
+- Run the following commands run prettier on the whole project
 
 ```
-$ npm install --global prettier
-$ prettier --write
+$ npm install
+$ npm run format
 ```
 
 Our prettier config is set to format code on file save.
@@ -227,6 +227,10 @@ $ sudo docker-compose up
 $npm run seed
 ```
 
-### License
+### Gitlab Runners
+- Gitlab runners are administered directly by Dr Brian
+- It is important to not change how jobs are picked up by runners as this affects projects outside of this repo
+- It is possible to run and test steps in the pipeline locally. [This is a useful guide to get started.](https://www.linkedin.com/pulse/how-execute-gitlab-ci-docker-your-local-machine-shubham-takode/)
 
+### License
 GNU GPL
