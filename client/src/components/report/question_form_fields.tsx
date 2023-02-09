@@ -18,19 +18,33 @@ type ErrorType = string;
 type FunctionalComponent = (object: Object) => JSX.Element;
 type ID = string;
 
-const FormField = ({children}): JSX.Element => <div className="form-group">{children}</div>;
-const FormFieldLabel = ({ id, prompt }): JSX.Element => {
-  const orderedLabel = id.replaceAll('_', '.');
-
-  return (
-    <label className="fs-6 m-0 text-secondary" htmlFor={id}>
-      {orderedLabel}. {prompt}
-    </label>
-  );
+type FormFieldProps = {
+  children: React.ReactNode;
+  nameId: string;
+  prompt: string;
 };
-const Group = ({children}): JSX.Element => <div className="pl-3">{children}</div>;
+type GroupProps = {
+  children: React.ReactNode;
+};
 
-// TODO: Refactor the below components since they're all similar
+const FormField = ({children, nameId, prompt}: FormFieldProps) => {
+  return <div className="form-group">
+    <label className="fs-6 m-0 text-secondary" htmlFor={nameId}>
+      {nameId.replaceAll("_", ".")}. {prompt}
+    </label>
+    {children}
+  </div>;
+};
+const FormFieldCheck = ({children, nameId, prompt}: FormFieldProps) => {
+  return <fieldset className="form-group">
+    <legend className="fs-6 m-0 text-secondary">
+      {nameId.replaceAll("_", ".")}. {prompt}
+    </legend>
+    {children}
+  </fieldset>;
+};
+const Group = ({children}: GroupProps): JSX.Element => <div className="pl-3">{children}</div>;
+
 const NumericQuestionFormField = ({
   applyReportChanges,
   question,
@@ -59,12 +73,11 @@ const NumericQuestionFormField = ({
   };
 
   return (
-    <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+    <FormField nameId={nameId} prompt={question.getPrompt()}>
       <input
         className={`form-control w-50 ${inputState === true ? "" : "is-invalid"}`}
         id={nameId}
-        min="0"
+        min={0}
         name={nameId}
         onChange={handleChange}
         type="number"
@@ -91,8 +104,7 @@ const TextQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+    <FormField nameId={nameId} prompt={question.getPrompt()}>
       <input
         className="form-control w-50"
         id={nameId}
@@ -122,8 +134,7 @@ const CompositionQuestionFormField = ({
 
   return (
     <>
-      <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+      <FormField nameId={nameId} prompt={question.getPrompt()}>
         <input
           className="form-control w-50"
           id={nameId}
@@ -176,8 +187,7 @@ const ExpandableQuestionFormField = ({
 
   return (
     <>
-      <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+      <FormField nameId={nameId} prompt={question.getPrompt()}>
         <input
           className="form-control w-50"
           id={nameId}
@@ -243,10 +253,7 @@ const SingleSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <fieldset className="form-group">
-      <legend className="fs-6 m-0 text-secondary">
-        {nameId.replaceAll("_", ".")}. {question.getPrompt()}
-      </legend>
+    <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div className="form-check" key={`${nameId}_${index}`}>
           <input
@@ -257,10 +264,12 @@ const SingleSelectionQuestionFormField = ({
             onChange={getChangeHandler(index)}
             type="radio"
           />
-          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
+          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
+            {choice.getDescription()}
+          </label>
         </div>
       ))}
-    </fieldset>
+    </FormFieldCheck>
   );
 };
 
@@ -277,17 +286,14 @@ const MultiSelectionQuestionFormField = ({
     question.setAnswer(
       choice.wasChosen()
         ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index)
-        : question.getAnswer().concat(index),
+        : question.getAnswer().concat(index)
     );
     applyReportChanges();
   };
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <fieldset className="form-group">
-      <legend className="fs-6 m-0 text-secondary">
-        {`${nameId.replaceAll("_", ".")}. ${question.getPrompt()}`}
-      </legend>
+    <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div className="form-check" key={`${nameId}_${index}`}>
           <input
@@ -298,10 +304,12 @@ const MultiSelectionQuestionFormField = ({
             onChange={getChangeHandler(choice, index)}
             type="checkbox"
           />
-          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
+          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
+            {choice.getDescription()}
+          </label>
         </div>
       ))}
-    </fieldset>
+    </FormFieldCheck>
   );
 };
 
@@ -354,7 +362,7 @@ export const ReportForm = ({
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={submitReport} noValidate>
-        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit"/>
+        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit Report"/>
         <Group>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
@@ -362,7 +370,7 @@ export const ReportForm = ({
             suffixName: "",
           })}
         </Group>
-        <input className="btn btn-outline-primary" type="submit" value="Submit"/>
+        <input className="btn btn-outline-primary" type="submit" value="Submit Report"/>
       </form>
     </div>
   );
