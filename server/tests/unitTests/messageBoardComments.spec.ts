@@ -61,7 +61,7 @@ describe('Message Board Comments Test', function () {
     agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
       expect(error).to.be.null;
       expect(response).to.have.status(HTTP_OK_CODE);
-
+      console.log(response.body[0]);
       const messageId = response.body[0].id;
 
       agent
