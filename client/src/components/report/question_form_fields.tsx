@@ -200,7 +200,7 @@ const ExpandableQuestionFormField = ({
       </FormField>
       <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          const itemId: string = `_${index + 1}`;
+          const itemId: string = `accordion-${nameId}_${index + 1}`;
 
           return (
             <div className="accordion-item" key={itemId}>
