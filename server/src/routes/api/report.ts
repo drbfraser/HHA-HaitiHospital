@@ -12,6 +12,7 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { ReportCollection } from '../../models/report';
 import { departmentAuth } from 'middleware/departmentAuth';
 import { Router } from 'express';
+import { cloneDeep } from 'lodash';
 
 const router = Router();
 
@@ -113,4 +114,25 @@ router.get(
   },
 );
 
+router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
+  const { id, serializedReport } = req.body;
+
+  const report = await ReportCollection.findById(id);
+
+  // TODO: restrict to user, department head or admin only ?
+  const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
+  if (!authorized) {
+    throw new Unauthorized(`User not authorized`);
+  }
+
+  if (!report) {
+    throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+  }
+
+  report.reportObject = cloneDeep(serializedReport);
+
+  await report.save();
+
+  res.status(HTTP_OK_CODE);
+});
 export default router;

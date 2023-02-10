@@ -48,7 +48,6 @@ const ReportView = () => {
       TOAST_REPORT_GET,
       history,
     );
-    console.log(fetchedReport.report);
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
 
     setMetaData({
@@ -77,7 +76,7 @@ const ReportView = () => {
               </button>
             </header>
             <div>
-              {editForm ? (
+              {editForm && !!report ? (
                 <ReportForm
                   applyReportChanges={applyReportChanges}
                   reportData={report}
