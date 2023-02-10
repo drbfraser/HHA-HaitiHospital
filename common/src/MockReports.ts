@@ -586,7 +586,7 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
     string,
     NumericQuestion<string, string>
   > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
-    'q14_1',
+    '14_1',
     'Age',
     q14_1_1,
     q14_1_2,
