@@ -3,14 +3,13 @@ import Sidebar from 'components/side_bar/side_bar';
 
 import { useCallback, useEffect, useState, MouseEvent } from 'react';
 import './report_view.css';
-import Api from 'actions/Api';
-import { ENDPOINT_REPORTS_GET_BY_ID } from 'constants/endpoints';
+import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
 import { TOAST_REPORT_GET } from 'constants/toast_messages';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/question_form_fields';
-import { ENDPOINT_REPORTS } from 'constants/endpoints';
+import Api from 'actions/Api';
 
 type ID = string;
 type ErrorType = string;
@@ -35,6 +34,12 @@ const ReportView = () => {
 
   const reportHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const serializedReport = objectSerializer.serialize(report);
+    const editedReportObject = {
+      id: report_id,
+      serializedReport,
+    };
+    Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
   };
 
   const getReport = useCallback(async () => {
