@@ -10,6 +10,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/question_form_fields';
+import { ENDPOINT_REPORTS } from 'constants/endpoints';
 
 type ID = string;
 type ErrorType = string;
@@ -32,7 +33,7 @@ const ReportView = () => {
     setEditForm((prev) => !prev);
   };
 
-  const formHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const reportHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
 
@@ -75,7 +76,7 @@ const ReportView = () => {
                 <ReportForm
                   applyReportChanges={applyReportChanges}
                   reportData={report}
-                  formHandler={formHandler}
+                  formHandler={reportHandler}
                 />
               ) : (
                 <pre>{JSON.stringify(report, null, 2)}</pre>
