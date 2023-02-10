@@ -10,6 +10,7 @@ import {
   TextQuestion,
   ValidationResult,
   ERROR_NOT_A_INTEGER,
+  ERROR_DOES_NOT_SUM_UP,
   isNumber,
 } from '@hha/common';
 import { useState } from 'react';
@@ -119,13 +120,16 @@ const CompositionQuestionFormField = ({
     applyReportChanges();
   };
   const nameId = `${question.getId()}${suffixName}`;
+  
+  const doesAllSumUp=question.allSumUp();
 
   return (
     <>
       <FormField>
         <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
         <input
-          className="form-control w-50"
+          
+        className={`form-control w-50 ${doesAllSumUp === true ? "" : "is-invalid"}`}
           id={nameId}
           min="0"
           name={nameId}
@@ -133,6 +137,8 @@ const CompositionQuestionFormField = ({
           type="number"
           value={question.getAnswer()}
         />
+        
+      {doesAllSumUp !== true && <div className="invalid-feedback">{ERROR_DOES_NOT_SUM_UP.message}</div>}
       </FormField>
       {question.map<JSX.Element>((group) => {
         const groupId = `${group.getId()}${suffixName}`;
