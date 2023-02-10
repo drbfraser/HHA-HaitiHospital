@@ -1,7 +1,7 @@
-import { UserJson } from 'constants/interfaces';
+import { UserDetails } from 'constants/interfaces';
 import { AdminUserFormData } from './typing';
 
-export const initAdminForm = (data: UserJson): AdminUserFormData => {
+export const initAdminForm = (data: UserDetails): AdminUserFormData => {
   return {
     username: '',
     password: '',
