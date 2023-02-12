@@ -86,7 +86,7 @@ export interface UserJson {
   errorMessage: string;
   isAuth: boolean;
   loading: boolean;
-  userDetails: UserDetails
+  userDetails: UserDetails;
 }
 export interface UserDetails {
   id: string;

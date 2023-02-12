@@ -67,14 +67,16 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
 
     if (this.getAnswer() > this.questionGroups.length) {
       for (let i = this.questionGroups.length; i < this.getAnswer(); i++) {
-        this.questionGroups.push(new QuestionGroup(
-          this.idGenerator(i + 1),
-          `${this.getPrompt()}-${i}`,
-          ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
-            let serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-            return serializer.deserialize(serializer.serialize(q));
-          })
-        ));
+        this.questionGroups.push(
+          new QuestionGroup(
+            this.idGenerator(i + 1),
+            `${this.getPrompt()}-${i}`,
+            ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
+              let serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+              return serializer.deserialize(serializer.serialize(q));
+            }),
+          ),
+        );
       }
     }
   }
@@ -90,8 +92,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorT
 
     if (answer < this.questionGroups.length) {
       this.shrink();
-    }
-    else if (answer > this.questionGroups.length) {
+    } else if (answer > this.questionGroups.length) {
       this.expand();
     }
   }

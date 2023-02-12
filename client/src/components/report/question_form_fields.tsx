@@ -19,7 +19,7 @@ type ErrorType = string;
 type FunctionalComponent = (object: Object) => JSX.Element;
 type ID = string;
 
-const FormField = ({children}): JSX.Element => <div className="form-group">{children}</div>;
+const FormField = ({ children }): JSX.Element => <div className="form-group">{children}</div>;
 const FormFieldLabel = ({ id, prompt }): JSX.Element => {
   const orderedLabel = id.replaceAll('_', '.');
 
@@ -29,7 +29,7 @@ const FormFieldLabel = ({ id, prompt }): JSX.Element => {
     </label>
   );
 };
-const Group = ({children}): JSX.Element => <div className="pl-3">{children}</div>;
+const Group = ({ children }): JSX.Element => <div className="pl-3">{children}</div>;
 
 // TODO: Refactor the below components since they're all similar
 const NumericQuestionFormField = ({
@@ -53,17 +53,16 @@ const NumericQuestionFormField = ({
 
     if (isNumber(newValue)) {
       setInputState(question.getValidationResults());
-    }
-    else {
+    } else {
       setInputState(ERROR_NOT_A_INTEGER);
     }
   };
 
   return (
     <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       <input
-        className={`form-control w-50 ${inputState === true ? "" : "is-invalid"}`}
+        className={`form-control w-50 ${inputState === true ? '' : 'is-invalid'}`}
         id={nameId}
         min="0"
         name={nameId}
@@ -93,7 +92,7 @@ const TextQuestionFormField = ({
 
   return (
     <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
       <input
         className="form-control w-50"
         id={nameId}
@@ -120,16 +119,15 @@ const CompositionQuestionFormField = ({
     applyReportChanges();
   };
   const nameId = `${question.getId()}${suffixName}`;
-  
-  const doesAllSumUp=question.allSumUp();
+
+  const doesAllSumUp = question.allSumUp();
 
   return (
     <>
       <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
-          
-        className={`form-control w-50 ${doesAllSumUp === true ? "" : "is-invalid"}`}
+          className={`form-control w-50 ${doesAllSumUp === true ? '' : 'is-invalid'}`}
           id={nameId}
           min="0"
           name={nameId}
@@ -137,8 +135,10 @@ const CompositionQuestionFormField = ({
           type="number"
           value={question.getAnswer()}
         />
-        
-      {doesAllSumUp !== true && <div className="invalid-feedback">{ERROR_DOES_NOT_SUM_UP.message}</div>}
+
+        {doesAllSumUp !== true && (
+          <div className="invalid-feedback">{ERROR_DOES_NOT_SUM_UP.message}</div>
+        )}
       </FormField>
       {question.map<JSX.Element>((group) => {
         const groupId = `${group.getId()}${suffixName}`;
@@ -146,7 +146,7 @@ const CompositionQuestionFormField = ({
         return (
           <fieldset className="form-group mb-0 pl-3" key={groupId}>
             <legend className="fs-6 mb-3 mt-0 text-secondary">
-              {groupId.replaceAll("_", ".")}. {group.getPrompt()}
+              {groupId.replaceAll('_', '.')}. {group.getPrompt()}
             </legend>
             <Group>
               {group.map((elem) => (
@@ -183,7 +183,7 @@ const ExpandableQuestionFormField = ({
   return (
     <>
       <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()}/>
+        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
           className="form-control w-50"
           id={nameId}
@@ -251,7 +251,7 @@ const SingleSelectionQuestionFormField = ({
   return (
     <fieldset className="form-group">
       <legend className="fs-6 m-0 text-secondary">
-        {nameId.replaceAll("_", ".")}. {question.getPrompt()}
+        {nameId.replaceAll('_', '.')}. {question.getPrompt()}
       </legend>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div className="form-check" key={`${nameId}_${index}`}>
@@ -263,7 +263,9 @@ const SingleSelectionQuestionFormField = ({
             onChange={getChangeHandler(index)}
             type="radio"
           />
-          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
+          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
+            {choice.getDescription()}
+          </label>
         </div>
       ))}
     </fieldset>
@@ -292,7 +294,7 @@ const MultiSelectionQuestionFormField = ({
   return (
     <fieldset className="form-group">
       <legend className="fs-6 m-0 text-secondary">
-        {`${nameId.replaceAll("_", ".")}. ${question.getPrompt()}`}
+        {`${nameId.replaceAll('_', '.')}. ${question.getPrompt()}`}
       </legend>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div className="form-check" key={`${nameId}_${index}`}>
@@ -304,7 +306,9 @@ const MultiSelectionQuestionFormField = ({
             onChange={getChangeHandler(choice, index)}
             type="checkbox"
           />
-          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>{choice.getDescription()}</label>
+          <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
+            {choice.getDescription()}
+          </label>
         </div>
       ))}
     </fieldset>
@@ -320,29 +324,31 @@ const buildQuestionFormField = ({
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  return (<>
-    {questions
-      .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
-        compositionQuestion: (q) => [q, CompositionQuestionFormField],
-        expandableQuestion: (q) => [q, ExpandableQuestionFormField],
-        multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
-        numericQuestion: (q) => [q, NumericQuestionFormField],
-        questionGroup: (q) => [q, buildQuestionFormField],
-        singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
-        textQuestion: (q) => [q, TextQuestionFormField]
-      })
-      .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
-        const [question, FormFieldComponent] = tuple;
-        return (
-          <FormFieldComponent
-            applyReportChanges={applyReportChanges}
-            key={`${question.getId()}${suffixName}`}
-            question={question}
-            suffixName={suffixName}
-          />
-        );
-      })}
-  </>);
+  return (
+    <>
+      {questions
+        .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
+          compositionQuestion: (q) => [q, CompositionQuestionFormField],
+          expandableQuestion: (q) => [q, ExpandableQuestionFormField],
+          multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
+          numericQuestion: (q) => [q, NumericQuestionFormField],
+          questionGroup: (q) => [q, buildQuestionFormField],
+          singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
+          textQuestion: (q) => [q, TextQuestionFormField],
+        })
+        .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
+          const [question, FormFieldComponent] = tuple;
+          return (
+            <FormFieldComponent
+              applyReportChanges={applyReportChanges}
+              key={`${question.getId()}${suffixName}`}
+              question={question}
+              suffixName={suffixName}
+            />
+          );
+        })}
+    </>
+  );
 };
 
 interface ReportFormProps {
@@ -360,15 +366,15 @@ export const ReportForm = ({
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={submitReport} noValidate>
-        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit"/>
+        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit" />
         <Group>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,
-            suffixName: "",
+            suffixName: '',
           })}
         </Group>
-        <input className="btn btn-outline-primary" type="submit" value="Submit"/>
+        <input className="btn btn-outline-primary" type="submit" value="Submit" />
       </form>
     </div>
   );
