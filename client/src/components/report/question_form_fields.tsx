@@ -344,21 +344,19 @@ const buildQuestionFormField = ({
   );
 };
 
-interface ReportFormProps {
-  applyReportChanges: () => void;
-  reportData: QuestionGroup<string, string>;
-  submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
 export const ReportForm = ({
   applyReportChanges,
   reportData,
-  submitReport,
-}: ReportFormProps): JSX.Element => {
+  formHandler,
+}: {
+  applyReportChanges: () => void;
+  reportData: QuestionGroup<ID, ErrorType>;
+  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+}): JSX.Element => {
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
-      <form onSubmit={submitReport} noValidate>
+      <form onSubmit={formHandler} noValidate>
         <input className="btn btn-outline-primary mb-3" type="submit" value="Submit" />
         <Group>
           {buildQuestionFormField({

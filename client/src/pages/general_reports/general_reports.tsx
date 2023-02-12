@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import './general_reports_styles.css';
 import Pagination from 'components/pagination/Pagination';
 import Api from 'actions/Api';
-import { ENDPOINT_REPORTS_GET } from 'constants/endpoints';
+import { ENDPOINT_REPORTS } from 'constants/endpoints';
 import { TOAST_REPORTS_GET } from 'constants/toast_messages';
 import { JsonReportDescriptor } from '@hha/common';
 import { Link, useHistory } from 'react-router-dom';
@@ -26,7 +26,7 @@ const GeneralReports = () => {
   const [reports, setReports] = useState<JsonReportDescriptor[]>([]);
   const getReports = useCallback(async () => {
     const fetchedReports: JsonReportDescriptor[] = await Api.Get(
-      ENDPOINT_REPORTS_GET,
+      ENDPOINT_REPORTS,
       TOAST_REPORTS_GET,
       history,
     );
