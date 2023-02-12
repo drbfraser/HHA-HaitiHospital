@@ -4,7 +4,7 @@ import Sidebar from 'components/side_bar/side_bar';
 import { useCallback, useEffect, useState, MouseEvent } from 'react';
 import './report_view.css';
 import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
-import { TOAST_REPORT_GET } from 'constants/toast_messages';
+import { TOAST_REPORT_GET } from 'constants/toastErrorMessages';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';

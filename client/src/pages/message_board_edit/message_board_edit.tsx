@@ -11,7 +11,7 @@ import {
   ENDPOINT_MESSAGEBOARD_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
 } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_PUT } from 'constants/toast_messages';
+import { TOAST_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_PUT } from 'constants/toastErrorMessages';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';

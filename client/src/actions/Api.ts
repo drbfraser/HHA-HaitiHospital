@@ -35,11 +35,15 @@ const Get = async (url: string, errorMsg: string, history: History): Promise<any
  * @param actions
  * - Actions that should occur after POST request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
- * @returns void
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
+ * @returns Promise<void>
  */
 const Post = async (
   url: string,

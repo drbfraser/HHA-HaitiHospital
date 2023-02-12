@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Axios from 'axios';
 import Api from 'actions/Api';
 import { ENDPOINT_DEPARTMENT_GET_BY_ID } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
+import { TOAST_DEPARTMENT_GET } from 'constants/toastErrorMessages';
 import { ReportProps, Department, EMPTY_DEPARTMENT } from 'constants/interfaces';
 import { ReportDisplay } from 'components/report_display/report_display';
 import SideBar from 'components/side_bar/side_bar';

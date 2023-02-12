@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Message } from 'constants/interfaces';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
+import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
 import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
 import { renderBasedOnRole } from 'actions/roleActions';

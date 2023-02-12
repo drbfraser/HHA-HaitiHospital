@@ -10,7 +10,7 @@ import './general_reports_styles.css';
 import Pagination from 'components/pagination/Pagination';
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS } from 'constants/endpoints';
-import { TOAST_REPORTS_GET } from 'constants/toast_messages';
+import { TOAST_REPORTS_GET } from 'constants/toastErrorMessages';
 import { JsonReportDescriptor } from '@hha/common';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';

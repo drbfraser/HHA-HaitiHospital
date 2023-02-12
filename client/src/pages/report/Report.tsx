@@ -2,6 +2,9 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/question_form_fields';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { TOAST_REPORT_POST as ERR_TOAST } from "constants/toastErrorMessages";
+import { TOAST_REPORT_POST as PENDING_TOAST } from "constants/toastPendingMessages";
+import { TOAST_REPORT_POST as SUCCESS_TOAST } from "constants/toastSuccessMessages";
 import Api from 'actions/Api';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
@@ -47,9 +50,9 @@ export const Report = () => {
       reportObject,
       () => {},
       history,
-      "Unable to submit report",
-      "Submitting report...",
-      "Report submitted successfully!"
+      ERR_TOAST,
+      PENDING_TOAST,
+      SUCCESS_TOAST
     );
   };
 

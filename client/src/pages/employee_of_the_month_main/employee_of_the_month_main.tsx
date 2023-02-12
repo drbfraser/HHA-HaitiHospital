@@ -6,7 +6,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month_summary/employee_of_the_month_summary';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toast_messages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
 import Api from '../../actions/Api';
 import './employee_of_the_month_main.css';
 import { useTranslation } from 'react-i18next';

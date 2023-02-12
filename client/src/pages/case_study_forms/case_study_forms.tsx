@@ -6,7 +6,7 @@ import Header from 'components/header/header';
 import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
-import { TOAST_CASESTUDY_POST } from 'constants/toast_messages';
+import { TOAST_CASESTUDY_POST } from 'constants/toastErrorMessages';
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
