@@ -45,8 +45,8 @@ const Post = async (
   url: string,
   obj: object = {},
   actions: any,
-  errorMsg: string,
   history: History,
+  errorMsg = "",
   pendingMsg?: string,
   successMsg?: string
 ): Promise<void> => {
@@ -56,7 +56,7 @@ const Post = async (
       .then(() => actions())
       .catch((err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
     {
-      error: errorMsg,
+      error: undefined,
       pending: pendingMsg,
       success: successMsg
     }

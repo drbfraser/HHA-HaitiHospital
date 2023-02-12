@@ -40,7 +40,7 @@ const onLogout = () => {
 
 export const logOutUser = async (dispatch, history: History) => {
   dispatch({ type: 'LOGOUT' });
-  await Api.Post(ENDPOINT_LOGOUT, {}, onLogout, 'Logging out failed', history);
+  await Api.Post(ENDPOINT_LOGOUT, {}, onLogout, history, 'Logging out failed');
 };
 
 const deleteAllCookies = () => {

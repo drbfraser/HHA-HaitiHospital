@@ -24,8 +24,8 @@ const AddMessage = () => {
       ENDPOINT_MESSAGEBOARD_POST,
       data,
       onSubmitActions,
-      TOAST_MESSAGEBOARD_POST,
       history,
+      TOAST_MESSAGEBOARD_POST
     );
   };
 

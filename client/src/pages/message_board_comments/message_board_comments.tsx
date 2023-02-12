@@ -74,8 +74,8 @@ const MessageComments = () => {
       ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
       data,
       onSubmitActions,
-      TOAST_MESSAGEBOARD_COMMENTS_POST,
       history,
+      TOAST_MESSAGEBOARD_COMMENTS_POST
     );
     reset();
   };

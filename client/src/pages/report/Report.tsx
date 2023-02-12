@@ -32,7 +32,6 @@ export const Report = () => {
   };
 
   const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportObject = {
@@ -41,12 +40,14 @@ export const Report = () => {
       serializedReport,
       submittedUserId: user?.userDetails?.id,
     };
+
+    event.preventDefault();
     Api.Post(
       ENDPOINT_REPORTS,
       reportObject,
       () => {},
-      '',
       history,
+      "Unable to submit report",
       "Submitting report...",
       "Report submitted successfully!"
     );

@@ -31,8 +31,8 @@ export const AddUserForm = (props: AdminProps) => {
       ENDPOINT_ADMIN_POST,
       data,
       onSubmit,
-      ResponseMessage.getMsgCreateUserFailed(),
       history,
+      ResponseMessage.getMsgCreateUserFailed()
     );
   };
 
