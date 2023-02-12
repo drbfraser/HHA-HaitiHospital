@@ -376,7 +376,7 @@ export const ReportForm = ({
 }: {
   applyReportChanges: () => void;
   reportData: QuestionGroup<ID, ErrorType>;
-  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  formHandler: (event: FormEvent<HTMLFormElement>) => void;
 }): JSX.Element => {
   return (
     <div className="mt-3 p-3">

@@ -41,7 +41,15 @@ export const Report = () => {
       serializedReport,
       submittedUserId: user?.userDetails?.id,
     };
-    Api.Post(ENDPOINT_REPORTS, reportObject, () => {}, '', history);
+    Api.Post(
+      ENDPOINT_REPORTS,
+      reportObject,
+      () => {},
+      '',
+      history,
+      "Submitting report...",
+      "Report submitted successfully!"
+    );
   };
 
   useEffect(() => {

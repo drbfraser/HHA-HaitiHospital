@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import { History } from 'history';
 import * as Error from './ApiError';
 import DbErrorHandler from './http_error_handler';
 import { ResponseMessage } from 'utils/response_message';
+import { toast } from 'react-toastify';
 
 /**
  *
@@ -46,15 +47,20 @@ const Post = async (
   actions: any,
   errorMsg: string,
   history: History,
+  pendingMsg?: string,
+  successMsg?: string
 ): Promise<void> => {
-  try {
-    await axios.post(url, obj);
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  await toast.promise(
+    axios
+      .post(url, obj)
+      .then(() => actions())
+      .catch((err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+    {
+      error: errorMsg,
+      pending: pendingMsg,
+      success: successMsg
+    }
+  );
 };
 
 /**
