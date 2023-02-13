@@ -489,7 +489,7 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
     NumericQuestion<string, string>
   > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
     '14_3',
-    'Main Condirtion',
+    'Main Condition',
 
     q14_3_1,
     q14_3_2,
