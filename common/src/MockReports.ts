@@ -292,14 +292,6 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
   );
 
   // Question 13
-  const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>(
-    '13',
-    'Admissions',
-  );
-  const q13_1: QuestionGroup<string, string> = new QuestionGroup<string, string>(
-    '13_1',
-    'Where do patients come from?',
-  );
   const q13_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>(
     '13_1_1',
     'Quarter Morin',
@@ -316,11 +308,228 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
     '13_1_4',
     'Other departments',
   );
+  const q13_1: SpecializedGroup<
+    string,
+    string,
+    NumericQuestion<string, string>
+  > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
+    '13_1',
+    'Where do patients come from?',
+    q13_1_1,
+    q13_1_2,
+    q13_1_3,
+    q13_1_4,
+  );
 
-  q13_1.addAll(q13_1_1, q13_1_2, q13_1_3, q13_1_4);
-  // TODO: Add q13_1 to q13
+  const q13_2_1: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_1',
+    'SCI - tetraplegia',
+    // q13_2_1_1,
+  );
+  const q13_2_2: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_2',
+    'SCI - paraplegia',
+    // q13_2_2_1,
+  );
+  const q13_2_3: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_3',
+    'Stroke/CVA',
+  );
+  const q13_2_4: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_4',
+    'Fractured Hip',
+  );
+  const q13_2_5: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_5',
+    'Fracrtured long bones',
+  );
+  const q13_2_6: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_6',
+    'Neurogenerative disease',
+  );
+  const q13_2_7: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_7',
+    'Head injury',
+  );
+  const q13_2_8: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_8',
+    'Wound Care',
+  );
+  const q13_2_9: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_9',
+    'Other medical reason',
+  );
+  const q13_2_10: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '13_2_10',
+    'Other trauma',
+  );
+  const q13_2: SpecializedGroup<
+    string,
+    string,
+    NumericQuestion<string, string>
+  > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
+    '13_2',
+    'Main Condirtion',
+    q13_2_1,
+    q13_2_2,
+    q13_2_3,
+    q13_2_4,
+    q13_2_5,
+    q13_2_6,
+    q13_2_7,
+    q13_2_8,
+    q13_2_9,
+    q13_2_10,
+  );
+  const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>(
+    '13',
+    'Admissions',
+    q13_1,
+    q13_2,
+  );
+  const q14_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_1',
+    'Extremely preterm(<28 weeks)',
+  );
+  const q14_1_2: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_2',
+    'Very preterm(28 to 32 weeks)',
+  );
+  const q14_1_3: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_3',
+    'Moderate to late preterm(32 to 37 weeks)',
+  );
+  const q14_1_4: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_4',
+    'Full term (37 weeks)',
+  );
+  const q14_1_5: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_5',
+    'Older than neonate(>4 weeks)',
+  );
+  const q14_1_6: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_6',
+    'Age 4 -5 weeks',
+  );
+  const q14_1_7: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_7',
+    'Age 4 -5 weeks',
+  );
+  const q14_1_8: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_8',
+    'Age 6-11 weeks',
+  );
+  const q14_1_9: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_1_9',
+    'Age 12-18 weeks',
+  );
+  const q14_2_1: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_2_1',
+    'Male',
+  );
+  const q14_2_2: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_2_2',
+    'Female',
+  );
+  const q14_2: SpecializedGroup<
+    string,
+    string,
+    NumericQuestion<string, string>
+  > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
+    '14_2',
+    'Gender',
+    q14_2_1,
+    q14_2_2,
+  );
+  const q14_3_1: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_1',
+    'SCI - tetraplegia',
+  );
 
-  rehabReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13);
+  const q14_3_2: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_2',
+    'SCI - paraplegia',
+    // q13_2_2_1,
+  );
+  const q14_3_3: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_3',
+    'Stroke/CVA',
+  );
+  const q14_3_4: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_4',
+    'Fractured Hip',
+  );
+  const q14_3_5: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_5',
+    'Fracrtured long bones',
+  );
+  const q14_3_6: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_6',
+    'Neurogenerative disease',
+  );
+  const q14_3_7: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_7',
+    'Head injury',
+  );
+  const q14_3_8: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_8',
+    'Wound Care',
+  );
+  const q14_3_9: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_9',
+    'Other medical reason',
+  );
+  const q14_3_10: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+    '14_3_10',
+    'Other trauma',
+  );
+  const q14_3: SpecializedGroup<
+    string,
+    string,
+    NumericQuestion<string, string>
+  > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
+    '14_3',
+    'Main Condition',
+
+    q14_3_1,
+    q14_3_2,
+    q14_3_3,
+    q14_3_4,
+    q14_3_5,
+    q14_3_6,
+    q14_3_7,
+    q14_3_8,
+    q14_3_9,
+    q14_3_10,
+  );
+
+  const q14_1: SpecializedGroup<
+    string,
+    string,
+    NumericQuestion<string, string>
+  > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
+    '14_1',
+    'Age',
+    q14_1_1,
+    q14_1_2,
+    q14_1_3,
+    q14_1_4,
+    q14_1_5,
+    q14_1_6,
+    q14_1_7,
+    q14_1_8,
+    q14_1_9,
+  );
+
+  const q14: CompositionQuestion<string, string> = new CompositionQuestion<string, string>(
+    '14',
+    'Outpatients',
+    q14_1,
+    q14_2,
+    q14_3,
+  );
+
+  rehabReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
   return rehabReport;
 };
 
