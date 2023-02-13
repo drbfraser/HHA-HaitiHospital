@@ -10,6 +10,7 @@ import {
   TextQuestion,
   ValidationResult,
   ERROR_NOT_A_INTEGER,
+  ERROR_DOES_NOT_SUM_UP,
   isNumber,
 } from '@hha/common';
 import { ChangeEvent, FormEvent, HTMLInputTypeAttribute, ReactNode, useState } from 'react';
@@ -87,7 +88,6 @@ const NumericQuestionFormField = ({
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
-
     if (isNumber(newValue)) {
       setInputState(question.getValidationResults());
     } else {
@@ -146,10 +146,14 @@ const CompositionQuestionFormField = ({
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const [inputState] = useState<ValidationResult<string>>(true);
+  let inputState: ValidationResult<string> = true;
   const nameId = `${question.getId()}${suffixName}`;
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  if (question.allSumUp()) {
+    inputState = true;
+  } else {
+    inputState = ERROR_DOES_NOT_SUM_UP;
+  }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
