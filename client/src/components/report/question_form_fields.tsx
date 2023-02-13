@@ -36,26 +36,120 @@ const NumericQuestionFormField = ({
   applyReportChanges,
   question,
   suffixName,
+  setErrorSet,
+  allSumUp,
+  setParentCompositionState,
 }: {
   applyReportChanges: () => void;
   question: NumericQuestion<ID, ErrorType>;
   suffixName: string;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  allSumUp?: () => boolean;
+  setParentCompositionState?: React.Dispatch<any>;
 }): JSX.Element => {
   // inputState has a value of true if the input is valid or
   // if it is of type ValidationResult<string> when the input is invalid
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newValue = event.target.value;
+  //   question.setAnswer(parseInt(newValue));
+  //   applyReportChanges();
+  //   let validationResults=true;
+  //   if (isNumber(newValue)) {
+  //     validationResults = question.getValidationResults();
+  //     setInputState(validationResults);
+  //   } else {
+  //     validationResults=ERROR_NOT_A_INTEGER;
+  //     setInputState(ERROR_NOT_A_INTEGER);
+  //   }
+
+  //   if (validationResults === true) {
+
+  //     if( typeof allSumUp === 'function')
+  //     {
+  //       if (allSumUp() === false) {
+  //         setErrorSet((prev) => {
+  //           const newSet = new Set(prev);
+  //           newSet.add(question.getId());
+  //           return newSet;
+  //         });
+  //       } else {
+  //         setErrorSet((prev) => {
+  //           const newSet = new Set(prev);
+  //           newSet.delete(question.getId());
+  //           return newSet;
+  //         });
+  //       }
+  //     }
+  //     else
+  //     {
+  // setErrorSet((prev) => {
+  //   const newSet = new Set(prev);
+  //   newSet.delete(question.getId());
+  //   return newSet;
+  // });
+  //     }
+  //   } else {
+
+  //     console.log("svrr")
+  //     setErrorSet((prev) => {
+  //       const newSet = new Set(prev);
+  //       newSet.add(question.getId());
+  //       return newSet;
+  //     });
+  //   }
+  // };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
 
-    if (isNumber(newValue)) {
-      setInputState(question.getValidationResults());
-    } else {
+    // If the input is not a number, then set the error and input state to ERROR_NOT_A_INTEGER
+    let validationResults;
+    if (!isNumber(newValue)) {
       setInputState(ERROR_NOT_A_INTEGER);
+      setErrorSet((prev) => new Set(prev).add(question.getId()));
+      return;
     }
+
+    // If the input is a number, then set the error and input state to the validation results
+    validationResults = question.getValidationResults();
+    setInputState(validationResults);
+
+    // If the validation results is not true, then set the error and input state to the validation results
+    if (validationResults !== true) {
+      setErrorSet((prev) => new Set(prev).add(question.getId()));
+      return;
+    }
+
+    // Check if this numeric question is not part of a composition question and then remove if it previously had errors registerd to its id
+    if (typeof allSumUp !== 'function') {
+      setErrorSet((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(question.getId());
+        return newSet;
+      });
+      return;
+    }
+
+    // If numeric question is part of the composition question, then check if the composition question is valid
+    // and set the error and input state of the composition question
+    if (allSumUp() === false) {
+      setParentCompositionState(ERROR_DOES_NOT_SUM_UP);
+      setErrorSet((prev) => new Set(prev).add(question.getId()));
+      return;
+    }
+
+    // If the composition question is valid, then remove the error and input state of composition question to true
+    setErrorSet((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(question.getId());
+      return newSet;
+    });
+    setParentCompositionState(true);
   };
 
   return (
@@ -109,25 +203,42 @@ const CompositionQuestionFormField = ({
   applyReportChanges,
   question,
   suffixName,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
+  const [inputState, setInputState] = useState<ValidationResult<string> | true>(true);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
+    if (question.allSumUp()) {
+      setInputState(true);
+      setErrorSet((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(question.getId());
+        return newSet;
+      });
+    } else {
+      setInputState(ERROR_DOES_NOT_SUM_UP);
+      setErrorSet((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(question.getId());
+        return newSet;
+      });
+    }
   };
-  const nameId = `${question.getId()}${suffixName}`;
 
-  const doesAllSumUp = question.allSumUp();
+  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <>
       <FormField>
         <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
-          className={`form-control w-50 ${doesAllSumUp === true ? '' : 'is-invalid'}`}
+          className={`form-control w-50 ${inputState === true ? '' : 'is-invalid'}`}
           id={nameId}
           min="0"
           name={nameId}
@@ -136,9 +247,7 @@ const CompositionQuestionFormField = ({
           value={question.getAnswer()}
         />
 
-        {doesAllSumUp !== true && (
-          <div className="invalid-feedback">{ERROR_DOES_NOT_SUM_UP.message}</div>
-        )}
+        {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
       </FormField>
       {question.map<JSX.Element>((group) => {
         const groupId = `${group.getId()}${suffixName}`;
@@ -155,6 +264,9 @@ const CompositionQuestionFormField = ({
                   key={`${elem.getId()}${suffixName}`}
                   question={elem}
                   suffixName={suffixName}
+                  setErrorSet={setErrorSet}
+                  allSumUp={() => question.allSumUp()}
+                  setParentCompositionState={setInputState}
                 />
               ))}
             </Group>
@@ -169,10 +281,12 @@ const ExpandableQuestionFormField = ({
   applyReportChanges,
   question,
   suffixName,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
@@ -222,6 +336,7 @@ const ExpandableQuestionFormField = ({
                     applyReportChanges: applyReportChanges,
                     questions: questionGroup,
                     suffixName: itemId,
+                    setErrorSet: setErrorSet,
                   })}
                 </div>
               </div>
@@ -319,10 +434,12 @@ const buildQuestionFormField = ({
   applyReportChanges,
   questions,
   suffixName,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
   return (
     <>
@@ -344,6 +461,7 @@ const buildQuestionFormField = ({
               key={`${question.getId()}${suffixName}`}
               question={question}
               suffixName={suffixName}
+              setErrorSet={setErrorSet}
             />
           );
         })}
@@ -362,16 +480,25 @@ export const ReportForm = ({
   reportData,
   submitReport,
 }: ReportFormProps): JSX.Element => {
+  const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
+
+  console.log(errorSet);
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
-      <form onSubmit={submitReport} noValidate>
-        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit" />
+      <form onSubmit={submitReport}>
+        <input
+          className="btn btn-outline-primary mb-3"
+          type="submit"
+          value="Submit"
+          disabled={!(errorSet.size === 0)}
+        />
         <Group>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,
             suffixName: '',
+            setErrorSet: setErrorSet,
           })}
         </Group>
         <input className="btn btn-outline-primary" type="submit" value="Submit" />
