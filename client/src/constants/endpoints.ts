@@ -76,10 +76,9 @@ const ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID = (id: string) => {
 const ENDPOINT_MESSAGEBOARD_COMMENTS_POST: string = '/api/message-board/comments';
 
 // Reports
-const ENDPOINT_REPORTS_GET: string = '/api/report';
+const ENDPOINT_REPORTS: string = '/api/report';
 const ENDPOINT_REPORTS_GET_BY_ID = (id: string) => `/api/report/${id}`;
 const ENDPOINT_REPORTS_GET_BY_DEPARTMENT = (id: string) => `/api/report/department/${id}`;
-const ENDPOINT_REPORTS_POST: string = '/api/report';
 
 // template
 const ENDPOINT_TEMPLATE: string = '/api/template';
@@ -116,9 +115,8 @@ export {
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
-  ENDPOINT_REPORTS_GET,
+  ENDPOINT_REPORTS,
   ENDPOINT_REPORTS_GET_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
-  ENDPOINT_REPORTS_POST,
   ENDPOINT_TEMPLATE,
 };

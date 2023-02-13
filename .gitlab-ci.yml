@@ -1,10 +1,27 @@
+variables:
+  MONGO_URI: 'mongodb://mongo:27017/hhahaiti'
+  PASSWORD_SEED: 'catdog'
+  IS_GITLAB_CI: 'true'
 stages:
+  - validate
   - build-dependencies
   - test-dependencies
   - build
   - deploy
-
-test-build common:
+validate-prettier:
+  stage: validate
+  image: node:16
+  tags:
+    - docker
+  only:
+    - master
+    - staging
+    - merge_requests
+  before_script:
+    - npm ci
+  script:
+    - npm run check-format
+test-build-common:
   stage: build-dependencies
   image: node:16
   tags:
@@ -25,7 +42,9 @@ test-build common:
     expire_in: 1 week
     paths:
       - common_build.tar.gz
-build server:
+test-build-server:
+  services:
+    - mongo:5.0.14-focal
   stage: build
   image: node:16
   tags:
@@ -38,7 +57,9 @@ build server:
     - cd server
     - npm ci
     - npm install ../common_build.tar.gz
+    - npm run seed
   script:
+    - npm run test
     - npm run build
   after_script:
     - cd server && tar -czf ../server_build.tar.gz .
@@ -47,7 +68,7 @@ build server:
     paths:
       - server_build.tar.gz
 
-build client:
+build-client:
   stage: build
   image: node:16
   tags:
@@ -76,7 +97,7 @@ build client:
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
   - docker image prune -f # remove unused images since we just built new ones
 
-deploy development:
+deploy-development:
   stage: deploy
   environment:
     name: development
@@ -88,7 +109,7 @@ deploy development:
   script:
     - *deploy-script
 
-deploy staging:
+deploy-staging:
   stage: deploy
   environment:
     name: staging

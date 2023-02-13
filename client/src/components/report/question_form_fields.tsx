@@ -13,25 +13,63 @@ import {
   ERROR_DOES_NOT_SUM_UP,
   isNumber,
 } from '@hha/common';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, HTMLInputTypeAttribute, ReactNode, useState } from 'react';
 
 type ErrorType = string;
 type FunctionalComponent = (object: Object) => JSX.Element;
 type ID = string;
 
-const FormField = ({ children }): JSX.Element => <div className="form-group">{children}</div>;
-const FormFieldLabel = ({ id, prompt }): JSX.Element => {
-  const orderedLabel = id.replaceAll('_', '.');
+type FormFieldProps = {
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  inputState: ValidationResult<string>;
+  min?: number | string;
+  nameId: string;
+  prompt: string;
+  type: HTMLInputTypeAttribute;
+  value: number | string;
+};
+type FormFieldCheckProps = {
+  children: ReactNode;
+  nameId: string;
+  prompt: string;
+};
+type GroupProps = {
+  children: ReactNode;
+};
 
+const FormField = (props: FormFieldProps) => {
   return (
-    <label className="fs-6 m-0 text-secondary" htmlFor={id}>
-      {orderedLabel}. {prompt}
-    </label>
+    <div className="form-group">
+      <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>
+        {props.nameId.replaceAll('_', '.')}. {props.prompt}
+      </label>
+      <input
+        className={`form-control w-50 ${props.inputState === true ? '' : 'is-invalid'}`}
+        id={props.nameId}
+        min={props.min}
+        name={props.nameId}
+        onChange={props.handleChange}
+        type={props.type}
+        value={props.value}
+      />
+      {props.inputState !== true && (
+        <div className="invalid-feedback">{props.inputState.message}</div>
+      )}
+    </div>
   );
 };
-const Group = ({ children }): JSX.Element => <div className="pl-3">{children}</div>;
+const FormFieldCheck = ({ children, nameId, prompt }: FormFieldCheckProps) => {
+  return (
+    <fieldset className="form-group">
+      <legend className="fs-6 m-0 text-secondary">
+        {nameId.replaceAll('_', '.')}. {prompt}
+      </legend>
+      {children}
+    </fieldset>
+  );
+};
+const Group = ({ children }: GroupProps): JSX.Element => <div className="pl-3">{children}</div>;
 
-// TODO: Refactor the below components since they're all similar
 const NumericQuestionFormField = ({
   applyReportChanges,
   question,
@@ -46,7 +84,7 @@ const NumericQuestionFormField = ({
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
@@ -58,19 +96,15 @@ const NumericQuestionFormField = ({
   };
 
   return (
-    <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      <input
-        className={`form-control w-50 ${inputState === true ? '' : 'is-invalid'}`}
-        id={nameId}
-        min="0"
-        name={nameId}
-        onChange={handleChange}
-        type="number"
-        value={question.getAnswer()}
-      />
-      {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
-    </FormField>
+    <FormField
+      handleChange={handleChange}
+      inputState={inputState}
+      min={0}
+      nameId={nameId}
+      prompt={question.getPrompt()}
+      type="number"
+      value={question.getAnswer()}
+    />
   );
 };
 
@@ -83,24 +117,23 @@ const TextQuestionFormField = ({
   question: TextQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [inputState] = useState<ValidationResult<string>>(true);
+  const nameId = `${question.getId()}${suffixName}`;
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(event.target.value);
     applyReportChanges();
   };
-  const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <FormField>
-      <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-      <input
-        className="form-control w-50"
-        id={nameId}
-        name={nameId}
-        onChange={handleChange}
-        type="text"
-        value={question.getAnswer()}
-      />
-    </FormField>
+    <FormField
+      handleChange={handleChange}
+      inputState={inputState}
+      nameId={nameId}
+      prompt={question.getPrompt()}
+      type="text"
+      value={question.getAnswer()}
+    />
   );
 };
 
@@ -127,20 +160,15 @@ const CompositionQuestionFormField = ({
 
   return (
     <>
-      <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-        <input
-          className={`form-control w-50 ${inputState === true ? '' : 'is-invalid'}`}
-          id={nameId}
-          min="0"
-          name={nameId}
-          onChange={handleChange}
-          type="number"
-          value={question.getAnswer()}
-        />
-
-        {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
-      </FormField>
+      <FormField
+        handleChange={handleChange}
+        inputState={inputState}
+        min={0}
+        nameId={nameId}
+        prompt={question.getPrompt()}
+        type="number"
+        value={question.getAnswer()}
+      />
       {question.map<JSX.Element>((group) => {
         const groupId = `${group.getId()}${suffixName}`;
 
@@ -175,29 +203,28 @@ const ExpandableQuestionFormField = ({
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [inputState] = useState<ValidationResult<string>>(true);
+  const nameId = `${question.getId()}${suffixName}`;
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
-  const nameId = `${question.getId()}${suffixName}`;
 
   return (
     <>
-      <FormField>
-        <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
-        <input
-          className="form-control w-50"
-          id={nameId}
-          min="0"
-          name={nameId}
-          onChange={handleChange}
-          type="number"
-          value={question.getAnswer()}
-        />
-      </FormField>
+      <FormField
+        handleChange={handleChange}
+        inputState={inputState}
+        min={0}
+        nameId={nameId}
+        prompt={question.getPrompt()}
+        type="number"
+        value={question.getAnswer()}
+      />
       <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          const itemId: string = `_${index + 1}`;
+          const itemId: string = `accordion-${nameId}_${index + 1}`;
 
           return (
             <div className="accordion-item" key={itemId}>
@@ -222,7 +249,7 @@ const ExpandableQuestionFormField = ({
                   {buildQuestionFormField({
                     applyReportChanges: applyReportChanges,
                     questions: questionGroup,
-                    suffixName: itemId,
+                    suffixName: `_${index + 1}`,
                   })}
                 </div>
               </div>
@@ -250,10 +277,7 @@ const SingleSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <fieldset className="form-group">
-      <legend className="fs-6 m-0 text-secondary">
-        {nameId.replaceAll('_', '.')}. {question.getPrompt()}
-      </legend>
+    <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div className="form-check" key={`${nameId}_${index}`}>
           <input
@@ -269,7 +293,7 @@ const SingleSelectionQuestionFormField = ({
           </label>
         </div>
       ))}
-    </fieldset>
+    </FormFieldCheck>
   );
 };
 
@@ -293,10 +317,7 @@ const MultiSelectionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   return (
-    <fieldset className="form-group">
-      <legend className="fs-6 m-0 text-secondary">
-        {`${nameId.replaceAll('_', '.')}. ${question.getPrompt()}`}
-      </legend>
+    <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       {question.getChoices().map((choice: ImmutableChoice, index) => (
         <div className="form-check" key={`${nameId}_${index}`}>
           <input
@@ -312,7 +333,7 @@ const MultiSelectionQuestionFormField = ({
           </label>
         </div>
       ))}
-    </fieldset>
+    </FormFieldCheck>
   );
 };
 
@@ -352,22 +373,20 @@ const buildQuestionFormField = ({
   );
 };
 
-interface ReportFormProps {
-  applyReportChanges: () => void;
-  reportData: QuestionGroup<string, string>;
-  submitReport: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
 export const ReportForm = ({
   applyReportChanges,
   reportData,
-  submitReport,
-}: ReportFormProps): JSX.Element => {
+  formHandler,
+}: {
+  applyReportChanges: () => void;
+  reportData: QuestionGroup<ID, ErrorType>;
+  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+}): JSX.Element => {
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
-      <form onSubmit={submitReport} noValidate>
-        <input className="btn btn-outline-primary mb-3" type="submit" value="Submit" />
+      <form onSubmit={formHandler} noValidate>
+        <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
         <Group>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
@@ -375,7 +394,7 @@ export const ReportForm = ({
             suffixName: '',
           })}
         </Group>
-        <input className="btn btn-outline-primary" type="submit" value="Submit" />
+        <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
       </form>
     </div>
   );
