@@ -148,12 +148,14 @@ const CompositionQuestionFormField = ({
 }): JSX.Element => {
   let inputState: ValidationResult<string> = true;
   const nameId = `${question.getId()}${suffixName}`;
+
   if (question.allSumUp()) {
     inputState = true;
   } else {
     inputState = ERROR_DOES_NOT_SUM_UP;
   }
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
@@ -204,11 +206,23 @@ const ExpandableQuestionFormField = ({
   suffixName: string;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
+  const [openClosedStates, setOpenClosedStates] = useState((new Array<boolean>(question.getAnswer())).fill(false));
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(parseInt(event.target.value));
+    // IF (the new value is valid):
+    const value = parseInt(event.target.value);
+
+    question.setAnswer(value);
     applyReportChanges();
+
+    if (value > openClosedStates.length) {
+      setOpenClosedStates(openClosedStates.concat((new Array<boolean>(value - openClosedStates.length)).fill(false)));
+    }
+    else if (value < openClosedStates.length) {
+      setOpenClosedStates(openClosedStates.slice(0, value));
+    }
+    // ENDIF
   };
 
   return (
@@ -224,17 +238,22 @@ const ExpandableQuestionFormField = ({
       />
       <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          const itemId: string = `accordion-${nameId}_${index + 1}`;
+          const isOpen = openClosedStates[index];
+          const itemId: string = `accordion-item-${nameId}_${index + 1}`;
 
           return (
             <div className="accordion-item" key={itemId}>
               <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
                 <button
-                  className="accordion-button"
+                  className={`accordion-button px-3 py-2${isOpen ? "" : " collapsed"}`}
                   type="button"
+                  onClick={() => {
+                    openClosedStates[index] = !openClosedStates[index];
+                    setOpenClosedStates([...openClosedStates]);
+                  }}
                   data-bs-toggle="collapse"
                   data-bs-target={`#${itemId}`}
-                  aria-expanded={true}
+                  aria-expanded={isOpen}
                   aria-controls={itemId}
                 >
                   {`Patient ${index + 1}`}
@@ -242,7 +261,7 @@ const ExpandableQuestionFormField = ({
               </h6>
               <div
                 id={itemId}
-                className="accordion-collapse collapse show"
+                className={`accordion-collapse collapse${isOpen ? " show" : ""}`}
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
