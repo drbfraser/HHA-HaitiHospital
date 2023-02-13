@@ -146,7 +146,7 @@ const CompositionQuestionFormField = ({
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  let inputState: true | ValidationResult<string> = true;
+  let inputState: ValidationResult<string> = true;
   const nameId = `${question.getId()}${suffixName}`;
   if (question.allSumUp()) {
     inputState = true;
