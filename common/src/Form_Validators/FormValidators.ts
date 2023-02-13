@@ -1,4 +1,4 @@
-import { ValidationResult, ValidationError } from '../Questions';
+import { ValidationResult } from '../Questions';
 
 export interface Validator<T> {
   (x: T): ValidationResult<string>;
@@ -19,7 +19,7 @@ export const ERROR_NOT_A_INTEGER: ValidationResult<string> = {
   error: 'NOT_A_INTEGER',
 };
 
-export const ERROR_DOES_NOT_SUM_UP: ValidationError<string> = {
+export const ERROR_DOES_NOT_SUM_UP: ValidationResult<string> = {
   message: 'The values below do not sum up to the total',
   error: 'DOES_NOT_SUM_UP',
 };

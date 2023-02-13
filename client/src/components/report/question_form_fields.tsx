@@ -50,7 +50,6 @@ const NumericQuestionFormField = ({
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
-
     if (isNumber(newValue)) {
       setInputState(question.getValidationResults());
     } else {
@@ -114,20 +113,25 @@ const CompositionQuestionFormField = ({
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
+  let inputState:true|ValidationResult=true;
+  const nameId = `${question.getId()}${suffixName}`;
+  if (question.allSumUp()) {
+    inputState=true;
+  } else {
+    inputState=ERROR_DOES_NOT_SUM_UP;
+  }
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
-  const nameId = `${question.getId()}${suffixName}`;
-
-  const doesAllSumUp = question.allSumUp();
+  
 
   return (
     <>
       <FormField>
         <FormFieldLabel id={nameId} prompt={question.getPrompt()} />
         <input
-          className={`form-control w-50 ${doesAllSumUp === true ? '' : 'is-invalid'}`}
+          className={`form-control w-50 ${inputState === true ? '' : 'is-invalid'}`}
           id={nameId}
           min="0"
           name={nameId}
@@ -136,9 +140,7 @@ const CompositionQuestionFormField = ({
           value={question.getAnswer()}
         />
 
-        {doesAllSumUp !== true && (
-          <div className="invalid-feedback">{ERROR_DOES_NOT_SUM_UP.message}</div>
-        )}
+        {inputState !== true && <div className="invalid-feedback">{inputState.message}</div>}
       </FormField>
       {question.map<JSX.Element>((group) => {
         const groupId = `${group.getId()}${suffixName}`;
