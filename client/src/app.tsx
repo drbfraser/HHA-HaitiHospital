@@ -16,7 +16,7 @@ const App = () => {
       <ReactQueryDevtools initialIsOpen={false} />
       <AuthProvider>
         <Router>
-          <ToastContainer style={{ width: '35%' }} />
+          <ToastContainer style={{ ['--toastify-toast-width' as any]: '35%' }} />
           <Switch>
             {routes.map((route) => (
               <AppRoute
