@@ -113,18 +113,17 @@ const CompositionQuestionFormField = ({
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
 }): JSX.Element => {
-  let inputState:true|ValidationResult=true;
+  let inputState: true | ValidationResult = true;
   const nameId = `${question.getId()}${suffixName}`;
   if (question.allSumUp()) {
-    inputState=true;
+    inputState = true;
   } else {
-    inputState=ERROR_DOES_NOT_SUM_UP;
+    inputState = ERROR_DOES_NOT_SUM_UP;
   }
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
-  
 
   return (
     <>
