@@ -206,7 +206,9 @@ const ExpandableQuestionFormField = ({
   suffixName: string;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
-  const [openClosedStates, setOpenClosedStates] = useState((new Array<boolean>(question.getAnswer())).fill(false));
+  const [openClosedStates, setOpenClosedStates] = useState(
+    new Array<boolean>(question.getAnswer()).fill(false),
+  );
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -217,9 +219,10 @@ const ExpandableQuestionFormField = ({
     applyReportChanges();
 
     if (value > openClosedStates.length) {
-      setOpenClosedStates(openClosedStates.concat((new Array<boolean>(value - openClosedStates.length)).fill(false)));
-    }
-    else if (value < openClosedStates.length) {
+      setOpenClosedStates(
+        openClosedStates.concat(new Array<boolean>(value - openClosedStates.length).fill(false)),
+      );
+    } else if (value < openClosedStates.length) {
       setOpenClosedStates(openClosedStates.slice(0, value));
     }
     // ENDIF
@@ -243,10 +246,13 @@ const ExpandableQuestionFormField = ({
 
           return (
             <div className="accordion-item">
-              <h6 className="accordion-header container-fluid m-0 p-0 text-lg uppercase" id={`${itemId}-header`}>
+              <h6
+                className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
+                id={`${itemId}-header`}
+              >
                 <div className="row p-0 m-0 align-items-center">
                   <button
-                    className={`accordion-button col pl-3 pr-1 py-2${isOpen ? "" : " collapsed"}`}
+                    className={`accordion-button col pl-3 pr-1 py-2${isOpen ? '' : ' collapsed'}`}
                     type="button"
                     onClick={() => {
                       openClosedStates[index] = !openClosedStates[index];
@@ -263,11 +269,11 @@ const ExpandableQuestionFormField = ({
                     className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
                     onClick={(e) => e.preventDefault()}
                     style={{
-                      alignItems: "center",
-                      display: "flex",
-                      height: "1.5em",
-                      justifyContent: "center",
-                      width: "1.5em"
+                      alignItems: 'center',
+                      display: 'flex',
+                      height: '1.5em',
+                      justifyContent: 'center',
+                      width: '1.5em',
                     }}
                   >
                     <i className="fa fa-close"></i>
@@ -276,7 +282,7 @@ const ExpandableQuestionFormField = ({
               </h6>
               <div
                 id={itemId}
-                className={`accordion-collapse collapse${isOpen ? " show" : ""}`}
+                className={`accordion-collapse collapse${isOpen ? ' show' : ''}`}
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
