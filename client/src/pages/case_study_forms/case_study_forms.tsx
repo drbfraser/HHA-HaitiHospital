@@ -67,7 +67,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       formData,
       onSubmitActions,
       props.history,
-      TOAST_CASESTUDY_POST
+      TOAST_CASESTUDY_POST,
     );
   };
   const { t } = useTranslation();
