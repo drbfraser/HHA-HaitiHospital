@@ -32,7 +32,7 @@ export const AddUserForm = (props: AdminProps) => {
       data,
       onSubmit,
       history,
-      ResponseMessage.getMsgCreateUserFailed()
+      ResponseMessage.getMsgCreateUserFailed(),
     );
   };
 

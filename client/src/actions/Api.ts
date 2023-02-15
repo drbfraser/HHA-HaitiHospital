@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios';
+import axios, { AxiosError } from 'axios';
 import { History } from 'history';
 import * as Error from './ApiError';
 import DbErrorHandler from './http_error_handler';
@@ -50,9 +50,9 @@ const Post = async (
   obj: object = {},
   actions: any,
   history: History,
-  errorMsg = "",
+  errorMsg = '',
   pendingMsg?: string,
-  successMsg?: string
+  successMsg?: string,
 ): Promise<void> => {
   await toast.promise(
     axios
@@ -62,8 +62,8 @@ const Post = async (
     {
       error: undefined,
       pending: pendingMsg,
-      success: successMsg
-    }
+      success: successMsg,
+    },
   );
 };
 

@@ -35,7 +35,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
       formData,
       onSubmitOk,
       history,
-      ResponseMessage.getMsgCreateReportFailed()
+      ResponseMessage.getMsgCreateReportFailed(),
     );
   };
 
