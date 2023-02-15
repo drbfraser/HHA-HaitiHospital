@@ -242,49 +242,50 @@ const ExpandableQuestionFormField = ({
           const itemId: string = `accordion-item-${nameId}_${index + 1}`;
 
           return (
-            <div className="container-fluid m-0 p-0" key={itemId}>
-              <div className="row m-0 p-0">
-                <div className="accordion-item col m-0 p-0">
-                  <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
-                    <button
-                      className={`accordion-button px-3 py-2${isOpen ? "" : " collapsed"}`}
-                      type="button"
-                      onClick={() => {
-                        openClosedStates[index] = !openClosedStates[index];
-                        setOpenClosedStates([...openClosedStates]);
-                      }}
-                      data-bs-toggle="collapse"
-                      data-bs-target={`#${itemId}`}
-                      aria-expanded={isOpen}
-                      aria-controls={itemId}
-                    >
-                      {`Patient ${index + 1}`}
-                    </button>
-                  </h6>
-                  <div
-                    id={itemId}
-                    className={`accordion-collapse collapse${isOpen ? " show" : ""}`}
-                    aria-labelledby={`${itemId}-header`}
+            <div className="accordion-item">
+              <h6 className="accordion-header container-fluid m-0 p-0 text-lg uppercase" id={`${itemId}-header`}>
+                <div className="row p-0 m-0 align-items-center">
+                  <button
+                    className={`accordion-button col pl-3 pr-1 py-2${isOpen ? "" : " collapsed"}`}
+                    type="button"
+                    onClick={() => {
+                      openClosedStates[index] = !openClosedStates[index];
+                      setOpenClosedStates([...openClosedStates]);
+                    }}
+                    data-bs-toggle="collapse"
+                    data-bs-target={`#${itemId}`}
+                    aria-expanded={isOpen}
+                    aria-controls={itemId}
                   >
-                    <div className="accordion-body pb-0">
-                      {buildQuestionFormField({
-                        applyReportChanges: applyReportChanges,
-                        questions: questionGroup,
-                        suffixName: `_${index + 1}`,
-                      })}
-                    </div>
-                  </div>
+                    {`Patient ${index + 1}`}
+                  </button>
+                  <button
+                    className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
+                    onClick={(e) => e.preventDefault()}
+                    style={{
+                      alignItems: "center",
+                      display: "flex",
+                      height: "1.5em",
+                      justifyContent: "center",
+                      width: "1.5em"
+                    }}
+                  >
+                    <i className="fa fa-close"></i>
+                  </button>
                 </div>
-                <button
-                  className="btn btn-outline-danger rounded-circle col-1 p-0"
-                  onClick={(e) => e.preventDefault()}
-                  style={{
-                    height: "2.2em",
-                    width: "2.2em"
-                  }}
-                >
-                  <i className="fa fa-close"></i>
-                </button>
+              </h6>
+              <div
+                id={itemId}
+                className={`accordion-collapse collapse${isOpen ? " show" : ""}`}
+                aria-labelledby={`${itemId}-header`}
+              >
+                <div className="accordion-body pb-0">
+                  {buildQuestionFormField({
+                    applyReportChanges: applyReportChanges,
+                    questions: questionGroup,
+                    suffixName: `_${index + 1}`,
+                  })}
+                </div>
               </div>
             </div>
           );
