@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
+import { checkUserIsDepartmentAuthed, checkUserCanEdit } from 'utils/authUtils';
 import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
 import {
@@ -119,8 +119,8 @@ router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
 
   const report = await ReportCollection.findById(id);
 
-  // TODO: restrict to user, department head or admin only ?
-  const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
+  const authorized = checkUserCanEdit(req.user, report.departmentId);
+
   if (!authorized) {
     throw new Unauthorized(`User not authorized`);
   }
