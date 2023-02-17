@@ -15,7 +15,7 @@ import {
   TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_DELETE,
   TOAST_CASESTUDY_PATCH,
-} from 'constants/toast_messages';
+} from 'constants/toastErrorMessages';
 import { toast } from 'react-toastify';
 import './case_study_main_styles.css';
 import { useTranslation } from 'react-i18next';

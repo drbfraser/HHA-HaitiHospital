@@ -34,8 +34,8 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
       ENDPOINT_BIOMECH_POST,
       formData,
       onSubmitOk,
-      ResponseMessage.getMsgCreateReportFailed(),
       history,
+      ResponseMessage.getMsgCreateReportFailed(),
     );
   };
 

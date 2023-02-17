@@ -148,12 +148,14 @@ const CompositionQuestionFormField = ({
 }): JSX.Element => {
   let inputState: ValidationResult<string> = true;
   const nameId = `${question.getId()}${suffixName}`;
+
   if (question.allSumUp()) {
     inputState = true;
   } else {
     inputState = ERROR_DOES_NOT_SUM_UP;
   }
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
   };
@@ -204,11 +206,26 @@ const ExpandableQuestionFormField = ({
   suffixName: string;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
+  const [openClosedStates, setOpenClosedStates] = useState(
+    new Array<boolean>(question.getAnswer()).fill(false),
+  );
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(parseInt(event.target.value));
+    // IF (the new value is valid):
+    const value = parseInt(event.target.value);
+
+    question.setAnswer(value);
     applyReportChanges();
+
+    if (value > openClosedStates.length) {
+      setOpenClosedStates(
+        openClosedStates.concat(new Array<boolean>(value - openClosedStates.length).fill(false)),
+      );
+    } else if (value < openClosedStates.length) {
+      setOpenClosedStates(openClosedStates.slice(0, value));
+    }
+    // ENDIF
   };
 
   return (
@@ -224,25 +241,48 @@ const ExpandableQuestionFormField = ({
       />
       <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          const itemId: string = `accordion-${nameId}_${index + 1}`;
+          const isOpen = openClosedStates[index];
+          const itemId: string = `accordion-item-${nameId}_${index + 1}`;
 
           return (
             <div className="accordion-item" key={itemId}>
-              <h6 className="uppercase text-lg accordion-header" id={`${itemId}-header`}>
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target={`#${itemId}`}
-                  aria-expanded={true}
-                  aria-controls={itemId}
-                >
-                  {`Patient ${index + 1}`}
-                </button>
+              <h6
+                className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
+                id={`${itemId}-header`}
+              >
+                <div className="row p-0 m-0 align-items-center">
+                  <button
+                    className={`accordion-button col pl-3 pr-1 py-2${isOpen ? '' : ' collapsed'}`}
+                    type="button"
+                    onClick={() => {
+                      openClosedStates[index] = !openClosedStates[index];
+                      setOpenClosedStates([...openClosedStates]);
+                    }}
+                    data-bs-toggle="collapse"
+                    data-bs-target={`#${itemId}`}
+                    aria-expanded={isOpen}
+                    aria-controls={itemId}
+                  >
+                    {`Patient ${index + 1}`}
+                  </button>
+                  <button
+                    className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
+                    onClick={(e) => e.preventDefault()}
+                    style={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      height: '1.5em',
+                      justifyContent: 'center',
+                      width: '1.5em',
+                    }}
+                  >
+                    <i className="fa fa-close"></i>
+                  </button>
+                </div>
               </h6>
               <div
                 id={itemId}
-                className="accordion-collapse collapse show"
+                className={`accordion-collapse collapse${isOpen ? ' show' : ''}`}
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
@@ -380,7 +420,7 @@ export const ReportForm = ({
 }: {
   applyReportChanges: () => void;
   reportData: QuestionGroup<ID, ErrorType>;
-  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  formHandler: (event: FormEvent<HTMLFormElement>) => void;
 }): JSX.Element => {
   return (
     <div className="mt-3 p-3">

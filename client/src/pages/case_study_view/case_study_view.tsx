@@ -4,7 +4,7 @@ import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_GET_BY_ID } from 'constants/endpoints';
-import { TOAST_CASESTUDY_GET } from 'constants/toast_messages';
+import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import { History } from 'history';

@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { History } from 'history';
 import * as Error from './ApiError';
 import DbErrorHandler from './http_error_handler';
 import { ResponseMessage } from 'utils/response_message';
+import { toast } from 'react-toastify';
 
 /**
  *
@@ -34,27 +35,36 @@ const Get = async (url: string, errorMsg: string, history: History): Promise<any
  * @param actions
  * - Actions that should occur after POST request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
- * @returns void
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
+ * @returns Promise<void>
  */
 const Post = async (
   url: string,
   obj: object = {},
   actions: any,
-  errorMsg: string,
   history: History,
+  errorMsg = '',
+  pendingMsg?: string,
+  successMsg?: string,
 ): Promise<void> => {
-  try {
-    await axios.post(url, obj);
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  await toast.promise(
+    axios
+      .post(url, obj)
+      .then(() => actions())
+      .catch((err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+    {
+      error: undefined,
+      pending: pendingMsg,
+      success: successMsg,
+    },
+  );
 };
 
 /**
