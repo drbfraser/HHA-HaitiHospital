@@ -5,13 +5,12 @@ import { Unauthorized } from 'exceptions/httpException';
 import { DEPARTMENT_ID_URL_SLUG } from 'utils/constants';
 import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
 import Departments from 'utils/departments';
-
-type Middleware = (req: RequestWithUser, res: Response, next: NextFunction) => void | Promise<void>;
+import type { Middleware } from 'utils/definitions/middleware';
 
 // This middleware requires department id slug in url
 export const departmentAuth: Middleware = async (
   req: RequestWithUser,
-  res: Response,
+  _: Response,
   next: NextFunction,
 ) => {
   const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
