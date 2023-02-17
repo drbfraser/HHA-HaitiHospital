@@ -1,6 +1,6 @@
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import { ReportForm } from 'components/report/question_form_fields';
+import { ReportForm } from 'components/report/report_form';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import Api from 'actions/Api';
 import { useHistory } from 'react-router-dom';

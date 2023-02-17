@@ -8,7 +8,7 @@ import { TOAST_REPORT_GET } from 'constants/toast_messages';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
-import { ReportForm } from 'components/report/question_form_fields';
+import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
 
 type ID = string;
