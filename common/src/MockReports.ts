@@ -1,13 +1,14 @@
 import {
   CompositionQuestion,
-  QuestionGroup,
-  NumericQuestion,
   ExpandableQuestion,
-  SingleSelectionQuestion,
   MultipleSelectionQuestion,
-  TextQuestion,
+  NumericQuestion,
+  QuestionGroup,
+  SingleSelectionQuestion,
   SpecializedGroup,
+  TextQuestion,
 } from './Questions';
+import { QuestionAnswerNode } from "./Questions/QuestionAnswer";
 
 const questionIdGeneratorBuilder =
   (questionId: string) =>
@@ -321,16 +322,26 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
     q13_1_4,
   );
 
-  const q13_2_1: NumericQuestion<string, string> = new NumericQuestion<string, string>(
+  const q13_2_1_1_1 = new NumericQuestion<string, string>("13_2_1_1_1", "Transport accident");
+  const q13_2_1_1_2 = new NumericQuestion<string, string>("13_2_1_1_2", "Fall");
+  const q13_2_1_1 = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
+    "13_2_1_1",
+    "Cause",
+    q13_2_1_1_1,
+    q13_2_1_1_2
+  );
+  const q13_2_1 = new CompositionQuestion<string, string>(
     '13_2_1',
     'SCI - tetraplegia',
-    // q13_2_1_1,
+    q13_2_1_1
   );
+
   const q13_2_2: NumericQuestion<string, string> = new NumericQuestion<string, string>(
     '13_2_2',
     'SCI - paraplegia',
     // q13_2_2_1,
   );
+
   const q13_2_3: NumericQuestion<string, string> = new NumericQuestion<string, string>(
     '13_2_3',
     'Stroke/CVA',
@@ -363,13 +374,14 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
     '13_2_10',
     'Other trauma',
   );
+
   const q13_2: SpecializedGroup<
     string,
     string,
-    NumericQuestion<string, string>
-  > = new SpecializedGroup<string, string, NumericQuestion<string, string>>(
+    QuestionAnswerNode<string, string>
+  > = new SpecializedGroup<string, string, QuestionAnswerNode<string, string>>(
     '13_2',
-    'Main Condirtion',
+    'Main Condition',
     q13_2_1,
     q13_2_2,
     q13_2_3,
@@ -381,12 +393,15 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
     q13_2_9,
     q13_2_10,
   );
+
   const q13: CompositionQuestion<string, string> = new CompositionQuestion<string, string>(
     '13',
     'Admissions',
     q13_1,
     q13_2,
   );
+
+  // Question 14
   const q14_1_1: NumericQuestion<string, string> = new NumericQuestion<string, string>(
     '14_1_1',
     'Extremely preterm(<28 weeks)',
@@ -1195,3 +1210,4 @@ export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   maternityReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13);
   return maternityReport;
 };
+buildRehabMockReport();
