@@ -245,7 +245,7 @@ const ExpandableQuestionFormField = ({
           const itemId: string = `accordion-item-${nameId}_${index + 1}`;
 
           return (
-            <div className="accordion-item">
+            <div className="accordion-item" key={itemId}>
               <h6
                 className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
                 id={`${itemId}-header`}
