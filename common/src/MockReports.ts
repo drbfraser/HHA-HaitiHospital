@@ -378,8 +378,8 @@ export const buildRehabMockReport = (): QuestionGroup<string, string> => {
   const q13_2: SpecializedGroup<
     string,
     string,
-    QuestionAnswerNode<string, string>
-  > = new SpecializedGroup<string, string, QuestionAnswerNode<string, string>>(
+    QuestionAnswerNode<string, number, string>
+  > = new SpecializedGroup<string, string, QuestionAnswerNode<string, number, string>>(
     '13_2',
     'Main Condition',
     q13_2_1,
@@ -1210,4 +1210,3 @@ export const buildMaternityMockReport = (): QuestionGroup<string, string> => {
   maternityReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13);
   return maternityReport;
 };
-buildRehabMockReport();
