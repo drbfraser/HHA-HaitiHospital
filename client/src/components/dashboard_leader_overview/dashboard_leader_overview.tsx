@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import { ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import { TOAST_LEADERBOARD_GET } from 'constants/toast_messages';
+import { TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { History } from 'history';

@@ -13,7 +13,7 @@ import {
   TOAST_MESSAGEBOARD_COMMENTS_GET,
   TOAST_MESSAGEBOARD_COMMENTS_POST,
   TOAST_MESSAGEBOARD_GET,
-} from 'constants/toast_messages';
+} from 'constants/toastErrorMessages';
 import './message_board_comments.css';
 import { emptyMessage, Message } from 'constants/interfaces';
 import MessageComment from 'components/message_comment/message_comment';
@@ -74,8 +74,8 @@ const MessageComments = () => {
       ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
       data,
       onSubmitActions,
-      TOAST_MESSAGEBOARD_COMMENTS_POST,
       history,
+      TOAST_MESSAGEBOARD_COMMENTS_POST,
     );
     reset();
   };
