@@ -11,9 +11,6 @@ import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
 
-type ID = string;
-type ErrorType = string;
-
 const ReportView = () => {
   const history = useHistory<History>();
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);

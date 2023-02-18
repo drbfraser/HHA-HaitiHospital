@@ -14,9 +14,6 @@ import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
 
-type ID = string;
-type ErrorType = string;
-
 export const Report = () => {
   const history: History = useHistory<History>();
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
