@@ -5,7 +5,7 @@ import MultiSelectionQuestionFormField from './MultiSelectionQuestionFormField';
 import NumericQuestionFormField from './NumericQuestionFormField';
 import TextQuestionFormField from './TextQuestionFormField';
 import CompositionQuestionFormField from './CompositionQuestionFormField';
-import ExpandableQuestionFormField from './ExpandQuestionFormField';
+import ExpandableQuestionFormField from './ExpandableQuestionFormField';
 import SingleSelectionQuestionFormField from './SingleSelectQuestionFormField';
 
 export {
