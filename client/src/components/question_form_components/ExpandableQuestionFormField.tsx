@@ -1,6 +1,7 @@
 import { ExpandableQuestion, ValidationResult } from '@hha/common';
 import { ChangeEvent, useState } from 'react';
 import { FormField } from './index';
+import cn from 'classnames';
 
 const ExpandableQuestionFormField = ({
   applyReportChanges,
@@ -56,7 +57,7 @@ const ExpandableQuestionFormField = ({
               >
                 <div className="row p-0 m-0 align-items-center">
                   <button
-                    className={`accordion-button col pl-3 pr-1 py-2${isOpen ? '' : ' collapsed'}`}
+                    className={cn('accordion-button col pl-3 pr-1 py-2', { collapsed: isOpen })}
                     type="button"
                     onClick={() => {
                       openClosedStates[index] = !openClosedStates[index];
@@ -86,7 +87,7 @@ const ExpandableQuestionFormField = ({
               </h6>
               <div
                 id={itemId}
-                className={`accordion-collapse collapse${isOpen && ' show'}`}
+                className={cn('accordion-collapse collapse', { show: isOpen })}
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
