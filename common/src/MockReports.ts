@@ -325,22 +325,50 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q13_2_1_1_1 = new NumericQuestion<ID, ErrorType>("13_2_1_1_1", "Transport accident");
   const q13_2_1_1_2 = new NumericQuestion<ID, ErrorType>("13_2_1_1_2", "Fall");
+  const q13_2_1_1_3 = new NumericQuestion<ID, ErrorType>("13_2_1_1_3", "Assault");
+  const q13_2_1_1_4 = new NumericQuestion<ID, ErrorType>("13_2_1_1_4", "Sports");
+  const q13_2_1_1_5 = new NumericQuestion<ID, ErrorType>("13_2_1_1_5", "Non-traumatic spinal cord dysfunction");
+  const q13_2_1_1_6 = new NumericQuestion<ID, ErrorType>("13_2_1_1_6", "Medical/surgical complication");
+  const q13_2_1_1_7 = new NumericQuestion<ID, ErrorType>("13_2_1_1_7", "Other traumatic reason");
   const q13_2_1_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     "13_2_1_1",
     "Cause",
     q13_2_1_1_1,
-    q13_2_1_1_2
+    q13_2_1_1_2,
+    q13_2_1_1_3,
+    q13_2_1_1_4,
+    q13_2_1_1_5,
+    q13_2_1_1_6,
+    q13_2_1_1_7,
   );
   const q13_2_1 = new CompositionQuestion<ID, ErrorType>(
     '13_2_1',
     'SCI - tetraplegia',
-    q13_2_1_1
+    q13_2_1_1,
   );
 
-  const q13_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+  const q13_2_2_1_1 = new NumericQuestion<ID, ErrorType>("13_2_2_1_1", "Transport accident");
+  const q13_2_2_1_2 = new NumericQuestion<ID, ErrorType>("13_2_2_1_2", "Fall");
+  const q13_2_2_1_3 = new NumericQuestion<ID, ErrorType>("13_2_2_1_3", "Assault");
+  const q13_2_2_1_4 = new NumericQuestion<ID, ErrorType>("13_2_2_1_4", "Sports");
+  const q13_2_2_1_5 = new NumericQuestion<ID, ErrorType>("13_2_2_1_5", "Non-traumatic spinal cord dysfunction");
+  const q13_2_2_1_6 = new NumericQuestion<ID, ErrorType>("13_2_2_1_6", "Medical/surgical complication");
+  const q13_2_2_1_7 = new NumericQuestion<ID, ErrorType>("13_2_2_1_7", "Other traumatic reason");
+  const q13_2_2_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
+    "13_2_2_1",
+    "Cause",
+    q13_2_2_1_1,
+    q13_2_2_1_2,
+    q13_2_2_1_3,
+    q13_2_2_1_4,
+    q13_2_2_1_5,
+    q13_2_2_1_6,
+    q13_2_2_1_7,
+  );
+  const q13_2_2 = new CompositionQuestion<ID, ErrorType>(
     '13_2_2',
     'SCI - paraplegia',
-    // q13_2_2_1,
+    q13_2_2_1,
   );
 
   const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(

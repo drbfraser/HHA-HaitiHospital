@@ -180,14 +180,25 @@ const CompositionQuestionFormField = ({
               {groupId.replaceAll('_', '.')}. {group.getPrompt()}
             </legend>
             <Group>
-              {group.map((elem) => (
-                <NumericQuestionFormField
-                  applyReportChanges={applyReportChanges}
-                  key={`${elem.getId()}${suffixName}`}
-                  question={elem}
-                  suffixName={suffixName}
-                />
-              ))}
+              {group.map((elem) => {
+                if (elem.constructor.name === CompositionQuestion.name) {
+                  return <CompositionQuestionFormField
+                    applyReportChanges={applyReportChanges}
+                    key={`${elem.getId()}${suffixName}`}
+                    question={elem as CompositionQuestion<ID, ErrorType>}
+                    suffixName={suffixName}
+                  />;
+                }
+                else if (elem.constructor.name === NumericQuestion.name) {
+                  return <NumericQuestionFormField
+                    applyReportChanges={applyReportChanges}
+                    key={`${elem.getId()}${suffixName}`}
+                    question={elem as NumericQuestion<ID, ErrorType>}
+                    suffixName={suffixName}
+                  />;
+                }
+                return <div>Error: Undefined</div>
+              })}
             </Group>
           </fieldset>
         );
