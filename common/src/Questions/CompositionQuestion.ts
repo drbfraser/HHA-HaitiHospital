@@ -53,6 +53,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<ID,
   }
 
   public allSumUp(): boolean {
+    if (this.compositionGroups.length === 0) return true;
     return this.compositionGroups
       .map((compositionGroup) => this.compositionGroupSumsUp(compositionGroup))
       .reduce((bool1, bool2) => bool1 && bool2);

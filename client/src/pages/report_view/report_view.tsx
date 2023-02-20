@@ -8,11 +8,8 @@ import { TOAST_REPORT_GET } from 'constants/toastErrorMessages';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
-import { ReportForm } from 'components/report/question_form_fields';
+import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
-
-type ID = string;
-type ErrorType = string;
 
 const ReportView = () => {
   const history = useHistory<History>();
