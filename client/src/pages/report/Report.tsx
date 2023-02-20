@@ -1,6 +1,6 @@
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import { ReportForm } from 'components/report/question_form_fields';
+import { ReportForm } from 'components/report/report_form';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { TOAST_REPORT_POST as ERR_TOAST } from 'constants/toastErrorMessages';
 import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
@@ -13,9 +13,6 @@ import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
-
-type ID = string;
-type ErrorType = string;
 
 export const Report = () => {
   const history: History = useHistory<History>();
