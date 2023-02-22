@@ -52,56 +52,6 @@ const NumericQuestionFormField = ({
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newValue = event.target.value;
-  //   question.setAnswer(parseInt(newValue));
-  //   applyReportChanges();
-  //   let validationResults=true;
-  //   if (isNumber(newValue)) {
-  //     validationResults = question.getValidationResults();
-  //     setInputState(validationResults);
-  //   } else {
-  //     validationResults=ERROR_NOT_A_INTEGER;
-  //     setInputState(ERROR_NOT_A_INTEGER);
-  //   }
-
-  //   if (validationResults === true) {
-
-  //     if( typeof allSumUp === 'function')
-  //     {
-  //       if (allSumUp() === false) {
-  //         setErrorSet((prev) => {
-  //           const newSet = new Set(prev);
-  //           newSet.add(question.getId());
-  //           return newSet;
-  //         });
-  //       } else {
-  //         setErrorSet((prev) => {
-  //           const newSet = new Set(prev);
-  //           newSet.delete(question.getId());
-  //           return newSet;
-  //         });
-  //       }
-  //     }
-  //     else
-  //     {
-  // setErrorSet((prev) => {
-  //   const newSet = new Set(prev);
-  //   newSet.delete(question.getId());
-  //   return newSet;
-  // });
-  //     }
-  //   } else {
-
-  //     console.log("svrr")
-  //     setErrorSet((prev) => {
-  //       const newSet = new Set(prev);
-  //       newSet.add(question.getId());
-  //       return newSet;
-  //     });
-  //   }
-  // };
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
