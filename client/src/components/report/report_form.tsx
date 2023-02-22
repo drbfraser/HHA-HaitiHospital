@@ -68,7 +68,7 @@ export const ReportForm = ({
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
         <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
-        <Group>
+        <Group isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,
