@@ -11,7 +11,9 @@
     "server": "npm start --prefix server",
     "dev": "npm run server & npm run client",
     "e2e": "cypress open",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
+    "format": "npm run prettier -- --write",
+    "check-format": "npm run prettier -- --list-different"
   },
   "repository": {
     "type": "git",

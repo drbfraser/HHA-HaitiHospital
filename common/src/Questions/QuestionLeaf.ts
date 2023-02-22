@@ -2,7 +2,7 @@
 import { QuestionNode } from './QuestionNode';
 import { runNumericValidators } from '../Form_Validators';
 
-interface ValidationError<ErrorType> {
+export interface ValidationError<ErrorType> {
   readonly error?: ErrorType;
   readonly message?: string;
 }

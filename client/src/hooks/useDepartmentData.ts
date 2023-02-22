@@ -2,7 +2,7 @@ import { History } from 'history';
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from 'constants/queryKeys';
 import { ENDPOINT_DEPARTMENT_GET } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET } from 'constants/toast_messages';
+import { TOAST_DEPARTMENT_GET } from 'constants/toastErrorMessages';
 import { createDepartmentNameMap, createDepartmentIdMap } from 'utils/departmentMapper';
 import { useHistory } from 'react-router-dom';
 import Api from 'actions/Api';

@@ -1,5 +1,5 @@
-import { IRouter, NextFunction, Response } from 'express';
-import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
+import { NextFunction, Response } from 'express';
+import { checkUserIsDepartmentAuthed, checkUserCanEdit } from 'utils/authUtils';
 import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
 import {
@@ -11,13 +11,16 @@ import {
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { ReportCollection } from '../../models/report';
 import { departmentAuth } from 'middleware/departmentAuth';
+import { Router } from 'express';
+import { cloneDeep } from 'lodash';
 
-const router: IRouter = require('express').Router();
+const router = Router();
 
 //Save report
-router
-  .route('/')
-  .post(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.post(
+  '/',
+  requireJwtAuth,
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { departmentId, reportMonth, submittedUserId, serializedReport } = req.body;
       // NOTE: May need to sanitize the reportObject before saving
@@ -32,12 +35,14 @@ router
     } catch (e) {
       next(e);
     }
-  });
+  },
+);
 
 // Fetch report by id
-router
-  .route(`/:${REPORT_ID_URL_SLUG}`)
-  .get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get(
+  `/:${REPORT_ID_URL_SLUG}`,
+  requireJwtAuth,
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const reportId = req.params[REPORT_ID_URL_SLUG];
       const report = await ReportCollection.findById(reportId).lean();
@@ -54,38 +59,80 @@ router
     } catch (e) {
       next(e);
     }
-  });
+  },
+);
 
 // Fetch all reports
-router
-  .route(`/`)
-  .get(requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const reports = await ReportCollection.find();
+    res.status(HTTP_OK_CODE).json(reports);
+  } catch (e) {
+    next(e);
+  }
+});
+
+//Fetch reports of a department with department id
+router.get(
+  `/department/:${DEPARTMENT_ID_URL_SLUG}`,
+  requireJwtAuth,
+  departmentAuth,
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const reports = await ReportCollection.find();
+      const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
+      const reports = await ReportCollection.find({ departmentId: deptId }).sort({
+        reportMonth: 'desc',
+      });
+
       res.status(HTTP_OK_CODE).json(reports);
     } catch (e) {
       next(e);
     }
-  });
+  },
+);
 
-export default router;
-
-//Fetch reports of a department with department id
-router
-  .route(`/department/:${DEPARTMENT_ID_URL_SLUG}`)
-  .get(
-    requireJwtAuth,
-    departmentAuth,
-    async (req: RequestWithUser, res: Response, next: NextFunction) => {
-      try {
-        const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
-        const reports = await ReportCollection.find({ departmentId: deptId }).sort({
-          reportMonth: 'desc',
-        });
-
-        res.status(HTTP_OK_CODE).json(reports);
-      } catch (e) {
-        next(e);
+router.get(
+  `/:${REPORT_ID_URL_SLUG}`,
+  requireJwtAuth,
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const reportId = req.params[REPORT_ID_URL_SLUG];
+      const report = await ReportCollection.findById(reportId).lean();
+      if (!report) {
+        throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
       }
-    },
-  );
+
+      const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
+      if (!authorized) {
+        throw new Unauthorized(`User not authorized`);
+      }
+
+      res.status(HTTP_OK_CODE).json({ report: report });
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
+router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
+  const { id, serializedReport } = req.body;
+
+  const report = await ReportCollection.findById(id);
+
+  const authorized = checkUserCanEdit(req.user, report.departmentId);
+
+  if (!authorized) {
+    throw new Unauthorized(`User not authorized`);
+  }
+
+  if (!report) {
+    throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+  }
+
+  report.reportObject = cloneDeep(serializedReport);
+
+  await report.save();
+
+  res.status(HTTP_OK_CODE);
+});
+export default router;

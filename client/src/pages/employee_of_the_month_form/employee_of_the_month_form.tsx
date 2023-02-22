@@ -7,7 +7,7 @@ import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMo
 import Api from '../../actions/Api';
 import { Department, GeneralDepartment } from 'constants/interfaces';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toast_messages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toastErrorMessages';
 import './employee_of_the_month_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';

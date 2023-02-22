@@ -3,7 +3,7 @@ import Sidebar from '../../components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_POST } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_POST } from 'constants/toast_messages';
+import { TOAST_MESSAGEBOARD_POST } from 'constants/toastErrorMessages';
 import './message_board_add.css';
 import { toast } from 'react-toastify';
 import MessageForm from '../../components/message_form/message_form';
@@ -24,8 +24,8 @@ const AddMessage = () => {
       ENDPOINT_MESSAGEBOARD_POST,
       data,
       onSubmitActions,
-      TOAST_MESSAGEBOARD_POST,
       history,
+      TOAST_MESSAGEBOARD_POST,
     );
   };
 

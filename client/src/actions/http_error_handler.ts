@@ -10,7 +10,7 @@ const CONFLICT_CODE = 409;
 const INTERNAL_CODE = 500;
 const UNPROCCESABLENTITY_CODE = 422;
 
-const DbErrorHandler = (e, history: History, toastMsg: string, errorActions?: any) => {
+const DbErrorHandler = (e, history: History, toastMsg: string) => {
   const err = e as AxiosError;
   if (err.isAxiosError === undefined) {
     console.log(e.message);

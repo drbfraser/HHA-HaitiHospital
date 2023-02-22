@@ -5,7 +5,7 @@ import { CaseStudySummary } from 'components/case_study_summary/case_study_summa
 import './leader_board_main.css';
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toast_messages';
+import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';

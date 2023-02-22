@@ -8,7 +8,7 @@ import {
   ENDPOINT_DEPARTMENT_GET_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
 } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET, TOAST_REPORTS_GET } from 'constants/toast_messages';
+import { TOAST_DEPARTMENT_GET, TOAST_REPORTS_GET } from 'constants/toastErrorMessages';
 import { Department as DepartmentModel, EMPTY_DEPARTMENT } from 'constants/interfaces';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';

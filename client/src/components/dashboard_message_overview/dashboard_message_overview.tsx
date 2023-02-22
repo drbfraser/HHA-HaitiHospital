@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET } from 'constants/toast_messages';
+import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
 import { Message } from 'constants/interfaces';
 import { NavLink } from 'react-router-dom';
 import './dashboard_message_overview.css';

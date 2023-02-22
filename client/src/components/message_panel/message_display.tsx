@@ -11,7 +11,7 @@ import {
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET,
   TOAST_MESSAGEBOARD_DELETE,
-} from 'constants/toast_messages';
+} from 'constants/toastErrorMessages';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { toast } from 'react-toastify';

@@ -1,7 +1,10 @@
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
-import { ReportForm } from 'components/report/question_form_fields';
-import { ENDPOINT_REPORTS_POST, ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { ReportForm } from 'components/report/report_form';
+import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { TOAST_REPORT_POST as ERR_TOAST } from 'constants/toastErrorMessages';
+import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
+import { TOAST_REPORT_POST as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
@@ -10,9 +13,6 @@ import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
-
-type ID = string;
-type ErrorType = string;
 
 export const Report = () => {
   const history: History = useHistory<History>();
@@ -32,7 +32,6 @@ export const Report = () => {
   };
 
   const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportObject = {
@@ -41,7 +40,17 @@ export const Report = () => {
       serializedReport,
       submittedUserId: user?.userDetails?.id,
     };
-    Api.Post(ENDPOINT_REPORTS_POST, reportObject, () => {}, '', history);
+
+    event.preventDefault();
+    Api.Post(
+      ENDPOINT_REPORTS,
+      reportObject,
+      () => {},
+      history,
+      ERR_TOAST,
+      PENDING_TOAST,
+      SUCCESS_TOAST,
+    );
   };
 
   useEffect(() => {
@@ -103,7 +112,7 @@ export const Report = () => {
             <ReportForm
               applyReportChanges={applyReportChanges}
               reportData={report}
-              submitReport={submitReport}
+              formHandler={submitReport}
             />
           </>
         )}
