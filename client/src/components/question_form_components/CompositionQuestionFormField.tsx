@@ -1,4 +1,9 @@
-import { CompositionQuestion, NumericQuestion, ValidationResult, ERROR_DOES_NOT_SUM_UP } from '@hha/common';
+import {
+  CompositionQuestion,
+  NumericQuestion,
+  ValidationResult,
+  ERROR_DOES_NOT_SUM_UP,
+} from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
 
 const CompositionQuestionFormField = ({
@@ -46,22 +51,25 @@ const CompositionQuestionFormField = ({
             <Group>
               {group.map((elem) => {
                 if (elem.constructor.name === CompositionQuestion.name) {
-                  return <CompositionQuestionFormField
-                    applyReportChanges={applyReportChanges}
-                    key={`${elem.getId()}${suffixName}`}
-                    question={elem as CompositionQuestion<ID, ErrorType>}
-                    suffixName={suffixName}
-                  />;
+                  return (
+                    <CompositionQuestionFormField
+                      applyReportChanges={applyReportChanges}
+                      key={`${elem.getId()}${suffixName}`}
+                      question={elem as CompositionQuestion<ID, ErrorType>}
+                      suffixName={suffixName}
+                    />
+                  );
+                } else if (elem.constructor.name === NumericQuestion.name) {
+                  return (
+                    <NumericQuestionFormField
+                      applyReportChanges={applyReportChanges}
+                      key={`${elem.getId()}${suffixName}`}
+                      question={elem as NumericQuestion<ID, ErrorType>}
+                      suffixName={suffixName}
+                    />
+                  );
                 }
-                else if (elem.constructor.name === NumericQuestion.name) {
-                  return <NumericQuestionFormField
-                    applyReportChanges={applyReportChanges}
-                    key={`${elem.getId()}${suffixName}`}
-                    question={elem as NumericQuestion<ID, ErrorType>}
-                    suffixName={suffixName}
-                  />;
-                }
-                return <div>Error: Undefined</div>
+                return <div>Error: Undefined</div>;
               })}
             </Group>
           </fieldset>

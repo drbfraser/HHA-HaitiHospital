@@ -6,9 +6,9 @@ type GroupProps = {
   isRootNode?: boolean;
 };
 const Group = ({ children, isRootNode }: GroupProps): JSX.Element => (
-  <div className={cn({"border-start border-2": !isRootNode}, "pl-3")}>
+  <div className={cn({ 'border-start border-2': !isRootNode }, 'pl-3')}>
     {children}
-    <div className="border-top border-2 ml-n3" style={{width: "1rem"}}/>
+    <div className="border-top border-2 ml-n3" style={{ width: '1rem' }} />
   </div>
 );
 
