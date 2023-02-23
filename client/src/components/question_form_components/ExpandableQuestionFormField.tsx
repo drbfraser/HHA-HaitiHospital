@@ -8,11 +8,13 @@ const ExpandableQuestionFormField = ({
   question,
   suffixName,
   buildQuestionFormField,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
   buildQuestionFormField: FunctionalComponent;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -47,29 +49,29 @@ const ExpandableQuestionFormField = ({
       />
       <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          const isOpen = openClosedStates[index];
-          const itemId: string = `accordion-item-${nameId}_${index + 1}`;
-          return (
-            <div className="accordion-item" key={itemId}>
-              <h6
-                className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
-                id={`${itemId}-header`}
-              >
-                <div className="row p-0 m-0 align-items-center">
-                  <button
-                    className={cn('accordion-button col pl-3 pr-1 py-2', { collapsed: isOpen })}
-                    type="button"
-                    onClick={() => {
-                      openClosedStates[index] = !openClosedStates[index];
-                      setOpenClosedStates([...openClosedStates]);
-                    }}
-                    data-bs-toggle="collapse"
-                    data-bs-target={`#${itemId}`}
-                    aria-expanded={isOpen}
-                    aria-controls={itemId}
-                  >
-                    {`Patient ${index + 1}`}
-                  </button>
+         const isOpen = openClosedStates[index];
+         const itemId: string = `accordion-item-${nameId}_${index + 1}`;
+         return (
+           <div className="accordion-item" key={itemId}>
+             <h6
+               className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
+               id={`${itemId}-header`}
+             >
+               <div className="row p-0 m-0 align-items-center">
+                 <button
+                   className={cn('accordion-button col pl-3 pr-1 py-2', { collapsed: isOpen })}
+                   type="button"
+                   onClick={() => {
+                     openClosedStates[index] = !openClosedStates[index];
+                     setOpenClosedStates([...openClosedStates]);
+                   }}
+                  data-bs-toggle="collapse"
+                  data-bs-target={`#${itemId}`}
+                  aria-expanded={isOpen}
+                  aria-controls={itemId}
+                >
+                  {`Patient ${index + 1}`}
+                </button>
                   <button
                     className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
                     onClick={(e) => e.preventDefault()}
@@ -95,6 +97,7 @@ const ExpandableQuestionFormField = ({
                     applyReportChanges: applyReportChanges,
                     questions: questionGroup,
                     suffixName: `_${index + 1}`,
+                    setErrorSet: setErrorSet,
                   })}
                 </div>
               </div>
