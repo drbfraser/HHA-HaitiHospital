@@ -5,28 +5,41 @@ import {
   ERROR_DOES_NOT_SUM_UP,
 } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
+import { useState } from 'react';
 
 const CompositionQuestionFormField = ({
   applyReportChanges,
   question,
   suffixName,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
-  let inputState: ValidationResult<string> = true;
+  const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
-
-  if (question.allSumUp()) {
-    inputState = true;
-  } else {
-    inputState = ERROR_DOES_NOT_SUM_UP;
-  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();
+
+    if (question.allSumUp()) {
+      setInputState(true);
+      setErrorSet((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(question.getId());
+        return newSet;
+      });
+    } else {
+      setInputState(ERROR_DOES_NOT_SUM_UP);
+      setErrorSet((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(question.getId());
+        return newSet;
+      });
+    }
   };
 
   return (
@@ -56,15 +69,20 @@ const CompositionQuestionFormField = ({
                       applyReportChanges={applyReportChanges}
                       key={`${elem.getId()}${suffixName}`}
                       question={elem as CompositionQuestion<ID, ErrorType>}
+                      setErrorSet={setErrorSet}
                       suffixName={suffixName}
                     />
                   );
                 } else if (elem.constructor.name === NumericQuestion.name) {
                   return (
                     <NumericQuestionFormField
+                      allSumUp={() => question.allSumUp()}
                       applyReportChanges={applyReportChanges}
+                      compositionParentId={question.getId()}
                       key={`${elem.getId()}${suffixName}`}
                       question={elem as NumericQuestion<ID, ErrorType>}
+                      setErrorSet={setErrorSet}
+                      setParentCompositionState={setInputState}
                       suffixName={suffixName}
                     />
                   );

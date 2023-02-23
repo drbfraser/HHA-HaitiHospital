@@ -10,22 +10,27 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 
-const ExpandableQuestion = ({ applyReportChanges, question, suffixName }) =>
+import { useState } from 'react';
+
+const ExpandableQuestion = ({ applyReportChanges, question, suffixName, setErrorSet }) =>
   ExpandableQuestionFormField({
     applyReportChanges,
     question,
     suffixName,
     buildQuestionFormField,
+    setErrorSet,
   });
 
 const buildQuestionFormField = ({
   applyReportChanges,
   questions,
   suffixName,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
   return (
     <>
@@ -47,6 +52,7 @@ const buildQuestionFormField = ({
               key={`${question.getId()}${suffixName}`}
               question={question}
               suffixName={suffixName}
+              setErrorSet={setErrorSet}
             />
           );
         })}
@@ -63,16 +69,23 @@ export const ReportForm = ({
   reportData: QuestionGroup<ID, ErrorType>;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
 }): JSX.Element => {
+  const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
-        <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
+        <input
+          className="btn btn-outline-primary"
+          type="submit"
+          value="Submit Report"
+          disabled={!(errorSet.size === 0)}
+        />
         <Group isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,
             suffixName: '',
+            setErrorSet: setErrorSet,
           })}
         </Group>
         <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
