@@ -7,7 +7,7 @@ import {
   isNumber,
 } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
-import { useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const CompositionQuestionFormField = ({
   allSumUp,
@@ -22,14 +22,14 @@ const CompositionQuestionFormField = ({
   applyReportChanges: () => void;
   compositionParentId?: string;
   question: CompositionQuestion<ID, ErrorType>;
-  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
-  setParentCompositionState?: React.Dispatch<React.SetStateAction<ValidationResult<string>>>;
+  setErrorSet: Dispatch<SetStateAction<Set<string>>>;
+  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
   suffixName: string;
 }): JSX.Element => {
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
@@ -37,17 +37,15 @@ const CompositionQuestionFormField = ({
     // If the input is not a number, then set the error and input state to ERROR_NOT_A_INTEGER
     if (!isNumber(newValue)) {
       setInputState(ERROR_NOT_A_INTEGER);
-      setErrorSet((prev) => (new Set(prev)).add(question.getId()));
-    }
-    else if (question.allSumUp()) {
+      setErrorSet((prev) => new Set(prev).add(question.getId()));
+    } else if (question.allSumUp()) {
       setInputState(true);
       setErrorSet((prev) => {
         const newSet = new Set(prev);
         newSet.delete(question.getId());
         return newSet;
       });
-    }
-    else {
+    } else {
       setInputState(ERROR_DOES_NOT_SUM_UP);
       setErrorSet((prev) => {
         const newSet = new Set(prev);

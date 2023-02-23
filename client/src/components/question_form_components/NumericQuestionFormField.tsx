@@ -6,7 +6,7 @@ import {
   isNumber,
 } from '@hha/common';
 import FormField from './FormField';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const NumericQuestionFormField = ({
   allSumUp,
@@ -21,8 +21,8 @@ const NumericQuestionFormField = ({
   applyReportChanges: () => void;
   compositionParentId?: string;
   question: NumericQuestion<ID, ErrorType>;
-  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
-  setParentCompositionState?: React.Dispatch<React.SetStateAction<ValidationResult<string>>>;
+  setErrorSet: Dispatch<SetStateAction<Set<string>>>;
+  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
   suffixName: string;
 }): JSX.Element => {
   // inputState has a value of true if the input is valid or
