@@ -6,9 +6,15 @@ import { SpecializedGroup } from '.';
 import { QuestionAnswerNode, QuestionAnswerParent } from './QuestionAnswer';
 
 @serializable(undefined)
-export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, number, ErrorType> {
+export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
+  ID,
+  number,
+  ErrorType
+> {
   private answer: number | undefined = 0;
-  private readonly compositionGroups: Array<SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>>;
+  private readonly compositionGroups: Array<
+    SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>
+  >;
 
   constructor(
     id: ID,
@@ -68,7 +74,9 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<ID,
   }
 
   public map<T>(
-    mapper: (numberGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>) => T,
+    mapper: (
+      numberGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>,
+    ) => T,
   ): T[] {
     return this.compositionGroups.map(mapper);
   }

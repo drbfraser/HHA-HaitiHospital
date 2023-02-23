@@ -8,13 +8,15 @@ import {
   SpecializedGroup,
   TextQuestion,
 } from './Questions';
-import { QuestionAnswerNode } from "./Questions/QuestionAnswer";
+import { QuestionAnswerNode } from './Questions/QuestionAnswer';
 
 type ID = string;
 type ErrorType = string;
 
-const questionIdGeneratorBuilder = (questionId: ID) =>
-  (questionGroupIndex: number): ID => `${questionId}_${questionGroupIndex}`;
+const questionIdGeneratorBuilder =
+  (questionId: ID) =>
+  (questionGroupIndex: number): ID =>
+    `${questionId}_${questionGroupIndex}`;
 
 export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
@@ -199,7 +201,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Days hospitalised',
     0,
   );
-  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('9', 'Referrals', 0);
+  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '9',
+    'Referrals',
+    0,
+  );
   const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '10',
     'Transfers',
@@ -336,16 +342,24 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q13_1_4,
   );
 
-  const q13_2_1_1_1 = new NumericQuestion<ID, ErrorType>("13_2_1_1_1", "Transport accident", 0);
-  const q13_2_1_1_2 = new NumericQuestion<ID, ErrorType>("13_2_1_1_2", "Fall", 0);
-  const q13_2_1_1_3 = new NumericQuestion<ID, ErrorType>("13_2_1_1_3", "Assault", 0);
-  const q13_2_1_1_4 = new NumericQuestion<ID, ErrorType>("13_2_1_1_4", "Sports", 0);
-  const q13_2_1_1_5 = new NumericQuestion<ID, ErrorType>("13_2_1_1_5", "Non-traumatic spinal cord dysfunction", 0);
-  const q13_2_1_1_6 = new NumericQuestion<ID, ErrorType>("13_2_1_1_6", "Medical/surgical complication", 0);
-  const q13_2_1_1_7 = new NumericQuestion<ID, ErrorType>("13_2_1_1_7", "Other traumatic reason", 0);
+  const q13_2_1_1_1 = new NumericQuestion<ID, ErrorType>('13_2_1_1_1', 'Transport accident', 0);
+  const q13_2_1_1_2 = new NumericQuestion<ID, ErrorType>('13_2_1_1_2', 'Fall', 0);
+  const q13_2_1_1_3 = new NumericQuestion<ID, ErrorType>('13_2_1_1_3', 'Assault', 0);
+  const q13_2_1_1_4 = new NumericQuestion<ID, ErrorType>('13_2_1_1_4', 'Sports', 0);
+  const q13_2_1_1_5 = new NumericQuestion<ID, ErrorType>(
+    '13_2_1_1_5',
+    'Non-traumatic spinal cord dysfunction',
+    0,
+  );
+  const q13_2_1_1_6 = new NumericQuestion<ID, ErrorType>(
+    '13_2_1_1_6',
+    'Medical/surgical complication',
+    0,
+  );
+  const q13_2_1_1_7 = new NumericQuestion<ID, ErrorType>('13_2_1_1_7', 'Other traumatic reason', 0);
   const q13_2_1_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
-    "13_2_1_1",
-    "Cause",
+    '13_2_1_1',
+    'Cause',
     q13_2_1_1_1,
     q13_2_1_1_2,
     q13_2_1_1_3,
@@ -354,22 +368,26 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q13_2_1_1_6,
     q13_2_1_1_7,
   );
-  const q13_2_1 = new CompositionQuestion<ID, ErrorType>(
-    '13_2_1',
-    'SCI - tetraplegia',
-    q13_2_1_1,
-  );
+  const q13_2_1 = new CompositionQuestion<ID, ErrorType>('13_2_1', 'SCI - tetraplegia', q13_2_1_1);
 
-  const q13_2_2_1_1 = new NumericQuestion<ID, ErrorType>("13_2_2_1_1", "Transport accident", 0);
-  const q13_2_2_1_2 = new NumericQuestion<ID, ErrorType>("13_2_2_1_2", "Fall", 0);
-  const q13_2_2_1_3 = new NumericQuestion<ID, ErrorType>("13_2_2_1_3", "Assault", 0);
-  const q13_2_2_1_4 = new NumericQuestion<ID, ErrorType>("13_2_2_1_4", "Sports", 0);
-  const q13_2_2_1_5 = new NumericQuestion<ID, ErrorType>("13_2_2_1_5", "Non-traumatic spinal cord dysfunction", 0);
-  const q13_2_2_1_6 = new NumericQuestion<ID, ErrorType>("13_2_2_1_6", "Medical/surgical complication", 0);
-  const q13_2_2_1_7 = new NumericQuestion<ID, ErrorType>("13_2_2_1_7", "Other traumatic reason", 0);
+  const q13_2_2_1_1 = new NumericQuestion<ID, ErrorType>('13_2_2_1_1', 'Transport accident', 0);
+  const q13_2_2_1_2 = new NumericQuestion<ID, ErrorType>('13_2_2_1_2', 'Fall', 0);
+  const q13_2_2_1_3 = new NumericQuestion<ID, ErrorType>('13_2_2_1_3', 'Assault', 0);
+  const q13_2_2_1_4 = new NumericQuestion<ID, ErrorType>('13_2_2_1_4', 'Sports', 0);
+  const q13_2_2_1_5 = new NumericQuestion<ID, ErrorType>(
+    '13_2_2_1_5',
+    'Non-traumatic spinal cord dysfunction',
+    0,
+  );
+  const q13_2_2_1_6 = new NumericQuestion<ID, ErrorType>(
+    '13_2_2_1_6',
+    'Medical/surgical complication',
+    0,
+  );
+  const q13_2_2_1_7 = new NumericQuestion<ID, ErrorType>('13_2_2_1_7', 'Other traumatic reason', 0);
   const q13_2_2_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
-    "13_2_2_1",
-    "Cause",
+    '13_2_2_1',
+    'Cause',
     q13_2_2_1_1,
     q13_2_2_1_2,
     q13_2_2_1_3,
@@ -378,11 +396,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q13_2_2_1_6,
     q13_2_2_1_7,
   );
-  const q13_2_2 = new CompositionQuestion<ID, ErrorType>(
-    '13_2_2',
-    'SCI - paraplegia',
-    q13_2_2_1,
-  );
+  const q13_2_2 = new CompositionQuestion<ID, ErrorType>('13_2_2', 'SCI - paraplegia', q13_2_2_1);
 
   const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_3',
@@ -736,10 +750,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Days hospitalised',
   );
   const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('9', 'Referrals');
-  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '10',
-    'Transfers',
-  );
+  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('10', 'Transfers');
 
   // Question 11 "Self-discharged"
   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
@@ -1190,10 +1201,7 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Days hospitalised',
   );
   const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('9', 'Referrals');
-  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '10',
-    'Transfers',
-  );
+  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('10', 'Transfers');
 
   // Question 11 "Self-discharged"
   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
