@@ -8,11 +8,13 @@ const ExpandableQuestionFormField = ({
   question,
   suffixName,
   buildQuestionFormField,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
   buildQuestionFormField: FunctionalComponent;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -95,6 +97,7 @@ const ExpandableQuestionFormField = ({
                     applyReportChanges: applyReportChanges,
                     questions: questionGroup,
                     suffixName: `_${index + 1}`,
+                    setErrorSet: setErrorSet,
                   })}
                 </div>
               </div>
