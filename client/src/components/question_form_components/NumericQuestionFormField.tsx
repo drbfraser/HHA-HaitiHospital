@@ -1,4 +1,10 @@
-import { NumericQuestion, ValidationResult, ERROR_NOT_A_INTEGER,ERROR_DOES_NOT_SUM_UP, isNumber } from '@hha/common';
+import {
+  NumericQuestion,
+  ValidationResult,
+  ERROR_NOT_A_INTEGER,
+  ERROR_DOES_NOT_SUM_UP,
+  isNumber,
+} from '@hha/common';
 import FormField from './FormField';
 import { ChangeEvent, useState } from 'react';
 
@@ -66,9 +72,9 @@ const NumericQuestionFormField = ({
     }
 
     // If the composition question is valid, then remove the errors related to composition question and input state of composition question to true
-    setErrorSet(prev => {
+    setErrorSet((prev) => {
       const newSet = new Set(prev);
-      newSet.forEach(id => {
+      newSet.forEach((id) => {
         if (id.toString().startsWith(compositionParentId.toString())) {
           newSet.delete(id);
         }
@@ -76,19 +82,18 @@ const NumericQuestionFormField = ({
       return newSet;
     });
     setParentCompositionState(true);
-    
   };
 
   return (
     <FormField
-    handleChange={handleChange}
-    inputState={inputState}
-    min={0}
-    nameId={nameId}
-    prompt={question.getPrompt()}
-    type="number"
-    value={question.getAnswer()}
-      />
+      handleChange={handleChange}
+      inputState={inputState}
+      min={0}
+      nameId={nameId}
+      prompt={question.getPrompt()}
+      type="number"
+      value={question.getAnswer()}
+    />
   );
 };
 

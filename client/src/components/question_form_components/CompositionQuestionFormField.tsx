@@ -15,7 +15,7 @@ const CompositionQuestionFormField = ({
 }): JSX.Element => {
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
-  
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     question.setAnswer(parseInt(event.target.value));
     applyReportChanges();

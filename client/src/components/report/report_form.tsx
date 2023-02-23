@@ -12,7 +12,7 @@ import {
 
 import { useState } from 'react';
 
-const ExpandableQuestion = ({ applyReportChanges, question, suffixName,setErrorSet }) =>
+const ExpandableQuestion = ({ applyReportChanges, question, suffixName, setErrorSet }) =>
   ExpandableQuestionFormField({
     applyReportChanges,
     question,
@@ -75,7 +75,12 @@ export const ReportForm = ({
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
-      <input className="btn btn-outline-primary" type="submit" value="Submit Report" disabled={!(errorSet.size === 0)}/>
+        <input
+          className="btn btn-outline-primary"
+          type="submit"
+          value="Submit Report"
+          disabled={!(errorSet.size === 0)}
+        />
         <Group>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
