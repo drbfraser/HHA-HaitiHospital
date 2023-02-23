@@ -70,7 +70,6 @@ export const ReportForm = ({
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
-  console.log(errorSet);
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
