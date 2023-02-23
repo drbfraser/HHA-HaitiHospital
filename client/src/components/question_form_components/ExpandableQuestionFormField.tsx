@@ -59,7 +59,7 @@ const ExpandableQuestionFormField = ({
               >
                 <div className="row p-0 m-0 align-items-center">
                   <button
-                    className={cn('accordion-button col pl-3 pr-1 py-2', { collapsed: isOpen })}
+                    className={cn('accordion-button col pl-3 pr-1 py-2', { collapsed: !isOpen })}
                     type="button"
                     onClick={() => {
                       openClosedStates[index] = !openClosedStates[index];
