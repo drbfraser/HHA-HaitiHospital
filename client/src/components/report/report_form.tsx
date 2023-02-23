@@ -1,5 +1,4 @@
 import { QuestionGroup, QuestionNode } from '@hha/common';
-
 import {
   CompositionQuestionFormField,
   ExpandableQuestionFormField,
