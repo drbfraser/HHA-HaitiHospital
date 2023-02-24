@@ -9,21 +9,21 @@ import FormField from './FormField';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const NumericQuestionFormField = ({
-  allSumUp,
   applyReportChanges,
-  compositionParentId,
   question,
   setErrorSet,
-  setParentCompositionState,
   suffixName,
+  allSumUp,
+  compositionParentId,
+  setParentCompositionState,
 }: {
-  allSumUp?: () => boolean;
   applyReportChanges: () => void;
-  compositionParentId?: string;
   question: NumericQuestion<ID, ErrorType>;
   setErrorSet: Dispatch<SetStateAction<Set<string>>>;
-  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
   suffixName: string;
+  allSumUp?: () => boolean;
+  compositionParentId?: string;
+  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
 }): JSX.Element => {
   // inputState has a value of true if the input is valid or
   // if it is of type ValidationResult<string> when the input is invalid

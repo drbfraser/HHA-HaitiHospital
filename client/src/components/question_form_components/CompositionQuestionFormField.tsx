@@ -10,21 +10,21 @@ import { FormField, Group, NumericQuestionFormField } from '.';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const CompositionQuestionFormField = ({
-  allSumUp,
   applyReportChanges,
-  compositionParentId,
   question,
   setErrorSet,
-  setParentCompositionState,
   suffixName,
+  allSumUp,
+  compositionParentId,
+  setParentCompositionState,
 }: {
-  allSumUp?: () => boolean;
   applyReportChanges: () => void;
-  compositionParentId?: string;
   question: CompositionQuestion<ID, ErrorType>;
   setErrorSet: Dispatch<SetStateAction<Set<string>>>;
-  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
   suffixName: string;
+  allSumUp?: () => boolean;
+  compositionParentId?: string;
+  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
 }): JSX.Element => {
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -34,8 +34,8 @@ const CompositionQuestionFormField = ({
     question.setAnswer(parseInt(newValue));
     applyReportChanges();
 
-    // If the input is not a number, then set the error and input state to ERROR_NOT_A_INTEGER
     if (!isNumber(newValue)) {
+      // If the input is not a number, then set the error and input state to ERROR_NOT_A_INTEGER
       setInputState(ERROR_NOT_A_INTEGER);
       setErrorSet((prev) => new Set(prev).add(question.getId()));
     } else if (question.allSumUp()) {
@@ -57,11 +57,13 @@ const CompositionQuestionFormField = ({
     // Check if this composition question is not part of a composition question and
     // then remove if it previously had errors registered to its ID
     if (typeof allSumUp !== 'function') {
-      setErrorSet((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(question.getId());
-        return newSet;
-      });
+      isNumber(newValue) &&
+        question.allSumUp() &&
+        setErrorSet((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(question.getId());
+          return newSet;
+        });
       return;
     }
 
@@ -80,7 +82,9 @@ const CompositionQuestionFormField = ({
     setErrorSet((prev) => {
       const newSet = new Set(prev);
       newSet.forEach((id) => {
-        if (id.startsWith(compositionParentId)) {
+        if (id === question.getId()) {
+          isNumber(newValue) && question.allSumUp() && newSet.delete(id);
+        } else if (id.startsWith(compositionParentId)) {
           newSet.delete(id);
         }
       });
