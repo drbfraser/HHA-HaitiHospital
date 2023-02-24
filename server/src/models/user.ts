@@ -120,5 +120,7 @@ export async function hashPassword(password) {
 }
 
 export const USER_MODEL_NAME = 'User';
-const UserCollection = mongoose.model<UserWithInstanceMethods>(USER_MODEL_NAME, userSchema);
+const UserCollection =
+  mongoose.models[USER_MODEL_NAME] ??
+  mongoose.model<UserWithInstanceMethods>(USER_MODEL_NAME, userSchema);
 export default UserCollection;
