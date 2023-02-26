@@ -7,6 +7,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "declaration": true,
 
     "alwaysStrict": true,
     "allowUnusedLabels": false,
