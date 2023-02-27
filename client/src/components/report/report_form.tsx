@@ -12,13 +12,14 @@ import {
 
 import { useState } from 'react';
 
-const ExpandableQuestion = ({ applyReportChanges, question, suffixName, setErrorSet }) =>
+const ExpandableQuestion = ({ applyReportChanges, question, suffixName, setErrorSet, readOnly }) =>
   ExpandableQuestionFormField({
     applyReportChanges,
     question,
     suffixName,
     buildQuestionFormField,
     setErrorSet,
+    readOnly,
   });
 
 const buildQuestionFormField = ({
@@ -26,13 +27,13 @@ const buildQuestionFormField = ({
   questions,
   suffixName,
   setErrorSet,
-  viewOnly,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
-  viewOnly?: boolean;
+  readOnly?: boolean;
 }): JSX.Element => {
   return (
     <>
@@ -55,7 +56,7 @@ const buildQuestionFormField = ({
               question={question}
               suffixName={suffixName}
               setErrorSet={setErrorSet}
-              viewOnly={viewOnly}
+              readOnly={readOnly}
             />
           );
         })}
@@ -67,12 +68,12 @@ export const ReportForm = ({
   applyReportChanges,
   reportData,
   formHandler,
-  viewOnly,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   reportData: QuestionGroup<ID, ErrorType>;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
-  viewOnly?: boolean;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
   return (
@@ -91,7 +92,7 @@ export const ReportForm = ({
             questions: reportData,
             suffixName: '',
             setErrorSet: setErrorSet,
-            viewOnly,
+            readOnly,
           })}
         </Group>
         <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
