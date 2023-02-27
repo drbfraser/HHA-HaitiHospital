@@ -26,11 +26,13 @@ const buildQuestionFormField = ({
   questions,
   suffixName,
   setErrorSet,
+  viewOnly,
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  viewOnly?: boolean;
 }): JSX.Element => {
   return (
     <>
@@ -53,6 +55,7 @@ const buildQuestionFormField = ({
               question={question}
               suffixName={suffixName}
               setErrorSet={setErrorSet}
+              viewOnly={viewOnly}
             />
           );
         })}
@@ -64,10 +67,12 @@ export const ReportForm = ({
   applyReportChanges,
   reportData,
   formHandler,
+  viewOnly,
 }: {
   applyReportChanges: () => void;
   reportData: QuestionGroup<ID, ErrorType>;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  viewOnly?: boolean;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
   return (
@@ -86,6 +91,7 @@ export const ReportForm = ({
             questions: reportData,
             suffixName: '',
             setErrorSet: setErrorSet,
+            viewOnly,
           })}
         </Group>
         <input className="btn btn-outline-primary" type="submit" value="Submit Report" />

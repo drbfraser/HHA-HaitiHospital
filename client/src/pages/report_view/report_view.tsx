@@ -15,7 +15,7 @@ const ReportView = () => {
   const history = useHistory<History>();
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
-  const [editForm, setEditForm] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const report_id = useLocation().pathname.split('/')[2];
   const { departmentIdKeyMap } = useDepartmentData();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
@@ -26,7 +26,7 @@ const ReportView = () => {
 
   const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setEditForm((prev) => !prev);
+    setIsEdit((prev) => !prev);
   };
 
   const reportHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,32 +60,31 @@ const ReportView = () => {
 
   return (
     <>
-      <div className="report-view">
-        <Sidebar />
-        <main>
-          <Header />
-          <>
-            <header>
-              <h1>Report ID: {metaData?._id}</h1>
-              <h2>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h2>
-              <button className="btn btn-primary" onClick={btnHandler}>
-                {editForm ? 'View Form' : 'Edit Form'}
-              </button>
-            </header>
-            <div>
-              {editForm && !!report ? (
+      {!!report && (
+        <div className="report-view">
+          <Sidebar />
+          <main>
+            <Header />
+            <>
+              <header>
+                <h1>Report ID: {metaData?._id}</h1>
+                <h2>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h2>
+                <button className="btn btn-primary" onClick={btnHandler}>
+                  {isEdit ? 'View Form' : 'Edit Form'}
+                </button>
+              </header>
+              <div>
                 <ReportForm
                   applyReportChanges={applyReportChanges}
                   reportData={report}
                   formHandler={reportHandler}
+                  viewOnly={isEdit}
                 />
-              ) : (
-                <pre>{JSON.stringify(report, null, 2)}</pre>
-              )}
-            </div>
-          </>
-        </main>
-      </div>
+              </div>
+            </>
+          </main>
+        </div>
+      )}
     </>
   );
 };
