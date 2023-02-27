@@ -5,10 +5,12 @@ const SingleSelectionQuestionFormField = ({
   applyReportChanges,
   question,
   suffixName,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   question: SingleSelectionQuestion<ID, ErrorType>;
   suffixName: string;
+  readOnly?: boolean;
 }) => {
   const getChangeHandler = (index: number) => () => {
     question.setAnswer(index);
@@ -27,6 +29,7 @@ const SingleSelectionQuestionFormField = ({
             name={nameId}
             onChange={getChangeHandler(index)}
             type="radio"
+            readOnly={readOnly}
           />
           <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
             {choice.getDescription()}

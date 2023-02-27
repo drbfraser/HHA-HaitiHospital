@@ -7,11 +7,13 @@ const CompositionQuestionFormField = ({
   question,
   suffixName,
   setErrorSet,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   question: CompositionQuestion<ID, ErrorType>;
   suffixName: string;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -46,6 +48,7 @@ const CompositionQuestionFormField = ({
         prompt={question.getPrompt()}
         type="number"
         value={question.getAnswer()}
+        readOnly={readOnly}
       />
       {question.map<JSX.Element>((group) => {
         const groupId = `${group.getId()}${suffixName}`;
@@ -66,6 +69,7 @@ const CompositionQuestionFormField = ({
                   allSumUp={() => question.allSumUp()}
                   setParentCompositionState={setInputState}
                   compositionParentId={question.getId()}
+                  readOnly={readOnly}
                 />
               ))}
             </Group>

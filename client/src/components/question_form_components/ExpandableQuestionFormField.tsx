@@ -9,12 +9,14 @@ const ExpandableQuestionFormField = ({
   suffixName,
   buildQuestionFormField,
   setErrorSet,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
   buildQuestionFormField: FunctionalComponent;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -46,6 +48,7 @@ const ExpandableQuestionFormField = ({
         prompt={question.getPrompt()}
         type="number"
         value={question.getAnswer()}
+        readOnly={readOnly}
       />
       <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
@@ -98,6 +101,7 @@ const ExpandableQuestionFormField = ({
                     questions: questionGroup,
                     suffixName: `_${index + 1}`,
                     setErrorSet: setErrorSet,
+                    readOnly: readOnly,
                   })}
                 </div>
               </div>
