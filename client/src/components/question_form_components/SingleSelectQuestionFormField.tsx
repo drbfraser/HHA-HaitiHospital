@@ -29,7 +29,7 @@ const SingleSelectionQuestionFormField = ({
             name={nameId}
             onChange={getChangeHandler(index)}
             type="radio"
-            readOnly={readOnly}
+            disabled={readOnly}
           />
           <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
             {choice.getDescription()}

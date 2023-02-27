@@ -33,7 +33,7 @@ const MultiSelectionQuestionFormField = ({
             name={`${nameId}_${index}`}
             onChange={getChangeHandler(choice, index)}
             type="checkbox"
-            readOnly={readOnly}
+            disabled={readOnly}
           />
           <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
             {choice.getDescription()}

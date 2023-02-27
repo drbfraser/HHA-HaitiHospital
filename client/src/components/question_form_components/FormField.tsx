@@ -27,7 +27,7 @@ const FormField = (props: FormFieldProps) => {
         onChange={props.handleChange}
         type={props.type}
         value={props.value}
-        readOnly={props.readOnly}
+        disabled={props.readOnly}
       />
       {props.inputState !== true && (
         <div className="invalid-feedback">{props.inputState.message}</div>

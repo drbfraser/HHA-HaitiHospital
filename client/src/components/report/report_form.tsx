@@ -97,7 +97,9 @@ export const ReportForm = ({
             readOnly,
           })}
         </Group>
-        <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
+        {!readOnly && (
+          <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
+        )}
       </form>
     </div>
   );
