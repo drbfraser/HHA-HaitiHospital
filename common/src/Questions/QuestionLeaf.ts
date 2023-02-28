@@ -1,5 +1,5 @@
 // Should represent a single question and have no nested questions.
-import { QuestionNode } from './QuestionNode';
+import { QuestionAnswerNode } from './QuestionAnswer';
 import { runNumericValidators } from '../Form_Validators';
 
 export interface ValidationError<ErrorType> {
@@ -9,7 +9,7 @@ export interface ValidationError<ErrorType> {
 
 export type ValidationResult<ErrorType> = ValidationError<ErrorType> | true;
 
-export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, ErrorType> {
+export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionAnswerNode<ID, T, ErrorType> {
   private answer: T | undefined;
 
   private readonly validators: string[] | undefined;
@@ -36,7 +36,9 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionNode<ID, Er
     this.validators?.push(validator);
   }
 
-  //The following function is used to check if the answer is valid for all the validators, it returns true if the answer is valid for all the validators, otherwise it returns the error message for the first validator that the answer is invalid for.
+  // The following function is used to check if the answer is valid for all the validators.
+  // It returns true if the answer is valid for all the validators.
+  // Otherwise, it returns the error message for the first validator that the answer is invalid for.
   public getValidationResults(): ValidationResult<string> {
     const defaultValidationResult = true;
 

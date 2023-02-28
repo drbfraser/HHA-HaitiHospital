@@ -1,25 +1,44 @@
-import { CompositionQuestion, ValidationResult, ERROR_DOES_NOT_SUM_UP } from '@hha/common';
-import { FormField, Group, NumericQuestionFormField } from './index';
-import { useState } from 'react';
+import {
+  CompositionQuestion,
+  NumericQuestion,
+  ValidationResult,
+  ERROR_DOES_NOT_SUM_UP,
+  ERROR_NOT_A_INTEGER,
+  isNumber,
+} from '@hha/common';
+import { FormField, Group, NumericQuestionFormField } from '.';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const CompositionQuestionFormField = ({
   applyReportChanges,
   question,
-  suffixName,
   setErrorSet,
+  suffixName,
+  allSumUp,
+  compositionParentId,
+  setParentCompositionState,
 }: {
   applyReportChanges: () => void;
   question: CompositionQuestion<ID, ErrorType>;
+  setErrorSet: Dispatch<SetStateAction<Set<string>>>;
   suffixName: string;
-  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  allSumUp?: () => boolean;
+  compositionParentId?: string;
+  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
 }): JSX.Element => {
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    question.setAnswer(parseInt(event.target.value));
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    question.setAnswer(parseInt(newValue));
     applyReportChanges();
-    if (question.allSumUp()) {
+
+    if (!isNumber(newValue)) {
+      // If the input is not a number, then set the error and input state to ERROR_NOT_A_INTEGER
+      setInputState(ERROR_NOT_A_INTEGER);
+      setErrorSet((prev) => new Set(prev).add(question.getId()));
+    } else if (question.allSumUp()) {
       setInputState(true);
       setErrorSet((prev) => {
         const newSet = new Set(prev);
@@ -34,6 +53,44 @@ const CompositionQuestionFormField = ({
         return newSet;
       });
     }
+
+    // Check if this composition question is not part of a composition question and
+    // then remove if it previously had errors registered to its ID
+    if (typeof allSumUp !== 'function') {
+      isNumber(newValue) &&
+        question.allSumUp() &&
+        setErrorSet((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(question.getId());
+          return newSet;
+        });
+      return;
+    }
+
+    // If this composition question is part of a composition question,
+    // then check if that parent composition question is valid and
+    // set the error and input state of the parent composition question
+    if (!allSumUp()) {
+      setParentCompositionState(ERROR_DOES_NOT_SUM_UP);
+      setErrorSet((prev) => new Set(prev).add(question.getId()));
+      return;
+    }
+
+    // If the parent composition question is valid,
+    // then remove the errors related to the parent composition question and
+    // set the input state of the parent composition question to true
+    setErrorSet((prev) => {
+      const newSet = new Set(prev);
+      newSet.forEach((id) => {
+        if (id === question.getId()) {
+          isNumber(newValue) && question.allSumUp() && newSet.delete(id);
+        } else if (id.startsWith(compositionParentId)) {
+          newSet.delete(id);
+        }
+      });
+      return newSet;
+    });
+    setParentCompositionState(true);
   };
 
   return (
@@ -56,18 +113,36 @@ const CompositionQuestionFormField = ({
               {groupId.replaceAll('_', '.')}. {group.getPrompt()}
             </legend>
             <Group>
-              {group.map((elem) => (
-                <NumericQuestionFormField
-                  applyReportChanges={applyReportChanges}
-                  key={`${elem.getId()}${suffixName}`}
-                  question={elem}
-                  suffixName={suffixName}
-                  setErrorSet={setErrorSet}
-                  allSumUp={() => question.allSumUp()}
-                  setParentCompositionState={setInputState}
-                  compositionParentId={question.getId()}
-                />
-              ))}
+              {group.map((elem) => {
+                if (elem.constructor.name === CompositionQuestion.name) {
+                  return (
+                    <CompositionQuestionFormField
+                      allSumUp={() => question.allSumUp()}
+                      applyReportChanges={applyReportChanges}
+                      compositionParentId={question.getId()}
+                      key={`${elem.getId()}${suffixName}`}
+                      question={elem as CompositionQuestion<ID, ErrorType>}
+                      setErrorSet={setErrorSet}
+                      setParentCompositionState={setInputState}
+                      suffixName={suffixName}
+                    />
+                  );
+                } else if (elem.constructor.name === NumericQuestion.name) {
+                  return (
+                    <NumericQuestionFormField
+                      allSumUp={() => question.allSumUp()}
+                      applyReportChanges={applyReportChanges}
+                      compositionParentId={question.getId()}
+                      key={`${elem.getId()}${suffixName}`}
+                      question={elem as NumericQuestion<ID, ErrorType>}
+                      setErrorSet={setErrorSet}
+                      setParentCompositionState={setInputState}
+                      suffixName={suffixName}
+                    />
+                  );
+                }
+                return <div>Error: Undefined</div>;
+              })}
             </Group>
           </fieldset>
         );
