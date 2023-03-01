@@ -1,5 +1,4 @@
 import { QuestionGroup, QuestionNode } from '@hha/common';
-
 import {
   CompositionQuestionFormField,
   ExpandableQuestionFormField,
@@ -9,18 +8,7 @@ import {
   Group,
   TextQuestionFormField,
 } from '../question_form_components';
-
 import { useState } from 'react';
-
-const ExpandableQuestion = ({ applyReportChanges, question, suffixName, setErrorSet, readOnly }) =>
-  ExpandableQuestionFormField({
-    applyReportChanges,
-    question,
-    suffixName,
-    buildQuestionFormField,
-    setErrorSet,
-    readOnly,
-  });
 
 const buildQuestionFormField = ({
   applyReportChanges,
@@ -40,7 +28,7 @@ const buildQuestionFormField = ({
       {questions
         .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
           compositionQuestion: (q) => [q, CompositionQuestionFormField],
-          expandableQuestion: (q) => [q, ExpandableQuestion],
+          expandableQuestion: (q) => [q, ExpandableQuestionFormField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
           numericQuestion: (q) => [q, NumericQuestionFormField],
           questionGroup: (q) => [q, buildQuestionFormField],
@@ -52,11 +40,12 @@ const buildQuestionFormField = ({
           return (
             <FormFieldComponent
               applyReportChanges={applyReportChanges}
+              buildQuestionFormField={buildQuestionFormField}
               key={`${question.getId()}${suffixName}`}
               question={question}
-              suffixName={suffixName}
               setErrorSet={setErrorSet}
               readOnly={readOnly}
+              suffixName={suffixName}
             />
           );
         })}
@@ -88,7 +77,8 @@ export const ReportForm = ({
             disabled={!(errorSet.size === 0)}
           />
         )}
-        <Group>
+
+        <Group isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,

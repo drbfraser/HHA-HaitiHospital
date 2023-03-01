@@ -6,13 +6,13 @@
     "Age"), where each expanded group of questions might relate to each
     hospitalized person.
 */
-import { QuestionParent } from './QuestionParent';
+import { QuestionAnswerParent } from './QuestionAnswer';
 import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
 import { ObjectSerializer, serializable } from '../Serializer/ObjectSerializer';
 
 @serializable(undefined, '', (arg: any) => undefined)
-export class ExpandableQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
+export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, number, ErrorType> {
   private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
   private readonly idGenerator: (questionGroupIndex: number) => ID;

@@ -6,25 +6,25 @@ import {
   isNumber,
 } from '@hha/common';
 import FormField from './FormField';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const NumericQuestionFormField = ({
   applyReportChanges,
   question,
-  suffixName,
   setErrorSet,
+  suffixName,
   allSumUp,
-  setParentCompositionState,
   compositionParentId,
   readOnly,
+  setParentCompositionState,
 }: {
   applyReportChanges: () => void;
   question: NumericQuestion<ID, ErrorType>;
+  setErrorSet: Dispatch<SetStateAction<Set<string>>>;
   suffixName: string;
-  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
   allSumUp?: () => boolean;
-  setParentCompositionState?: React.Dispatch<any>;
-  compositionParentId?: any;
+  compositionParentId?: string;
+  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
   readOnly?: boolean;
 }): JSX.Element => {
   // inputState has a value of true if the input is valid or
@@ -38,7 +38,6 @@ const NumericQuestionFormField = ({
     applyReportChanges();
 
     // If the input is not a number, then set the error and input state to ERROR_NOT_A_INTEGER
-    let validationResults;
     if (!isNumber(newValue)) {
       setInputState(ERROR_NOT_A_INTEGER);
       setErrorSet((prev) => new Set(prev).add(question.getId()));
@@ -46,7 +45,7 @@ const NumericQuestionFormField = ({
     }
 
     // If the input is a number, then set the error and input state to the validation results
-    validationResults = question.getValidationResults();
+    const validationResults = question.getValidationResults();
     setInputState(validationResults);
 
     // If the validation results is not true, then set the error and input state to the validation results
@@ -55,7 +54,8 @@ const NumericQuestionFormField = ({
       return;
     }
 
-    // Check if this numeric question is not part of a composition question and then remove if it previously had errors registerd to its id
+    // Check if this numeric question is not part of a composition question and
+    // then remove if it previously had errors registered to its ID
     if (typeof allSumUp !== 'function') {
       setErrorSet((prev) => {
         const newSet = new Set(prev);
@@ -65,19 +65,22 @@ const NumericQuestionFormField = ({
       return;
     }
 
-    // If numeric question is part of the composition question, then check if the composition question is valid
-    // and set the error and input state of the composition question
-    if (allSumUp() === false) {
+    // If this numeric question is part of a composition question,
+    // then check if that parent composition question is valid and
+    // set the error and input state of the parent composition question
+    if (!allSumUp()) {
       setParentCompositionState(ERROR_DOES_NOT_SUM_UP);
       setErrorSet((prev) => new Set(prev).add(question.getId()));
       return;
     }
 
-    // If the composition question is valid, then remove the errors related to composition question and input state of composition question to true
+    // If the parent composition question is valid,
+    // then remove the errors related to the parent composition question and
+    // set the input state of the parent composition question to true
     setErrorSet((prev) => {
       const newSet = new Set(prev);
       newSet.forEach((id) => {
-        if (id.toString().startsWith(compositionParentId.toString())) {
+        if (id.startsWith(compositionParentId)) {
           newSet.delete(id);
         }
       });

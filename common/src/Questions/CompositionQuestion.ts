@@ -2,21 +2,24 @@
     to the sum of its numeric children questions.
 */
 import { serializable } from '../Serializer/ObjectSerializer';
-import { QuestionParent } from './QuestionParent';
-import { NumericQuestion } from './SimpleQuestionTypes';
-import { SpecializedGroup } from './SpecializedGroup';
+import { SpecializedGroup } from '.';
+import { QuestionAnswerNode, QuestionAnswerParent } from './QuestionAnswer';
 
 @serializable(undefined)
-export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
+export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
+  ID,
+  number,
+  ErrorType
+> {
   private answer: number | undefined = 0;
   private readonly compositionGroups: Array<
-    SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>
+    SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>
   >;
 
   constructor(
     id: ID,
     prompt: string,
-    ...questions: Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>>
+    ...questions: Array<SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>>
   ) {
     super(id, prompt);
     this.compositionGroups = questions;
@@ -24,7 +27,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
 
   public searchById(
     id: ID,
-  ): SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>> | undefined {
+  ): SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>> | undefined {
     return this.compositionGroups.find((question) => question.getId() === id);
   }
 
@@ -38,7 +41,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
   }
 
   private compositionGroupSumsUp(
-    compositionGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>,
+    compositionGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>,
   ): boolean {
     return (
       compositionGroup
@@ -49,7 +52,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
 
   public getCompositionQuestionsBySumsUp(
     sumsUp: boolean,
-  ): Array<SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>> {
+  ): Array<SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>> {
     return this.compositionGroups.filter(
       (compositionGroup) => this.compositionGroupSumsUp(compositionGroup) === sumsUp,
     );
@@ -64,14 +67,16 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionParent<ID, Error
 
   public forEach(
     numberGroupHandler: (
-      numberGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>,
+      numberGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>,
     ) => void,
   ): void {
     this.compositionGroups.forEach(numberGroupHandler);
   }
 
   public map<T>(
-    mapper: (numberGroup: SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>) => T,
+    mapper: (
+      numberGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>,
+    ) => T,
   ): T[] {
     return this.compositionGroups.map(mapper);
   }
