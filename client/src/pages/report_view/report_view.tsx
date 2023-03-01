@@ -78,6 +78,7 @@ const ReportView = () => {
                   reportData={report}
                   formHandler={reportHandler}
                   readOnly={readOnly}
+                  btnText="Edit"
                 />
               </div>
             </>

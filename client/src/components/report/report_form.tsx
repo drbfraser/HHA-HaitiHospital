@@ -58,11 +58,13 @@ export const ReportForm = ({
   reportData,
   formHandler,
   readOnly,
+  btnText = 'Submit',
 }: {
   applyReportChanges: () => void;
   reportData: QuestionGroup<ID, ErrorType>;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
   readOnly?: boolean;
+  btnText?: string;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
   return (
@@ -73,7 +75,7 @@ export const ReportForm = ({
           <input
             className="btn btn-outline-primary"
             type="submit"
-            value="Submit Report"
+            value={`${btnText} Report`}
             disabled={!(errorSet.size === 0)}
           />
         )}
@@ -88,7 +90,7 @@ export const ReportForm = ({
           })}
         </Group>
         {!readOnly && (
-          <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
+          <input className="btn btn-outline-primary" type="submit" value={`${btnText} Report`} />
         )}
       </form>
     </div>
