@@ -37,13 +37,14 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
     }
     case UNPROCCESABLENTITY_CODE: {
       toast.error(ErrorListToast(toastMsg, err.response.data.errors), {
-        closeOnClick: true,
         autoClose: false,
+        closeOnClick: false,
+        progress: 1,
       });
       break;
     }
     default:
-      console.log('Error Needs a Handler');
+      console.error('Error Needs a Handler');
   }
 };
 
