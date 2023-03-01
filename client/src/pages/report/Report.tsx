@@ -45,7 +45,7 @@ export const Report = () => {
     Api.Post(
       ENDPOINT_REPORTS,
       reportObject,
-      () => {},
+      () => history.push(`/department/${currentDepartment.id}`),
       history,
       ERR_TOAST,
       PENDING_TOAST,
