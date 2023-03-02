@@ -194,7 +194,7 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
 const CaseStudyModel = mongoose.model<CaseStudyWithInstanceMethods>(
   'CaseStudy',
   caseStudySchema,
-  'CaseStudy'
+  'CaseStudy',
 );
 
 export default CaseStudyModel;

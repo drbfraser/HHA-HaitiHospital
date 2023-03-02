@@ -42,7 +42,7 @@ export const DEPARTMENT_MODEL_NAME = 'Department';
 const DepartmentCollection = mongoose.model<DepartmentWithInstanceMethods>(
   DEPARTMENT_MODEL_NAME,
   departmentSchema,
-  'Department'
+  'Department',
 );
 
 export default DepartmentCollection;
