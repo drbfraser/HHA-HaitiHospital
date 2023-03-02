@@ -60,7 +60,6 @@ test-build-server:
     - npm run seed
   script:
     - npm run test
-    - npm run build
   after_script:
     - cd server && tar -czf ../server_build.tar.gz .
   artifacts:
