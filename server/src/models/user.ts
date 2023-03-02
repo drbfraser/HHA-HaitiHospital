@@ -99,7 +99,7 @@ userSchema.methods.registerUser = (newUser, callback) => {
       }
       // set pasword to hash
       newUser.password = hash;
-      newUser.save(callback);
+      newUser.save({ new: true }, callback);
     });
   });
 };
