@@ -30,14 +30,24 @@ interface MessageJson {
 interface MessageWithInstanceMethods extends Message {
   toJson: () => Promise<MessageJson>;
 }
-const messageBodySchema = new Schema<MessageWithInstanceMethods>({
-  // entry data
-  departmentId: { type: String, required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  date: { type: Date, required: true, default: new Date() },
-  messageBody: { type: String, required: true, default: '' },
-  messageHeader: { type: String, required: true, default: '' },
-});
+const messageBodySchema = new Schema<MessageWithInstanceMethods>(
+  {
+    // entry data
+    departmentId: { type: String, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    date: { type: Date, required: true, default: new Date() },
+    messageBody: { type: String, required: true, default: '' },
+    messageHeader: { type: String, required: true, default: '' },
+  },
+  {
+    writeConcern: {
+      w: 'majority',
+    },
+    readConcern: {
+      level: 'majority',
+    },
+  },
+);
 messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
   if (!userDoc) {

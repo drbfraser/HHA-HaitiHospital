@@ -55,7 +55,12 @@ const userSchema = new Schema<UserWithInstanceMethods>(
     role: { type: String, default: Role.User },
     departmentId: { type: String, required: true },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    writeConcern: {
+      w: 'majority',
+    },
+  },
 );
 
 userSchema.methods.toJson = async function (): Promise<UserApiOut.UserJson> {

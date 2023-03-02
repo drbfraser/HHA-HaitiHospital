@@ -125,6 +125,7 @@ export const seedUsers = async () => {
         }
         foundUser.save();
       } else {
+        UserCollection.options.writeConcern = { w: 'majority' };
         const user = new UserCollection({
           username: `user${index}`,
           password: ENV.PASSWORD_SEED,
@@ -479,12 +480,6 @@ mongoose
     useCreateIndex: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    writeConcern: {
-      w: 'majority',
-    },
-    readConcern: {
-      level: 'majority',
-    },
   })
   .then(() => {
     console.log('MongoDB Connected...');
