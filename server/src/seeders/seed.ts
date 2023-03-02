@@ -482,6 +482,9 @@ mongoose
     writeConcern: {
       w: 'majority',
     },
+    readConcern: {
+      level: 'majority',
+    },
   })
   .then(() => {
     console.log('MongoDB Connected...');
