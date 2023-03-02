@@ -185,7 +185,7 @@ export const seedUsers = async () => {
             break;
         }
         console.log(user);
-        user.registerUser(user, () => {});
+        await user.registerUser(user, () => {});
       }
     });
     console.log('Users seeded');
