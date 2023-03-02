@@ -125,7 +125,6 @@ export const seedUsers = async () => {
         }
         foundUser.save();
       } else {
-        UserCollection.options.writeConcern = { w: 'majority' };
         const user = new UserCollection({
           username: `user${index}`,
           password: ENV.PASSWORD_SEED,
