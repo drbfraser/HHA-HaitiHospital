@@ -198,11 +198,8 @@ export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   try {
     await MessageCollection.deleteMany({});
-    let users: User[] = await UserCollection.find();
+    const users: User[] = await UserCollection.find();
     // Wait for users to be seeded before creating messages.
-    while (users.length < 7) {
-      users = await UserCollection.find();
-    }
     const numOfMessagesToGenerate: number = 100;
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);
@@ -482,6 +479,9 @@ mongoose
     useCreateIndex: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    writeConcern: {
+      w: 'majority',
+    },
   })
   .then(() => {
     console.log('MongoDB Connected...');
