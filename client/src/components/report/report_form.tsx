@@ -15,11 +15,13 @@ const buildQuestionFormField = ({
   questions,
   suffixName,
   setErrorSet,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  readOnly?: boolean;
 }): JSX.Element => {
   return (
     <>
@@ -42,6 +44,7 @@ const buildQuestionFormField = ({
               key={`${question.getId()}${suffixName}`}
               question={question}
               setErrorSet={setErrorSet}
+              readOnly={readOnly}
               suffixName={suffixName}
             />
           );
@@ -55,11 +58,15 @@ export const ReportForm = ({
   formHandler,
   isSubmitting,
   reportData,
+  btnText = 'Submit',
+  readOnly,
 }: {
   applyReportChanges: () => void;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
   reportData: QuestionGroup<ID, ErrorType>;
+  btnText?: string;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
 
@@ -67,21 +74,27 @@ export const ReportForm = ({
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
-        <input
-          className="btn btn-outline-primary"
-          type="submit"
-          value="Submit Report"
-          disabled={!(errorSet.size === 0)}
-        />
+        {!readOnly && (
+          <input
+            className="btn btn-outline-primary"
+            type="submit"
+            value={`${btnText} Report`}
+            disabled={!(errorSet.size === 0)}
+          />
+        )}
+
         <Group isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,
             suffixName: '',
             setErrorSet: setErrorSet,
+            readOnly,
           })}
         </Group>
-        <input className="btn btn-outline-primary" type="submit" value="Submit Report" />
+        {!readOnly && (
+          <input className="btn btn-outline-primary" type="submit" value={`${btnText} Report`} />
+        )}
       </form>
     </div>
   );

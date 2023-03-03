@@ -1,4 +1,4 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as ENV from 'utils/processEnv';
@@ -55,7 +55,12 @@ const userSchema = new Schema<UserWithInstanceMethods>(
     role: { type: String, default: Role.User },
     departmentId: { type: String, required: true },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    writeConcern: {
+      w: 'majority',
+    },
+  },
 );
 
 userSchema.methods.toJson = async function (): Promise<UserApiOut.UserJson> {
@@ -94,7 +99,7 @@ userSchema.methods.registerUser = (newUser, callback) => {
       }
       // set pasword to hash
       newUser.password = hash;
-      newUser.save(callback);
+      newUser.save({ new: true }, callback);
     });
   });
 };
@@ -120,7 +125,5 @@ export async function hashPassword(password) {
 }
 
 export const USER_MODEL_NAME = 'User';
-const UserCollection =
-  mongoose.models[USER_MODEL_NAME] ??
-  mongoose.model<UserWithInstanceMethods>(USER_MODEL_NAME, userSchema);
+const UserCollection = mongoose.model<UserWithInstanceMethods>(USER_MODEL_NAME, userSchema);
 export default UserCollection;

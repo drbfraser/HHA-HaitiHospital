@@ -21,7 +21,7 @@ import DepartmentCollection, { Department } from 'models/departments';
 
 let nameMapper: Map<string, string>;
 
-const selectRandomUser = (users: User[] | any[]): User => {
+const selectRandomUser = (users: User[]): User => {
   const randomUserIndex = Math.floor(Math.random() * users.length);
   return users[randomUserIndex];
 };
@@ -67,7 +67,7 @@ export const seedUsers = async () => {
     // Delete seeded users on server start so we can reseed them.
     await UserCollection.deleteMany({});
 
-    [...Array(7).keys()].forEach(async (index) => {
+    for (const index of [...Array(7).keys()]) {
       const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
@@ -184,10 +184,11 @@ export const seedUsers = async () => {
           default:
             break;
         }
-        console.log(user);
-        user.registerUser(user, () => {});
+        await user.registerUser(user, () => {});
+        // check if user is registered
       }
-    });
+    }
+
     console.log('Users seeded');
   } catch (err: any) {
     console.error(err);
@@ -198,11 +199,8 @@ export const seedMessageBoard = async () => {
   console.log('Seeding message board...');
   try {
     await MessageCollection.deleteMany({});
-    let users: User[] = await UserCollection.find();
+    const users: User[] = await UserCollection.find();
     // Wait for users to be seeded before creating messages.
-    while (users.length < 7) {
-      users = await UserCollection.find();
-    }
     const numOfMessagesToGenerate: number = 100;
     for (let i = 0; i < numOfMessagesToGenerate; i++) {
       const randomUser: User = selectRandomUser(users);

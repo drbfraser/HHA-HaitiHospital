@@ -13,6 +13,7 @@ const CompositionQuestionFormField = ({
   applyReportChanges,
   question,
   setErrorSet,
+  readOnly,
   suffixName,
   allSumUp,
   compositionParentId,
@@ -25,6 +26,7 @@ const CompositionQuestionFormField = ({
   allSumUp?: () => boolean;
   compositionParentId?: string;
   setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [inputState, setInputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -103,6 +105,7 @@ const CompositionQuestionFormField = ({
         prompt={question.getPrompt()}
         type="number"
         value={question.getAnswer()}
+        readOnly={readOnly}
       />
       {question.map<JSX.Element>((group) => {
         const groupId = `${group.getId()}${suffixName}`;
@@ -125,6 +128,7 @@ const CompositionQuestionFormField = ({
                       setErrorSet={setErrorSet}
                       setParentCompositionState={setInputState}
                       suffixName={suffixName}
+                      readOnly={readOnly}
                     />
                   );
                 } else if (elem.constructor.name === NumericQuestion.name) {
@@ -138,6 +142,7 @@ const CompositionQuestionFormField = ({
                       setErrorSet={setErrorSet}
                       setParentCompositionState={setInputState}
                       suffixName={suffixName}
+                      readOnly={readOnly}
                     />
                   );
                 }
