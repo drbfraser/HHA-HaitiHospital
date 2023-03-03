@@ -9,12 +9,14 @@ const ExpandableQuestionFormField = ({
   suffixName,
   buildQuestionFormField,
   setErrorSet,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
   buildQuestionFormField: FunctionalComponent;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -46,45 +48,56 @@ const ExpandableQuestionFormField = ({
         prompt={question.getPrompt()}
         type="number"
         value={question.getAnswer()}
+        readOnly={readOnly}
       />
       <div className="accordion mb-3" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
-          const isOpen = openClosedStates[index];
+          const isOpen = openClosedStates[index] || readOnly;
           const itemId: string = `accordion-item-${nameId}_${index + 1}`;
           return (
-            <div className="accordion-item" key={itemId}>
+            <div
+              className="accordion-item"
+              key={itemId}
+              {...(readOnly && { style: { border: 'none' } })}
+            >
               <h6
                 className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
                 id={`${itemId}-header`}
               >
                 <div className="row p-0 m-0 align-items-center">
-                  <button
-                    className={cn('accordion-button col pl-3 pr-1 py-2', { collapsed: !isOpen })}
-                    type="button"
-                    onClick={() => {
-                      openClosedStates[index] = !openClosedStates[index];
-                      setOpenClosedStates([...openClosedStates]);
-                    }}
-                    data-bs-toggle="collapse"
-                    data-bs-target={`#${itemId}`}
-                    aria-expanded={isOpen}
-                    aria-controls={itemId}
-                  >
-                    {`Patient ${index + 1}`}
-                  </button>
-                  <button
-                    className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
-                    onClick={(e) => e.preventDefault()}
-                    style={{
-                      alignItems: 'center',
-                      display: 'flex',
-                      height: '1.5em',
-                      justifyContent: 'center',
-                      width: '1.5em',
-                    }}
-                  >
-                    <i className="fa fa-close"></i>
-                  </button>
+                  {!readOnly && (
+                    <>
+                      <button
+                        className={cn('accordion-button col pl-3 pr-1 py-2', {
+                          collapsed: !isOpen,
+                        })}
+                        type="button"
+                        onClick={() => {
+                          openClosedStates[index] = !openClosedStates[index];
+                          setOpenClosedStates([...openClosedStates]);
+                        }}
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#${itemId}`}
+                        aria-expanded={isOpen}
+                        aria-controls={itemId}
+                      >
+                        {`Patient ${index + 1}`}
+                      </button>
+                      <button
+                        className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
+                        onClick={(e) => e.preventDefault()}
+                        style={{
+                          alignItems: 'center',
+                          display: 'flex',
+                          height: '1.5em',
+                          justifyContent: 'center',
+                          width: '1.5em',
+                        }}
+                      >
+                        <i className="fa fa-close"></i>
+                      </button>
+                    </>
+                  )}
                 </div>
               </h6>
               <div
@@ -98,6 +111,7 @@ const ExpandableQuestionFormField = ({
                     questions: questionGroup,
                     suffixName: `_${index + 1}`,
                     setErrorSet: setErrorSet,
+                    readOnly: readOnly,
                   })}
                 </div>
               </div>

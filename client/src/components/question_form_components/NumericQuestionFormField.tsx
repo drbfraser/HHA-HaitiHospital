@@ -15,6 +15,7 @@ const NumericQuestionFormField = ({
   suffixName,
   allSumUp,
   compositionParentId,
+  readOnly,
   setParentCompositionState,
 }: {
   applyReportChanges: () => void;
@@ -24,6 +25,7 @@ const NumericQuestionFormField = ({
   allSumUp?: () => boolean;
   compositionParentId?: string;
   setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
+  readOnly?: boolean;
 }): JSX.Element => {
   // inputState has a value of true if the input is valid or
   // if it is of type ValidationResult<string> when the input is invalid
@@ -96,6 +98,7 @@ const NumericQuestionFormField = ({
       prompt={question.getPrompt()}
       type="number"
       value={question.getAnswer()}
+      readOnly={readOnly}
     />
   );
 };

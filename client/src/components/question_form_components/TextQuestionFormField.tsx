@@ -6,10 +6,12 @@ const TextQuestionFormField = ({
   applyReportChanges,
   question,
   suffixName,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   question: TextQuestion<ID, ErrorType>;
   suffixName: string;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
   const nameId = `${question.getId()}${suffixName}`;
@@ -27,6 +29,7 @@ const TextQuestionFormField = ({
       prompt={question.getPrompt()}
       type="text"
       value={question.getAnswer()}
+      readOnly={readOnly}
     />
   );
 };

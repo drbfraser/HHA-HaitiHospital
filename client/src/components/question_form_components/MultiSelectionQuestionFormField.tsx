@@ -5,10 +5,12 @@ const MultiSelectionQuestionFormField = ({
   applyReportChanges,
   question,
   suffixName,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   question: MultipleSelectionQuestion<ID, ErrorType>;
   suffixName: string;
+  readOnly?: boolean;
 }) => {
   const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
     question.setAnswer(
@@ -31,6 +33,7 @@ const MultiSelectionQuestionFormField = ({
             name={`${nameId}_${index}`}
             onChange={getChangeHandler(choice, index)}
             type="checkbox"
+            disabled={readOnly}
           />
           <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
             {choice.getDescription()}
