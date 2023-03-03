@@ -1,5 +1,5 @@
 import SideBar from 'components/side_bar/side_bar';
-import ModalGeneric from 'components/popup_modal/popup_modal_generic';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/report_form';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
@@ -88,15 +88,15 @@ export const Report = () => {
       <SideBar />
       <main className="container-fluid main-region bg-light h-screen">
         <Header />
-        <ModalGeneric
-          dataTestId="confirmation-to-submit-report"
-          history={history}
-          item="report submission"
-          location={undefined}
-          match={undefined}
-          message={`Please click "Ok" to proceed with your submission. You'll be redirected to the main ${currentDepartment?.name} view. If you've made a mistake, please click "Cancel" instead.`}
-          onModalClose={submitReport}
+        <PopupModalConfirmation
+          messages={[
+            <>Please click <strong>Confirm</strong> to proceed with your submission. You'll be redirected to the main {currentDepartment?.name} view.</>,
+            <>If you've made a mistake, please click <strong>Cancel</strong> instead.</>
+          ]}
+          onModalCancel={() => setIsShowingModal(false)}
+          onModalProceed={submitReport}
           show={isShowingModal}
+          title={"Confirm Submission"}
         />
         {!report && departments && (
           <div className="col-md-6 mb-5">
