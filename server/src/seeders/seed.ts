@@ -21,7 +21,7 @@ import DepartmentCollection, { Department } from 'models/departments';
 
 let nameMapper: Map<string, string>;
 
-const selectRandomUser = (users: User[] | any[]): User => {
+const selectRandomUser = (users: User[]): User => {
   const randomUserIndex = Math.floor(Math.random() * users.length);
   return users[randomUserIndex];
 };

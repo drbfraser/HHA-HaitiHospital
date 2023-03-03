@@ -39,12 +39,10 @@ departmentSchema.methods.toLeaderboard = async function (
 };
 
 export const DEPARTMENT_MODEL_NAME = 'Department';
-const DepartmentCollection =
-  mongoose.models[DEPARTMENT_MODEL_NAME] ??
-  mongoose.model<DepartmentWithInstanceMethods>(
-    DEPARTMENT_MODEL_NAME,
-    departmentSchema,
-    'Department',
-  );
+const DepartmentCollection = mongoose.model<DepartmentWithInstanceMethods>(
+  DEPARTMENT_MODEL_NAME,
+  departmentSchema,
+  'Department',
+);
 
 export default DepartmentCollection;

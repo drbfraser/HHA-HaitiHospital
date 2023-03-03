@@ -1,4 +1,4 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as ENV from 'utils/processEnv';
@@ -125,7 +125,5 @@ export async function hashPassword(password) {
 }
 
 export const USER_MODEL_NAME = 'User';
-const UserCollection =
-  mongoose.models[USER_MODEL_NAME] ??
-  mongoose.model<UserWithInstanceMethods>(USER_MODEL_NAME, userSchema);
+const UserCollection = mongoose.model<UserWithInstanceMethods>(USER_MODEL_NAME, userSchema);
 export default UserCollection;
