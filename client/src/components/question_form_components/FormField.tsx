@@ -20,7 +20,7 @@ const FormField = (props: FormFieldProps) => {
         {props.nameId.replaceAll('_', '.')}. {props.prompt}
       </label>
       <input
-        className={cn({ 'is-invalid': !props.inputState }, 'form-control w-50 ')}
+        className={cn({ 'is-invalid': props.inputState !== true }, 'form-control w-50 ')}
         id={props.nameId}
         min={props.min}
         name={props.nameId}
