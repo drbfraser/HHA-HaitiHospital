@@ -67,7 +67,7 @@ export const seedUsers = async () => {
     // Delete seeded users on server start so we can reseed them.
     await UserCollection.deleteMany({});
 
-    [...Array(7).keys()].forEach(async (index) => {
+    for (const index of [...Array(7).keys()]) {
       const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
@@ -186,8 +186,10 @@ export const seedUsers = async () => {
         }
         console.log(user);
         await user.registerUser(user, () => {});
+        // check if user is registered
       }
-    });
+    }
+
     console.log('Users seeded');
   } catch (err: any) {
     console.error(err);
