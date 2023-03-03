@@ -90,13 +90,18 @@ export const Report = () => {
         <Header />
         <PopupModalConfirmation
           messages={[
-            <>Please click <strong>Confirm</strong> to proceed with your submission. You'll be redirected to the main {currentDepartment?.name} view.</>,
-            <>If you've made a mistake, please click <strong>Cancel</strong> instead.</>
+            <>
+              Please click <strong>Confirm</strong> to proceed with your submission. You'll be
+              redirected to the main {currentDepartment?.name} view.
+            </>,
+            <>
+              If you've made a mistake, please click <strong>Cancel</strong> instead.
+            </>,
           ]}
           onModalCancel={() => setIsShowingModal(false)}
           onModalProceed={submitReport}
           show={isShowingModal}
-          title={"Confirm Submission"}
+          title={'Confirm Submission'}
         />
         {!report && departments && (
           <div className="col-md-6 mb-5">
