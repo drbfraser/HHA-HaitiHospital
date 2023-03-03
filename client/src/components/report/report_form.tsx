@@ -52,14 +52,17 @@ const buildQuestionFormField = ({
 
 export const ReportForm = ({
   applyReportChanges,
-  reportData,
   formHandler,
+  isSubmitting,
+  reportData,
 }: {
   applyReportChanges: () => void;
-  reportData: QuestionGroup<ID, ErrorType>;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  isSubmitting: boolean;
+  reportData: QuestionGroup<ID, ErrorType>;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
+
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>

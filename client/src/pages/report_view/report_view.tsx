@@ -76,8 +76,9 @@ const ReportView = () => {
               {editForm && !!report ? (
                 <ReportForm
                   applyReportChanges={applyReportChanges}
-                  reportData={report}
                   formHandler={reportHandler}
+                  isSubmitting={false}
+                  reportData={report}
                 />
               ) : (
                 <pre>{JSON.stringify(report, null, 2)}</pre>
