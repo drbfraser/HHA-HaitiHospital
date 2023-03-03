@@ -184,7 +184,6 @@ export const seedUsers = async () => {
           default:
             break;
         }
-        console.log(user);
         await user.registerUser(user, () => {});
         // check if user is registered
       }
