@@ -20,7 +20,14 @@ const FormField = (props: FormFieldProps) => {
         {props.nameId.replaceAll('_', '.')}. {props.prompt}
       </label>
       <input
-        className={cn({ 'is-invalid': props.inputState !== true }, 'form-control w-50 ')}
+        className={cn(
+          {
+            'is-invalid': props.inputState !== true,
+            'form-control': !props.readOnly,
+            'form-control-plaintext': props.readOnly,
+          },
+          'w-50 ',
+        )}
         id={props.nameId}
         min={props.min}
         name={props.nameId}
@@ -28,7 +35,6 @@ const FormField = (props: FormFieldProps) => {
         type={props.type}
         value={props.value}
         disabled={props.readOnly}
-        {...(props.readOnly && { style: { background: 'transparent', border: 'none' } })}
       />
       {props.inputState !== true && (
         <div className="invalid-feedback">{props.inputState.message}</div>
