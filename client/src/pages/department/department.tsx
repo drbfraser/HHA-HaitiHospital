@@ -12,8 +12,8 @@ import { TOAST_DEPARTMENT_GET, TOAST_REPORTS_GET } from 'constants/toastErrorMes
 import { Department as DepartmentModel, EMPTY_DEPARTMENT } from 'constants/interfaces';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-// import { useAuthState } from 'contexts';
 import { History } from 'history';
+import { userLocale, dateOptions } from 'constants/date';
 
 interface DepartmentProps {}
 
@@ -100,12 +100,12 @@ export const Department = (props: DepartmentProps) => {
           </thead>
           <tbody>
             {reports?.map((item, index) => {
-              console.log(item);
+              const dateSubmitted = new Date(item.submittedDate);
               return (
                 <tr key={item.__id}>
                   <th scope="row">{index + 1}</th>
                   <td>{item.reportObject.id}</td>
-                  <td>{item.submittedDate}</td>
+                  <td>{dateSubmitted.toLocaleDateString(userLocale, dateOptions)}</td>
                   <td>{item.submittedUserId}</td>
                   <td>
                     <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
