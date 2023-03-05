@@ -100,8 +100,9 @@ export const Department = (props: DepartmentProps) => {
           </thead>
           <tbody>
             {reports?.map((item, index) => {
+              console.log(item);
               return (
-                <tr key={item.reportObject.id}>
+                <tr key={item.__id}>
                   <th scope="row">{index + 1}</th>
                   <td>{item.reportObject.id}</td>
                   <td>{item.submittedDate}</td>
