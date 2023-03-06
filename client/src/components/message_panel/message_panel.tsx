@@ -29,9 +29,10 @@ const MessagePanel = (props: MessagePanelProps) => {
   }, [currentPage, msgsJson]);
 
   useEffect(() => {
+    const controller  = new AbortController();
     const getMessages = async (isMounted: boolean) => {
       if (isMounted) {
-        const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history);
+        const messages = await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history, controller.signal);
         setMsgJson(messages);
       }
     };
@@ -39,8 +40,9 @@ const MessagePanel = (props: MessagePanelProps) => {
     let isMounted: boolean = true;
     getMessages(isMounted);
     return () => {
-      setMsgJson([]);
-    };
+      controller.abort();
+      setMsgJson([]);    
+      };
   }, [rerender, history, authState]);
 
   const toggleRerender = async () => {

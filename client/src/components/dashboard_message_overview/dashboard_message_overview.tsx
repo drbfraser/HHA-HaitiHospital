@@ -18,13 +18,15 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
   const history: History = useHistory<History>();
 
   useEffect(() => {
+    const controller = new AbortController();
     const getMessages = async () => {
-      setMessages(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history));
+      setMessages(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history, controller.signal));
     };
 
     getMessages();
     return () => {
       setMessages([]);
+      controller.abort();
     };
   }, [history]);
 

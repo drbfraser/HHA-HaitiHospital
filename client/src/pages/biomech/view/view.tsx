@@ -39,16 +39,23 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
 
   useEffect(
     function fetchReportInitially() {
+      const controller = new AbortController();
       const getBioReport = async () => {
         setBioReport(
           await Api.Get(
             ENDPOINT_BIOMECH_GET_BY_ID(id),
             ResponseMessage.getMsgFetchReportFailed(),
             history,
+            controller.signal,
           ),
         );
       };
       getBioReport();
+      return () => {
+        controller.abort();
+        setBioReport({} as any);
+        setBioReportImage('');
+      }
     },
     [history, id],
   );

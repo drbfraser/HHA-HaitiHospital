@@ -54,12 +54,14 @@ export const Report = () => {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
     const getTemplates = async () => {
       try {
         const fetchedTemplateObject = await Api.Get(
           `${ENDPOINT_TEMPLATE}/${currentDepartment.id}`,
           '',
           history,
+          controller.signal,
         );
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
@@ -73,7 +75,7 @@ export const Report = () => {
     };
     currentDepartment && getTemplates();
     return () => {
-      setReport(undefined);
+      controller.abort();
     };
   }, [currentDepartment, history, objectSerializer]);
 

@@ -38,28 +38,31 @@ const MessageComments = () => {
     setRerender(!rerender);
   };
 
-  const getMessage = async () => {
-    const message = await Api.Get(
-      ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
-      TOAST_MESSAGEBOARD_GET,
-      history,
-    );
-    setMsgJson(message);
-  };
-
-  async function getComments() {
-    const fetchedComments = await Api.Get(
-      ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
-      TOAST_MESSAGEBOARD_COMMENTS_GET,
-      history,
-    );
-    setComments(fetchedComments);
-  }
 
   useEffect(() => {
+    const controller = new AbortController();
+    const getMessage = async () => {
+      const message = await Api.Get(
+        ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
+        TOAST_MESSAGEBOARD_GET,
+        history,
+        controller.signal,
+      );
+      setMsgJson(message);
+    };
+    async function getComments() {
+      const fetchedComments = await Api.Get(
+        ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
+        TOAST_MESSAGEBOARD_COMMENTS_GET,
+        history,
+        controller.signal,
+      );
+      setComments(fetchedComments);
+    }
     getMessage();
     getComments();
     return () => {
+      controller.abort();
       setComments([]);
       setMsgJson(emptyMessage);
     };
