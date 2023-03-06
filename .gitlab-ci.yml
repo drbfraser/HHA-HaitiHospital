@@ -80,7 +80,7 @@ build-client:
     - cd client
     - npm ci
     - npm install ../common_build.tar.gz
-  script:
+  # script:
     # TODO: remove "CI=false", temporarily required because the project has warnings during the build
     # - CI=false GENERATE_SOURCEMAP=false npm run build
   after_script:
