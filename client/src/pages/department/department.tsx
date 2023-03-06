@@ -100,12 +100,13 @@ export const Department = (props: DepartmentProps) => {
           </thead>
           <tbody>
             {reports?.map((item, index) => {
-              const dateSubmitted = new Date(item.submittedDate);
               return (
                 <tr key={item._id}>
                   <th scope="row">{index + 1}</th>
                   <td>{item.reportObject.id}</td>
-                  <td>{dateSubmitted.toLocaleDateString(userLocale, dateOptions)}</td>
+                  <td>
+                    {new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                  </td>
                   <td>{item.submittedUserId}</td>
                   <td>
                     <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">

@@ -80,13 +80,14 @@ const GeneralReports = () => {
             </thead>
             <tbody>
               {currentTableData.map((item, index) => {
-                const dateSubmitted = new Date(item.submittedDate);
                 return (
                   <tr key={item._id}>
                     <th scope="row">{reportNumberIndex + index + 1}</th>
                     <td>{item.reportObject.id}</td>
                     <td>{t(departmentIdKeyMap.get(item.departmentId))}</td>
-                    <td>{dateSubmitted.toLocaleDateString(userLocale, dateOptions)}</td>
+                    <td>
+                      {new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                    </td>
                     <td>{item.submittedUserId}</td>
                     <td>
                       <Link
