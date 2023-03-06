@@ -74,7 +74,6 @@ const GeneralReports = () => {
                 <th scope="col">{t('reportsReportId')}</th>
                 <th scope="col">{t('reportsDepartment')}</th>
                 <th scope="col">{t('reportsSubmissionDate')}</th>
-                <th scope="col">{t('reportsUserId')}</th>
                 <th scope="col">{t('reportsOptions')}</th>
               </tr>
             </thead>
@@ -88,7 +87,6 @@ const GeneralReports = () => {
                     <td>
                       {new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
                     </td>
-                    <td>{item.submittedUserId}</td>
                     <td>
                       <Link
                         to={'/report-view/' + item._id}

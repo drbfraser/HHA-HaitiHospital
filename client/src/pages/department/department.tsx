@@ -94,7 +94,6 @@ export const Department = (props: DepartmentProps) => {
               <th scope="col">#</th>
               <th scope="col">{t('reportsReportId')}</th>
               <th scope="col">{t('reportsSubmissionDate')}</th>
-              <th scope="col">{t('reportsUserId')}</th>
               <th scope="col">{t('reportsOptions')}</th>
             </tr>
           </thead>
@@ -107,7 +106,6 @@ export const Department = (props: DepartmentProps) => {
                   <td>
                     {new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
                   </td>
-                  <td>{item.submittedUserId}</td>
                   <td>
                     <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
                       {t('reportsOpenReport')}
