@@ -54,14 +54,16 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   }
 
   public allSumUp(): boolean {
-    if (this.compositionGroups.length === 0) return true;
+    if (this.compositionGroups.length === 0) {
+      return true
+    }
     return this.compositionGroups
       .map((compositionGroup) => this.compositionGroupSumsUp(compositionGroup))
       .reduce((bool1, bool2) => bool1 && bool2);
   }
 
   public getValidationResults(): ValidationResult<string> {
-    if (!isNumber(this.answer)) {
+    if (!isNumber(this.getAnswer())) {
       return ERROR_NOT_A_INTEGER;
     }
     else if (!this.allSumUp()) {
