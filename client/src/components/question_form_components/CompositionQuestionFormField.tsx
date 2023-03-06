@@ -134,15 +134,11 @@ const CompositionQuestionFormField = ({
                 } else if (elem.constructor.name === NumericQuestion.name) {
                   return (
                     <NumericQuestionFormField
-                      allSumUp={() => question.allSumUp()}
                       applyReportChanges={applyReportChanges}
-                      compositionParentId={question.getId()}
                       key={`${elem.getId()}${suffixName}`}
                       question={elem as NumericQuestion<ID, ErrorType>}
-                      setErrorSet={setErrorSet}
-                      setParentCompositionState={setInputState}
-                      suffixName={suffixName}
                       readOnly={readOnly}
+                      suffixName={suffixName}
                     />
                   );
                 }
