@@ -80,14 +80,14 @@ export const AdminUserForm = (props: Props) => {
               className={`${
                 passwordShown ? 'd-none' : 'd-block'
               } btn btn-sm p-0 m-0 fa fa-eye-slash text-dark`}
-              style={{fontFamily: "FontAwesome"}}
+              style={{ fontFamily: 'FontAwesome' }}
             ></i>
             <i
               onClick={() => setPasswordShown(false)}
               className={`${
                 passwordShown ? 'd-block' : 'd-none'
               } btn btn-sm p-0 m-0 fa fa-eye text-dark`}
-              style={{fontFamily: "FontAwesome"}}
+              style={{ fontFamily: 'FontAwesome' }}
             ></i>
           </div>
         </div>

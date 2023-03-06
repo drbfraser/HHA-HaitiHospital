@@ -55,9 +55,10 @@ const Post = async (
   successMsg?: string,
 ) => {
   await toast.promise(
-    axios
-      .post(url, obj)
-      .then(() => actions(), (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+    axios.post(url, obj).then(
+      () => actions(),
+      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
+    ),
     {
       error: undefined,
       pending: pendingMsg,
