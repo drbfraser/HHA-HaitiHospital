@@ -47,9 +47,19 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   };
 
   const getBioReport = useCallback(async () => {
+    const controller = new AbortController();
     setBioReport(
-      await Api.Get(ENDPOINT_BIOMECH_GET, ResponseMessage.getMsgFetchReportsFailed(), history),
+      await Api.Get(
+        ENDPOINT_BIOMECH_GET,
+        ResponseMessage.getMsgFetchReportsFailed(),
+        history,
+        controller.signal,
+      ),
     );
+    return () => {
+      controller.abort();
+      setBioReport([]);
+    };
   }, [history]);
 
   const deleteBioMech = async (id: string) => {
@@ -81,6 +91,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   useEffect(() => {
     getBioReport();
+    return () => {
+      setBioReport([]);
+    };
   }, [getBioReport]);
 
   return (

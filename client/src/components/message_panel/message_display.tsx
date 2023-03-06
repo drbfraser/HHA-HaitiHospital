@@ -40,6 +40,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const is_comment_page: boolean = useLocation().pathname.split('/')[2] === 'comments';
 
   useEffect(() => {
+    const controller = new AbortController();
     const retrievedUser = props.msgJson.user as unknown;
     setAuthor(retrievedUser as UserDetails);
     setMessage(props.msgJson);
@@ -50,12 +51,18 @@ const MessageDisplay = (props: MessageDisplayProps) => {
           ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(id),
           TOAST_MESSAGEBOARD_COMMENTS_GET,
           history,
+          controller.signal,
         );
         setCommentCount(comments.length);
       }
     };
 
     getCommentCount(props.msgJson.id);
+    return () => {
+      setAuthor(initialUserJson as unknown as UserDetails);
+      setMessage(emptyMessage);
+      controller.abort();
+    };
   }, [props.msgJson, history]);
 
   const deleteMessageActions = () => {

@@ -19,15 +19,35 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const history: History = useHistory<History>();
 
   useEffect(() => {
+    const leaderboardController = new AbortController();
+    const caseStudyController = new AbortController();
     const getLeaderboard = async () => {
-      setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
+      setLeaderboard(
+        await Api.Get(
+          ENDPOINT_LEADERBOARD_GET,
+          TOAST_LEADERBOARD_GET,
+          history,
+          leaderboardController.signal,
+        ),
+      );
     };
 
     const getCaseStudy = async () => {
-      setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_FEATURED, TOAST_CASESTUDY_GET, history));
+      setCaseStudy(
+        await Api.Get(
+          ENDPOINT_CASESTUDY_FEATURED,
+          TOAST_CASESTUDY_GET,
+          history,
+          caseStudyController.signal,
+        ),
+      );
     };
     getLeaderboard();
     getCaseStudy();
+    return () => {
+      leaderboardController.abort();
+      caseStudyController.abort();
+    };
   }, [history]);
 
   return (

@@ -13,12 +13,19 @@ import { toast } from 'react-toastify';
  * - Error message for toast
  * @param history
  * - History instance from navigation
+ * @param signal
+ * - AbortSignal signal to cancel request (Optional) so that it is backwards compatible
  * @returns response.data
  * - Data retrieved from endpoint (Eg. JSON, Array)
  */
-const Get = async (url: string, errorMsg: string, history: History): Promise<any> => {
+const Get = async (
+  url: string,
+  errorMsg: string,
+  history: History,
+  signal: AbortSignal = new AbortController().signal,
+): Promise<any> => {
   try {
-    const response: any = await axios.get(url);
+    const response: any = await axios.get(url, { signal: signal });
     return response.data;
   } catch (error: any) {
     DbErrorHandler(error, history, errorMsg);

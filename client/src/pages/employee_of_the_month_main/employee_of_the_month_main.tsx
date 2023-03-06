@@ -27,12 +27,21 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
   const { t: translateText } = useTranslation();
 
   useEffect(() => {
+    const controller = new AbortController();
     const getEmployeeOfTheMonth = async () => {
       setEmployeeOfTheMonth(
-        await Api.Get(ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET, TOAST_EMPLOYEE_OF_THE_MONTH_GET, history),
+        await Api.Get(
+          ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
+          TOAST_EMPLOYEE_OF_THE_MONTH_GET,
+          history,
+          controller.signal,
+        ),
       );
     };
     getEmployeeOfTheMonth();
+    return () => {
+      controller.abort();
+    };
   }, [history]);
 
   return (
