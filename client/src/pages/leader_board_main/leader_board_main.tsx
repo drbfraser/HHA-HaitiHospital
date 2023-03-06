@@ -22,18 +22,32 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
     const leaderboardController = new AbortController();
     const caseStudyController = new AbortController();
     const getLeaderboard = async () => {
-      setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history, leaderboardController.signal));
+      setLeaderboard(
+        await Api.Get(
+          ENDPOINT_LEADERBOARD_GET,
+          TOAST_LEADERBOARD_GET,
+          history,
+          leaderboardController.signal,
+        ),
+      );
     };
 
     const getCaseStudy = async () => {
-      setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_FEATURED, TOAST_CASESTUDY_GET, history, caseStudyController.signal));
+      setCaseStudy(
+        await Api.Get(
+          ENDPOINT_CASESTUDY_FEATURED,
+          TOAST_CASESTUDY_GET,
+          history,
+          caseStudyController.signal,
+        ),
+      );
     };
     getLeaderboard();
     getCaseStudy();
     return () => {
       leaderboardController.abort();
       caseStudyController.abort();
-    }
+    };
   }, [history]);
 
   return (

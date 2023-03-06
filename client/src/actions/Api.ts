@@ -18,9 +18,14 @@ import { toast } from 'react-toastify';
  * @returns response.data
  * - Data retrieved from endpoint (Eg. JSON, Array)
  */
-const Get = async (url: string, errorMsg: string, history: History, signal: AbortSignal = new AbortController().signal): Promise<any> => {
+const Get = async (
+  url: string,
+  errorMsg: string,
+  history: History,
+  signal: AbortSignal = new AbortController().signal,
+): Promise<any> => {
   try {
-    const response: any = await axios.get(url, { signal: signal } )
+    const response: any = await axios.get(url, { signal: signal });
     return response.data;
   } catch (error: any) {
     DbErrorHandler(error, history, errorMsg);

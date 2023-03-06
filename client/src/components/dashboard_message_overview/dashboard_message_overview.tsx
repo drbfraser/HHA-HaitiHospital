@@ -20,7 +20,14 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
   useEffect(() => {
     const controller = new AbortController();
     const getMessages = async () => {
-      setMessages(await Api.Get(ENDPOINT_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_GET, history, controller.signal));
+      setMessages(
+        await Api.Get(
+          ENDPOINT_MESSAGEBOARD_GET,
+          TOAST_MESSAGEBOARD_GET,
+          history,
+          controller.signal,
+        ),
+      );
     };
 
     getMessages();

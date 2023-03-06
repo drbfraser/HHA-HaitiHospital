@@ -55,7 +55,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         controller.abort();
         setBioReport({} as any);
         setBioReportImage('');
-      }
+      };
     },
     [history, id],
   );

@@ -38,7 +38,6 @@ const MessageComments = () => {
     setRerender(!rerender);
   };
 
-
   useEffect(() => {
     const controller = new AbortController();
     const getMessage = async () => {

@@ -59,12 +59,13 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   const fetchCaseStudies = useCallback(async () => {
     const controller = new AbortController();
-    setCaseStudies(await Api.Get(ENDPOINT_CASESTUDY_GET, TOAST_CASESTUDY_GET, history, controller.signal));
+    setCaseStudies(
+      await Api.Get(ENDPOINT_CASESTUDY_GET, TOAST_CASESTUDY_GET, history, controller.signal),
+    );
     return () => {
       controller.abort();
       setCaseStudies([]);
     };
-
   }, [history]);
 
   const deleteCaseStudy = async (id: string) => {
