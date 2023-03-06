@@ -45,6 +45,9 @@ const EditMessage = () => {
       setMsg(msg);
     };
     getMessage(id);
+    return () => {
+      setMsg(emptyMessage);
+    };
   }, [id, history]);
 
   const updateMessageActions = () => {

@@ -56,6 +56,10 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     };
 
     getCommentCount(props.msgJson.id);
+    return () => {
+      setAuthor(initialUserJson as unknown as UserDetails);
+      setMessage(emptyMessage);
+    };
   }, [props.msgJson, history]);
 
   const deleteMessageActions = () => {

@@ -38,6 +38,9 @@ const MessagePanel = (props: MessagePanelProps) => {
 
     let isMounted: boolean = true;
     getMessages(isMounted);
+    return () => {
+      setMsgJson([]);
+    };
   }, [rerender, history, authState]);
 
   const toggleRerender = async () => {

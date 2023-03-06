@@ -72,6 +72,9 @@ export const Report = () => {
       }
     };
     currentDepartment && getTemplates();
+    return () => {
+      setReport(undefined);
+    };
   }, [currentDepartment, history, objectSerializer]);
 
   return (

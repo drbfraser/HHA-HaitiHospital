@@ -59,6 +59,10 @@ const MessageComments = () => {
   useEffect(() => {
     getMessage();
     getComments();
+    return () => {
+      setComments([]);
+      setMsgJson(emptyMessage);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rerender, message_id, history, authState.userDetails]);
 

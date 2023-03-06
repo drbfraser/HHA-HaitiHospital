@@ -81,6 +81,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   useEffect(() => {
     getBioReport();
+    return () => {
+      setBioReport([]);
+    };
   }, [getBioReport]);
 
   return (

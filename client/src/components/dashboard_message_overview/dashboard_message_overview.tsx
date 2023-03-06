@@ -23,6 +23,9 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
     };
 
     getMessages();
+    return () => {
+      setMessages([]);
+    };
   }, [history]);
 
   const { t } = useTranslation();
