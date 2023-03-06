@@ -84,7 +84,7 @@ build-client:
     # TODO: remove "CI=false", temporarily required because the project has warnings during the build
     - CI=false GENERATE_SOURCEMAP=false npm run build
   after_script:
-    - cd client && tar -czvf ../client_build.tar.gz .
+    - cd client/build && tar -czvf ../../client_build.tar.gz .
   artifacts:
     expire_in: 1 week
     paths:
