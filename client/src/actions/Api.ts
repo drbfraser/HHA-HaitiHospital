@@ -51,22 +51,13 @@ const Post = async (
   actions: () => void,
   history: History,
   errorMsg = '',
-  pendingMsg = "Processing...",
+  pendingMsg = 'Processing...',
   successMsg?: string,
 ) => {
-  /*const toastId = toast.loading(pendingMsg);
-  await axios
-    .post(url, obj)
-    .then(() => actions())
-    //.catch((err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg))
-    .catch((err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg, toastId));
-  //toast.dismiss(toastId);*/
-
   await toast.promise(
     axios
       .post(url, obj)
-      .then(() => actions())
-      .catch((err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+      .then(() => actions(), (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
     {
       error: undefined,
       pending: pendingMsg,
