@@ -75,10 +75,11 @@ const ReportView = () => {
               <div>
                 <ReportForm
                   applyReportChanges={applyReportChanges}
-                  reportData={report}
                   formHandler={reportHandler}
-                  readOnly={readOnly}
+                  isSubmitting={false}
+                  reportData={report}
                   btnText="Edit"
+                  readOnly={readOnly}
                 />
               </div>
             </>

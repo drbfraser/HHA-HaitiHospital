@@ -55,31 +55,41 @@ const buildQuestionFormField = ({
 
 export const ReportForm = ({
   applyReportChanges,
-  reportData,
   formHandler,
-  readOnly,
+  isSubmitting,
+  reportData,
   btnText = 'Submit',
+  readOnly,
 }: {
   applyReportChanges: () => void;
-  reportData: QuestionGroup<ID, ErrorType>;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
-  readOnly?: boolean;
+  isSubmitting: boolean;
+  reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
+  readOnly?: boolean;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
+
+  const buildSubmitButton = () => {
+    return (
+      <>
+        {!readOnly && (
+          <input
+            className="btn btn-outline-primary"
+            disabled={!(errorSet.size === 0) || isSubmitting}
+            type="submit"
+            value={`${btnText} Report`}
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
-        {!readOnly && (
-          <input
-            className="btn btn-outline-primary"
-            type="submit"
-            value={`${btnText} Report`}
-            disabled={!(errorSet.size === 0)}
-          />
-        )}
-
+        {buildSubmitButton()}
         <Group isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
@@ -89,9 +99,7 @@ export const ReportForm = ({
             readOnly,
           })}
         </Group>
-        {!readOnly && (
-          <input className="btn btn-outline-primary" type="submit" value={`${btnText} Report`} />
-        )}
+        {buildSubmitButton()}
       </form>
     </div>
   );

@@ -1,4 +1,5 @@
 import SideBar from 'components/side_bar/side_bar';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/report_form';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
@@ -15,12 +16,14 @@ import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
 
 export const Report = () => {
-  const history: History = useHistory<History>();
-  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
-  const { departments } = useDepartmentData();
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
+  const [isShowingModal, setIsShowingModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
+  const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
+  const { departments } = useDepartmentData();
 
   const applyReportChanges = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
@@ -31,7 +34,12 @@ export const Report = () => {
     setReport(undefined);
   };
 
-  const submitReport = (event: React.FormEvent<HTMLFormElement>) => {
+  const confirmSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsShowingModal(true);
+  };
+
+  const submitReport = () => {
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportObject = {
@@ -41,11 +49,12 @@ export const Report = () => {
       submittedUserId: user?.userDetails?.id,
     };
 
-    event.preventDefault();
+    setIsShowingModal(false);
+    setIsSubmitting(true);
     Api.Post(
       ENDPOINT_REPORTS,
       reportObject,
-      () => {},
+      () => history.push(`/department/${currentDepartment.id}`),
       history,
       ERR_TOAST,
       PENDING_TOAST,
@@ -84,6 +93,21 @@ export const Report = () => {
       <SideBar />
       <main className="container-fluid main-region bg-light h-screen">
         <Header />
+        <PopupModalConfirmation
+          messages={[
+            <>
+              Please click <strong>Confirm</strong> to proceed with your submission. You'll be
+              redirected to the main {currentDepartment?.name} view.
+            </>,
+            <>
+              If you've made a mistake, please click <strong>Cancel</strong> instead.
+            </>,
+          ]}
+          onModalCancel={() => setIsShowingModal(false)}
+          onModalProceed={submitReport}
+          show={isShowingModal}
+          title={'Confirm Submission'}
+        />
         {!report && departments && (
           <div className="col-md-6 mb-5">
             <h1 className="text-start">Submit a report</h1>
@@ -116,8 +140,9 @@ export const Report = () => {
             </button>
             <ReportForm
               applyReportChanges={applyReportChanges}
+              formHandler={confirmSubmission}
+              isSubmitting={isSubmitting}
               reportData={report}
-              formHandler={submitReport}
             />
           </>
         )}
