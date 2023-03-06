@@ -38,7 +38,6 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
     case UNPROCCESABLENTITY_CODE: {
       toast.error(ErrorListToast(toastMsg, err.response.data.errors), {
         autoClose: false,
-        closeOnClick: false,
         progress: 1,
       });
       break;
