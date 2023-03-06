@@ -72,6 +72,8 @@ export const Report = () => {
           history,
           controller.signal,
         );
+        console.log('fetchedTemplateObject');
+        console.log(fetchedTemplateObject);
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
