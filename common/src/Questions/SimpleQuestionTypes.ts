@@ -1,8 +1,8 @@
 // Leaf questions in the question tree for questions with simple data types as
 // answers.
 import { serializable } from '../Serializer/ObjectSerializer';
-import { ERROR_NOT_A_INTEGER, isNumber } from '../Form_Validators';
-import { QuestionLeaf, ValidationResult } from './QuestionLeaf';
+import { ERROR_NOT_A_INTEGER, isNumber, ValidationResult } from '../Form_Validators';
+import { QuestionLeaf } from './QuestionLeaf';
 
 @serializable(undefined, '')
 export class TextQuestion<ID, ErrorType> extends QuestionLeaf<ID, string, ErrorType> {}

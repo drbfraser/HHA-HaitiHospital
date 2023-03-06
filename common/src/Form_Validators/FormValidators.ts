@@ -1,4 +1,9 @@
-import { ValidationResult } from '../Questions';
+export interface ValidationError<ErrorType> {
+  readonly error?: ErrorType;
+  readonly message?: string;
+}
+
+export type ValidationResult<ErrorType> = ValidationError<ErrorType> | true;
 
 export interface Validator<T> {
   (x: T): ValidationResult<string>;

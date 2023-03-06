@@ -2,9 +2,14 @@
     to the sum of its numeric children questions.
 */
 import { serializable } from '../Serializer/ObjectSerializer';
-import { SpecializedGroup, ValidationResult } from '.';
+import { SpecializedGroup } from '.';
 import { QuestionAnswerNode, QuestionAnswerParent } from './QuestionAnswer';
-import { ERROR_DOES_NOT_SUM_UP, ERROR_NOT_A_INTEGER, isNumber } from '../Form_Validators';
+import {
+  ERROR_DOES_NOT_SUM_UP,
+  ERROR_NOT_A_INTEGER,
+  isNumber,
+  ValidationResult
+} from '../Form_Validators';
 
 type ChildType<ID, ErrorType> = SpecializedGroup<
   ID,
