@@ -11,7 +11,7 @@ import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
 import { ObjectSerializer, serializable } from '../Serializer/ObjectSerializer';
 
-@serializable(undefined, '', (arg: any) => undefined)
+@serializable('ExpandableQuestion', undefined, '', (arg: any) => undefined)
 export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, number, ErrorType> {
   private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
@@ -30,6 +30,10 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
       idGenerator(0),
       `${prompt}-template`,
     ).addAll(...questions);
+  }
+
+  public override getClassName(): string {
+    return 'ExpandableQuestion';
   }
 
   public addToTemplate(

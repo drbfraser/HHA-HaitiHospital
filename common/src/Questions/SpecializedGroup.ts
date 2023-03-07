@@ -4,7 +4,7 @@ import { QuestionNode } from '.';
 import { QuestionParent } from './QuestionParent';
 import { serializable } from '../Serializer';
 
-@serializable(undefined, '')
+@serializable('SpecializedGroup', undefined, '')
 export class SpecializedGroup<
   ID,
   ErrorType,
@@ -15,6 +15,10 @@ export class SpecializedGroup<
   constructor(id: ID, prompt: string, ...questions: Array<QuestionType>) {
     super(id, prompt);
     this.questions = questions;
+  }
+
+  public override getClassName(): string {
+    return 'SpecializedGroup';
   }
 
   searchById(id: ID): QuestionNode<ID, ErrorType> | undefined {

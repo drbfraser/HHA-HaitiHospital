@@ -20,4 +20,8 @@ export abstract class QuestionNode<ID, ErrorType> {
   public getId(): ID {
     return this.id;
   }
+
+  public getClassName(): string {
+    return 'QuestionNode';
+  }
 }

@@ -45,15 +45,19 @@ export class ObjectSerializer {
   };
 
   private readonly addClassNameProperty = (object: any): void => {
-    if (!this.constructorMapper[object.constructor.name]) {
+    const name = object.getClassName ? object.getClassName() : object.constructor.name;
+
+    if (!this.constructorMapper[name]) {
       return;
     }
 
-    object['__class__'] = object.constructor.name;
+    object['__class__'] = name;
   };
 
   private readonly removeClassNameProperty = (object: any): void => {
-    if (!this.constructorMapper[object.constructor.name]) {
+    const name = object.getClassName ? object.getClassName() : object.constructor.name;
+
+    if (!this.constructorMapper[name]) {
       return;
     }
 
@@ -131,10 +135,10 @@ export class ObjectSerializer {
     IMPORTANT: If the serializable class being deserialized has
     side-effects, those side-effects will occur during deserialization!
 */
-export function serializable(...args: any[]) {
+export function serializable(constrName: string, ...args: any[]) {
   return (constructor: Function) => {
     let objectSerializer = ObjectSerializer.getObjectSerializer();
     let constr = constructor.bind(null, ...args);
-    objectSerializer.registerSerializable(constructor.name, constr);
+    objectSerializer.registerSerializable(constrName, constr);
   };
 }
