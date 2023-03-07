@@ -71,7 +71,8 @@ const ReportView = () => {
                 <h1>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h1>
                 <h2>
                   Date:{' '}
-                  {new Date(metaData?.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                  {metaData?.submittedDate &&
+                    new Date(metaData?.submittedDate).toLocaleDateString(userLocale, dateOptions)}
                 </h2>
                 <button className="btn btn-primary" onClick={btnHandler}>
                   {readOnly ? 'Edit Form' : 'View Form'}

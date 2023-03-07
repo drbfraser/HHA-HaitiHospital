@@ -80,6 +80,6 @@ export interface ReportMetaData {
   departmentId: string;
   reportMonth: string;
   _id: string;
-  submittedDate?: string;
+  submittedDate?: Date | undefined;
   submittedUserId?: string;
 }

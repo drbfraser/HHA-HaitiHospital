@@ -104,7 +104,8 @@ export const Department = (props: DepartmentProps) => {
                   <th scope="row">{index + 1}</th>
                   <td>{item.reportObject.id}</td>
                   <td>
-                    {new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                    {item.submittedDate &&
+                      new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
                   </td>
                   <td>
                     <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
