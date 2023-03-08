@@ -5,7 +5,7 @@ import { serializable } from '../Serializer/ObjectSerializer';
 import { SpecializedGroup } from '.';
 import { QuestionAnswerNode, QuestionAnswerParent } from './QuestionAnswer';
 
-@serializable('CompositionQuestion', undefined)
+@serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   ID,
   number,
@@ -23,10 +23,6 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   ) {
     super(id, prompt);
     this.compositionGroups = questions;
-  }
-
-  public override getClassName(): string {
-    return 'CompositionQuestion';
   }
 
   public searchById(

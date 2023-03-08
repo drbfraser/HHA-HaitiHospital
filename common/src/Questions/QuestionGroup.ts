@@ -4,17 +4,13 @@ import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
 import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
 
-@serializable('QuestionGroup', undefined)
+@serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private readonly questionItems: Array<QuestionNode<ID, ErrorType>> = [];
 
   constructor(id: ID, prompt: string, ...questions: Array<QuestionNode<ID, ErrorType>>) {
     super(id, prompt);
     questions ? this.addAll(...questions) : undefined;
-  }
-
-  public override getClassName(): string {
-    return 'QuestionGroup';
   }
 
   public add(questionItem: QuestionNode<ID, ErrorType>): QuestionGroup<ID, ErrorType> {

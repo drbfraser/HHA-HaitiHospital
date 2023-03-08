@@ -12,7 +12,7 @@ import { recursiveConsumeObjectHOF } from '../Utils';
     registered by the ObjectSerializer before serialization will have their
     types preserved after deserialization.
 
-    The @serializable decorator provides with an alternative to programatically
+    The @serializable decorator provides with an alternative to programmatically
     registering classes. "Default" arguments should be provided to this decorator
     which will be used to construct a "mock" class from which the deserialized object
     will be built.
@@ -45,19 +45,15 @@ export class ObjectSerializer {
   };
 
   private readonly addClassNameProperty = (object: any): void => {
-    const name = object.getClassName ? object.getClassName() : object.constructor.name;
-
-    if (!this.constructorMapper[name]) {
+    if (!this.constructorMapper[object.constructor.name]) {
       return;
     }
 
-    object['__class__'] = name;
+    object['__class__'] = object.constructor.name;
   };
 
   private readonly removeClassNameProperty = (object: any): void => {
-    const name = object.getClassName ? object.getClassName() : object.constructor.name;
-
-    if (!this.constructorMapper[name]) {
+    if (!this.constructorMapper[object.constructor.name]) {
       return;
     }
 
@@ -80,13 +76,13 @@ export class ObjectSerializer {
   };
 
   /*  JSON parse will call this function upon each field of the JSON string
-        while it traverses through the fields in preorder order.
+      while it traverses through the fields in pre-order order.
 
-        It takes in a key-value pair, allowing the value to be modified. It
-        returns an object or value that is going to be assigned to the given
-        key in the newly-parsed object.
+      It takes in a key-value pair, allowing the value to be modified. It
+      returns an object or value that is going to be assigned to the given
+      key in the newly-parsed object.
 
-        For more info, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter
+      For more info, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter
     */
   private readonly reviver = (key: string, value: any): any => {
     if (!(value instanceof Object) || !value.__class__) {
@@ -128,17 +124,17 @@ export class ObjectSerializer {
     
     The decorator takes in a variable number of arguments which should
     correspond to the arguments that would be passed to the constructor for
-    the succesfull instantiation of a "mock" object. The constructor is called
+    the successful instantiation of a "mock" object. The constructor is called
     with these arguments every time the corresponding object's deserialization
     is performed.
 
     IMPORTANT: If the serializable class being deserialized has
     side-effects, those side-effects will occur during deserialization!
 */
-export function serializable(constrName: string, ...args: any[]) {
+export function serializable(...args: any[]) {
   return (constructor: Function) => {
     let objectSerializer = ObjectSerializer.getObjectSerializer();
     let constr = constructor.bind(null, ...args);
-    objectSerializer.registerSerializable(constrName, constr);
+    objectSerializer.registerSerializable(constructor.name, constr);
   };
 }

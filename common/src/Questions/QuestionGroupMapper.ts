@@ -76,23 +76,23 @@ export class QuestionMapper<ID, ErrorType, T> {
 
   private constructor(questionMapper: MapperArgs<ID, ErrorType, T>) {
     this.questionMapper = {
-      textQuestion: { className: 'TextQuestion', mapper: questionMapper.textQuestion },
-      numericQuestion: { className: 'NumericQuestion', mapper: questionMapper.numericQuestion },
+      textQuestion: { className: TextQuestion.name, mapper: questionMapper.textQuestion },
+      numericQuestion: { className: NumericQuestion.name, mapper: questionMapper.numericQuestion },
       singleSelectionQuestion: {
-        className: 'SingleSelectionQuestion',
+        className: SingleSelectionQuestion.name,
         mapper: questionMapper.singleSelectionQuestion,
       },
       multipleSelectionQuestion: {
-        className: 'MultipleSelectionQuestion',
+        className: MultipleSelectionQuestion.name,
         mapper: questionMapper.multipleSelectionQuestion,
       },
-      questionGroup: { className: 'QuestionGroup', mapper: questionMapper.questionGroup },
+      questionGroup: { className: QuestionGroup.name, mapper: questionMapper.questionGroup },
       compositionQuestion: {
-        className: 'CompositionQuestion',
+        className: CompositionQuestion.name,
         mapper: questionMapper.compositionQuestion,
       },
       expandableQuestion: {
-        className: 'ExpandableQuestion',
+        className: ExpandableQuestion.name,
         mapper: questionMapper.expandableQuestion,
       },
     };
@@ -124,7 +124,7 @@ export class QuestionMapper<ID, ErrorType, T> {
     question: QuestionNode<ID, ErrorType>,
   ): Mapper<QuestionNode<ID, ErrorType>, ID, ErrorType, T> {
     return Object.values(this.questionMapper).find(
-      (classNameMap) => classNameMap.className === question.getClassName(),
+      (classNameMap) => classNameMap.className === question.constructor.name,
     ).mapper;
   }
 

@@ -117,7 +117,7 @@ const CompositionQuestionFormField = ({
             </legend>
             <Group>
               {group.map((elem) => {
-                if (elem.getClassName() === 'CompositionQuestion') {
+                if (elem.constructor.name === CompositionQuestion.name) {
                   return (
                     <CompositionQuestionFormField
                       allSumUp={() => question.allSumUp()}
@@ -131,7 +131,7 @@ const CompositionQuestionFormField = ({
                       readOnly={readOnly}
                     />
                   );
-                } else if (elem.getClassName() === 'NumericQuestion') {
+                } else if (elem.constructor.name === NumericQuestion.name) {
                   return (
                     <NumericQuestionFormField
                       allSumUp={() => question.allSumUp()}
