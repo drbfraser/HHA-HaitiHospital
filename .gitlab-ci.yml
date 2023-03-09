@@ -93,7 +93,7 @@ build-client:
 
 .deploy-script: &export_image_tag
   # Set IMAGE_TAG to encode the date and SHA of the most recent commit.
-  # - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
+  - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
   # Display some useful info for understanding / debugging the pipeline
   - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
   - echo "Full tag (backend) is               = $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
@@ -103,7 +103,7 @@ build-client:
 build-docker publish-docker-images:
   stage: build-docker
   tags:
-    - docker
+    - deploy-development
   script:
     # Required environment variables defined by GitLab's settings:
     #   HUB_USER:           Docker Hub user
