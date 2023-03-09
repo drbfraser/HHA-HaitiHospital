@@ -86,6 +86,8 @@ build-client:
   - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
   - echo "Full tag (backend) is               = $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
   - echo "Full tag (rev-proxy & frontend) is  = $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
+  - export SERVER_IMAGE="$HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
+  - export CLIENT_IMAGE="$HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
   - docker images
 
 build-docker publish-docker-images:
