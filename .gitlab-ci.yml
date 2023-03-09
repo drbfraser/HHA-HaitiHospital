@@ -102,9 +102,7 @@ build-client:
 
 build-docker publish-docker-images:
   stage: build-docker
-  image: docker:latest
-  services:
-    - docker:dind
+  image: docker:dind
   tags:
     - docker
   script:
