@@ -100,33 +100,36 @@ build-client:
   - echo "Full tag (rev-proxy & frontend) is  = $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
   - docker images
 
-# build-docker publish-docker-images:
-#   stage: build-docker
-#   tags:
-#     - docker
-#   script:
-#     # Required environment variables defined by GitLab's settings:
-#     #   HUB_USER:           Docker Hub user
-#     #   HUB_TOKEN:          Docker Hub token
-#     #   HUB_REPO_BACKEND:   Docker Hub project name for backend
-#     #   HUB_REPO_FRONTEND:  Docker Hub project name for frontend / caddy
-#     # Set IMAGE_TAG to encode the date and SHA of the most recent commit.
-#     - *export_image_tag
-#     # Build images (tagged by docker-composition*.yml using IMAGE_TAG)
-#     - docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
+build-docker publish-docker-images:
+  stage: build-docker
+  image: docker:latest
+  services:
+    - docker:dind
+  tags:
+    - docker
+  script:
+    # Required environment variables defined by GitLab's settings:
+    #   HUB_USER:           Docker Hub user
+    #   HUB_TOKEN:          Docker Hub token
+    #   HUB_REPO_BACKEND:   Docker Hub project name for backend
+    #   HUB_REPO_FRONTEND:  Docker Hub project name for frontend / caddy
+    # Set IMAGE_TAG to encode the date and SHA of the most recent commit.
+    - *export_image_tag
+    # Build images (tagged by docker-composition*.yml using IMAGE_TAG)
+    - docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
 
-#     # Push images to Docker Hub
-#     - docker images
-#     - docker login -u $HUB_USER -p $HUB_TOKEN
-#     - docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
-#     - docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
-#     - docker logout
+    # Push images to Docker Hub
+    - docker images
+    - docker login -u $HUB_USER -p $HUB_TOKEN
+    - docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
+    - docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
+    - docker logout
 
-#     # Cleanup the image and any tags of that image
-#     # Run on the CI/CD server, so it can force delete these images because it does not run any of them as containers
-#     - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
-#       xargs docker rmi --force
-#     - docker images
+    # Cleanup the image and any tags of that image
+    # Run on the CI/CD server, so it can force delete these images because it does not run any of them as containers
+    - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
+      xargs docker rmi --force
+    - docker images
 
 .deploy-script: &deploy-script
   - cp /var/hhahaiti/.env ./.env
