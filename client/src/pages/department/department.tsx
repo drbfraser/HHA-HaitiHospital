@@ -111,8 +111,7 @@ export const Department = (props: DepartmentProps) => {
                     {item.submittedDate &&
                       new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
                   </td>
-                  <td>{item.submittedBy}
-                  </td>
+                  <td>{item.submittedBy}</td>
                 </tr>
               );
             })}

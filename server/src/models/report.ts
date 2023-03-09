@@ -35,7 +35,7 @@ const reportSchema = new Schema({
   },
   submittedBy: {
     type: String,
-    required: true
+    required: true,
   },
   submittedUserId: {
     type: String,
