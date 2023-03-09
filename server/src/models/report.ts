@@ -33,6 +33,10 @@ const reportSchema = new Schema({
     required: true,
     default: Date.now,
   },
+  submittedBy: {
+    type: String,
+    required: true
+  },
   submittedUserId: {
     type: String,
     required: true,

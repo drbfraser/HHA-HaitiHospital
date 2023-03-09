@@ -49,6 +49,7 @@ export const Report = () => {
       reportMonth: new Date(today.getFullYear(), today.getMonth()),
       serializedReport,
       submittedUserId: user?.userDetails?.id,
+      submittedBy: user?.userDetails?.name,
     };
 
     setIsShowingModal(false);

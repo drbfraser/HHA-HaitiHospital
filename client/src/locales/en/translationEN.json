@@ -243,8 +243,7 @@
   "reportsDepartment": "Department",
   "reportsSubmissionDate": "Submission Date",
   "reportsUserId": "User ID",
-  "reportsOptions": "Options",
-  "reportsOpenReport": "Open Report",
+  "reportsSubmittedBy": "Submitted By",
 
   "employeeOfTheMonthEdit": "Update Employee Of The Month",
   "employeeOfTheMonthTitle": "Employee of the month for ",
