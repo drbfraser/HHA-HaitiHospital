@@ -12,6 +12,7 @@ export interface IReport {
   reportMonth: Date;
   submittedDate: Date;
   submittedUserId: string;
+  submittedBy: string;
   reportObject: object;
 }
 

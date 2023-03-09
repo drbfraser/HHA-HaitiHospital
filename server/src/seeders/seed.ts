@@ -463,6 +463,7 @@ const seedReports = async () => {
     let report = new ReportCollection({
       departmentId: user?.departmentId,
       submittedUserId: user?._id,
+      submittedBy: user?.username,
       reportMonth: new Date(),
       reportObject: serializer.deserialize(serialized),
     });

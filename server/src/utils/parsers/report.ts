@@ -12,7 +12,7 @@ import * as _ItemParser from './item';
 export const parseToReport = async (
   jsonReport: JsonReportDescriptor,
 ): Promise<ReportDescriptor> => {
-  const { id, departmentId, submittedDate, submittedUserId } = await parseToReportMeta(
+  const { id, departmentId, submittedDate, submittedUserId, submittedBy } = await parseToReportMeta(
     jsonReport.meta,
   );
   const items: ReportItems = _JsonUtils.getReportItems(jsonReport).map((jsonItem) => {
@@ -25,6 +25,7 @@ export const parseToReport = async (
     departmentId: departmentId,
     submittedDate: submittedDate,
     submittedUserId: submittedUserId,
+    submittedBy: submittedBy,
     items: items,
   };
   return report;
@@ -50,10 +51,16 @@ const parseToReportMeta = async (jsonMeta: JsonReportMeta) => {
     submittedUserId = jsonMeta.submittedUserId;
   }
 
+  let submittedBy: string = '';
+  if (jsonMeta.submittedBy) {
+    submittedBy = jsonMeta.submittedBy;
+  }
+
   let meta = {
     id: jsonMeta.id,
     departmentId: jsonMeta.department.id,
     submittedDate: submittedDate,
+    submittedBy: submittedBy,
     submittedUserId: submittedUserId,
   };
   return meta;
