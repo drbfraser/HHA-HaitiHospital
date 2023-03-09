@@ -27,10 +27,6 @@ test-build-common:
   image: node:16
   tags:
     - docker
-  only:
-    - master
-    - staging
-    - merge_requests
   before_script:
     - cd common
     - npm ci
@@ -50,10 +46,6 @@ test-build-server:
   image: node:16
   tags:
     - docker
-  only:
-    - master
-    - staging
-    - merge_requests
   before_script:
     - cd server
     - npm ci
@@ -73,10 +65,6 @@ build-client:
   image: node:16
   tags:
     - docker
-  only:
-    - master
-    - staging
-    - merge_requests
   before_script:
     - cd client
     - npm ci
