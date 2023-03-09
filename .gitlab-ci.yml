@@ -104,6 +104,9 @@ build-docker publish-docker-images:
   stage: build-docker
   tags:
     - docker
+  services:
+    - git:latest
+    - docker:latest
   script:
     # Required environment variables defined by GitLab's settings:
     #   HUB_USER:           Docker Hub user
