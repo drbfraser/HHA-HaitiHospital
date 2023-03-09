@@ -93,6 +93,7 @@ build-client:
 
 build-docker publish-docker-images:
   stage: build-docker
+  image: docker:latest
   tags:
     - docker
   script:
