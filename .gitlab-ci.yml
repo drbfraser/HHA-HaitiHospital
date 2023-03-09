@@ -105,9 +105,7 @@ build-docker publish-docker-images:
     - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8
       $CI_COMMIT_SHA`
     # Build images (tagged by docker-composition*.yml using IMAGE_TAG)
-    - cp /var/hhahaiti/.env ./.env
     - docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
-    - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
 
     # Push images to Docker Hub
     - docker images
