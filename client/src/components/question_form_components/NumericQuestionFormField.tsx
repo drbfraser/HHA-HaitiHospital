@@ -1,15 +1,17 @@
 import { NumericQuestion, ValidationResult } from '@hha/common';
 import FormField from './FormField';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 const NumericQuestionFormField = ({
   applyReportChanges,
   question,
+  setErrorSet,
   suffixName,
   readOnly,
 }: {
   applyReportChanges: () => void;
   question: NumericQuestion<ID, ErrorType>;
+  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   suffixName: string;
   readOnly?: boolean;
 }): JSX.Element => {
@@ -21,8 +23,23 @@ const NumericQuestionFormField = ({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
+
     applyReportChanges();
+    updateErrorSetFromSelf();
   };
+
+  const updateErrorSetFromSelf = () => setErrorSet((prevErrorSet: Set<ID>) => {
+    const nextErrorSet = new Set(prevErrorSet);
+
+    if (inputState !== true) {
+      nextErrorSet.add(question.getId());
+    }
+    else {
+      nextErrorSet.delete(question.getId());
+    }
+
+    return nextErrorSet;
+  });
 
   return (
     <FormField
