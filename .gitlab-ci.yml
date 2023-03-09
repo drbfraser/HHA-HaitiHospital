@@ -115,8 +115,7 @@ build-docker publish-docker-images:
     - *export_image_tag
     # Build images (tagged by docker-composition*.yml using IMAGE_TAG)
     - cp /var/hhahaiti/.env ./.env
-    - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
-    - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
+    - docker-compose.override.yml build
     # Push images to Docker Hub
     - docker images
     - docker login -u $HUB_USER -p $HUB_TOKEN
