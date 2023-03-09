@@ -15,6 +15,7 @@ const CompositionQuestionFormField = ({
   suffixName: string;
   readOnly?: boolean;
 }): JSX.Element => {
+  const allSumUpInfo = question.getAllSumUpInfo();
   const inputState: ValidationResult<ErrorType> = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
 
@@ -26,18 +27,19 @@ const CompositionQuestionFormField = ({
     updateErrorSetFromSelf();
   };
 
-  const updateErrorSetFromSelf = () => setErrorSet((prevErrorSet: Set<ID>) => {
-    const nextErrorSet = new Set(prevErrorSet);
+  const updateErrorSetFromSelf = () => {
+    setErrorSet((prevErrorSet: Set<ID>) => {
+      const nextErrorSet = new Set(prevErrorSet);
 
-    if (inputState !== true) {
-      nextErrorSet.add(question.getId());
-    }
-    else {
-      nextErrorSet.delete(question.getId());
-    }
+      if (inputState !== true) {
+        nextErrorSet.add(question.getId());
+      } else {
+        nextErrorSet.delete(question.getId());
+      }
 
-    return nextErrorSet;
-  });
+      return nextErrorSet;
+    });
+  };
 
   return (
     <>
@@ -51,7 +53,7 @@ const CompositionQuestionFormField = ({
         value={question.getAnswer()}
         readOnly={readOnly}
       />
-      {question.map<JSX.Element>((group) => {
+      {question.map<JSX.Element>((group, index) => {
         const groupId = `${group.getId()}${suffixName}`;
 
         return (
@@ -59,7 +61,7 @@ const CompositionQuestionFormField = ({
             <legend className="fs-6 mb-3 mt-0 text-secondary">
               {groupId.replaceAll('_', '.')}. {group.getPrompt()}
             </legend>
-            <Group>
+            <Group hasErrors={allSumUpInfo.invalidGroupsIndices.includes(index)}>
               {group.map((elem) => {
                 if (elem.constructor.name === CompositionQuestion.name) {
                   return (
