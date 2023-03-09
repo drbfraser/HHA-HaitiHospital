@@ -105,6 +105,8 @@ build-docker publish-docker-images:
   image: docker:dind
   tags:
     - docker
+  before_script:
+  - apk add --no-cache git
   script:
     # Required environment variables defined by GitLab's settings:
     #   HUB_USER:           Docker Hub user
