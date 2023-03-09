@@ -91,9 +91,17 @@ build-client:
     paths:
       - client_build.tar.gz
 
+.deploy-script: &export_image_tag
+  # Set IMAGE_TAG to encode the date and SHA of the most recent commit.
+  - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
+  # Display some useful info for understanding / debugging the pipeline
+  - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
+  - echo "Full tag (backend) is               = $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
+  - echo "Full tag (rev-proxy & frontend) is  = $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
+  - docker images
+
 build-docker publish-docker-images:
   stage: build-docker
-  image: docker:latest
   tags:
     - docker
   script:
@@ -103,8 +111,7 @@ build-docker publish-docker-images:
     #   HUB_REPO_BACKEND:   Docker Hub project name for backend
     #   HUB_REPO_FRONTEND:  Docker Hub project name for frontend / caddy
     # Set IMAGE_TAG to encode the date and SHA of the most recent commit.
-    - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8
-      $CI_COMMIT_SHA`
+    - *export_image_tag
     # Build images (tagged by docker-composition*.yml using IMAGE_TAG)
     - docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
 
