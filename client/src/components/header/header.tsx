@@ -142,19 +142,21 @@ const Header = (props: HeaderProps) => {
 
   useEffect(() => {
     let isMounted: boolean = true;
+    const controller = new AbortController();
 
     const getUserInfo = async () => {
       const user: UserDetails = await Api.Get(
         ENDPOINT_ADMIN_ME,
         ResponseMessage.getMsgFetchUserFailed(),
         history,
+        controller.signal,
       );
       if (isMounted) setUserInfo(user);
     };
     getUserInfo();
-
-    return function cleanUp() {
+    return () => {
       isMounted = false;
+      controller.abort();
     };
   }, [history]);
 

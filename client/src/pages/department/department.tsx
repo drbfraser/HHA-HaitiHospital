@@ -30,12 +30,17 @@ export const Department = (props: DepartmentProps) => {
   const [reports, setReports] = useState<any[]>([]);
 
   const getReports = useCallback(async () => {
+    const controller = new AbortController();
     const fetchedReports = await Api.Get(
       ENDPOINT_REPORTS_GET_BY_DEPARTMENT(deptId),
       TOAST_REPORTS_GET,
       history,
+      controller.signal,
     );
     setReports(fetchedReports);
+    return () => {
+      controller.abort();
+    };
   }, [deptId, history]);
 
   useEffect(() => {
@@ -43,9 +48,15 @@ export const Department = (props: DepartmentProps) => {
   }, [getReports]);
 
   useEffect(() => {
+    const controller = new AbortController();
     const getDepartmentById = async (id: string) => {
       setDepartment(
-        await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(id), TOAST_DEPARTMENT_GET, history),
+        await Api.Get(
+          ENDPOINT_DEPARTMENT_GET_BY_ID(id),
+          TOAST_DEPARTMENT_GET,
+          history,
+          controller.signal,
+        ),
       );
     };
 
@@ -54,6 +65,9 @@ export const Department = (props: DepartmentProps) => {
     } catch (e) {
       history.push('/notFound');
     }
+    return () => {
+      controller.abort();
+    };
   }, [history, deptId]);
 
   return (

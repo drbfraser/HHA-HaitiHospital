@@ -25,11 +25,13 @@ const EditMessage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const controller = new AbortController();
     const getMessage = async (id: string) => {
       const msgData: Message = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET_BY_ID(id),
         TOAST_MESSAGEBOARD_GET,
         history,
+        controller.signal,
       );
       const msg: Message = {
         id: msgData.id,
@@ -47,6 +49,7 @@ const EditMessage = () => {
     getMessage(id);
     return () => {
       setMsg(emptyMessage);
+      controller.abort();
     };
   }, [id, history]);
 

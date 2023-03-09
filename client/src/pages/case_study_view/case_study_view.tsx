@@ -18,10 +18,22 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
 
   useEffect(
     function fetchCaseStudyInitially() {
+      const controller = new AbortController();
+
       const getCaseStudy = async () => {
-        setCaseStudy(await Api.Get(ENDPOINT_CASESTUDY_GET_BY_ID(id), TOAST_CASESTUDY_GET, history));
+        setCaseStudy(
+          await Api.Get(
+            ENDPOINT_CASESTUDY_GET_BY_ID(id),
+            TOAST_CASESTUDY_GET,
+            history,
+            controller.signal,
+          ),
+        );
       };
       getCaseStudy();
+      return () => {
+        controller.abort();
+      };
     },
     [history, id],
   );

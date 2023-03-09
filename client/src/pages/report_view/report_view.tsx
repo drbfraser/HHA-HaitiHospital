@@ -40,10 +40,12 @@ const ReportView = () => {
     Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
   };
   const getReport = useCallback(async () => {
+    const controller = new AbortController();
     const fetchedReport: any = await Api.Get(
       ENDPOINT_REPORTS_GET_BY_ID(report_id),
       TOAST_REPORT_GET,
       history,
+      controller.signal,
     );
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
 
@@ -53,6 +55,9 @@ const ReportView = () => {
       reportMonth: fetchedReport?.report?.reportMonth,
       submittedDate: fetchedReport?.report?.submittedDate,
     });
+    return () => {
+      controller.abort();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
   useEffect(() => {
