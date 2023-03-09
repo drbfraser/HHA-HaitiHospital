@@ -105,6 +105,7 @@ build-docker publish-docker-images:
   tags:
     - docker
   script:
+    - apk add --update git docker
     # Required environment variables defined by GitLab's settings:
     #   HUB_USER:           Docker Hub user
     #   HUB_TOKEN:          Docker Hub token
