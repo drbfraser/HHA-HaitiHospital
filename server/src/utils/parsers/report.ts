@@ -60,7 +60,7 @@ const parseToReportMeta = async (jsonMeta: JsonReportMeta) => {
     id: jsonMeta.id,
     departmentId: jsonMeta.department.id,
     submittedDate: submittedDate,
-    submittedBy: submittedBy,
+    submittedBy: jsonMeta?.submittedBy ?? '',
     submittedUserId: submittedUserId,
   };
   return meta;
