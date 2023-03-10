@@ -200,16 +200,349 @@ export const seedMessageBoard = async () => {
   try {
     await MessageCollection.deleteMany({});
     const users: User[] = await UserCollection.find();
+
+    const messages = [
+      ['Patient Information', 'Patient in Room 415 has a scheduled surgery at 1pm today.'],
+      [
+        'Hospital Policy Update',
+        "The hospital's policy on patient visitation has been updated. Please review it carefully.",
+      ],
+      [
+        'Cafeteria Closure',
+        'The cafeteria will be closed for cleaning tonight. Please make alternative arrangements for meals.',
+      ],
+      [
+        'Patient Appointment',
+        'Patient in Room 601 has a scheduled consultation with the oncologist at 2pm today.',
+      ],
+      ['Volunteer Program', "The hospital's volunteer program is now accepting new applications."],
+      [
+        'Hand Hygiene Audit',
+        'Reminder: The hospital-wide hand hygiene audit will take place next week.',
+      ],
+      [
+        'IT Maintenance',
+        "The IT department will be performing maintenance on the hospital's servers tonight.",
+      ],
+      [
+        'Patient Care',
+        'Patient in Room 308 is experiencing shortness of breath. Please assess the situation and provide appropriate care.',
+      ],
+      ['Flu Shot Clinic', "The hospital's annual flu shot clinic will be held next week."],
+      ['Cafeteria Promotion', 'The cafeteria is running a promotion on healthy snacks this week.'],
+      [
+        'Translation Request',
+        'Patient in Room 501 has requested a translator. Please contact the appropriate personnel.',
+      ],
+      [
+        'Bed Linen Shortage',
+        'The hospital is currently experiencing a shortage of bed linens. Please use them judiciously.',
+      ],
+      [
+        'Patient Safety Training',
+        'The night shift supervisor will be holding a training session on patient safety next week.',
+      ],
+      [
+        'Patient Discharge',
+        'Patient in Room 712 has been discharged. Please arrange for transportation if necessary.',
+      ],
+      [
+        'Gift Shop Announcement',
+        "The hospital's gift shop is now open. Please stop by and support our auxiliary volunteers.",
+      ],
+      [
+        'Disaster Preparedness Drill',
+        'Reminder: The hospital-wide disaster preparedness drill is scheduled for next month.',
+      ],
+      [
+        'Radiology Department Backlog',
+        'The radiology department is experiencing a backlog of scans. Please prioritize urgent cases.',
+      ],
+      ['Scheduled CT Scan', 'Patient in Room 301 has a scheduled CT scan at 11am today.'],
+      [
+        'Blood Donation Request',
+        'The hospital is running low on certain types of blood products. Please contact the blood bank if you can donate.',
+      ],
+      [
+        'Cafeteria Renovations',
+        'The cafeteria will be closed for renovations starting next Monday. Please make alternative arrangements for meals.',
+      ],
+      [
+        'Spiritual Counselor Request',
+        'Patient in Room 401 has requested a spiritual counselor. Please contact the appropriate personnel.',
+      ],
+      [
+        'Workplace Violence Prevention',
+        "The hospital's policy on workplace violence prevention has been updated. Please review it carefully.",
+      ],
+      [
+        'Team-Building Exercise',
+        'The night shift supervisor will be holding a team-building exercise next week.',
+      ],
+      [
+        'Scheduled Family Visit',
+        'Patient in Room 212 has a scheduled visit from a family member at 2pm today.',
+      ],
+      [
+        'Cultural Competence Workshop',
+        'The hospital is offering a workshop on cultural competence in healthcare next month.',
+      ],
+      [
+        'Fresh Produce Order',
+        'The cafeteria is running low on fresh produce. Please order more if possible.',
+      ],
+      [
+        'Bedside Commode Request',
+        'Patient in Room 511 has requested a bedside commode. Please provide one if available.',
+      ],
+      [
+        'Parking Garage Closure',
+        "The hospital's parking garage will be closed for repairs next week. Please park in alternative locations.",
+      ],
+      [
+        'Night Shift Staffing',
+        'The night shift will be overstaffed tonight. Please let us know if you would like to take a break or leave early.',
+      ],
+      [
+        'Food Allergy Alert',
+        'Patient in Room 303 has a severe peanut allergy. Please ensure that no peanuts or peanut products are served to them.',
+      ],
+      [
+        'Emergency Drill',
+        "The hospital's emergency response team will be conducting a drill tomorrow morning. Please follow instructions from staff members.",
+      ],
+      [
+        'New Equipment Training',
+        "The hospital's biomedical department will be holding training sessions on the new equipment installed in the operating rooms.",
+      ],
+      [
+        'Patient Discharge Delay',
+        'The discharge of patient in Room 604 has been delayed. Please inform their family members accordingly.',
+      ],
+      [
+        'Flowers and Gifts Policy',
+        'The hospital has updated its policy on flowers and gifts for patients. Please review it carefully.',
+      ],
+      [
+        'Surgical Staff Meeting',
+        'All surgical staff are requested to attend a meeting in the conference room at 3pm today.',
+      ],
+      [
+        'MRI Machine Maintenance',
+        'The MRI machine will be unavailable for use for maintenance from 10am to 2pm tomorrow.',
+      ],
+      [
+        'Medical Waste Disposal',
+        'Reminder: All staff members must dispose of medical waste in designated containers only.',
+      ],
+      [
+        'Interpreter Needed',
+        'Patient in Room 709 requires an interpreter for their appointment tomorrow morning. Please arrange accordingly.',
+      ],
+      [
+        'Pharmacy Staffing',
+        'The pharmacy department is short-staffed tonight. Please contact the supervisor if you are available to help.',
+      ],
+      [
+        'Patient Satisfaction Survey',
+        "The hospital's patient satisfaction survey will be conducted in the next few weeks. Please encourage patients to participate.",
+      ],
+      [
+        'Nursing Conference',
+        'The annual nursing conference will be held next month. Please register if you would like to attend.',
+      ],
+      [
+        'Supply Room Inventory',
+        'All staff members are requested to assist in taking inventory of the supply room tomorrow morning.',
+      ],
+      [
+        'IT Security Update',
+        "The hospital's IT department has released a security update. Please ensure that your devices are up-to-date.",
+      ],
+      [
+        'Patient Transfer Request',
+        'The patient in Room 408 has requested a transfer to another hospital. Please initiate the necessary arrangements.',
+      ],
+      [
+        'Community Blood Drive',
+        'The hospital is hosting a community blood drive next week. Please encourage donors to sign up.',
+      ],
+      [
+        'Laboratory Result Delay',
+        'The laboratory is experiencing delays in releasing test results. Please inform patients accordingly.',
+      ],
+      [
+        'Environmental Services Training',
+        'The environmental services department will be conducting training sessions on infection control and sanitation practices.',
+      ],
+      [
+        'Patient Meal Preferences',
+        'All staff members are requested to inquire about patient meal preferences and communicate them to the dietary department.',
+      ],
+      [
+        'Employee Assistance Program',
+        "The hospital's employee assistance program is available to provide counseling and support to staff members.",
+      ],
+      [
+        'Surgical Instrument Cleaning',
+        'All surgical staff members are reminded to ensure that surgical instruments are cleaned and sterilized properly.',
+      ],
+      [
+        'Maternity Ward Visitor Policy',
+        "The maternity ward's visitor policy has been updated. Please review it carefully.",
+      ],
+      [
+        'Physical Therapy Referral',
+        'Patient in Room 510 requires a referral for physical therapy. Please consult with the attending physician.',
+      ],
+      [
+        'Human Resources Policy Update',
+        "The hospital's human resources department has updated its policies on employee benefits. Please review them carefully.",
+      ],
+      [
+        'Security Alert',
+        'A security alert has been issued for a missing patient. Please be vigilant and report any suspicious activity.',
+      ],
+      [
+        'Volunteer Appreciation Event',
+        "The hospital's auxiliary volunteers will be honored at an appreciation event next week.",
+      ],
+      [
+        'Billing and Insurance Assistance',
+        "The hospital's billing and insurance assistance office is available to provide support to patients and their families.",
+      ],
+      [
+        'Infection Control Audit',
+        'The hospital-wide infection control audit will be conducted next week. Please ensure that all protocols are followed.',
+      ],
+      [
+        'Patient Fall Prevention',
+        'Reminder: All staff members are responsible for ensuring that patient fall prevention protocols are followed.',
+      ],
+      [
+        'Medical Record Requests',
+        'All medical record requests must be submitted to the health information management department.',
+      ],
+      [
+        'Nursing Shift Change',
+        'All nursing staff members are reminded to properly communicate patient information during shift change.',
+      ],
+      [
+        'Patient Transport Request',
+        'Patient in Room 201 requires transportation to a medical appointment offsite. Please arrange accordingly.',
+      ],
+      [
+        'Employee Wellness Program',
+        "The hospital's employee wellness program is available to provide resources and support for staff members' well-being.",
+      ],
+      [
+        'Infection Control Training',
+        'All staff members are required to attend infection control training sessions next week.',
+      ],
+      [
+        'Patient Safety Concern',
+        'If you have a concern about patient safety, please report it to your supervisor or the patient safety department.',
+      ],
+      [
+        'Medication Administration Error',
+        'If you have made a medication administration error, please report it immediately to the attending physician.',
+      ],
+      [
+        'Patient Room Cleaning',
+        'All staff members are responsible for ensuring that patient rooms are cleaned and sanitized properly.',
+      ],
+      [
+        'Code Blue Response Drill',
+        "The hospital's code blue response team will be conducting a drill tomorrow afternoon.",
+      ],
+      [
+        'Patient Appointment Reminder',
+        'Reminder: Please remind patients of their upcoming appointments and provide necessary instructions.',
+      ],
+      [
+        'Radiology Equipment Maintenance',
+        'The radiology department will be conducting maintenance on the imaging equipment from 8am to 12pm tomorrow.',
+      ],
+      [
+        'Social Work Consult Request',
+        'Patient in Room 408 requires a social work consult. Please contact the social work department.',
+      ],
+      [
+        'Medical Equipment Loan Request',
+        "The hospital's medical equipment loan program is available to provide equipment for patient care at home.",
+      ],
+      [
+        'Patient Discharge Instructions',
+        'All staff members are responsible for ensuring that patients receive proper discharge instructions and follow-up care plans.',
+      ],
+      [
+        'Pharmacy Medication Shortage',
+        'The pharmacy department is currently experiencing a shortage of certain medications. Please consult with the pharmacist for alternative options.',
+      ],
+      [
+        'Patient Transport Policy',
+        "The hospital's patient transport policy has been updated. Please review it carefully.",
+      ],
+      [
+        'Surgical Procedure Change',
+        'The surgical procedure for patient in Room 605 has been changed. Please consult with the attending physician for details.',
+      ],
+      [
+        'Patient Experience Improvement',
+        'The hospital is committed to improving the patient experience. Please share any ideas or suggestions with the patient experience department.',
+      ],
+      [
+        'Security Camera Upgrade',
+        "The hospital's security cameras will be upgraded next week. Please be aware of potential disruptions.",
+      ],
+      [
+        'Interdisciplinary Care Team Meeting',
+        'The interdisciplinary care team will be holding a meeting tomorrow morning to discuss patient care plans.',
+      ],
+      [
+        'Laboratory Specimen Collection Reminder',
+        'Reminder: All laboratory specimens must be collected and labeled properly.',
+      ],
+      [
+        'Volunteer Opportunities',
+        "The hospital's auxiliary volunteer program has opportunities available for those interested in volunteering.",
+      ],
+      [
+        'Patient Satisfaction Feedback',
+        'Please encourage patients to provide feedback on their experience at the hospital to help us improve our services.',
+      ],
+      [
+        'Environmental Services Request',
+        'If you need assistance from the environmental services department, please submit a request through the online system.',
+      ],
+      [
+        'Medical Staff Meeting',
+        'All medical staff members are requested to attend a meeting in the conference room at 4pm today.',
+      ],
+      [
+        'Patient Communication Assistance',
+        'If you need assistance communicating with a patient, please contact the interpreter services department.',
+      ],
+      [
+        'Medication Disposal Reminder',
+        'Reminder: All medication must be disposed of properly to prevent potential harm or misuse.',
+      ],
+      [
+        'Patient Financial Assistance',
+        "The hospital's financial assistance program is available to provide support for patients with financial hardship.",
+      ],
+    ];
+
+    //how to get size of array in javascript
     // Wait for users to be seeded before creating messages.
-    const numOfMessagesToGenerate: number = 100;
-    for (let i = 0; i < numOfMessagesToGenerate; i++) {
+    for (let i = 0; i < messages.length; i++) {
       const randomUser: User = selectRandomUser(users);
       const message = new MessageCollection({
         departmentId: randomUser.departmentId,
         userId: randomUser._id,
         date: new Date(),
-        messageBody: faker.lorem.words(),
-        messageHeader: faker.lorem.words(),
+        messageBody: messages[i][1],
+        messageHeader: messages[i][0],
       });
       message.save();
     }
@@ -463,6 +796,7 @@ const seedReports = async () => {
     let report = new ReportCollection({
       departmentId: user?.departmentId,
       submittedUserId: user?._id,
+      submittedBy: user?.username,
       reportMonth: new Date(),
       reportObject: serializer.deserialize(serialized),
     });
