@@ -50,6 +50,6 @@ export interface ReportDescriptor {
   submittedDate: Date;
   reportMonth?: Date;
   submittedUserId: string;
-
+  submittedBy: string;
   items: ReportItems;
 }

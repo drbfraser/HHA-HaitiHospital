@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { History } from 'history';
-import * as Error from './ApiError';
+import * as ApiError from './ApiError';
 import DbErrorHandler from './http_error_handler';
 import { ResponseMessage } from 'utils/response_message';
 import { toast } from 'react-toastify';
@@ -29,7 +29,7 @@ const Get = async (
     return response.data;
   } catch (error: any) {
     DbErrorHandler(error, history, errorMsg);
-    return Error.ERROR_OBJ;
+    return ApiError.ERROR_OBJ;
   }
 };
 
@@ -55,17 +55,17 @@ const Get = async (
 const Post = async (
   url: string,
   obj: object = {},
-  actions: any,
+  actions: () => void,
   history: History,
   errorMsg = '',
-  pendingMsg?: string,
+  pendingMsg = 'Processing...',
   successMsg?: string,
-): Promise<void> => {
+) => {
   await toast.promise(
-    axios
-      .post(url, obj)
-      .then(() => actions())
-      .catch((err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+    axios.post(url, obj).then(
+      () => actions(),
+      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
+    ),
     {
       error: undefined,
       pending: pendingMsg,
@@ -186,7 +186,7 @@ const Image = async (url: string, history: History): Promise<string> => {
     return URL.createObjectURL(response.data);
   } catch (error: any) {
     DbErrorHandler(error, history, ResponseMessage.getMsgFetchImageFailed());
-    return Error.ERROR_IMG;
+    return ApiError.ERROR_IMG;
   }
 };
 

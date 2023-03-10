@@ -30,6 +30,7 @@ export interface JsonReportMeta {
   };
   submittedDate?: string;
   submittedUserId?: string;
+  submittedBy?: string;
 }
 
 export type JsonItemAnswer = Array<string>;
@@ -80,6 +81,7 @@ export interface ReportMetaData {
   departmentId: string;
   reportMonth: string;
   _id: string;
-  submittedDate?: string;
+  submittedDate?: Date | undefined;
   submittedUserId?: string;
+  submittedBy?: string;
 }

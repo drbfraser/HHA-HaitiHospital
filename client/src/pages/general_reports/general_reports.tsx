@@ -15,6 +15,7 @@ import { JsonReportDescriptor } from '@hha/common';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDepartmentData } from 'hooks';
+import { userLocale, dateOptions } from 'constants/date';
 
 const GeneralReports = () => {
   const [dayRange, setDayRange] = useState<DayRange>({
@@ -73,19 +74,19 @@ const GeneralReports = () => {
                 <th scope="col">{t('reportsReportId')}</th>
                 <th scope="col">{t('reportsDepartment')}</th>
                 <th scope="col">{t('reportsSubmissionDate')}</th>
-                <th scope="col">{t('reportsUserId')}</th>
                 <th scope="col">{t('reportsOptions')}</th>
               </tr>
             </thead>
             <tbody>
               {currentTableData.map((item, index) => {
                 return (
-                  <tr key={item.reportObject.id}>
+                  <tr key={item._id}>
                     <th scope="row">{reportNumberIndex + index + 1}</th>
                     <td>{item.reportObject.id}</td>
                     <td>{t(departmentIdKeyMap.get(item.departmentId))}</td>
-                    <td>{item.submittedDate}</td>
-                    <td>{item.submittedUserId}</td>
+                    <td>
+                      {new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                    </td>
                     <td>
                       <Link
                         to={'/report-view/' + item._id}

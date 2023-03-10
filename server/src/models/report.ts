@@ -12,6 +12,7 @@ export interface IReport {
   reportMonth: Date;
   submittedDate: Date;
   submittedUserId: string;
+  submittedBy: string;
   reportObject: object;
 }
 
@@ -32,6 +33,10 @@ const reportSchema = new Schema({
     type: Date,
     required: true,
     default: Date.now,
+  },
+  submittedBy: {
+    type: String,
+    required: true,
   },
   submittedUserId: {
     type: String,

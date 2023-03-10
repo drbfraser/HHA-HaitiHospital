@@ -13,6 +13,7 @@ export interface Template {
   departmentId: string;
   submittedDate: Date;
   submittedByUserId: string;
+  submittedBy: string;
   items: TemplateItems;
 }
 export interface TemplateWithInstanceMethods extends Template {

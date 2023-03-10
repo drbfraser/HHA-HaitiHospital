@@ -10,6 +10,7 @@ import { useDepartmentData } from 'hooks';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
+import { userLocale, dateOptions } from 'constants/date';
 
 const ReportView = () => {
   const history = useHistory<History>();
@@ -50,6 +51,7 @@ const ReportView = () => {
       _id: fetchedReport?.report?._id,
       departmentId: fetchedReport?.report?.departmentId,
       reportMonth: fetchedReport?.report?.reportMonth,
+      submittedDate: fetchedReport?.report?.submittedDate,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
@@ -66,8 +68,12 @@ const ReportView = () => {
             <Header />
             <>
               <header>
-                <h1>Report ID: {metaData?._id}</h1>
-                <h2>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h2>
+                <h1>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h1>
+                <h2>
+                  Date:{' '}
+                  {metaData?.submittedDate &&
+                    new Date(metaData?.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                </h2>
                 <button className="btn btn-primary" onClick={btnHandler}>
                   {readOnly ? 'Edit Form' : 'View Form'}
                 </button>
