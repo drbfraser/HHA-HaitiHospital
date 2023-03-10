@@ -139,7 +139,7 @@ build-docker publish-docker-images:
 .deploy-script: &deploy-script
   - cp /var/hhahaiti/.env ./.env
   - export SERVER_IMAGE="hhahaiti_server"
-  - export CLIENT_IMAGE="haiti-caddy"
+  - export CLIENT_IMAGE="hhahaiti_caddy"
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
   - docker image prune -f # remove unused images since we just built new ones

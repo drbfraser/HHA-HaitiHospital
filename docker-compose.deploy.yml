@@ -3,7 +3,6 @@ version: '3.9'
 services:
   server:
     image: ${SERVER_IMAGE}
-    container_name: hhahaiti_server
     build:
       context: .
       dockerfile: server/Dockerfile
