@@ -19,12 +19,10 @@ const Group = ({ children, hasErrors, isRootNode }: GroupProps): JSX.Element => 
   >
     {children}
     <div
-      className={cn(
-        {
-          'border-top border-2 ml-n3': !isRootNode,
-          'border-danger border-opacity-50': hasErrors,
-        }
-      )}
+      className={cn({
+        'border-top border-2 ml-n3': !isRootNode,
+        'border-danger border-opacity-50': hasErrors,
+      })}
       style={{ width: '1rem' }}
     />
   </div>

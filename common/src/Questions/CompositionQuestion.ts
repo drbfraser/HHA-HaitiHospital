@@ -86,8 +86,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   public getValidationResults(): ValidationResult<string> {
     if (!isNumber(this.getAnswer())) {
       return ERROR_NOT_A_INTEGER;
-    }
-    else if (!this.getAllSumUpInfo().areAllSumsCorrect) {
+    } else if (!this.getAllSumUpInfo().areAllSumsCorrect) {
       return ERROR_DOES_NOT_SUM_UP;
     }
     return true;

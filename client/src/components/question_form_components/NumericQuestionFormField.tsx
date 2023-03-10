@@ -28,18 +28,18 @@ const NumericQuestionFormField = ({
     updateErrorSetFromSelf();
   };
 
-  const updateErrorSetFromSelf = () => setErrorSet((prevErrorSet: Set<ID>) => {
-    const nextErrorSet = new Set(prevErrorSet);
+  const updateErrorSetFromSelf = () =>
+    setErrorSet((prevErrorSet: Set<ID>) => {
+      const nextErrorSet = new Set(prevErrorSet);
 
-    if (question.getValidationResults() !== true) {
-      nextErrorSet.add(question.getId());
-    }
-    else {
-      nextErrorSet.delete(question.getId());
-    }
+      if (question.getValidationResults() !== true) {
+        nextErrorSet.add(question.getId());
+      } else {
+        nextErrorSet.delete(question.getId());
+      }
 
-    return nextErrorSet;
-  });
+      return nextErrorSet;
+    });
 
   return (
     <FormField
