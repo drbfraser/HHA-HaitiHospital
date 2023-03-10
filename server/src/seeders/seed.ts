@@ -717,15 +717,89 @@ export const seedBioMech = async () => {
   try {
     await BioMech.deleteMany({});
     const users: User[] = await UserCollection.find();
-    const numOfBioMechReportsToGenerate: number = 100;
-    for (let i = 0; i < numOfBioMechReportsToGenerate; i++) {
+    const brokenEquipment = [
+      ['X-ray machine', 'Cracked display screen caused by accidental impact', 'urgent'],
+      ['MRI scanner', 'Power failure due to electrical surge during lightning storm', 'important'],
+      [
+        'Ultrasound machine',
+        'Faulty probe with distorted images caused by wear and tear',
+        'non-urgent',
+      ],
+      [
+        'ECG machine',
+        'Loose cable connection causing intermittent signal loss due to repeated use',
+        'important',
+      ],
+      [
+        'Ventilator',
+        'Low oxygen output due to blocked flow sensor caused by buildup of debris',
+        'urgent',
+      ],
+      [
+        'Defibrillator',
+        'Battery failure with error message "Battery Low" caused by expired battery',
+        'important',
+      ],
+      ['Anesthesia machine', 'Leaking gas from faulty valve caused by wear and tear', 'urgent'],
+      [
+        'Blood pressure monitor',
+        'Malfunctioning cuff with inaccurate readings caused by worn-out components',
+        'non-urgent',
+      ],
+      ['Surgical microscope', 'Blurred lens with poor focus caused by dirty lens', 'non-urgent'],
+      [
+        'Pulse oximeter',
+        'Faulty sensor causing erratic readings caused by damaged sensor',
+        'important',
+      ],
+      [
+        'Fetal heart rate monitor',
+        'No power due to disconnected power cord caused by accidental unplugging',
+        'urgent',
+      ],
+      [
+        'Endoscope',
+        'Cracked lens with visible distortion caused by accidental impact',
+        'non-urgent',
+      ],
+      [
+        'Infusion pump',
+        'Blocked line due to debris in infusion tubing caused by contamination',
+        'important',
+      ],
+      [
+        'Nebulizer',
+        'No mist output due to clogged mesh caused by accumulation of medication residue',
+        'non-urgent',
+      ],
+      [
+        'Syringe pump',
+        'Jammed plunger with error message "Pump Failure" caused by damaged plunger',
+        'urgent',
+      ],
+      ['Wheelchair', 'Broken wheel causing wobbling caused by wear and tear', 'non-urgent'],
+      [
+        'Hospital bed',
+        'Worn out mattress with visible sagging caused by repeated use',
+        'non-urgent',
+      ],
+      ['Walker', 'Loose grip causing slipping caused by wear and tear', 'non-urgent'],
+      ['Crutches', 'Broken handle causing instability caused by accidental impact', 'non-urgent'],
+      [
+        'Blood gas analyzer',
+        'Outdated software with compatibility issues caused by lack of updates',
+        'important',
+      ],
+    ];
+
+    for (let i = 0; i < brokenEquipment.length; i++) {
       const randomUser = selectRandomUser(users);
       const bioMechReport = new BioMech({
         userId: randomUser,
         departmentId: randomUser.departmentId,
-        equipmentName: faker.lorem.words(),
-        equipmentFault: faker.lorem.words(),
-        equipmentPriority: randomEnumValue(BiomechPriority),
+        equipmentName: brokenEquipment[i][0],
+        equipmentFault: brokenEquipment[i][1],
+        equipmentPriority: brokenEquipment[i][2],
         imgPath: 'public/images/bioMech0.jpeg',
       });
       bioMechReport.save();
