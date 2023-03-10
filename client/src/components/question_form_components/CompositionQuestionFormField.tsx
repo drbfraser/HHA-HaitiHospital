@@ -67,6 +67,7 @@ const CompositionQuestionFormField = ({
               })}
             >
               {groupId.replaceAll('_', '.')}. {group.getPrompt()}
+              {hasErrors && <i className='bi bi-exclamation-circle ms-2'/>}
             </legend>
             <Group hasErrors={hasErrors}>
               {group.map((elem) => {
