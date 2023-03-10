@@ -98,8 +98,8 @@ build-client:
   - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
   - echo "Full tag (backend) is               = $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
   - echo "Full tag (rev-proxy & frontend) is  = $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
-  - export SERVER_IMAGE="$HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
-  - export CLIENT_IMAGE="$HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
+  # - export SERVER_IMAGE="$HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
+  # - export CLIENT_IMAGE="$HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
   - docker images
 
 build-docker publish-docker-images:
@@ -121,12 +121,14 @@ build-docker publish-docker-images:
     - *export_image_tag
     # Build images (tagged by docker-composition*.yml using IMAGE_TAG)
     - cp /var/hhahaiti/.env ./.env
-    - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
+    - export SERVER_IMAGE="haiti-server"
+    - export CLIENT_IMAGE="haiti-client"
+    - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
     # Push images to Docker Hub
     - docker images
     - docker login -u $HUB_USER -p $HUB_TOKEN
-    - docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
-    - docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
+    # - docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
+    # - docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
     - docker logout
 
     # Cleanup the image and any tags of that image
