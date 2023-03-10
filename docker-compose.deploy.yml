@@ -16,6 +16,7 @@ services:
   mongodb:
     restart: always
   caddy:
+    image: ${CLIENT_IMAGE}
     container_name: hhahaiti_caddy
     build:
       context: .
@@ -27,8 +28,3 @@ services:
     ports:
       - '80:80'
       - '443:443'
-  client:
-    image: ${CLIENT_IMAGE}
-    build:
-      context: .
-      dockerfile: client/Dockerfile
