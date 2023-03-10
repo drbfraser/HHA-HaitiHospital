@@ -1,6 +1,7 @@
 import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import cn from 'classnames';
 
 const CompositionQuestionFormField = ({
   applyReportChanges,
@@ -55,13 +56,19 @@ const CompositionQuestionFormField = ({
       />
       {question.map<JSX.Element>((group, index) => {
         const groupId = `${group.getId()}${suffixName}`;
+        const hasErrors = allSumUpInfo.invalidGroupsIndices.includes(index);
 
         return (
           <fieldset className="form-group mb-0 pl-3" key={groupId}>
-            <legend className="fs-6 mb-2 mt-0 text-secondary">
+            <legend
+              className={cn('fs-6 mb-2 mt-0', {
+                'text-danger': hasErrors,
+                'text-secondary': !hasErrors,
+              })}
+            >
               {groupId.replaceAll('_', '.')}. {group.getPrompt()}
             </legend>
-            <Group hasErrors={allSumUpInfo.invalidGroupsIndices.includes(index)}>
+            <Group hasErrors={hasErrors}>
               {group.map((elem) => {
                 if (elem.constructor.name === CompositionQuestion.name) {
                   return (
