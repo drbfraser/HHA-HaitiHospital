@@ -131,13 +131,15 @@ build-docker publish-docker-images:
 
     # Cleanup the image and any tags of that image
     # Run on the CI/CD server, so it can force delete these images because it does not run any of them as containers
-    - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
-      xargs docker rmi --force
+    # - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
+    #   xargs docker rmi --force
     - docker images
     
 
 .deploy-script: &deploy-script
   - cp /var/hhahaiti/.env ./.env
+  - export SERVER_IMAGE="haiti-server"
+  - export CLIENT_IMAGE="haiti-caddy"
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
   - docker image prune -f # remove unused images since we just built new ones
