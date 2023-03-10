@@ -43,6 +43,10 @@ const reportSchema = new Schema<ReportWithInstanceMethods>({
     required: true,
     ref: USER_MODEL_NAME,
   },
+  submittedBy: {
+    type: String,
+    required: true,
+  },
   reportObject: { type: Object, required: true },
 });
 

@@ -71,6 +71,7 @@ describe('report tests', function () {
       .send({
         departmentId: '123',
         submittedUserId: '123',
+        submittedBy: '123',
         reportMonth: new Date(),
         serializedReport,
       })

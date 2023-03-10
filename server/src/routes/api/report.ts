@@ -22,11 +22,13 @@ router.post(
   requireJwtAuth,
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { departmentId, reportMonth, submittedUserId, serializedReport } = req.body;
+      const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport } =
+        req.body;
       // NOTE: May need to sanitize the reportObject before saving
       const newReport = new ReportCollection({
         departmentId,
         submittedUserId,
+        submittedBy,
         reportMonth,
         reportObject: serializedReport,
       });
