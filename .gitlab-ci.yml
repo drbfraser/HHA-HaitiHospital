@@ -138,7 +138,7 @@ build-docker publish-docker-images:
 
 .deploy-script: &deploy-script
   - cp /var/hhahaiti/.env ./.env
-  - export SERVER_IMAGE="haiti-server"
+  - export SERVER_IMAGE="hhahaiti_server"
   - export CLIENT_IMAGE="haiti-caddy"
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
