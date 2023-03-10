@@ -552,7 +552,7 @@ export const seedMessageBoard = async () => {
   }
 };
 
-const setDefaultFeaturedCaseStudy = (user: User) => {
+const setDefaultFeaturedCaseStudy = (user: User, caseStudyTemplate) => {
   try {
     let caseStudy = new CaseStudy({
       caseStudyType: CaseStudyOptions.PatientStory,
@@ -561,13 +561,13 @@ const setDefaultFeaturedCaseStudy = (user: User) => {
       imgPath: 'public/images/case1.jpg',
       featured: true,
       patientStory: {
-        patientsName: faker.name.findName(),
-        patientsAge: faker.random.number({ min: 10, max: 50 }),
-        whereIsThePatientFrom: faker.lorem.words(),
-        whyComeToHcbh: faker.lorem.sentences(),
-        howLongWereTheyAtHcbh: faker.lorem.words(),
-        diagnosis: faker.lorem.sentences(),
-        caseStudyStory: faker.lorem.paragraph(10),
+        patientsName: caseStudyTemplate[1],
+        patientsAge: caseStudyTemplate[2],
+        whereIsThePatientFrom: caseStudyTemplate[3],
+        whyComeToHcbh: caseStudyTemplate[4],
+        howLongWereTheyAtHcbh: caseStudyTemplate[5],
+        diagnosis: caseStudyTemplate[6],
+        caseStudyStory: caseStudyTemplate[7],
       },
     });
     caseStudy.save();
@@ -582,12 +582,112 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
     const users = await UserCollection.find().lean();
     const randomDefaultUser = selectRandomUser(users);
-    setDefaultFeaturedCaseStudy(randomDefaultUser);
-    const numCaseStudiesToGenerate: number = 100;
-    for (let i = 0; i < numCaseStudiesToGenerate; i++) {
+    const caseStudies = [
+      [
+        'Patient Story',
+        'Linda Etienne',
+        '43',
+        'Port-au-Prince',
+        'Severe stomach pain',
+        '3 days',
+        'Gastrointestinal bleeding caused by a peptic ulcer',
+        "Linda Etienne, a 43-year-old mother of three, had been experiencing severe stomach pain for several days before she decided to visit the hospital. At first, she thought it was just a stomach bug and tried to tough it out, but the pain only got worse. Finally, her husband convinced her to seek medical attention. When she arrived at the hospital, Linda was seen by a gastroenterologist who suspected that she might have a peptic ulcer. After some tests, the doctor confirmed that Linda did indeed have an ulcer, and that it had caused gastrointestinal bleeding. Linda was admitted to the hospital and given medication to help control the bleeding and reduce the inflammation in her stomach. She was also advised to make some lifestyle changes, such as avoiding spicy and acidic foods, and reducing her stress levels. After three days in the hospital, Linda's condition had improved significantly. She was discharged with a prescription for medication to continue treating her ulcer, and advised to follow up with her gastroenterologist regularly. Although Linda was initially scared and reluctant to seek medical attention, she was grateful to the hospital staff for their kindness and expertise in helping her recover from her illness. She now knows the importance of taking care of her health and seeking medical help when needed.",
+      ],
+      [
+        'Patient Story',
+        'Jean-Francois Michel',
+        '29',
+        'Cap-Haitien',
+        'Chest pain and shortness of breath',
+        '2 days',
+        'Myocardial infarction (heart attack)',
+        "Jean-Francois Michel, a 29-year-old musician from Cap-Haitien, was rushed to the hospital after experiencing chest pain and shortness of breath. He had been feeling unwell for a few days, but didn't think it was anything serious until the pain became unbearable. When he arrived at the hospital, doctors quickly diagnosed him with a myocardial infarction (heart attack) and began treatment. Jean-Francois underwent surgery to unblock a clogged artery and was monitored closely by hospital staff during his recovery. After two days in the hospital, he was stable enough to be discharged and was advised to make some lifestyle changes, such as quitting smoking and reducing his alcohol intake, to reduce his risk of future heart problems. Jean-Francois was grateful to the hospital staff for their quick and effective treatment, and now takes his health more seriously.",
+      ],
+      [
+        'Training Session',
+        '03-01-2023',
+        'Patient Communication',
+        'Dr. Smith',
+        ['Nurse Johnson', 'Nurse Lee', 'Dr. Patel'],
+        'Improved communication skills will help hospital staff build stronger relationships with patients and improve patient satisfaction.',
+        'During the training, attendees learned about best practices for communicating with patients and how to handle difficult situations. Nurse Johnson shared a story about a patient who was upset and anxious about their upcoming procedure. She used active listening skills and empathy to help the patient feel more comfortable and informed about what to expect. The patient later wrote a letter thanking Nurse Johnson for her care.',
+      ],
+      [
+        'Training Session',
+        '03-07-2023',
+        'Infection Control',
+        'Dr. Garcia',
+        ['Nurse Kim', 'Nurse Singh', 'Dr. Chen'],
+        'Improved infection control practices can help prevent the spread of disease and protect both patients and staff.',
+        "During the training, attendees learned about the importance of proper hand hygiene and how to properly clean and disinfect surfaces. Nurse Kim shared a story about a time when she witnessed a colleague not washing their hands properly before entering a patient's room. She used the opportunity to educate her colleague about the importance of hand hygiene and how it can help protect patients from infections.",
+      ],
+      [
+        'Patient Story',
+        'Louis Charles',
+        '72',
+        'Les Cayes',
+        'Weakness and dizziness',
+        '2 days',
+        'Dehydration and low blood pressure',
+        'Louis Charles, a 72-year-old farmer from Les Cayes, had been feeling weak and dizzy for several days before he decided to visit the hospital. When he arrived, doctors discovered that he was severely dehydrated and had low blood pressure. Louis was admitted to the hospital and given fluids intravenously to help rehydrate him. Doctors also discovered that he had an underlying heart condition that was contributing to his symptoms. Louis was monitored closely by hospital staff during his stay, and after two days, he was stable enough to be discharged. He was advised to continue taking his medication for his heart condition and to drink plenty of fluids to avoid becoming dehydrated again. Louis was grateful to the hospital staff for their quick and effective treatment, and for helping him feel better.',
+      ],
+      [
+        'Patient Story',
+        'Sophie Jean',
+        '18',
+        'Gonaives',
+        'Fever and body aches',
+        '3 days',
+        'Malaria',
+        'Sophie Jean, an 18-year-old student from Gonaives, had been feeling unwell for several days before she decided to visit the hospital. When she arrived, doctors discovered that she had a fever and body aches, and suspected that she might have malaria. After some tests, their suspicions were confirmed, and Sophie was admitted to the hospital to receive treatment. She was given medication to help control the fever and reduce the severity of her symptoms. Hospital staff monitored her closely during her stay, and after three days, she was feeling much better. Sophie was discharged with a prescription for medication to complete her treatment for malaria, and advised to take measures to avoid being bitten by mosquitoes in the future. Sophie was grateful to the hospital staff for their care and attention, and for helping her recover from her illness.',
+      ],
+      [
+        'Patient Story',
+        'Pierre-Jean Louis',
+        '41',
+        'Port-au-Prince',
+        'Abdominal pain and swelling',
+        '5 days',
+        'Gastric cancer',
+        'Pierre-Jean Louis, a 41-year-old taxi driver from Port-au-Prince, had been experiencing abdominal pain and swelling for several weeks before he decided to visit the hospital. When he arrived, doctors discovered a mass in his stomach and suspected that he might have gastric cancer. After some tests, their suspicions were confirmed, and Pierre-Jean was admitted to the hospital to receive treatment. He underwent surgery to remove the cancerous tumor and was closely monitored during his recovery. Hospital staff provided him with emotional support and helped him cope with the difficult news of his diagnosis. After five days in the hospital, Pierre-Jean was stable enough to be discharged, and was advised to continue with further treatment and follow-up appointments. Although he was scared and uncertain about his future, Pierre-Jean was grateful to the hospital staff for their expertise and compassion in helping him through his illness.',
+      ],
+      [
+        'Patient Story',
+        'Marie Antoine',
+        '28',
+        'Jacmel',
+        'Difficulty breathing',
+        '1 day',
+        'Asthma',
+        'Marie Antoine, a 28-year-old teacher from Jacmel, had been experiencing difficulty breathing for several days before she decided to visit the hospital. When she arrived, doctors diagnosed her with asthma and admitted her to the hospital for treatment. She was given medication to help open up her airways and reduce inflammation. Hospital staff monitored her closely during her stay, and after one day, she was feeling much better. Marie was discharged with a prescription for medication to manage her asthma symptoms, and advised to avoid triggers such as cigarette smoke and dust.',
+      ],
+      [
+        'Patient Story',
+        'Jean-Baptiste Dubois',
+        '65',
+        'Leogane',
+        'Chest pain and shortness of breath',
+        '4 days',
+        'Heart attack',
+        'Jean-Baptiste Dubois, a 65-year-old retiree from Leogane, was rushed to the hospital after experiencing severe chest pain and shortness of breath. When he arrived, doctors diagnosed him with a heart attack and admitted him to the hospital for emergency treatment. He underwent surgery to clear blocked arteries and was closely monitored during his recovery. Hospital staff provided him with emotional support and helped him adjust to the lifestyle changes needed to manage his condition. After four days in the hospital, Jean-Baptiste was stable enough to be discharged, and was advised to follow a healthy diet and exercise plan to prevent future heart problems.',
+      ],
+      [
+        'Patient Story',
+        'Jacqueline Francois',
+        '42',
+        'Cap-Haitien',
+        'Severe abdominal pain',
+        '2 days',
+        'Gallstones',
+        'Jacqueline Francois, a 42-year-old market vendor from Cap-Haitien, had been experiencing severe abdominal pain for several days before she decided to visit the hospital. When she arrived, doctors diagnosed her with gallstones and admitted her to the hospital for treatment. She underwent surgery to remove the gallstones and was closely monitored during her recovery. Hospital staff provided her with pain medication and advised her on dietary changes to prevent future gallstones from forming. After two days in the hospital, Jacqueline was feeling much better and was discharged with a prescription for medication to manage her pain.',
+      ],
+    ];
+
+    setDefaultFeaturedCaseStudy(randomDefaultUser, caseStudies[0]);
+
+    for (let i = 1; i < caseStudies.length; i++) {
       const randomUser = selectRandomUser(users);
-      const randomCaseStudy = randomEnumValue(CaseStudyOptions);
-      generateRandomCaseStudy(randomCaseStudy, randomUser);
+      generateRandomCaseStudy(caseStudies[i][0], randomUser, caseStudies[i]);
     }
     console.log('Case studies seeded');
   } catch (err: any) {
@@ -656,7 +756,7 @@ export const seedEmployeeOfTheMonth = async () => {
   }
 };
 
-const generateRandomCaseStudy = (caseStudyType, user: User) => {
+const generateRandomCaseStudy = (caseStudyType, user: User, caseStudyTemplate) => {
   try {
     let caseStudy;
     switch (caseStudyType) {
@@ -668,13 +768,13 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
           imgPath: 'public/images/case1.jpg',
           featured: false,
           patientStory: {
-            patientsName: faker.name.findName(),
-            patientsAge: faker.random.number({ min: 10, max: 50 }),
-            whereIsThePatientFrom: faker.lorem.words(),
-            whyComeToHcbh: faker.lorem.sentences(),
-            howLongWereTheyAtHcbh: faker.lorem.words(),
-            diagnosis: faker.lorem.sentences(),
-            caseStudyStory: faker.lorem.paragraph(10),
+            patientsName: caseStudyTemplate[1],
+            patientsAge: caseStudyTemplate[2],
+            whereIsThePatientFrom: caseStudyTemplate[3],
+            whyComeToHcbh: caseStudyTemplate[4],
+            howLongWereTheyAtHcbh: caseStudyTemplate[5],
+            diagnosis: caseStudyTemplate[6],
+            caseStudyStory: caseStudyTemplate[7],
           },
         });
         caseStudy.save();
@@ -706,11 +806,11 @@ const generateRandomCaseStudy = (caseStudyType, user: User) => {
           featured: false,
           trainingSession: {
             trainingDate: faker.date.recent(),
-            trainingOn: faker.lorem.sentences(),
-            whoConducted: faker.name.findName(),
-            whoAttended: faker.name.findName(),
-            benefitsFromTraining: faker.lorem.sentences(),
-            caseStudyStory: faker.lorem.paragraph(10),
+            trainingOn: caseStudyTemplate[2],
+            whoConducted: caseStudyTemplate[3],
+            whoAttended: caseStudyTemplate[4].toString(),
+            benefitsFromTraining: caseStudyTemplate[5],
+            caseStudyStory: caseStudyTemplate[6],
           },
         });
         caseStudy.save();
