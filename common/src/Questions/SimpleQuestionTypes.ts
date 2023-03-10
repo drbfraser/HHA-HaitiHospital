@@ -9,15 +9,14 @@ export class TextQuestion<ID, ErrorType> extends QuestionLeaf<ID, string, ErrorT
 
 @serializable(undefined, '')
 export class NumericQuestion<ID, ErrorType> extends QuestionLeaf<ID, number, ErrorType> {
-	public override getValidationResults(): ValidationResult<string> {
-		const results = super.getValidationResults();
+  public override getValidationResults(): ValidationResult<string> {
+    const results = super.getValidationResults();
 
-		if (results !== true) {
-			return results;
-		}
-		else if (!isNumber(this.getAnswer())) {
-			return ERROR_NOT_A_INTEGER;
-		}
-		return true;
-	}
+    if (results !== true) {
+      return results;
+    } else if (!isNumber(this.getAnswer())) {
+      return ERROR_NOT_A_INTEGER;
+    }
+    return true;
+  }
 }
