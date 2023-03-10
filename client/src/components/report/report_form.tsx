@@ -90,7 +90,7 @@ export const ReportForm = ({
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
         {buildSubmitButton()}
-        <Group isRootNode>
+        <Group className="mb-2" isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
             questions: reportData,

@@ -1,4 +1,4 @@
-import { NumericQuestion, ValidationResult } from '@hha/common';
+import { NumericQuestion } from '@hha/common';
 import FormField from './FormField';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
@@ -17,7 +17,7 @@ const NumericQuestionFormField = ({
 }): JSX.Element => {
   // inputState has a value of true if the input is valid or
   // if it is of type "ValidationResult<ErrorType>" when the input is invalid
-  const inputState: ValidationResult<ErrorType> = question.getValidationResults();
+  const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ const NumericQuestionFormField = ({
   const updateErrorSetFromSelf = () => setErrorSet((prevErrorSet: Set<ID>) => {
     const nextErrorSet = new Set(prevErrorSet);
 
-    if (inputState !== true) {
+    if (question.getValidationResults() !== true) {
       nextErrorSet.add(question.getId());
     }
     else {

@@ -1,4 +1,4 @@
-import { CompositionQuestion, NumericQuestion, ValidationResult } from '@hha/common';
+import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
@@ -16,7 +16,7 @@ const CompositionQuestionFormField = ({
   readOnly?: boolean;
 }): JSX.Element => {
   const allSumUpInfo = question.getAllSumUpInfo();
-  const inputState: ValidationResult<ErrorType> = question.getValidationResults();
+  const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ const CompositionQuestionFormField = ({
     setErrorSet((prevErrorSet: Set<ID>) => {
       const nextErrorSet = new Set(prevErrorSet);
 
-      if (inputState !== true) {
+      if (question.getValidationResults() !== true) {
         nextErrorSet.add(question.getId());
       } else {
         nextErrorSet.delete(question.getId());
