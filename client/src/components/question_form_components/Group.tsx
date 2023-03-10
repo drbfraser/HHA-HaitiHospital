@@ -3,18 +3,17 @@ import cn from 'classnames';
 
 type GroupProps = {
   children: ReactNode;
-  className?: string;
   hasErrors?: boolean;
   isRootNode?: boolean;
 };
-const Group = ({ children, className, hasErrors, isRootNode }: GroupProps): JSX.Element => (
+const Group = ({ children, hasErrors, isRootNode }: GroupProps): JSX.Element => (
   <div
     className={cn(
       {
         'border-start border-2': !isRootNode,
         'border-danger border-opacity-50': hasErrors,
+        'mb-3': !isRootNode,
       },
-      className,
       'pl-3',
     )}
   >

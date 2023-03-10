@@ -58,7 +58,7 @@ const CompositionQuestionFormField = ({
 
         return (
           <fieldset className="form-group mb-0 pl-3" key={groupId}>
-            <legend className="fs-6 mb-3 mt-0 text-secondary">
+            <legend className="fs-6 mb-2 mt-0 text-secondary">
               {groupId.replaceAll('_', '.')}. {group.getPrompt()}
             </legend>
             <Group hasErrors={allSumUpInfo.invalidGroupsIndices.includes(index)}>
