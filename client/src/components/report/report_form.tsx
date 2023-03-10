@@ -2,13 +2,13 @@ import { QuestionGroup, QuestionNode } from '@hha/common';
 import {
   CompositionQuestionFormField,
   ExpandableQuestionFormField,
-  MultiSelectionQuestionFormField,
-  SingleSelectionQuestionFormField,
-  NumericQuestionFormField,
   Group,
+  MultiSelectionQuestionFormField,
+  NumericQuestionFormField,
+  SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 const buildQuestionFormField = ({
   applyReportChanges,
@@ -20,7 +20,7 @@ const buildQuestionFormField = ({
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
-  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   readOnly?: boolean;
 }): JSX.Element => {
   return (
@@ -68,7 +68,7 @@ export const ReportForm = ({
   btnText?: string;
   readOnly?: boolean;
 }): JSX.Element => {
-  const [errorSet, setErrorSet] = useState<Set<string>>(new Set());
+  const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
 
   const buildSubmitButton = () => {
     return (

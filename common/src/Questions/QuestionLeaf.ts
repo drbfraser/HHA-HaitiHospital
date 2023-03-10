@@ -1,13 +1,6 @@
 // Should represent a single question and have no nested questions.
 import { QuestionAnswerNode } from './QuestionAnswer';
-import { runNumericValidators } from '../Form_Validators';
-
-export interface ValidationError<ErrorType> {
-  readonly error?: ErrorType;
-  readonly message?: string;
-}
-
-export type ValidationResult<ErrorType> = ValidationError<ErrorType> | true;
+import { runNumericValidators, ValidationResult } from '../Form_Validators';
 
 export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionAnswerNode<ID, T, ErrorType> {
   private answer: T | undefined;

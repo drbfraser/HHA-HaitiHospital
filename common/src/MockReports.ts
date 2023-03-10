@@ -41,7 +41,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '1',
     'Beds available',
-    19,
+    18,
   );
   q1.addValidator('isPositive');
   q1.addValidator('isEven');

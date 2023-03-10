@@ -26,7 +26,7 @@ const FormField = (props: FormFieldProps) => {
             'form-control': !props.readOnly,
             'form-control-plaintext': props.readOnly,
           },
-          'w-50 ',
+          'w-50',
         )}
         id={props.nameId}
         min={props.min}

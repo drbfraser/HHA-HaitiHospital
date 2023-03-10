@@ -4,6 +4,22 @@
 import { serializable } from '../Serializer/ObjectSerializer';
 import { SpecializedGroup } from '.';
 import { QuestionAnswerNode, QuestionAnswerParent } from './QuestionAnswer';
+import {
+  ERROR_DOES_NOT_SUM_UP,
+  ERROR_NOT_A_INTEGER,
+  isNumber,
+  ValidationResult,
+} from '../Form_Validators';
+
+type ChildType<ID, ErrorType> = SpecializedGroup<
+  ID,
+  ErrorType,
+  QuestionAnswerNode<ID, number, ErrorType>
+>;
+type AllSumUpInfo = {
+  areAllSumsCorrect: boolean;
+  invalidGroupsIndices: number[];
+};
 
 @serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
@@ -12,22 +28,14 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   ErrorType
 > {
   private answer: number | undefined = 0;
-  private readonly compositionGroups: Array<
-    SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>
-  >;
+  private readonly compositionGroups: Array<ChildType<ID, ErrorType>>;
 
-  constructor(
-    id: ID,
-    prompt: string,
-    ...questions: Array<SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>>
-  ) {
+  constructor(id: ID, prompt: string, ...questions: Array<ChildType<ID, ErrorType>>) {
     super(id, prompt);
     this.compositionGroups = questions;
   }
 
-  public searchById(
-    id: ID,
-  ): SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>> | undefined {
+  public searchById(id: ID): ChildType<ID, ErrorType> | undefined {
     return this.compositionGroups.find((question) => question.getId() === id);
   }
 
@@ -40,9 +48,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
     this.answer = answer >= 0 ? answer : this.answer;
   }
 
-  private compositionGroupSumsUp(
-    compositionGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>,
-  ): boolean {
+  private compositionGroupSumsUp(compositionGroup: ChildType<ID, ErrorType>): boolean {
     return (
       compositionGroup
         .map((question) => question.getAnswer() ?? 0)
@@ -50,34 +56,47 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
     );
   }
 
-  public getCompositionQuestionsBySumsUp(
-    sumsUp: boolean,
-  ): Array<SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>> {
+  /*public getCompositionQuestionsBySumsUp(sumsUp: boolean): Array<ChildType<ID, ErrorType>> {
     return this.compositionGroups.filter(
       (compositionGroup) => this.compositionGroupSumsUp(compositionGroup) === sumsUp,
     );
-  }
+  }*/
 
-  public allSumUp(): boolean {
-    if (this.compositionGroups.length === 0) return true;
-    return this.compositionGroups
-      .map((compositionGroup) => this.compositionGroupSumsUp(compositionGroup))
+  public getAllSumUpInfo(): AllSumUpInfo {
+    const info: AllSumUpInfo = {
+      areAllSumsCorrect: true,
+      invalidGroupsIndices: [],
+    };
+
+    if (this.compositionGroups.length === 0) {
+      return info;
+    }
+
+    info.areAllSumsCorrect = this.compositionGroups
+      .map((compositionGroup, index) => {
+        const doesGroupSumAddUpToAns = this.compositionGroupSumsUp(compositionGroup);
+        !doesGroupSumAddUpToAns && info.invalidGroupsIndices.push(index);
+        return doesGroupSumAddUpToAns;
+      })
       .reduce((bool1, bool2) => bool1 && bool2);
+
+    return info;
   }
 
-  public forEach(
-    numberGroupHandler: (
-      numberGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>,
-    ) => void,
-  ): void {
+  public getValidationResults(): ValidationResult<string> {
+    if (!isNumber(this.getAnswer())) {
+      return ERROR_NOT_A_INTEGER;
+    } else if (!this.getAllSumUpInfo().areAllSumsCorrect) {
+      return ERROR_DOES_NOT_SUM_UP;
+    }
+    return true;
+  }
+
+  public forEach(numberGroupHandler: (numberGroup: ChildType<ID, ErrorType>) => void): void {
     this.compositionGroups.forEach(numberGroupHandler);
   }
 
-  public map<T>(
-    mapper: (
-      numberGroup: SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>,
-    ) => T,
-  ): T[] {
+  public map<T>(mapper: (numberGroup: ChildType<ID, ErrorType>, index: number) => T): T[] {
     return this.compositionGroups.map(mapper);
   }
 }

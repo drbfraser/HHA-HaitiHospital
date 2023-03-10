@@ -1,98 +1,45 @@
-import {
-  CompositionQuestion,
-  NumericQuestion,
-  ValidationResult,
-  ERROR_DOES_NOT_SUM_UP,
-  ERROR_NOT_A_INTEGER,
-  isNumber,
-} from '@hha/common';
+import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import cn from 'classnames';
 
 const CompositionQuestionFormField = ({
   applyReportChanges,
   question,
   setErrorSet,
-  readOnly,
   suffixName,
-  allSumUp,
-  compositionParentId,
-  setParentCompositionState,
+  readOnly,
 }: {
   applyReportChanges: () => void;
   question: CompositionQuestion<ID, ErrorType>;
-  setErrorSet: Dispatch<SetStateAction<Set<string>>>;
+  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   suffixName: string;
-  allSumUp?: () => boolean;
-  compositionParentId?: string;
-  setParentCompositionState?: Dispatch<SetStateAction<ValidationResult<string>>>;
   readOnly?: boolean;
 }): JSX.Element => {
-  const [inputState, setInputState] = useState<ValidationResult<string>>(true);
+  const allSumUpInfo = question.getAllSumUpInfo();
+  const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
+
     applyReportChanges();
+    updateErrorSetFromSelf();
+  };
 
-    if (!isNumber(newValue)) {
-      // If the input is not a number, then set the error and input state to ERROR_NOT_A_INTEGER
-      setInputState(ERROR_NOT_A_INTEGER);
-      setErrorSet((prev) => new Set(prev).add(question.getId()));
-    } else if (question.allSumUp()) {
-      setInputState(true);
-      setErrorSet((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(question.getId());
-        return newSet;
-      });
-    } else {
-      setInputState(ERROR_DOES_NOT_SUM_UP);
-      setErrorSet((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(question.getId());
-        return newSet;
-      });
-    }
+  const updateErrorSetFromSelf = () => {
+    setErrorSet((prevErrorSet: Set<ID>) => {
+      const nextErrorSet = new Set(prevErrorSet);
 
-    // Check if this composition question is not part of a composition question and
-    // then remove if it previously had errors registered to its ID
-    if (typeof allSumUp !== 'function') {
-      isNumber(newValue) &&
-        question.allSumUp() &&
-        setErrorSet((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(question.getId());
-          return newSet;
-        });
-      return;
-    }
+      if (question.getValidationResults() !== true) {
+        nextErrorSet.add(question.getId());
+      } else {
+        nextErrorSet.delete(question.getId());
+      }
 
-    // If this composition question is part of a composition question,
-    // then check if that parent composition question is valid and
-    // set the error and input state of the parent composition question
-    if (!allSumUp()) {
-      setParentCompositionState(ERROR_DOES_NOT_SUM_UP);
-      setErrorSet((prev) => new Set(prev).add(question.getId()));
-      return;
-    }
-
-    // If the parent composition question is valid,
-    // then remove the errors related to the parent composition question and
-    // set the input state of the parent composition question to true
-    setErrorSet((prev) => {
-      const newSet = new Set(prev);
-      newSet.forEach((id) => {
-        if (id === question.getId()) {
-          isNumber(newValue) && question.allSumUp() && newSet.delete(id);
-        } else if (id.startsWith(compositionParentId)) {
-          newSet.delete(id);
-        }
-      });
-      return newSet;
+      return nextErrorSet;
     });
-    setParentCompositionState(true);
   };
 
   return (
@@ -107,42 +54,49 @@ const CompositionQuestionFormField = ({
         value={question.getAnswer()}
         readOnly={readOnly}
       />
-      {question.map<JSX.Element>((group) => {
+      {question.map<JSX.Element>((group, index) => {
         const groupId = `${group.getId()}${suffixName}`;
+        const hasErrors = allSumUpInfo.invalidGroupsIndices.includes(index);
 
         return (
           <fieldset className="form-group mb-0 pl-3" key={groupId}>
-            <legend className="fs-6 mb-3 mt-0 text-secondary">
+            <legend
+              className={cn('fs-6 mb-2 mt-0', {
+                'text-danger': hasErrors,
+                'text-secondary': !hasErrors,
+              })}
+            >
               {groupId.replaceAll('_', '.')}. {group.getPrompt()}
+              {hasErrors && <i className="bi bi-exclamation-circle ms-2" />}
             </legend>
-            <Group>
+            <Group hasErrors={hasErrors}>
               {group.map((elem) => {
                 if (elem.constructor.name === CompositionQuestion.name) {
                   return (
                     <CompositionQuestionFormField
-                      allSumUp={() => question.allSumUp()}
                       applyReportChanges={applyReportChanges}
-                      compositionParentId={question.getId()}
                       key={`${elem.getId()}${suffixName}`}
                       question={elem as CompositionQuestion<ID, ErrorType>}
-                      setErrorSet={setErrorSet}
-                      setParentCompositionState={setInputState}
-                      suffixName={suffixName}
                       readOnly={readOnly}
+                      setErrorSet={(value: SetStateAction<Set<ID>>) => {
+                        updateErrorSetFromSelf();
+                        setErrorSet(value);
+                      }}
+                      suffixName={suffixName}
                     />
                   );
                 } else if (elem.constructor.name === NumericQuestion.name) {
                   return (
                     <NumericQuestionFormField
-                      allSumUp={() => question.allSumUp()}
                       applyReportChanges={applyReportChanges}
-                      compositionParentId={question.getId()}
                       key={`${elem.getId()}${suffixName}`}
                       question={elem as NumericQuestion<ID, ErrorType>}
-                      setErrorSet={setErrorSet}
-                      setParentCompositionState={setInputState}
-                      suffixName={suffixName}
                       readOnly={readOnly}
+                      setErrorSet={(value: SetStateAction<Set<ID>>) => {
+                        updateErrorSetFromSelf();
+                        setErrorSet(value);
+                      }}
+                      suffixName={suffixName}
                     />
                   );
                 }
