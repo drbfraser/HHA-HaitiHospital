@@ -14,7 +14,6 @@ import { TOAST_REPORTS_GET } from 'constants/toastErrorMessages';
 import { JsonReportDescriptor } from '@hha/common';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useDepartmentData } from 'hooks';
 import { userLocale, dateOptions } from 'constants/date';
 
 const GeneralReports = () => {
@@ -38,7 +37,7 @@ const GeneralReports = () => {
       controller.abort();
     };
   }, [history]);
-  const { departmentIdKeyMap } = useDepartmentData();
+
   useEffect(() => {
     getReports();
   }, [getReports]);
@@ -77,9 +76,8 @@ const GeneralReports = () => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{t('reportsReportId')}</th>
-                <th scope="col">{t('reportsDepartment')}</th>
                 <th scope="col">{t('reportsSubmissionDate')}</th>
-                <th scope="col">{t('reportsOptions')}</th>
+                <th scope="col">{t('reportsSubmittedBy')}</th>
               </tr>
             </thead>
             <tbody>
@@ -87,19 +85,19 @@ const GeneralReports = () => {
                 return (
                   <tr key={item._id}>
                     <th scope="row">{reportNumberIndex + index + 1}</th>
-                    <td>{item.reportObject.id}</td>
-                    <td>{t(departmentIdKeyMap.get(item.departmentId))}</td>
-                    <td>
-                      {new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                    </td>
                     <td>
                       <Link
                         to={'/report-view/' + item._id}
                         className="btn-link text-decoration-none"
                       >
-                        {t('reportsOpenReport')}
+                        {item.reportObject.id}
                       </Link>
                     </td>
+                    <td>
+                      {item.submittedDate &&
+                        new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                    </td>
+                    <td>{item.submittedBy}</td>
                   </tr>
                 );
               })}
