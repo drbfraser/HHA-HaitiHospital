@@ -32,7 +32,7 @@ export const Department = (props: DepartmentProps) => {
   const { deptId } = useParams<{ deptId: string }>();
   const { t } = useTranslation();
 
-  // Pagination
+  // Pagination variables
   const [currentPage, setCurrentPage] = useState(1);
   const currentTableData: IReportObject<any>[] = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PAGE_SIZE;
