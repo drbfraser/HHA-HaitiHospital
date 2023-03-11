@@ -30,15 +30,20 @@ export const EditUserForm = (props: UserEditProps) => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchAndSetUser = async () => {
       const fetchedUser: UserDetails = await Api.Get(
         ENDPOINT_ADMIN_GET_BY_ID(id),
         ResponseMessage.getMsgFetchUserFailed(),
         history,
+        controller.signal,
       );
       setUser(fetchedUser);
     };
     fetchAndSetUser();
+    return () => {
+      controller.abort();
+    };
   }, [history, id]);
 
   useDidMountEffect(

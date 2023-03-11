@@ -30,7 +30,18 @@ const Admin = (props: AdminProps) => {
   };
 
   const getUsers = useCallback(async () => {
-    setUsers(await Api.Get(ENDPOINT_ADMIN_GET, ResponseMessage.getMsgFetchUsersFailed(), history));
+    const controller = new AbortController();
+    setUsers(
+      await Api.Get(
+        ENDPOINT_ADMIN_GET,
+        ResponseMessage.getMsgFetchUsersFailed(),
+        history,
+        controller.signal,
+      ),
+    );
+    return () => {
+      controller.abort();
+    };
   }, [history]);
 
   const deleteUser = async (id: string) => {
