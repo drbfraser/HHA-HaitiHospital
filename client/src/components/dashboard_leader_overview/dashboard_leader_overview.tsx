@@ -14,10 +14,16 @@ const DashboardLeaderOverview = (props: DashboardLeaderProps) => {
   const history: History = useHistory<History>();
 
   useEffect(() => {
+    const controller = new AbortController();
     const getLeaderboard = async () => {
-      setLeaderboard(await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history));
+      setLeaderboard(
+        await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history, controller.signal),
+      );
     };
     getLeaderboard();
+    return () => {
+      controller.abort();
+    };
   }, [history]);
 
   const { t } = useTranslation();

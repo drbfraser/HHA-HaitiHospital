@@ -35,6 +35,7 @@ export const fromReportToTemplate = (report: ReportDescriptor): Template => {
     id: report.id,
     departmentId: report.departmentId,
     submittedByUserId: report.submittedUserId,
+    submittedBy: report.submittedBy,
     submittedDate: report.submittedDate,
     items: emptyItems,
   };
@@ -55,6 +56,7 @@ export const fromTemplateToReport = (doc: Template): ReportDescriptor => {
     departmentId: doc.departmentId,
     submittedDate: doc.submittedDate,
     submittedUserId: doc.submittedByUserId,
+    submittedBy: doc.submittedBy,
   };
   let items: ReportItems = doc.items;
   return (report = { ...meta, items: items });

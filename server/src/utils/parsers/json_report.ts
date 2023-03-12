@@ -9,6 +9,7 @@ export const parseToJson = async (report: ReportDescriptor) => {
   const departmentId: string = report.departmentId;
   const submittedDate: string = formatDateString(report.submittedDate);
   const submittedUserId: string = report.submittedUserId;
+  const submittedBy: string = report.submittedBy;
   const items: JsonReportItems = parseToJsonItems(report.items);
 
   const jsonReport: JsonReportDescriptor = {
@@ -20,6 +21,7 @@ export const parseToJson = async (report: ReportDescriptor) => {
       },
       submittedDate: submittedDate,
       submittedUserId: submittedUserId,
+      submittedBy: submittedBy,
     },
     items: items,
   };

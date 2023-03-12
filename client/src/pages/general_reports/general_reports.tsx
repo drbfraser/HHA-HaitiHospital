@@ -26,12 +26,17 @@ const GeneralReports = () => {
   const history = useHistory<History>();
   const [reports, setReports] = useState<JsonReportDescriptor[]>([]);
   const getReports = useCallback(async () => {
+    const controller = new AbortController();
     const fetchedReports: JsonReportDescriptor[] = await Api.Get(
       ENDPOINT_REPORTS,
       TOAST_REPORTS_GET,
       history,
+      controller.signal,
     );
     setReports(fetchedReports);
+    return () => {
+      controller.abort();
+    };
   }, [history]);
   const { departmentIdKeyMap } = useDepartmentData();
   useEffect(() => {

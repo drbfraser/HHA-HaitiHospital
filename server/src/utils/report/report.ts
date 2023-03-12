@@ -39,6 +39,7 @@ export const generateReportForMonth = async (
       departmentId: deptId,
       submittedDate: new Date(),
       submittedUserId: requestor._id!,
+      submittedBy: requestor.name,
       reportMonth: reportMonth,
       items: [],
     };

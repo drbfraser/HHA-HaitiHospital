@@ -38,9 +38,15 @@ const DepartmentReport = (props: DepartmentReportProps) => {
   const history: History = useHistory<History>();
 
   useEffect(() => {
+    const controller = new AbortController();
     const getDepartmentById = async (id: string) => {
       setDepartment(
-        await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(id), TOAST_DEPARTMENT_GET, history),
+        await Api.Get(
+          ENDPOINT_DEPARTMENT_GET_BY_ID(id),
+          TOAST_DEPARTMENT_GET,
+          history,
+          controller.signal,
+        ),
       );
     };
     getDepartmentById(deptId);
@@ -100,6 +106,9 @@ const DepartmentReport = (props: DepartmentReportProps) => {
     }
     console.log(data);
     setCsvData(data);
+    return () => {
+      controller.abort();
+    };
   }, [deptId, report, history]);
 
   // Get Report Id when Loaded

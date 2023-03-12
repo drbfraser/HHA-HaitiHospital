@@ -30,12 +30,17 @@ export const Department = (props: DepartmentProps) => {
   const [reports, setReports] = useState<any[]>([]);
 
   const getReports = useCallback(async () => {
+    const controller = new AbortController();
     const fetchedReports = await Api.Get(
       ENDPOINT_REPORTS_GET_BY_DEPARTMENT(deptId),
       TOAST_REPORTS_GET,
       history,
+      controller.signal,
     );
     setReports(fetchedReports);
+    return () => {
+      controller.abort();
+    };
   }, [deptId, history]);
 
   useEffect(() => {
@@ -43,9 +48,15 @@ export const Department = (props: DepartmentProps) => {
   }, [getReports]);
 
   useEffect(() => {
+    const controller = new AbortController();
     const getDepartmentById = async (id: string) => {
       setDepartment(
-        await Api.Get(ENDPOINT_DEPARTMENT_GET_BY_ID(id), TOAST_DEPARTMENT_GET, history),
+        await Api.Get(
+          ENDPOINT_DEPARTMENT_GET_BY_ID(id),
+          TOAST_DEPARTMENT_GET,
+          history,
+          controller.signal,
+        ),
       );
     };
 
@@ -54,6 +65,9 @@ export const Department = (props: DepartmentProps) => {
     } catch (e) {
       history.push('/notFound');
     }
+    return () => {
+      controller.abort();
+    };
   }, [history, deptId]);
 
   return (
@@ -94,7 +108,7 @@ export const Department = (props: DepartmentProps) => {
               <th scope="col">#</th>
               <th scope="col">{t('reportsReportId')}</th>
               <th scope="col">{t('reportsSubmissionDate')}</th>
-              <th scope="col">{t('reportsOptions')}</th>
+              <th scope="col">{t('reportsSubmittedBy')}</th>
             </tr>
           </thead>
           <tbody>
@@ -102,16 +116,16 @@ export const Department = (props: DepartmentProps) => {
               return (
                 <tr key={item._id}>
                   <th scope="row">{index + 1}</th>
-                  <td>{item.reportObject.id}</td>
+                  <td>
+                    <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
+                      {item.reportObject.id}
+                    </Link>
+                  </td>
                   <td>
                     {item.submittedDate &&
                       new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
                   </td>
-                  <td>
-                    <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
-                      {t('reportsOpenReport')}
-                    </Link>
-                  </td>
+                  <td>{item.submittedBy}</td>
                 </tr>
               );
             })}
