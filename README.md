@@ -42,7 +42,6 @@ team to deploy it for summer 2022.
 - Backend Coupling Resolution between API Routing and Backend Logic
 - Frontend Coupling Resolution for API Calls and Business Logic
 - Dynamic Form Creation/Data Rendering
-- Editing Report For Department
 - Displaying Frontend Report Aggregation
 - Automatic Unit Testing/Integration
 - Creole Translation
@@ -228,9 +227,26 @@ $npm run seed
 ```
 
 ### Gitlab Runners
+
 - Gitlab runners are administered directly by Dr Brian
-- It is important to not change how jobs are picked up by runners as this affects projects outside of this repo
-- It is possible to run and test steps in the pipeline locally. [This is a useful guide to get started.](https://www.linkedin.com/pulse/how-execute-gitlab-ci-docker-your-local-machine-shubham-takode/)
+- It is important to not change how jobs are picked up by runners as this affects projects outside
+  of this repo
+- It is possible to run and test steps in the pipeline locally.
+  [This is a useful guide to get started.](https://www.linkedin.com/pulse/how-execute-gitlab-ci-docker-your-local-machine-shubham-takode/)
+
+## MongoDB in non-local environments
+
+If the mongoDB is not seeded you may need to seed it.
+
+To do so:
+
+1. Successfully deploy the project
+2. SSH into the server
+3. Find the ID of the server container (via `docker container ls`)
+4. run: `docker exec -it <container-id> bash`
+5. run: `cd server`
+6. run: `npm run seed`
 
 ### License
+
 GNU GPL
