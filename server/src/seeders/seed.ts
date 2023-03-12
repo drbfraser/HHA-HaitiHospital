@@ -67,7 +67,7 @@ export const seedUsers = async () => {
     // Delete seeded users on server start so we can reseed them.
     await UserCollection.deleteMany({});
 
-    for (const index of [...Array(7).keys()]) {
+    for (const index of [...Array(14).keys()]) {
       const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
@@ -120,15 +120,92 @@ export const seedUsers = async () => {
               nameMapper,
             );
             break;
+          case 7:
+            foundUser.role = Role.Admin;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
+            break;
+          case 8:
+            foundUser.role = Role.MedicalDirector;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
+            break;
+          case 9:
+            foundUser.role = Role.HeadOfDepartment;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
+            break;
+          case 10:
+            foundUser.role = Role.User;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Community,
+              nameMapper,
+            );
+            break;
+          case 11:
+            foundUser.role = Role.User;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Rehab,
+              nameMapper,
+            );
+            break;
+          case 12:
+            foundUser.role = Role.User;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Maternity,
+              nameMapper,
+            );
+            break;
+          case 13:
+            foundUser.role = Role.User;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
+            break;
           default:
             break;
         }
         foundUser.save();
       } else {
+        let name;
+        if (index >= 7 && index <= 13) {
+          switch (index) {
+            case 7:
+              name = 'Michael Admin';
+              break;
+            case 8:
+              name = 'Michael MD';
+              break;
+            case 9:
+              name = 'Michael HOD';
+              break;
+            case 10:
+              name = 'Michael Communinty User';
+              break;
+            case 11:
+              name = 'Michael Rehab User';
+              break;
+            case 12:
+              name = 'Michael Maternity User';
+              break;
+            case 13:
+              name = 'Michael NICU User';
+              break;
+          }
+        } else {
+          name = faker.name.findName();
+        }
         const user = new UserCollection({
           username: `user${index}`,
           password: ENV.PASSWORD_SEED,
-          name: faker.name.findName(),
+          name: name,
         });
 
         switch (index) {
@@ -175,6 +252,55 @@ export const seedUsers = async () => {
             );
             break;
           case 6:
+            user.role = Role.User;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
+            break;
+          case 7:
+            user.role = Role.Admin;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
+            break;
+          case 8:
+            user.role = Role.MedicalDirector;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.General,
+              nameMapper,
+            );
+            break;
+          case 9:
+            user.role = Role.HeadOfDepartment;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.NICU,
+              nameMapper,
+            );
+            break;
+          case 10:
+            user.role = Role.User;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Community,
+              nameMapper,
+            );
+            break;
+          case 11:
+            user.role = Role.User;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Rehab,
+              nameMapper,
+            );
+            break;
+          case 12:
+            user.role = Role.User;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.Maternity,
+              nameMapper,
+            );
+            break;
+          case 13:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
               DefaultDepartments.NICU,
