@@ -41,24 +41,24 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '1',
     'Beds available',
-    18,
+    0,
   );
   q1.addValidator('isPositive');
   q1.addValidator('isEven');
   const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '2',
     'Beds days',
-    434,
+    0,
   );
   const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '3',
     'Patient days',
-    377,
+    0,
   );
   const q4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '4',
     'Hospitalized',
-    17,
+    0,
   );
 
   // Question 5
