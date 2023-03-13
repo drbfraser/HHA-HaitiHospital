@@ -51,7 +51,11 @@ export class ImmutableChoice {
   }
 }
 
-export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
+export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<
+  ID,
+  T,
+  ErrorType
+> {
   protected readonly choices: Array<Choice> = new Array<Choice>();
 
   constructor(id: ID, prompt: string, choices: string[], defaultAnswer?: T) {
