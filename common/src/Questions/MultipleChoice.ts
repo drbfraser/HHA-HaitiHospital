@@ -2,6 +2,7 @@
     alternative answers. A class exists for a question representing a multiple
     selection MCQ or a single selection MCQ.
 */
+import { ERROR_AT_LEAST_ONE_CHOICE, ValidationResult } from '../Form_Validators';
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
 
@@ -50,11 +51,7 @@ export class ImmutableChoice {
   }
 }
 
-export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<
-  ID,
-  T,
-  ErrorType
-> {
+export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionLeaf<ID, T, ErrorType> {
   protected readonly choices: Array<Choice> = new Array<Choice>();
 
   constructor(id: ID, prompt: string, choices: string[], defaultAnswer?: T) {
@@ -74,6 +71,14 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
   // Return the choice descriptions in their respective order.
   public getChoices(): Array<ImmutableChoice> {
     return this.choices.map((choice) => new ImmutableChoice(choice));
+  }
+
+  public override getValidationResults(): ValidationResult<string> {
+    //check if any of the choices were chosen
+    if (this.choices.every((choice) => !choice.wasChosen())) {
+      return ERROR_AT_LEAST_ONE_CHOICE;
+    }
+    return true;
   }
 }
 

@@ -29,6 +29,11 @@ export const ERROR_DOES_NOT_SUM_UP: ValidationResult<string> = {
   error: 'DOES_NOT_SUM_UP',
 };
 
+export const ERROR_AT_LEAST_ONE_CHOICE: ValidationResult<string> = {
+  message: 'Please select at least one choice',
+  error: 'AT_LEAST_ONE_CHOICE',
+};
+
 //Validators for different types of questions
 export const isNumber = (x: any): boolean => {
   return !isNaN(parseInt(x));
