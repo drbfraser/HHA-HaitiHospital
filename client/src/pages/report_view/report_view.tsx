@@ -11,6 +11,7 @@ import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
 import { userLocale, dateOptions } from 'constants/date';
+import { useTranslation } from 'react-i18next';
 
 const ReportView = () => {
   const history = useHistory<History>();
@@ -20,6 +21,7 @@ const ReportView = () => {
   const report_id = useLocation().pathname.split('/')[2];
   const { departmentIdKeyMap } = useDepartmentData();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const { t } = useTranslation();
 
   const applyReportChanges = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
@@ -71,7 +73,14 @@ const ReportView = () => {
           <Sidebar />
           <main>
             <Header />
-            <>
+
+            <div className="mb-3 d-flex justify-content-start">
+              <button className="btn btn-outline-dark" onClick={history.goBack}>
+                {t('reportViewBack')}
+              </button>
+            </div>
+
+            <div>
               <header>
                 <h1>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h1>
                 <h2>
@@ -93,7 +102,7 @@ const ReportView = () => {
                   readOnly={readOnly}
                 />
               </div>
-            </>
+            </div>
           </main>
         </div>
       )}

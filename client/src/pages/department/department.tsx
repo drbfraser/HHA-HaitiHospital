@@ -1,7 +1,8 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import SideBar from 'components/side_bar/side_bar';
+import Pagination from 'components/pagination/Pagination';
 import Header from 'components/header/header';
 import Api from 'actions/Api';
 import {
@@ -15,23 +16,34 @@ import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
 import { History } from 'history';
 import { userLocale, dateOptions } from 'constants/date';
 
+const PAGE_SIZE = 10;
+
 interface DepartmentProps {}
 
 export const Department = (props: DepartmentProps) => {
-  const { t } = useTranslation();
-  //   const authState = useAuthState();
-  const { deptId } = useParams<{ deptId: string }>();
-  const [department, setDepartment] = useState<DepartmentModel>(EMPTY_DEPARTMENT);
-  const history: History = useHistory<History>();
   const [dateRange, setDayRange] = useState<DayRange>({
     from: null,
     to: null,
   });
-  const [reports, setReports] = useState<any[]>([]);
+  const [department, setDepartment] = useState<DepartmentModel>(EMPTY_DEPARTMENT);
+  const [reports, setReports] = useState<IReportObject<any>[]>([]);
+  //const authState = useAuthState();
+  const history: History = useHistory<History>();
+  const { deptId } = useParams<{ deptId: string }>();
+  const { t } = useTranslation();
+
+  // Pagination variables
+  const [currentPage, setCurrentPage] = useState(1);
+  const currentTableData: IReportObject<any>[] = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PAGE_SIZE;
+    const lastPageIndex = firstPageIndex + PAGE_SIZE;
+    return reports.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, reports]);
+  const reportNumberIndex = currentPage * PAGE_SIZE - PAGE_SIZE;
 
   const getReports = useCallback(async () => {
     const controller = new AbortController();
-    const fetchedReports = await Api.Get(
+    const fetchedReports: IReportObject<any>[] = await Api.Get(
       ENDPOINT_REPORTS_GET_BY_DEPARTMENT(deptId),
       TOAST_REPORTS_GET,
       history,
@@ -112,10 +124,10 @@ export const Department = (props: DepartmentProps) => {
             </tr>
           </thead>
           <tbody>
-            {reports?.map((item, index) => {
+            {currentTableData.map((item, index) => {
               return (
                 <tr key={item._id}>
-                  <th scope="row">{index + 1}</th>
+                  <th scope="row">{reportNumberIndex + index + 1}</th>
                   <td>
                     <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
                       {item.reportObject.id}
@@ -131,6 +143,14 @@ export const Department = (props: DepartmentProps) => {
             })}
           </tbody>
         </table>
+
+        <Pagination
+          className="pagination-bar"
+          currentPage={currentPage}
+          onPageChange={(page) => setCurrentPage(page)}
+          pageSize={PAGE_SIZE}
+          totalCount={reports.length}
+        />
       </main>
     </div>
   );
