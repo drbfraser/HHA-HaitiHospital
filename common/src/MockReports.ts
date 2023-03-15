@@ -78,7 +78,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q5_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '5_2',
     'No. Days in Rehab Unit from admission to discharge',
-    230,
+    0,
   );
 
   const q5_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
@@ -129,7 +129,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     '5_6',
     'Mobility Aid/Assistive Device Given?',
     ['Wheelchair', 'Walker', 'Cane', 'Crutches'],
-    [0, 2],
+    [],
   );
 
   const q5_7: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
