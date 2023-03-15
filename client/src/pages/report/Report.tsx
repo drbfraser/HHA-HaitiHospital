@@ -7,7 +7,7 @@ import { TOAST_REPORT_POST as ERR_TOAST } from 'constants/toastErrorMessages';
 import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
 import { TOAST_REPORT_POST as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
-import { useHistory } from 'react-router-dom';
+import { Prompt, useHistory } from 'react-router-dom';
 import { History } from 'history';
 import { useEffect, useState } from 'react';
 import { Department } from 'constants/interfaces';
@@ -16,6 +16,7 @@ import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
 
 export const Report = () => {
+  const [areChangesMade, setAreChangesMade] = useState(false);
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,10 +27,12 @@ export const Report = () => {
   const { departments } = useDepartmentData();
 
   const applyReportChanges = () => {
+    !areChangesMade && setAreChangesMade(true);
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
-  const clearCurrentDepartment = (): void => {
+  const clearCurrentDepartment = () => {
+    setAreChangesMade(false);
     setCurrentDepartment(undefined);
     setReport(undefined);
   };
@@ -66,7 +69,7 @@ export const Report = () => {
   };
 
   // Generate a form ID based on the current date, time, and user ID
-  function generateFormId(userName, reportPrompt) {
+  const generateFormId = (userName: string, reportPrompt: string) => {
     const words = userName.trim().split(/\s+/);
     let userId = '';
     let spaces = 0;
@@ -93,6 +96,7 @@ export const Report = () => {
     const second = now.getSeconds().toString().padStart(2, '0');
     return `${reportPrompt}_${year}-${month}-${day}_${hour}-${minute}-${second}-${userId}`;
   }
+
   useEffect(() => {
     const controller = new AbortController();
     const getTemplates = async () => {
@@ -119,6 +123,16 @@ export const Report = () => {
     };
   }, [currentDepartment, history, objectSerializer]);
 
+  useEffect(() => {
+    if (areChangesMade) {
+      window.onbeforeunload = () => true
+    } else {
+      window.onbeforeunload = undefined;
+    }
+
+    return () => window.onbeforeunload = undefined;
+  }, [areChangesMade]);
+
   return (
     <div className="department">
       <SideBar />
@@ -139,6 +153,9 @@ export const Report = () => {
           show={isShowingModal}
           title={'Confirm Submission'}
         />
+        <Prompt
+          message="Are you sure you want to leave? You may have unsaved changes!"
+          when={areChangesMade}/>
         {!report && departments && (
           <div className="col-md-6 mb-5">
             <h1 className="text-start">Submit a report</h1>
@@ -165,7 +182,15 @@ export const Report = () => {
         )}
         {report && (
           <>
-            <button className="btn btn-outline-secondary" onClick={clearCurrentDepartment}>
+            <button className="btn btn-outline-secondary" onClick={() => {
+              if (areChangesMade) {
+                if (!window.confirm("Are you sure you want to leave? You may have unsaved changes!")) {
+                  return;
+                }
+              }
+
+              clearCurrentDepartment();
+            }}>
               <i className="bi bi-chevron-left me-2" />
               Choose Different Department
             </button>
