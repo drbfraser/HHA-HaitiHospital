@@ -32,7 +32,7 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 router.put(
   '/',
   requireJwtAuth,
-  roleAuth(Role.Admin),
+  roleAuth(Role.Admin, Role.MedicalDirector),
   registerEmployeeOfTheMonthEdit,
   validateInput,
   upload.single('file'),
