@@ -8,18 +8,26 @@ import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessag
 import { TOAST_REPORT_POST as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
 import { Prompt, useHistory } from 'react-router-dom';
-import { History } from 'history';
+import { Action, History, Location } from 'history';
 import { useEffect, useState } from 'react';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
 
+const UNSAVED_CHANGES_MSG = 'Are you sure you want to leave? You may have unsaved changes!';
+type NavigationInfo = null | {
+  action: Action;
+  location: Location;
+};
+
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
-  const [isShowingModal, setIsShowingModal] = useState(false);
+  const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
+  const [isShowingSubmissionModal, setIsShowingSubmissionModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
@@ -39,7 +47,7 @@ export const Report = () => {
 
   const confirmSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsShowingModal(true);
+    setIsShowingSubmissionModal(true);
   };
 
   const submitReport = () => {
@@ -55,7 +63,7 @@ export const Report = () => {
       submittedBy: user?.userDetails?.name,
     };
 
-    setIsShowingModal(false);
+    setIsShowingSubmissionModal(false);
     setIsSubmitting(true);
     Api.Post(
       ENDPOINT_REPORTS,
@@ -95,7 +103,7 @@ export const Report = () => {
     const minute = now.getMinutes().toString().padStart(2, '0');
     const second = now.getSeconds().toString().padStart(2, '0');
     return `${reportPrompt}_${year}-${month}-${day}_${hour}-${minute}-${second}-${userId}`;
-  }
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -125,12 +133,14 @@ export const Report = () => {
 
   useEffect(() => {
     if (areChangesMade) {
-      window.onbeforeunload = () => true
+      window.onbeforeunload = () => true;
     } else {
       window.onbeforeunload = undefined;
     }
 
-    return () => window.onbeforeunload = undefined;
+    return () => {
+      window.onbeforeunload = undefined;
+    };
   }, [areChangesMade]);
 
   return (
@@ -148,14 +158,47 @@ export const Report = () => {
               If you've made a mistake, please click <strong>Cancel</strong> instead.
             </>,
           ]}
-          onModalCancel={() => setIsShowingModal(false)}
+          onModalCancel={() => setIsShowingSubmissionModal(false)}
           onModalProceed={submitReport}
-          show={isShowingModal}
+          show={isShowingSubmissionModal}
           title={'Confirm Submission'}
         />
-        <Prompt
-          message="Are you sure you want to leave? You may have unsaved changes!"
-          when={areChangesMade}/>
+        <PopupModalConfirmation
+          messages={[UNSAVED_CHANGES_MSG]}
+          onModalCancel={() => {
+            setIsShowingNavigationModal(false);
+            setNavigationInfo(null);
+          }}
+          onModalProceed={() => {
+            setIsShowingNavigationModal(false);
+            setIsSubmitting(true);
+
+            // Stay on the same page, but start over the submission process
+            if (!navigationInfo) {
+              clearCurrentDepartment();
+            }
+            // Proceed with the normal navigation
+            else if (navigationInfo.action === "POP") {
+              history.goBack();
+            }
+            else if (navigationInfo.action === "PUSH") {
+              history.push(navigationInfo.location);
+            }
+            else if (navigationInfo.action === "REPLACE") {
+              history.replace(navigationInfo.location);
+            }
+          }}
+          show={isShowingNavigationModal}
+          title={'Discard Submission?'}
+        />
+        <Prompt message={(location, action) => {
+          if (!navigationInfo && areChangesMade) {
+            setIsShowingNavigationModal(true);
+            setNavigationInfo({action, location});
+            return false;
+          }
+          return true;
+        }} when={areChangesMade} />
         {!report && departments && (
           <div className="col-md-6 mb-5">
             <h1 className="text-start">Submit a report</h1>
@@ -182,15 +225,17 @@ export const Report = () => {
         )}
         {report && (
           <>
-            <button className="btn btn-outline-secondary" onClick={() => {
-              if (areChangesMade) {
-                if (!window.confirm("Are you sure you want to leave? You may have unsaved changes!")) {
-                  return;
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => {
+                if (areChangesMade) {
+                  setIsShowingNavigationModal(true);
+                  setNavigationInfo(null);
+                } else {
+                  clearCurrentDepartment();
                 }
-              }
-
-              clearCurrentDepartment();
-            }}>
+              }}
+            >
               <i className="bi bi-chevron-left me-2" />
               Choose Different Department
             </button>
