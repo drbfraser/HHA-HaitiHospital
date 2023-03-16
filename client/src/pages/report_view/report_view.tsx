@@ -99,7 +99,10 @@ const ReportView = () => {
                     {readOnly ? 'Edit Form' : 'View Form'}
                   </button>
                   {readOnly && (
-                    <button onClick={handleExportWithComponent}>
+                    <button
+                      className="btn btn-outline-dark ml-3"
+                      onClick={handleExportWithComponent}
+                    >
                       {t('departmentReportDisplayGeneratePDF')}
                     </button>
                   )}
