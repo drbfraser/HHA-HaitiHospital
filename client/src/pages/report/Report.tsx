@@ -178,27 +178,28 @@ export const Report = () => {
               clearCurrentDepartment();
             }
             // Proceed with the normal navigation
-            else if (navigationInfo.action === "POP") {
+            else if (navigationInfo.action === 'POP') {
               history.goBack();
-            }
-            else if (navigationInfo.action === "PUSH") {
+            } else if (navigationInfo.action === 'PUSH') {
               history.push(navigationInfo.location);
-            }
-            else if (navigationInfo.action === "REPLACE") {
+            } else if (navigationInfo.action === 'REPLACE') {
               history.replace(navigationInfo.location);
             }
           }}
           show={isShowingNavigationModal}
           title={'Discard Submission?'}
         />
-        <Prompt message={(location, action) => {
-          if (!navigationInfo && areChangesMade) {
-            setIsShowingNavigationModal(true);
-            setNavigationInfo({action, location});
-            return false;
-          }
-          return true;
-        }} when={areChangesMade} />
+        <Prompt
+          message={(location, action) => {
+            if (!navigationInfo && areChangesMade) {
+              setIsShowingNavigationModal(true);
+              setNavigationInfo({ action, location });
+              return false;
+            }
+            return true;
+          }}
+          when={areChangesMade}
+        />
         {!report && departments && (
           <div className="col-md-6 mb-5">
             <h1 className="text-start">Submit a report</h1>
