@@ -45,7 +45,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
 
   // Changes answer if given a non-negative number
   public setAnswer(answer: number): void {
-    this.answer = answer >= 0 ? answer : this.answer;
+    this.answer = answer;
   }
 
   private compositionGroupSumsUp(compositionGroup: ChildType<ID, ErrorType>): boolean {
