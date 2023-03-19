@@ -10,7 +10,7 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionAnswerNode<
   constructor(id: ID, prompt: string, defaultAnswer?: T) {
     super(id, prompt);
     this.answer = defaultAnswer;
-    this.validators = [];
+    this.validators = ['isPositive'];
   }
 
   public getAnswer(): T | undefined {
