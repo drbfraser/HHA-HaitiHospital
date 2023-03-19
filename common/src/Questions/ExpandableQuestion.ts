@@ -13,10 +13,11 @@ import { ObjectSerializer, serializable } from '../Serializer/ObjectSerializer';
 
 @serializable(undefined, '', (arg: any) => undefined)
 export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, number, ErrorType> {
-  private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
-  private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
-  private readonly idGenerator: (questionGroupIndex: number) => ID;
   private answer: number = 0;
+  private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
+  private readonly idGenerator: (questionGroupIndex: number) => ID;
+  private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
+  private readonly validators: string[] = [];
 
   constructor(
     id: ID,
@@ -99,6 +100,14 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
 
   public getAnswer(): number {
     return this.answer;
+  }
+
+  public getValidators() {
+    return this.validators;
+  }
+
+  public addValidator(validator: string) {
+    this.validators.push(validator);
   }
 
   public getTemplate(): QuestionGroup<ID, ErrorType> {

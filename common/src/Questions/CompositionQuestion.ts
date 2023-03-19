@@ -29,6 +29,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
 > {
   private answer: number | undefined = 0;
   private readonly compositionGroups: Array<ChildType<ID, ErrorType>>;
+  private readonly validators: string[] = [];
 
   constructor(id: ID, prompt: string, ...questions: Array<ChildType<ID, ErrorType>>) {
     super(id, prompt);
@@ -48,6 +49,14 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
     this.answer = answer;
   }
 
+  public getValidators() {
+    return this.validators;
+  }
+
+  public addValidator(validator: string) {
+    this.validators.push(validator);
+  }
+
   private compositionGroupSumsUp(compositionGroup: ChildType<ID, ErrorType>): boolean {
     return (
       compositionGroup
@@ -55,12 +64,6 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
         .reduce((answer1, answer2) => answer1 + answer2) === this.getAnswer()
     );
   }
-
-  /*public getCompositionQuestionsBySumsUp(sumsUp: boolean): Array<ChildType<ID, ErrorType>> {
-    return this.compositionGroups.filter(
-      (compositionGroup) => this.compositionGroupSumsUp(compositionGroup) === sumsUp,
-    );
-  }*/
 
   public getAllSumUpInfo(): AllSumUpInfo {
     const info: AllSumUpInfo = {
