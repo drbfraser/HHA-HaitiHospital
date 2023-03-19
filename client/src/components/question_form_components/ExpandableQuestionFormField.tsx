@@ -1,4 +1,4 @@
-import { ExpandableQuestion, ValidationResult } from '@hha/common';
+import { ExpandableQuestion } from '@hha/common';
 import { ChangeEvent, useState } from 'react';
 import { FormField } from './index';
 import cn from 'classnames';
@@ -18,8 +18,8 @@ const ExpandableQuestionFormField = ({
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
   readOnly?: boolean;
 }): JSX.Element => {
-  const [inputState] = useState<ValidationResult<string>>(true);
   const [openClosedStates, setOpenClosedStates] = useState<boolean[]>([]);
+  const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
