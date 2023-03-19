@@ -24,6 +24,11 @@ const ReportView = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const { t } = useTranslation();
   const pdfExportComponent = useRef(null);
+  const department = departmentIdKeyMap.get(metaData?.departmentId);
+  const submittedDate = new Date(metaData?.submittedDate).toLocaleDateString(
+    userLocale,
+    dateOptions,
+  );
 
   const applyReportChanges = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
@@ -88,12 +93,8 @@ const ReportView = () => {
 
             <div>
               <header>
-                <h1>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h1>
-                <h2>
-                  Date:{' '}
-                  {metaData?.submittedDate &&
-                    new Date(metaData?.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                </h2>
+                <h1>Department: {department}</h1>
+                <h2>Date: {metaData?.submittedDate && submittedDate}</h2>
                 <div>
                   <button className="btn btn-primary" onClick={btnHandler}>
                     {readOnly ? 'Edit Form' : 'View Form'}
@@ -109,7 +110,11 @@ const ReportView = () => {
                 </div>
               </header>
               <div>
-                <PDFExport ref={pdfExportComponent} paperSize="A4" fileName={metaData?._id}>
+                <PDFExport
+                  ref={pdfExportComponent}
+                  paperSize="A4"
+                  fileName={`${submittedDate}_${department}`}
+                >
                   <ReportForm
                     applyReportChanges={applyReportChanges}
                     formHandler={reportHandler}
