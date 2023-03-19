@@ -19,10 +19,9 @@ const ExpandableQuestionFormField = ({
   readOnly?: boolean;
 }): JSX.Element => {
   const [inputState] = useState<ValidationResult<string>>(true);
+  const [openClosedStates, setOpenClosedStates] = useState<boolean[]>([]);
   const nameId = `${question.getId()}${suffixName}`;
-  const [openClosedStates, setOpenClosedStates] = useState(
-    new Array<boolean>(question.getAnswer()).fill(false),
-  );
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value);
 

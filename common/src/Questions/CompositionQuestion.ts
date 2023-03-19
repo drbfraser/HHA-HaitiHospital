@@ -8,6 +8,7 @@ import {
   ERROR_DOES_NOT_SUM_UP,
   ERROR_NOT_A_INTEGER,
   isNumber,
+  runNumericValidators,
   ValidationResult,
 } from '../Form_Validators';
 
@@ -29,7 +30,7 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
 > {
   private answer: number | undefined = 0;
   private readonly compositionGroups: Array<ChildType<ID, ErrorType>>;
-  private readonly validators: string[] = [];
+  private readonly validators: string[] = ['isPositive'];
 
   constructor(id: ID, prompt: string, ...questions: Array<ChildType<ID, ErrorType>>) {
     super(id, prompt);
@@ -57,6 +58,18 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
     this.validators.push(validator);
   }
 
+  private checkValidators(): ValidationResult<string> {
+    for (const validatorName of this.getValidators()) {
+      const validate = runNumericValidators[validatorName];
+
+      if (validate && validate(this.getAnswer()!) !== true) {
+        return validate(this.getAnswer()!);
+      }
+    }
+
+    return true;
+  }
+
   private compositionGroupSumsUp(compositionGroup: ChildType<ID, ErrorType>): boolean {
     return (
       compositionGroup
@@ -71,7 +84,9 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
       invalidGroupsIndices: [],
     };
 
-    if (this.compositionGroups.length === 0) {
+    if (!isNumber(this.getAnswer()) || this.checkValidators() !== true) {
+      return info;
+    } else if (this.compositionGroups.length === 0) {
       return info;
     }
 
@@ -89,6 +104,8 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   public getValidationResults(): ValidationResult<string> {
     if (!isNumber(this.getAnswer())) {
       return ERROR_NOT_A_INTEGER;
+    } else if (this.checkValidators() !== true) {
+      return this.checkValidators();
     } else if (!this.getAllSumUpInfo().areAllSumsCorrect) {
       return ERROR_DOES_NOT_SUM_UP;
     }

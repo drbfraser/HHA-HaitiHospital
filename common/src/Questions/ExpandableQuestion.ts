@@ -10,6 +10,12 @@ import { QuestionAnswerParent } from './QuestionAnswer';
 import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
 import { ObjectSerializer, serializable } from '../Serializer/ObjectSerializer';
+import {
+  ERROR_NOT_A_INTEGER,
+  isNumber,
+  runNumericValidators,
+  ValidationResult,
+} from '../Form_Validators';
 
 @serializable(undefined, '', (arg: any) => undefined)
 export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, number, ErrorType> {
@@ -17,7 +23,7 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
   private questionGroups: Array<QuestionGroup<ID, ErrorType>> = [];
   private readonly idGenerator: (questionGroupIndex: number) => ID;
   private readonly questionsTemplate: QuestionGroup<ID, ErrorType>;
-  private readonly validators: string[] = [];
+  private readonly validators: string[] = ['isPositive'];
 
   constructor(
     id: ID,
@@ -54,18 +60,6 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
   }
 
   private expand(): void {
-    /*this.questionGroups = new Array<QuestionGroup<ID, ErrorType>>(this.answer ?? 0).fill(undefined).map(
-      (x, index) =>
-        new QuestionGroup(
-          this.idGenerator(index + 1),
-          `${this.getPrompt()}-${index}`,
-          ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
-            let serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-            return serializer.deserialize(serializer.serialize(q));
-          }),
-        ),
-    );*/
-
     if (this.getAnswer() > this.questionGroups.length) {
       for (let i = this.questionGroups.length; i < this.getAnswer(); i++) {
         this.questionGroups.push(
@@ -91,7 +85,9 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
   public setAnswer(answer: number): void {
     this.answer = answer;
 
-    if (answer < this.questionGroups.length) {
+    if (this.getValidationResults() !== true) {
+      return;
+    } else if (answer < this.questionGroups.length) {
       this.shrink();
     } else if (answer > this.questionGroups.length) {
       this.expand();
@@ -102,6 +98,10 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
     return this.answer;
   }
 
+  public getTemplate(): QuestionGroup<ID, ErrorType> {
+    return this.questionsTemplate;
+  }
+
   public getValidators() {
     return this.validators;
   }
@@ -110,8 +110,23 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
     this.validators.push(validator);
   }
 
-  public getTemplate(): QuestionGroup<ID, ErrorType> {
-    return this.questionsTemplate;
+  public getValidationResults(): ValidationResult<string> {
+    if (!isNumber(this.getAnswer())) {
+      return ERROR_NOT_A_INTEGER;
+    }
+    return this.checkValidators();
+  }
+
+  private checkValidators(): ValidationResult<string> {
+    for (const validatorName of this.getValidators()) {
+      const validate = runNumericValidators[validatorName];
+
+      if (validate && validate(this.getAnswer()!) !== true) {
+        return validate(this.getAnswer()!);
+      }
+    }
+
+    return true;
   }
 
   public forEach(groupHandler: (groupInstance: QuestionGroup<ID, ErrorType>) => void): void {
