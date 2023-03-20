@@ -1,7 +1,7 @@
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 
-import { useCallback, useEffect, useState, MouseEvent } from 'react';
+import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
 import './report_view.css';
 import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
 import { TOAST_REPORT_GET } from 'constants/toastErrorMessages';
@@ -11,6 +11,8 @@ import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
 import { userLocale, dateOptions } from 'constants/date';
+import { useTranslation } from 'react-i18next';
+import { PDFExport } from '@progress/kendo-react-pdf';
 
 const ReportView = () => {
   const history = useHistory<History>();
@@ -20,9 +22,20 @@ const ReportView = () => {
   const report_id = useLocation().pathname.split('/')[2];
   const { departmentIdKeyMap } = useDepartmentData();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const { t } = useTranslation();
+  const pdfExportComponent = useRef(null);
+  const department = departmentIdKeyMap.get(metaData?.departmentId);
+  const submittedDate = new Date(metaData?.submittedDate).toLocaleDateString(
+    userLocale,
+    dateOptions,
+  );
 
   const applyReportChanges = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
+  };
+
+  const handleExportWithComponent = () => {
+    pdfExportComponent.current.save();
   };
 
   const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -71,29 +84,48 @@ const ReportView = () => {
           <Sidebar />
           <main>
             <Header />
-            <>
+
+            <div className="mb-3 d-flex justify-content-start">
+              <button className="btn btn-outline-dark" onClick={history.goBack}>
+                {t('reportViewBack')}
+              </button>
+            </div>
+
+            <div>
               <header>
-                <h1>Department: {departmentIdKeyMap.get(metaData?.departmentId)}</h1>
-                <h2>
-                  Date:{' '}
-                  {metaData?.submittedDate &&
-                    new Date(metaData?.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                </h2>
-                <button className="btn btn-primary" onClick={btnHandler}>
-                  {readOnly ? 'Edit Form' : 'View Form'}
-                </button>
+                <h1>Department: {department}</h1>
+                <h2>Date: {metaData?.submittedDate && submittedDate}</h2>
+                <div>
+                  <button className="btn btn-primary" onClick={btnHandler}>
+                    {readOnly ? 'Edit Form' : 'View Form'}
+                  </button>
+                  {readOnly && (
+                    <button
+                      className="btn btn-outline-dark ml-3"
+                      onClick={handleExportWithComponent}
+                    >
+                      {t('departmentReportDisplayGeneratePDF')}
+                    </button>
+                  )}
+                </div>
               </header>
               <div>
-                <ReportForm
-                  applyReportChanges={applyReportChanges}
-                  formHandler={reportHandler}
-                  isSubmitting={false}
-                  reportData={report}
-                  btnText="Edit"
-                  readOnly={readOnly}
-                />
+                <PDFExport
+                  ref={pdfExportComponent}
+                  paperSize="A4"
+                  fileName={`${submittedDate}_${department}`}
+                >
+                  <ReportForm
+                    applyReportChanges={applyReportChanges}
+                    formHandler={reportHandler}
+                    isSubmitting={false}
+                    reportData={report}
+                    btnText="Edit"
+                    readOnly={readOnly}
+                  />
+                </PDFExport>
               </div>
-            </>
+            </div>
           </main>
         </div>
       )}

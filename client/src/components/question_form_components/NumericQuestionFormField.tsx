@@ -1,6 +1,6 @@
 import { NumericQuestion } from '@hha/common';
 import FormField from './FormField';
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 const NumericQuestionFormField = ({
   applyReportChanges,
@@ -40,6 +40,12 @@ const NumericQuestionFormField = ({
 
       return nextErrorSet;
     });
+
+  // Disable the submit button the first time component loads if there are errors
+  // This would be the case when nothing is selected and the question is required
+  useEffect(() => {
+    updateErrorSetFromSelf();
+  }, []);
 
   return (
     <FormField

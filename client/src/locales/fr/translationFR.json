@@ -245,6 +245,9 @@
   "reportsSubmissionDate": "Date de soumission",
   "reportsUserId": "ID de l'utilisateur",
   "reportsSubmittedBy": "Proposé par",
+
+  "reportViewBack": "Arrière",
+
   "employeeOfTheMonthEdit": "Mettre à jour l'employé du mois",
   "employeeOfTheMonthTitle": "Employé du mois de ",
   "employeeOfTheMonthDate": "Date de mise à jour",

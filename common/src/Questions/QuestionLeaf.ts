@@ -4,13 +4,11 @@ import { runNumericValidators, ValidationResult } from '../Form_Validators';
 
 export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionAnswerNode<ID, T, ErrorType> {
   private answer: T | undefined;
-
-  private readonly validators: string[] | undefined;
+  private readonly validators: string[] = [];
 
   constructor(id: ID, prompt: string, defaultAnswer?: T) {
     super(id, prompt);
     this.answer = defaultAnswer;
-    this.validators = [];
   }
 
   public getAnswer(): T | undefined {
@@ -21,12 +19,12 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionAnswerNode<
     this.answer = answer;
   }
 
-  public getValidators(): string[] | undefined {
+  public getValidators() {
     return this.validators;
   }
 
-  public addValidator(validator: string): void {
-    this.validators?.push(validator);
+  public addValidator(validator: string) {
+    this.validators.push(validator);
   }
 
   // The following function is used to check if the answer is valid for all the validators.

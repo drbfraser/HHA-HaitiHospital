@@ -9,6 +9,11 @@ export class TextQuestion<ID, ErrorType> extends QuestionLeaf<ID, string, ErrorT
 
 @serializable(undefined, '')
 export class NumericQuestion<ID, ErrorType> extends QuestionLeaf<ID, number, ErrorType> {
+  constructor(id: ID, prompt: string, defaultAnswer?: number) {
+    super(id, prompt, defaultAnswer);
+    this.addValidator('isPositive');
+  }
+
   public override getValidationResults(): ValidationResult<string> {
     const results = super.getValidationResults();
 

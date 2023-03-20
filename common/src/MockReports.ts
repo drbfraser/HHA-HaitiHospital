@@ -29,7 +29,6 @@ export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   return report;
 };
 
-// TODO: Finish report
 export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const reportID: ID = 'rehab-report_1';
   const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
@@ -43,18 +42,20 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Beds available',
     0,
   );
-  q1.addValidator('isPositive');
   q1.addValidator('isEven');
+
   const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '2',
     'Beds days',
     0,
   );
+
   const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '3',
     'Patient days',
     0,
   );
+
   const q4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '4',
     'Hospitalized',
@@ -67,20 +68,17 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Discharged Alive',
     questionIdGeneratorBuilder('5'),
   );
-
   const q5_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_1',
     'Discharged diagnosis',
     ['SCI', 'Stroke', 'Other'],
     0,
   );
-
   const q5_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '5_2',
     'No. Days in Rehab Unit from admission to discharge',
-    230,
+    0,
   );
-
   const q5_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_3',
     'Discharged reason',
@@ -91,7 +89,6 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     ],
     0,
   );
-
   const q5_4: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_4',
     'Discharge Outcome (ADLs/Self-Care)',
@@ -106,7 +103,6 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     ],
     0,
   );
-
   const q5_5: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_5',
     'Discharge Outcome (Transfers and Mobility)',
@@ -121,7 +117,6 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     ],
     0,
   );
-
   const q5_6: MultipleSelectionQuestion<ID, ErrorType> = new MultipleSelectionQuestion<
     ID,
     ErrorType
@@ -129,16 +124,14 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     '5_6',
     'Mobility Aid/Assistive Device Given?',
     ['Wheelchair', 'Walker', 'Cane', 'Crutches'],
-    [0, 2],
+    [],
   );
-
   const q5_7: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_7',
     'Discharge Location',
     ['Return home, alone', 'Return home, with family/caregiver(s)', 'Admitted to hospital'],
     0,
   );
-
   const q5_8: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_8',
     'Discharge Employment Status',
@@ -150,7 +143,6 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     ],
     0,
   );
-
   q5.addAllToTemplate(q5_1, q5_2, q5_3, q5_4, q5_5, q5_6, q5_7, q5_8);
 
   // Question 6
@@ -164,15 +156,12 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Diagnosis',
     ['SCI', 'CVA', 'Other'],
   );
-
   const q6_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('6_2', 'Age');
-
   const q6_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '6_3',
     'Cause of death',
     ['Suspected CVA'],
   );
-
   q6.addAllToTemplate(q6_1, q6_2, q6_3);
 
   // Question 7
@@ -186,13 +175,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Diagnosis',
     ['SCI', 'CVA', 'Other'],
   );
-
   const q7_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('7_2', 'Age');
   const q7_3: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '7_3',
     'Cause of death',
   );
-
   q7.addAllToTemplate(q7_1, q7_2, q7_3);
 
   // Questions 8 to 10
@@ -201,11 +188,13 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     'Days hospitalised',
     0,
   );
+
   const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '9',
     'Referrals',
     0,
   );
+
   const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '10',
     'Transfers',
