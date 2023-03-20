@@ -53,12 +53,13 @@ router.post(
       let serializedTemplate = await TemplateCollection.findOne({
         departmentId: departmentId,
       }).lean();
-      
+
       if (serializedTemplate) {
         template = new TemplateCollection({
           _id: serializedTemplate._id,
           departmentId: departmentId,
-          reportObject: serializedReport,});
+          reportObject: serializedReport,
+        });
         const saved = await TemplateCollection.updateOne({ departmentId: departmentId }, template);
         return res
           .status(HTTP_CREATED_CODE)
