@@ -65,11 +65,6 @@ const GeneralReports = () => {
             {/* <ReportSummary dateRange={dayRange} /> */}
           </section>
           <div className="d-flex justify-content-start mt-3 mb-3">
-            <Link to="/change-template">
-              <button type="button" className="btn btn-outline-dark">
-                {t('template.change_template')}
-              </button>
-            </Link>
           </div>
           <table className="table table-hover mt-3">
             <thead>
