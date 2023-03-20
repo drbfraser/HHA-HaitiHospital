@@ -4,13 +4,11 @@ import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import Api from 'actions/Api';
 
 export const UploadForm = ({
-  applyReportChanges,
   formHandler,
   isSubmitting,
   reportTemplateData,
   updateReport,
 }: {
-  applyReportChanges: () => void;
   formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
   reportTemplateData: QuestionGroup<ID, ErrorType>;
