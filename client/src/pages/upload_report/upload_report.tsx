@@ -7,6 +7,7 @@ import { TOAST_REPORT_POST as ERR_TOAST } from 'constants/toastErrorMessages';
 import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
 import { TOAST_REPORT_TEMPLATE_PUT as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
 import { useState } from 'react';
@@ -15,6 +16,7 @@ import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 
 export const UploadReport = () => {
+  const { t } = useTranslation();
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,11 +72,9 @@ export const UploadReport = () => {
         />
         {departments && (
           <div className="col-md-6 mb-5">
-            <h1 className="text-start">Submit a report template</h1>
+            <h1 className="text-start">{t('template.upload_template')}</h1>
             <fieldset>
-              <label htmlFor="">
-                Please select the Department that you are uploading a report template for
-              </label>
+              <label htmlFor="">{t('template.select_department')}</label>
               <select
                 className="form-control"
                 id="Report-Department-Type"
