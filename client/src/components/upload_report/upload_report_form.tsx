@@ -1,8 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
+import { ObjectSerializer, QuestionGroup } from '@hha/common';
 
-export const UploadForm = (): JSX.Element => {
-  const [formData, setFormData] = useState(null);
+import Api from 'actions/Api';
+
+export const UploadForm = ({
+  applyReportChanges,
+  formHandler,
+  isSubmitting,
+  reportTemplateData,
+  updateReport,
+}: {
+  applyReportChanges: () => void;
+  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  isSubmitting: boolean;
+  reportTemplateData: QuestionGroup<ID, ErrorType>;
+  updateReport: Dispatch<SetStateAction<QuestionGroup<string, string>>>;
+}): JSX.Element => {
   const [error, setError] = useState(null);
+  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+
+  const buildSubmitButton = () => {
+    return (
+      <>
+        <input
+          className="btn btn-outline-primary"
+          disabled={!reportTemplateData || isSubmitting}
+          type="submit"
+          value="Submit Report Template"
+        />
+      </>
+    );
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -11,10 +39,10 @@ export const UploadForm = (): JSX.Element => {
     reader.onload = (event) => {
       try {
         const data = JSON.parse(String(event.target.result));
-        setFormData(data);
+        updateReport(objectSerializer.deserialize(data.reportObject));
         setError(null);
       } catch (e) {
-        setFormData(null);
+        updateReport(null);
         setError('Error parsing JSON data. Please upload a valid JSON file.');
       }
     };
@@ -26,23 +54,25 @@ export const UploadForm = (): JSX.Element => {
   };
 
   return (
-    <div>
-    
+    <div className="mt-3 p-3">
+      <form onSubmit={formHandler} noValidate>
+        <br />
 
-      <br />
+        <label htmlFor="file">Upload JSON Form:</label>
+        <input id="file" type="file" accept=".json" onChange={handleFileChange} />
 
-      <label htmlFor="file">Upload JSON Form:</label>
-      <input id="file" type="file" accept=".json" onChange={handleFileChange} />
+        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <br />
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {formData && (
-        <div>
-          <pre>{JSON.stringify(formData, null, 2)}</pre>
-        </div>
-      )}
+        {buildSubmitButton()}
+        {reportTemplateData && (
+          <>
+            <div>
+              <pre>{JSON.stringify(reportTemplateData, null, 2)}</pre>
+            </div>
+            {buildSubmitButton()}
+          </>
+        )}
+      </form>
     </div>
   );
 };
