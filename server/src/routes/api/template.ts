@@ -7,8 +7,6 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import Departments from 'utils/departments';
 import { TemplateCollection } from 'models/template';
 import { Role } from 'models/user';
-import { serializeTemplateReportObject } from 'utils/serializer';
-import { buildMaternityMockReport, ObjectSerializer } from '@hha/common';
 
 const router: IRouter = require('express').Router();
 
@@ -36,7 +34,7 @@ router
   );
 
 //Save report template
-router.post(
+router.put(
   '/',
   requireJwtAuth,
   roleAuth(Role.Admin),

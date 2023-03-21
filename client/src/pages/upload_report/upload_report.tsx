@@ -3,8 +3,8 @@ import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmatio
 import Header from 'components/header/header';
 import { UploadForm } from 'components/upload_report/upload_report_form';
 import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
-import { TOAST_REPORT_POST as ERR_TOAST } from 'constants/toastErrorMessages';
-import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
+import { TOAST_REPORT_TEMPLATE_PUT as ERR_TOAST } from 'constants/toastErrorMessages';
+import { TOAST_REPORT_TEMPLATE__PUT as PENDING_TOAST } from 'constants/toastPendingMessages';
 import { TOAST_REPORT_TEMPLATE_PUT as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
+import { toast } from 'react-toastify';
 
 export const UploadReport = () => {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ export const UploadReport = () => {
     setIsShowingModal(true);
   };
 
-  const submitReport = () => {
+  const submitReport = async () => {
     const serializedReport = objectSerializer.serialize(reportTemplate);
     const reportObject = {
       departmentId: currentDepartment.id,
@@ -39,15 +40,12 @@ export const UploadReport = () => {
 
     setIsShowingModal(false);
     setIsSubmitting(true);
-    Api.Post(
-      ENDPOINT_TEMPLATE,
-      reportObject,
-      () => history.push(`/home`),
-      history,
-      ERR_TOAST,
-      PENDING_TOAST,
-      SUCCESS_TOAST,
-    );
+    await Api.Put(ENDPOINT_TEMPLATE, reportObject, onSubmit, ERR_TOAST, history);
+  };
+
+  const onSubmit = () => {
+    toast.success(SUCCESS_TOAST);
+    history.push(`/home`);
   };
 
   return (
