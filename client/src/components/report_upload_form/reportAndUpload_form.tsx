@@ -1,4 +1,3 @@
-
 import { Dispatch, SetStateAction } from 'react';
 import { Department } from 'constants/interfaces';
 
@@ -38,5 +37,5 @@ export const ReportAndTemplateForm = ({
         </select>
       </fieldset>
     </div>
-  )
+  );
 };

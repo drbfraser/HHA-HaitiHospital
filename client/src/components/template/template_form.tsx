@@ -19,14 +19,12 @@ export const UploadForm = ({
 
   const buildSubmitButton = () => {
     return (
-      <>
-        <input
-          className="btn btn-outline-primary"
-          disabled={!reportTemplateData || isSubmitting}
-          type="submit"
-          value="Submit Report Template"
-        />
-      </>
+      <input
+        className="btn btn-outline-primary"
+        disabled={!reportTemplateData || isSubmitting}
+        type="submit"
+        value="Submit Report Template"
+      />
     );
   };
 
