@@ -122,8 +122,7 @@ const ReportView = () => {
             <PopupModalConfirmation
               messages={[
                 <>
-                  Please click <strong>Confirm</strong> to proceed with your submission. You'll be
-                  redirected to the report view.
+                  Please click <strong>Confirm</strong> to proceed with Edit.
                 </>,
                 <>
                   If you've made a mistake, please click <strong>Cancel</strong> instead.
