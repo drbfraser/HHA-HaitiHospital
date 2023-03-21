@@ -45,9 +45,6 @@ export const UploadForm = ({
     };
 
     reader.readAsText(file);
-
-    // Clear the file input value as if the user selects the same file again, browser does not fire onChange event
-    event.target.value = '';
   };
 
   return (
@@ -63,6 +60,7 @@ export const UploadForm = ({
             accept=".json"
             className="form-control"
             onChange={handleFileChange}
+            onClick={(event) => { event.currentTarget.value = null; }}
           />
         </div>
 
