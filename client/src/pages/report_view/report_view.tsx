@@ -131,7 +131,7 @@ const ReportView = () => {
               onModalCancel={() => setShowEditModal(false)}
               onModalProceed={reportHandler}
               show={showEditModal}
-              title={'Confirm Submission'}
+              title={'Confirm Edit'}
             />
             <PopupModalConfirmation
               messages={[UNSAVED_CHANGES_MSG]}
@@ -154,7 +154,7 @@ const ReportView = () => {
                 }
               }}
               show={isShowingNavigationModal}
-              title={'Discard Submission?'}
+              title={'Discard Edit?'}
             />
             <Prompt
               message={(location, action) => {
