@@ -24,7 +24,8 @@ const ReportView = () => {
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
-
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showViewEditBtn, setShowViewEditBtn] = useState(true);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
@@ -40,8 +41,13 @@ const ReportView = () => {
   );
   const user = useAuthState();
 
+  const confirmEdit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setShowEditModal(true);
+  };
+
   const applyReportChanges = () => {
-    !areChangesMade && setAreChangesMade(true);
+    setAreChangesMade(true);
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
@@ -52,10 +58,10 @@ const ReportView = () => {
   const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setReadOnly((prev) => !prev);
+    setShowViewEditBtn(false);
   };
 
-  const reportHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const reportHandler = () => {
     const serializedReport = objectSerializer.serialize(report);
     const editedReportObject = {
       id: report_id,
@@ -63,6 +69,9 @@ const ReportView = () => {
       submittedBy: user?.userDetails?.name,
     };
     Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
+    setShowEditModal(false);
+    setReadOnly((prev) => !prev);
+    setShowViewEditBtn(true);
   };
 
   const getReport = useCallback(async () => {
@@ -111,6 +120,21 @@ const ReportView = () => {
           <main>
             <Header />
             <PopupModalConfirmation
+              messages={[
+                <>
+                  Please click <strong>Confirm</strong> to proceed with your submission. You'll be
+                  redirected to the report view.
+                </>,
+                <>
+                  If you've made a mistake, please click <strong>Cancel</strong> instead.
+                </>,
+              ]}
+              onModalCancel={() => setShowEditModal(false)}
+              onModalProceed={reportHandler}
+              show={showEditModal}
+              title={'Confirm Submission'}
+            />
+            <PopupModalConfirmation
               messages={[UNSAVED_CHANGES_MSG]}
               onModalCancel={() => {
                 setIsShowingNavigationModal(false);
@@ -155,9 +179,11 @@ const ReportView = () => {
                 <h1>Department: {department}</h1>
                 <h2>Date: {metaData?.submittedDate && submittedDate}</h2>
                 <div>
-                  <button className="btn btn-primary" onClick={btnHandler}>
-                    {readOnly ? 'Edit Form' : 'View Form'}
-                  </button>
+                  {showViewEditBtn && (
+                    <button className="btn btn-primary" onClick={btnHandler}>
+                      {readOnly ? 'Edit Form' : 'View Form'}
+                    </button>
+                  )}
                   {readOnly && (
                     <button
                       className="btn btn-outline-dark ml-3"
@@ -176,7 +202,7 @@ const ReportView = () => {
                 >
                   <ReportForm
                     applyReportChanges={applyReportChanges}
-                    formHandler={reportHandler}
+                    formHandler={confirmEdit}
                     isSubmitting={false}
                     reportData={report}
                     btnText="Edit"
