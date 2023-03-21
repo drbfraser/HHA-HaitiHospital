@@ -2,6 +2,7 @@ import SideBar from 'components/side_bar/side_bar';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/report_form';
+import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { TOAST_REPORT_POST as ERR_TOAST } from 'constants/toastErrorMessages';
 import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
@@ -201,28 +202,13 @@ export const Report = () => {
           when={areChangesMade}
         />
         {!report && departments && (
-          <div className="col-md-6 mb-5">
-            <h1 className="text-start">Submit a report</h1>
-            <fieldset>
-              <label htmlFor="">Department Type</label>
-              <select
-                className="form-control"
-                id="Report-Department-Type"
-                onChange={(e) =>
-                  setCurrentDepartment(departments.find(({ id, name }) => e.target.value === id))
-                }
-                value={currentDepartment?.id || ''}
-              >
-                <option value="">Choose a department</option>
-                {departments &&
-                  departments.map(({ id, name }) => (
-                    <option key={id} value={id}>
-                      {name}
-                    </option>
-                  ))}
-              </select>
-            </fieldset>
-          </div>
+          <ReportAndTemplateForm
+            title="Submit a report"
+            departmentLabel="Department Type"
+            departments={departments}
+            currentDepartment={currentDepartment}
+            setCurrentDepartment={setCurrentDepartment}
+          />
         )}
         {report && (
           <>

@@ -29,6 +29,7 @@ const TOAST_MESSAGEBOARD_COMMENTS_POST: string = 'Unable to post comment';
 const TOAST_REPORTS_GET: string = 'Unable to fetch reports';
 const TOAST_REPORT_GET: string = 'Unable to fetch report';
 const TOAST_REPORT_POST: string = 'Unable to submit report';
+const TOAST_REPORT_TEMPLATE_PUT: string = 'Unable to submit report template';
 
 // Template
 const TOAST_TEMPLATE_GET: string = 'Unable to fetch template';
@@ -55,4 +56,5 @@ export {
   TOAST_REPORT_POST,
   TOAST_TEMPLATE_GET,
   TOAST_TEMPLATE_PUT,
+  TOAST_REPORT_TEMPLATE_PUT,
 };

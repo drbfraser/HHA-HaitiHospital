@@ -23,9 +23,9 @@ import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employe
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 import { Report } from 'pages/report/Report';
+import { UploadReport } from 'pages/upload_template/Template';
 import { PathPatterns } from 'constants/paths';
 import ReportView from 'pages/report_view/report_view';
-import { ChangeTemplate } from 'pages/general_reports/change_template';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -60,6 +60,13 @@ const routes = [
     departmentsAllowed: [],
   },
   {
+    path: '/upload-report',
+    component: UploadReport,
+    loginRequired: true,
+    rolesAllowed: [Role.Admin],
+    departmentsAllowed: [],
+  },
+  {
     path: '/home',
     component: Home,
     loginRequired: true,
@@ -78,13 +85,6 @@ const routes = [
     component: ReportView,
     loginRequired: true,
     rolesAllowed: [],
-    departmentsAllowed: [],
-  },
-  {
-    path: '/change-template',
-    component: ChangeTemplate,
-    loginRequired: true,
-    rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
     departmentsAllowed: [],
   },
   // Explicitly setting department 0 (General) to be non-accessible
