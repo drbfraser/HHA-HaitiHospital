@@ -23,7 +23,7 @@ import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employe
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 import { Report } from 'pages/report/Report';
-import { UploadReport } from 'pages/upload_report/upload_report';
+import { UploadReport } from 'pages/upload_template/Template';
 import { PathPatterns } from 'constants/paths';
 import ReportView from 'pages/report_view/report_view';
 

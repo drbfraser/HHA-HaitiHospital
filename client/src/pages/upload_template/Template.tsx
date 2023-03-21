@@ -1,10 +1,10 @@
 import SideBar from 'components/side_bar/side_bar';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import Header from 'components/header/header';
-import { UploadForm } from 'components/upload_report/upload_report_form';
+import { UploadForm } from 'components/template/template_form';
+import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
 import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { TOAST_REPORT_TEMPLATE_PUT as ERR_TOAST } from 'constants/toastErrorMessages';
-import { TOAST_REPORT_TEMPLATE__PUT as PENDING_TOAST } from 'constants/toastPendingMessages';
 import { TOAST_REPORT_TEMPLATE_PUT as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
@@ -69,36 +69,21 @@ export const UploadReport = () => {
           title={'Confirm Submission'}
         />
         {departments && (
-          <div className="col-md-6 mb-5">
-            <h1 className="text-start">{t('template.upload_template')}</h1>
-            <fieldset>
-              <label htmlFor="">{t('template.select_department')}</label>
-              <select
-                className="form-control"
-                id="Report-Department-Type"
-                onChange={(e) =>
-                  setCurrentDepartment(departments.find(({ id, name }) => e.target.value === id))
-                }
-                value={currentDepartment?.id || ''}
-              >
-                <option value="">Choose a department</option>
-                {departments &&
-                  departments.map(({ id, name }) => (
-                    <option key={id} value={id}>
-                      {name}
-                    </option>
-                  ))}
-              </select>
-              {currentDepartment && (
-                <UploadForm
-                  formHandler={confirmSubmission}
-                  isSubmitting={isSubmitting}
-                  reportTemplateData={reportTemplate}
-                  updateReport={setReportTemplate}
-                />
-              )}
-            </fieldset>
-          </div>
+          <ReportAndTemplateForm
+            title={t('template.upload_template')}
+            departmentLabel={t('template.select_department')}
+            departments={departments}
+            currentDepartment={currentDepartment}
+            setCurrentDepartment={setCurrentDepartment}
+          />
+        )}
+        {currentDepartment && (
+          <UploadForm
+            formHandler={confirmSubmission}
+            isSubmitting={isSubmitting}
+            reportTemplateData={reportTemplate}
+            updateReport={setReportTemplate}
+          />
         )}
       </main>
     </div>

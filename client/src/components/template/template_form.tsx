@@ -1,7 +1,6 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-
-import Api from 'actions/Api';
+import { useTranslation } from 'react-i18next';
 
 export const UploadForm = ({
   formHandler,
@@ -14,6 +13,7 @@ export const UploadForm = ({
   reportTemplateData: QuestionGroup<ID, ErrorType>;
   updateReport: Dispatch<SetStateAction<QuestionGroup<string, string>>>;
 }): JSX.Element => {
+  const { t } = useTranslation();
   const [error, setError] = useState(null);
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
 
@@ -52,23 +52,36 @@ export const UploadForm = ({
   };
 
   return (
-    <div className="mt-3 p-3">
+    <div className="col-md-6">
       <form onSubmit={formHandler} noValidate>
-        <br />
+        <div className="mb-3">
+          <label htmlFor="file" className="form-label">
+            {t('template.upload_template')}:
+          </label>
+          <input
+            id="file"
+            type="file"
+            accept=".json"
+            className="form-control"
+            onChange={handleFileChange}
+          />
+        </div>
 
-        <label htmlFor="file">Upload JSON Form:</label>
-        <input id="file" type="file" accept=".json" onChange={handleFileChange} />
+        {error && (
+          <p style={{ color: 'red' }} className="mb-3">
+            {error}
+          </p>
+        )}
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className="mb-3">{buildSubmitButton()}</div>
 
-        {buildSubmitButton()}
         {reportTemplateData && (
-          <>
+          <div className="mb-3">
             <div>
               <pre>{JSON.stringify(reportTemplateData, null, 2)}</pre>
             </div>
-            {buildSubmitButton()}
-          </>
+            <div className="mb-3">{buildSubmitButton()}</div>
+          </div>
         )}
       </form>
     </div>
