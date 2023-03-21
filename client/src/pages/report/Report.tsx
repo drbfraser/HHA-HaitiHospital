@@ -14,9 +14,9 @@ import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
+import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 
-const UNSAVED_CHANGES_MSG = 'Are you sure you want to leave? You may have unsaved changes!';
-type NavigationInfo = null | {
+export type NavigationInfo = null | {
   action: Action;
   location: Location;
 };
