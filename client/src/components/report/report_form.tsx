@@ -61,8 +61,8 @@ export const ReportForm = ({
   btnText = 'Submit',
   readOnly,
 }: {
-  applyReportChanges: () => void;
-  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  applyReportChanges?: () => void;
+  formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
