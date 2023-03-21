@@ -62,6 +62,8 @@ export const UploadForm = ({
             onChange={handleFileChange}
             onClick={(event) => {
               event.currentTarget.value = null;
+              updateReport(null);
+              setError(null);
             }}
           />
         </div>
