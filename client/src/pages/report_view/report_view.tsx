@@ -1,12 +1,14 @@
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 
 import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
 import './report_view.css';
 import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
 import { TOAST_REPORT_GET } from 'constants/toastErrorMessages';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Prompt } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
+import { History } from 'history';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
@@ -14,10 +16,16 @@ import { userLocale, dateOptions } from 'constants/date';
 import { useTranslation } from 'react-i18next';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import { useAuthState } from 'contexts';
+import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import { NavigationInfo } from 'pages/report/Report';
 
 const ReportView = () => {
-  const history = useHistory<History>();
+  const history: History = useHistory<History>();
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
+  const [areChangesMade, setAreChangesMade] = useState(false);
+  const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
+
+  const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
   const report_id = useLocation().pathname.split('/')[2];
@@ -33,6 +41,7 @@ const ReportView = () => {
   const user = useAuthState();
 
   const applyReportChanges = () => {
+    !areChangesMade && setAreChangesMade(true);
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
@@ -55,6 +64,7 @@ const ReportView = () => {
     };
     Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
   };
+
   const getReport = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReport: any = await Api.Get(
@@ -76,9 +86,22 @@ const ReportView = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
+
   useEffect(() => {
     getReport();
   }, [getReport]);
+
+  useEffect(() => {
+    if (areChangesMade && !readOnly) {
+      window.onbeforeunload = () => true;
+    } else {
+      window.onbeforeunload = undefined;
+    }
+
+    return () => {
+      window.onbeforeunload = undefined;
+    };
+  }, [areChangesMade, readOnly]);
 
   return (
     <>
@@ -87,7 +110,40 @@ const ReportView = () => {
           <Sidebar />
           <main>
             <Header />
-
+            <PopupModalConfirmation
+              messages={[UNSAVED_CHANGES_MSG]}
+              onModalCancel={() => {
+                setIsShowingNavigationModal(false);
+                setNavigationInfo(null);
+              }}
+              onModalProceed={() => {
+                setIsShowingNavigationModal(false);
+                if (!navigationInfo) {
+                  setAreChangesMade(false);
+                }
+                // Proceed with the normal navigation
+                else if (navigationInfo?.action === 'POP') {
+                  history.goBack();
+                } else if (navigationInfo?.action === 'PUSH') {
+                  history.push(navigationInfo.location);
+                } else if (navigationInfo?.action === 'REPLACE') {
+                  history.replace(navigationInfo.location);
+                }
+              }}
+              show={isShowingNavigationModal}
+              title={'Discard Submission?'}
+            />
+            <Prompt
+              message={(location, action) => {
+                if (!navigationInfo && areChangesMade) {
+                  setIsShowingNavigationModal(true);
+                  setNavigationInfo({ action, location });
+                  return false;
+                }
+                return true;
+              }}
+              when={areChangesMade}
+            />
             <div className="mb-3 d-flex justify-content-start">
               <button className="btn btn-outline-dark" onClick={history.goBack}>
                 {t('reportViewBack')}
