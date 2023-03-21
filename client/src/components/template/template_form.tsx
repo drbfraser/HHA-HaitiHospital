@@ -60,7 +60,9 @@ export const UploadForm = ({
             accept=".json"
             className="form-control"
             onChange={handleFileChange}
-            onClick={(event) => { event.currentTarget.value = null; }}
+            onClick={(event) => {
+              event.currentTarget.value = null;
+            }}
           />
         </div>
 
@@ -73,11 +75,7 @@ export const UploadForm = ({
         <div className="mb-3">{buildSubmitButton()}</div>
 
         {reportTemplateData && (
-          <ReportForm
-            isSubmitting={false}
-            reportData={reportTemplateData}
-            readOnly={true}
-          />
+          <ReportForm isSubmitting={false} reportData={reportTemplateData} readOnly={true} />
         )}
       </form>
     </div>
