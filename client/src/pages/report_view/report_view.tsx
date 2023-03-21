@@ -13,6 +13,7 @@ import Api from 'actions/Api';
 import { userLocale, dateOptions } from 'constants/date';
 import { useTranslation } from 'react-i18next';
 import { PDFExport } from '@progress/kendo-react-pdf';
+import { useAuthState } from 'contexts';
 
 const ReportView = () => {
   const history = useHistory<History>();
@@ -29,6 +30,7 @@ const ReportView = () => {
     userLocale,
     dateOptions,
   );
+  const user = useAuthState();
 
   const applyReportChanges = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
@@ -49,6 +51,7 @@ const ReportView = () => {
     const editedReportObject = {
       id: report_id,
       serializedReport,
+      submittedBy: user?.userDetails?.name,
     };
     Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
   };
