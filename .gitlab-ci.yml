@@ -133,7 +133,7 @@ build-docker publish-docker-images:
     # Run on the CI/CD server, so it can force delete these images because it does not run any of them as containers
     # - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
     #   xargs docker rmi --force
-    - docker image prune -a
+    - docker image prune -a -f
     - docker images
 
 .deploy-script: &deploy-from-dockerhub
