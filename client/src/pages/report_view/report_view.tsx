@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import { useAuthState } from 'contexts';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
-import { NavigationInfo } from 'pages/report/Report';
+import { NavigationInfo, navigation } from 'pages/report/utils';
 
 const ReportView = () => {
   const history: History = useHistory<History>();
@@ -117,7 +117,7 @@ const ReportView = () => {
       {!!report && (
         <div className="report-view">
           <Sidebar />
-          <main>
+          <main className="container-fluid main-region bg-light h-screen">
             <Header />
             <PopupModalConfirmation
               messages={[
@@ -141,17 +141,7 @@ const ReportView = () => {
               }}
               onModalProceed={() => {
                 setIsShowingNavigationModal(false);
-                if (!navigationInfo) {
-                  setAreChangesMade(false);
-                }
-                // Proceed with the normal navigation
-                else if (navigationInfo?.action === 'POP') {
-                  history.goBack();
-                } else if (navigationInfo?.action === 'PUSH') {
-                  history.push(navigationInfo.location);
-                } else if (navigationInfo?.action === 'REPLACE') {
-                  history.replace(navigationInfo.location);
-                }
+                navigation(history, navigationInfo, () => setAreChangesMade(false));
               }}
               show={isShowingNavigationModal}
               title={'Discard Edit?'}
