@@ -106,7 +106,7 @@ build-docker publish-docker-images:
   stage: build-docker
   image: docker:dind
   tags:
-    - deploy-staging
+    - deploy-development
   only:
     - master
     - staging
