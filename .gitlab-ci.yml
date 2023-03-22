@@ -134,7 +134,6 @@ build-docker publish-docker-images:
     - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
       xargs docker rmi --force
     - docker images
-    
 
 .deploy-script: &deploy-from-dockerhub
   - *export_image_tag
@@ -148,15 +147,6 @@ build-docker publish-docker-images:
   - docker ps -a
   - docker volume ls
 
-.deploy-script: &deploy-script
-  - cp /var/hhahaiti/.env ./.env
-  - export SERVER_IMAGE="hhahaiti_server"
-  - export CLIENT_IMAGE="hhahaiti_caddy"
-  - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
-  - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
-  - docker image prune -f # remove unused images since we just built new ones
-
-
 deploy-development:
   stage: deploy
   environment:
@@ -166,7 +156,6 @@ deploy-development:
     - deploy-development
   only:
     - master
-    - merge_requests
   script:
     - *deploy-from-dockerhub
 
@@ -180,4 +169,4 @@ deploy-staging:
   only:
     - staging
   script:
-    - *deploy-script
+    - *deploy-from-dockerhub
