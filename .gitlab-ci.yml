@@ -138,7 +138,7 @@ build-docker publish-docker-images:
 
 .deploy-script: &deploy-from-dockerhub
   - *export_image_tag
-  - cp /var/baytree/.env ./.env
+  - cp /var/hhahaiti/.env ./.env
   - docker pull $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
   - docker pull $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
   - docker compose -f docker-compose.yml -f docker-compose.deploy.yml up -d
