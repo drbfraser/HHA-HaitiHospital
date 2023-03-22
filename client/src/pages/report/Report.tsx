@@ -16,8 +16,7 @@ import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { generateFormId } from 'utils/generate_report_name';
-import { navigation } from './utils';
-import type { NavigationInfo } from './utils';
+import { NavigationInfo, navigate } from '../../components/report/utils';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -113,15 +112,22 @@ export const Report = () => {
   }, [areChangesMade]);
 
   return (
-    <div className="department">
+    <div className="report-submission">
       <Sidebar />
-      <main className="container-fluid main-region bg-light h-screen">
+      <main
+        className="container-fluid main-region bg-light h-screen"
+        style={{
+          left: '200px',
+          position: 'absolute',
+          width: 'calc(100% - 200px)',
+        }}
+      >
         <Header />
         <PopupModalConfirmation
           messages={[
             <>
               Please click <strong>Confirm</strong> to proceed with your submission. You'll be
-              redirected to the main {currentDepartment?.name} view.
+              redirected to the main list of {currentDepartment?.name} reports.
             </>,
             <>
               If you've made a mistake, please click <strong>Cancel</strong> instead.
@@ -141,7 +147,7 @@ export const Report = () => {
           onModalProceed={() => {
             setIsShowingNavigationModal(false);
             setIsSubmitting(true);
-            navigation(history, navigationInfo, clearCurrentDepartment);
+            navigate(history, navigationInfo, clearCurrentDepartment);
           }}
           show={isShowingNavigationModal}
           title={'Discard Submission?'}

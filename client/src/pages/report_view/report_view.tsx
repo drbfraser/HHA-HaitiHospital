@@ -1,9 +1,8 @@
+import './report_view.css';
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-
 import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
-import './report_view.css';
 import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
 import { TOAST_REPORT_GET } from 'constants/toastErrorMessages';
 import { useHistory, useLocation, Prompt } from 'react-router-dom';
@@ -17,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import { useAuthState } from 'contexts';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
-import { NavigationInfo, navigation } from 'pages/report/utils';
+import { NavigationInfo, navigate } from 'components/report/utils';
 
 const ReportView = () => {
   const history: History = useHistory<History>();
@@ -68,9 +67,11 @@ const ReportView = () => {
       serializedReport,
       submittedBy: user?.userDetails?.name,
     };
+
     Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
-    setShowEditModal(false);
+    setAreChangesMade(false);
     setReadOnly((prev) => !prev);
+    setShowEditModal(false);
     setShowViewEditBtn(true);
   };
 
@@ -122,7 +123,7 @@ const ReportView = () => {
             <PopupModalConfirmation
               messages={[
                 <>
-                  Please click <strong>Confirm</strong> to proceed with Edit.
+                  Please click <strong>Confirm</strong> to proceed with your edits.
                 </>,
                 <>
                   If you've made a mistake, please click <strong>Cancel</strong> instead.
@@ -141,7 +142,7 @@ const ReportView = () => {
               }}
               onModalProceed={() => {
                 setIsShowingNavigationModal(false);
-                navigation(history, navigationInfo, () => setAreChangesMade(false));
+                navigate(history, navigationInfo, () => {});
               }}
               show={isShowingNavigationModal}
               title={'Discard Edit?'}

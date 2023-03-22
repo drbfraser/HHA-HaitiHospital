@@ -1,11 +1,12 @@
 import { History, Action, Location } from 'history';
-export const navigation = (
-  history: History<unknown>,
+
+export const navigate = (
+  history: History,
   navigationInfo: NavigationInfo,
-  defaultCallback: () => void,
+  onNullNavigationInfo: () => void,
 ) => {
   if (!navigationInfo) {
-    defaultCallback();
+    onNullNavigationInfo();
     return;
   }
 
@@ -20,6 +21,7 @@ export const navigation = (
       history.replace(navigationInfo.location);
       break;
   }
+
   return;
 };
 
