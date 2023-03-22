@@ -109,8 +109,6 @@ build-docker publish-docker-images:
     - deploy-staging
   only:
     - master
-    - staging
-    - merge_requests
   script:
     # Required environment variables defined by GitLab's settings:
     #   HUB_USER:           Docker Hub user
