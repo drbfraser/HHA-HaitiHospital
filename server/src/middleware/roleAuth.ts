@@ -5,7 +5,8 @@ import { Role } from '../models/user';
 type UserPrivilegeInfo = {
   role: Role;
 };
-
+// what is ... in javascript?
+//
 export const roleAuth =
   (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction) => {

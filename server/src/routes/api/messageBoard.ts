@@ -95,7 +95,7 @@ router.get(
 router.post(
   '/',
   requireJwtAuth,
-  roleAuth(Role.Admin),
+  roleAuth(Role.Admin, Role.MedicalDirector),
   registerMessageBoardCreate,
   validateInput,
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
