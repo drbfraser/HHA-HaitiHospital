@@ -95,7 +95,7 @@ router.get(
 router.post(
   '/',
   requireJwtAuth,
-  roleAuth(Role.Admin),
+  roleAuth(Role.Admin, Role.MedicalDirector),
   registerMessageBoardCreate,
   validateInput,
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
@@ -128,7 +128,7 @@ router.post(
 router.put(
   '/:id',
   requireJwtAuth,
-  roleAuth(Role.Admin),
+  roleAuth(Role.Admin, Role.MedicalDirector),
   registerMessageBoardCreate,
   validateInput,
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
@@ -173,7 +173,7 @@ router.put(
 router.delete(
   '/:id',
   requireJwtAuth,
-  roleAuth(Role.Admin),
+  roleAuth(Role.Admin, Role.MedicalDirector),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const msgId: string = req.params.id;
