@@ -34,7 +34,6 @@ interface UserWithInstanceMethods extends User {
   registerUser: (newUser: any, callback: Function) => void;
   comparePassword: (otherPw: any, callback: Function) => void;
 }
-
 const userSchema = new Schema<UserWithInstanceMethods>(
   {
     username: {
@@ -51,7 +50,7 @@ const userSchema = new Schema<UserWithInstanceMethods>(
       minlength: 6,
       maxlength: 60,
       match: [
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$/,
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/,
         'Password must contain at least one lowercase, one uppercase, one number, and one special character',
       ],
     },
