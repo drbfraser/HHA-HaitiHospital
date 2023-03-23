@@ -17,7 +17,6 @@ import { BrokenKitReport } from 'pages/biomech/report/report';
 import { BrokenKitView } from 'pages/biomech/view/view';
 import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
-import DepartmentReport from 'pages/department_report/department_report';
 import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employee_of_the_month_main';
 import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
 import { Role } from 'constants/interfaces';
@@ -95,13 +94,13 @@ const routes = [
     rolesAllowed: ['None'],
     departmentsAllowed: ['None'],
   },
-  {
+  /*{
     path: '/department/:deptId/edit/:id',
     component: () => <DepartmentReport edit={true} />,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
-  },
+  },*/
   {
     path: '/department/:deptId',
     component: Department,
