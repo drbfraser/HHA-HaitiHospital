@@ -106,7 +106,7 @@ build-docker publish-docker-images:
   stage: build-docker
   image: docker:dind
   tags:
-    - deploy-staging
+    - deploy-development
   only:
     - master
     - staging
@@ -131,18 +131,22 @@ build-docker publish-docker-images:
 
     # Cleanup the image and any tags of that image
     # Run on the CI/CD server, so it can force delete these images because it does not run any of them as containers
-    - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
-      xargs docker rmi --force
+    # - docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' |
+    #   xargs docker rmi --force
+    - docker image prune -a -f
     - docker images
-    
 
-.deploy-script: &deploy-script
+.deploy-script: &deploy-from-dockerhub
+  - *export_image_tag
   - cp /var/hhahaiti/.env ./.env
-  - export SERVER_IMAGE="hhahaiti_server"
-  - export CLIENT_IMAGE="hhahaiti_caddy"
-  - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
-  - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
-  - docker image prune -f # remove unused images since we just built new ones
+  - docker pull $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
+  - docker pull $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
+  - docker compose -f docker-compose.yml -f docker-compose.deploy.yml up -d
+  - docker image prune -f      # remove unused images since we just downloaded new ones
+  - bash -c 'sleep 15'
+  - docker images
+  - docker ps -a
+  - docker volume ls
 
 deploy-development:
   stage: deploy
@@ -154,7 +158,7 @@ deploy-development:
   only:
     - master
   script:
-    - *deploy-script
+    - *deploy-from-dockerhub
 
 deploy-staging:
   stage: deploy
@@ -166,4 +170,4 @@ deploy-staging:
   only:
     - staging
   script:
-    - *deploy-script
+    - *deploy-from-dockerhub
