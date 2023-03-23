@@ -50,7 +50,10 @@ const userSchema = new Schema<UserWithInstanceMethods>(
       trim: true,
       minlength: 6,
       maxlength: 60,
-      match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$/, 'Password must contain at least one lowercase, one uppercase, one number, and one special character'],
+      match: [
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$/,
+        'Password must contain at least one lowercase, one uppercase, one number, and one special character',
+      ],
     },
     name: String,
     role: { type: String, default: Role.User },
