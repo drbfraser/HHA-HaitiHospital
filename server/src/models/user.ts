@@ -42,7 +42,7 @@ const userSchema = new Schema<UserWithInstanceMethods>(
       lowercase: true,
       unique: true,
       required: [true, "can't be blank"],
-      match: [/^[a-zA-Z0-9_]+$/, 'is invalid'],
+      match: [/^[a-zA-Z0-9_]+$/, 'Only letters, numbers and underscore allowed'],
       index: true,
     },
     password: {
@@ -50,6 +50,7 @@ const userSchema = new Schema<UserWithInstanceMethods>(
       trim: true,
       minlength: 6,
       maxlength: 60,
+      match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$/, 'Password must contain at least one lowercase, one uppercase, one number, and one special character'],
     },
     name: String,
     role: { type: String, default: Role.User },
