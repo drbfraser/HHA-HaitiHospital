@@ -40,7 +40,7 @@ export const UploadReport = () => {
 
     setIsShowingModal(false);
     setIsSubmitting(true);
-    await Api.Put(ENDPOINT_TEMPLATE, reportObject, onSubmit, ERR_TOAST, history);
+    await Api.Put(ENDPOINT_TEMPLATE, reportObject, onSubmit, history, ERR_TOAST);
   };
 
   const onSubmit = () => {

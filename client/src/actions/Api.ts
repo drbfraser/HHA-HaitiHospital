@@ -92,18 +92,23 @@ const Post = async (
 const Put = async (
   url: string,
   obj: object = {},
-  actions: any,
-  errorMsg: string,
+  actions: () => void,
   history: History,
+  errorMsg = '',
+  pendingMsg = 'Processing...',
+  successMsg?: string,
 ): Promise<void> => {
-  try {
-    await axios.put(url, obj);
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  await toast.promise(
+    axios.put(url, obj).then(
+      () => actions(),
+      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
+    ),
+    {
+      error: undefined,
+      pending: pendingMsg,
+      success: successMsg,
+    },
+  );
 };
 
 /**

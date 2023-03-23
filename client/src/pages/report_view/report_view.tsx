@@ -50,7 +50,7 @@ const ReportView = () => {
       id: report_id,
       serializedReport,
     };
-    Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
+    Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, history);
   };
   const getReport = useCallback(async () => {
     const controller = new AbortController();

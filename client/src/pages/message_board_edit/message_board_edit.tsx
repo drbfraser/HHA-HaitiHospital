@@ -63,8 +63,8 @@ const EditMessage = () => {
       ENDPOINT_MESSAGEBOARD_PUT_BY_ID(id),
       data,
       updateMessageActions,
-      TOAST_MESSAGEBOARD_PUT,
       history,
+      TOAST_MESSAGEBOARD_PUT,
     );
   };
 

@@ -63,8 +63,8 @@ export const EditUserForm = (props: UserEditProps) => {
       ENDPOINT_ADMIN_PUT_BY_ID(id),
       data,
       onSubmit,
-      ResponseMessage.getMsgUpdateUserFailed(),
       history,
+      ResponseMessage.getMsgUpdateUserFailed(),
     );
   };
 
