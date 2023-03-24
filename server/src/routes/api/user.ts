@@ -9,6 +9,7 @@ import {
   HTTP_CREATED_CODE,
   HTTP_NOCONTENT_CODE,
   HTTP_OK_CODE,
+  HTTP_UNPROCESSABLE_ENTITY_CODE,
   InternalError,
   NotFound,
 } from 'exceptions/httpException';
@@ -17,6 +18,7 @@ import { RequestWithUser } from 'utils/definitions/express';
 import { IllegalState } from 'exceptions/systemException';
 import { user as inputValidator } from 'sanitization/schemas/user';
 import { logger } from 'logger';
+import { send } from 'process';
 
 const router = Router();
 
@@ -161,16 +163,21 @@ router.post(
         updatedAt: new Date(),
       };
       const newUser = new UserCollection(userInfo);
-      newUser.validate((err: any) => {
-        if (err) {
-          logger.error(`Invalid user info: ${err}`);
-          throw new BadRequest(`Invalid user info: ${err}`);
+      const validationError  = newUser.validateSync();
+
+      if (validationError){
+        let errorJson = {};
+        for (let key in validationError.errors) {
+          errorJson[key] = validationError.errors[key].message;
+          logger.error(`Invalid user info: ${key}:${validationError.errors[key].message}`);
         }
-      });
+        res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send(errorJson)
+      }else{
       newUser.registerUser(newUser, (err: any) => {
         if (err) throw new InternalError(`Failed to register new user: ${err}`);
         res.status(HTTP_CREATED_CODE).send(`New user created`);
       });
+    }
     } catch (e) {
       next(e);
     }
