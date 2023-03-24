@@ -135,7 +135,7 @@ describe('Users Test', function () {
 
     const newUser: User = {
       username: 'JohnUsername',
-      password: 'JohnPassword',
+      password: 'J0hnP@ssword',
       name: 'John',
       role: 'User',
       department: { id: departmentId, name: departmentName },
