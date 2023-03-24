@@ -160,6 +160,9 @@ router.post(
         updatedAt: new Date(),
       };
       const newUser = new UserCollection(userInfo);
+      newUser.validate((err: any) => {
+        if (err) throw new BadRequest(`Invalid user info: ${err}`);
+      });
       newUser.registerUser(newUser, (err: any) => {
         if (err) throw new InternalError(`Failed to register new user: ${err}`);
         res.status(HTTP_CREATED_CODE).send(`New user created`);
