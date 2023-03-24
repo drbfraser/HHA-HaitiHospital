@@ -164,7 +164,8 @@ router.post(
       newUser.validate((err: any) => {
         if (err) {
           logger.error(`Invalid user info: ${err}`);
-          throw new BadRequest(`Invalid user info: ${err}`)};
+          throw new BadRequest(`Invalid user info: ${err}`);
+        }
       });
       newUser.registerUser(newUser, (err: any) => {
         if (err) throw new InternalError(`Failed to register new user: ${err}`);
