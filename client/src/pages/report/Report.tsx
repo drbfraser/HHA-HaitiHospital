@@ -1,4 +1,4 @@
-import SideBar from 'components/side_bar/side_bar';
+import Sidebar from 'components/side_bar/side_bar';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import Header from 'components/header/header';
 import { ReportForm } from 'components/report/report_form';
@@ -8,18 +8,15 @@ import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessag
 import { ResponseMessage } from "utils/response_message";
 import Api from 'actions/Api';
 import { Prompt, useHistory } from 'react-router-dom';
-import { Action, History, Location } from 'history';
+import { History } from 'history';
 import { useEffect, useState } from 'react';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import { useAuthState } from 'contexts';
-
-const UNSAVED_CHANGES_MSG = 'Are you sure you want to leave? You may have unsaved changes!';
-type NavigationInfo = null | {
-  action: Action;
-  location: Location;
-};
+import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import { generateFormId } from 'utils/generate_report_name';
+import { NavigationInfo, navigate } from '../../components/report/utils';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -76,35 +73,6 @@ export const Report = () => {
     );
   };
 
-  // Generate a form ID based on the current date, time, and user ID
-  const generateFormId = (userName: string, reportPrompt: string) => {
-    const words = userName.trim().split(/\s+/);
-    let userId = '';
-    let spaces = 0;
-    for (const word of words) {
-      if (spaces === 2) {
-        break;
-      }
-      if (word.length > 0) {
-        if (word.length >= 3) {
-          userId += word.slice(0, 3).toLowerCase();
-        } else {
-          userId += word.toLowerCase();
-        }
-        spaces++;
-      }
-    }
-    userId = userId.padEnd(6, 'x');
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const day = now.getDate().toString().padStart(2, '0');
-    const hour = now.getHours().toString().padStart(2, '0');
-    const minute = now.getMinutes().toString().padStart(2, '0');
-    const second = now.getSeconds().toString().padStart(2, '0');
-    return `${reportPrompt}_${year}-${month}-${day}_${hour}-${minute}-${second}-${userId}`;
-  };
-
   useEffect(() => {
     const controller = new AbortController();
     const getTemplates = async () => {
@@ -144,15 +112,22 @@ export const Report = () => {
   }, [areChangesMade]);
 
   return (
-    <div className="department">
-      <SideBar />
-      <main className="container-fluid main-region bg-light h-screen">
+    <div className="report-submission">
+      <Sidebar />
+      <main
+        className="container-fluid main-region bg-light h-screen"
+        style={{
+          left: '200px',
+          position: 'absolute',
+          width: 'calc(100% - 200px)',
+        }}
+      >
         <Header />
         <PopupModalConfirmation
           messages={[
             <>
               Please click <strong>Confirm</strong> to proceed with your submission. You'll be
-              redirected to the main {currentDepartment?.name} view.
+              redirected to the main list of {currentDepartment?.name} reports.
             </>,
             <>
               If you've made a mistake, please click <strong>Cancel</strong> instead.
@@ -172,19 +147,7 @@ export const Report = () => {
           onModalProceed={() => {
             setIsShowingNavigationModal(false);
             setIsSubmitting(true);
-
-            // Stay on the same page, but start over the submission process
-            if (!navigationInfo) {
-              clearCurrentDepartment();
-            }
-            // Proceed with the normal navigation
-            else if (navigationInfo.action === 'POP') {
-              history.goBack();
-            } else if (navigationInfo.action === 'PUSH') {
-              history.push(navigationInfo.location);
-            } else if (navigationInfo.action === 'REPLACE') {
-              history.replace(navigationInfo.location);
-            }
+            navigate(history, navigationInfo, clearCurrentDepartment);
           }}
           show={isShowingNavigationModal}
           title={'Discard Submission?'}
