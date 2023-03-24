@@ -1,10 +1,10 @@
 import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
-
 import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
 import './report_view.css';
 import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
-import { TOAST_REPORT_GET } from 'constants/toastErrorMessages';
+import { TOAST_REPORT_PUT as PENDING_TOAST } from 'constants/toastPendingMessages';
+import { ResponseMessage } from "utils/response_message";
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
@@ -50,13 +50,21 @@ const ReportView = () => {
       id: report_id,
       serializedReport,
     };
-    Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, history);
+    Api.Put(
+      ENDPOINT_REPORTS,
+      editedReportObject,
+      () => {},
+      history,
+      ResponseMessage.getMsgUpdateReportFailed(),
+      PENDING_TOAST,
+      ResponseMessage.getMsgUpdateReportOk(),
+    );
   };
   const getReport = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReport: any = await Api.Get(
       ENDPOINT_REPORTS_GET_BY_ID(report_id),
-      TOAST_REPORT_GET,
+      ResponseMessage.getMsgFetchReportFailed(),
       history,
       controller.signal,
     );

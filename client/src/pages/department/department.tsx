@@ -9,7 +9,7 @@ import {
   ENDPOINT_DEPARTMENT_GET_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
 } from 'constants/endpoints';
-import { TOAST_DEPARTMENT_GET, TOAST_REPORTS_GET } from 'constants/toastErrorMessages';
+import { ResponseMessage } from "utils/response_message";
 import { Department as DepartmentModel, EMPTY_DEPARTMENT } from 'constants/interfaces';
 import './department_style.css';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
@@ -45,7 +45,7 @@ export const Department = (props: DepartmentProps) => {
     const controller = new AbortController();
     const fetchedReports: IReportObject<any>[] = await Api.Get(
       ENDPOINT_REPORTS_GET_BY_DEPARTMENT(deptId),
-      TOAST_REPORTS_GET,
+      ResponseMessage.getMsgFetchReportsFailed(),
       history,
       controller.signal,
     );
@@ -65,7 +65,7 @@ export const Department = (props: DepartmentProps) => {
       setDepartment(
         await Api.Get(
           ENDPOINT_DEPARTMENT_GET_BY_ID(id),
-          TOAST_DEPARTMENT_GET,
+          ResponseMessage.getMsgFetchDepartmentFailed(),
           history,
           controller.signal,
         ),

@@ -50,7 +50,7 @@ const Get = async (
  * - Pending message for toast
  * @param successMsg
  * - Success message for toast
- * @returns Promise<void>
+ * @returns void
  */
 const Post = async (
   url: string,
@@ -83,10 +83,14 @@ const Post = async (
  * @param actions
  * - Actions that should occur after PUT request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
  * @returns void
  */
 const Put = async (

@@ -5,6 +5,7 @@ import { UploadForm } from 'components/template/template_form';
 import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
 import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { TOAST_REPORT_TEMPLATE_PUT as ERR_TOAST } from 'constants/toastErrorMessages';
+import { TOAST_REPORT_TEMPLATE_PUT as PENDING_TOAST } from 'constants/toastPendingMessages';
 import { TOAST_REPORT_TEMPLATE_PUT as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +15,6 @@ import { useState } from 'react';
 import { Department } from 'constants/interfaces';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useDepartmentData } from 'hooks';
-import { toast } from 'react-toastify';
 
 export const UploadReport = () => {
   const { t } = useTranslation();
@@ -40,13 +40,18 @@ export const UploadReport = () => {
 
     setIsShowingModal(false);
     setIsSubmitting(true);
-    await Api.Put(ENDPOINT_TEMPLATE, reportObject, onSubmit, history, ERR_TOAST);
+    await Api.Put(
+      ENDPOINT_TEMPLATE,
+      reportObject,
+      onSubmit,
+      history,
+      ERR_TOAST,
+      PENDING_TOAST,
+      SUCCESS_TOAST,
+    );
   };
 
-  const onSubmit = () => {
-    toast.success(SUCCESS_TOAST);
-    history.push(`/home`);
-  };
+  const onSubmit = () => history.push(`/home`);
 
   return (
     <div className="department">

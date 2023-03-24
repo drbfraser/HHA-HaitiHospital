@@ -40,7 +40,15 @@ const onLogout = () => {
 
 export const logOutUser = async (dispatch, history: History) => {
   dispatch({ type: 'LOGOUT' });
-  await Api.Post(ENDPOINT_LOGOUT, {}, onLogout, history, 'Logging out failed');
+  await Api.Post(
+    ENDPOINT_LOGOUT,
+    {},
+    onLogout,
+    history,
+    'Logging out failed',
+    'Logging out...',
+    'Logged out successfully!',
+  );
 };
 
 const deleteAllCookies = () => {
@@ -49,7 +57,7 @@ const deleteAllCookies = () => {
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i];
     const eqPos = cookie.indexOf('=');
-    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
   }
 };

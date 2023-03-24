@@ -345,15 +345,15 @@
   },
 
   "request_response": {
-    "ok": "Successfully {{action}} {{item}}",
+    "ok": "Successfully {{action}} {{item}}!",
     "failed": "Unable to {{action}} {{item}}"
   },
 
   "request_action": {
-    "create": "create",
-    "fetch": "fetch",
-    "update": "update",
-    "delete": "delete"
+    "create": "created",
+    "delete": "deleted",
+    "fetch": "fetched",
+    "update": "updated"
   },
 
   "item": {

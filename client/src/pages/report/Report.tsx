@@ -4,9 +4,8 @@ import Header from 'components/header/header';
 import { ReportForm } from 'components/report/report_form';
 import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
-import { TOAST_REPORT_POST as ERR_TOAST } from 'constants/toastErrorMessages';
 import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
-import { TOAST_REPORT_POST as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
+import { ResponseMessage } from "utils/response_message";
 import Api from 'actions/Api';
 import { Prompt, useHistory } from 'react-router-dom';
 import { Action, History, Location } from 'history';
@@ -71,9 +70,9 @@ export const Report = () => {
       reportObject,
       () => history.push(`/department/${currentDepartment.id}`),
       history,
-      ERR_TOAST,
+      ResponseMessage.getMsgCreateReportFailed(),
       PENDING_TOAST,
-      SUCCESS_TOAST,
+      ResponseMessage.getMsgCreateReportOk(),
     );
   };
 

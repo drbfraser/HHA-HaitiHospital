@@ -10,7 +10,7 @@ import './general_reports_styles.css';
 import Pagination from 'components/pagination/Pagination';
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS } from 'constants/endpoints';
-import { TOAST_REPORTS_GET } from 'constants/toastErrorMessages';
+import { ResponseMessage } from "utils/response_message";
 import { JsonReportDescriptor } from '@hha/common';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,7 @@ const GeneralReports = () => {
     const controller = new AbortController();
     const fetchedReports: JsonReportDescriptor[] = await Api.Get(
       ENDPOINT_REPORTS,
-      TOAST_REPORTS_GET,
+      ResponseMessage.getMsgFetchReportsFailed(),
       history,
       controller.signal,
     );

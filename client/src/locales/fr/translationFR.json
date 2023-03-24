@@ -345,7 +345,7 @@
   },
 
   "request_response": {
-    "ok": "Avec succès {{action}} {{item}}",
+    "ok": "Avec succès {{action}} {{item}}!",
     "failed": "Échec de {{action}} {{item}}"
   },
 
