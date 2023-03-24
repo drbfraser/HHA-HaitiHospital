@@ -16,7 +16,7 @@ import { cloneDeep } from 'lodash';
 
 const router = Router();
 
-//Save report
+// Save report
 router.post(
   '/',
   requireJwtAuth,
@@ -135,6 +135,6 @@ router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
 
   await report.save();
 
-  res.status(HTTP_OK_CODE);
+  res.status(HTTP_OK_CODE).json({ message: 'Report updated' });
 });
 export default router;
