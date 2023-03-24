@@ -16,6 +16,7 @@ import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 import { IllegalState } from 'exceptions/systemException';
 import { user as inputValidator } from 'sanitization/schemas/user';
+import { logger } from 'logger';
 
 const router = Router();
 
@@ -161,7 +162,9 @@ router.post(
       };
       const newUser = new UserCollection(userInfo);
       newUser.validate((err: any) => {
-        if (err) throw new BadRequest(`Invalid user info: ${err}`);
+        if (err) {
+          logger.error(`Invalid user info: ${err}`);
+          throw new BadRequest(`Invalid user info: ${err}`)};
       });
       newUser.registerUser(newUser, (err: any) => {
         if (err) throw new InternalError(`Failed to register new user: ${err}`);
