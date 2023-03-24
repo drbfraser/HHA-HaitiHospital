@@ -3,7 +3,7 @@ import Header from 'components/header/header';
 import Sidebar from 'components/side_bar/side_bar';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
-import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
+import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
 import { TOAST_REPORT_PUT as PENDING_TOAST } from 'constants/toastPendingMessages';
 import { ResponseMessage } from "utils/response_message";
 import { useHistory, useLocation, Prompt } from 'react-router-dom';
@@ -87,7 +87,7 @@ const ReportView = () => {
   const getReport = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReport: any = await Api.Get(
-      ENDPOINT_REPORTS_GET_BY_ID(report_id),
+      ENDPOINT_REPORT_GET_BY_ID(report_id),
       ResponseMessage.getMsgFetchReportFailed(),
       history,
       controller.signal,
