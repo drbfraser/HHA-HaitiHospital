@@ -345,8 +345,9 @@
   },
 
   "request_response": {
-    "ok": "Successfully {{action}} {{item}}!",
-    "failed": "Unable to {{action}} {{item}}"
+    "ok": "{{item}} successfully {{action}}!",
+    "pending": "{{item}} is being {{action}}...",
+    "failed": "{{item}} could not be {{action}}"
   },
 
   "request_action": {
@@ -357,13 +358,14 @@
   },
 
   "item": {
-    "user": "user",
-    "users": "users",
-    "department": "department",
-    "departments": "departments",
-    "report": "report",
-    "reports": "reports",
-    "image": "image"
+    "department": "Department",
+    "departments": "Departments",
+    "image": "Image",
+    "report": "Report",
+    "reports": "Reports",
+    "report_template": "Report template",
+    "user": "User",
+    "users": "Users"
   },
 
   "error_message": {

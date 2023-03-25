@@ -1,22 +1,21 @@
-import Sidebar from 'components/side_bar/side_bar';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import Header from 'components/header/header';
-import { ReportForm } from 'components/report/report_form';
-import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
-import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
-import { TOAST_REPORT_POST as PENDING_TOAST } from 'constants/toastPendingMessages';
-import { ResponseMessage } from "utils/response_message";
 import Api from 'actions/Api';
-import { Prompt, useHistory } from 'react-router-dom';
-import { History } from 'history';
-import { useEffect, useState } from 'react';
+import Header from 'components/header/header';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
+import Sidebar from 'components/side_bar/side_bar';
 import { Department } from 'constants/interfaces';
+import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { History } from 'history';
+import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-import { useDepartmentData } from 'hooks';
-import { useAuthState } from 'contexts';
+import { Prompt, useHistory } from 'react-router-dom';
+import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
+import { ReportForm } from 'components/report/report_form';
+import { ResponseMessage } from "utils/response_message";
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { generateFormId } from 'utils/generate_report_name';
-import { NavigationInfo, navigate } from '../../components/report/utils';
+import { useAuthState } from 'contexts';
+import { useDepartmentData } from 'hooks';
+import { useEffect, useState } from 'react';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -68,7 +67,7 @@ export const Report = () => {
       () => history.push(`/department/${currentDepartment.id}`),
       history,
       ResponseMessage.getMsgCreateReportFailed(),
-      PENDING_TOAST,
+      ResponseMessage.getMsgCreateReportPending(),
       ResponseMessage.getMsgCreateReportOk(),
     );
   };

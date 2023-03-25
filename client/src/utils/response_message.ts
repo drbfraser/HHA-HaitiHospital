@@ -12,6 +12,7 @@ enum RequestAction {
 // Make sure enum values match with i18-next translation JSON
 enum RequestStatus {
   OK = 'ok',
+  PENDING = 'pending',
   FAILED = 'failed',
 }
 
@@ -22,6 +23,7 @@ enum RequestItem {
   IMAGE = 'image',
   REPORT = 'report',
   REPORTS = 'reports',
+  REPORT_TEMPLATE = 'report_template',
   USER = 'user',
   USERS = 'users',
 }
@@ -80,6 +82,13 @@ const getMsgCreateReportOk = (): string => {
     item: RequestItem.REPORT,
   });
 };
+const getMsgCreateReportPending = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.PENDING,
+    item: RequestItem.REPORT,
+  });
+};
 const getMsgCreateReportFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.CREATE,
@@ -91,6 +100,13 @@ const getMsgUpdateReportOk = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
     status: RequestStatus.OK,
+    item: RequestItem.USER,
+  });
+};
+const getMsgUpdateReportPending = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.PENDING,
     item: RequestItem.USER,
   });
 };
@@ -127,6 +143,29 @@ const getMsgDeleteReportFailed = (): string => {
     action: RequestAction.DELETE,
     status: RequestStatus.FAILED,
     item: RequestItem.REPORT,
+  });
+};
+
+// REPORT_TEMPLATE
+const getMsgUpdateReportTemplateOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.OK,
+    item: RequestItem.USER,
+  });
+};
+const getMsgUpdateReportTemplatePending = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.PENDING,
+    item: RequestItem.USER,
+  });
+};
+const getMsgUpdateReportTemplateFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USER,
   });
 };
 
@@ -195,13 +234,19 @@ export const ResponseMessage = {
   getMsgFetchImageFailed,
 
   getMsgCreateReportOk,
+  getMsgCreateReportPending,
   getMsgCreateReportFailed,
   getMsgUpdateReportOk,
+  getMsgUpdateReportPending,
   getMsgUpdateReportFailed,
   getMsgFetchReportFailed,
   getMsgFetchReportsFailed,
   getMsgDeleteReportOk,
   getMsgDeleteReportFailed,
+
+  getMsgUpdateReportTemplateOk,
+  getMsgUpdateReportTemplatePending,
+  getMsgUpdateReportTemplateFailed,
 
   getMsgCreateUserOk,
   getMsgCreateUserFailed,

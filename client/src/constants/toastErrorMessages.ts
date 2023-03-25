@@ -22,9 +22,6 @@ const TOAST_MESSAGEBOARD_DELETE: string = 'Unable to delete message';
 const TOAST_MESSAGEBOARD_COMMENTS_GET: string = 'Unable to fetch comments';
 const TOAST_MESSAGEBOARD_COMMENTS_POST: string = 'Unable to post comment';
 
-// Report templates
-const TOAST_REPORT_TEMPLATE_PUT: string = 'Unable to submit report template';
-
 export {
   TOAST_CASESTUDY_DELETE,
   TOAST_CASESTUDY_GET,
@@ -40,5 +37,4 @@ export {
   TOAST_MESSAGEBOARD_GET,
   TOAST_MESSAGEBOARD_POST,
   TOAST_MESSAGEBOARD_PUT,
-  TOAST_REPORT_TEMPLATE_PUT,
 };

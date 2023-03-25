@@ -1,23 +1,22 @@
 import './report_view.css';
-import Header from 'components/header/header';
-import Sidebar from 'components/side_bar/side_bar';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
-import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
-import { TOAST_REPORT_PUT as PENDING_TOAST } from 'constants/toastPendingMessages';
-import { ResponseMessage } from "utils/response_message";
-import { useHistory, useLocation, Prompt } from 'react-router-dom';
-import { useDepartmentData } from 'hooks';
-import { History } from 'history';
-import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
-import { ReportForm } from 'components/report/report_form';
 import Api from 'actions/Api';
-import { userLocale, dateOptions } from 'constants/date';
-import { useTranslation } from 'react-i18next';
-import { PDFExport } from '@progress/kendo-react-pdf';
-import { useAuthState } from 'contexts';
-import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import Header from 'components/header/header';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
+import Sidebar from 'components/side_bar/side_bar';
+import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
+import { History } from 'history';
 import { NavigationInfo, navigate } from 'components/report/utils';
+import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
+import { PDFExport } from '@progress/kendo-react-pdf';
+import { ReportForm } from 'components/report/report_form';
+import { ResponseMessage } from "utils/response_message";
+import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import { useAuthState } from 'contexts';
+import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
+import { useDepartmentData } from 'hooks';
+import { useHistory, useLocation, Prompt } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { userLocale, dateOptions } from 'constants/date';
 
 const ReportView = () => {
   const history: History = useHistory<History>();
@@ -79,7 +78,7 @@ const ReportView = () => {
       },
       history,
       ResponseMessage.getMsgUpdateReportFailed(),
-      PENDING_TOAST,
+      ResponseMessage.getMsgUpdateReportPending(),
       ResponseMessage.getMsgUpdateReportOk(),
     );
   };
