@@ -163,21 +163,21 @@ router.post(
         updatedAt: new Date(),
       };
       const newUser = new UserCollection(userInfo);
-      const validationError  = newUser.validateSync();
+      const validationError = newUser.validateSync();
 
-      if (validationError){
+      if (validationError == undefined) {
         let errorJson = {};
         for (let key in validationError.errors) {
           errorJson[key] = validationError.errors[key].message;
           logger.error(`Invalid user info: ${key}:${validationError.errors[key].message}`);
         }
-        res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send(errorJson)
-      }else{
-      newUser.registerUser(newUser, (err: any) => {
-        if (err) throw new InternalError(`Failed to register new user: ${err}`);
-        res.status(HTTP_CREATED_CODE).send(`New user created`);
-      });
-    }
+        res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send(errorJson);
+      } else {
+        newUser.registerUser(newUser, (err: any) => {
+          if (err) throw new InternalError(`Failed to register new user: ${err}`);
+          res.status(HTTP_CREATED_CODE).send(`New user created`);
+        });
+      }
     } catch (e) {
       next(e);
     }
