@@ -4,6 +4,7 @@ import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmatio
 import Sidebar from 'components/side_bar/side_bar';
 import { Department } from 'constants/interfaces';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { FormEvent, useEffect, useState } from 'react';
 import { History } from 'history';
 import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
@@ -15,7 +16,6 @@ import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
-import { useEffect, useState } from 'react';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -41,7 +41,7 @@ export const Report = () => {
     setReport(undefined);
   };
 
-  const confirmSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+  const confirmSubmission = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsShowingSubmissionModal(true);
   };
@@ -59,8 +59,10 @@ export const Report = () => {
       submittedBy: user?.userDetails?.name,
     };
 
-    setIsShowingSubmissionModal(false);
     setIsSubmitting(true);
+    setIsShowingSubmissionModal(false);
+    setAreChangesMade(false);
+
     Api.Post(
       ENDPOINT_REPORTS,
       reportObject,

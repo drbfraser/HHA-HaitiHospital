@@ -12,35 +12,35 @@ import { ReportForm } from 'components/report/report_form';
 import { ResponseMessage } from "utils/response_message";
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { useAuthState } from 'contexts';
-import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
+import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useDepartmentData } from 'hooks';
 import { useHistory, useLocation, Prompt } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { userLocale, dateOptions } from 'constants/date';
 
 const ReportView = () => {
-  const history: History = useHistory<History>();
-  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
+  const [metaData, setMetaData] = useState<ReportMetaData>(null);
+  const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
+  const [readOnly, setReadOnly] = useState<boolean>(true);
+  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
-  const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
-  const [metaData, setMetaData] = useState<ReportMetaData>(null);
-  const [readOnly, setReadOnly] = useState<boolean>(true);
-  const report_id = useLocation().pathname.split('/')[2];
   const { departmentIdKeyMap } = useDepartmentData();
-  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const { t } = useTranslation();
-  const pdfExportComponent = useRef(null);
   const department = departmentIdKeyMap.get(metaData?.departmentId);
+  const history: History = useHistory<History>();
+  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const pdfExportComponent = useRef(null);
+  const report_id = useLocation().pathname.split('/')[2];
   const submittedDate = new Date(metaData?.submittedDate).toLocaleDateString(
     userLocale,
     dateOptions,
   );
   const user = useAuthState();
 
-  const confirmEdit = (event: React.FormEvent<HTMLFormElement>) => {
+  const confirmEdit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowEditModal(true);
   };
@@ -57,7 +57,6 @@ const ReportView = () => {
   const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setReadOnly((prev) => !prev);
-    setShowViewEditBtn(false);
   };
 
   const reportHandler = () => {
@@ -67,13 +66,15 @@ const ReportView = () => {
       serializedReport,
       submittedBy: user?.userDetails?.name,
     };
+
+    setAreChangesMade(false);
+    setShowEditModal(false);
+
     Api.Put(
       ENDPOINT_REPORTS,
       editedReportObject,
       () => {
-        setAreChangesMade(false);
         setReadOnly((prev) => !prev);
-        setShowEditModal(false);
         setShowViewEditBtn(true);
       },
       history,

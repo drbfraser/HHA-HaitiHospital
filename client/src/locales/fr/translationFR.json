@@ -346,6 +346,7 @@
 
   "request_response": {
     "ok": "Avec succès {{action}} {{item}}!",
+    "pending": "Traitement {{action}} {{item}}...",
     "failed": "Échec de {{action}} {{item}}"
   },
 
@@ -357,13 +358,14 @@
   },
 
   "item": {
-    "user": "l'utilisateur",
-    "users": "utilisateurs",
     "department": "départment",
     "departments": "départments",
+    "image": "image",
     "report": "rapport",
     "reports": "rapports",
-    "image": "image"
+    "report_template": "modèle de rapport",
+    "user": "l'utilisateur",
+    "users": "utilisateurs"
   },
 
   "error_message": {

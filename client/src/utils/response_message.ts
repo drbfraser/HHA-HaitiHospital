@@ -100,21 +100,21 @@ const getMsgUpdateReportOk = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
     status: RequestStatus.OK,
-    item: RequestItem.USER,
+    item: RequestItem.REPORT,
   });
 };
 const getMsgUpdateReportPending = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
     status: RequestStatus.PENDING,
-    item: RequestItem.USER,
+    item: RequestItem.REPORT,
   });
 };
 const getMsgUpdateReportFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
     status: RequestStatus.FAILED,
-    item: RequestItem.USER,
+    item: RequestItem.REPORT,
   });
 };
 const getMsgFetchReportFailed = (): string => {
@@ -122,13 +122,6 @@ const getMsgFetchReportFailed = (): string => {
     action: RequestAction.FETCH,
     status: RequestStatus.FAILED,
     item: RequestItem.REPORT,
-  });
-};
-const getMsgFetchReportsFailed = (): string => {
-  return getResponseMessage({
-    action: RequestAction.FETCH,
-    status: RequestStatus.FAILED,
-    item: RequestItem.REPORTS,
   });
 };
 const getMsgDeleteReportOk = (): string => {
@@ -146,26 +139,35 @@ const getMsgDeleteReportFailed = (): string => {
   });
 };
 
+// REPORTS
+const getMsgFetchReportsFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.REPORTS,
+  });
+};
+
 // REPORT_TEMPLATE
 const getMsgUpdateReportTemplateOk = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
     status: RequestStatus.OK,
-    item: RequestItem.USER,
+    item: RequestItem.REPORT_TEMPLATE,
   });
 };
 const getMsgUpdateReportTemplatePending = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
     status: RequestStatus.PENDING,
-    item: RequestItem.USER,
+    item: RequestItem.REPORT_TEMPLATE,
   });
 };
 const getMsgUpdateReportTemplateFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
     status: RequestStatus.FAILED,
-    item: RequestItem.USER,
+    item: RequestItem.REPORT_TEMPLATE,
   });
 };
 
@@ -198,13 +200,6 @@ const getMsgUpdateUserFailed = (): string => {
     item: RequestItem.USER,
   });
 };
-const getMsgFetchUsersFailed = (): string => {
-  return getResponseMessage({
-    action: RequestAction.FETCH,
-    status: RequestStatus.FAILED,
-    item: RequestItem.USERS,
-  });
-};
 const getMsgFetchUserFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.FETCH,
@@ -227,6 +222,15 @@ const getMsgDeleteUserFailed = (): string => {
   });
 };
 
+// USERS
+const getMsgFetchUsersFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FETCH,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USERS,
+  });
+};
+
 export const ResponseMessage = {
   getMsgFetchDepartmentFailed,
   getMsgFetchDepartmentsFailed,
@@ -240,9 +244,10 @@ export const ResponseMessage = {
   getMsgUpdateReportPending,
   getMsgUpdateReportFailed,
   getMsgFetchReportFailed,
-  getMsgFetchReportsFailed,
   getMsgDeleteReportOk,
   getMsgDeleteReportFailed,
+
+  getMsgFetchReportsFailed,
 
   getMsgUpdateReportTemplateOk,
   getMsgUpdateReportTemplatePending,
@@ -252,8 +257,9 @@ export const ResponseMessage = {
   getMsgCreateUserFailed,
   getMsgUpdateUserOk,
   getMsgUpdateUserFailed,
-  getMsgFetchUsersFailed,
   getMsgFetchUserFailed,
   getMsgDeleteUserOk,
   getMsgDeleteUserFailed,
+
+  getMsgFetchUsersFailed,
 };

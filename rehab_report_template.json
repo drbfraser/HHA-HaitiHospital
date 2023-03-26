@@ -1,0 +1,904 @@
+{
+  "_id": {
+    "$oid": "640e849215be385110e6ed50"
+  },
+  "departmentId": "640e849115be385110e6ec29",
+  "reportObject": {
+    "id": "rehab-report_1",
+    "prompt": "Rehab Report",
+    "questionItems": [
+      {
+        "id": "1",
+        "prompt": "Beds available",
+        "answer": 60,
+        "validators": [
+          "isPositive",
+          "isEven"
+        ],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "2",
+        "prompt": "Beds days",
+        "answer": 0,
+        "validators": [],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "3",
+        "prompt": "Patient days",
+        "answer": 0,
+        "validators": [],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "4",
+        "prompt": "Hospitalized",
+        "answer": 0,
+        "validators": [],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "5",
+        "prompt": "Discharged Alive",
+        "questionGroups": [],
+        "answer": 0,
+        "questionsTemplate": {
+          "id": "5_0",
+          "prompt": "Discharged Alive-template",
+          "questionItems": [
+            {
+              "id": "5_1",
+              "prompt": "Discharged diagnosis",
+              "answer": 0,
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": true,
+                  "description": "SCI",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Stroke",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Other",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            },
+            {
+              "id": "5_2",
+              "prompt": "No. Days in Rehab Unit from admission to discharge",
+              "answer": 230,
+              "validators": [],
+              "__class__": "NumericQuestion"
+            },
+            {
+              "id": "5_3",
+              "prompt": "Discharged reason",
+              "answer": 0,
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": true,
+                  "description": "All goals met",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Goals partially met, sufficient for discharge",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Goals not met, discharged for alternate reason",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            },
+            {
+              "id": "5_4",
+              "prompt": "Discharge Outcome (ADLs/Self-Care)",
+              "answer": 0,
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": true,
+                  "description": "Independent",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Modified Independent",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Supervision",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Minimum Assistance",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Moderate Assistance",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Maximum Assistance",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Dependent",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            },
+            {
+              "id": "5_5",
+              "prompt": "Discharge Outcome (Transfers and Mobility)",
+              "answer": 0,
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": true,
+                  "description": "Independent",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Modified Independent",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Supervision",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Minimum Assistance",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Moderate Assistance",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Maximum Assistance",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Dependent",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            },
+            {
+              "id": "5_6",
+              "prompt": "Mobility Aid/Assistive Device Given?",
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": false,
+                  "description": "Wheelchair",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Walker",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Cane",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Crutches",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "MultipleSelectionQuestion"
+            },
+            {
+              "id": "5_7",
+              "prompt": "Discharge Location",
+              "answer": 0,
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": true,
+                  "description": "Return home, alone",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Return home, with family/caregiver(s)",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Admitted to hospital",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            },
+            {
+              "id": "5_8",
+              "prompt": "Discharge Employment Status",
+              "answer": 0,
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": true,
+                  "description": "Employed",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Unemployed, unable to find work",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Unemployed, due to condition",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Retired, not working due to age",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            }
+          ],
+          "__class__": "QuestionGroup"
+        },
+        "__class__": "ExpandableQuestion"
+      },
+      {
+        "id": "6",
+        "prompt": "Died before 48h",
+        "questionGroups": [],
+        "answer": 0,
+        "questionsTemplate": {
+          "id": "6_0",
+          "prompt": "Died before 48h-template",
+          "questionItems": [
+            {
+              "id": "6_1",
+              "prompt": "Diagnosis",
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": false,
+                  "description": "SCI",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "CVA",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Other",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            },
+            {
+              "id": "6_2",
+              "prompt": "Age",
+              "validators": [],
+              "__class__": "NumericQuestion"
+            },
+            {
+              "id": "6_3",
+              "prompt": "Cause of death",
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": false,
+                  "description": "Suspected CVA",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            }
+          ],
+          "__class__": "QuestionGroup"
+        },
+        "__class__": "ExpandableQuestion"
+      },
+      {
+        "id": "7",
+        "prompt": "Died after 48h",
+        "questionGroups": [],
+        "answer": 0,
+        "questionsTemplate": {
+          "id": "7_0",
+          "prompt": "Died after 48h-template",
+          "questionItems": [
+            {
+              "id": "7_1",
+              "prompt": "Diagnosis",
+              "validators": [],
+              "choices": [
+                {
+                  "chosen": false,
+                  "description": "SCI",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "CVA",
+                  "__class__": "Choice"
+                },
+                {
+                  "chosen": false,
+                  "description": "Other",
+                  "__class__": "Choice"
+                }
+              ],
+              "__class__": "SingleSelectionQuestion"
+            },
+            {
+              "id": "7_2",
+              "prompt": "Age",
+              "validators": [],
+              "__class__": "NumericQuestion"
+            },
+            {
+              "id": "7_3",
+              "prompt": "Cause of death",
+              "validators": [],
+              "__class__": "TextQuestion"
+            }
+          ],
+          "__class__": "QuestionGroup"
+        },
+        "__class__": "ExpandableQuestion"
+      },
+      {
+        "id": "8",
+        "prompt": "Days hospitalised",
+        "answer": 0,
+        "validators": [],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "9",
+        "prompt": "Referrals",
+        "answer": 0,
+        "validators": [],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "10",
+        "prompt": "Transfers",
+        "answer": 0,
+        "validators": [],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "11",
+        "prompt": "Self-discharged",
+        "answer": 0,
+        "validators": [],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "12",
+        "prompt": "Stayed in the ward",
+        "answer": 0,
+        "compositionGroups": [
+          {
+            "id": "12_1",
+            "prompt": "Reason Not Yet Discharged",
+            "questions": [
+              {
+                "id": "12_1_1",
+                "prompt": "Not ready from therapy standpoint",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "12_1_2",
+                "prompt": "Wound Care",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "12_1_3",
+                "prompt": "Other medical reason (such as IV medication)",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "12_2",
+            "prompt": "Length of Stay of Current Inpatients",
+            "questions": [
+              {
+                "id": "12_2_1",
+                "prompt": "1-3 months",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "12_2_2",
+                "prompt": "3-6 months",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "12_2_3",
+                "prompt": "6 months - 1 year",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "12_2_4",
+                "prompt": "1-2 years",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "12_2_5",
+                "prompt": "2-3 years ",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "12_2_6",
+                "prompt": "3+ years ",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "13",
+        "prompt": "Admissions",
+        "answer": 0,
+        "compositionGroups": [
+          {
+            "id": "13_1",
+            "prompt": "Where do patients come from?",
+            "questions": [
+              {
+                "id": "13_1_1",
+                "prompt": "Quarter Morin",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_1_2",
+                "prompt": "Cap Haitian",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_1_3",
+                "prompt": "Department Nord",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_1_4",
+                "prompt": "Other departments",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "13_2",
+            "prompt": "Main Condition",
+            "questions": [
+              {
+                "id": "13_2_1",
+                "prompt": "SCI - tetraplegia",
+                "answer": 0,
+                "compositionGroups": [
+                  {
+                    "id": "13_2_1_1",
+                    "prompt": "Cause",
+                    "questions": [
+                      {
+                        "id": "13_2_1_1_1",
+                        "prompt": "Transport accident",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_1_1_2",
+                        "prompt": "Fall",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_1_1_3",
+                        "prompt": "Assault",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_1_1_4",
+                        "prompt": "Sports",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_1_1_5",
+                        "prompt": "Non-traumatic spinal cord dysfunction",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_1_1_6",
+                        "prompt": "Medical/surgical complication",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_1_1_7",
+                        "prompt": "Other traumatic reason",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      }
+                    ],
+                    "__class__": "SpecializedGroup"
+                  }
+                ],
+                "__class__": "CompositionQuestion"
+              },
+              {
+                "id": "13_2_2",
+                "prompt": "SCI - paraplegia",
+                "answer": 0,
+                "compositionGroups": [
+                  {
+                    "id": "13_2_2_1",
+                    "prompt": "Cause",
+                    "questions": [
+                      {
+                        "id": "13_2_2_1_1",
+                        "prompt": "Transport accident",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_2_1_2",
+                        "prompt": "Fall",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_2_1_3",
+                        "prompt": "Assault",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_2_1_4",
+                        "prompt": "Sports",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_2_1_5",
+                        "prompt": "Non-traumatic spinal cord dysfunction",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_2_1_6",
+                        "prompt": "Medical/surgical complication",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      },
+                      {
+                        "id": "13_2_2_1_7",
+                        "prompt": "Other traumatic reason",
+                        "answer": 0,
+                        "validators": [],
+                        "__class__": "NumericQuestion"
+                      }
+                    ],
+                    "__class__": "SpecializedGroup"
+                  }
+                ],
+                "__class__": "CompositionQuestion"
+              },
+              {
+                "id": "13_2_3",
+                "prompt": "Stroke/CVA",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_4",
+                "prompt": "Fractured Hip",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_5",
+                "prompt": "Fracrtured long bones",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_6",
+                "prompt": "Neurogenerative disease",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_7",
+                "prompt": "Head injury",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_8",
+                "prompt": "Wound Care",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_9",
+                "prompt": "Other medical reason",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_10",
+                "prompt": "Other trauma",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "14",
+        "prompt": "Outpatients",
+        "answer": 0,
+        "compositionGroups": [
+          {
+            "id": "14_1",
+            "prompt": "Age",
+            "questions": [
+              {
+                "id": "14_1_1",
+                "prompt": "Extremely preterm (< 28 weeks)",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_2",
+                "prompt": "Very preterm (28 to 32 weeks)",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_3",
+                "prompt": "Moderate to late preterm (32 to 37 weeks)",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_4",
+                "prompt": "Full term (37 weeks)",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_5",
+                "prompt": "Older than neonate (> 4 weeks)",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_6",
+                "prompt": "Age 4 to 5 weeks",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_8",
+                "prompt": "Age 6 to 11 weeks",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_9",
+                "prompt": "Age 12 to 18 weeks",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "14_2",
+            "prompt": "Gender",
+            "questions": [
+              {
+                "id": "14_2_1",
+                "prompt": "Male",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_2",
+                "prompt": "Female",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "14_3",
+            "prompt": "Main Condition",
+            "questions": [
+              {
+                "id": "14_3_1",
+                "prompt": "SCI - tetraplegia",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_2",
+                "prompt": "SCI - paraplegia",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_3",
+                "prompt": "Stroke/CVA",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_4",
+                "prompt": "Fractured Hip",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_5",
+                "prompt": "Fractured long bones",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_6",
+                "prompt": "Neurogenerative disease",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_7",
+                "prompt": "Head injury",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_8",
+                "prompt": "Wound Care",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_9",
+                "prompt": "Other medical reason",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_10",
+                "prompt": "Other trauma",
+                "answer": 0,
+                "validators": [],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      }
+    ],
+    "__class__": "QuestionGroup"
+  },
+  "__v": 0
+}
