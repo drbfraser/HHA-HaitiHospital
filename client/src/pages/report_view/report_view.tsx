@@ -9,7 +9,7 @@ import { NavigationInfo, navigate } from 'components/report/utils';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import { ReportForm } from 'components/report/report_form';
-import { ResponseMessage } from "utils/response_message";
+import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { useAuthState } from 'contexts';
 import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';

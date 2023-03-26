@@ -11,7 +11,7 @@ import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
 import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
 import { ReportForm } from 'components/report/report_form';
-import { ResponseMessage } from "utils/response_message";
+import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
