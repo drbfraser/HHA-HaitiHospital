@@ -163,6 +163,7 @@ router.post(
         updatedAt: new Date(),
       };
       const newUser = new UserCollection(userInfo);
+      // generates a json object with key and value pairs that we need to map
       const validationError = newUser.validateSync();
 
       if (validationError == undefined) {
