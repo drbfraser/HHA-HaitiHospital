@@ -100,14 +100,6 @@ export const Department = (props: DepartmentProps) => {
           <section>
             <div className="row">
               <div className="col-auto">
-                <Link to={`/biomechanic`}>
-                  <button className="btn btn-dark btn-sm rounded-bill">
-                    <div className="lead">{t('departmentPageBiomechanic')}</div>
-                  </button>
-                </Link>
-              </div>
-
-              <div className="col-auto">
                 <DatePicker value={dateRange} onChange={setDayRange} />
               </div>
             </div>
