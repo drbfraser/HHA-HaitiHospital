@@ -1,5 +1,5 @@
 import { ExpandableQuestion } from '@hha/common';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect } from 'react';
 import { FormField } from './index';
 import cn from 'classnames';
 
@@ -23,6 +23,13 @@ const ExpandableQuestionFormField = ({
   const [openClosedStates, setOpenClosedStates] = useState<boolean[]>([]);
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
+
+  useEffect(() => {
+    if (isTemplate) {
+      question.setAnswer(1);
+      setOpenClosedStates([false]);
+    }
+  }, [isTemplate, question]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value);
@@ -103,7 +110,7 @@ const ExpandableQuestionFormField = ({
               </h6>
               <div
                 id={itemId}
-                className={cn('accordion-collapse collapse', { show: isOpen })}
+                className={cn('accordion-collapse collapse', { show: isOpen || isTemplate })}
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
