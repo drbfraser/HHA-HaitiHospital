@@ -16,12 +16,14 @@ const buildQuestionFormField = ({
   suffixName,
   setErrorSet,
   readOnly,
+  isTemplate = false,
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
   setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   readOnly?: boolean;
+  isTemplate?: boolean;
 }): JSX.Element => {
   return (
     <>
@@ -46,6 +48,7 @@ const buildQuestionFormField = ({
               setErrorSet={setErrorSet}
               readOnly={readOnly}
               suffixName={suffixName}
+              isTemplate={isTemplate}
             />
           );
         })}
@@ -99,6 +102,7 @@ export const ReportForm = ({
             suffixName: '',
             setErrorSet: setErrorSet,
             readOnly,
+            isTemplate,
           })}
         </Group>
         {buildSubmitButton()}

@@ -10,6 +10,7 @@ const ExpandableQuestionFormField = ({
   buildQuestionFormField,
   setErrorSet,
   readOnly,
+  isTemplate = false,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
@@ -17,6 +18,7 @@ const ExpandableQuestionFormField = ({
   buildQuestionFormField: FunctionalComponent;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
   readOnly?: boolean;
+  isTemplate?: boolean;
 }): JSX.Element => {
   const [openClosedStates, setOpenClosedStates] = useState<boolean[]>([]);
   const inputState = question.getValidationResults();
