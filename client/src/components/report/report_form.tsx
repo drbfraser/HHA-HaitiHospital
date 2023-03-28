@@ -60,6 +60,7 @@ export const ReportForm = ({
   reportData,
   btnText = 'Submit',
   readOnly,
+  isTemplate = false,
 }: {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -67,6 +68,7 @@ export const ReportForm = ({
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
   readOnly?: boolean;
+  isTemplate?: boolean;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
 

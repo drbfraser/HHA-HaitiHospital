@@ -77,7 +77,12 @@ export const UploadForm = ({
         <div className="mb-3">{buildSubmitButton()}</div>
 
         {reportTemplateData && (
-          <ReportForm isSubmitting={false} reportData={reportTemplateData} readOnly={true} />
+          <ReportForm
+            isSubmitting={false}
+            reportData={reportTemplateData}
+            readOnly={true}
+            isTemplate
+          />
         )}
       </form>
     </div>
