@@ -1,3 +1,4 @@
+import Pagination from 'components/pagination/Pagination';
 import { QuestionGroup, QuestionNode } from '@hha/common';
 import {
   CompositionQuestionFormField,
@@ -10,17 +11,21 @@ import {
 } from '../question_form_components';
 import { Dispatch, SetStateAction, useState } from 'react';
 
+const PAGE_SIZE = 10;
+
 const buildQuestionFormField = ({
   applyReportChanges,
+  currentPage,
   questions,
-  suffixName,
   setErrorSet,
+  suffixName,
   readOnly,
 }: {
   applyReportChanges: () => void;
+  currentPage: number;
   questions: QuestionGroup<ID, ErrorType>;
-  suffixName: string;
   setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
+  suffixName: string;
   readOnly?: boolean;
 }): JSX.Element => {
   return (
@@ -48,7 +53,8 @@ const buildQuestionFormField = ({
               suffixName={suffixName}
             />
           );
-        })}
+        })
+        .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
     </>
   );
 };
@@ -68,6 +74,7 @@ export const ReportForm = ({
   btnText?: string;
   readOnly?: boolean;
 }): JSX.Element => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
 
   const buildSubmitButton = () => {
@@ -93,14 +100,22 @@ export const ReportForm = ({
         <Group isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
+            currentPage: currentPage,
             questions: reportData,
-            suffixName: '',
             setErrorSet: setErrorSet,
+            suffixName: '',
             readOnly,
           })}
         </Group>
         {buildSubmitButton()}
       </form>
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        onPageChange={(page) => setCurrentPage(page)}
+        pageSize={PAGE_SIZE}
+        totalCount={reportData.getSize()}
+      />
     </div>
   );
 };

@@ -13,6 +13,10 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
     questions ? this.addAll(...questions) : undefined;
   }
 
+  public getSize() {
+    return this.questionItems.length;
+  }
+
   public add(questionItem: QuestionNode<ID, ErrorType>): QuestionGroup<ID, ErrorType> {
     this.questionItems.push(questionItem);
     return this;
