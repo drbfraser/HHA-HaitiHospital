@@ -16,12 +16,14 @@ const buildQuestionFormField = ({
   suffixName,
   setErrorSet,
   readOnly,
+  isTemplate = false,
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
   setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   readOnly?: boolean;
+  isTemplate?: boolean;
 }): JSX.Element => {
   return (
     <>
@@ -46,6 +48,7 @@ const buildQuestionFormField = ({
               setErrorSet={setErrorSet}
               readOnly={readOnly}
               suffixName={suffixName}
+              isTemplate={isTemplate}
             />
           );
         })}
@@ -53,13 +56,14 @@ const buildQuestionFormField = ({
   );
 };
 
-export const ReportForm = ({
+export const ReportView = ({
   applyReportChanges,
   formHandler,
   isSubmitting,
   reportData,
   btnText = 'Submit',
   readOnly,
+  isTemplate = false,
 }: {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -67,6 +71,7 @@ export const ReportForm = ({
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
   readOnly?: boolean;
+  isTemplate?: boolean;
 }): JSX.Element => {
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
 
@@ -97,6 +102,7 @@ export const ReportForm = ({
             suffixName: '',
             setErrorSet: setErrorSet,
             readOnly,
+            isTemplate,
           })}
         </Group>
         {buildSubmitButton()}

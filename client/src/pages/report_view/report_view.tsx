@@ -10,6 +10,7 @@ import { useDepartmentData } from 'hooks';
 import { History } from 'history';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { ReportForm } from 'components/report/report_form';
+import { ReportView } from 'components/report/ReportView';
 import Api from 'actions/Api';
 import { userLocale, dateOptions } from 'constants/date';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +19,7 @@ import { useAuthState } from 'contexts';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { NavigationInfo, navigate } from 'components/report/utils';
 
-const ReportView = () => {
+const Report = () => {
   const history: History = useHistory<History>();
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -185,20 +186,29 @@ const ReportView = () => {
                 </div>
               </header>
               <div>
-                <PDFExport
-                  ref={pdfExportComponent}
-                  paperSize="A4"
-                  fileName={`${submittedDate}_${department}`}
-                >
+                {readOnly ? (
+                  <PDFExport
+                    ref={pdfExportComponent}
+                    paperSize="A4"
+                    fileName={`${submittedDate}_${department}`}
+                  >
+                    <ReportView
+                      applyReportChanges={applyReportChanges}
+                      formHandler={confirmEdit}
+                      isSubmitting={false}
+                      reportData={report}
+                      btnText="Edit"
+                    />
+                  </PDFExport>
+                ) : (
                   <ReportForm
                     applyReportChanges={applyReportChanges}
                     formHandler={confirmEdit}
                     isSubmitting={false}
                     reportData={report}
                     btnText="Edit"
-                    readOnly={readOnly}
                   />
-                </PDFExport>
+                )}
               </div>
             </div>
           </main>
@@ -208,4 +218,4 @@ const ReportView = () => {
   );
 };
 
-export default ReportView;
+export default Report;
