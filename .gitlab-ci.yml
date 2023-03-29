@@ -1,6 +1,6 @@
 variables:
   MONGO_URI: 'mongodb://mongo:27017/hhahaiti'
-  PASSWORD_SEED: 'c@td0g'
+  PASSWORD_SEED: 'catdog'
   IS_GITLAB_CI: 'true'
 stages:
   - validate
