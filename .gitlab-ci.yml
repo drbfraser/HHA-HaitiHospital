@@ -101,6 +101,7 @@ build-client:
   - export SERVER_IMAGE="$HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
   - export CLIENT_IMAGE="$HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
   - docker images
+  - docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker rmi -f $(docker images -aq) && docker volume rm $(docker volume ls -q)
 
 build-docker publish-docker-images:
   stage: build-docker
