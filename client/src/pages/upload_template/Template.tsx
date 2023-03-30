@@ -1,20 +1,18 @@
-import SideBar from 'components/side_bar/side_bar';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import Header from 'components/header/header';
-import { UploadForm } from 'components/template/template_form';
-import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
-import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
-import { TOAST_REPORT_TEMPLATE_PUT as ERR_TOAST } from 'constants/toastErrorMessages';
-import { TOAST_REPORT_TEMPLATE_PUT as SUCCESS_TOAST } from 'constants/toastSuccessMessages';
 import Api from 'actions/Api';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
-import { History } from 'history';
-import { useState } from 'react';
+import Header from 'components/header/header';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
+import SideBar from 'components/side_bar/side_bar';
 import { Department } from 'constants/interfaces';
+import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { History } from 'history';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
+import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
+import { ResponseMessage } from '../../utils/response_message';
+import { UploadForm } from 'components/template/template_form';
 import { useDepartmentData } from 'hooks';
-import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const UploadReport = () => {
   const { t } = useTranslation();
@@ -40,13 +38,18 @@ export const UploadReport = () => {
 
     setIsShowingModal(false);
     setIsSubmitting(true);
-    await Api.Put(ENDPOINT_TEMPLATE, reportObject, onSubmit, ERR_TOAST, history);
+    await Api.Put(
+      ENDPOINT_TEMPLATE,
+      reportObject,
+      onSubmit,
+      history,
+      ResponseMessage.getMsgUpdateReportTemplateFailed(),
+      ResponseMessage.getMsgUpdateReportTemplatePending(),
+      ResponseMessage.getMsgUpdateReportTemplateOk(),
+    );
   };
 
-  const onSubmit = () => {
-    toast.success(SUCCESS_TOAST);
-    history.push(`/home`);
-  };
+  const onSubmit = () => history.push(`/home`);
 
   return (
     <div className="department">

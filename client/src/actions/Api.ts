@@ -50,7 +50,7 @@ const Get = async (
  * - Pending message for toast
  * @param successMsg
  * - Success message for toast
- * @returns Promise<void>
+ * @returns void
  */
 const Post = async (
   url: string,
@@ -83,27 +83,36 @@ const Post = async (
  * @param actions
  * - Actions that should occur after PUT request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
  * @returns void
  */
 const Put = async (
   url: string,
   obj: object = {},
-  actions: any,
-  errorMsg: string,
+  actions: () => void,
   history: History,
+  errorMsg = '',
+  pendingMsg = 'Processing...',
+  successMsg?: string,
 ): Promise<void> => {
-  try {
-    await axios.put(url, obj);
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  await toast.promise(
+    axios.put(url, obj).then(
+      () => actions(),
+      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
+    ),
+    {
+      error: undefined,
+      pending: pendingMsg,
+      success: successMsg,
+    },
+  );
 };
 
 /**

@@ -1,47 +1,47 @@
 import './report_view.css';
-import Header from 'components/header/header';
-import Sidebar from 'components/side_bar/side_bar';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import { useCallback, useEffect, useState, MouseEvent, useRef } from 'react';
-import { ENDPOINT_REPORTS_GET_BY_ID, ENDPOINT_REPORTS } from 'constants/endpoints';
-import { TOAST_REPORT_GET } from 'constants/toastErrorMessages';
-import { useHistory, useLocation, Prompt } from 'react-router-dom';
-import { useDepartmentData } from 'hooks';
-import { History } from 'history';
-import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
-import { ReportForm } from 'components/report/report_form';
-import { ReportView } from 'components/report/ReportView';
 import Api from 'actions/Api';
-import { userLocale, dateOptions } from 'constants/date';
-import { useTranslation } from 'react-i18next';
-import { PDFExport } from '@progress/kendo-react-pdf';
-import { useAuthState } from 'contexts';
-import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import Header from 'components/header/header';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
+import Sidebar from 'components/side_bar/side_bar';
+import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
+import { History } from 'history';
 import { NavigationInfo, navigate } from 'components/report/utils';
+import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
+import { PDFExport } from '@progress/kendo-react-pdf';
+import { ReportForm } from 'components/report/report_form';
+import { ResponseMessage } from 'utils/response_message';
+import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import { useAuthState } from 'contexts';
+import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory, useLocation, Prompt } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { userLocale, dateOptions } from 'constants/date';
+import { useDepartmentData } from 'hooks';
+import { ReportView } from 'components/report/ReportView';
 
 const Report = () => {
-  const history: History = useHistory<History>();
-  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
+  const [metaData, setMetaData] = useState<ReportMetaData>(null);
+  const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
+  const [readOnly, setReadOnly] = useState<boolean>(true);
+  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
-  const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
-  const [metaData, setMetaData] = useState<ReportMetaData>(null);
-  const [readOnly, setReadOnly] = useState<boolean>(true);
-  const report_id = useLocation().pathname.split('/')[2];
   const { departmentIdKeyMap } = useDepartmentData();
-  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const { t } = useTranslation();
-  const pdfExportComponent = useRef(null);
   const department = departmentIdKeyMap.get(metaData?.departmentId);
+  const history: History = useHistory<History>();
+  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const pdfExportComponent = useRef(null);
+  const report_id = useLocation().pathname.split('/')[2];
   const submittedDate = new Date(metaData?.submittedDate).toLocaleDateString(
     userLocale,
     dateOptions,
   );
   const user = useAuthState();
 
-  const confirmEdit = (event: React.FormEvent<HTMLFormElement>) => {
+  const confirmEdit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowEditModal(true);
   };
@@ -58,7 +58,6 @@ const Report = () => {
   const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setReadOnly((prev) => !prev);
-    setShowViewEditBtn(false);
   };
 
   const reportHandler = () => {
@@ -69,18 +68,28 @@ const Report = () => {
       submittedBy: user?.userDetails?.name,
     };
 
-    Api.Put(ENDPOINT_REPORTS, editedReportObject, () => {}, '', history);
     setAreChangesMade(false);
-    setReadOnly((prev) => !prev);
     setShowEditModal(false);
-    setShowViewEditBtn(true);
+
+    Api.Put(
+      ENDPOINT_REPORTS,
+      editedReportObject,
+      () => {
+        setReadOnly((prev) => !prev);
+        setShowViewEditBtn(true);
+      },
+      history,
+      ResponseMessage.getMsgUpdateReportFailed(),
+      ResponseMessage.getMsgUpdateReportPending(),
+      ResponseMessage.getMsgUpdateReportOk(),
+    );
   };
 
   const getReport = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReport: any = await Api.Get(
-      ENDPOINT_REPORTS_GET_BY_ID(report_id),
-      TOAST_REPORT_GET,
+      ENDPOINT_REPORT_GET_BY_ID(report_id),
+      ResponseMessage.getMsgFetchReportFailed(),
       history,
       controller.signal,
     );
