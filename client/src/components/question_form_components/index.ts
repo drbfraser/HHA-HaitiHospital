@@ -6,6 +6,7 @@ import NumericQuestionFormField from './NumericQuestionFormField';
 import TextQuestionFormField from './TextQuestionFormField';
 import CompositionQuestionFormField from './CompositionQuestionFormField';
 import ExpandableQuestionFormField from './ExpandableQuestionFormField';
+import ExpandableQuestionViewField from './ExpandableQuestionViewField';
 import SingleSelectionQuestionFormField from './SingleSelectQuestionFormField';
 
 export {
@@ -18,4 +19,5 @@ export {
   CompositionQuestionFormField,
   ExpandableQuestionFormField,
   SingleSelectionQuestionFormField,
+  ExpandableQuestionViewField,
 };
