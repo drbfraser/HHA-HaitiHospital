@@ -10,23 +10,21 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { SubmitButton } from "./SubmitButton";
-
-const PAGE_SIZE = 10;
+import { SubmitButton } from './SubmitButton';
 
 const buildQuestionFormField = ({
   applyReportChanges,
-  currentPage,
   questions,
   setErrorSet,
   suffixName,
+  currentPage,
   readOnly,
 }: {
   applyReportChanges: () => void;
-  currentPage: number;
   questions: QuestionGroup<ID, ErrorType>;
   setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   suffixName: string;
+  currentPage?: number;
   readOnly?: boolean;
 }): JSX.Element => {
   return (
@@ -55,7 +53,12 @@ const buildQuestionFormField = ({
             />
           );
         })
-        .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
+        .slice(
+          currentPage === undefined ? 0 : questions.getPagination()[currentPage - 1][0],
+          currentPage === undefined
+            ? questions.getSize()
+            : questions.getPagination()[currentPage - 1][1],
+        )}
     </>
   );
 };
@@ -77,6 +80,10 @@ export const ReportForm = ({
 }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
+  const pageSize = reportData
+    .getPagination()
+    .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
+    .reduce((prev, curr) => (curr > prev ? curr : prev));
 
   return (
     <div className="mt-3 p-3">
@@ -107,8 +114,8 @@ export const ReportForm = ({
         className="pagination-bar"
         currentPage={currentPage}
         onPageChange={(page) => setCurrentPage(page)}
-        pageSize={PAGE_SIZE}
-        totalCount={reportData.getSize()}
+        pageSize={pageSize}
+        totalCount={reportData.getPagination().length * pageSize}
       />
     </div>
   );

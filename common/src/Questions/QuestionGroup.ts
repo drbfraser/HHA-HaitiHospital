@@ -6,11 +6,16 @@ import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
 
 @serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
+  private readonly breakpointPairs: number[][] = [];
   private readonly questionItems: Array<QuestionNode<ID, ErrorType>> = [];
 
   constructor(id: ID, prompt: string, ...questions: Array<QuestionNode<ID, ErrorType>>) {
     super(id, prompt);
     questions ? this.addAll(...questions) : undefined;
+  }
+
+  public getPagination() {
+    return this.breakpointPairs;
   }
 
   public getSize() {
@@ -25,6 +30,15 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
   public addAll(...questions: Array<QuestionNode<ID, ErrorType>>): QuestionGroup<ID, ErrorType> {
     questions.forEach((question) => this.add(question));
     return this;
+  }
+
+  public addBreakpoints(...breakpoints: number[]) {
+    for (let i = 0; i < breakpoints.length; i++) {
+      this.breakpointPairs.push([
+        breakpoints[i] ?? this.questionItems.length,
+        breakpoints[i + 1] ?? this.questionItems.length,
+      ]);
+    }
   }
 
   /*  Use this function to operate on all questions from QuestionGroup if the subclasses of
