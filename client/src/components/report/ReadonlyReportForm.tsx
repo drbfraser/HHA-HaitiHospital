@@ -52,7 +52,7 @@ const buildQuestionFormField = ({
   );
 };
 
-export const ReportView = ({
+export const ReadonlyReportForm = ({
   applyReportChanges,
   formHandler,
   reportData,

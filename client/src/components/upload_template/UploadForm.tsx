@@ -1,7 +1,7 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useTranslation } from 'react-i18next';
-import { ReportView } from 'components/report/ReportView';
+import { ReadonlyReportForm } from 'components/report/ReadonlyReportForm';
 import { SubmitButton } from "components/report/SubmitButton";
 
 export const UploadForm = ({
@@ -73,7 +73,7 @@ export const UploadForm = ({
         </div>
 
         {reportTemplateData && (
-          <ReportView isSubmitting={false} reportData={reportTemplateData} isTemplate />
+          <ReadonlyReportForm isSubmitting={false} reportData={reportTemplateData} isTemplate />
         )}
       </form>
     </div>

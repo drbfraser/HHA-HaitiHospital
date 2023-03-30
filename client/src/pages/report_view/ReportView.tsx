@@ -1,4 +1,4 @@
-import './report_view.css';
+import './ReportView.css';
 import Api from 'actions/Api';
 import Header from 'components/header/header';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
@@ -8,7 +8,7 @@ import { History } from 'history';
 import { NavigationInfo, navigate } from 'components/report/utils';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { PDFExport } from '@progress/kendo-react-pdf';
-import { ReportForm } from 'components/report/report_form';
+import { ReportForm } from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { useAuthState } from 'contexts';
@@ -17,9 +17,9 @@ import { useHistory, useLocation, Prompt } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { userLocale, dateOptions } from 'constants/date';
 import { useDepartmentData } from 'hooks';
-import { ReportView } from 'components/report/ReportView';
+import { ReadonlyReportForm } from 'components/report/ReadonlyReportForm';
 
-const Report = () => {
+const ReportView = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
@@ -201,7 +201,7 @@ const Report = () => {
                     paperSize="A4"
                     fileName={`${submittedDate}_${department}`}
                   >
-                    <ReportView
+                    <ReadonlyReportForm
                       applyReportChanges={applyReportChanges}
                       formHandler={confirmEdit}
                       isSubmitting={false}
@@ -227,4 +227,4 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default ReportView;
