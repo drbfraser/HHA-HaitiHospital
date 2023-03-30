@@ -35,16 +35,16 @@ const ExpandableQuestionFormField = ({
         value={question.getAnswer()}
         readOnly
       />
-      <div className="accordion mb-3" id={nameId}>
+      <div className="accordion mb-3 bg-light" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
           const itemId: string = `accordion-item-${nameId}_${index + 1}`;
           return (
-            <div className="accordion-item border-none" key={itemId}>
+            <div className="accordion-item border-0 bg-light" key={itemId}>
               <h6
-                className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
+                className="accordion-header container-fluid m-0 text-lg uppercase pt-4 pl-3"
                 id={`${itemId}-header`}
               >
-                <div className="row p-0 m-0 align-items-center"></div>
+                <div className="row p-0 m-0 align-items-center">{`Patient ${index + 1}`}</div>
               </h6>
               <div
                 id={itemId}
@@ -57,7 +57,6 @@ const ExpandableQuestionFormField = ({
                     questions: questionGroup,
                     suffixName: `_${index + 1}`,
                     setErrorSet: setErrorSet,
-                    readOnly: true,
                   })}
                 </div>
               </div>
