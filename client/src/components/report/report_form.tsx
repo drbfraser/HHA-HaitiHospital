@@ -10,6 +10,7 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { SubmitButton } from "./SubmitButton";
 
 const PAGE_SIZE = 10;
 
@@ -77,26 +78,15 @@ export const ReportForm = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
 
-  const buildSubmitButton = () => {
-    return (
-      <>
-        {!readOnly && (
-          <input
-            className="btn btn-outline-primary"
-            disabled={!(errorSet.size === 0) || isSubmitting}
-            type="submit"
-            value={`${btnText} Report`}
-          />
-        )}
-      </>
-    );
-  };
-
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
-        {buildSubmitButton()}
+        <SubmitButton
+          buttonText={`${btnText} Report`}
+          disabled={!(errorSet.size === 0) || isSubmitting}
+          readOnly={readOnly}
+        />
         <Group isRootNode>
           {buildQuestionFormField({
             applyReportChanges: applyReportChanges,
@@ -107,7 +97,11 @@ export const ReportForm = ({
             readOnly,
           })}
         </Group>
-        {buildSubmitButton()}
+        <SubmitButton
+          buttonText={`${btnText} Report`}
+          disabled={!(errorSet.size === 0) || isSubmitting}
+          readOnly={readOnly}
+        />
       </form>
       <Pagination
         className="pagination-bar"

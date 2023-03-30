@@ -2,6 +2,7 @@ import React, { useState, Dispatch, SetStateAction } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useTranslation } from 'react-i18next';
 import { ReportView } from 'components/report/ReportView';
+import { SubmitButton } from "components/report/SubmitButton";
 
 export const UploadForm = ({
   formHandler,
@@ -17,17 +18,6 @@ export const UploadForm = ({
   const { t } = useTranslation();
   const [error, setError] = useState(null);
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-
-  const buildSubmitButton = () => {
-    return (
-      <input
-        className="btn btn-outline-primary"
-        disabled={!reportTemplateData || isSubmitting}
-        type="submit"
-        value="Submit Report Template"
-      />
-    );
-  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -74,7 +64,13 @@ export const UploadForm = ({
           </p>
         )}
 
-        <div className="mb-3">{buildSubmitButton()}</div>
+        <div className="mb-3">
+          <SubmitButton
+            buttonText="Submit Report Template"
+            disabled={!reportTemplateData || isSubmitting}
+            readOnly={false}
+          />
+        </div>
 
         {reportTemplateData && (
           <ReportView isSubmitting={false} reportData={reportTemplateData} isTemplate />
