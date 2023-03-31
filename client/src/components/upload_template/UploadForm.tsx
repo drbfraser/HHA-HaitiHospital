@@ -1,8 +1,8 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import SubmitButton from "components/report/SubmitButton";
+import { FormEvent, Dispatch, SetStateAction, useState } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-import { useTranslation } from 'react-i18next';
 import { ReadonlyReportForm } from 'components/report/ReadonlyReportForm';
-import { SubmitButton } from "components/report/SubmitButton";
+import { useTranslation } from 'react-i18next';
 
 export const UploadForm = ({
   formHandler,
@@ -10,7 +10,7 @@ export const UploadForm = ({
   reportTemplateData,
   updateReport,
 }: {
-  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  formHandler: (event: FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
   reportTemplateData: QuestionGroup<ID, ErrorType>;
   updateReport: Dispatch<SetStateAction<QuestionGroup<string, string>>>;

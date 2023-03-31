@@ -4,15 +4,17 @@ type SubmitButtonProps = {
   readOnly: boolean;
 };
 
-export const SubmitButton = ({ buttonText, disabled, readOnly }: SubmitButtonProps) => (
+const SubmitButton = ({ buttonText, disabled, readOnly }: SubmitButtonProps) => (
   <>
     {!readOnly && (
       <input
-        className="btn btn-outline-primary"
+        className="btn btn-primary"
         disabled={disabled}
         type="submit"
         value={buttonText}
       />
     )}
   </>
-);
+)
+
+export default SubmitButton;

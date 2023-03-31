@@ -1,4 +1,5 @@
 import Pagination from 'components/pagination/Pagination';
+import SubmitButton from './SubmitButton';
 import { QuestionGroup, QuestionNode } from '@hha/common';
 import {
   CompositionQuestionFormField,
@@ -10,7 +11,6 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { SubmitButton } from './SubmitButton';
 
 export const QuestionFormFields = ({
   applyReportChanges,
