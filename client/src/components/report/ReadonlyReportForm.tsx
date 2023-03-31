@@ -90,7 +90,7 @@ export const ReadonlyReportForm = ({
             currentPage={currentPage}
             isTemplate={isTemplate}
             questions={reportData}
-            suffixName=''
+            suffixName=""
           />
         </Group>
       </form>

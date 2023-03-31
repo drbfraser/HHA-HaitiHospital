@@ -1,4 +1,4 @@
-import SubmitButton from "components/report/SubmitButton";
+import SubmitButton from 'components/report/SubmitButton';
 import { FormEvent, Dispatch, SetStateAction, useState } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { ReadonlyReportForm } from 'components/report/ReadonlyReportForm';

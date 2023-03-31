@@ -101,7 +101,7 @@ export const ReportForm = ({
             questions={reportData}
             readOnly={readOnly}
             setErrorSet={setErrorSet}
-            suffixName=''
+            suffixName=""
           />
         </Group>
         <SubmitButton

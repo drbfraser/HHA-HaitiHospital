@@ -7,14 +7,9 @@ type SubmitButtonProps = {
 const SubmitButton = ({ buttonText, disabled, readOnly }: SubmitButtonProps) => (
   <>
     {!readOnly && (
-      <input
-        className="btn btn-primary"
-        disabled={disabled}
-        type="submit"
-        value={buttonText}
-      />
+      <input className="btn btn-primary" disabled={disabled} type="submit" value={buttonText} />
     )}
   </>
-)
+);
 
 export default SubmitButton;

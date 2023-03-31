@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { ExpandableQuestion } from '@hha/common';
 import { FormField } from './index';
-import { QuestionFormFields } from "components/report/ReadonlyReportForm";
+import { QuestionFormFields } from 'components/report/ReadonlyReportForm';
 
 const ExpandableQuestionViewField = ({
   applyReportChanges,
