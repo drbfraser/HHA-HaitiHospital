@@ -9,7 +9,7 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 
-const buildQuestionFormField = ({
+export const QuestionFormFields = ({
   applyReportChanges,
   questions,
   suffixName,
@@ -18,9 +18,9 @@ const buildQuestionFormField = ({
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
   suffixName: string;
-  readOnly?: boolean;
   isTemplate?: boolean;
-}): JSX.Element => {
+  readOnly?: boolean;
+}) => {
   return (
     <>
       {questions
@@ -29,16 +29,16 @@ const buildQuestionFormField = ({
           expandableQuestion: (q) => [q, ExpandableQuestionViewField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
           numericQuestion: (q) => [q, NumericQuestionFormField],
-          questionGroup: (q) => [q, buildQuestionFormField],
+          questionGroup: (q) => [q, QuestionFormFields],
           singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
           textQuestion: (q) => [q, TextQuestionFormField],
         })
+        // TODO: Remove "any" type
         .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
           const [question, FormFieldComponent] = tuple;
           return (
             <FormFieldComponent
               applyReportChanges={applyReportChanges}
-              buildQuestionFormField={buildQuestionFormField}
               key={`${question.getId()}${suffixName}`}
               question={question}
               setErrorSet={() => {}}
@@ -70,12 +70,12 @@ export const ReadonlyReportForm = ({
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <form onSubmit={formHandler} noValidate>
         <Group isRootNode>
-          {buildQuestionFormField({
-            applyReportChanges: applyReportChanges,
-            questions: reportData,
-            suffixName: '',
-            isTemplate,
-          })}
+          <QuestionFormFields
+            applyReportChanges={applyReportChanges}
+            isTemplate={isTemplate}
+            questions={reportData}
+            suffixName=''
+          />
         </Group>
       </form>
     </div>

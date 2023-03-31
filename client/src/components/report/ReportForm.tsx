@@ -12,7 +12,7 @@ import {
 import { Dispatch, SetStateAction, useState } from 'react';
 import { SubmitButton } from './SubmitButton';
 
-const buildQuestionFormField = ({
+export const QuestionFormFields = ({
   applyReportChanges,
   questions,
   setErrorSet,
@@ -26,7 +26,7 @@ const buildQuestionFormField = ({
   suffixName: string;
   currentPage?: number;
   readOnly?: boolean;
-}): JSX.Element => {
+}) => {
   return (
     <>
       {questions
@@ -35,16 +35,16 @@ const buildQuestionFormField = ({
           expandableQuestion: (q) => [q, ExpandableQuestionFormField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
           numericQuestion: (q) => [q, NumericQuestionFormField],
-          questionGroup: (q) => [q, buildQuestionFormField],
+          questionGroup: (q) => [q, QuestionFormFields],
           singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
           textQuestion: (q) => [q, TextQuestionFormField],
         })
+        // TODO: Remove "any" type
         .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
           const [question, FormFieldComponent] = tuple;
           return (
             <FormFieldComponent
               applyReportChanges={applyReportChanges}
-              buildQuestionFormField={buildQuestionFormField}
               key={`${question.getId()}${suffixName}`}
               question={question}
               setErrorSet={setErrorSet}
@@ -95,14 +95,14 @@ export const ReportForm = ({
           readOnly={readOnly}
         />
         <Group isRootNode>
-          {buildQuestionFormField({
-            applyReportChanges: applyReportChanges,
-            currentPage: currentPage,
-            questions: reportData,
-            setErrorSet: setErrorSet,
-            suffixName: '',
-            readOnly,
-          })}
+          <QuestionFormFields
+            applyReportChanges={applyReportChanges}
+            currentPage={currentPage}
+            questions={reportData}
+            readOnly={readOnly}
+            setErrorSet={setErrorSet}
+            suffixName=''
+          />
         </Group>
         <SubmitButton
           buttonText={`${btnText} Report`}
