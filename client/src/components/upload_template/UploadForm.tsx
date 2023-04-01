@@ -1,7 +1,7 @@
+import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import SubmitButton from 'components/report/SubmitButton';
 import { FormEvent, Dispatch, SetStateAction, useState } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-import { ReadonlyReportForm } from 'components/report/ReadonlyReportForm';
 import { useTranslation } from 'react-i18next';
 
 export const UploadForm = ({

@@ -63,7 +63,7 @@ export const QuestionFormFields = ({
   );
 };
 
-export const ReportForm = ({
+const ReportForm = ({
   applyReportChanges,
   formHandler,
   isSubmitting,
@@ -120,3 +120,5 @@ export const ReportForm = ({
     </div>
   );
 };
+
+export default ReportForm;

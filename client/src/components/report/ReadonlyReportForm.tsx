@@ -61,7 +61,7 @@ export const QuestionFormFields = ({
   );
 };
 
-export const ReadonlyReportForm = ({
+const ReadonlyReportForm = ({
   applyReportChanges,
   formHandler,
   reportData,
@@ -104,3 +104,5 @@ export const ReadonlyReportForm = ({
     </div>
   );
 };
+
+export default ReadonlyReportForm;

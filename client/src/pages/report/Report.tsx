@@ -1,6 +1,7 @@
 import Api from 'actions/Api';
 import Header from 'components/header/header';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
+import ReportForm from 'components/report/ReportForm';
 import Sidebar from 'components/side_bar/side_bar';
 import { Department } from 'constants/interfaces';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
@@ -10,7 +11,6 @@ import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
 import { ReportAndTemplateForm } from 'components/report_upload_form/ReportAndTemplateForm';
-import { ReportForm } from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { generateFormId } from 'utils/generate_report_name';
