@@ -21,6 +21,7 @@ import { userLocale, dateOptions } from 'constants/date';
 const ReportView = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
+  const [isUsingPagination, setIsUsingPagination] = useState(true);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
@@ -83,6 +84,8 @@ const ReportView = () => {
       ResponseMessage.getMsgUpdateReportOk(),
     );
   };
+
+  const togglePagination = () => setIsUsingPagination(!isUsingPagination);
 
   const getReport = useCallback(async () => {
     const controller = new AbortController();
@@ -187,7 +190,9 @@ const ReportView = () => {
                 <div>
                   {showViewEditBtn && (
                     <button className="btn btn-primary" onClick={btnHandler}>
-                      {readOnly ? 'Edit Form' : 'View Form'}
+                      {readOnly
+                        ? t('departmentReportDisplayEditForm')
+                        : t('departmentReportDisplayViewForm')}
                     </button>
                   )}
                   {readOnly && (
@@ -196,6 +201,13 @@ const ReportView = () => {
                       onClick={handleExportWithComponent}
                     >
                       {t('departmentReportDisplayGeneratePDF')}
+                    </button>
+                  )}
+                  {readOnly && (
+                    <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
+                      {isUsingPagination
+                        ? t('departmentReportDisplayHidePagination')
+                        : t('departmentReportDisplayShowPagination')}
                     </button>
                   )}
                 </div>
@@ -222,6 +234,7 @@ const ReportView = () => {
                     btnText="Edit"
                     formHandler={confirmEdit}
                     isSubmitting={false}
+                    isUsingPagination={isUsingPagination}
                     reportData={report}
                   />
                 ) : (
