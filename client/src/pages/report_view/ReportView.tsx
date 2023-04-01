@@ -201,27 +201,36 @@ const ReportView = () => {
                 </div>
               </header>
               <div>
-                {readOnly ? (
+                <div className="visually-hidden">
                   <PDFExport
-                    ref={pdfExportComponent}
-                    paperSize="A4"
                     fileName={`${submittedDate}_${department}`}
+                    paperSize="A4"
+                    ref={pdfExportComponent}
                   >
                     <ReadonlyReportForm
                       applyReportChanges={applyReportChanges}
-                      formHandler={confirmEdit}
+                      formHandler={() => {}}
                       isSubmitting={false}
+                      isUsingPagination={false}
                       reportData={report}
-                      btnText="Edit"
                     />
                   </PDFExport>
-                ) : (
-                  <ReportForm
+                </div>
+                {readOnly ? (
+                  <ReadonlyReportForm
                     applyReportChanges={applyReportChanges}
+                    btnText="Edit"
                     formHandler={confirmEdit}
                     isSubmitting={false}
                     reportData={report}
+                  />
+                ) : (
+                  <ReportForm
+                    applyReportChanges={applyReportChanges}
                     btnText="Edit"
+                    formHandler={confirmEdit}
+                    isSubmitting={false}
+                    reportData={report}
                   />
                 )}
               </div>

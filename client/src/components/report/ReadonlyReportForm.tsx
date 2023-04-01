@@ -66,6 +66,7 @@ const ReadonlyReportForm = ({
   formHandler,
   reportData,
   isTemplate = false,
+  isUsingPagination = true,
 }: {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -73,12 +74,14 @@ const ReadonlyReportForm = ({
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
   isTemplate?: boolean;
+  isUsingPagination?: boolean;
 }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = reportData
     .getPagination()
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
+  const totalCount = reportData.getPagination().length * pageSize;
 
   return (
     <div className="mt-3 p-3">
@@ -87,20 +90,20 @@ const ReadonlyReportForm = ({
         <Group isRootNode>
           <QuestionFormFields
             applyReportChanges={applyReportChanges}
-            currentPage={currentPage}
+            currentPage={isUsingPagination ? currentPage : undefined}
             isTemplate={isTemplate}
             questions={reportData}
             suffixName=""
           />
         </Group>
       </form>
-      <Pagination
+      {isUsingPagination && <Pagination
         className="pagination-bar"
         currentPage={currentPage}
         onPageChange={(page) => setCurrentPage(page)}
         pageSize={pageSize}
-        totalCount={reportData.getPagination().length * pageSize}
-      />
+        totalCount={totalCount}
+      />}
     </div>
   );
 };
