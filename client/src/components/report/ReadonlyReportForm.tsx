@@ -97,13 +97,15 @@ const ReadonlyReportForm = ({
           />
         </Group>
       </form>
-      {isUsingPagination && <Pagination
-        className="pagination-bar"
-        currentPage={currentPage}
-        onPageChange={(page) => setCurrentPage(page)}
-        pageSize={pageSize}
-        totalCount={totalCount}
-      />}
+      {isUsingPagination && (
+        <Pagination
+          className="pagination-bar"
+          currentPage={currentPage}
+          onPageChange={(page) => setCurrentPage(page)}
+          pageSize={pageSize}
+          totalCount={totalCount}
+        />
+      )}
     </div>
   );
 };
