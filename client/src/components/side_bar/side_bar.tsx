@@ -29,8 +29,8 @@ const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <div className={'Sidebar'}>
-      <div className="bg-dark">
+    <div className={'Sidebar h-100 bg-dark flex overflow-auto'} style={{ width: '200px' }}>
+      <div>
         <div className="sidebar_logo">
           <div className="text-center" style={{ width: 190 }}>
             <HhaLogo style={{ width: 150 }} />
