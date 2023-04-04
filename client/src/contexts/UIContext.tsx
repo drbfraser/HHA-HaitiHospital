@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const UIContext = createContext<any>({} as any);
@@ -6,13 +6,20 @@ const UIContext = createContext<any>({} as any);
 const useUIProvider = () => {
   const { i18n } = useTranslation();
 
-  const changeLanguage = (ln, i18n) => {
-    return () => {
-      i18n.changeLanguage(ln);
-    };
-  };
+  const changeLanguage = useCallback(
+    (ln: string) => {
+      return () => {
+        i18n.changeLanguage(ln);
+      };
+    },
+    [i18n],
+  );
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const lang = localStorage.getItem('language');
+    if (!lang) return;
+    changeLanguage(lang);
+  }, [changeLanguage]);
 
   return {
     changeLanguage,
