@@ -6,8 +6,9 @@ import React from 'react';
 import logo from 'img/logo/LogoWText.svg';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './login_styles.css';
-import { useAuthState, useAuthDispatch, useUI } from 'contexts';
+import { useAuthState, useAuthDispatch } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { changeLanguage } from '../../components/side_bar/side_bar';
 
 interface LoginProps {}
 
@@ -22,7 +23,6 @@ const Login = (props: LoginProps) => {
   // @ts-ignore
   const { loading } = useAuthState();
   const [errorMessage, setErrorMessage] = React.useState('');
-  const { changeLanguage } = useUI();
   const { t, i18n } = useTranslation();
 
   // Moved the validation here to support the language translation feature
@@ -132,7 +132,7 @@ const Login = (props: LoginProps) => {
         <div className="col">
           <button
             className="w-100 btn btn-outline-secondary shadow-sm"
-            onClick={changeLanguage('en')}
+            onClick={changeLanguage('en', i18n)}
           >
             {t('sidebarEnglish')}
           </button>
@@ -142,7 +142,7 @@ const Login = (props: LoginProps) => {
           <button
             className="w-100 btn btn-outline-secondary shadow-sm"
             id="fc"
-            onClick={changeLanguage('fr')}
+            onClick={changeLanguage('fr', i18n)}
           >
             {t('sidebarFrench')}
           </button>
