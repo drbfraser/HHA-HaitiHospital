@@ -6,9 +6,8 @@ import React from 'react';
 import logo from 'img/logo/LogoWText.svg';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './login_styles.css';
-import { useAuthState, useAuthDispatch } from '../../contexts';
+import { useAuthState, useAuthDispatch, useUI } from 'contexts';
 import { useTranslation } from 'react-i18next';
-import { changeLanguage } from '../../components/side_bar/side_bar';
 
 interface LoginProps {}
 
@@ -23,7 +22,7 @@ const Login = (props: LoginProps) => {
   // @ts-ignore
   const { loading } = useAuthState();
   const [errorMessage, setErrorMessage] = React.useState('');
-
+  const { changeLanguage } = useUI();
   const { t, i18n } = useTranslation();
 
   // Moved the validation here to support the language translation feature
