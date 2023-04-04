@@ -8,6 +8,7 @@ const useUIProvider = () => {
 
   const changeLanguage = useCallback(
     (ln: string) => {
+      localStorage.setItem('language', ln);
       return () => {
         i18n.changeLanguage(ln);
       };
