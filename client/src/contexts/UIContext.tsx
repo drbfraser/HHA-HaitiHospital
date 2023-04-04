@@ -1,26 +1,25 @@
-import { createContext, useCallback, useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 const UIContext = createContext<any>({} as any);
 
 const useUIProvider = () => {
   const { i18n } = useTranslation();
+  const [lang, setLang] = useState(localStorage.getItem('language') ?? 'en');
 
-  const changeLanguage = useCallback(
-    (ln: string) => {
-      localStorage.setItem('language', ln);
-      return () => {
-        i18n.changeLanguage(ln);
-      };
-    },
-    [i18n],
-  );
+  const changeLanguage = (ln: string) => {
+    console.log(ln);
+    localStorage.setItem('language', ln);
+    setLang(ln);
+  };
 
   useEffect(() => {
-    const lang = localStorage.getItem('language');
-    if (!lang) return;
-    changeLanguage(lang);
-  }, [changeLanguage]);
+    const changeLang = async () => {
+      console.log('render');
+      await i18n.changeLanguage(lang);
+    };
+    changeLang();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   return {
     changeLanguage,

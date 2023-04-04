@@ -132,7 +132,7 @@ const Login = (props: LoginProps) => {
         <div className="col">
           <button
             className="w-100 btn btn-outline-secondary shadow-sm"
-            onClick={changeLanguage('en', i18n)}
+            onClick={changeLanguage('en')}
           >
             {t('sidebarEnglish')}
           </button>
@@ -142,7 +142,7 @@ const Login = (props: LoginProps) => {
           <button
             className="w-100 btn btn-outline-secondary shadow-sm"
             id="fc"
-            onClick={changeLanguage('fr', i18n)}
+            onClick={changeLanguage('fr')}
           >
             {t('sidebarFrench')}
           </button>
