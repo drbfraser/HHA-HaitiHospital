@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useHistory } from 'react-router-dom';
-import SideBar from 'components/side_bar/side_bar';
 import Pagination from 'components/pagination/Pagination';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from 'actions/Api';
 import {
   ENDPOINT_DEPARTMENT_GET_BY_ID,
@@ -27,7 +26,6 @@ export const Department = (props: DepartmentProps) => {
   });
   const [department, setDepartment] = useState<DepartmentModel>(EMPTY_DEPARTMENT);
   const [reports, setReports] = useState<IReportObject<any>[]>([]);
-  //const authState = useAuthState();
   const history: History = useHistory<History>();
   const { deptId } = useParams<{ deptId: string }>();
   const { t } = useTranslation();
@@ -84,19 +82,14 @@ export const Department = (props: DepartmentProps) => {
 
   return (
     <div className="department">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
-
+      <Layout>
         <div className="mt-3">
-          {/* Department Title */}
           <section>
             <h1 className="text-start">
               {t('departmentPageDepartmentOf')} {department.name}
             </h1>
           </section>
 
-          {/* Nav buttons */}
           <section>
             <div className="row">
               <div className="col-auto">
@@ -143,7 +136,7 @@ export const Department = (props: DepartmentProps) => {
           pageSize={PAGE_SIZE}
           totalCount={reports.length}
         />
-      </main>
+      </Layout>
     </div>
   );
 };

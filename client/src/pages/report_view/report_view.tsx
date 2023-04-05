@@ -1,8 +1,7 @@
 import './report_view.css';
 import Api from 'actions/Api';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import Sidebar from 'components/side_bar/side_bar';
 import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
 import { History } from 'history';
 import { NavigationInfo, navigate } from 'components/report/utils';
@@ -127,9 +126,7 @@ const Report = () => {
     <>
       {!!report && (
         <div className="report-view">
-          <Sidebar />
-          <main className="container-fluid main-region bg-light h-screen">
-            <Header />
+          <Layout className="bg-light h-screen">
             <PopupModalConfirmation
               messages={[
                 <>
@@ -220,7 +217,7 @@ const Report = () => {
                 )}
               </div>
             </div>
-          </main>
+          </Layout>
         </div>
       )}
     </>

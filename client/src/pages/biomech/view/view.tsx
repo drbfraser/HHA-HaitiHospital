@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, Link, useParams } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from '../../../actions/Api';
 import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import ModalImage from 'components/popup_modal/popup_modal_image';
@@ -85,9 +84,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         location={undefined}
         match={undefined}
       ></ModalImage>
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <div className="d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
             <button
@@ -149,7 +146,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
             </div>
           </div>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

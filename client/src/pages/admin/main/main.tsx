@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import { Link, useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
@@ -77,9 +76,7 @@ const Admin = (props: AdminProps) => {
 
   return (
     <div className={'admin'}>
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <ModalDelete
           dataTestId="confirm-delete-user-button"
           currentItem={currentIndex}
@@ -153,7 +150,7 @@ const Admin = (props: AdminProps) => {
             </tbody>
           </table>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

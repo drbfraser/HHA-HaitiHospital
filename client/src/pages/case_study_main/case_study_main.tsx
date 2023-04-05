@@ -1,8 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import Api from 'actions/Api';
@@ -121,9 +120,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
   return (
     <div className="case-study-main">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <ModalGeneric
           dataTestId="reminder-to-change-featured-before-deleting"
           show={genericModal}
@@ -244,7 +241,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

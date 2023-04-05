@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import './leader_board_main.css';
 import Api from 'actions/Api';
@@ -52,9 +51,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
 
   return (
     <div className={'leader-board-main'}>
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <div className="my-3 p-2 bg-body rounded shadow-sm">
           <h5 className="mb-3">{t('leaderBoardDepartmentLeaderboard')}</h5>
           <div className="table-responsive">
@@ -106,7 +103,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
             <CaseStudySummary caseStudy={caseStudy} />
           </div>
         )}
-      </main>
+      </Layout>
     </div>
   );
 };

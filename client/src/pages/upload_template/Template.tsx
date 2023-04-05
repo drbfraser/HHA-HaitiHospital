@@ -1,7 +1,6 @@
 import Api from 'actions/Api';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import SideBar from 'components/side_bar/side_bar';
 import { Department } from 'constants/interfaces';
 import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { History } from 'history';
@@ -53,9 +52,7 @@ export const UploadReport = () => {
 
   return (
     <div className="department">
-      <SideBar />
-      <main className="container-fluid main-region bg-light h-screen">
-        <Header />
+      <Layout className=" bg-light h-screen">
         <PopupModalConfirmation
           messages={[
             <>
@@ -88,7 +85,7 @@ export const UploadReport = () => {
             updateReport={setReportTemplate}
           />
         )}
-      </main>
+      </Layout>
     </div>
   );
 };

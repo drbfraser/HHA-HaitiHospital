@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
 import Api from '../../actions/Api';
 import { Department, GeneralDepartment } from 'constants/interfaces';
@@ -53,9 +52,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
 
   return (
     <div className="employee-of-the-month-form">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to="/employee-of-the-month">
             <button data-testid="back-eotm-button" type="button" className="btn btn-outline-dark">
@@ -133,7 +130,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
             </div>
           </form>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import Api from 'actions/Api';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import Sidebar from 'components/side_bar/side_bar';
 import { Department } from 'constants/interfaces';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { FormEvent, useEffect, useState } from 'react';
@@ -114,16 +113,14 @@ export const Report = () => {
 
   return (
     <div className="report-submission">
-      <Sidebar />
-      <main
-        className="container-fluid main-region bg-light h-screen"
+      <Layout
+        className="bg-light h-screen"
         style={{
           left: '200px',
           position: 'absolute',
           width: 'calc(100% - 200px)',
         }}
       >
-        <Header />
         <PopupModalConfirmation
           messages={[
             <>
@@ -197,7 +194,7 @@ export const Report = () => {
             />
           </>
         )}
-      </main>
+      </Layout>
     </div>
   );
 };

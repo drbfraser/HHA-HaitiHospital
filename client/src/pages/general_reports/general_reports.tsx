@@ -1,5 +1,4 @@
-import Header from 'components/header/header';
-import Sidebar from 'components/side_bar/side_bar';
+import Layout from 'components/layout';
 
 // Reference :
 //https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
@@ -56,10 +55,7 @@ const GeneralReports = () => {
   return (
     <>
       <div className="general-reports">
-        <Sidebar />
-        <main>
-          <Header />
-
+        <Layout>
           <section>
             <DatePicker value={dayRange} onChange={setDayRange} />
             {/* <ReportSummary dateRange={dayRange} /> */}
@@ -105,7 +101,7 @@ const GeneralReports = () => {
             pageSize={pageSize}
             onPageChange={(page) => setCurrentPage(page)}
           />
-        </main>
+        </Layout>
       </div>
     </>
   );
