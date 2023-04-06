@@ -293,7 +293,9 @@
       "priority_col": "Priorité",
       "author_col": "Auteur",
       "created_col": "Créé à",
-      "options_col": "Options"
+      "options_col": "Options",
+      "status_col": "Statut",
+      "equipment_col": "Équipement"
     },
     "view_report": {
       "title": "Rapport de Kit Cassé",

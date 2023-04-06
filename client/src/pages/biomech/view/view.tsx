@@ -62,6 +62,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
 
   useEffect(
     function fetchImage() {
+      const controller = new AbortController();
       const getBioReportImage = async () => {
         setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(BioReport.imgPath), history));
       };
@@ -70,6 +71,9 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
       if (BioReport.imgPath !== undefined) {
         getBioReportImage();
       }
+      return () => {
+        controller.abort();
+      };
     },
     [BioReport, history],
   );

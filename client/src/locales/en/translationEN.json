@@ -292,6 +292,8 @@
     "main_page": {
       "priority_col": "Priority",
       "author_col": "Author",
+      "status_col": "Status",
+      "equipment_col": "Equipment",
       "created_col": "Created",
       "options_col": "Options"
     },

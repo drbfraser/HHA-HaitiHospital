@@ -132,6 +132,8 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">{t('biomech.main_page.priority_col')}</th>
+                    <th scope="col">{t('biomech.main_page.status_col')}</th>
+                    <th scope="col">{t('biomech.main_page.equipment_col')}</th>
                     <th scope="col">{t('biomech.main_page.author_col')}</th>
                     <th scope="col">{t('biomech.main_page.created_col')}</th>
                     <th scope="col">{t('biomech.main_page.options_col')}</th>
@@ -149,6 +151,10 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                             </Badge>
                           }
                         </td>
+                        <td>
+                          <Badge>{item.equipmentStatus}</Badge>
+                        </td>
+                        <td>{item.equipmentName}</td>
                         <td>{item.user ? item.user.name : t('status.not_available')} </td>
                         <td>
                           {item.createdAt.toLocaleString(language, {

@@ -1,4 +1,4 @@
-import { BiomechPriority } from './typing';
+import { BiomechPriority, BiomechStatus } from './typing';
 
 export const setPriority = (priority: BiomechPriority): string => {
   enum BiomechBadge {
@@ -14,5 +14,16 @@ export const setPriority = (priority: BiomechPriority): string => {
       return BiomechBadge.IMPORTANT;
     case BiomechPriority.NONURGENT:
       return BiomechBadge.NONURGENT;
+  }
+};
+
+export const setStatusBadgeColor = (status: BiomechStatus): string => {
+  switch (status) {
+    case BiomechStatus.FIXED:
+      return 'success';
+    case BiomechStatus.INPROGRESS:
+      return 'primary';
+    case BiomechStatus.BACKLOG:
+      return 'secondary';
   }
 };
