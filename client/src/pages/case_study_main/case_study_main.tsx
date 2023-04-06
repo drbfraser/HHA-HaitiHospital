@@ -25,15 +25,20 @@ import i18n from 'i18next';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
+import DatePicker, { Day, DayRange, utils } from 'react-modern-calendar-datepicker';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
 export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const DEFAULT_INDEX: string = '';
-  const [genericModal, setGenericModal] = useState<boolean>(false);
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [caseStudies, setCaseStudies] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
+  const [dayRange, setDayRange] = useState<DayRange>({
+    from: null,
+    to: null,
+  });
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [genericModal, setGenericModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
@@ -43,8 +48,28 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
-    return caseStudies.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, caseStudies]);
+
+    return caseStudies.slice(firstPageIndex, lastPageIndex).filter((caseStudy) => {
+      if (dayRange.from && dayRange.to) {
+        const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '))
+          .toISOString()
+          .split('T')[0];
+        const createdAtDay: Day = {
+          day: parseInt(createdAt.split('-')[2]),
+          month: parseInt(createdAt.split('-')[1]),
+          year: parseInt(createdAt.split('-')[0]),
+        };
+
+        //return utils('en').isBeforeDate(dayRange.from, createdAtDay) && utils('en').isBeforeDate(createdAtDay, dayRange.to);
+        return utils('en').checkDayInDayRange({
+          day: createdAtDay,
+          from: dayRange.from,
+          to: dayRange.to,
+        });
+      }
+      return true;
+    });
+  }, [caseStudies, currentPage, dayRange]);
   const caseStudyNumberIndex = currentPage * pageSize - pageSize;
 
   const onFeatureCaseStudy = () => {
@@ -147,16 +172,23 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           location={undefined}
           match={undefined}
         ></ModalDelete>
-        <div className="d-flex justify-content-start">
-          <Link to="/case-study/form">
-            <button
-              data-testid="add-case-study-button"
-              type="button"
-              className="btn btn-outline-dark"
-            >
-              {translateText('caseStudyMainAddCaseStudy')}
-            </button>
-          </Link>
+        <div className="container-fluid px-0">
+          <div className="row align-items-center">
+            <div className="col-auto">
+              <Link to="/case-study/form">
+                <button
+                  className="btn btn-outline-dark"
+                  data-testid="add-case-study-button"
+                  type="button"
+                >
+                  {translateText('caseStudyMainAddCaseStudy')}
+                </button>
+              </Link>
+            </div>
+            <div className="col-auto">
+              <DatePicker onChange={setDayRange} shouldHighlightWeekends value={dayRange} />
+            </div>
+          </div>
         </div>
 
         <div className="table-responsive">
