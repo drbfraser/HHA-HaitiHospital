@@ -9,7 +9,7 @@ import ModalImage from 'components/popup_modal/popup_modal_image';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';
-import { setPriority } from 'pages/biomech/utils';
+import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { BioReportIdParams, Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 
@@ -127,6 +127,14 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                     {
                       <Badge bg={setPriority(BioReport.equipmentPriority)}>
                         {t(`biomech.priority.${BioReport.equipmentPriority}`)}
+                      </Badge>
+                    }
+                  </p>
+                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.status')}</h6>
+                  <p data-testid="biomech-priority" className="fs-6 lh-base text-break">
+                    {
+                      <Badge bg={setStatusBadgeColor(BioReport.equipmentStatus)}>
+                        {t(`biomech.status.${BioReport.equipmentStatus}`)}
                       </Badge>
                     }
                   </p>

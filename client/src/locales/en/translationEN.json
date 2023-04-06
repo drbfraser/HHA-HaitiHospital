@@ -302,7 +302,8 @@
       "equipment_name": "Name of Equipment",
       "author": "Author",
       "priority": "Priority",
-      "issue": "Issue"
+      "issue": "Issue",
+      "status": "Status"
     },
     "report": {
       "title": "Broken Kit Report",

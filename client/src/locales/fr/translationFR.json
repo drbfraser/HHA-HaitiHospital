@@ -302,7 +302,8 @@
       "equipment_name": "Nom de L'équipement",
       "author": "Auteur",
       "priority": "Priorité",
-      "issue": "Problème"
+      "issue": "Problème",
+      "status": "Statut"
     },
     "report": {
       "title": "Rapport de Kit Cassé",

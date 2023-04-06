@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
-import { setPriority } from 'pages/biomech/utils';
+import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { timezone, language } from 'constants/timezones';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
@@ -152,7 +152,9 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                           }
                         </td>
                         <td>
-                          <Badge>{item.equipmentStatus}</Badge>
+                          <Badge bg={setStatusBadgeColor(item.equipmentStatus)}>
+                            {item.equipmentStatus}
+                          </Badge>
                         </td>
                         <td>{item.equipmentName}</td>
                         <td>{item.user ? item.user.name : t('status.not_available')} </td>
