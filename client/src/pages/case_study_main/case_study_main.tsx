@@ -1,31 +1,31 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
-import { Role } from 'constants/interfaces';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
-import ModalGeneric from 'components/popup_modal/popup_modal_generic';
-import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import './case_study_main_styles.css';
 import Api from 'actions/Api';
+import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
+import Header from 'components/header/header';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import ModalGeneric from 'components/popup_modal/popup_modal_generic';
+import Pagination from 'components/pagination/Pagination';
+import SideBar from 'components/side_bar/side_bar';
+import i18n from 'i18next';
 import {
+  ENDPOINT_CASESTUDY_DELETE_BY_ID,
   ENDPOINT_CASESTUDY_GET,
   ENDPOINT_CASESTUDY_PATCH_BY_ID,
-  ENDPOINT_CASESTUDY_DELETE_BY_ID,
 } from 'constants/endpoints';
+import { History } from 'history';
+import { Role } from 'constants/interfaces';
+import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import {
-  TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_DELETE,
+  TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_PATCH,
 } from 'constants/toastErrorMessages';
-import { toast } from 'react-toastify';
-import './case_study_main_styles.css';
-import { useTranslation } from 'react-i18next';
-import { useAuthState } from 'contexts';
 import { renderBasedOnRole } from 'actions/roleActions';
-import i18n from 'i18next';
-import Pagination from 'components/pagination/Pagination';
-import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
-import DatePicker, { Day, DayRange, utils } from 'react-modern-calendar-datepicker';
+import { toast } from 'react-toastify';
+import { useAuthState } from 'contexts';
+import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -51,21 +51,18 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
 
     return caseStudies.slice(firstPageIndex, lastPageIndex).filter((caseStudy) => {
       if (dayRange.from && dayRange.to) {
-        const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '))
-          .toISOString()
-          .split('T')[0];
-        const createdAtDay: Day = {
-          day: parseInt(createdAt.split('-')[2]),
-          month: parseInt(createdAt.split('-')[1]),
-          year: parseInt(createdAt.split('-')[0]),
-        };
+        const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '));
+        const createdAtUTC = new Date(
+          Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
+        );
+        const dayRangeFrom = new Date(
+          Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
+        );
+        const dayRangeTo = new Date(
+          Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
+        );
 
-        //return utils('en').isBeforeDate(dayRange.from, createdAtDay) && utils('en').isBeforeDate(createdAtDay, dayRange.to);
-        return utils('en').checkDayInDayRange({
-          day: createdAtDay,
-          from: dayRange.from,
-          to: dayRange.to,
-        });
+        return dayRangeFrom <= createdAtUTC && createdAtUTC <= dayRangeTo;
       }
       return true;
     });
@@ -135,12 +132,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     setDeleteModal(false);
   };
 
-  useEffect(
-    function fetchCaseStudiesInitially() {
-      fetchCaseStudies();
-    },
-    [fetchCaseStudies],
-  );
+  useEffect(() => {
+    fetchCaseStudies();
+  }, [fetchCaseStudies]);
 
   const { t: translateText } = useTranslation();
 
