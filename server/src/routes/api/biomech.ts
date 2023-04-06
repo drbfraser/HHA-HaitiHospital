@@ -66,6 +66,7 @@ router.post(
       equipmentName: submitData.equipmentName,
       equipmentFault: submitData.equipmentFault,
       equipmentPriority: submitData.equipmentPriority,
+      equipmentStatus: submitData.equipmentStatus,
       imgPath: submitData.file.path,
       createdAt: new Date(),
       updatedAt: new Date(),

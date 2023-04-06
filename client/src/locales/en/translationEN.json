@@ -307,6 +307,7 @@
       "equipment_name": "Name of Equipment",
       "issue": "Issue",
       "priority": "Priority",
+      "status": "Status",
       "inquiry_priority": "Pick a Priority",
       "inquiry_status": "Pick a Status"
     },

@@ -13,12 +13,19 @@ export enum BiomechPriority {
   NONURGENT = 'non-urgent',
 }
 
+export enum BiomechStatus {
+  FIXED = 'fixed',
+  INPROGRESS = 'in-progress',
+  BACKLOG = 'backlog',
+}
+
 export interface BioMech {
   userId: string;
   departmentId: string;
   equipmentName: string;
   equipmentFault: string;
   equipmentPriority: BiomechPriority;
+  equipmentStatus: BiomechStatus;
   createdAt: Date;
   updatedAt: Date;
   imgPath: string;
@@ -36,6 +43,7 @@ const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
     equipmentName: { type: String, required: true },
     equipmentFault: { type: String, required: true },
     equipmentPriority: { type: BiomechPriority, required: true },
+    equipmentStatus: { type: BiomechStatus, required: true },
     imgPath: { type: String, required: true },
   },
   { timestamps: true },
@@ -57,6 +65,7 @@ bioMechSchema.methods.toJson = async function (): Promise<BiomechJson> {
     equipmentName: this.equipmentName,
     equipmentPriority: this.equipmentPriority,
     equipmentFault: this.equipmentFault,
+    equipmentStatus: this.equipmentStatus,
     createdAt: formatDateString(this.createdAt),
     updatedAt: formatDateString(this.createdAt),
     imgPath: this.imgPath,
