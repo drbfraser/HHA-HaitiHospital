@@ -307,12 +307,18 @@
       "equipment_name": "Nom de L'équipement",
       "issue": "Issue",
       "priority": "Priorité",
-      "inquiry_priority": "Choisissez une Priorité"
+      "inquiry_priority": "Choisissez une Priorité",
+      "inquiry_status": "Choisissez un statut"
     },
     "priority": {
       "urgent": "Urgent",
       "important": "Important",
       "non-urgent": "Non-Urgent"
+    },
+    "status": {
+      "fixed": "Fixé",
+      "in-progress": "En Cours",
+      "backlog": "Arriéré"
     }
   },
 
