@@ -4,7 +4,11 @@ import { Badge } from 'react-bootstrap';
 import SideBar from 'components/side_bar/side_bar';
 import Header from 'components/header/header';
 import Api from '../../../actions/Api';
-import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import {
+  ENDPOINT_BIOMECH_GET_BY_ID,
+  ENDPOINT_IMAGE_BY_PATH,
+  ENDPOINT_BIOMECH_UPDATE_STATUS,
+} from 'constants/endpoints';
 import ModalImage from 'components/popup_modal/popup_modal_image';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -30,6 +34,10 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const [status, setStatus] = useState<BiomechStatus>(t(BiomechStatus.INPROGRESS));
 
   const statusArray: BiomechStatus[] = Object.values(BiomechStatus);
+
+  const handleStatusUpdate = (status: BiomechStatus) => {
+    Api.Put(ENDPOINT_BIOMECH_UPDATE_STATUS(id), { status }, () => {}, history);
+  };
 
   const changeStatus = (direction: number) => {
     const index = statusArray.findIndex((el) => el === status) + direction;
@@ -167,7 +175,14 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                   <p data-testid="biomech-issue" className="fs-6 lh-base text-break">
                     {BioReport.equipmentFault}
                   </p>
-                  <button className="btn btn-outline-dark">Update Status</button>
+                  <button
+                    className="btn btn-outline-dark"
+                    onClick={() => {
+                      handleStatusUpdate(status);
+                    }}
+                  >
+                    Update Status
+                  </button>
                 </div>
                 <div className="w-100 pl-2">
                   <div className="broken-kit-image-container">

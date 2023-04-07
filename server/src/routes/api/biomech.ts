@@ -103,4 +103,24 @@ router.delete(
   },
 );
 
+router.put(
+  '/:id',
+  requireJwtAuth,
+  roleAuth(Role.Admin),
+  async (req: RequestWithUser, res: Response) => {
+    const bioId = req.params.id;
+    const { status } = req.body;
+    const report = await BioMechCollection.findById(bioId);
+    if (!report) {
+      throw new NotFound(`No report with id ${bioId}`);
+    }
+
+    report.equipmentStatus = status;
+
+    await report.save();
+
+    res.status(HTTP_OK_CODE).json({ message: 'Report updated' });
+  },
+);
+
 export default router;
