@@ -27,4 +27,4 @@ export const checkUserHasMessageAdminLevelAuth = (user: User, departmentId: stri
   if (user.role === Role.HeadOfDepartment && user.departmentId === departmentId) return true;
 
   return false;
-}
+};
