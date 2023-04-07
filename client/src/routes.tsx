@@ -23,6 +23,7 @@ import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 import { Report } from 'pages/report/Report';
 import { UploadReport } from 'pages/upload_template/Template';
+import { UpdatePermissions } from 'pages/permissions/updatePermissions';
 import { PathPatterns } from 'constants/paths';
 import ReportView from 'pages/report_view/report_view';
 
@@ -61,6 +62,13 @@ const routes = [
   {
     path: '/upload-report',
     component: UploadReport,
+    loginRequired: true,
+    rolesAllowed: [Role.Admin],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/update-permissions',
+    component: UpdatePermissions,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
     departmentsAllowed: [],

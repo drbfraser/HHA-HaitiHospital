@@ -181,6 +181,20 @@ const Sidebar = (props: SidebarProps) => {
                   <span className="text text-light">{t('sidebarUploadReport')}</span>
                 </NavLink>
               </li>
+
+              <li key="udpatePermissions">
+                <NavLink
+                  to="/update-permissions"
+                  className="nav-link link-light"
+                  exact
+                  activeClassName="active"
+                >
+                  <i className="bi bi-person-badge-fill me-2" />
+                  <span className="text text-light">{t('sidebarPermissions')}</span>
+                </NavLink>
+              </li>
+
+              
               <li className="border-top my-2" key="border-3" />
             </>
           ) : null}
