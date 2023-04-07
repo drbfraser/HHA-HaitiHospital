@@ -12,6 +12,7 @@ interface SidebarProps {}
 export const changeLanguage = (ln, i18n) => {
   return () => {
     console.log(`Language changed to ${ln}`);
+    localStorage.setItem('lang', ln);
     i18n.changeLanguage(ln);
   };
 };
@@ -20,7 +21,6 @@ const Sidebar = (props: SidebarProps) => {
   const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
-
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
       return isUserInDepartment(authState.userDetails.department.name, departmentName);
@@ -29,8 +29,8 @@ const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <div className={'Sidebar'}>
-      <div className="bg-dark">
+    <div className={'Sidebar h-100 bg-dark flex overflow-auto'} style={{ width: '200px' }}>
+      <div>
         <div className="sidebar_logo">
           <div className="text-center" style={{ width: 190 }}>
             <HhaLogo style={{ width: 150 }} />

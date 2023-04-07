@@ -1,13 +1,14 @@
-import React, { useReducer } from 'react';
+import { useReducer, useEffect, createContext, useContext, Dispatch } from 'react';
 import { initialState, AuthReducer } from './reducer';
 import { UserJson } from 'constants/interfaces';
+import { useTranslation } from 'react-i18next';
 
-const AuthStateContext = React.createContext<any>({} as any);
+const AuthStateContext = createContext<any>({} as any);
 
-const AuthDispatchContext = React.createContext<React.Dispatch<any>>({} as React.Dispatch<any>);
+const AuthDispatchContext = createContext<Dispatch<any>>({} as Dispatch<any>);
 
 export function useAuthState() {
-  const context = React.useContext<UserJson>(AuthStateContext);
+  const context = useContext<UserJson>(AuthStateContext);
   if (context === undefined) {
     throw new Error('useAuthState must be used within a AuthProvider');
   }
@@ -16,7 +17,7 @@ export function useAuthState() {
 }
 
 export function useAuthDispatch() {
-  const context = React.useContext(AuthDispatchContext);
+  const context = useContext(AuthDispatchContext);
   if (context === undefined) {
     throw new Error('useAuthDispatch must be used within a AuthProvider');
   }
@@ -26,6 +27,13 @@ export function useAuthDispatch() {
 
 export const AuthProvider = ({ children }) => {
   const [user, dispatch] = useReducer(AuthReducer, initialState);
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    i18n.changeLanguage(localStorage.getItem('lang') ?? window.navigator.language);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <AuthStateContext.Provider value={user}>
       <AuthDispatchContext.Provider value={dispatch}>{children}</AuthDispatchContext.Provider>

@@ -46,8 +46,8 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
       ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
       formData,
       onSubmitActions,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
       history,
+      TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
     );
   };
 
