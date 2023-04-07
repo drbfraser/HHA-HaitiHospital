@@ -11,7 +11,7 @@ import {
 import UserCollection, { Role, User } from 'models/user';
 import MessageCollection from 'models/messageBoard';
 import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
-import BioMech, { BiomechPriority } from 'models/bioMech';
+import BioMech, { BiomechPriority, BiomechStatus } from 'models/bioMech';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from 'utils/processEnv';
 import { TemplateCollection } from 'models/template';
@@ -926,6 +926,7 @@ export const seedBioMech = async () => {
         equipmentName: brokenEquipment[i][0],
         equipmentFault: brokenEquipment[i][1],
         equipmentPriority: brokenEquipment[i][2],
+        equipmentStatus: BiomechStatus.BACKLOG,
         imgPath: 'public/images/bioMech0.jpeg',
       });
       bioMechReport.save();
