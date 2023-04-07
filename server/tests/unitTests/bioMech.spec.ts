@@ -30,6 +30,7 @@ interface BioMechReport {
   equipmentName: string;
   equipmentFault: string;
   equipmentPriority: 'urgent' | 'non-urgent' | 'important';
+  equipmentStatus: 'fixed' | 'in-progress' | 'backlog';
   file: {
     fieldname?: string;
     originalname?: string;
@@ -55,6 +56,7 @@ function postBioMech(
     .field('equipmentName', bioMechReport.equipmentName)
     .field('equipmentFault', bioMechReport.equipmentFault)
     .field('equipmentPriority', bioMechReport.equipmentPriority)
+    .field('equipmentStatus', bioMechReport.equipmentStatus)
     .attach('file', imgPath)
     .end(function (error: any, response: any) {
       if (error) done(error);
@@ -150,6 +152,7 @@ describe('Bio Mech Tests', function () {
       equipmentName: 'Test Equipment',
       equipmentFault: 'It is broken',
       equipmentPriority: 'urgent',
+      equipmentStatus: 'fixed',
       file: { path: imgPath },
     };
     postBioMech(bioMechReport, imgPath, done, HTTP_CREATED_CODE, updatePostedBioMechIds);
