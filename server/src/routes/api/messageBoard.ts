@@ -18,7 +18,7 @@ import Departments, { DefaultDepartments } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 import MessageBoard from 'utils/messageboard';
-
+import { checkUserHasMessageAdminLevelAuth } from 'utils/authUtils';
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     let docs;
@@ -104,14 +104,11 @@ router.post(
       if (!(await Departments.Database.validateDeptId(departmentId))) {
         throw new BadRequest(`Invalid department id ${departmentId}`);
       }
-      if (req.user.role == Role.HeadOfDepartment) {
-        const userDeptId = req.user.departmentId;
-        if (departmentId != userDeptId) {
+      if (!checkUserHasMessageAdminLevelAuth(req.user, departmentId)){
           throw new Unauthorized(
             `Do not have access to post messages to department id: ${departmentId}`,
           );
         }
-      }
       const date: Date = new Date();
       const messageBody: string = req.body.messageBody;
       const messageHeader: string = req.body.messageHeader;
@@ -144,14 +141,11 @@ router.put(
       if (!(await Departments.Database.validateDeptId(departmentId))) {
         throw new BadRequest(`Invalid department id ${departmentId}`);
       }
-      if (req.user.role == Role.HeadOfDepartment) {
-        const userDeptId = req.user.departmentId;
-        if (departmentId != userDeptId) {
+      if (!checkUserHasMessageAdminLevelAuth(req.user, departmentId)) {
           throw new Unauthorized(
             `Do not have access to post messages to department id: ${departmentId}`,
           );
         }
-      }
       const date: Date = new Date();
       const messageBody: string = req.body.messageBody;
       const messageHeader: string = req.body.messageHeader;
@@ -195,14 +189,13 @@ router.delete(
       if (!msg) {
         throw new NotFound(`No message with id ${msgId} found`);
       }
-      if (req.user.role == Role.HeadOfDepartment) {
-        const userDeptId = req.user.departmentId;
-        if (msg.departmentId != userDeptId) {
+      if (!checkUserHasMessageAdminLevelAuth(req.user, msg.departmentId))
+{
           throw new Unauthorized(
             `Do not have access to delete messages from department id: ${msg.departmentId}`,
           );
         }
-      }
+      
       res.status(HTTP_NOCONTENT_CODE).send();
     } catch (e) {
       next(e);
