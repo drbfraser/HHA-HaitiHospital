@@ -137,7 +137,7 @@ export const Department = (props: DepartmentProps) => {
             </tbody>
           </table>
         ) : (
-          <div className="display-6 text-danger">
+          <div className="h5 text-primary">
             No reports have been submitted yet for the {department.name} department. Click Report
             (on the left) to create a new report.
           </div>
