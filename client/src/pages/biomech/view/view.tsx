@@ -12,6 +12,7 @@ import { History } from 'history';
 import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { BioReportIdParams, Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
+import { BiomechStatus } from '../typing';
 
 import './view.css';
 
@@ -26,6 +27,16 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const params = useParams<BioReportIdParams>();
   const id: string = useMemo(() => params.bioId, [params.bioId]);
   const history: History = useHistory<History>();
+  const [status, setStatus] = useState<BiomechStatus>(t(BiomechStatus.INPROGRESS));
+
+  const statusArray: BiomechStatus[] = Object.values(BiomechStatus);
+
+  const changeStatus = (direction: number) => {
+    const index = statusArray.findIndex((el) => el === status) + direction;
+    if (index < 0) setStatus(statusArray[statusArray.length - 1]);
+    else if (index > statusArray.length - 1) setStatus(statusArray[0]);
+    else setStatus(statusArray[index]);
+  };
 
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
@@ -41,14 +52,14 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
     function fetchReportInitially() {
       const controller = new AbortController();
       const getBioReport = async () => {
-        setBioReport(
-          await Api.Get(
-            ENDPOINT_BIOMECH_GET_BY_ID(id),
-            ResponseMessage.getMsgFetchReportFailed(),
-            history,
-            controller.signal,
-          ),
+        const report = await Api.Get(
+          ENDPOINT_BIOMECH_GET_BY_ID(id),
+          ResponseMessage.getMsgFetchReportFailed(),
+          history,
+          controller.signal,
         );
+        setBioReport(report);
+        setStatus(report.equipmentStatus);
       };
       getBioReport();
       return () => {
@@ -131,17 +142,32 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                     }
                   </p>
                   <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.status')}</h6>
-                  <p data-testid="biomech-priority" className="fs-6 lh-base text-break">
-                    {
-                      <Badge bg={setStatusBadgeColor(BioReport.equipmentStatus)}>
-                        {t(`biomech.status.${BioReport.equipmentStatus}`)}
+                  <div className="d-flex align-items-center">
+                    <i
+                      className="bi-arrow-left h4 mr-3"
+                      role="button"
+                      onClick={() => {
+                        changeStatus(1);
+                      }}
+                    />
+                    <p data-testid="biomech-priority" className="fs-6 lh-base text-break">
+                      <Badge bg={setStatusBadgeColor(status)}>
+                        {t(`biomech.status.${status}`)}
                       </Badge>
-                    }
-                  </p>
+                    </p>
+                    <i
+                      className="bi-arrow-right h4 ml-3"
+                      role="button"
+                      onClick={() => {
+                        changeStatus(-1);
+                      }}
+                    />
+                  </div>
                   <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.issue')}</h6>
                   <p data-testid="biomech-issue" className="fs-6 lh-base text-break">
                     {BioReport.equipmentFault}
                   </p>
+                  <button className="btn btn-outline-dark">Update Status</button>
                 </div>
                 <div className="w-100 pl-2">
                   <div className="broken-kit-image-container">
