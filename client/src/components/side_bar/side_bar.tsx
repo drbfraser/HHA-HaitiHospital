@@ -194,7 +194,6 @@ const Sidebar = (props: SidebarProps) => {
                 </NavLink>
               </li>
 
-              
               <li className="border-top my-2" key="border-3" />
             </>
           ) : null}
