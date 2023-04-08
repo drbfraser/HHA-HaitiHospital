@@ -1,8 +1,7 @@
-import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
-import SubmitButton from 'components/report/SubmitButton';
-import { FormEvent, Dispatch, SetStateAction, useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useTranslation } from 'react-i18next';
+import { ReportView } from 'components/report/ReportView';
 
 export const UploadForm = ({
   formHandler,
@@ -10,7 +9,7 @@ export const UploadForm = ({
   reportTemplateData,
   updateReport,
 }: {
-  formHandler: (event: FormEvent<HTMLFormElement>) => void;
+  formHandler: (event: React.FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
   reportTemplateData: QuestionGroup<ID, ErrorType>;
   updateReport: Dispatch<SetStateAction<QuestionGroup<string, string>>>;
@@ -18,6 +17,17 @@ export const UploadForm = ({
   const { t } = useTranslation();
   const [error, setError] = useState(null);
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+
+  const buildSubmitButton = () => {
+    return (
+      <input
+        className="btn btn-outline-primary"
+        disabled={!reportTemplateData || isSubmitting}
+        type="submit"
+        value="Submit Report Template"
+      />
+    );
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -64,16 +74,10 @@ export const UploadForm = ({
           </p>
         )}
 
-        <div className="mb-3">
-          <SubmitButton
-            buttonText="Submit Report Template"
-            disabled={!reportTemplateData || isSubmitting}
-            readOnly={false}
-          />
-        </div>
+        <div className="mb-3">{buildSubmitButton()}</div>
 
         {reportTemplateData && (
-          <ReadonlyReportForm isSubmitting={false} reportData={reportTemplateData} isTemplate />
+          <ReportView isSubmitting={false} reportData={reportTemplateData} isTemplate />
         )}
       </form>
     </div>

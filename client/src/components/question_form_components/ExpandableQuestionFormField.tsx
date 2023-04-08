@@ -1,19 +1,20 @@
-import cn from 'classnames';
-import { ChangeEvent, useState } from 'react';
 import { ExpandableQuestion } from '@hha/common';
+import { ChangeEvent, useState } from 'react';
 import { FormField } from './index';
-import { QuestionFormFields } from 'components/report/ReportForm';
+import cn from 'classnames';
 
 const ExpandableQuestionFormField = ({
   applyReportChanges,
   question,
-  setErrorSet,
   suffixName,
+  buildQuestionFormField,
+  setErrorSet,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
-  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
   suffixName: string;
+  buildQuestionFormField: FunctionalComponent;
+  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): JSX.Element => {
   const [openClosedStates, setOpenClosedStates] = useState<boolean[]>([]);
   const inputState = question.getValidationResults();
@@ -94,12 +95,12 @@ const ExpandableQuestionFormField = ({
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
-                  <QuestionFormFields
-                    applyReportChanges={applyReportChanges}
-                    questions={questionGroup}
-                    setErrorSet={setErrorSet}
-                    suffixName={`_${index + 1}`}
-                  />
+                  {buildQuestionFormField({
+                    applyReportChanges: applyReportChanges,
+                    questions: questionGroup,
+                    suffixName: `_${index + 1}`,
+                    setErrorSet: setErrorSet,
+                  })}
                 </div>
               </div>
             </div>

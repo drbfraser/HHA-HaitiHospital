@@ -1,27 +1,27 @@
+import './report_view.css';
 import Api from 'actions/Api';
 import Header from 'components/header/header';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
-import ReportForm from 'components/report/ReportForm';
 import Sidebar from 'components/side_bar/side_bar';
 import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
-import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { History } from 'history';
 import { NavigationInfo, navigate } from 'components/report/utils';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { PDFExport } from '@progress/kendo-react-pdf';
+import { ReportForm } from 'components/report/report_form';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { useAuthState } from 'contexts';
-import { useDepartmentData } from 'hooks';
+import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation, Prompt } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { userLocale, dateOptions } from 'constants/date';
+import { useDepartmentData } from 'hooks';
+import { ReportView } from 'components/report/ReportView';
 
-const ReportView = () => {
+const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
-  const [isUsingPagination, setIsUsingPagination] = useState(true);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
@@ -85,8 +85,6 @@ const ReportView = () => {
     );
   };
 
-  const togglePagination = () => setIsUsingPagination(!isUsingPagination);
-
   const getReport = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReport: any = await Api.Get(
@@ -130,14 +128,7 @@ const ReportView = () => {
       {!!report && (
         <div className="report-view">
           <Sidebar />
-          <main
-            className="container-fluid main-region bg-light h-screen"
-            style={{
-              left: '200px',
-              position: 'absolute',
-              width: 'calc(100% - 200px)',
-            }}
-          >
+          <main className="container-fluid main-region bg-light h-screen">
             <Header />
             <PopupModalConfirmation
               messages={[
@@ -190,9 +181,7 @@ const ReportView = () => {
                 <div>
                   {showViewEditBtn && (
                     <button className="btn btn-primary" onClick={btnHandler}>
-                      {readOnly
-                        ? t('departmentReportDisplayEditForm')
-                        : t('departmentReportDisplayViewForm')}
+                      {readOnly ? 'Edit Form' : 'View Form'}
                     </button>
                   )}
                   {readOnly && (
@@ -203,47 +192,30 @@ const ReportView = () => {
                       {t('departmentReportDisplayGeneratePDF')}
                     </button>
                   )}
-                  {readOnly && (
-                    <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
-                      {isUsingPagination
-                        ? t('departmentReportDisplayHidePagination')
-                        : t('departmentReportDisplayShowPagination')}
-                    </button>
-                  )}
                 </div>
               </header>
               <div>
-                <div className="visually-hidden">
+                {readOnly ? (
                   <PDFExport
-                    fileName={`${submittedDate}_${department}`}
-                    paperSize="A4"
                     ref={pdfExportComponent}
+                    paperSize="A4"
+                    fileName={`${submittedDate}_${department}`}
                   >
-                    <ReadonlyReportForm
+                    <ReportView
                       applyReportChanges={applyReportChanges}
-                      formHandler={() => {}}
+                      formHandler={confirmEdit}
                       isSubmitting={false}
-                      isUsingPagination={false}
                       reportData={report}
+                      btnText="Edit"
                     />
                   </PDFExport>
-                </div>
-                {readOnly ? (
-                  <ReadonlyReportForm
-                    applyReportChanges={applyReportChanges}
-                    btnText="Edit"
-                    formHandler={confirmEdit}
-                    isSubmitting={false}
-                    isUsingPagination={isUsingPagination}
-                    reportData={report}
-                  />
                 ) : (
                   <ReportForm
                     applyReportChanges={applyReportChanges}
-                    btnText="Edit"
                     formHandler={confirmEdit}
                     isSubmitting={false}
                     reportData={report}
+                    btnText="Edit"
                   />
                 )}
               </div>
@@ -255,4 +227,4 @@ const ReportView = () => {
   );
 };
 
-export default ReportView;
+export default Report;

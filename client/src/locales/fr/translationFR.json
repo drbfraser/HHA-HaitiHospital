@@ -234,10 +234,6 @@
   "departmentReportDisplayDiscard": "Jeter",
   "departmentReportDisplaySubmit": "Soumettre",
   "departmentReportDisplayBack": "Arrière",
-  "departmentReportDisplayEditForm": "Modifier le Formulaire",
-  "departmentReportDisplayViewForm": "Voir le Formulaire",
-  "departmentReportDisplayHidePagination": "Masquer la Pagination",
-  "departmentReportDisplayShowPagination": "Afficher la Pagination",
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
 
