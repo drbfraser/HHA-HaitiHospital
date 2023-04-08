@@ -15,6 +15,9 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
   }
 
   public getPagination() {
+    if (this.breakpointPairs.length === 0) {
+      return [[0, this.questionItems.length]];
+    }
     return this.breakpointPairs;
   }
 
