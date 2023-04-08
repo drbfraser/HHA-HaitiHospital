@@ -152,37 +152,37 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                   <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.status')}</h6>
                   <div className="d-flex align-items-center">
                     <i
-                      className="bi-arrow-left h4 mr-3"
+                      className="bi-arrow-left h4 mr-3 mb-0"
                       role="button"
                       onClick={() => {
                         changeStatus(1);
                       }}
                     />
-                    <p data-testid="biomech-priority" className="fs-6 lh-base text-break">
+                    <p data-testid="biomech-priority" className="fs-6 lh-base text-break mb-0">
                       <Badge bg={setStatusBadgeColor(status)}>
                         {t(`biomech.status.${status}`)}
                       </Badge>
                     </p>
                     <i
-                      className="bi-arrow-right h4 ml-3"
+                      className="bi-arrow-right h4 ml-3 mr-4 mb-0"
                       role="button"
                       onClick={() => {
                         changeStatus(-1);
                       }}
                     />
+                    <button
+                      className="btn btn-outline-dark"
+                      onClick={() => {
+                        handleStatusUpdate(status);
+                      }}
+                    >
+                      Update Status
+                    </button>
                   </div>
                   <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.issue')}</h6>
                   <p data-testid="biomech-issue" className="fs-6 lh-base text-break">
                     {BioReport.equipmentFault}
                   </p>
-                  <button
-                    className="btn btn-outline-dark"
-                    onClick={() => {
-                      handleStatusUpdate(status);
-                    }}
-                  >
-                    Update Status
-                  </button>
                 </div>
                 <div className="w-100 pl-2">
                   <div className="broken-kit-image-container">
