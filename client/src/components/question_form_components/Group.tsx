@@ -12,7 +12,6 @@ const Group = ({ children, hasErrors, isRootNode }: GroupProps): JSX.Element => 
       {
         'border-start border-2': !isRootNode,
         'border-danger border-opacity-50': hasErrors,
-        'mt-3': isRootNode,
         'mb-3': !isRootNode,
       },
       'pl-3',

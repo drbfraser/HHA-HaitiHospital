@@ -234,10 +234,6 @@
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
   "departmentReportDisplayBack": "Back",
-  "departmentReportDisplayEditForm": "Edit Form",
-  "departmentReportDisplayViewForm": "View Form",
-  "departmentReportDisplayHidePagination": "Hide Pagination",
-  "departmentReportDisplayShowPagination": "Show Pagination",
   "departmentReportDisplayDownloadCSV": "Download CSV",
   "departmentReportDisplayGeneratePDF": "Generate PDF",
 

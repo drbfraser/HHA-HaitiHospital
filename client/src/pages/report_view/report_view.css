@@ -1,0 +1,16 @@
+.report-view main {
+  /* margin-left: 200px; */
+  position: absolute;
+  left: 220px;
+  width: calc(100% - 220px);
+}
+
+/*Margin by pixel:*/
+@media screen and (max-width: 700px) {
+  .report-view main {
+    /* margin-left: 70px; */
+    position: absolute;
+    left: 80px;
+    width: calc(100% - 80px);
+  }
+}
