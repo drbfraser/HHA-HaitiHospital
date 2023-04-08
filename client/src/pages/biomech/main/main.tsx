@@ -153,7 +153,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                         </td>
                         <td>
                           <Badge bg={setStatusBadgeColor(item.equipmentStatus)}>
-                            {item.equipmentStatus}
+                            {item.equipmentStatus && t(`biomech.status.${item.equipmentStatus}`)}
                           </Badge>
                         </td>
                         <td>{item.equipmentName}</td>
