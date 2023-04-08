@@ -36,7 +36,15 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const statusArray: BiomechStatus[] = Object.values(BiomechStatus);
 
   const handleStatusUpdate = (status: BiomechStatus) => {
-    Api.Put(ENDPOINT_BIOMECH_UPDATE_STATUS(id), { status }, () => {}, history);
+    Api.Put(
+      ENDPOINT_BIOMECH_UPDATE_STATUS(id),
+      { status },
+      () => {},
+      history,
+      ResponseMessage.getMsgUpdateReportFailed(),
+      ResponseMessage.getMsgUpdateReportPending(),
+      ResponseMessage.getMsgUpdateReportOk(),
+    );
   };
 
   const changeStatus = (direction: number) => {
