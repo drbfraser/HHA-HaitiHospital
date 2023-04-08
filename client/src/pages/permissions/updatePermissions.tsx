@@ -7,9 +7,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getEnumKeyByStringValue } from 'utils/utils';
 import { Permissions } from 'components/permissions/Permissions';
+import { Permission, RolesData } from 'constants/interfaces';
 
 export const UpdatePermissions = () => {
-  const [permissionsData, setPermissionsData] = useState({
+  const [permissionsData, setPermissionsData] = useState<RolesData>({
     roles: {
       Admin: {
         name: 'Admin',
@@ -127,12 +128,6 @@ export const UpdatePermissions = () => {
   const { t } = useTranslation();
   const [currentRole, setCurrentRole] = useState<string>('User');
   const history: History = useHistory<History>();
-
-  interface Permission {
-    name: string;
-    key: string;
-    isChecked: boolean;
-  }
 
   const onRoleChange = (newRole: keyof typeof Role) => {
     setCurrentRole(newRole);

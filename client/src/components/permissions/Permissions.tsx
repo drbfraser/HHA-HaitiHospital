@@ -1,24 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
+import { Permission, Page, RolesData } from 'constants/interfaces';
 
-interface Permission {
-  name: string;
-  key: string;
-  isChecked: boolean;
-}
-
-interface Page {
-  name: string;
-  key: string;
-  permissions: Permission[];
-}
 export const Permissions = ({
   permissionsData,
   setPermissionsData,
   handleCheckboxChange,
   currentRole,
 }: {
-  permissionsData: any;
-  setPermissionsData: Dispatch<SetStateAction<any>>;
+  permissionsData: RolesData;
+  setPermissionsData: Dispatch<SetStateAction<RolesData>>;
   handleCheckboxChange: (permission: Permission) => void;
   currentRole: string;
 }): JSX.Element => {

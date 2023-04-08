@@ -96,3 +96,25 @@ export interface UserDetails {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Permission {
+  name: string;
+  key: string;
+  isChecked: boolean;
+}
+export interface Page {
+  name: string;
+  key: string;
+  permissions: Permission[];
+}
+
+export interface RoleWithPermissions {
+  name: string;
+  key: string;
+  pages: Page[];
+}
+export interface RolesData {
+  roles: {
+    [key: string]: RoleWithPermissions;
+  };
+}
