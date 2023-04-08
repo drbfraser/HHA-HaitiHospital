@@ -72,7 +72,8 @@ const ExpandableQuestionFormField = ({
                   >
                     {`Patient ${index + 1}`}
                   </button>
-                  <button
+                  {/* TODO: Add a way to individually delete accordion items */}
+                  {/*<button
                     className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
                     onClick={(e) => e.preventDefault()}
                     style={{
@@ -84,7 +85,7 @@ const ExpandableQuestionFormField = ({
                     }}
                   >
                     <i className="fa fa-close"></i>
-                  </button>
+                  </button>*/}
                 </div>
               </h6>
               <div
