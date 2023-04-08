@@ -1,42 +1,17 @@
-import Api from 'actions/Api';
 import Header from 'components/header/header';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import SideBar from 'components/side_bar/side_bar';
-import { Department, Role } from 'constants/interfaces';
-import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
+import { Role } from 'constants/interfaces';
 import { History } from 'history';
-import { ObjectSerializer, QuestionGroup } from '@hha/common';
-import { ReportAndTemplateForm } from 'components/report_upload_form/reportAndUpload_form';
-import { ResponseMessage } from '../../utils/response_message';
-import { UploadForm } from 'components/template/template_form';
-import { useDepartmentData } from 'hooks';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getEnumKeyByStringValue } from 'utils/utils';
+import { Permissions } from 'components/permissions/Permissions';
 
 export const UpdatePermissions = () => {
-  const { t } = useTranslation();
-  const [currentRole, setCurrentRole] = useState();
-  const history: History = useHistory<History>();
-  const { departments } = useDepartmentData();
-
-  interface Permission {
-    name: string;
-    key: string;
-    isChecked: boolean;
-  }
-
-  interface Page {
-    name: string;
-    key: string;
-    permissions: Permission[];
-  }
-
-  type Permissions = Permission[];
-
-  const permissionsData = {
+  const [permissionsData, setPermissionsData] = useState({
     roles: {
-      admin: {
+      Admin: {
         name: 'Admin',
         key: 'admin',
         pages: [
@@ -47,14 +22,17 @@ export const UpdatePermissions = () => {
               {
                 name: 'View Dashboard',
                 key: 'view_dashboard',
+                isChecked: true,
               },
               {
                 name: 'Edit Dashboard',
                 key: 'edit_dashboard',
+                isChecked: true,
               },
               {
                 name: 'Delete Dashboard',
                 key: 'delete_dashboard',
+                isChecked: true,
               },
             ],
           },
@@ -65,20 +43,23 @@ export const UpdatePermissions = () => {
               {
                 name: 'View Settings',
                 key: 'view_settings',
+                isChecked: true,
               },
               {
                 name: 'Edit Settings',
                 key: 'edit_settings',
+                isChecked: true,
               },
               {
                 name: 'Delete Settings',
                 key: 'delete_settings',
+                isChecked: true,
               },
             ],
           },
         ],
       },
-      user: {
+      User: {
         name: 'User',
         key: 'user',
         pages: [
@@ -89,6 +70,7 @@ export const UpdatePermissions = () => {
               {
                 name: 'View Dashboard',
                 key: 'view_dashboard',
+                isChecked: true,
               },
             ],
           },
@@ -99,14 +81,15 @@ export const UpdatePermissions = () => {
               {
                 name: 'View Settings',
                 key: 'view_settings',
+                isChecked: true,
               },
             ],
           },
         ],
       },
-      guest: {
-        name: 'Guest',
-        key: 'guest',
+      MedicalDirector: {
+        name: 'MedicalDiretor',
+        key: 'medicalDiretor',
         pages: [
           {
             name: 'Settings',
@@ -115,32 +98,86 @@ export const UpdatePermissions = () => {
               {
                 name: 'View Settings',
                 key: 'view_settings',
+                isChecked: true,
+              },
+            ],
+          },
+        ],
+      },
+      HeadOfDepartment: {
+        name: 'HeadOfDepartment',
+        key: 'headOfDepartment',
+        pages: [
+          {
+            name: 'Settings',
+            key: 'settings',
+            permissions: [
+              {
+                name: 'View Settings',
+                key: 'view_settings',
+                isChecked: true,
               },
             ],
           },
         ],
       },
     },
+  });
+
+  const { t } = useTranslation();
+  const [currentRole, setCurrentRole] = useState<string>('User');
+  const history: History = useHistory<History>();
+
+  interface Permission {
+    name: string;
+    key: string;
+    isChecked: boolean;
+  }
+
+  const onRoleChange = (newRole: keyof typeof Role) => {
+    setCurrentRole(newRole);
   };
 
-  const [selectedPermissions, setSelectedPermissions] = useState(
-    permissionsData.roles.admin.pages[0].permissions,
-  );
+  function handleCheckboxChange(permission: Permission): void {
+    // Get the current role's selected permissions for diffrerent pages
+    const selectedPermissions = permissionsData.roles[currentRole].pages;
 
-  function handleCheckboxChange(permission: Permission) {
-    const updatedPermissions = selectedPermissions.map((p) => {
-      if (p.key === permission.key) {
-        return {
-          ...permission,
-          isChecked: !permission.isChecked,
-        };
-      }
-      return p;
+    // Map over each page and update the permissions for the given key
+    const updatedPermissions = selectedPermissions.map((page) => {
+      // Map over each permission in the page and update the isChecked value for the given key
+      const updatedPagePermissions = page.permissions.map((perm) => {
+        // If the permission key matches the given key, update the isChecked value and return the updated permission
+        if (perm.key === permission.key) {
+          return {
+            ...perm,
+            isChecked: !perm.isChecked,
+          };
+        }
+        // Otherwise, return the original permission
+        return perm;
+      });
+
+      // Return the updated page with the updated permissions
+      return {
+        ...page,
+        permissions: updatedPagePermissions,
+      };
     });
-    setSelectedPermissions(updatedPermissions);
-    permissionsData.roles.admin.pages.forEach((page) => {
-      page.permissions = updatedPermissions.filter((p) => p.key.startsWith(page.key));
-    }); // Update the JSON object
+
+    // Update the permissions data for the current role with the updated pages and permissions
+    const updatedPermissionsData = {
+      ...permissionsData,
+      roles: {
+        ...permissionsData.roles,
+        [currentRole]: {
+          ...permissionsData.roles[currentRole],
+          pages: updatedPermissions,
+        },
+      },
+    };
+
+    // Update the state with the updated permissions data
+    setPermissionsData(updatedPermissionsData);
   }
 
   return (
@@ -159,14 +196,9 @@ export const UpdatePermissions = () => {
               <select
                 className="form-select"
                 id="role"
-                // defaultValue={userData.role}
                 required
-                // {...register(ADMIN_USER_FORM_FIELDS.role)}
-                // onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
+                onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
               >
-                <option value="" disabled hidden>
-                  {t('admin.user_form.inquiry_role')}
-                </option>
                 <option value={Role.User}>{t('role.user')}</option>
                 <option value={Role.Admin}>{t('role.admin')}</option>
                 <option value={Role.MedicalDirector}>{t('role.medical_director')}</option>
@@ -175,44 +207,12 @@ export const UpdatePermissions = () => {
             </fieldset>
           </div>
 
-          <div className="container mt-5">
-            <div className="row justify-content-center">
-              <div className="col-md-0">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Page Name</th>
-                      <th>Permissions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {permissionsData.roles.admin.pages.map((page: Page) => (
-                      <tr key={page.key}>
-                        <td>{page.name}</td>
-                        <td>
-                          {page.permissions.map((permission: Permission) => (
-                            <div className="form-check" key={permission.key}>
-                              <input
-                                className="form-check-input"
-                                type="checkbox"
-                                value={permission.key}
-                                id={permission.key}
-                                checked={permission.isChecked}
-                                onChange={() => handleCheckboxChange(permission)}
-                              />
-                              <label className="form-check-label" htmlFor={permission.key}>
-                                {permission.name}
-                              </label>
-                            </div>
-                          ))}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <Permissions
+            permissionsData={permissionsData}
+            setPermissionsData={setPermissionsData}
+            handleCheckboxChange={handleCheckboxChange}
+            currentRole={currentRole}
+          />
         </>
       </main>
     </div>
