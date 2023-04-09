@@ -5,7 +5,7 @@ import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
 import { logger } from '../logger';
-
+import { isValidPasswordString } from 'utils/utils';
 const { Schema } = mongoose;
 
 export enum Role {
@@ -89,7 +89,6 @@ userSchema.methods.generateJWT = function () {
 };
 
 userSchema.methods.registerUser = (newUser, callback) => {
-  // we want to validate passwords here instead of mongoose because the actual saved password is hashed.
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if (err) {

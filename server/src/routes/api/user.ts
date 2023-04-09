@@ -19,6 +19,7 @@ import { IllegalState } from 'exceptions/systemException';
 import { user as inputValidator } from 'sanitization/schemas/user';
 import { logger } from 'logger';
 import { send } from 'process';
+import { isValidPasswordString } from 'utils/utils';
 
 const router = Router();
 
@@ -164,21 +165,19 @@ router.post(
       };
       const newUser = new UserCollection(userInfo);
       // generates a json object with key and value pairs that we need to map
-      const validationError = newUser.validateSync();
 
-      if (validationError == undefined) {
-        let errorJson = {};
-        for (let key in validationError.errors) {
-          errorJson[key] = validationError.errors[key].message;
-          logger.error(`Invalid user info: ${key}:${validationError.errors[key].message}`);
-        }
-        res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send(errorJson);
-      } else {
-        newUser.registerUser(newUser, (err: any) => {
-          if (err) throw new InternalError(`Failed to register new user: ${err}`);
-          res.status(HTTP_CREATED_CODE).send(`New user created`);
-        });
+      // We want to check if the password is valid here instead of in mongoose because the actual password is hashed so mongoose validation is applied on the hashed password.
+      // Also because we want old passwords to be valid even if the password validation changes.
+      if (!isValidPasswordString(newUser.password)) {
+        throw new BadRequest(
+          `Invalid password. Password must be at least 8 characters long and contain at least one number, one uppercase letter, and one lowercase letter`,
+        );
       }
+
+      newUser.registerUser(newUser, (err: any) => {
+        if (err) throw new InternalError(`Failed to register new user: ${err}`);
+        res.status(HTTP_CREATED_CODE).send(`New user created`);
+      });
     } catch (e) {
       next(e);
     }
