@@ -47,12 +47,6 @@ const userSchema = new Schema<UserWithInstanceMethods>(
     password: {
       type: String,
       trim: true,
-      minlength: 6,
-      maxlength: 60,
-      match: [
-        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/,
-        'Password must contain at least one lowercase, one uppercase, one number, and one special character',
-      ],
     },
     name: String,
     role: { type: String, default: Role.User },
@@ -95,6 +89,7 @@ userSchema.methods.generateJWT = function () {
 };
 
 userSchema.methods.registerUser = (newUser, callback) => {
+  // we want to validate passwords here instead of mongoose because the actual saved password is hashed.
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if (err) {
