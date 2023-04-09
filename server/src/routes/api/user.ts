@@ -164,7 +164,6 @@ router.post(
         updatedAt: new Date(),
       };
       const newUser = new UserCollection(userInfo);
-      // generates a json object with key and value pairs that we need to map
 
       // We want to check if the password is valid here instead of in mongoose because the actual password is hashed so mongoose validation is applied on the hashed password.
       // Also because we want old passwords to be valid even if the password validation changes.
