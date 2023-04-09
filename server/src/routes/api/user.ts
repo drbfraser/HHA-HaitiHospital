@@ -168,18 +168,16 @@ router.post(
       // We want to check if the password is valid here instead of in mongoose because the actual password is hashed so mongoose validation is applied on the hashed password.
       // Also because we want old passwords to be valid even if the password validation changes.
       if (!isValidPasswordString(newUser.password)) {
-        res
-          .status(HTTP_UNPROCESSABLE_ENTITY_CODE)
-          .send({
-            errors: [
-              {
-                password: {
-                  message:
-                    'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
-                },
+        res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send({
+          errors: [
+            {
+              password: {
+                message:
+                  'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
               },
-            ],
-          });
+            },
+          ],
+        });
       } else {
         newUser.registerUser(newUser, (err: any) => {
           if (err) throw new InternalError(`Failed to register new user: ${err}`);
