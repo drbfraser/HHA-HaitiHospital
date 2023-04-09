@@ -172,8 +172,7 @@ router.post(
           errors: [
             {
               param: 'Password',
-              msg:
-                'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
+              msg: 'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
             },
           ],
         });
