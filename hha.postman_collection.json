@@ -57,7 +57,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"user0\", \r\n    \"password\": \"123456789\"\r\n}",
+              "raw": "{\r\n    \"username\": \"user0\", \r\n    \"password\": \"C@td0g\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -723,7 +723,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Bob\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"C@td0g\",\r\n    \"name\": \"Billy Bob\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"0\",\r\n        \"name\": \"Rehab\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -752,7 +752,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"editeduser\",\r\n    \"password\": \"123456789\",\r\n    \"name\": \"Billy Joe\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"3\",\r\n        \"name\": \"Maternity\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"username\": \"editeduser\",\r\n    \"password\": \"C@td0g\",\r\n    \"name\": \"Billy Joe\",\r\n    \"role\": \"User\",\r\n    \"department\": { \r\n        \"id\": \"3\",\r\n        \"name\": \"Maternity\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

@@ -108,7 +108,7 @@ SERVER_PORT=8000
 # Port for unit test server
 TEST_SERVER_PORT=5001
 # Password for seeding users
-PASSWORD_SEED=catdog
+PASSWORD_SEED=C@td0g
 ```
 
 ### Common package
