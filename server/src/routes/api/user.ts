@@ -50,12 +50,24 @@ router.put(
       }
 
       if (updatedUser.password && updatedUser.password !== '') {
+        if (!isValidPasswordString(updatedUser.password)) {
+          // early return if password is not valid
+          res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send({
+            errors: [
+              {
+                param: 'Password',
+                msg: 'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
+              },
+            ],
+          });
+          return;
+        }
         updatedUser.password = await hashPassword(updatedUser.password);
       }
+
       if (!(await Departments.Database.validateDeptId(updatedUser.departmentId))) {
         throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
       }
-
       Object.keys(updatedUser).forEach(
         (k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k],
       );
@@ -176,12 +188,13 @@ router.post(
             },
           ],
         });
-      } else {
-        newUser.registerUser(newUser, (err: any) => {
-          if (err) throw new InternalError(`Failed to register new user: ${err}`);
-          res.status(HTTP_CREATED_CODE).send(`New user created`);
-        });
+        // early return if password is not valid
+        return;
       }
+      newUser.registerUser(newUser, (err: any) => {
+        if (err) throw new InternalError(`Failed to register new user: ${err}`);
+        res.status(HTTP_CREATED_CODE).send(`New user created`);
+      });
     } catch (e) {
       next(e);
     }
