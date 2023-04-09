@@ -457,42 +457,37 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 14
   const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_1',
-    'Extremely preterm (< 28 weeks)',
+    'Age 0-5 years old',
     0,
   );
   const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_2',
-    'Very preterm (28 to 32 weeks)',
+    'Age 6-11 years old',
     0,
   );
   const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_3',
-    'Moderate to late preterm (32 to 37 weeks)',
+    'Age 12-17 years old',
     0,
   );
   const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_4',
-    'Full term (37 weeks)',
+    'Age 18-30 years old',
     0,
   );
   const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_5',
-    'Older than neonate (> 4 weeks)',
+    'Age 31-50 years old',
     0,
   );
   const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_6',
-    'Age 4 to 5 weeks',
+    'Age 51-70 years old',
     0,
   );
   const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_8',
-    'Age 6 to 11 weeks',
-    0,
-  );
-  const q14_1_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '14_1_9',
-    'Age 12 to 18 weeks',
+    'Age 71+ years old',
     0,
   );
   const q14_1: SpecializedGroup<
@@ -509,7 +504,6 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q14_1_5,
     q14_1_6,
     q14_1_7,
-    q14_1_8,
   );
 
   const q14_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -980,37 +974,33 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q14_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('14_1', 'Age');
   const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_1,',
-    'Extremely preterm (less than 28 weeks)',
+    'Age 0-5 yeard old',
   );
   const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_2,',
-    'Very preterm (28 to 32 weeks)',
+    'Age 6-11 years old',
   );
   const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_3,',
-    'Moderate to late preterm (32 to 37 weeks)',
+    'Age 12-17 years old',
   );
   const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_4,',
-    'Full term (37 weeks plus)',
+    'Age 18-30 years old',
   );
   const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_5,',
-    'Older than neonate (>4 weeks old)',
+    'Age 31-50 years old',
   );
   const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_6,',
-    'Age 4 weeks -5',
+    'Age 51-70 years old',
   );
   const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_7,',
-    'Age 6-11',
+    'Age 71+ years old',
   );
-  const q14_1_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '14_1_8,',
-    'Age 12-18',
-  );
-  q14_1.addAll(q14_1_1, q14_1_2, q14_1_3, q14_1_4, q14_1_5, q14_1_6, q14_1_7, q14_1_8);
+  q14_1.addAll(q14_1_1, q14_1_2, q14_1_3, q14_1_4, q14_1_5, q14_1_6, q14_1_7);
   // TODO: Add q14_1 to q14
 
   // 14_2 "Main Condition"
