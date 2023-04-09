@@ -171,11 +171,11 @@ router.post(
         res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send({
           errors: [
             {
-              password: {
+              param: 'Password',
                 message:
                   'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
               },
-            },
+            
           ],
         });
       } else {
