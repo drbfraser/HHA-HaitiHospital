@@ -42,6 +42,7 @@ interface User {
   role: string;
   department: { id: string; name: string };
 }
+const WORKING_PASSWORD = 'J0hnP@ssw0rd';
 
 async function updatePostedUserIds() {
   const response = await agent.get(USERS_ENDPOINT);
@@ -161,7 +162,7 @@ describe('Users Test', function () {
 
     const newUser: User = {
       username: 'JohnUsername',
-      password: 'JohnPassword',
+      password: WORKING_PASSWORD,
       name: 'John',
       role: 'User',
       department: { id: departmentId, name: departmentName },
@@ -177,7 +178,23 @@ describe('Users Test', function () {
     // Grab a valid department id
     const newUser: User = {
       username: 'JohnUsername',
-      password: 'JohnPassword',
+      password: WORKING_PASSWORD,
+      name: 'John',
+      role: 'User',
+      department: { id: 'Invalid', name: 'Invalid Name' },
+    };
+    const postResponse = await agent
+      .post(USERS_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
+    expect(postResponse).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
+  });
+
+  it('Should Unsuccessfully Post a New User Due to Invalid Password', async function () {
+    // Grab a valid department id
+    const newUser: User = {
+      username: 'JohnUsername',
+      password: 'notvalidpassword',
       name: 'John',
       role: 'User',
       department: { id: 'Invalid', name: 'Invalid Name' },
@@ -196,7 +213,7 @@ describe('Users Test', function () {
 
     const newUser: User = {
       username: 'JohnUsernameUPDATED',
-      password: 'JohnPasswordUPDATED',
+      password: 'JohnP@sswordUPDATED',
       name: 'JohnUPDATED',
       role: 'User',
       department: { id: departmentId, name: departmentName },
@@ -223,7 +240,7 @@ describe('Users Test', function () {
 
     const newUser: User = {
       username: 'JohnUsernameUPDATED',
-      password: 'JohnPasswordUPDATED',
+      password: WORKING_PASSWORD + 'UPDATED',
       name: 'JohnUPDATED',
       role: 'User',
       department: { id: departmentId, name: departmentName },
@@ -242,7 +259,7 @@ describe('Users Test', function () {
   it('Should Unsuccessfully Update a User Due to Invalid Department Id', async function () {
     const newUser: User = {
       username: 'JohnUsernameUPDATED',
-      password: 'JohnPasswordUPDATED',
+      password: WORKING_PASSWORD + 'UPDATED',
       name: 'JohnUPDATED',
       role: 'User',
       department: { id: 'Invalid Id', name: 'Invalid Name' },
@@ -257,6 +274,22 @@ describe('Users Test', function () {
       .send(newUser);
     expect(updatedResponse).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
   });
+  it('Should Unsuccessfully Update a User Due to Invalid Password', async function () {
+    const newUser: User = {
+      username: 'JohnUsernameUPDATED',
+      password: 'notvalidpassword_updated',
+      name: 'JohnUPDATED',
+      role: 'User',
+      department: { id: 'Invalid Id', name: 'Invalid Name' },
+    };
+    const userResponse = await agent.get(USERS_ENDPOINT);
+    const userId: string = userResponse.body[0].id;
+    const updatedResponse = await agent
+      .put(`${USERS_ENDPOINT}/${userId}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(newUser);
+    expect(updatedResponse).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
+  });
 
   it('Should Unsuccessfully Update a User Due to Invalid User ID', async function () {
     const departmentResponse = await agent.get(DEPARTMENT_ENDPOINT);
@@ -265,7 +298,7 @@ describe('Users Test', function () {
 
     const newUser: User = {
       username: 'JohnUsernameUPDATED',
-      password: 'JohnPasswordUPDATED',
+      password: WORKING_PASSWORD + 'UPDATED',
       name: 'JohnUPDATED',
       role: 'User',
       department: { id: departmentId, name: departmentName },
