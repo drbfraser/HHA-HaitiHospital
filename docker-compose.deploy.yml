@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   server:
+    image: ${SERVER_IMAGE}
     build:
       context: .
       dockerfile: server/Dockerfile
@@ -15,6 +16,7 @@ services:
   mongodb:
     restart: always
   caddy:
+    image: ${CLIENT_IMAGE}
     container_name: hhahaiti_caddy
     build:
       context: .
