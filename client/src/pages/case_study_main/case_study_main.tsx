@@ -255,6 +255,9 @@ export const CaseStudyMain = () => {
                     });
                   }}
                   scope="col"
+                  style={{
+                    cursor: 'pointer',
+                  }}
                 >
                   <div className="d-flex align-items-center gap-2">
                     {translateText('caseStudyMainCaseStudyType')}
@@ -278,6 +281,9 @@ export const CaseStudyMain = () => {
                     });
                   }}
                   scope="col"
+                  style={{
+                    cursor: 'pointer',
+                  }}
                 >
                   <div className="d-flex align-items-center gap-2">
                     {translateText('caseStudyMainAuthor')}
@@ -302,6 +308,9 @@ export const CaseStudyMain = () => {
                     });
                   }}
                   scope="col"
+                  style={{
+                    cursor: 'pointer',
+                  }}
                 >
                   <div className="d-flex align-items-center gap-2">
                     {translateText('caseStudyMainCreated')}
