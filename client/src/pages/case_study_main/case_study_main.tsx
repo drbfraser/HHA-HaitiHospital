@@ -50,11 +50,24 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     const lastPageIndex = firstPageIndex + pageSize;
 
     return caseStudies.slice(firstPageIndex, lastPageIndex).filter((caseStudy) => {
-      if (dayRange.from && dayRange.to) {
-        const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '));
-        const createdAtUTC = new Date(
-          Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
+      const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '));
+      const createdAtUTC = new Date(
+        Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
+      );
+
+      if (dayRange.from) {
+        const dayRangeFrom = new Date(
+          Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
         );
+        return dayRangeFrom <= createdAtUTC;
+      }
+      else if (dayRange.to) {
+        const dayRangeTo = new Date(
+          Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
+        );
+        return createdAtUTC <= dayRangeTo;
+      }
+      else if (dayRange.from && dayRange.to) {
         const dayRangeFrom = new Date(
           Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
         );
