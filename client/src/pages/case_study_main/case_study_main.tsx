@@ -6,6 +6,7 @@ import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import Pagination from 'components/pagination/Pagination';
 import SideBar from 'components/side_bar/side_bar';
+import cn from 'classnames';
 import i18n from 'i18next';
 import {
   ENDPOINT_CASESTUDY_DELETE_BY_ID,
@@ -14,7 +15,7 @@ import {
 } from 'constants/endpoints';
 import { History } from 'history';
 import { Role } from 'constants/interfaces';
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   TOAST_CASESTUDY_DELETE,
   TOAST_CASESTUDY_GET,
@@ -27,9 +28,17 @@ import { useAuthState } from 'contexts';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface CaseStudyMainProps extends RouteComponentProps {}
+enum SortOrderCol {
+  AUTHOR,
+  CREATED_AT,
+  TYPE,
+}
+type SortOrder = {
+  column: SortOrderCol;
+  isAscDir: boolean;
+};
 
-export const CaseStudyMain = (props: CaseStudyMainProps) => {
+export const CaseStudyMain = () => {
   const DEFAULT_INDEX: string = '';
   const [caseStudies, setCaseStudies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
@@ -39,6 +48,10 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
   });
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [genericModal, setGenericModal] = useState<boolean>(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>({
+    column: SortOrderCol.CREATED_AT,
+    isAscDir: true,
+  });
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
@@ -49,35 +62,72 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;
 
-    return caseStudies.slice(firstPageIndex, lastPageIndex).filter((caseStudy) => {
-      const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '));
-      const createdAtUTC = new Date(
-        Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
-      );
-
-      if (dayRange.from) {
-        const dayRangeFrom = new Date(
-          Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
-        );
-        return dayRangeFrom <= createdAtUTC;
-      } else if (dayRange.to) {
-        const dayRangeTo = new Date(
-          Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
-        );
-        return createdAtUTC <= dayRangeTo;
-      } else if (dayRange.from && dayRange.to) {
-        const dayRangeFrom = new Date(
-          Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
-        );
-        const dayRangeTo = new Date(
-          Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
+    return caseStudies
+      .slice(firstPageIndex, lastPageIndex)
+      .filter((caseStudy) => {
+        const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '));
+        const createdAtUTC = new Date(
+          Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
         );
 
-        return dayRangeFrom <= createdAtUTC && createdAtUTC <= dayRangeTo;
-      }
-      return true;
-    });
-  }, [caseStudies, currentPage, dayRange]);
+        if (dayRange.from) {
+          const dayRangeFrom = new Date(
+            Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
+          );
+          return dayRangeFrom <= createdAtUTC;
+        } else if (dayRange.to) {
+          const dayRangeTo = new Date(
+            Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
+          );
+          return createdAtUTC <= dayRangeTo;
+        } else if (dayRange.from && dayRange.to) {
+          const dayRangeFrom = new Date(
+            Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
+          );
+          const dayRangeTo = new Date(
+            Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
+          );
+
+          return dayRangeFrom <= createdAtUTC && createdAtUTC <= dayRangeTo;
+        }
+        return true;
+      })
+      .sort((prevCaseStudy, nextCaseStudy) => {
+        if (prevCaseStudy.featured) {
+          return Number.NEGATIVE_INFINITY;
+        } else if (sortOrder.column === SortOrderCol.AUTHOR) {
+          return sortOrder.isAscDir
+            ? prevCaseStudy.user.name.localeCompare(nextCaseStudy.user.name)
+            : nextCaseStudy.user.name.localeCompare(prevCaseStudy.user.name);
+        } else if (sortOrder.column === SortOrderCol.CREATED_AT) {
+          const prevCreatedAt = new Date(prevCaseStudy.createdAt.split(' ').slice(0, 3).join(' '));
+          const prevCreatedAtUTC = new Date(
+            Date.UTC(
+              prevCreatedAt.getFullYear(),
+              prevCreatedAt.getMonth(),
+              prevCreatedAt.getDate(),
+            ),
+          );
+          const nextCreatedAt = new Date(nextCaseStudy.createdAt.split(' ').slice(0, 3).join(' '));
+          const nextCreatedAtUTC = new Date(
+            Date.UTC(
+              nextCreatedAt.getFullYear(),
+              nextCreatedAt.getMonth(),
+              nextCreatedAt.getDate(),
+            ),
+          );
+
+          return sortOrder.isAscDir
+            ? prevCreatedAtUTC.getTime() - nextCreatedAtUTC.getTime()
+            : nextCreatedAtUTC.getTime() - prevCreatedAtUTC.getTime();
+        } else if (sortOrder.column === SortOrderCol.TYPE) {
+          return sortOrder.isAscDir
+            ? prevCaseStudy.caseStudyType.localeCompare(nextCaseStudy.caseStudyType)
+            : nextCaseStudy.caseStudyType.localeCompare(prevCaseStudy.caseStudyType);
+        }
+        return 0;
+      });
+  }, [caseStudies, currentPage, dayRange, sortOrder]);
   const caseStudyNumberIndex = currentPage * pageSize - pageSize;
 
   const onFeatureCaseStudy = () => {
@@ -198,24 +248,72 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                 <th scope="col">#</th>
                 <th
                   data-testid="case-study-type-title"
-                  onClick={(e) => console.log(e)}
+                  onClick={() => {
+                    setSortOrder({
+                      column: SortOrderCol.TYPE,
+                      isAscDir: sortOrder.column === SortOrderCol.TYPE ? !sortOrder.isAscDir : true,
+                    });
+                  }}
                   scope="col"
                 >
                   <div className="d-flex align-items-center gap-2">
                     {translateText('caseStudyMainCaseStudyType')}
-                    <i className="bi bi-arrow-down-up"></i>
+                    <i
+                      className={cn('bi', {
+                        'bi-arrow-down-up': sortOrder.column !== SortOrderCol.TYPE,
+                        'bi-arrow-down':
+                          sortOrder.column === SortOrderCol.TYPE && !sortOrder.isAscDir,
+                        'bi-arrow-up': sortOrder.column === SortOrderCol.TYPE && sortOrder.isAscDir,
+                      })}
+                    />
                   </div>
                 </th>
-                <th data-testid="case-study-author-title" scope="col">
+                <th
+                  data-testid="case-study-author-title"
+                  onClick={() => {
+                    setSortOrder({
+                      column: SortOrderCol.AUTHOR,
+                      isAscDir:
+                        sortOrder.column === SortOrderCol.AUTHOR ? !sortOrder.isAscDir : true,
+                    });
+                  }}
+                  scope="col"
+                >
                   <div className="d-flex align-items-center gap-2">
                     {translateText('caseStudyMainAuthor')}
-                    <i className="bi bi-arrow-down-up"></i>
+                    <i
+                      className={cn('bi', {
+                        'bi-arrow-down-up': sortOrder.column !== SortOrderCol.AUTHOR,
+                        'bi-arrow-down':
+                          sortOrder.column === SortOrderCol.AUTHOR && !sortOrder.isAscDir,
+                        'bi-arrow-up':
+                          sortOrder.column === SortOrderCol.AUTHOR && sortOrder.isAscDir,
+                      })}
+                    />
                   </div>
                 </th>
-                <th data-testid="case-study-created-title" scope="col">
+                <th
+                  data-testid="case-study-created-title"
+                  onClick={() => {
+                    setSortOrder({
+                      column: SortOrderCol.CREATED_AT,
+                      isAscDir:
+                        sortOrder.column === SortOrderCol.CREATED_AT ? !sortOrder.isAscDir : true,
+                    });
+                  }}
+                  scope="col"
+                >
                   <div className="d-flex align-items-center gap-2">
                     {translateText('caseStudyMainCreated')}
-                    <i className="bi bi-arrow-down-up"></i>
+                    <i
+                      className={cn('bi', {
+                        'bi-arrow-down-up': sortOrder.column !== SortOrderCol.CREATED_AT,
+                        'bi-arrow-down':
+                          sortOrder.column === SortOrderCol.CREATED_AT && !sortOrder.isAscDir,
+                        'bi-arrow-up':
+                          sortOrder.column === SortOrderCol.CREATED_AT && sortOrder.isAscDir,
+                      })}
+                    />
                   </div>
                 </th>
                 <th data-testid="case-study-options-title" scope="col">
