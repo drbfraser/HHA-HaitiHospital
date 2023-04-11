@@ -154,7 +154,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           history={history}
           location={undefined}
           match={undefined}
-        ></ModalGeneric>
+        />
         <ModalDelete
           dataTestId="confirm-delete-case-study-button"
           currentItem={currentIndex}
@@ -165,28 +165,23 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           history={history}
           location={undefined}
           match={undefined}
-        ></ModalDelete>
-        <div className="container-fluid px-0">
-          <div className="row align-items-center">
-            <div className="col-auto">
-              <Link to="/case-study/form">
-                <button
-                  className="btn btn-outline-dark"
-                  data-testid="add-case-study-button"
-                  type="button"
-                >
-                  {translateText('caseStudyMainAddCaseStudy')}
-                </button>
-              </Link>
-            </div>
-            <div className="col-auto">
-              <DatePicker onChange={setDayRange} shouldHighlightWeekends value={dayRange} />
-            </div>
-          </div>
+        />
+        <div className="w-100">
+          <Link to="/case-study/form">
+            <button
+              className="btn btn-outline-dark"
+              data-testid="add-case-study-button"
+              type="button"
+            >
+              {translateText('caseStudyMainAddCaseStudy')}
+            </button>
+          </Link>
         </div>
-
+        <div className="w-100 mt-3">
+          <DatePicker onChange={setDayRange} shouldHighlightWeekends value={dayRange} />
+        </div>
         <div className="table-responsive">
-          <table className="table table-hover mt-3">
+          <table className="table table-hover mt-2">
             <thead>
               <tr>
                 <th scope="col">#</th>
