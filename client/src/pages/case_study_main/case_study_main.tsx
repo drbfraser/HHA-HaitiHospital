@@ -60,14 +60,12 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
         );
         return dayRangeFrom <= createdAtUTC;
-      }
-      else if (dayRange.to) {
+      } else if (dayRange.to) {
         const dayRangeTo = new Date(
           Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
         );
         return createdAtUTC <= dayRangeTo;
-      }
-      else if (dayRange.from && dayRange.to) {
+      } else if (dayRange.from && dayRange.to) {
         const dayRangeFrom = new Date(
           Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
         );
@@ -198,14 +196,27 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th data-testid="case-study-type-title" scope="col">
-                  {translateText('caseStudyMainCaseStudyType')}
+                <th
+                  data-testid="case-study-type-title"
+                  onClick={(e) => console.log(e)}
+                  scope="col"
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    {translateText('caseStudyMainCaseStudyType')}
+                    <i className="bi bi-arrow-down-up"></i>
+                  </div>
                 </th>
                 <th data-testid="case-study-author-title" scope="col">
-                  {translateText('caseStudyMainAuthor')}
+                  <div className="d-flex align-items-center gap-2">
+                    {translateText('caseStudyMainAuthor')}
+                    <i className="bi bi-arrow-down-up"></i>
+                  </div>
                 </th>
                 <th data-testid="case-study-created-title" scope="col">
-                  {translateText('caseStudyMainCreated')}
+                  <div className="d-flex align-items-center gap-2">
+                    {translateText('caseStudyMainCreated')}
+                    <i className="bi bi-arrow-down-up"></i>
+                  </div>
                 </th>
                 <th data-testid="case-study-options-title" scope="col">
                   {translateText('caseStudyMainLink')}
