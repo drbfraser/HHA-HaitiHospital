@@ -129,7 +129,7 @@ deploy-upload-docker:
   stage: upload
   image: docker:dind
   tags:
-    - deploy-upload
+    - deploy-development
   only:
     - master
   script:
