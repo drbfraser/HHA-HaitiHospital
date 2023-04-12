@@ -13,6 +13,18 @@ services:
     image: mongo:5.0.6-focal
     volumes:
       - hhahaiti_mongodb_data:/data/db
+  log_metrics_processor:
+    container_name: hhahaiti_fluentbit
+    image: fluent/fluent-bit:2.0.11
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./fluentbit-config:/fluent-bit/etc
+    logging:
+      driver: "none"
+
 
 volumes:
   hhahaiti_mongodb_data:
+  fluentbit-config:
+
