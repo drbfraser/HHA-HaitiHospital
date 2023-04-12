@@ -10,7 +10,7 @@ import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { BiomechForm, BiomechPriority, BIOMECH_REPORT_FIELDS } from '../typing';
+import { BiomechForm, BiomechPriority, BIOMECH_REPORT_FIELDS, BiomechStatus } from '../typing';
 
 import './report.css';
 
@@ -102,6 +102,30 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                   </option>
                   <option value={BiomechPriority.NONURGENT}>
                     {t(`biomech.priority.${BiomechPriority.NONURGENT}`)}
+                  </option>
+                </select>
+                <label htmlFor="Equipment Status" className="form-label">
+                  {t('biomech.report.status')}
+                </label>
+                <select
+                  required
+                  id="Equipment Status"
+                  aria-label="Default select example"
+                  className="form-select"
+                  defaultValue=""
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentStatus)}
+                >
+                  <option value="" disabled hidden>
+                    {t('biomech.report.inquiry_status')}
+                  </option>
+                  <option value={BiomechStatus.FIXED}>
+                    {t(`biomech.status.${BiomechStatus.FIXED}`)}
+                  </option>
+                  <option value={BiomechStatus.INPROGRESS}>
+                    {t(`biomech.status.${BiomechStatus.INPROGRESS}`)}
+                  </option>
+                  <option value={BiomechStatus.BACKLOG}>
+                    {t(`biomech.status.${BiomechStatus.BACKLOG}`)}
                   </option>
                 </select>
                 <label htmlFor="customFile" className="form-label mt-2">
