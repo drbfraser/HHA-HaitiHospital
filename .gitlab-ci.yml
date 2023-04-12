@@ -135,7 +135,6 @@ deploy-upload-docker:
     - deploy-development
   only:
     - master
-    - merge_requests
   script:
     - *upload-script
 
