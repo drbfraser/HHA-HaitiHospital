@@ -5,7 +5,7 @@ import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
 import { logger } from '../logger';
-
+import { isValidPasswordString } from 'utils/utils';
 const { Schema } = mongoose;
 
 export enum Role {
@@ -34,7 +34,6 @@ interface UserWithInstanceMethods extends User {
   registerUser: (newUser: any, callback: Function) => void;
   comparePassword: (otherPw: any, callback: Function) => void;
 }
-
 const userSchema = new Schema<UserWithInstanceMethods>(
   {
     username: {
@@ -42,14 +41,12 @@ const userSchema = new Schema<UserWithInstanceMethods>(
       lowercase: true,
       unique: true,
       required: [true, "can't be blank"],
-      match: [/^[a-zA-Z0-9_]+$/, 'is invalid'],
+      match: [/^[a-zA-Z0-9_]+$/, 'Only letters, numbers and underscore allowed'],
       index: true,
     },
     password: {
       type: String,
       trim: true,
-      minlength: 6,
-      maxlength: 60,
     },
     name: String,
     role: { type: String, default: Role.User },

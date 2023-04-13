@@ -235,6 +235,10 @@
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
   "departmentReportDisplayBack": "Back",
+  "departmentReportDisplayEditForm": "Edit Form",
+  "departmentReportDisplayViewForm": "View Form",
+  "departmentReportDisplayHidePagination": "Hide Pagination",
+  "departmentReportDisplayShowPagination": "Show Pagination",
   "departmentReportDisplayDownloadCSV": "Download CSV",
   "departmentReportDisplayGeneratePDF": "Generate PDF",
 
@@ -298,6 +302,8 @@
     "main_page": {
       "priority_col": "Priority",
       "author_col": "Author",
+      "status_col": "Status",
+      "equipment_col": "Equipment",
       "created_col": "Created",
       "options_col": "Options"
     },
@@ -306,19 +312,27 @@
       "equipment_name": "Name of Equipment",
       "author": "Author",
       "priority": "Priority",
-      "issue": "Issue"
+      "issue": "Issue",
+      "status": "Status"
     },
     "report": {
       "title": "Broken Kit Report",
       "equipment_name": "Name of Equipment",
       "issue": "Issue",
       "priority": "Priority",
-      "inquiry_priority": "Pick a Priority"
+      "status": "Status",
+      "inquiry_priority": "Pick a Priority",
+      "inquiry_status": "Pick a Status"
     },
     "priority": {
       "urgent": "Urgent",
       "important": "Important",
       "non-urgent": "Non-Urgent"
+    },
+    "status": {
+      "fixed": "Fixed",
+      "in-progress": "In-Progress",
+      "backlog": "Backlog"
     }
   },
 

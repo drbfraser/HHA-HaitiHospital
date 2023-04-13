@@ -16,7 +16,7 @@ interface UserAccount {
 
 const AdminUser: UserAccount = {
   username: 'user0',
-  password: 'catdog',
+  password: 'C@td0g',
 };
 
 const IncorrectPasswordUser: UserAccount = {

@@ -66,6 +66,7 @@ router.post(
       equipmentName: submitData.equipmentName,
       equipmentFault: submitData.equipmentFault,
       equipmentPriority: submitData.equipmentPriority,
+      equipmentStatus: submitData.equipmentStatus,
       imgPath: submitData.file.path,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -99,6 +100,26 @@ router.delete(
       .catch((err: any) => {
         next(new InternalError(`Failed to delete biomech post: ${err}`));
       });
+  },
+);
+
+router.put(
+  '/:id',
+  requireJwtAuth,
+  roleAuth(Role.Admin),
+  async (req: RequestWithUser, res: Response) => {
+    const bioId = req.params.id;
+    const { status } = req.body;
+    const report = await BioMechCollection.findById(bioId);
+    if (!report) {
+      throw new NotFound(`No report with id ${bioId}`);
+    }
+
+    report.equipmentStatus = status;
+
+    await report.save();
+
+    res.status(HTTP_OK_CODE).json({ message: 'Report updated' });
   },
 );
 
