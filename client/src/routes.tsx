@@ -30,6 +30,134 @@ import ReportView from 'pages/report_view/ReportView';
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
 
+const permissionData = {
+  permission: {
+    _id: '643899a1d0a45d32207c8c94',
+    modifiedUserId: '6438999fd0a45d32207c8b62',
+    modifiedBy: 'user0',
+    permissionObject: {
+      roles: {
+        Admin: {
+          name: 'Admin',
+          key: 'admin',
+          pages: [
+            {
+              name: 'Dashboard',
+              key: 'dashboard',
+              permissions: [
+                {
+                  name: 'View Dashboard',
+                  key: 'view_dashboard',
+                  isChecked: true,
+                },
+                {
+                  name: 'Edit Dashboard',
+                  key: 'edit_dashboard',
+                  isChecked: true,
+                },
+                {
+                  name: 'Delete Dashboard',
+                  key: 'delete_dashboard',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+                {
+                  name: 'Edit Settings',
+                  key: 'edit_settings',
+                  isChecked: true,
+                },
+                {
+                  name: 'Delete Settings',
+                  key: 'delete_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+        User: {
+          name: 'User',
+          key: 'user',
+          pages: [
+            {
+              name: 'Dashboard',
+              key: 'dashboard',
+              permissions: [
+                {
+                  name: 'View Dashboard',
+                  key: 'view_dashboard',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+        MedicalDirector: {
+          name: 'MedicalDiretor',
+          key: 'medicalDiretor',
+          pages: [
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+        HeadOfDepartment: {
+          name: 'HeadOfDepartment',
+          key: 'headOfDepartment',
+          pages: [
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+    lastModified: '2023-04-14T00:09:05.577Z',
+    __v: 0,
+  },
+};
+
+//based on pages in permission Data I have to configure roles allowed
+//based on roles allowed I have to configure departments allowed
+
+
 const routes = [
   {
     path: '/login',
