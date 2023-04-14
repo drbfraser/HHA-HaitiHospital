@@ -3,18 +3,16 @@ import { Permission, Page, RolesData } from 'constants/interfaces';
 
 export const Permissions = ({
   permissionsData,
-  setPermissionsData,
   handleCheckboxChange,
   currentRole,
 }: {
   permissionsData: RolesData;
-  setPermissionsData: Dispatch<SetStateAction<RolesData>>;
   handleCheckboxChange: (permission: Permission) => void;
   currentRole: string;
 }): JSX.Element => {
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
+    <div className="container mt-5 ml-0">
+      <div className="row justify-content-left">
         <div className="col-md-0">
           <table className="table">
             <thead>
@@ -24,7 +22,7 @@ export const Permissions = ({
               </tr>
             </thead>
             <tbody>
-              {permissionsData.roles[currentRole].pages.map((page: Page) => (
+              {permissionsData?.roles[currentRole]?.pages?.map((page: Page) => (
                 <tr key={page.key}>
                   <td>{page.name}</td>
                   <td>

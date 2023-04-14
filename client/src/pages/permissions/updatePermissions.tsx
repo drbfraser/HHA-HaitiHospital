@@ -1,129 +1,41 @@
+import Api from 'actions/Api';
 import Header from 'components/header/header';
 import SideBar from 'components/side_bar/side_bar';
 import { Role } from 'constants/interfaces';
 import { History } from 'history';
 import { useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getEnumKeyByStringValue } from 'utils/utils';
 import { Permissions } from 'components/permissions/Permissions';
 import { Permission, RolesData } from 'constants/interfaces';
+import { ENDPOINT_PERMISSION } from 'constants/endpoints';
 
 export const UpdatePermissions = () => {
-  const [permissionsData, setPermissionsData] = useState<RolesData>({
-    roles: {
-      Admin: {
-        name: 'Admin',
-        key: 'admin',
-        pages: [
-          {
-            name: 'Dashboard',
-            key: 'dashboard',
-            permissions: [
-              {
-                name: 'View Dashboard',
-                key: 'view_dashboard',
-                isChecked: true,
-              },
-              {
-                name: 'Edit Dashboard',
-                key: 'edit_dashboard',
-                isChecked: true,
-              },
-              {
-                name: 'Delete Dashboard',
-                key: 'delete_dashboard',
-                isChecked: true,
-              },
-            ],
-          },
-          {
-            name: 'Settings',
-            key: 'settings',
-            permissions: [
-              {
-                name: 'View Settings',
-                key: 'view_settings',
-                isChecked: true,
-              },
-              {
-                name: 'Edit Settings',
-                key: 'edit_settings',
-                isChecked: true,
-              },
-              {
-                name: 'Delete Settings',
-                key: 'delete_settings',
-                isChecked: true,
-              },
-            ],
-          },
-        ],
-      },
-      User: {
-        name: 'User',
-        key: 'user',
-        pages: [
-          {
-            name: 'Dashboard',
-            key: 'dashboard',
-            permissions: [
-              {
-                name: 'View Dashboard',
-                key: 'view_dashboard',
-                isChecked: true,
-              },
-            ],
-          },
-          {
-            name: 'Settings',
-            key: 'settings',
-            permissions: [
-              {
-                name: 'View Settings',
-                key: 'view_settings',
-                isChecked: true,
-              },
-            ],
-          },
-        ],
-      },
-      MedicalDirector: {
-        name: 'MedicalDiretor',
-        key: 'medicalDiretor',
-        pages: [
-          {
-            name: 'Settings',
-            key: 'settings',
-            permissions: [
-              {
-                name: 'View Settings',
-                key: 'view_settings',
-                isChecked: true,
-              },
-            ],
-          },
-        ],
-      },
-      HeadOfDepartment: {
-        name: 'HeadOfDepartment',
-        key: 'headOfDepartment',
-        pages: [
-          {
-            name: 'Settings',
-            key: 'settings',
-            permissions: [
-              {
-                name: 'View Settings',
-                key: 'view_settings',
-                isChecked: true,
-              },
-            ],
-          },
-        ],
-      },
-    },
-  });
+  const [permissionsData, setPermissionsData] = useState<RolesData>();
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const getTemplates = async () => {
+      try {
+        const fetchedPermissions = await Api.Get(
+          `${ENDPOINT_PERMISSION}`,
+          '',
+          history,
+          controller.signal,
+        );
+        const permissions = fetchedPermissions.permission.permissionObject;
+
+        setPermissionsData(permissions);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getTemplates();
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   const { t } = useTranslation();
   const [currentRole, setCurrentRole] = useState<string>('User');
@@ -182,7 +94,7 @@ export const UpdatePermissions = () => {
         <Header />
 
         <>
-          <div className="col-md-6 mb-2">
+          <div className="col-md-4 mb-2">
             <h1 className="text-start">{t('permissions.permissionHeader')}</h1>
             <fieldset>
               <label htmlFor="role" className="form-label">
@@ -204,7 +116,6 @@ export const UpdatePermissions = () => {
 
           <Permissions
             permissionsData={permissionsData}
-            setPermissionsData={setPermissionsData}
             handleCheckboxChange={handleCheckboxChange}
             currentRole={currentRole}
           />
