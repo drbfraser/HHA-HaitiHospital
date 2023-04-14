@@ -16,6 +16,7 @@ import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import * as ENV from 'utils/processEnv';
 import { TemplateCollection } from 'models/template';
 import { ReportCollection } from 'models/report';
+import { PermissionCollection } from 'models/permission';
 import Departments, { DefaultDepartments } from 'utils/departments';
 import DepartmentCollection, { Department } from 'models/departments';
 
@@ -48,6 +49,7 @@ export const seedDb = async () => {
     await seedCaseStudies();
     await seedTemplates();
     await seedReports();
+    await seedPermissions();
 
     console.log('Database seeding completed.');
     process.exit();
@@ -1104,6 +1106,137 @@ const seedReports = async () => {
     });
     await report.save();
     console.log(`Reports seeded`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const seedPermissions = async () => {
+  console.log(`Seeding Permissions...`);
+  try {
+    await PermissionCollection.deleteMany({});
+    const user = await UserCollection.findOne({ username: 'user0' });
+    const permissionObject = {
+      roles: {
+        Admin: {
+          name: 'Admin',
+          key: 'admin',
+          pages: [
+            {
+              name: 'Dashboard',
+              key: 'dashboard',
+              permissions: [
+                {
+                  name: 'View Dashboard',
+                  key: 'view_dashboard',
+                  isChecked: true,
+                },
+                {
+                  name: 'Edit Dashboard',
+                  key: 'edit_dashboard',
+                  isChecked: true,
+                },
+                {
+                  name: 'Delete Dashboard',
+                  key: 'delete_dashboard',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+                {
+                  name: 'Edit Settings',
+                  key: 'edit_settings',
+                  isChecked: true,
+                },
+                {
+                  name: 'Delete Settings',
+                  key: 'delete_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+        User: {
+          name: 'User',
+          key: 'user',
+          pages: [
+            {
+              name: 'Dashboard',
+              key: 'dashboard',
+              permissions: [
+                {
+                  name: 'View Dashboard',
+                  key: 'view_dashboard',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+        MedicalDirector: {
+          name: 'MedicalDiretor',
+          key: 'medicalDiretor',
+          pages: [
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+        HeadOfDepartment: {
+          name: 'HeadOfDepartment',
+          key: 'headOfDepartment',
+          pages: [
+            {
+              name: 'Settings',
+              key: 'settings',
+              permissions: [
+                {
+                  name: 'View Settings',
+                  key: 'view_settings',
+                  isChecked: true,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    };
+    let permission = new PermissionCollection({
+      modifiedUserId: user?._id,
+      modifiedBy: user?.username,
+      permissionObject: permissionObject,
+    });
+    await permission.save();
+    console.log(`Permissions seeded`);
   } catch (err) {
     console.log(err);
   }
