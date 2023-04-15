@@ -1,7 +1,6 @@
 import { Link, useHistory } from 'react-router-dom';
 import { AdminUserFormData } from 'pages/admin/typing';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { useTranslation } from 'react-i18next';
@@ -38,10 +37,7 @@ export const AddUserForm = (props: AdminProps) => {
 
   return (
     <div className={'admin'}>
-      <SideBar />
-
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to={Paths.getAdminMain()}>
             <button
@@ -57,7 +53,7 @@ export const AddUserForm = (props: AdminProps) => {
         <div className="col-md-6">
           <AdminUserForm data={{ departments: departments }} onSubmit={submitForm}></AdminUserForm>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
@@ -74,11 +73,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
 
   return (
     <div className={'case-study-form'}>
-      <SideBar />
-
-      <main className="container-fluid main-region">
-        <Header />
-
+      <Layout>
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to="/case-study">
             <button type="button" className="btn btn-outline-dark">
@@ -546,7 +541,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
             </div>
           </div>
         </form>
-      </main>
+      </Layout>
     </div>
   );
 };
