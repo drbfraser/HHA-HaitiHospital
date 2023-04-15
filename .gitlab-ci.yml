@@ -73,7 +73,7 @@ test-build-server:
     paths:
       - server_build.tar.gz
 
-build-client:
+test-build-client:
   stage: build
   image: node:16
   tags:
@@ -87,6 +87,7 @@ build-client:
     - npm ci
     - npm install ../common_build.tar.gz
   script:
+    - npm run test
     # TODO: remove "CI=false", temporarily required because the project has warnings during the build
     - CI=false GENERATE_SOURCEMAP=false npm run build
   after_script:
