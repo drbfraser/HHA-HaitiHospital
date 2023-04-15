@@ -98,7 +98,7 @@ build-client:
 
 .upload-script: &upload-script
   # remove unused images
-  - docker image prune -a -f
+  - docker system prune -a -f --volumes # clears all unused docker images, containers, volumes, and networks
   - cp /var/hhahaiti/.env ./.env
   - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
   - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
