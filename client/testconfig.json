@@ -20,5 +20,5 @@
     "noImplicitAny": false,
     "experimentalDecorators": true
   },
-  "include": ["tests/**/*.spec.ts"]
+  "include": ["tests/**/*.spec.tsx"]
 }
