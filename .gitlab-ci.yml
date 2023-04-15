@@ -97,7 +97,7 @@ build-client:
       - client_build.tar.gz
 
 .upload-script: &upload-script
-  # remove unused images
+  # we remove all unused docker images, containers, volumes, and networks before upload in case someone created them before the build
   - docker system prune -a -f --volumes # clears all unused docker images, containers, volumes, and networks
   - cp /var/hhahaiti/.env ./.env
   - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
@@ -110,10 +110,11 @@ build-client:
   - docker login -u $HUB_USER -p $HUB_TOKEN
   - docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
   - docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
-  - docker image prune -a -f # remove unused images since we just built new ones
+  - docker system prune -a -f --volumes # clears all unused docker images, containers, volumes, and networks
+  # we clear our images after as they are now on docker hub
 
 .deploy-script: &deploy-script
-  - docker image prune -a -f
+  - docker system prune -a -f --volumes # clears all unused docker images, containers, volumes, and networks
   - cp /var/hhahaiti/.env ./.env
   - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
   - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
@@ -126,8 +127,7 @@ build-client:
   - docker images
   - docker ps -a
   - docker volume ls
-  - docker image prune -a -f # remove unused images since we just built new ones
-
+  - docker system prune -a -f --volumes # clears all unused docker images, containers, volumes, and networks
 deploy-upload-docker:
   stage: upload
   image: docker:dind
