@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
-import { setPriority } from 'pages/biomech/utils';
+import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { timezone, language } from 'constants/timezones';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
@@ -129,6 +129,8 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">{t('biomech.main_page.priority_col')}</th>
+                    <th scope="col">{t('biomech.main_page.status_col')}</th>
+                    <th scope="col">{t('biomech.main_page.equipment_col')}</th>
                     <th scope="col">{t('biomech.main_page.author_col')}</th>
                     <th scope="col">{t('biomech.main_page.created_col')}</th>
                     <th scope="col">{t('biomech.main_page.options_col')}</th>
@@ -146,6 +148,12 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                             </Badge>
                           }
                         </td>
+                        <td>
+                          <Badge bg={setStatusBadgeColor(item.equipmentStatus)}>
+                            {item.equipmentStatus && t(`biomech.status.${item.equipmentStatus}`)}
+                          </Badge>
+                        </td>
+                        <td>{item.equipmentName}</td>
                         <td>{item.user ? item.user.name : t('status.not_available')} </td>
                         <td>
                           {item.createdAt.toLocaleString(language, {

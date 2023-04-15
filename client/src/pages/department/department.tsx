@@ -89,46 +89,55 @@ export const Department = (props: DepartmentProps) => {
               {t('departmentPageDepartmentOf')} {department.name}
             </h1>
           </section>
-
           <section>
-            <div className="row">
-              <div className="col-auto">
-                <DatePicker value={dateRange} onChange={setDayRange} />
+            {currentTableData.length > 0 && (
+              <div className="row">
+                <div className="col-auto">
+                  <DatePicker value={dateRange} onChange={setDayRange} />
+                </div>
               </div>
-            </div>
+            )}
           </section>
         </div>
-
-        <table className="table table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">{t('reportsReportId')}</th>
-              <th scope="col">{t('reportsSubmissionDate')}</th>
-              <th scope="col">{t('reportsSubmittedBy')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentTableData.map((item, index) => {
-              return (
-                <tr key={item._id}>
-                  <th scope="row">{reportNumberIndex + index + 1}</th>
-                  <td>
-                    <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
-                      {item.reportObject.id}
-                    </Link>
-                  </td>
-                  <td>
-                    {item.submittedDate &&
-                      new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                  </td>
-                  <td>{item.submittedBy}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
+        {currentTableData.length > 0 ? (
+          <table className="table table-hover mt-3">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{t('reportsReportId')}</th>
+                <th scope="col">{t('reportsSubmissionDate')}</th>
+                <th scope="col">{t('reportsSubmittedBy')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentTableData.map((item, index) => {
+                return (
+                  <tr key={item._id}>
+                    <th scope="row">{reportNumberIndex + index + 1}</th>
+                    <td>
+                      <Link
+                        to={'/report-view/' + item._id}
+                        className="btn-link text-decoration-none"
+                      >
+                        {item.reportObject.id}
+                      </Link>
+                    </td>
+                    <td>
+                      {item.submittedDate &&
+                        new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                    </td>
+                    <td>{item.submittedBy}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <div className="h5 text-primary">
+            No reports have been submitted yet for the {department.name} department. Click Report
+            (on the left) to create a new report.
+          </div>
+        )}
         <Pagination
           className="pagination-bar"
           currentPage={currentPage}

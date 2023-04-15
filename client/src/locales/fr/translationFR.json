@@ -234,6 +234,10 @@
   "departmentReportDisplayDiscard": "Jeter",
   "departmentReportDisplaySubmit": "Soumettre",
   "departmentReportDisplayBack": "Arrière",
+  "departmentReportDisplayEditForm": "Modifier le Formulaire",
+  "departmentReportDisplayViewForm": "Voir le Formulaire",
+  "departmentReportDisplayHidePagination": "Masquer la Pagination",
+  "departmentReportDisplayShowPagination": "Afficher la Pagination",
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
 
@@ -293,26 +297,36 @@
       "priority_col": "Priorité",
       "author_col": "Auteur",
       "created_col": "Créé à",
-      "options_col": "Options"
+      "options_col": "Options",
+      "status_col": "Statut",
+      "equipment_col": "Équipement"
     },
     "view_report": {
       "title": "Rapport de Kit Cassé",
       "equipment_name": "Nom de L'équipement",
       "author": "Auteur",
       "priority": "Priorité",
-      "issue": "Problème"
+      "issue": "Problème",
+      "status": "Statut"
     },
     "report": {
       "title": "Rapport de Kit Cassé",
       "equipment_name": "Nom de L'équipement",
       "issue": "Issue",
       "priority": "Priorité",
-      "inquiry_priority": "Choisissez une Priorité"
+      "status": "Statut",
+      "inquiry_priority": "Choisissez une Priorité",
+      "inquiry_status": "Choisissez un statut"
     },
     "priority": {
       "urgent": "Urgent",
       "important": "Important",
       "non-urgent": "Non-Urgent"
+    },
+    "status": {
+      "fixed": "Fixé",
+      "in-progress": "En Cours",
+      "backlog": "Arriéré"
     }
   },
 

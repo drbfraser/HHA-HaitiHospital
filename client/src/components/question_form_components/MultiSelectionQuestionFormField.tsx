@@ -20,9 +20,9 @@ const MultiSelectionQuestionFormField = ({
       const nextErrorSet = new Set(prevErrorSet);
 
       if (question.getValidationResults() !== true) {
-        nextErrorSet.add(question.getId());
+        nextErrorSet.add(nameId);
       } else {
-        nextErrorSet.delete(question.getId());
+        nextErrorSet.delete(nameId);
       }
 
       return nextErrorSet;
@@ -44,6 +44,14 @@ const MultiSelectionQuestionFormField = ({
   // This would be the case when nothing is selected and the question is required
   useEffect(() => {
     updateErrorSetFromSelf();
+
+    return () => {
+      setErrorSet((prevErrorSet: Set<ID>) => {
+        const nextErrorSet = new Set(prevErrorSet);
+        nextErrorSet.delete(nameId);
+        return nextErrorSet;
+      });
+    };
   }, []);
 
   return (

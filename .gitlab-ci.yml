@@ -1,12 +1,18 @@
+# Required environment variables defined by GitLab's settings:
+#   HUB_USER:           Docker Hub user
+#   HUB_TOKEN:          Docker Hub token
+#   HUB_REPO_BACKEND:   Docker Hub project name for backend
+#   HUB_REPO_FRONTEND:  Docker Hub project name for frontend / caddy
 variables:
   MONGO_URI: 'mongodb://mongo:27017/hhahaiti'
-  PASSWORD_SEED: 'catdog'
+  PASSWORD_SEED: 'C@td0g'
   IS_GITLAB_CI: 'true'
 stages:
   - validate
   - build-dependencies
   - test-dependencies
   - build
+  - upload
   - deploy
 validate-prettier:
   stage: validate
@@ -61,7 +67,7 @@ test-build-server:
   script:
     - npm run test
   after_script:
-    - cd server && tar -czf ../server_build.tar.gz .
+    - cd server && tar -czvf ../server_build.tar.gz .
   artifacts:
     expire_in: 1 week
     paths:
@@ -90,11 +96,47 @@ build-client:
     paths:
       - client_build.tar.gz
 
-.deploy-script: &deploy-script
+.upload-script: &upload-script
+  # remove unused images
+  - docker image prune -a -f
   - cp /var/hhahaiti/.env ./.env
+  - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
+  - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
+  - echo "Full tag (backend) is               = $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
+  - echo "Full tag (rev-proxy & frontend) is  = $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
+  - export SERVER_IMAGE="$HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
+  - export CLIENT_IMAGE="$HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml build
+  - docker login -u $HUB_USER -p $HUB_TOKEN
+  - docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
+  - docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
+  - docker image prune -a -f # remove unused images since we just built new ones
+
+.deploy-script: &deploy-script
+  - docker image prune -a -f
+  - cp /var/hhahaiti/.env ./.env
+  - export IMAGE_TAG=v$(git show -s --format=%cs $CI_COMMIT_SHA).`git rev-parse --short=8 $CI_COMMIT_SHA`
+  - echo "Docker hub user ='$HUB_USER',     version='$IMAGE_TAG'"
+  - echo "Full tag (backend) is               = $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
+  - echo "Full tag (rev-proxy & frontend) is  = $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
+  - export SERVER_IMAGE="$HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG"
+  - export CLIENT_IMAGE="$HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG"
   - docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --force-recreate -d
-  - docker image prune -f # remove unused images since we just built new ones
+  - bash -c 'sleep 15'
+  - docker images
+  - docker ps -a
+  - docker volume ls
+  - docker image prune -a -f # remove unused images since we just built new ones
+
+deploy-upload-docker:
+  stage: upload
+  image: docker:dind
+  tags:
+    - deploy-development
+  only:
+    - master
+  script:
+    - *upload-script
 
 deploy-development:
   stage: deploy

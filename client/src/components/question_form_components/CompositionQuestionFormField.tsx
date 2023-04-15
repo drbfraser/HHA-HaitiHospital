@@ -1,6 +1,6 @@
 import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import cn from 'classnames';
 
 const CompositionQuestionFormField = ({
@@ -33,14 +33,26 @@ const CompositionQuestionFormField = ({
       const nextErrorSet = new Set(prevErrorSet);
 
       if (question.getValidationResults() !== true) {
-        nextErrorSet.add(question.getId());
+        nextErrorSet.add(nameId);
       } else {
-        nextErrorSet.delete(question.getId());
+        nextErrorSet.delete(nameId);
       }
 
       return nextErrorSet;
     });
   };
+
+  useEffect(() => {
+    updateErrorSetFromSelf();
+
+    return () => {
+      setErrorSet((prevErrorSet: Set<ID>) => {
+        const nextErrorSet = new Set(prevErrorSet);
+        nextErrorSet.delete(nameId);
+        return nextErrorSet;
+      });
+    };
+  }, []);
 
   return (
     <>
