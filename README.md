@@ -254,7 +254,7 @@ GNU GPL
 ## Infrastructure Notes
 
 ### Overview:
-Our infrastructure is composed of frontend and backend projects, utilizing React and Node.js, respectively. Both projects rely on a shared package responsible for performing various tasks. The backend, developed in TypeScript, is transpiled with ts-node for production builds, while the frontend is created using Create React App, which employs webpack as its default bundler. We modify the webpack rules with the rewire library. Deployment occurs within Docker containers, featuring Caddy as a reverse proxy for the frontend and MongoDB as the database. Our infrastructure maintains consistency across development (dev) and staging environments, with updates pushed through respective branch merges.
+Our infrastructure is composed of frontend and backend projects, utilizing React and Node.js, respectively. Both projects rely on a shared package responsible for performing various tasks. The backend, developed in TypeScript, is transpiled with ts-node for production builds, while the frontend is created using Create React App, which employs webpack as its default bundler. We modify the webpack rules with the rewire library. Deployment occurs within Docker containers, featuring Caddy as a reverse proxy for the frontend and MongoDB as the database. Our infrastructure maintains consistency across development (dev) and staging environments, with updates pushed through respective branch merges. We use fluentbit to collect logs and send them to hosted services like cloudwatch and grafana where they can be stored and analyzed.
 
 ### Backend:
 The backend project, developed using TypeScript, operates within a dedicated Docker container. TypeScript code is transpiled to JavaScript using ts-node. The backend container communicates with the MongoDB container for data storage and retrieval purposes.
@@ -270,6 +270,9 @@ Caddy serves as the reverse proxy for our frontend, providing built-in TLS to en
 
 ### Database:
 MongoDB functions as our database solution, operating within its own Docker container. It interacts with the backend container for data storage and retrieval operations.
+
+### Fluentbit:
+Fluent Bit is a lightweight data collector that can efficiently collect log data from various sources, including Docker containers, and output it to different destinations like Amazon CloudWatch. This setup helps monitor application health and identify issues quickly, ensuring a reliable and stable product for our users.
 
 ### Dev and Staging:
 Our infrastructure supports two environments: dev and staging. Updates to the dev environment occur through merges to the master branch, while the staging environment is updated via merges to the staging branch. Consistent infrastructure across both environments ensures application uniformity, simplifying the process of identifying and resolving issues that may arise in one environment but not the other.
