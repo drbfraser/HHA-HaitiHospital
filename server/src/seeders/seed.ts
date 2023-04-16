@@ -67,7 +67,7 @@ export const seedUsers = async () => {
     // Delete seeded users on server start so we can reseed them.
     await UserCollection.deleteMany({});
 
-    for (const index of [...Array(14).keys()]) {
+    for (const index of [...Array(15).keys()]) {
       const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
@@ -166,6 +166,13 @@ export const seedUsers = async () => {
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
               DefaultDepartments.NICU,
+              nameMapper,
+            );
+            break;
+          case 13:
+            foundUser.role = Role.BioMechanical;
+            foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.BioMechanic,
               nameMapper,
             );
             break;
