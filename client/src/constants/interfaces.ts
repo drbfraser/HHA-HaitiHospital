@@ -19,6 +19,7 @@ export enum Role {
   Admin = 'Admin',
   MedicalDirector = 'Medical Director',
   HeadOfDepartment = 'Head of Department',
+  BioMechanical = 'Bio Mechanic',
   User = 'User',
 }
 
