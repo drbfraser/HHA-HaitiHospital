@@ -338,7 +338,8 @@
     "user": "User",
     "admin": "Admin",
     "medical_director": "Medical Director",
-    "head_department": "Head of Department"
+    "head_department": "Head of Department",
+    "bio_mechanic": "Bio Mechanic"
   },
 
   "modal": {

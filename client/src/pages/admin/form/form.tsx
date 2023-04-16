@@ -129,7 +129,7 @@ export const AdminUserForm = (props: Props) => {
           <option value={Role.Admin}>{t('role.admin')}</option>
           <option value={Role.MedicalDirector}>{t('role.medical_director')}</option>
           <option value={Role.HeadOfDepartment}>{t('role.head_department')}</option>
-          <option value={Role.BioMechanical}>{t('role.head_department')}</option>
+          <option value={Role.BioMechanical}>{t('role.bio_mechanic')}</option>
         </select>
       </div>
 
