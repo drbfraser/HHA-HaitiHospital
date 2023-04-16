@@ -2,8 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { UserDetails } from 'constants/interfaces';
 import { AdminUserFormData } from 'pages/admin/typing';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
 import { useTranslation } from 'react-i18next';
@@ -70,28 +69,28 @@ export const EditUserForm = (props: UserEditProps) => {
 
   return (
     <div className={'admin'}>
-      <SideBar />
-      {!fetch ? (
-        <Spinner></Spinner>
-      ) : (
-        <main className="container-fluid main-region">
-          <Header />
-          <div className="ml-3 mb-3 d-flex justify-content-start">
-            <Link to={Paths.getAdminMain()}>
-              <button type="button" className="btn btn-outline-dark">
-                {t('button.back')}
-              </button>
-            </Link>
-          </div>
+      <Layout>
+        {!fetch ? (
+          <Spinner></Spinner>
+        ) : (
+          <>
+            <div className="ml-3 mb-3 d-flex justify-content-start">
+              <Link to={Paths.getAdminMain()}>
+                <button type="button" className="btn btn-outline-dark">
+                  {t('button.back')}
+                </button>
+              </Link>
+            </div>
 
-          <div className="col-md-6">
-            <AdminUserForm
-              data={{ userData: user, departments: departments }}
-              onSubmit={submitForm}
-            ></AdminUserForm>
-          </div>
-        </main>
-      )}
+            <div className="col-md-6">
+              <AdminUserForm
+                data={{ userData: user, departments: departments }}
+                onSubmit={submitForm}
+              ></AdminUserForm>
+            </div>
+          </>
+        )}
+      </Layout>
     </div>
   );
 };

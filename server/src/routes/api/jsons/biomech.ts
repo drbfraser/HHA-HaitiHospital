@@ -1,4 +1,4 @@
-import { BiomechPriority } from 'models/bioMech';
+import { BiomechPriority, BiomechStatus } from 'models/bioMech';
 import { UserApiOut } from 'routes/api/jsons/user';
 import { proxiedPropertyOf } from 'utils/utils';
 
@@ -7,6 +7,7 @@ export namespace BiomechApiIn {
     equipmentName: string;
     equipmentFault: string;
     equipmentPriority: BiomechPriority;
+    equipmentStatus: BiomechStatus;
     file: Express.Multer.File;
   }
 
@@ -24,6 +25,7 @@ export namespace BiomechApiOut {
     equipmentName: string;
     equipmentFault: string;
     equipmentPriority: string;
+    equipmentStatus: string;
     createdAt: string;
     updatedAt: string;
     imgPath: string;

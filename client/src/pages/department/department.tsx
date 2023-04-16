@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useHistory } from 'react-router-dom';
-import SideBar from 'components/side_bar/side_bar';
 import Pagination from 'components/pagination/Pagination';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from 'actions/Api';
 import {
   ENDPOINT_DEPARTMENT_GET_BY_ID,
@@ -27,7 +26,6 @@ export const Department = (props: DepartmentProps) => {
   });
   const [department, setDepartment] = useState<DepartmentModel>(EMPTY_DEPARTMENT);
   const [reports, setReports] = useState<IReportObject<any>[]>([]);
-  //const authState = useAuthState();
   const history: History = useHistory<History>();
   const { deptId } = useParams<{ deptId: string }>();
   const { t } = useTranslation();
@@ -84,58 +82,62 @@ export const Department = (props: DepartmentProps) => {
 
   return (
     <div className="department">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
-
+      <Layout>
         <div className="mt-3">
-          {/* Department Title */}
           <section>
             <h1 className="text-start">
               {t('departmentPageDepartmentOf')} {department.name}
             </h1>
           </section>
-
-          {/* Nav buttons */}
           <section>
-            <div className="row">
-              <div className="col-auto">
-                <DatePicker value={dateRange} onChange={setDayRange} />
+            {currentTableData.length > 0 && (
+              <div className="row">
+                <div className="col-auto">
+                  <DatePicker value={dateRange} onChange={setDayRange} />
+                </div>
               </div>
-            </div>
+            )}
           </section>
         </div>
-
-        <table className="table table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">{t('reportsReportId')}</th>
-              <th scope="col">{t('reportsSubmissionDate')}</th>
-              <th scope="col">{t('reportsSubmittedBy')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentTableData.map((item, index) => {
-              return (
-                <tr key={item._id}>
-                  <th scope="row">{reportNumberIndex + index + 1}</th>
-                  <td>
-                    <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
-                      {item.reportObject.id}
-                    </Link>
-                  </td>
-                  <td>
-                    {item.submittedDate &&
-                      new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                  </td>
-                  <td>{item.submittedBy}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
+        {currentTableData.length > 0 ? (
+          <table className="table table-hover mt-3">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{t('reportsReportId')}</th>
+                <th scope="col">{t('reportsSubmissionDate')}</th>
+                <th scope="col">{t('reportsSubmittedBy')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentTableData.map((item, index) => {
+                return (
+                  <tr key={item._id}>
+                    <th scope="row">{reportNumberIndex + index + 1}</th>
+                    <td>
+                      <Link
+                        to={'/report-view/' + item._id}
+                        className="btn-link text-decoration-none"
+                      >
+                        {item.reportObject.id}
+                      </Link>
+                    </td>
+                    <td>
+                      {item.submittedDate &&
+                        new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                    </td>
+                    <td>{item.submittedBy}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <div className="h5 text-primary">
+            No reports have been submitted yet for the {department.name} department. Click Report
+            (on the left) to create a new report.
+          </div>
+        )}
         <Pagination
           className="pagination-bar"
           currentPage={currentPage}
@@ -143,7 +145,7 @@ export const Department = (props: DepartmentProps) => {
           pageSize={PAGE_SIZE}
           totalCount={reports.length}
         />
-      </main>
+      </Layout>
     </div>
   );
 };

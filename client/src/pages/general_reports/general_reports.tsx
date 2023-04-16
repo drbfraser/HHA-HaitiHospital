@@ -1,5 +1,4 @@
-import Header from 'components/header/header';
-import Sidebar from 'components/side_bar/side_bar';
+import Layout from 'components/layout';
 
 // Reference :
 //https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
@@ -56,56 +55,63 @@ const GeneralReports = () => {
   return (
     <>
       <div className="general-reports">
-        <Sidebar />
-        <main>
-          <Header />
-
-          <section>
-            <DatePicker value={dayRange} onChange={setDayRange} />
-            {/* <ReportSummary dateRange={dayRange} /> */}
-          </section>
-          <div className="d-flex justify-content-start mt-3 mb-3"></div>
-          <table className="table table-hover mt-3">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{t('reportsReportId')}</th>
-                <th scope="col">{t('reportsSubmissionDate')}</th>
-                <th scope="col">{t('reportsSubmittedBy')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentTableData.map((item, index) => {
-                return (
-                  <tr key={item._id}>
-                    <th scope="row">{reportNumberIndex + index + 1}</th>
-                    <td>
-                      <Link
-                        to={'/report-view/' + item._id}
-                        className="btn-link text-decoration-none"
-                      >
-                        {item.reportObject.id}
-                      </Link>
-                    </td>
-                    <td>
-                      {item.submittedDate &&
-                        new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                    </td>
-                    <td>{item.submittedBy}</td>
+        <Layout>
+          {currentTableData.length > 0 ? (
+            <>
+              <section>
+                <DatePicker value={dayRange} onChange={setDayRange} />
+                {/* <ReportSummary dateRange={dayRange} /> */}
+              </section>
+              <div className="d-flex justify-content-start mt-3 mb-3"></div>
+              <table className="table table-hover mt-3">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{t('reportsReportId')}</th>
+                    <th scope="col">{t('reportsSubmissionDate')}</th>
+                    <th scope="col">{t('reportsSubmittedBy')}</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          <Pagination
-            className="pagination-bar"
-            currentPage={currentPage}
-            totalCount={reports.length}
-            pageSize={pageSize}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </main>
+                </thead>
+                <tbody>
+                  {currentTableData.map((item, index) => {
+                    return (
+                      <tr key={item._id}>
+                        <th scope="row">{reportNumberIndex + index + 1}</th>
+                        <td>
+                          <Link
+                            to={'/report-view/' + item._id}
+                            className="btn-link text-decoration-none"
+                          >
+                            {item.reportObject.id}
+                          </Link>
+                        </td>
+                        <td>
+                          {item.submittedDate &&
+                            new Date(item.submittedDate).toLocaleDateString(
+                              userLocale,
+                              dateOptions,
+                            )}
+                        </td>
+                        <td>{item.submittedBy}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={reports.length}
+                pageSize={pageSize}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </>
+          ) : (
+            <div className="h5 text-primary">
+              No reports have been submitted yet. Click Report (on the left) to create a new report.
+            </div>
+          )}
+        </Layout>
       </div>
     </>
   );

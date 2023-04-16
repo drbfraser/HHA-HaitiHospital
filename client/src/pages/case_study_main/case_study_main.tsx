@@ -1,12 +1,11 @@
 import './case_study_main_styles.css';
 import Api from 'actions/Api';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import Header from 'components/header/header';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import Pagination from 'components/pagination/Pagination';
-import SideBar from 'components/side_bar/side_bar';
 import cn from 'classnames';
+import Layout from 'components/layout';
 import i18n from 'i18next';
 import {
   ENDPOINT_CASESTUDY_DELETE_BY_ID,
@@ -201,9 +200,7 @@ export const CaseStudyMain = () => {
 
   return (
     <div className="case-study-main">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <ModalGeneric
           dataTestId="reminder-to-change-featured-before-deleting"
           show={genericModal}
@@ -396,7 +393,7 @@ export const CaseStudyMain = () => {
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

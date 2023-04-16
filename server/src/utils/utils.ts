@@ -107,3 +107,9 @@ export const proxiedPropertyOf = <IObj>() =>
   ) as {
     [P in keyof IObj]: P;
   };
+
+export const isValidPasswordString = (password: string): boolean => {
+  // this regex checks for at least one uppercase, one lowercase, one number, and one special character with a minimum length of 6
+  const regexPattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
+  return password.length >= 6 && password.length <= 60 && regexPattern.test(password);
+};

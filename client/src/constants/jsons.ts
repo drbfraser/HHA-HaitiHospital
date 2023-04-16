@@ -12,6 +12,7 @@ export interface BiomechGet {
   equipmentName: string;
   equipmentFault: string;
   equipmentPriority: string;
+  equipmentStatus: string;
   createdAt: string;
   updatedAt: string;
   imgPath: string;

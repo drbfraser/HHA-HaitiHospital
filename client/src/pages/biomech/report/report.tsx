@@ -1,7 +1,6 @@
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from '../../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +9,7 @@ import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { BiomechForm, BiomechPriority, BIOMECH_REPORT_FIELDS } from '../typing';
+import { BiomechForm, BiomechPriority, BIOMECH_REPORT_FIELDS, BiomechStatus } from '../typing';
 
 import './report.css';
 
@@ -41,9 +40,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
 
   return (
     <div className="broken_kit">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
             <button
@@ -104,6 +101,30 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
                     {t(`biomech.priority.${BiomechPriority.NONURGENT}`)}
                   </option>
                 </select>
+                <label htmlFor="Equipment Status" className="form-label">
+                  {t('biomech.report.status')}
+                </label>
+                <select
+                  required
+                  id="Equipment Status"
+                  aria-label="Default select example"
+                  className="form-select"
+                  defaultValue=""
+                  {...register(BIOMECH_REPORT_FIELDS.equipmentStatus)}
+                >
+                  <option value="" disabled hidden>
+                    {t('biomech.report.inquiry_status')}
+                  </option>
+                  <option value={BiomechStatus.FIXED}>
+                    {t(`biomech.status.${BiomechStatus.FIXED}`)}
+                  </option>
+                  <option value={BiomechStatus.INPROGRESS}>
+                    {t(`biomech.status.${BiomechStatus.INPROGRESS}`)}
+                  </option>
+                  <option value={BiomechStatus.BACKLOG}>
+                    {t(`biomech.status.${BiomechStatus.BACKLOG}`)}
+                  </option>
+                </select>
                 <label htmlFor="customFile" className="form-label mt-2">
                   {t('button.add_image')}
                 </label>
@@ -146,7 +167,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
             </div>
           </form>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

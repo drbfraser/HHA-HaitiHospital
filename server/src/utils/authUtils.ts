@@ -20,3 +20,11 @@ export const checkUserCanEdit = (user: User, report: IReport) => {
 
   return false;
 };
+
+export const checkUserHasMessageAdminLevelAuth = (user: User, departmentId: string) => {
+  if (user.role === Role.Admin || user.role === Role.MedicalDirector) return true;
+
+  if (user.role === Role.HeadOfDepartment && user.departmentId === departmentId) return true;
+
+  return false;
+};

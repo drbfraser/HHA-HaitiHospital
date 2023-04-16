@@ -1,17 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, Link, useParams } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from '../../../actions/Api';
-import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import {
+  ENDPOINT_BIOMECH_GET_BY_ID,
+  ENDPOINT_IMAGE_BY_PATH,
+  ENDPOINT_BIOMECH_UPDATE_STATUS,
+} from 'constants/endpoints';
 import ModalImage from 'components/popup_modal/popup_modal_image';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';
-import { setPriority } from 'pages/biomech/utils';
+import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { BioReportIdParams, Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
+import { BiomechStatus } from '../typing';
 
 import './view.css';
 
@@ -26,6 +30,28 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
   const params = useParams<BioReportIdParams>();
   const id: string = useMemo(() => params.bioId, [params.bioId]);
   const history: History = useHistory<History>();
+  const [status, setStatus] = useState<BiomechStatus>(t(BiomechStatus.INPROGRESS));
+
+  const statusArray: BiomechStatus[] = Object.values(BiomechStatus);
+
+  const handleStatusUpdate = (status: BiomechStatus) => {
+    Api.Put(
+      ENDPOINT_BIOMECH_UPDATE_STATUS(id),
+      { status },
+      () => {},
+      history,
+      ResponseMessage.getMsgUpdateReportFailed(),
+      ResponseMessage.getMsgUpdateReportPending(),
+      ResponseMessage.getMsgUpdateReportOk(),
+    );
+  };
+
+  const changeStatus = (direction: number) => {
+    const index = statusArray.findIndex((el) => el === status) + direction;
+    if (index < 0) setStatus(statusArray[statusArray.length - 1]);
+    else if (index > statusArray.length - 1) setStatus(statusArray[0]);
+    else setStatus(statusArray[index]);
+  };
 
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
@@ -41,14 +67,14 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
     function fetchReportInitially() {
       const controller = new AbortController();
       const getBioReport = async () => {
-        setBioReport(
-          await Api.Get(
-            ENDPOINT_BIOMECH_GET_BY_ID(id),
-            ResponseMessage.getMsgFetchReportFailed(),
-            history,
-            controller.signal,
-          ),
+        const report = await Api.Get(
+          ENDPOINT_BIOMECH_GET_BY_ID(id),
+          ResponseMessage.getMsgFetchReportFailed(),
+          history,
+          controller.signal,
         );
+        setBioReport(report);
+        setStatus(report.equipmentStatus);
       };
       getBioReport();
       return () => {
@@ -62,6 +88,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
 
   useEffect(
     function fetchImage() {
+      const controller = new AbortController();
       const getBioReportImage = async () => {
         setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(BioReport.imgPath), history));
       };
@@ -70,6 +97,9 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
       if (BioReport.imgPath !== undefined) {
         getBioReportImage();
       }
+      return () => {
+        controller.abort();
+      };
     },
     [BioReport, history],
   );
@@ -85,9 +115,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         location={undefined}
         match={undefined}
       ></ModalImage>
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <div className="d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
             <button
@@ -126,6 +154,36 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                       </Badge>
                     }
                   </p>
+                  <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.status')}</h6>
+                  <div className="d-flex align-items-center">
+                    <i
+                      className="bi-arrow-left h4 mr-3 mb-0"
+                      role="button"
+                      onClick={() => {
+                        changeStatus(1);
+                      }}
+                    />
+                    <p data-testid="biomech-priority" className="fs-6 lh-base text-break mb-0">
+                      <Badge bg={setStatusBadgeColor(status)}>
+                        {t(`biomech.status.${status}`)}
+                      </Badge>
+                    </p>
+                    <i
+                      className="bi-arrow-right h4 ml-3 mr-4 mb-0"
+                      role="button"
+                      onClick={() => {
+                        changeStatus(-1);
+                      }}
+                    />
+                    <button
+                      className="btn btn-outline-dark"
+                      onClick={() => {
+                        handleStatusUpdate(status);
+                      }}
+                    >
+                      Update Status
+                    </button>
+                  </div>
                   <h6 className="fs-6 fw-bold lh-base">{t('biomech.view_report.issue')}</h6>
                   <p data-testid="biomech-issue" className="fs-6 lh-base text-break">
                     {BioReport.equipmentFault}
@@ -149,7 +207,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
             </div>
           </div>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

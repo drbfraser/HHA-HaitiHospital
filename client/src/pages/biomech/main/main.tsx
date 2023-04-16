@@ -2,8 +2,7 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
 import { Role } from 'constants/interfaces';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import Api from 'actions/Api';
 import { ENDPOINT_BIOMECH_GET, ENDPOINT_BIOMECH_DELETE_BY_ID } from 'constants/endpoints';
@@ -13,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthState } from 'contexts';
 import Pagination from 'components/pagination/Pagination';
 import { History } from 'history';
-import { setPriority } from 'pages/biomech/utils';
+import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { timezone, language } from 'constants/timezones';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
@@ -98,9 +97,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   return (
     <div className="biomechanical_page">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <ModalDelete
           dataTestId="confirm-delete-biomech-button"
           currentItem={currentIndex}
@@ -132,6 +129,8 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">{t('biomech.main_page.priority_col')}</th>
+                    <th scope="col">{t('biomech.main_page.status_col')}</th>
+                    <th scope="col">{t('biomech.main_page.equipment_col')}</th>
                     <th scope="col">{t('biomech.main_page.author_col')}</th>
                     <th scope="col">{t('biomech.main_page.created_col')}</th>
                     <th scope="col">{t('biomech.main_page.options_col')}</th>
@@ -149,6 +148,12 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                             </Badge>
                           }
                         </td>
+                        <td>
+                          <Badge bg={setStatusBadgeColor(item.equipmentStatus)}>
+                            {item.equipmentStatus && t(`biomech.status.${item.equipmentStatus}`)}
+                          </Badge>
+                        </td>
+                        <td>{item.equipmentName}</td>
                         <td>{item.user ? item.user.name : t('status.not_available')} </td>
                         <td>
                           {item.createdAt.toLocaleString(language, {
@@ -195,7 +200,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
             </div>
           </div>
         </section>
-      </main>
+      </Layout>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import Sidebar from '../../components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_POST } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_POST } from 'constants/toastErrorMessages';
@@ -31,9 +30,7 @@ const AddMessage = () => {
 
   return (
     <div className="add_message">
-      <Sidebar />
-      <main className="main_container">
-        <Header />
+      <Layout>
         <div className="container">
           <h1 className="h1">{t('addMessageAddMessage')}</h1>
           <MessageForm submitAction={onSubmit} />
@@ -47,7 +44,7 @@ const AddMessage = () => {
             </button>
           </div>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

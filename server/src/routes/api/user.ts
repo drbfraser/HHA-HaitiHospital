@@ -9,6 +9,7 @@ import {
   HTTP_CREATED_CODE,
   HTTP_NOCONTENT_CODE,
   HTTP_OK_CODE,
+  HTTP_UNPROCESSABLE_ENTITY_CODE,
   InternalError,
   NotFound,
 } from 'exceptions/httpException';
@@ -16,6 +17,9 @@ import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
 import { IllegalState } from 'exceptions/systemException';
 import { user as inputValidator } from 'sanitization/schemas/user';
+import { logger } from 'logger';
+import { send } from 'process';
+import { isValidPasswordString } from 'utils/utils';
 
 const router = Router();
 
@@ -46,12 +50,24 @@ router.put(
       }
 
       if (updatedUser.password && updatedUser.password !== '') {
+        if (!isValidPasswordString(updatedUser.password)) {
+          // early return if password is not valid
+          res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send({
+            errors: [
+              {
+                param: 'Password',
+                msg: 'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
+              },
+            ],
+          });
+          return;
+        }
         updatedUser.password = await hashPassword(updatedUser.password);
       }
+
       if (!(await Departments.Database.validateDeptId(updatedUser.departmentId))) {
         throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
       }
-
       Object.keys(updatedUser).forEach(
         (k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k],
       );
@@ -160,6 +176,21 @@ router.post(
         updatedAt: new Date(),
       };
       const newUser = new UserCollection(userInfo);
+
+      // We want to check if the password is valid here instead of in mongoose because the actual password is hashed so mongoose validation is applied on the hashed password.
+      // Also because we want old passwords to be valid even if the password validation changes.
+      if (!isValidPasswordString(newUser.password)) {
+        res.status(HTTP_UNPROCESSABLE_ENTITY_CODE).send({
+          errors: [
+            {
+              param: 'Password',
+              msg: 'Password needs to be at between 6 and 60 characters long and contain at least one number, one special character, one uppercase and one lowercase letter',
+            },
+          ],
+        });
+        // early return if password is not valid
+        return;
+      }
       newUser.registerUser(newUser, (err: any) => {
         if (err) throw new InternalError(`Failed to register new user: ${err}`);
         res.status(HTTP_CREATED_CODE).send(`New user created`);

@@ -1,24 +1,22 @@
+import cn from 'classnames';
 import { ExpandableQuestion } from '@hha/common';
 import { FormField } from './index';
-import cn from 'classnames';
+import { QuestionFormFields } from 'components/report/ReadonlyReportForm';
 
-const ExpandableQuestionFormField = ({
+const ExpandableQuestionViewField = ({
   applyReportChanges,
   question,
   suffixName,
-  buildQuestionFormField,
-  setErrorSet,
   isTemplate = false,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
   suffixName: string;
-  buildQuestionFormField: FunctionalComponent;
-  setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
   isTemplate?: boolean;
 }): JSX.Element => {
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
+
   if (isTemplate) {
     question.setAnswer(1);
   }
@@ -52,12 +50,11 @@ const ExpandableQuestionFormField = ({
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
-                  {buildQuestionFormField({
-                    applyReportChanges: applyReportChanges,
-                    questions: questionGroup,
-                    suffixName: `_${index + 1}`,
-                    setErrorSet: setErrorSet,
-                  })}
+                  <QuestionFormFields
+                    applyReportChanges={applyReportChanges}
+                    questions={questionGroup}
+                    suffixName={`_${index + 1}`}
+                  />
                 </div>
               </div>
             </div>
@@ -68,4 +65,4 @@ const ExpandableQuestionFormField = ({
   );
 };
 
-export default ExpandableQuestionFormField;
+export default ExpandableQuestionViewField;

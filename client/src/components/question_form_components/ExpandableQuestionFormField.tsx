@@ -1,20 +1,19 @@
-import { ExpandableQuestion } from '@hha/common';
-import { ChangeEvent, useState } from 'react';
-import { FormField } from './index';
 import cn from 'classnames';
+import { ChangeEvent, useState } from 'react';
+import { ExpandableQuestion } from '@hha/common';
+import { FormField } from './index';
+import { QuestionFormFields } from 'components/report/ReportForm';
 
 const ExpandableQuestionFormField = ({
   applyReportChanges,
   question,
-  suffixName,
-  buildQuestionFormField,
   setErrorSet,
+  suffixName,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
-  suffixName: string;
-  buildQuestionFormField: FunctionalComponent;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
+  suffixName: string;
 }): JSX.Element => {
   const [openClosedStates, setOpenClosedStates] = useState<boolean[]>([]);
   const inputState = question.getValidationResults();
@@ -73,7 +72,8 @@ const ExpandableQuestionFormField = ({
                   >
                     {`Patient ${index + 1}`}
                   </button>
-                  <button
+                  {/* TODO: Add a way to individually delete accordion items */}
+                  {/*<button
                     className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
                     onClick={(e) => e.preventDefault()}
                     style={{
@@ -85,7 +85,7 @@ const ExpandableQuestionFormField = ({
                     }}
                   >
                     <i className="fa fa-close"></i>
-                  </button>
+                  </button>*/}
                 </div>
               </h6>
               <div
@@ -94,12 +94,12 @@ const ExpandableQuestionFormField = ({
                 aria-labelledby={`${itemId}-header`}
               >
                 <div className="accordion-body pb-0">
-                  {buildQuestionFormField({
-                    applyReportChanges: applyReportChanges,
-                    questions: questionGroup,
-                    suffixName: `_${index + 1}`,
-                    setErrorSet: setErrorSet,
-                  })}
+                  <QuestionFormFields
+                    applyReportChanges={applyReportChanges}
+                    questions={questionGroup}
+                    setErrorSet={setErrorSet}
+                    suffixName={`_${index + 1}`}
+                  />
                 </div>
               </div>
             </div>
