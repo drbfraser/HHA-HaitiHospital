@@ -106,7 +106,7 @@ router.delete(
 router.put(
   '/:id',
   requireJwtAuth,
-  roleAuth(Role.Admin),
+  roleAuth(Role.Admin, Role.BioMechanical),
   async (req: RequestWithUser, res: Response) => {
     const bioId = req.params.id;
     const { status } = req.body;

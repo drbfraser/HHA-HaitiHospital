@@ -169,7 +169,7 @@ export const seedUsers = async () => {
               nameMapper,
             );
             break;
-          case 13:
+          case 14:
             foundUser.role = Role.BioMechanical;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
               DefaultDepartments.BioMechanic,
@@ -311,6 +311,13 @@ export const seedUsers = async () => {
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
               DefaultDepartments.NICU,
+              nameMapper,
+            );
+            break;
+          case 14:
+            user.role = Role.BioMechanical;
+            user.departmentId = Departments.Hashtable.getDeptIdFromName(
+              DefaultDepartments.BioMechanic,
               nameMapper,
             );
             break;
