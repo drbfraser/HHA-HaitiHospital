@@ -85,7 +85,7 @@ router.post(
 router.delete(
   '/:id',
   requireJwtAuth,
-  roleAuth(Role.Admin),
+  roleAuth(Role.Admin, Role.BioMechanical),
   (req: RequestWithUser, res: Response, next: NextFunction) => {
     const bioId = req.params.id;
     BioMechCollection.findByIdAndRemove(bioId)
