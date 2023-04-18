@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
-import { useAuthState } from 'contexts';
+import { useAuthState, useAdminToggleState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { Role, Department, GeneralDepartment } from 'constants/interfaces';
@@ -27,6 +27,7 @@ const Sidebar = (props: SidebarProps) => {
     }
     return true;
   };
+  const { adminToggleState, setAdminToggleState } = useAdminToggleState();
 
   return (
     <div className={'Sidebar h-100 bg-dark flex overflow-auto'} style={{ width: '200px' }}>
@@ -163,35 +164,53 @@ const Sidebar = (props: SidebarProps) => {
           <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) ? (
             <>
-              <li key="admin">
-                <NavLink to="/admin" className="nav-link link-light" exact activeClassName="active">
-                  <i className="bi bi-person-badge-fill me-2" />
+              <li key="admin_toggle" className={adminToggleState ? 'active' : ''}>
+                <span
+                  className="nav-link link-light"
+                  onClick={() => {
+                    setAdminToggleState(!adminToggleState);
+                  }}
+                >
+                  <i
+                    className={adminToggleState ? 'bi bi-chevron-down' : 'bi bi-chevron-right'}
+                  ></i>
                   <span className="text text-light">{t('sidebarAdmin')}</span>
-                </NavLink>
-              </li>
-
-              <li key="uploadReport">
-                <NavLink
-                  to="/upload-report"
-                  className="nav-link link-light"
-                  exact
-                  activeClassName="active"
-                >
-                  <i className="bi bi-person-badge-fill me-2" />
-                  <span className="text text-light">{t('sidebarUploadReport')}</span>
-                </NavLink>
-              </li>
-
-              <li key="udpatePermissions">
-                <NavLink
-                  to="/update-permissions"
-                  className="nav-link link-light"
-                  exact
-                  activeClassName="active"
-                >
-                  <i className="bi bi-person-badge-fill me-2" />
-                  <span className="text text-light">{t('sidebarPermissions')}</span>
-                </NavLink>
+                </span>
+                <ul className="nested">
+                  <li key="admin">
+                    <NavLink
+                      to="/admin"
+                      className="nav-link link-light"
+                      exact
+                      activeClassName="active"
+                    >
+                      <i className="bi bi-person-badge-fill me-2" />
+                      <span className="text text-light">{t('sidebarAdmin')}</span>
+                    </NavLink>
+                  </li>
+                  <li key="uploadReport">
+                    <NavLink
+                      to="/upload-report"
+                      className="nav-link link-light"
+                      exact
+                      activeClassName="active"
+                    >
+                      <i className="bi bi-upload me-2" />
+                      <span className="text text-light">{t('sidebarUploadReport')}</span>
+                    </NavLink>
+                  </li>
+                  <li key="permissions">
+                    <NavLink
+                      to="/update-permissions"
+                      className="nav-link link-light"
+                      exact
+                      activeClassName="active"
+                    >
+                      <i className="bi bi-people-fill me-2" />
+                      <span className="text text-light">{t('sidebarPermissions')}</span>
+                    </NavLink>
+                  </li>
+                </ul>
               </li>
 
               <li className="border-top my-2" key="border-3" />

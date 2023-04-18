@@ -1,7 +1,12 @@
 .wrapper {
   width: 100%;
 }
-
+.nested {
+  display: none;
+}
+.active > .nested {
+  display: block;
+}
 .Sidebar {
   position: fixed;
   top: 0;
