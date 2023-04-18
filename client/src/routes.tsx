@@ -30,9 +30,6 @@ import ReportView from 'pages/report_view/ReportView';
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
 
-//based on pages in permission Data I have to configure roles allowed
-//based on roles allowed I have to configure departments allowed
-
 const routes = [
   {
     path: '/login',

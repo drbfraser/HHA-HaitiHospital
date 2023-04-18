@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Permission, Page, RolesData } from 'constants/interfaces';
 
 export const Permissions = ({
