@@ -28,44 +28,6 @@ router.get(
 );
 
 // TODO::  Update permissions
-// router.put(
-//   '/',
-//   requireJwtAuth,
-//   roleAuth(Role.Admin),
-//   async (req: RequestWithUser, res: Response, next: NextFunction) => {
-//     try {
-//       const { departmentId, serializedReport } = req.body;
-
-//       // NOTE: May need to sanitize the reportTemplate before saving
-//       let template = new TemplateCollection({
-//         departmentId: departmentId,
-//         reportObject: serializedReport,
-//       });
-
-//       let serializedTemplate = await TemplateCollection.findOne({
-//         departmentId: departmentId,
-//       }).lean();
-
-//       if (serializedTemplate) {
-//         template = new TemplateCollection({
-//           _id: serializedTemplate._id,
-//           departmentId: departmentId,
-//           reportObject: serializedReport,
-//         });
-//         const saved = await TemplateCollection.updateOne({ departmentId: departmentId }, template);
-//         return res
-//           .status(HTTP_CREATED_CODE)
-//           .json({ message: 'Report Template saved', report: saved });
-//       } else {
-//         const saved = await template.save();
-//         return res
-//           .status(HTTP_CREATED_CODE)
-//           .json({ message: 'Report Template saved', report: saved });
-//       }
-//     } catch (e) {
-//       next(e);
-//     }
-//   },
-// );
+// Create a put request to update permissions from the front end
 
 export default router;

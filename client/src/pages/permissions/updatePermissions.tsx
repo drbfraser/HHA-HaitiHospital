@@ -45,7 +45,7 @@ export const UpdatePermissions = () => {
     setCurrentRole(newRole);
   };
 
-  function handleCheckboxChange(permission: Permission): void {
+  const handleCheckboxChange = (permission: Permission): void => {
     // Get the current role's selected permissions for diffrerent pages
     const selectedPermissions = permissionsData.roles[currentRole].pages;
 
@@ -85,7 +85,7 @@ export const UpdatePermissions = () => {
 
     // Update the state with the updated permissions data
     setPermissionsData(updatedPermissionsData);
-  }
+  };
 
   return (
     <div className="department">
