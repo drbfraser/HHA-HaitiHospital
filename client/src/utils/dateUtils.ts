@@ -32,7 +32,14 @@ const isDateStrInDayRange = (dateStr: string, dayRange: DayRange) => {
     Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
   );
 
-  if (dayRange.from) {
+  if (dayRange.from && dayRange.to) {
+    const dayRangeFrom = new Date(
+      Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
+    );
+    const dayRangeTo = new Date(Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day));
+
+    return dayRangeFrom <= createdAtUTC && createdAtUTC <= dayRangeTo;
+  } else if (dayRange.from) {
     const dayRangeFrom = new Date(
       Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
     );
@@ -42,13 +49,6 @@ const isDateStrInDayRange = (dateStr: string, dayRange: DayRange) => {
     const dayRangeTo = new Date(Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day));
 
     return createdAtUTC <= dayRangeTo;
-  } else if (dayRange.from && dayRange.to) {
-    const dayRangeFrom = new Date(
-      Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
-    );
-    const dayRangeTo = new Date(Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day));
-
-    return dayRangeFrom <= createdAtUTC && createdAtUTC <= dayRangeTo;
   }
   return true;
 };
