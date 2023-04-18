@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import Sidebar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from 'actions/Api';
 import {
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
@@ -88,9 +87,7 @@ const MessageComments = () => {
 
   return (
     <div className="message_comments">
-      <Sidebar />
-      <main className="main_container">
-        <Header />
+      <Layout>
         <div className="container">
           <div className="mb-3 d-flex justify-content-start">
             <button type="button" className="btn btn-outline-dark" onClick={history.goBack}>
@@ -128,7 +125,7 @@ const MessageComments = () => {
             </form>
           </div>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

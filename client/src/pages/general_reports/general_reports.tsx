@@ -1,5 +1,4 @@
-import Header from 'components/header/header';
-import Sidebar from 'components/side_bar/side_bar';
+import Layout from 'components/layout';
 
 // Reference :
 //https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
@@ -56,9 +55,7 @@ const GeneralReports = () => {
   return (
     <>
       <div className="general-reports">
-        <Sidebar />
-        <main>
-          <Header />
+        <Layout>
           {currentTableData.length > 0 ? (
             <>
               <section>
@@ -101,7 +98,6 @@ const GeneralReports = () => {
                   })}
                 </tbody>
               </table>
-
               <Pagination
                 className="pagination-bar"
                 currentPage={currentPage}
@@ -115,7 +111,7 @@ const GeneralReports = () => {
               No reports have been submitted yet. Click Report (on the left) to create a new report.
             </div>
           )}
-        </main>
+        </Layout>
       </div>
     </>
   );

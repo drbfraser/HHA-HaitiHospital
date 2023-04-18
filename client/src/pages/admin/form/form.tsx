@@ -3,7 +3,7 @@ import { EMPTY_USER_JSON } from 'constants/default_values';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { getEnumKeyByStringValue } from 'utils/utils';
+import { getEnumKeyByStringValue } from 'utils';
 import { AdminUserFormData, ADMIN_USER_FORM_FIELDS } from 'pages/admin/typing';
 import { initAdminForm } from '../utils';
 
@@ -129,6 +129,7 @@ export const AdminUserForm = (props: Props) => {
           <option value={Role.Admin}>{t('role.admin')}</option>
           <option value={Role.MedicalDirector}>{t('role.medical_director')}</option>
           <option value={Role.HeadOfDepartment}>{t('role.head_department')}</option>
+          <option value={Role.BioMechanic}>{t('role.bio_mechanic')}</option>
         </select>
       </div>
 

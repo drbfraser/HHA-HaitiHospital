@@ -5,13 +5,13 @@ import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
 import { logger } from '../logger';
-import { isValidPasswordString } from 'utils/utils';
 const { Schema } = mongoose;
 
 export enum Role {
   Admin = 'Admin',
   MedicalDirector = 'Medical Director',
   HeadOfDepartment = 'Head of Department',
+  BioMechanic = 'Bio Mechanic',
   User = 'User',
 }
 

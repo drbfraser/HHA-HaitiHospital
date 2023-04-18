@@ -1,9 +1,8 @@
 import Api from 'actions/Api';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import ReportForm from 'components/report/ReportForm';
-import Sidebar from 'components/side_bar/side_bar';
 import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
 import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { History } from 'history';
@@ -129,16 +128,14 @@ const ReportView = () => {
     <>
       {!!report && (
         <div className="report-view">
-          <Sidebar />
-          <main
-            className="container-fluid main-region bg-light h-screen"
+          <Layout
+            className="bg-light h-screen"
             style={{
               left: '200px',
               position: 'absolute',
               width: 'calc(100% - 200px)',
             }}
           >
-            <Header />
             <PopupModalConfirmation
               messages={[
                 <>
@@ -248,7 +245,7 @@ const ReportView = () => {
                 )}
               </div>
             </div>
-          </main>
+          </Layout>
         </div>
       )}
     </>

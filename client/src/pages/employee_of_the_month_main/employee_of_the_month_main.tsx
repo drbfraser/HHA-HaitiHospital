@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { Role } from 'constants/interfaces';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month_summary/employee_of_the_month_summary';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
@@ -46,10 +45,8 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
 
   return (
     <div className="employee-of-the-month-main">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
-        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+      <Layout>
+        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
           <div className="d-flex justify-content-start">
             <Link to="/employee-of-the-month/form">
               <button
@@ -61,8 +58,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
               </button>
             </Link>
           </div>
-        ) : null}
-
+        )}
         <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
           <EmployeeOfTheMonthSummary
             employeeOfTheMonth={employeeOfTheMonth}
@@ -71,7 +67,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
             match={undefined}
           />
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

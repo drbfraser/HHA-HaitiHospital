@@ -2,8 +2,7 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
 import { Role } from 'constants/interfaces';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import Api from 'actions/Api';
 import { ENDPOINT_BIOMECH_GET, ENDPOINT_BIOMECH_DELETE_BY_ID } from 'constants/endpoints';
@@ -98,9 +97,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
 
   return (
     <div className="biomechanical_page">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <ModalDelete
           dataTestId="confirm-delete-biomech-button"
           currentItem={currentIndex}
@@ -203,7 +200,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
             </div>
           </div>
         </section>
-      </main>
+      </Layout>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { History } from 'history';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getEnumKeyByStringValue } from 'utils/utils';
+import { getEnumKeyByStringValue } from 'utils/enum';
 import { Permissions } from 'components/permissions/Permissions';
 import { Permission, RolesData } from 'constants/interfaces';
 import { ENDPOINT_PERMISSION } from 'constants/endpoints';

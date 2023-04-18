@@ -1,7 +1,6 @@
 import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import SideBar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import Api from '../../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
 import { useTranslation } from 'react-i18next';
@@ -41,9 +40,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
 
   return (
     <div className="broken_kit">
-      <SideBar />
-      <main className="container-fluid main-region">
-        <Header />
+      <Layout>
         <div className="ml-3 mb-3 d-flex justify-content-start">
           <Link to={Paths.getBioMechMain()}>
             <button
@@ -170,7 +167,7 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
             </div>
           </form>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };

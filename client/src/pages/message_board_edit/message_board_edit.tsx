@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { emptyMessage, Message } from 'constants/interfaces';
-import Sidebar from 'components/side_bar/side_bar';
-import Header from 'components/header/header';
+import Layout from 'components/layout';
 import MessageForm from 'components/message_form/message_form';
 import './message_board_edit.css';
 import Api from 'actions/Api';
@@ -70,9 +69,7 @@ const EditMessage = () => {
 
   return (
     <div className="edit-message">
-      <Sidebar />
-      <main className="main_container">
-        <Header />
+      <Layout>
         <div className="container">
           <h1 className="h1">{t('editMessage')}</h1>
           <MessageForm optionalMsg={msg} submitAction={updateMessage} />
@@ -82,7 +79,7 @@ const EditMessage = () => {
             </button>
           </div>
         </div>
-      </main>
+      </Layout>
     </div>
   );
 };
