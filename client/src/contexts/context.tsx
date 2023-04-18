@@ -1,4 +1,4 @@
-import { useReducer, useEffect, createContext, useContext, Dispatch } from 'react';
+import { useReducer, useEffect, createContext, useContext, useState, Dispatch } from 'react';
 import { initialState, AuthReducer } from './reducer';
 import { UserJson } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
@@ -39,4 +39,24 @@ export const AuthProvider = ({ children }) => {
       <AuthDispatchContext.Provider value={dispatch}>{children}</AuthDispatchContext.Provider>
     </AuthStateContext.Provider>
   );
+};
+
+export const AdminToggle = createContext(null);
+
+export const AdminToggleProvider = ({ children }) => {
+  const [adminToggleState, setAdminToggleState] = useState(false);
+
+  return (
+    <AdminToggle.Provider value={{ adminToggleState, setAdminToggleState }}>
+      {children}
+    </AdminToggle.Provider>
+  );
+};
+
+export const useAdminToggleState = () => {
+  const context = useContext(AdminToggle);
+  if (context === undefined) {
+    throw new Error('useAdminToggleState must be used within a AdminToggleProvider');
+  }
+  return context;
 };

@@ -23,6 +23,7 @@ import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 import { Report } from 'pages/report/Report';
 import { UploadReport } from 'pages/upload_template/UploadReport';
+import { UpdatePermissions } from 'pages/permissions/updatePermissions';
 import { PathPatterns } from 'constants/paths';
 import ReportView from 'pages/report_view/ReportView';
 
@@ -32,6 +33,7 @@ import ReportView from 'pages/report_view/ReportView';
 const routes = [
   {
     path: '/login',
+    key: 'login',
     component: Login,
     loginRequired: false,
     rolesAllowed: [],
@@ -39,6 +41,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.ADMIN_ADD_USER}`,
+    key: 'admin',
     component: AddUserForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -46,6 +49,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.ADMIN_EDIT_USER}`,
+    key: 'admin',
     component: EditUserForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -53,6 +57,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.ADMIN_MAIN}`,
+    key: 'admin',
     component: Admin,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -60,13 +65,23 @@ const routes = [
   },
   {
     path: '/upload-report',
+    key: 'upload_report',
     component: UploadReport,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
     departmentsAllowed: [],
   },
   {
+    path: '/update-permissions',
+    key: 'update_permissions',
+    component: UpdatePermissions,
+    loginRequired: true,
+    rolesAllowed: [Role.Admin],
+    departmentsAllowed: [],
+  },
+  {
     path: '/home',
+    key: 'home',
     component: Home,
     loginRequired: true,
     rolesAllowed: [],
@@ -74,6 +89,7 @@ const routes = [
   },
   {
     path: '/general-reports',
+    key: 'general_reports',
     component: GeneralReports,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
@@ -81,6 +97,7 @@ const routes = [
   },
   {
     path: '/report-view/:id',
+    key: 'view_reports',
     component: ReportView,
     loginRequired: true,
     rolesAllowed: [],
@@ -103,6 +120,7 @@ const routes = [
   },*/
   {
     path: '/department/:deptId',
+    key: 'department',
     component: Department,
     loginRequired: true,
     rolesAllowed: [],
@@ -110,6 +128,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.BIOMECH_REPORT}`,
+    key: 'bio_support',
     component: BrokenKitReport,
     isPrivate: true,
     rolesAllowed: [],
@@ -117,6 +136,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.BIOMECH_VIEW}`,
+    key: 'bio_support',
     component: BrokenKitView,
     loginRequired: true,
     rolesAllowed: [],
@@ -124,6 +144,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.BIOMECH_MAIN}`,
+    key: 'bio_support',
     component: BiomechanicalPage,
     isPrivate: true,
     rolesAllowed: [],
@@ -131,6 +152,7 @@ const routes = [
   },
   {
     path: '/case-study/view/:id',
+    key: 'case_study',
     component: CaseStudyView,
     loginRequired: true,
     rolesAllowed: [],
@@ -138,6 +160,7 @@ const routes = [
   },
   {
     path: '/case-study/form',
+    key: 'case_study',
     component: CaseStudyForm,
     loginRequired: true,
     rolesAllowed: [],
@@ -145,6 +168,7 @@ const routes = [
   },
   {
     path: '/case-study',
+    key: 'case_study',
     component: CaseStudyMain,
     loginRequired: true,
     rolesAllowed: [],
@@ -152,6 +176,7 @@ const routes = [
   },
   {
     path: '/report',
+    key: 'report',
     component: Report,
     loginRequired: true,
     rolesAllowed: [],
@@ -159,6 +184,7 @@ const routes = [
   },
   {
     path: '/leaderboard',
+    key: 'leaderboard',
     component: LeaderBoardMain,
     loginRequired: true,
     rolesAllowed: [],
@@ -167,6 +193,7 @@ const routes = [
   {
     path: '/message-board/edit/:id',
     component: EditMessage,
+    key: 'message_board',
     isPrivate: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
@@ -174,6 +201,7 @@ const routes = [
   {
     path: '/message-board/add-message',
     component: AddMessage,
+    key: 'message_board',
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
@@ -181,12 +209,14 @@ const routes = [
   {
     path: '/message-board/comments/:id',
     component: MessageComments,
+    key: 'message_board',
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
   },
   {
     path: '/message-board',
+    key: 'message_board',
     component: MessageBoardMain,
     loginRequired: true,
     rolesAllowed: [],
@@ -194,6 +224,7 @@ const routes = [
   },
   {
     path: '/employee-of-the-month/form',
+    key: 'employee_of_the_month',
     component: EmployeeOfTheMonthForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
@@ -201,6 +232,7 @@ const routes = [
   },
   {
     path: '/employee-of-the-month',
+    key: 'employee_of_the_month',
     component: EmployeeOfTheMonthMain,
     loginRequired: true,
     rolesAllowed: [],

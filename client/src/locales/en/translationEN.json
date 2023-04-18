@@ -26,6 +26,7 @@
   "sidebarEmployeeOfTheMonth": "Employee of the Month",
   "sidebarAdmin": "Admin",
   "sidebarUploadReport": "Upload Report",
+  "sidebarPermissions": "Permissions",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
 
@@ -290,6 +291,11 @@
         "leave_blank": "Leave blank to keep it unchanged"
       }
     }
+  },
+
+  "permissions": {
+    "selectRole": "Select Role",
+    "permissionHeader": "Permissions"
   },
 
   "biomech": {

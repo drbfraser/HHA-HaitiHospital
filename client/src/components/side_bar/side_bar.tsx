@@ -1,7 +1,8 @@
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import HhaLogo from 'components/hha_logo/hha_logo';
+import './side_bar.css';
 import { Department, GeneralDepartment, Role } from 'constants/interfaces';
-import { useAuthState } from 'contexts';
+import { useAuthState, useAdminToggleState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { ReactNode, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -79,6 +80,7 @@ const Sidebar = (props: SidebarProps) => {
     }
     return true;
   };
+  const { adminToggleState, setAdminToggleState } = useAdminToggleState();
 
   return (
     <div
@@ -175,19 +177,42 @@ const Sidebar = (props: SidebarProps) => {
           <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) && (
             <>
-              <SidebarItem path="admin">
-                <i className="bi bi-person-badge-fill me-2" />
-                <span className={cn('text-light', { 'd-none': isMobile })}>
-                  {t('sidebarAdmin')}
+              <li key="admin_toggle" className={adminToggleState ? 'active' : ''}>
+                <span
+                  className="nav-link link-light"
+                  onClick={() => {
+                    setAdminToggleState(!adminToggleState);
+                  }}
+                >
+                  <i
+                    className={adminToggleState ? 'bi bi-chevron-down' : 'bi bi-chevron-right'}
+                  ></i>
+                  <span className="text text-light">{t('sidebarAdmin')}</span>
                 </span>
-              </SidebarItem>
+                <ul className="nested">
+                  <SidebarItem path="admin">
+                    <i className="bi bi-exclamation-square me-2" />
+                    <span className={cn('text-light', { 'd-none': isMobile })}>
+                      {t('sidebarAdmin')}
+                    </span>
+                  </SidebarItem>
 
-              <SidebarItem path="upload-report">
-                <i className="bi bi-person-badge-fill me-2" />
-                <span className={cn('text-light', { 'd-none': isMobile })}>
-                  {t('sidebarUploadReport')}
-                </span>
-              </SidebarItem>
+                  <SidebarItem path="upload-report">
+                    <i className="bi bi-person-badge-fill me-2" />
+                    <span className={cn('text-light', { 'd-none': isMobile })}>
+                      {t('sidebarUploadReport')}
+                    </span>
+                  </SidebarItem>
+
+                  <SidebarItem path="update-permissions">
+                    <i className="bi bi-person-badge-fill me-2" />
+                    <span className={cn('text-light', { 'd-none': isMobile })}>
+                      {t('sidebarPermissions')}
+                    </span>
+                  </SidebarItem>
+                </ul>
+              </li>
+
               <li className="border-top my-2" key="border-3" />
             </>
           )}

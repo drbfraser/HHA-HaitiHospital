@@ -1,0 +1,6 @@
+.nested {
+  display: none;
+}
+.active > .nested {
+  display: block;
+}
