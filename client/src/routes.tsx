@@ -30,137 +30,13 @@ import ReportView from 'pages/report_view/ReportView';
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
 
-const permissionData = {
-  permission: {
-    _id: '643899a1d0a45d32207c8c94',
-    modifiedUserId: '6438999fd0a45d32207c8b62',
-    modifiedBy: 'user0',
-    permissionObject: {
-      roles: {
-        Admin: {
-          name: 'Admin',
-          key: 'admin',
-          pages: [
-            {
-              name: 'Dashboard',
-              key: 'dashboard',
-              permissions: [
-                {
-                  name: 'View Dashboard',
-                  key: 'view_dashboard',
-                  isChecked: true,
-                },
-                {
-                  name: 'Edit Dashboard',
-                  key: 'edit_dashboard',
-                  isChecked: true,
-                },
-                {
-                  name: 'Delete Dashboard',
-                  key: 'delete_dashboard',
-                  isChecked: true,
-                },
-              ],
-            },
-            {
-              name: 'Settings',
-              key: 'settings',
-              permissions: [
-                {
-                  name: 'View Settings',
-                  key: 'view_settings',
-                  isChecked: true,
-                },
-                {
-                  name: 'Edit Settings',
-                  key: 'edit_settings',
-                  isChecked: true,
-                },
-                {
-                  name: 'Delete Settings',
-                  key: 'delete_settings',
-                  isChecked: true,
-                },
-              ],
-            },
-          ],
-        },
-        User: {
-          name: 'User',
-          key: 'user',
-          pages: [
-            {
-              name: 'Dashboard',
-              key: 'dashboard',
-              permissions: [
-                {
-                  name: 'View Dashboard',
-                  key: 'view_dashboard',
-                  isChecked: true,
-                },
-              ],
-            },
-            {
-              name: 'Settings',
-              key: 'settings',
-              permissions: [
-                {
-                  name: 'View Settings',
-                  key: 'view_settings',
-                  isChecked: true,
-                },
-              ],
-            },
-          ],
-        },
-        MedicalDirector: {
-          name: 'MedicalDiretor',
-          key: 'medicalDiretor',
-          pages: [
-            {
-              name: 'Settings',
-              key: 'settings',
-              permissions: [
-                {
-                  name: 'View Settings',
-                  key: 'view_settings',
-                  isChecked: true,
-                },
-              ],
-            },
-          ],
-        },
-        HeadOfDepartment: {
-          name: 'HeadOfDepartment',
-          key: 'headOfDepartment',
-          pages: [
-            {
-              name: 'Settings',
-              key: 'settings',
-              permissions: [
-                {
-                  name: 'View Settings',
-                  key: 'view_settings',
-                  isChecked: true,
-                },
-              ],
-            },
-          ],
-        },
-      },
-    },
-    lastModified: '2023-04-14T00:09:05.577Z',
-    __v: 0,
-  },
-};
-
 //based on pages in permission Data I have to configure roles allowed
 //based on roles allowed I have to configure departments allowed
-
 
 const routes = [
   {
     path: '/login',
+    key: 'login',
     component: Login,
     loginRequired: false,
     rolesAllowed: [],
@@ -168,6 +44,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.ADMIN_ADD_USER}`,
+    key: 'admin',
     component: AddUserForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -175,6 +52,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.ADMIN_EDIT_USER}`,
+    key: 'admin',
     component: EditUserForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -182,6 +60,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.ADMIN_MAIN}`,
+    key: 'admin',
     component: Admin,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -189,6 +68,7 @@ const routes = [
   },
   {
     path: '/upload-report',
+    key: 'upload_report',
     component: UploadReport,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -196,6 +76,7 @@ const routes = [
   },
   {
     path: '/update-permissions',
+    key: 'update_permissions',
     component: UpdatePermissions,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
@@ -203,6 +84,7 @@ const routes = [
   },
   {
     path: '/home',
+    key: 'home',
     component: Home,
     loginRequired: true,
     rolesAllowed: [],
@@ -210,6 +92,7 @@ const routes = [
   },
   {
     path: '/general-reports',
+    key: 'general_reports',
     component: GeneralReports,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
@@ -217,6 +100,7 @@ const routes = [
   },
   {
     path: '/report-view/:id',
+    key: 'view_reports',
     component: ReportView,
     loginRequired: true,
     rolesAllowed: [],
@@ -239,6 +123,7 @@ const routes = [
   },*/
   {
     path: '/department/:deptId',
+    key: 'department',
     component: Department,
     loginRequired: true,
     rolesAllowed: [],
@@ -246,6 +131,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.BIOMECH_REPORT}`,
+    key: 'bio_support',
     component: BrokenKitReport,
     isPrivate: true,
     rolesAllowed: [],
@@ -253,6 +139,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.BIOMECH_VIEW}`,
+    key: 'bio_support',
     component: BrokenKitView,
     loginRequired: true,
     rolesAllowed: [],
@@ -260,6 +147,7 @@ const routes = [
   },
   {
     path: `${PathPatterns.BIOMECH_MAIN}`,
+    key: 'bio_support',
     component: BiomechanicalPage,
     isPrivate: true,
     rolesAllowed: [],
@@ -267,6 +155,7 @@ const routes = [
   },
   {
     path: '/case-study/view/:id',
+    key: 'case_study',
     component: CaseStudyView,
     loginRequired: true,
     rolesAllowed: [],
@@ -274,6 +163,7 @@ const routes = [
   },
   {
     path: '/case-study/form',
+    key: 'case_study',
     component: CaseStudyForm,
     loginRequired: true,
     rolesAllowed: [],
@@ -281,6 +171,7 @@ const routes = [
   },
   {
     path: '/case-study',
+    key: 'case_study',
     component: CaseStudyMain,
     loginRequired: true,
     rolesAllowed: [],
@@ -288,6 +179,7 @@ const routes = [
   },
   {
     path: '/report',
+    key: 'report',
     component: Report,
     loginRequired: true,
     rolesAllowed: [],
@@ -295,6 +187,7 @@ const routes = [
   },
   {
     path: '/leaderboard',
+    key: 'leaderboard',
     component: LeaderBoardMain,
     loginRequired: true,
     rolesAllowed: [],
@@ -303,6 +196,7 @@ const routes = [
   {
     path: '/message-board/edit/:id',
     component: EditMessage,
+    key: 'message_board',
     isPrivate: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
@@ -310,6 +204,7 @@ const routes = [
   {
     path: '/message-board/add-message',
     component: AddMessage,
+    key: 'message_board',
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
@@ -317,12 +212,14 @@ const routes = [
   {
     path: '/message-board/comments/:id',
     component: MessageComments,
+    key: 'message_board',
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
   },
   {
     path: '/message-board',
+    key: 'message_board',
     component: MessageBoardMain,
     loginRequired: true,
     rolesAllowed: [],
@@ -330,6 +227,7 @@ const routes = [
   },
   {
     path: '/employee-of-the-month/form',
+    key: 'employee_of_the_month',
     component: EmployeeOfTheMonthForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
@@ -337,6 +235,7 @@ const routes = [
   },
   {
     path: '/employee-of-the-month',
+    key: 'employee_of_the_month',
     component: EmployeeOfTheMonthMain,
     loginRequired: true,
     rolesAllowed: [],
