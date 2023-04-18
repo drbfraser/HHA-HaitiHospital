@@ -143,7 +143,7 @@ const Sidebar = (props: SidebarProps) => {
             Role.MedicalDirector,
             Role.HeadOfDepartment,
           ]) && (
-            <SidebarItem path='general-reports'>
+            <SidebarItem path="general-reports">
               <i className="bi bi-folder-fill me-2" />
               <span className={cn('text-light', { 'd-none': isMobile })}>
                 {t('sidebarGeneral')}
