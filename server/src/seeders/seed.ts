@@ -1123,43 +1123,229 @@ const seedPermissions = async () => {
           key: 'admin',
           pages: [
             {
-              name: 'Dashboard',
-              key: 'dashboard',
+              name: 'Login',
+              key: 'login',
               permissions: [
                 {
-                  name: 'View Dashboard',
-                  key: 'view_dashboard',
-                  isChecked: true,
-                },
-                {
-                  name: 'Edit Dashboard',
-                  key: 'edit_dashboard',
-                  isChecked: true,
-                },
-                {
-                  name: 'Delete Dashboard',
-                  key: 'delete_dashboard',
+                  path: '/login',
+                  name: 'Access Page',
+                  key: 'login_access_page',
                   isChecked: true,
                 },
               ],
             },
             {
-              name: 'Settings',
-              key: 'settings',
+              name: 'Admin',
+              key: 'admin',
               permissions: [
                 {
-                  name: 'View Settings',
-                  key: 'view_settings',
+                  path: '/admin',
+                  name: 'Access Page',
+                  key: 'admin_access_page',
                   isChecked: true,
                 },
                 {
-                  name: 'Edit Settings',
-                  key: 'edit_settings',
+                  path: '/admin/add-user',
+                  name: 'Add User',
+                  key: 'admin_add_user_page',
                   isChecked: true,
                 },
                 {
-                  name: 'Delete Settings',
-                  key: 'delete_settings',
+                  path: '/admin/edit-user/:userId',
+                  name: 'Edit User',
+                  key: 'admin_edit_user',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Upload Report',
+              key: 'upload_report',
+              permissions: [
+                {
+                  path: '/upload-report',
+                  name: 'Access Page',
+                  key: 'upload_report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Update Permissions',
+              key: 'update_permissions',
+              permissions: [
+                {
+                  path: '/update-permissions',
+                  name: 'Access Page',
+                  key: 'update_permissions_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Home',
+              key: 'home',
+              permissions: [
+                {
+                  path: '/home',
+                  name: 'Access Page',
+                  key: 'home_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'General Reports',
+              key: 'general_reports',
+              permissions: [
+                {
+                  path: '/general-reports',
+                  name: 'Access Page',
+                  key: 'general_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'View Reports',
+              key: 'view_reports',
+              permissions: [
+                {
+                  path: '/report-view/:id',
+                  name: 'Access Page',
+                  key: 'view_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Department',
+              key: 'department',
+              permissions: [
+                {
+                  path: '/department/:deptId',
+                  name: 'Access Page',
+                  key: 'department_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Bio Support',
+              key: 'bio_support',
+              permissions: [
+                {
+                  path: '/biomechanic',
+                  name: 'Access Page',
+                  key: 'biomechanic_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/report-broken-kit`',
+                  name: 'Add broken kit report',
+                  key: 'biomechanic_add_broken_kit',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/view/:bioId',
+                  name: 'View broken kit report',
+                  key: 'biomechanic_view_broken_kit',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Case Study',
+              key: 'case_study',
+              permissions: [
+                {
+                  path: '/case-study',
+                  name: 'Access Page',
+                  key: 'case_study_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/view/:id',
+                  name: 'View Case Study',
+                  key: 'case_study_view',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/form',
+                  name: 'Add Case Study',
+                  key: 'case_study_add',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Report',
+              key: 'report',
+              permissions: [
+                {
+                  path: '/report',
+                  name: 'Access Page',
+                  key: 'report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Leaderboard',
+              key: 'leaderboard',
+              permissions: [
+                {
+                  path: '/leaderboard',
+                  name: 'Access Page',
+                  key: 'leaderboard_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Message Board',
+              key: 'message_board',
+              permissions: [
+                {
+                  path: '/message-board',
+                  name: 'Access Page',
+                  key: 'message_board_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/add-message',
+                  name: 'Add Message',
+                  key: 'message_board_add_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/edit/:id',
+                  name: 'Edit Message',
+                  key: 'message_board_edit_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/comments/:id',
+                  name: 'Message Comments',
+                  key: 'message_board_comments',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Employee of the Month',
+              key: 'employee_of_the_month',
+              permissions: [
+                {
+                  path: '/employee-of-the-month',
+                  name: 'Access Page',
+                  key: 'employee_of_the_month_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/employee-of-the-month/form',
+                  name: 'Update Employee of the month',
+                  key: 'employee_of_the_month_update',
                   isChecked: true,
                 },
               ],
@@ -1171,23 +1357,229 @@ const seedPermissions = async () => {
           key: 'user',
           pages: [
             {
-              name: 'Dashboard',
-              key: 'dashboard',
+              name: 'Login',
+              key: 'login',
               permissions: [
                 {
-                  name: 'View Dashboard',
-                  key: 'view_dashboard',
+                  path: '/login',
+                  name: 'Access Page',
+                  key: 'login_access_page',
                   isChecked: true,
                 },
               ],
             },
             {
-              name: 'Settings',
-              key: 'settings',
+              name: 'Admin',
+              key: 'admin',
               permissions: [
                 {
-                  name: 'View Settings',
-                  key: 'view_settings',
+                  path: '/admin',
+                  name: 'Access Page',
+                  key: 'admin_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/admin/add-user',
+                  name: 'Add User',
+                  key: 'admin_add_user_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/admin/edit-user/:userId',
+                  name: 'Edit User',
+                  key: 'admin_edit_user',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Upload Report',
+              key: 'upload_report',
+              permissions: [
+                {
+                  path: '/upload-report',
+                  name: 'Access Page',
+                  key: 'upload_report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Update Permissions',
+              key: 'update_permissions',
+              permissions: [
+                {
+                  path: '/update-permissions',
+                  name: 'Access Page',
+                  key: 'update_permissions_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Home',
+              key: 'home',
+              permissions: [
+                {
+                  path: '/home',
+                  name: 'Access Page',
+                  key: 'home_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'General Reports',
+              key: 'general_reports',
+              permissions: [
+                {
+                  path: '/general-reports',
+                  name: 'Access Page',
+                  key: 'general_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'View Reports',
+              key: 'view_reports',
+              permissions: [
+                {
+                  path: '/report-view/:id',
+                  name: 'Access Page',
+                  key: 'view_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Department',
+              key: 'department',
+              permissions: [
+                {
+                  path: '/department/:deptId',
+                  name: 'Access Page',
+                  key: 'department_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Bio Support',
+              key: 'bio_support',
+              permissions: [
+                {
+                  path: '/biomechanic',
+                  name: 'Access Page',
+                  key: 'biomechanic_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/report-broken-kit`',
+                  name: 'Add broken kit report',
+                  key: 'biomechanic_add_broken_kit',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/view/:bioId',
+                  name: 'View broken kit report',
+                  key: 'biomechanic_view_broken_kit',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Case Study',
+              key: 'case_study',
+              permissions: [
+                {
+                  path: '/case-study',
+                  name: 'Access Page',
+                  key: 'case_study_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/view/:id',
+                  name: 'View Case Study',
+                  key: 'case_study_view',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/form',
+                  name: 'Add Case Study',
+                  key: 'case_study_add',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Report',
+              key: 'report',
+              permissions: [
+                {
+                  path: '/report',
+                  name: 'Access Page',
+                  key: 'report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Leaderboard',
+              key: 'leaderboard',
+              permissions: [
+                {
+                  path: '/leaderboard',
+                  name: 'Access Page',
+                  key: 'leaderboard_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Message Board',
+              key: 'message_board',
+              permissions: [
+                {
+                  path: '/message-board',
+                  name: 'Access Page',
+                  key: 'message_board_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/add-message',
+                  name: 'Add Message',
+                  key: 'message_board_add_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/edit/:id',
+                  name: 'Edit Message',
+                  key: 'message_board_edit_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/comments/:id',
+                  name: 'Message Comments',
+                  key: 'message_board_comments',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Employee of the Month',
+              key: 'employee_of_the_month',
+              permissions: [
+                {
+                  path: '/employee-of-the-month',
+                  name: 'Access Page',
+                  key: 'employee_of_the_month_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/employee-of-the-month/form',
+                  name: 'Update Employee of the month',
+                  key: 'employee_of_the_month_update',
                   isChecked: true,
                 },
               ],
@@ -1199,12 +1591,229 @@ const seedPermissions = async () => {
           key: 'medicalDiretor',
           pages: [
             {
-              name: 'Settings',
-              key: 'settings',
+              name: 'Login',
+              key: 'login',
               permissions: [
                 {
-                  name: 'View Settings',
-                  key: 'view_settings',
+                  path: '/login',
+                  name: 'Access Page',
+                  key: 'login_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Admin',
+              key: 'admin',
+              permissions: [
+                {
+                  path: '/admin',
+                  name: 'Access Page',
+                  key: 'admin_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/admin/add-user',
+                  name: 'Add User',
+                  key: 'admin_add_user_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/admin/edit-user/:userId',
+                  name: 'Edit User',
+                  key: 'admin_edit_user',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Upload Report',
+              key: 'upload_report',
+              permissions: [
+                {
+                  path: '/upload-report',
+                  name: 'Access Page',
+                  key: 'upload_report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Update Permissions',
+              key: 'update_permissions',
+              permissions: [
+                {
+                  path: '/update-permissions',
+                  name: 'Access Page',
+                  key: 'update_permissions_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Home',
+              key: 'home',
+              permissions: [
+                {
+                  path: '/home',
+                  name: 'Access Page',
+                  key: 'home_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'General Reports',
+              key: 'general_reports',
+              permissions: [
+                {
+                  path: '/general-reports',
+                  name: 'Access Page',
+                  key: 'general_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'View Reports',
+              key: 'view_reports',
+              permissions: [
+                {
+                  path: '/report-view/:id',
+                  name: 'Access Page',
+                  key: 'view_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Department',
+              key: 'department',
+              permissions: [
+                {
+                  path: '/department/:deptId',
+                  name: 'Access Page',
+                  key: 'department_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Bio Support',
+              key: 'bio_support',
+              permissions: [
+                {
+                  path: '/biomechanic',
+                  name: 'Access Page',
+                  key: 'biomechanic_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/report-broken-kit`',
+                  name: 'Add broken kit report',
+                  key: 'biomechanic_add_broken_kit',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/view/:bioId',
+                  name: 'View broken kit report',
+                  key: 'biomechanic_view_broken_kit',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Case Study',
+              key: 'case_study',
+              permissions: [
+                {
+                  path: '/case-study',
+                  name: 'Access Page',
+                  key: 'case_study_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/view/:id',
+                  name: 'View Case Study',
+                  key: 'case_study_view',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/form',
+                  name: 'Add Case Study',
+                  key: 'case_study_add',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Report',
+              key: 'report',
+              permissions: [
+                {
+                  path: '/report',
+                  name: 'Access Page',
+                  key: 'report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Leaderboard',
+              key: 'leaderboard',
+              permissions: [
+                {
+                  path: '/leaderboard',
+                  name: 'Access Page',
+                  key: 'leaderboard_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Message Board',
+              key: 'message_board',
+              permissions: [
+                {
+                  path: '/message-board',
+                  name: 'Access Page',
+                  key: 'message_board_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/add-message',
+                  name: 'Add Message',
+                  key: 'message_board_add_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/edit/:id',
+                  name: 'Edit Message',
+                  key: 'message_board_edit_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/comments/:id',
+                  name: 'Message Comments',
+                  key: 'message_board_comments',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Employee of the Month',
+              key: 'employee_of_the_month',
+              permissions: [
+                {
+                  path: '/employee-of-the-month',
+                  name: 'Access Page',
+                  key: 'employee_of_the_month_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/employee-of-the-month/form',
+                  name: 'Update Employee of the month',
+                  key: 'employee_of_the_month_update',
                   isChecked: true,
                 },
               ],
@@ -1216,12 +1825,229 @@ const seedPermissions = async () => {
           key: 'headOfDepartment',
           pages: [
             {
-              name: 'Settings',
-              key: 'settings',
+              name: 'Login',
+              key: 'login',
               permissions: [
                 {
-                  name: 'View Settings',
-                  key: 'view_settings',
+                  path: '/login',
+                  name: 'Access Page',
+                  key: 'login_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Admin',
+              key: 'admin',
+              permissions: [
+                {
+                  path: '/admin',
+                  name: 'Access Page',
+                  key: 'admin_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/admin/add-user',
+                  name: 'Add User',
+                  key: 'admin_add_user_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/admin/edit-user/:userId',
+                  name: 'Edit User',
+                  key: 'admin_edit_user',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Upload Report',
+              key: 'upload_report',
+              permissions: [
+                {
+                  path: '/upload-report',
+                  name: 'Access Page',
+                  key: 'upload_report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Update Permissions',
+              key: 'update_permissions',
+              permissions: [
+                {
+                  path: '/update-permissions',
+                  name: 'Access Page',
+                  key: 'update_permissions_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Home',
+              key: 'home',
+              permissions: [
+                {
+                  path: '/home',
+                  name: 'Access Page',
+                  key: 'home_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'General Reports',
+              key: 'general_reports',
+              permissions: [
+                {
+                  path: '/general-reports',
+                  name: 'Access Page',
+                  key: 'general_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'View Reports',
+              key: 'view_reports',
+              permissions: [
+                {
+                  path: '/report-view/:id',
+                  name: 'Access Page',
+                  key: 'view_reports_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Department',
+              key: 'department',
+              permissions: [
+                {
+                  path: '/department/:deptId',
+                  name: 'Access Page',
+                  key: 'department_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Bio Support',
+              key: 'bio_support',
+              permissions: [
+                {
+                  path: '/biomechanic',
+                  name: 'Access Page',
+                  key: 'biomechanic_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/report-broken-kit`',
+                  name: 'Add broken kit report',
+                  key: 'biomechanic_add_broken_kit',
+                  isChecked: true,
+                },
+                {
+                  path: '/biomechanic/view/:bioId',
+                  name: 'View broken kit report',
+                  key: 'biomechanic_view_broken_kit',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Case Study',
+              key: 'case_study',
+              permissions: [
+                {
+                  path: '/case-study',
+                  name: 'Access Page',
+                  key: 'case_study_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/view/:id',
+                  name: 'View Case Study',
+                  key: 'case_study_view',
+                  isChecked: true,
+                },
+                {
+                  path: '/case-study/form',
+                  name: 'Add Case Study',
+                  key: 'case_study_add',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Report',
+              key: 'report',
+              permissions: [
+                {
+                  path: '/report',
+                  name: 'Access Page',
+                  key: 'report_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Leaderboard',
+              key: 'leaderboard',
+              permissions: [
+                {
+                  path: '/leaderboard',
+                  name: 'Access Page',
+                  key: 'leaderboard_access_page',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Message Board',
+              key: 'message_board',
+              permissions: [
+                {
+                  path: '/message-board',
+                  name: 'Access Page',
+                  key: 'message_board_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/add-message',
+                  name: 'Add Message',
+                  key: 'message_board_add_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/edit/:id',
+                  name: 'Edit Message',
+                  key: 'message_board_edit_message',
+                  isChecked: true,
+                },
+                {
+                  path: '/message-board/comments/:id',
+                  name: 'Message Comments',
+                  key: 'message_board_comments',
+                  isChecked: true,
+                },
+              ],
+            },
+            {
+              name: 'Employee of the Month',
+              key: 'employee_of_the_month',
+              permissions: [
+                {
+                  path: '/employee-of-the-month',
+                  name: 'Access Page',
+                  key: 'employee_of_the_month_access_page',
+                  isChecked: true,
+                },
+                {
+                  path: '/employee-of-the-month/form',
+                  name: 'Update Employee of the month',
+                  key: 'employee_of_the_month_update',
                   isChecked: true,
                 },
               ],
