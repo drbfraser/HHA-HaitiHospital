@@ -1,11 +1,12 @@
 import './case_study_main_styles.css';
 import Api from 'actions/Api';
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
+import HoverableTableHead from 'components/table/HoverableTableHead';
+import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import Pagination from 'components/pagination/Pagination';
 import cn from 'classnames';
-import Layout from 'components/layout';
 import i18n from 'i18next';
 import {
   ENDPOINT_CASESTUDY_DELETE_BY_ID,
@@ -27,6 +28,8 @@ import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+
+const PAGE_SIZE = 10;
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -52,13 +55,14 @@ export const CaseStudyMain = () => {
   });
   const authState = useAuthState();
   const history: History = useHistory<History>();
+  const { t } = useTranslation();
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize: number = 10;
+  const caseStudyNumberIndex = currentPage * PAGE_SIZE - PAGE_SIZE;
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
+    const firstPageIndex = (currentPage - 1) * PAGE_SIZE;
+    const lastPageIndex = firstPageIndex + PAGE_SIZE;
 
     return caseStudies
       .slice(firstPageIndex, lastPageIndex)
@@ -70,7 +74,6 @@ export const CaseStudyMain = () => {
         return sortCaseStudies(prevCaseStudy, nextCaseStudy, sortOrder);
       });
   }, [caseStudies, currentPage, dayRange, sortOrder]);
-  const caseStudyNumberIndex = currentPage * pageSize - pageSize;
 
   const onFeatureCaseStudy = () => {
     toast.success('Featured case study has now changed!');
@@ -139,8 +142,6 @@ export const CaseStudyMain = () => {
     fetchCaseStudies();
   }, [fetchCaseStudies]);
 
-  const { t: translateText } = useTranslation();
-
   return (
     <div className="case-study-main">
       <Layout>
@@ -174,7 +175,7 @@ export const CaseStudyMain = () => {
               data-testid="add-case-study-button"
               type="button"
             >
-              {translateText('caseStudyMainAddCaseStudy')}
+              {t('caseStudyMainAddCaseStudy')}
             </button>
           </Link>
         </div>
@@ -186,7 +187,7 @@ export const CaseStudyMain = () => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th
+                <HoverableTableHead
                   data-testid="case-study-type-title"
                   onClick={() => {
                     setSortOrder({
@@ -195,12 +196,9 @@ export const CaseStudyMain = () => {
                     });
                   }}
                   scope="col"
-                  style={{
-                    cursor: 'pointer',
-                  }}
                 >
                   <div className="d-flex align-items-center gap-2">
-                    {translateText('caseStudyMainCaseStudyType')}
+                    {t('caseStudyMainCaseStudyType')}
                     <i
                       className={cn('bi', {
                         'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.TYPE,
@@ -210,8 +208,8 @@ export const CaseStudyMain = () => {
                       })}
                     />
                   </div>
-                </th>
-                <th
+                </HoverableTableHead>
+                <HoverableTableHead
                   data-testid="case-study-author-title"
                   onClick={() => {
                     setSortOrder({
@@ -221,12 +219,9 @@ export const CaseStudyMain = () => {
                     });
                   }}
                   scope="col"
-                  style={{
-                    cursor: 'pointer',
-                  }}
                 >
                   <div className="d-flex align-items-center gap-2">
-                    {translateText('caseStudyMainAuthor')}
+                    {t('caseStudyMainAuthor')}
                     <i
                       className={cn('bi', {
                         'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.AUTHOR,
@@ -237,8 +232,8 @@ export const CaseStudyMain = () => {
                       })}
                     />
                   </div>
-                </th>
-                <th
+                </HoverableTableHead>
+                <HoverableTableHead
                   data-testid="case-study-created-title"
                   onClick={() => {
                     setSortOrder({
@@ -248,12 +243,9 @@ export const CaseStudyMain = () => {
                     });
                   }}
                   scope="col"
-                  style={{
-                    cursor: 'pointer',
-                  }}
                 >
                   <div className="d-flex align-items-center gap-2">
-                    {translateText('caseStudyMainCreated')}
+                    {t('caseStudyMainCreated')}
                     <i
                       className={cn('bi', {
                         'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.CREATED_AT,
@@ -264,9 +256,9 @@ export const CaseStudyMain = () => {
                       })}
                     />
                   </div>
-                </th>
+                </HoverableTableHead>
                 <th data-testid="case-study-options-title" scope="col">
-                  {translateText('caseStudyMainLink')}
+                  {t('caseStudyMainLink')}
                 </th>
               </tr>
             </thead>
@@ -288,7 +280,7 @@ export const CaseStudyMain = () => {
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/case-study/view/${item.id}`)}
                       >
-                        {translateText('caseStudyMainViewCaseStudy').concat(' ')}
+                        {t('caseStudyMainViewCaseStudy').concat(' ')}
                       </button>
 
                       {renderBasedOnRole(authState.userDetails.role, [
@@ -302,7 +294,7 @@ export const CaseStudyMain = () => {
                             onDeleteButton(event, item);
                           }}
                         >
-                          {translateText('caseStudyMainDelete').concat(' ')}
+                          {t('caseStudyMainDelete').concat(' ')}
                         </button>
                       ) : null}
 
@@ -318,8 +310,8 @@ export const CaseStudyMain = () => {
                           onClick={() => (item.featured ? undefined : featureCaseStudy(item.id))}
                         >
                           {item.featured
-                            ? translateText('caseStudyMainUnFeatured')
-                            : translateText('caseStudyMainFeatured')}
+                            ? t('caseStudyMainUnFeatured')
+                            : t('caseStudyMainFeatured')}
                         </button>
                       ) : null}
                     </td>
@@ -332,7 +324,7 @@ export const CaseStudyMain = () => {
             className="pagination-bar"
             currentPage={currentPage}
             totalCount={caseStudies.length}
-            pageSize={pageSize}
+            pageSize={PAGE_SIZE}
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>

@@ -4,10 +4,6 @@
   width: calc(100% - 200px);
 }
 
-.case-study-main table th:hover {
-  background-color: rgba(0, 0, 0, 0.075);
-}
-
 /*Margin by pixel:*/
 @media screen and (max-width: 700px) {
   .case-study-main .main-region {
