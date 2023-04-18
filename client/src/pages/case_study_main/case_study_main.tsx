@@ -1,50 +1,79 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
-import { Role } from 'constants/interfaces';
-import Layout from 'components/layout';
-import ModalGeneric from 'components/popup_modal/popup_modal_generic';
-import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import './case_study_main_styles.css';
 import Api from 'actions/Api';
+import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
+import HoverableTableHead from 'components/table/HoverableTableHead';
+import Layout from 'components/layout';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import ModalGeneric from 'components/popup_modal/popup_modal_generic';
+import Pagination from 'components/pagination/Pagination';
+import cn from 'classnames';
+import i18n from 'i18next';
 import {
+  ENDPOINT_CASESTUDY_DELETE_BY_ID,
   ENDPOINT_CASESTUDY_GET,
   ENDPOINT_CASESTUDY_PATCH_BY_ID,
-  ENDPOINT_CASESTUDY_DELETE_BY_ID,
 } from 'constants/endpoints';
+import { History } from 'history';
+import { Role } from 'constants/interfaces';
+import { Link, useHistory } from 'react-router-dom';
 import {
-  TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_DELETE,
+  TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_PATCH,
 } from 'constants/toastErrorMessages';
-import { toast } from 'react-toastify';
-import './case_study_main_styles.css';
-import { useTranslation } from 'react-i18next';
-import { useAuthState } from 'contexts';
+import { SortOrder, isDateStrInDayRange, sortCaseStudies } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
-import i18n from 'i18next';
-import Pagination from 'components/pagination/Pagination';
-import { History } from 'history';
 import { timezone, language } from 'constants/timezones';
+import { toast } from 'react-toastify';
+import { useAuthState } from 'contexts';
+import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
-interface CaseStudyMainProps extends RouteComponentProps {}
+const PAGE_SIZE = 10;
 
-export const CaseStudyMain = (props: CaseStudyMainProps) => {
+export enum CaseStudyCol {
+  AUTHOR,
+  CREATED_AT,
+  TYPE,
+}
+export type CaseStudySortOrder = SortOrder<CaseStudyCol>;
+
+export const CaseStudyMain = () => {
   const DEFAULT_INDEX: string = '';
-  const [genericModal, setGenericModal] = useState<boolean>(false);
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
+  // TODO: Create a "CaseStudy" type (instead of using "any")
   const [caseStudies, setCaseStudies] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
+  const [dayRange, setDayRange] = useState<DayRange>({
+    from: null,
+    to: null,
+  });
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [genericModal, setGenericModal] = useState<boolean>(false);
+  const [sortOrder, setSortOrder] = useState<CaseStudySortOrder>({
+    column: CaseStudyCol.CREATED_AT,
+    isAscDir: true,
+  });
   const authState = useAuthState();
   const history: History = useHistory<History>();
+  const { t } = useTranslation();
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize: number = 10;
+  const caseStudyNumberIndex = currentPage * PAGE_SIZE - PAGE_SIZE;
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
-    return caseStudies.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, caseStudies]);
-  const caseStudyNumberIndex = currentPage * pageSize - pageSize;
+    const firstPageIndex = (currentPage - 1) * PAGE_SIZE;
+    const lastPageIndex = firstPageIndex + PAGE_SIZE;
+
+    return caseStudies
+      .slice(firstPageIndex, lastPageIndex)
+      .filter((caseStudy) => {
+        const createdAtLabel = caseStudy.createdAt.split(' ').slice(0, 3).join(' ');
+        return isDateStrInDayRange(createdAtLabel, dayRange);
+      })
+      .sort((prevCaseStudy, nextCaseStudy) => {
+        return sortCaseStudies(prevCaseStudy, nextCaseStudy, sortOrder);
+      });
+  }, [caseStudies, currentPage, dayRange, sortOrder]);
 
   const onFeatureCaseStudy = () => {
     toast.success('Featured case study has now changed!');
@@ -109,14 +138,9 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
     setDeleteModal(false);
   };
 
-  useEffect(
-    function fetchCaseStudiesInitially() {
-      fetchCaseStudies();
-    },
-    [fetchCaseStudies],
-  );
-
-  const { t: translateText } = useTranslation();
+  useEffect(() => {
+    fetchCaseStudies();
+  }, [fetchCaseStudies]);
 
   return (
     <div className="case-study-main">
@@ -132,7 +156,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           history={history}
           location={undefined}
           match={undefined}
-        ></ModalGeneric>
+        />
         <ModalDelete
           dataTestId="confirm-delete-case-study-button"
           currentItem={currentIndex}
@@ -143,35 +167,98 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
           history={history}
           location={undefined}
           match={undefined}
-        ></ModalDelete>
-        <div className="d-flex justify-content-start">
+        />
+        <div className="w-100">
           <Link to="/case-study/form">
             <button
+              className="btn btn-outline-dark"
               data-testid="add-case-study-button"
               type="button"
-              className="btn btn-outline-dark"
             >
-              {translateText('caseStudyMainAddCaseStudy')}
+              {t('caseStudyMainAddCaseStudy')}
             </button>
           </Link>
         </div>
-
+        <div className="w-100 mt-3">
+          <DatePicker onChange={setDayRange} shouldHighlightWeekends value={dayRange} />
+        </div>
         <div className="table-responsive">
-          <table className="table table-hover mt-3">
+          <table className="table table-hover mt-2">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th data-testid="case-study-type-title" scope="col">
-                  {translateText('caseStudyMainCaseStudyType')}
-                </th>
-                <th data-testid="case-study-author-title" scope="col">
-                  {translateText('caseStudyMainAuthor')}
-                </th>
-                <th data-testid="case-study-created-title" scope="col">
-                  {translateText('caseStudyMainCreated')}
-                </th>
+                <HoverableTableHead
+                  data-testid="case-study-type-title"
+                  onClick={() => {
+                    setSortOrder({
+                      column: CaseStudyCol.TYPE,
+                      isAscDir: sortOrder.column === CaseStudyCol.TYPE ? !sortOrder.isAscDir : true,
+                    });
+                  }}
+                  scope="col"
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    {t('caseStudyMainCaseStudyType')}
+                    <i
+                      className={cn('bi', {
+                        'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.TYPE,
+                        'bi-arrow-down':
+                          sortOrder.column === CaseStudyCol.TYPE && !sortOrder.isAscDir,
+                        'bi-arrow-up': sortOrder.column === CaseStudyCol.TYPE && sortOrder.isAscDir,
+                      })}
+                    />
+                  </div>
+                </HoverableTableHead>
+                <HoverableTableHead
+                  data-testid="case-study-author-title"
+                  onClick={() => {
+                    setSortOrder({
+                      column: CaseStudyCol.AUTHOR,
+                      isAscDir:
+                        sortOrder.column === CaseStudyCol.AUTHOR ? !sortOrder.isAscDir : true,
+                    });
+                  }}
+                  scope="col"
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    {t('caseStudyMainAuthor')}
+                    <i
+                      className={cn('bi', {
+                        'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.AUTHOR,
+                        'bi-arrow-down':
+                          sortOrder.column === CaseStudyCol.AUTHOR && !sortOrder.isAscDir,
+                        'bi-arrow-up':
+                          sortOrder.column === CaseStudyCol.AUTHOR && sortOrder.isAscDir,
+                      })}
+                    />
+                  </div>
+                </HoverableTableHead>
+                <HoverableTableHead
+                  data-testid="case-study-created-title"
+                  onClick={() => {
+                    setSortOrder({
+                      column: CaseStudyCol.CREATED_AT,
+                      isAscDir:
+                        sortOrder.column === CaseStudyCol.CREATED_AT ? !sortOrder.isAscDir : true,
+                    });
+                  }}
+                  scope="col"
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    {t('caseStudyMainCreated')}
+                    <i
+                      className={cn('bi', {
+                        'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.CREATED_AT,
+                        'bi-arrow-down':
+                          sortOrder.column === CaseStudyCol.CREATED_AT && !sortOrder.isAscDir,
+                        'bi-arrow-up':
+                          sortOrder.column === CaseStudyCol.CREATED_AT && sortOrder.isAscDir,
+                      })}
+                    />
+                  </div>
+                </HoverableTableHead>
                 <th data-testid="case-study-options-title" scope="col">
-                  {translateText('caseStudyMainLink')}
+                  {t('caseStudyMainLink')}
                 </th>
               </tr>
             </thead>
@@ -193,7 +280,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                         className="btn btn-link text-decoration-none"
                         onClick={() => history.push(`/case-study/view/${item.id}`)}
                       >
-                        {translateText('caseStudyMainViewCaseStudy').concat(' ')}
+                        {t('caseStudyMainViewCaseStudy').concat(' ')}
                       </button>
 
                       {renderBasedOnRole(authState.userDetails.role, [
@@ -207,7 +294,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                             onDeleteButton(event, item);
                           }}
                         >
-                          {translateText('caseStudyMainDelete').concat(' ')}
+                          {t('caseStudyMainDelete').concat(' ')}
                         </button>
                       ) : null}
 
@@ -223,8 +310,8 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
                           onClick={() => (item.featured ? undefined : featureCaseStudy(item.id))}
                         >
                           {item.featured
-                            ? translateText('caseStudyMainUnFeatured')
-                            : translateText('caseStudyMainFeatured')}
+                            ? t('caseStudyMainUnFeatured')
+                            : t('caseStudyMainFeatured')}
                         </button>
                       ) : null}
                     </td>
@@ -237,7 +324,7 @@ export const CaseStudyMain = (props: CaseStudyMainProps) => {
             className="pagination-bar"
             currentPage={currentPage}
             totalCount={caseStudies.length}
-            pageSize={pageSize}
+            pageSize={PAGE_SIZE}
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
