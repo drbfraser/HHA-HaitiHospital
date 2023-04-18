@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ModalImage from 'components/popup_modal/popup_modal_image';
-import { currMonth, currYear } from 'utils/dateFormatting';
+import { currMonth, currYear } from 'utils/dateUtils';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
 import './employee_of_the_month_summary.css';
 import { History } from 'history';

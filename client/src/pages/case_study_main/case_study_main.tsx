@@ -20,6 +20,7 @@ import {
   TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_PATCH,
 } from 'constants/toastErrorMessages';
+import { SortOrder, isDateStrInDayRange, sortCaseStudies } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { timezone, language } from 'constants/timezones';
 import { toast } from 'react-toastify';
@@ -27,18 +28,16 @@ import { useAuthState } from 'contexts';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-enum SortOrderCol {
+export enum CaseStudyCol {
   AUTHOR,
   CREATED_AT,
   TYPE,
 }
-type SortOrder = {
-  column: SortOrderCol;
-  isAscDir: boolean;
-};
+export type CaseStudySortOrder = SortOrder<CaseStudyCol>;
 
 export const CaseStudyMain = () => {
   const DEFAULT_INDEX: string = '';
+  // TODO: Create a "CaseStudy" type (instead of using "any")
   const [caseStudies, setCaseStudies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
   const [dayRange, setDayRange] = useState<DayRange>({
@@ -47,8 +46,8 @@ export const CaseStudyMain = () => {
   });
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [genericModal, setGenericModal] = useState<boolean>(false);
-  const [sortOrder, setSortOrder] = useState<SortOrder>({
-    column: SortOrderCol.CREATED_AT,
+  const [sortOrder, setSortOrder] = useState<CaseStudySortOrder>({
+    column: CaseStudyCol.CREATED_AT,
     isAscDir: true,
   });
   const authState = useAuthState();
@@ -64,67 +63,11 @@ export const CaseStudyMain = () => {
     return caseStudies
       .slice(firstPageIndex, lastPageIndex)
       .filter((caseStudy) => {
-        const createdAt = new Date(caseStudy.createdAt.split(' ').slice(0, 3).join(' '));
-        const createdAtUTC = new Date(
-          Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
-        );
-
-        if (dayRange.from) {
-          const dayRangeFrom = new Date(
-            Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
-          );
-          return dayRangeFrom <= createdAtUTC;
-        } else if (dayRange.to) {
-          const dayRangeTo = new Date(
-            Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
-          );
-          return createdAtUTC <= dayRangeTo;
-        } else if (dayRange.from && dayRange.to) {
-          const dayRangeFrom = new Date(
-            Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
-          );
-          const dayRangeTo = new Date(
-            Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day),
-          );
-
-          return dayRangeFrom <= createdAtUTC && createdAtUTC <= dayRangeTo;
-        }
-        return true;
+        const createdAtLabel = caseStudy.createdAt.split(' ').slice(0, 3).join(' ');
+        return isDateStrInDayRange(createdAtLabel, dayRange);
       })
       .sort((prevCaseStudy, nextCaseStudy) => {
-        if (prevCaseStudy.featured) {
-          return Number.NEGATIVE_INFINITY;
-        } else if (sortOrder.column === SortOrderCol.AUTHOR) {
-          return sortOrder.isAscDir
-            ? prevCaseStudy.user.name.localeCompare(nextCaseStudy.user.name)
-            : nextCaseStudy.user.name.localeCompare(prevCaseStudy.user.name);
-        } else if (sortOrder.column === SortOrderCol.CREATED_AT) {
-          const prevCreatedAt = new Date(prevCaseStudy.createdAt.split(' ').slice(0, 3).join(' '));
-          const prevCreatedAtUTC = new Date(
-            Date.UTC(
-              prevCreatedAt.getFullYear(),
-              prevCreatedAt.getMonth(),
-              prevCreatedAt.getDate(),
-            ),
-          );
-          const nextCreatedAt = new Date(nextCaseStudy.createdAt.split(' ').slice(0, 3).join(' '));
-          const nextCreatedAtUTC = new Date(
-            Date.UTC(
-              nextCreatedAt.getFullYear(),
-              nextCreatedAt.getMonth(),
-              nextCreatedAt.getDate(),
-            ),
-          );
-
-          return sortOrder.isAscDir
-            ? prevCreatedAtUTC.getTime() - nextCreatedAtUTC.getTime()
-            : nextCreatedAtUTC.getTime() - prevCreatedAtUTC.getTime();
-        } else if (sortOrder.column === SortOrderCol.TYPE) {
-          return sortOrder.isAscDir
-            ? prevCaseStudy.caseStudyType.localeCompare(nextCaseStudy.caseStudyType)
-            : nextCaseStudy.caseStudyType.localeCompare(prevCaseStudy.caseStudyType);
-        }
-        return 0;
+        return sortCaseStudies(prevCaseStudy, nextCaseStudy, sortOrder);
       });
   }, [caseStudies, currentPage, dayRange, sortOrder]);
   const caseStudyNumberIndex = currentPage * pageSize - pageSize;
@@ -247,8 +190,8 @@ export const CaseStudyMain = () => {
                   data-testid="case-study-type-title"
                   onClick={() => {
                     setSortOrder({
-                      column: SortOrderCol.TYPE,
-                      isAscDir: sortOrder.column === SortOrderCol.TYPE ? !sortOrder.isAscDir : true,
+                      column: CaseStudyCol.TYPE,
+                      isAscDir: sortOrder.column === CaseStudyCol.TYPE ? !sortOrder.isAscDir : true,
                     });
                   }}
                   scope="col"
@@ -260,10 +203,10 @@ export const CaseStudyMain = () => {
                     {translateText('caseStudyMainCaseStudyType')}
                     <i
                       className={cn('bi', {
-                        'bi-arrow-down-up': sortOrder.column !== SortOrderCol.TYPE,
+                        'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.TYPE,
                         'bi-arrow-down':
-                          sortOrder.column === SortOrderCol.TYPE && !sortOrder.isAscDir,
-                        'bi-arrow-up': sortOrder.column === SortOrderCol.TYPE && sortOrder.isAscDir,
+                          sortOrder.column === CaseStudyCol.TYPE && !sortOrder.isAscDir,
+                        'bi-arrow-up': sortOrder.column === CaseStudyCol.TYPE && sortOrder.isAscDir,
                       })}
                     />
                   </div>
@@ -272,9 +215,9 @@ export const CaseStudyMain = () => {
                   data-testid="case-study-author-title"
                   onClick={() => {
                     setSortOrder({
-                      column: SortOrderCol.AUTHOR,
+                      column: CaseStudyCol.AUTHOR,
                       isAscDir:
-                        sortOrder.column === SortOrderCol.AUTHOR ? !sortOrder.isAscDir : true,
+                        sortOrder.column === CaseStudyCol.AUTHOR ? !sortOrder.isAscDir : true,
                     });
                   }}
                   scope="col"
@@ -286,11 +229,11 @@ export const CaseStudyMain = () => {
                     {translateText('caseStudyMainAuthor')}
                     <i
                       className={cn('bi', {
-                        'bi-arrow-down-up': sortOrder.column !== SortOrderCol.AUTHOR,
+                        'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.AUTHOR,
                         'bi-arrow-down':
-                          sortOrder.column === SortOrderCol.AUTHOR && !sortOrder.isAscDir,
+                          sortOrder.column === CaseStudyCol.AUTHOR && !sortOrder.isAscDir,
                         'bi-arrow-up':
-                          sortOrder.column === SortOrderCol.AUTHOR && sortOrder.isAscDir,
+                          sortOrder.column === CaseStudyCol.AUTHOR && sortOrder.isAscDir,
                       })}
                     />
                   </div>
@@ -299,9 +242,9 @@ export const CaseStudyMain = () => {
                   data-testid="case-study-created-title"
                   onClick={() => {
                     setSortOrder({
-                      column: SortOrderCol.CREATED_AT,
+                      column: CaseStudyCol.CREATED_AT,
                       isAscDir:
-                        sortOrder.column === SortOrderCol.CREATED_AT ? !sortOrder.isAscDir : true,
+                        sortOrder.column === CaseStudyCol.CREATED_AT ? !sortOrder.isAscDir : true,
                     });
                   }}
                   scope="col"
@@ -313,11 +256,11 @@ export const CaseStudyMain = () => {
                     {translateText('caseStudyMainCreated')}
                     <i
                       className={cn('bi', {
-                        'bi-arrow-down-up': sortOrder.column !== SortOrderCol.CREATED_AT,
+                        'bi-arrow-down-up': sortOrder.column !== CaseStudyCol.CREATED_AT,
                         'bi-arrow-down':
-                          sortOrder.column === SortOrderCol.CREATED_AT && !sortOrder.isAscDir,
+                          sortOrder.column === CaseStudyCol.CREATED_AT && !sortOrder.isAscDir,
                         'bi-arrow-up':
-                          sortOrder.column === SortOrderCol.CREATED_AT && sortOrder.isAscDir,
+                          sortOrder.column === CaseStudyCol.CREATED_AT && sortOrder.isAscDir,
                       })}
                     />
                   </div>
