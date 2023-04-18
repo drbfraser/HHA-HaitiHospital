@@ -170,7 +170,7 @@ export const seedUsers = async () => {
             );
             break;
           case 14:
-            foundUser.role = Role.BioMechanical;
+            foundUser.role = Role.BioMechanic;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
               DefaultDepartments.BioMechanic,
               nameMapper,
@@ -315,7 +315,7 @@ export const seedUsers = async () => {
             );
             break;
           case 14:
-            user.role = Role.BioMechanical;
+            user.role = Role.BioMechanic;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
               DefaultDepartments.BioMechanic,
               nameMapper,
