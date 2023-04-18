@@ -98,6 +98,7 @@ export interface UserDetails {
 }
 
 export interface Permission {
+  path: string;
   name: string;
   key: string;
   isChecked: boolean;
