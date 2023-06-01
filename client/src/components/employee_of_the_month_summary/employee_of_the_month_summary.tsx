@@ -107,19 +107,18 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
               </h6>
               <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department.name}</p>
             </div>
-            {/* <div className="w-100 pl-2"> */}
-              <div className="employee-image-container">
-                <img
-                  src={employeeOfTheMonthImage}
-                  className={`employee-image img-thumbnail img-fluid mt-3 mb-3 ${
-                    props.employeeOfTheMonth.imgPath ? 'd-block' : 'd-none'
-                  }`}
-                  alt={ALT_MESSAGE}
-                  onClick={(event: any) => {
-                    onEnlargeImage(event);
-                  }}
-                />
-              </div>
+            <div className="employee-image-container">
+              <img
+                src={employeeOfTheMonthImage}
+                className={`employee-image img-thumbnail img-fluid mt-3 mb-3 ${
+                  props.employeeOfTheMonth.imgPath ? 'd-block' : 'd-none'
+                }`}
+                alt={ALT_MESSAGE}
+                onClick={(event: any) => {
+                  onEnlargeImage(event);
+                }}
+              />
+            </div>
             {/* </div> */}
           </div>
           <div className="employee-description">
@@ -133,4 +132,3 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
     </div>
   );
 };
-
