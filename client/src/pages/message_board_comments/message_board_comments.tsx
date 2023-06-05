@@ -1,26 +1,28 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import Layout from 'components/layout';
-import Api from 'actions/Api';
+import './message_board_comments.css';
+
 import {
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
-  ENDPOINT_MESSAGEBOARD_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
+  ENDPOINT_MESSAGEBOARD_GET_BY_ID,
 } from 'constants/endpoints';
+import { Message, emptyMessage } from 'constants/interfaces';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET,
   TOAST_MESSAGEBOARD_COMMENTS_POST,
   TOAST_MESSAGEBOARD_GET,
 } from 'constants/toastErrorMessages';
-import './message_board_comments.css';
-import { emptyMessage, Message } from 'constants/interfaces';
+import { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+
+import Api from 'actions/Api';
+import { History } from 'history';
+import Layout from 'components/layout';
 import MessageComment from 'components/message_comment/message_comment';
 import MessageDisplay from 'components/message_panel/message_display';
-import { useTranslation } from 'react-i18next';
-import { History } from 'history';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);
@@ -88,7 +90,7 @@ const MessageComments = () => {
   return (
     <div className="message_comments">
       <Layout>
-        <div className="container">
+        <div className="main_container">
           <div className="mb-3 d-flex justify-content-start">
             <button type="button" className="btn btn-outline-dark" onClick={history.goBack}>
               {t('messageBoardCommentsBack')}
