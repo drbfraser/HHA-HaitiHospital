@@ -29,5 +29,23 @@ router.get(
 
 // TODO::  Update permissions
 // Create a put request to update permissions from the front end
+router.put(
+  '/',
+  requireJwtAuth,
+  roleAuth(Role.Admin),
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const updatedPermission = req.body.permission;
+      await PermissionCollection.findOneAndUpdate({}, updatedPermission);
+      const permission = await PermissionCollection.findOne().lean();
+      if (!permission) {
+        throw new NotFound(`No Permissions found`);
+      }
+      res.status(HTTP_OK_CODE).json({ permission });
+    } catch (e) {
+      next(e);
+    }
+  },
+);
 
 export default router;
