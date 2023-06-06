@@ -1,25 +1,27 @@
-import { useEffect, useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { renderBasedOnRole } from 'actions/roleActions';
-import { useAuthState } from 'contexts';
-import { UserDetails, Role, Message, emptyMessage } from 'constants/interfaces';
-import Api from 'actions/Api';
+import './message_display.css';
+
 import {
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
 } from 'constants/endpoints';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Message, Role, UserDetails, emptyMessage } from 'constants/interfaces';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET,
   TOAST_MESSAGEBOARD_DELETE,
 } from 'constants/toastErrorMessages';
-import ModalDelete from 'components/popup_modal/popup_modal_delete';
-import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
-import { toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
+import { useEffect, useState } from 'react';
+
+import Api from 'actions/Api';
 import { History } from 'history';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import i18n from 'i18next';
 import initialUserJson from './initialUserJson.json';
-import './message_display.css';
+import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { toast } from 'react-toastify';
+import { useAuthState } from 'contexts';
+import { useTranslation } from 'react-i18next';
 
 interface MessageDisplayProps {
   msgJson: Message;
@@ -27,9 +29,8 @@ interface MessageDisplayProps {
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
-  const { t: translateText } = useTranslation();
+  const { t: t } = useTranslation();
   const [message, setMessage] = useState<Message>(emptyMessage);
-  const [author, setAuthor] = useState<UserDetails>(initialUserJson as unknown as UserDetails);
   const history: History = useHistory<History>();
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
@@ -38,11 +39,10 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const readableDate = props.msgJson.date.toLocaleString();
   const [commentCount, setCommentCount] = useState<number>(0);
   const is_comment_page: boolean = useLocation().pathname.split('/')[2] === 'comments';
+  const author = !!props.msgJson.user ? props.msgJson.user.name : t('status.not_available');
 
   useEffect(() => {
     const controller = new AbortController();
-    const retrievedUser = props.msgJson.user as unknown;
-    setAuthor(retrievedUser as UserDetails);
     setMessage(props.msgJson);
 
     const getCommentCount = async (id: string) => {
@@ -59,7 +59,6 @@ const MessageDisplay = (props: MessageDisplayProps) => {
 
     getCommentCount(props.msgJson.id);
     return () => {
-      setAuthor(initialUserJson as unknown as UserDetails);
       setMessage(emptyMessage);
       controller.abort();
     };
@@ -125,7 +124,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   <strong>{message.messageHeader}</strong>
                 </p>
                 <p className="department-info">{parseEscapedCharacters(message.department.name)}</p>
-                <p className="department-info">{author.name}</p>
+                <p className="department-info">{author}</p>
               </div>
               <div className="p-2">
                 <div>
@@ -139,7 +138,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                         type="button"
                         className="btn btn-link text-decoration-none admin-utils"
                       >
-                        {translateText('messageBoardEdit')}
+                        {t('messageBoardEdit')}
                       </button>
                     </Link>
                   ) : (
@@ -158,14 +157,14 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                         onDeleteMessage(event, message.id);
                       }}
                     >
-                      {translateText('messageBoardDelete')}
+                      {t('messageBoardDelete')}
                     </button>
                   ) : (
                     <div></div>
                   )}
                 </div>
 
-                <p className="department-info">{translateText('messageBoardPostedOn')}</p>
+                <p className="department-info">{t('messageBoardPostedOn')}</p>
                 <p className="department-info">{readableDate}</p>
               </div>
             </div>
@@ -177,7 +176,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             {useLocation().pathname.split('/').length < 4 ? (
               <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
                 <button type="button" className="btn btn-link text-decoration-none admin-utils">
-                  {translateText('messageBoardComments') + '(' + commentCount + ')'}
+                  {t('messageBoardComments') + '(' + commentCount + ')'}
                 </button>
               </Link>
             ) : null}

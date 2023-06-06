@@ -1,9 +1,10 @@
-import Departments from 'utils/departments';
 import * as mongoose from 'mongoose';
-import { IllegalState } from 'exceptions/systemException';
-import { formatDateString } from 'utils/utils';
-import UserCollection from './user';
+
 import { BiomechApiOut } from 'routes/api/jsons/biomech';
+import Departments from 'utils/departments';
+import { IllegalState } from 'exceptions/systemException';
+import UserCollection from './user';
+import { formatDateString } from 'utils/utils';
 
 const { Schema } = mongoose;
 
@@ -50,10 +51,7 @@ const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
 );
 bioMechSchema.methods.toJson = async function (): Promise<BiomechJson> {
   const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
-  if (!userDoc) {
-    throw new IllegalState(`Biomech references to non-existing user with id ${this.userId}`);
-  }
-  const userJson = await userDoc.toJson();
+  const userJson = await userDoc?.toJson();
 
   const json: BiomechJson = {
     id: this._id,

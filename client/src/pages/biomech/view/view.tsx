@@ -1,23 +1,24 @@
-import { useEffect, useMemo, useState } from 'react';
-import { RouteComponentProps, Link, useParams } from 'react-router-dom';
-import { Badge } from 'react-bootstrap';
-import Layout from 'components/layout';
-import Api from '../../../actions/Api';
+import './view.css';
+
+import { BioReportIdParams, Paths } from 'constants/paths';
 import {
   ENDPOINT_BIOMECH_GET_BY_ID,
-  ENDPOINT_IMAGE_BY_PATH,
   ENDPOINT_BIOMECH_UPDATE_STATUS,
+  ENDPOINT_IMAGE_BY_PATH,
 } from 'constants/endpoints';
-import ModalImage from 'components/popup_modal/popup_modal_image';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
-import { History } from 'history';
+import { Link, RouteComponentProps, useParams } from 'react-router-dom';
 import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
-import { BioReportIdParams, Paths } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
-import { BiomechStatus } from '../typing';
+import { useEffect, useMemo, useState } from 'react';
 
-import './view.css';
+import Api from '../../../actions/Api';
+import { Badge } from 'react-bootstrap';
+import { BiomechStatus } from '../typing';
+import { History } from 'history';
+import Layout from 'components/layout';
+import ModalImage from 'components/popup_modal/popup_modal_image';
+import { ResponseMessage } from 'utils/response_message';
+import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 interface BrokenKitViewProps extends RouteComponentProps {}
 
@@ -137,7 +138,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                   </h2>
                   <h6 className="fs-6 lh-base">
                     {`${t('biomech.view_report.author')}: `}
-                    {BioReport.user ? BioReport.user.name : 'status.not_available'}
+                    {BioReport.user ? BioReport.user.name : t('status.not_available')}
                   </h6>
                   <h6 className="fs-6 mb-3 lh-base">Date: {BioReport.createdAt}</h6>
                   <h6 className="fs-6 fw-bold lh-base">

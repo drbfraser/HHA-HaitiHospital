@@ -11,15 +11,10 @@ interface MessageCommentProps {
 
 const MessageComment = (props: MessageCommentProps) => {
   const { t: translateText } = useTranslation();
-  const [comment, setComment] = useState<Comment>(emptyMessageComment);
-  const [author, setAuthor] = useState<UserDetails>(initialUserJson as unknown as UserDetails);
+  const author = !!props.commentJson.user ? props.commentJson.user : initialUserJson;
+  const comment = !!props.commentJson ? props.commentJson : emptyMessageComment;
 
-  useEffect(() => {
-    const retrievedUser = props.commentJson.user as unknown;
-    setAuthor(retrievedUser as UserDetails);
-    setComment(props.commentJson);
-  }, [props.commentJson]);
-
+  console.log('MessageCommentProps: ', props);
   return (
     <div className="pt-2 pb-2 border-bottom">
       <p className="">
