@@ -3,6 +3,7 @@
   "Maternity": "Maternity",
   "Rehab": "Rehab",
   "Community & Health": "Com & Health",
+  "Report": "Report",
 
   "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
@@ -40,6 +41,9 @@
   "headerDepartmentMaternity": "Department of Maternity",
   "headerDepartmentRehab": "Department of Rehab",
   "headerDepartmentCom": "Department of Com&Health",
+  "headerReport": "Submit a report",
+  "headerReportDepartmentType": "Department Type",
+  "headerReportChooseDepartment": "Choose a department",
   "headerEmployeeOfTheMonth": "Employee Of The Month",
   "headerEmployeeOfTheMonthForm": "Employee Of The Month Form",
   "headerBiomechanicalSupport": "Biomechanical Support",
