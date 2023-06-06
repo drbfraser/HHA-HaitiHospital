@@ -1,9 +1,9 @@
 import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
-import mongoose from 'mongoose';
-import { formatDateString } from 'utils/utils';
-import UserCollection from './user';
 import { UserApiOut } from '../routes/api/jsons/user';
+import UserCollection from './user';
+import { formatDateString } from 'utils/utils';
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -164,11 +164,7 @@ const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
 );
 caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
   const userDoc = await UserCollection.findById(this.userId);
-  if (!userDoc) {
-    throw new IllegalState(`Case study references to non-existing user id ${this.userId}`);
-  }
-
-  const userJson = await userDoc.toJson();
+  const userJson = await userDoc?.toJson();
   const json: CaseStudyJson = {
     id: this._id,
     caseStudyType: this.caseStudyType,

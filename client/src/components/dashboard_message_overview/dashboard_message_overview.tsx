@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import './dashboard_message_overview.css';
+
+import { language, timezone } from 'constants/timezones';
+
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
+import { History } from 'history';
 import { Message } from 'constants/interfaces';
 import { NavLink } from 'react-router-dom';
-import './dashboard_message_overview.css';
+import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { History } from 'history';
-import { timezone, language } from 'constants/timezones';
 
 interface DashboardMessageProps {}
 
@@ -63,7 +65,9 @@ const DashboardMessageOverview = (props: DashboardMessageProps) => {
                       <th scope="row" className="text-secondary text-break">
                         {message.messageHeader}
                       </th>
-                      <td className="text-secondary">{message.user.name}</td>
+                      <td className="text-secondary">
+                        {!!message.user ? message.user.name : t('status.not_available')}
+                      </td>
                       <td className="text-secondary">
                         {message.date.toLocaleString(language, {
                           timeZone: timezone,

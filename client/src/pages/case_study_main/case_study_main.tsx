@@ -1,32 +1,34 @@
 import './case_study_main_styles.css';
-import Api from 'actions/Api';
+
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import HoverableTableHead from 'components/table/HoverableTableHead';
-import Layout from 'components/layout';
-import ModalDelete from 'components/popup_modal/popup_modal_delete';
-import ModalGeneric from 'components/popup_modal/popup_modal_generic';
-import Pagination from 'components/pagination/Pagination';
-import cn from 'classnames';
-import i18n from 'i18next';
 import {
   ENDPOINT_CASESTUDY_DELETE_BY_ID,
   ENDPOINT_CASESTUDY_GET,
   ENDPOINT_CASESTUDY_PATCH_BY_ID,
 } from 'constants/endpoints';
-import { History } from 'history';
-import { Role } from 'constants/interfaces';
 import { Link, useHistory } from 'react-router-dom';
+import { SortOrder, isDateStrInDayRange, sortCaseStudies } from 'utils';
 import {
   TOAST_CASESTUDY_DELETE,
   TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_PATCH,
 } from 'constants/toastErrorMessages';
-import { SortOrder, isDateStrInDayRange, sortCaseStudies } from 'utils';
+import { language, timezone } from 'constants/timezones';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import Api from 'actions/Api';
+import { History } from 'history';
+import HoverableTableHead from 'components/table/HoverableTableHead';
+import Layout from 'components/layout';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import ModalGeneric from 'components/popup_modal/popup_modal_generic';
+import Pagination from 'components/pagination/Pagination';
+import { Role } from 'constants/interfaces';
+import cn from 'classnames';
+import i18n from 'i18next';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { timezone, language } from 'constants/timezones';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
-import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE = 10;
@@ -268,7 +270,7 @@ export const CaseStudyMain = () => {
                   <tr key={item.id}>
                     <th scope="row">{caseStudyNumberIndex + index + 1}</th>
                     <td>{i18n.t(item.caseStudyType)}</td>
-                    <td>{item.user ? item.user.name : '[deleted]'}</td>
+                    <td>{!!item.user ? item.user.name : t('status.not_available')}</td>
                     <td>
                       {item.createdAt.toLocaleString(language, {
                         timeZone: timezone,
