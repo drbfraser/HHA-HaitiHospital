@@ -10,7 +10,7 @@
     "test": "npm run test --prefix client; npm run test --prefix server; npm run test --prefix common",
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "npm run server & npm run client",
     "e2e": "cypress open",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "format": "npm run prettier -- --write",
