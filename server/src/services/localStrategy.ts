@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy as PassportLocalStrategy } from 'passport-local';
 import Joi from 'joi';
 import { Request } from 'express';
+import { validationResult } from 'express-validator';
 
 import UserCollection, { User } from '../models/user';
 import { loginSchema } from './validators';
@@ -14,15 +15,13 @@ const passportLogin = new PassportLocalStrategy(
     passReqToCallback: true,
   },
   async (req: Request, username: string, password: string, done) => {
-    // TODO: validate with express-validator
-    loginSchema
-      .validateAsync({ username, password })
-      .then((val) => {
-        req.body = val;
-      })
-      .catch((err) => {
-        throw new Error('Failed to validate input ' + err.details[0].message);
-      });
+    // TODO: validate with express-validator - #93 Done
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const errorMessages = errors.array().map((error) => error.msg);
+      throw new Error('Failed to validate input: ' + errorMessages.join(' '));
+    }
 
     try {
       const user = await UserCollection.findOne({ username: username.trim() });
