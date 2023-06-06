@@ -9,7 +9,6 @@ export enum DefaultDepartments {
   Maternity = 'Maternity',
   Community = 'Community & Health',
   BioMechanic = 'Bio Support',
-  Report = 'Report',
 }
 
 // ***************************************************** Utility functions for hashtable approach *****************************************************
