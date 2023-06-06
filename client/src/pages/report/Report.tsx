@@ -75,7 +75,6 @@ export const Report = () => {
     );
   };
 
-  
   useEffect(() => {
     const controller = new AbortController();
     const getTemplates = async () => {
