@@ -22,12 +22,12 @@ const ModalDelete = (props: ModalDeleteProps) => {
       </Modal.Header>
       <Modal.Body>{t('modal.delete_msg', { item: props.item })}</Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-dark" onClick={() => props.onModalClose()}>
+        <Button className="mr-3" variant="outline-dark" onClick={() => props.onModalClose()}>
           {t('button.cancel')}
         </Button>
         <Button
           data-testid={props.dataTestId}
-          variant="outline-danger"
+          variant="danger"
           onClick={() => props.onModalDelete(props.currentItem)}
         >
           {t('button.delete')}
