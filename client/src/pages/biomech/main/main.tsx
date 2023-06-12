@@ -139,7 +139,11 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                 <tbody>
                   {currentTableData.map((item, index) => {
                     return (
-                      <tr key={item.id}>
+                      <tr
+                        key={item.id}
+                        onClick={() => history.push(`${Paths.getBioMechViewId(item.id)}`)}
+                        role="button"
+                      >
                         <th scope="row">{bioReportNumberIndex + index + 1}</th>
                         <td>
                           {
@@ -161,13 +165,13 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                           })}
                         </td>
                         <td>
-                          <button
+                          {/* <button
                             data-testid="view-biomech-button"
                             className="btn btn-link text-decoration-none d-inline"
                             onClick={() => history.push(`${Paths.getBioMechViewId(item.id)}`)}
                           >
                             {t(`button.view`)}
-                          </button>
+                          </button> */}
                           {renderBasedOnRole(authState.userDetails.role, [
                             Role.Admin,
                             Role.MedicalDirector,
