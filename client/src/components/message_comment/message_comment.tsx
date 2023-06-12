@@ -1,8 +1,9 @@
+import { Comment, UserDetails, emptyMessageComment } from 'constants/interfaces';
 import { useEffect, useState } from 'react';
-import { UserDetails, Comment, emptyMessageComment } from 'constants/interfaces';
+
+import initialUserJson from '../message_panel/initialUserJson.json';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useTranslation } from 'react-i18next';
-import initialUserJson from '../message_panel/initialUserJson.json';
 
 interface MessageCommentProps {
   commentJson: Comment;
@@ -10,16 +11,10 @@ interface MessageCommentProps {
 
 const MessageComment = (props: MessageCommentProps) => {
   const { t: translateText } = useTranslation();
-  const [comment, setComment] = useState<Comment>(emptyMessageComment);
-  const [author, setAuthor] = useState<UserDetails>(initialUserJson as unknown as UserDetails);
-  const readableDate = new Date(props.commentJson.createdAt).toLocaleString();
+  const author = !!props.commentJson.user ? props.commentJson.user : initialUserJson;
+  const comment = !!props.commentJson ? props.commentJson : emptyMessageComment;
 
-  useEffect(() => {
-    const retrievedUser = props.commentJson.user as unknown;
-    setAuthor(retrievedUser as UserDetails);
-    setComment(props.commentJson);
-  }, [props.commentJson]);
-
+  console.log('MessageCommentProps: ', props);
   return (
     <div className="pt-2 pb-2 border-bottom">
       <p className="">
@@ -28,7 +23,7 @@ const MessageComment = (props: MessageCommentProps) => {
           {' (' + parseEscapedCharacters(author.department.name) + ', '}
           {author.role + ') '}
           {translateText('messageBoardCommentCommentedOn') + ' '}
-          {readableDate}
+          {props.commentJson.createdAt}
         </small>
       </p>
       <p>

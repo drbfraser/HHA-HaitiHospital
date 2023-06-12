@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
 import { IllegalState } from 'exceptions/systemException';
-import UserModel from './user';
 import { UserApiOut } from '../routes/api/jsons/user';
+import UserModel from './user';
 import { formatDateString } from 'utils/utils';
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -38,10 +38,7 @@ const messageBoardCommentSchema = new Schema<MessageBoardCommentWithInstanceMeth
 
 messageBoardCommentSchema.methods.toJson = async function (): Promise<MessageBoardCommentJson> {
   const userDoc = await UserModel.findOne({ _id: this.userId }).exec();
-  if (!userDoc) {
-    throw new IllegalState(`Message references to non-existing user with id ${this.userId}`);
-  }
-  const userJson = await userDoc.toJson();
+  const userJson = await userDoc?.toJson();
 
   const json: MessageBoardCommentJson = {
     id: this._id,

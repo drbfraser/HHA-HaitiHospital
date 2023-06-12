@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Department } from 'constants/interfaces';
+import { useTranslation } from 'react-i18next';
 
 export const ReportAndTemplateForm = ({
   title,
@@ -14,6 +15,7 @@ export const ReportAndTemplateForm = ({
   currentDepartment: Department;
   setCurrentDepartment: Dispatch<SetStateAction<Department>>;
 }): JSX.Element => {
+  const { t } = useTranslation();
   return (
     <div className="col-md-6 mb-2">
       <h1 className="text-start">{title}</h1>
@@ -27,7 +29,7 @@ export const ReportAndTemplateForm = ({
           }
           value={currentDepartment?.id || ''}
         >
-          <option value="">Choose a department</option>
+          <option value="">{t('headerReportChooseDepartment')}</option>
           {departments &&
             departments.map(({ id, name }) => (
               <option key={id} value={id}>

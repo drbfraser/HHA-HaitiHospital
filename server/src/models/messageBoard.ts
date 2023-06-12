@@ -1,9 +1,10 @@
+import * as mongoose from 'mongoose';
+
 import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
-import * as mongoose from 'mongoose';
-import { formatDateString } from 'utils/utils';
-import UserCollection from './user';
 import { UserApiOut } from '../routes/api/jsons/user';
+import UserCollection from './user';
+import { formatDateString } from 'utils/utils';
 
 const { Schema } = mongoose;
 
@@ -21,7 +22,7 @@ interface MessageJson {
     id: string;
     name: string;
   };
-  user: UserApiOut.UserJson;
+  user: UserApiOut.UserJson | null;
   date: string;
   messageBody: string;
   messageHeader: string;
@@ -47,10 +48,7 @@ const messageBodySchema = new Schema<MessageWithInstanceMethods>(
 );
 messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
-  if (!userDoc) {
-    throw new IllegalState(`Message references to non-existing user with id ${this.userId}`);
-  }
-  const userJson = await userDoc.toJson();
+  const userJson = await userDoc?.toJson();
 
   const json: MessageJson = {
     id: this._id,
@@ -63,6 +61,7 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
     messageBody: this.messageBody,
     messageHeader: this.messageHeader,
   };
+
   return json;
 };
 

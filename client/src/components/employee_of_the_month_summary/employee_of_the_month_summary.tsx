@@ -84,33 +84,29 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
         match={undefined}
       ></ModalImage>
       <div className="employee-subcontainer">
-        <div style={{ display: 'flex', flex: '1 1 auto' }}>
-          <div className="w-100 pr-2">
-            <h2 className="mt-3 mb-3 fw-bold">
-              {translateText('employeeOfTheMonthTitle').concat(
-                translateMonth(currMonth).concat(' ').concat(currYear.toString()),
-              )}
-            </h2>
-            <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
-            <p className="fs-6 lh-base text-break">
-              {(Date.parse(updatedDate) &&
-                new Date(updatedDate).toLocaleDateString(language, {
-                  timeZone: timezone,
-                })) || // If Date is already coverted, do not covert again on rerender (causes Invalid Date Error)
-                updatedDate}
-            </p>
-            <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>
-            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>
-            <h6 className="fs-6 fw-bold lh-base">
-              {translateText('employeeOfTheMonthDepartment')}
-            </h6>
-            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department.name}</p>
-            <h6 className="fs-6 fw-bold lh-base">
-              {translateText('employeeOfTheMonthDescription')}
-            </h6>
-            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.description}</p>
-          </div>
-          <div className="w-100 pl-2">
+        <div className="employee-image-description flex flex-col">
+          <div className="top-description">
+            <div className="w-100 pr-2">
+              <h2 className="mt-3 mb-3 fw-bold">
+                {translateText('employeeOfTheMonthTitle').concat(
+                  translateMonth(currMonth).concat(' ').concat(currYear.toString()),
+                )}
+              </h2>
+              <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
+              <p className="fs-6 lh-base text-break">
+                {(Date.parse(updatedDate) &&
+                  new Date(updatedDate).toLocaleDateString(language, {
+                    timeZone: timezone,
+                  })) || // If Date is already coverted, do not covert again on rerender (causes Invalid Date Error)
+                  updatedDate}
+              </p>
+              <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>
+              <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>
+              <h6 className="fs-6 fw-bold lh-base">
+                {translateText('employeeOfTheMonthDepartment')}
+              </h6>
+              <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department.name}</p>
+            </div>
             <div className="employee-image-container">
               <img
                 src={employeeOfTheMonthImage}
@@ -123,6 +119,13 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
                 }}
               />
             </div>
+            {/* </div> */}
+          </div>
+          <div className="employee-description">
+            <h6 className="fs-6 fw-bold lh-base">
+              {translateText('employeeOfTheMonthDescription')}
+            </h6>
+            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.description}</p>
           </div>
         </div>
       </div>

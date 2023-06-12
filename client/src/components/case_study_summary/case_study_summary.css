@@ -12,11 +12,30 @@
 .case-study-image {
   cursor: pointer;
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
   object-fit: cover;
 }
 
 .case-study-image-container {
   height: 600px;
-  width: 100%;
+  flex: 1 1;
+  float: right;
+  text-align: right;
+}
+
+.case-study-top-description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.case-study-top-text, .case-study-top-image {
+  flex: 1 1;
+}
+
+/* 767px is tablet size */
+@media screen and (max-width: 767px) {
+  .case-study-top-description {
+    flex-direction: column;
+  }
 }
