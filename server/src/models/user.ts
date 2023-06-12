@@ -5,6 +5,9 @@ import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
 import { logger } from '../logger';
+import { isMatch, reject } from 'lodash';
+import { hash } from 'argon2';
+
 const { Schema } = mongoose;
 
 export enum Role {
@@ -88,37 +91,63 @@ userSchema.methods.generateJWT = function () {
   return token;
 };
 
-userSchema.methods.registerUser = (newUser, callback) => {
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(newUser.password, salt, (err, hash) => {
-      if (err) {
-        logger.error(err);
-      }
-      // set pasword to hash
-      newUser.password = hash;
-      newUser.save({ new: true }, callback);
-    });
-  });
+userSchema.methods.registerUser = async (newUser, callback) => {
+  // Using Argon2id June 12, 2023. Password is automatically hashed using this algorithm
+  try {
+    await hashPassword(newUser.password)
+      .then((hash) => {
+        newUser.password = hash;
+      })
+      .then(() => newUser.save({ new: true }, callback));
+  } catch (err) {
+    logger.log(err);
+  }
+
+  // bcrypt.genSalt(10, (err, salt) => {
+  //   bcrypt.hash(newUser.password, salt, (err, hash) => {
+  //     if (err) {
+  //       logger.error(err);
+  //     }
+  //     // set pasword to hash
+  //     newUser.password = hash;
+  //     newUser.save({ new: true }, callback);
+  //   });
+  // });
 };
 
-userSchema.methods.comparePassword = function (candidatePassword, callback) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    if (err) return callback(err);
-    callback(null, isMatch);
-  });
+userSchema.methods.comparePassword = async (candidatePassword, callback) => {
+  try {
+    if (await argon2.verify(candidatePassword, this.password)) {
+      callback(null, true);
+    } else {
+      return callback(null, false);
+    }
+  } catch (err) {
+    return callback(err);
+  }
+
+  // bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+  //   if (err) return callback(err);
+  //   callback(null, isMatch);
+  // });
 };
 
-export async function hashPassword(password) {
-  const saltRounds = 10;
+export async function hashPassword(password): Promise<string> {
+  // Using Argon2id June 12, 2023. Password is automatically hashed using this algorithm
+  try {
+    const hashedPassword = await argon2.hash(password, { type: argon2.argon2id });
+    return hashedPassword;
+  } catch (err) {
+    logger.log(err);
+    return err;
+  }
 
-  const hashedPassword: string = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, function (err, hash) {
-      if (err) reject(err);
-      else resolve(hash);
-    });
-  });
-
-  return hashedPassword;
+  // const hashedPassword: string = await new Promise((resolve, reject) => {
+  //   bcrypt.hash(password, saltRounds, function (err, hash) {
+  //     if (err) reject(err);
+  //     else resolve(hash);
+  //   });
+  // });
 }
 
 export const USER_MODEL_NAME = 'User';

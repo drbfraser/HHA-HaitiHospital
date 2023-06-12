@@ -23,6 +23,7 @@ import { isValidPasswordString } from 'utils/utils';
 
 const router = Router();
 
+// Update existing user
 router.put(
   '/:id',
   requireJwtAuth,
@@ -148,6 +149,7 @@ router.delete(
   },
 );
 
+// Admin creates user
 router.post(
   '/',
   requireJwtAuth,
