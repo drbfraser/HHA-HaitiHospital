@@ -17,7 +17,7 @@ interface EmployeeOfTheMonthSummaryProps extends RouteComponentProps {
 
 export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps) => {
   const ALT_MESSAGE: string = 'Employee Of The Month...';
-  const { t: translateText } = useTranslation();
+  const { t } = useTranslation();
   const [imageModal, setImageModal] = useState<boolean>(false);
   const [employeeOfTheMonthImage, setEmployeeOfTheMonthImage] = useState<string>('');
   const updatedDate = props.employeeOfTheMonth.updatedAt;
@@ -46,29 +46,29 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
   const translateMonth = (monthIndicator: number): string => {
     switch (monthIndicator) {
       case 0:
-        return translateText('monthJanuary');
+        return t('monthJanuary');
       case 1:
-        return translateText('monthFebruary');
+        return t('monthFebruary');
       case 2:
-        return translateText('monthMarch');
+        return t('monthMarch');
       case 3:
-        return translateText('monthApril');
+        return t('monthApril');
       case 4:
-        return translateText('monthMay');
+        return t('monthMay');
       case 5:
-        return translateText('monthJune');
+        return t('monthJune');
       case 6:
-        return translateText('monthJuly');
+        return t('monthJuly');
       case 7:
-        return translateText('monthAugust');
+        return t('monthAugust');
       case 8:
-        return translateText('monthSeptember');
+        return t('monthSeptember');
       case 9:
-        return translateText('monthOctober');
+        return t('monthOctober');
       case 10:
-        return translateText('monthNovember');
+        return t('monthNovember');
       case 11:
-        return translateText('monthDecember');
+        return t('monthDecember');
     }
   };
 
@@ -88,11 +88,11 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
           <div className="top-description">
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">
-                {translateText('employeeOfTheMonthTitle').concat(
+                {t('employeeOfTheMonthTitle').concat(
                   translateMonth(currMonth).concat(' ').concat(currYear.toString()),
                 )}
               </h2>
-              <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
+              <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
               <p className="fs-6 lh-base text-break">
                 {(Date.parse(updatedDate) &&
                   new Date(updatedDate).toLocaleDateString(language, {
@@ -100,10 +100,10 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
                   })) || // If Date is already coverted, do not covert again on rerender (causes Invalid Date Error)
                   updatedDate}
               </p>
-              <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>
+              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
               <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>
               <h6 className="fs-6 fw-bold lh-base">
-                {translateText('employeeOfTheMonthDepartment')}
+                {t('employeeOfTheMonthDepartment')}
               </h6>
               <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department.name}</p>
             </div>
@@ -123,7 +123,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
           </div>
           <div className="employee-description">
             <h6 className="fs-6 fw-bold lh-base">
-              {translateText('employeeOfTheMonthDescription')}
+              {t('employeeOfTheMonthDescription')}
             </h6>
             <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.description}</p>
           </div>

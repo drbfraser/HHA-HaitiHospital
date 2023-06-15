@@ -10,7 +10,7 @@ interface MessageCommentProps {
 }
 
 const MessageComment = (props: MessageCommentProps) => {
-  const { t: translateText } = useTranslation();
+  const { t } = useTranslation();
   const author = !!props.commentJson.user ? props.commentJson.user : initialUserJson;
   const comment = !!props.commentJson ? props.commentJson : emptyMessageComment;
 
@@ -22,7 +22,7 @@ const MessageComment = (props: MessageCommentProps) => {
           <strong>{author.name}</strong>
           {' (' + parseEscapedCharacters(author.department.name) + ', '}
           {author.role + ') '}
-          {translateText('messageBoardCommentCommentedOn') + ' '}
+          {t('messageBoardCommentCommentedOn') + ' '}
           {props.commentJson.createdAt}
         </small>
       </p>
