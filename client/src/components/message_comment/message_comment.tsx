@@ -22,7 +22,7 @@ const MessageComment = (props: MessageCommentProps) => {
         </strong>
         <small className="text-muted fs-6">{`${props.commentJson.createdAt}`}</small>
       </div>
-      <div className='d-flex bg-light m-2 p-2 rounded border border-secondary-subtle'>
+      <div className="d-flex bg-light m-2 p-2 rounded border border-secondary-subtle">
         {comment.messageComment}
       </div>
     </div>
