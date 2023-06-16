@@ -6,7 +6,7 @@ import Departments from 'utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
 import { logger } from '../logger';
 import { isMatch, reject } from 'lodash';
-import { hash } from 'argon2';
+const argon2 = require('argon2');
 
 const { Schema } = mongoose;
 
@@ -115,9 +115,9 @@ userSchema.methods.registerUser = async (newUser, callback) => {
   // });
 };
 
-userSchema.methods.comparePassword = async (candidatePassword, callback) => {
+userSchema.methods.comparePassword = async function (candidatePassword, callback) {
   try {
-    if (await argon2.verify(candidatePassword, this.password)) {
+    if (await argon2.verify(this.password, candidatePassword)) {
       callback(null, true);
     } else {
       return callback(null, false);
