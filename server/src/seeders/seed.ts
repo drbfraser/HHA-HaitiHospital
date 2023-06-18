@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import faker from 'faker';
-
+//import { buildRehabMockReport } from '../../../common/src/MockReports';
 import {
   ObjectSerializer,
   buildMaternityMockReport,
@@ -1083,8 +1083,9 @@ const seedTemplates = async () => {
     const reportDepartmentMap: [Report, string][] = [
       [buildRehabMockReport(), DefaultDepartments.Rehab],
       [buildNicuPaedsMockReport(), DefaultDepartments.NICU],
-      [buildMaternityMockReport(), DefaultDepartments.Maternity],
+      [buildMaternityMockReport(), DefaultDepartments.Maternity], 
     ];
+    console.log(`Seeding templates buildRehabMockReport ...`);
 
     for (const tuple of reportDepartmentMap) {
       const report: Report = tuple[0];

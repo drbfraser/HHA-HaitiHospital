@@ -1,6 +1,6 @@
 import { NumericQuestion } from '@hha/common';
 import FormField from './FormField';
-import { useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { useEffect, ChangeEvent, Dispatch, SetStateAction, useCallback } from 'react';
 
 const NumericQuestionFormField = ({
   applyReportChanges,
@@ -15,6 +15,7 @@ const NumericQuestionFormField = ({
   suffixName: string;
   readOnly?: boolean;
 }): JSX.Element => {
+  console.log('NumericQuestionFormField');
   // inputState has a value of true if the input is valid or
   // if it is of type "ValidationResult<ErrorType>" when the input is invalid
   const inputState = question.getValidationResults();
@@ -28,18 +29,19 @@ const NumericQuestionFormField = ({
     updateErrorSetFromSelf();
   };
 
-  const updateErrorSetFromSelf = () =>
+  const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {
       const nextErrorSet = new Set(prevErrorSet);
-
+  
       if (question.getValidationResults() !== true) {
         nextErrorSet.add(nameId);
       } else {
         nextErrorSet.delete(nameId);
       }
-
+  
       return nextErrorSet;
     });
+  }, [setErrorSet, question, nameId]);
 
   // Disable the submit button the first time component loads if there are errors
   // This would be the case when nothing is selected and the question is required
@@ -53,7 +55,7 @@ const NumericQuestionFormField = ({
         return nextErrorSet;
       });
     };
-  }, []);
+  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
 
   return (
     <FormField

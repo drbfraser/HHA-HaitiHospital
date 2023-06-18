@@ -44,6 +44,7 @@
   "headerReport": "Submit a report",
   "headerReportDepartmentType": "Department Type",
   "headerReportChooseDepartment": "Choose a department",
+  "headerReportChooseDifferentDepartment": "Choose different department",
   "headerEmployeeOfTheMonth": "Employee Of The Month",
   "headerEmployeeOfTheMonthForm": "Employee Of The Month Form",
   "headerBiomechanicalSupport": "Biomechanical Support",
@@ -410,5 +411,16 @@
   "monthSeptember": "September",
   "monthOctober": "October",
   "monthNovember": "November",
-  "monthDecember": "December"
+  "monthDecember": "December",
+
+  "question1_1": "Beds available",
+  "rehabReportQuestions": {
+    "title": "Rehab Report",
+    "question1": "Beds available",
+    "question2": "Beds days",
+    "question3": "Patient days",
+    "question4": "Hospitalized",
+    "question5": "Discharged Alive",
+    "question5_1": "Discharged diagnosis"
+  }
 }

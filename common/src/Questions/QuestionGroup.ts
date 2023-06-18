@@ -3,13 +3,20 @@ import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
 import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
+console.log('common/src/Questions/QuestionGroup.ts');
+
+//type Translation = Record<string, string>;
+
+interface Translation {
+  [lang: string]: string;
+}
 
 @serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private readonly breakpointPairs: number[][] = [];
   private readonly questionItems: Array<QuestionNode<ID, ErrorType>> = [];
 
-  constructor(id: ID, prompt: string, ...questions: Array<QuestionNode<ID, ErrorType>>) {
+  constructor(id: ID, prompt: Translation, ...questions: Array<QuestionNode<ID, ErrorType>>) {
     super(id, prompt);
     questions ? this.addAll(...questions) : undefined;
   }

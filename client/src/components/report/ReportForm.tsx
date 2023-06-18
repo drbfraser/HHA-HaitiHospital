@@ -78,6 +78,7 @@ const ReportForm = ({
   btnText?: string;
   readOnly?: boolean;
 }): JSX.Element => {
+  console.log('client/src/componenets/report/ReportForm');
   const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
   const pageSize = reportData

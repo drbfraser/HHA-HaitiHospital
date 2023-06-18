@@ -2,12 +2,16 @@ import { ValidationResult } from '@hha/common';
 import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
 import cn from 'classnames';
 
+interface Translation {
+  [lang: string]: string;
+}
+
 type FormFieldProps = {
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   inputState: ValidationResult<string>;
   min?: number | string;
   nameId: string;
-  prompt: string;
+  prompt: Translation;
   type: HTMLInputTypeAttribute;
   value: number | string;
   readOnly?: boolean;

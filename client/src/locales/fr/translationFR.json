@@ -44,6 +44,7 @@
   "headerReport": "Présenter un rapport",
   "headerReportDepartmentType": "Type de département",
   "headerReportChooseDepartment": "Choisir un département",
+  "headerReportChooseDifferentDepartment": "Choisir un autre département",
   "headerEmployeeOfTheMonth": "Employé du mois",
   "headerEmployeeOfTheMonthForm": "Formulaire d'employé du mois",
   "headerBiomechanicalSupport": "Soutien biomécanique",
@@ -410,5 +411,16 @@
   "monthSeptember": "Septembre",
   "monthOctober": "Octobre",
   "monthNovember": "Novembre",
-  "monthDecember": "Décembre"
+  "monthDecember": "Décembre",
+
+  "question1_1": "Lits disponibles",
+  "rehabReportQuestions": {
+    "title":"Rapport de Kit Cassé",
+    "question1": "Lits disponibles",
+    "question2": "Jours de lits",
+    "question3": "Jours de patient",
+    "question4": "Hospitalisés",
+    "question5": "Sortis vivants",
+    "question5_1": "Diagnostic à la sortie"
+  }
 }

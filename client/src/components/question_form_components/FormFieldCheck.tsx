@@ -1,9 +1,13 @@
 import { ReactNode } from 'react';
 
+interface Translation {
+  [lang: string]: string;
+}
+
 type FormFieldCheckProps = {
   children: ReactNode;
   nameId: string;
-  prompt: string;
+  prompt: Translation;
 };
 
 const FormFieldCheck = ({ children, nameId, prompt }: FormFieldCheckProps) => {
