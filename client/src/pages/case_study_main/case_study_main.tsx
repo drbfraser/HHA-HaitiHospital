@@ -276,18 +276,9 @@ export const CaseStudyMain = () => {
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{!!item.user ? item.user.name : t('status.not_available')}</td>
                     <td>
-                      {item.createdAt.toLocaleString(language, {
-                        timeZone: timezone,
-                      })}
+                      {item.createdAt}
                     </td>
                     <td>
-                      {/* <button
-                        data-testid="view-case-study-button"
-                        className="btn btn-link text-decoration-none"
-                      >
-                        {t('caseStudyMainViewCaseStudy').concat(' ')}
-                      </button> */}
-
                       {renderBasedOnRole(authState.userDetails.role, [
                         Role.Admin,
                         Role.MedicalDirector,
