@@ -4,7 +4,6 @@
   "Rehab": "Rehab",
   "Community & Health": "Com & Health",
   "Report": "Report",
-
   "signInPleaseSignIn": "S'identifier",
   "signInPleasePlaceHolderEmail": "Nom d'utilisateur",
   "signInPleasePlaceHolderPassword": "Mot de passe",
@@ -17,7 +16,6 @@
   "signInUsernameValidationRequired": "Le nom d'utilisateur est requis pour se connecter",
   "signInPasswordValidationRequired": "Le mot de passe est requis pour se connecter",
   "signInContactAdmin": "Contacter l'administrateur",
-
   "sidebarHome": "D'accueil",
   "sidebarMessageBoard": "Tableau de bord",
   "sidebarLeaderBoard": "Classement",
@@ -30,7 +28,6 @@
   "sidebarPermissions": "autorisations",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
-
   "headerOverview": "Aperçu",
   "headerMessageBoard": "Tableau de bord",
   "headerMessageComments": "Commentaires",
@@ -60,7 +57,6 @@
   "Medical Director": "Directeur médical",
   "Head of Department": "Chef de département",
   "User": "Utilisateur",
-
   "leaderBoardOverviewDepartmentLeader": "Classement du département",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "département",
@@ -68,14 +64,12 @@
   "leaderBoardOverviewPoints": "Points",
   "leaderBoardOverviewShowLess": "Montrer moins",
   "leaderBoardOverviewShowMore": "Montre plus",
-
   "dashboardMessageOverviewMessages": "messages",
   "dashboardMessageOverviewTitle": "Titre",
   "dashboardMessageOverviewUser": "Utilisateur",
   "dashboardMessageOverviewDate": "Date",
   "dashboardMessageOverviewMessage": "Un message",
   "dashboardMessageOverviewSeeMore": "Voir plus de messages",
-
   "messageBoardRecentUpdates": "Annonces Récentes",
   "messageBoardAddMessage": "Ajouter un message",
   "messageBoardMore": "Suite",
@@ -93,7 +87,6 @@
   "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
   "MessageAlertMessageDeleted": "Message supprimé!",
-
   "addMessageAddMessage": "Ajouter un message",
   "addMessageUserID": "Identifiant d'utilisateur",
   "addMessageDepartment": "département",
@@ -106,9 +99,7 @@
   "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
   "addMessageAlertFailed": "Échec de la mise à jour du message",
   "addMessageAlertMustSelectDepartment": "Doit sélectionner un département",
-
   "editMessage": "Modifier le message",
-
   "leaderBoardDepartmentLeaderboard": "Classement du département",
   "leaderBoardPosition": "Position",
   "leaderBoardDepartment": "département",
@@ -116,7 +107,6 @@
   "leaderBoardPoints": "Points",
   "leaderBoardEmployeeOfMonth": "Employé du mois",
   "leaderBoardLastUpdate": "Dernière mise à jour il y a 3 jours",
-
   "caseStudyMainAddCaseStudy": "Ajouter une étude de cas",
   "caseStudyMainCaseStudyType": "Type d'étude de cas",
   "Patient Story": "Témoignage de patients",
@@ -131,7 +121,6 @@
   "caseStudyMainDelete": "Effacer",
   "caseStudyMainFeatured": "Définir comme présenté ",
   "caseStudyMainUnFeatured": "Actuellement en vedette ",
-
   "caseStudyFormBack": "Arrière",
   "caseStudyFormCaseStudyOptions": "Options d'étude de cas",
   "caseStudyFormClickToSelect": "Cliquez pour sélectionner un type d'étude de cas",
@@ -140,7 +129,6 @@
   "caseStudyFormTrainingSession": "Session de formation",
   "caseStudyFormEquipmentReceived": "Équipement reçu",
   "caseStudyFormOtherStory": "Autre histoire",
-
   "caseStudyFormPatientStoryCaseStudy": "Étude de cas sur l'histoire d'un patient",
   "caseStudyFormPatientName": "Le nom du patient",
   "caseStudyFormPatientAge": "Âge du patient",
@@ -154,34 +142,28 @@
   "caseStudyFormNoFileChosen": "Aucun fichier choisi",
   "caseStudyFormPermissionToShare": "Cette personne a donné la permission de partager son histoire et sa photo dans les communications HHA, y compris les plateformes en ligne",
   "caseStudyFormSubmitForm": "Soumettre le formulaire",
-
   "caseStudyFormStaffRecognitionCaseStudy": "Étude de cas sur la reconnaissance du personnel",
   "caseStudyFormStaffName": "Nom du personnel",
   "caseStudyFormRoleJobTitle": "Rôle / Titre du poste",
   "caseStudyFormWhichDepartmentWorkIn": "Dans quel département travaillent-ils ?",
   "caseStudyFormHowLongHaveBeenWorkingHCBH": "Depuis combien de temps travaillent-ils chez HCBH ?",
   "caseStudyFormWhatEnjoyTheMostAtHCBH": "Qu'est-ce qu'ils apprécient le plus dans leur travail chez HCBH ?",
-
   "caseStudyFormTrainingSessionCaseStudy": "Étude de cas sur la session de formation",
   "caseStudyFormTrainingDate": "Date de formation (MM-DD-YYYY)",
   "caseStudyFormWhatWasTrainingOn": "Sur quoi s'est déroulée la formation ?",
   "caseStudyFormWhoConductedTraining": "Qui a mené la formation ?",
   "caseStudyFormWhoAttendedTraining": "Qui a suivi la formation ?",
   "caseStudyFormHowWillTrainingBenefitHCBH": "Comment la formation profitera-t-elle à HCBH et à son personnel ?",
-
   "caseStudyFormEquipmentReceivedCaseStudy": "Étude de cas sur l'équipement reçu",
   "caseStudyFormWhatEquipmentWasReceived": "Quel équipement a été reçu ?",
   "caseStudyFormWhichDepartmentReceivedIt": "Quel département l'a reçu ?",
   "caseStudyFormWhoWasEquipmentFrom": "De qui provenait l'équipement ?",
   "caseStudyFormWasItDonatedOrPurchased": "A-t-il été donné ou acheté ?",
   "caseStudyFormWhatDoesThisNewEquipmentDo": "A quoi sert ce nouvel équipement ?",
-
   "caseStudyFormOtherStoryCaseStudy": "Autre histoire Étude de cas",
   "caseStudyFormAnErrorOccurred": "Une erreur s'est produite lors de la soumission. Veuillez réessayer.",
-
   "caseStudyViewAuthor": "Auteur: ",
   "caseStudyViewDate": "Date: ",
-
   "departmentPageNICU/PAED": "Département de NICU/PAED",
   "departmentPageDepartmentOf": "Département de ",
   "departmentPageSubmitData": "Soumettre des données",
@@ -193,7 +175,6 @@
   "departmentPageDelete": "Effacer",
   "departmentPageAction": "action",
   "departmentPageAccumulate": "Accumuler",
-
   "departmentAddBack": "Arrière",
   "departmentAddDate": "Date:",
   "departmentAddMonth": "Mois",
@@ -210,7 +191,6 @@
   "departmentAddNovember": "novembre",
   "departmentAddDecember": "décembre",
   "departmentAddYear": "Année",
-
   "departmentFormSteps": "Pas:",
   "departmentFormSelectPatient": "Sélectionner un patient",
   "departmentFormSubmitAlertPressOKToSubmit": "Appuyez sur OK pour finaliser la soumission",
@@ -218,12 +198,10 @@
   "departmentFormSubmit": "Soumettret",
   "departmentFormPrevious": "Précédent",
   "departmentFormNext": "Prochain",
-
   "departmentFormRequiresValidNumber": "Nécessite un numéro valide",
   "departmentFormNameAndValue": "Nom et valeur",
   "departmentFormAdd": "Ajouter",
   "departmentFormRemove": "Supprimer",
-
   "departmentFormArrayInputValidationMustEnterValue": "Doit entrer une valeur pour ce champ",
   "departmentFormArrayInputValidationPositiveNumberOnly": "Nombres positifs uniquement pour ce champ",
   "departmentFormArrayInputValidationIntegersOnly": "Entiers uniquement pour ce champ",
@@ -233,7 +211,6 @@
   "departmentFormTotalValidationDoesNotAddUpToTotal": "Ne correspond pas au total",
   "departmentFormTotalValidationMustEnterName": "Doit entrer un nom",
   "departmentFormValidationOneOrMoreFieldsAreInvalid": "Un ou plusieurs champs sont invalides",
-
   "departmentReportDisplayDepartmentNICU": "Département de l'NICU/pédiatrie",
   "departmentReportDisplayNoReportFound": "Aucun rapport trouvé",
   "departmentReportDisplaySave": "sauvegarder",
@@ -246,18 +223,14 @@
   "departmentReportDisplayShowPagination": "Afficher la Pagination",
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
-
   "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",
   "reportAlertReportsDeleted": "Rapport(s) supprimé(s)",
-
   "reportsReportId": "ID de rapport",
   "reportsDepartment": "Département",
   "reportsSubmissionDate": "Date de soumission",
   "reportsUserId": "ID de l'utilisateur",
   "reportsSubmittedBy": "Proposé par",
-
   "reportViewBack": "Arrière",
-
   "employeeOfTheMonthEdit": "Mettre à jour l'employé du mois",
   "employeeOfTheMonthTitle": "Employé du mois de ",
   "employeeOfTheMonthDate": "Date de mise à jour",
@@ -268,14 +241,12 @@
   "employeeOfTheMonthUploadImage": "Télécharger une image",
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
-
   "template": {
     "change_template": "Changer de modèle",
     "department": "Département",
     "select_department": "Sélectionner le département",
     "upload_template": "Télécharger un nouveau modèle"
   },
-
   "admin": {
     "main_page": {
       "name_col": "Nom",
@@ -297,12 +268,10 @@
       }
     }
   },
-
   "permissions": {
     "selectRole": "Sélectionnez le rôle",
     "permissionHeader": "Autorisations"
   },
-
   "biomech": {
     "main_page": {
       "priority_col": "Priorité",
@@ -340,11 +309,9 @@
       "backlog": "Arriéré"
     }
   },
-
   "status": {
     "not_available": "N/A"
   },
-
   "role": {
     "user": "User",
     "admin": "Admin",
@@ -352,12 +319,10 @@
     "head_department": "Head of Department",
     "bio_mechanic": "Bio mécanique"
   },
-
   "modal": {
     "delete_msg": "Confirmer pour supprimer {{item}}?",
     "title": "AVERTISSEMENT"
   },
-
   "button": {
     "add_user": "Ajouter un Utilisateur",
     "edit": "Éditer",
@@ -369,20 +334,17 @@
     "view": "Regarder",
     "add_image": "Ajouter une Image"
   },
-
   "request_response": {
     "ok": "Avec succès {{action}} {{item}}!",
     "pending": "Traitement {{action}} {{item}}...",
     "failed": "Échec de {{action}} {{item}}"
   },
-
   "request_action": {
     "create": "créer",
     "fetch": "la récupération de(s)",
     "update": "la mise à jour de(s)",
     "delete": "la suppression de(s)"
   },
-
   "item": {
     "department": "départment",
     "departments": "départments",
@@ -393,13 +355,11 @@
     "user": "l'utilisateur",
     "users": "utilisateurs"
   },
-
   "error_message": {
     "compress": {
       "image": "Impossible de compresser ce fichier image"
     }
   },
-
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",
   "monthMarch": "Mars",
@@ -412,15 +372,128 @@
   "monthOctober": "Octobre",
   "monthNovember": "Novembre",
   "monthDecember": "Décembre",
-
-  "question1_1": "Lits disponibles",
   "rehabReportQuestions": {
-    "title":"Rapport de Kit Cassé",
+    "title": "Rapport de Réadaptation",
     "question1": "Lits disponibles",
     "question2": "Jours de lits",
     "question3": "Jours de patient",
     "question4": "Hospitalisés",
     "question5": "Sortis vivants",
-    "question5_1": "Diagnostic à la sortie"
+    "question5_1": "Diagnostic à la sortie",
+    "question5_2": "Nombre de jours en unité de rééducation de l'admission à la sortie",
+    "question5_3": "Motif de sortie",
+    "question5_4": "Résultat de la sortie (AVQ/AIV)",
+    "question5_5": "Résultat de la sortie (Transferts et mobilité)",
+    "question5_6": "Aide à la mobilité / Dispositif d'assistance fourni ?",
+    "question5_7": "Lieu de sortie",
+    "question5_8": "Statut d'emploi à la sortie",
+    "question6": "Décès avant 48h",
+    "question6_1": "Diagnostic",
+    "question6_2": "Âge",
+    "question6_3": "Cause du décès",
+    "question7": "Décès après 48h",
+    "question7_1": "Diagnostic",
+    "question7_2": "Âge",
+    "question7_3": "Cause du décès",
+    "question8": "Jours d'hospitalisation",
+    "question9": "Références",
+    "question10": "Transferts",
+    "question11": "Sortie volontaire",
+    "question12_1": "Raison pour laquelle le patient n'a pas encore été libéré",
+    "question12_1_1": "Pas prêt(e) d'un point de vue thérapeutique",
+    "question12_1_2": "Soins de plaies",
+    "question12_1_3": "Autre raison médicale (telle que la médication IV)",
+    "question12_2": "Durée de séjour des patients actuellement hospitalisés",
+    "question12_2_1": "1-3 mois",
+    "question12_2_2": "3-6 mois",
+    "question12_2_3": "6 mois - 1 an",
+    "question12_2_4": "1-2 ans",
+    "question12_2_5": "2-3 ans",
+    "question12_2_6": "3 ans ou plus",
+    "question13": "Admissions",
+    "question13_1": "D'où viennent les patients ?",
+    "question13_1_1": "Morin Quartier",
+    "question13_1_2": "Cap-Haïtien",
+    "question13_1_3": "Département du Nord",
+    "question13_1_4": "Autres départements",
+    "question13_2": "Maladie principale",
+    "question13_2_1": "SCI - tétraplégie",
+    "question13_2_1_1": "Cause",
+    "question13_2_1_1_1": "Accident de transport",
+    "question13_2_1_1_2": "Chute",
+    "question13_2_1_1_3": "Agression",
+    "question13_2_1_1_4": "Sports",
+    "question13_2_1_1_5": "Dysfonctionnement médullaire non traumatique",
+    "question13_2_1_1_6": "Complication médicale/chirurgicale",
+    "question13_2_1_1_7": "Autre raison traumatique",
+    "question13_2_2": "SCI - paraplégie",
+    "question13_2_2_1": "Cause",
+    "question13_2_2_1_1": "Accident de transport",
+    "question13_2_2_1_2": "Chute",
+    "question13_2_2_1_3": "Agression",
+    "question13_2_2_1_4": "Sports",
+    "question13_2_2_1_5": "Dysfonctionnement médullaire non traumatique",
+    "question13_2_2_1_6": "Complication médicale/chirurgicale",
+    "question13_2_2_1_7": "Autre raison traumatique",
+    "question13_2_3": "AVC",
+    "question13_2_4": "Fracture de la hanche",
+    "question13_2_5": "Fracture des os longs",
+    "question13_2_6": "Maladie neurodégénérative",
+    "question13_2_7": "Traumatisme crânien",
+    "question13_2_8": "Soins de plaies",
+    "question13_2_9": "Autre raison médicale",
+    "question13_2_10": "Autre traumatisme",
+    "question14": "Patients externes",
+    "question14_1": "Âge",
+    "question14_1_1": "0-5 ans",
+    "question14_1_2": "6-11 ans",
+    "question14_1_3": "12-17 ans",
+    "question14_1_4": "18-30 ans",
+    "question14_1_5": "31-50 ans",
+    "question14_1_6": "51-70 ans",
+    "question14_1_7": "71 ans et plus",
+    "question14_2": "Sexe",
+    "question14_2_1": "Masculin",
+    "question14_2_2": "Féminin",
+    "question14_3": "Condition principale",
+    "question14_3_1": "SCI - tétraplégie",
+    "question14_3_2": "SCI - paraplégie",
+    "question14_3_3": "Accident vasculaire cérébral (AVC)",
+    "question14_3_4": "Fracture de la hanche",
+    "question14_3_5": "Fracture des os longs",
+    "question14_3_6": "Maladie neurogénérative",
+    "question14_3_7": "Traumatisme crânien",
+    "question14_3_8": "Soins des plaies",
+    "question14_3_9": "Autre raison médicale",
+    "question14_3_10": "Autre traumatisme",
+    "question5_3Options": [
+      "Tous les objectifs atteints",
+      "Objectifs partiellement atteints, suffisant pour la sortie",
+      "Objectifs non atteints, sortie pour une autre raison"
+    ],
+    "question5_4Options": [
+      "Indépendant",
+      "Modifié indépendant",
+      "Surveillance",
+      "Assistance minimale",
+      "Assistance modérée",
+      "Assistance maximale",
+      "Dépendant"
+    ],
+    "question5_5Options": [
+      "Indépendant",
+      "Modifié indépendant",
+      "Surveillance",
+      "Assistance minimale",
+      "Assistance modérée",
+      "Assistance maximale",
+      "Dépendant"
+    ],
+    "question5_8Options": [
+      "Employé",
+      "Sans emploi, incapable de trouver du travail",
+      "Sans emploi, en raison de l'état de santé",
+      "Retraité, ne travaille pas en raison de l'âge"
+    ]
   }
 }

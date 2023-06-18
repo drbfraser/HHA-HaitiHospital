@@ -4,7 +4,6 @@
   "Rehab": "Rehab",
   "Community & Health": "Com & Health",
   "Report": "Report",
-
   "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
   "signInPleasePlaceHolderPassword": "Password",
@@ -17,7 +16,6 @@
   "signInUsernameValidationRequired": "Username is required to login",
   "signInPasswordValidationRequired": "Password is required to login",
   "signInContactAdmin": "Contact Admin",
-
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",
   "sidebarLeaderBoard": "Leaderboard",
@@ -30,7 +28,6 @@
   "sidebarPermissions": "Permissions",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
-
   "headerOverview": "Overview",
   "headerMessageBoard": "Message Board",
   "headerMessageComments": "Comments",
@@ -59,7 +56,6 @@
   "MedicalDirector": "Medical Director",
   "HeadOfDepartment": "Head of Department",
   "User": "User",
-
   "leaderBoardOverviewDepartmentLeader": "Department Leaderboard",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "Department",
@@ -68,14 +64,12 @@
   "leaderBoardOverviewShowLess": "Show Less",
   "leaderBoardOverviewShowMore": "Show More",
   "leaderBoardOverviewSeeFullLeaderboard": "Go to leaderboard page",
-
   "dashboardMessageOverviewMessages": "Messages",
   "dashboardMessageOverviewTitle": "Title",
   "dashboardMessageOverviewUser": "User",
   "dashboardMessageOverviewDate": "Date",
   "dashboardMessageOverviewMessage": "Message",
   "dashboardMessageOverviewSeeMore": "See More messages",
-
   "messageBoardRecentUpdates": "Recent Announcements",
   "messageBoardAddMessage": "Add Message",
   "messageBoardMore": "More",
@@ -93,7 +87,6 @@
   "messageBoardCommentsBack": "Back",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
-
   "addMessageAddMessage": "Add Message",
   "addMessageUserID": "User ID",
   "addMessageDepartment": "Department",
@@ -106,9 +99,7 @@
   "addMessageAlertUnauthorized": "Update message failed: unauthorized",
   "addMessageAlertFailed": "Update message failed",
   "addMessageAlertMustSelectDepartment": "Must select a department",
-
   "editMessage": "Edit Message",
-
   "leaderBoardDepartmentLeaderboard": "Department Leaderboard",
   "leaderBoardPosition": "Position",
   "leaderBoardDepartment": "Department",
@@ -116,7 +107,6 @@
   "leaderBoardPoints": "Points",
   "leaderBoardEmployeeOfMonth": "Employee of the Month",
   "leaderBoardLastUpdate": "Last updated 3 days ago",
-
   "caseStudyMainAddCaseStudy": "Add Case Study",
   "caseStudyMainCaseStudyType": "Case Study Type",
   "Patient Story": "Patient Story",
@@ -131,7 +121,6 @@
   "caseStudyMainDelete": "Delete",
   "caseStudyMainFeatured": "Set as Featured",
   "caseStudyMainUnFeatured": "Currently Featured",
-
   "caseStudyFormBack": "Back",
   "caseStudyFormCaseStudyOptions": "Case Study Options",
   "caseStudyFormClickToSelect": "Click to select a Case Study Type",
@@ -140,7 +129,6 @@
   "caseStudyFormTrainingSession": "Training Session",
   "caseStudyFormEquipmentReceived": "Equipment Received",
   "caseStudyFormOtherStory": "Other Story",
-
   "caseStudyFormPatientStoryCaseStudy": "Patient Story Case Study",
   "caseStudyFormPatientName": "Patient's Name",
   "caseStudyFormPatientAge": "Patient Age",
@@ -154,34 +142,28 @@
   "caseStudyFormNoFileChosen": "No file chosen",
   "caseStudyFormPermissionToShare": "This person has given permission to share their story and photo in HHA communications, including online platforms",
   "caseStudyFormSubmitForm": "Submit Form",
-
   "caseStudyFormStaffRecognitionCaseStudy": "Staff Recognition Case Study",
   "caseStudyFormStaffName": "Staff Name",
   "caseStudyFormRoleJobTitle": "Role / Job Title",
   "caseStudyFormWhichDepartmentWorkIn": "Which department do they work in?",
   "caseStudyFormHowLongHaveBeenWorkingHCBH": "How long have they been working at HCBH?",
   "caseStudyFormWhatEnjoyTheMostAtHCBH": "What do they enjoy the most about working at HCBH?",
-
   "caseStudyFormTrainingSessionCaseStudy": "Training Session Case Study",
   "caseStudyFormTrainingDate": "Training Date (MM-DD-YYYY)",
   "caseStudyFormWhatWasTrainingOn": "What was the training on?",
   "caseStudyFormWhoConductedTraining": "Who conducted training?",
   "caseStudyFormWhoAttendedTraining": "Who attended the training?",
   "caseStudyFormHowWillTrainingBenefitHCBH": "How will the training benefit HCBH and its staff?",
-
   "caseStudyFormEquipmentReceivedCaseStudy": "Equipment Received Case Study",
   "caseStudyFormWhatEquipmentWasReceived": "What equipment was received?",
   "caseStudyFormWhichDepartmentReceivedIt": "Which department received it?",
   "caseStudyFormWhoWasEquipmentFrom": "Who was the equipment from?",
   "caseStudyFormWasItDonatedOrPurchased": "Was it donated or purchased?",
   "caseStudyFormWhatDoesThisNewEquipmentDo": "What does this new equipment do?",
-
   "caseStudyFormOtherStoryCaseStudy": "Other Story Case Study",
   "caseStudyFormAnErrorOccurred": "An error occurred during the submission. Please try again.",
-
   "caseStudyViewAuthor": "Author: ",
   "caseStudyViewDate": "Date: ",
-
   "departmentPageNICU/PAED": "Department of NICU/PAED",
   "departmentPageDepartmentOf": "Department of ",
   "departmentPageSubmitData": "SubmitData",
@@ -193,7 +175,6 @@
   "departmentPageDelete": "Delete",
   "departmentPageAction": "Action",
   "departmentPageAccumulate": "Accumulate",
-
   "departmentAddBack": "Back",
   "departmentAddDate": "Date:",
   "departmentAddMonth": "Month",
@@ -210,7 +191,6 @@
   "departmentAddNovember": "November",
   "departmentAddDecember": "December",
   "departmentAddYear": "Year",
-
   "departmentFormSteps": "Steps:",
   "departmentFormSelectPatient": "Select Patient",
   "departmentFormSubmitAlertPressOKToSubmit": "Press OK to finalize submission",
@@ -218,12 +198,10 @@
   "departmentFormSubmit": "Submit",
   "departmentFormPrevious": "Previous",
   "departmentFormNext": "Next",
-
   "departmentFormRequiresValidNumber": "Requires a valid number",
   "departmentFormNameAndValue": "Name and value",
   "departmentFormAdd": "Add",
   "departmentFormRemove": "Remove",
-
   "departmentFormArrayInputValidationMustEnterValue": "Must enter a value for this field",
   "departmentFormArrayInputValidationPositiveNumberOnly": "Positive numbers only for this field",
   "departmentFormArrayInputValidationIntegersOnly": "Integers only for this field",
@@ -233,7 +211,6 @@
   "departmentFormTotalValidationDoesNotAddUpToTotal": "Does not add up to total",
   "departmentFormTotalValidationMustEnterName": "Must enter a name",
   "departmentFormValidationOneOrMoreFieldsAreInvalid": "One or more fields are invalid",
-
   "departmentReportDisplayDepartmentNICU": "Department of NICU/Paediatrics",
   "departmentReportDisplayNoReportFound": "No report found",
   "departmentReportDisplaySave": "Save",
@@ -246,18 +223,14 @@
   "departmentReportDisplayShowPagination": "Show Pagination",
   "departmentReportDisplayDownloadCSV": "Download CSV",
   "departmentReportDisplayGeneratePDF": "Generate PDF",
-
   "reportAlertDeleteReportsFailed": "Delete report(s) failed",
   "reportAlertReportsDeleted": "Report(s) deleted",
-
   "reportsReportId": "Report ID",
   "reportsDepartment": "Department",
   "reportsSubmissionDate": "Submission Date",
   "reportsUserId": "User ID",
   "reportsSubmittedBy": "Submitted By",
-
   "reportViewBack": "Back",
-
   "employeeOfTheMonthEdit": "Update Employee Of The Month",
   "employeeOfTheMonthTitle": "Employee of the month for ",
   "employeeOfTheMonthDate": "Date updated",
@@ -268,14 +241,12 @@
   "employeeOfTheMonthUploadImage": "Upload Image",
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
-
   "template": {
     "change_template": "Change template",
     "department": "Department",
     "select_department": "Select Department",
     "upload_template": "Upload New Template"
   },
-
   "admin": {
     "main_page": {
       "name_col": "Name",
@@ -297,12 +268,10 @@
       }
     }
   },
-
   "permissions": {
     "selectRole": "Select Role",
     "permissionHeader": "Permissions"
   },
-
   "biomech": {
     "main_page": {
       "priority_col": "Priority",
@@ -340,11 +309,9 @@
       "backlog": "Backlog"
     }
   },
-
   "status": {
     "not_available": "N/A"
   },
-
   "role": {
     "user": "User",
     "admin": "Admin",
@@ -352,12 +319,10 @@
     "head_department": "Head of Department",
     "bio_mechanic": "Bio Mechanic"
   },
-
   "modal": {
     "delete_msg": "Confirm to delete {{item}}?",
     "title": "WARNING"
   },
-
   "button": {
     "add_user": "Add User",
     "edit": "Edit",
@@ -369,20 +334,17 @@
     "view": "View",
     "add_image": "Upload Image"
   },
-
   "request_response": {
     "ok": "{{item}} successfully {{action}}!",
     "pending": "{{item}} is being {{action}}...",
     "failed": "{{item}} could not be {{action}}"
   },
-
   "request_action": {
     "create": "created",
     "delete": "deleted",
     "fetch": "fetched",
     "update": "updated"
   },
-
   "item": {
     "department": "Department",
     "departments": "Departments",
@@ -393,13 +355,11 @@
     "user": "User",
     "users": "Users"
   },
-
   "error_message": {
     "compress": {
       "image": "Can't compress this image file"
     }
   },
-
   "monthJanuary": "January",
   "monthFebruary": "February",
   "monthMarch": "March",
@@ -412,8 +372,6 @@
   "monthOctober": "October",
   "monthNovember": "November",
   "monthDecember": "December",
-
-  "question1_1": "Beds available",
   "rehabReportQuestions": {
     "title": "Rehab Report",
     "question1": "Beds available",
@@ -421,6 +379,122 @@
     "question3": "Patient days",
     "question4": "Hospitalized",
     "question5": "Discharged Alive",
-    "question5_1": "Discharged diagnosis"
+    "question5_1": "Discharged diagnosis",
+    "question5_2": "No. Days in Rehab Unit from admission to discharge",
+    "question5_3": "Discharged reason",
+    "question5_4": "Discharge Outcome (ADLs/Self-Care)",
+    "question5_5": "Discharge Outcome (Transfers and Mobility)",
+    "question5_6": "Mobility Aid/Assistive Device Given?",
+    "question5_7": "Discharge Location",
+    "question5_8": "Discharge Employment Status",
+    "question6": "Died before 48h",
+    "question6_1": "Diagnosis",
+    "question6_2": "Age",
+    "question6_3": "Cause of death",
+    "question7": "Died after 48h",
+    "question7_1": "Diagnosis",
+    "question7_2": "Age",
+    "question7_3": "Cause of death",
+    "question8": "Days hospitalized",
+    "question9": "Referrals",
+    "question10": "Transfers",
+    "question11": "Self-discharged",
+    "question12": "Stayed in the ward",
+    "question12_1": "Reason Not Yet Discharged",
+    "question12_1_1": "Not ready from therapy standpoint",
+    "question12_1_2": "Wound Care",
+    "question12_1_3": "Other medical reason (such as IV medication)",
+    "question12_2": "Length of Stay of Current Inpatients",
+    "question12_2_1": "1-3 months",
+    "question12_2_2": "3-6 months",
+    "question12_2_3": "6 months - 1 year",
+    "question12_2_4": "1-2 years",
+    "question12_2_5": "2-3 years",
+    "question12_2_6": "3+ years",
+    "question13": "Admissions",
+    "question13_1": "Where do patients come from?",
+    "question13_1_1": "Quarter Morin",
+    "question13_1_2": "Cap Haitian",
+    "question13_1_3": "Department Nord",
+    "question13_1_4": "Other departments",
+    "question13_2": "Main Condition",
+    "question13_2_1": "SCI - tetraplegia",
+    "question13_2_1_1": "Cause",
+    "question13_2_1_1_1": "Transport accident",
+    "question13_2_1_1_2": "Fall",
+    "question13_2_1_1_3": "Assault",
+    "question13_2_1_1_4": "Sports",
+    "question13_2_1_1_5": "Non-traumatic spinal cord dysfunction",
+    "question13_2_1_1_6": "Medical/surgical complication",
+    "question13_2_1_1_7": "Other traumatic reason",
+    "question13_2_2": "SCI - paraplegia",
+    "question13_2_2_1": "Cause",
+    "question13_2_2_1_1": "Transport accident",
+    "question13_2_2_1_2": "Fall",
+    "question13_2_2_1_3": "Assault",
+    "question13_2_2_1_4": "Sports",
+    "question13_2_2_1_5": "Non-traumatic spinal cord dysfunction",
+    "question13_2_2_1_6": "Medical/surgical complication",
+    "question13_2_2_1_7": "Other traumatic reason",
+    "question13_2_3": "Stroke/CVA",
+    "question13_2_4": "Fractured Hip",
+    "question13_2_5": "Fracrtured long bones",
+    "question13_2_6": "Neurogenerative disease",
+    "question13_2_7": "Head injury",
+    "question13_2_8": "Wound Care",
+    "question13_2_9": "Other medical reason",
+    "question13_2_10": "Other trauma",
+    "question14": "Outpatients",
+    "question14_1": "Age",
+    "question14_1_1": "Age 0-5 years old",
+    "question14_1_2": "Age 6-11 years old",
+    "question14_1_3": "Age 12-17 years old",
+    "question14_1_4": "Age 18-30 years old",
+    "question14_1_5": "Age 31-50 years old",
+    "question14_1_6": "Age 51-70 years old",
+    "question14_1_7": "Age 71+ years old",
+    "question14_2": "Gender",
+    "question14_2_1": "Male",
+    "question14_2_2": "Female",
+    "question14_3": "Main Condition",
+    "question14_3_1": "SCI - tetraplegia",
+    "question14_3_2": "SCI - paraplegia",
+    "question14_3_3": "Stroke/CVA",
+    "question14_3_4": "Fractured Hip",
+    "question14_3_5": "Fractured long bones",
+    "question14_3_6": "Neurogenerative disease",
+    "question14_3_7": "Head injury",
+    "question14_3_8": "Wound Care",
+    "question14_3_9": "Other medical reason",
+    "question14_3_10": "Other trauma",
+    "question5_3Options": [
+      "All goals met",
+      "Goals partially met, sufficient for discharge",
+      "Goals not met, discharged for alternate reason"
+    ],
+    "question5_4Options": [
+      "Independent",
+      "Modified Independent",
+      "Supervision",
+      "Minimum Assistance",
+      "Moderate Assistance",
+      "Maximum Assistance",
+      "Dependent"
+    ],
+    "question5_5Options": [
+      "Independent",
+      "Modified Independent",
+      "Supervision",
+      "Minimum Assistance",
+      "Moderate Assistance",
+      "Maximum Assistance",
+      "Dependent"
+    ],
+    "question5_8Options": [
+      "Employed",
+      "Unemployed, unable to find work",
+      "Unemployed, due to condition",
+      "Retired, not working due to age"
+    ]
   }
 }
