@@ -127,11 +127,6 @@ userSchema.methods.registerUser = async (newUser, callback) => {
 };
 
 userSchema.methods.comparePassword = async function (plainTextPassword, callback) {
-  console.log(
-    `Testing user: ${this.username}\n
-    password: ${this.password}\n
-    hashAlgorithm: ${this.hashAlgorithm}`,
-  );
   switch (this.hashAlgorithm) {
     // Null is bcrypt by default
     case null:
@@ -147,14 +142,10 @@ userSchema.methods.comparePassword = async function (plainTextPassword, callback
           this.password = newPassword;
           this.hashAlgorithm = hashAlgorithm.argon2id;
           this.save();
-
-          console.log('Rehashed password: ', newPassword, '\nisMatch:', isMatch);
-
           callback(null, isMatch);
-        } else {
-          callback(null, false);
         }
       });
+      break;
 
     case hashAlgorithm.argon2id:
       try {
@@ -163,6 +154,7 @@ userSchema.methods.comparePassword = async function (plainTextPassword, callback
       } catch (err) {
         return callback(err);
       }
+      break;
   }
 
   // bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
