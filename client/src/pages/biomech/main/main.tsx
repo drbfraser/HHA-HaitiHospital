@@ -1,65 +1,148 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
-import { Badge } from 'react-bootstrap';
-import { Role } from 'constants/interfaces';
-import Layout from 'components/layout';
-import ModalDelete from 'components/popup_modal/popup_modal_delete';
-import Api from 'actions/Api';
-import { ENDPOINT_BIOMECH_GET, ENDPOINT_BIOMECH_DELETE_BY_ID } from 'constants/endpoints';
-import { toast } from 'react-toastify';
-import { renderBasedOnRole } from 'actions/roleActions';
-import { useTranslation } from 'react-i18next';
-import { useAuthState } from 'contexts';
-import Pagination from 'components/pagination/Pagination';
-import { History } from 'history';
-import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
-import { timezone, language } from 'constants/timezones';
-import { Paths } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
-
 import './main.css';
 
-interface BiomechanicalPageProps extends RouteComponentProps {}
+import { Badge, Table } from 'react-bootstrap';
+import {
+  DisplayColumnDef,
+  createColumn,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { ENDPOINT_BIOMECH_DELETE_BY_ID, ENDPOINT_BIOMECH_GET } from 'constants/endpoints';
+import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+import { language, timezone } from 'constants/timezones';
+import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
+import Api from 'actions/Api';
+import { History } from 'history';
+import Layout from 'components/layout';
+import ModalDelete from 'components/popup_modal/popup_modal_delete';
+import Pagination from 'components/pagination/Pagination';
+import { Paths } from 'constants/paths';
+import { ResponseMessage } from 'utils/response_message';
+import { Role } from 'constants/interfaces';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { toast } from 'react-toastify';
+import { useAuthState } from 'contexts';
+import { useTranslation } from 'react-i18next';
+
+interface Props extends RouteComponentProps {}
+
+const PAGE_SIZE: number = 10;
+
+const columnHelper = createColumnHelper<any>();
+
+export const BiomechanicalPage = (_: Props) => {
   const { t } = useTranslation();
-  const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
+  const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [BioReport, setBioReport] = useState([]);
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const pageSize: number = 10;
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize;
-    const lastPageIndex = firstPageIndex + pageSize;
-    return BioReport.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, BioReport]);
-  const bioReportNumberIndex = currentPage * pageSize - pageSize;
+  const columns = useMemo(
+    () => [
+      columnHelper.display({
+        header: '#',
+        cell: (row) => row.row.index + 1,
+        enableSorting: true,
+      }),
+      columnHelper.accessor((row) => row.equipmentPriority, {
+        id: 'equipmentPriority',
+        header: t('biomech.main_page.priority_col'),
+        cell: (row) => (
+          <Badge bg={setPriority(row.getValue())}>{t(`biomech.priority.${row.getValue()}`)}</Badge>
+        ),
+      }),
+      columnHelper.accessor((row) => row.equipmentStatus, {
+        id: 'equipmentStatus',
+        header: t('biomech.main_page.status_col'),
+        cell: (row) => (
+          <Badge bg={setStatusBadgeColor(row.getValue())}>
+            {t(`biomech.status.${row.getValue()}`)}
+          </Badge>
+        ),
+      }),
+      columnHelper.accessor((row) => row.equipmentName, {
+        id: 'equipmentName',
+        header: t('biomech.main_page.equipment_col'),
+        cell: (row) => row.getValue(),
+      }),
+      columnHelper.accessor((row) => (row.user ? row.user.name : t('status.not_available')), {
+        id: 'equipmentLocation',
+        header: t('biomech.main_page.author_col'),
+      }),
+      columnHelper.accessor(
+        (row) =>
+          row.createdAt.toLocaleString(language, {
+            timeZone: timezone,
+          }),
+        {
+          id: 'createdAt',
+          header: t('biomech.main_page.created_col'),
+        },
+      ),
+      columnHelper.accessor((row) => row.id, {
+        id: 'Options',
+        header: t('biomech.main_page.options_col'),
+        cell: (row) => (
+          <>
+            <button
+              data-testid="view-biomech-button"
+              className="btn btn-link text-decoration-none d-inline"
+              onClick={() => history.push(`${Paths.getBioMechViewId(row.getValue())}`)}
+            >
+              {t(`button.view`)}
+            </button>
+            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+              <button
+                data-testid="delete-biomech-button"
+                className="btn btn-link text-decoration-none d-inline"
+                onClick={(event) => {
+                  onDeleteBioMech(event, row.getValue());
+                }}
+              >
+                {t(`button.delete`)}
+              </button>
+            ) : (
+              <></>
+            )}
+          </>
+        ),
+      }),
+    ],
+    [authState.userDetails.role, history, t],
+  );
+
+  const table = useReactTable({
+    columns: columns,
+    data: BioReport,
+    getCoreRowModel: getCoreRowModel(),
+    pageCount: Math.ceil(BioReport.length / PAGE_SIZE),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
   const deleteBioMechActions = () => {
     toast.success(ResponseMessage.getMsgDeleteReportOk());
     getBioReport();
   };
 
-  const getBioReport = useCallback(async () => {
-    const controller = new AbortController();
-    setBioReport(
-      await Api.Get(
+  const getBioReport = useCallback(
+    async (controller?: AbortController) => {
+      const data = await Api.Get(
         ENDPOINT_BIOMECH_GET,
         ResponseMessage.getMsgFetchReportsFailed(),
         history,
-        controller.signal,
-      ),
-    );
-    return () => {
-      controller.abort();
-      setBioReport([]);
-    };
-  }, [history]);
+        controller && controller.signal,
+      );
+
+      setBioReport(data);
+    },
+    [history],
+  );
 
   const deleteBioMech = async (id: string) => {
     await Api.Delete(
@@ -79,7 +162,7 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   };
 
   const onModalClose = () => {
-    setCurrentIndex(DEFAULT_INDEX);
+    setCurrentIndex(null);
     setDeleteModal(false);
   };
 
@@ -89,10 +172,10 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
   };
 
   useEffect(() => {
-    getBioReport();
-    return () => {
-      setBioReport([]);
-    };
+    const controller = new AbortController();
+    getBioReport(controller);
+
+    return () => controller.abort();
   }, [getBioReport]);
 
   return (
@@ -124,78 +207,51 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
               </Link>
             </div>
             <div className="table-responsive">
-              <table className="table table-hover mt-3">
+              <Table>
                 <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{t('biomech.main_page.priority_col')}</th>
-                    <th scope="col">{t('biomech.main_page.status_col')}</th>
-                    <th scope="col">{t('biomech.main_page.equipment_col')}</th>
-                    <th scope="col">{t('biomech.main_page.author_col')}</th>
-                    <th scope="col">{t('biomech.main_page.created_col')}</th>
-                    <th scope="col">{t('biomech.main_page.options_col')}</th>
-                  </tr>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(header.column.columnDef.header, header.getContext())}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
                 </thead>
                 <tbody>
-                  {currentTableData.map((item, index) => {
-                    return (
-                      <tr key={item.id}>
-                        <th scope="row">{bioReportNumberIndex + index + 1}</th>
-                        <td>
-                          {
-                            <Badge bg={setPriority(item.equipmentPriority)}>
-                              {t(`biomech.priority.${item.equipmentPriority}`)}
-                            </Badge>
-                          }
+                  {table.getRowModel().rows.map((row) => (
+                    <tr key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <td key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </td>
-                        <td>
-                          <Badge bg={setStatusBadgeColor(item.equipmentStatus)}>
-                            {item.equipmentStatus && t(`biomech.status.${item.equipmentStatus}`)}
-                          </Badge>
-                        </td>
-                        <td>{item.equipmentName}</td>
-                        <td>{item.user ? item.user.name : t('status.not_available')} </td>
-                        <td>
-                          {item.createdAt.toLocaleString(language, {
-                            timeZone: timezone,
-                          })}
-                        </td>
-                        <td>
-                          <button
-                            data-testid="view-biomech-button"
-                            className="btn btn-link text-decoration-none d-inline"
-                            onClick={() => history.push(`${Paths.getBioMechViewId(item.id)}`)}
-                          >
-                            {t(`button.view`)}
-                          </button>
-                          {renderBasedOnRole(authState.userDetails.role, [
-                            Role.Admin,
-                            Role.MedicalDirector,
-                          ]) ? (
-                            <button
-                              data-testid="delete-biomech-button"
-                              className="btn btn-link text-decoration-none d-inline"
-                              onClick={(event) => {
-                                onDeleteBioMech(event, item.id);
-                              }}
-                            >
-                              {t(`button.delete`)}
-                            </button>
-                          ) : (
-                            <></>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
-              </table>
+                <tfoot>
+                  {table.getFooterGroups().map((footerGroup) => (
+                    <tr key={footerGroup.id}>
+                      {footerGroup.headers.map((header) => (
+                        <th key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(header.column.columnDef.footer, header.getContext())}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </tfoot>
+              </Table>
               <Pagination
                 className="pagination-bar"
-                currentPage={currentPage}
+                currentPage={table.getState().pagination.pageIndex + 1}
                 totalCount={BioReport.length}
-                pageSize={pageSize}
-                onPageChange={(page) => setCurrentPage(page)}
+                pageSize={table.getState().pagination.pageSize}
+                onPageChange={(page) => table.setPageIndex(page - 1)}
               />
             </div>
           </div>
