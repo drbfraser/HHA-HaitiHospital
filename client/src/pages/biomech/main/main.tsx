@@ -1,28 +1,17 @@
 import './main.css';
 
-import { Badge, Form, Table } from 'react-bootstrap';
-import {
-  DisplayColumnDef,
-  createColumn,
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
+import { Badge, Button } from 'react-bootstrap';
 import { ENDPOINT_BIOMECH_DELETE_BY_ID, ENDPOINT_BIOMECH_GET } from 'constants/endpoints';
 import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
-import { language, timezone } from 'constants/timezones';
 import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
+import { ColumnDef } from '@tanstack/react-table';
 import FilterableTable from 'components/table/FilterableTable';
 import { History } from 'history';
 import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
-import Pagination from 'components/pagination/Pagination';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 import { Role } from 'constants/interfaces';
@@ -33,33 +22,31 @@ import { useTranslation } from 'react-i18next';
 
 interface Props extends RouteComponentProps {}
 
-const columnHelper = createColumnHelper<any>();
-
 export const BiomechanicalPage = (_: Props) => {
   const { t } = useTranslation();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [BioReport, setBioReport] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState<string>('');
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
   const columns = useMemo(
-    () => [
-      columnHelper.display({
+    (): ColumnDef<any, any>[] => [
+      {
         header: '#',
         cell: (row) => row.row.index + 1,
         enableSorting: true,
         enableGlobalFilter: false,
-      }),
-      columnHelper.accessor((row) => row.equipmentPriority, {
+      },
+      {
         id: 'equipmentPriority',
         header: t('biomech.main_page.priority_col'),
         cell: (row) => (
           <Badge bg={setPriority(row.getValue())}>{t(`biomech.priority.${row.getValue()}`)}</Badge>
         ),
-      }),
-      columnHelper.accessor((row) => row.equipmentStatus, {
+        accessorKey: 'equipmentPriority',
+      },
+      {
         id: 'equipmentStatus',
         header: t('biomech.main_page.status_col'),
         cell: (row) => (
@@ -67,92 +54,77 @@ export const BiomechanicalPage = (_: Props) => {
             {t(`biomech.status.${row.getValue()}`)}
           </Badge>
         ),
-      }),
-      columnHelper.accessor((row) => row.equipmentName, {
+        accessorKey: 'equipmentStatus',
+      },
+      {
         id: 'equipmentName',
         header: t('biomech.main_page.equipment_col'),
         cell: (row) => row.getValue(),
-      }),
-      columnHelper.accessor((row) => (row.user ? row.user.name : t('status.not_available')), {
-        id: 'equipmentLocation',
+        accessorKey: 'equipmentName',
+      },
+      {
+        id: 'author',
         header: t('biomech.main_page.author_col'),
-      }),
-      columnHelper.accessor(
-        (row) =>
-          row.createdAt.toLocaleString(language, {
-            timeZone: timezone,
-          }),
-        {
-          id: 'createdAt',
-          header: t('biomech.main_page.created_col'),
-          enableGlobalFilter: false,
-        },
-      ),
-      columnHelper.accessor((row) => row.id, {
+        accessorFn: (row) => row.user?.name ?? t('status.not_available'),
+      },
+
+      {
+        id: 'createdAt',
+        header: t('biomech.main_page.created_col'),
+        enableGlobalFilter: false,
+        accessorKey: 'createdAt',
+      },
+      {
         id: 'Options',
         header: t('biomech.main_page.options_col'),
         enableGlobalFilter: false,
         cell: (row) => (
           <>
-            <button
+            <Button
               data-testid="view-biomech-button"
-              className="btn btn-link text-decoration-none d-inline"
               onClick={() => history.push(`${Paths.getBioMechViewId(row.getValue())}`)}
+              variant="link"
+              className="text-decoration-none"
             >
               {t(`button.view`)}
-            </button>
+            </Button>
             {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
-              <button
+              <Button
                 data-testid="delete-biomech-button"
-                className="btn btn-link text-decoration-none d-inline"
-                onClick={(event) => {
-                  onDeleteBioMech(event, row.getValue());
-                }}
+                onClick={(event) => onDeleteBioMech(event, row.getValue())}
+                variant="link"
+                className="text-decoration-none"
               >
                 {t(`button.delete`)}
-              </button>
+              </Button>
             ) : (
               <></>
             )}
           </>
         ),
-      }),
+        accessorKey: 'id',
+      },
     ],
     [authState.userDetails.role, history, t],
   );
 
-  const deleteBioMechActions = () => {
+  const deleteBioMechCallback = () => {
     toast.success(ResponseMessage.getMsgDeleteReportOk());
-    getBioReport();
+    setBioReport(BioReport.filter((item) => item.id !== currentIndex));
+    setCurrentIndex(null);
   };
-
-  const getBioReport = useCallback(
-    async (controller?: AbortController) => {
-      const data = await Api.Get(
-        ENDPOINT_BIOMECH_GET,
-        ResponseMessage.getMsgFetchReportsFailed(),
-        history,
-        controller && controller.signal,
-      );
-
-      setBioReport(data);
-    },
-    [history],
-  );
 
   const deleteBioMech = async (id: string) => {
     await Api.Delete(
       ENDPOINT_BIOMECH_DELETE_BY_ID(id),
       {},
-      deleteBioMechActions,
+      deleteBioMechCallback,
       ResponseMessage.getMsgDeleteReportFailed(),
       history,
     );
   };
 
-  const onDeleteBioMech = (event: any, id: string) => {
-    event.stopPropagation();
-    event.preventDefault();
+  const onDeleteBioMech = (_: any, id: string) => {
     setCurrentIndex(id);
     setDeleteModal(true);
   };
@@ -162,17 +134,28 @@ export const BiomechanicalPage = (_: Props) => {
     setDeleteModal(false);
   };
 
-  const onModalDelete = (id: string) => {
-    deleteBioMech(id);
+  const onModalDelete = async (id: string) => {
+    await deleteBioMech(id);
     setDeleteModal(false);
   };
 
   useEffect(() => {
+    const getBioReport = async (controller?: AbortController) => {
+      const data = await Api.Get(
+        ENDPOINT_BIOMECH_GET,
+        ResponseMessage.getMsgFetchReportsFailed(),
+        history,
+        controller && controller.signal,
+      );
+
+      setBioReport(data);
+    };
+
     const controller = new AbortController();
     getBioReport(controller);
 
     return () => controller.abort();
-  }, [getBioReport]);
+  }, [history]);
 
   return (
     <div className="biomechanical_page">
