@@ -102,9 +102,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
               </p>
               <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
               <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>
-              <h6 className="fs-6 fw-bold lh-base">
-                {t('employeeOfTheMonthDepartment')}
-              </h6>
+              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>
               <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department.name}</p>
             </div>
             <div className="employee-image-container">
@@ -122,9 +120,7 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
             {/* </div> */}
           </div>
           <div className="employee-description">
-            <h6 className="fs-6 fw-bold lh-base">
-              {t('employeeOfTheMonthDescription')}
-            </h6>
+            <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
             <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.description}</p>
           </div>
         </div>

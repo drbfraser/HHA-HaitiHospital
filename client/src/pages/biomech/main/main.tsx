@@ -186,7 +186,13 @@ export const BiomechanicalPage = (_: Props) => {
                 </button>
               </Link>
             </div>
-            <FilterableTable data={BioReport} columns={columns} enableFilters enableGlobalFilter enableSorting />
+            <FilterableTable
+              data={BioReport}
+              columns={columns}
+              enableFilters
+              enableGlobalFilter
+              enableSorting
+            />
           </div>
         </section>
       </Layout>
