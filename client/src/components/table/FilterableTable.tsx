@@ -1,4 +1,4 @@
-import { Form, Table } from 'react-bootstrap';
+import { Button, Form, InputGroup, Table } from 'react-bootstrap';
 import {
   Header,
   SortingState,
@@ -9,10 +9,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useEffect, useState } from 'react';
 
 import Pagination from 'components/pagination/Pagination';
 import cn from 'classnames';
-import { useState } from 'react';
 
 interface Props {
   data: any[];
@@ -37,6 +37,12 @@ const endsWithFilterFn = (row, columnId, value) =>
   row.getValue(columnId).toLowerCase().endsWith(value.toLowerCase());
 
 const SortableHeader = (header: Header<any, any>, enableSorting: boolean = false) => {
+  const [filterValue, setFilterValue] = useState<string>('');
+
+  useEffect(() => {
+    header.column.setFilterValue(filterValue);
+  }, [filterValue, header.column]);
+
   if (header.isPlaceholder) {
     return <th key={header.id}></th>;
   }
@@ -67,12 +73,21 @@ const SortableHeader = (header: Header<any, any>, enableSorting: boolean = false
       )}
       {header.column.getCanFilter() && (
         <>
-          <Form.Control
-            type="text"
-            onChange={(e) => header.column.setFilterValue(e.target.value)}
-            placeholder={'Filter: ' + header.column.columnDef.header.toString()}
-            className="my-2"
-          />
+          <InputGroup className="my-2">
+            <Form.Control
+              type="text"
+              onChange={(e) => {
+                setFilterValue(e.target.value);
+              }}
+              value={filterValue}
+              placeholder={'Filter: ' + header.column.columnDef.header.toString()}
+            />
+            {filterValue && (
+              <Button size='sm' variant="light text-danger"  onClick={() => setFilterValue('')} title="clear">
+                &#x2715;
+              </Button>
+            )}
+          </InputGroup>
           <Form.Select
             onChange={(e) => {
               switch (e.target.value) {
@@ -135,15 +150,22 @@ const FilterableTable = ({
   return (
     <div className="px-4 pt-3">
       {enableFilters && enableGlobalFilter && (
-        <Form.Control
-          type="text"
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Global Search"
-          className="mb-3"
-        />
+        <InputGroup className="mb-3">
+          <Form.Control
+            type="text"
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            value={globalFilter}
+            placeholder="Global Search"
+          />
+          {globalFilter && (
+            <Button variant="light text-danger" onClick={() => setGlobalFilter('')} title="clear">
+              &#x2715;
+            </Button>
+          )}
+        </InputGroup>
       )}
 
-      <Table hover>
+      <Table hover responsive>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
