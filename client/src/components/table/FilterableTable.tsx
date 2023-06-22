@@ -1,6 +1,7 @@
 import { Button, Form, InputGroup, Table } from 'react-bootstrap';
 import {
   Header,
+  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -9,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Pagination from 'components/pagination/Pagination';
 import cn from 'classnames';
@@ -20,6 +21,7 @@ interface Props {
   enableGlobalFilter?: boolean;
   enableFilters?: boolean;
   enableSorting?: boolean;
+  rowClickHandler?: (row: any) => void;
 }
 
 const PAGE_SIZE: number = 10;
@@ -83,7 +85,12 @@ const SortableHeader = (header: Header<any, any>, enableSorting: boolean = false
               placeholder={'Filter: ' + header.column.columnDef.header.toString()}
             />
             {filterValue && (
-              <Button size='sm' variant="light text-danger"  onClick={() => setFilterValue('')} title="clear">
+              <Button
+                size="sm"
+                variant="light text-danger"
+                onClick={() => setFilterValue('')}
+                title="clear"
+              >
                 &#x2715;
               </Button>
             )}
@@ -125,9 +132,21 @@ const FilterableTable = ({
   enableGlobalFilter = false,
   enableFilters = false,
   enableSorting = false,
+  rowClickHandler,
 }: Props) => {
   const [globalFilter, setGlobalFilter] = useState<string>('');
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const getRowProps = useMemo(() => {
+    if (rowClickHandler) {
+      return (row: Row<any>) => ({
+        onClick: () => rowClickHandler(row),
+        style: { cursor: 'pointer' },
+      });
+    }
+
+    return (row: Row<any>) => ({});
+  }, [rowClickHandler]);
 
   const table = useReactTable({
     columns: columns,
@@ -175,7 +194,7 @@ const FilterableTable = ({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <tr key={row.id} {...getRowProps(row)}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}
