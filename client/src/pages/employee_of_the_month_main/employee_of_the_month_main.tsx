@@ -11,7 +11,6 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { Role } from 'constants/interfaces';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
-import initialEmployeeOfTheMonth from './initialEmployeeOfTheMonth.json';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useHistory } from 'react-router';
@@ -20,9 +19,7 @@ import { useTranslation } from 'react-i18next';
 interface EmployeeOfTheMonthMainProps extends RouteComponentProps {}
 
 export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
-  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(
-    initialEmployeeOfTheMonth as unknown as EmployeeOfTheMonth,
-  );
+  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const authState = useAuthState();
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -62,12 +59,14 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
           </div>
         )}
         <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
-          <EmployeeOfTheMonthSummary
-            employeeOfTheMonth={employeeOfTheMonth}
-            history={history}
-            location={undefined}
-            match={undefined}
-          />
+          {employeeOfTheMonth && (
+            <EmployeeOfTheMonthSummary
+              employee={employeeOfTheMonth}
+              history={history}
+              location={undefined}
+              match={undefined}
+            />
+          )}
         </div>
       </Layout>
     </div>
