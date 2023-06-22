@@ -103,6 +103,7 @@ const SortableHeader = (header: Header<any, any>, enableSorting: boolean = false
   );
 };
 
+// Referenced https://tanstack.com/table/v8/docs/api/features/filters to implement this component.
 const FilterableTable = ({
   data,
   columns,
