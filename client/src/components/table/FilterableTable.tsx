@@ -1,4 +1,4 @@
-import { Form, InputGroup, Table } from 'react-bootstrap';
+import { Form, Table } from 'react-bootstrap';
 import {
   Header,
   SortingState,
@@ -18,6 +18,7 @@ interface Props {
   data: any[];
   columns: any[];
   enableGlobalFilter?: boolean;
+  enableFilters?: boolean;
   enableSorting?: boolean;
 }
 
@@ -106,6 +107,7 @@ const FilterableTable = ({
   data,
   columns,
   enableGlobalFilter = false,
+  enableFilters = false,
   enableSorting = false,
 }: Props) => {
   const [globalFilter, setGlobalFilter] = useState<string>('');
@@ -126,11 +128,12 @@ const FilterableTable = ({
     },
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
+    enableFilters: enableFilters,
   });
 
   return (
     <div className="px-4 pt-3">
-      {enableGlobalFilter && (
+      {enableFilters && enableGlobalFilter && (
         <Form.Control
           type="text"
           onChange={(e) => setGlobalFilter(e.target.value)}

@@ -30,6 +30,7 @@ export const BiomechanicalPage = (_: Props) => {
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
+  // Github co-pilot assited in filling this array
   const columns = useMemo(
     (): ColumnDef<any, any>[] => [
       {
@@ -185,7 +186,7 @@ export const BiomechanicalPage = (_: Props) => {
                 </button>
               </Link>
             </div>
-            <FilterableTable data={BioReport} columns={columns} enableGlobalFilter enableSorting />
+            <FilterableTable data={BioReport} columns={columns} enableFilters enableGlobalFilter enableSorting />
           </div>
         </section>
       </Layout>
