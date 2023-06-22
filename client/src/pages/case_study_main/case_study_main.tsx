@@ -275,9 +275,7 @@ export const CaseStudyMain = () => {
                     <th scope="row">{caseStudyNumberIndex + index + 1}</th>
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{!!item.user ? item.user.name : t('status.not_available')}</td>
-                    <td>
-                      {item.createdAt}
-                    </td>
+                    <td>{item.createdAt}</td>
                     <td>
                       {renderBasedOnRole(authState.userDetails.role, [
                         Role.Admin,
