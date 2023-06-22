@@ -1,4 +1,4 @@
-import { Form, Table } from 'react-bootstrap';
+import { Form, InputGroup, Table } from 'react-bootstrap';
 import {
   Header,
   SortingState,
@@ -7,7 +7,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table';
 
 import Pagination from 'components/pagination/Pagination';
@@ -22,8 +22,18 @@ interface Props {
 }
 
 const PAGE_SIZE: number = 10;
+
 const filterFn = (row, columnId, value) =>
   row.getValue(columnId).toLowerCase().includes(value.toLowerCase());
+
+const equalFilterFn = (row, columnId, value) =>
+  row.getValue(columnId).toLowerCase() === value.toLowerCase();
+
+const startsWithFilterFn = (row, columnId, value) =>
+  row.getValue(columnId).toLowerCase().startsWith(value.toLowerCase());
+
+const endsWithFilterFn = (row, columnId, value) =>
+  row.getValue(columnId).toLowerCase().endsWith(value.toLowerCase());
 
 const SortableHeader = (header: Header<any, any>, enableSorting: boolean = false) => {
   if (header.isPlaceholder) {
@@ -37,7 +47,7 @@ const SortableHeader = (header: Header<any, any>, enableSorting: boolean = false
   };
 
   return (
-    <th key={header.id}>
+    <th key={header.id} className="align-text-top">
       {enableSorting && header.column.getCanSort() ? (
         <div {...divProps}>
           {renderedFlex}
@@ -53,6 +63,40 @@ const SortableHeader = (header: Header<any, any>, enableSorting: boolean = false
         </div>
       ) : (
         renderedFlex
+      )}
+      {header.column.getCanFilter() && (
+        <>
+          <Form.Control
+            type="text"
+            onChange={(e) => header.column.setFilterValue(e.target.value)}
+            placeholder={'Filter: ' + header.column.columnDef.header.toString()}
+            className="my-2"
+          />
+          <Form.Select
+            onChange={(e) => {
+              switch (e.target.value) {
+                case '1':
+                  header.column.columnDef.filterFn = equalFilterFn;
+                  break;
+                case '2':
+                  header.column.columnDef.filterFn = startsWithFilterFn;
+                  break;
+                case '3':
+                  header.column.columnDef.filterFn = endsWithFilterFn;
+                  break;
+                default:
+                  header.column.columnDef.filterFn = filterFn;
+                  break;
+              }
+              header.column.setFilterValue(header.column.getFilterValue());
+            }}
+          >
+            <option>Contains</option>
+            <option value="1">Equals</option>
+            <option value="2">Starts With</option>
+            <option value="3">Ends With</option>
+          </Form.Select>
+        </>
       )}
     </th>
   );
@@ -85,17 +129,17 @@ const FilterableTable = ({
   });
 
   return (
-    <div className="p-4">
+    <div className="px-4 pt-3">
       {enableGlobalFilter && (
         <Form.Control
           type="text"
           onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search"
-          className="mt-2"
+          placeholder="Global Search"
+          className="mb-3"
         />
       )}
 
-      <Table hover className="mt-2">
+      <Table hover>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -129,7 +173,7 @@ const FilterableTable = ({
       <Pagination
         className="pagination-bar"
         currentPage={table.getState().pagination.pageIndex + 1}
-        totalCount={data.length}
+        totalCount={table.getFilteredRowModel().rows.length}
         pageSize={table.getState().pagination.pageSize}
         onPageChange={(page) => table.setPageIndex(page - 1)}
       />

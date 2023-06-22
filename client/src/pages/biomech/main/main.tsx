@@ -76,6 +76,7 @@ export const BiomechanicalPage = (_: Props) => {
         id: 'Options',
         header: t('biomech.main_page.options_col'),
         enableGlobalFilter: false,
+        enableColumnFilter: false,
         cell: (row) => (
           <>
             <Button
@@ -101,7 +102,7 @@ export const BiomechanicalPage = (_: Props) => {
           </>
         ),
         accessorKey: 'id',
-        enableSorting: false
+        enableSorting: false,
       },
     ],
     [authState.userDetails.role, history, t],
