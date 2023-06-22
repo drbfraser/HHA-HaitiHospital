@@ -1,12 +1,13 @@
 import './main.css';
 
-import { Badge, Table } from 'react-bootstrap';
+import { Badge, Form, Table } from 'react-bootstrap';
 import {
   DisplayColumnDef,
   createColumn,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
@@ -17,6 +18,7 @@ import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
+import FilterableTable from 'components/table/FilterableTable';
 import { History } from 'history';
 import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
@@ -31,8 +33,6 @@ import { useTranslation } from 'react-i18next';
 
 interface Props extends RouteComponentProps {}
 
-const PAGE_SIZE: number = 10;
-
 const columnHelper = createColumnHelper<any>();
 
 export const BiomechanicalPage = (_: Props) => {
@@ -40,6 +40,7 @@ export const BiomechanicalPage = (_: Props) => {
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [BioReport, setBioReport] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState<string>('');
   const authState = useAuthState();
   const history: History = useHistory<History>();
 
@@ -49,6 +50,7 @@ export const BiomechanicalPage = (_: Props) => {
         header: '#',
         cell: (row) => row.row.index + 1,
         enableSorting: true,
+        enableGlobalFilter: false,
       }),
       columnHelper.accessor((row) => row.equipmentPriority, {
         id: 'equipmentPriority',
@@ -83,11 +85,13 @@ export const BiomechanicalPage = (_: Props) => {
         {
           id: 'createdAt',
           header: t('biomech.main_page.created_col'),
+          enableGlobalFilter: false,
         },
       ),
       columnHelper.accessor((row) => row.id, {
         id: 'Options',
         header: t('biomech.main_page.options_col'),
+        enableGlobalFilter: false,
         cell: (row) => (
           <>
             <button
@@ -116,14 +120,6 @@ export const BiomechanicalPage = (_: Props) => {
     ],
     [authState.userDetails.role, history, t],
   );
-
-  const table = useReactTable({
-    columns: columns,
-    data: BioReport,
-    getCoreRowModel: getCoreRowModel(),
-    pageCount: Math.ceil(BioReport.length / PAGE_SIZE),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
 
   const deleteBioMechActions = () => {
     toast.success(ResponseMessage.getMsgDeleteReportOk());
@@ -206,54 +202,7 @@ export const BiomechanicalPage = (_: Props) => {
                 </button>
               </Link>
             </div>
-            <div className="table-responsive">
-              <Table>
-                <thead>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <th key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(header.column.columnDef.header, header.getContext())}
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody>
-                  {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <td key={cell.id}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  {table.getFooterGroups().map((footerGroup) => (
-                    <tr key={footerGroup.id}>
-                      {footerGroup.headers.map((header) => (
-                        <th key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(header.column.columnDef.footer, header.getContext())}
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </tfoot>
-              </Table>
-              <Pagination
-                className="pagination-bar"
-                currentPage={table.getState().pagination.pageIndex + 1}
-                totalCount={BioReport.length}
-                pageSize={table.getState().pagination.pageSize}
-                onPageChange={(page) => table.setPageIndex(page - 1)}
-              />
-            </div>
+            <FilterableTable data={BioReport} columns={columns} enableGlobalFilter />
           </div>
         </section>
       </Layout>
