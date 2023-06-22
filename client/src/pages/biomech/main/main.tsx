@@ -35,8 +35,6 @@ export const BiomechanicalPage = (_: Props) => {
       {
         header: '#',
         cell: (row) => row.row.index + 1,
-        enableSorting: true,
-        enableGlobalFilter: false,
       },
       {
         id: 'equipmentPriority',
@@ -103,6 +101,7 @@ export const BiomechanicalPage = (_: Props) => {
           </>
         ),
         accessorKey: 'id',
+        enableSorting: false
       },
     ],
     [authState.userDetails.role, history, t],
@@ -185,7 +184,7 @@ export const BiomechanicalPage = (_: Props) => {
                 </button>
               </Link>
             </div>
-            <FilterableTable data={BioReport} columns={columns} enableGlobalFilter />
+            <FilterableTable data={BioReport} columns={columns} enableGlobalFilter enableSorting />
           </div>
         </section>
       </Layout>
