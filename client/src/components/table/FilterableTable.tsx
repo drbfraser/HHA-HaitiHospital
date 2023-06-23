@@ -140,7 +140,7 @@ const FilterableTable = ({
   const getRowProps = useMemo(() => {
     if (rowClickHandler) {
       return (row: Row<any>) => ({
-        onClick: () => rowClickHandler(row),
+        onClick: () => rowClickHandler(row.original),
         style: { cursor: 'pointer' },
       });
     }
