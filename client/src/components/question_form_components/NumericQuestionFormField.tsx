@@ -1,6 +1,7 @@
 import { NumericQuestion } from '@hha/common';
 import FormField from './FormField';
 import { useEffect, ChangeEvent, Dispatch, SetStateAction, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const NumericQuestionFormField = ({
   applyReportChanges,
@@ -20,6 +21,12 @@ const NumericQuestionFormField = ({
   // if it is of type "ValidationResult<ErrorType>" when the input is invalid
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
+  const prompt = question.getPrompt()[language];
+  console.log('language', language);
+  console.log('prompt', prompt);
+  console.log('get prompt', question.getPrompt());
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;

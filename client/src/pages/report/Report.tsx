@@ -16,6 +16,7 @@ import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -29,7 +30,7 @@ export const Report = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
   const { departments } = useDepartmentData();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const applyReportChanges = () => {
     !areChangesMade && setAreChangesMade(true);
@@ -97,10 +98,13 @@ export const Report = () => {
       }
     };
     currentDepartment && getTemplates();
+    // Set the Accept-Language header for Axios requests
+    axios.defaults.headers.common['Accept-Language'] = i18n.language;
+    console.log('Accept-Language: ', i18n.language);
     return () => {
       controller.abort();
     };
-  }, [currentDepartment, history, objectSerializer]);
+  }, [currentDepartment, history, objectSerializer, i18n.language]);
 
   useEffect(() => {
     if (areChangesMade) {

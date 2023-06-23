@@ -1,5 +1,6 @@
 import { ValidationResult } from '@hha/common';
 import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 
 interface Translation {
@@ -18,10 +19,16 @@ type FormFieldProps = {
 };
 
 const FormField = (props: FormFieldProps) => {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
+  const prompt = props.prompt[language];
+  const displayPrompt = prompt ?? props.prompt;
+  console.log('FormField language: ', i18n.language);
+  console.log('FormField prompt: ', prompt);
   return (
     <div className="form-group">
       <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>
-        {props.nameId.replaceAll('_', '.')}. {props.prompt}
+        {props.nameId.replaceAll('_', '.')}. {displayPrompt}
       </label>
       <input
         className={cn(

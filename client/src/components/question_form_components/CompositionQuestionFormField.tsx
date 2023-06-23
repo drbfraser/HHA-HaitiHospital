@@ -1,6 +1,7 @@
 import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 
 const CompositionQuestionFormField = ({
@@ -19,6 +20,10 @@ const CompositionQuestionFormField = ({
   const allSumUpInfo = question.getAllSumUpInfo();
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
+  const { t, i18n } = useTranslation();
+  const prompt = question.getPrompt();
+  const language = i18n.language;
+  const promptValue = prompt && prompt[language] ? prompt[language] : '';
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -78,7 +83,7 @@ const CompositionQuestionFormField = ({
                 'text-secondary': !hasErrors,
               })}
             >
-              {groupId.replaceAll('_', '.')}. {group.getPrompt()}
+              {`${groupId.replaceAll('_', '.')}. ${promptValue}`}
               {hasErrors && <i className="bi bi-exclamation-circle ms-2" />}
             </legend>
             <Group hasErrors={hasErrors}>
