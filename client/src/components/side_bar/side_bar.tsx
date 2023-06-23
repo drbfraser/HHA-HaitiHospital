@@ -218,18 +218,27 @@ const Sidebar = (props: SidebarProps) => {
           )}
 
           <li className="btn-group-toggle" data-toggle="buttons" key="english">
-            <button className="nav-link link-light" onClick={changeLanguage('en', i18n)}>
-              <i className="bi bi-gear-fill me-2" />
-              <span className={cn('text-light', { 'd-none': isMobile })}>
-                {t('sidebarEnglish')}
-              </span>
+            <button
+              className={`btn-group-toggle nav-link ${
+                localStorage.getItem('lang') === 'en' ? 'link-primary' : 'link-light'
+              }`}
+              onClick={changeLanguage('en', i18n)}
+            >
+              <b>EN</b>&ensp;
+              <span className={cn({ 'd-none': isMobile })}>{t('sidebarEnglish')}</span>
             </button>
           </li>
 
           <li key="french">
-            <button className="nav-link link-light" id="fc" onClick={changeLanguage('fr', i18n)}>
-              <i className="bi bi-gear me-2" />
-              <span className={cn('text-light', { 'd-none': isMobile })}>{t('sidebarFrench')}</span>
+            <button
+              className={`nav-link ${
+                localStorage.getItem('lang') === 'fr' ? 'link-primary' : 'link-light'
+              }`}
+              id="fc"
+              onClick={changeLanguage('fr', i18n)}
+            >
+              <b>FR</b>&ensp;
+              <span className={cn({ 'd-none': isMobile })}>{t('sidebarFrench')}</span>
             </button>
           </li>
         </ul>
