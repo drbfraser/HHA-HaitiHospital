@@ -50,6 +50,9 @@ const Login = (props: LoginProps) => {
             .then((res: any) => {
               if (!res.success) {
                 setErrorMessage(i18n.t('signInInvalidLoginCredentials'));
+                document.querySelector('.login-form').classList.remove('shaked'); // do nothing if no class yet
+                document.querySelector('.login-form').scrollBy(0, 0); // allows animation to happen again
+                document.querySelector('.login-form').classList.add('shaked');
                 return;
               }
               setUsername(res.user.name);
@@ -69,7 +72,7 @@ const Login = (props: LoginProps) => {
     <div className={'login'}>
       <img className="login-logo user-select-none" src={logo} alt="logo logo" />
       <h4 className="text-center mt-4 mb-4 user-select-none fw-bold">{t('signInPleaseSignIn')}</h4>
-      <form className="mb-5" onSubmit={formik.handleSubmit}>
+      <form className="login-form mb-5" onSubmit={formik.handleSubmit}>
         <div>
           <input type="hidden" name="_csrf" value="csrfToken" />
         </div>

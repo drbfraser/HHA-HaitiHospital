@@ -267,24 +267,16 @@ export const CaseStudyMain = () => {
             <tbody>
               {currentTableData.map((item, index) => {
                 return (
-                  <tr key={item.id}>
+                  <tr
+                    key={item.id}
+                    onClick={() => history.push(`/case-study/view/${item.id}`)}
+                    role="button"
+                  >
                     <th scope="row">{caseStudyNumberIndex + index + 1}</th>
                     <td>{i18n.t(item.caseStudyType)}</td>
                     <td>{!!item.user ? item.user.name : t('status.not_available')}</td>
+                    <td>{item.createdAt}</td>
                     <td>
-                      {item.createdAt.toLocaleString(language, {
-                        timeZone: timezone,
-                      })}
-                    </td>
-                    <td>
-                      <button
-                        data-testid="view-case-study-button"
-                        className="btn btn-link text-decoration-none"
-                        onClick={() => history.push(`/case-study/view/${item.id}`)}
-                      >
-                        {t('caseStudyMainViewCaseStudy').concat(' ')}
-                      </button>
-
                       {renderBasedOnRole(authState.userDetails.role, [
                         Role.Admin,
                         Role.MedicalDirector,

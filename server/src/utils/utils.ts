@@ -57,14 +57,12 @@ export const getItemTypeFromValue = (type: string): ItemTypeKeys => {
 };
 
 export const formatDateString = (date: Date): string => {
-  // const myOptions = {year: "numeric", month: 'long', day: 'numeric'};
   const result = date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
-    second: 'numeric',
   });
   return result;
 };

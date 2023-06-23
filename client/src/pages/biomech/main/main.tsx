@@ -189,6 +189,7 @@ export const BiomechanicalPage = (_: Props) => {
             <FilterableTable
               data={BioReport}
               columns={columns}
+              rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
               enableFilters
               enableGlobalFilter
               enableSorting
