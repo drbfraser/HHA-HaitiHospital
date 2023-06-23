@@ -2,7 +2,6 @@ import { Comment, emptyMessageComment } from 'constants/interfaces';
 
 import initialUserJson from '../message_panel/initialUserJson.json';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
-import { useTranslation } from 'react-i18next';
 
 interface MessageCommentProps {
   commentJson: Comment;

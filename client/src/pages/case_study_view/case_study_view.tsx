@@ -1,12 +1,13 @@
+import { Link, RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { RouteComponentProps, useLocation, Link, useHistory } from 'react-router-dom';
-import Layout from 'components/layout';
+
 import Api from 'actions/Api';
+import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import { ENDPOINT_CASESTUDY_GET_BY_ID } from 'constants/endpoints';
+import { History } from 'history';
+import Layout from 'components/layout';
 import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
-import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
-import { History } from 'history';
 
 interface CaseStudyViewProps extends RouteComponentProps {}
 
@@ -37,7 +38,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
     [history, id],
   );
 
-  const { t: translateText } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="case-study-main">
@@ -45,7 +46,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
         <div className="d-flex justify-content-start">
           <Link to="/case-study">
             <button type="button" className="btn btn-outline-dark">
-              {translateText('caseStudyFormBack')}
+              {t('caseStudyFormBack')}
             </button>
           </Link>
         </div>
@@ -56,7 +57,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
           <div className="ml-3 mb-5 d-flex justify-content-start">
             <Link to="/case-study">
               <button type="button" className="btn btn-outline-dark">
-                {translateText('caseStudyFormBack')}
+                {t('caseStudyFormBack')}
               </button>
             </Link>
           </div>

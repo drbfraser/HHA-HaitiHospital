@@ -1,15 +1,16 @@
-import http from 'http';
+import * as ENV from './utils/processEnv';
+
 import express, { Application } from 'express';
+
+import cookieParser from 'cookie-parser';
+import csrf from 'csurf';
+import http from 'http';
+import httpErrorHandler from 'middleware/httpErrorHandler';
+import { logger } from './logger';
 import mongoose from 'mongoose';
 import passport from 'passport';
-import cookieParser from 'cookie-parser';
 import routes from './routes/routes';
-import * as ENV from './utils/processEnv';
-import { logger } from './logger';
 const path = require('path');
-
-import csrf from 'csurf';
-import httpErrorHandler from 'middleware/httpErrorHandler';
 
 export const createServer = () => {
   const app = express();
@@ -69,5 +70,5 @@ export const createServer = () => {
 export const setServerPort = (app: Application, PORT: number) => {
   // Start listening to PORT
   const httpServer = http.createServer(app);
-  httpServer.listen(ENV.SERVER_PORT, () => logger.info(`Server started on port ${PORT}`));
+  httpServer.listen(PORT, () => logger.info(`Server started on port ${PORT}`));
 };
