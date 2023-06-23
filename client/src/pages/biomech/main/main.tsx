@@ -165,13 +165,6 @@ export const BiomechanicalPage = (props: BiomechanicalPageProps) => {
                           })}
                         </td>
                         <td>
-                          {/* <button
-                            data-testid="view-biomech-button"
-                            className="btn btn-link text-decoration-none d-inline"
-                            onClick={() => history.push(`${Paths.getBioMechViewId(item.id)}`)}
-                          >
-                            {t(`button.view`)}
-                          </button> */}
                           {renderBasedOnRole(authState.userDetails.role, [
                             Role.Admin,
                             Role.MedicalDirector,
