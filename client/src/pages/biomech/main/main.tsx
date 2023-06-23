@@ -80,15 +80,7 @@ export const BiomechanicalPage = (_: Props) => {
         enableColumnFilter: false,
         cell: (row) => (
           <>
-            <Button
-              data-testid="view-biomech-button"
-              onClick={() => history.push(`${Paths.getBioMechViewId(row.getValue())}`)}
-              variant="link"
-              className="text-decoration-none"
-            >
-              {t(`button.view`)}
-            </Button>
-            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
+            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
               <Button
                 data-testid="delete-biomech-button"
                 onClick={(event) => onDeleteBioMech(event, row.getValue())}
@@ -97,8 +89,6 @@ export const BiomechanicalPage = (_: Props) => {
               >
                 {t(`button.delete`)}
               </Button>
-            ) : (
-              <></>
             )}
           </>
         ),
