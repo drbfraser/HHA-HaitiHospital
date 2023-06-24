@@ -108,6 +108,7 @@ userSchema.methods.registerUser = async (newUser, callback) => {
     await hashPassword(newUser.password)
       .then((hash) => {
         newUser.password = hash;
+        newUser.hashAlgorithm = hashAlgorithm.argon2id;
       })
       .then(() => newUser.save({ new: true }, callback));
   } catch (err) {
