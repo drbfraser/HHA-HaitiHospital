@@ -1,83 +1,85 @@
-import { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import ModalImage from 'components/popup_modal/popup_modal_image';
-import { currMonth, currYear } from 'utils/dateUtils';
-import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
 import './employee_of_the_month_summary.css';
-import { History } from 'history';
+
+import { currMonth, currYear } from 'utils/dateUtils';
+import { useEffect, useState } from 'react';
+
 import Api from '../../actions/Api';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
-import { timezone, language } from 'constants/timezones';
+import { EmployeeOfTheMonth } from 'pages/employee_of_the_month_form/EmployeeOfTheMonthModel';
+import { History } from 'history';
+import ModalImage from 'components/popup_modal/popup_modal_image';
+import { RouteComponentProps } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-interface EmployeeOfTheMonthSummaryProps extends RouteComponentProps {
-  employeeOfTheMonth: EmployeeOfTheMonth;
+interface Props extends RouteComponentProps {
+  employee: EmployeeOfTheMonth;
   history: History;
 }
 
-export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps) => {
+export const EmployeeOfTheMonthSummary = (props: Props) => {
   const ALT_MESSAGE: string = 'Employee Of The Month...';
-  const { t: translateText } = useTranslation();
-  const [imageModal, setImageModal] = useState<boolean>(false);
-  const [employeeOfTheMonthImage, setEmployeeOfTheMonthImage] = useState<string>('');
-  const updatedDate = props.employeeOfTheMonth.updatedAt;
+  const { t } = useTranslation();
+  const [showImageModal, setShowImageModal] = useState<boolean>(false);
+  const [employeeImage, setEmployeeImage] = useState<string>(null);
+  const updatedDate = props.employee.updatedAt;
 
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
-    setImageModal(true);
+    setShowImageModal(true);
   };
 
   const onModalImageClose = () => {
-    setImageModal(false);
+    setShowImageModal(false);
   };
 
   useEffect(() => {
     const getEmployeeOfTheMonthImage = async () => {
-      setEmployeeOfTheMonthImage(
-        await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.employeeOfTheMonth.imgPath), props.history),
+      const employeeImage = await Api.Image(
+        ENDPOINT_IMAGE_BY_PATH(props.employee.imgPath),
+        props.history,
       );
+      setEmployeeImage(employeeImage);
     };
 
-    // Only execute once employee of the month data has been successfully passed to this component
-    if (props.employeeOfTheMonth !== null) getEmployeeOfTheMonthImage();
-  }, [props.employeeOfTheMonth, props.history]);
+    getEmployeeOfTheMonthImage();
+  }, [props.employee, props.history]);
 
-  const translateMonth = (monthIndicator: number): string => {
-    switch (monthIndicator) {
+  const translateMonth = (index: number): string => {
+    switch (index) {
       case 0:
-        return translateText('monthJanuary');
+        return t('monthJanuary');
       case 1:
-        return translateText('monthFebruary');
+        return t('monthFebruary');
       case 2:
-        return translateText('monthMarch');
+        return t('monthMarch');
       case 3:
-        return translateText('monthApril');
+        return t('monthApril');
       case 4:
-        return translateText('monthMay');
+        return t('monthMay');
       case 5:
-        return translateText('monthJune');
+        return t('monthJune');
       case 6:
-        return translateText('monthJuly');
+        return t('monthJuly');
       case 7:
-        return translateText('monthAugust');
+        return t('monthAugust');
       case 8:
-        return translateText('monthSeptember');
+        return t('monthSeptember');
       case 9:
-        return translateText('monthOctober');
+        return t('monthOctober');
       case 10:
-        return translateText('monthNovember');
+        return t('monthNovember');
       case 11:
-        return translateText('monthDecember');
+        return t('monthDecember');
     }
   };
 
   return (
     <div className="employee-container mb-5">
       <ModalImage
-        show={imageModal}
+        show={showImageModal}
         item={ALT_MESSAGE}
-        image={employeeOfTheMonthImage}
+        image={employeeImage}
         onModalClose={onModalImageClose}
         history={props.history}
         location={undefined}
@@ -88,44 +90,33 @@ export const EmployeeOfTheMonthSummary = (props: EmployeeOfTheMonthSummaryProps)
           <div className="top-description">
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">
-                {translateText('employeeOfTheMonthTitle').concat(
+                {t('employeeOfTheMonthTitle').concat(
                   translateMonth(currMonth).concat(' ').concat(currYear.toString()),
                 )}
               </h2>
-              <h6 className="fs-6 lh-base fw-bold">{translateText('employeeOfTheMonthDate')}</h6>
-              <p className="fs-6 lh-base text-break">
-                {(Date.parse(updatedDate) &&
-                  new Date(updatedDate).toLocaleDateString(language, {
-                    timeZone: timezone,
-                  })) || // If Date is already coverted, do not covert again on rerender (causes Invalid Date Error)
-                  updatedDate}
-              </p>
-              <h6 className="fs-6 fw-bold lh-base">{translateText('employeeOfTheMonthName')}</h6>
-              <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.name}</p>
-              <h6 className="fs-6 fw-bold lh-base">
-                {translateText('employeeOfTheMonthDepartment')}
-              </h6>
-              <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.department.name}</p>
+              <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
+              <p className="fs-6 lh-base text-break">{updatedDate}</p>
+              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
+              <p className="fs-6 lh-base text-break">{props.employee.name}</p>
+              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>
+              <p className="fs-6 lh-base text-break">{props.employee.department.name}</p>
             </div>
             <div className="employee-image-container">
-              <img
-                src={employeeOfTheMonthImage}
-                className={`employee-image img-thumbnail img-fluid mt-3 mb-3 ${
-                  props.employeeOfTheMonth.imgPath ? 'd-block' : 'd-none'
-                }`}
-                alt={ALT_MESSAGE}
-                onClick={(event: any) => {
-                  onEnlargeImage(event);
-                }}
-              />
+              {employeeImage && (
+                <img
+                  src={employeeImage}
+                  className={`employee-image img-thumbnail img-fluid mt-3 mb-3`}
+                  alt={ALT_MESSAGE}
+                  onClick={(event: any) => {
+                    onEnlargeImage(event);
+                  }}
+                />
+              )}
             </div>
-            {/* </div> */}
           </div>
           <div className="employee-description">
-            <h6 className="fs-6 fw-bold lh-base">
-              {translateText('employeeOfTheMonthDescription')}
-            </h6>
-            <p className="fs-6 lh-base text-break">{props.employeeOfTheMonth.description}</p>
+            <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
+            <p className="fs-6 lh-base text-break">{props.employee.description}</p>
           </div>
         </div>
       </div>

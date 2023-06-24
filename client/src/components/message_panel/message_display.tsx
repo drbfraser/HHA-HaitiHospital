@@ -5,7 +5,7 @@ import {
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
 } from 'constants/endpoints';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Message, Role, UserDetails, emptyMessage } from 'constants/interfaces';
+import { Message, Role, emptyMessage } from 'constants/interfaces';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET,
   TOAST_MESSAGEBOARD_DELETE,
@@ -16,7 +16,6 @@ import Api from 'actions/Api';
 import { History } from 'history';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
 import i18n from 'i18next';
-import initialUserJson from './initialUserJson.json';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { toast } from 'react-toastify';
@@ -29,7 +28,7 @@ interface MessageDisplayProps {
 }
 
 const MessageDisplay = (props: MessageDisplayProps) => {
-  const { t: t } = useTranslation();
+  const { t } = useTranslation();
   const [message, setMessage] = useState<Message>(emptyMessage);
   const history: History = useHistory<History>();
   const authState = useAuthState();
