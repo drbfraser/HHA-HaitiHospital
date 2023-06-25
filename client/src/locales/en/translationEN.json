@@ -496,5 +496,64 @@
       "Unemployed, due to condition",
       "Retired, not working due to age"
     ]
+  },
+
+  "communityHealthQuestions" : {
+    "question1": "Deliveries",
+    "question1_1": "Age of Mothers",
+    "question1_1_1": "< 15 years",
+    "question1_1_2": "15-19 years",
+    "question1_1_3": "20-24 years",
+    "question1_1_4": "25-29 years",
+    "question1_1_5": "30 years plus",
+    "question1_1_6": "Unknown",
+    "question1_options": [
+      "< 15 years",
+      "15-19 years",
+      "20-24 years",
+      "25-29 years",
+      "30 years plus",
+      "Unknown"
+    ],
+    "question2": "Births",
+    "question2_1": "Weight",
+    "question2_1_1": "Weight <1.5kg",
+    "question2_1_2": "1.5kg ≤ Weight <2.5kg",
+    "question2_1_3": "2.5kg and over",
+    "question2_1_4": "Not weighed",
+    "question2_2": "Immediately breastfed",
+    "question2_3": "Skin to skin therapy",
+    "question2_options": [
+      "Weight <1.5kg",
+      "1.5kg ≤ Weight <2.5kg",
+      "2.5kg and over",
+      "Not weighed",
+      "Immediately breastfed",
+      "Skin to skin therapy"
+    ],
+    "question3": "Post Natal",
+    "question3_1": "Breastfeeding women receiving vitamin A",
+    "question3_2": "Breastfeeding women with MUAC <210mm",
+    "question3_3": "Breastfeeding women with malnutrition support",
+    "question3_4": "Domestic visits in 0-3 days",
+    "question4": "Birth Control",
+    "question4_1": "Methods/ Sex",
+    "question4_1_1": "OCP",
+    "question4_1_2": "Patch",
+    "question4_1_3": "Depo injection",
+    "question4_1_4": "Implant",
+    "question4_1_5": "Inter uterine devices (IUD)",
+    "question4_1_6": "Vaginal ring",
+    "question4_1_7": "Breastfeeding as birth control",
+    "question4_1_8": "Female condom",
+    "question4_1_9": "Sterlisation",
+    "question4_1_10": "Male condom",
+    "question4_1_11": "Vasectomy",
+    "question4_2": "Opérations de CCV",
+    "question4_2_1": "Sterlisation",
+    "question4_2_2": "Vasectomy"
+
   }
+  
 }
+
