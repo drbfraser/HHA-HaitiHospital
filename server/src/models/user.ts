@@ -42,7 +42,6 @@ interface UserWithInstanceMethods extends User {
   generateJWT: () => any;
   registerUser: (newUser: any, callback: Function) => void;
   comparePassword: (otherPw: any, callback: Function) => void;
-  rehashPassword: (plainTextPassword: String) => void;
 }
 const userSchema = new Schema<UserWithInstanceMethods>(
   {
