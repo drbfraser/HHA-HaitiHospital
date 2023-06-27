@@ -19,7 +19,7 @@ describe('Messageboard Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
 
     // Tests run too quickly---cy.visit() is not working without this delay
     cy.wait(100);
@@ -129,7 +129,7 @@ describe('Messageboard Test for User', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
 
     // Tests run too quickly---cy.visit() is not working without this delay
     cy.wait(100);

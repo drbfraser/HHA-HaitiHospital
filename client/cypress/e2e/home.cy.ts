@@ -13,7 +13,7 @@ describe('Admin Home Page Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('include', '/home');
   });
 
@@ -66,7 +66,7 @@ describe('User Home Page Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('include', '/home');
   });
 

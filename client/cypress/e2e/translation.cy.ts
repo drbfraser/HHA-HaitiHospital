@@ -16,7 +16,7 @@ describe('French Translation Tests', function () {
     cy.viewport(1200, 900);
 
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
 
     // Tests run too quickly---cy.visit() is not working without this delay
     cy.wait(100);

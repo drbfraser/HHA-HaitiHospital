@@ -31,7 +31,7 @@ describe('Admin Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     userIds = new Array();
 
     // Tests run too quickly---cy.visit() is not working without this delay
@@ -80,7 +80,7 @@ describe('Admin Tests', function () {
     cy.wait(1000); // Wait for toast to disappear
 
     adminPage.clickSignout();
-    loginPage.usernameInput('username').passwordInput('password').clickLoginButton();
+    loginPage.usernameInput('username').passwordInput('password').clickSignIn();
     cy.url().should('equal', `${baseUrl}/home`);
   });
 

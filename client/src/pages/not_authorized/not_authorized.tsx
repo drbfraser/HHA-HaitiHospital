@@ -9,9 +9,9 @@ const NotAuthorized = (props: NotAuthProps) => {
     <div className={'not-authorized-page'}>
       <h1>Not Authorized 401</h1>
       <p>
-        Go back to{' '}
-        <Link className="bold" to="/home">
-          Home
+        Please{' '}
+        <Link className="bold" to="/">
+          Login
         </Link>
       </p>
     </div>

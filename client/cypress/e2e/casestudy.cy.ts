@@ -22,7 +22,7 @@ describe('Case Study Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     caseStudyIds = new Array();
 
     // Tests run too quickly---cy.visit() is not working without this delay
