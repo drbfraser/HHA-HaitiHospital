@@ -13,7 +13,6 @@ import {
   TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_PATCH,
 } from 'constants/toastErrorMessages';
-import { language, timezone } from 'constants/timezones';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';

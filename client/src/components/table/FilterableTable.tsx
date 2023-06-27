@@ -11,7 +11,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { Omit, omit } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 
 import Pagination from 'components/pagination/Pagination';

@@ -8,7 +8,6 @@ import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
-import { ColumnDef } from '@tanstack/react-table';
 import { History } from 'history';
 import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
