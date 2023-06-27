@@ -101,7 +101,10 @@ const ReportView = () => {
       departmentId: fetchedReport?.report?.departmentId,
       reportMonth: fetchedReport?.report?.reportMonth,
       submittedDate: fetchedReport?.report?.submittedDate,
+      submittedBy: fetchedReport?.report?.submittedBy,
     });
+
+    console.log('WOW', metaData);
     return () => {
       controller.abort();
     };
@@ -182,8 +185,6 @@ const ReportView = () => {
 
             <div>
               <header>
-                <h1>Department: {department}</h1>
-                <h2>Date: {metaData?.submittedDate && submittedDate}</h2>
                 <div>
                   {showViewEditBtn && (
                     <button className="btn btn-primary" onClick={btnHandler}>
@@ -212,9 +213,12 @@ const ReportView = () => {
               <div>
                 <div className="visually-hidden">
                   <PDFExport
-                    fileName={`${submittedDate}_${department}`}
+                    fileName={`${department}_${new Date(
+                      metaData?.submittedDate,
+                    ).toLocaleDateString()}__${metaData?.submittedBy}`}
                     paperSize="A4"
                     ref={pdfExportComponent}
+                    scale={0.75}
                   >
                     <ReadonlyReportForm
                       applyReportChanges={applyReportChanges}
@@ -222,6 +226,8 @@ const ReportView = () => {
                       isSubmitting={false}
                       isUsingPagination={false}
                       reportData={report}
+                      date={submittedDate}
+                      author={metaData?.submittedBy}
                     />
                   </PDFExport>
                 </div>
@@ -233,6 +239,8 @@ const ReportView = () => {
                     isSubmitting={false}
                     isUsingPagination={isUsingPagination}
                     reportData={report}
+                    date={submittedDate}
+                    author={metaData?.submittedBy}
                   />
                 ) : (
                   <ReportForm
