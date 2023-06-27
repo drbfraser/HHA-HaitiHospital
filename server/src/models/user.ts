@@ -113,17 +113,6 @@ userSchema.methods.registerUser = async (newUser, callback) => {
   } catch (err) {
     logger.log(err);
   }
-
-  // bcrypt.genSalt(10, (err, salt) => {
-  //   bcrypt.hash(newUser.password, salt, (err, hash) => {
-  //     if (err) {
-  //       logger.error(err);
-  //     }
-  //     // set pasword to hash
-  //     newUser.password = hash;
-  //     newUser.save({ new: true }, callback);
-  //   });
-  // });
 };
 
 userSchema.methods.comparePassword = async function (plainTextPassword, callback) {
@@ -156,11 +145,6 @@ userSchema.methods.comparePassword = async function (plainTextPassword, callback
       }
       break;
   }
-
-  // bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-  //   if (err) return callback(err);
-  //   callback(null, isMatch);
-  // });
 };
 
 export async function hashPassword(password): Promise<string> {
@@ -172,17 +156,6 @@ export async function hashPassword(password): Promise<string> {
     logger.log(err);
     return err;
   }
-
-  // const saltRounds = 10;
-
-  // const hashedPassword: string = await new Promise((resolve, reject) => {
-  //   bcrypt.hash(password, saltRounds, function (err, hash) {
-  //     if (err) reject(err);
-  //     else resolve(hash);
-  //   });
-  // });
-
-  // return hashedPassword;
 }
 
 export const USER_MODEL_NAME = 'User';
