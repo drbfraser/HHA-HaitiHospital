@@ -21,6 +21,33 @@ import { useTranslation } from 'react-i18next';
 
 interface Props extends RouteComponentProps {}
 
+const enumSort = (key, e) => {
+  type enumKey = keyof typeof e;
+
+  return (rowA, rowB) => {
+    const reportA = rowA.getValue(key) as enumKey;
+    const reportB = rowB.getValue(key) as enumKey;
+
+    return e[reportA] - e[reportB];
+  };
+};
+
+enum Priority {
+  'non-urgent',
+  'important',
+  'urgent',
+}
+
+enum Status {
+  'in-progress',
+  'fixed',
+  'backlog',
+}
+
+const prioritySort = enumSort('equipmentPriority', Priority);
+
+const statusSort = enumSort('equipmentStatus', Status);
+
 export const BiomechanicalPage = (_: Props) => {
   const { t } = useTranslation();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -39,6 +66,8 @@ export const BiomechanicalPage = (_: Props) => {
           <Badge bg={setPriority(row.getValue())}>{t(`biomech.priority.${row.getValue()}`)}</Badge>
         ),
         accessorKey: 'equipmentPriority',
+        sortingFn: prioritySort,
+        sortDescFirst: true,
       },
       {
         id: 'equipmentStatus',
@@ -49,6 +78,7 @@ export const BiomechanicalPage = (_: Props) => {
           </Badge>
         ),
         accessorKey: 'equipmentStatus',
+        sortingFn: statusSort,
       },
       {
         id: 'equipmentName',
