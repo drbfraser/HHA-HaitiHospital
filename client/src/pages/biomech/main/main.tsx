@@ -2,13 +2,13 @@ import './main.css';
 
 import { Badge, Button } from 'react-bootstrap';
 import { ENDPOINT_BIOMECH_DELETE_BY_ID, ENDPOINT_BIOMECH_GET } from 'constants/endpoints';
+import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
 import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
 import { ColumnDef } from '@tanstack/react-table';
-import FilterableTable from 'components/table/FilterableTable';
 import { History } from 'history';
 import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
@@ -32,7 +32,7 @@ export const BiomechanicalPage = (_: Props) => {
 
   // Github co-pilot assited in filling this array
   const columns = useMemo(
-    (): ColumnDef<any, any>[] => [
+    (): FilterableColumnDef[] => [
       {
         id: 'equipmentPriority',
         header: t('biomech.main_page.priority_col'),
