@@ -1,24 +1,25 @@
-import mongoose from 'mongoose';
-import faker from 'faker';
+import * as ENV from 'utils/processEnv';
 
+import BioMech, { BiomechPriority, BiomechStatus } from 'models/bioMech';
+import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
+import DepartmentCollection, { Department } from 'models/departments';
+import Departments, { DefaultDepartments } from 'utils/departments';
 import {
   ObjectSerializer,
-  buildMaternityMockReport,
-  buildRehabMockReport,
-  buildNicuPaedsMockReport,
   QuestionGroup,
+  buildMaternityMockReport,
+  buildNicuPaedsMockReport,
+  buildRehabMockReport,
 } from '@hha/common';
 import UserCollection, { Role, User } from 'models/user';
-import MessageCollection from 'models/messageBoard';
-import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
-import BioMech, { BiomechPriority, BiomechStatus } from 'models/bioMech';
+
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-import * as ENV from 'utils/processEnv';
-import { TemplateCollection } from 'models/template';
-import { ReportCollection } from 'models/report';
+import MessageCollection from 'models/messageBoard';
 import { PermissionCollection } from 'models/permission';
-import Departments, { DefaultDepartments } from 'utils/departments';
-import DepartmentCollection, { Department } from 'models/departments';
+import { ReportCollection } from 'models/report';
+import { TemplateCollection } from 'models/template';
+import faker from 'faker';
+import mongoose from 'mongoose';
 
 let nameMapper: Map<string, string>;
 
@@ -2093,7 +2094,7 @@ mongoose
   .then(() => {
     console.log('MongoDB Connected...');
     const readline = require('readline');
-    const IS_GITLAB_CI = process.env.IS_GITLAB_CI ?? 'false';
+
     if (process.env.IS_GITLAB_CI === 'true') {
       (async () => await seedDb())(); // anonymous async function
     } else {
