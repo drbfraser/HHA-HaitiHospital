@@ -34,10 +34,6 @@ export const BiomechanicalPage = (_: Props) => {
   const columns = useMemo(
     (): ColumnDef<any, any>[] => [
       {
-        header: '#',
-        cell: (row) => row.row.index + 1,
-      },
-      {
         id: 'equipmentPriority',
         header: t('biomech.main_page.priority_col'),
         cell: (row) => (
@@ -75,7 +71,7 @@ export const BiomechanicalPage = (_: Props) => {
       },
       {
         id: 'Options',
-        header: t('biomech.main_page.options_col'),
+        header: '',
         enableGlobalFilter: false,
         enableColumnFilter: false,
         cell: (row) => (
@@ -85,9 +81,10 @@ export const BiomechanicalPage = (_: Props) => {
                 data-testid="delete-biomech-button"
                 onClick={(event) => onDeleteBioMech(event, row.getValue())}
                 variant="link"
-                className="text-decoration-none"
+                title={t('button.delete')}
+                className="text-decoration-none link-secondary"
               >
-                {t(`button.delete`)}
+                <i className="bi bi-trash"></i>
               </Button>
             )}
           </>
@@ -96,7 +93,7 @@ export const BiomechanicalPage = (_: Props) => {
         enableSorting: false,
       },
     ],
-    [authState.userDetails.role, history, t],
+    [authState.userDetails.role, t],
   );
 
   const deleteBioMechCallback = () => {
@@ -115,7 +112,8 @@ export const BiomechanicalPage = (_: Props) => {
     );
   };
 
-  const onDeleteBioMech = (_: any, id: string) => {
+  const onDeleteBioMech = (event: any, id: string) => {
+    event.stopPropagation();
     setCurrentIndex(id);
     setDeleteModal(true);
   };
