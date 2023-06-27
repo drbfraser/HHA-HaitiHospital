@@ -5,7 +5,7 @@ import {
   ObjectSerializer,
   buildMaternityMockReport,
   buildRehabMockReport,
-  buildNicuPaedsMockReport,
+  //buildNicuPaedsMockReport,
   QuestionGroup,
 } from '@hha/common';
 import UserCollection, { Role, User } from 'models/user';
@@ -326,7 +326,7 @@ export const seedUsers = async () => {
           default:
             break;
         }
-        await user.registerUser(user, () => {});
+        await user.registerUser(user, () => { });
         // check if user is registered
       }
     }
@@ -1082,8 +1082,8 @@ const seedTemplates = async () => {
 
     const reportDepartmentMap: [Report, string][] = [
       [buildRehabMockReport(), DefaultDepartments.Rehab],
-      [buildNicuPaedsMockReport(), DefaultDepartments.NICU],
-      [buildMaternityMockReport(), DefaultDepartments.Maternity], 
+      //[buildNicuPaedsMockReport(), DefaultDepartments.NICU],
+      [buildMaternityMockReport(), DefaultDepartments.Maternity],
     ];
     console.log(`Seeding templates buildRehabMockReport ...`);
 

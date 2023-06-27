@@ -68,8 +68,8 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
     if (this.getAnswer() > this.questionGroups.length) {
       for (let i = this.questionGroups.length; i < this.getAnswer(); i++) {
         const lang: string = 'en'; // Set the desired language code here
-        const promptValue: string | undefined = this.getPrompt(lang);
-        const promptText: string = promptValue || '';
+        const promptValue: Translation | undefined = this.getPrompt();
+        const promptText: Translation = promptValue || '';
         const questionGroupName: Translation = {
           [lang]: `${promptText}-${i}`,
         };

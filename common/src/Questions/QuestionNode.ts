@@ -6,9 +6,10 @@
 */
 console.log('common/src/Questions/QuestionNode.ts');
 
-interface Translation {
-  [lang: string]: string;
-}
+// interface Translation {
+//   [lang: string]: string;
+// }
+type Translation = Record<string, string>;
 
 export abstract class QuestionNode<ID, ErrorType> {
   private readonly id: ID;
@@ -19,8 +20,8 @@ export abstract class QuestionNode<ID, ErrorType> {
     this.prompt = prompt;
   }
 
-  public getPrompt(lang: string): string | undefined {
-    return this.prompt[lang];
+  public getPrompt(): Translation {
+    return this.prompt;
   }
 
   public getId(): ID {

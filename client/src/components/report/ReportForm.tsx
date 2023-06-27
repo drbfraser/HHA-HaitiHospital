@@ -11,6 +11,7 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -79,6 +80,8 @@ const ReportForm = ({
   readOnly?: boolean;
 }): JSX.Element => {
   console.log('client/src/componenets/report/ReportForm');
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
   const pageSize = reportData
@@ -88,7 +91,7 @@ const ReportForm = ({
 
   return (
     <div className="mt-3 p-3">
-      <h2 className="mb-3">{reportData.getPrompt()}</h2>
+      <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
       <form onSubmit={formHandler} noValidate>
         <SubmitButton
           buttonText={`${btnText} Report`}

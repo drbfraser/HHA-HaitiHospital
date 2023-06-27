@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "i18next": "^23.1.0",
     "i18next-conv": "^14.0.0",
     "i18next-fs-backend": "^2.1.5",

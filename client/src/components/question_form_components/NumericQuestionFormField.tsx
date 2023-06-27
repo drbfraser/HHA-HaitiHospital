@@ -23,9 +23,9 @@ const NumericQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
   const { t, i18n } = useTranslation();
   const language = i18n.language;
-  const prompt = question.getPrompt()[language];
-  console.log('language', language);
-  console.log('prompt', prompt);
+  console.log('Numeric language', language);
+  const prompt = question.getPrompt();
+  console.log('prompt', prompt.en);
   console.log('get prompt', question.getPrompt());
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,12 +48,13 @@ const NumericQuestionFormField = ({
   
       return nextErrorSet;
     });
-  }, [setErrorSet, question, nameId]);
+  }, [question, nameId]);
 
   // Disable the submit button the first time component loads if there are errors
   // This would be the case when nothing is selected and the question is required
   useEffect(() => {
     updateErrorSetFromSelf();
+    console.log('useEffect NumericQuestionFormField');
 
     return () => {
       setErrorSet((prevErrorSet: Set<ID>) => {
@@ -62,7 +63,7 @@ const NumericQuestionFormField = ({
         return nextErrorSet;
       });
     };
-  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
+  }, [nameId, updateErrorSetFromSelf]);
 
   return (
     <FormField

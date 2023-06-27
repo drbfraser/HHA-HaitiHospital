@@ -17,6 +17,7 @@ const CompositionQuestionFormField = ({
   suffixName: string;
   readOnly?: boolean;
 }): JSX.Element => {
+  console.log('compositionQuestion promptValue1');
   const allSumUpInfo = question.getAllSumUpInfo();
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
@@ -24,6 +25,7 @@ const CompositionQuestionFormField = ({
   const prompt = question.getPrompt();
   const language = i18n.language;
   const promptValue = prompt && prompt[language] ? prompt[language] : '';
+  console.log('compositionQuestion promptValue2', promptValue);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -66,7 +68,7 @@ const CompositionQuestionFormField = ({
         inputState={inputState}
         min={0}
         nameId={nameId}
-        prompt={question.getPrompt()}
+        prompt={promptValue}
         type="number"
         value={question.getAnswer()}
         readOnly={readOnly}

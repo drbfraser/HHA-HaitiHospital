@@ -6,9 +6,10 @@ import { ERROR_AT_LEAST_ONE_CHOICE, ValidationResult } from '../Form_Validators'
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
 
-interface Translation {
-  [lang: string]: string;
-}
+// interface Translation {
+//   [lang: string]: string;
+// }
+type Translation = Record<string, string>;
 
 // Choice for multiple choice questions
 @serializable('')

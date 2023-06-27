@@ -12,7 +12,7 @@ type FormFieldProps = {
   inputState: ValidationResult<string>;
   min?: number | string;
   nameId: string;
-  prompt: Translation;
+  prompt: Translation | string;
   type: HTMLInputTypeAttribute;
   value: number | string;
   readOnly?: boolean;
@@ -25,6 +25,8 @@ const FormField = (props: FormFieldProps) => {
   const displayPrompt = prompt ?? props.prompt;
   console.log('FormField language: ', i18n.language);
   console.log('FormField prompt: ', prompt);
+  console.log('FormField displayPrompt: ', displayPrompt);
+
   return (
     <div className="form-group">
       <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>

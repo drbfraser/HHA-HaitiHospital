@@ -32,15 +32,15 @@ router
         const isFrenchRequested = languagePreference && languagePreference.includes('fr');
 
         // Extract the desired language version of prompt for each question item
-        if (serializedTemplate.reportObject.questionItems) {
-          serializedTemplate.reportObject.questionItems.forEach((item) => {
-            item.prompt = isFrenchRequested ? item.prompt.fr : item.prompt.en;
-            if (item.prompt instanceof Object) {
-              item.prompt = Object.values(item.prompt)[0];
-              console.log('server routes/api/template item prompr', item.prompt);
-            }
-          });
-        }
+        // if (serializedTemplate.reportObject.questionItems) {
+        //   serializedTemplate.reportObject.questionItems.forEach((item) => {
+        //     item.prompt = isFrenchRequested ? item.prompt.fr : item.prompt.en;
+        //     if (item.prompt instanceof Object) {
+        //       item.prompt = Object.values(item.prompt)[0];
+        //       console.log('server routes/api/template item prompr', item.prompt);
+        //     }
+        //   });
+        // }
 
         res.status(HTTP_OK_CODE).json({ template: serializedTemplate });
 
