@@ -1,5 +1,5 @@
 import Pagination from 'components/pagination/Pagination';
-import { QuestionGroup, QuestionNode } from '@hha/common';
+import { QuestionGroup, QuestionNode, ReportMetaData } from '@hha/common';
 import {
   CompositionQuestionFormField,
   ExpandableQuestionViewField,
@@ -10,6 +10,7 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import { useState } from 'react';
+import { createImportSpecifier } from 'typescript';
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -67,6 +68,8 @@ const ReadonlyReportForm = ({
   reportData,
   isTemplate = false,
   isUsingPagination = true,
+  date,
+  author,
 }: {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -75,6 +78,8 @@ const ReadonlyReportForm = ({
   btnText?: string;
   isTemplate?: boolean;
   isUsingPagination?: boolean;
+  date?: string;
+  author?: string;
 }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = reportData
@@ -86,6 +91,8 @@ const ReadonlyReportForm = ({
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
+      <p>Author: {author}</p>
+      <p>Date: {date}</p>
       <form onSubmit={formHandler} noValidate>
         <Group isRootNode>
           <QuestionFormFields
