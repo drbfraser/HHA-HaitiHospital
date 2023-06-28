@@ -17,5 +17,5 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true
   },
-  "include": ["./src/**/*", "./security/*", "./tests/**/*"]
+  "include": ["./src/**/*", "./security/*", "./tests/**/*", "./common/**/*"]
 }
