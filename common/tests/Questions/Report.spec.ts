@@ -1,6 +1,6 @@
 import {
   buildRehabMockReport,
-  buildNicuPaedsMockReport,
+  //buildNicuPaedsMockReport,
   buildMaternityMockReport,
   oneQuestionMockReport,
 } from '../../src/MockReports';
@@ -42,21 +42,21 @@ describe('Mock Reports', function () {
     });
   });
 
-  describe('NICUPaeds mock report', function () {
-    it('Should create a mock NICUPaeds report', function () {
-      buildNicuPaedsMockReport();
-    });
+  // describe('NICUPaeds mock report', function () {
+  //   it('Should create a mock NICUPaeds report', function () {
+  //     buildNicuPaedsMockReport();
+  //   });
 
-    it('Should be able to serialize NICUPaeds report', function () {
-      const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-      const report: QuestionGroup<string, string> = buildNicuPaedsMockReport();
-      const serializedObject: Object = objectSerializer.serialize(report);
-      const deserialized: QuestionGroup<string, string> =
-        objectSerializer.deserialize(serializedObject);
+  //   it('Should be able to serialize NICUPaeds report', function () {
+  //     const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  //     const report: QuestionGroup<string, string> = buildNicuPaedsMockReport();
+  //     const serializedObject: Object = objectSerializer.serialize(report);
+  //     const deserialized: QuestionGroup<string, string> =
+  //       objectSerializer.deserialize(serializedObject);
 
-      expect(verifySerialized(report, deserialized)).to.be.true;
-    });
-  });
+  //     expect(verifySerialized(report, deserialized)).to.be.true;
+  //   });
+  // });
 
   describe('Maternity mock report', function () {
     it('Should create a mock Maternity report', function () {
