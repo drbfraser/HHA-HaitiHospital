@@ -526,7 +526,7 @@
     "question11_3_3": "Département Nord",
     "question11_3_4": "Autres départements"
   },
-  "communityHealthQuestions" : {
+  "communityHealthQuestions": {
     "question1": "Accouchements",
     "question1_1": "Age des mères",
     "question1_1_1": "< 15 ans",

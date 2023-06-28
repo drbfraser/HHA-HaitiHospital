@@ -30,7 +30,6 @@ const SidebarItem = ({ path, children }: SideBarItemProps) => {
     textDecoration: 'none',
   };
 
-
   return (
     <li
       key={path}

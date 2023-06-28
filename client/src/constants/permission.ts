@@ -7,13 +7,9 @@ export enum Permission {
 }
 
 export const rolePermissions = {
-  [Role.Admin]: [
-    Permission.ACCESS_PAGE,
-    Permission.EDIT_PAGE,
-    Permission.DELETE_PAGE,
-  ],
+  [Role.Admin]: [Permission.ACCESS_PAGE, Permission.EDIT_PAGE, Permission.DELETE_PAGE],
   [Role.User]: [Permission.ACCESS_PAGE],
   [Role.HeadOfDepartment]: [Permission.ACCESS_PAGE],
   [Role.MedicalDirector]: [Permission.ACCESS_PAGE],
-  [Role.BioMechanic]: [Permission.ACCESS_PAGE]
+  [Role.BioMechanic]: [Permission.ACCESS_PAGE],
 };

@@ -36,12 +36,14 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
     super(id, prompt);
     this.idGenerator = idGenerator;
     const translations: string[] = Object.values(prompt).filter(Boolean) as string[];
-    const firstPromptValue: string | undefined = translations.length > 0 ? translations[0] : undefined;
-    const templateName: Translation = firstPromptValue ? { [firstPromptValue]: firstPromptValue } : {};
-    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(
-      idGenerator(0),
-      templateName,
-    ).addAll(...questions);
+    const firstPromptValue: string | undefined =
+      translations.length > 0 ? translations[0] : undefined;
+    const templateName: Translation = firstPromptValue
+      ? { [firstPromptValue]: firstPromptValue }
+      : {};
+    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(idGenerator(0), templateName).addAll(
+      ...questions,
+    );
   }
 
   public addToTemplate(
@@ -121,7 +123,6 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
   public addValidator(validator: string) {
     this.validators.push(validator);
   }
-
 
   public getValidationResults(): ValidationResult<string> {
     if (!isNumber(this.getAnswer())) {

@@ -7,7 +7,6 @@ console.log('common/src/Questions/QuestionGroup.ts');
 
 type Translation = Record<string, string>;
 
-
 @serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private readonly breakpointPairs: number[][] = [];

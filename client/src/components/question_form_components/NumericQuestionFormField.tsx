@@ -39,13 +39,13 @@ const NumericQuestionFormField = ({
   const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {
       const nextErrorSet = new Set(prevErrorSet);
-  
+
       if (question.getValidationResults() !== true) {
         nextErrorSet.add(nameId);
       } else {
         nextErrorSet.delete(nameId);
       }
-  
+
       return nextErrorSet;
     });
   }, [question, nameId]);

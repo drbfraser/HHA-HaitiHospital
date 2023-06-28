@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*", "./security/*", "./tests/**/*"]
 }

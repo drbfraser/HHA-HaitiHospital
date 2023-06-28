@@ -17,14 +17,14 @@ type ErrorType = string;
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
-    (questionGroupIndex: number): ID =>
-      `${questionId}_${questionGroupIndex}`;
+  (questionGroupIndex: number): ID =>
+    `${questionId}_${questionGroupIndex}`;
 
 export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
-  const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-    'ROOT',
-    { en: 'OneQuestionReport', fr: 'test' },
-  );
+  const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('ROOT', {
+    en: 'OneQuestionReport',
+    fr: 'test',
+  });
   const q1 = new TextQuestion<ID, ErrorType>('1', { en: 'What is your name?', fr: 'test' });
   report.add(q1);
 
@@ -32,7 +32,6 @@ export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
-
   const translations = {
     en: require('../../client/src/locales/en/translationEN.json'),
     fr: require('../../client/src/locales/fr/translationFR.json'),
@@ -48,11 +47,10 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   console.log('Here is the buildRehabMockReport');
   const reportID: ID = 'rehab-report_1_1';
 
-  const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-    reportID,
-    { en: 'Rehab Report', fr: 'Rapport de Rehab' },
-  );
-
+  const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
+    en: 'Rehab Report',
+    fr: 'Rapport de Rehab',
+  });
 
   // Questions 1 to 4
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -138,12 +136,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q5_6: MultipleSelectionQuestion<ID, ErrorType> = new MultipleSelectionQuestion<
     ID,
     ErrorType
-  >(
-    '5_6',
-    getQuestionContent('question5_6'),
-    ['Wheelchair', 'Walker', 'Cane', 'Crutches'],
-    [],
-  );
+  >('5_6', getQuestionContent('question5_6'), ['Wheelchair', 'Walker', 'Cane', 'Crutches'], []);
   const q5_7: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_7',
     getQuestionContent('question5_7'),
@@ -174,7 +167,10 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question6_1'),
     ['SCI', 'CVA', 'Other'],
   );
-  const q6_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('6_2', getQuestionContent('question6_2'));
+  const q6_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '6_2',
+    getQuestionContent('question6_2'),
+  );
   const q6_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '6_3',
     getQuestionContent('question6_3'),
@@ -193,7 +189,10 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question7_1'),
     ['SCI', 'CVA', 'Other'],
   );
-  const q7_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('7_2', getQuestionContent('question7_2'));
+  const q7_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '7_2',
+    getQuestionContent('question7_2'),
+  );
   const q7_3: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '7_3',
     getQuestionContent('question7_3'),
@@ -349,10 +348,26 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q13_1_4,
   );
 
-  const q13_2_1_1_1 = new NumericQuestion<ID, ErrorType>('13_2_1_1_1', getQuestionContent('question13_2_1_1_1'), 0);
-  const q13_2_1_1_2 = new NumericQuestion<ID, ErrorType>('13_2_1_1_2', getQuestionContent('question13_2_1_1_2'), 0);
-  const q13_2_1_1_3 = new NumericQuestion<ID, ErrorType>('13_2_1_1_3', getQuestionContent('question13_2_1_1_3'), 0);
-  const q13_2_1_1_4 = new NumericQuestion<ID, ErrorType>('13_2_1_1_4', getQuestionContent('question13_2_1_1_4'), 0);
+  const q13_2_1_1_1 = new NumericQuestion<ID, ErrorType>(
+    '13_2_1_1_1',
+    getQuestionContent('question13_2_1_1_1'),
+    0,
+  );
+  const q13_2_1_1_2 = new NumericQuestion<ID, ErrorType>(
+    '13_2_1_1_2',
+    getQuestionContent('question13_2_1_1_2'),
+    0,
+  );
+  const q13_2_1_1_3 = new NumericQuestion<ID, ErrorType>(
+    '13_2_1_1_3',
+    getQuestionContent('question13_2_1_1_3'),
+    0,
+  );
+  const q13_2_1_1_4 = new NumericQuestion<ID, ErrorType>(
+    '13_2_1_1_4',
+    getQuestionContent('question13_2_1_1_4'),
+    0,
+  );
   const q13_2_1_1_5 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_5',
     getQuestionContent('question13_2_1_1_5'),
@@ -363,7 +378,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question13_2_1_1_6'),
     0,
   );
-  const q13_2_1_1_7 = new NumericQuestion<ID, ErrorType>('13_2_1_1_7', getQuestionContent('question13_2_1_1_7'), 0);
+  const q13_2_1_1_7 = new NumericQuestion<ID, ErrorType>(
+    '13_2_1_1_7',
+    getQuestionContent('question13_2_1_1_7'),
+    0,
+  );
   const q13_2_1_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_2_1_1',
     getQuestionContent('question13_2_1_1'),
@@ -375,12 +394,32 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q13_2_1_1_6,
     q13_2_1_1_7,
   );
-  const q13_2_1 = new CompositionQuestion<ID, ErrorType>('13_2_1', getQuestionContent('question13_2_1_1'), q13_2_1_1);
+  const q13_2_1 = new CompositionQuestion<ID, ErrorType>(
+    '13_2_1',
+    getQuestionContent('question13_2_1_1'),
+    q13_2_1_1,
+  );
 
-  const q13_2_2_1_1 = new NumericQuestion<ID, ErrorType>('13_2_2_1_1', getQuestionContent('question13_2_2_1_1'), 0);
-  const q13_2_2_1_2 = new NumericQuestion<ID, ErrorType>('13_2_2_1_2', getQuestionContent('question13_2_2_1_2'), 0);
-  const q13_2_2_1_3 = new NumericQuestion<ID, ErrorType>('13_2_2_1_3', getQuestionContent('question13_2_2_1_3'), 0);
-  const q13_2_2_1_4 = new NumericQuestion<ID, ErrorType>('13_2_2_1_4', getQuestionContent('question13_2_2_1_4'), 0);
+  const q13_2_2_1_1 = new NumericQuestion<ID, ErrorType>(
+    '13_2_2_1_1',
+    getQuestionContent('question13_2_2_1_1'),
+    0,
+  );
+  const q13_2_2_1_2 = new NumericQuestion<ID, ErrorType>(
+    '13_2_2_1_2',
+    getQuestionContent('question13_2_2_1_2'),
+    0,
+  );
+  const q13_2_2_1_3 = new NumericQuestion<ID, ErrorType>(
+    '13_2_2_1_3',
+    getQuestionContent('question13_2_2_1_3'),
+    0,
+  );
+  const q13_2_2_1_4 = new NumericQuestion<ID, ErrorType>(
+    '13_2_2_1_4',
+    getQuestionContent('question13_2_2_1_4'),
+    0,
+  );
   const q13_2_2_1_5 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_5',
     getQuestionContent('question13_2_2_1_5'),
@@ -391,7 +430,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question13_2_2_1_6'),
     0,
   );
-  const q13_2_2_1_7 = new NumericQuestion<ID, ErrorType>('13_2_2_1_7', getQuestionContent('question13_2_2_1_7'), 0);
+  const q13_2_2_1_7 = new NumericQuestion<ID, ErrorType>(
+    '13_2_2_1_7',
+    getQuestionContent('question13_2_2_1_7'),
+    0,
+  );
   const q13_2_2_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_2_2_1',
     getQuestionContent('question13_2_2_1'),
@@ -403,7 +446,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q13_2_2_1_6,
     q13_2_2_1_7,
   );
-  const q13_2_2 = new CompositionQuestion<ID, ErrorType>('13_2_2', getQuestionContent('question13_2_2'), q13_2_2_1);
+  const q13_2_2 = new CompositionQuestion<ID, ErrorType>(
+    '13_2_2',
+    getQuestionContent('question13_2_2'),
+    q13_2_2_1,
+  );
 
   const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_3',
@@ -1148,7 +1195,6 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
 // };
 
 export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
-
   const translations = {
     en: require('../../client/src/locales/en/translationEN.json'),
     fr: require('../../client/src/locales/fr/translationFR.json'),
@@ -1162,17 +1208,20 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
   };
 
   const reportID: ID = 'maternity-report_1';
-  const maternityReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-    reportID,
-    { en: 'Maternity Report', fr: 'Rapport de maternité' },
-  );
+  const maternityReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
+    en: 'Maternity Report',
+    fr: 'Rapport de maternité',
+  });
 
   // Questions 1 to 5
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '1',
     getQuestionContent('question1'),
   );
-  const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('2', getQuestionContent('question2'));
+  const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '2',
+    getQuestionContent('question2'),
+  );
   const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '3',
     getQuestionContent('question3'),
@@ -1192,7 +1241,10 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question6'),
     questionIdGeneratorBuilder('6'),
   );
-  const q6_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('6_1', getQuestionContent('question6_1'));
+  const q6_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '6_1',
+    getQuestionContent('question6_1'),
+  );
   const q6_2: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '6_2',
     getQuestionContent('question6_2'),
@@ -1205,7 +1257,10 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question7'),
     questionIdGeneratorBuilder('7'),
   );
-  const q7_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('7_1', getQuestionContent('question7_1'));
+  const q7_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '7_1',
+    getQuestionContent('question7_1'),
+  );
   const q7_2: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '7_2',
     getQuestionContent('question7_2'),
@@ -1217,8 +1272,14 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     '8',
     getQuestionContent('question8'),
   );
-  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('9', getQuestionContent('question9'));
-  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('10', getQuestionContent('question10'));
+  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '9',
+    getQuestionContent('question9'),
+  );
+  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '10',
+    getQuestionContent('question10'),
+  );
 
   // Question 11 "Self-discharged"
   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
