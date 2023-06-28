@@ -19,8 +19,8 @@ type ErrorType = string;
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
-    (questionGroupIndex: number): ID =>
-      `${questionId}_${questionGroupIndex}`;
+  (questionGroupIndex: number): ID =>
+    `${questionId}_${questionGroupIndex}`;
 
 export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('ROOT', {
@@ -48,7 +48,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     return {
       en: translations['en'].rehabReportQuestions[questionKey],
       fr: translations['fr'].rehabReportQuestions[questionKey],
-    }
+    };
   };
 
   console.log('Here is the buildRehabMockReport');
