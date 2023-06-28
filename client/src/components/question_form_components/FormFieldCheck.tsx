@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Translation {
   [lang: string]: string;
@@ -11,10 +12,15 @@ type FormFieldCheckProps = {
 };
 
 const FormFieldCheck = ({ children, nameId, prompt }: FormFieldCheckProps) => {
+  console.log('FormFieldCheck prompt: ', prompt);
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
+  const displayPrompt = prompt[language] || prompt; // Fallback to default prompt if translation is not available
+
   return (
     <fieldset className="form-group">
       <legend className="fs-6 m-0 text-secondary">
-        {nameId.replaceAll('_', '.')}. {prompt}
+        {nameId.replaceAll('_', '.')}. {displayPrompt}
       </legend>
       {children}
     </fieldset>

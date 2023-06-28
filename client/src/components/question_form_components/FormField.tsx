@@ -26,6 +26,7 @@ const FormField = (props: FormFieldProps) => {
   console.log('FormField language: ', i18n.language);
   console.log('FormField prompt: ', prompt);
   console.log('FormField displayPrompt: ', displayPrompt);
+  const value = props.value !== null ? props.value : ""; // Set a default value if props.value is null
 
   return (
     <div className="form-group">
@@ -46,7 +47,7 @@ const FormField = (props: FormFieldProps) => {
         name={props.nameId}
         onChange={props.handleChange}
         type={props.type}
-        value={props.value}
+        value={value}
         disabled={props.readOnly}
       />
       {props.inputState !== true && (
