@@ -1202,9 +1202,9 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
 // };
 
 export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
-  const translations = {
-    en: require('../../client/src/locales/en/translationEN.json'),
-    fr: require('../../client/src/locales/fr/translationFR.json'),
+  const translations: { [key: string]: any } = {
+    en: translationEN,
+    fr: translationFR,
   };
 
   const getQuestionContent = (questionKey: string) => {
