@@ -24,7 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.0.1",
+    "concurrently": "^8.2.0",
     "i18next": "^22.5.1",
     "i18next-conv": "^14.0.0",
     "i18next-fs-backend": "^2.1.5",
@@ -34,6 +34,7 @@
     "react-i18next": "^12.3.1"
   },
   "devDependencies": {
-    "@types/react-i18next": "^8.1.0"
+    "@types/react-i18next": "^8.1.0",
+    "browserslist": "^4.21.9"
   }
 }
