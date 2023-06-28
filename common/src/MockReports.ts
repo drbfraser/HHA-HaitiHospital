@@ -50,7 +50,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
 
   const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
     reportID,
-    { en: 'rehabReportQuestions.title', fr: 'test' },
+    { en: 'Rehab Report', fr: 'Rapport de Rehab' },
   );
 
 
