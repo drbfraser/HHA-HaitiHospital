@@ -1,4 +1,4 @@
-import { Role } from 'constants/interfaces';
+import { Role } from './interfaces';
 
 export enum Permission {
   ACCESS_PAGE = 'can_view_dashboard',
