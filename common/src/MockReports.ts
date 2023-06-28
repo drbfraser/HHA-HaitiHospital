@@ -9,6 +9,8 @@ import {
   TextQuestion,
 } from './Questions';
 import { QuestionAnswerNode } from './Questions/QuestionAnswer';
+import translationEN from '../../client/src/locales/en/translationEN.json';
+import translationFR from '../../client/src/locales/fr/translationFR.json';
 //import { useTranslation } from 'react-i18next';
 //import { TFunction } from 'i18next';
 
@@ -17,8 +19,8 @@ type ErrorType = string;
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
-  (questionGroupIndex: number): ID =>
-    `${questionId}_${questionGroupIndex}`;
+    (questionGroupIndex: number): ID =>
+      `${questionId}_${questionGroupIndex}`;
 
 export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('ROOT', {
@@ -32,16 +34,21 @@ export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
-  const translations = {
-    en: require('../../client/src/locales/en/translationEN.json'),
-    fr: require('../../client/src/locales/fr/translationFR.json'),
+  // const translations = {
+  //   en: require('../../client/src/locales/en/translationEN.json'),
+  //   fr: require('../../client/src/locales/fr/translationFR.json'),
+  // };
+
+  const translations: { [key: string]: any } = {
+    en: translationEN,
+    fr: translationFR,
   };
 
   const getQuestionContent = (questionKey: string) => {
     return {
       en: translations['en'].rehabReportQuestions[questionKey],
       fr: translations['fr'].rehabReportQuestions[questionKey],
-    };
+    }
   };
 
   console.log('Here is the buildRehabMockReport');
