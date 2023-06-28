@@ -12,7 +12,7 @@ describe('Admin Tests', function () {
     USER = 'User',
   }
 
-  enum Departments {
+  enum DEPARTMENTS {
     Rehab = 'Rehab',
     NICU = 'NICU/Paeds',
     Maternity = 'Maternity',
@@ -32,6 +32,7 @@ describe('Admin Tests', function () {
   beforeEach('Logging in...', function () {
     loginPage.visit();
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
+    cy.url().should('include', '/home');
     userIds = new Array();
 
     // Tests run too quickly---cy.visit() is not working without this delay
@@ -62,25 +63,26 @@ describe('Admin Tests', function () {
   });
 
   it('Should Successfully Add a New User And Login With It', function () {
+    const username = 'username';
+    const password = 'Pas$w0rd';
     adminPage.clickAddUserButton();
     cy.url().should('equal', `${baseUrl}/admin/add-user`);
 
-    adminPage.inputUsername('username');
-    adminPage.inputPassword('password');
+    adminPage.inputUsername(username);
+    adminPage.inputPassword(password);
     adminPage.inputName('Handsome Squidward');
     adminPage.selectUserRole(ROLES.USER);
-    adminPage.selectUserDepartment(Departments.Rehab);
+    adminPage.selectUserDepartment(DEPARTMENTS.Rehab);
     adminPage.clickSubmitUserButton();
 
     cy.url().should('equal', `${baseUrl}/admin`);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', USER_ADDED_SUCCESSFULLY);
-    toast.click();
-    cy.wait(1000); // Wait for toast to disappear
+    toast.click({ multiple: true });
 
     adminPage.clickSignout();
-    loginPage.usernameInput('username').passwordInput('password').clickSignIn();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('equal', `${baseUrl}/home`);
   });
 
