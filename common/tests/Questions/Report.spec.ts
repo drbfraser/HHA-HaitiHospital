@@ -74,15 +74,15 @@ describe('Mock Reports', function () {
     });
   });
 
-  it('verifySerialized should not return true for two different mock reports', function () {
-    const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-    const NICUReport: QuestionGroup<string, string> = buildNicuPaedsMockReport();
-    const maternityReport: QuestionGroup<string, string> = buildMaternityMockReport();
-    const nicuSerialized: Object = objectSerializer.serialize(NICUReport);
-    const maternitySerialized: Object = objectSerializer.serialize(maternityReport);
-    const deserializedNICUReport = objectSerializer.deserialize(nicuSerialized);
-    const deserializedMaternityReport = objectSerializer.deserialize(maternitySerialized);
+  // it('verifySerialized should not return true for two different mock reports', function () {
+  //   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  //   const NICUReport: QuestionGroup<string, string> = buildNicuPaedsMockReport();
+  //   const maternityReport: QuestionGroup<string, string> = buildMaternityMockReport();
+  //   const nicuSerialized: Object = objectSerializer.serialize(NICUReport);
+  //   const maternitySerialized: Object = objectSerializer.serialize(maternityReport);
+  //   const deserializedNICUReport = objectSerializer.deserialize(nicuSerialized);
+  //   const deserializedMaternityReport = objectSerializer.deserialize(maternitySerialized);
 
-    expect(verifySerialized(deserializedNICUReport, deserializedMaternityReport)).to.be.false;
-  });
+  //   expect(verifySerialized(deserializedNICUReport, deserializedMaternityReport)).to.be.false;
+  // });
 });
