@@ -12,6 +12,7 @@ import { QuestionParent } from './QuestionParent';
 import { QuestionNode } from './QuestionNode';
 
 type table<T> = Array<Array<T>>;
+type Translation = Record<string, string>;
 
 // The cell must be gray if no question is defined.
 class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, ErrorType>> {
@@ -56,9 +57,10 @@ export abstract class QuestionTable<
   /*  The questionCreator is a callback that takes in the row and column index
         for where the question will be placed and may return a question. 
     */
+
   constructor(
     id: ID,
-    prompt: string,
+    prompt: Translation,
     rowHeaders: Array<string>,
     columnHeaders: Array<string>,
     questionCreator: (row: number, col: number) => QuestionType | undefined,

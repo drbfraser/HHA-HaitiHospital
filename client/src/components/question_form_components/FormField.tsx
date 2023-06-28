@@ -1,23 +1,37 @@
 import { ValidationResult } from '@hha/common';
 import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
+import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
+
+interface Translation {
+  [lang: string]: string;
+}
 
 type FormFieldProps = {
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   inputState: ValidationResult<string>;
   min?: number | string;
   nameId: string;
-  prompt: string;
+  prompt: Translation | string;
   type: HTMLInputTypeAttribute;
   value: number | string;
   readOnly?: boolean;
 };
 
 const FormField = (props: FormFieldProps) => {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
+  const prompt = props.prompt[language];
+  const displayPrompt = prompt ?? props.prompt;
+  console.log('FormField language: ', i18n.language);
+  console.log('FormField prompt: ', prompt);
+  console.log('FormField displayPrompt: ', displayPrompt);
+  const value = props.value !== null ? props.value : ""; // Set a default value if props.value is null
+
   return (
     <div className="form-group">
       <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>
-        {props.nameId.replaceAll('_', '.')}. {props.prompt}
+        {props.nameId.replaceAll('_', '.')}. {displayPrompt}
       </label>
       <input
         className={cn(
@@ -33,7 +47,7 @@ const FormField = (props: FormFieldProps) => {
         name={props.nameId}
         onChange={props.handleChange}
         type={props.type}
-        value={props.value}
+        value={value}
         disabled={props.readOnly}
       />
       {props.inputState !== true && (

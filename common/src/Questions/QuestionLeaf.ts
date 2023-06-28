@@ -2,11 +2,14 @@
 import { QuestionAnswerNode } from './QuestionAnswer';
 import { runNumericValidators, ValidationResult } from '../Form_Validators';
 
+type Translation = Record<string, string>;
+
 export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionAnswerNode<ID, T, ErrorType> {
   private answer: T | undefined;
   private readonly validators: string[] = [];
+  private promptTranslation: Translation = {};
 
-  constructor(id: ID, prompt: string, defaultAnswer?: T) {
+  constructor(id: ID, prompt: Translation, defaultAnswer?: T) {
     super(id, prompt);
     this.answer = defaultAnswer;
   }
@@ -25,6 +28,14 @@ export abstract class QuestionLeaf<ID, T, ErrorType> extends QuestionAnswerNode<
 
   public addValidator(validator: string) {
     this.validators.push(validator);
+  }
+
+  public getPromptTranslation(): Translation {
+    return this.promptTranslation;
+  }
+
+  public setPromptTranslation(translation: Translation): void {
+    this.promptTranslation = translation;
   }
 
   // The following function is used to check if the answer is valid for all the validators.
