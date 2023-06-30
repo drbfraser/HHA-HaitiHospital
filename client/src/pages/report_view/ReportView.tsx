@@ -21,6 +21,7 @@ const ReportView = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
   const [isUsingPagination, setIsUsingPagination] = useState(true);
+  const [isUsingTable, setIsUsingTable] = useState(true);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
@@ -85,6 +86,8 @@ const ReportView = () => {
   };
 
   const togglePagination = () => setIsUsingPagination(!isUsingPagination);
+
+  const toggleTable = () => setIsUsingTable(!isUsingTable);
 
   const getReport = useCallback(async () => {
     const controller = new AbortController();
@@ -208,6 +211,13 @@ const ReportView = () => {
                         : t('departmentReportDisplayShowPagination')}
                     </button>
                   )}
+                  {readOnly && (
+                    <button className="btn btn-outline-dark ml-3" onClick={toggleTable}>
+                      {isUsingPagination
+                        ? "Show Table"
+                        : "Hide Table"}
+                    </button>
+                  )}
                 </div>
               </header>
               <div>
@@ -225,6 +235,7 @@ const ReportView = () => {
                       formHandler={() => {}}
                       isSubmitting={false}
                       isUsingPagination={false}
+                      isUsingTable={true}
                       reportData={report}
                       date={submittedDate}
                       author={metaData?.submittedBy}
@@ -238,6 +249,7 @@ const ReportView = () => {
                     formHandler={confirmEdit}
                     isSubmitting={false}
                     isUsingPagination={isUsingPagination}
+                    isUsingTable={isUsingTable}
                     reportData={report}
                     date={submittedDate}
                     author={metaData?.submittedBy}

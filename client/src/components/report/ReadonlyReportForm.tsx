@@ -68,6 +68,7 @@ const ReadonlyReportForm = ({
   reportData,
   isTemplate = false,
   isUsingPagination = true,
+  isUsingTable = true,
   date,
   author,
 }: {
@@ -78,6 +79,7 @@ const ReadonlyReportForm = ({
   btnText?: string;
   isTemplate?: boolean;
   isUsingPagination?: boolean;
+  isUsingTable?: boolean;
   date?: string;
   author?: string;
 }): JSX.Element => {
@@ -87,24 +89,28 @@ const ReadonlyReportForm = ({
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
   const totalCount = reportData.getPagination().length * pageSize;
-
+  console.log(reportData);
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
       <p>Author: {author}</p>
       <p>Date: {date}</p>
       <form onSubmit={formHandler} noValidate>
-        <Group isRootNode>
-          <QuestionFormFields
-            applyReportChanges={applyReportChanges}
-            currentPage={isUsingPagination ? currentPage : undefined}
-            isTemplate={isTemplate}
-            questions={reportData}
-            suffixName=""
-          />
-        </Group>
+        {isUsingTable ? (
+          <div>Hi</div>
+        ) : (
+          <Group isRootNode>
+            <QuestionFormFields
+              applyReportChanges={applyReportChanges}
+              currentPage={isUsingPagination ? currentPage : undefined}
+              isTemplate={isTemplate}
+              questions={reportData}
+              suffixName=""
+            />
+          </Group>
+        )}
       </form>
-      {isUsingPagination && (
+      {!isUsingTable && isUsingPagination && (
         <Pagination
           className="pagination-bar"
           currentPage={currentPage}
