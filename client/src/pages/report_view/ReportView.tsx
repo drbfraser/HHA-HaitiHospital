@@ -205,17 +205,15 @@ const ReportView = () => {
                     </button>
                   )}
                   {readOnly && (
+                    <button className="btn btn-outline-dark ml-3" onClick={toggleTable}>
+                      {isUsingTable ? 'Hide Table' : 'Show Table'}
+                    </button>
+                  )}
+                  {readOnly && !isUsingTable && (
                     <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
                       {isUsingPagination
                         ? t('departmentReportDisplayHidePagination')
                         : t('departmentReportDisplayShowPagination')}
-                    </button>
-                  )}
-                  {readOnly && (
-                    <button className="btn btn-outline-dark ml-3" onClick={toggleTable}>
-                      {isUsingPagination
-                        ? "Show Table"
-                        : "Hide Table"}
                     </button>
                   )}
                 </div>
