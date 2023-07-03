@@ -26,6 +26,7 @@ const ReportView = () => {
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
+  const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
   const { departmentIdKeyMap } = useDepartmentData();
@@ -98,7 +99,7 @@ const ReportView = () => {
       controller.signal,
     );
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
-
+    setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
       _id: fetchedReport?.report?._id,
       departmentId: fetchedReport?.report?.departmentId,
@@ -237,6 +238,7 @@ const ReportView = () => {
                       reportData={report}
                       date={submittedDate}
                       author={metaData?.submittedBy}
+                      questionItems={questionItems}
                     />
                   </PDFExport>
                 </div>
@@ -251,6 +253,7 @@ const ReportView = () => {
                     reportData={report}
                     date={submittedDate}
                     author={metaData?.submittedBy}
+                    questionItems={questionItems}
                   />
                 ) : (
                   <ReportForm

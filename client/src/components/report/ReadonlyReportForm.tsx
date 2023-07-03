@@ -74,6 +74,7 @@ const ReadonlyReportForm = ({
   isUsingTable = true,
   date,
   author,
+  questionItems = []
 }: {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -85,6 +86,7 @@ const ReadonlyReportForm = ({
   isUsingTable?: boolean;
   date?: string;
   author?: string;
+  questionItems: any[];
 }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = reportData
@@ -129,18 +131,7 @@ const ReadonlyReportForm = ({
                       <tr>
                         <th scope="row">{question.getId()}</th>
                         <td>{question.getPrompt()}</td>
-                        <td>
-                          {' '}
-                          <FormFieldComponent
-                            applyReportChanges={applyReportChanges}
-                            key={`${question.getId()}${suffixName}`}
-                            question={question}
-                            setErrorSet={() => {}}
-                            readOnly
-                            suffixName={suffixName}
-                            isTemplate={isTemplate}
-                          />
-                        </td>{' '}
+                        <td>{questionItems[+question.getId() - 1].answer}</td>
                       </tr>
                     );
                     return (

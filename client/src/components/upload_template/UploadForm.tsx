@@ -73,7 +73,7 @@ export const UploadForm = ({
         </div>
 
         {reportTemplateData && (
-          <ReadonlyReportForm isSubmitting={false} reportData={reportTemplateData} isTemplate />
+          <ReadonlyReportForm isSubmitting={false} reportData={reportTemplateData} isTemplate questionItems={[]}/>
         )}
       </form>
     </div>
