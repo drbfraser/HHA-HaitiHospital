@@ -11,73 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import Filter, { stringFilterFn } from './Filter';
 import { useEffect, useMemo, useState } from 'react';
 
 import Pagination from 'components/pagination/Pagination';
 import cn from 'classnames';
 
 const PAGE_SIZE: number = 10;
-
-const filterFn = (row, columnId, value) =>
-  row.getValue(columnId).toLowerCase().includes(value.toLowerCase());
-
-const equalFilterFn = (row, columnId, value) =>
-  row.getValue(columnId).toLowerCase() === value.toLowerCase();
-
-const startsWithFilterFn = (row, columnId, value) =>
-  row.getValue(columnId).toLowerCase().startsWith(value.toLowerCase());
-
-const endsWithFilterFn = (row, columnId, value) =>
-  row.getValue(columnId).toLowerCase().endsWith(value.toLowerCase());
-
-const Filter = ({ header, setFilterValue, filterValue }) => (
-  <>
-    <InputGroup className="my-2">
-      <Form.Control
-        type="text"
-        onChange={(e) => {
-          setFilterValue(e.target.value);
-        }}
-        value={filterValue}
-        placeholder={'Filter: ' + header.column.columnDef.header.toString()}
-      />
-      {filterValue && (
-        <Button
-          size="sm"
-          variant="light text-danger"
-          onClick={() => setFilterValue('')}
-          title="clear"
-        >
-          &#x2715;
-        </Button>
-      )}
-    </InputGroup>
-    <Form.Select
-      onChange={(e) => {
-        switch (e.target.value) {
-          case '1':
-            header.column.columnDef.filterFn = equalFilterFn;
-            break;
-          case '2':
-            header.column.columnDef.filterFn = startsWithFilterFn;
-            break;
-          case '3':
-            header.column.columnDef.filterFn = endsWithFilterFn;
-            break;
-          default:
-            header.column.columnDef.filterFn = filterFn;
-            break;
-        }
-        header.column.setFilterValue(header.column.getFilterValue());
-      }}
-    >
-      <option>Contains</option>
-      <option value="1">Equals</option>
-      <option value="2">Starts With</option>
-      <option value="3">Ends With</option>
-    </Form.Select>
-  </>
-);
 
 interface SortableHeaderProps {
   header: Header<any, any>;
@@ -142,7 +82,13 @@ const SortableHeader = ({ header, enableSorting }: SortableHeaderProps) => {
       )}
       {header.column.getCanFilter() &&
         showAdvancedFilters &&
-        Filter({ header, setFilterValue, filterValue })}
+        Filter({
+          placeholder: 'Filter' + header.column.columnDef.header.toString(),
+          setFilterValue,
+          filterValue,
+          setFilterFn: (fn) => (header.column.columnDef.filterFn = fn),
+          allowFilterFnChange: true,
+        })}
     </th>
   );
 };
@@ -178,7 +124,7 @@ const FilterableTable = ({
       });
     }
 
-    return (row: Row<any>) => ({});
+    return (_: Row<any>) => ({});
   }, [rowClickHandler]);
 
   const table = useReactTable({
@@ -189,7 +135,7 @@ const FilterableTable = ({
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    globalFilterFn: filterFn,
+    globalFilterFn: stringFilterFn.contains,
     state: {
       globalFilter,
       sorting,
@@ -197,24 +143,17 @@ const FilterableTable = ({
     onGlobalFilterChange: setGlobalFilter,
     onSortingChange: setSorting,
     enableFilters: enableFilters,
+    enableColumnResizing: false
   });
 
   return (
     <div className="px-4 pt-3">
       {enableFilters && enableGlobalFilter && (
-        <InputGroup className="mb-3">
-          <Form.Control
-            type="text"
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            value={globalFilter}
-            placeholder="Global Search"
-          />
-          {globalFilter && (
-            <Button variant="light text-danger" onClick={() => setGlobalFilter('')} title="clear">
-              &#x2715;
-            </Button>
-          )}
-        </InputGroup>
+        <Filter
+          placeholder="Global Search"
+          setFilterValue={setGlobalFilter}
+          filterValue={globalFilter}
+        />
       )}
 
       <Table hover responsive>
