@@ -117,7 +117,10 @@ userSchema.methods.registerUser = async (newUser, callback) => {
 
 userSchema.methods.comparePassword = async function (plainTextPassword, callback) {
   switch (this.hashAlgorithm) {
-    // Null is bcrypt by default
+    default:
+      return callback('Password algorithm is invalid, please contact a developer');
+
+    // null is bcrypt
     case null:
       bcrypt.compare(plainTextPassword, this.password, async (err, isMatch) => {
         if (err) return callback(err);
