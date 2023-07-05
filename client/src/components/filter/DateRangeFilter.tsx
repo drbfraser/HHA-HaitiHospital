@@ -1,8 +1,8 @@
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { ClearFilterButton, FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
 import DatePicker, { DayRange, DayValue } from 'react-modern-calendar-datepicker';
+import { Form, InputGroup } from 'react-bootstrap';
 import { getDateFromDateStr, isDateInRange } from 'utils';
 
-import { FilterProps } from './Filter';
 import { useEffect } from 'react';
 
 const getDateStrFromDayValue = (day: DayValue) =>
@@ -10,7 +10,6 @@ const getDateStrFromDayValue = (day: DayValue) =>
 
 export const dateRangeFilterFn = (row, columnId, value: DayRange) => {
   const dateStr = row.getValue(columnId);
-
   return isDateInRange(getDateFromDateStr(dateStr), value);
 };
 
@@ -53,16 +52,11 @@ export const DateRangeFilter = ({
               readOnly
               {...inputProps}
             />
-            {filterValue && (
-              <Button
-                size="sm"
-                variant="light text-danger border border-right border-top border-bottom"
-                onClick={() => setFilterValue('')}
-                title="clear"
-              >
-                &#x2715;
-              </Button>
-            )}
+            <ClearFilterButton
+              setFilterValue={setFilterValue}
+              filterValue={filterValue}
+              initialValue={FILTER_DEFAULT_VALUE.DATE}
+            />
           </InputGroup>
         );
       }}

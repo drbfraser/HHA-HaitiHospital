@@ -1,6 +1,7 @@
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { ClearFilterButton, FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
+import { Form, InputGroup } from 'react-bootstrap';
 
-import { FilterProps } from './Filter';
+import { useEffect } from 'react';
 
 export const stringFilterFn = {
   contains: (row, columnId, value) =>
@@ -22,54 +23,56 @@ export const StringFilter = ({
   setFilterValue,
   filterValue,
   inputProps,
-}: FilterProps) => (
-  <>
-    <InputGroup className="my-2" {...inputProps}>
-      <Form.Control
-        type="text"
-        onChange={(e) => {
-          setFilterValue(e.target.value);
-        }}
-        value={filterValue as string}
-        placeholder={placeholder}
-      />
-      {filterValue && (
-        <Button
-          size="sm"
-          variant="light text-danger border border-right border-top border-bottom"
-          onClick={() => setFilterValue('')}
-          title="clear"
+}: FilterProps) => {
+  
+  useEffect(() => {
+    setFilterFn(stringFilterFn.contains);
+  }, [setFilterFn]);
+
+  return (
+    <>
+      <InputGroup className="my-2" {...inputProps}>
+        <Form.Control
+          type="text"
+          onChange={(e) => {
+            setFilterValue(e.target.value);
+          }}
+          value={filterValue as string}
+          placeholder={placeholder}
+        />
+        <ClearFilterButton
+          setFilterValue={setFilterValue}
+          filterValue={filterValue}
+          initialValue={FILTER_DEFAULT_VALUE.STRING}
+        />
+      </InputGroup>
+      {allowFilterFnChange && (
+        <Form.Select
+          onChange={(e) => {
+            switch (e.target.value) {
+              case '1':
+                setFilterFn(stringFilterFn.equal);
+                break;
+              case '2':
+                setFilterFn(stringFilterFn.startsWith);
+                break;
+              case '3':
+                setFilterFn(stringFilterFn.endsWith);
+                break;
+              default:
+                setFilterFn(stringFilterFn.contains);
+                break;
+            }
+            setFilterValue(filterValue);
+          }}
+          {...inputProps}
         >
-          &#x2715;
-        </Button>
+          <option>Contains</option>
+          <option value="1">Equals</option>
+          <option value="2">Starts With</option>
+          <option value="3">Ends With</option>
+        </Form.Select>
       )}
-    </InputGroup>
-    {allowFilterFnChange && (
-      <Form.Select
-        onChange={(e) => {
-          switch (e.target.value) {
-            case '1':
-              setFilterFn(stringFilterFn.equal);
-              break;
-            case '2':
-              setFilterFn(stringFilterFn.startsWith);
-              break;
-            case '3':
-              setFilterFn(stringFilterFn.endsWith);
-              break;
-            default:
-              setFilterFn(stringFilterFn.contains);
-              break;
-          }
-          setFilterValue(filterValue);
-        }}
-        {...inputProps}
-      >
-        <option>Contains</option>
-        <option value="1">Equals</option>
-        <option value="2">Starts With</option>
-        <option value="3">Ends With</option>
-      </Form.Select>
-    )}
-  </>
-);
+    </>
+  );
+};

@@ -10,9 +10,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import Filter, { FilterValue } from '../filter/Filter';
+import Filter, { FILTER_DEFAULT_VALUE, FilterType, FilterValue } from '../filter/Filter';
 import { useEffect, useMemo, useState } from 'react';
 
+import { EnumOption } from 'components/filter/EnumFilter';
 import Pagination from 'components/pagination/Pagination';
 import { Table } from 'react-bootstrap';
 import cn from 'classnames';
@@ -28,20 +29,12 @@ interface SortableHeaderProps {
 }
 
 export type ColumnMeta = {
-  dataType: 'string' | 'number' | 'date';
+  dataType: FilterType;
+  enumOptions?: EnumOption[];
 };
 
 const SortableHeader = ({ header, enableSorting }: SortableHeaderProps) => {
-  const [filterValue, setFilterValue] = useState<FilterValue>('');
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
-
-  useEffect(() => {
-    header.column.setFilterValue(filterValue);
-  }, [filterValue, header.column]);
-
-  if (header.isPlaceholder) {
-    return <th key={header.id}></th>;
-  }
 
   const renderedFlex = flexRender(header.column.columnDef.header, header.getContext());
   const divProps = {
@@ -67,19 +60,30 @@ const SortableHeader = ({ header, enableSorting }: SortableHeaderProps) => {
   const columnMeta = header.column.columnDef.meta as ColumnMeta;
 
   let columnType = columnMeta?.dataType;
+  let enumOptions = columnMeta?.enumOptions ?? [];
 
   if (!columnType && firstValue) {
     const date = getDateFromDateStr(firstValue);
     const number = Number(firstValue);
 
     if (date && !isNaN(date.getTime())) {
-      columnType = 'date';
+      columnType = FilterType.DATE;
     } else if (!isNaN(number)) {
-      columnType = 'number';
+      columnType = FilterType.NUMBER;
     }
   }
 
-  columnType = columnType ?? 'string';
+  columnType = columnType ?? FilterType.STRING;
+
+  const [filterValue, setFilterValue] = useState<FilterValue>(FILTER_DEFAULT_VALUE[columnType]);
+
+  useEffect(() => {
+    header.column.setFilterValue(filterValue);
+  }, [filterValue, header.column]);
+
+  if (header.isPlaceholder) {
+    return <th key={header.id}></th>;
+  }
 
   return (
     <th key={header.id} className="align-text-top">
@@ -116,19 +120,21 @@ const SortableHeader = ({ header, enableSorting }: SortableHeaderProps) => {
           setFilterFn: (fn) => (header.column.columnDef.filterFn = fn),
           allowFilterFnChange: true,
           type: columnType,
+          enumOptions: enumOptions,
         })}
     </th>
   );
 };
 
 export type FilterableColumnDef = ColumnDef<any, any>;
-interface Props {
+interface FilterableTableProps {
   data: any[];
   columns: FilterableColumnDef[];
   enableGlobalFilter?: boolean;
   enableFilters?: boolean;
   enableSorting?: boolean;
   rowClickHandler?: (row: any) => void;
+  globalFilterType?: FilterType;
 }
 
 // Referenced https://tanstack.com/table/v8/docs/api/features/filters to implement this component.
@@ -139,8 +145,11 @@ const FilterableTable = ({
   enableFilters = false,
   enableSorting = false,
   rowClickHandler,
-}: Props) => {
-  const [globalFilter, setGlobalFilter] = useState<string>('');
+  globalFilterType = FilterType.STRING,
+}: FilterableTableProps) => {
+  const [globalFilter, setGlobalFilter] = useState<FilterValue>(
+    FILTER_DEFAULT_VALUE[globalFilterType],
+  );
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const getRowProps = useMemo(() => {
@@ -178,9 +187,13 @@ const FilterableTable = ({
       {enableFilters && enableGlobalFilter && (
         <Filter
           placeholder="Global Search"
-          setFilterValue={(value) => setGlobalFilter(value as string)}
+          setFilterValue={setGlobalFilter}
+          setFilterFn={(fn) => {
+            table.options.globalFilterFn = fn;
+          }}
           filterValue={globalFilter}
-          type={'string'}
+          type={globalFilterType}
+          allowFilterFnChange
         />
       )}
 

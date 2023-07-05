@@ -8,6 +8,7 @@ import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
+import { FilterType } from 'components/filter/Filter';
 import { History } from 'history';
 import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
@@ -32,17 +33,17 @@ const enumSort = (key, e) => {
   };
 };
 
-enum Priority {
-  'non-urgent',
-  'important',
-  'urgent',
-}
+const Priority = {
+  'non-urgent': 0,
+  important: 1,
+  urgent: 2,
+};
 
-enum Status {
-  'in-progress',
-  'fixed',
-  'backlog',
-}
+const Status = {
+  'in-progress': 0,
+  fixed: 1,
+  backlog: 2,
+};
 
 const prioritySort = enumSort('equipmentPriority', Priority);
 
@@ -68,6 +69,14 @@ export const BiomechanicalPage = (_: Props) => {
         accessorKey: 'equipmentPriority',
         sortingFn: prioritySort,
         sortDescFirst: true,
+        meta: {
+          dataType: FilterType.ENUM,
+          enumOptions: [
+            { value: 'non-urgent', label: t('biomech.priority.non_urgent') },
+            { value: 'important', label: t('biomech.priority.important') },
+            { value: 'urgent', label: t('biomech.priority.urgent') },
+          ],
+        },
       },
       {
         id: 'equipmentStatus',
@@ -79,6 +88,14 @@ export const BiomechanicalPage = (_: Props) => {
         ),
         accessorKey: 'equipmentStatus',
         sortingFn: statusSort,
+        meta: {
+          dataType: FilterType.ENUM,
+          enumOptions: [
+            { value: 'in-progress', label: t('biomech.status.in_progress') },
+            { value: 'fixed', label: t('biomech.status.fixed') },
+            { value: 'backlog', label: t('biomech.status.backlog') },
+          ],
+        },
       },
       {
         id: 'equipmentName',
