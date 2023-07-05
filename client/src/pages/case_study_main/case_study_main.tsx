@@ -7,7 +7,7 @@ import {
   ENDPOINT_CASESTUDY_PATCH_BY_ID,
 } from 'constants/endpoints';
 import { Link, useHistory } from 'react-router-dom';
-import { SortOrder, isDateStrInDayRange, sortCaseStudies } from 'utils';
+import { SortOrder, isDateInRange, sortCaseStudies } from 'utils';
 import {
   TOAST_CASESTUDY_DELETE,
   TOAST_CASESTUDY_GET,
@@ -69,7 +69,7 @@ export const CaseStudyMain = () => {
       .slice(firstPageIndex, lastPageIndex)
       .filter((caseStudy) => {
         const createdAtLabel = caseStudy.createdAt.split(' ').slice(0, 3).join(' ');
-        return isDateStrInDayRange(createdAtLabel, dayRange);
+        return isDateInRange(createdAtLabel, dayRange);
       })
       .sort((prevCaseStudy, nextCaseStudy) => {
         return sortCaseStudies(prevCaseStudy, nextCaseStudy, sortOrder);
@@ -181,7 +181,7 @@ export const CaseStudyMain = () => {
           </Link>
         </div>
         <div className="w-100 mt-3">
-          <DatePicker onChange={setDayRange} shouldHighlightWeekends value={dayRange} />
+          <DatePicker onChange={setDayRange} value={dayRange} />
         </div>
         <div className="table-responsive">
           <table className="table table-hover mt-2">

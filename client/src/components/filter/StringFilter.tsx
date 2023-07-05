@@ -1,6 +1,6 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
-import { Row } from '@tanstack/react-table';
+import { FilterProps } from './Filter';
 
 export const stringFilterFn = {
   contains: (row, columnId, value) =>
@@ -15,16 +15,7 @@ export const stringFilterFn = {
     row.getValue(columnId).toLowerCase().endsWith(value.toLowerCase()),
 };
 
-interface FilterProps {
-  placeholder: string;
-  setFilterFn?: (fn: (row: Row<any>, columnId: string, value: string) => boolean) => void;
-  allowFilterFnChange?: boolean;
-  setFilterValue: (value: string) => void;
-  filterValue: string;
-  inputProps?: any;
-}
-
-const Filter = ({
+export const StringFilter = ({
   placeholder,
   setFilterFn = (_) => {},
   allowFilterFnChange = false,
@@ -39,13 +30,13 @@ const Filter = ({
         onChange={(e) => {
           setFilterValue(e.target.value);
         }}
-        value={filterValue}
+        value={filterValue as string}
         placeholder={placeholder}
       />
       {filterValue && (
         <Button
           size="sm"
-          variant="light text-danger"
+          variant="light text-danger border border-right border-top border-bottom"
           onClick={() => setFilterValue('')}
           title="clear"
         >
@@ -82,5 +73,3 @@ const Filter = ({
     )}
   </>
 );
-
-export default Filter;
