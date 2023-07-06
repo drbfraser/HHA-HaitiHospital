@@ -1,6 +1,10 @@
+import '@tanstack/react-table';
+
 import {
   ColumnDef,
+  ColumnMeta,
   Row,
+  RowData,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -8,19 +12,28 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from '@tanstack/react-table';
 import Filter, { FILTER_DEFAULT_VALUE, FilterType, FilterValue } from '../filter/Filter';
 import { useMemo, useState } from 'react';
 
+import { EnumOption } from 'components/filter/EnumFilter';
 import { FilterableHeader } from './FilterableHeader';
 import Pagination from 'components/pagination/Pagination';
 import { Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE: number = 10;
+declare module '@tanstack/table-core' {
+  interface ColumnMeta<_ extends RowData, __> {
+    dataType?: FilterType;
+    enumOptions?: EnumOption[];
+    headerClasses?: string;
+  }
+}
 
 export type FilterableColumnDef = ColumnDef<any, any>;
+
 interface FilterableTableProps {
   data: any[];
   columns: FilterableColumnDef[];

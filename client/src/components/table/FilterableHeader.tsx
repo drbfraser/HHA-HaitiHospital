@@ -2,7 +2,6 @@ import Filter, { FILTER_DEFAULT_VALUE, FilterType, FilterValue } from '../filter
 import { Header, flexRender } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
-import { EnumOption } from 'components/filter/EnumFilter';
 import cn from 'classnames';
 import { getDateFromDateStr } from 'utils';
 import { isArray } from 'lodash';
@@ -13,11 +12,6 @@ export interface SortableHeaderProps {
   showAdvancedFilters?: boolean;
   toggleAdvancedFilters?: () => void;
 }
-
-export type ColumnMeta = {
-  dataType: FilterType;
-  enumOptions?: EnumOption[];
-};
 
 export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
@@ -38,7 +32,7 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
         title: 'Show Advanced Filters',
       };
 
-  const columnMeta = header.column.columnDef.meta as ColumnMeta;
+  const columnMeta = header.column.columnDef.meta;
 
   let columnType = columnMeta?.dataType;
   let enumOptions = columnMeta?.enumOptions ?? FILTER_DEFAULT_VALUE.ENUM;
@@ -50,7 +44,7 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
       .table.getPreFilteredRowModel()
       .flatRows[0]?.getValue(header.column.columnDef.id) as string;
 
-    if (firstValue) {
+    if (firstValue && typeof firstValue === 'string') {
       const date = getDateFromDateStr(firstValue);
       const number = Number(firstValue);
 

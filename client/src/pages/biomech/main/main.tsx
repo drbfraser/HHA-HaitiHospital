@@ -50,12 +50,13 @@ const prioritySort = enumSort('equipmentPriority', Priority);
 const statusSort = enumSort('equipmentStatus', Status);
 
 export const BiomechanicalPage = (_: Props) => {
+  const authState = useAuthState();
+  const history: History = useHistory<History>();
+
   const { t } = useTranslation();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [BioReport, setBioReport] = useState([]);
-  const authState = useAuthState();
-  const history: History = useHistory<History>();
+  const [biomechData, setBiomechData] = useState([]);
 
   // Github co-pilot assited in filling this array
   const columns = useMemo(
@@ -144,7 +145,7 @@ export const BiomechanicalPage = (_: Props) => {
 
   const deleteBioMechCallback = () => {
     toast.success(ResponseMessage.getMsgDeleteReportOk());
-    setBioReport(BioReport.filter((item) => item.id !== currentIndex));
+    setBiomechData(biomechData.filter((item) => item.id !== currentIndex));
     setCurrentIndex(null);
   };
 
@@ -183,7 +184,7 @@ export const BiomechanicalPage = (_: Props) => {
         controller && controller.signal,
       );
 
-      setBioReport(data);
+      setBiomechData(data);
     };
 
     const controller = new AbortController();
@@ -221,7 +222,7 @@ export const BiomechanicalPage = (_: Props) => {
               </Link>
             </div>
             <FilterableTable
-              data={BioReport}
+              data={biomechData}
               columns={columns}
               rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
               enableFilters

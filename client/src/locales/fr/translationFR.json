@@ -116,20 +116,25 @@
   "leaderBoardEmployeeOfMonth": "Employé du mois",
   "leaderBoardLastUpdate": "Dernière mise à jour il y a 3 jours",
 
-  "caseStudyMainAddCaseStudy": "Ajouter une étude de cas",
-  "caseStudyMainCaseStudyType": "Type d'étude de cas",
   "Patient Story": "Témoignage de patients",
   "Staff Recognition": "Reconnaissance du personnel",
   "Training Session": "Session de formation",
   "Equipment Received": "Équipement reçu",
   "Other Story": "Autre histoire",
-  "caseStudyMainAuthor": "Auteur",
-  "caseStudyMainCreated": "Créé",
-  "caseStudyMainLink": "Options",
-  "caseStudyMainViewCaseStudy": "Voir",
-  "caseStudyMainDelete": "Effacer",
-  "caseStudyMainFeatured": "Définir comme présenté ",
-  "caseStudyMainUnFeatured": "Actuellement en vedette ",
+
+  "CaseStudy":{
+    "Main":{
+      "AddCaseStudy": "Ajouter une étude de cas",
+      "CaseStudyType": "Type d'étude de cas",
+      "Author": "Auteur",
+      "Created": "Créé",
+      "Link": "Options",
+      "ViewCaseStudy": "Voir",
+      "Delete": "Effacer",
+      "Featured": "Définir comme présenté ",
+      "UnFeatured": "Actuellement en vedette "
+    }
+  },
 
   "caseStudyFormBack": "Arrière",
   "caseStudyFormCaseStudyOptions": "Options d'étude de cas",
@@ -393,5 +398,22 @@
   "monthSeptember": "Septembre",
   "monthOctober": "Octobre",
   "monthNovember": "Novembre",
-  "monthDecember": "Décembre"
+  "monthDecember": "Décembre",
+
+  "FilterableTable": {
+    "GlobalSearch": "Recherche"
+  },
+
+  "StringFilter":{
+    "Equals": "Équivaut à",
+    "StartsWith": "Commence avec",
+    "EndsWith": "Se termine par",
+    "Contains": "Contient"
+  },
+
+  "NumberFilter":{
+    "Equals": "Équivaut à",
+    "GreaterThan": "Plus grand que",
+    "LessThan": "Moins que"
+  }
 }
