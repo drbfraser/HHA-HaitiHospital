@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
-import UserCollection, { hashPassword, Role, User } from '../../models/user';
+import UserCollection, { hashAlgorithm, hashPassword, Role, User } from '../../models/user';
 import Departments from 'utils/departments';
 import {
   BadRequest,
@@ -23,6 +23,7 @@ import { isValidPasswordString } from 'utils/utils';
 
 const router = Router();
 
+// Update existing user
 router.put(
   '/:id',
   requireJwtAuth,
@@ -37,6 +38,7 @@ router.put(
       }
 
       const updatedUser = {
+        hashAlgorithm: null,
         name: req.body.name,
         username: req.body.username,
         password: req.body.password,
@@ -63,6 +65,7 @@ router.put(
           return;
         }
         updatedUser.password = await hashPassword(updatedUser.password);
+        updatedUser.hashAlgorithm = hashAlgorithm.argon2id;
       }
 
       if (!(await Departments.Database.validateDeptId(updatedUser.departmentId))) {
@@ -148,6 +151,7 @@ router.delete(
   },
 );
 
+// Admin creates user
 router.post(
   '/',
   requireJwtAuth,
