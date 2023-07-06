@@ -36,7 +36,7 @@ describe('Admin Tests', function () {
     userIds = new Array();
 
     // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(100);
+    cy.wait(200);
     adminPage.visit();
   });
 

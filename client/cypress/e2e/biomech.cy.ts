@@ -14,6 +14,12 @@ describe('Bio Mech Tests', function () {
     NONURGENT = 'Non-Urgent',
   }
 
+  enum BiomechStatus {
+    FIXED = 'Fixed',
+    INPROGRESS = 'In-progress',
+    BACKLOG = 'Backlog',
+  }
+
   const loginPage = new LoginPage();
   const bioMechPage = new BioMechPage();
 
@@ -27,10 +33,11 @@ describe('Bio Mech Tests', function () {
   beforeEach('Logging in...', function () {
     loginPage.visit();
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
+    cy.url().should('include', '/home');
     bioMechIds = new Array();
 
     // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(100);
+    cy.wait(200);
     bioMechPage.visit();
   });
 
@@ -55,14 +62,11 @@ describe('Bio Mech Tests', function () {
     bioMechPage.inputEquipmentName('X-ray');
     bioMechPage.inputEquipmentIssue('It is not functioning!');
     bioMechPage.selectEquipmentPriority(BiomechPriority.URGENT);
+    bioMechPage.selectEquipmentStatus(BiomechStatus.BACKLOG);
     bioMechPage.uploadEquipmentFile('public/images/avatar0.jpg');
     cy.wait(1000); // Will not work without a pause
     bioMechPage.clickSubmitBioMechReportButton();
     cy.url().should('equal', `${baseUrl}/biomechanic`);
-
-    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', BIO_MECH_ADDED_SUCCESSFULLY);
-    toast.click();
 
     bioMechPage.clickViewBioMechReportButton(0);
     cy.url().should('include', '/biomechanic/view');
@@ -71,21 +75,28 @@ describe('Bio Mech Tests', function () {
       bioMechIds.push(bioMechId); // Store the Id of the Bio Mech Report to Delete Later
     });
 
+    // Check that fields are properly set
     cy.get('[data-testid="biomech-title"]').contains('Broken Kit Report');
     cy.get('[data-testid="biomech-equipment-name"]').contains('X-ray');
     cy.get('[data-testid="biomech-priority"]').contains(BiomechPriority.URGENT);
+    cy.get('[data-testid="biomech-equipment-status"]').contains(BiomechStatus.BACKLOG);
     cy.get('[data-testid="biomech-issue"]').contains('It is not functioning!');
 
     bioMechPage.clickBackViewBioMechReportButton();
     cy.url().should('equal', `${baseUrl}/biomechanic`);
+
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', BIO_MECH_ADDED_SUCCESSFULLY);
   });
 
   it('Should Successfully Delete a Bio Mech Report', function () {
     bioMechPage.clickDeleteBioMechReportButton(0);
     bioMechPage.clickDeleteBioMechConfirmButton();
 
+    // Wait to return to reports page
+    cy.wait(100);
+
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', BIO_MECH_DELETED_SUCCESSFULLY);
-    toast.click();
   });
 });

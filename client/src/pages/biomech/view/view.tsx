@@ -164,7 +164,10 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
                         changeStatus(1);
                       }}
                     />
-                    <p data-testid="biomech-priority" className="fs-6 lh-base text-break mb-0">
+                    <p
+                      data-testid="biomech-equipment-status"
+                      className="fs-6 lh-base text-break mb-0"
+                    >
                       <Badge bg={setStatusBadgeColor(status)}>
                         {t(`biomech.status.${status}`)}
                       </Badge>
