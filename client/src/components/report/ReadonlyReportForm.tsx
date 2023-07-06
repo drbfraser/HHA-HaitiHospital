@@ -74,7 +74,7 @@ const ReadonlyReportForm = ({
   isUsingTable = true,
   date,
   author,
-  questionItems = []
+  questionItems = [],
 }: {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -97,6 +97,28 @@ const ReadonlyReportForm = ({
   console.log(reportData);
   const questions = reportData;
   const suffixName = '';
+
+  console.log(questionItems);
+
+  function processQuestionItem(questionItem) {
+    let baseAnswer = (
+      <tr>
+        <th scope="row">{questionItem.id}</th>
+        <td>{questionItem.prompt}</td>
+        <td>{questionItem.answer}</td>
+      </tr>
+    );
+
+    if (questionItem.compositionGroups) {
+      console.log("questionItem.compositionGroups WOWW", questionItem.compositionGroups)
+      return (
+        baseAnswer +
+        questionItem.compositionGroups.map((questionItem) => processQuestionItem(questionItem))
+      );
+    } 
+    return baseAnswer;
+  }
+
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()}</h2>
@@ -114,7 +136,13 @@ const ReadonlyReportForm = ({
                 </tr>
               </thead>
               <tbody>
-                {questions
+                {questionItems.length > 0
+                  ? questionItems.map((questionItem) => {
+                      console.log(questionItem);
+                      return processQuestionItem(questionItem);
+                    })
+                  : ''}
+                {/* {questions
                   .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
                     compositionQuestion: (q) => [q, CompositionQuestionFormField],
                     expandableQuestion: (q) => [q, ExpandableQuestionViewField],
@@ -127,13 +155,7 @@ const ReadonlyReportForm = ({
                   // TODO: Remove "any" type
                   .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
                     const [question, FormFieldComponent] = tuple;
-                    return (
-                      <tr>
-                        <th scope="row">{question.getId()}</th>
-                        <td>{question.getPrompt()}</td>
-                        <td>{questionItems[+question.getId() - 1].answer}</td>
-                      </tr>
-                    );
+              
                     return (
                       <FormFieldComponent
                         applyReportChanges={applyReportChanges}
@@ -145,7 +167,7 @@ const ReadonlyReportForm = ({
                         isTemplate={isTemplate}
                       />
                     );
-                  })}
+                  })} */}
                 {/* {currentTableData.map((item, index) => {
                  return (
                    <tr
