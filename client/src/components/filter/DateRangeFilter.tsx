@@ -17,7 +17,7 @@ export const DateRangeFilter = ({
   placeholder,
   setFilterFn,
   setFilterValue,
-  filterValue,
+  filterValue = FILTER_DEFAULT_VALUE.DATE,
   inputProps,
 }: FilterProps) => {
   useEffect(() => {
@@ -26,6 +26,7 @@ export const DateRangeFilter = ({
 
   return (
     <DatePicker
+      wrapperClassName='w-100'
       onChange={(value) => setFilterValue(value as DayRange)}
       shouldHighlightWeekends
       value={
@@ -40,7 +41,7 @@ export const DateRangeFilter = ({
         const fromStr = getDateStrFromDayValue(dayRange?.from);
         const toStr = getDateStrFromDayValue(dayRange?.to);
 
-        const value = `${fromStr} - ${toStr}`;
+        const value = fromStr || toStr ?  `${fromStr} - ${toStr}` : "";
 
         return (
           <InputGroup className="my-2" {...inputProps}>
@@ -48,7 +49,7 @@ export const DateRangeFilter = ({
               ref={ref}
               type="text"
               placeholder={placeholder}
-              value={fromStr || toStr ? value : ''}
+              value={value}
               readOnly
               {...inputProps}
             />

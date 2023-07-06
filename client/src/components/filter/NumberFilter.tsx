@@ -2,6 +2,7 @@ import { ClearFilterButton, FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
 import { Form, InputGroup } from 'react-bootstrap';
 
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const numberFilterFn = {
   equal: (row, columnId, value) => row.getValue(columnId) === value,
@@ -16,9 +17,11 @@ export const NumberFilter = ({
   setFilterFn = (_) => {},
   allowFilterFnChange = false,
   setFilterValue,
-  filterValue,
+  filterValue = FILTER_DEFAULT_VALUE.NUMBER,
   inputProps,
 }: FilterProps) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     setFilterFn(numberFilterFn.equal);
   }, [setFilterFn]);
@@ -58,9 +61,9 @@ export const NumberFilter = ({
           }}
           {...inputProps}
         >
-          <option>Equals</option>
-          <option value="1">Greater Than</option>
-          <option value="2">Less Than</option>
+          <option>{t('NumberFilter.Equals') + ' (=)'}</option>
+          <option value="1">{t('NumberFilter.GreaterThan') + ' (>)'}</option>
+          <option value="2">{t('NumberFilter.LessThan') + ' (<)'}</option>
         </Form.Select>
       )}
     </>

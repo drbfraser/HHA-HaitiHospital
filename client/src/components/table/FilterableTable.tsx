@@ -4,6 +4,7 @@ import {
   SortingState,
   flexRender,
   getCoreRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -15,6 +16,7 @@ import { useMemo, useState } from 'react';
 import { FilterableHeader } from './FilterableHeader';
 import Pagination from 'components/pagination/Pagination';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE: number = 10;
 
@@ -39,6 +41,8 @@ const FilterableTable = ({
   rowClickHandler,
   globalFilterType = FilterType.STRING,
 }: FilterableTableProps) => {
+  const { t } = useTranslation();
+
   const [globalFilter, setGlobalFilter] = useState<FilterValue>(
     FILTER_DEFAULT_VALUE[globalFilterType],
   );
@@ -63,6 +67,7 @@ const FilterableTable = ({
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     globalFilterFn: 'includesString',
     state: {
       globalFilter,
@@ -78,7 +83,7 @@ const FilterableTable = ({
     <div className="px-4 pt-3">
       {enableFilters && enableGlobalFilter && (
         <Filter
-          placeholder="Global Search"
+          placeholder={t('FilterableTable.GlobalSearch')}
           setFilterValue={setGlobalFilter}
           setFilterFn={(fn) => {
             table.options.globalFilterFn = fn;

@@ -2,6 +2,7 @@ import { ClearFilterButton, FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
 import { Form, InputGroup } from 'react-bootstrap';
 
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const stringFilterFn = {
   contains: (row, columnId, value) =>
@@ -21,13 +22,16 @@ export const StringFilter = ({
   setFilterFn = (_) => {},
   allowFilterFnChange = false,
   setFilterValue,
-  filterValue,
+  filterValue = FILTER_DEFAULT_VALUE.STRING,
   inputProps,
 }: FilterProps) => {
-  
+  const { t } = useTranslation();
+
   useEffect(() => {
     setFilterFn(stringFilterFn.contains);
   }, [setFilterFn]);
+
+  const value: string = (filterValue as string) ?? FILTER_DEFAULT_VALUE.STRING;
 
   return (
     <>
@@ -37,7 +41,7 @@ export const StringFilter = ({
           onChange={(e) => {
             setFilterValue(e.target.value);
           }}
-          value={filterValue as string}
+          value={value}
           placeholder={placeholder}
         />
         <ClearFilterButton
@@ -67,10 +71,10 @@ export const StringFilter = ({
           }}
           {...inputProps}
         >
-          <option>Contains</option>
-          <option value="1">Equals</option>
-          <option value="2">Starts With</option>
-          <option value="3">Ends With</option>
+          <option>{t('StringFilter.Contains')}</option>
+          <option value="1">{t('StringFilter.Equals')}</option>
+          <option value="2">{t('StringFilter.StartsWith')}</option>
+          <option value="3">{t('StringFilter.EndsWith')}</option>
         </Form.Select>
       )}
     </>

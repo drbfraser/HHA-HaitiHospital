@@ -193,23 +193,6 @@
   "departmentPageAction": "Action",
   "departmentPageAccumulate": "Accumulate",
 
-  "departmentAddBack": "Back",
-  "departmentAddDate": "Date:",
-  "departmentAddMonth": "Month",
-  "departmentAddJanuary": "January",
-  "departmentAddFebruary": "February",
-  "departmentAddMarch": "March",
-  "departmentAddApril": "April",
-  "departmentAddMay": "May",
-  "departmentAddJune": "June",
-  "departmentAddJuly": "July",
-  "departmentAddAugust": "August",
-  "departmentAddSeptember": "September",
-  "departmentAddOctober": "October",
-  "departmentAddNovember": "November",
-  "departmentAddDecember": "December",
-  "departmentAddYear": "Year",
-
   "departmentFormSteps": "Steps:",
   "departmentFormSelectPatient": "Select Patient",
   "departmentFormSubmitAlertPressOKToSubmit": "Press OK to finalize submission",
@@ -410,5 +393,24 @@
   "monthSeptember": "September",
   "monthOctober": "October",
   "monthNovember": "November",
-  "monthDecember": "December"
+  "monthDecember": "December",
+
+  "FilterableTable": {
+    "GlobalSearch": "Search"
+  },
+
+  "StringFilter":{
+    "Equals": "Equals",
+    "StartsWith": "Starts With",
+    "EndsWith": "Ends With",
+    "Contains": "Contains"
+  },
+
+  "NumberFilter":{
+    "Equals": "Equals",
+    "GreaterThan": "Greater Than",
+    "LessThan": "Less Than"
+  }
+
+  
 }

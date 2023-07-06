@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { EnumOption } from 'components/filter/EnumFilter';
 import cn from 'classnames';
 import { getDateFromDateStr } from 'utils';
+import { isArray } from 'lodash';
 
 export interface SortableHeaderProps {
   header: Header<any, any>;
@@ -37,27 +38,40 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
         title: 'Show Advanced Filters',
       };
 
-  const firstValue = header
-    .getContext()
-    .table.getPreFilteredRowModel()
-    .flatRows[0]?.getValue(header.column.columnDef.id) as string;
-
   const columnMeta = header.column.columnDef.meta as ColumnMeta;
 
   let columnType = columnMeta?.dataType;
-  let enumOptions = columnMeta?.enumOptions ?? [];
+  let enumOptions = columnMeta?.enumOptions ?? FILTER_DEFAULT_VALUE.ENUM;
 
-  if (!columnType && firstValue) {
-    const date = getDateFromDateStr(firstValue);
-    const number = Number(firstValue);
+  if (!columnType) {
+    // First value to infer column type
+    const firstValue = header
+      .getContext()
+      .table.getPreFilteredRowModel()
+      .flatRows[0]?.getValue(header.column.columnDef.id) as string;
 
-    if (date && !isNaN(date.getTime())) {
-      columnType = FilterType.DATE;
-    } else if (!isNaN(number)) {
-      columnType = FilterType.NUMBER;
+    if (firstValue) {
+      const date = getDateFromDateStr(firstValue);
+      const number = Number(firstValue);
+
+      if (date && !isNaN(date.getTime())) {
+        columnType = FilterType.DATE;
+      } else if (!isNaN(number)) {
+        columnType = FilterType.NUMBER;
+      }
     }
   }
 
+  // case where enum options are not provided
+  if (
+    columnType === FilterType.ENUM &&
+    (!enumOptions || !isArray(enumOptions) || enumOptions.length === 0)
+  ) {
+    const uniqueValues = header.column.getFacetedUniqueValues();
+    enumOptions = Array.from(uniqueValues.keys()).map((value) => ({ label: value, value }));
+  }
+
+  // default to string if no column type is inferred
   columnType = columnType ?? FilterType.STRING;
 
   const [filterValue, setFilterValue] = useState<FilterValue>(FILTER_DEFAULT_VALUE[columnType]);
@@ -99,7 +113,7 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
       {header.column.getCanFilter() &&
         showAdvancedFilters &&
         Filter({
-          placeholder: 'Filter: ' + header.column.columnDef.header.toString(),
+          placeholder: header.column.columnDef.header.toString(),
           setFilterValue,
           filterValue,
           setFilterFn: (fn) => (header.column.columnDef.filterFn = fn),

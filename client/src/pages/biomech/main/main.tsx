@@ -72,7 +72,7 @@ export const BiomechanicalPage = (_: Props) => {
         meta: {
           dataType: FilterType.ENUM,
           enumOptions: [
-            { value: 'non-urgent', label: t('biomech.priority.non_urgent') },
+            { value: 'non-urgent', label: t('biomech.priority.non-urgent') },
             { value: 'important', label: t('biomech.priority.important') },
             { value: 'urgent', label: t('biomech.priority.urgent') },
           ],
@@ -91,7 +91,7 @@ export const BiomechanicalPage = (_: Props) => {
         meta: {
           dataType: FilterType.ENUM,
           enumOptions: [
-            { value: 'in-progress', label: t('biomech.status.in_progress') },
+            { value: 'in-progress', label: t('biomech.status.in-progress') },
             { value: 'fixed', label: t('biomech.status.fixed') },
             { value: 'backlog', label: t('biomech.status.backlog') },
           ],

@@ -32,12 +32,11 @@ interface ClearFilterButtonProps {
 export const ClearFilterButton = ({
   setFilterValue,
   filterValue,
-  initialValue = '',
+  initialValue,
 }: ClearFilterButtonProps) => (
   <>
     {filterValue !== initialValue && (
       <Button
-        size="sm"
         variant="light text-danger border border-right border-top border-bottom"
         onClick={() => setFilterValue(initialValue)}
         title="clear"
