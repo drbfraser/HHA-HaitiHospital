@@ -18,7 +18,6 @@ const MultiSelectionQuestionFormField = ({
   suffixName,
   readOnly,
 }: MultiSelectionQuestionFormFieldProps) => {
-  
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
 
@@ -34,7 +33,7 @@ const MultiSelectionQuestionFormField = ({
 
       return nextErrorSet;
     });
-  },[nameId, question, setErrorSet]);
+  }, [nameId, question, setErrorSet]);
 
   const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
     question.setAnswer(
