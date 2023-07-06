@@ -121,10 +121,9 @@
   "Training Session": "Training Session",
   "Equipment Received": "Equipment Received",
   "Other Story": "Other Story",
-  
-  
-  "CaseStudy":{
-    "Main":{
+
+  "CaseStudy": {
+    "Main": {
       "AddCaseStudy": "Add Case Study",
       "CaseStudyType": "Case Study Type",
       "Author": "Author",
@@ -405,18 +404,16 @@
     "GlobalSearch": "Search"
   },
 
-  "StringFilter":{
+  "StringFilter": {
     "Equals": "Equals",
     "StartsWith": "Starts With",
     "EndsWith": "Ends With",
     "Contains": "Contains"
   },
 
-  "NumberFilter":{
+  "NumberFilter": {
     "Equals": "Equals",
     "GreaterThan": "Greater Than",
     "LessThan": "Less Than"
   }
-
-  
 }

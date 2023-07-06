@@ -2,7 +2,6 @@ import '@tanstack/react-table';
 
 import {
   ColumnDef,
-  ColumnMeta,
   Row,
   RowData,
   SortingState,
@@ -12,7 +11,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table';
 import Filter, { FILTER_DEFAULT_VALUE, FilterType, FilterValue } from '../filter/Filter';
 import { useMemo, useState } from 'react';
@@ -25,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE: number = 10;
 declare module '@tanstack/table-core' {
-  interface ColumnMeta<_ extends RowData, __> {
+  interface ColumnMeta<TData extends RowData, TValue> {
     dataType?: FilterType;
     enumOptions?: EnumOption[];
     headerClasses?: string;

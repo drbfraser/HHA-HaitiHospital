@@ -26,7 +26,7 @@ export const DateRangeFilter = ({
 
   return (
     <DatePicker
-      wrapperClassName='w-100'
+      wrapperClassName="w-100"
       onChange={(value) => setFilterValue(value as DayRange)}
       shouldHighlightWeekends
       value={
@@ -41,7 +41,7 @@ export const DateRangeFilter = ({
         const fromStr = getDateStrFromDayValue(dayRange?.from);
         const toStr = getDateStrFromDayValue(dayRange?.to);
 
-        const value = fromStr || toStr ?  `${fromStr} - ${toStr}` : "";
+        const value = fromStr || toStr ? `${fromStr} - ${toStr}` : '';
 
         return (
           <InputGroup className="my-2" {...inputProps}>

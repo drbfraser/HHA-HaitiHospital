@@ -122,8 +122,8 @@
   "Equipment Received": "Équipement reçu",
   "Other Story": "Autre histoire",
 
-  "CaseStudy":{
-    "Main":{
+  "CaseStudy": {
+    "Main": {
       "AddCaseStudy": "Ajouter une étude de cas",
       "CaseStudyType": "Type d'étude de cas",
       "Author": "Auteur",
@@ -404,14 +404,14 @@
     "GlobalSearch": "Recherche"
   },
 
-  "StringFilter":{
+  "StringFilter": {
     "Equals": "Équivaut à",
     "StartsWith": "Commence avec",
     "EndsWith": "Se termine par",
     "Contains": "Contient"
   },
 
-  "NumberFilter":{
+  "NumberFilter": {
     "Equals": "Équivaut à",
     "GreaterThan": "Plus grand que",
     "LessThan": "Moins que"
