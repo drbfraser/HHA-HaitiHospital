@@ -1,7 +1,8 @@
-import { ClearFilterButton, FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
-import { FormSelect, InputGroup } from 'react-bootstrap';
+import { FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
+import { useCallback, useEffect } from 'react';
 
-import { useEffect } from 'react';
+import { InputGroup } from 'react-bootstrap';
+import Select from 'react-select';
 
 export type EnumOption = Record<string, string>;
 
@@ -9,7 +10,7 @@ export const EnumFilter = ({
   placeholder,
   setFilterValue,
   setFilterFn = (_) => {},
-  filterValue,
+  filterValue = FILTER_DEFAULT_VALUE.ENUM,
   inputProps,
   enumOptions,
 }: FilterProps) => {
@@ -19,28 +20,26 @@ export const EnumFilter = ({
     });
   }, [setFilterFn]);
 
+  const value: string[] = (filterValue as string[]) ?? FILTER_DEFAULT_VALUE.ENUM;
+
+  const filterSelected = useCallback(
+    (value: string[]) => enumOptions.filter((option) => value.includes(option.value)),
+    [enumOptions],
+  );
+
   return (
     <>
       <InputGroup className="my-2" {...inputProps}>
-        <FormSelect
-          value={filterValue as string[]}
+        <Select
+          defaultValue={filterSelected(value)}
           placeholder={placeholder}
-          onChange={(e) => {
-            setFilterValue(Array.from(e.target.selectedOptions).map((x) => x.value));
+          onChange={(value: EnumOption[]) => {
+            const values = value.map((option) => option.value);
+
+            setFilterValue(values);
           }}
-          multiple
-        >
-          {enumOptions &&
-            enumOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-        </FormSelect>
-        <ClearFilterButton
-          setFilterValue={setFilterValue}
-          filterValue={filterValue}
-          initialValue={FILTER_DEFAULT_VALUE.ENUM}
+          options={enumOptions}
+          isMulti
         />
       </InputGroup>
     </>
