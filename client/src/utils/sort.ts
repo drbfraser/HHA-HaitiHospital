@@ -1,4 +1,4 @@
-import { CaseStudyCol, CaseStudySortOrder } from 'pages/case_study_main/case_study_main';
+import { CaseStudyCol, CaseStudySortOrder } from 'pages/case_study/CaseStudyList';
 
 // TODO: Create a "CaseStudy" type (instead of using "any")
 export const sortCaseStudies = (prevCaseStudy, nextCaseStudy, sortOrder: CaseStudySortOrder) => {

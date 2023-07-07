@@ -1,15 +1,16 @@
-import Api from 'actions/Api';
-import Layout from 'components/layout';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import ReportForm from 'components/report/ReportForm';
-import { Department } from 'constants/interfaces';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { FormEvent, useEffect, useState } from 'react';
-import { History } from 'history';
 import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
-import { ReportAndTemplateForm } from 'components/report_upload_form/ReportAndTemplateForm';
+
+import Api from 'actions/Api';
+import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
+import { Department } from 'constants/interfaces';
+import { History } from 'history';
+import Layout from 'components/layout';
+import { ReportAndTemplateForm } from 'components/report/ReportAndTemplateForm';
+import ReportForm from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { generateFormId } from 'utils/generate_report_name';
@@ -123,7 +124,7 @@ export const Report = () => {
           width: 'calc(100% - 200px)',
         }}
       >
-        <PopupModalConfirmation
+        <ConfirmationModal
           messages={[
             <>
               Please click <strong>Confirm</strong> to proceed with your submission. You'll be
@@ -138,7 +139,7 @@ export const Report = () => {
           show={isShowingSubmissionModal}
           title={'Confirm Submission'}
         />
-        <PopupModalConfirmation
+        <ConfirmationModal
           messages={[UNSAVED_CHANGES_MSG]}
           onModalCancel={() => {
             setIsShowingNavigationModal(false);

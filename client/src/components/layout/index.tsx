@@ -1,7 +1,7 @@
 import './index.css';
 
-import Header from 'components/header/header';
-import SideBar from 'components/side_bar/side_bar';
+import Header from 'components/header/Header';
+import SideBar from 'components/side_bar/SideBar';
 import cn from 'classnames';
 
 interface LayoutProps {
