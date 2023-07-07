@@ -115,7 +115,7 @@ export const Report = () => {
   }, [areChangesMade]);
 
   return (
-    <Layout title='Report'>
+    <Layout title="Report">
       <ConfirmationModal
         messages={[
           <>

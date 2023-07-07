@@ -40,7 +40,6 @@ export const UpdatePermissions = () => {
     };
   }, [history]);
 
-
   const onRoleChange = (newRole: keyof typeof Role) => {
     setCurrentRole(newRole);
   };
