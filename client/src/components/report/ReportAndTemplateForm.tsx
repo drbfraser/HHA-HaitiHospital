@@ -1,6 +1,15 @@
 import { Dispatch, SetStateAction } from 'react';
+
 import { Department } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
+
+interface ReportAndTemplateFormProps {
+  title: string;
+  departmentLabel: string;
+  departments: any;
+  currentDepartment: Department;
+  setCurrentDepartment: Dispatch<SetStateAction<Department>>;
+}
 
 export const ReportAndTemplateForm = ({
   title,
@@ -8,14 +17,9 @@ export const ReportAndTemplateForm = ({
   departments,
   currentDepartment,
   setCurrentDepartment,
-}: {
-  title: string;
-  departmentLabel: string;
-  departments: any;
-  currentDepartment: Department;
-  setCurrentDepartment: Dispatch<SetStateAction<Department>>;
-}): JSX.Element => {
+}: ReportAndTemplateFormProps): JSX.Element => {
   const { t } = useTranslation();
+
   return (
     <div className="col-md-6 mb-2">
       <h1 className="text-start">{title}</h1>
@@ -25,7 +29,7 @@ export const ReportAndTemplateForm = ({
           className="form-control"
           id="Report-Department-Type"
           onChange={(e) =>
-            setCurrentDepartment(departments.find(({ id, name }) => e.target.value === id))
+            setCurrentDepartment(departments.find(({ id }) => e.target.value === id))
           }
           value={currentDepartment?.id || ''}
         >

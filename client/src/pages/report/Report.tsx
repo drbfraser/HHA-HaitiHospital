@@ -115,89 +115,80 @@ export const Report = () => {
   }, [areChangesMade]);
 
   return (
-    <div className="report-submission">
-      <Layout
-        className="bg-light h-screen"
-        style={{
-          left: '200px',
-          position: 'absolute',
-          width: 'calc(100% - 200px)',
-        }}
-      >
-        <ConfirmationModal
-          messages={[
-            <>
-              Please click <strong>Confirm</strong> to proceed with your submission. You'll be
-              redirected to the main list of {currentDepartment?.name} reports.
-            </>,
-            <>
-              If you've made a mistake, please click <strong>Cancel</strong> instead.
-            </>,
-          ]}
-          onModalCancel={() => setIsShowingSubmissionModal(false)}
-          onModalProceed={submitReport}
-          show={isShowingSubmissionModal}
-          title={'Confirm Submission'}
-        />
-        <ConfirmationModal
-          messages={[UNSAVED_CHANGES_MSG]}
-          onModalCancel={() => {
-            setIsShowingNavigationModal(false);
-            setNavigationInfo(null);
-          }}
-          onModalProceed={() => {
-            setIsShowingNavigationModal(false);
-            setIsSubmitting(true);
-            navigate(history, navigationInfo, clearCurrentDepartment);
-          }}
-          show={isShowingNavigationModal}
-          title={'Discard Submission?'}
-        />
-        <Prompt
-          message={(location, action) => {
-            if (!navigationInfo && areChangesMade) {
-              setIsShowingNavigationModal(true);
-              setNavigationInfo({ action, location });
-              return false;
-            }
-            return true;
-          }}
-          when={areChangesMade}
-        />
-        {!report && departments && (
-          <ReportAndTemplateForm
-            title={t('headerReport')}
-            departmentLabel={t('headerReportDepartmentType')}
-            departments={departments}
-            currentDepartment={currentDepartment}
-            setCurrentDepartment={setCurrentDepartment}
-          />
-        )}
-        {report && (
+    <Layout title='Report'>
+      <ConfirmationModal
+        messages={[
           <>
-            <button
-              className="btn btn-outline-secondary"
-              onClick={() => {
-                if (areChangesMade) {
-                  setIsShowingNavigationModal(true);
-                  setNavigationInfo(null);
-                } else {
-                  clearCurrentDepartment();
-                }
-              }}
-            >
-              <i className="bi bi-chevron-left me-2" />
-              Choose Different Department
-            </button>
-            <ReportForm
-              applyReportChanges={applyReportChanges}
-              formHandler={confirmSubmission}
-              isSubmitting={isSubmitting}
-              reportData={report}
-            />
-          </>
-        )}
-      </Layout>
-    </div>
+            Please click <strong>Confirm</strong> to proceed with your submission. You'll be
+            redirected to the main list of {currentDepartment?.name} reports.
+          </>,
+          <>
+            If you've made a mistake, please click <strong>Cancel</strong> instead.
+          </>,
+        ]}
+        onModalCancel={() => setIsShowingSubmissionModal(false)}
+        onModalProceed={submitReport}
+        show={isShowingSubmissionModal}
+        title={'Confirm Submission'}
+      />
+      <ConfirmationModal
+        messages={[UNSAVED_CHANGES_MSG]}
+        onModalCancel={() => {
+          setIsShowingNavigationModal(false);
+          setNavigationInfo(null);
+        }}
+        onModalProceed={() => {
+          setIsShowingNavigationModal(false);
+          setIsSubmitting(true);
+          navigate(history, navigationInfo, clearCurrentDepartment);
+        }}
+        show={isShowingNavigationModal}
+        title={'Discard Submission?'}
+      />
+      <Prompt
+        message={(location, action) => {
+          if (!navigationInfo && areChangesMade) {
+            setIsShowingNavigationModal(true);
+            setNavigationInfo({ action, location });
+            return false;
+          }
+          return true;
+        }}
+        when={areChangesMade}
+      />
+      {!report && departments && (
+        <ReportAndTemplateForm
+          title={t('headerReport')}
+          departmentLabel={t('headerReportDepartmentType')}
+          departments={departments}
+          currentDepartment={currentDepartment}
+          setCurrentDepartment={setCurrentDepartment}
+        />
+      )}
+      {report && (
+        <>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => {
+              if (areChangesMade) {
+                setIsShowingNavigationModal(true);
+                setNavigationInfo(null);
+              } else {
+                clearCurrentDepartment();
+              }
+            }}
+          >
+            <i className="bi bi-chevron-left me-2" />
+            Choose Different Department
+          </button>
+          <ReportForm
+            applyReportChanges={applyReportChanges}
+            formHandler={confirmSubmission}
+            isSubmitting={isSubmitting}
+            reportData={report}
+          />
+        </>
+      )}
+    </Layout>
   );
 };

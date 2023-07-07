@@ -131,131 +131,119 @@ const ReportView = () => {
   return (
     <>
       {!!report && (
-        <div className="report-view">
-          <Layout
-            className="bg-light h-screen"
-            style={{
-              left: '200px',
-              position: 'absolute',
-              width: 'calc(100% - 200px)',
+        <Layout>
+          <ConfirmationModal
+            messages={[
+              <>
+                Please click <strong>Confirm</strong> to proceed with your edits.
+              </>,
+              <>
+                If you've made a mistake, please click <strong>Cancel</strong> instead.
+              </>,
+            ]}
+            onModalCancel={() => setShowEditModal(false)}
+            onModalProceed={reportHandler}
+            show={showEditModal}
+            title={'Confirm Edit'}
+          />
+          <ConfirmationModal
+            messages={[UNSAVED_CHANGES_MSG]}
+            onModalCancel={() => {
+              setIsShowingNavigationModal(false);
+              setNavigationInfo(null);
             }}
-          >
-            <ConfirmationModal
-              messages={[
-                <>
-                  Please click <strong>Confirm</strong> to proceed with your edits.
-                </>,
-                <>
-                  If you've made a mistake, please click <strong>Cancel</strong> instead.
-                </>,
-              ]}
-              onModalCancel={() => setShowEditModal(false)}
-              onModalProceed={reportHandler}
-              show={showEditModal}
-              title={'Confirm Edit'}
-            />
-            <ConfirmationModal
-              messages={[UNSAVED_CHANGES_MSG]}
-              onModalCancel={() => {
-                setIsShowingNavigationModal(false);
-                setNavigationInfo(null);
-              }}
-              onModalProceed={() => {
-                setIsShowingNavigationModal(false);
-                navigate(history, navigationInfo, () => {});
-              }}
-              show={isShowingNavigationModal}
-              title={'Discard Edit?'}
-            />
-            <Prompt
-              message={(location, action) => {
-                if (!navigationInfo && areChangesMade) {
-                  setIsShowingNavigationModal(true);
-                  setNavigationInfo({ action, location });
-                  return false;
-                }
-                return true;
-              }}
-              when={areChangesMade}
-            />
-            <div className="mb-3 d-flex justify-content-start">
-              <button className="btn btn-outline-dark" onClick={history.goBack}>
-                {t('reportViewBack')}
-              </button>
-            </div>
+            onModalProceed={() => {
+              setIsShowingNavigationModal(false);
+              navigate(history, navigationInfo, () => {});
+            }}
+            show={isShowingNavigationModal}
+            title={'Discard Edit?'}
+          />
+          <Prompt
+            message={(location, action) => {
+              if (!navigationInfo && areChangesMade) {
+                setIsShowingNavigationModal(true);
+                setNavigationInfo({ action, location });
+                return false;
+              }
+              return true;
+            }}
+            when={areChangesMade}
+          />
+          <div className="mb-3 d-flex justify-content-start">
+            <button className="btn btn-outline-dark" onClick={history.goBack}>
+              {t('reportViewBack')}
+            </button>
+          </div>
 
-            <div>
-              <header>
-                <div>
-                  {showViewEditBtn && (
-                    <button className="btn btn-primary" onClick={btnHandler}>
-                      {readOnly
-                        ? t('departmentReportDisplayEditForm')
-                        : t('departmentReportDisplayViewForm')}
-                    </button>
-                  )}
-                  {readOnly && (
-                    <button
-                      className="btn btn-outline-dark ml-3"
-                      onClick={handleExportWithComponent}
-                    >
-                      {t('departmentReportDisplayGeneratePDF')}
-                    </button>
-                  )}
-                  {readOnly && (
-                    <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
-                      {isUsingPagination
-                        ? t('departmentReportDisplayHidePagination')
-                        : t('departmentReportDisplayShowPagination')}
-                    </button>
-                  )}
-                </div>
-              </header>
+          <div>
+            <header>
               <div>
-                <div className="visually-hidden">
-                  <PDFExport
-                    fileName={`${department}_${new Date(
-                      metaData?.submittedDate,
-                    ).toLocaleDateString()}__${metaData?.submittedBy}`}
-                    paperSize="A4"
-                    ref={pdfExportComponent}
-                    scale={0.75}
-                  >
-                    <ReadonlyReportForm
-                      applyReportChanges={applyReportChanges}
-                      formHandler={() => {}}
-                      isSubmitting={false}
-                      isUsingPagination={false}
-                      reportData={report}
-                      date={submittedDate}
-                      author={metaData?.submittedBy}
-                    />
-                  </PDFExport>
-                </div>
-                {readOnly ? (
+                {showViewEditBtn && (
+                  <button className="btn btn-primary" onClick={btnHandler}>
+                    {readOnly
+                      ? t('departmentReportDisplayEditForm')
+                      : t('departmentReportDisplayViewForm')}
+                  </button>
+                )}
+                {readOnly && (
+                  <button className="btn btn-outline-dark ml-3" onClick={handleExportWithComponent}>
+                    {t('departmentReportDisplayGeneratePDF')}
+                  </button>
+                )}
+                {readOnly && (
+                  <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
+                    {isUsingPagination
+                      ? t('departmentReportDisplayHidePagination')
+                      : t('departmentReportDisplayShowPagination')}
+                  </button>
+                )}
+              </div>
+            </header>
+            {readOnly && (
+              <div className="visually-hidden">
+                <PDFExport
+                  fileName={`${department}_${new Date(
+                    metaData?.submittedDate,
+                  ).toLocaleDateString()}__${metaData?.submittedBy}`}
+                  paperSize="A4"
+                  ref={pdfExportComponent}
+                  scale={0.75}
+                >
                   <ReadonlyReportForm
                     applyReportChanges={applyReportChanges}
-                    btnText="Edit"
-                    formHandler={confirmEdit}
+                    formHandler={() => {}}
                     isSubmitting={false}
-                    isUsingPagination={isUsingPagination}
+                    isUsingPagination={false}
                     reportData={report}
                     date={submittedDate}
                     author={metaData?.submittedBy}
                   />
-                ) : (
-                  <ReportForm
-                    applyReportChanges={applyReportChanges}
-                    btnText="Edit"
-                    formHandler={confirmEdit}
-                    isSubmitting={false}
-                    reportData={report}
-                  />
-                )}
+                </PDFExport>
               </div>
-            </div>
-          </Layout>
-        </div>
+            )}
+            {readOnly ? (
+              <ReadonlyReportForm
+                applyReportChanges={applyReportChanges}
+                btnText="Edit"
+                formHandler={confirmEdit}
+                isSubmitting={false}
+                isUsingPagination={isUsingPagination}
+                reportData={report}
+                date={submittedDate}
+                author={metaData?.submittedBy}
+              />
+            ) : (
+              <ReportForm
+                applyReportChanges={applyReportChanges}
+                btnText="Update"
+                formHandler={confirmEdit}
+                isSubmitting={false}
+                reportData={report}
+              />
+            )}
+          </div>
+        </Layout>
       )}
     </>
   );
