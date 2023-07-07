@@ -1,5 +1,4 @@
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import { Department as DepartmentModel, EMPTY_DEPARTMENT } from 'constants/interfaces';
 import {
   ENDPOINT_DEPARTMENT_GET_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
@@ -9,6 +8,7 @@ import { dateOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
+import { Department as DepartmentModel } from 'constants/interfaces';
 import { History } from 'history';
 import Layout from 'components/layout';
 import Pagination from 'components/pagination/Pagination';
@@ -22,7 +22,7 @@ export const Department = () => {
     from: null,
     to: null,
   });
-  const [department, setDepartment] = useState<DepartmentModel>(EMPTY_DEPARTMENT);
+  const [department, setDepartment] = useState<DepartmentModel>();
   const [reports, setReports] = useState<IReportObject<any>[]>([]);
   const history: History = useHistory<History>();
   const { deptId } = useParams<{ deptId: string }>();
@@ -78,72 +78,71 @@ export const Department = () => {
     };
   }, [history, deptId]);
 
+  if (!department) {
+    return null;
+  }
+
   return (
-    <div className="department">
-      <Layout>
-        <div className="mt-3">
-          <section>
-            <h1 className="text-start">
-              {t('departmentPageDepartmentOf')} {department.name}
-            </h1>
-          </section>
-          <section>
-            {currentTableData.length > 0 && (
-              <div className="row">
-                <div className="col-auto">
-                  <DatePicker value={dateRange} onChange={setDayRange} />
-                </div>
+    <Layout>
+      <div className="mt-3">
+        <section>
+          <h1 className="text-start">
+            {t('departmentPageDepartmentOf')} {department.name}
+          </h1>
+        </section>
+        <section>
+          {currentTableData.length > 0 && (
+            <div className="row">
+              <div className="col-auto">
+                <DatePicker value={dateRange} onChange={setDayRange} />
               </div>
-            )}
-          </section>
+            </div>
+          )}
+        </section>
+      </div>
+      {currentTableData.length > 0 ? (
+        <table className="table table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">{t('reportsReportId')}</th>
+              <th scope="col">{t('reportsSubmissionDate')}</th>
+              <th scope="col">{t('reportsSubmittedBy')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentTableData.map((item, index) => {
+              return (
+                <tr key={item._id}>
+                  <th scope="row">{reportNumberIndex + index + 1}</th>
+                  <td>
+                    <Link to={'/report-view/' + item._id} className="btn-link text-decoration-none">
+                      {item.reportObject.id}
+                    </Link>
+                  </td>
+                  <td>
+                    {item.submittedDate &&
+                      new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
+                  </td>
+                  <td>{item.submittedBy}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <div className="h5 text-primary">
+          No reports have been submitted yet for the {department.name} department. Click Report (on
+          the left) to create a new report.
         </div>
-        {currentTableData.length > 0 ? (
-          <table className="table table-hover mt-3">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{t('reportsReportId')}</th>
-                <th scope="col">{t('reportsSubmissionDate')}</th>
-                <th scope="col">{t('reportsSubmittedBy')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentTableData.map((item, index) => {
-                return (
-                  <tr key={item._id}>
-                    <th scope="row">{reportNumberIndex + index + 1}</th>
-                    <td>
-                      <Link
-                        to={'/report-view/' + item._id}
-                        className="btn-link text-decoration-none"
-                      >
-                        {item.reportObject.id}
-                      </Link>
-                    </td>
-                    <td>
-                      {item.submittedDate &&
-                        new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                    </td>
-                    <td>{item.submittedBy}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : (
-          <div className="h5 text-primary">
-            No reports have been submitted yet for the {department.name} department. Click Report
-            (on the left) to create a new report.
-          </div>
-        )}
-        <Pagination
-          className="pagination-bar"
-          currentPage={currentPage}
-          onPageChange={(page) => setCurrentPage(page)}
-          pageSize={PAGE_SIZE}
-          totalCount={reports.length}
-        />
-      </Layout>
-    </div>
+      )}
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        onPageChange={(page) => setCurrentPage(page)}
+        pageSize={PAGE_SIZE}
+        totalCount={reports.length}
+      />
+    </Layout>
   );
 };

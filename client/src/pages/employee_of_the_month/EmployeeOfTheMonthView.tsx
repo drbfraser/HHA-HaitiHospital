@@ -41,13 +41,11 @@ export const EmployeeOfTheMonthView = () => {
   return (
     <Layout>
       {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <div className="d-flex justify-content-start">
-          <Link to="/employee-of-the-month/form">
-            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-              {t('employeeOfTheMonthEdit')}
-            </button>
-          </Link>
-        </div>
+        <Link to="/employee-of-the-month/form">
+          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+            {t('employeeOfTheMonthEdit')}
+          </button>
+        </Link>
       )}
       {employeeOfTheMonth && <EmployeeOfTheMonthSummary employee={employeeOfTheMonth} />}
     </Layout>
