@@ -87,7 +87,7 @@ const CaseStudyInfo = ({ caseStudy, infoRows = [], caseStudyStory }: CaseStudyIn
         match={undefined}
       ></ImageModal>
       <div className="w-100">
-        <div className="d-flex">
+        <div className="d-flex flex-column flex-lg-row">
           <div className="d-flex flex-column">
             <h2 data-testid="case-study-patient-title" className="mt-3 mb-3 fw-bold">
               {t('caseStudyFormPatientStoryCaseStudy')}
@@ -217,10 +217,6 @@ const TrainingSessionSummary = ({ caseStudy }) => (
   />
 );
 
-const OtherStorySummary = ({ caseStudy }) => (
-  <CaseStudyInfo caseStudy={caseStudy} caseStudyStory={caseStudy.otherStory.caseStudyStory} />
-);
-
 const EquipmentReceivedSummary = ({ caseStudy }) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
@@ -250,24 +246,26 @@ const EquipmentReceivedSummary = ({ caseStudy }) => (
   />
 );
 
-export const CaseStudySummary = ({ caseStudy }) => {
-  return (
-    <>
-      {caseStudy.caseStudyType === CaseStudyType.PatientStory && (
-        <PatientStorySummary caseStudy={caseStudy} />
-      )}
-      {caseStudy.caseStudyType === CaseStudyType.StaffRecognition && (
-        <StaffRecognitionSummary caseStudy={caseStudy} />
-      )}
-      {caseStudy.caseStudyType === CaseStudyType.TrainingSession && (
-        <TrainingSessionSummary caseStudy={caseStudy} />
-      )}
-      {caseStudy.caseStudyType === CaseStudyType.EquipmentReceived && (
-        <EquipmentReceivedSummary caseStudy={caseStudy} />
-      )}
-      {caseStudy.caseStudyType === CaseStudyType.OtherStory && (
-        <OtherStorySummary caseStudy={caseStudy} />
-      )}
-    </>
-  );
-};
+const OtherStorySummary = ({ caseStudy }) => (
+  <CaseStudyInfo caseStudy={caseStudy} caseStudyStory={caseStudy.otherStory.caseStudyStory} />
+);
+
+export const CaseStudySummary = ({ caseStudy }) => (
+  <>
+    {caseStudy.caseStudyType === CaseStudyType.PatientStory && (
+      <PatientStorySummary caseStudy={caseStudy} />
+    )}
+    {caseStudy.caseStudyType === CaseStudyType.StaffRecognition && (
+      <StaffRecognitionSummary caseStudy={caseStudy} />
+    )}
+    {caseStudy.caseStudyType === CaseStudyType.TrainingSession && (
+      <TrainingSessionSummary caseStudy={caseStudy} />
+    )}
+    {caseStudy.caseStudyType === CaseStudyType.EquipmentReceived && (
+      <EquipmentReceivedSummary caseStudy={caseStudy} />
+    )}
+    {caseStudy.caseStudyType === CaseStudyType.OtherStory && (
+      <OtherStorySummary caseStudy={caseStudy} />
+    )}
+  </>
+);

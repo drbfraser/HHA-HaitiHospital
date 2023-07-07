@@ -100,6 +100,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         {employeeImage && (
           <img
             className="d-flex ms-auto mt-3 mb-3"
+            style={{ width: '600px' }}
             src={employeeImage}
             alt={ALT_MESSAGE}
             onClick={(event: any) => {
