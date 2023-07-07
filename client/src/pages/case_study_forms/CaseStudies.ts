@@ -1,4 +1,4 @@
-export enum CaseStudyOptions {
+export enum CaseStudyType {
   PatientStory = 'Patient Story',
   StaffRecognition = 'Staff Recognition',
   TrainingSession = 'Training Session',
@@ -48,7 +48,7 @@ interface OtherStory {
 }
 
 export interface CaseStudyModel {
-  caseStudyType: { type: CaseStudyOptions; required: true };
+  caseStudyType: { type: CaseStudyType; required: true };
   // TODO: add created by user. right now JWT is not yet applied
   // createdByUser: { type: string},
   patientStory: PatientStory;

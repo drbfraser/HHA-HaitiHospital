@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import Layout from 'components/layout';
-import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
+import { CaseStudyModel, CaseStudyType } from './CaseStudies';
+import { Link, RouteComponentProps } from 'react-router-dom';
+
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
+import Layout from 'components/layout';
 import { TOAST_CASESTUDY_POST } from 'constants/toastErrorMessages';
-import './case_study_form.css';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import { imageCompressor } from 'utils/imageCompressor';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -96,19 +96,17 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
                 defaultValue={''}
               >
                 <option value="">{t('caseStudyFormClickToSelect')}</option>
-                <option value={CaseStudyOptions.PatientStory}>
-                  {t('caseStudyFormPatientStory')}
-                </option>
-                <option value={CaseStudyOptions.StaffRecognition}>
+                <option value={CaseStudyType.PatientStory}>{t('caseStudyFormPatientStory')}</option>
+                <option value={CaseStudyType.StaffRecognition}>
                   {t('caseStudyFormStaffRecognition')}
                 </option>
-                <option value={CaseStudyOptions.TrainingSession}>
+                <option value={CaseStudyType.TrainingSession}>
                   {t('caseStudyFormTrainingSession')}
                 </option>
-                <option value={CaseStudyOptions.EquipmentReceived}>
+                <option value={CaseStudyType.EquipmentReceived}>
                   {t('caseStudyFormEquipmentReceived')}
                 </option>
-                <option value={CaseStudyOptions.OtherStory}>{t('caseStudyFormOtherStory')}</option>
+                <option value={CaseStudyType.OtherStory}>{t('caseStudyFormOtherStory')}</option>
               </select>
             </div>
           </form>
@@ -117,7 +115,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div
             className={`form-group col-md-6 ${
-              formOption === CaseStudyOptions.PatientStory ? 'd-block' : 'd-none'
+              formOption === CaseStudyType.PatientStory ? 'd-block' : 'd-none'
             }`}
             id="Form1"
           >
@@ -220,7 +218,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <form onSubmit={handleSubmit2(onSubmit)}>
           <div
             className={`form-group col-md-6 ${
-              formOption === CaseStudyOptions.StaffRecognition ? 'd-block' : 'd-none'
+              formOption === CaseStudyType.StaffRecognition ? 'd-block' : 'd-none'
             }`}
             id="Form2"
           >
@@ -311,7 +309,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <form onSubmit={handleSubmit3(onSubmit)}>
           <div
             className={`form-group col-md-6 ${
-              formOption === CaseStudyOptions.TrainingSession ? 'd-block' : 'd-none'
+              formOption === CaseStudyType.TrainingSession ? 'd-block' : 'd-none'
             }`}
             id="Form3"
           >
@@ -398,7 +396,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <form onSubmit={handleSubmit4(onSubmit)}>
           <div
             className={`form-group col-md-6 ${
-              formOption === CaseStudyOptions.EquipmentReceived ? 'd-block' : 'd-none'
+              formOption === CaseStudyType.EquipmentReceived ? 'd-block' : 'd-none'
             }`}
             id="Form4"
           >
@@ -498,7 +496,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
         <form onSubmit={handleSubmit5(onSubmit)}>
           <div
             className={`form-group col-md-6 ${
-              formOption === CaseStudyOptions.OtherStory ? 'd-block' : 'd-none'
+              formOption === CaseStudyType.OtherStory ? 'd-block' : 'd-none'
             }`}
             id="Form5"
           >
