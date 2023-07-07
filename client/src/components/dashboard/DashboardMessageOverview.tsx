@@ -11,9 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface DashboardMessageProps {}
-
-const DashboardMessageOverview = (props: DashboardMessageProps) => {
+const DashboardMessageOverview = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const history: History = useHistory<History>();
 

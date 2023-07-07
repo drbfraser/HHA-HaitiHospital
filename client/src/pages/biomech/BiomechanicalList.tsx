@@ -1,7 +1,7 @@
 import { Badge, Button } from 'react-bootstrap';
 import { ENDPOINT_BIOMECH_DELETE_BY_ID, ENDPOINT_BIOMECH_GET } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 

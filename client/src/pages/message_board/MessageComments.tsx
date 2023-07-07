@@ -97,7 +97,7 @@ const MessageComments = () => {
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pb-2 mb-0">{t('messageBoardCommentsMessage')}</h6>
           </div>
-          <MessageDisplay msgJson={msgJson} notifyChange={toggleRerender} />
+          <MessageDisplay message={msgJson} notifyChange={toggleRerender} />
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pt-5 pb-2 mb-0">
               {t('messageBoardCommentsComment') + ' (' + comments.length + ')'}

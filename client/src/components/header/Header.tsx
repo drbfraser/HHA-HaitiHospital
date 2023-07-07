@@ -1,16 +1,16 @@
-import { useAuthDispatch } from '../../contexts';
-import { useState, useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import { UserDetails } from 'constants/interfaces';
-import { EMPTY_USER_JSON } from 'constants/default_values';
-import { logOutUser } from '../../actions/authActions';
-import Api from 'actions/Api';
-import { useTranslation } from 'react-i18next';
-import { History } from 'history';
-import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
-import { ResponseMessage } from 'utils/response_message';
+import { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
-interface HeaderProps {}
+import Api from 'actions/Api';
+import { EMPTY_USER_JSON } from 'constants/default_values';
+import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
+import { History } from 'history';
+import { ResponseMessage } from 'utils/response_message';
+import { UserDetails } from 'constants/interfaces';
+import { logOutUser } from '../../actions/authActions';
+import { useAuthDispatch } from '../../contexts';
+import { useTranslation } from 'react-i18next';
+
 interface HeaderViewProps {
   user: UserDetails;
 }
@@ -133,7 +133,7 @@ const HeaderView = (props: HeaderViewProps) => {
   }
 };
 
-const Header = (props: HeaderProps) => {
+const Header = () => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
   const onLogOut = () => {
     logOutUser(dispatch, history);

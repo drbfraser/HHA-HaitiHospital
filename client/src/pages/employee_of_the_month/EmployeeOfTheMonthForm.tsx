@@ -1,5 +1,5 @@
 import { Department, GeneralDepartment } from 'constants/interfaces';
-import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Api from '../../actions/Api';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';

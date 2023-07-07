@@ -10,8 +10,6 @@ import { NavLink } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
-interface SidebarProps {}
-
 type SideBarItemProps = { path: string; children: ReactNode };
 
 export const changeLanguage = (ln, i18n) => {
@@ -58,7 +56,8 @@ const SidebarItem = ({ path, children }: SideBarItemProps) => {
     </li>
   );
 };
-const Sidebar = (_: SidebarProps) => {
+
+const Sidebar = () => {
   const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();

@@ -1,4 +1,4 @@
-import { Link, RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -9,9 +9,7 @@ import Layout from 'components/layout';
 import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
 
-interface CaseStudyViewProps extends RouteComponentProps {}
-
-export const CaseStudyView = (props: CaseStudyViewProps) => {
+export const CaseStudyView = () => {
   const [caseStudy, setCaseStudy] = useState({} as any);
   const id: string = useLocation().pathname.split('/')[3];
   const history: History = useHistory<History>();

@@ -13,9 +13,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
-interface MessagePanelProps {}
-
-const MessagePanel = (props: MessagePanelProps) => {
+const MessagePanel = () => {
   const { t } = useTranslation();
   const history: History = useHistory<History>();
   const [rerender, setRerender] = useState<boolean>(false);
@@ -73,7 +71,7 @@ const MessagePanel = (props: MessagePanelProps) => {
               <h6 className="border-bottom pb-2 mb-0">{t('messageBoardRecentUpdates')}</h6>
             </div>
             {currentTableData.map((msgJson, index) => {
-              return <MessageDisplay key={index} msgJson={msgJson} notifyChange={toggleRerender} />;
+              return <MessageDisplay key={index} message={msgJson} notifyChange={toggleRerender} />;
             })}
           </div>
           <Pagination

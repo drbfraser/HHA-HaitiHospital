@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
 import Api from 'actions/Api';
 import { ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import { TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import { History } from 'history';
+import { Link } from 'react-router-dom';
+import { TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-interface DashboardLeaderProps {}
-
-const DashboardLeaderOverview = (props: DashboardLeaderProps) => {
+const DashboardLeaderOverview = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const history: History = useHistory<History>();
 

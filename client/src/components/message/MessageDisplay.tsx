@@ -21,7 +21,7 @@ import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
 interface MessageDisplayProps {
-  msgJson: Message;
+  message: Message;
   notifyChange: Function;
 }
 
@@ -33,14 +33,14 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
-  const readableDate = props.msgJson.date.toLocaleString();
+  const readableDate = props.message.date.toLocaleString();
   const [commentCount, setCommentCount] = useState<number>(0);
   const is_comment_page: boolean = useLocation().pathname.split('/')[2] === 'comments';
-  const author = !!props.msgJson.user ? props.msgJson.user.name : t('status.not_available');
+  const author = !!props.message.user ? props.message.user.name : t('status.not_available');
 
   useEffect(() => {
     const controller = new AbortController();
-    setMessage(props.msgJson);
+    setMessage(props.message);
 
     const getCommentCount = async (id: string) => {
       if (id) {
@@ -54,12 +54,12 @@ const MessageDisplay = (props: MessageDisplayProps) => {
       }
     };
 
-    getCommentCount(props.msgJson.id);
+    getCommentCount(props.message.id);
     return () => {
       setMessage(emptyMessage);
       controller.abort();
     };
-  }, [props.msgJson, history]);
+  }, [props.message, history]);
 
   const deleteMessageActions = () => {
     toast.success(i18n.t('MessageAlertMessageDeleted'));

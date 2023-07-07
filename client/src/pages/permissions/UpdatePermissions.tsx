@@ -13,6 +13,9 @@ import { useTranslation } from 'react-i18next';
 
 export const UpdatePermissions = () => {
   const [permissionsData, setPermissionsData] = useState<RolesData>();
+  const { t } = useTranslation();
+  const [currentRole, setCurrentRole] = useState<string>('User');
+  const history: History = useHistory<History>();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -35,11 +38,8 @@ export const UpdatePermissions = () => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [history]);
 
-  const { t } = useTranslation();
-  const [currentRole, setCurrentRole] = useState<string>('User');
-  const history: History = useHistory<History>();
 
   const onRoleChange = (newRole: keyof typeof Role) => {
     setCurrentRole(newRole);

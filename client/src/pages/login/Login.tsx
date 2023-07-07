@@ -3,7 +3,6 @@ import './login_styles.css';
 
 import * as Yup from 'yup';
 
-import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { getCSRFToken, loginUser } from '../../actions/authActions';
 import { useAuthDispatch, useAuthState } from 'contexts';
 
@@ -11,6 +10,7 @@ import React from 'react';
 import { changeLanguage } from '../../components/side_bar/SideBar';
 import logo from 'img/logo/LogoWText.svg';
 import { useFormik } from 'formik';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 function setUsername(name: string) {

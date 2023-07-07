@@ -17,9 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE = 10;
 
-interface DepartmentProps {}
-
-export const Department = (props: DepartmentProps) => {
+export const Department = () => {
   const [dateRange, setDayRange] = useState<DayRange>({
     from: null,
     to: null,

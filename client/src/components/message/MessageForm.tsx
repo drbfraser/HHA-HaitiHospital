@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Message } from 'constants/interfaces';
 import { Department } from 'constants/interfaces';
-import { useTranslation } from 'react-i18next';
+import { Message } from 'constants/interfaces';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface MessageFormProps {
-  optionalMsg?: Message;
+  message?: Message;
   submitAction: (data: any) => void;
 }
 
@@ -63,7 +63,7 @@ const MessageForm = (props: MessageFormProps) => {
           className="form-control"
           type="text"
           {...register('messageHeader')}
-          defaultValue={props?.optionalMsg?.messageHeader || ''}
+          defaultValue={props?.message?.messageHeader || ''}
         />
       </div>
 
@@ -77,7 +77,7 @@ const MessageForm = (props: MessageFormProps) => {
           {...register('messageBody')}
           cols={30}
           rows={10}
-          defaultValue={props?.optionalMsg?.messageBody || ''}
+          defaultValue={props?.message?.messageBody || ''}
         ></textarea>
       </div>
 

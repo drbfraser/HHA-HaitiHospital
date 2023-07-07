@@ -16,9 +16,7 @@ import { useDepartmentData } from 'hooks';
 import useDidMountEffect from 'utils/custom_hooks';
 import { useTranslation } from 'react-i18next';
 
-interface UserEditProps {}
-
-export const EditUserForm = (props: UserEditProps) => {
+export const EditUserForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const [fetch, setFetch] = useState<boolean>(false);
   const [user, setUser] = useState<UserDetails>(undefined);

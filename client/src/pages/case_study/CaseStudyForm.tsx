@@ -1,5 +1,5 @@
 import { CaseStudyModel, CaseStudyType } from './typing';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
@@ -11,12 +11,11 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface CaseStudyMainProps extends RouteComponentProps {}
-
-export const CaseStudyForm = (props: CaseStudyMainProps) => {
+export const CaseStudyForm = () => {
   const [formOption, setformOption] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const history = useHistory<History>();
   const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
   const {
     register: register2,
@@ -51,7 +50,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
     reset4({});
     reset5({});
     setSelectedFile(null);
-    props.history.push('/case-study');
+    history.push('/case-study');
   };
 
   const onSubmit = async (data: any) => {
@@ -65,7 +64,7 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       ENDPOINT_CASESTUDY_POST,
       formData,
       onSubmitActions,
-      props.history,
+      history,
       TOAST_CASESTUDY_POST,
     );
   };

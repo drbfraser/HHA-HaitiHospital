@@ -1,5 +1,5 @@
 import { BIOMECH_REPORT_FIELDS, BiomechForm, BiomechPriority, BiomechStatus } from './typing';
-import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Api from '../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
@@ -12,16 +12,14 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-interface BrokenKitReportProps extends RouteComponentProps {}
-
-export const BrokenKitReport = (props: BrokenKitReportProps) => {
+export const BrokenKitReport = () => {
   const { t } = useTranslation();
   const { register, handleSubmit, setValue } = useForm<BiomechForm>({});
   const history: History = useHistory<History>();
 
   const onSubmitOk = () => {
     toast.success(ResponseMessage.getMsgCreateReportOk());
-    props.history.push(Paths.getBioMechMain());
+    history.push(Paths.getBioMechMain());
   };
 
   const onSubmit = async (data: BiomechForm) => {

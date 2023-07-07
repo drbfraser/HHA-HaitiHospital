@@ -6,7 +6,7 @@ import {
   ENDPOINT_BIOMECH_UPDATE_STATUS,
   ENDPOINT_IMAGE_BY_PATH,
 } from 'constants/endpoints';
-import { Link, RouteComponentProps, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -20,9 +20,7 @@ import { ResponseMessage } from 'utils/response_message';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
-interface BrokenKitViewProps extends RouteComponentProps {}
-
-export const BrokenKitView = (props: BrokenKitViewProps) => {
+export const BrokenKitView = () => {
   const ALT_MESSAGE: string = 'Broken kit report...';
   const { t } = useTranslation();
   const [BioReport, setBioReport] = useState({} as any);
@@ -112,7 +110,7 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         item={ALT_MESSAGE}
         image={BioReportImage}
         onModalClose={onModalImageClose}
-        history={props.history}
+        history={history}
         location={undefined}
         match={undefined}
       ></ImageModal>
