@@ -1,13 +1,14 @@
-import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
-import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
+
 import { Department, GeneralDepartment, Role } from 'constants/interfaces';
-import { useAuthState, useAdminToggleState } from 'contexts';
-import { useDepartmentData } from 'hooks';
-import { ReactNode, useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { ReactNode, useEffect, useState } from 'react';
+import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
+import { useAdminToggleState, useAuthState } from 'contexts';
+
+import HhaLogo from 'components/hha_logo/hha_logo';
 import { NavLink } from 'react-router-dom';
-import cn from 'classnames';
+import { useDepartmentData } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 interface SidebarProps {}
 
@@ -57,7 +58,7 @@ const SidebarItem = ({ path, children }: SideBarItemProps) => {
     </li>
   );
 };
-const Sidebar = (props: SidebarProps) => {
+const Sidebar = (_: SidebarProps) => {
   const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
@@ -85,56 +86,50 @@ const Sidebar = (props: SidebarProps) => {
   return (
     <div
       className={'h-100 bg-dark flex overflow-auto position-fixed'}
-      style={{ width: `${isMobile ? '75px' : '200px'}`, top: 0, left: 0, zIndex: 1 }}
+      style={{ top: 0, left: 0, zIndex: 1000 }}
     >
       <div>
-        <div className={cn({ 'd-none': isMobile })}>
-          <div className="text-center" style={{ width: 190 }}>
-            <HhaLogo style={{ width: 150 }} />
+        {!isMobile && (
+          <div>
+            <div className="text-center" style={{ width: 190 }}>
+              <HhaLogo style={{ width: 150 }} />
+            </div>
           </div>
-        </div>
+        )}
 
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem path="home">
             <i className="bi bi-house-door-fill me-2" />
-            <span className={cn('text-light', { 'd-none': isMobile })}>{t('sidebarHome')}</span>
+            {!isMobile && <span className={'text-light'}>{t('sidebarHome')}</span>}
           </SidebarItem>
           <SidebarItem path="message-board">
             <i className="bi bi-chat-right-text-fill me-2" />
-            <span
-              data-testid="message-board-side-bar"
-              className={cn('text-light', { 'd-none': isMobile })}
-            >
-              {t('sidebarMessageBoard')}
-            </span>
+            {!isMobile && (
+              <span data-testid="message-board-side-bar" className={'text-light'}>
+                {t('sidebarMessageBoard')}
+              </span>
+            )}
           </SidebarItem>
           <SidebarItem path="leaderboard">
             <i className="bi bi-bar-chart-fill me-2" />
-            <span
-              data-testid="leaderboard-side-bar"
-              className={cn('text-light', { 'd-none': isMobile })}
-            >
-              {t('sidebarLeaderBoard')}
-            </span>
+            {!isMobile && (
+              <span data-testid="leaderboard-side-bar" className={'text-light'}>
+                {t('sidebarLeaderBoard')}
+              </span>
+            )}
           </SidebarItem>
           <SidebarItem path="case-study">
             <i className="bi bi-award-fill me-2" />
-            <span className={cn('text-light', { 'd-none': isMobile })}>
-              {t('sidebarCaseStudy')}
-            </span>
+            {!isMobile && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
           </SidebarItem>
           <SidebarItem path="biomechanic">
             <i className="bi bi-wrench me-2" />
-            <span className={cn('text-light', { 'd-none': isMobile })}>
-              {t('sidebarBioSupport')}
-            </span>
+            {!isMobile && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
           </SidebarItem>
           <SidebarItem path="employee-of-the-month">
             <div style={{ display: 'flex', flex: '1 1 auto' }}>
               <i className="bi bi-star-fill me-2" />
-              <span className={cn('text-light', { 'd-none': isMobile })}>
-                {t('sidebarEmployeeOfTheMonth')}
-              </span>
+              {!isMobile && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
             </div>
           </SidebarItem>
 
@@ -147,9 +142,7 @@ const Sidebar = (props: SidebarProps) => {
           ]) && (
             <SidebarItem path="general-reports">
               <i className="bi bi-folder-fill me-2" />
-              <span className={cn('text-light', { 'd-none': isMobile })}>
-                {t('sidebarGeneral')}
-              </span>
+              {!isMobile && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
             </SidebarItem>
           )}
 
@@ -161,7 +154,7 @@ const Sidebar = (props: SidebarProps) => {
               return (
                 <SidebarItem path={`department/${deptId}`}>
                   <i className="bi bi-brightness-high-fill me-2" />
-                  <span className={cn('text-light', { 'd-none': isMobile })}>{t(deptName)}</span>
+                  {!isMobile && <span className={'text-light'}>{t(deptName)}</span>}
                 </SidebarItem>
               );
             else {
@@ -171,7 +164,7 @@ const Sidebar = (props: SidebarProps) => {
 
           <SidebarItem path="report">
             <i className="bi bi-exclamation-square me-2" />
-            <span className={cn('text-light', { 'd-none': isMobile })}>Report</span>
+            {!isMobile && <span className={'text-light'}>Report</span>}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-2" />
@@ -187,28 +180,22 @@ const Sidebar = (props: SidebarProps) => {
                   <i
                     className={adminToggleState ? 'bi bi-chevron-down' : 'bi bi-chevron-right'}
                   ></i>
-                  <span className="text text-light">{t('sidebarAdmin')}</span>
+                  {!isMobile && <span className="text text-light">{t('sidebarAdmin')}</span>}
                 </span>
                 <ul className="nested">
                   <SidebarItem path="admin">
                     <i className="bi bi-exclamation-square me-2" />
-                    <span className={cn('text-light', { 'd-none': isMobile })}>
-                      {t('sidebarAdmin')}
-                    </span>
+                    {!isMobile && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="upload-report">
                     <i className="bi bi-person-badge-fill me-2" />
-                    <span className={cn('text-light', { 'd-none': isMobile })}>
-                      {t('sidebarUploadReport')}
-                    </span>
+                    {!isMobile && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="update-permissions">
                     <i className="bi bi-person-badge-fill me-2" />
-                    <span className={cn('text-light', { 'd-none': isMobile })}>
-                      {t('sidebarPermissions')}
-                    </span>
+                    {!isMobile && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
                   </SidebarItem>
                 </ul>
               </li>
@@ -225,7 +212,7 @@ const Sidebar = (props: SidebarProps) => {
               onClick={changeLanguage('en', i18n)}
             >
               <b>EN</b>&ensp;
-              <span className={cn({ 'd-none': isMobile })}>{t('sidebarEnglish')}</span>
+              {!isMobile && <span>{t('sidebarEnglish')}</span>}
             </button>
           </li>
 
@@ -238,7 +225,7 @@ const Sidebar = (props: SidebarProps) => {
               onClick={changeLanguage('fr', i18n)}
             >
               <b>FR</b>&ensp;
-              <span className={cn({ 'd-none': isMobile })}>{t('sidebarFrench')}</span>
+              {!isMobile && <span>{t('sidebarFrench')}</span>}
             </button>
           </li>
         </ul>
