@@ -1,5 +1,3 @@
-import './employee_of_the_month_summary.css';
-
 import { currMonth, currYear } from 'utils/dateUtils';
 import { useEffect, useState } from 'react';
 
@@ -42,7 +40,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
       setEmployeeImage(employeeImage);
     };
 
-    getEmployeeOfTheMonthImage();
+    props.employee.imgPath && getEmployeeOfTheMonthImage();
   }, [props.employee, props.history]);
 
   const translateMonth = (index: number): string => {
@@ -75,7 +73,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   };
 
   return (
-    <div className="employee-container mb-5">
+    <>
       <ModalImage
         show={showImageModal}
         item={ALT_MESSAGE}
@@ -85,41 +83,35 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         location={undefined}
         match={undefined}
       ></ModalImage>
-      <div className="employee-subcontainer">
-        <div className="employee-image-description flex flex-col">
-          <div className="top-description">
-            <div className="w-100 pr-2">
-              <h2 className="mt-3 mb-3 fw-bold">
-                {t('employeeOfTheMonthTitle').concat(
-                  translateMonth(currMonth).concat(' ').concat(currYear.toString()),
-                )}
-              </h2>
-              <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
-              <p className="fs-6 lh-base text-break">{updatedDate}</p>
-              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
-              <p className="fs-6 lh-base text-break">{props.employee.name}</p>
-              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>
-              <p className="fs-6 lh-base text-break">{props.employee.department.name}</p>
-            </div>
-            <div className="employee-image-container">
-              {employeeImage && (
-                <img
-                  src={employeeImage}
-                  className={`employee-image img-thumbnail img-fluid mt-3 mb-3`}
-                  alt={ALT_MESSAGE}
-                  onClick={(event: any) => {
-                    onEnlargeImage(event);
-                  }}
-                />
-              )}
-            </div>
-          </div>
-          <div className="employee-description">
-            <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
-            <p className="fs-6 lh-base text-break">{props.employee.description}</p>
-          </div>
+      <div className="d-flex flex-row">
+        <div className="d-flex flex-column">
+          <h2 className="mt-3 mb-3 fw-bold">
+            {t('employeeOfTheMonthTitle').concat(
+              translateMonth(currMonth).concat(' ').concat(currYear.toString()),
+            )}
+          </h2>
+          <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
+          <p className="fs-6 lh-base">{updatedDate}</p>
+          <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
+          <p className="fs-6 lh-base">{props.employee.name}</p>
+          <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>
+          <p className="fs-6 lh-base">{props.employee.department.name}</p>
         </div>
+        {employeeImage && (
+          <img
+            className="d-flex ms-auto mt-3 mb-3"
+            src={employeeImage}
+            alt={ALT_MESSAGE}
+            onClick={(event: any) => {
+              onEnlargeImage(event);
+            }}
+          />
+        )}
       </div>
-    </div>
+      <>
+        <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
+        <p className="fs-6 lh-base">{props.employee.description}</p>
+      </>
+    </>
   );
 };

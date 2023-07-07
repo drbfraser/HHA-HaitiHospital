@@ -1,21 +1,20 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { UserDetails } from 'constants/interfaces';
-import { AdminUserFormData } from 'pages/admin/typing';
-import Layout from 'components/layout';
-import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
-import { useTranslation } from 'react-i18next';
-import { History } from 'history';
-import { toast } from 'react-toastify';
-import { Spinner } from 'components/spinner/Spinner';
-import useDidMountEffect from 'utils/custom_hooks';
-import { AdminUserForm } from 'pages/admin/form/form';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Paths, UserIdParams } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
-import { useDepartmentData } from 'hooks';
+import { useEffect, useMemo, useState } from 'react';
 
-import './edit.css';
+import { AdminUserForm } from 'pages/admin/form/form';
+import { AdminUserFormData } from 'pages/admin/typing';
+import Api from 'actions/Api';
+import { History } from 'history';
+import Layout from 'components/layout';
+import { ResponseMessage } from 'utils/response_message';
+import { Spinner } from 'components/spinner/Spinner';
+import { UserDetails } from 'constants/interfaces';
+import { toast } from 'react-toastify';
+import { useDepartmentData } from 'hooks';
+import useDidMountEffect from 'utils/custom_hooks';
+import { useTranslation } from 'react-i18next';
 
 interface UserEditProps {}
 

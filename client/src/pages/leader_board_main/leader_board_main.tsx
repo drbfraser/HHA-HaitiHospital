@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react';
-import Layout from 'components/layout';
-import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
-import './leader_board_main.css';
-import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
 import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useEffect, useState } from 'react';
+
+import Api from 'actions/Api';
+import { CaseStudySummary } from 'components/case_study_summary/case_study_summary';
 import { History } from 'history';
+import Layout from 'components/layout';
+import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 interface LeaderBoardMainProps {}
 
 export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
   const { t } = useTranslation();
   const [leaderboard, setLeaderboard] = useState([]);
-  const [caseStudy, setCaseStudy] = useState({} as any);
+  const [caseStudy, setCaseStudy] = useState(null);
   const history: History = useHistory<History>();
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
           </div>
         </div>
 
-        {JSON.stringify(caseStudy) !== '{}' && (
+        {caseStudy && (
           <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
             <CaseStudySummary caseStudy={caseStudy} />
           </div>

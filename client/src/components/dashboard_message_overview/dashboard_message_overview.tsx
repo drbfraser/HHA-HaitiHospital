@@ -1,5 +1,3 @@
-import './dashboard_message_overview.css';
-
 import { language, timezone } from 'constants/timezones';
 
 import Api from 'actions/Api';

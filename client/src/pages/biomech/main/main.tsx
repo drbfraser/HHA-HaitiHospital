@@ -1,5 +1,3 @@
-import './main.css';
-
 import { Badge, Button } from 'react-bootstrap';
 import { ENDPOINT_BIOMECH_DELETE_BY_ID, ENDPOINT_BIOMECH_GET } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';

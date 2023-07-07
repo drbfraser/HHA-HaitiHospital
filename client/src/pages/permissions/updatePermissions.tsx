@@ -1,15 +1,15 @@
-import Api from 'actions/Api';
-import Header from 'components/header/header';
-import SideBar from 'components/side_bar/side_bar';
-import { Role } from 'constants/interfaces';
-import { History } from 'history';
-import { useHistory } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { getEnumKeyByStringValue } from 'utils/enum';
-import { Permissions } from 'components/permissions/Permissions';
 import { Permission, RolesData } from 'constants/interfaces';
+import { useEffect, useState } from 'react';
+
+import Api from 'actions/Api';
 import { ENDPOINT_PERMISSION } from 'constants/endpoints';
+import { History } from 'history';
+import Layout from 'components/layout';
+import { Permissions } from 'components/permissions/Permissions';
+import { Role } from 'constants/interfaces';
+import { getEnumKeyByStringValue } from 'utils/enum';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const UpdatePermissions = () => {
   const [permissionsData, setPermissionsData] = useState<RolesData>();
@@ -88,39 +88,34 @@ export const UpdatePermissions = () => {
   };
 
   return (
-    <div className="department">
-      <SideBar />
-      <main className="container-fluid main-region bg-light h-screen">
-        <Header />
+    <Layout>
+      <>
+        <div className="col-md-4 mb-2">
+          <h1 className="text-start">{t('permissions.permissionHeader')}</h1>
+          <fieldset>
+            <label htmlFor="role" className="form-label">
+              {t('permissions.selectRole')}
+            </label>
+            <select
+              className="form-select"
+              id="role"
+              required
+              onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
+            >
+              <option value={Role.User}>{t('role.user')}</option>
+              <option value={Role.Admin}>{t('role.admin')}</option>
+              <option value={Role.MedicalDirector}>{t('role.medical_director')}</option>
+              <option value={Role.HeadOfDepartment}>{t('role.head_department')}</option>
+            </select>
+          </fieldset>
+        </div>
 
-        <>
-          <div className="col-md-4 mb-2">
-            <h1 className="text-start">{t('permissions.permissionHeader')}</h1>
-            <fieldset>
-              <label htmlFor="role" className="form-label">
-                {t('permissions.selectRole')}
-              </label>
-              <select
-                className="form-select"
-                id="role"
-                required
-                onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
-              >
-                <option value={Role.User}>{t('role.user')}</option>
-                <option value={Role.Admin}>{t('role.admin')}</option>
-                <option value={Role.MedicalDirector}>{t('role.medical_director')}</option>
-                <option value={Role.HeadOfDepartment}>{t('role.head_department')}</option>
-              </select>
-            </fieldset>
-          </div>
-
-          <Permissions
-            permissionsData={permissionsData}
-            handleCheckboxChange={handleCheckboxChange}
-            currentRole={currentRole}
-          />
-        </>
-      </main>
-    </div>
+        <Permissions
+          permissionsData={permissionsData}
+          handleCheckboxChange={handleCheckboxChange}
+          currentRole={currentRole}
+        />
+      </>
+    </Layout>
   );
 };

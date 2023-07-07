@@ -1,6 +1,3 @@
-import './case_study_summary.css';
-
-import { language, timezone } from 'constants/timezones';
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';

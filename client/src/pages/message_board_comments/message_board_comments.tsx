@@ -1,5 +1,3 @@
-import './message_board_comments.css';
-
 import {
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
@@ -107,7 +105,7 @@ const MessageComments = () => {
           </div>
           <div>
             {comments.map((item, index) => (
-              <MessageComment key={index} commentJson={item} />
+              <MessageComment key={index} comment={item} />
             ))}
           </div>
           <div className="d-sm-flex align-items-center">

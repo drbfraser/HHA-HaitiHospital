@@ -1,16 +1,16 @@
 import { Link, useHistory } from 'react-router-dom';
+
+import { AdminUserForm } from 'pages/admin/form/form';
 import { AdminUserFormData } from 'pages/admin/typing';
-import Layout from 'components/layout';
 import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
-import { useTranslation } from 'react-i18next';
 import { History } from 'history';
-import { toast } from 'react-toastify';
-import { AdminUserForm } from 'pages/admin/form/form';
-import { ResponseMessage } from 'utils/response_message';
+import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
-import './add.css';
+import { ResponseMessage } from 'utils/response_message';
+import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 interface AdminProps {}
 

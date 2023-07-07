@@ -1,13 +1,12 @@
-import { useHistory } from 'react-router-dom';
-import Layout from 'components/layout';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_POST } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_POST } from 'constants/toastErrorMessages';
-import './message_board_add.css';
-import { toast } from 'react-toastify';
-import MessageForm from '../../components/message_form/message_form';
-import { useTranslation } from 'react-i18next';
 import { History } from 'history';
+import Layout from 'components/layout';
+import MessageForm from '../../components/message_form/message_form';
+import { TOAST_MESSAGEBOARD_POST } from 'constants/toastErrorMessages';
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const AddMessage = () => {
   const history: History = useHistory<History>();
@@ -29,23 +28,19 @@ const AddMessage = () => {
   };
 
   return (
-    <div className="add_message">
-      <Layout>
-        <div className="container">
-          <h1 className="h1">{t('addMessageAddMessage')}</h1>
-          <MessageForm submitAction={onSubmit} />
-          <div className="add-msg-back-btn">
-            <button
-              data-testid="add-message-back-button"
-              className="btn btn-md btn-outline-secondary"
-              onClick={history.goBack}
-            >
-              {t('addMessageBack')}
-            </button>
-          </div>
-        </div>
-      </Layout>
-    </div>
+    <Layout>
+      <h1 className="h1">{t('addMessageAddMessage')}</h1>
+      <MessageForm submitAction={onSubmit} />
+      <div className="add-msg-back-btn">
+        <button
+          data-testid="add-message-back-button"
+          className="btn btn-md btn-outline-secondary"
+          onClick={history.goBack}
+        >
+          {t('addMessageBack')}
+        </button>
+      </div>
+    </Layout>
   );
 };
 

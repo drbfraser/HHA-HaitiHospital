@@ -1,5 +1,3 @@
-import './case_study_main_styles.css';
-
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
 import {
   ENDPOINT_CASESTUDY_DELETE_BY_ID,

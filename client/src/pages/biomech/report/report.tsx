@@ -1,17 +1,16 @@
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import Layout from 'components/layout';
+import { BIOMECH_REPORT_FIELDS, BiomechForm, BiomechPriority, BiomechStatus } from '../typing';
+import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+
 import Api from '../../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import { History } from 'history';
-import { imageCompressor } from 'utils/imageCompressor';
+import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { BiomechForm, BiomechPriority, BIOMECH_REPORT_FIELDS, BiomechStatus } from '../typing';
-
-import './report.css';
+import { imageCompressor } from 'utils/imageCompressor';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 interface BrokenKitReportProps extends RouteComponentProps {}
 

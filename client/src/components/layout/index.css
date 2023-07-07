@@ -1,14 +1,18 @@
-.case-study-form .main-region {
+.main.main-region {
   position: absolute;
-  left: 200px;
-  width: calc(100% - 200px);
+  left: 275px;
+  width: calc(100% - 275px);
 }
 
 /*Margin by pixel:*/
 @media screen and (max-width: 700px) {
-  .case-study-form .main-region {
+  .home.main-region {
     position: absolute;
     left: 70px;
     width: calc(100% - 70px);
   }
+}
+
+.errorMsg {
+  color: red;
 }

@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import Layout from 'components/layout';
-import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
-import Api from '../../actions/Api';
 import { Department, GeneralDepartment } from 'constants/interfaces';
+import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+
+import Api from '../../actions/Api';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toastErrorMessages';
-import './employee_of_the_month_form.css';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
+import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMonthModel';
 import { History } from 'history';
+import Layout from 'components/layout';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
+import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 

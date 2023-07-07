@@ -1,15 +1,13 @@
-import { Comment, emptyMessageComment } from 'constants/interfaces';
-
-import initialUserJson from '../message_panel/initialUserJson.json';
+import { Comment } from 'constants/interfaces';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 
 interface MessageCommentProps {
-  commentJson: Comment;
+  comment: Comment;
 }
 
 const MessageComment = (props: MessageCommentProps) => {
-  const author = !!props.commentJson.user ? props.commentJson.user : initialUserJson;
-  const comment = !!props.commentJson ? props.commentJson : emptyMessageComment;
+  const author = props.comment.user;
+  const comment = props.comment;
   const departmentName = parseEscapedCharacters(author.department.name);
 
   return (
@@ -19,7 +17,7 @@ const MessageComment = (props: MessageCommentProps) => {
           {author.name}
           {` (${departmentName}, ${author.role})`}
         </strong>
-        <small className="text-muted fs-6">{`${props.commentJson.createdAt}`}</small>
+        <small className="text-muted fs-6">{`${props.comment.createdAt}`}</small>
       </div>
       <div className="d-flex bg-light m-2 p-2 rounded border border-secondary-subtle">
         {comment.messageComment}

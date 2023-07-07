@@ -1,5 +1,3 @@
-import './message_display.css';
-
 import {
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
@@ -119,11 +117,9 @@ const MessageDisplay = (props: MessageDisplayProps) => {
           <div className="text-gray-dark">
             <div className="d-flex">
               <div className="mr-auto p-2">
-                <p data-testid="message-title" className="title-info">
-                  <strong>{message.messageHeader}</strong>
-                </p>
-                <p className="department-info">{parseEscapedCharacters(message.department.name)}</p>
-                <p className="department-info">{author}</p>
+                <h5 data-testid="message-title">{message.messageHeader}</h5>
+                <p className="small m-0">{parseEscapedCharacters(message.department.name)}</p>
+                <p className="small m-0">{author}</p>
               </div>
               <div className="p-2">
                 <div>
@@ -135,7 +131,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                       <button
                         data-testid="edit-message-button"
                         type="button"
-                        className="btn btn-link text-decoration-none admin-utils"
+                        className="btn btn-link text-decoration-none small border-0 p-0"
                       >
                         {t('messageBoardEdit')}
                       </button>
@@ -151,7 +147,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                     <button
                       data-testid="delete-message-button"
                       type="button"
-                      className="btn btn-link text-decoration-none admin-utils"
+                      className="btn btn-link text-decoration-none small border-0 p-0"
                       onClick={(event) => {
                         onDeleteMessage(event, message.id);
                       }}
@@ -163,13 +159,13 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                   )}
                 </div>
 
-                <p className="department-info">{t('messageBoardPostedOn')}</p>
-                <p className="department-info">{readableDate}</p>
+                <p className="small m-0">{t('messageBoardPostedOn')}</p>
+                <p className="small m-0">{readableDate}</p>
               </div>
             </div>
           </div>
           <div className="mr-auto p-2">
-            <p data-testid="message-body" className="lh-sm message-body">
+            <p data-testid="message-body" className="lh-sm">
               {message.messageBody}
             </p>
             {useLocation().pathname.split('/').length < 4 ? (

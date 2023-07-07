@@ -1,19 +1,19 @@
-import Layout from 'components/layout';
-
 // Reference :
 //https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
+import { Link, useHistory } from 'react-router-dom';
+import { dateOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import './general_reports_styles.css';
-import Pagination from 'components/pagination/Pagination';
+
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS } from 'constants/endpoints';
-import { ResponseMessage } from 'utils/response_message';
 import { JsonReportDescriptor } from '@hha/common';
-import { Link, useHistory } from 'react-router-dom';
+import Layout from 'components/layout';
+import Pagination from 'components/pagination/Pagination';
+import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
-import { userLocale, dateOptions } from 'constants/date';
 
 const GeneralReports = () => {
   const [dayRange, setDayRange] = useState<DayRange>({

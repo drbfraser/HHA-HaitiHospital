@@ -1,5 +1,3 @@
-import './employee_of_the_month_main.css';
-
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -43,32 +41,24 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
   }, [history]);
 
   return (
-    <div className="employee-of-the-month-main">
-      <Layout>
-        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-          <div className="d-flex justify-content-start">
-            <Link to="/employee-of-the-month/form">
-              <button
-                data-testid="update-eotm-button"
-                type="button"
-                className="btn btn-outline-dark"
-              >
-                {t('employeeOfTheMonthEdit')}
-              </button>
-            </Link>
-          </div>
-        )}
-        <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
-          {employeeOfTheMonth && (
-            <EmployeeOfTheMonthSummary
-              employee={employeeOfTheMonth}
-              history={history}
-              location={undefined}
-              match={undefined}
-            />
-          )}
+    <Layout>
+      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+        <div className="d-flex justify-content-start">
+          <Link to="/employee-of-the-month/form">
+            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+              {t('employeeOfTheMonthEdit')}
+            </button>
+          </Link>
         </div>
-      </Layout>
-    </div>
+      )}
+      {employeeOfTheMonth && (
+        <EmployeeOfTheMonthSummary
+          employee={employeeOfTheMonth}
+          history={history}
+          location={undefined}
+          match={undefined}
+        />
+      )}
+    </Layout>
   );
 };

@@ -1,16 +1,17 @@
-import { useEffect, useState, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Message } from 'constants/interfaces';
+import { useEffect, useMemo, useState } from 'react';
+
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
+import { History } from 'history';
+import { Message } from 'constants/interfaces';
 import MessageDisplay from './message_display';
-import { useTranslation } from 'react-i18next';
+import Pagination from 'components/pagination/Pagination';
+import { Role } from 'constants/interfaces';
+import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
-import { Role } from 'constants/interfaces';
-import Pagination from 'components/pagination/Pagination';
-import { History } from 'history';
+import { useTranslation } from 'react-i18next';
 
 interface MessagePanelProps {}
 
@@ -56,7 +57,7 @@ const MessagePanel = (props: MessagePanelProps) => {
 
   return (
     <div className="message-panel">
-      <div className="ml-3 d-flex justify-content-start">
+      <div className="d-flex justify-content-start">
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) ? (
           <Link to="/message-board/add-message">
             <button data-testid="add-message-button" className="btn btn-md btn-outline-secondary">

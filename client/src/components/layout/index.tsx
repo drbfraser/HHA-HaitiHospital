@@ -1,21 +1,24 @@
-import SideBar from 'components/side_bar/side_bar';
+import './index.css';
+
 import Header from 'components/header/header';
+import SideBar from 'components/side_bar/side_bar';
 import cn from 'classnames';
 
-const Layout = ({
-  className,
-  children,
-  style,
-}: {
+interface LayoutProps {
   className?: string;
-  children: any;
-  style?: any;
-}) => (
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}
+
+const Layout = ({ className, children, style }: LayoutProps) => (
   <>
-    <SideBar />
-    <main className={cn('container-fluid main-region', className)} style={style}>
-      <Header />
-      {children}
+    <main className={cn('container-fluid', className)} style={style}>
+      <SideBar />
+
+      <div className="main main-region px-2">
+        <Header />
+        {children}
+      </div>
     </main>
   </>
 );
