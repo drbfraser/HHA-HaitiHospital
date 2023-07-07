@@ -68,19 +68,9 @@ const EditMessage = () => {
   };
 
   return (
-    <div className="edit-message">
-      <Layout>
-        <div className="container">
-          <h1 className="h1">{t('editMessage')}</h1>
-          <MessageForm message={msg} submitAction={updateMessage} />
-          <div className="edit-msg-back-btn">
-            <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
-              {t('addMessageBack')}
-            </button>
-          </div>
-        </div>
-      </Layout>
-    </div>
+    <Layout showBackButton title={t('editMessage')}>
+      <MessageForm message={msg} submitAction={updateMessage} />
+    </Layout>
   );
 };
 

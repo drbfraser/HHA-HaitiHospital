@@ -28,18 +28,8 @@ const AddMessage = () => {
   };
 
   return (
-    <Layout>
-      <h1 className="h1">{t('addMessageAddMessage')}</h1>
+    <Layout showBackButton title={t('addMessageAddMessage')}>
       <MessageForm submitAction={onSubmit} />
-      <div className="add-msg-back-btn">
-        <button
-          data-testid="add-message-back-button"
-          className="btn btn-md btn-outline-secondary"
-          onClick={history.goBack}
-        >
-          {t('addMessageBack')}
-        </button>
-      </div>
     </Layout>
   );
 };

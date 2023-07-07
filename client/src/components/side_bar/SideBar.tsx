@@ -46,7 +46,7 @@ const SidebarItem = ({ path, children }: SideBarItemProps) => {
     >
       <NavLink
         to={`/${path}`}
-        className="nav-link link-light"
+        className="nav-link link-light d-flex gap-0 gap-sm-2"
         exact
         activeClassName="active"
         {...(active && { style: focusHoverState })}
@@ -98,11 +98,11 @@ const Sidebar = () => {
 
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem path="home">
-            <i className="bi bi-house-door-fill me-2" />
+            <i className="bi bi-house-door-fill" />
             {!isMobile && <span className={'text-light'}>{t('sidebarHome')}</span>}
           </SidebarItem>
           <SidebarItem path="message-board">
-            <i className="bi bi-chat-right-text-fill me-2" />
+            <i className="bi bi-chat-right-text-fill" />
             {!isMobile && (
               <span data-testid="message-board-side-bar" className={'text-light'}>
                 {t('sidebarMessageBoard')}
@@ -110,7 +110,7 @@ const Sidebar = () => {
             )}
           </SidebarItem>
           <SidebarItem path="leaderboard">
-            <i className="bi bi-bar-chart-fill me-2" />
+            <i className="bi bi-bar-chart-fill" />
             {!isMobile && (
               <span data-testid="leaderboard-side-bar" className={'text-light'}>
                 {t('sidebarLeaderBoard')}
@@ -118,18 +118,16 @@ const Sidebar = () => {
             )}
           </SidebarItem>
           <SidebarItem path="case-study">
-            <i className="bi bi-award-fill me-2" />
+            <i className="bi bi-award-fill" />
             {!isMobile && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
           </SidebarItem>
           <SidebarItem path="biomechanic">
-            <i className="bi bi-wrench me-2" />
+            <i className="bi bi-wrench" />
             {!isMobile && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
           </SidebarItem>
           <SidebarItem path="employee-of-the-month">
-            <div style={{ display: 'flex', flex: '1 1 auto' }}>
-              <i className="bi bi-star-fill me-2" />
-              {!isMobile && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
-            </div>
+            <i className="bi bi-star-fill" />
+            {!isMobile && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-1" />
@@ -140,7 +138,7 @@ const Sidebar = () => {
             Role.HeadOfDepartment,
           ]) && (
             <SidebarItem path="general-reports">
-              <i className="bi bi-folder-fill me-2" />
+              <i className="bi bi-folder-fill" />
               {!isMobile && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
             </SidebarItem>
           )}
@@ -152,7 +150,7 @@ const Sidebar = () => {
             if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
               return (
                 <SidebarItem path={`department/${deptId}`}>
-                  <i className="bi bi-brightness-high-fill me-2" />
+                  <i className="bi bi-brightness-high-fill" />
                   {!isMobile && <span className={'text-light'}>{t(deptName)}</span>}
                 </SidebarItem>
               );
@@ -162,7 +160,7 @@ const Sidebar = () => {
           })}
 
           <SidebarItem path="report">
-            <i className="bi bi-exclamation-square me-2" />
+            <i className="bi bi-exclamation-square" />
             {!isMobile && <span className={'text-light'}>Report</span>}
           </SidebarItem>
 
@@ -183,17 +181,17 @@ const Sidebar = () => {
                 </span>
                 <ul className="nested">
                   <SidebarItem path="admin">
-                    <i className="bi bi-exclamation-square me-2" />
+                    <i className="bi bi-exclamation-square" />
                     {!isMobile && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="upload-report">
-                    <i className="bi bi-person-badge-fill me-2" />
+                    <i className="bi bi-person-badge-fill" />
                     {!isMobile && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="update-permissions">
-                    <i className="bi bi-person-badge-fill me-2" />
+                    <i className="bi bi-person-badge-fill" />
                     {!isMobile && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
                   </SidebarItem>
                 </ul>

@@ -13,17 +13,24 @@ import { useTranslation } from 'react-i18next';
 
 interface HeaderViewProps {
   user: UserDetails;
+  title?: string;
 }
 
-const HeaderView = (props: HeaderViewProps) => {
+const HeaderView = ({ user, title = '' }: HeaderViewProps) => {
   const { t } = useTranslation();
   const location = useLocation();
-  const user = props.user;
   const department =
     user.department.name === undefined && user.role === undefined
       ? ''
       : `- ${user.department.name !== undefined ? user.department.name : user.role}`;
-  if (location.pathname.slice(1) === 'home') {
+
+  if (title) {
+    return (
+      <h2 data-testid="home-header" className="text-secondary">
+        {title}
+      </h2>
+    );
+  } else if (location.pathname.slice(1) === 'home') {
     return (
       <h2 data-testid="home-header" className="text-secondary">{`${t(
         'headerOverview',
@@ -133,92 +140,100 @@ const HeaderView = (props: HeaderViewProps) => {
   }
 };
 
-const Header = () => {
+interface HeaderProps {
+  title?: string;
+}
+
+const Header = ({ title }: HeaderProps) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
-  const onLogOut = () => {
+  const history: History = useHistory<History>();
+  const [userInfo, setUserInfo] = useState(null);
+  const { t } = useTranslation();
+
+  const logout = () => {
     logOutUser(dispatch, history);
     history.push('/login');
   };
-  const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState(EMPTY_USER_JSON);
 
   useEffect(() => {
-    let isMounted: boolean = true;
-    const controller = new AbortController();
-
-    const getUserInfo = async () => {
+    const getUserInfo = async (controller: AbortController) => {
       const user: UserDetails = await Api.Get(
         ENDPOINT_ADMIN_ME,
         ResponseMessage.getMsgFetchUserFailed(),
         history,
         controller.signal,
       );
-      if (isMounted) setUserInfo(user);
+
+      setUserInfo(user);
     };
-    getUserInfo();
+
+    const controller = new AbortController();
+
+    getUserInfo(controller);
+
     return () => {
-      isMounted = false;
       controller.abort();
     };
   }, [history]);
 
-  const { t, i18n } = useTranslation();
   return (
-    <div className={'header'}>
-      <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
-        <div className="col">
-          <HeaderView user={userInfo} />
-        </div>
+    <>
+      {userInfo && (
+        <div className="d-flex align-items-center pt-3 pb-2 mb-3 mx-1 border-bottom row">
+          <div className="col">
+            <HeaderView user={userInfo} title={title} />
+          </div>
 
-        {/* User drop down */}
-        <div className="col-auto">
-          <div className="dropdown">
-            <button
-              data-testid="user-dropdown"
-              className="btn dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
-            </button>
-            <ul className="dropdown-menu dropdown-menu-end rounded shadow">
-              <li className="d-block d-sm-none">
-                <button className="dropdown-item disabled fw-bold text-muted mb-2">
-                  {userInfo.name}
-                </button>
-              </li>
-              <li>
-                <button className="dropdown-item disabled text-muted mb-2">
-                  <i className="bi bi-person-badge-fill"></i>
-                  {i18n.t(userInfo.role)}
-                </button>
-              </li>
-              <li className={`${userInfo.department.name ? 'd-block' : 'd-none'}`}>
-                <button className="dropdown-item disabled text-muted">
-                  <i className="bi bi-people-fill"></i>
-                  {userInfo.department.name}
-                </button>
-              </li>
-              <li>
-                <hr className="dropdown-divider" />
-              </li>
-              <li>
-                <button
-                  data-testid="signout-button"
-                  className="dropdown-item"
-                  type="button"
-                  onClick={onLogOut}
-                >
-                  <i className="fa fa-sign-out" aria-hidden="true"></i>
-                  {t('headerSignOut')}
-                </button>
-              </li>
-            </ul>
+          {/* User drop down */}
+          <div className="col-auto">
+            <div className="dropdown">
+              <button
+                data-testid="user-dropdown"
+                className="btn dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end rounded shadow">
+                <li className="d-block d-sm-none">
+                  <button className="dropdown-item disabled fw-bold text-muted mb-2">
+                    {userInfo.name}
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item disabled text-muted mb-2">
+                    <i className="bi bi-person-badge-fill"></i>
+                    {t(userInfo.role)}
+                  </button>
+                </li>
+                <li className={`${userInfo.department.name ? 'd-block' : 'd-none'}`}>
+                  <button className="dropdown-item disabled text-muted">
+                    <i className="bi bi-people-fill"></i>
+                    {userInfo.department.name}
+                  </button>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <button
+                    data-testid="signout-button"
+                    className="dropdown-item"
+                    type="button"
+                    onClick={logout}
+                  >
+                    <i className="fa fa-sign-out" aria-hidden="true"></i>
+                    {t('headerSignOut')}
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

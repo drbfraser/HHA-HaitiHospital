@@ -7,7 +7,6 @@ import { ENDPOINT_CASESTUDY_GET_BY_ID } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
-import { useTranslation } from 'react-i18next';
 
 export const CaseStudyView = () => {
   const [caseStudy, setCaseStudy] = useState({} as any);
@@ -36,31 +35,9 @@ export const CaseStudyView = () => {
     [history, id],
   );
 
-  const { t } = useTranslation();
-
   return (
-    <div className="case-study-main">
-      <Layout>
-        <div className="d-flex justify-content-start">
-          <Link to="/case-study">
-            <button type="button" className="btn btn-outline-dark">
-              {t('caseStudyFormBack')}
-            </button>
-          </Link>
-        </div>
-        <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
-          <CaseStudySummary caseStudy={caseStudy} />
-        </div>
-        {document.documentElement.scrollHeight > window.innerHeight && (
-          <div className="ml-3 mb-5 d-flex justify-content-start">
-            <Link to="/case-study">
-              <button type="button" className="btn btn-outline-dark">
-                {t('caseStudyFormBack')}
-              </button>
-            </Link>
-          </div>
-        )}
-      </Layout>
-    </div>
+    <Layout showBackButton>
+      <CaseStudySummary caseStudy={caseStudy} />
+    </Layout>
   );
 };
