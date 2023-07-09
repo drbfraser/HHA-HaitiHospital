@@ -1,42 +1,19 @@
-import Api from 'actions/Api';
-import Header from 'components/header/header';
-import SideBar from 'components/side_bar/side_bar';
-import { Role } from 'constants/interfaces';
-import { History } from 'history';
-import { useHistory } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { getEnumKeyByStringValue } from 'utils/enum';
-import { Permissions } from 'components/permissions/Permissions';
 import { Permission, RolesData } from 'constants/interfaces';
+import { useEffect, useState } from 'react';
+
+import Api from 'actions/Api';
 import { ENDPOINT_PERMISSION } from 'constants/endpoints';
+import Header from 'components/header/header';
+import { History } from 'history';
+import { Permissions } from 'components/permissions/Permissions';
+import { Role } from 'constants/interfaces';
+import SideBar from 'components/side_bar/side_bar';
+import { getEnumKeyByStringValue } from 'utils/enum';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const UpdatePermissions = () => {
   const [permissionsData, setPermissionsData] = useState<RolesData>();
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const getTemplates = async () => {
-      try {
-        const fetchedPermissions = await Api.Get(
-          `${ENDPOINT_PERMISSION}`,
-          '',
-          history,
-          controller.signal,
-        );
-        const permissions = fetchedPermissions.permission.permissionObject;
-
-        setPermissionsData(permissions);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    getTemplates();
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
   const { t } = useTranslation();
   const [currentRole, setCurrentRole] = useState<string>('User');
   const history: History = useHistory<History>();
@@ -86,6 +63,29 @@ export const UpdatePermissions = () => {
     // Update the state with the updated permissions data
     setPermissionsData(updatedPermissionsData);
   };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const getTemplates = async () => {
+      try {
+        const fetchedPermissions = await Api.Get(
+          `${ENDPOINT_PERMISSION}`,
+          '',
+          history,
+          controller.signal,
+        );
+        const permissions = fetchedPermissions.permission.permissionObject;
+
+        setPermissionsData(permissions);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getTemplates();
+    return () => {
+      controller.abort();
+    };
+  }, [history]);
 
   return (
     <div className="department">
