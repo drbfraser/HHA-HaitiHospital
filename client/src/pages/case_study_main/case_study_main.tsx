@@ -12,11 +12,10 @@ import {
   TOAST_CASESTUDY_GET,
   TOAST_CASESTUDY_PATCH,
 } from 'constants/toastErrorMessages';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
 import { Button } from 'react-bootstrap';
-import { FilterType } from 'components/filter/Filter';
 import { History } from 'history';
 import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
@@ -24,7 +23,6 @@ import ModalGeneric from 'components/popup_modal/popup_modal_generic';
 import { Role } from 'constants/interfaces';
 import { SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { set } from 'lodash';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';

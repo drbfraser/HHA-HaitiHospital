@@ -23,7 +23,10 @@ import { Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE: number = 10;
+
+// This warning has to be ignored because the additional props do not use the Type Parameters but the declaration still needs them
 declare module '@tanstack/table-core' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     dataType?: FilterType;
     enumOptions?: EnumOption[];
