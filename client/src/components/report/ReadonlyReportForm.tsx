@@ -10,10 +10,12 @@ import {
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
-import { useState } from 'react';
+import QuestionRows from './QuestionRows'
+import { useEffect, useState } from 'react';
 import { createImportSpecifier } from 'typescript';
 import HoverableTableHead from 'components/table/HoverableTableHead';
 import { Form } from 'react-bootstrap/lib/Navbar';
+import { QuestionRow } from 'constants/interfaces';
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -94,30 +96,15 @@ const ReadonlyReportForm = ({
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
   const totalCount = reportData.getPagination().length * pageSize;
-  console.log(reportData);
+  const [rowElements, setRowElements] = useState<QuestionRow[]>([]);
   const questions = reportData;
   const suffixName = '';
 
-  console.log(questionItems);
 
-  function processQuestionItem(questionItem) {
-    let baseAnswer = (
-      <tr>
-        <th scope="row">{questionItem.id}</th>
-        <td>{questionItem.prompt}</td>
-        <td>{questionItem.answer}</td>
-      </tr>
-    );
-
-    if (questionItem.compositionGroups) {
-      console.log("questionItem.compositionGroups WOWW", questionItem.compositionGroups)
-      return (
-        baseAnswer +
-        questionItem.compositionGroups.map((questionItem) => processQuestionItem(questionItem))
-      );
-    } 
-    return baseAnswer;
-  }
+  // useEffect(() => {
+  //   setRowElements(processQuestionItem(questionItems))
+  // }, [questionItems])
+  // const ponyo: QuestionRow[] = processQuestionItem(questionItems);
 
   return (
     <div className="mt-3 p-3">
@@ -132,17 +119,15 @@ const ReadonlyReportForm = ({
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Question</th>
-                  <th scope="col">Answer</th>
+                  <th scope="col">Answser</th>
                 </tr>
               </thead>
               <tbody>
-                {questionItems.length > 0
-                  ? questionItems.map((questionItem) => {
-                      console.log(questionItem);
-                      return processQuestionItem(questionItem);
-                    })
-                  : ''}
-                {/* {questions
+                <QuestionRows questionItems={questionItems}/>
+              </tbody>
+              
+              {/* <QuestionRowsElement questionRows={} /> */}
+              {/* {questions
                   .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
                     compositionQuestion: (q) => [q, CompositionQuestionFormField],
                     expandableQuestion: (q) => [q, ExpandableQuestionViewField],
@@ -168,7 +153,7 @@ const ReadonlyReportForm = ({
                       />
                     );
                   })} */}
-                {/* {currentTableData.map((item, index) => {
+              {/* {currentTableData.map((item, index) => {
                  return (
                    <tr
                      key={item.id}
@@ -215,7 +200,6 @@ const ReadonlyReportForm = ({
                    </tr>
                  );
                })} */}
-              </tbody>
             </table>
           </div>
         ) : (

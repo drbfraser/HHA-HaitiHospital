@@ -120,3 +120,9 @@ export interface RolesData {
     [key: string]: RoleWithPermissions;
   };
 }
+
+export interface QuestionRow {
+  id: string;
+  prompt: string;
+  answer: string;
+}
