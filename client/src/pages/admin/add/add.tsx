@@ -21,7 +21,6 @@ export const AddUserForm = (props: AdminProps) => {
   const history: History = useHistory<History>();
 
   const onSubmit = () => {
-    toast.success(ResponseMessage.getMsgCreateUserOk());
     history.push(Paths.getAdminMain());
   };
 
@@ -32,6 +31,8 @@ export const AddUserForm = (props: AdminProps) => {
       onSubmit,
       history,
       ResponseMessage.getMsgCreateUserFailed(),
+      null,
+      ResponseMessage.getMsgCreateUserOk(),
     );
   };
 
