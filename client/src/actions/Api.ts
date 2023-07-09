@@ -102,8 +102,8 @@ const Put = async (
   obj: object = {},
   actions: () => void,
   history: History,
-  errorMsg = '',
-  pendingMsg = 'Processing...',
+  errorMsg?: string,
+  pendingMsg?: string,
   successMsg?: string,
 ): Promise<void> => {
   await toast.promise(
@@ -112,9 +112,9 @@ const Put = async (
       (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
     ),
     {
-      error: undefined,
-      pending: pendingMsg,
-      success: successMsg,
+      error: errorMsg ? errorMsg : 'An error occurred',
+      pending: pendingMsg ? pendingMsg : 'Processing...',
+      success: successMsg ? successMsg : 'Success!',
     },
   );
 };
