@@ -1,6 +1,7 @@
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
+
 import cn from 'classnames';
 
 const CompositionQuestionFormField = ({
@@ -28,7 +29,7 @@ const CompositionQuestionFormField = ({
     updateErrorSetFromSelf();
   };
 
-  const updateErrorSetFromSelf = () => {
+  const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {
       const nextErrorSet = new Set(prevErrorSet);
 
@@ -40,7 +41,7 @@ const CompositionQuestionFormField = ({
 
       return nextErrorSet;
     });
-  };
+  }, [nameId, question, setErrorSet]);
 
   useEffect(() => {
     updateErrorSetFromSelf();
@@ -52,7 +53,7 @@ const CompositionQuestionFormField = ({
         return nextErrorSet;
       });
     };
-  }, []);
+  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
 
   return (
     <>
