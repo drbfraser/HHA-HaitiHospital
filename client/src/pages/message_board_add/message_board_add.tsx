@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 import Layout from 'components/layout';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_POST } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_POST } from 'constants/toastErrorMessages';
+import { TOAST_MESSAGEBOARD_POST_ERROR } from 'constants/toastErrorMessages';
 import './message_board_add.css';
 import { toast } from 'react-toastify';
 import MessageForm from '../../components/message_form/message_form';
@@ -15,7 +15,6 @@ const AddMessage = () => {
 
   const onSubmitActions = () => {
     history.push('/message-board');
-    toast.success(i18n.t('addMessageAlertSuccess'));
   };
 
   const onSubmit = async (data: any) => {
@@ -24,7 +23,9 @@ const AddMessage = () => {
       data,
       onSubmitActions,
       history,
-      TOAST_MESSAGEBOARD_POST,
+      TOAST_MESSAGEBOARD_POST_ERROR,
+      null,
+      i18n.t('addMessageAlertSuccess'),
     );
   };
 

@@ -4,7 +4,10 @@ import { CaseStudySummary } from 'components/case_study_summary/case_study_summa
 import './leader_board_main.css';
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
+import {
+  TOAST_CASESTUDY_GET_ERROR,
+  TOAST_LEADERBOARD_GET_ERROR,
+} from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { History } from 'history';
@@ -24,7 +27,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
       setLeaderboard(
         await Api.Get(
           ENDPOINT_LEADERBOARD_GET,
-          TOAST_LEADERBOARD_GET,
+          TOAST_LEADERBOARD_GET_ERROR,
           history,
           leaderboardController.signal,
         ),
@@ -35,7 +38,7 @@ export const LeaderBoardMain = (props: LeaderBoardMainProps) => {
       setCaseStudy(
         await Api.Get(
           ENDPOINT_CASESTUDY_FEATURED,
-          TOAST_CASESTUDY_GET,
+          TOAST_CASESTUDY_GET_ERROR,
           history,
           caseStudyController.signal,
         ),

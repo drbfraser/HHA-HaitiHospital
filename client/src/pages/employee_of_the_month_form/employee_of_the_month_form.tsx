@@ -6,13 +6,14 @@ import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './EmployeeOfTheMo
 import Api from '../../actions/Api';
 import { Department, GeneralDepartment } from 'constants/interfaces';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toastErrorMessages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR } from 'constants/toastErrorMessages';
 import './employee_of_the_month_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { History } from 'history';
 import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT_SUCCESS } from 'constants/toastSuccessMessages';
 
 interface EmployeeOfTheMonthFormProps extends RouteComponentProps {}
 
@@ -28,7 +29,6 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   };
 
   const onSubmitActions = () => {
-    toast.success('Employee of the month successfully updated!');
     reset({});
     setSelectedFile(null);
     props.history.push('/employee-of-the-month');
@@ -46,7 +46,9 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
       formData,
       onSubmitActions,
       history,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
+      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
+      null,
+      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_SUCCESS,
     );
   };
 

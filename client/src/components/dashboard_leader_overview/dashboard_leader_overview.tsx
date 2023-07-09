@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import { ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import { TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
+import { TOAST_LEADERBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { History } from 'history';
@@ -17,7 +17,12 @@ const DashboardLeaderOverview = (props: DashboardLeaderProps) => {
     const controller = new AbortController();
     const getLeaderboard = async () => {
       setLeaderboard(
-        await Api.Get(ENDPOINT_LEADERBOARD_GET, TOAST_LEADERBOARD_GET, history, controller.signal),
+        await Api.Get(
+          ENDPOINT_LEADERBOARD_GET,
+          TOAST_LEADERBOARD_GET_ERROR,
+          history,
+          controller.signal,
+        ),
       );
     };
     getLeaderboard();

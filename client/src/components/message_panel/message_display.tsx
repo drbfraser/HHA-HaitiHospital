@@ -7,8 +7,8 @@ import {
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Message, Role, emptyMessage } from 'constants/interfaces';
 import {
-  TOAST_MESSAGEBOARD_COMMENTS_GET,
-  TOAST_MESSAGEBOARD_DELETE,
+  TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
+  TOAST_MESSAGEBOARD_DELETE_ERROR,
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
 
@@ -48,7 +48,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
       if (id) {
         let comments = await Api.Get(
           ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(id),
-          TOAST_MESSAGEBOARD_COMMENTS_GET,
+          TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
           history,
           controller.signal,
         );
@@ -72,7 +72,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
       ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(id),
       {},
       deleteMessageActions,
-      TOAST_MESSAGEBOARD_DELETE,
+      TOAST_MESSAGEBOARD_DELETE_ERROR,
       history,
     );
     if (is_comment_page) {

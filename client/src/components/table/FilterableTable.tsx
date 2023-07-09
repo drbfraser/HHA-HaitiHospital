@@ -155,6 +155,7 @@ interface Props {
   enableGlobalFilter?: boolean;
   enableFilters?: boolean;
   enableSorting?: boolean;
+  rowTestId?: string;
   rowClickHandler?: (row: any) => void;
 }
 
@@ -165,6 +166,7 @@ const FilterableTable = ({
   enableGlobalFilter = false,
   enableFilters = false,
   enableSorting = false,
+  rowTestId,
   rowClickHandler,
 }: Props) => {
   const [globalFilter, setGlobalFilter] = useState<string>('');
@@ -232,7 +234,7 @@ const FilterableTable = ({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr data-testid="view-biomech-report" key={row.id} {...getRowProps(row)}>
+            <tr data-testid={rowTestId} key={row.id} {...getRowProps(row)}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}

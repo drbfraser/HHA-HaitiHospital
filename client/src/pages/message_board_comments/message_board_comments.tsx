@@ -7,9 +7,9 @@ import {
 } from 'constants/endpoints';
 import { Message, emptyMessage } from 'constants/interfaces';
 import {
-  TOAST_MESSAGEBOARD_COMMENTS_GET,
-  TOAST_MESSAGEBOARD_COMMENTS_POST,
-  TOAST_MESSAGEBOARD_GET,
+  TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
+  TOAST_MESSAGEBOARD_COMMENTS_POST_ERROR,
+  TOAST_MESSAGEBOARD_GET_ERROR,
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { TOAST_MESSAGEBOARD_COMMENTS_POST_SUCCESS } from 'constants/toastSuccessMessages';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);
@@ -44,7 +45,7 @@ const MessageComments = () => {
     const getMessage = async () => {
       const message = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
-        TOAST_MESSAGEBOARD_GET,
+        TOAST_MESSAGEBOARD_GET_ERROR,
         history,
         controller.signal,
       );
@@ -53,7 +54,7 @@ const MessageComments = () => {
     async function getComments() {
       const fetchedComments = await Api.Get(
         ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
-        TOAST_MESSAGEBOARD_COMMENTS_GET,
+        TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
         history,
         controller.signal,
       );
@@ -70,7 +71,6 @@ const MessageComments = () => {
   }, [rerender, message_id, history, authState.userDetails]);
 
   const onSubmitActions = () => {
-    toast.success('Successfully added comment');
     reset({});
     toggleRerender();
   };
@@ -82,7 +82,9 @@ const MessageComments = () => {
       data,
       onSubmitActions,
       history,
-      TOAST_MESSAGEBOARD_COMMENTS_POST,
+      TOAST_MESSAGEBOARD_COMMENTS_POST_ERROR,
+      null,
+      TOAST_MESSAGEBOARD_COMMENTS_POST_SUCCESS,
     );
     reset();
   };

@@ -5,11 +5,14 @@ import Layout from 'components/layout';
 import { CaseStudyModel, CaseStudyOptions } from './CaseStudies';
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
-import { TOAST_CASESTUDY_POST } from 'constants/toastErrorMessages';
+
 import './case_study_form.css';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { imageCompressor } from 'utils/imageCompressor';
+
+import { TOAST_CASESTUDY_POST_ERROR } from 'constants/toastErrorMessages';
+import { TOAST_CASESTUDY_POST_SUCCESS } from 'constants/toastSuccessMessages';
 
 interface CaseStudyMainProps extends RouteComponentProps {}
 
@@ -44,7 +47,6 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
   };
 
   const onSubmitActions = () => {
-    toast.success('Case study successfully submitted!');
     reset({});
     reset2({});
     reset3({});
@@ -66,7 +68,9 @@ export const CaseStudyForm = (props: CaseStudyMainProps) => {
       formData,
       onSubmitActions,
       props.history,
-      TOAST_CASESTUDY_POST,
+      TOAST_CASESTUDY_POST_ERROR,
+      '',
+      TOAST_CASESTUDY_POST_SUCCESS,
     );
   };
   const { t } = useTranslation();

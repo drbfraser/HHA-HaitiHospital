@@ -9,9 +9,9 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import { SortOrder, isDateStrInDayRange, sortCaseStudies } from 'utils';
 import {
-  TOAST_CASESTUDY_DELETE,
-  TOAST_CASESTUDY_GET,
-  TOAST_CASESTUDY_PATCH,
+  TOAST_CASESTUDY_DELETE_ERROR,
+  TOAST_CASESTUDY_GET_ERROR,
+  TOAST_CASESTUDY_PATCH_ERROR,
 } from 'constants/toastErrorMessages';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -82,14 +82,13 @@ export const CaseStudyMain = () => {
   };
 
   const onDeleteCaseStudy = () => {
-    toast.success('Case Study deleted!');
     fetchCaseStudies();
   };
 
   const fetchCaseStudies = useCallback(async () => {
     const controller = new AbortController();
     setCaseStudies(
-      await Api.Get(ENDPOINT_CASESTUDY_GET, TOAST_CASESTUDY_GET, history, controller.signal),
+      await Api.Get(ENDPOINT_CASESTUDY_GET, TOAST_CASESTUDY_GET_ERROR, history, controller.signal),
     );
     return () => {
       controller.abort();
@@ -102,7 +101,7 @@ export const CaseStudyMain = () => {
       ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
       {},
       onDeleteCaseStudy,
-      TOAST_CASESTUDY_DELETE,
+      TOAST_CASESTUDY_DELETE_ERROR,
       history,
     );
   };
@@ -112,7 +111,7 @@ export const CaseStudyMain = () => {
       ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
       {},
       onFeatureCaseStudy,
-      TOAST_CASESTUDY_PATCH,
+      TOAST_CASESTUDY_PATCH_ERROR,
       history,
     );
   };
@@ -270,6 +269,7 @@ export const CaseStudyMain = () => {
                     key={item.id}
                     onClick={() => history.push(`/case-study/view/${item.id}`)}
                     role="button"
+                    data-testid="view-case-study-button"
                   >
                     <th scope="row">{caseStudyNumberIndex + index + 1}</th>
                     <td>{i18n.t(item.caseStudyType)}</td>

@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Message } from 'constants/interfaces';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
+import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import MessageDisplay from './message_display';
 import { useTranslation } from 'react-i18next';
 import { renderBasedOnRole } from 'actions/roleActions';
@@ -34,7 +34,7 @@ const MessagePanel = (props: MessagePanelProps) => {
       if (isMounted) {
         const messages = await Api.Get(
           ENDPOINT_MESSAGEBOARD_GET,
-          TOAST_MESSAGEBOARD_GET,
+          TOAST_MESSAGEBOARD_GET_ERROR,
           history,
           controller.signal,
         );

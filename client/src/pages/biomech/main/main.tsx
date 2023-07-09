@@ -207,6 +207,7 @@ export const BiomechanicalPage = (_: Props) => {
               data={BioReport}
               columns={columns}
               rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
+              rowTestId="view-biomech-report"
               enableFilters
               enableGlobalFilter
               enableSorting

@@ -21,7 +21,6 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
   const history: History = useHistory<History>();
 
   const onSubmitOk = () => {
-    toast.success(ResponseMessage.getMsgCreateReportOk());
     props.history.push(Paths.getBioMechMain());
   };
 
@@ -35,6 +34,8 @@ export const BrokenKitReport = (props: BrokenKitReportProps) => {
       onSubmitOk,
       history,
       ResponseMessage.getMsgCreateReportFailed(),
+      null,
+      ResponseMessage.getMsgCreateReportOk(),
     );
   };
 

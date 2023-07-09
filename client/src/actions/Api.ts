@@ -54,24 +54,26 @@ const Get = async (
  * - Success message for toast
  * @returns void
  */
+
 const Post = async (
   url: string,
   obj: object = {},
   actions: () => void,
   history: History,
-  errorMsg = '',
-  pendingMsg = 'Processing...',
+  errorMsg?: string,
+  pendingMsg?: string,
   successMsg?: string,
 ) => {
+  actions();
   await toast.promise(
     axios.post(url, obj).then(
       () => actions(),
       (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
     ),
     {
-      error: undefined,
-      pending: pendingMsg,
-      success: successMsg,
+      error: errorMsg ? errorMsg : 'An error occurred',
+      pending: pendingMsg ? pendingMsg : 'Processing...',
+      success: successMsg ? successMsg : 'Success!',
     },
   );
 };

@@ -10,7 +10,7 @@ import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month_summ
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Role } from 'constants/interfaces';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useHistory } from 'react-router';
@@ -30,7 +30,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
       setEmployeeOfTheMonth(
         await Api.Get(
           ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
-          TOAST_EMPLOYEE_OF_THE_MONTH_GET,
+          TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
           history,
           controller.signal,
         ),

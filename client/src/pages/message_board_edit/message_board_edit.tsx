@@ -10,7 +10,10 @@ import {
   ENDPOINT_MESSAGEBOARD_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
 } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET, TOAST_MESSAGEBOARD_PUT } from 'constants/toastErrorMessages';
+import {
+  TOAST_MESSAGEBOARD_GET_ERROR,
+  TOAST_MESSAGEBOARD_PUT_ERROR,
+} from 'constants/toastErrorMessages';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
@@ -28,7 +31,7 @@ const EditMessage = () => {
     const getMessage = async (id: string) => {
       const msgData: Message = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET_BY_ID(id),
-        TOAST_MESSAGEBOARD_GET,
+        TOAST_MESSAGEBOARD_GET_ERROR,
         history,
         controller.signal,
       );
@@ -54,7 +57,6 @@ const EditMessage = () => {
 
   const updateMessageActions = () => {
     history.push('/message-board');
-    toast.success(i18n.t('addMessageAlertSuccess'));
   };
 
   const updateMessage = async (data: any) => {
@@ -63,7 +65,9 @@ const EditMessage = () => {
       data,
       updateMessageActions,
       history,
-      TOAST_MESSAGEBOARD_PUT,
+      TOAST_MESSAGEBOARD_PUT_ERROR,
+      null,
+      i18n.t('addMessageAlertSuccess'),
     );
   };
 

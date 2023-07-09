@@ -6,7 +6,7 @@ import { CaseStudySummary } from 'components/case_study_summary/case_study_summa
 import { ENDPOINT_CASESTUDY_GET_BY_ID } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
+import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
 
 interface CaseStudyViewProps extends RouteComponentProps {}
@@ -24,7 +24,7 @@ export const CaseStudyView = (props: CaseStudyViewProps) => {
         setCaseStudy(
           await Api.Get(
             ENDPOINT_CASESTUDY_GET_BY_ID(id),
-            TOAST_CASESTUDY_GET,
+            TOAST_CASESTUDY_GET_ERROR,
             history,
             controller.signal,
           ),
