@@ -96,21 +96,10 @@ const ReadonlyReportForm = ({
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
   const totalCount = reportData.getPagination().length * pageSize;
-  const [rowElements, setRowElements] = useState<QuestionRow[]>([]);
-  const questions = reportData;
-  const suffixName = '';
-
-
-  // useEffect(() => {
-  //   setRowElements(processQuestionItem(questionItems))
-  // }, [questionItems])
-  // const ponyo: QuestionRow[] = processQuestionItem(questionItems);
 
   return (
     <div className="mt-3 p-3">
-      <h2 className="mb-3">{reportData.getPrompt()}</h2>
-      <p>Author: {author}</p>
-      <p>Date: {date}</p>
+      <h2 className="mb-3">{reportData.getPrompt()} - {author} - {date} </h2>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (
           <div className="table-responsive">
@@ -119,87 +108,12 @@ const ReadonlyReportForm = ({
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Question</th>
-                  <th scope="col">Answser</th>
+                  <th scope="col">Answer</th>
                 </tr>
               </thead>
               <tbody>
                 <QuestionRows questionItems={questionItems}/>
               </tbody>
-              
-              {/* <QuestionRowsElement questionRows={} /> */}
-              {/* {questions
-                  .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
-                    compositionQuestion: (q) => [q, CompositionQuestionFormField],
-                    expandableQuestion: (q) => [q, ExpandableQuestionViewField],
-                    multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
-                    numericQuestion: (q) => [q, NumericQuestionFormField],
-                    questionGroup: (q) => [q, QuestionFormFields],
-                    singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
-                    textQuestion: (q) => [q, TextQuestionFormField],
-                  })
-                  // TODO: Remove "any" type
-                  .map((tuple: [QuestionNode<ID, ErrorType>, any]) => {
-                    const [question, FormFieldComponent] = tuple;
-              
-                    return (
-                      <FormFieldComponent
-                        applyReportChanges={applyReportChanges}
-                        key={`${question.getId()}${suffixName}`}
-                        question={question}
-                        setErrorSet={() => {}}
-                        readOnly
-                        suffixName={suffixName}
-                        isTemplate={isTemplate}
-                      />
-                    );
-                  })} */}
-              {/* {currentTableData.map((item, index) => {
-                 return (
-                   <tr
-                     key={item.id}
-                     onClick={() => history.push(`/case-study/view/${item.id}`)}
-                     role="button"
-                   >
-                     <th scope="row">{caseStudyNumberIndex + index + 1}</th>
-                     <td>{i18n.t(item.caseStudyType)}</td>
-                     <td>{!!item.user ? item.user.name : t('status.not_available')}</td>
-                     <td>{item.createdAt}</td>
-                     <td>
-                       {renderBasedOnRole(authState.userDetails.role, [
-                         Role.Admin,
-                         Role.MedicalDirector,
-                       ]) ? (
-                         <button
-                           data-testid="delete-case-study-button"
-                           className="btn btn-link text-decoration-none"
-                           onClick={(event) => {
-                             onDeleteButton(event, item);
-                           }}
-                         >
-                           {t('caseStudyMainDelete').concat(' ')}
-                         </button>
-                       ) : null}
- 
-                       {renderBasedOnRole(authState.userDetails.role, [
-                         Role.Admin,
-                         Role.MedicalDirector,
-                       ]) ? (
-                         <button
-                           data-testid="feature-case-study-button"
-                           className="btn btn-link text-decoration-none"
-                           disabled={item.featured}
-                           style={item.featured ? { fontStyle: 'italic' } : {}}
-                           onClick={() => (item.featured ? undefined : featureCaseStudy(item.id))}
-                         >
-                           {item.featured
-                             ? t('caseStudyMainUnFeatured')
-                             : t('caseStudyMainFeatured')}
-                         </button>
-                       ) : null}
-                     </td>
-                   </tr>
-                 );
-               })} */}
             </table>
           </div>
         ) : (
