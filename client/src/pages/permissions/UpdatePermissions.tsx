@@ -86,6 +86,29 @@ export const UpdatePermissions = () => {
     setPermissionsData(updatedPermissionsData);
   };
 
+  useEffect(() => {
+    const controller = new AbortController();
+    const getTemplates = async () => {
+      try {
+        const fetchedPermissions = await Api.Get(
+          `${ENDPOINT_PERMISSION}`,
+          '',
+          history,
+          controller.signal,
+        );
+        const permissions = fetchedPermissions.permission.permissionObject;
+
+        setPermissionsData(permissions);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getTemplates();
+    return () => {
+      controller.abort();
+    };
+  }, [history]);
+
   return (
     <Layout>
       <>

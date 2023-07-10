@@ -1,5 +1,3 @@
-import Pagination from 'components/pagination/Pagination';
-import { QuestionGroup, QuestionNode, ReportMetaData } from '@hha/common';
 import {
   CompositionQuestionFormField,
   ExpandableQuestionViewField,
@@ -9,8 +7,18 @@ import {
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
+import { QuestionGroup, QuestionNode } from '@hha/common';
+
+import Pagination from 'components/pagination/Pagination';
 import { useState } from 'react';
-import { createImportSpecifier } from 'typescript';
+
+interface QuestionFormFieldsProps {
+  applyReportChanges: () => void;
+  questions: QuestionGroup<ID, ErrorType>;
+  suffixName: string;
+  currentPage?: number;
+  isTemplate?: boolean;
+}
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -18,13 +26,7 @@ export const QuestionFormFields = ({
   suffixName,
   currentPage,
   isTemplate = false,
-}: {
-  applyReportChanges: () => void;
-  questions: QuestionGroup<ID, ErrorType>;
-  suffixName: string;
-  currentPage?: number;
-  isTemplate?: boolean;
-}) => {
+}: QuestionFormFieldsProps) => {
   return (
     <>
       {questions
@@ -53,7 +55,7 @@ export const QuestionFormFields = ({
           );
         })
         .slice(
-          currentPage === undefined ? 0 : questions.getPagination()[currentPage - 1][0],
+          currentPage === undefined ? 0 : questions?.getPagination()[currentPage - 1][0],
           currentPage === undefined
             ? questions.getSize()
             : questions.getPagination()[currentPage - 1][1],
@@ -62,15 +64,7 @@ export const QuestionFormFields = ({
   );
 };
 
-const ReadonlyReportForm = ({
-  applyReportChanges,
-  formHandler,
-  reportData,
-  isTemplate = false,
-  isUsingPagination = true,
-  date,
-  author,
-}: {
+interface ReadonlyReportFormProps {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
@@ -80,7 +74,17 @@ const ReadonlyReportForm = ({
   isUsingPagination?: boolean;
   date?: string;
   author?: string;
-}): JSX.Element => {
+}
+
+const ReadonlyReportForm = ({
+  applyReportChanges,
+  formHandler,
+  reportData,
+  isTemplate = false,
+  isUsingPagination = true,
+  date,
+  author,
+}: ReadonlyReportFormProps): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = reportData
     .getPagination()
