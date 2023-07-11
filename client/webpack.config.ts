@@ -10,13 +10,19 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        include: [
-          path.resolve(__dirname, 'src'), // Include your project's source code
-          path.resolve(__dirname, 'node_modules/@hha/common'), // Include @hha/common package
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-typescript'],
+            },
+          },
+          {
+            loader: 'ts-loader',
+          },
         ],
-        use: 'ts-loader',
       },
-      // Other rules...
     ],
   },
   resolve: {
