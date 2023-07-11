@@ -1,5 +1,6 @@
+import { language, timezone } from 'constants/timezones';
+
 import { DayRange } from 'react-modern-calendar-datepicker';
-import { timezone, language } from 'constants/timezones';
 
 // Haiti is GMT-5 (EASTERN TIME ET)
 enum Month {
@@ -23,33 +24,34 @@ const currYear = currDate.getFullYear();
 const currMonthLastDay = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0).getDate();
 const currMonthLastDate = new Date(currYear, currMonth, currMonthLastDay, 23, 59, 59);
 
-const makeDateShort = (date: string): string => {
-  return Month[parseInt(date.substring(5, 7)) - 1].concat(' ').concat(date.substring(0, 4));
+const getDateStrComponents = (dateStr: string): string[] => dateStr.split(' at ');
+
+const getReformattedDateStr = (dateStr: string): string => getDateStrComponents(dateStr).join(' ');
+
+const getDateTimeFromDateStr = (dateStr: string): Date => new Date(getReformattedDateStr(dateStr));
+
+const getDateFromDateStr = (dateStr: string): Date => new Date(getDateStrComponents(dateStr)[0]);
+
+const makeDateShort = (dateStr: string): string => {
+  const date = getDateFromDateStr(dateStr);
+
+  const month = date.getMonth();
+  const day = date.getDate();
+
+  return `${Month[month]}/${day}`;
 };
-const isDateStrInDayRange = (dateStr: string, dayRange: DayRange) => {
-  const createdAt = new Date(dateStr);
-  const createdAtUTC = new Date(
-    Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()),
-  );
 
-  if (dayRange.from && dayRange.to) {
-    const dayRangeFrom = new Date(
-      Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
-    );
-    const dayRangeTo = new Date(Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day));
+const isDateInRange = (dateStr: string | Date, dateRange: DayRange) => {
+  const date = new Date(dateStr);
 
-    return dayRangeFrom <= createdAtUTC && createdAtUTC <= dayRangeTo;
-  } else if (dayRange.from) {
-    const dayRangeFrom = new Date(
-      Date.UTC(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day),
-    );
+  const from =
+    dateRange.from && new Date(dateRange.from.year, dateRange.from.month - 1, dateRange.from.day);
 
-    return dayRangeFrom <= createdAtUTC;
-  } else if (dayRange.to) {
-    const dayRangeTo = new Date(Date.UTC(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day));
+  const to = dateRange.to && new Date(dateRange.to.year, dateRange.to.month - 1, dateRange.to.day);
 
-    return createdAtUTC <= dayRangeTo;
-  }
+  if (from && from > date) return false;
+  if (to && to < date) return false;
+
   return true;
 };
 
@@ -60,6 +62,9 @@ export {
   currMonthLastDate,
   currMonthLastDay,
   currYear,
-  isDateStrInDayRange,
+  isDateInRange,
   makeDateShort,
+  getDateFromDateStr,
+  getDateTimeFromDateStr,
+  getReformattedDateStr,
 };

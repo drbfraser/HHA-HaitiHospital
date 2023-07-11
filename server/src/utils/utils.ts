@@ -1,6 +1,14 @@
+import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';
+import { Error, NativeError } from 'mongoose';
+import { ItemType, ItemTypeKeys } from '@hha/common';
+import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
+
+import { CustomError } from 'exceptions/custom_exception';
+import { InvalidInput } from 'exceptions/systemException';
+import crypto from 'crypto';
 import fs from 'fs';
-import { promisify } from 'util';
 import { logger } from '../logger';
+import { promisify } from 'util';
 
 const readdir = promisify(fs.readdir);
 const unlink = promisify(fs.unlink);
@@ -27,14 +35,6 @@ export const isValidUrl = (str) => {
   return str.length < 2083 && url.test(str);
 };
 
-import { InvalidInput } from 'exceptions/systemException';
-import crypto from 'crypto';
-import { ItemType, ItemTypeKeys } from '@hha/common';
-import { CustomError } from 'exceptions/custom_exception';
-import { Error, NativeError } from 'mongoose';
-import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';
-import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
-
 export const getEnumKeyByStringValue = function <T extends { [index: string]: any }>(
   myEnum: T,
   enumValue: string,
@@ -56,16 +56,14 @@ export const getItemTypeFromValue = (type: string): ItemTypeKeys => {
   return key!;
 };
 
-export const formatDateString = (date: Date): string => {
-  const result = date.toLocaleDateString('en-US', {
+export const formatDateString = (date: Date): string =>
+  date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
   });
-  return result;
-};
 
 export const generateUuid = (): string => {
   const id: string = crypto.randomBytes(16).toString('hex');
