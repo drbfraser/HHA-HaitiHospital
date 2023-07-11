@@ -71,6 +71,8 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-typescript": "^7.22.5",
     "@types/bootstrap": "^5.1.9",
     "@types/chai-enzyme": "^0.6.9",
     "@types/enzyme": "^3.10.13",
