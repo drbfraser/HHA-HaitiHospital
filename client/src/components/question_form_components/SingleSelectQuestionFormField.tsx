@@ -52,9 +52,12 @@ const SingleSelectionQuestionFormField = ({
   }, []);
 
   return (
-    <FormFieldCheck nameId={nameId} prompt={{
-      en: question.getPrompt()
-    }}>
+    <FormFieldCheck
+      nameId={nameId}
+      prompt={{
+        en: question.getPrompt(),
+      }}
+    >
       <div>
         {inputState !== true && <div className="text-danger">{inputState.message}</div>}
         {question.getChoices().map((choice: ImmutableChoice, index) => (

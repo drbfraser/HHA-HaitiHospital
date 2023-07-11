@@ -42,7 +42,6 @@ router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(
       // }
 
       res.status(HTTP_OK_CODE).json({ template: serializedTemplate });
-
     } catch (e) {
       next(e);
     }
