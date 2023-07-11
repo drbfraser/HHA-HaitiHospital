@@ -99,11 +99,11 @@ const ReadonlyReportForm = ({
 
   return (
     <div className="mt-3 p-3">
-      <h2 className="mb-3">{reportData.getPrompt()} - {author} - {date} </h2>
+      <h3 className="mb-3">{reportData.getPrompt()} - {author} - {date} </h3>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (
           <div className="table-responsive">
-            <table className="table table-hover mt-2">
+            <table className="table table-responsive-sm w-auto mt-2">
               <thead>
                 <tr>
                   <th scope="col">#</th>

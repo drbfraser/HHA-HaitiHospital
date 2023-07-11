@@ -140,7 +140,7 @@ const ReportView = () => {
             style={{
               left: '200px',
               position: 'absolute',
-              width: 'calc(100% - 200px)',
+              width: 'calc(100% - 200px)'
             }}
           >
             <PopupModalConfirmation
