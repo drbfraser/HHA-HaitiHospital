@@ -10,7 +10,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        //exclude: /node_modules/,
+        exclude: /node_modules\/(?!(?:@hha\/common)\/).*/,
         use: 'ts-loader',
       },
       // Other rules...
