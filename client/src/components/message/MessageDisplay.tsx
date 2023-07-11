@@ -170,7 +170,10 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             </p>
             {useLocation().pathname.split('/').length < 4 ? (
               <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
-                <button type="button" className="btn btn-sm btn-link text-decoration-none admin-utils">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-link text-decoration-none admin-utils"
+                >
                   {t('messageBoardComments') + '(' + commentCount + ')'}
                 </button>
               </Link>

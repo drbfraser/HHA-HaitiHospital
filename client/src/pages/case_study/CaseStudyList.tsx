@@ -33,7 +33,6 @@ export enum CaseStudyCol {
 export type CaseStudySortOrder = SortOrder<CaseStudyCol>;
 
 export const CaseStudyList = () => {
-  
   // TODO: Create a "CaseStudy" type (instead of using "any")
   const [caseStudies, setCaseStudies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
