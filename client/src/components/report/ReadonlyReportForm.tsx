@@ -10,7 +10,7 @@ import {
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
-import QuestionRows from './QuestionRows'
+import QuestionRows from './QuestionRows';
 import { useEffect, useState } from 'react';
 import { createImportSpecifier } from 'typescript';
 import HoverableTableHead from 'components/table/HoverableTableHead';
@@ -91,7 +91,7 @@ const ReadonlyReportForm = ({
   questionItems: any[];
 }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(reportData)
+  console.log(reportData);
   const pageSize = reportData
     .getPagination()
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
@@ -100,7 +100,9 @@ const ReadonlyReportForm = ({
 
   return (
     <div className="mt-3 p-3">
-      <h3 className="mb-3">{reportData.getPrompt()} - {author} - {date} </h3>
+      <h3 className="mb-3">
+        {reportData.getPrompt()} - {author} - {date}{' '}
+      </h3>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (
           <div className="table-responsive">
@@ -113,7 +115,7 @@ const ReadonlyReportForm = ({
                 </tr>
               </thead>
               <tbody>
-                <QuestionRows questionItems={questionItems}/>
+                <QuestionRows questionItems={questionItems} />
               </tbody>
             </table>
           </div>
