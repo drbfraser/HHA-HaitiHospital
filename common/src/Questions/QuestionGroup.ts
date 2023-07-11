@@ -1,9 +1,9 @@
+import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
+
+import { QuestionNode } from './QuestionNode';
+import { QuestionParent } from './QuestionParent';
 //  A parent node in the question tree that supports any question type as child.
 import { serializable } from '../Serializer/ObjectSerializer';
-import { QuestionParent } from './QuestionParent';
-import { QuestionNode } from './QuestionNode';
-import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
-console.log('common/src/Questions/QuestionGroup.ts');
 
 type Translation = Record<string, string>;
 

@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+
 import { Department } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +17,7 @@ export const ReportAndTemplateForm = ({
   setCurrentDepartment: Dispatch<SetStateAction<Department>>;
 }): JSX.Element => {
   const { t } = useTranslation();
-  console.log('client/src/report_upload_form/ReportandTemplateForm/ departments', departments);
+
   return (
     <div className="col-md-6 mb-2">
       <h1 className="text-start">{title}</h1>

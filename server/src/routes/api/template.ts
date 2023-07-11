@@ -1,12 +1,13 @@
-import { DEPARTMENT_ID_URL_SLUG } from './../../utils/constants';
+import { HTTP_CREATED_CODE, HTTP_OK_CODE, NotFound } from '../../exceptions/httpException';
 import { IRouter, NextFunction, Response } from 'express';
-import { roleAuth } from 'middleware/roleAuth';
-import { RequestWithUser } from 'utils/definitions/express';
-import { HTTP_OK_CODE, HTTP_CREATED_CODE, NotFound } from '../../exceptions/httpException';
-import requireJwtAuth from '../../middleware/requireJwtAuth';
+
+import { DEPARTMENT_ID_URL_SLUG } from './../../utils/constants';
 import Departments from 'utils/departments';
-import { TemplateCollection } from 'models/template';
+import { RequestWithUser } from 'utils/definitions/express';
 import { Role } from 'models/user';
+import { TemplateCollection } from 'models/template';
+import requireJwtAuth from '../../middleware/requireJwtAuth';
+import { roleAuth } from 'middleware/roleAuth';
 
 const router: IRouter = require('express').Router();
 
@@ -42,7 +43,6 @@ router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(
 
       res.status(HTTP_OK_CODE).json({ template: serializedTemplate });
 
-      console.log('server routes/api/template', serializedTemplate);
     } catch (e) {
       next(e);
     }

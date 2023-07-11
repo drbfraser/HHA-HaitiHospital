@@ -1,14 +1,16 @@
-import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
-import HhaLogo from 'components/hha_logo/hha_logo';
 import './side_bar.css';
+
 import { Department, GeneralDepartment, Role } from 'constants/interfaces';
-import { useAuthState, useAdminToggleState } from 'contexts';
-import { useDepartmentData } from 'hooks';
-import { ReactNode, useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { ReactNode, useEffect, useState } from 'react';
+import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
+import { useAdminToggleState, useAuthState } from 'contexts';
+
+import HhaLogo from 'components/hha_logo/hha_logo';
 import { NavLink } from 'react-router-dom';
-import cn from 'classnames';
 import axios from 'axios';
+import cn from 'classnames';
+import { useDepartmentData } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 interface SidebarProps {}
 
@@ -16,7 +18,6 @@ type SideBarItemProps = { path: string; children: ReactNode };
 
 export const changeLanguage = (ln, i18n) => {
   return () => {
-    console.log(`Language changed to ${ln}`);
     localStorage.setItem('lang', ln);
     i18n.changeLanguage(ln);
   };

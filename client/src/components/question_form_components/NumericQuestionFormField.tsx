@@ -2,7 +2,6 @@ import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect } from 'r
 
 import FormField from './FormField';
 import { NumericQuestion } from '@hha/common';
-import { useTranslation } from 'react-i18next';
 
 const NumericQuestionFormField = ({
   applyReportChanges,
@@ -17,7 +16,6 @@ const NumericQuestionFormField = ({
   suffixName: string;
   readOnly?: boolean;
 }): JSX.Element => {
-  console.log('NumericQuestionFormField');
   // inputState has a value of true if the input is valid or
   // if it is of type "ValidationResult<ErrorType>" when the input is invalid
   const inputState = question.getValidationResults();
@@ -43,13 +41,12 @@ const NumericQuestionFormField = ({
 
       return nextErrorSet;
     });
-  }, [question, nameId]);
+  }, [setErrorSet, question, nameId]);
 
   // Disable the submit button the first time component loads if there are errors
   // This would be the case when nothing is selected and the question is required
   useEffect(() => {
     updateErrorSetFromSelf();
-    console.log('useEffect NumericQuestionFormField');
 
     return () => {
       setErrorSet((prevErrorSet: Set<ID>) => {
@@ -58,7 +55,7 @@ const NumericQuestionFormField = ({
         return nextErrorSet;
       });
     };
-  }, [nameId, updateErrorSetFromSelf]);
+  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
 
   return (
     <FormField

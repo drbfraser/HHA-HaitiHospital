@@ -12,8 +12,7 @@ type FormFieldCheckProps = {
 };
 
 const FormFieldCheck = ({ children, nameId, prompt }: FormFieldCheckProps) => {
-  console.log('FormFieldCheck prompt: ', prompt);
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const language = i18n.language;
   const displayPrompt = prompt[language] || prompt; // Fallback to default prompt if translation is not available
 

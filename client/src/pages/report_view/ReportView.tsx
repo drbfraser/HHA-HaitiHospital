@@ -1,21 +1,22 @@
+import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
+import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { NavigationInfo, navigate } from 'components/report/utils';
+import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
+import { Prompt, useHistory, useLocation } from 'react-router-dom';
+import { dateOptions, userLocale } from 'constants/date';
+
 import Api from 'actions/Api';
+import { History } from 'history';
 import Layout from 'components/layout';
+import { PDFExport } from '@progress/kendo-react-pdf';
 import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import ReportForm from 'components/report/ReportForm';
-import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
-import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { History } from 'history';
-import { NavigationInfo, navigate } from 'components/report/utils';
-import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
-import { PDFExport } from '@progress/kendo-react-pdf';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
-import { useHistory, useLocation, Prompt } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { userLocale, dateOptions } from 'constants/date';
 
 const ReportView = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -104,7 +105,6 @@ const ReportView = () => {
       submittedBy: fetchedReport?.report?.submittedBy,
     });
 
-    console.log('WOW', metaData);
     return () => {
       controller.abort();
     };

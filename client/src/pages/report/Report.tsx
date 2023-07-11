@@ -1,22 +1,23 @@
-import Api from 'actions/Api';
-import Layout from 'components/layout';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import ReportForm from 'components/report/ReportForm';
-import { Department } from 'constants/interfaces';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { FormEvent, useEffect, useState } from 'react';
-import { History } from 'history';
 import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
+
+import Api from 'actions/Api';
+import { Department } from 'constants/interfaces';
+import { History } from 'history';
+import Layout from 'components/layout';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import { ReportAndTemplateForm } from 'components/report_upload_form/ReportAndTemplateForm';
+import ReportForm from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import axios from 'axios';
 import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -77,7 +78,6 @@ export const Report = () => {
   };
 
   useEffect(() => {
-    console.log('Report.tsx: useEffect()');
     const controller = new AbortController();
     const getTemplates = async () => {
       try {
@@ -100,7 +100,6 @@ export const Report = () => {
     currentDepartment && getTemplates();
     // Set the Accept-Language header for Axios requests
     axios.defaults.headers.common['Accept-Language'] = i18n.language;
-    console.log('Accept-Language: ', i18n.language);
     return () => {
       controller.abort();
     };

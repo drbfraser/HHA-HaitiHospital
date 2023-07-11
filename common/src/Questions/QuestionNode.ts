@@ -4,7 +4,6 @@
     Its type is meant to be further specialized to determine the kind of node it 
     represents and what other capabilities it should support.
 */
-console.log('common/src/Questions/QuestionNode.ts');
 
 // interface Translation {
 //   [lang: string]: string;

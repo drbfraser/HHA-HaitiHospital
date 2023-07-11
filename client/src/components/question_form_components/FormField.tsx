@@ -1,7 +1,8 @@
-import { ValidationResult } from '@hha/common';
 import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
-import { useTranslation } from 'react-i18next';
+
+import { ValidationResult } from '@hha/common';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 interface Translation {
   [lang: string]: string;
@@ -19,13 +20,10 @@ type FormFieldProps = {
 };
 
 const FormField = (props: FormFieldProps) => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const language = i18n.language;
   const prompt = props.prompt[language];
   const displayPrompt = prompt ?? props.prompt;
-  console.log('FormField language: ', i18n.language);
-  console.log('FormField prompt: ', prompt);
-  console.log('FormField displayPrompt: ', displayPrompt);
   const value = props.value !== null ? props.value : ''; // Set a default value if props.value is null
 
   return (

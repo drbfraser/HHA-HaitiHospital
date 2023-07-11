@@ -1,6 +1,3 @@
-import Pagination from 'components/pagination/Pagination';
-import SubmitButton from './SubmitButton';
-import { QuestionGroup, QuestionNode } from '@hha/common';
 import {
   CompositionQuestionFormField,
   ExpandableQuestionFormField,
@@ -11,6 +8,10 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { QuestionGroup, QuestionNode } from '@hha/common';
+
+import Pagination from 'components/pagination/Pagination';
+import SubmitButton from './SubmitButton';
 import { useTranslation } from 'react-i18next';
 
 export const QuestionFormFields = ({
@@ -79,8 +80,7 @@ const ReportForm = ({
   btnText?: string;
   readOnly?: boolean;
 }): JSX.Element => {
-  console.log('client/src/componenets/report/ReportForm');
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const language = i18n.language;
   const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());

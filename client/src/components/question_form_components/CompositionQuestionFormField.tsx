@@ -1,8 +1,9 @@
+import { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 const CompositionQuestionFormField = ({
   applyReportChanges,
@@ -17,15 +18,13 @@ const CompositionQuestionFormField = ({
   suffixName: string;
   readOnly?: boolean;
 }): JSX.Element => {
-  console.log('compositionQuestion promptValue1');
   const allSumUpInfo = question.getAllSumUpInfo();
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const prompt = question.getPrompt();
   const language = i18n.language;
   const promptValue = prompt && prompt[language] ? prompt[language] : '';
-  console.log('compositionQuestion promptValue2', promptValue);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;

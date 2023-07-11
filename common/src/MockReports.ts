@@ -8,6 +8,7 @@ import {
   SpecializedGroup,
   TextQuestion,
 } from './Questions';
+
 import { QuestionAnswerNode } from './Questions/QuestionAnswer';
 import translationEN from '../../client/src/locales/en/translationEN.json';
 import translationFR from '../../client/src/locales/fr/translationFR.json';
@@ -19,8 +20,8 @@ type ErrorType = string;
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
-  (questionGroupIndex: number): ID =>
-    `${questionId}_${questionGroupIndex}`;
+    (questionGroupIndex: number): ID =>
+      `${questionId}_${questionGroupIndex}`;
 
 export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('ROOT', {
@@ -51,7 +52,6 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     };
   };
 
-  console.log('Here is the buildRehabMockReport');
   const reportID: ID = 'rehab-report_1_1';
 
   const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
