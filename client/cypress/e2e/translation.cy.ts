@@ -1,9 +1,8 @@
 /// <reference types="cypress" />
 
-import { LoginPage } from '../support/pages/LoginPage';
 import { HomePage } from '../support/pages/HomePage';
+import { LoginPage } from '../support/pages/LoginPage';
 import fr from '../../src/locales/fr/translationFR.json';
-import { EOTMPage } from '../support/pages/EOTMPage';
 
 describe('French Translation Tests', function () {
   const loginPage = new LoginPage();
@@ -65,21 +64,24 @@ describe('French Translation Tests', function () {
     cy.get('[data-testid="case-study-header"]').should('include.text', fr.headerCaseStudy);
     cy.get('[data-testid="add-case-study-button"]').should(
       'include.text',
-      fr.caseStudyMainAddCaseStudy,
+      fr.CaseStudy.Main.AddCaseStudy,
     );
     cy.get('[data-testid="case-study-type-title"]').should(
       'include.text',
-      fr.caseStudyMainCaseStudyType,
+      fr.CaseStudy.Main.CaseStudyType,
     );
     cy.get('[data-testid="case-study-author-title"]').should(
       'include.text',
-      fr.caseStudyMainAuthor,
+      fr.CaseStudy.Main.Author,
     );
     cy.get('[data-testid="case-study-created-title"]').should(
       'include.text',
-      fr.caseStudyMainCreated,
+      fr.CaseStudy.Main.Created,
     );
-    cy.get('[data-testid="case-study-options-title"]').should('include.text', fr.caseStudyMainLink);
+    cy.get('[data-testid="case-study-options-title"]').should(
+      'include.text',
+      fr.CaseStudy.Main.Link,
+    );
   });
 
   it('Should Check That Bio Support Page Is In French', function () {
