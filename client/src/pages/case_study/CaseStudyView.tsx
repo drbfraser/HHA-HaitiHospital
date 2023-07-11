@@ -1,5 +1,5 @@
-import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import Api from 'actions/Api';
 import { CaseStudySummary } from 'components/case_study/CaseStudySummary';

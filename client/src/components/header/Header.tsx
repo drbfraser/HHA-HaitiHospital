@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import Api from 'actions/Api';
-import { EMPTY_USER_JSON } from 'constants/default_values';
 import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
 import { History } from 'history';
 import { ResponseMessage } from 'utils/response_message';

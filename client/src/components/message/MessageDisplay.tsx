@@ -131,7 +131,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                       <button
                         data-testid="edit-message-button"
                         type="button"
-                        className="btn btn-link text-decoration-none small border-0 p-0"
+                        className="btn btn-sm btn-link text-decoration-none small border-0 p-0 me-2"
                       >
                         {t('messageBoardEdit')}
                       </button>
@@ -147,7 +147,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
                     <button
                       data-testid="delete-message-button"
                       type="button"
-                      className="btn btn-link text-decoration-none small border-0 p-0"
+                      className="btn btn-sm btn-link text-decoration-none border-0 p-0"
                       onClick={(event) => {
                         onDeleteMessage(event, message.id);
                       }}
@@ -170,7 +170,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
             </p>
             {useLocation().pathname.split('/').length < 4 ? (
               <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
-                <button type="button" className="btn btn-link text-decoration-none admin-utils">
+                <button type="button" className="btn btn-sm btn-link text-decoration-none admin-utils">
                   {t('messageBoardComments') + '(' + commentCount + ')'}
                 </button>
               </Link>

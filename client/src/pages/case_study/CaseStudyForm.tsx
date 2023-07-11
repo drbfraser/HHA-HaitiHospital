@@ -1,5 +1,4 @@
 import { CaseStudyModel, CaseStudyType } from './typing';
-import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -9,6 +8,7 @@ import { TOAST_CASESTUDY_POST } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export const CaseStudyForm = () => {
