@@ -38,6 +38,7 @@
     "@babel/preset-typescript": "^7.22.5",
     "@types/react-i18next": "^8.1.0",
     "browserslist": "^4.21.9",
-    "ts-loader": "^9.4.4"
+    "ts-loader": "^9.4.4",
+    "webpack": "^5.88.1"
   }
 }
