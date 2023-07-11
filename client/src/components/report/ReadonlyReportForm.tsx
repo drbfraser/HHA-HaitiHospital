@@ -91,6 +91,7 @@ const ReadonlyReportForm = ({
   questionItems: any[];
 }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
+  console.log(reportData)
   const pageSize = reportData
     .getPagination()
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])

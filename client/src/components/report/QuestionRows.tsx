@@ -5,7 +5,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
   const [questionRowElements, setQuestionRowElements] = useState<QuestionRow[]>([]);
 
   const underscoreAmount = (str: string): number => {
-    return str.replace(/^_/g, '').length;
+    return (str.match(/_/g) || []).length;
   };
 
   const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {
@@ -38,15 +38,12 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
       };
       array.push(element);
       if (questionItem.__class__ === 'CompositionQuestion') {
-        console.log('questionItem.__class__ == CompositionQuestion', questionItem);
         for (let nestedQuestionItem of questionItem.compositionGroups) {
           const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
           array = array.concat(subArray);
         }
       }
       if (questionItem.__class__ === 'SpecializedGroup') {
-        console.log('questionItem.__class__ == SpecializedGroup', questionItem);
-
         for (let nestedQuestionItem of questionItem.questions) {
           const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
           array = array.concat(subArray);
@@ -61,7 +58,6 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
     setQuestionRowElements(processQuestionItem(questionItems));
   }, [questionItems]);
 
-  console.log('questionItems', questionItems);
   return (
     <>
       {questionRowElements.map((questionRow) => (
