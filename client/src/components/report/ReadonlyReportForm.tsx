@@ -106,7 +106,7 @@ const ReadonlyReportForm = ({
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (
           <div className="table-responsive">
-            <table className="table table-responsive-sm w-auto mt-2">
+            <table className="table table-bordered table-responsive-sm w-auto mt-2">
               <thead>
                 <tr>
                   <th scope="col">#</th>

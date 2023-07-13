@@ -58,16 +58,18 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
     setQuestionRowElements(processQuestionItem(questionItems));
   }, [questionItems]);
 
+  const indent = '\xa0\xa0\xa0'
+
   return (
     <>
       {questionRowElements.map((questionRow) => (
         <tr key={questionRow.id}>
           <th scope="row" className="text-start">
-            {'\xa0\xa0'.repeat(underscoreAmount(questionRow.id))}
-            {questionRow.id}
+            {indent.repeat(underscoreAmount(questionRow.id))}
+            {questionRow.id.replaceAll('_', '.')}
           </th>
           <td className="text-start">
-            {'\xa0\xa0'.repeat(underscoreAmount(questionRow.id))}
+            {indent.repeat(underscoreAmount(questionRow.id))}
             {questionRow.prompt}
           </td>
           <td>{questionRow.answer}</td>
