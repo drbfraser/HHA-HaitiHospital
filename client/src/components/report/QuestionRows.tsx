@@ -58,7 +58,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
     setQuestionRowElements(processQuestionItem(questionItems));
   }, [questionItems]);
 
-  const indent = '\xa0\xa0\xa0'
+  const indent = '\xa0\xa0\xa0';
 
   return (
     <>
