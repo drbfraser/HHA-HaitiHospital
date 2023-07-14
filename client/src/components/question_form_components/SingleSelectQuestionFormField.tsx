@@ -54,9 +54,7 @@ const SingleSelectionQuestionFormField = ({
   return (
     <FormFieldCheck
       nameId={nameId}
-      prompt={{
-        en: question.getPrompt(),
-      }}
+      prompt={question.getPrompt()}
     >
       <div>
         {inputState !== true && <div className="text-danger">{inputState.message}</div>}

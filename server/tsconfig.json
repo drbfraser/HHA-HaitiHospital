@@ -14,8 +14,7 @@
     "strictNullChecks": false,
     "skipLibCheck": true,
     "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "resolveJsonModule": true
+    "experimentalDecorators": true
   },
-  "include": ["./src/**/*", "./security/*", "./tests/**/*", "./common/**/*"]
+  "include": ["./src/**/*", "./security/*", "./tests/**/*"]
 }
