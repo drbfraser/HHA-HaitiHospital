@@ -1,24 +1,24 @@
-import mongoose from 'mongoose';
-import faker from 'faker';
-//import { buildRehabMockReport } from '../../../common/src/MockReports';
+import * as ENV from 'utils/processEnv';
+
+import BioMech, { BiomechStatus } from 'models/bioMech';
+import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
+import DepartmentCollection, { Department } from 'models/departments';
+import Departments, { DefaultDepartments } from 'utils/departments';
 import {
   ObjectSerializer,
+  QuestionGroup,
   buildMaternityMockReport,
   buildRehabMockReport,
-  //buildNicuPaedsMockReport,
-  QuestionGroup,
 } from '@hha/common';
 import UserCollection, { Role, User } from 'models/user';
-import MessageCollection from 'models/messageBoard';
-import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
-import BioMech, { BiomechPriority, BiomechStatus } from 'models/bioMech';
+
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
-import * as ENV from 'utils/processEnv';
-import { TemplateCollection } from 'models/template';
-import { ReportCollection } from 'models/report';
+import MessageCollection from 'models/messageBoard';
 import { PermissionCollection } from 'models/permission';
-import Departments, { DefaultDepartments } from 'utils/departments';
-import DepartmentCollection, { Department } from 'models/departments';
+import { ReportCollection } from 'models/report';
+import { TemplateCollection } from 'models/template';
+import faker from 'faker';
+import mongoose from 'mongoose';
 
 let nameMapper: Map<string, string>;
 
@@ -326,7 +326,7 @@ export const seedUsers = async () => {
           default:
             break;
         }
-        await user.registerUser(user, () => {});
+        await user.registerUser(user, () => { });
         // check if user is registered
       }
     }
@@ -1082,7 +1082,6 @@ const seedTemplates = async () => {
 
     const reportDepartmentMap: [Report, string][] = [
       [buildRehabMockReport(), DefaultDepartments.Rehab],
-      //[buildNicuPaedsMockReport(), DefaultDepartments.NICU],
       [buildMaternityMockReport(), DefaultDepartments.Maternity],
     ];
     console.log(`Seeding templates buildRehabMockReport ...`);
