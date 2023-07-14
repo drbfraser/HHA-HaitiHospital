@@ -56,10 +56,7 @@ const MultiSelectionQuestionFormField = ({
   }, []);
 
   return (
-    <FormFieldCheck
-      nameId={nameId}
-      prompt={question.getPrompt()}
-    >
+    <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       <div>
         {inputState !== true && <div className="text-danger">{inputState.message}</div>}
         {question.getChoices().map((choice: ImmutableChoice, index) => (
