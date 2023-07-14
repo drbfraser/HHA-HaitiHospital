@@ -1,7 +1,15 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { ImmutableChoice, MultipleSelectionQuestion } from '@hha/common';
 
 import FormFieldCheck from './FormFieldCheck';
+
+interface MultiSelectionQuestionFormFieldProps {
+  applyReportChanges: () => void;
+  question: MultipleSelectionQuestion<ID, ErrorType>;
+  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
+  suffixName: string;
+  readOnly?: boolean;
+}
 
 const MultiSelectionQuestionFormField = ({
   applyReportChanges,
@@ -9,14 +17,11 @@ const MultiSelectionQuestionFormField = ({
   setErrorSet,
   suffixName,
   readOnly,
-}: {
-  applyReportChanges: () => void;
-  question: MultipleSelectionQuestion<ID, ErrorType>;
-  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
-  suffixName: string;
-  readOnly?: boolean;
-}) => {
-  const updateErrorSetFromSelf = () => {
+}: MultiSelectionQuestionFormFieldProps) => {
+  const nameId = `${question.getId()}${suffixName}`;
+  const inputState = question.getValidationResults();
+
+  const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {
       const nextErrorSet = new Set(prevErrorSet);
 
@@ -28,7 +33,8 @@ const MultiSelectionQuestionFormField = ({
 
       return nextErrorSet;
     });
-  };
+  }, [nameId, question, setErrorSet]);
+
   const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
     question.setAnswer(
       choice.wasChosen()
@@ -38,8 +44,6 @@ const MultiSelectionQuestionFormField = ({
     updateErrorSetFromSelf();
     applyReportChanges();
   };
-  const nameId = `${question.getId()}${suffixName}`;
-  const inputState = question.getValidationResults();
 
   // Disable the submit button the first time component loads if there are errors
   // This would be the case when nothing is selected and the question is required
@@ -53,7 +57,7 @@ const MultiSelectionQuestionFormField = ({
         return nextErrorSet;
       });
     };
-  }, []);
+  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
 
   return (
     <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>

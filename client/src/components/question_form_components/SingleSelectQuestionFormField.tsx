@@ -1,7 +1,15 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { ImmutableChoice, SingleSelectionQuestion } from '@hha/common';
 
 import { FormFieldCheck } from './index';
+
+interface SingleSelectionQuestionFormFieldProps {
+  applyReportChanges: () => void;
+  question: SingleSelectionQuestion<ID, ErrorType>;
+  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
+  suffixName: string;
+  readOnly?: boolean;
+}
 
 const SingleSelectionQuestionFormField = ({
   applyReportChanges,
@@ -9,14 +17,11 @@ const SingleSelectionQuestionFormField = ({
   setErrorSet,
   suffixName,
   readOnly,
-}: {
-  applyReportChanges: () => void;
-  question: SingleSelectionQuestion<ID, ErrorType>;
-  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
-  suffixName: string;
-  readOnly?: boolean;
-}) => {
-  const updateErrorSetFromSelf = () => {
+}: SingleSelectionQuestionFormFieldProps) => {
+  const nameId = `${question.getId()}${suffixName}`;
+  const inputState = question.getValidationResults();
+
+  const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {
       const nextErrorSet = new Set(prevErrorSet);
 
@@ -28,14 +33,13 @@ const SingleSelectionQuestionFormField = ({
 
       return nextErrorSet;
     });
-  };
+  }, [nameId, question, setErrorSet]);
+
   const getChangeHandler = (index: number) => () => {
     question.setAnswer(index);
     updateErrorSetFromSelf();
     applyReportChanges();
   };
-  const nameId = `${question.getId()}${suffixName}`;
-  const inputState = question.getValidationResults();
 
   // Disable the submit button the first time component loads if there are errors
   // This would be the case when nothing is selected and the question is required
@@ -49,7 +53,7 @@ const SingleSelectionQuestionFormField = ({
         return nextErrorSet;
       });
     };
-  }, []);
+  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
 
   return (
     <FormFieldCheck

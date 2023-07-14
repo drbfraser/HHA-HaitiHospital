@@ -3,45 +3,49 @@ import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect } from 'r
 import FormField from './FormField';
 import { NumericQuestion } from '@hha/common';
 
+interface NumericQuestionFormFieldProps {
+  applyReportChanges: () => void;
+  question: NumericQuestion<ID, ErrorType>;
+  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
+  suffixName: string;
+  readOnly?: boolean;
+}
+
 const NumericQuestionFormField = ({
   applyReportChanges,
   question,
   setErrorSet,
   suffixName,
   readOnly,
-}: {
-  applyReportChanges: () => void;
-  question: NumericQuestion<ID, ErrorType>;
-  setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
-  suffixName: string;
-  readOnly?: boolean;
-}): JSX.Element => {
+}: NumericQuestionFormFieldProps): JSX.Element => {
   // inputState has a value of true if the input is valid or
   // if it is of type "ValidationResult<ErrorType>" when the input is invalid
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
 
+  const updateErrorSetFromSelf = useCallback(
+    () =>
+      setErrorSet((prevErrorSet: Set<ID>) => {
+        const nextErrorSet = new Set(prevErrorSet);
+
+        if (question.getValidationResults() !== true) {
+          nextErrorSet.add(nameId);
+        } else {
+          nextErrorSet.delete(nameId);
+        }
+
+        return nextErrorSet;
+      }),
+    [nameId, question, setErrorSet],
+  );
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     question.setAnswer(parseInt(newValue));
 
-    applyReportChanges();
     updateErrorSetFromSelf();
+    applyReportChanges();
   };
-
-  const updateErrorSetFromSelf = useCallback(() => {
-    setErrorSet((prevErrorSet: Set<ID>) => {
-      const nextErrorSet = new Set(prevErrorSet);
-
-      if (question.getValidationResults() !== true) {
-        nextErrorSet.add(nameId);
-      } else {
-        nextErrorSet.delete(nameId);
-      }
-
-      return nextErrorSet;
-    });
-  }, [setErrorSet, question, nameId]);
 
   // Disable the submit button the first time component loads if there are errors
   // This would be the case when nothing is selected and the question is required

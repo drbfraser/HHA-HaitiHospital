@@ -161,7 +161,7 @@ const Sidebar = (props: SidebarProps) => {
 
             if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
               return (
-                <SidebarItem path={`department/${deptId}`}>
+                <SidebarItem path={`department/${deptId}`} key={dept.id}>
                   <i className="bi bi-brightness-high-fill me-2" />
                   <span className={cn('text-light', { 'd-none': isMobile })}>{t(deptName)}</span>
                 </SidebarItem>
