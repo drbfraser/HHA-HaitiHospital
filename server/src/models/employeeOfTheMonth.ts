@@ -1,6 +1,7 @@
 import Departments from 'utils/departments';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
+import { number } from 'joi';
 
 const { Schema } = mongoose;
 
@@ -9,6 +10,7 @@ export interface EmployeeOfTheMonth {
   departmentId: string;
   description: string;
   imgPath: string;
+  awardedAt: Date;
   updatedAt?: Date;
   createdAt?: Date;
 }
@@ -22,6 +24,7 @@ export interface EmployeeOfTheMonthJson {
   };
   description: string;
   imgPath: string;
+  awardedAt: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -36,6 +39,7 @@ const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethod
     departmentId: { type: String, required: true },
     description: { type: String, required: true },
     imgPath: { type: String, required: true },
+    awardedAt: { type: Date },
     updatedAt: { type: Date },
     createdAt: { type: Date },
   },
@@ -53,6 +57,7 @@ employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfT
     },
     description: this.description,
     imgPath: this.imgPath,
+    awardedAt: formatDateString(this.awardedAt!),
     updatedAt: formatDateString(this.updatedAt!),
     createdAt: formatDateString(this.createdAt!),
   };
