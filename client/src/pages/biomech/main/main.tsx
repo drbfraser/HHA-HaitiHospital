@@ -8,7 +8,7 @@ import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
-import { ColumnDef } from '@tanstack/react-table';
+import { FilterType } from 'components/filter/Filter';
 import { History } from 'history';
 import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/popup_modal_delete';
@@ -22,13 +22,41 @@ import { useTranslation } from 'react-i18next';
 
 interface Props extends RouteComponentProps {}
 
+const enumSort = (key, e) => {
+  type enumKey = keyof typeof e;
+
+  return (rowA, rowB) => {
+    const reportA = rowA.getValue(key) as enumKey;
+    const reportB = rowB.getValue(key) as enumKey;
+
+    return e[reportA] - e[reportB];
+  };
+};
+
+const Priority = {
+  'non-urgent': 0,
+  important: 1,
+  urgent: 2,
+};
+
+const Status = {
+  'in-progress': 0,
+  fixed: 1,
+  backlog: 2,
+};
+
+const prioritySort = enumSort('equipmentPriority', Priority);
+
+const statusSort = enumSort('equipmentStatus', Status);
+
 export const BiomechanicalPage = (_: Props) => {
+  const authState = useAuthState();
+  const history: History = useHistory<History>();
+
   const { t } = useTranslation();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [BioReport, setBioReport] = useState([]);
-  const authState = useAuthState();
-  const history: History = useHistory<History>();
+  const [biomechData, setBiomechData] = useState([]);
 
   // Github co-pilot assited in filling this array
   const columns = useMemo(
@@ -40,6 +68,16 @@ export const BiomechanicalPage = (_: Props) => {
           <Badge bg={setPriority(row.getValue())}>{t(`biomech.priority.${row.getValue()}`)}</Badge>
         ),
         accessorKey: 'equipmentPriority',
+        sortingFn: prioritySort,
+        sortDescFirst: true,
+        meta: {
+          dataType: FilterType.ENUM,
+          enumOptions: [
+            { value: 'non-urgent', label: t('biomech.priority.non-urgent') },
+            { value: 'important', label: t('biomech.priority.important') },
+            { value: 'urgent', label: t('biomech.priority.urgent') },
+          ],
+        },
       },
       {
         id: 'equipmentStatus',
@@ -50,6 +88,15 @@ export const BiomechanicalPage = (_: Props) => {
           </Badge>
         ),
         accessorKey: 'equipmentStatus',
+        sortingFn: statusSort,
+        meta: {
+          dataType: FilterType.ENUM,
+          enumOptions: [
+            { value: 'in-progress', label: t('biomech.status.in-progress') },
+            { value: 'fixed', label: t('biomech.status.fixed') },
+            { value: 'backlog', label: t('biomech.status.backlog') },
+          ],
+        },
       },
       {
         id: 'equipmentName',
@@ -98,7 +145,7 @@ export const BiomechanicalPage = (_: Props) => {
 
   const deleteBioMechCallback = () => {
     toast.success(ResponseMessage.getMsgDeleteReportOk());
-    setBioReport(BioReport.filter((item) => item.id !== currentIndex));
+    setBiomechData(biomechData.filter((item) => item.id !== currentIndex));
     setCurrentIndex(null);
   };
 
@@ -137,7 +184,7 @@ export const BiomechanicalPage = (_: Props) => {
         controller && controller.signal,
       );
 
-      setBioReport(data);
+      setBiomechData(data);
     };
 
     const controller = new AbortController();
@@ -175,7 +222,7 @@ export const BiomechanicalPage = (_: Props) => {
               </Link>
             </div>
             <FilterableTable
-              data={BioReport}
+              data={biomechData}
               columns={columns}
               rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
               enableFilters
