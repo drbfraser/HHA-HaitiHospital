@@ -3,7 +3,6 @@ import { QuestionGroup, QuestionNode, ReportMetaData } from '@hha/common';
 import {
   CompositionQuestionFormField,
   ExpandableQuestionViewField,
-  FormField,
   Group,
   MultiSelectionQuestionFormField,
   NumericQuestionFormField,
@@ -11,11 +10,7 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import QuestionRows from './QuestionRows';
-import { useEffect, useState } from 'react';
-import { createImportSpecifier } from 'typescript';
-import HoverableTableHead from 'components/table/HoverableTableHead';
-import { Form } from 'react-bootstrap/lib/Navbar';
-import { QuestionRow } from 'constants/interfaces';
+import { useState } from 'react';
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -88,10 +83,9 @@ const ReadonlyReportForm = ({
   isUsingTable?: boolean;
   date?: string;
   author?: string;
-  questionItems: any[];
+  questionItems?: any[];
 }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(reportData);
   const pageSize = reportData
     .getPagination()
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])

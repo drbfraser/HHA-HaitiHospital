@@ -77,7 +77,6 @@ export const UploadForm = ({
             isSubmitting={false}
             reportData={reportTemplateData}
             isTemplate
-            questionItems={[]}
           />
         )}
       </form>
