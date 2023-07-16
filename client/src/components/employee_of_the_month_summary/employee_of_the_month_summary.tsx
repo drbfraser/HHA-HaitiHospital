@@ -23,6 +23,9 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   const [employeeImage, setEmployeeImage] = useState<string>(null);
   const updatedDate = props.employee.updatedAt;
 
+  console.log('Year', props.employee.awardedYear);
+  console.log('Month', props.employee.awardedMonth);
+
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
@@ -46,32 +49,22 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   }, [props.employee, props.history]);
 
   const translateMonth = (index: number): string => {
-    switch (index) {
-      case 0:
-        return t('monthJanuary');
-      case 1:
-        return t('monthFebruary');
-      case 2:
-        return t('monthMarch');
-      case 3:
-        return t('monthApril');
-      case 4:
-        return t('monthMay');
-      case 5:
-        return t('monthJune');
-      case 6:
-        return t('monthJuly');
-      case 7:
-        return t('monthAugust');
-      case 8:
-        return t('monthSeptember');
-      case 9:
-        return t('monthOctober');
-      case 10:
-        return t('monthNovember');
-      case 11:
-        return t('monthDecember');
-    }
+    // index is 1-indexed
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return months[index - 1];
   };
 
   return (
@@ -90,9 +83,12 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
           <div className="top-description">
             <div className="w-100 pr-2">
               <h2 className="mt-3 mb-3 fw-bold">
-                {t('employeeOfTheMonthTitle').concat(
+                {/* {t('employeeOfTheMonthTitle').concat(
                   translateMonth(currMonth).concat(' ').concat(currYear.toString()),
-                )}
+                )} */}
+                {t('employeeOfTheMonthTitle')
+                  .concat(translateMonth(props.employee.awardedMonth) + " ")
+                  .concat(props.employee.awardedYear.toString())}
               </h2>
               <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
               <p className="fs-6 lh-base text-break">{updatedDate}</p>

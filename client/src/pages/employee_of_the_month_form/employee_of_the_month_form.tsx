@@ -37,10 +37,11 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   const onSubmit = async (data: any) => {
     let formData = new FormData();
     data.department = departments.get(data.department);
+    [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-');
+    console.log(data.awardedYear, data.awardedMonth);
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
-
     await Api.Put(
       ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
       formData,
@@ -65,6 +66,17 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
             <div className="form-group col-md-6">
               <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
               <div>
+                <label htmlFor="Employee Month Year" className="form-label">
+                  Month and Year Awarded
+                </label>
+                <input
+                  data-testid="eotm-awarded-at"
+                  className="form-control mb-2 mt-0"
+                  type="month"
+                  id="employee-month"
+                  required
+                  {...register('awardedMonth', { required: true })}
+                ></input>
                 <label htmlFor="Employee Name" className="form-label">
                   {t('employeeOfTheMonthName')}
                 </label>

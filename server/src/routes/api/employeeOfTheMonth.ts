@@ -46,7 +46,9 @@ router.put(
           deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
         }
       }
-      const { name, department, description } = JSON.parse(req.body.document);
+      const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
+        req.body.document,
+      );
 
       let imgPath: string = '';
       if (req.file) {
@@ -61,6 +63,8 @@ router.put(
         departmentId: department.id,
         description: description,
         imgPath: imgPath,
+        awardedMonth: awardedMonth,
+        awardedYear: awardedYear,
       };
       await EOTMCollection.findByIdAndUpdate(
         { _id: previousEmployeeOfTheMonth?._id },

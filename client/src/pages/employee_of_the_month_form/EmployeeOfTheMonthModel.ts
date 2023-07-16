@@ -5,6 +5,8 @@ export interface EmployeeOfTheMonth {
   department: Department;
   description: string;
   imgPath: string;
+  awardedMonth: number;
+  awardedYear: number;
   createdAt: string;
   updatedAt: string;
 }

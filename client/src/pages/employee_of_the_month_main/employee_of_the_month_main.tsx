@@ -46,7 +46,7 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
     <div className="employee-of-the-month-main">
       <Layout>
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-          <div className="d-flex justify-content-start">
+          <div className="d-flex justify-content-start ">
             <Link to="/employee-of-the-month/form">
               <button
                 data-testid="update-eotm-button"
@@ -54,6 +54,14 @@ export const EmployeeOfTheMonthMain = (props: EmployeeOfTheMonthMainProps) => {
                 className="btn btn-outline-dark"
               >
                 {t('employeeOfTheMonthEdit')}
+              </button>
+            </Link>
+            <Link to="/employee-of-the-month/record" className="pl-3">
+              <button
+                type="button"
+                className="btn btn-outline-dark"
+              >
+                Record
               </button>
             </Link>
           </div>

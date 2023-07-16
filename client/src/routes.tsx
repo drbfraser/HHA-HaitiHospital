@@ -19,6 +19,7 @@ import GeneralReports from 'pages/general_reports/general_reports';
 import { Department } from 'pages/department/department';
 import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employee_of_the_month_main';
 import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
+import { EmployeeOfTheMonthRecord } from 'pages/employee_of_the_month_record/employee_of_the_month_record';
 import { Role } from 'constants/interfaces';
 import NotAuthorized from 'pages/not_authorized/not_authorized';
 import { Report } from 'pages/report/Report';
@@ -218,6 +219,14 @@ const routes = [
     path: '/message-board',
     key: 'message_board',
     component: MessageBoardMain,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/record',
+    key: 'employee_of_the_month',
+    component: EmployeeOfTheMonthRecord,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],

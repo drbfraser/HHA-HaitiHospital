@@ -966,7 +966,8 @@ export const seedEmployeeOfTheMonth = async () => {
       description:
         "Meet Sarah, a nurse working at a large hospital in the bustling city. She's been working at the hospital for almost three years now and has become an indispensable part of the team. Sarah is known for her dedication, her positive attitude, and her willingness to go above and beyond to help her patients.Last month, Sarah was named Employee of the Month, and for good reason. She had been working long hours and handling an increased workload due to the recent surge in patients with COVID-19. Despite the added stress, Sarah remained calm and composed, always putting her patients' needs first.One of Sarah's patients, a young girl named Emily, was admitted to the hospital with a serious illness. Emily was scared and anxious, but Sarah took the time to sit with her, answer her questions, and comfort her. Sarah went out of her way to make sure Emily felt safe and cared for, and the girl's parents were incredibly grateful for Sarah's kindness. But it wasn't just Sarah's bedside manner that earned her the Employee of the Month award. She also played a key role in training new nurses, helping to ensure that the hospital's high standards of patient care were upheld. And despite her busy schedule, Sarah always found time to help her colleagues and lend a listening ear when they needed it. Overall, Sarah's commitment to her patients, her colleagues, and the hospital as a whole made her an obvious choice for Employee of the Month. Her hard work and dedication are a true inspiration to everyone around her, and the hospital is lucky to have her on their team.",
       imgPath: 'public/images/avatar0.jpg',
-      awardedAt: new Date(),
+      awardedMonth: new Date().getMonth() + 1,
+      awardedYear: new Date().getFullYear(),
     });
     employeeOfTheMonth.save();
     console.log('Employee of the month seeded');
