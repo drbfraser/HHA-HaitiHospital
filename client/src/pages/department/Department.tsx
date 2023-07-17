@@ -83,13 +83,8 @@ export const Department = () => {
   }
 
   return (
-    <Layout>
+    <Layout title={`${t('departmentPageDepartmentOf')} ${department.name}`}>
       <div className="mt-3">
-        <section>
-          <h1 className="text-start">
-            {t('departmentPageDepartmentOf')} {department.name}
-          </h1>
-        </section>
         <section>
           {currentTableData.length > 0 && (
             <div className="row">

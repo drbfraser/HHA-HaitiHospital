@@ -12,6 +12,7 @@ export const CaseStudyView = () => {
   const [caseStudy, setCaseStudy] = useState({} as any);
   const id: string = useLocation().pathname.split('/')[3];
   const history: History = useHistory<History>();
+  const [title, setTitle] = useState('');
 
   useEffect(
     function fetchCaseStudyInitially() {
@@ -36,8 +37,8 @@ export const CaseStudyView = () => {
   );
 
   return (
-    <Layout showBackButton>
-      <CaseStudySummary caseStudy={caseStudy} />
+    <Layout showBackButton title={title}>
+      <CaseStudySummary caseStudy={caseStudy} setTitle={setTitle} />
     </Layout>
   );
 };

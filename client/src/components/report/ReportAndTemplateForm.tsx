@@ -4,7 +4,6 @@ import { Department } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
 
 interface ReportAndTemplateFormProps {
-  title: string;
   departmentLabel: string;
   departments: any;
   currentDepartment: Department;
@@ -12,7 +11,6 @@ interface ReportAndTemplateFormProps {
 }
 
 export const ReportAndTemplateForm = ({
-  title,
   departmentLabel,
   departments,
   currentDepartment,
@@ -22,7 +20,6 @@ export const ReportAndTemplateForm = ({
 
   return (
     <div className="col-md-6 mb-2">
-      <h1 className="text-start">{title}</h1>
       <fieldset>
         <label htmlFor="">{departmentLabel}</label>
         <select

@@ -25,11 +25,19 @@ const InfoRow = ({ label, testid = '', detail }: InfoRowProps) => (
 
 interface CaseStudyInfoProps {
   caseStudy: any;
+  setTitle?: (title: string) => void;
+  titleLabel?: string;
   infoRows?: InfoRowProps[];
   caseStudyStory: string;
 }
 
-const CaseStudyInfo = ({ caseStudy, infoRows = [], caseStudyStory }: CaseStudyInfoProps) => {
+const CaseStudyInfo = ({
+  caseStudy,
+  infoRows = [],
+  caseStudyStory,
+  setTitle,
+  titleLabel,
+}: CaseStudyInfoProps) => {
   const { t } = useTranslation();
   const author = caseStudy?.user?.name ?? t('status.not_available');
 
@@ -46,6 +54,12 @@ const CaseStudyInfo = ({ caseStudy, infoRows = [], caseStudyStory }: CaseStudyIn
   const onModalImageClose = () => {
     setImageModal(false);
   };
+
+  useEffect(() => {
+    console.log('caseStudyStory', titleLabel);
+    console.log('caseStudyStory', setTitle);
+    setTitle && setTitle(t(titleLabel));
+  }, [setTitle, t, titleLabel]);
 
   useEffect(() => {
     const getCaseStudyImage = async () => {
@@ -85,9 +99,6 @@ const CaseStudyInfo = ({ caseStudy, infoRows = [], caseStudyStory }: CaseStudyIn
       <div className="w-100">
         <div className="d-flex flex-column flex-xl-row">
           <div className="d-flex flex-column">
-            <h2 data-testid="case-study-patient-title" className="mt-3 mb-3 fw-bold">
-              {t('caseStudyFormPatientStoryCaseStudy')}
-            </h2>
             <h6 className="fs-6 lh-base">
               {t('caseStudyViewAuthor')} {author}
             </h6>
@@ -116,9 +127,11 @@ const CaseStudyInfo = ({ caseStudy, infoRows = [], caseStudyStory }: CaseStudyIn
   );
 };
 
-const PatientStorySummary = ({ caseStudy }) => (
+const PatientStorySummary = ({ caseStudy, setTitle }) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
+    setTitle={setTitle}
+    titleLabel="caseStudyFormPatientStoryCaseStudy"
     infoRows={[
       {
         label: 'caseStudyFormPatientName',
@@ -155,9 +168,11 @@ const PatientStorySummary = ({ caseStudy }) => (
   />
 );
 
-const StaffRecognitionSummary = ({ caseStudy }) => (
+const StaffRecognitionSummary = ({ caseStudy, setTitle }) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
+    setTitle={setTitle}
+    titleLabel="caseStudyFormPatientStoryCaseStudy"
     infoRows={[
       {
         label: 'caseStudyFormStaffName',
@@ -184,9 +199,11 @@ const StaffRecognitionSummary = ({ caseStudy }) => (
   />
 );
 
-const TrainingSessionSummary = ({ caseStudy }) => (
+const TrainingSessionSummary = ({ caseStudy, setTitle }) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
+    setTitle={setTitle}
+    titleLabel="caseStudyFormTrainingSessionCaseStudy"
     infoRows={[
       {
         label: 'caseStudyFormTrainingDate',
@@ -213,9 +230,11 @@ const TrainingSessionSummary = ({ caseStudy }) => (
   />
 );
 
-const EquipmentReceivedSummary = ({ caseStudy }) => (
+const EquipmentReceivedSummary = ({ caseStudy, setTitle }) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
+    setTitle={setTitle}
+    titleLabel="caseStudyFormTrainingSessionCaseStudy"
     infoRows={[
       {
         label: 'caseStudyFormWhatEquipmentWasReceived',
@@ -242,26 +261,36 @@ const EquipmentReceivedSummary = ({ caseStudy }) => (
   />
 );
 
-const OtherStorySummary = ({ caseStudy }) => (
-  <CaseStudyInfo caseStudy={caseStudy} caseStudyStory={caseStudy.otherStory.caseStudyStory} />
+const OtherStorySummary = ({ caseStudy, setTitle }) => (
+  <CaseStudyInfo
+    caseStudy={caseStudy}
+    setTitle={setTitle}
+    titleLabel="caseStudyFormOtherStoryCaseStudy"
+    caseStudyStory={caseStudy.otherStory.caseStudyStory}
+  />
 );
 
-export const CaseStudySummary = ({ caseStudy }) => (
+interface CaseStudySummaryProps {
+  caseStudy: any;
+  setTitle?: (title: string) => void;
+}
+
+export const CaseStudySummary = ({ caseStudy, setTitle }: CaseStudySummaryProps) => (
   <>
     {caseStudy.caseStudyType === CaseStudyType.PatientStory && (
-      <PatientStorySummary caseStudy={caseStudy} />
+      <PatientStorySummary caseStudy={caseStudy} setTitle={setTitle} />
     )}
     {caseStudy.caseStudyType === CaseStudyType.StaffRecognition && (
-      <StaffRecognitionSummary caseStudy={caseStudy} />
+      <StaffRecognitionSummary caseStudy={caseStudy} setTitle={setTitle} />
     )}
     {caseStudy.caseStudyType === CaseStudyType.TrainingSession && (
-      <TrainingSessionSummary caseStudy={caseStudy} />
+      <TrainingSessionSummary caseStudy={caseStudy} setTitle={setTitle} />
     )}
     {caseStudy.caseStudyType === CaseStudyType.EquipmentReceived && (
-      <EquipmentReceivedSummary caseStudy={caseStudy} />
+      <EquipmentReceivedSummary caseStudy={caseStudy} setTitle={setTitle} />
     )}
     {caseStudy.caseStudyType === CaseStudyType.OtherStory && (
-      <OtherStorySummary caseStudy={caseStudy} />
+      <OtherStorySummary caseStudy={caseStudy} setTitle={setTitle} />
     )}
   </>
 );

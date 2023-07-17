@@ -52,41 +52,38 @@ export const UploadReport = () => {
   const onSubmit = () => history.push(`/home`);
 
   return (
-    <div className="department">
-      <Layout className=" bg-light h-screen">
-        <ConfirmationModal
-          messages={[
-            <>
-              Please click <strong>Confirm</strong> to proceed with your submission. You'll be
-              redirected to the home page view.
-            </>,
-            <>
-              If you've made a mistake, please click <strong>Cancel</strong> instead.
-            </>,
-          ]}
-          onModalCancel={() => setIsShowingModal(false)}
-          onModalProceed={submitReport}
-          show={isShowingModal}
-          title={'Confirm Submission'}
+    <Layout title={t('template.upload_template')}>
+      <ConfirmationModal
+        messages={[
+          <>
+            Please click <strong>Confirm</strong> to proceed with your submission. You'll be
+            redirected to the home page view.
+          </>,
+          <>
+            If you've made a mistake, please click <strong>Cancel</strong> instead.
+          </>,
+        ]}
+        onModalCancel={() => setIsShowingModal(false)}
+        onModalProceed={submitReport}
+        show={isShowingModal}
+        title={'Confirm Submission'}
+      />
+      {departments && (
+        <ReportAndTemplateForm
+          departmentLabel={t('template.select_department')}
+          departments={departments}
+          currentDepartment={currentDepartment}
+          setCurrentDepartment={setCurrentDepartment}
         />
-        {departments && (
-          <ReportAndTemplateForm
-            title={t('template.upload_template')}
-            departmentLabel={t('template.select_department')}
-            departments={departments}
-            currentDepartment={currentDepartment}
-            setCurrentDepartment={setCurrentDepartment}
-          />
-        )}
-        {currentDepartment && (
-          <UploadForm
-            formHandler={confirmSubmission}
-            isSubmitting={isSubmitting}
-            reportTemplateData={reportTemplate}
-            updateReport={setReportTemplate}
-          />
-        )}
-      </Layout>
-    </div>
+      )}
+      {currentDepartment && (
+        <UploadForm
+          formHandler={confirmSubmission}
+          isSubmitting={isSubmitting}
+          reportTemplateData={reportTemplate}
+          updateReport={setReportTemplate}
+        />
+      )}
+    </Layout>
   );
 };

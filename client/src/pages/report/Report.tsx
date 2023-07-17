@@ -158,7 +158,6 @@ export const Report = () => {
       />
       {!report && departments && (
         <ReportAndTemplateForm
-          title={t('headerReport')}
           departmentLabel={t('headerReportDepartmentType')}
           departments={departments}
           currentDepartment={currentDepartment}

@@ -110,10 +110,9 @@ export const UpdatePermissions = () => {
   }, [history]);
 
   return (
-    <Layout>
+    <Layout title={t('permissions.permissionHeader')}>
       <>
         <div className="col-md-4 mb-2">
-          <h1 className="text-start">{t('permissions.permissionHeader')}</h1>
           <fieldset>
             <label htmlFor="role" className="form-label">
               {t('permissions.selectRole')}
