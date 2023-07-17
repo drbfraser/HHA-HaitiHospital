@@ -113,7 +113,7 @@ export const CaseStudyList = () => {
 
     if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector])) {
       columns.push({
-        header: 'Actions',
+        header: '',
         id: 'featured',
         enableColumnFilter: false,
         enableSorting: false,
@@ -153,7 +153,7 @@ export const CaseStudyList = () => {
               </Button>
               <Button
                 data-testid="delete-case-study-button"
-                className="text-decoration-none"
+                className="text-decoration-none link-secondary"
                 variant="link"
                 onClick={(event) => {
                   onDeleteButton(event, item);
