@@ -22,6 +22,8 @@ type AllSumUpInfo = {
   invalidGroupsIndices: number[];
 };
 
+type Translation = Record<string, string>;
+
 @serializable(undefined)
 export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   ID,
@@ -29,10 +31,11 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
   ErrorType
 > {
   private answer: number | undefined = 0;
+  private promptTranslation: Translation = {};
   private readonly compositionGroups: Array<ChildType<ID, ErrorType>>;
   private readonly validators: string[] = ['isPositive'];
 
-  constructor(id: ID, prompt: string, ...questions: Array<ChildType<ID, ErrorType>>) {
+  constructor(id: ID, prompt: Translation, ...questions: Array<ChildType<ID, ErrorType>>) {
     super(id, prompt);
     this.compositionGroups = questions;
   }
@@ -56,6 +59,14 @@ export class CompositionQuestion<ID, ErrorType> extends QuestionAnswerParent<
 
   public addValidator(validator: string) {
     this.validators.push(validator);
+  }
+
+  public getPromptTranslation(): Translation {
+    return this.promptTranslation;
+  }
+
+  public setPromptTranslation(translation: Translation): void {
+    this.promptTranslation = translation;
   }
 
   private checkValidators(): ValidationResult<string> {

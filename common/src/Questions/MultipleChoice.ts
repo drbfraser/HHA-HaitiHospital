@@ -6,6 +6,11 @@ import { ERROR_AT_LEAST_ONE_CHOICE, ValidationResult } from '../Form_Validators'
 import { serializable } from '../Serializer/ObjectSerializer';
 import { QuestionLeaf } from './QuestionLeaf';
 
+// interface Translation {
+//   [lang: string]: string;
+// }
+type Translation = Record<string, string>;
+
 // Choice for multiple choice questions
 @serializable('')
 class Choice {
@@ -58,7 +63,7 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
 > {
   protected readonly choices: Array<Choice> = new Array<Choice>();
 
-  constructor(id: ID, prompt: string, choices: string[], defaultAnswer?: T) {
+  constructor(id: ID, prompt: Translation, choices: string[], defaultAnswer?: T) {
     super(id, prompt);
     this.addChoices(choices);
     if (defaultAnswer !== undefined) {

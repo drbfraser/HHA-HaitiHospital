@@ -109,7 +109,6 @@ const ReportView = () => {
       submittedBy: fetchedReport?.report?.submittedBy,
     });
 
-    console.log('WOW', metaData);
     return () => {
       controller.abort();
     };

@@ -1,17 +1,19 @@
-import Api from 'actions/Api';
-import Layout from 'components/layout';
-import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
-import ReportForm from 'components/report/ReportForm';
-import { Department } from 'constants/interfaces';
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { FormEvent, useEffect, useState } from 'react';
-import { History } from 'history';
 import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
+
+import Api from 'actions/Api';
+import { Department } from 'constants/interfaces';
+import { History } from 'history';
+import Layout from 'components/layout';
+import PopupModalConfirmation from 'components/popup_modal/PopupModalConfirmation';
 import { ReportAndTemplateForm } from 'components/report_upload_form/ReportAndTemplateForm';
+import ReportForm from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import axios from 'axios';
 import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
@@ -29,7 +31,7 @@ export const Report = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
   const { departments } = useDepartmentData();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const applyReportChanges = () => {
     !areChangesMade && setAreChangesMade(true);
@@ -96,10 +98,12 @@ export const Report = () => {
       }
     };
     currentDepartment && getTemplates();
+    // Set the Accept-Language header for Axios requests
+    axios.defaults.headers.common['Accept-Language'] = i18n.language;
     return () => {
       controller.abort();
     };
-  }, [currentDepartment, history, objectSerializer]);
+  }, [currentDepartment, history, objectSerializer, i18n.language]);
 
   useEffect(() => {
     if (areChangesMade) {
@@ -186,7 +190,7 @@ export const Report = () => {
               }}
             >
               <i className="bi bi-chevron-left me-2" />
-              Choose Different Department
+              {t('headerReportChooseDifferentDepartment')}
             </button>
             <ReportForm
               applyReportChanges={applyReportChanges}

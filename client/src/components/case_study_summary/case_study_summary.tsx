@@ -58,8 +58,6 @@ export const CaseStudySummary = ({ caseStudy }) => {
         image={caseStudyImage}
         onModalClose={onModalImageClose}
         history={history}
-        location={undefined}
-        match={undefined}
       ></ModalImage>
       <div className="case-study-subcontainer flex flex-col">
         {caseStudy.caseStudyType === CaseStudyOptions.PatientStory ? (

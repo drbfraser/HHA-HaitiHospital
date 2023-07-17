@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
+import { ErrorListToast } from '../components/error/error_list';
 import { History } from 'history';
 import { toast } from 'react-toastify';
-import { ErrorListToast } from '../components/error/error_list';
 
 const BADREQUEST_CODE = 400;
 const UNAUTHORIZED_CODE = 401;
@@ -17,7 +17,7 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
     return;
   }
 
-  switch (err.response.status) {
+  switch (err.response?.status) {
     case UNAUTHORIZED_CODE: {
       history.push('/unauthorized');
       break;
