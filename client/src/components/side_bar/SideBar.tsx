@@ -67,12 +67,11 @@ const Sidebar = () => {
     const matchMedia = window.matchMedia('(max-width: 768px)');
 
     const windowSizeCallback = () => {
-      console.log(matchMedia)
       setIsMobile(matchMedia.matches);
     };
 
     matchMedia.addEventListener('change', windowSizeCallback);
-    
+
     windowSizeCallback();
     return () => {
       matchMedia.removeEventListener('change', windowSizeCallback);
