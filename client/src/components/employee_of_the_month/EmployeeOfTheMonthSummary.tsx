@@ -83,7 +83,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         location={undefined}
         match={undefined}
       ></ImageModal>
-      <div className="d-flex flex-row">
+      <div className="d-flex flex-column flex-xl-row">
         <div className="d-flex flex-column">
           <h2 className="mt-3 mb-3 fw-bold">
             {t('employeeOfTheMonthTitle').concat(
@@ -99,8 +99,8 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         </div>
         {employeeImage && (
           <img
-            className="d-flex ms-auto mt-3 mb-3"
-            style={{ width: '600px' }}
+            className="d-flex mx-auto ms-xl-auto mt-3 mb-3"
+            style={{ maxWidth: '400px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
             src={employeeImage}
             alt={ALT_MESSAGE}
             onClick={(event: any) => {

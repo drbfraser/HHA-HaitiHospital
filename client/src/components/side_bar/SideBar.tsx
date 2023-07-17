@@ -64,13 +64,18 @@ const Sidebar = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const matchMedia = window.matchMedia('(max-width: 768px)');
+
     const windowSizeCallback = () => {
-      setIsMobile(window.matchMedia('(max-width: 700px)').matches);
+      console.log(matchMedia)
+      setIsMobile(matchMedia.matches);
     };
-    window.matchMedia('(max-width: 700px)').addEventListener('change', windowSizeCallback);
+
+    matchMedia.addEventListener('change', windowSizeCallback);
+    
     windowSizeCallback();
     return () => {
-      window.matchMedia('(max-width: 700px)').removeEventListener('change', windowSizeCallback);
+      matchMedia.removeEventListener('change', windowSizeCallback);
     };
   }, []);
 

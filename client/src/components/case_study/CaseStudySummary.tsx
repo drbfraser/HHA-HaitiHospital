@@ -56,23 +56,19 @@ const CaseStudyInfo = ({ caseStudy, infoRows = [], caseStudyStory }: CaseStudyIn
   }, [caseStudy, history]);
 
   const imageComponent = (
-    <div
-      className="pl-2 d-flex ml-auto"
-      style={{
-        width: '500px',
-      }}
-    >
+    <>
       {caseStudyImage && (
         <img
           src={caseStudyImage}
+          style={{ maxWidth: '400px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
           alt="Case Study"
-          className={`img-fluid mt-3 mb-3 `}
+          className="d-flex mx-auto ms-xl-auto mt-3 mb-3"
           onClick={(event: any) => {
             onEnlargeImage(event);
           }}
         />
       )}
-    </div>
+    </>
   );
 
   return (
@@ -87,7 +83,7 @@ const CaseStudyInfo = ({ caseStudy, infoRows = [], caseStudyStory }: CaseStudyIn
         match={undefined}
       ></ImageModal>
       <div className="w-100">
-        <div className="d-flex flex-column flex-lg-row">
+        <div className="d-flex flex-column flex-xl-row">
           <div className="d-flex flex-column">
             <h2 data-testid="case-study-patient-title" className="mt-3 mb-3 fw-bold">
               {t('caseStudyFormPatientStoryCaseStudy')}
