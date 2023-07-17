@@ -5,7 +5,9 @@ import { useTranslation } from 'react-i18next';
 export const MessageBoardView = () => {
   const { t } = useTranslation();
 
-  return <Layout title={t('headerMessageBoard')}>
-    <MessagePanel />
-  </Layout>
+  return (
+    <Layout title={t('headerMessageBoard')}>
+      <MessagePanel />
+    </Layout>
+  );
 };
