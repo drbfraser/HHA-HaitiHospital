@@ -60,6 +60,8 @@ test-build-server:
     - staging
     - merge_requests
   before_script:
+    - npm -v
+    - node -v
     - cd server
     - npm ci
     - npm install ../common_build.tar.gz
@@ -83,6 +85,8 @@ test-build-client:
     - staging
     - merge_requests
   before_script:
+    - npm -v
+    - node -v
     - cd client
     - npm ci
     - npm install ../common_build.tar.gz

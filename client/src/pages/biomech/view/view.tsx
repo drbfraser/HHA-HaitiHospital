@@ -113,8 +113,6 @@ export const BrokenKitView = (props: BrokenKitViewProps) => {
         image={BioReportImage}
         onModalClose={onModalImageClose}
         history={props.history}
-        location={undefined}
-        match={undefined}
       ></ModalImage>
       <Layout>
         <div className="d-flex justify-content-start">
