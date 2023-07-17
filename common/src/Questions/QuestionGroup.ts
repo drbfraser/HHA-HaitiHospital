@@ -1,15 +1,18 @@
+import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
+
+import { QuestionNode } from './QuestionNode';
+import { QuestionParent } from './QuestionParent';
 //  A parent node in the question tree that supports any question type as child.
 import { serializable } from '../Serializer/ObjectSerializer';
-import { QuestionParent } from './QuestionParent';
-import { QuestionNode } from './QuestionNode';
-import { MapperArgs, QuestionMapper } from './QuestionGroupMapper';
+
+type Translation = Record<string, string>;
 
 @serializable(undefined)
 export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> {
   private readonly breakpointPairs: number[][] = [];
   private readonly questionItems: Array<QuestionNode<ID, ErrorType>> = [];
 
-  constructor(id: ID, prompt: string, ...questions: Array<QuestionNode<ID, ErrorType>>) {
+  constructor(id: ID, prompt: Translation, ...questions: Array<QuestionNode<ID, ErrorType>>) {
     super(id, prompt);
     questions ? this.addAll(...questions) : undefined;
   }

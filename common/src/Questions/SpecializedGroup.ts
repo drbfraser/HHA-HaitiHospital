@@ -4,6 +4,8 @@ import { QuestionNode } from '.';
 import { QuestionParent } from './QuestionParent';
 import { serializable } from '../Serializer';
 
+type Translation = Record<string, string>;
+
 @serializable(undefined, '')
 export class SpecializedGroup<
   ID,
@@ -12,7 +14,7 @@ export class SpecializedGroup<
 > extends QuestionParent<ID, ErrorType> {
   private readonly questions: Array<QuestionType>;
 
-  constructor(id: ID, prompt: string, ...questions: Array<QuestionType>) {
+  constructor(id: ID, prompt: Translation, ...questions: Array<QuestionType>) {
     super(id, prompt);
     this.questions = questions;
   }

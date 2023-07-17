@@ -3,6 +3,7 @@ import { CompositionQuestion, NumericQuestion } from '@hha/common';
 import { FormField, Group, NumericQuestionFormField } from '.';
 
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 const CompositionQuestionFormField = ({
   applyReportChanges,
@@ -20,6 +21,10 @@ const CompositionQuestionFormField = ({
   const allSumUpInfo = question.getAllSumUpInfo();
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
+  const { i18n } = useTranslation();
+  const prompt = question.getPrompt();
+  const language = i18n.language;
+  const promptValue = prompt && prompt[language] ? prompt[language] : '';
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -62,7 +67,7 @@ const CompositionQuestionFormField = ({
         inputState={inputState}
         min={0}
         nameId={nameId}
-        prompt={question.getPrompt()}
+        prompt={promptValue}
         type="number"
         value={question.getAnswer()}
         readOnly={readOnly}
@@ -79,7 +84,7 @@ const CompositionQuestionFormField = ({
                 'text-secondary': !hasErrors,
               })}
             >
-              {groupId.replaceAll('_', '.')}. {group.getPrompt()}
+              {`${groupId.replaceAll('_', '.')}. ${promptValue}`}
               {hasErrors && <i className="bi bi-exclamation-circle ms-2" />}
             </legend>
             <Group hasErrors={hasErrors}>

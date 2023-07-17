@@ -107,8 +107,8 @@ const HeaderView = (props: HeaderViewProps) => {
     return <h4 className="text-secondary">{t('headerDepartmentRehab')}</h4>;
   } else if (location.pathname.slice(1) === 'Department4ComHealth') {
     return <h4 className="text-secondary">{t('headerDepartmentCom')}</h4>;
-  } else if (location.pathname.slice(1) === 'Report') {
-    return <h4 className="text-secondary">{t('headerReport')}</h4>;
+    // } else if (location.pathname.slice(1) === 'Report') {
+    //   return <h4 className="text-secondary">{t('headerReport')}</h4>;
   } else if (location.pathname.slice(1) === 'admin') {
     return (
       <h4 data-testid="admin-header" className="text-secondary">

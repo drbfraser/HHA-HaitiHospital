@@ -4,16 +4,22 @@
     Its type is meant to be further specialized to determine the kind of node it 
     represents and what other capabilities it should support.
 */
+
+// interface Translation {
+//   [lang: string]: string;
+// }
+type Translation = Record<string, string>;
+
 export abstract class QuestionNode<ID, ErrorType> {
   private readonly id: ID;
-  private readonly prompt: string;
+  private readonly prompt: Translation;
 
-  constructor(id: ID, prompt: string) {
+  constructor(id: ID, prompt: Translation) {
     this.id = id;
     this.prompt = prompt;
   }
 
-  public getPrompt(): string {
+  public getPrompt(): Translation {
     return this.prompt;
   }
 

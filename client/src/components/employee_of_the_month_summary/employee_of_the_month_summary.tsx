@@ -82,8 +82,6 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         image={employeeImage}
         onModalClose={onModalImageClose}
         history={props.history}
-        location={undefined}
-        match={undefined}
       ></ModalImage>
       <div className="employee-subcontainer">
         <div className="employee-image-description flex flex-col">
