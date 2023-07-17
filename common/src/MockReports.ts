@@ -11,8 +11,17 @@ import {
 
 import { QuestionAnswerNode } from './Questions/QuestionAnswer';
 
+import translationEN from '../src/locales/en/translationEN.json';
+import translationFR from '../src/locales/fr/translationFR.json';
+
 type ID = string;
 type ErrorType = string;
+
+const translations: { [key: string]: any } = {
+  en: translationEN,
+  fr: translationFR,
+};
+
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
@@ -33,8 +42,8 @@ export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
 export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const getQuestionContent = (questionKey: string) => {
     return {
-      en: questionKey,
-      fr: questionKey,
+      en: translations['en'].rehabReportQuestions[questionKey],
+      fr: translations['fr'].rehabReportQuestions[questionKey],
     };
   };
 
@@ -664,8 +673,8 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
 export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
   const getQuestionContent = (questionKey: string) => {
     return {
-      en: questionKey,
-      fr: questionKey,
+      en: translations['en'].maternityQuestions[questionKey],
+      fr: translations['fr'].maternityQuestions[questionKey],
     };
   };
 
