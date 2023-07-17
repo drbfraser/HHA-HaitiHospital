@@ -7,7 +7,6 @@ import { useAdminToggleState, useAuthState } from 'contexts';
 
 import HhaLogo from 'components/hha_logo/hha_logo';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
 import cn from 'classnames';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
