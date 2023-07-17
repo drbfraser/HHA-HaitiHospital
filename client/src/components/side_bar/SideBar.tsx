@@ -14,7 +14,6 @@ type SideBarItemProps = { path: string; children: ReactNode };
 
 export const changeLanguage = (ln, i18n) => {
   return () => {
-    console.log(`Language changed to ${ln}`);
     localStorage.setItem('lang', ln);
     i18n.changeLanguage(ln);
   };

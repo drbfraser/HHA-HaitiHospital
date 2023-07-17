@@ -1,6 +1,8 @@
-import axios, { AxiosError } from 'axios';
 import { ENDPOINT_LOGIN, ENDPOINT_LOGOUT } from 'constants/endpoints';
+import axios, { AxiosError } from 'axios';
+
 import Api from './Api';
+import { Dispatch } from 'react';
 import { History } from 'history';
 
 interface FormData {
@@ -8,7 +10,7 @@ interface FormData {
   password: string;
 }
 
-export const loginUser = async (dispatch, formData: FormData) => {
+export const loginUser = async (dispatch: Dispatch<any>, formData: FormData) => {
   try {
     dispatch({ type: 'REQUEST_LOGIN' });
     const response = await axios.post(ENDPOINT_LOGIN, formData);
@@ -20,7 +22,7 @@ export const loginUser = async (dispatch, formData: FormData) => {
     dispatch({ type: 'LOGIN_ERROR', error: error });
     if (axios.isAxiosError(error)) {
       const err: AxiosError = error as AxiosError;
-      if (err.response.status < 500) {
+      if (err.response && err.response.status < 500) {
         return { success: false, error: err.message };
       } else {
         throw new Error(`Internal Error: ${err.message}`);
@@ -38,7 +40,7 @@ const onLogout = () => {
   localStorage.removeItem('username');
 };
 
-export const logOutUser = async (dispatch, history: History) => {
+export const logOutUser = async (dispatch: Dispatch<any>, history: History) => {
   dispatch({ type: 'LOGOUT' });
   await Api.Post(
     ENDPOINT_LOGOUT,

@@ -17,6 +17,8 @@ import {
   ValidationResult,
 } from '../Form_Validators';
 
+type Translation = Record<string, string>;
+
 @serializable(undefined, '', (arg: any) => undefined)
 export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, number, ErrorType> {
   private answer: number = 0;
@@ -27,16 +29,21 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
 
   constructor(
     id: ID,
-    prompt: string,
+    prompt: Translation,
     idGenerator: (questionGroupIndex: number) => ID,
     ...questions: Array<QuestionNode<ID, ErrorType>>
   ) {
     super(id, prompt);
     this.idGenerator = idGenerator;
-    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(
-      idGenerator(0),
-      `${prompt}-template`,
-    ).addAll(...questions);
+    const translations: string[] = Object.values(prompt).filter(Boolean) as string[];
+    const firstPromptValue: string | undefined =
+      translations.length > 0 ? translations[0] : undefined;
+    const templateName: Translation = firstPromptValue
+      ? { [firstPromptValue]: firstPromptValue }
+      : {};
+    this.questionsTemplate = new QuestionGroup<ID, ErrorType>(idGenerator(0), templateName).addAll(
+      ...questions,
+    );
   }
 
   public addToTemplate(
@@ -62,10 +69,17 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
   private expand(): void {
     if (this.getAnswer() > this.questionGroups.length) {
       for (let i = this.questionGroups.length; i < this.getAnswer(); i++) {
+        const lang: string = 'en'; // Set the desired language code here
+        const promptValue: Translation | undefined = this.getPrompt();
+        const promptText: Translation = promptValue || { '': '' };
+        const questionGroupName: Translation = {
+          [lang]: `${promptText}-${i}`,
+        };
+
         this.questionGroups.push(
           new QuestionGroup(
             this.idGenerator(i + 1),
-            `${this.getPrompt()}-${i}`,
+            questionGroupName,
             ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
               let serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
               return serializer.deserialize(serializer.serialize(q));

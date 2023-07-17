@@ -17,7 +17,7 @@ const DbErrorHandler = (e, history: History, toastMsg: string) => {
     return;
   }
 
-  switch (err.response.status) {
+  switch (err.response?.status) {
     case UNAUTHORIZED_CODE: {
       history.push('/unauthorized');
       break;

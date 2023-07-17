@@ -13,6 +13,7 @@ import { ReportAndTemplateForm } from 'components/report/ReportAndTemplateForm';
 import ReportForm from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
 import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
+import axios from 'axios';
 import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
@@ -30,7 +31,7 @@ export const Report = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
   const { departments } = useDepartmentData();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const applyReportChanges = () => {
     !areChangesMade && setAreChangesMade(true);
@@ -97,10 +98,12 @@ export const Report = () => {
       }
     };
     currentDepartment && getTemplates();
+    // Set the Accept-Language header for Axios requests
+    axios.defaults.headers.common['Accept-Language'] = i18n.language;
     return () => {
       controller.abort();
     };
-  }, [currentDepartment, history, objectSerializer]);
+  }, [currentDepartment, history, objectSerializer, i18n.language]);
 
   useEffect(() => {
     if (areChangesMade) {

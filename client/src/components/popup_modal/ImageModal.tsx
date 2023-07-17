@@ -3,7 +3,7 @@ import { Image, Modal } from 'react-bootstrap';
 import { History } from 'history';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface ModalImageProps extends RouteComponentProps {
+interface ModalImageProps {
   onModalClose: any;
   show: boolean;
   image: string;
