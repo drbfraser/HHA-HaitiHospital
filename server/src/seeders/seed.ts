@@ -956,7 +956,7 @@ export const seedBioMech = async () => {
 export const seedEmployeeOfTheMonth = async () => {
   console.log('Seeding employee of the month...');
   try {
-    await EmployeeOfTheMonth.deleteOne({});
+    await EmployeeOfTheMonth.deleteMany({});
     const employeeOfTheMonth = new EmployeeOfTheMonth({
       name: 'John Doe',
       departmentId: Departments.Hashtable.getDeptIdFromName(

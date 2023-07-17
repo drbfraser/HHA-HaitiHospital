@@ -94,6 +94,9 @@ const FilterableTable = ({
     enableColumnResizing: false,
   });
 
+  console.log("data", data);
+  console.log("columns", columns);
+
   return (
     <div className="px-4 pt-3">
       {enableFilters && enableGlobalFilter && (

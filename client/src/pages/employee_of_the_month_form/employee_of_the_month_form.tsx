@@ -37,8 +37,7 @@ export const EmployeeOfTheMonthForm = (props: EmployeeOfTheMonthFormProps) => {
   const onSubmit = async (data: any) => {
     let formData = new FormData();
     data.department = departments.get(data.department);
-    [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-');
-    console.log(data.awardedYear, data.awardedMonth);
+    [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
