@@ -131,7 +131,7 @@ const ReportView = () => {
   return (
     <>
       {!!report && (
-        <Layout>
+        <Layout showBackButton>
           <ConfirmationModal
             messages={[
               <>
@@ -170,79 +170,74 @@ const ReportView = () => {
             }}
             when={areChangesMade}
           />
-          <div className="mb-3 d-flex justify-content-start">
-            <button className="btn btn-outline-dark" onClick={history.goBack}>
-              {t('reportViewBack')}
-            </button>
-          </div>
 
-          <div>
-            <header>
-              <div>
-                {showViewEditBtn && (
-                  <button className="btn btn-primary" onClick={btnHandler}>
-                    {readOnly
-                      ? t('departmentReportDisplayEditForm')
-                      : t('departmentReportDisplayViewForm')}
-                  </button>
-                )}
-                {readOnly && (
-                  <button className="btn btn-outline-dark ml-3" onClick={handleExportWithComponent}>
-                    {t('departmentReportDisplayGeneratePDF')}
-                  </button>
-                )}
-                {readOnly && (
-                  <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
-                    {isUsingPagination
-                      ? t('departmentReportDisplayHidePagination')
-                      : t('departmentReportDisplayShowPagination')}
-                  </button>
-                )}
-              </div>
-            </header>
-            {readOnly && (
-              <div className="visually-hidden">
-                <PDFExport
-                  fileName={`${department}_${new Date(
-                    metaData?.submittedDate,
-                  ).toLocaleDateString()}__${metaData?.submittedBy}`}
-                  paperSize="A4"
-                  ref={pdfExportComponent}
-                  scale={0.75}
-                >
-                  <ReadonlyReportForm
-                    applyReportChanges={applyReportChanges}
-                    formHandler={() => {}}
-                    isSubmitting={false}
-                    isUsingPagination={false}
-                    reportData={report}
-                    date={submittedDate}
-                    author={metaData?.submittedBy}
-                  />
-                </PDFExport>
-              </div>
-            )}
-            {readOnly ? (
-              <ReadonlyReportForm
-                applyReportChanges={applyReportChanges}
-                btnText="Edit"
-                formHandler={confirmEdit}
-                isSubmitting={false}
-                isUsingPagination={isUsingPagination}
-                reportData={report}
-                date={submittedDate}
-                author={metaData?.submittedBy}
-              />
-            ) : (
-              <ReportForm
-                applyReportChanges={applyReportChanges}
-                btnText="Update"
-                formHandler={confirmEdit}
-                isSubmitting={false}
-                reportData={report}
-              />
-            )}
-          </div>
+          <header>
+            <div>
+              {showViewEditBtn && (
+                <button className="btn btn-primary" onClick={btnHandler}>
+                  {readOnly
+                    ? t('departmentReportDisplayEditForm')
+                    : t('departmentReportDisplayViewForm')}
+                </button>
+              )}
+              {readOnly && (
+                <button className="btn btn-outline-dark ml-3" onClick={handleExportWithComponent}>
+                  {t('departmentReportDisplayGeneratePDF')}
+                </button>
+              )}
+              {readOnly && (
+                <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
+                  {isUsingPagination
+                    ? t('departmentReportDisplayHidePagination')
+                    : t('departmentReportDisplayShowPagination')}
+                </button>
+              )}
+            </div>
+          </header>
+
+          {readOnly && (
+            <div className="visually-hidden">
+              <PDFExport
+                fileName={`${department}_${new Date(
+                  metaData?.submittedDate,
+                ).toLocaleDateString()}__${metaData?.submittedBy}`}
+                paperSize="A4"
+                ref={pdfExportComponent}
+                scale={0.75}
+              >
+                <ReadonlyReportForm
+                  applyReportChanges={applyReportChanges}
+                  formHandler={() => {}}
+                  isSubmitting={false}
+                  isUsingPagination={false}
+                  reportData={report}
+                  date={submittedDate}
+                  author={metaData?.submittedBy}
+                />
+              </PDFExport>
+            </div>
+          )}
+
+          {readOnly ? (
+            <ReadonlyReportForm
+              applyReportChanges={applyReportChanges}
+              btnText="Edit"
+              formHandler={confirmEdit}
+              isSubmitting={false}
+              isUsingPagination={isUsingPagination}
+              reportData={report}
+              date={submittedDate}
+              author={metaData?.submittedBy}
+            />
+          ) : (
+            <ReportForm
+              applyReportChanges={applyReportChanges}
+              btnText="Update"
+              formHandler={confirmEdit}
+              isSubmitting={false}
+              reportData={report}
+            />
+          )}
         </Layout>
       )}
     </>

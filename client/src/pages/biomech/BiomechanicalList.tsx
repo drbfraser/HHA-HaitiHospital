@@ -190,44 +190,36 @@ export const BiomechanicalList = () => {
   }, [history]);
 
   return (
-    <div className="biomechanical_page">
-      <Layout>
-        <ModalDelete
-          dataTestId="confirm-delete-biomech-button"
-          currentItem={currentIndex}
-          show={deleteModal}
-          item={t('item.report')}
-          onModalClose={onModalClose}
-          onModalDelete={onModalDelete}
-          history={history}
-          location={undefined}
-          match={undefined}
-        ></ModalDelete>
+    <Layout>
+      <ModalDelete
+        dataTestId="confirm-delete-biomech-button"
+        currentItem={currentIndex}
+        show={deleteModal}
+        item={t('item.report')}
+        onModalClose={onModalClose}
+        onModalDelete={onModalDelete}
+        history={history}
+        location={undefined}
+        match={undefined}
+      ></ModalDelete>
 
-        <section>
-          <div className="row my-2 justify-items-center">
-            <div className="col-sm-6 col-md-6 col-lg-6">
-              <Link to={`${Paths.getBioMechReport()}`}>
-                <button
-                  data-testid="add-biomech-button"
-                  type="button"
-                  className="btn btn-outline-dark"
-                >
-                  {t(`button.report`)}
-                </button>
-              </Link>
-            </div>
-            <FilterableTable
-              data={biomechData}
-              columns={columns}
-              rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
-              enableFilters
-              enableGlobalFilter
-              enableSorting
-            />
-          </div>
-        </section>
-      </Layout>
-    </div>
+      <div className="row justify-items-center">
+        <div className="col-sm-6">
+          <Link to={`${Paths.getBioMechReport()}`}>
+            <button data-testid="add-biomech-button" type="button" className="btn btn-outline-dark">
+              {t(`button.report`)}
+            </button>
+          </Link>
+        </div>
+        <FilterableTable
+          data={biomechData}
+          columns={columns}
+          rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
+          enableFilters
+          enableGlobalFilter
+          enableSorting
+        />
+      </div>
+    </Layout>
   );
 };

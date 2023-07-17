@@ -31,12 +31,15 @@ const Layout = ({
 
         <div className="main main-region px-2">
           <Header title={title} />
-          {showBackButton && (
-            <button className="btn btn-md btn-outline-secondary" onClick={history.goBack}>
-              {t('addMessageBack')}
-            </button>
-          )}
-          <div className="p-3">{children}</div>
+
+          <div className="p-3">
+            {showBackButton && (
+              <button className="btn btn-md btn-outline-secondary mb-3" onClick={history.goBack}>
+                {t('button.back')}
+              </button>
+            )}
+            {children}
+          </div>
         </div>
       </main>
     </>

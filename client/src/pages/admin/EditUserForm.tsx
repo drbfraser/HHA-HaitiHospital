@@ -1,7 +1,7 @@
 import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
-import { Link, useHistory, useParams } from 'react-router-dom';
 import { Paths, UserIdParams } from 'constants/paths';
 import { useEffect, useMemo, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { AdminUserForm } from 'pages/admin/AdminUserForm';
 import { AdminUserFormData } from 'pages/admin/typing';
@@ -14,7 +14,6 @@ import { UserDetails } from 'constants/interfaces';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import useDidMountEffect from 'utils/custom_hooks';
-import { useTranslation } from 'react-i18next';
 
 export const EditUserForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
@@ -23,7 +22,6 @@ export const EditUserForm = () => {
   const params = useParams<UserIdParams>();
   const id = useMemo<string>(() => params.userId, [params.userId]);
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -66,19 +64,11 @@ export const EditUserForm = () => {
 
   return (
     <div className={'admin'}>
-      <Layout>
+      <Layout showBackButton>
         {!fetch ? (
           <Spinner></Spinner>
         ) : (
           <>
-            <div className="ml-3 mb-3 d-flex justify-content-start">
-              <Link to={Paths.getAdminMain()}>
-                <button type="button" className="btn btn-outline-dark">
-                  {t('button.back')}
-                </button>
-              </Link>
-            </div>
-
             <div className="col-md-6">
               <AdminUserForm
                 data={{ userData: user, departments: departments }}

@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);
-  const [msgJson, setMsgJson] = useState<Message>(emptyMessage);
+  const [message, setMsgJson] = useState<Message>(emptyMessage);
   const [rerender, setRerender] = useState<boolean>(false);
   const history: History = useHistory<History>();
   const { register, handleSubmit, reset } = useForm({});
@@ -86,47 +86,33 @@ const MessageComments = () => {
   };
 
   return (
-    <div className="message_comments">
-      <Layout>
-        <div className="main_container">
-          <div className="mb-3 d-flex justify-content-start">
-            <button type="button" className="btn btn-outline-dark" onClick={history.goBack}>
-              {t('messageBoardCommentsBack')}
-            </button>
-          </div>
-          <div className="d-sm-flex align-items-center">
-            <h6 className="border-bottom pb-2 mb-0">{t('messageBoardCommentsMessage')}</h6>
-          </div>
-          <MessageDisplay message={msgJson} notifyChange={toggleRerender} />
-          <div className="d-sm-flex align-items-center">
-            <h6 className="border-bottom pt-5 pb-2 mb-0">
-              {t('messageBoardCommentsComment') + ' (' + comments.length + ')'}
-            </h6>
-          </div>
-          <div>
-            {comments.map((item, index) => (
-              <MessageComment key={index} comment={item} />
-            ))}
-          </div>
-          <div className="d-sm-flex align-items-center">
-            <h6 className="pt-5 pb-2 mb-2">{t('messageBoardAddComment')}</h6>
-          </div>
-          <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <input
-                className="form-control"
-                type="text"
-                {...register('messageComment', { required: true })}
-                defaultValue={''}
-              />
-              <button className="btn btn-primary mt-3 mb-5">
-                {t('messageBoardAddCommentSubmit')}
-              </button>
-            </form>
-          </div>
-        </div>
-      </Layout>
-    </div>
+    <Layout showBackButton title={t('messageBoardCommentsMessage')}>
+      <MessageDisplay message={message} notifyChange={toggleRerender} />
+      <div className="d-sm-flex align-items-center">
+        <h6 className="border-bottom pt-5 pb-2 mb-0">
+          {t('messageBoardCommentsComment') + ' (' + comments.length + ')'}
+        </h6>
+      </div>
+      <div>
+        {comments.map((item, index) => (
+          <MessageComment key={index} comment={item} />
+        ))}
+      </div>
+      <div className="d-sm-flex align-items-center">
+        <h6 className="pt-5 pb-2 mb-2">{t('messageBoardAddComment')}</h6>
+      </div>
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            className="form-control"
+            type="text"
+            {...register('messageComment', { required: true })}
+            defaultValue={''}
+          />
+          <button className="btn btn-primary mt-3 mb-5">{t('messageBoardAddCommentSubmit')}</button>
+        </form>
+      </div>
+    </Layout>
   );
 };
 
