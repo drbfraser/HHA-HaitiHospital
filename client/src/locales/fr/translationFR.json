@@ -87,7 +87,6 @@
   "messageBoardCommentCommentedOn": "Commenté sur:",
   "messageBoardAddComment": "Ajouter un commentaire",
   "messageBoardAddCommentSubmit": "Soumettre",
-  "messageBoardCommentsBack": "Arrière",
   "messageBoardDelete": "Supprimer",
   "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
@@ -100,7 +99,6 @@
   "addMessageTitle": "Titre",
   "addMessageBody": "Corps",
   "addMessageSubmit": "Soumettre",
-  "addMessageBack": "Arrière",
   "addMessageAlertSuccess": "Le message a été ajouté avec succès!",
   "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
   "addMessageAlertFailed": "Échec de la mise à jour du message",
@@ -136,7 +134,6 @@
     }
   },
 
-  "caseStudyFormBack": "Arrière",
   "caseStudyFormCaseStudyOptions": "Options d'étude de cas",
   "caseStudyFormClickToSelect": "Cliquez pour sélectionner un type d'étude de cas",
   "caseStudyFormPatientStory": "Témoignage de patients",
@@ -226,7 +223,6 @@
   "departmentReportDisplaySave": "sauvegarder",
   "departmentReportDisplayDiscard": "Jeter",
   "departmentReportDisplaySubmit": "Soumettre",
-  "departmentReportDisplayBack": "Arrière",
   "departmentReportDisplayEditForm": "Modifier le Formulaire",
   "departmentReportDisplayViewForm": "Voir le Formulaire",
   "departmentReportDisplayHidePagination": "Masquer la Pagination",
@@ -243,15 +239,12 @@
   "reportsUserId": "ID de l'utilisateur",
   "reportsSubmittedBy": "Proposé par",
 
-  "reportViewBack": "Arrière",
-
   "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthTitle": "Employé du mois de ",
   "employeeOfTheMonthDate": "Date de mise à jour",
   "employeeOfTheMonthName": "Nom",
   "employeeOfTheMonthDepartment": "Département",
   "employeeOfTheMonthDescription": "La description",
-  "employeeOfTheMonthBack": "Arrière",
   "employeeOfTheMonthUploadImage": "Télécharger une image",
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",

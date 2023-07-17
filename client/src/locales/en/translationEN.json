@@ -89,7 +89,6 @@
   "messageBoardCommentCommentedOn": "Commented On:",
   "messageBoardAddComment": "Add Comment",
   "messageBoardAddCommentSubmit": "Submit",
-  "messageBoardCommentsBack": "Back",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
 
@@ -100,7 +99,6 @@
   "addMessageTitle": "Title",
   "addMessageBody": "Body",
   "addMessageSubmit": "Submit",
-  "addMessageBack": "Back",
   "addMessageAlertSuccess": "Message is successfully added!",
   "addMessageAlertUnauthorized": "Update message failed: unauthorized",
   "addMessageAlertFailed": "Update message failed",
@@ -136,7 +134,6 @@
     }
   },
 
-  "caseStudyFormBack": "Back",
   "caseStudyFormCaseStudyOptions": "Case Study Options",
   "caseStudyFormClickToSelect": "Click to select a Case Study Type",
   "caseStudyFormPatientStory": "Patient Story",
@@ -226,7 +223,6 @@
   "departmentReportDisplaySave": "Save",
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
-  "departmentReportDisplayBack": "Back",
   "departmentReportDisplayEditForm": "Edit Form",
   "departmentReportDisplayViewForm": "View Form",
   "departmentReportDisplayHidePagination": "Hide Pagination",
@@ -243,15 +239,12 @@
   "reportsUserId": "User ID",
   "reportsSubmittedBy": "Submitted By",
 
-  "reportViewBack": "Back",
-
   "employeeOfTheMonthEdit": "Update",
   "employeeOfTheMonthTitle": "Employee of the month for ",
   "employeeOfTheMonthDate": "Date updated",
   "employeeOfTheMonthName": "Name",
   "employeeOfTheMonthDepartment": "Department",
   "employeeOfTheMonthDescription": "Description",
-  "employeeOfTheMonthBack": "Back",
   "employeeOfTheMonthUploadImage": "Upload Image",
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
