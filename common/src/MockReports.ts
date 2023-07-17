@@ -22,7 +22,6 @@ const translations: { [key: string]: any } = {
   fr: translationFR,
 };
 
-
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
   (questionGroupIndex: number): ID =>
