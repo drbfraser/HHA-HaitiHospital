@@ -39,7 +39,7 @@ export const EmployeeOfTheMonthView = () => {
   }, [history]);
 
   return (
-    <Layout>
+    <Layout title={t('headerEmployeeOfTheMonth')}>
       {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
         <Link to="/employee-of-the-month/form">
           <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">

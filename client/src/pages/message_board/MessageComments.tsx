@@ -86,7 +86,7 @@ const MessageComments = () => {
   };
 
   return (
-    <Layout showBackButton title={t('messageBoardCommentsMessage')}>
+    <Layout showBackButton title={t('headerMessageComments')}>
       <MessageDisplay message={message} notifyChange={toggleRerender} />
       <div className="d-sm-flex align-items-center">
         <h6 className="border-bottom pt-5 pb-2 mb-0">

@@ -9,9 +9,11 @@ import { ResponseMessage } from 'utils/response_message';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const AddUserForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
+  const { t } = useTranslation();
 
   const history: History = useHistory<History>();
 
@@ -31,7 +33,7 @@ export const AddUserForm = () => {
   };
 
   return (
-    <Layout showBackButton>
+    <Layout showBackButton title={t('headerAddUser')}>
       <div className="col-md-6">
         <AdminUserForm data={{ departments: departments }} onSubmit={submitForm}></AdminUserForm>
       </div>

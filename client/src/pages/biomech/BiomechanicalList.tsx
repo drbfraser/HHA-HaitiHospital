@@ -190,7 +190,7 @@ export const BiomechanicalList = () => {
   }, [history]);
 
   return (
-    <Layout>
+    <Layout title={t("headerBiomechanicalSupport")}>
       <ModalDelete
         dataTestId="confirm-delete-biomech-button"
         currentItem={currentIndex}

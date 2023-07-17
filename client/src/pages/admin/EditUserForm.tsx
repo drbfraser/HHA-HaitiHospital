@@ -14,6 +14,7 @@ import { UserDetails } from 'constants/interfaces';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import useDidMountEffect from 'utils/custom_hooks';
+import { useTranslation } from 'react-i18next';
 
 export const EditUserForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
@@ -22,6 +23,7 @@ export const EditUserForm = () => {
   const params = useParams<UserIdParams>();
   const id = useMemo<string>(() => params.userId, [params.userId]);
   const history: History = useHistory<History>();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -63,21 +65,19 @@ export const EditUserForm = () => {
   };
 
   return (
-    <div className={'admin'}>
-      <Layout showBackButton>
-        {!fetch ? (
-          <Spinner></Spinner>
-        ) : (
-          <>
-            <div className="col-md-6">
-              <AdminUserForm
-                data={{ userData: user, departments: departments }}
-                onSubmit={submitForm}
-              ></AdminUserForm>
-            </div>
-          </>
-        )}
-      </Layout>
-    </div>
+    <Layout showBackButton title={t('headerEditUser')}>
+      {!fetch ? (
+        <Spinner></Spinner>
+      ) : (
+        <>
+          <div className="col-md-6">
+            <AdminUserForm
+              data={{ userData: user, departments: departments }}
+              onSubmit={submitForm}
+            ></AdminUserForm>
+          </div>
+        </>
+      )}
+    </Layout>
   );
 };

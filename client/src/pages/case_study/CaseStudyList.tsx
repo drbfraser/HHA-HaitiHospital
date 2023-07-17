@@ -192,51 +192,49 @@ export const CaseStudyList = () => {
   }, [history]);
 
   return (
-    <div className="case-study-main">
-      <Layout>
-        <GenericModal
-          dataTestId="reminder-to-change-featured-before-deleting"
-          show={showWarningModal}
-          item={'case study'}
-          message={
-            'Please select another case study to feature before deleting the featured case study'
-          }
-          onModalClose={resetWarningModel}
-          history={history}
-          location={undefined}
-          match={undefined}
-        />
-        <DeleteModal
-          dataTestId="confirm-delete-case-study-button"
-          currentItem={currentIndex}
-          show={showDeleteModal}
-          item={'case study'}
-          onModalClose={resetDeleteModel}
-          onModalDelete={onModalDeleteConfirm}
-          history={history}
-          location={undefined}
-          match={undefined}
-        />
-        <div className="w-100">
-          <Link to="/case-study/form">
-            <button
-              className="btn btn-outline-dark"
-              data-testid="add-case-study-button"
-              type="button"
-            >
-              {t('CaseStudy.Main.AddCaseStudy')}
-            </button>
-          </Link>
-        </div>
-        <FilterableTable
-          columns={columns}
-          data={caseStudies}
-          rowClickHandler={(item) => history.push(`/case-study/view/${item.id}`)}
-          enableFilters
-          enableGlobalFilter
-          enableSorting
-        />
-      </Layout>
-    </div>
+    <Layout title={t('headerCaseStudy')}>
+      <GenericModal
+        dataTestId="reminder-to-change-featured-before-deleting"
+        show={showWarningModal}
+        item={'case study'}
+        message={
+          'Please select another case study to feature before deleting the featured case study'
+        }
+        onModalClose={resetWarningModel}
+        history={history}
+        location={undefined}
+        match={undefined}
+      />
+      <DeleteModal
+        dataTestId="confirm-delete-case-study-button"
+        currentItem={currentIndex}
+        show={showDeleteModal}
+        item={'case study'}
+        onModalClose={resetDeleteModel}
+        onModalDelete={onModalDeleteConfirm}
+        history={history}
+        location={undefined}
+        match={undefined}
+      />
+      <div className="w-100">
+        <Link to="/case-study/form">
+          <button
+            className="btn btn-outline-dark"
+            data-testid="add-case-study-button"
+            type="button"
+          >
+            {t('CaseStudy.Main.AddCaseStudy')}
+          </button>
+        </Link>
+      </div>
+      <FilterableTable
+        columns={columns}
+        data={caseStudies}
+        rowClickHandler={(item) => history.push(`/case-study/view/${item.id}`)}
+        enableFilters
+        enableGlobalFilter
+        enableSorting
+      />
+    </Layout>
   );
 };

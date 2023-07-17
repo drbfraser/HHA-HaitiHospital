@@ -51,7 +51,7 @@ export const CaseStudyForm = () => {
   };
 
   return (
-    <Layout showBackButton>
+    <Layout showBackButton title={t('headerCaseStudyForm')}>
       <div>
         <form>
           <div className="form-group col-md-6">

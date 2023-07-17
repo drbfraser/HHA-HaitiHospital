@@ -72,83 +72,81 @@ const AdminList = () => {
   }, [getUsers]);
 
   return (
-    <div className={'admin'}>
-      <Layout>
-        <ModalDelete
-          dataTestId="confirm-delete-user-button"
-          currentItem={currentIndex}
-          show={deleteModal}
-          item={t('item.user')}
-          onModalClose={onModalClose}
-          onModalDelete={onModalDelete}
-          history={history}
-          location={undefined}
-          match={undefined}
-        ></ModalDelete>
-        <div className="d-flex justify-content-start">
-          <Link to={Paths.getAdminAddUser()}>
-            <button data-testid="add-user-button" type="button" className="btn btn-outline-dark">
-              {t('button.add_user')}
-            </button>
-          </Link>
-        </div>
+    <Layout title={t('headerAdmin')}>
+      <ModalDelete
+        dataTestId="confirm-delete-user-button"
+        currentItem={currentIndex}
+        show={deleteModal}
+        item={t('item.user')}
+        onModalClose={onModalClose}
+        onModalDelete={onModalDelete}
+        history={history}
+        location={undefined}
+        match={undefined}
+      ></ModalDelete>
+      <div className="d-flex justify-content-start">
+        <Link to={Paths.getAdminAddUser()}>
+          <button data-testid="add-user-button" type="button" className="btn btn-outline-dark">
+            {t('button.add_user')}
+          </button>
+        </Link>
+      </div>
 
-        <div className="table-responsive">
-          <table className="table table-hover mt-3">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{t('admin.main_page.name_col')}</th>
-                <th scope="col">{t('admin.main_page.role_col')}</th>
-                <th scope="col">{t('admin.main_page.department_col')}</th>
-                <th scope="col">{t('admin.main_page.created_col')}</th>
-                <th scope="col" className="text-center">
-                  {t('admin.main_page.options_col')}
-                </th>
+      <div className="table-responsive">
+        <table className="table table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">{t('admin.main_page.name_col')}</th>
+              <th scope="col">{t('admin.main_page.role_col')}</th>
+              <th scope="col">{t('admin.main_page.department_col')}</th>
+              <th scope="col">{t('admin.main_page.created_col')}</th>
+              <th scope="col" className="text-center">
+                {t('admin.main_page.options_col')}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((item, index) => (
+              <tr key={index}>
+                <th scope="row">{index + 1}</th>
+                <td>{item.name}</td>
+                <td>{item.role}</td>
+                <td>{item.department.name}</td>
+                <td>
+                  {new Date(item.createdAt).toLocaleString(language, {
+                    timeZone: timezone,
+                  })}
+                </td>
+                <td>
+                  <div className="text-center">
+                    <button
+                      data-testid="edit-user-button"
+                      type="button"
+                      className="btn btn-link text-decoration-none"
+                      onClick={() => history.push(`${Paths.getAdminEditUser(item.id)}`)}
+                    >
+                      {t('button.edit')}
+                    </button>
+
+                    <button
+                      data-testid="view-user-button"
+                      type="button"
+                      className="btn btn-link text-decoration-none"
+                      onClick={(event) => {
+                        onDeleteUser(event, item.id);
+                      }}
+                    >
+                      {t('button.delete')}
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {users.map((item, index) => (
-                <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{item.name}</td>
-                  <td>{item.role}</td>
-                  <td>{item.department.name}</td>
-                  <td>
-                    {new Date(item.createdAt).toLocaleString(language, {
-                      timeZone: timezone,
-                    })}
-                  </td>
-                  <td>
-                    <div className="text-center">
-                      <button
-                        data-testid="edit-user-button"
-                        type="button"
-                        className="btn btn-link text-decoration-none"
-                        onClick={() => history.push(`${Paths.getAdminEditUser(item.id)}`)}
-                      >
-                        {t('button.edit')}
-                      </button>
-
-                      <button
-                        data-testid="view-user-button"
-                        type="button"
-                        className="btn btn-link text-decoration-none"
-                        onClick={(event) => {
-                          onDeleteUser(event, item.id);
-                        }}
-                      >
-                        {t('button.delete')}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Layout>
-    </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Layout>
   );
 };
 

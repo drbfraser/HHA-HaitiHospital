@@ -49,7 +49,7 @@ export const EmployeeOfTheMonthForm = () => {
   };
 
   return (
-    <Layout showBackButton>
+    <Layout showBackButton title={t("headerEmployeeOfTheMonthForm")}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group col-lg-9 col-xl-6">
           <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
