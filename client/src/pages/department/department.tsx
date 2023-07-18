@@ -49,7 +49,7 @@ export const Department = (props: DepartmentProps) => {
       history,
       controller.signal,
     );
-    
+
     setReports(fetchedReports);
     return () => {
       controller.abort();
