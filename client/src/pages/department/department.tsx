@@ -1,21 +1,19 @@
-import './department_style.css';
-
-import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import { Department as DepartmentModel, EMPTY_DEPARTMENT } from 'constants/interfaces';
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useParams, useHistory } from 'react-router-dom';
+import Pagination from 'components/pagination/Pagination';
+import Layout from 'components/layout';
+import Api from 'actions/Api';
 import {
   ENDPOINT_DEPARTMENT_GET_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
 } from 'constants/endpoints';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { dateOptions, userLocale } from 'constants/date';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
-import Api from 'actions/Api';
-import { History } from 'history';
-import Layout from 'components/layout';
-import Pagination from 'components/pagination/Pagination';
 import { ResponseMessage } from 'utils/response_message';
-import { useTranslation } from 'react-i18next';
+import { Department as DepartmentModel, EMPTY_DEPARTMENT } from 'constants/interfaces';
+import './department_style.css';
+import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
+import { History } from 'history';
+import { userLocale, dateOptions } from 'constants/date';
 
 const PAGE_SIZE = 10;
 
@@ -30,7 +28,8 @@ export const Department = (props: DepartmentProps) => {
   const [reports, setReports] = useState<IReportObject<any>[]>([]);
   const history: History = useHistory<History>();
   const { deptId } = useParams<{ deptId: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
   // Pagination variables
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +48,6 @@ export const Department = (props: DepartmentProps) => {
       history,
       controller.signal,
     );
-
     setReports(fetchedReports);
     return () => {
       controller.abort();
@@ -59,7 +57,6 @@ export const Department = (props: DepartmentProps) => {
   useEffect(() => {
     getReports();
   }, [getReports]);
-
   useEffect(() => {
     const controller = new AbortController();
     const getDepartmentById = async (id: string) => {
