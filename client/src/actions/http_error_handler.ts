@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { ErrorListToast } from '../components/error/error_list';
+import { ErrorListToast } from '../components/error/ErrorListToast';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 

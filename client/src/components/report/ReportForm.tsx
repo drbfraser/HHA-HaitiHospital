@@ -65,6 +65,15 @@ export const QuestionFormFields = ({
   );
 };
 
+interface ReportFormProps {
+  applyReportChanges?: () => void;
+  formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
+  isSubmitting: boolean;
+  reportData: QuestionGroup<ID, ErrorType>;
+  btnText?: string;
+  readOnly?: boolean;
+}
+
 const ReportForm = ({
   applyReportChanges,
   formHandler,
@@ -72,14 +81,7 @@ const ReportForm = ({
   reportData,
   btnText = 'Submit',
   readOnly,
-}: {
-  applyReportChanges?: () => void;
-  formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
-  isSubmitting: boolean;
-  reportData: QuestionGroup<ID, ErrorType>;
-  btnText?: string;
-  readOnly?: boolean;
-}): JSX.Element => {
+}: ReportFormProps): JSX.Element => {
   const { i18n } = useTranslation();
   const language = i18n.language;
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,11 +95,6 @@ const ReportForm = ({
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
       <form onSubmit={formHandler} noValidate>
-        <SubmitButton
-          buttonText={`${btnText} Report`}
-          disabled={!(errorSet.size === 0) || isSubmitting}
-          readOnly={readOnly}
-        />
         <Group isRootNode>
           <QuestionFormFields
             applyReportChanges={applyReportChanges}
@@ -110,7 +107,7 @@ const ReportForm = ({
         </Group>
         <SubmitButton
           buttonText={`${btnText} Report`}
-          disabled={!(errorSet.size === 0) || isSubmitting}
+          disabled={errorSet.size !== 0 || isSubmitting}
           readOnly={readOnly}
         />
       </form>
