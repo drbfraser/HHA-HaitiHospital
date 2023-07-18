@@ -64,19 +64,15 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     };
   }, [props.msgJson, history]);
 
-  const deleteMessageActions = () => {
-    toast.success(i18n.t('MessageAlertMessageDeleted'));
-  };
-
   const deleteMessage = async (id: string) => {
     await Api.Delete(
       ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(id),
       {},
-      deleteMessageActions,
+      null,
       history,
       TOAST_MESSAGEBOARD_DELETE_ERROR,
       null,
-      TOAST_MESSAGEBOARD_DELETE_SUCCESS,
+      i18n.t('MessageAlertMessageDeleted'),
     );
     if (is_comment_page) {
       history.push('/message-board');
