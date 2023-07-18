@@ -52,7 +52,7 @@ export const Report = () => {
   const submitReport = () => {
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
-    const reportPrompt = serializedReport['prompt'];
+    const reportPrompt = serializedReport['prompt'][i18n.language || 'en'];
     serializedReport['id'] = generateFormId(user?.userDetails?.name, reportPrompt);
     const reportObject = {
       departmentId: currentDepartment.id,
