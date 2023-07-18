@@ -12,9 +12,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
     return (str.match(/_/g) || []).length;
   };
 
-  
   useEffect(() => {
-    
     const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {
       let array: QuestionRow[] = [];
       const element: QuestionRow = {
@@ -31,13 +29,13 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
         };
         array.push(element);
       }
-  
+
       return array;
     };
 
     const processQuestionItem = (questionItems): QuestionRow[] => {
       let array: QuestionRow[] = [];
-  
+
       for (let questionItem of questionItems) {
         const element: QuestionRow = {
           id: questionItem.id,
@@ -58,10 +56,10 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
           }
         }
       }
-  
+
       return array;
     };
-    
+
     setQuestionRowElements(processQuestionItem(questionItems));
   }, [language, questionItems]);
 
