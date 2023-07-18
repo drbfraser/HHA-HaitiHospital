@@ -1,5 +1,3 @@
-import { useTranslation } from 'react-i18next';
-
 // Case studies
 const TOAST_CASESTUDY_POST_SUCCESS: string = 'Case study successfully submitted!';
 const TOAST_CASESTUDY_PATCH_SUCCESS: string = 'Case study successfully featured!';

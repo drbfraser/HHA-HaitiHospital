@@ -7,10 +7,11 @@ import {
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
+import QuestionRows from './QuestionRows';
 import { QuestionGroup, QuestionNode } from '@hha/common';
-
 import Pagination from 'components/pagination/Pagination';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface QuestionFormFieldsProps {
   applyReportChanges: () => void;
@@ -72,8 +73,10 @@ interface ReadonlyReportFormProps {
   btnText?: string;
   isTemplate?: boolean;
   isUsingPagination?: boolean;
+  isUsingTable?: boolean;
   date?: string;
   author?: string;
+  questionItems?: any[];
 }
 
 const ReadonlyReportForm = ({
@@ -82,8 +85,10 @@ const ReadonlyReportForm = ({
   reportData,
   isTemplate = false,
   isUsingPagination = true,
+  isUsingTable = true,
   date,
   author,
+  questionItems = [],
 }: ReadonlyReportFormProps): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = reportData
@@ -91,24 +96,42 @@ const ReadonlyReportForm = ({
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
   const totalCount = reportData.getPagination().length * pageSize;
-
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   return (
     <div className="mt-3 p-3">
-      <h2 className="mb-3">{reportData.getPrompt()}</h2>
-      <p>Author: {author}</p>
-      <p>Date: {date}</p>
+      <h3 className="mb-3">
+        {reportData.getPrompt()[language]} - {author} - {date}{' '}
+      </h3>
       <form onSubmit={formHandler} noValidate>
-        <Group isRootNode>
-          <QuestionFormFields
-            applyReportChanges={applyReportChanges}
-            currentPage={isUsingPagination ? currentPage : undefined}
-            isTemplate={isTemplate}
-            questions={reportData}
-            suffixName=""
-          />
-        </Group>
+        {isUsingTable ? (
+          <div className="table-responsive">
+            <table className="table table-bordered table-responsive-sm w-auto mt-2">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Question</th>
+                  <th scope="col">Answer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <QuestionRows questionItems={questionItems} />
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <Group isRootNode>
+            <QuestionFormFields
+              applyReportChanges={applyReportChanges}
+              currentPage={isUsingPagination ? currentPage : undefined}
+              isTemplate={isTemplate}
+              questions={reportData}
+              suffixName=""
+            />
+          </Group>
+        )}
       </form>
-      {isUsingPagination && (
+      {!isUsingTable && isUsingPagination && (
         <Pagination
           className="pagination-bar"
           currentPage={currentPage}

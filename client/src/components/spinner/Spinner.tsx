@@ -1,4 +1,10 @@
-export function Spinner(props: { text?: string; size?: string; style?: object }) {
+interface SpinnerProps {
+  text?: string;
+  size?: string;
+  style?: object;
+}
+
+export function Spinner(props: SpinnerProps) {
   return (
     <div className="text-center text-primary" style={props.style ?? {}}>
       <div
