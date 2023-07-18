@@ -11,6 +11,7 @@ import QuestionRows from './QuestionRows';
 import { QuestionGroup, QuestionNode } from '@hha/common';
 import Pagination from 'components/pagination/Pagination';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface QuestionFormFieldsProps {
   applyReportChanges: () => void;
@@ -95,11 +96,14 @@ const ReadonlyReportForm = ({
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
   const totalCount = reportData.getPagination().length * pageSize;
+  const { i18n } = useTranslation();
+  const language = i18n.language;
+  console.log("questionItems", questionItems)
 
   return (
     <div className="mt-3 p-3">
       <h3 className="mb-3">
-        {reportData.getPrompt()} - {author} - {date}{' '}
+        {reportData.getPrompt()[language]} - {author} - {date}{' '}
       </h3>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (

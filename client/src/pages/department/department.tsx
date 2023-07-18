@@ -28,7 +28,8 @@ export const Department = (props: DepartmentProps) => {
   const [reports, setReports] = useState<IReportObject<any>[]>([]);
   const history: History = useHistory<History>();
   const { deptId } = useParams<{ deptId: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
   // Pagination variables
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,7 +57,6 @@ export const Department = (props: DepartmentProps) => {
   useEffect(() => {
     getReports();
   }, [getReports]);
-
   useEffect(() => {
     const controller = new AbortController();
     const getDepartmentById = async (id: string) => {
@@ -79,6 +79,7 @@ export const Department = (props: DepartmentProps) => {
       controller.abort();
     };
   }, [history, deptId]);
+  console.log(currentTableData)
 
   return (
     <div className="department">

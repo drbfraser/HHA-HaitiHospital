@@ -53,7 +53,7 @@ export const Report = () => {
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportPrompt = serializedReport['prompt'];
-    serializedReport['id'] = generateFormId(user?.userDetails?.name, reportPrompt);
+    serializedReport['id'] = generateFormId(user?.userDetails?.name, reportPrompt['en']); // for now, id is always in english
     const reportObject = {
       departmentId: currentDepartment.id,
       reportMonth: new Date(today.getFullYear(), today.getMonth()),

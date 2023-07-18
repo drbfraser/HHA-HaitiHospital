@@ -1,8 +1,11 @@
 import { QuestionRow } from 'constants/interfaces';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Element => {
   const [questionRowElements, setQuestionRowElements] = useState<QuestionRow[]>([]);
+  const { i18n } = useTranslation();
+  const language = i18n.language;
 
   const underscoreAmount = (str: string): number => {
     return (str.match(/_/g) || []).length;
@@ -12,14 +15,14 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
     let array: QuestionRow[] = [];
     const element: QuestionRow = {
       id: specialQuestionItem.id,
-      prompt: specialQuestionItem.prompt,
+      prompt: specialQuestionItem.prompt[language],
       answer: specialQuestionItem?.answer,
     };
     array.push(element);
     for (let questionItem of specialQuestionItem.questions) {
       const element: QuestionRow = {
         id: questionItem.id,
-        prompt: questionItem.prompt,
+        prompt: questionItem.prompt[language],
         answer: questionItem?.answer,
       };
       array.push(element);
@@ -33,7 +36,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
     for (let questionItem of questionItems) {
       const element: QuestionRow = {
         id: questionItem.id,
-        prompt: questionItem.prompt,
+        prompt: questionItem.prompt[language],
         answer: questionItem?.answer,
       };
       array.push(element);

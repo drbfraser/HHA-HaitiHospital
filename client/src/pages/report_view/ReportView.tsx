@@ -42,7 +42,6 @@ const ReportView = () => {
     dateOptions,
   );
   const user = useAuthState();
-
   const confirmEdit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowEditModal(true);
@@ -130,6 +129,7 @@ const ReportView = () => {
       window.onbeforeunload = undefined;
     };
   }, [areChangesMade, readOnly]);
+  console.log("DEPT", department)
 
   return (
     <>
