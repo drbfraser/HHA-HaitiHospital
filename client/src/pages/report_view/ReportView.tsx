@@ -129,7 +129,6 @@ const ReportView = () => {
       window.onbeforeunload = undefined;
     };
   }, [areChangesMade, readOnly]);
-  console.log('DEPT', department);
 
   return (
     <>

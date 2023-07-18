@@ -79,7 +79,6 @@ export const Department = (props: DepartmentProps) => {
       controller.abort();
     };
   }, [history, deptId]);
-  console.log(currentTableData);
 
   return (
     <div className="department">
