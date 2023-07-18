@@ -48,7 +48,7 @@ export const seedDb = async () => {
     await seedEmployeeOfTheMonth();
     await seedCaseStudies();
     await seedTemplates();
-    await seedReports();
+    // await seedReports();
     await seedPermissions();
 
     console.log('Database seeding completed.');
