@@ -80,8 +80,6 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         image={employeeImage}
         onModalClose={onModalImageClose}
         history={history}
-        location={undefined}
-        match={undefined}
       ></ImageModal>
       <div className="d-flex flex-column flex-xl-row">
         <div className="d-flex flex-column">

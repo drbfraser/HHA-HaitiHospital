@@ -1,7 +1,6 @@
 import { Image, Modal } from 'react-bootstrap';
 
 import { History } from 'history';
-import { RouteComponentProps } from 'react-router-dom';
 
 interface ModalImageProps {
   onModalClose: any;

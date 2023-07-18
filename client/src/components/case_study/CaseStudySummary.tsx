@@ -93,8 +93,6 @@ const CaseStudyInfo = ({
         image={caseStudyImage}
         onModalClose={onModalImageClose}
         history={history}
-        location={undefined}
-        match={undefined}
       ></ImageModal>
       <div className="w-100">
         <div className="d-flex flex-column flex-xl-row">

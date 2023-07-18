@@ -111,8 +111,6 @@ export const BrokenKitView = () => {
         image={BioReportImage}
         onModalClose={onModalImageClose}
         history={history}
-        location={undefined}
-        match={undefined}
       ></ImageModal>
       <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
         <div style={{ display: 'flex', flex: '1 1 auto' }}>
