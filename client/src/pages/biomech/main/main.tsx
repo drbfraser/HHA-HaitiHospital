@@ -144,7 +144,6 @@ export const BiomechanicalPage = (_: Props) => {
   );
 
   const deleteBioMechCallback = () => {
-    toast.success(ResponseMessage.getMsgDeleteReportOk());
     setBiomechData(biomechData.filter((item) => item.id !== currentIndex));
     setCurrentIndex(null);
   };
