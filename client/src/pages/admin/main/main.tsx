@@ -48,8 +48,10 @@ const Admin = (props: AdminProps) => {
       ENDPOINT_ADMIN_DELETE_BY_ID(id),
       {},
       deleteUserActions,
-      ResponseMessage.getMsgDeleteUserFailed(),
       history,
+      ResponseMessage.getMsgDeleteUserFailed(),
+      null,
+      ResponseMessage.getMsgDeleteUserOk(),
     );
   };
 

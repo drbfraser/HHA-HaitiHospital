@@ -154,8 +154,10 @@ export const BiomechanicalPage = (_: Props) => {
       ENDPOINT_BIOMECH_DELETE_BY_ID(id),
       {},
       deleteBioMechCallback,
-      ResponseMessage.getMsgDeleteReportFailed(),
       history,
+      ResponseMessage.getMsgDeleteReportFailed(),
+      null,
+      ResponseMessage.getMsgDeleteReportOk(),
     );
   };
 

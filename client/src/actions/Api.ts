@@ -159,27 +159,38 @@ const Patch = async (
  * @param actions
  * - Actions that should occur after DELETE request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
  * @returns void
  */
 const Delete = async (
   url: string,
   obj: object = {},
-  actions: any,
-  errorMsg: string,
+  actions: () => void,
   history: History,
+  errorMsg?: string,
+  pendingMsg?: string,
+  successMsg?: string,
 ): Promise<void> => {
-  try {
-    await axios.delete(url, { data: obj });
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  //   error: errorMsg ? errorMsg : 'An error occurred',
+  // pending: pendingMsg ? pendingMsg : 'Processing...',
+  // success: successMsg ? successMsg : 'Success!',
+  await toast.promise(
+    axios
+      .delete(url, obj)
+      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+    {
+      error: errorMsg ? errorMsg : 'An error occurred',
+      pending: pendingMsg ? pendingMsg : 'Processing...',
+      success: successMsg ? successMsg : 'Deleted!',
+    },
+  );
 };
 
 /**

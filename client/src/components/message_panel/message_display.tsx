@@ -21,6 +21,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { TOAST_MESSAGEBOARD_DELETE_SUCCESS } from 'constants/toastSuccessMessages';
 
 interface MessageDisplayProps {
   msgJson: Message;
@@ -72,8 +73,10 @@ const MessageDisplay = (props: MessageDisplayProps) => {
       ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(id),
       {},
       deleteMessageActions,
-      TOAST_MESSAGEBOARD_DELETE_ERROR,
       history,
+      TOAST_MESSAGEBOARD_DELETE_ERROR,
+      null,
+      TOAST_MESSAGEBOARD_DELETE_SUCCESS,
     );
     if (is_comment_page) {
       history.push('/message-board');

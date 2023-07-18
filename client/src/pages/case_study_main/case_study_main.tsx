@@ -26,6 +26,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { TOAST_CASESTUDY_DELETE_SUCCESS } from 'constants/toastSuccessMessages';
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -49,8 +50,10 @@ export const CaseStudyMain = () => {
       ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
       {},
       resetDeleteModal,
-      TOAST_CASESTUDY_DELETE_ERROR,
       history,
+      TOAST_CASESTUDY_DELETE_ERROR,
+      null,
+      TOAST_CASESTUDY_DELETE_SUCCESS,
     );
   };
 
