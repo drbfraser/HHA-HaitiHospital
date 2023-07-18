@@ -34,7 +34,7 @@ export const UploadReport = () => {
       departmentId: currentDepartment.id,
       serializedReport,
     };
-    console.log("reportObject", reportObject)
+    console.log('reportObject', reportObject);
 
     setIsShowingModal(false);
     setIsSubmitting(true);
