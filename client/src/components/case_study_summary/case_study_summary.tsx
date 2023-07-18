@@ -64,7 +64,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <div className="w-100 pr-2">
             <div className="case-study-top-description">
               <div className="case-study-top-text">
-                <h2 data-testid="case-study-patient-title" className="mt-3 mb-3 fw-bold">
+                <h2 data-testid="case-study-title" className="mt-3 mb-3 fw-bold">
                   {t('caseStudyFormPatientStoryCaseStudy')}
                 </h2>
                 <h6 className="fs-6 lh-base">
@@ -112,7 +112,9 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <div className="w-100 pr-2">
             <div className="case-study-top-description">
               <div className="case-study-top-text">
-                <h2 className="mt-3 mb-3 fw-bold">{t('caseStudyFormStaffRecognitionCaseStudy')}</h2>
+                <h2 className="mt-3 mb-3 fw-bold" data-testid="case-study-title">
+                  {t('caseStudyFormStaffRecognitionCaseStudy')}
+                </h2>
                 <h6 className="fs-6 lh-base">
                   {t('caseStudyViewAuthor')} {author}
                 </h6>
@@ -146,7 +148,9 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <div className="w-100 pr-2">
             <div className="case-study-top-description">
               <div className="case-study-top-text">
-                <h2 className="mt-3 mb-3 fw-bold">{t('caseStudyFormTrainingSessionCaseStudy')}</h2>
+                <h2 className="mt-3 mb-3 fw-bold" data-testid="case-study-title">
+                  {t('caseStudyFormTrainingSessionCaseStudy')}
+                </h2>
                 <h6 className="fs-6 lh-base">
                   {t('caseStudyViewAuthor')} {author}
                 </h6>
@@ -184,7 +188,7 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <div className="w-100 pr-2">
             <div className="case-study-top-description">
               <div className="case-study-top-text">
-                <h2 className="mt-3 mb-3 fw-bold">
+                <h2 className="mt-3 mb-3 fw-bold" data-testid="case-study-title">
                   {t('caseStudyFormEquipmentReceivedCaseStudy')}
                 </h2>
                 <h6 className="fs-6 lh-base">
@@ -234,7 +238,9 @@ export const CaseStudySummary = ({ caseStudy }) => {
           <div className="w-100 pr-2">
             <div className="case-study-top-description">
               <div className="case-study-top-text">
-                <h2 className="mt-3 mb-3 fw-bold">{t('caseStudyFormOtherStoryCaseStudy')}</h2>
+                <h2 className="mt-3 mb-3 fw-bold" data-testid="case-study-title">
+                  {t('caseStudyFormOtherStoryCaseStudy')}
+                </h2>
                 <h6 className="fs-6 lh-base">
                   {t('caseStudyViewAuthor')} {author}
                 </h6>

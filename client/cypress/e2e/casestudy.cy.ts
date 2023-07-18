@@ -63,7 +63,7 @@ describe('Case Study Tests', function () {
       caseStudyIds.push(caseStudyId); // Store the Id of the Case Study for Deleting later
     });
 
-    cy.contains('[data-testid="case-study-patient-title"]', 'Patient Story Case Study');
+    cy.contains('[data-testid="case-study-title"]', 'Patient Story Case Study');
     cy.contains('[data-testid="case-study-patient-name"]', 'John Doe');
     cy.contains('[data-testid="case-study-patient-age"]', '22');
     cy.contains('[data-testid="case-study-patient-from"]', 'Canada');

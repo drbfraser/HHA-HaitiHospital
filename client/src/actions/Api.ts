@@ -64,7 +64,6 @@ const Post = async (
   pendingMsg?: string,
   successMsg?: string,
 ) => {
-  actions();
   await toast.promise(
     axios.post(url, obj).then(
       () => actions(),

@@ -48,26 +48,26 @@ export const CaseStudyMain = () => {
     await Api.Delete(
       ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
       {},
-      () => {},
+      resetDeleteModal,
       TOAST_CASESTUDY_DELETE_ERROR,
       history,
     );
   };
 
-  const resetDeleteModel = () => {
+  const resetDeleteModal = () => {
     setCurrentIndex(null);
     setShowDeleteModal(false);
   };
 
-  const resetWarningModel = () => {
+  const resetWarningModal = () => {
     setCurrentIndex(null);
     setShowWarningModel(false);
   };
 
   const onModalDeleteConfirm = async (id: string) => {
     await deleteCaseStudy(id);
-
     setCaseStudies(caseStudies.filter((item: any) => item.id !== id));
+    setCurrentIndex(null);
   };
 
   const columns = useMemo(() => {
@@ -147,7 +147,10 @@ export const CaseStudyMain = () => {
                 title={t('button.')}
                 className="text-decoration-none"
               >
-                <i className={`bi ${item.featured ? 'bi-star-fill' : 'bi-star'}`}></i>
+                <i
+                  data-testid={`featured=${item.featured}`}
+                  className={`bi ${item.featured ? 'bi-star-fill' : 'bi-star'}`}
+                ></i>
               </Button>
               <Button
                 data-testid="delete-case-study-button"
@@ -199,7 +202,7 @@ export const CaseStudyMain = () => {
           message={
             'Please select another case study to feature before deleting the featured case study'
           }
-          onModalClose={resetWarningModel}
+          onModalClose={resetWarningModal}
           history={history}
           location={undefined}
           match={undefined}
@@ -209,7 +212,7 @@ export const CaseStudyMain = () => {
           currentItem={currentIndex}
           show={showDeleteModal}
           item={'case study'}
-          onModalClose={resetDeleteModel}
+          onModalClose={resetDeleteModal}
           onModalDelete={onModalDeleteConfirm}
           history={history}
           location={undefined}
