@@ -22,10 +22,12 @@ const ReportView = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
   const [isUsingPagination, setIsUsingPagination] = useState(true);
+  const [isUsingTable, setIsUsingTable] = useState(true);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
+  const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
   const { departmentIdKeyMap } = useDepartmentData();
@@ -87,6 +89,8 @@ const ReportView = () => {
 
   const togglePagination = () => setIsUsingPagination(!isUsingPagination);
 
+  const toggleTable = () => setIsUsingTable((isUsingTable) => !isUsingTable);
+
   const getReport = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReport: any = await Api.Get(
@@ -95,8 +99,10 @@ const ReportView = () => {
       history,
       controller.signal,
     );
-    setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
 
+    setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
+    console.log(report);
+    setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
       _id: fetchedReport?.report?._id,
       departmentId: fetchedReport?.report?.departmentId,
@@ -185,6 +191,12 @@ const ReportView = () => {
                 </button>
               )}
               {readOnly && (
+                <button className="btn btn-outline-dark ml-3" onClick={toggleTable}>
+                  {isUsingTable ? 'Hide Table' : 'Show Table'}
+                </button>
+              )}
+
+              {readOnly && !isUsingTable && (
                 <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
                   {isUsingPagination
                     ? t('departmentReportDisplayHidePagination')
@@ -209,9 +221,11 @@ const ReportView = () => {
                   formHandler={() => {}}
                   isSubmitting={false}
                   isUsingPagination={false}
+                  isUsingTable={true}
                   reportData={report}
                   date={submittedDate}
                   author={metaData?.submittedBy}
+                  questionItems={questionItems}
                 />
               </PDFExport>
             </div>
@@ -224,9 +238,11 @@ const ReportView = () => {
               formHandler={confirmEdit}
               isSubmitting={false}
               isUsingPagination={isUsingPagination}
+              isUsingTable={isUsingTable}
               reportData={report}
               date={submittedDate}
               author={metaData?.submittedBy}
+              questionItems={questionItems}
             />
           ) : (
             <ReportForm
