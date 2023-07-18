@@ -3,13 +3,13 @@ import { ENDPOINT_MESSAGEBOARD_POST } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
 import MessageForm from '../../components/message/MessageForm';
-import { TOAST_MESSAGEBOARD_POST_ERROR } from 'constants/toastErrorMessages';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { ResponseMessage } from 'utils';
 
 const AddMessage = () => {
   const history: History = useHistory<History>();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const onSubmitActions = () => {
     history.push('/message-board');
@@ -21,9 +21,9 @@ const AddMessage = () => {
       data,
       onSubmitActions,
       history,
-      TOAST_MESSAGEBOARD_POST_ERROR,
+      ResponseMessage.getMsgCreatePostFailed(),
       null,
-      i18n.t('addMessageAlertSuccess'),
+      ResponseMessage.getMsgCreatePostOk(),
     );
   };
 

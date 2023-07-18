@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { TOAST_CASESTUDY_POST_SUCCESS } from 'constants/toastSuccessMessages';
+import { ResponseMessage } from 'utils';
 
 export const CaseStudyForm = () => {
   const [formOption, setformOption] = useState('');
@@ -45,7 +47,9 @@ export const CaseStudyForm = () => {
       formData,
       onSubmitActions,
       history,
-      TOAST_CASESTUDY_POST_ERROR,
+      ResponseMessage.getMsgCreateCaseStudyFailed(),
+      null,
+      ResponseMessage.getMsgCreateCaseStudyOk(),
     );
   };
 

@@ -21,6 +21,7 @@ import { useAuthState } from 'contexts';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { TOAST_MESSAGEBOARD_COMMENTS_POST_SUCCESS } from 'constants/toastSuccessMessages';
+import { ResponseMessage } from 'utils';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);
@@ -79,9 +80,9 @@ const MessageComments = () => {
       data,
       onSubmitActions,
       history,
-      TOAST_MESSAGEBOARD_COMMENTS_POST_ERROR,
+      ResponseMessage.getMsgCreateCommentFailed(),
       null,
-      TOAST_MESSAGEBOARD_COMMENTS_POST_SUCCESS,
+      ResponseMessage.getMsgCreateCommentOk(),
     );
     reset();
   };

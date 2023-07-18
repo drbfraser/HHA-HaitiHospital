@@ -26,6 +26,9 @@ enum RequestItem {
   REPORT_TEMPLATE = 'report_template',
   USER = 'user',
   USERS = 'users',
+  CASE_STUDY = 'case study',
+  POST = 'message board post',
+  COMMENT = 'message board comment',
 }
 
 // Make sure these keys match with i18-next translation JSON
@@ -231,6 +234,55 @@ const getMsgFetchUsersFailed = (): string => {
   });
 };
 
+// CASE STUDIES
+const getMsgCreateCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgCreateCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+// MESSAGE BOARD
+const getMsgCreatePostFailed = () => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.POST,
+  });
+};
+
+const getMsgCreatePostOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.POST,
+  });
+};
+
+const getMsgCreateCommentFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.COMMENT,
+  });
+};
+
+const getMsgCreateCommentOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.COMMENT,
+  });
+};
 export const ResponseMessage = {
   getMsgFetchDepartmentFailed,
   getMsgFetchDepartmentsFailed,
@@ -262,4 +314,12 @@ export const ResponseMessage = {
   getMsgDeleteUserFailed,
 
   getMsgFetchUsersFailed,
+
+  getMsgCreateCaseStudyFailed,
+  getMsgCreateCaseStudyOk,
+
+  getMsgCreatePostFailed,
+  getMsgCreatePostOk,
+  getMsgCreateCommentFailed,
+  getMsgCreateCommentOk,
 };

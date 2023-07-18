@@ -64,7 +64,7 @@ const EditMessage = () => {
       data,
       updateMessageActions,
       history,
-      TOAST_MESSAGEBOARD_PUT_ERROR,
+      i18n.t('addMessageAlertFailed'),
       null,
       i18n.t('addMessageAlertSuccess'),
     );
