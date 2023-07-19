@@ -68,6 +68,10 @@ describe('Bio Mech Tests', function () {
     bioMechPage.clickSubmitBioMechReportButton();
     cy.url().should('equal', `${baseUrl}/biomechanic`);
 
+    let toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', BIO_MECH_ADDED_SUCCESSFULLY);
+    toast.click();
+
     bioMechPage.clickViewBioMechReportButton(0);
     cy.url().should('include', '/biomechanic/view');
     cy.url().then(function (url) {
@@ -85,7 +89,7 @@ describe('Bio Mech Tests', function () {
     bioMechPage.clickBackViewBioMechReportButton();
     cy.url().should('equal', `${baseUrl}/biomechanic`);
 
-    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast = cy.get('div.Toastify__toast');
     toast.should('include.text', BIO_MECH_ADDED_SUCCESSFULLY);
   });
 

@@ -46,6 +46,8 @@ const AdminList = () => {
       deleteUserActions,
       history,
       ResponseMessage.getMsgDeleteUserFailed(),
+      null,
+      ResponseMessage.getMsgDeleteUserOk(),
     );
   };
 

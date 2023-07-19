@@ -215,6 +215,7 @@ export const BiomechanicalList = () => {
           data={biomechData}
           columns={columns}
           rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
+          rowTestId="view-biomech-report"
           enableFilters
           enableGlobalFilter
           enableSorting

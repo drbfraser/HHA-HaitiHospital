@@ -37,7 +37,7 @@ export const BrokenKitReport = () => {
   };
 
   return (
-    <Layout title={t('headerBiomechanicalSupportForm')}>
+    <Layout showBackButton title={t('headerBiomechanicalSupportForm')}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group col-md-6">
           <label className="font-weight-bold">{t('biomech.report.title')}</label>
