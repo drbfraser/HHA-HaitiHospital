@@ -78,6 +78,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
       <FilterableTable
         columns={columns}
         data={employeeOfTheMonthList}
+        rowClickHandler={(eotm) => history.push(`/employee-of-the-month/${eotm.awardedYear}/${eotm.awardedMonth}`)}
         enableFilters={false}
         enableGlobalFilter={false}
         enableSorting={false}

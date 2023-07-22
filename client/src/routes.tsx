@@ -240,6 +240,14 @@ const routes = [
     departmentsAllowed: [],
   },
   {
+    path: '/employee-of-the-month/:year/:month',
+    key: 'employee_of_the_month',
+    component: EmployeeOfTheMonthView,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
     path: '/employee-of-the-month',
     key: 'employee_of_the_month',
     component: EmployeeOfTheMonthView,

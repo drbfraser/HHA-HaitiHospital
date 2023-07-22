@@ -1,4 +1,5 @@
 import { Department } from 'constants/interfaces';
+import * as H from 'history';
 
 export interface EmployeeOfTheMonth {
   name: string;
@@ -9,4 +10,18 @@ export interface EmployeeOfTheMonth {
   awardedYear: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface RouteComponentProps<P> {
+  match: match<P>;
+  location: H.Location;
+  history: H.History;
+  staticContext?: any;
+}
+
+export interface match<P> {
+  params: P;
+  isExact: boolean;
+  path: string;
+  url: string;
 }

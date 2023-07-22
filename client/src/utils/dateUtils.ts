@@ -57,7 +57,10 @@ const isDateInRange = (dateStr: string | Date, dateRange: DayRange) => {
 
 const currentYearAndMonth = () => {
   const date = new Date();
-  return [date.getFullYear(), date.getMonth() + 1];
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+  };
 };
 
 const translateMonth = (index: number): string => {
