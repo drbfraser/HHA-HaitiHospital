@@ -17,6 +17,8 @@ import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
+import { formatDateString, translateMonth } from 'utils/dateUtils';
+import useDepartmentData from 'hooks/useDepartmentData';
 
 interface Props extends RouteComponentProps {}
 
@@ -46,32 +48,28 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
       controller.abort();
     };
   }, [history]);
-
-  useEffect(() => {
-    console.log('list', employeeOfTheMonthList);
-  }, [employeeOfTheMonthList]);
-  console.log('list', employeeOfTheMonthList);
-
+  const { departmentIdKeyMap } = useDepartmentData();
+  console.log("dddd", departmentIdKeyMap)
   const columns: FilterableColumnDef[] = [
+    {
+      header: 'Awarded Month Year',
+      id: 'awardedMonthYear',
+      accessorFn: ({awardedMonth, awardedYear}) => `${translateMonth(awardedMonth)} ${awardedYear}`
+    },
     {
       header: 'Employee Name',
       id: 'name',
       accessorKey: 'name',
     },
     {
-      header: 'Awarded Month',
-      id: 'awardedMonth',
-      accessorKey: 'awardedMonth',
-    },
-    {
-      header: 'Awarded Year',
-      id: 'awardedYear',
-      accessorKey: 'awardedYear',
+      header: 'Department',
+      id: 'department',
+      accessorFn: ({departmentId}) => departmentIdKeyMap.get(departmentId),
     },
     {
       header: 'Last Updated',
       id: 'updatedAt',
-      accessorKey: 'updatedAt',
+      accessorFn: ({updatedAt}) => formatDateString(new Date(updatedAt))
     },
   ];
 

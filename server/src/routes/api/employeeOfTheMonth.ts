@@ -46,8 +46,7 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
     if (!doc) {
       throw new NotFound(`No employee of the month found`);
     }
-    // const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
-    console.log('DOC', doc);
+
     res.status(HTTP_OK_CODE).json(doc);
   } catch (e) {
     next(e);

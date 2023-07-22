@@ -1,4 +1,4 @@
-import { currMonth, currYear } from 'utils/dateUtils';
+import { currMonth, currYear, translateMonth } from 'utils/dateUtils';
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
@@ -43,23 +43,6 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
     props.employee.imgPath && getEmployeeOfTheMonthImage();
   }, [props.employee.imgPath, history]);
 
-  const translateMonth = (index: number): string => {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return months[index - 1];
-  };
   return (
     <>
       <ImageModal

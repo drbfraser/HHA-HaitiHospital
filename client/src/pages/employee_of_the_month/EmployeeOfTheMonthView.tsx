@@ -13,17 +13,13 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { currentYearAndMonth } from 'utils/dateUtils';
 
 export const EmployeeOfTheMonthView = () => {
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const authState = useAuthState();
   const history: History = useHistory<History>();
   const { t } = useTranslation();
-
-  const currentYearAndMonth = () => {
-    const date = new Date();
-    return [date.getFullYear(), date.getMonth() + 1];
-  };
 
   const isNonEmptyObject = (objectName) => {
     return Object.keys(objectName).length > 0
@@ -33,7 +29,6 @@ export const EmployeeOfTheMonthView = () => {
     const controller = new AbortController();
     const [currentYear, currentMonth] = currentYearAndMonth();
     const endpoint = `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${currentYear}/${currentMonth}`;
-    console.log('endpoint', endpoint);
     const getEmployeeOfTheMonth = async () => {
       const employeeOfTheMonthInfo = await Api.Get(
         endpoint,
