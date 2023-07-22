@@ -1,6 +1,3 @@
-import Pagination from 'components/pagination/Pagination';
-import SubmitButton from './SubmitButton';
-import { QuestionGroup, QuestionNode } from '@hha/common';
 import {
   CompositionQuestionFormField,
   ExpandableQuestionFormField,
@@ -11,6 +8,11 @@ import {
   TextQuestionFormField,
 } from '../question_form_components';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { QuestionGroup, QuestionNode } from '@hha/common';
+
+import Pagination from 'components/pagination/Pagination';
+import SubmitButton from './SubmitButton';
+import { useTranslation } from 'react-i18next';
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -63,6 +65,15 @@ export const QuestionFormFields = ({
   );
 };
 
+interface ReportFormProps {
+  applyReportChanges?: () => void;
+  formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
+  isSubmitting: boolean;
+  reportData: QuestionGroup<ID, ErrorType>;
+  btnText?: string;
+  readOnly?: boolean;
+}
+
 const ReportForm = ({
   applyReportChanges,
   formHandler,
@@ -70,14 +81,9 @@ const ReportForm = ({
   reportData,
   btnText = 'Submit',
   readOnly,
-}: {
-  applyReportChanges?: () => void;
-  formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
-  isSubmitting: boolean;
-  reportData: QuestionGroup<ID, ErrorType>;
-  btnText?: string;
-  readOnly?: boolean;
-}): JSX.Element => {
+}: ReportFormProps): JSX.Element => {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
   const pageSize = reportData
@@ -87,13 +93,8 @@ const ReportForm = ({
 
   return (
     <div className="mt-3 p-3">
-      <h2 className="mb-3">{reportData.getPrompt()}</h2>
+      <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
       <form onSubmit={formHandler} noValidate>
-        <SubmitButton
-          buttonText={`${btnText} Report`}
-          disabled={!(errorSet.size === 0) || isSubmitting}
-          readOnly={readOnly}
-        />
         <Group isRootNode>
           <QuestionFormFields
             applyReportChanges={applyReportChanges}
@@ -106,7 +107,7 @@ const ReportForm = ({
         </Group>
         <SubmitButton
           buttonText={`${btnText} Report`}
-          disabled={!(errorSet.size === 0) || isSubmitting}
+          disabled={errorSet.size !== 0 || isSubmitting}
           readOnly={readOnly}
         />
       </form>

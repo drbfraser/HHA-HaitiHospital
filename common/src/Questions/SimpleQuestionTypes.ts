@@ -4,12 +4,14 @@ import { serializable } from '../Serializer/ObjectSerializer';
 import { ERROR_NOT_A_INTEGER, isNumber, ValidationResult } from '../Form_Validators';
 import { QuestionLeaf } from './QuestionLeaf';
 
+type Translation = Record<string, string>;
+
 @serializable(undefined, '')
 export class TextQuestion<ID, ErrorType> extends QuestionLeaf<ID, string, ErrorType> {}
 
 @serializable(undefined, '')
 export class NumericQuestion<ID, ErrorType> extends QuestionLeaf<ID, number, ErrorType> {
-  constructor(id: ID, prompt: string, defaultAnswer?: number) {
+  constructor(id: ID, prompt: Translation, defaultAnswer?: number) {
     super(id, prompt, defaultAnswer);
     this.addValidator('isPositive');
   }

@@ -4,7 +4,6 @@
   "Rehab": "Rehab",
   "Community & Health": "Com & Health",
   "Report": "Report",
-
   "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
   "signInPleasePlaceHolderPassword": "Password",
@@ -17,7 +16,6 @@
   "signInUsernameValidationRequired": "Username is required to login",
   "signInPasswordValidationRequired": "Password is required to login",
   "signInContactAdmin": "Contact Admin",
-
   "sidebarHome": "Home",
   "sidebarMessageBoard": "Message Board",
   "sidebarLeaderBoard": "Leaderboard",
@@ -30,7 +28,6 @@
   "sidebarPermissions": "Permissions",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
-
   "headerOverview": "Overview",
   "headerMessageBoard": "Message Board",
   "headerMessageComments": "Comments",
@@ -44,6 +41,7 @@
   "headerReport": "Submit a report",
   "headerReportDepartmentType": "Department Type",
   "headerReportChooseDepartment": "Choose a department",
+  "headerReportChooseDifferentDepartment": "Choose different department",
   "headerEmployeeOfTheMonth": "Employee Of The Month",
   "headerEmployeeOfTheMonthForm": "Employee Of The Month Form",
   "headerBiomechanicalSupport": "Biomechanical Support",
@@ -58,7 +56,6 @@
   "MedicalDirector": "Medical Director",
   "HeadOfDepartment": "Head of Department",
   "User": "User",
-
   "leaderBoardOverviewDepartmentLeader": "Department Leaderboard",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "Department",
@@ -67,14 +64,12 @@
   "leaderBoardOverviewShowLess": "Show Less",
   "leaderBoardOverviewShowMore": "Show More",
   "leaderBoardOverviewSeeFullLeaderboard": "Go to leaderboard page",
-
   "dashboardMessageOverviewMessages": "Messages",
   "dashboardMessageOverviewTitle": "Title",
   "dashboardMessageOverviewUser": "User",
   "dashboardMessageOverviewDate": "Date",
   "dashboardMessageOverviewMessage": "Message",
   "dashboardMessageOverviewSeeMore": "See More messages",
-
   "messageBoardRecentUpdates": "Recent Announcements",
   "messageBoardAddMessage": "Add Message",
   "messageBoardMore": "More",
@@ -89,10 +84,8 @@
   "messageBoardCommentCommentedOn": "Commented On:",
   "messageBoardAddComment": "Add Comment",
   "messageBoardAddCommentSubmit": "Submit",
-  "messageBoardCommentsBack": "Back",
   "MessageAlertDeleteMessage": "Delete message?",
   "MessageAlertMessageDeleted": "Message deleted!",
-
   "addMessageAddMessage": "Add Message",
   "addMessageUserID": "User ID",
   "addMessageDepartment": "Department",
@@ -100,14 +93,11 @@
   "addMessageTitle": "Title",
   "addMessageBody": "Body",
   "addMessageSubmit": "Submit",
-  "addMessageBack": "Back",
   "addMessageAlertSuccess": "Message is successfully added!",
   "addMessageAlertUnauthorized": "Update message failed: unauthorized",
   "addMessageAlertFailed": "Update message failed",
   "addMessageAlertMustSelectDepartment": "Must select a department",
-
   "editMessage": "Edit Message",
-
   "leaderBoardDepartmentLeaderboard": "Department Leaderboard",
   "leaderBoardPosition": "Position",
   "leaderBoardDepartment": "Department",
@@ -115,7 +105,6 @@
   "leaderBoardPoints": "Points",
   "leaderBoardEmployeeOfMonth": "Employee of the Month",
   "leaderBoardLastUpdate": "Last updated 3 days ago",
-
   "Patient Story": "Patient Story",
   "Staff Recognition": "Staff Recognition",
   "Training Session": "Training Session",
@@ -136,7 +125,6 @@
     }
   },
 
-  "caseStudyFormBack": "Back",
   "caseStudyFormCaseStudyOptions": "Case Study Options",
   "caseStudyFormClickToSelect": "Click to select a Case Study Type",
   "caseStudyFormPatientStory": "Patient Story",
@@ -144,7 +132,6 @@
   "caseStudyFormTrainingSession": "Training Session",
   "caseStudyFormEquipmentReceived": "Equipment Received",
   "caseStudyFormOtherStory": "Other Story",
-
   "caseStudyFormPatientStoryCaseStudy": "Patient Story Case Study",
   "caseStudyFormPatientName": "Patient's Name",
   "caseStudyFormPatientAge": "Patient Age",
@@ -158,34 +145,28 @@
   "caseStudyFormNoFileChosen": "No file chosen",
   "caseStudyFormPermissionToShare": "This person has given permission to share their story and photo in HHA communications, including online platforms",
   "caseStudyFormSubmitForm": "Submit Form",
-
   "caseStudyFormStaffRecognitionCaseStudy": "Staff Recognition Case Study",
   "caseStudyFormStaffName": "Staff Name",
   "caseStudyFormRoleJobTitle": "Role / Job Title",
   "caseStudyFormWhichDepartmentWorkIn": "Which department do they work in?",
   "caseStudyFormHowLongHaveBeenWorkingHCBH": "How long have they been working at HCBH?",
   "caseStudyFormWhatEnjoyTheMostAtHCBH": "What do they enjoy the most about working at HCBH?",
-
   "caseStudyFormTrainingSessionCaseStudy": "Training Session Case Study",
   "caseStudyFormTrainingDate": "Training Date (MM-DD-YYYY)",
   "caseStudyFormWhatWasTrainingOn": "What was the training on?",
   "caseStudyFormWhoConductedTraining": "Who conducted training?",
   "caseStudyFormWhoAttendedTraining": "Who attended the training?",
   "caseStudyFormHowWillTrainingBenefitHCBH": "How will the training benefit HCBH and its staff?",
-
   "caseStudyFormEquipmentReceivedCaseStudy": "Equipment Received Case Study",
   "caseStudyFormWhatEquipmentWasReceived": "What equipment was received?",
   "caseStudyFormWhichDepartmentReceivedIt": "Which department received it?",
   "caseStudyFormWhoWasEquipmentFrom": "Who was the equipment from?",
   "caseStudyFormWasItDonatedOrPurchased": "Was it donated or purchased?",
   "caseStudyFormWhatDoesThisNewEquipmentDo": "What does this new equipment do?",
-
   "caseStudyFormOtherStoryCaseStudy": "Other Story Case Study",
   "caseStudyFormAnErrorOccurred": "An error occurred during the submission. Please try again.",
-
   "caseStudyViewAuthor": "Author: ",
   "caseStudyViewDate": "Date: ",
-
   "departmentPageNICU/PAED": "Department of NICU/PAED",
   "departmentPageDepartmentOf": "Department of ",
   "departmentPageSubmitData": "SubmitData",
@@ -197,7 +178,6 @@
   "departmentPageDelete": "Delete",
   "departmentPageAction": "Action",
   "departmentPageAccumulate": "Accumulate",
-
   "departmentFormSteps": "Steps:",
   "departmentFormSelectPatient": "Select Patient",
   "departmentFormSubmitAlertPressOKToSubmit": "Press OK to finalize submission",
@@ -205,12 +185,10 @@
   "departmentFormSubmit": "Submit",
   "departmentFormPrevious": "Previous",
   "departmentFormNext": "Next",
-
   "departmentFormRequiresValidNumber": "Requires a valid number",
   "departmentFormNameAndValue": "Name and value",
   "departmentFormAdd": "Add",
   "departmentFormRemove": "Remove",
-
   "departmentFormArrayInputValidationMustEnterValue": "Must enter a value for this field",
   "departmentFormArrayInputValidationPositiveNumberOnly": "Positive numbers only for this field",
   "departmentFormArrayInputValidationIntegersOnly": "Integers only for this field",
@@ -220,49 +198,40 @@
   "departmentFormTotalValidationDoesNotAddUpToTotal": "Does not add up to total",
   "departmentFormTotalValidationMustEnterName": "Must enter a name",
   "departmentFormValidationOneOrMoreFieldsAreInvalid": "One or more fields are invalid",
-
   "departmentReportDisplayDepartmentNICU": "Department of NICU/Paediatrics",
   "departmentReportDisplayNoReportFound": "No report found",
   "departmentReportDisplaySave": "Save",
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
-  "departmentReportDisplayBack": "Back",
   "departmentReportDisplayEditForm": "Edit Form",
   "departmentReportDisplayViewForm": "View Form",
   "departmentReportDisplayHidePagination": "Hide Pagination",
   "departmentReportDisplayShowPagination": "Show Pagination",
   "departmentReportDisplayDownloadCSV": "Download CSV",
   "departmentReportDisplayGeneratePDF": "Generate PDF",
-
   "reportAlertDeleteReportsFailed": "Delete report(s) failed",
   "reportAlertReportsDeleted": "Report(s) deleted",
-
   "reportsReportId": "Report ID",
   "reportsDepartment": "Department",
   "reportsSubmissionDate": "Submission Date",
   "reportsUserId": "User ID",
   "reportsSubmittedBy": "Submitted By",
 
-  "reportViewBack": "Back",
-
-  "employeeOfTheMonthEdit": "Update Employee Of The Month",
+  "employeeOfTheMonthEdit": "Update",
   "employeeOfTheMonthTitle": "Employee of the month for ",
   "employeeOfTheMonthDate": "Date updated",
   "employeeOfTheMonthName": "Name",
   "employeeOfTheMonthDepartment": "Department",
   "employeeOfTheMonthDescription": "Description",
-  "employeeOfTheMonthBack": "Back",
   "employeeOfTheMonthUploadImage": "Upload Image",
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
-
   "template": {
     "change_template": "Change template",
     "department": "Department",
     "select_department": "Select Department",
     "upload_template": "Upload New Template"
   },
-
   "admin": {
     "main_page": {
       "name_col": "Name",
@@ -284,12 +253,10 @@
       }
     }
   },
-
   "permissions": {
     "selectRole": "Select Role",
     "permissionHeader": "Permissions"
   },
-
   "biomech": {
     "main_page": {
       "priority_col": "Priority",
@@ -327,11 +294,9 @@
       "backlog": "Backlog"
     }
   },
-
   "status": {
     "not_available": "N/A"
   },
-
   "role": {
     "user": "User",
     "admin": "Admin",
@@ -339,12 +304,10 @@
     "head_department": "Head of Department",
     "bio_mechanic": "Bio Mechanic"
   },
-
   "modal": {
     "delete_msg": "Confirm to delete {{item}}?",
     "title": "WARNING"
   },
-
   "button": {
     "add_user": "Add User",
     "edit": "Edit",
@@ -356,20 +319,17 @@
     "view": "View",
     "add_image": "Upload Image"
   },
-
   "request_response": {
     "ok": "{{item}} successfully {{action}}!",
     "pending": "{{item}} is being {{action}}...",
     "failed": "{{item}} could not be {{action}}"
   },
-
   "request_action": {
     "create": "created",
     "delete": "deleted",
     "fetch": "fetched",
     "update": "updated"
   },
-
   "item": {
     "department": "Department",
     "departments": "Departments",
@@ -380,13 +340,11 @@
     "user": "User",
     "users": "Users"
   },
-
   "error_message": {
     "compress": {
       "image": "Can't compress this image file"
     }
   },
-
   "monthJanuary": "January",
   "monthFebruary": "February",
   "monthMarch": "March",

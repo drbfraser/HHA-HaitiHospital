@@ -1,25 +1,28 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "declaration": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
     "module": "CommonJS",
     "moduleResolution": "node",
-    "skipLibCheck": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "declaration": true,
+    "skipLibCheck": true,
+    "target": "es6",
 
-    "alwaysStrict": true,
+    "allowUnreachableCode": false,
     "allowUnusedLabels": false,
+    "alwaysStrict": true,
     "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noImplicitAny": true,
+    "removeComments": true,
     "strict": true,
 
     "baseUrl": ".",
@@ -27,6 +30,6 @@
 
     "experimentalDecorators": true
   },
-  "include": ["src/**/*"],
+  "include": ["./src/**/*"],
   "exclude": ["node_modules", "tests"]
 }

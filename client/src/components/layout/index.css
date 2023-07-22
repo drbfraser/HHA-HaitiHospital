@@ -1,0 +1,18 @@
+.main.main-region {
+  position: absolute;
+  left: 275px;
+  width: calc(100% - 275px);
+}
+
+/*Margin by pixel:*/
+@media screen and (max-width: 768px) {
+  .main.main-region {
+    position: absolute;
+    left: 70px;
+    width: calc(100% - 70px);
+  }
+}
+
+.errorMsg {
+  color: red;
+}

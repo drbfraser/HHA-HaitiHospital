@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { ImmutableChoice, SingleSelectionQuestion } from '@hha/common';
 
 import { FormFieldCheck } from './index';
+import { useTranslation } from 'react-i18next';
 
 interface SingleSelectionQuestionFormFieldProps {
   applyReportChanges: () => void;
@@ -20,6 +21,8 @@ const SingleSelectionQuestionFormField = ({
 }: SingleSelectionQuestionFormFieldProps) => {
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
+  const { i18n } = useTranslation();
+  const language = i18n.language;
 
   const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {
@@ -56,7 +59,7 @@ const SingleSelectionQuestionFormField = ({
   }, [nameId, setErrorSet, updateErrorSetFromSelf]);
 
   return (
-    <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
+    <FormFieldCheck nameId={nameId} prompt={question.getPrompt()[language]}>
       <div>
         {inputState !== true && <div className="text-danger">{inputState.message}</div>}
         {question.getChoices().map((choice: ImmutableChoice, index) => (

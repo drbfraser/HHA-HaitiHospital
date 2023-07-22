@@ -4,7 +4,6 @@
   "Rehab": "Rehab",
   "Community & Health": "Com & Health",
   "Report": "Report",
-
   "signInPleaseSignIn": "S'identifier",
   "signInPleasePlaceHolderEmail": "Nom d'utilisateur",
   "signInPleasePlaceHolderPassword": "Mot de passe",
@@ -17,7 +16,6 @@
   "signInUsernameValidationRequired": "Le nom d'utilisateur est requis pour se connecter",
   "signInPasswordValidationRequired": "Le mot de passe est requis pour se connecter",
   "signInContactAdmin": "Contacter l'administrateur",
-
   "sidebarHome": "D'accueil",
   "sidebarMessageBoard": "Tableau de bord",
   "sidebarLeaderBoard": "Classement",
@@ -30,7 +28,6 @@
   "sidebarPermissions": "autorisations",
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
-
   "headerOverview": "Aperçu",
   "headerMessageBoard": "Tableau de bord",
   "headerMessageComments": "Commentaires",
@@ -44,6 +41,7 @@
   "headerReport": "Présenter un rapport",
   "headerReportDepartmentType": "Type de département",
   "headerReportChooseDepartment": "Choisir un département",
+  "headerReportChooseDifferentDepartment": "Choisir un autre département",
   "headerEmployeeOfTheMonth": "Employé du mois",
   "headerEmployeeOfTheMonthForm": "Formulaire d'employé du mois",
   "headerBiomechanicalSupport": "Soutien biomécanique",
@@ -59,7 +57,6 @@
   "Medical Director": "Directeur médical",
   "Head of Department": "Chef de département",
   "User": "Utilisateur",
-
   "leaderBoardOverviewDepartmentLeader": "Classement du département",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "département",
@@ -67,14 +64,12 @@
   "leaderBoardOverviewPoints": "Points",
   "leaderBoardOverviewShowLess": "Montrer moins",
   "leaderBoardOverviewShowMore": "Montre plus",
-
   "dashboardMessageOverviewMessages": "messages",
   "dashboardMessageOverviewTitle": "Titre",
   "dashboardMessageOverviewUser": "Utilisateur",
   "dashboardMessageOverviewDate": "Date",
   "dashboardMessageOverviewMessage": "Un message",
   "dashboardMessageOverviewSeeMore": "Voir plus de messages",
-
   "messageBoardRecentUpdates": "Annonces Récentes",
   "messageBoardAddMessage": "Ajouter un message",
   "messageBoardMore": "Suite",
@@ -87,12 +82,10 @@
   "messageBoardCommentCommentedOn": "Commenté sur:",
   "messageBoardAddComment": "Ajouter un commentaire",
   "messageBoardAddCommentSubmit": "Soumettre",
-  "messageBoardCommentsBack": "Arrière",
   "messageBoardDelete": "Supprimer",
   "messageBoardPostedOn": "Posté Sur:",
   "MessageAlertDeleteMessage": "Supprimer le message ?",
   "MessageAlertMessageDeleted": "Message supprimé!",
-
   "addMessageAddMessage": "Ajouter un message",
   "addMessageUserID": "Identifiant d'utilisateur",
   "addMessageDepartment": "département",
@@ -100,14 +93,11 @@
   "addMessageTitle": "Titre",
   "addMessageBody": "Corps",
   "addMessageSubmit": "Soumettre",
-  "addMessageBack": "Arrière",
   "addMessageAlertSuccess": "Le message a été ajouté avec succès!",
   "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
   "addMessageAlertFailed": "Échec de la mise à jour du message",
   "addMessageAlertMustSelectDepartment": "Doit sélectionner un département",
-
   "editMessage": "Modifier le message",
-
   "leaderBoardDepartmentLeaderboard": "Classement du département",
   "leaderBoardPosition": "Position",
   "leaderBoardDepartment": "département",
@@ -115,7 +105,6 @@
   "leaderBoardPoints": "Points",
   "leaderBoardEmployeeOfMonth": "Employé du mois",
   "leaderBoardLastUpdate": "Dernière mise à jour il y a 3 jours",
-
   "Patient Story": "Témoignage de patients",
   "Staff Recognition": "Reconnaissance du personnel",
   "Training Session": "Session de formation",
@@ -136,7 +125,6 @@
     }
   },
 
-  "caseStudyFormBack": "Arrière",
   "caseStudyFormCaseStudyOptions": "Options d'étude de cas",
   "caseStudyFormClickToSelect": "Cliquez pour sélectionner un type d'étude de cas",
   "caseStudyFormPatientStory": "Témoignage de patients",
@@ -144,7 +132,6 @@
   "caseStudyFormTrainingSession": "Session de formation",
   "caseStudyFormEquipmentReceived": "Équipement reçu",
   "caseStudyFormOtherStory": "Autre histoire",
-
   "caseStudyFormPatientStoryCaseStudy": "Étude de cas sur l'histoire d'un patient",
   "caseStudyFormPatientName": "Le nom du patient",
   "caseStudyFormPatientAge": "Âge du patient",
@@ -158,34 +145,28 @@
   "caseStudyFormNoFileChosen": "Aucun fichier choisi",
   "caseStudyFormPermissionToShare": "Cette personne a donné la permission de partager son histoire et sa photo dans les communications HHA, y compris les plateformes en ligne",
   "caseStudyFormSubmitForm": "Soumettre le formulaire",
-
   "caseStudyFormStaffRecognitionCaseStudy": "Étude de cas sur la reconnaissance du personnel",
   "caseStudyFormStaffName": "Nom du personnel",
   "caseStudyFormRoleJobTitle": "Rôle / Titre du poste",
   "caseStudyFormWhichDepartmentWorkIn": "Dans quel département travaillent-ils ?",
   "caseStudyFormHowLongHaveBeenWorkingHCBH": "Depuis combien de temps travaillent-ils chez HCBH ?",
   "caseStudyFormWhatEnjoyTheMostAtHCBH": "Qu'est-ce qu'ils apprécient le plus dans leur travail chez HCBH ?",
-
   "caseStudyFormTrainingSessionCaseStudy": "Étude de cas sur la session de formation",
   "caseStudyFormTrainingDate": "Date de formation (MM-DD-YYYY)",
   "caseStudyFormWhatWasTrainingOn": "Sur quoi s'est déroulée la formation ?",
   "caseStudyFormWhoConductedTraining": "Qui a mené la formation ?",
   "caseStudyFormWhoAttendedTraining": "Qui a suivi la formation ?",
   "caseStudyFormHowWillTrainingBenefitHCBH": "Comment la formation profitera-t-elle à HCBH et à son personnel ?",
-
   "caseStudyFormEquipmentReceivedCaseStudy": "Étude de cas sur l'équipement reçu",
   "caseStudyFormWhatEquipmentWasReceived": "Quel équipement a été reçu ?",
   "caseStudyFormWhichDepartmentReceivedIt": "Quel département l'a reçu ?",
   "caseStudyFormWhoWasEquipmentFrom": "De qui provenait l'équipement ?",
   "caseStudyFormWasItDonatedOrPurchased": "A-t-il été donné ou acheté ?",
   "caseStudyFormWhatDoesThisNewEquipmentDo": "A quoi sert ce nouvel équipement ?",
-
   "caseStudyFormOtherStoryCaseStudy": "Autre histoire Étude de cas",
   "caseStudyFormAnErrorOccurred": "Une erreur s'est produite lors de la soumission. Veuillez réessayer.",
-
   "caseStudyViewAuthor": "Auteur: ",
   "caseStudyViewDate": "Date: ",
-
   "departmentPageNICU/PAED": "Département de NICU/PAED",
   "departmentPageDepartmentOf": "Département de ",
   "departmentPageSubmitData": "Soumettre des données",
@@ -197,7 +178,6 @@
   "departmentPageDelete": "Effacer",
   "departmentPageAction": "action",
   "departmentPageAccumulate": "Accumuler",
-
   "departmentFormSteps": "Pas:",
   "departmentFormSelectPatient": "Sélectionner un patient",
   "departmentFormSubmitAlertPressOKToSubmit": "Appuyez sur OK pour finaliser la soumission",
@@ -205,12 +185,10 @@
   "departmentFormSubmit": "Soumettret",
   "departmentFormPrevious": "Précédent",
   "departmentFormNext": "Prochain",
-
   "departmentFormRequiresValidNumber": "Nécessite un numéro valide",
   "departmentFormNameAndValue": "Nom et valeur",
   "departmentFormAdd": "Ajouter",
   "departmentFormRemove": "Supprimer",
-
   "departmentFormArrayInputValidationMustEnterValue": "Doit entrer une valeur pour ce champ",
   "departmentFormArrayInputValidationPositiveNumberOnly": "Nombres positifs uniquement pour ce champ",
   "departmentFormArrayInputValidationIntegersOnly": "Entiers uniquement pour ce champ",
@@ -220,49 +198,40 @@
   "departmentFormTotalValidationDoesNotAddUpToTotal": "Ne correspond pas au total",
   "departmentFormTotalValidationMustEnterName": "Doit entrer un nom",
   "departmentFormValidationOneOrMoreFieldsAreInvalid": "Un ou plusieurs champs sont invalides",
-
   "departmentReportDisplayDepartmentNICU": "Département de l'NICU/pédiatrie",
   "departmentReportDisplayNoReportFound": "Aucun rapport trouvé",
   "departmentReportDisplaySave": "sauvegarder",
   "departmentReportDisplayDiscard": "Jeter",
   "departmentReportDisplaySubmit": "Soumettre",
-  "departmentReportDisplayBack": "Arrière",
   "departmentReportDisplayEditForm": "Modifier le Formulaire",
   "departmentReportDisplayViewForm": "Voir le Formulaire",
   "departmentReportDisplayHidePagination": "Masquer la Pagination",
   "departmentReportDisplayShowPagination": "Afficher la Pagination",
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
-
   "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",
   "reportAlertReportsDeleted": "Rapport(s) supprimé(s)",
-
   "reportsReportId": "ID de rapport",
   "reportsDepartment": "Département",
   "reportsSubmissionDate": "Date de soumission",
   "reportsUserId": "ID de l'utilisateur",
   "reportsSubmittedBy": "Proposé par",
 
-  "reportViewBack": "Arrière",
-
-  "employeeOfTheMonthEdit": "Mettre à jour l'employé du mois",
+  "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthTitle": "Employé du mois de ",
   "employeeOfTheMonthDate": "Date de mise à jour",
   "employeeOfTheMonthName": "Nom",
   "employeeOfTheMonthDepartment": "Département",
   "employeeOfTheMonthDescription": "La description",
-  "employeeOfTheMonthBack": "Arrière",
   "employeeOfTheMonthUploadImage": "Télécharger une image",
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
-
   "template": {
     "change_template": "Changer de modèle",
     "department": "Département",
     "select_department": "Sélectionner le département",
     "upload_template": "Télécharger un nouveau modèle"
   },
-
   "admin": {
     "main_page": {
       "name_col": "Nom",
@@ -284,12 +253,10 @@
       }
     }
   },
-
   "permissions": {
     "selectRole": "Sélectionnez le rôle",
     "permissionHeader": "Autorisations"
   },
-
   "biomech": {
     "main_page": {
       "priority_col": "Priorité",
@@ -327,11 +294,9 @@
       "backlog": "Arriéré"
     }
   },
-
   "status": {
     "not_available": "N/A"
   },
-
   "role": {
     "user": "User",
     "admin": "Admin",
@@ -339,12 +304,10 @@
     "head_department": "Head of Department",
     "bio_mechanic": "Bio mécanique"
   },
-
   "modal": {
     "delete_msg": "Confirmer pour supprimer {{item}}?",
     "title": "AVERTISSEMENT"
   },
-
   "button": {
     "add_user": "Ajouter un Utilisateur",
     "edit": "Éditer",
@@ -356,20 +319,17 @@
     "view": "Regarder",
     "add_image": "Ajouter une Image"
   },
-
   "request_response": {
     "ok": "Avec succès {{action}} {{item}}!",
     "pending": "Traitement {{action}} {{item}}...",
     "failed": "Échec de {{action}} {{item}}"
   },
-
   "request_action": {
     "create": "créer",
     "fetch": "la récupération de(s)",
     "update": "la mise à jour de(s)",
     "delete": "la suppression de(s)"
   },
-
   "item": {
     "department": "départment",
     "departments": "départments",
@@ -380,13 +340,11 @@
     "user": "l'utilisateur",
     "users": "utilisateurs"
   },
-
   "error_message": {
     "compress": {
       "image": "Impossible de compresser ce fichier image"
     }
   },
-
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",
   "monthMarch": "Mars",

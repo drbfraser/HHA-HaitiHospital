@@ -1,32 +1,32 @@
-import Login from 'pages/login/login';
-import Home from 'pages/home/home';
-import NotFound from 'pages/not_found/not_found';
-import Admin from 'pages/admin/main/main';
-import { AddUserForm } from 'pages/admin/add/add';
-import { EditUserForm } from 'pages/admin/edit/edit';
-import { CaseStudyMain } from 'pages/case_study_main/case_study_main';
-import { CaseStudyForm } from 'pages/case_study_forms/case_study_forms';
-import { CaseStudyView } from 'pages/case_study_view/case_study_view';
-import { LeaderBoardMain } from 'pages/leader_board_main/leader_board_main';
-import { MessageBoardMain } from 'pages/message_board_main/message_board_main';
-import AddMessage from 'pages/message_board_add/message_board_add';
-import EditMessage from 'pages/message_board_edit/message_board_edit';
-import MessageComments from 'pages/message_board_comments/message_board_comments';
-import { BiomechanicalPage } from 'pages/biomech/main/main';
-import { BrokenKitReport } from 'pages/biomech/report/report';
-import { BrokenKitView } from 'pages/biomech/view/view';
-import GeneralReports from 'pages/general_reports/general_reports';
-import { Department } from 'pages/department/department';
-import { EmployeeOfTheMonthMain } from 'pages/employee_of_the_month_main/employee_of_the_month_main';
-import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month_form/employee_of_the_month_form';
-import { EmployeeOfTheMonthRecord } from 'pages/employee_of_the_month_record/employee_of_the_month_record';
-import { Role } from 'constants/interfaces';
-import NotAuthorized from 'pages/not_authorized/not_authorized';
-import { Report } from 'pages/report/Report';
-import { UploadReport } from 'pages/upload_template/UploadReport';
-import { UpdatePermissions } from 'pages/permissions/updatePermissions';
+import AddMessage from 'pages/message_board/AddMessage';
+import { AddUserForm } from 'pages/admin/AddUserForm';
+import AdminList from 'pages/admin/AdminList';
+import { BiomechanicalList } from 'pages/biomech/BiomechanicalList';
+import { BrokenKitReport } from 'pages/biomech/BrokenKitReport';
+import { BrokenKitView } from 'pages/biomech/BrokenKitView';
+import { CaseStudyForm } from 'pages/case_study/CaseStudyForm';
+import { CaseStudyList } from 'pages/case_study/CaseStudyList';
+import { CaseStudyView } from 'pages/case_study/CaseStudyView';
+import { Department } from 'pages/department/Department';
+import EditMessage from 'pages/message_board/EditMessage';
+import { EditUserForm } from 'pages/admin/EditUserForm';
+import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthForm';
+import { EmployeeOfTheMonthView } from 'pages/employee_of_the_month/EmployeeOfTheMonthView';
+import { EmployeeOfTheMonthRecord } from 'pages/employee_of_the_month/EmployeeOfTheMonthRecord';
+import GeneralReports from 'pages/general_reports/GeneralReports';
+import Home from 'pages/home/Home';
+import { LeaderBoard } from 'pages/leader_board/LeaderBoard';
+import Login from 'pages/login/Login';
+import { MessageBoardView } from 'pages/message_board/MessageBoardView';
+import MessageComments from 'pages/message_board/MessageComments';
+import NotAuthorized from 'pages/not_authorized/NotAuthorized';
+import NotFound from 'pages/not_found/NotFound';
 import { PathPatterns } from 'constants/paths';
-import ReportView from 'pages/report_view/ReportView';
+import { Report } from 'pages/report/Report';
+import ReportView from 'pages/report/ReportView';
+import { Role } from 'constants/interfaces';
+import { UpdatePermissions } from 'pages/permissions/UpdatePermissions';
+import { UploadReport } from 'pages/report/UploadReport';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -59,7 +59,7 @@ const routes = [
   {
     path: `${PathPatterns.ADMIN_MAIN}`,
     key: 'admin',
-    component: Admin,
+    component: AdminList,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
     departmentsAllowed: [],
@@ -146,7 +146,7 @@ const routes = [
   {
     path: `${PathPatterns.BIOMECH_MAIN}`,
     key: 'bio_support',
-    component: BiomechanicalPage,
+    component: BiomechanicalList,
     isPrivate: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -170,7 +170,7 @@ const routes = [
   {
     path: '/case-study',
     key: 'case_study',
-    component: CaseStudyMain,
+    component: CaseStudyList,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -186,7 +186,7 @@ const routes = [
   {
     path: '/leaderboard',
     key: 'leaderboard',
-    component: LeaderBoardMain,
+    component: LeaderBoard,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -218,7 +218,7 @@ const routes = [
   {
     path: '/message-board',
     key: 'message_board',
-    component: MessageBoardMain,
+    component: MessageBoardView,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -242,7 +242,7 @@ const routes = [
   {
     path: '/employee-of-the-month',
     key: 'employee_of_the_month',
-    component: EmployeeOfTheMonthMain,
+    component: EmployeeOfTheMonthView,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
