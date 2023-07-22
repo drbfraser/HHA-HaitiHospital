@@ -44,34 +44,22 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   }, [props.employee.imgPath, history]);
 
   const translateMonth = (index: number): string => {
-    switch (index) {
-      case 0:
-        return t('monthJanuary');
-      case 1:
-        return t('monthFebruary');
-      case 2:
-        return t('monthMarch');
-      case 3:
-        return t('monthApril');
-      case 4:
-        return t('monthMay');
-      case 5:
-        return t('monthJune');
-      case 6:
-        return t('monthJuly');
-      case 7:
-        return t('monthAugust');
-      case 8:
-        return t('monthSeptember');
-      case 9:
-        return t('monthOctober');
-      case 10:
-        return t('monthNovember');
-      case 11:
-        return t('monthDecember');
-    }
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return months[index - 1];
   };
-
   return (
     <>
       <ImageModal
@@ -85,7 +73,9 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         <div className="d-flex flex-column">
           <h2 className="mt-3 mb-3 fw-bold">
             {t('employeeOfTheMonthTitle').concat(
-              translateMonth(currMonth).concat(' ').concat(currYear.toString()),
+              translateMonth(props.employee.awardedMonth)
+                .concat(' ')
+                .concat(props.employee.awardedYear.toString()),
             )}
           </h2>
           <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>

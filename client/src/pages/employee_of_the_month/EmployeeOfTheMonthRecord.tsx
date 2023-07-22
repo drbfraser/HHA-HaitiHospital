@@ -76,23 +76,14 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
   ];
 
   return (
-    <div className="employee-of-the-month-main">
-      <Layout>
-        <div className="ml-3 mb-3 d-flex justify-content-start">
-          <Link to="/employee-of-the-month">
-            <button data-testid="back-eotm-button" type="button" className="btn btn-outline-dark">
-              {t('employeeOfTheMonthBack')}
-            </button>
-          </Link>
-        </div>
-        <FilterableTable
-          columns={columns}
-          data={employeeOfTheMonthList}
-          enableFilters={false}
-          enableGlobalFilter={false}
-          enableSorting={false}
-        />
-      </Layout>
-    </div>
+    <Layout showBackButton>
+      <FilterableTable
+        columns={columns}
+        data={employeeOfTheMonthList}
+        enableFilters={false}
+        enableGlobalFilter={false}
+        enableSorting={false}
+      />
+    </Layout>
   );
 };

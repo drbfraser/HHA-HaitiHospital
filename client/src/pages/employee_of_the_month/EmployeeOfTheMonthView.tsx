@@ -20,17 +20,31 @@ export const EmployeeOfTheMonthView = () => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
+  const currentYearAndMonth = () => {
+    const date = new Date();
+    return [date.getFullYear(), date.getMonth() + 1];
+  };
+
+  const isNonEmptyObject = (objectName) => {
+    return Object.keys(objectName).length > 0
+  }
+
   useEffect(() => {
     const controller = new AbortController();
+    const [currentYear, currentMonth] = currentYearAndMonth();
+    const endpoint = `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${currentYear}/${currentMonth}`;
+    console.log('endpoint', endpoint);
     const getEmployeeOfTheMonth = async () => {
-      setEmployeeOfTheMonth(
-        await Api.Get(
-          ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
-          TOAST_EMPLOYEE_OF_THE_MONTH_GET,
-          history,
-          controller.signal,
-        ),
+      const employeeOfTheMonthInfo = await Api.Get(
+        endpoint,
+        TOAST_EMPLOYEE_OF_THE_MONTH_GET,
+        history,
+        controller.signal,
       );
+
+      if (isNonEmptyObject(employeeOfTheMonthInfo)) {
+        setEmployeeOfTheMonth(employeeOfTheMonthInfo);
+      }
     };
     getEmployeeOfTheMonth();
     return () => {
@@ -53,6 +67,7 @@ export const EmployeeOfTheMonthView = () => {
         </button>
       </Link>
       {employeeOfTheMonth && <EmployeeOfTheMonthSummary employee={employeeOfTheMonth} />}
+      {!employeeOfTheMonth && <h2>No employee of the month found</h2>}
     </Layout>
   );
 };

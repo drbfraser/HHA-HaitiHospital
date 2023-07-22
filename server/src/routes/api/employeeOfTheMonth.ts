@@ -16,14 +16,39 @@ import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
+router.get(
+  '/:awardedYear/:awardedMonth',
+  requireJwtAuth,
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const { awardedYear, awardedMonth } = req.params;
+      const doc = await EOTMCollection.findOne({
+        awardedYear: { $lte: +awardedYear },
+        awardedMonth: { $lte: +awardedMonth },
+      }).sort({ awardedYear: -1, awardedMonth: -1 });
+      // find eotm with current year and month, if not found, find the closest below it.
+
+      if (!doc) {
+        throw new NotFound(`No employee of the month found`);
+      }
+
+      const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
+      res.status(HTTP_OK_CODE).json(json);
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const doc = await EOTMCollection.findOne();
+    const doc = await EOTMCollection.find({});
     if (!doc) {
       throw new NotFound(`No employee of the month found`);
     }
-    const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
-    res.status(HTTP_OK_CODE).json(json);
+    // const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
+    console.log('DOC', doc);
+    res.status(HTTP_OK_CODE).json(doc);
   } catch (e) {
     next(e);
   }
