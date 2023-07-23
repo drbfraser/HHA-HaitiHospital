@@ -9,7 +9,14 @@ import EOTMCollection, {
 import { Role } from '../../models/user';
 import { registerEmployeeOfTheMonthEdit } from '../../sanitization/schemas/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
-import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
+import {
+  BadRequest,
+  HTTP_CREATED_CODE,
+  HTTP_NOCONTENT_CODE,
+  HTTP_OK_CODE,
+  InternalError,
+  NotFound,
+} from 'exceptions/httpException';
 import Departments from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
@@ -95,6 +102,52 @@ router.put(
         { $set: updatedEmployeeOfTheMonth },
         { new: true },
       );
+      res.sendStatus(HTTP_OK_CODE);
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
+router.post(
+  '/',
+  requireJwtAuth,
+  roleAuth(Role.Admin, Role.MedicalDirector),
+  registerEmployeeOfTheMonthEdit,
+  validateInput,
+  upload.single('file'),
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const defaultImgPath: string = 'public/images/avatar0.jpg';
+      const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
+        req.body.document,
+      );
+
+      let imgPath: string = '';
+      if (req.file) {
+        imgPath = req.file.path.replace(/\\/g, '/');
+      }
+
+      if (!Departments.Database.validateDeptId(department.id)) {
+        throw new BadRequest(`Invalid department id ${department}`);
+      }
+      const addedEmployeeOfTheMonth: EmployeeOfTheMonth = {
+        name: name,
+        departmentId: department.id,
+        description: description,
+        imgPath: imgPath,
+        awardedMonth: awardedMonth,
+        awardedYear: awardedYear,
+      };
+
+      const doc = new EOTMCollection(addedEmployeeOfTheMonth);
+      doc
+        .save()
+        .then(() => res.status(HTTP_CREATED_CODE).send('Case Study Submitted successfully'))
+        .catch((err: any) => {
+          // return res.status(500).json(err);
+          throw new InternalError(`Case study submission failed: ${err}`);
+        });
       res.sendStatus(HTTP_OK_CODE);
     } catch (e) {
       next(e);

@@ -1,7 +1,7 @@
 import { Department, GeneralDepartment } from 'constants/interfaces';
 
 import Api from '../../actions/Api';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST } from 'constants/endpoints';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './typing';
 import { History } from 'history';
 import Layout from 'components/layout';
@@ -39,8 +39,8 @@ export const EmployeeOfTheMonthForm = () => {
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
-    await Api.Put(
-      ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
+    await Api.Post(
+      ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST,
       formData,
       onSubmitActions,
       history,
