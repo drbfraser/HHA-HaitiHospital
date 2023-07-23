@@ -49,12 +49,13 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     };
   }, [history]);
   const { departmentIdKeyMap } = useDepartmentData();
-  console.log("dddd", departmentIdKeyMap)
+  console.log('dddd', departmentIdKeyMap);
   const columns: FilterableColumnDef[] = [
     {
       header: 'Awarded Month Year',
       id: 'awardedMonthYear',
-      accessorFn: ({awardedMonth, awardedYear}) => `${translateMonth(awardedMonth)} ${awardedYear}`
+      accessorFn: ({ awardedMonth, awardedYear }) =>
+        `${translateMonth(awardedMonth)} ${awardedYear}`,
     },
     {
       header: 'Employee Name',
@@ -64,21 +65,32 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     {
       header: 'Department',
       id: 'department',
-      accessorFn: ({departmentId}) => departmentIdKeyMap.get(departmentId),
+      accessorFn: ({ departmentId }) => departmentIdKeyMap.get(departmentId),
     },
     {
       header: 'Last Updated',
       id: 'updatedAt',
-      accessorFn: ({updatedAt}) => formatDateString(new Date(updatedAt))
+      accessorFn: ({ updatedAt }) => formatDateString(new Date(updatedAt)),
     },
   ];
 
   return (
     <Layout showBackButton>
+      <div>
+      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+        <Link to="/employee-of-the-month/form">
+          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+            {t('employeeOfTheMonthAdd')}
+          </button>
+        </Link>
+      )}
+      </div>
       <FilterableTable
         columns={columns}
         data={employeeOfTheMonthList}
-        rowClickHandler={(eotm) => history.push(`/employee-of-the-month/${eotm.awardedYear}/${eotm.awardedMonth}`)}
+        rowClickHandler={(eotm) =>
+          history.push(`/employee-of-the-month/${eotm.awardedYear}/${eotm.awardedMonth}`)
+        }
         enableFilters={false}
         enableGlobalFilter={false}
         enableSorting={false}
