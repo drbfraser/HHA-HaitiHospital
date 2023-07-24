@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
-import Layout from 'components/layout';
+import Layout, { LayoutTestProps } from 'components/layout';
 import { TOAST_CASESTUDY_POST_ERROR } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
 import { toast } from 'react-toastify';
@@ -53,8 +53,11 @@ export const CaseStudyForm = () => {
     );
   };
 
+  const layoutTestProps: LayoutTestProps = {
+    backButtonTestId: 'add-case-study-back-button',
+  };
   return (
-    <Layout showBackButton title={t('headerCaseStudyForm')}>
+    <Layout testProps={layoutTestProps} showBackButton title={t('headerCaseStudyForm')}>
       <div>
         <form>
           <div className="form-group col-md-6">
@@ -413,6 +416,7 @@ export const CaseStudyForm = () => {
             <>
               <div className="form-check mt-2 mb-2">
                 <input
+                  data-testid="case-study-patient-consent-check"
                   className="form-check-input"
                   type="checkbox"
                   value=""
@@ -424,7 +428,11 @@ export const CaseStudyForm = () => {
                 </label>
               </div>
               <div className="mt-3 mb-5">
-                <button className="btn btn-primary" type="submit">
+                <button
+                  data-testid="case-study-patient-submit-button"
+                  className="btn btn-primary"
+                  type="submit"
+                >
                   {t('caseStudyFormSubmitForm')}
                 </button>
               </div>

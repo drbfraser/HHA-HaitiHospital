@@ -26,9 +26,9 @@ enum RequestItem {
   REPORT_TEMPLATE = 'report_template',
   USER = 'user',
   USERS = 'users',
-  CASE_STUDY = 'case study',
-  POST = 'message board post',
-  COMMENT = 'message board comment',
+  CASE_STUDY = 'case_study',
+  POST = 'message_board_post',
+  COMMENT = 'message_board_comment',
 }
 
 // Make sure these keys match with i18-next translation JSON
