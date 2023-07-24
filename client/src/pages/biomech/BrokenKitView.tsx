@@ -14,7 +14,7 @@ import { BioReportIdParams } from 'constants/paths';
 import { BiomechStatus } from './typing';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
-import Layout from 'components/layout';
+import Layout, { LayoutTestProps } from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
@@ -103,8 +103,12 @@ export const BrokenKitView = () => {
     [BioReport, history],
   );
 
+  const layoutTestProps: LayoutTestProps = {
+    backButtonTestId: 'biomech-view-back-button',
+  };
+
   return (
-    <Layout showBackButton title={t('biomech.view_report.title')}>
+    <Layout testProps={layoutTestProps} showBackButton title={t('biomech.view_report.title')}>
       <ImageModal
         show={imageModal}
         item={ALT_MESSAGE}

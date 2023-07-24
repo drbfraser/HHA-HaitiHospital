@@ -130,7 +130,7 @@ const AdminList = () => {
                     </button>
 
                     <button
-                      data-testid="view-user-button"
+                      data-testid="delete-user-button"
                       type="button"
                       className="btn btn-link text-decoration-none"
                       onClick={(event) => {
