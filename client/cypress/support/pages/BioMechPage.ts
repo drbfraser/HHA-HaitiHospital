@@ -10,12 +10,12 @@ export class BioMechPage {
   }
 
   clickBackAddBioMechReportButton() {
-    cy.get('[data-testid="biomech-add-back-button"').click();
+    cy.get('[data-testid="biomech-add-back-button"]').click();
     return this;
   }
 
   clickBackViewBioMechReportButton() {
-    cy.get('[data-testid="biomech-view-back-button"').click();
+    cy.get('[data-testid="biomech-view-back-button"]').click();
     return this;
   }
 
@@ -26,7 +26,7 @@ export class BioMechPage {
 
   clickViewBioMechReportButton(index: number) {
     // View the index-th Bio Mech Report
-    cy.get(`[data-testid="view-biomech-report"]`).eq(index).click();
+    cy.get('[data-test-id="row-data"]').eq(index).click();
     return this;
   }
 

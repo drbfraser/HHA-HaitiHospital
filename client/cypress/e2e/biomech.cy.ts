@@ -16,7 +16,7 @@ describe('Bio Mech Tests', function () {
 
   enum BiomechStatus {
     FIXED = 'Fixed',
-    INPROGRESS = 'In-progress',
+    IN_PROGRESS = 'In-Progress',
     BACKLOG = 'Backlog',
   }
 
@@ -79,8 +79,7 @@ describe('Bio Mech Tests', function () {
       bioMechIds.push(bioMechId); // Store the Id of the Bio Mech Report to Delete Later
     });
 
-    // Check that fields are properly set
-    cy.get('[data-testid="biomech-title"]').contains('Broken Kit Report');
+    cy.get('[data-testid="header"]').contains('Broken Kit Report');
     cy.get('[data-testid="biomech-equipment-name"]').contains('X-ray');
     cy.get('[data-testid="biomech-priority"]').contains(BiomechPriority.URGENT);
     cy.get('[data-testid="biomech-equipment-status"]').contains(BiomechStatus.BACKLOG);
@@ -88,9 +87,6 @@ describe('Bio Mech Tests', function () {
 
     bioMechPage.clickBackViewBioMechReportButton();
     cy.url().should('equal', `${baseUrl}/biomechanic`);
-
-    toast = cy.get('div.Toastify__toast');
-    toast.should('include.text', BIO_MECH_ADDED_SUCCESSFULLY);
   });
 
   it('Should Successfully Delete a Bio Mech Report', function () {

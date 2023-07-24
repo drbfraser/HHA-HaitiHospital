@@ -3,7 +3,7 @@ import { BIOMECH_REPORT_FIELDS, BiomechForm, BiomechPriority, BiomechStatus } fr
 import Api from '../../actions/Api';
 import { ENDPOINT_BIOMECH_POST } from 'constants/endpoints';
 import { History } from 'history';
-import Layout from 'components/layout';
+import Layout, { LayoutTestProps } from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 import { imageCompressor } from 'utils/imageCompressor';
@@ -36,8 +36,12 @@ export const BrokenKitReport = () => {
     );
   };
 
+  const layoutTestProps: LayoutTestProps = {
+    backButtonTestId: 'biomech-add-back-button',
+  };
+
   return (
-    <Layout showBackButton title={t('headerBiomechanicalSupportForm')}>
+    <Layout showBackButton testProps={layoutTestProps} title={t('headerBiomechanicalSupportForm')}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group col-md-6">
           <label className="font-weight-bold">{t('biomech.report.title')}</label>
