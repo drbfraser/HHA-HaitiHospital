@@ -25,3 +25,8 @@ export interface match<P> {
   path: string;
   url: string;
 }
+
+export interface YearMonthParams {
+  year: string;
+  month: string;
+}

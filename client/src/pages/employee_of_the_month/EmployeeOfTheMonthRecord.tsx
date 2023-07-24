@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
-import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 
 import { Role } from 'constants/interfaces';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
@@ -78,7 +77,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     <Layout showBackButton>
       <div>
       {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link to="/employee-of-the-month/form">
+        <Link to="/employee-of-the-month/add">
           <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
             {t('employeeOfTheMonthAdd')}
           </button>
@@ -88,8 +87,8 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
       <FilterableTable
         columns={columns}
         data={employeeOfTheMonthList}
-        rowClickHandler={(eotm) =>
-          history.push(`/employee-of-the-month/${eotm.awardedYear}/${eotm.awardedMonth}`)
+        rowClickHandler={(row) =>
+          history.push(`/employee-of-the-month/${row.awardedYear}/${row.awardedMonth}`)
         }
         enableFilters={false}
         enableGlobalFilter={false}

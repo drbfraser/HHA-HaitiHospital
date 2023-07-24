@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
-import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
+import { EmployeeOfTheMonth, YearMonthParams } from 'pages/employee_of_the_month/typing';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 import { History } from 'history';
 import Layout from 'components/layout';
@@ -15,15 +15,9 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { currentYearAndMonth } from 'utils/dateUtils';
 
-interface MatchParams {
-  year: string;
-  month: string;
-}
-
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<YearMonthParams> {}
 
 export const EmployeeOfTheMonthView = (props: Props) => {
-  console.log('PROPS', props);
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const authState = useAuthState();
   const history: History = useHistory<History>();
@@ -61,7 +55,7 @@ export const EmployeeOfTheMonthView = (props: Props) => {
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
       {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link to="/employee-of-the-month/form">
+        <Link to={`/employee-of-the-month/update/2023/4`}>
           <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
             {t('employeeOfTheMonthEdit')}
           </button>

@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const EmployeeOfTheMonthForm = () => {
+export const EmployeeOfTheMonthAddForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -49,7 +49,7 @@ export const EmployeeOfTheMonthForm = () => {
   };
 
   return (
-    <Layout showBackButton title={t('headerEmployeeOfTheMonthForm')}>
+    <Layout showBackButton title={t('headerEmployeeOfTheMonthAddForm')}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group col-lg-9 col-xl-6">
           <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>

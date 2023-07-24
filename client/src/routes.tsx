@@ -10,7 +10,7 @@ import { CaseStudyView } from 'pages/case_study/CaseStudyView';
 import { Department } from 'pages/department/Department';
 import EditMessage from 'pages/message_board/EditMessage';
 import { EditUserForm } from 'pages/admin/EditUserForm';
-import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthForm';
+import { EmployeeOfTheMonthAddForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthAddForm';
 import { EmployeeOfTheMonthView } from 'pages/employee_of_the_month/EmployeeOfTheMonthView';
 import { EmployeeOfTheMonthRecord } from 'pages/employee_of_the_month/EmployeeOfTheMonthRecord';
 import GeneralReports from 'pages/general_reports/GeneralReports';
@@ -27,6 +27,7 @@ import ReportView from 'pages/report/ReportView';
 import { Role } from 'constants/interfaces';
 import { UpdatePermissions } from 'pages/permissions/UpdatePermissions';
 import { UploadReport } from 'pages/report/UploadReport';
+import { EmployeeOfTheMonthUpdateForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthUpdateForm';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -232,9 +233,17 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/employee-of-the-month/form',
+    path: '/employee-of-the-month/add',
     key: 'employee_of_the_month',
-    component: EmployeeOfTheMonthForm,
+    component: EmployeeOfTheMonthAddForm,
+    loginRequired: true,
+    rolesAllowed: [Role.Admin, Role.MedicalDirector],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/update/:year/:month',
+    key: 'employee_of_the_month',
+    component: EmployeeOfTheMonthUpdateForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
