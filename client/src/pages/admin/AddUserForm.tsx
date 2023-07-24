@@ -3,9 +3,10 @@ import { AdminUserFormData } from 'pages/admin/typing';
 import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_POST } from 'constants/endpoints';
 import { History } from 'history';
-import Layout, { LayoutTestProps } from 'components/layout';
+import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
+import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -16,11 +17,8 @@ export const AddUserForm = () => {
 
   const history: History = useHistory<History>();
 
-  const layoutTestProps: LayoutTestProps = {
-    backButtonTestId: 'add-user-back-button',
-  };
-
   const onSubmit = () => {
+    toast.success(ResponseMessage.getMsgCreateUserOk());
     history.push(Paths.getAdminMain());
   };
 
@@ -31,13 +29,11 @@ export const AddUserForm = () => {
       onSubmit,
       history,
       ResponseMessage.getMsgCreateUserFailed(),
-      null,
-      ResponseMessage.getMsgCreateUserOk(),
     );
   };
 
   return (
-    <Layout showBackButton testProps={layoutTestProps} title={t('headerAddUser')}>
+    <Layout showBackButton title={t('headerAddUser')}>
       <div className="col-md-6">
         <AdminUserForm data={{ departments: departments }} onSubmit={submitForm}></AdminUserForm>
       </div>

@@ -14,12 +14,6 @@ describe('Bio Mech Tests', function () {
     NONURGENT = 'Non-Urgent',
   }
 
-  enum BioMechStatus {
-    FIXED = 'Fixed',
-    IN_PROGRESS = 'In-Progress',
-    BACKLOG = 'Backlog',
-  }
-
   const loginPage = new LoginPage();
   const bioMechPage = new BioMechPage();
 
@@ -61,7 +55,6 @@ describe('Bio Mech Tests', function () {
     bioMechPage.inputEquipmentName('X-ray');
     bioMechPage.inputEquipmentIssue('It is not functioning!');
     bioMechPage.selectEquipmentPriority(BiomechPriority.URGENT);
-    bioMechPage.selectEquipmentStatus(BioMechStatus.FIXED);
     bioMechPage.uploadEquipmentFile('public/images/avatar0.jpg');
     cy.wait(1000); // Will not work without a pause
     bioMechPage.clickSubmitBioMechReportButton();
@@ -78,7 +71,7 @@ describe('Bio Mech Tests', function () {
       bioMechIds.push(bioMechId); // Store the Id of the Bio Mech Report to Delete Later
     });
 
-    cy.get('[data-testid="header"]').contains('Broken Kit Report');
+    cy.get('[data-testid="biomech-title"]').contains('Broken Kit Report');
     cy.get('[data-testid="biomech-equipment-name"]').contains('X-ray');
     cy.get('[data-testid="biomech-priority"]').contains(BiomechPriority.URGENT);
     cy.get('[data-testid="biomech-issue"]').contains('It is not functioning!');

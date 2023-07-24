@@ -66,7 +66,7 @@ describe('Admin Tests', function () {
     cy.url().should('equal', `${baseUrl}/admin/add-user`);
 
     adminPage.inputUsername('username');
-    adminPage.inputPassword('P@ssw0rd');
+    adminPage.inputPassword('password');
     adminPage.inputName('Handsome Squidward');
     adminPage.selectUserRole(ROLES.USER);
     adminPage.selectUserDepartment(Departments.Rehab);
@@ -80,7 +80,7 @@ describe('Admin Tests', function () {
     cy.wait(1000); // Wait for toast to disappear
 
     adminPage.clickSignout();
-    loginPage.usernameInput('username').passwordInput('P@ssw0rd').clickLoginButton();
+    loginPage.usernameInput('username').passwordInput('password').clickLoginButton();
     cy.url().should('equal', `${baseUrl}/home`);
   });
 
