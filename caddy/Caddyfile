@@ -1,3 +1,10 @@
+{
+    servers {
+        metrics
+    }
+    admin :2019
+}
+
 {$DOMAIN} {
     encode gzip
 
@@ -18,4 +25,6 @@
         # If there is a 404, serve index.html (required for React)
         try_files {path} index.html
     }
+
+    metrics /metrics
 }
