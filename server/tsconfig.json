@@ -16,5 +16,5 @@
     "downlevelIteration": true,
     "experimentalDecorators": true
   },
-  "include": ["./src/**/*", "./security/*", "./tests/**/*"]
+  "include": ["./src/**/*", "./tests/**/*"]
 }
