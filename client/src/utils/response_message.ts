@@ -252,6 +252,37 @@ const getMsgCreateCaseStudyOk = (): string => {
   });
 };
 
+const getMsgUpdateCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgUpdateCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+const getMsgDeleteCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgDeleteCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
 const getMsgFeatureCaseStudyFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.FEATURE,
@@ -334,6 +365,10 @@ export const ResponseMessage = {
 
   getMsgCreateCaseStudyFailed,
   getMsgCreateCaseStudyOk,
+  getMsgUpdateCaseStudyFailed,
+  getMsgUpdateCaseStudyOk,
+  getMsgDeleteCaseStudyFailed,
+  getMsgDeleteCaseStudyOk,
   getMsgFeatureCaseStudyFailed,
   getMsgFeatureCaseStudyOk,
 

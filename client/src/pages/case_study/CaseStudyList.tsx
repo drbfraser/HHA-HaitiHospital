@@ -5,11 +5,7 @@ import {
 } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  TOAST_CASESTUDY_DELETE_ERROR,
-  TOAST_CASESTUDY_GET_ERROR,
-  TOAST_CASESTUDY_PATCH_ERROR,
-} from 'constants/toastErrorMessages';
+import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -19,10 +15,8 @@ import Layout from 'components/layout';
 import { Role } from 'constants/interfaces';
 import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
-import { TOAST_CASESTUDY_DELETE_SUCCESS } from 'constants/toastSuccessMessages';
 import GenericModal from 'components/popup_modal/GenericModal';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 
@@ -49,9 +43,9 @@ export const CaseStudyList = () => {
       {},
       resetDeleteModal,
       history,
-      TOAST_CASESTUDY_DELETE_ERROR,
+      ResponseMessage.getMsgDeleteCaseStudyFailed(),
       null,
-      TOAST_CASESTUDY_DELETE_SUCCESS,
+      ResponseMessage.getMsgDeleteCaseStudyOk(),
     );
   };
 
