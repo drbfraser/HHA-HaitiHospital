@@ -125,7 +125,7 @@ const FilterableTable = ({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr data-test-id="row-data" key={row.id} {...getRowProps(row)}>
+            <tr data-testid="row-data" key={row.id} {...getRowProps(row)}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}

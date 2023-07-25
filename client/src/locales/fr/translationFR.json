@@ -339,9 +339,9 @@
     "report_template": "modèle de rapport",
     "user": "l'utilisateur",
     "users": "utilisateurs",
-    "case_study": "Étude de cas",
-    "message_board_post": "Posté",
-    "message_board_comment": "Commentaire"
+    "case_study": "étude de cas",
+    "message_board_post": "posté",
+    "message_board_comment": "commentaire"
   },
   "error_message": {
     "compress": {

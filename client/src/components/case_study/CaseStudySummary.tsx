@@ -148,13 +148,13 @@ const PatientStorySummary = ({ caseStudy, setTitle }) => (
       },
       {
         label: 'caseStudyFormWhyPatientChooseHCBH',
-        testid: 'case-study-patient-how-long',
+        testid: 'case-study-patient-why-come',
         detail: caseStudy.patientStory.whyComeToHcbh,
       },
       {
         label: 'caseStudyFormHowLongAtHCBH',
-        testid: 'case-study-patient-story',
-        detail: caseStudy.patientStory.howLongAtHcbh,
+        testid: 'case-study-patient-how-long',
+        detail: caseStudy.patientStory.howLongWereTheyAtHcbh,
       },
       {
         label: 'caseStudyFormWhatWasTheirDiagnosis',

@@ -6,7 +6,6 @@ import {
 import { Message, emptyMessage } from 'constants/interfaces';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
-  TOAST_MESSAGEBOARD_COMMENTS_POST_ERROR,
   TOAST_MESSAGEBOARD_GET_ERROR,
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
@@ -20,7 +19,6 @@ import MessageDisplay from 'components/message/MessageDisplay';
 import { useAuthState } from 'contexts';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { TOAST_MESSAGEBOARD_COMMENTS_POST_SUCCESS } from 'constants/toastSuccessMessages';
 import { ResponseMessage } from 'utils';
 
 const MessageComments = () => {

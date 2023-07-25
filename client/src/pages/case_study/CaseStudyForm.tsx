@@ -3,14 +3,11 @@ import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
-import Layout, { LayoutTestProps } from 'components/layout';
-import { TOAST_CASESTUDY_POST_ERROR } from 'constants/toastErrorMessages';
+import Layout from 'components/layout';
 import { imageCompressor } from 'utils/imageCompressor';
-import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { TOAST_CASESTUDY_POST_SUCCESS } from 'constants/toastSuccessMessages';
 import { ResponseMessage } from 'utils';
 
 export const CaseStudyForm = () => {
@@ -53,11 +50,8 @@ export const CaseStudyForm = () => {
     );
   };
 
-  const layoutTestProps: LayoutTestProps = {
-    backButtonTestId: 'add-case-study-back-button',
-  };
   return (
-    <Layout testProps={layoutTestProps} showBackButton title={t('headerCaseStudyForm')}>
+    <Layout showBackButton title={t('headerCaseStudyForm')}>
       <div>
         <form>
           <div className="form-group col-md-6">

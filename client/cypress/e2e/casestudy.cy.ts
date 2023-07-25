@@ -63,7 +63,7 @@ describe('Case Study Tests', function () {
       caseStudyIds.push(caseStudyId); // Store the Id of the Case Study for Deleting later
     });
 
-    cy.contains('[data-testid="case-study-title"]', 'Patient Story Case Study');
+    cy.contains('[data-testid="header"]', 'Patient Story Case Study');
     cy.contains('[data-testid="case-study-patient-name"]', 'John Doe');
     cy.contains('[data-testid="case-study-patient-age"]', '22');
     cy.contains('[data-testid="case-study-patient-from"]', 'Canada');
@@ -87,9 +87,13 @@ describe('Case Study Tests', function () {
       .get('[data-testid="feature-case-study-button"]')
       .eq(1);
 
-    featureCaseStudyButton.should('not.include.text', 'Currently Featured');
+    const isFeatured: Cypress.Chainable<JQuery<HTMLElement>> = cy
+      .get('[data-testid="is-featured"]')
+      .eq(1);
+
+    isFeatured.should('include.text', 'false');
     caseStudyPage.clickFeatureCaseStudyButton(1);
-    featureCaseStudyButton.should('include.text', 'Currently Featured');
+    isFeatured.should('include.text', 'true');
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY);

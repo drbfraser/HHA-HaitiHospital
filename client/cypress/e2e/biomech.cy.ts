@@ -51,7 +51,7 @@ describe('Bio Mech Tests', function () {
   it('Should Successfully Navigate Back to the Main Bio Mech Report Page', function () {
     bioMechPage.clickAddBioMechReportButton();
     cy.url().should('equal', `${baseUrl}/biomechanic/report-broken-kit`);
-    bioMechPage.clickBackAddBioMechReportButton();
+    cy.get('[data-testid="back-button"]').click();
     cy.url().should('equal', `${baseUrl}/biomechanic`);
   });
 
@@ -85,7 +85,8 @@ describe('Bio Mech Tests', function () {
     cy.get('[data-testid="biomech-equipment-status"]').contains(BiomechStatus.BACKLOG);
     cy.get('[data-testid="biomech-issue"]').contains('It is not functioning!');
 
-    bioMechPage.clickBackViewBioMechReportButton();
+    cy.get('[data-testid="back-button"]').click();
+
     cy.url().should('equal', `${baseUrl}/biomechanic`);
   });
 

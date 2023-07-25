@@ -9,7 +9,6 @@ import Layout from 'components/layout';
 import ModalDelete from 'components/popup_modal/DeleteModal';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 const AdminList = () => {

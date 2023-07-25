@@ -11,7 +11,7 @@ export class CaseStudyPage {
 
   clickViewCaseStudyButton(index: number) {
     // View the index-th case study
-    cy.get('[data-testid="view-case-study-button"]').eq(index).click();
+    cy.get('[data-testid="row-data"]').eq(index).click();
     return this;
   }
 

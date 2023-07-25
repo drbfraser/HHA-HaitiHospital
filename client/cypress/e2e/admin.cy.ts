@@ -43,7 +43,7 @@ describe('Admin Tests', function () {
   it('Should Successfully Navigate Back to the Admin Page', function () {
     adminPage.clickAddUserButton();
     cy.url().should('equal', `${baseUrl}/admin/add-user`);
-    adminPage.clickBackAddUserButton();
+    cy.get('[data-testid="back-button"]').click();
     cy.url().should('equal', `${baseUrl}/admin`);
   });
 

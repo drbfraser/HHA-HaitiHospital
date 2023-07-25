@@ -2,10 +2,7 @@ import {
   ENDPOINT_MESSAGEBOARD_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
 } from 'constants/endpoints';
-import {
-  TOAST_MESSAGEBOARD_GET_ERROR,
-  TOAST_MESSAGEBOARD_PUT_ERROR,
-} from 'constants/toastErrorMessages';
+import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { Message, emptyMessage } from 'constants/interfaces';
 import { useEffect, useState } from 'react';
 

@@ -7,7 +7,6 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
-import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';

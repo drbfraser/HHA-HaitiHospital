@@ -11,19 +11,14 @@ interface LayoutProps {
   style?: React.CSSProperties;
   showBackButton?: boolean;
   title?: string;
-  testProps?: LayoutTestProps;
 }
 
-export interface LayoutTestProps {
-  backButtonTestId?: String;
-}
 const Layout = ({
   className,
   children,
   style,
   showBackButton = false,
   title = '',
-  testProps,
 }: LayoutProps) => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -40,7 +35,7 @@ const Layout = ({
             {showBackButton && (
               <button
                 className="btn btn-md btn-outline-secondary mb-3"
-                data-testid={testProps.backButtonTestId}
+                data-testid="back-button"
                 onClick={history.goBack}
               >
                 {t('button.back')}

@@ -148,10 +148,11 @@ export const CaseStudyList = () => {
                 title={t('button.')}
                 className="text-decoration-none"
               >
-                <i
-                  data-testid={`featured=${item.featured}`}
-                  className={`bi ${item.featured ? 'bi-star-fill' : 'bi-star'}`}
-                ></i>
+                <i className={`bi ${item.featured ? 'bi-star-fill' : 'bi-star'}`}>
+                  <p data-testid="is-featured" hidden>
+                    {item.featured ? 'true' : 'false'}
+                  </p>
+                </i>
               </Button>
               <Button
                 data-testid="delete-case-study-button"
