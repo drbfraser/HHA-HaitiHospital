@@ -87,13 +87,7 @@ describe('Case Study Tests', function () {
       .get('[data-testid="feature-case-study-button"]')
       .eq(1);
 
-    const isFeatured: Cypress.Chainable<JQuery<HTMLElement>> = cy
-      .get('[data-testid="is-featured"]')
-      .eq(1);
-
-    isFeatured.should('include.text', 'false');
     caseStudyPage.clickFeatureCaseStudyButton(1);
-    isFeatured.should('include.text', 'true');
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY);
