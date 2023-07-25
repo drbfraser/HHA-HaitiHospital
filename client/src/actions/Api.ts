@@ -131,23 +131,35 @@ const Put = async (
  * - Error message for toast
  * @param history
  * - History instance from navigation
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
+ * @returns void
  * @returns void
  */
 const Patch = async (
   url: string,
   obj: object = {},
   actions: any,
-  errorMsg: string,
   history: History,
+  errorMsg: string,
+  pendingMsg: string,
+  successMsg: string,
 ): Promise<void> => {
-  try {
-    await axios.patch(url, obj);
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  toast.promise(
+    await axios.patch(url, obj).then(
+      () => actions(),
+      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
+    ),
+    {
+      error: errorMsg ? errorMsg : 'An error occurred',
+      pending: pendingMsg ? pendingMsg : 'Processing...',
+      success: successMsg ? successMsg : 'Success!',
+    },
+  );
 };
 
 /**
