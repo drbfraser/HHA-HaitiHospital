@@ -7,6 +7,7 @@ enum RequestAction {
   UPDATE = 'update',
   FETCH = 'fetch',
   DELETE = 'delete',
+  FEATURE = 'feature',
 }
 
 // Make sure enum values match with i18-next translation JSON
@@ -251,6 +252,22 @@ const getMsgCreateCaseStudyOk = (): string => {
   });
 };
 
+const getMsgFeatureCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FEATURE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgFeatureCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FEATURE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
 // MESSAGE BOARD
 const getMsgCreatePostFailed = () => {
   return getResponseMessage({
@@ -317,6 +334,8 @@ export const ResponseMessage = {
 
   getMsgCreateCaseStudyFailed,
   getMsgCreateCaseStudyOk,
+  getMsgFeatureCaseStudyFailed,
+  getMsgFeatureCaseStudyOk,
 
   getMsgCreatePostFailed,
   getMsgCreatePostOk,

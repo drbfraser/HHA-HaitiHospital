@@ -17,7 +17,7 @@ import { Button } from 'react-bootstrap';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Role } from 'constants/interfaces';
-import { SortOrder } from 'utils';
+import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
@@ -77,10 +77,12 @@ export const CaseStudyList = () => {
         ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
         {},
         () => {
-          toast.success('Featured case study has now changed!');
+          history.push('/case-study');
         },
-        TOAST_CASESTUDY_PATCH_ERROR,
         history,
+        ResponseMessage.getMsgFeatureCaseStudyFailed(),
+        null,
+        ResponseMessage.getMsgFeatureCaseStudyOk(),
       );
     };
 

@@ -127,8 +127,6 @@ const Put = async (
  * @param actions
  * - Actions that should occur after PATCH request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
  * @param errorMsg
@@ -138,22 +136,20 @@ const Put = async (
  * @param successMsg
  * - Success message for toast
  * @returns void
- * @returns void
  */
 const Patch = async (
   url: string,
   obj: object = {},
-  actions: any,
+  actions: () => void,
   history: History,
   errorMsg: string,
   pendingMsg: string,
   successMsg: string,
 ): Promise<void> => {
-  toast.promise(
-    await axios.patch(url, obj).then(
-      () => actions(),
-      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
-    ),
+  await toast.promise(
+    axios
+      .patch(url, obj)
+      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
     {
       error: errorMsg ? errorMsg : 'An error occurred',
       pending: pendingMsg ? pendingMsg : 'Processing...',
