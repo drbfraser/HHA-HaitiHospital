@@ -113,6 +113,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               id="employee-month"
               required
               value={awardedAt}
+              readOnly
               {...register('awardedMonth', { required: true })}
             ></input>
             <label htmlFor="Employee Name" className="form-label">
