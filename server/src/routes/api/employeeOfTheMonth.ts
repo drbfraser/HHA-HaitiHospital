@@ -69,7 +69,15 @@ router.put(
   upload.single('file'),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const previousEmployeeOfTheMonth = await EOTMCollection.findOne();
+      const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
+        req.body.document,
+      );
+
+      const previousEmployeeOfTheMonth = await EOTMCollection.findOne({
+        awardedMonth: awardedMonth,
+        awardedYear: awardedYear,
+      });
+
       const defaultImgPath: string = 'public/images/avatar0.jpg';
       if (previousEmployeeOfTheMonth) {
         const imgPath: string = previousEmployeeOfTheMonth.imgPath;
@@ -77,9 +85,6 @@ router.put(
           deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
         }
       }
-      const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
-        req.body.document,
-      );
 
       let imgPath: string = '';
       if (req.file) {

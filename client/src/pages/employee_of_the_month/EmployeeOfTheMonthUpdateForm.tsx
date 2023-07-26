@@ -3,7 +3,7 @@ import { Department, GeneralDepartment } from 'constants/interfaces';
 import Api from '../../actions/Api';
 import {
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
-  ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST,
+  ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
 } from 'constants/endpoints';
 import {
   EmployeeOfTheMonth,
@@ -32,12 +32,15 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const [awardedAt, setAwardedAt] = useState('');
+  const [departmentName, setDepartmentName] = useState('');
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
   const history: History = useHistory<History>();
 
   const isNonEmptyObject = (objectName) => {
-    return Object.keys(objectName).length > 0;
+    return (
+      typeof objectName === 'object' && objectName !== null && Object.keys(objectName).length > 0
+    );
   };
 
   const getYearMonthObject = () =>
@@ -54,13 +57,8 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
         history,
         controller.signal,
       );
-
       if (isNonEmptyObject(employeeOfTheMonthInfo)) {
         setEmployeeOfTheMonth(employeeOfTheMonthInfo);
-        const month = employeeOfTheMonthInfo.awardedMonth.toString();
-        const awardedMonth = month.length == 1 ? `0${month}` : `${month}`;
-        const awardedAtInfo = `${employeeOfTheMonthInfo.awardedYear}-${awardedMonth}`;
-        setAwardedAt(awardedAtInfo);
       }
     };
     getEmployeeOfTheMonth();
@@ -69,6 +67,15 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     };
   }, [history]);
 
+  useEffect(() => {
+    if (isNonEmptyObject(employeeOfTheMonth)) {
+      const month = employeeOfTheMonth.awardedMonth.toString();
+      const awardedMonth = month.length == 1 ? `0${month}` : `${month}`;
+      const awardedAtInfo = `${employeeOfTheMonth.awardedYear}-${awardedMonth}`;
+      setAwardedAt(awardedAtInfo);
+      setDepartmentName(employeeOfTheMonth.department.name);
+    }
+  }, [employeeOfTheMonth]);
 
   const onImageUpload = (item: File) => {
     setSelectedFile(item);
@@ -88,8 +95,8 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     let postData = JSON.stringify(data);
     formData.append('document', postData);
     formData.append('file', selectedFile);
-    await Api.Post(
-      ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST,
+    await Api.Put(
+      ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
       formData,
       onSubmitActions,
       history,
@@ -112,7 +119,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               type="month"
               id="employee-month"
               required
-              value={awardedAt}
+              defaultValue={awardedAt}
               readOnly
               {...register('awardedMonth', { required: true })}
             ></input>
@@ -125,7 +132,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               type="text"
               id="employee-name"
               required
-              value={employeeOfTheMonth?.name}
+              defaultValue={employeeOfTheMonth?.name}
               {...register('name', { required: true })}
             ></input>
             <label htmlFor="Employee Department" className="form-label">
@@ -137,9 +144,9 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               id="employee-department"
               aria-label="Default select example"
               required
-              value={employeeOfTheMonth?.department.name}
+              value={departmentName}
+              onChange={e => setDepartmentName(e.target.value)}
               {...register('department', { required: true })}
-              defaultValue=""
             >
               <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>
               {Array.from(departments.values()).map((dept: Department, index: number) => {
@@ -157,7 +164,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               className="form-control mb-2 mt-0"
               id="employee-description"
               required
-              value={employeeOfTheMonth?.description}
+              defaultValue={employeeOfTheMonth?.description}
               {...register('description', { required: true })}
             ></textarea>
             <label htmlFor="Employee Image" className="form-label mb-2">
