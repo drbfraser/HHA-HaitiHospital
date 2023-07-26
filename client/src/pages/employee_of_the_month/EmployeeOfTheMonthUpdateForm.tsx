@@ -31,6 +31,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [awardedAt, setAwardedAt] = useState('');
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const { register, handleSubmit, reset } = useForm<EmployeeOfTheMonthModel>({});
   const history: History = useHistory<History>();
@@ -47,7 +48,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     const { year, month } = getYearMonthObject();
     const endpoint = `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${year}/${month}`;
     const getEmployeeOfTheMonth = async () => {
-      const employeeOfTheMonthInfo = await Api.Get(
+      const employeeOfTheMonthInfo: EmployeeOfTheMonth = await Api.Get(
         endpoint,
         TOAST_EMPLOYEE_OF_THE_MONTH_GET,
         history,
@@ -56,6 +57,10 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
 
       if (isNonEmptyObject(employeeOfTheMonthInfo)) {
         setEmployeeOfTheMonth(employeeOfTheMonthInfo);
+        const month = employeeOfTheMonthInfo.awardedMonth.toString();
+        const awardedMonth = month.length == 1 ? `0${month}` : `${month}`;
+        const awardedAtInfo = `${employeeOfTheMonthInfo.awardedYear}-${awardedMonth}`;
+        setAwardedAt(awardedAtInfo);
       }
     };
     getEmployeeOfTheMonth();
@@ -64,9 +69,6 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     };
   }, [history]);
 
-  useEffect(() => {
-    console.log("EOTM", employeeOfTheMonth)
-  }, [employeeOfTheMonth])
 
   const onImageUpload = (item: File) => {
     setSelectedFile(item);
@@ -110,6 +112,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               type="month"
               id="employee-month"
               required
+              value={awardedAt}
               {...register('awardedMonth', { required: true })}
             ></input>
             <label htmlFor="Employee Name" className="form-label">
