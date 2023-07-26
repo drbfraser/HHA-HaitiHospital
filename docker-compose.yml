@@ -22,9 +22,14 @@ services:
       - ./fluentbit-config:/fluent-bit/etc
     logging:
       driver: "none"
-
-
+  prometheus:
+    image: prom/prometheus
+    container_name: hhahaiti_prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - '9090:9090'
+      
 volumes:
   hhahaiti_mongodb_data:
   fluentbit-config:
-

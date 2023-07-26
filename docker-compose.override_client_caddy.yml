@@ -23,6 +23,5 @@ services:
       - DOMAIN=localhost
       - API_HOSTNAME=hhahaiti_server
     ports:
-      - '8080:80'
       - '8443:443'
       - '2019:2019'
