@@ -1,13 +1,10 @@
 import { Image, Modal } from 'react-bootstrap';
 
-import { History } from 'history';
-
 interface ModalImageProps {
   onModalClose: any;
   show: boolean;
   image: string;
   item: string;
-  history: History;
 }
 
 const ImageModal = (props: ModalImageProps) => {

@@ -1,17 +1,14 @@
 import { Button, Modal } from 'react-bootstrap';
 
-import { History } from 'history';
-import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-interface ModalDeleteProps extends RouteComponentProps {
+interface ModalDeleteProps {
   dataTestId: string;
   onModalClose: any;
   onModalDelete: any;
   currentItem: string;
   show: boolean;
   item: string;
-  history: History;
 }
 
 const DeleteModal = (props: ModalDeleteProps) => {

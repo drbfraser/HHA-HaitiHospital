@@ -105,9 +105,6 @@ const MessageDisplay = (props: MessageDisplayProps) => {
         item={'message'}
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
-        history={undefined}
-        location={undefined}
-        match={undefined}
       ></DeleteModal>
 
       {/* Message content */}
