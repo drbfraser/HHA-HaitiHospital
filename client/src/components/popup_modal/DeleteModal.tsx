@@ -4,11 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 interface ModalDeleteProps {
   dataTestId: string;
-  onModalClose: any;
-  onModalDelete: any;
-  currentItem: string;
+  onModalClose: () => void;
+  onModalDelete: () => void;
   show: boolean;
-  item: string;
+  itemName: string;
 }
 
 const DeleteModal = (props: ModalDeleteProps) => {
@@ -18,7 +17,7 @@ const DeleteModal = (props: ModalDeleteProps) => {
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.title')}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{t('modal.delete_msg', { item: props.item })}</Modal.Body>
+      <Modal.Body>{t('modal.delete_msg', { item: props.itemName })}</Modal.Body>
       <Modal.Footer>
         <Button className="mr-3" variant="outline-dark" onClick={() => props.onModalClose()}>
           {t('button.cancel')}
@@ -26,7 +25,7 @@ const DeleteModal = (props: ModalDeleteProps) => {
         <Button
           data-testid={props.dataTestId}
           variant="danger"
-          onClick={() => props.onModalDelete(props.currentItem)}
+          onClick={() => props.onModalDelete()}
         >
           {t('button.delete')}
         </Button>
