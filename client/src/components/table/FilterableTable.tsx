@@ -17,6 +17,7 @@ import Filter, { FILTER_DEFAULT_VALUE, FilterType, FilterValue } from '../filter
 import { useMemo, useState } from 'react';
 
 import { EnumOption } from 'components/filter/EnumFilter';
+import { FILTERS } from 'components/filter/StringFilter';
 import { FilterableHeader } from './FilterableHeader';
 import Pagination from 'components/pagination/Pagination';
 import { Table } from 'react-bootstrap';
@@ -83,7 +84,7 @@ const FilterableTable = ({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    globalFilterFn: 'includesString',
+    globalFilterFn: FILTERS.contains,
     state: {
       globalFilter,
       sorting,
@@ -95,7 +96,7 @@ const FilterableTable = ({
   });
 
   return (
-    <div className="px-4 pt-3">
+    <div className="p-2">
       {enableFilters && enableGlobalFilter && (
         <Filter
           placeholder={t('FilterableTable.GlobalSearch')}
@@ -110,16 +111,19 @@ const FilterableTable = ({
 
       <Table hover responsive>
         <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) =>
-                FilterableHeader({
-                  header,
-                  enableSorting,
-                }),
-              )}
-            </tr>
-          ))}
+          {table.getHeaderGroups().map(
+            (headerGroup) =>
+            headerGroup.headers.some((header) => header.column.columnDef.header) && (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) =>
+                    FilterableHeader({
+                      header,
+                      enableSorting,
+                    }),
+                  )}
+                </tr>
+              ),
+          )}
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
