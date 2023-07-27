@@ -193,7 +193,6 @@ export const BiomechanicalList = () => {
     <Layout title={t('headerBiomechanicalSupport')}>
       <ModalDelete
         dataTestId="confirm-delete-biomech-button"
-        currentItem={currentIndex}
         show={deleteModal}
         item={t('item.report')}
         onModalClose={onModalClose}

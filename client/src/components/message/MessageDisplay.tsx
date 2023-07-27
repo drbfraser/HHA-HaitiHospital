@@ -91,7 +91,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
       <DeleteModal
         dataTestId="confirm-delete-message-button"
         show={deleteModal}
-        itemName={'message'}
+        item={'message'}
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
         history={undefined}
