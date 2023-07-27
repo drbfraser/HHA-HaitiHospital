@@ -113,7 +113,7 @@ const FilterableTable = ({
         <thead>
           {table.getHeaderGroups().map(
             (headerGroup) =>
-            headerGroup.headers.some((header) => header.column.columnDef.header) && (
+              headerGroup.headers.some((header) => header.column.columnDef.header) && (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) =>
                     FilterableHeader({
