@@ -16,7 +16,7 @@ const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [users, setUsers] = useState([]);
-  
+
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
