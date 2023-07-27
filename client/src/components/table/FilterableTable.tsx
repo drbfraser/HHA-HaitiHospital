@@ -17,7 +17,7 @@ import Filter, { FILTER_DEFAULT_VALUE, FilterType, FilterValue } from '../filter
 import { useMemo, useState } from 'react';
 
 import { EnumOption } from 'components/filter/EnumFilter';
-import { FILTERS } from 'components/filter/StringFilter';
+import { FILTER_FUNCTIONS } from 'components/filter/StringFilter';
 import { FilterableHeader } from './FilterableHeader';
 import Pagination from 'components/pagination/Pagination';
 import { Table } from 'react-bootstrap';
@@ -84,7 +84,7 @@ const FilterableTable = ({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    globalFilterFn: FILTERS.contains,
+    globalFilterFn: FILTER_FUNCTIONS.contains,
     state: {
       globalFilter,
       sorting,
