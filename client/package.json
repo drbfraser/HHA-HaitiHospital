@@ -7,6 +7,7 @@
     "**/@typescript-eslint/parser": "^4.1.1"
   },
   "dependencies": {
+    "@grafana/faro-web-sdk": "^1.1.2",
     "@hha/common": "file:../common",
     "@progress/kendo-drawing": "^1.16.2",
     "@progress/kendo-licensing": "^1.2.2",
