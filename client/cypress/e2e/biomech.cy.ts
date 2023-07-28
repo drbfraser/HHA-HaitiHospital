@@ -68,7 +68,7 @@ describe('Bio Mech Tests', function () {
     bioMechPage.clickSubmitBioMechReportButton();
     cy.url().should('equal', `${baseUrl}/biomechanic`);
 
-    let toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', BIO_MECH_ADDED_SUCCESSFULLY);
     toast.click();
 
