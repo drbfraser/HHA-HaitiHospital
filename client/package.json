@@ -28,6 +28,7 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "mongoose": "^7.4.1",
     "react": "^16.14.0",
     "react-bootstrap": "^2.0.2",
     "react-csv": "^2.2.2",

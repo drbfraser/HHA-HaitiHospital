@@ -18,7 +18,7 @@ import { currentYearAndMonth } from 'utils/dateUtils';
 interface Props extends RouteComponentProps<YearMonthParams> {}
 
 export const EmployeeOfTheMonthView = (props: Props) => {
-  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
+  const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
   const authState = useAuthState();
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -34,16 +34,21 @@ export const EmployeeOfTheMonthView = (props: Props) => {
     const controller = new AbortController();
     const { year, month } = getYearMonthObject();
     const endpoint = `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${year}/${month}`;
+
     const getEmployeeOfTheMonth = async () => {
-      const employeeOfTheMonthInfo = await Api.Get(
+      console.log(
+        await Api.Get(endpoint, TOAST_EMPLOYEE_OF_THE_MONTH_GET, history, controller.signal),
+      );
+      const employeeOfTheMonthArr: EmployeeOfTheMonth[] = await Api.Get(
         endpoint,
         TOAST_EMPLOYEE_OF_THE_MONTH_GET,
         history,
         controller.signal,
       );
 
-      if (isNonEmptyObject(employeeOfTheMonthInfo)) {
-        setEmployeeOfTheMonth(employeeOfTheMonthInfo);
+      console.log('ARR', employeeOfTheMonthArr);
+      if (employeeOfTheMonthArr.length > 0) {
+        setEmployeesOfTheMonth(employeeOfTheMonthArr);
       }
     };
     getEmployeeOfTheMonth();
@@ -54,20 +59,26 @@ export const EmployeeOfTheMonthView = (props: Props) => {
 
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
-      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link to={`/employee-of-the-month/update/2023/4`}>
-          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-            {t('employeeOfTheMonthEdit')}
-          </button>
-        </Link>
-      )}
+      {/* {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) &&
+        employeesOfTheMonth && (
+          <Link
+            to={`/employee-of-the-month/update/${employeesOfTheMonth[0].awardedYear}/${employeeOfTheMonth.awardedMonth}`}
+          >
+            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+              {t('employeeOfTheMonthEdit')}
+            </button>
+          </Link>
+        )} */}
       <Link to="/employee-of-the-month/record" className="pl-3">
         <button type="button" className="btn btn-outline-dark">
           Record
         </button>
       </Link>
-      {employeeOfTheMonth && <EmployeeOfTheMonthSummary employee={employeeOfTheMonth} />}
-      {!employeeOfTheMonth && <h2>No employee of the month found</h2>}
+      {employeesOfTheMonth.map((eotm, i) => {
+        console.log(eotm);
+        return <EmployeeOfTheMonthSummary employee={eotm} key={i}/>;
+      })}
+      {!employeesOfTheMonth && <h2>No employee of the month found</h2>}
     </Layout>
   );
 };

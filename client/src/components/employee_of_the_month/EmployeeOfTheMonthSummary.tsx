@@ -14,6 +14,7 @@ interface Props {
 }
 
 export const EmployeeOfTheMonthSummary = (props: Props) => {
+  console.log("props", props)
   const ALT_MESSAGE: string = 'Employee Of The Month...';
   const { t } = useTranslation();
   const [showImageModal, setShowImageModal] = useState<boolean>(false);

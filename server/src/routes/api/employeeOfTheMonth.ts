@@ -29,18 +29,21 @@ router.get(
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { awardedYear, awardedMonth } = req.params;
-      const doc = await EOTMCollection.findOne({
-        awardedYear: { $lte: +awardedYear },
-        awardedMonth: { $lte: +awardedMonth },
-      }).sort({ awardedYear: -1, awardedMonth: -1 });
+      const doc = await EOTMCollection.find({
+        awardedYear: +awardedYear,
+        awardedMonth: +awardedMonth,
+      });
       // find eotm with current year and month, if not found, find the closest below it.
 
       if (!doc) {
         throw new NotFound(`No employee of the month found`);
       }
 
-      const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
-      res.status(HTTP_OK_CODE).json(json);
+      const jsons = doc.map(async (eotm) => (await eotm.toJson()) as EmployeeOfTheMonthJson);
+
+      Promise.all(jsons).then((eotms) => {
+        res.status(HTTP_OK_CODE).json(eotms);
+      });
     } catch (e) {
       next(e);
     }
@@ -69,6 +72,9 @@ router.put(
   upload.single('file'),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
+      console.log('PONTO', JSON.parse(req.body.document));
+      console.log('PONYO', JSON.parse(req.body.document)?._id);
+
       const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
         req.body.document,
       );

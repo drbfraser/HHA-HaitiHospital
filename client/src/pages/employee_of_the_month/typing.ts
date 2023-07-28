@@ -1,7 +1,9 @@
 import { Department } from 'constants/interfaces';
+import { Types } from 'mongoose';
 import * as H from 'history';
 
 export interface EmployeeOfTheMonth {
+  _id: Types.ObjectId;
   name: string;
   department: Department;
   description: string;
