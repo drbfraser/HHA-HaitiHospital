@@ -23,5 +23,20 @@ services:
       - DOMAIN=localhost
       - API_HOSTNAME=hhahaiti_server
     ports:
-      - '8443:443'
+      - '3000:80'
+      - '3443:443'
       - '2019:2019'
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: hha_grafana
+    restart: unless-stopped
+    ports:
+     - '8443:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+     - GF_SERVER_ROOT_URL=http://localhost:3000/
+     - GF_INSTALL_PLUGINS=grafana-clock-panel
+
+volumes:
+  grafana_data:
