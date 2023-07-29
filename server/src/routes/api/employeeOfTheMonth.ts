@@ -50,6 +50,27 @@ router.get(
   },
 );
 
+router.get(
+  '/:eotmId',
+  requireJwtAuth,
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const { eotmId } = req.params;
+      const doc = await EOTMCollection.findById(eotmId);
+
+      if (!doc) {
+        throw new NotFound(`No employee of the month found`);
+      }
+
+      const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
+
+      res.status(HTTP_OK_CODE).json([json]);
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const doc = await EOTMCollection.find({});

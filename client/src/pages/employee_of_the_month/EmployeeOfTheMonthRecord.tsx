@@ -88,7 +88,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
         columns={columns}
         data={employeeOfTheMonthList}
         rowClickHandler={(row) =>
-          history.push(`/employee-of-the-month/${row.awardedYear}/${row.awardedMonth}`)
+          history.push(`/employee-of-the-month/${row._id.toString()}`)
         }
         enableFilters={false}
         enableGlobalFilter={false}

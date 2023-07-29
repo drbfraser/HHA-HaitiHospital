@@ -28,7 +28,14 @@ export interface match<P> {
   url: string;
 }
 
-export interface YearMonthParams {
+export interface EmployeeViewParams {
   year: string;
   month: string;
+  eotmId: string;
+  type: EmployeeViewType.YearMonth | EmployeeViewType.EotmId;
+}
+
+export enum EmployeeViewType {
+  YearMonth = 'YEAR_MONTH',
+  EotmId = 'EOTM_ID',
 }

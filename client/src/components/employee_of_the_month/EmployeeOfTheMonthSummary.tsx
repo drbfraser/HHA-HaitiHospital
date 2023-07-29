@@ -6,21 +6,25 @@ import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { useAuthState } from 'contexts';
+import { Role } from 'constants/interfaces';
 
 interface Props {
   employee: EmployeeOfTheMonth;
 }
 
 export const EmployeeOfTheMonthSummary = (props: Props) => {
-  console.log("props", props)
+  console.log('props', props);
   const ALT_MESSAGE: string = 'Employee Of The Month...';
   const { t } = useTranslation();
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
   const [employeeImage, setEmployeeImage] = useState<string>(null);
   const updatedDate = props.employee.updatedAt;
   const history: History = useHistory<History>();
+  const authState = useAuthState();
 
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
@@ -45,7 +49,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   }, [props.employee.imgPath, history]);
 
   return (
-    <>
+    <div className="p-4 mb-2">
       <ImageModal
         show={showImageModal}
         item={ALT_MESSAGE}
@@ -53,15 +57,17 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         onModalClose={onModalImageClose}
         history={history}
       ></ImageModal>
+      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+        <Link
+          to={`/employee-of-the-month`}
+        >
+          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark mb-1">
+            {t('employeeOfTheMonthEdit')}
+          </button>
+        </Link>
+      )}
       <div className="d-flex flex-column flex-xl-row">
         <div className="d-flex flex-column">
-          <h2 className="mt-3 mb-3 fw-bold">
-            {t('employeeOfTheMonthTitle').concat(
-              translateMonth(props.employee.awardedMonth)
-                .concat(' ')
-                .concat(props.employee.awardedYear.toString()),
-            )}
-          </h2>
           <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
           <p className="fs-6 lh-base">{updatedDate}</p>
           <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
@@ -85,6 +91,6 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
         <p className="fs-6 lh-base">{props.employee.description}</p>
       </>
-    </>
+    </div>
   );
 };

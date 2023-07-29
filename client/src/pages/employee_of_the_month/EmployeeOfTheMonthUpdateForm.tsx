@@ -8,7 +8,7 @@ import {
 import {
   EmployeeOfTheMonth,
   EmployeeOfTheMonth as EmployeeOfTheMonthModel,
-  YearMonthParams,
+  EmployeeViewParams,
 } from './typing';
 import { History } from 'history';
 import Layout from 'components/layout';
@@ -25,7 +25,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { currentYearAndMonth } from 'utils/dateUtils';
 
-interface Props extends RouteComponentProps<YearMonthParams> {}
+interface Props extends RouteComponentProps<EmployeeViewParams> {}
 
 export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
