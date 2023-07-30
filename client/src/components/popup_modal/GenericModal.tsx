@@ -1,15 +1,11 @@
 import { Button, Modal } from 'react-bootstrap';
 
-import { History } from 'history';
-import { RouteComponentProps } from 'react-router-dom';
-
-interface ModalGenericProps extends RouteComponentProps {
+interface ModalGenericProps {
   dataTestId: string;
   onModalClose: any;
   show: boolean;
   message: string;
   item: string;
-  history: History;
 }
 
 const GenericModal = (props: ModalGenericProps) => {

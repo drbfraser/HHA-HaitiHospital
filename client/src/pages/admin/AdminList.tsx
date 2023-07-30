@@ -4,19 +4,19 @@ import { language, timezone } from 'constants/timezones';
 import { useCallback, useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
+import DeleteModal from 'components/popup_modal/DeleteModal';
 import { History } from 'history';
 import Layout from 'components/layout';
-import ModalDelete from 'components/popup_modal/DeleteModal';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 const AdminList = () => {
-  const DEFAULT_INDEX: string = '';
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [users, setUsers] = useState([]);
+
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
@@ -54,17 +54,17 @@ const AdminList = () => {
     event.stopPropagation();
     event.preventDefault();
     setCurrentIndex(id);
-    setDeleteModal(true);
+    setShowDeleteModal(true);
   };
 
   const onModalClose = () => {
-    setCurrentIndex(DEFAULT_INDEX);
-    setDeleteModal(false);
+    setCurrentIndex(null);
+    setShowDeleteModal(false);
   };
 
-  const onModalDelete = (id: string) => {
-    deleteUser(id);
-    setDeleteModal(false);
+  const onModalDelete = () => {
+    deleteUser(currentIndex);
+    setShowDeleteModal(false);
   };
 
   useEffect(() => {
@@ -73,17 +73,13 @@ const AdminList = () => {
 
   return (
     <Layout title={t('headerAdmin')}>
-      <ModalDelete
+      <DeleteModal
         dataTestId="confirm-delete-user-button"
-        currentItem={currentIndex}
-        show={deleteModal}
-        item={t('item.user')}
+        show={showDeleteModal}
+        itemName={t('item.user')}
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
-        history={history}
-        location={undefined}
-        match={undefined}
-      ></ModalDelete>
+      ></DeleteModal>
       <div className="d-flex justify-content-start">
         <Link to={Paths.getAdminAddUser()}>
           <button data-testid="add-user-button" type="button" className="btn btn-outline-dark">
