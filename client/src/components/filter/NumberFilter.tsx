@@ -4,7 +4,7 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const numberFilterFn = {
+export const FILTER_FUNCTIONS = {
   equal: (row, columnId, value) => row.getValue(columnId) === value,
 
   greaterThan: (row, columnId, value) => row.getValue(columnId) > value,
@@ -23,7 +23,7 @@ export const NumberFilter = ({
   const { t } = useTranslation();
 
   useEffect(() => {
-    setFilterFn(numberFilterFn.equal);
+    setFilterFn(FILTER_FUNCTIONS.equal);
   }, [setFilterFn]);
 
   return (
@@ -48,13 +48,13 @@ export const NumberFilter = ({
           onChange={(e) => {
             switch (e.target.value) {
               case '1':
-                setFilterFn(numberFilterFn.greaterThan);
+                setFilterFn(FILTER_FUNCTIONS.greaterThan);
                 break;
               case '2':
-                setFilterFn(numberFilterFn.lessThan);
+                setFilterFn(FILTER_FUNCTIONS.lessThan);
                 break;
               default:
-                setFilterFn(numberFilterFn.equal);
+                setFilterFn(FILTER_FUNCTIONS.equal);
                 break;
             }
             setFilterValue(filterValue);
