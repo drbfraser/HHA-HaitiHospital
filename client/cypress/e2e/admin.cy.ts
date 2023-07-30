@@ -5,18 +5,18 @@ import { USER_ADDED_SUCCESSFULLY, USER_DELETED_SUCCESSFULLY } from '../support/c
 import { AdminPage } from '../support/pages/AdminPage';
 
 describe('Admin Tests', function () {
-  enum ROLES {
+  enum Roles {
     ADMIN = 'Admin',
     MEDICAL_DIRECTOR = 'Medical Director',
     HEAD_OF_DEPARTMENT = 'Head of Department',
     USER = 'User',
   }
 
-  enum DEPARTMENTS {
-    Rehab = 'Rehab',
+  enum Departments {
+    REHAB = 'Rehab',
     NICU = 'NICU/Paeds',
-    Maternity = 'Maternity',
-    Community = 'Community & Health',
+    MATERNITY = 'Maternity',
+    COMMUNITY = 'Community & Health',
   }
 
   const loginPage = new LoginPage();
@@ -71,8 +71,8 @@ describe('Admin Tests', function () {
     adminPage.inputUsername(username);
     adminPage.inputPassword(password);
     adminPage.inputName('Handsome Squidward');
-    adminPage.selectUserRole(ROLES.USER);
-    adminPage.selectUserDepartment(DEPARTMENTS.Rehab);
+    adminPage.selectUserRole(Roles.USER);
+    adminPage.selectUserDepartment(Departments.REHAB);
     adminPage.clickSubmitUserButton();
 
     cy.url().should('equal', `${baseUrl}/admin`);
@@ -93,7 +93,7 @@ describe('Admin Tests', function () {
     adminPage.inputUsername('username');
     adminPage.inputPassword('password');
     adminPage.inputName('Handsome Squidward');
-    adminPage.selectUserRole(ROLES.ADMIN);
+    adminPage.selectUserRole(Roles.ADMIN);
     cy.get('[id="department"]').should('not.exist');
   });
 
@@ -104,7 +104,7 @@ describe('Admin Tests', function () {
     adminPage.inputUsername('username');
     adminPage.inputPassword('password');
     adminPage.inputName('Handsome Squidward');
-    adminPage.selectUserRole(ROLES.MEDICAL_DIRECTOR);
+    adminPage.selectUserRole(Roles.MEDICAL_DIRECTOR);
     cy.get('[id="department"]').should('not.exist');
   });
 

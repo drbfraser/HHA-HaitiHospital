@@ -328,7 +328,8 @@
     "create": "created",
     "delete": "deleted",
     "fetch": "fetched",
-    "update": "updated"
+    "update": "updated",
+    "feature": "featured"
   },
   "item": {
     "department": "Department",

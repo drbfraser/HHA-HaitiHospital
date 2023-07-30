@@ -7,6 +7,7 @@ enum RequestAction {
   UPDATE = 'update',
   FETCH = 'fetch',
   DELETE = 'delete',
+  FEATURE = 'feature',
 }
 
 // Make sure enum values match with i18-next translation JSON
@@ -251,6 +252,53 @@ const getMsgCreateCaseStudyOk = (): string => {
   });
 };
 
+const getMsgUpdateCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgUpdateCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+const getMsgDeleteCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgDeleteCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgFeatureCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FEATURE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgFeatureCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FEATURE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
 // MESSAGE BOARD
 const getMsgCreatePostFailed = () => {
   return getResponseMessage({
@@ -317,6 +365,12 @@ export const ResponseMessage = {
 
   getMsgCreateCaseStudyFailed,
   getMsgCreateCaseStudyOk,
+  getMsgUpdateCaseStudyFailed,
+  getMsgUpdateCaseStudyOk,
+  getMsgDeleteCaseStudyFailed,
+  getMsgDeleteCaseStudyOk,
+  getMsgFeatureCaseStudyFailed,
+  getMsgFeatureCaseStudyOk,
 
   getMsgCreatePostFailed,
   getMsgCreatePostOk,

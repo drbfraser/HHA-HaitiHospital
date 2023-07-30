@@ -328,7 +328,8 @@
     "create": "créer",
     "fetch": "la récupération de(s)",
     "update": "la mise à jour de(s)",
-    "delete": "la suppression de(s)"
+    "delete": "la suppression de(s)",
+    "feature": "la mise en vedette de(s)"
   },
   "item": {
     "department": "départment",

@@ -5,11 +5,7 @@ import {
 } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  TOAST_CASESTUDY_DELETE_ERROR,
-  TOAST_CASESTUDY_GET_ERROR,
-  TOAST_CASESTUDY_PATCH_ERROR,
-} from 'constants/toastErrorMessages';
+import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -17,12 +13,10 @@ import { Button } from 'react-bootstrap';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Role } from 'constants/interfaces';
-import { SortOrder } from 'utils';
+import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
-import { TOAST_CASESTUDY_DELETE_SUCCESS } from 'constants/toastSuccessMessages';
 import GenericModal from 'components/popup_modal/GenericModal';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 
@@ -49,9 +43,9 @@ export const CaseStudyList = () => {
       {},
       resetDeleteModal,
       history,
-      TOAST_CASESTUDY_DELETE_ERROR,
+      ResponseMessage.getMsgDeleteCaseStudyFailed(),
       null,
-      TOAST_CASESTUDY_DELETE_SUCCESS,
+      ResponseMessage.getMsgDeleteCaseStudyOk(),
     );
   };
 
@@ -77,10 +71,12 @@ export const CaseStudyList = () => {
         ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
         {},
         () => {
-          toast.success('Featured case study has now changed!');
+          history.push('/case-study');
         },
-        TOAST_CASESTUDY_PATCH_ERROR,
         history,
+        ResponseMessage.getMsgFeatureCaseStudyFailed(),
+        null,
+        ResponseMessage.getMsgFeatureCaseStudyOk(),
       );
     };
 
@@ -148,11 +144,7 @@ export const CaseStudyList = () => {
                 title={t('button.')}
                 className="text-decoration-none"
               >
-                <i className={`bi ${item.featured ? 'bi-star-fill' : 'bi-star'}`}>
-                  <p data-testid="is-featured" hidden>
-                    {item.featured ? 'true' : 'false'}
-                  </p>
-                </i>
+                <i className={`bi ${item.featured ? 'bi-star-fill' : 'bi-star'}`}></i>
               </Button>
               <Button
                 data-testid="delete-case-study-button"
