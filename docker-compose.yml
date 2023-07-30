@@ -23,8 +23,6 @@ services:
     logging:
       driver: "none"
 
-
 volumes:
   hhahaiti_mongodb_data:
   fluentbit-config:
-

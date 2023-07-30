@@ -92,7 +92,6 @@ const CaseStudyInfo = ({
         item={'Case Study'}
         image={caseStudyImage}
         onModalClose={onModalImageClose}
-        history={history}
       ></ImageModal>
       <div className="w-100">
         <div className="d-flex flex-column flex-xl-row">

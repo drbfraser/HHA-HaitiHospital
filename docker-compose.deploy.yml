@@ -1,8 +1,16 @@
+# Used for deployment to a server where we are getting images from Docker Hub
+# Overlay ontop of base config with:
+#    $ export IMAGE_TEST="v2022-05-20.ABCD1234"
+#    $ docker compose -f docker-compose.yml -f docker-compose.deploy.yml up -d
+# Set IMAGE_TAG to the image desired, such as:
+#     dev
+#     staging
+#     vYYYY-MM-DD.SHA
 version: '3.9'
 
 services:
   server:
-    image: ${SERVER_IMAGE}
+    image: drbfraser/hhahaiti_backend:$IMAGE_TAG
     build:
       context: .
       dockerfile: server/Dockerfile
@@ -16,7 +24,7 @@ services:
   mongodb:
     restart: always
   caddy:
-    image: ${CLIENT_IMAGE}
+    image: drbfraser/hhahaiti_revproxy_frontend:$IMAGE_TAG
     container_name: hhahaiti_caddy
     build:
       context: .
