@@ -322,7 +322,12 @@
   "request_response": {
     "ok": "{{item}} successfully {{action}}!",
     "pending": "{{item}} is being {{action}}...",
-    "failed": "{{item}} could not be {{action}}"
+    "failed": "{{item}} could not be {{action}}",
+    "default": {
+      "ok": "Success!",
+      "pending": "Processing...",
+      "failed": "An error occurred"
+    }
   },
   "request_action": {
     "create": "created",

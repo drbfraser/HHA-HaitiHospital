@@ -6,6 +6,7 @@ import DbErrorHandler from './http_error_handler';
 import { History } from 'history';
 import { ResponseMessage } from 'utils/response_message';
 import { toast } from 'react-toastify';
+import i18n from 'i18n';
 
 /**
  *
@@ -70,9 +71,9 @@ const Post = async (
       (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
     ),
     {
-      error: errorMsg ? errorMsg : 'An error occurred',
-      pending: pendingMsg ? pendingMsg : 'Processing...',
-      success: successMsg ? successMsg : 'Success!',
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
     },
   );
 };
@@ -111,9 +112,9 @@ const Put = async (
       (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
     ),
     {
-      error: errorMsg ? errorMsg : 'An error occurred',
-      pending: pendingMsg ? pendingMsg : 'Processing...',
-      success: successMsg ? successMsg : 'Success!',
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
     },
   );
 };
@@ -151,9 +152,9 @@ const Patch = async (
       .patch(url, obj)
       .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
     {
-      error: errorMsg ? errorMsg : 'An error occurred',
-      pending: pendingMsg ? pendingMsg : 'Processing...',
-      success: successMsg ? successMsg : 'Success!',
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
     },
   );
 };
@@ -186,17 +187,14 @@ const Delete = async (
   pendingMsg?: string,
   successMsg?: string,
 ): Promise<void> => {
-  //   error: errorMsg ? errorMsg : 'An error occurred',
-  // pending: pendingMsg ? pendingMsg : 'Processing...',
-  // success: successMsg ? successMsg : 'Success!',
   await toast.promise(
     axios
       .delete(url, obj)
       .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
     {
-      error: errorMsg ? errorMsg : 'An error occurred',
-      pending: pendingMsg ? pendingMsg : 'Processing...',
-      success: successMsg ? successMsg : 'Deleted!',
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
     },
   );
 };

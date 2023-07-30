@@ -322,7 +322,12 @@
   "request_response": {
     "ok": "Avec succès {{action}} {{item}}!",
     "pending": "Traitement {{action}} {{item}}...",
-    "failed": "Échec de {{action}} {{item}}"
+    "failed": "Échec de {{action}} {{item}}",
+    "default": {
+      "ok": "Succès!",
+      "pending": "En cours...",
+      "failed": "une erreur s'est produite"
+    }
   },
   "request_action": {
     "create": "créer",

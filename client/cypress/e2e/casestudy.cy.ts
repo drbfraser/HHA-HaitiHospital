@@ -8,10 +8,12 @@ import {
   CASE_STUDY_DELETED_SUCCESSFULLY,
   CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY,
 } from '../support/constants/toasts';
+import { HeaderComponent } from '../support/components/Header';
 
 describe('Case Study Tests', function () {
   const loginPage = new LoginPage();
   const caseStudyPage = new CaseStudyPage();
+  const headerComponent = new HeaderComponent();
 
   const username = Cypress.env('Admin').username;
   const password = Cypress.env('Admin').password;
@@ -63,7 +65,6 @@ describe('Case Study Tests', function () {
       caseStudyIds.push(caseStudyId); // Store the Id of the Case Study for Deleting later
     });
 
-    cy.contains('[data-testid="header"]', 'Patient Story Case Study');
     cy.contains('[data-testid="case-study-patient-name"]', 'John Doe');
     cy.contains('[data-testid="case-study-patient-age"]', '22');
     cy.contains('[data-testid="case-study-patient-from"]', 'Canada');

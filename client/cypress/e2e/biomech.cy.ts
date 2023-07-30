@@ -6,6 +6,7 @@ import {
   BIO_MECH_DELETED_SUCCESSFULLY,
 } from '../support/constants/toasts';
 import { BioMechPage } from '../support/pages/BioMechPage';
+import { HeaderComponent } from '../support/components/Header';
 
 describe('Bio Mech Tests', function () {
   enum BiomechPriority {
@@ -20,8 +21,12 @@ describe('Bio Mech Tests', function () {
     BACKLOG = 'Backlog',
   }
 
+  // Pages
   const loginPage = new LoginPage();
   const bioMechPage = new BioMechPage();
+
+  // Components
+  const headerComponent = new HeaderComponent();
 
   const username = Cypress.env('Admin').username;
   const password = Cypress.env('Admin').password;
@@ -79,7 +84,7 @@ describe('Bio Mech Tests', function () {
       bioMechIds.push(bioMechId); // Store the Id of the Bio Mech Report to Delete Later
     });
 
-    cy.get('[data-testid="header"]').contains('Broken Kit Report');
+    headerComponent.getHeader().contains('Broken Kit Report');
     cy.get('[data-testid="biomech-equipment-name"]').contains('X-ray');
     cy.get('[data-testid="biomech-priority"]').contains(BiomechPriority.URGENT);
     cy.get('[data-testid="biomech-equipment-status"]').contains(BiomechStatus.BACKLOG);
