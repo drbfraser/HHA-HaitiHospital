@@ -32,7 +32,7 @@ const MessageDisplay = (props: MessageDisplayProps) => {
   const authState = useAuthState();
   const DEFAULT_INDEX: string = '';
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(DEFAULT_INDEX);
+  const [currentIndex, setCurrentIndex] = useState<string>(null);
   const readableDate = props.message.date.toLocaleString();
   const [commentCount, setCommentCount] = useState<number>(0);
   const is_comment_page: boolean = useLocation().pathname.split('/')[2] === 'comments';
@@ -91,8 +91,8 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     setDeleteModal(false);
   };
 
-  const onModalDelete = (id: string) => {
-    deleteMessage(id);
+  const onModalDelete = () => {
+    deleteMessage(currentIndex);
     setDeleteModal(false);
   };
 
@@ -100,14 +100,10 @@ const MessageDisplay = (props: MessageDisplayProps) => {
     <div className="d-flex text-muted pt-2">
       <DeleteModal
         dataTestId="confirm-delete-message-button"
-        currentItem={currentIndex}
         show={deleteModal}
-        item={'message'}
+        itemName={'message'}
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
-        history={undefined}
-        location={undefined}
-        match={undefined}
       ></DeleteModal>
 
       {/* Message content */}
