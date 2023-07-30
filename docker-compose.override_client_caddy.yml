@@ -17,10 +17,10 @@ services:
     container_name: hhahaiti_caddy
     restart: unless-stopped
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ./client/build:/var/www/
+      - ./caddy/Caddyfile_local:/etc/caddy/Caddyfile
+      # - ./client/build:/var/www/
     environment:
-      - DOMAIN=localhost
+      - DOMAIN=myapp.local
       - API_HOSTNAME=hhahaiti_server
     ports:
       - '3000:80'

@@ -16,8 +16,36 @@ services:
     container_name: hhahaiti_client
     image: node:16
     volumes:
-      - ./client:/code
-    working_dir: /code
+      - ./:/code
+    working_dir: /code/client
     command: npm start
     ports:
       - '3000:3000'
+  caddy:
+    image: caddy:2.6.4
+    container_name: hhahaiti_caddy
+    restart: unless-stopped
+    volumes:
+      - ./caddy/Caddyfile_local:/etc/caddy/Caddyfile
+      # - ./client/build:/var/www/
+    environment:
+      - DOMAIN=myapp.local
+      - API_HOSTNAME=hhahaiti_server
+    ports:
+      - '9080:80'
+      - '9443:443'
+      - '2019:2019'
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: hha_grafana
+    restart: unless-stopped
+    ports:
+     - '8443:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+     - GF_SERVER_ROOT_URL=http://localhost:3000/
+     - GF_INSTALL_PLUGINS=grafana-clock-panel
+
+volumes:
+  grafana_data:
