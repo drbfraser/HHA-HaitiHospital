@@ -69,22 +69,39 @@ export abstract class QuestionTable<
     this.rowHeaders = [...rowHeaders];
     this.columnHeaders = [...columnHeaders];
 
-    this.questionTable = new Array(rowHeaders.length).map((x, row) =>
-      new Array(columnHeaders.length)
-        .map((x, col) => questionCreator(row, col))
-        .map((question) => new TableCell(question)),
+    // this.questionTable = new Array(rowHeaders.length).map((x, row) =>
+    //   new Array(columnHeaders.length)
+    //     .map((x, col) => questionCreator(row, col))
+    //     .map((question) => new TableCell(question)),
+    // );
+
+    this.questionTable = new Array(rowHeaders.length).fill(undefined).map((_, row) =>
+      new Array(columnHeaders.length).fill(undefined).map((_, col) => {
+        const question = questionCreator(row, col);
+        return new TableCell(question);
+      }),
     );
   }
 
+
   // Returns undefined if given numbers are out of bound OR if no question has
   // been defined in the given cell.
+  // public getQuestionAt(row: number, col: number): QuestionType | undefined {
+  //   return row >= 0 &&
+  //     row < this.questionTable.length &&
+  //     col >= 0 &&
+  //     col < (this.questionTable[0]?.length ?? 0)
+  //     ? this.questionTable[row]?.[col]?.getQuestion()
+  //     : undefined;
+  // }
+
   public getQuestionAt(row: number, col: number): QuestionType | undefined {
-    return row >= 0 &&
-      row < this.questionTable.length &&
-      col >= 0 &&
-      col < (this.questionTable[0]?.length ?? 0)
-      ? this.questionTable[row]?.[col]?.getQuestion()
-      : undefined;
+    const tableRow = this.questionTable[row];
+    if (tableRow && col >= 0 && col < tableRow.length) {
+      const tableCell = tableRow[col];
+      return tableCell?.getQuestion();
+    }
+    return undefined;
   }
 
   public getRowHeaders(): Array<string> {
@@ -123,4 +140,5 @@ export abstract class QuestionTable<
       return row.map(mapper);
     });
   }
+
 }
