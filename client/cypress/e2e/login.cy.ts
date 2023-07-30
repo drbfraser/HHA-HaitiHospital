@@ -20,7 +20,6 @@ describe('Admin Login Tests', () => {
   it('Should Login Successfully As Admin', () => {
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('include', '/home');
-    console.log('ADMIN: ', username, password);
   });
 
   it('Should Fail to Login Due to Invalid Credentials', () => {
