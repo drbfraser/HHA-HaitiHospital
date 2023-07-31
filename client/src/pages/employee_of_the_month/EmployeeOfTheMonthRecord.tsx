@@ -27,6 +27,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
+
   useEffect(() => {
     const fetchEmployeeOfTheMonths = async (controller: AbortController) => {
       const data = await Api.Get(
@@ -35,7 +36,6 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
         history,
         controller.signal,
       );
-
       setEmployeeOfTheMonthList(data);
     };
 
@@ -47,8 +47,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
       controller.abort();
     };
   }, [history]);
-  const { departmentIdKeyMap } = useDepartmentData();
-  console.log('dddd', departmentIdKeyMap);
+
   const columns: FilterableColumnDef[] = [
     {
       header: 'Awarded Month Year',
@@ -64,12 +63,12 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     {
       header: 'Department',
       id: 'department',
-      accessorFn: ({ departmentId }) => departmentIdKeyMap.get(departmentId),
+      accessorFn: ({ department: {name} }) => name,
     },
     {
       header: 'Last Updated',
       id: 'updatedAt',
-      accessorFn: ({ updatedAt }) => formatDateString(new Date(updatedAt)),
+      accessorFn: ({ updatedAt }) => updatedAt,
     },
   ];
 
@@ -88,7 +87,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
         columns={columns}
         data={employeeOfTheMonthList}
         rowClickHandler={(row) =>
-          history.push(`/employee-of-the-month/${row._id.toString()}`)
+          history.push(`/employee-of-the-month/${row.id}`)
         }
         enableFilters={false}
         enableGlobalFilter={false}
