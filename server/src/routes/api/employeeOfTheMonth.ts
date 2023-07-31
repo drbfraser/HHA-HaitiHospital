@@ -78,7 +78,11 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
       throw new NotFound(`No employee of the month found`);
     }
 
-    res.status(HTTP_OK_CODE).json(doc);
+    const jsons = doc.map(async (eotm) => (await eotm.toJson()) as EmployeeOfTheMonthJson);
+
+    Promise.all(jsons).then((eotms) => {
+      res.status(HTTP_OK_CODE).json(eotms);
+    });
   } catch (e) {
     next(e);
   }
