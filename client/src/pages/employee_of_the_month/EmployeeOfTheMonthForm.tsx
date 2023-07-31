@@ -12,6 +12,8 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18n';
+import { ResponseMessage } from 'utils';
 
 export const EmployeeOfTheMonthForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
@@ -42,7 +44,9 @@ export const EmployeeOfTheMonthForm = () => {
       formData,
       onSubmitActions,
       history,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
+      ResponseMessage.getMsgUpdateEotmFail(),
+      null,
+      ResponseMessage.getMsgUpdateEotmOk(),
     );
   };
 

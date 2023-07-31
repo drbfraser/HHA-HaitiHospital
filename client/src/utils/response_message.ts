@@ -30,6 +30,7 @@ enum RequestItem {
   CASE_STUDY = 'case_study',
   POST = 'message_board_post',
   COMMENT = 'message_board_comment',
+  EOTM = 'employee_of_the_month',
 }
 
 // Make sure these keys match with i18-next translation JSON
@@ -331,6 +332,39 @@ const getMsgCreateCommentOk = (): string => {
     item: RequestItem.COMMENT,
   });
 };
+
+const getMsgCreateEotmFail = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.EOTM,
+  });
+};
+
+const getMsgCreateEotmOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.EOTM,
+  });
+};
+
+const getMsgUpdateEotmFail = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.EOTM,
+  });
+};
+
+const getMsgUpdateEotmOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.OK,
+    item: RequestItem.EOTM,
+  });
+};
+
 export const ResponseMessage = {
   getMsgFetchDepartmentFailed,
   getMsgFetchDepartmentsFailed,
@@ -376,4 +410,9 @@ export const ResponseMessage = {
   getMsgCreatePostOk,
   getMsgCreateCommentFailed,
   getMsgCreateCommentOk,
+
+  getMsgCreateEotmFail,
+  getMsgCreateEotmOk,
+  getMsgUpdateEotmFail,
+  getMsgUpdateEotmOk,
 };

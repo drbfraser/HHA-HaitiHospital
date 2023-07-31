@@ -347,7 +347,8 @@
     "users": "utilisateurs",
     "case_study": "étude de cas",
     "message_board_post": "posté",
-    "message_board_comment": "commentaire"
+    "message_board_comment": "commentaire",
+    "employee_of_the_month": "Employé du mois"
   },
   "error_message": {
     "compress": {

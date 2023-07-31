@@ -3,10 +3,13 @@
 import { LoginPage } from '../support/pages/LoginPage';
 import { EOTMPage } from '../support/pages/EOTMPage';
 import { EOTM_UPDATED_SUCCESSFULLY } from '../support/constants/toasts';
+import { LayoutComponent } from '../support/components/Layout';
 
 describe('Employee Of The Month Tests', function () {
   const loginPage = new LoginPage();
   const eotmPage = new EOTMPage();
+
+  const layoutComponent = new LayoutComponent();
 
   const username = Cypress.env('Admin').username;
   const password = Cypress.env('Admin').password;
@@ -23,7 +26,8 @@ describe('Employee Of The Month Tests', function () {
 
   it('Should Navigate Back to the EOTM Main', function () {
     eotmPage.clickUpdateEOTMButton();
-    eotmPage.clickBackEOTMButton();
+    layoutComponent.clickBackButton();
+
     cy.url().should('equal', `${baseUrl}/employee-of-the-month`);
   });
 
@@ -48,9 +52,9 @@ describe('Employee Of The Month Tests', function () {
 
     cy.url().should('equal', `${baseUrl}/employee-of-the-month`);
 
-    cy.get('div.employee-subcontainer').contains('p', name);
-    cy.get('div.employee-subcontainer').contains('p', department);
-    cy.get('div.employee-subcontainer').contains('p', description);
+    cy.get('[data-testid="employee-name"]').contains('p', name);
+    cy.get('[data-testid="employee-department"]').contains('p', department);
+    cy.get('[data-testid="employee-description"]').contains('p', description);
   });
 
   it('Should Unsuccessfully Update EOTM Due to Missing Image', function () {
