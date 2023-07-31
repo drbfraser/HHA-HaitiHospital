@@ -11,7 +11,6 @@ import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { Spinner } from 'components/spinner/Spinner';
 import { UserDetails } from 'constants/interfaces';
-import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import useDidMountEffect from 'utils/custom_hooks';
 import { useTranslation } from 'react-i18next';
@@ -50,7 +49,6 @@ export const EditUserForm = () => {
   );
 
   const onSubmit = () => {
-    toast.success(ResponseMessage.getMsgUpdateUserOk());
     history.push(Paths.getAdminMain());
   };
 

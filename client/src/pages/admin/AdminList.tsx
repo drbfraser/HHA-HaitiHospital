@@ -9,7 +9,6 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 const AdminList = () => {
@@ -22,7 +21,6 @@ const AdminList = () => {
 
   const deleteUserActions = () => {
     getUsers();
-    toast.success(ResponseMessage.getMsgDeleteUserOk());
   };
 
   const getUsers = useCallback(async () => {
@@ -45,8 +43,10 @@ const AdminList = () => {
       ENDPOINT_ADMIN_DELETE_BY_ID(id),
       {},
       deleteUserActions,
-      ResponseMessage.getMsgDeleteUserFailed(),
       history,
+      ResponseMessage.getMsgDeleteUserFailed(),
+      null,
+      ResponseMessage.getMsgDeleteUserOk(),
     );
   };
 
@@ -126,7 +126,7 @@ const AdminList = () => {
                     </button>
 
                     <button
-                      data-testid="view-user-button"
+                      data-testid="delete-user-button"
                       type="button"
                       className="btn btn-link text-decoration-none"
                       onClick={(event) => {

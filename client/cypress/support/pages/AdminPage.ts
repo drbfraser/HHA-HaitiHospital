@@ -15,7 +15,7 @@ export class AdminPage {
   }
 
   clickDeleteUserButton(index: number) {
-    cy.get('[data-testid="view-user-button"]').eq(index).click();
+    cy.get('[data-testid="delete-user-button"]').eq(index).click();
     return this;
   }
 

@@ -5,8 +5,8 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import { Message, Role } from 'constants/interfaces';
 import {
-  TOAST_MESSAGEBOARD_COMMENTS_GET,
-  TOAST_MESSAGEBOARD_DELETE,
+  TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
+  TOAST_MESSAGEBOARD_DELETE_ERROR,
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
 
@@ -17,7 +17,6 @@ import { History } from 'history';
 import i18n from 'i18next';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
@@ -42,7 +41,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
     const getCommentCount = async (controller: AbortController, message: Message) => {
       let comments = await Api.Get(
         ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message.id),
-        TOAST_MESSAGEBOARD_COMMENTS_GET,
+        TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
         history,
         controller.signal,
       );
@@ -56,17 +55,15 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
     };
   }, [message, history]);
 
-  const deleteMessageActions = () => {
-    toast.success(i18n.t('MessageAlertMessageDeleted'));
-  };
-
   const deleteMessage = async () => {
     await Api.Delete(
       ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(message.id),
       {},
-      deleteMessageActions,
-      TOAST_MESSAGEBOARD_DELETE,
+      null,
       history,
+      TOAST_MESSAGEBOARD_DELETE_ERROR,
+      null,
+      i18n.t('MessageAlertMessageDeleted'),
     );
     onDelete && onDelete(message);
   };

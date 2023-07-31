@@ -111,6 +111,8 @@ TEST_SERVER_PORT=5001
 PASSWORD_SEED=C@td0g
 ```
 
+##### NOTE: If you are planning to run tests in your local environment and have changed the password variable above, please make sure to update the cypress.config.ts file accordingly.
+
 ### Common package
 
 - Navigate to the /common folder from the root directory
@@ -254,30 +256,73 @@ GNU GPL
 ## Infrastructure Notes
 
 ### Overview:
-Our infrastructure is composed of frontend and backend projects, utilizing React and Node.js, respectively. Both projects rely on a shared package responsible for performing various tasks. The backend, developed in TypeScript, is transpiled with ts-node for production builds, while the frontend is created using Create React App, which employs webpack as its default bundler. We modify the webpack rules with the rewire library. Deployment occurs within Docker containers, featuring Caddy as a reverse proxy for the frontend and MongoDB as the database. Our infrastructure maintains consistency across development (dev) and staging environments, with updates pushed through respective branch merges. We use fluentbit to collect logs and send them to hosted services like cloudwatch and grafana where they can be stored and analyzed.
+
+Our infrastructure is composed of frontend and backend projects, utilizing React and Node.js,
+respectively. Both projects rely on a shared package responsible for performing various tasks. The
+backend, developed in TypeScript, is transpiled with ts-node for production builds, while the
+frontend is created using Create React App, which employs webpack as its default bundler. We modify
+the webpack rules with the rewire library. Deployment occurs within Docker containers, featuring
+Caddy as a reverse proxy for the frontend and MongoDB as the database. Our infrastructure maintains
+consistency across development (dev) and staging environments, with updates pushed through
+respective branch merges. We use fluentbit to collect logs and send them to hosted services like
+cloudwatch and grafana where they can be stored and analyzed.
 
 ### Backend:
-The backend project, developed using TypeScript, operates within a dedicated Docker container. TypeScript code is transpiled to JavaScript using ts-node. The backend container communicates with the MongoDB container for data storage and retrieval purposes.
+
+The backend project, developed using TypeScript, operates within a dedicated Docker container.
+TypeScript code is transpiled to JavaScript using ts-node. The backend container communicates with
+the MongoDB container for data storage and retrieval purposes.
 
 ### Frontend:
-The frontend project, built with Create React App and also using Typescript, runs inside a separate Docker container. The frontend is served via Caddy, a reverse proxy incorporating TLS, which delivers the frontend content as HTML, CSS, and JS files within the Caddy container. The frontend in production is compiled using webpack, which transpiles CRA into an optimized javascript file (more on this Webpack and Rewire).
+
+The frontend project, built with Create React App and also using Typescript, runs inside a separate
+Docker container. The frontend is served via Caddy, a reverse proxy incorporating TLS, which
+delivers the frontend content as HTML, CSS, and JS files within the Caddy container. The frontend in
+production is compiled using webpack, which transpiles CRA into an optimized javascript file (more
+on this Webpack and Rewire).
 
 ### Docker Containers:
-Our application is constructed and deployed within Docker containers. We utilize three containers: one each for the frontend, backend, and MongoDB database. This approach ensures component isolation and independent scalability. Each container is assembled using a Dockerfile, which outlines the necessary dependencies and configurations for that specific component.
+
+Our application is constructed and deployed within Docker containers. We utilize three containers:
+one each for the frontend, backend, and MongoDB database. This approach ensures component isolation
+and independent scalability. Each container is assembled using a Dockerfile, which outlines the
+necessary dependencies and configurations for that specific component.
 
 ### Caddy:
-Caddy serves as the reverse proxy for our frontend, providing built-in TLS to encrypt all incoming and outgoing traffic. This additional layer of security enhances the overall protection of our application.
+
+Caddy serves as the reverse proxy for our frontend, providing built-in TLS to encrypt all incoming
+and outgoing traffic. This additional layer of security enhances the overall protection of our
+application.
 
 ### Database:
-MongoDB functions as our database solution, operating within its own Docker container. It interacts with the backend container for data storage and retrieval operations.
+
+MongoDB functions as our database solution, operating within its own Docker container. It interacts
+with the backend container for data storage and retrieval operations.
 
 ### Fluentbit:
-Fluent Bit is a lightweight data collector that can efficiently collect log data from various sources, including Docker containers, and output it to different destinations like Amazon CloudWatch. This setup helps monitor application health and identify issues quickly, ensuring a reliable and stable product for our users.
+
+Fluent Bit is a lightweight data collector that can efficiently collect log data from various
+sources, including Docker containers, and output it to different destinations like Amazon
+CloudWatch. This setup helps monitor application health and identify issues quickly, ensuring a
+reliable and stable product for our users.
 
 ### Dev and Staging:
-Our infrastructure supports two environments: dev and staging. Updates to the dev environment occur through merges to the master branch, while the staging environment is updated via merges to the staging branch. Consistent infrastructure across both environments ensures application uniformity, simplifying the process of identifying and resolving issues that may arise in one environment but not the other.
+
+Our infrastructure supports two environments: dev and staging. Updates to the dev environment occur
+through merges to the master branch, while the staging environment is updated via merges to the
+staging branch. Consistent infrastructure across both environments ensures application uniformity,
+simplifying the process of identifying and resolving issues that may arise in one environment but
+not the other.
 
 ### Webpack and Rewire:
-Webpack serves as a powerful bundler and transpiler, responsible for transforming and bundling our frontend project's assets, including JavaScript, CSS, and images. Webpack is employed by default in Create React App (CRA) configurations, allowing for streamlined development.
 
-Rewire is a complementary library that enables us to modify the default CRA configurations of Webpack without ejecting from CRA. This allows us to customize Webpack configurations according to our specific requirements, granting us the flexibility to adapt our project's build process while maintaining the simplicity and ease of use provided by CRA. An example use of rewire is preventing webpack from changing class and function names which are shortened by default in CRA's webpack config.
+Webpack serves as a powerful bundler and transpiler, responsible for transforming and bundling our
+frontend project's assets, including JavaScript, CSS, and images. Webpack is employed by default in
+Create React App (CRA) configurations, allowing for streamlined development.
+
+Rewire is a complementary library that enables us to modify the default CRA configurations of
+Webpack without ejecting from CRA. This allows us to customize Webpack configurations according to
+our specific requirements, granting us the flexibility to adapt our project's build process while
+maintaining the simplicity and ease of use provided by CRA. An example use of rewire is preventing
+webpack from changing class and function names which are shortened by default in CRA's webpack
+config.

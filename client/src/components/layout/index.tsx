@@ -1,5 +1,4 @@
 import './index.css';
-
 import Header from 'components/header/Header';
 import SideBar from 'components/side_bar/SideBar';
 import cn from 'classnames';
@@ -34,7 +33,11 @@ const Layout = ({
 
           <div className="p-3">
             {showBackButton && (
-              <button className="btn btn-md btn-outline-secondary mb-3" onClick={history.goBack}>
+              <button
+                className="btn btn-md btn-outline-secondary mb-3"
+                data-testid="back-button"
+                onClick={history.goBack}
+              >
                 {t('button.back')}
               </button>
             )}
