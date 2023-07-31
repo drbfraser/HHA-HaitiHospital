@@ -2,8 +2,8 @@ import {
   ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
 } from 'constants/endpoints';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Message, Role, emptyMessage } from 'constants/interfaces';
+import { Link, useHistory } from 'react-router-dom';
+import { Message, Role } from 'constants/interfaces';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
   TOAST_MESSAGEBOARD_DELETE_ERROR,
@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
+import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import { History } from 'history';
 import i18n from 'i18next';
@@ -21,48 +22,42 @@ import { useTranslation } from 'react-i18next';
 
 interface MessageDisplayProps {
   message: Message;
-  notifyChange: Function;
+  onDelete?: (message: Message) => void;
+  showCommentsLink?: boolean;
 }
 
-const MessageDisplay = (props: MessageDisplayProps) => {
+const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageDisplayProps) => {
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [commentCount, setCommentCount] = useState<number>(0);
+
   const { t } = useTranslation();
-  const [message, setMessage] = useState<Message>(emptyMessage);
   const history: History = useHistory<History>();
   const authState = useAuthState();
-  const DEFAULT_INDEX: string = '';
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const readableDate = props.message.date.toLocaleString();
-  const [commentCount, setCommentCount] = useState<number>(0);
-  const is_comment_page: boolean = useLocation().pathname.split('/')[2] === 'comments';
-  const author = !!props.message.user ? props.message.user.name : t('status.not_available');
+
+  const readableDate = message.date.toLocaleString();
+  const author = !!message.user ? message.user.name : t('status.not_available');
 
   useEffect(() => {
-    const controller = new AbortController();
-    setMessage(props.message);
-
-    const getCommentCount = async (id: string) => {
-      if (id) {
-        let comments = await Api.Get(
-          ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(id),
-          TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
-          history,
-          controller.signal,
-        );
-        setCommentCount(comments.length);
-      }
+    const getCommentCount = async (controller: AbortController, message: Message) => {
+      let comments = await Api.Get(
+        ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message.id),
+        TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
+        history,
+        controller.signal,
+      );
+      setCommentCount(comments.length);
     };
 
-    getCommentCount(props.message.id);
+    const controller = new AbortController();
+    getCommentCount(controller, message);
     return () => {
-      setMessage(emptyMessage);
       controller.abort();
     };
-  }, [props.message, history]);
+  }, [message, history]);
 
-  const deleteMessage = async (id: string) => {
+  const deleteMessage = async () => {
     await Api.Delete(
-      ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(id),
+      ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(message.id),
       {},
       null,
       history,
@@ -70,31 +65,26 @@ const MessageDisplay = (props: MessageDisplayProps) => {
       null,
       i18n.t('MessageAlertMessageDeleted'),
     );
-    if (is_comment_page) {
-      history.push('/message-board');
-    }
-    props.notifyChange();
+    onDelete && onDelete(message);
   };
 
-  const onDeleteMessage = (event: any, id: string) => {
+  const onDeleteMessage = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
-    setCurrentIndex(id);
     setDeleteModal(true);
   };
 
   const onModalClose = () => {
-    setCurrentIndex(DEFAULT_INDEX);
     setDeleteModal(false);
   };
 
   const onModalDelete = () => {
-    deleteMessage(currentIndex);
+    deleteMessage();
     setDeleteModal(false);
   };
 
   return (
-    <div className="d-flex text-muted pt-2">
+    <div className="d-flex text-muted">
       <DeleteModal
         dataTestId="confirm-delete-message-button"
         show={deleteModal}
@@ -104,74 +94,49 @@ const MessageDisplay = (props: MessageDisplayProps) => {
       ></DeleteModal>
 
       {/* Message content */}
-      <div className="pb-3 mb-0 border-bottom flex-grow-1">
-        {/* Message info */}
-        <div className="message-info">
-          <div className="text-gray-dark">
-            <div className="d-flex">
-              <div className="mr-auto p-2">
-                <h5 data-testid="message-title">{message.messageHeader}</h5>
-                <p className="small m-0">{parseEscapedCharacters(message.department.name)}</p>
-                <p className="small m-0">{author}</p>
-              </div>
-              <div className="p-2">
-                <div>
-                  {renderBasedOnRole(authState.userDetails.role, [
-                    Role.Admin,
-                    Role.MedicalDirector,
-                  ]) ? (
-                    <Link className="align-self-center" to={`/message-board/edit/${message.id}`}>
-                      <button
-                        data-testid="edit-message-button"
-                        type="button"
-                        className="btn btn-sm btn-link text-decoration-none small border-0 p-0 me-2"
-                      >
-                        {t('messageBoardEdit')}
-                      </button>
-                    </Link>
-                  ) : (
-                    <div></div>
-                  )}
-
-                  {renderBasedOnRole(authState.userDetails.role, [
-                    Role.Admin,
-                    Role.MedicalDirector,
-                  ]) ? (
-                    <button
-                      data-testid="delete-message-button"
-                      type="button"
-                      className="btn btn-sm btn-link text-decoration-none border-0 p-0"
-                      onClick={(event) => {
-                        onDeleteMessage(event, message.id);
-                      }}
-                    >
-                      {t('messageBoardDelete')}
-                    </button>
-                  ) : (
-                    <div></div>
-                  )}
-                </div>
-
-                <p className="small m-0">{t('messageBoardPostedOn')}</p>
-                <p className="small m-0">{readableDate}</p>
-              </div>
-            </div>
-          </div>
+      <div className="flex-grow-1">
+        <div className="d-flex">
           <div className="mr-auto p-2">
-            <p data-testid="message-body" className="lh-sm">
-              {message.messageBody}
-            </p>
-            {useLocation().pathname.split('/').length < 4 ? (
-              <Link className="align-self-center" to={`/message-board/comments/${message.id}`}>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-link text-decoration-none admin-utils"
-                >
-                  {t('messageBoardComments') + '(' + commentCount + ')'}
-                </button>
-              </Link>
-            ) : null}
+            <h5 data-testid="message-title">{message.messageHeader}</h5>
+            <p className="small m-0">{parseEscapedCharacters(message.department.name)}</p>
+            <p className="small m-0">{author}</p>
           </div>
+          <div className="p-2">
+            {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+              <>
+                <Link className="align-self-center" to={`/message-board/edit/${message.id}`}>
+                  <button
+                    data-testid="edit-message-button"
+                    type="button"
+                    className="btn btn-sm btn-link text-decoration-none small border-0 p-0 me-2"
+                  >
+                    {t('messageBoardEdit')}
+                  </button>
+                </Link>
+                <Button
+                  data-testid="delete-message-button"
+                  type="button"
+                  className="btn btn-sm btn-link text-decoration-none border-0 p-0"
+                  onClick={onDeleteMessage}
+                >
+                  {t('messageBoardDelete')}
+                </Button>
+              </>
+            )}
+
+            <p className="small m-0">{t('messageBoardPostedOn')}</p>
+            <p className="small m-0">{readableDate}</p>
+          </div>
+        </div>
+        <div className="mr-auto p-2">
+          <p data-testid="message-body" className="lh-sm">
+            {message.messageBody}
+          </p>
+          {showCommentsLink && (
+            <Link className="align-self-center small" to={`/message-board/comments/${message.id}`}>
+              {t('messageBoardComments') + '(' + commentCount + ')'}
+            </Link>
+          )}
         </div>
       </div>
     </div>

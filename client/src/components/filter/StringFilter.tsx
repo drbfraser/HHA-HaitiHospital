@@ -4,7 +4,7 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const stringFilterFn = {
+export const FILTER_FUNCTIONS = {
   contains: (row, columnId, value) =>
     row.getValue(columnId).toLowerCase().includes(value.toLowerCase()),
 
@@ -28,7 +28,7 @@ export const StringFilter = ({
   const { t } = useTranslation();
 
   useEffect(() => {
-    setFilterFn(stringFilterFn.contains);
+    setFilterFn(FILTER_FUNCTIONS.contains);
   }, [setFilterFn]);
 
   const value: string = (filterValue as string) ?? FILTER_DEFAULT_VALUE.STRING;
@@ -55,16 +55,16 @@ export const StringFilter = ({
           onChange={(e) => {
             switch (e.target.value) {
               case '1':
-                setFilterFn(stringFilterFn.equal);
+                setFilterFn(FILTER_FUNCTIONS.equal);
                 break;
               case '2':
-                setFilterFn(stringFilterFn.startsWith);
+                setFilterFn(FILTER_FUNCTIONS.startsWith);
                 break;
               case '3':
-                setFilterFn(stringFilterFn.endsWith);
+                setFilterFn(FILTER_FUNCTIONS.endsWith);
                 break;
               default:
-                setFilterFn(stringFilterFn.contains);
+                setFilterFn(FILTER_FUNCTIONS.contains);
                 break;
             }
             setFilterValue(filterValue);
