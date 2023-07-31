@@ -1,12 +1,12 @@
 {
-    servers {
-        metrics
-    }
-    admin :2019
+	servers {
+		metrics
+	}
+	admin :2019
 }
 
 {$DOMAIN} {
-    reverse_proxy {$API_HOSTNAME}:8000
+	reverse_proxy {$API_HOSTNAME}:8000
 }
 
 # {$DOMAIN} {
