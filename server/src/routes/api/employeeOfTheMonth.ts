@@ -171,4 +171,26 @@ router.post(
   },
 );
 
+router.delete(
+  '/:id',
+  requireJwtAuth,
+  roleAuth(Role.Admin, Role.MedicalDirector),
+  (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const eotmId = req.params.id;
+    EOTMCollection.findByIdAndRemove(eotmId)
+      .exec()
+      .then((data: any) => {
+        if (!data) {
+          return next(new NotFound(`No Employee of the month with id ${eotmId} found`));
+        }
+
+        return deleteUploadedImage(data.imgPath);
+      })
+      .then(() => res.sendStatus(HTTP_NOCONTENT_CODE))
+      .catch((err: any) =>
+        next(new InternalError(`Delete Employee of the month id ${eotmId} failed: ${err}`)),
+      );
+  },
+);
+
 export default router;

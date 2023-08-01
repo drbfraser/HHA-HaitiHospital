@@ -1,8 +1,8 @@
 import { Link, RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
-import { ENDPOINT_CASESTUDY_GET_BY_ID } from 'constants/endpoints';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
+import { toast } from 'react-toastify';
 
 import { Role } from 'constants/interfaces';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
@@ -18,8 +19,10 @@ import { useAuthState } from 'contexts';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { formatDateString, translateMonth } from 'utils/dateUtils';
 import useDepartmentData from 'hooks/useDepartmentData';
+import { Button } from 'react-bootstrap';
 
-interface Props extends RouteComponentProps {}
+
+interface Props extends RouteComponentProps { }
 
 export const EmployeeOfTheMonthRecord = (props: Props) => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
@@ -27,6 +30,26 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
+  const deleteEotm = async (id: string) => {
+    await Api.Delete(
+      ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID(id),
+      {},
+      () => {
+        toast.success('Employee of the month deleted!');
+      },
+      TOAST_EMPLOYEE_OF_THE_MONTH_GET,
+      history,
+    );
+  };
+
+
+  const onDeleteButton = async (event: any, item: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    await deleteEotm(item.id);
+    // setEmployeeOfTheMonthList(employeeOfTheMonthList.filter((eotm: any) => eotm.id !== item.id));
+  };
 
   useEffect(() => {
     const fetchEmployeeOfTheMonths = async (controller: AbortController) => {
@@ -42,46 +65,74 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     const controller = new AbortController();
 
     fetchEmployeeOfTheMonths(controller);
-
     return () => {
       controller.abort();
     };
   }, [history]);
 
-  const columns: FilterableColumnDef[] = [
-    {
-      header: 'Awarded Month Year',
-      id: 'awardedMonthYear',
-      accessorFn: ({ awardedMonth, awardedYear }) =>
-        `${translateMonth(awardedMonth)} ${awardedYear}`,
-    },
-    {
-      header: 'Employee Name',
-      id: 'name',
-      accessorKey: 'name',
-    },
-    {
-      header: 'Department',
-      id: 'department',
-      accessorFn: ({ department: {name} }) => name,
-    },
-    {
-      header: 'Last Updated',
-      id: 'updatedAt',
-      accessorFn: ({ updatedAt }) => updatedAt,
-    },
-  ];
+  const columns = useMemo(() => {
+
+    const columns: FilterableColumnDef[] = [
+      {
+        header: 'Awarded Month Year',
+        id: 'awardedMonthYear',
+        accessorFn: ({ awardedMonth, awardedYear }) =>
+          `${translateMonth(awardedMonth)} ${awardedYear}`,
+      },
+      {
+        header: 'Employee Name',
+        id: 'name',
+        accessorKey: 'name',
+      },
+      {
+        header: 'Department',
+        id: 'department',
+        accessorFn: ({ department: { name } }) => name,
+      },
+      {
+        header: 'Last Updated',
+        id: 'updatedAt',
+        accessorFn: ({ updatedAt }) => updatedAt,
+      },
+    ];
+
+    if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector])) {
+      columns.push(
+        {
+          header: '',
+          id: 'deleteEotm',
+          cell: (row) => {
+            const item = row.row.original;
+
+            return (
+              <Button
+                data-testid="delete-case-study-button"
+                className="text-decoration-none link-secondary"
+                variant="link"
+                onClick={(event) => {
+                  onDeleteButton(event, item);
+                }}
+              >
+                <i className="bi bi-trash"></i>
+              </Button>
+            );
+          },
+        },
+      )
+    }
+    return columns;
+  }, [authState.userDetails.role, history, t]);
 
   return (
     <Layout showBackButton>
       <div>
-      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link to="/employee-of-the-month/add">
-          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-            {t('employeeOfTheMonthAdd')}
-          </button>
-        </Link>
-      )}
+        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+          <Link to="/employee-of-the-month/add">
+            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+              {t('employeeOfTheMonthAdd')}
+            </button>
+          </Link>
+        )}
       </div>
       <FilterableTable
         columns={columns}
