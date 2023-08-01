@@ -4,36 +4,18 @@ on:
   push:
     branches: [ main, staging ]
   workflow_dispatch:
-env:
-  MIRROR_TO_GITHUB_USER: ${{ secrets.MIRROR_TO_GITHUB_USER }}
-  MIRROR_TO_GITHUB_TOKEN: ${{ secrets.MIRROR_TO_GITHUB_TOKEN }}
-  # Where to mirror to; likely format is:
-  #    github.com/<user>/<repo>.git
-  MIRROR_TO_GITHUB_URL: ${{ secrets.MIRROR_TO_GITHUB_URL }}
+
 jobs:
   mirror-to-githubcom:
     runs-on: [self-hosted, docker]
     container:
       image: node:16
     steps:
-      - name: Display arguments from GitHub "secrets"
-        run: |
-          echo "1   URL: $MIRROR_TO_GITHUB_URL" | sed 's/./& /g'
-          echo "2  User: $MIRROR_TO_GITHUB_USER" | sed 's/./& /g'
-          # echo "3 Token: $MIRROR_TO_GITHUB_TOKEN" | sed 's/./& /g'   # this is the only *actual* secret
-          
-      - name: Checkout repo as Mirror
-        run: |
-          mkdir /isolated_build/ ; cd /isolated_build/
-          HTTPS_PATH_WITH_TOKEN=`echo ${{ github.repositoryUrl }} | awk '{ gsub(/git:\/\//, "\n" ); print "https://oauth2:${{ secrets.GITHUB_TOKEN }}@" $1; }'`
-          echo "Cloning w/ --mirror from '$HTTPS_PATH_WITH_TOKEN' (it should be https://oauth2:<password>@<url>.<user>.<repo>)"
-          git clone --mirror $HTTPS_PATH_WITH_TOKEN repo
-
-      - name: Push mirror to GitHub.com
-        working-directory: /isolated_build/repo/
-        run: |
-          # Source: https://github.com/isaacs/github/issues/415#issuecomment-769711216
-          echo "Adding remote..."
-          git remote add github "https://$MIRROR_TO_GITHUB_USER:$MIRROR_TO_GITHUB_TOKEN@$MIRROR_TO_GITHUB_URL"
-          echo "Pushing mirror (--all and --force)"
-          git push --all --force github
+      - uses: bfraser/cicd/actions/mirror_to_github@v1
+        with:
+          target_github_user:  ${{ secrets.MIRROR_TO_GITHUB_USER }}
+          target_github_token: ${{ secrets.MIRROR_TO_GITHUB_TOKEN }}
+          # Where to mirror to; likely format is:
+          #    github.com/<user>/<repo>.git
+          target_github_url:   ${{ secrets.MIRROR_TO_GITHUB_URL }}
+          source_github_token: ${{ secrets.GITHUB_TOKEN }}
