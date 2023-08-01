@@ -176,14 +176,7 @@ router.post(
         awardedYear: awardedYear,
       };
 
-      const doc = new EOTMCollection(addedEmployeeOfTheMonth);
-      doc
-        .save()
-        .then(() => res.status(HTTP_CREATED_CODE).send('Case Study Submitted successfully'))
-        .catch((err: any) => {
-          // return res.status(500).json(err);
-          throw new InternalError(`Case study submission failed: ${err}`);
-        });
+      await EOTMCollection.create(addedEmployeeOfTheMonth);
       res.sendStatus(HTTP_OK_CODE);
     } catch (e) {
       next(e);

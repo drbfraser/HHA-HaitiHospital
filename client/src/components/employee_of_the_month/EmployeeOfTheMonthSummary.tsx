@@ -17,7 +17,6 @@ interface Props {
 }
 
 export const EmployeeOfTheMonthSummary = (props: Props) => {
-  console.log('props', props);
   const ALT_MESSAGE: string = 'Employee Of The Month...';
   const { t } = useTranslation();
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
@@ -57,17 +56,17 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         onModalClose={onModalImageClose}
         history={history}
       ></ImageModal>
-      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+      <div className="d-flex flex-column flex-xl-row">
+        <div className="d-flex flex-column mt-3">
+        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
         <Link
-          to={`/employee-of-the-month`}
+          to={`/employee-of-the-month/update/${props.employee.id}`}
         >
           <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark mb-1">
             {t('employeeOfTheMonthEdit')}
           </button>
         </Link>
       )}
-      <div className="d-flex flex-column flex-xl-row">
-        <div className="d-flex flex-column">
           <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
           <p className="fs-6 lh-base">{updatedDate}</p>
           <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
@@ -78,7 +77,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         {employeeImage && (
           <img
             className="d-flex mx-auto ms-xl-auto mt-3 mb-3"
-            style={{ maxWidth: '400px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
+            style={{ maxWidth: '250px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
             src={employeeImage}
             alt={ALT_MESSAGE}
             onClick={(event: any) => {

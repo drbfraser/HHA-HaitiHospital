@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 import * as H from 'history';
 
 export interface EmployeeOfTheMonth {
-  _id: Types.ObjectId;
+  id: string;
   name: string;
   department: Department;
   description: string;
