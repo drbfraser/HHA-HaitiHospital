@@ -322,13 +322,19 @@
   "request_response": {
     "ok": "{{item}} successfully {{action}}!",
     "pending": "{{item}} is being {{action}}...",
-    "failed": "{{item}} could not be {{action}}"
+    "failed": "{{item}} could not be {{action}}",
+    "default": {
+      "ok": "Success!",
+      "pending": "Processing...",
+      "failed": "An error occurred"
+    }
   },
   "request_action": {
     "create": "created",
     "delete": "deleted",
     "fetch": "fetched",
-    "update": "updated"
+    "update": "updated",
+    "feature": "featured"
   },
   "item": {
     "department": "Department",
@@ -338,7 +344,10 @@
     "reports": "Reports",
     "report_template": "Report template",
     "user": "User",
-    "users": "Users"
+    "users": "Users",
+    "case_study": "Case study",
+    "message_board_post": "Post",
+    "message_board_comment": "Comment"
   },
   "error_message": {
     "compress": {

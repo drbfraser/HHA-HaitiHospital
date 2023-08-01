@@ -5,7 +5,7 @@ import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { History } from 'history';
 import { Message } from 'constants/interfaces';
 import { NavLink } from 'react-router-dom';
-import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
+import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
@@ -21,7 +21,7 @@ const DashboardMessageOverview = () => {
       setMessages(
         await Api.Get(
           ENDPOINT_MESSAGEBOARD_GET,
-          TOAST_MESSAGEBOARD_GET,
+          TOAST_MESSAGEBOARD_GET_ERROR,
           history,
           controller.signal,
         ),

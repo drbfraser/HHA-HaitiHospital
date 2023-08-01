@@ -14,7 +14,7 @@ export class LoginPage {
     return this;
   }
 
-  clickLoginButton() {
+  clickSignIn() {
     cy.get('[data-testid="signin-button"]').click();
     return this;
   }

@@ -6,7 +6,7 @@ import { CaseStudySummary } from 'components/case_study/CaseStudySummary';
 import { ENDPOINT_CASESTUDY_GET_BY_ID } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
+import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
 
 export const CaseStudyView = () => {
   const [caseStudy, setCaseStudy] = useState({} as any);
@@ -22,7 +22,7 @@ export const CaseStudyView = () => {
         setCaseStudy(
           await Api.Get(
             ENDPOINT_CASESTUDY_GET_BY_ID(id),
-            TOAST_CASESTUDY_GET,
+            TOAST_CASESTUDY_GET_ERROR,
             history,
             controller.signal,
           ),

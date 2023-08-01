@@ -5,11 +5,7 @@ import {
 } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  TOAST_CASESTUDY_DELETE,
-  TOAST_CASESTUDY_GET,
-  TOAST_CASESTUDY_PATCH,
-} from 'constants/toastErrorMessages';
+import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -20,9 +16,8 @@ import GenericModal from 'components/popup_modal/GenericModal';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Role } from 'constants/interfaces';
-import { SortOrder } from 'utils';
+import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
@@ -48,11 +43,11 @@ export const CaseStudyList = () => {
     await Api.Delete(
       ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
       {},
-      () => {
-        toast.success('Case Study deleted!');
-      },
-      TOAST_CASESTUDY_DELETE,
+      resetModals,
       history,
+      ResponseMessage.getMsgDeleteCaseStudyFailed(),
+      null,
+      ResponseMessage.getMsgDeleteCaseStudyOk(),
     );
   };
 
@@ -74,10 +69,12 @@ export const CaseStudyList = () => {
         ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
         {},
         () => {
-          toast.success('Featured case study has now changed!');
+          history.push('/case-study');
         },
-        TOAST_CASESTUDY_PATCH,
         history,
+        ResponseMessage.getMsgFeatureCaseStudyFailed(),
+        null,
+        ResponseMessage.getMsgFeatureCaseStudyOk(),
       );
     };
 
@@ -109,7 +106,7 @@ export const CaseStudyList = () => {
 
     if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector])) {
       columns.push({
-        header: '',
+        header: 'Actions',
         id: 'featured',
         enableColumnFilter: false,
         enableSorting: false,
@@ -149,7 +146,7 @@ export const CaseStudyList = () => {
               </Button>
               <Button
                 data-testid="delete-case-study-button"
-                className="text-decoration-none link-secondary"
+                className="text-decoration-none"
                 variant="link"
                 onClick={(event) => {
                   onDeleteButton(event, item);
@@ -170,7 +167,7 @@ export const CaseStudyList = () => {
     const fetchCaseStudies = async (controller: AbortController) => {
       const data = await Api.Get(
         ENDPOINT_CASESTUDY_GET,
-        TOAST_CASESTUDY_GET,
+        TOAST_CASESTUDY_GET_ERROR,
         history,
         controller.signal,
       );

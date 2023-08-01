@@ -14,7 +14,6 @@ import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 import { Role } from 'constants/interfaces';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
@@ -140,7 +139,6 @@ export const BiomechanicalList = () => {
   );
 
   const deleteBioMechCallback = () => {
-    toast.success(ResponseMessage.getMsgDeleteReportOk());
     setBiomechData(biomechData.filter((item) => item.id !== currentIndex));
     setCurrentIndex(null);
   };
@@ -150,8 +148,10 @@ export const BiomechanicalList = () => {
       ENDPOINT_BIOMECH_DELETE_BY_ID(id),
       {},
       deleteBioMechCallback,
-      ResponseMessage.getMsgDeleteReportFailed(),
       history,
+      ResponseMessage.getMsgDeleteReportFailed(),
+      null,
+      ResponseMessage.getMsgDeleteReportOk(),
     );
   };
 
@@ -211,6 +211,7 @@ export const BiomechanicalList = () => {
           data={biomechData}
           columns={columns}
           rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
+          rowTestId="view-biomech-report"
           enableFilters
           enableGlobalFilter
           enableSorting

@@ -6,7 +6,6 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +17,6 @@ export const AddUserForm = () => {
   const history: History = useHistory<History>();
 
   const onSubmit = () => {
-    toast.success(ResponseMessage.getMsgCreateUserOk());
     history.push(Paths.getAdminMain());
   };
 
@@ -29,6 +27,8 @@ export const AddUserForm = () => {
       onSubmit,
       history,
       ResponseMessage.getMsgCreateUserFailed(),
+      null,
+      ResponseMessage.getMsgCreateUserOk(),
     );
   };
 

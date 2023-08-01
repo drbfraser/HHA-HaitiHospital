@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import Api from 'actions/Api';
 import { CellContext } from '@tanstack/react-table';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
+import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { History } from 'history';
 import MessageDisplay from './MessageDisplay';
-import { TOAST_MESSAGEBOARD_GET } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,7 @@ const MessagePanel = () => {
     const getMessages = async (controller: AbortController) => {
       const messages = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET,
-        TOAST_MESSAGEBOARD_GET,
+        TOAST_MESSAGEBOARD_GET_ERROR,
         history,
         controller.signal,
       );

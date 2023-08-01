@@ -4,9 +4,8 @@ import {
   ENDPOINT_MESSAGEBOARD_GET_BY_ID,
 } from 'constants/endpoints';
 import {
-  TOAST_MESSAGEBOARD_COMMENTS_GET,
-  TOAST_MESSAGEBOARD_COMMENTS_POST,
-  TOAST_MESSAGEBOARD_GET,
+  TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
+  TOAST_MESSAGEBOARD_GET_ERROR,
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -17,9 +16,9 @@ import Layout from 'components/layout';
 import { Message } from 'constants/interfaces';
 import MessageComment from 'components/message/MessageComment';
 import MessageDisplay from 'components/message/MessageDisplay';
-import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { ResponseMessage } from 'utils';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);
@@ -36,7 +35,7 @@ const MessageComments = () => {
     const getMessage = async (controller: AbortController) => {
       const message = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
-        TOAST_MESSAGEBOARD_GET,
+        TOAST_MESSAGEBOARD_GET_ERROR,
         history,
         controller.signal,
       );
@@ -46,7 +45,7 @@ const MessageComments = () => {
     async function getComments(controller: AbortController) {
       const comments = await Api.Get(
         ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
-        TOAST_MESSAGEBOARD_COMMENTS_GET,
+        TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
         history,
         controller.signal,
       );
@@ -63,18 +62,16 @@ const MessageComments = () => {
     };
   }, [message_id, history]);
 
-  const onSubmitActions = () => {
-    toast.success('Successfully added comment');
-  };
-
   const onSubmit = (data: any) => {
     data.parentMessageId = message_id;
     Api.Post(
       ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
       data,
-      onSubmitActions,
+      null,
       history,
-      TOAST_MESSAGEBOARD_COMMENTS_POST,
+      ResponseMessage.getMsgCreateCommentFailed(),
+      null,
+      ResponseMessage.getMsgCreateCommentOk(),
     );
     reset({});
   };

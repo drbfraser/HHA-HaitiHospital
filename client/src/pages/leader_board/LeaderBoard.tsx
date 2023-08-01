@@ -1,5 +1,8 @@
 import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import { TOAST_CASESTUDY_GET, TOAST_LEADERBOARD_GET } from 'constants/toastErrorMessages';
+import {
+  TOAST_CASESTUDY_GET_ERROR,
+  TOAST_LEADERBOARD_GET_ERROR,
+} from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -22,7 +25,7 @@ export const LeaderBoard = () => {
       setLeaderboard(
         await Api.Get(
           ENDPOINT_LEADERBOARD_GET,
-          TOAST_LEADERBOARD_GET,
+          TOAST_LEADERBOARD_GET_ERROR,
           history,
           leaderboardController.signal,
         ),
@@ -33,7 +36,7 @@ export const LeaderBoard = () => {
       setCaseStudy(
         await Api.Get(
           ENDPOINT_CASESTUDY_FEATURED,
-          TOAST_CASESTUDY_GET,
+          TOAST_CASESTUDY_GET_ERROR,
           history,
           caseStudyController.signal,
         ),

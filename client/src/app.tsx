@@ -19,7 +19,7 @@ const App = () => {
       <AuthProvider>
         <AdminToggleProvider>
           <Router>
-            <ToastContainer style={{ ['--toastify-toast-width' as any]: '35%' }} />
+            <ToastContainer style={{ ['--toastify-toast-width' as any]: '35%' }} autoClose={4000} />
             <Switch>
               {routes.map((route) => (
                 <AppRoute

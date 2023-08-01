@@ -43,6 +43,7 @@ interface FilterableTableProps {
   enableGlobalFilter?: boolean;
   enableFilters?: boolean;
   enableSorting?: boolean;
+  rowTestId?: string;
   rowClickHandler?: (row: any) => void;
   globalFilterType?: FilterType;
 }
@@ -54,6 +55,7 @@ const FilterableTable = ({
   enableGlobalFilter = false,
   enableFilters = false,
   enableSorting = false,
+  rowTestId,
   rowClickHandler,
   globalFilterType = FilterType.STRING,
 }: FilterableTableProps) => {
@@ -127,7 +129,7 @@ const FilterableTable = ({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} {...getRowProps(row)}>
+            <tr data-testid="row-data" key={row.id} {...getRowProps(row)}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}
