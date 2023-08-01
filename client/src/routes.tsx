@@ -241,7 +241,7 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/employee-of-the-month/update/:year/:month',
+    path: '/employee-of-the-month/update/:eotmId',
     key: 'employee_of_the_month',
     component: EmployeeOfTheMonthUpdateForm,
     loginRequired: true,

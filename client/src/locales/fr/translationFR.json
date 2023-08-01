@@ -226,6 +226,7 @@
   "employeeOfTheMonthDepartment": "Département",
   "employeeOfTheMonthDescription": "La description",
   "employeeOfTheMonthUploadImage": "Télécharger une image",
+  "employeeOfTheMonthUpdateUploadImage": "Télécharger une image. Laisser si non modifid",
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
   "template": {

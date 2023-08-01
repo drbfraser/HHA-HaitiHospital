@@ -23,9 +23,8 @@ import { useForm } from 'react-hook-form';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { currentYearAndMonth } from 'utils/dateUtils';
 
-interface Props extends RouteComponentProps<EmployeeViewParams> {}
+interface Props extends RouteComponentProps<EmployeeViewParams> { }
 
 export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
@@ -43,13 +42,11 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     );
   };
 
-  const getYearMonthObject = () =>
-    isNonEmptyObject(props.match.params) ? props.match.params : currentYearAndMonth();
 
   useEffect(() => {
     const controller = new AbortController();
-    const { year, month } = getYearMonthObject();
-    const endpoint = `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${year}/${month}`;
+    const { eotmId } = props.match.params;
+    const endpoint = `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${eotmId}`;
     const getEmployeeOfTheMonth = async () => {
       const employeeOfTheMonthInfo: EmployeeOfTheMonth = await Api.Get(
         endpoint,
@@ -89,6 +86,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   };
 
   const onSubmit = async (data: any) => {
+    console.log("PONYO")
     let formData = new FormData();
     data.department = departments.get(data.department);
     [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
@@ -110,6 +108,15 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
         <div className="form-group col-lg-9 col-xl-6">
           <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
           <div>
+            <input
+              data-testid="eotm-id"
+              className="form-control mb-2 mt-0"
+              type="text"
+              id="employee-eotmid"
+              defaultValue={employeeOfTheMonth?.id}
+              readOnly
+              {...register('id', { required: true })}
+            ></input>
             <label htmlFor="Employee Month Year" className="form-label">
               Month and Year Awarded
             </label>
@@ -120,7 +127,6 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               id="employee-month"
               required
               defaultValue={awardedAt}
-              readOnly
               {...register('awardedMonth', { required: true })}
             ></input>
             <label htmlFor="Employee Name" className="form-label">
@@ -168,14 +174,13 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               {...register('description', { required: true })}
             ></textarea>
             <label htmlFor="Employee Image" className="form-label mb-2">
-              {t('employeeOfTheMonthUploadImage')}
+              {t('employeeOfTheMonthUpdateUploadImage')}
             </label>
             <input
               type="file"
               accept="image/*"
               className="form-control"
               id="employee-image"
-              required
               onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
             />
           </div>

@@ -64,7 +64,7 @@ router.get(
 
       const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
 
-      res.status(HTTP_OK_CODE).json([json]);
+      res.status(HTTP_OK_CODE).json(json);
     } catch (e) {
       next(e);
     }
@@ -97,34 +97,22 @@ router.put(
   upload.single('file'),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      console.log('PONTO', JSON.parse(req.body.document));
-      console.log('PONYO', JSON.parse(req.body.document)?._id);
-
-      const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
+      const { id, name, department, description, awardedMonth, awardedYear } = JSON.parse(
         req.body.document,
       );
 
-      const previousEmployeeOfTheMonth = await EOTMCollection.findOne({
-        awardedMonth: awardedMonth,
-        awardedYear: awardedYear,
-      });
+      const preUpdatedEmployeeOfTheMonth = await EOTMCollection.findById(id);
 
-      const defaultImgPath: string = 'public/images/avatar0.jpg';
-      if (previousEmployeeOfTheMonth) {
-        const imgPath: string = previousEmployeeOfTheMonth.imgPath;
-        if (imgPath != defaultImgPath) {
-          deleteUploadedImage(previousEmployeeOfTheMonth.imgPath);
-        }
-      }
-
-      let imgPath: string = '';
+      let imgPath: string = preUpdatedEmployeeOfTheMonth.imgPath;
       if (req.file) {
         imgPath = req.file.path.replace(/\\/g, '/');
+        deleteUploadedImage(preUpdatedEmployeeOfTheMonth.imgPath);
       }
 
       if (!Departments.Database.validateDeptId(department.id)) {
         throw new BadRequest(`Invalid department id ${department}`);
       }
+
       const updatedEmployeeOfTheMonth: EmployeeOfTheMonth = {
         name: name,
         departmentId: department.id,
@@ -134,7 +122,7 @@ router.put(
         awardedYear: awardedYear,
       };
       await EOTMCollection.findByIdAndUpdate(
-        { _id: previousEmployeeOfTheMonth?._id },
+        { _id: id },
         { $set: updatedEmployeeOfTheMonth },
         { new: true },
       );
@@ -154,7 +142,6 @@ router.post(
   upload.single('file'),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const defaultImgPath: string = 'public/images/avatar0.jpg';
       const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
         req.body.document,
       );

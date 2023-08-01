@@ -226,6 +226,7 @@
   "employeeOfTheMonthDepartment": "Department",
   "employeeOfTheMonthDescription": "Description",
   "employeeOfTheMonthUploadImage": "Upload Image",
+  "employeeOfTheMonthUpdateUploadImage": "Upload Image. Leave if not changed",
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
   "template": {

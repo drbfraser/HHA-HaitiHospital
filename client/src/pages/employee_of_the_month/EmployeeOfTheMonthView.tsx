@@ -16,7 +16,7 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { currentYearAndMonth, translateMonth } from 'utils/dateUtils';
 
-interface Props extends RouteComponentProps<EmployeeViewParams> {}
+interface Props extends RouteComponentProps<EmployeeViewParams> { }
 
 export const EmployeeOfTheMonthView = (props: Props) => {
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
@@ -61,12 +61,14 @@ export const EmployeeOfTheMonthView = (props: Props) => {
         : `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${params.year}/${params.month}`;
 
     const getEmployeeOfTheMonth = async () => {
-      const employeeOfTheMonthArr: EmployeeOfTheMonth[] = await Api.Get(
+      let employeeOfTheMonth: EmployeeOfTheMonth | EmployeeOfTheMonth[] = await Api.Get(
         endpoint,
         TOAST_EMPLOYEE_OF_THE_MONTH_GET,
         history,
         controller.signal,
       );
+
+      const employeeOfTheMonthArr: EmployeeOfTheMonth[] = [employeeOfTheMonth].flat();
 
       if (employeeOfTheMonthArr.length > 0) {
         setEmployeesOfTheMonth(employeeOfTheMonthArr);
@@ -76,6 +78,7 @@ export const EmployeeOfTheMonthView = (props: Props) => {
           params.type === EmployeeViewType.EotmId
             ? `${emp.name} - ${monthYearTitle}`
             : monthYearTitle;
+
         setTitle(title);
       }
     };
