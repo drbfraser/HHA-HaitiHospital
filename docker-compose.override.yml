@@ -36,7 +36,6 @@ services:
       - DOMAIN=myapp.local.test
       - API_HOSTNAME=hhahaiti_server
     ports:
-      - '9080:80'
       - '9443:443'
       - '2019:2019'
   grafana:
