@@ -1,29 +1,22 @@
 import { Logger, createLogger, format, transports } from 'winston';
 
-import DailyRotateFile from 'winston-daily-rotate-file';
-const { combine, timestamp, printf, colorize, errors } = format;
+import LokiTransport from 'winston-loki';
+
+const { combine, timestamp, printf, align } = format;
 
 export const buildDevLogger = (): Logger => {
   const formatter = printf(
-    ({ level, message, timestamp, stack }) => `${timestamp} [${level}]: ${stack || message}`,
+    ({ level, message, timestamp, stack, label }) =>
+      `[${timestamp}][${label}][${level}]: ${stack || message}`,
   );
 
-  const infoTransport = new DailyRotateFile({
-    filename: `logs/hha-info-%DATE%.log`,
-    datePattern: 'YYYY-MM-DD',
-    zippedArchive: true,
-    maxSize: '10m', // 10MB
-    maxFiles: '3d', // keep for 3 days
-    level: 'info',
-  });
-
-  const errorTransport = new DailyRotateFile({
-    filename: `logs/hha-errors-%DATE%.log`,
-    datePattern: 'YYYY-MM-DD',
-    zippedArchive: true,
-    maxSize: '10m', // 10MB
-    maxFiles: '3d', // keep for 3 days
-    level: 'error',
+  const lokiTransport = new LokiTransport({
+    host: 'http://loki:3100',
+    labels: { app: 'hhahaiti_local' },
+    json: true,
+    format: format.json(),
+    replaceTimestamp: true,
+    onConnectionError: (err) => console.error(err),
   });
 
   const consoleTransport = new transports.Console({
@@ -32,13 +25,10 @@ export const buildDevLogger = (): Logger => {
   });
 
   return createLogger({
-    level: 'debug',
-    format: combine(
-      colorize(),
-      timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-      errors({ stack: true }),
-      formatter,
-    ),
-    transports: [errorTransport, infoTransport, consoleTransport],
+    defaultMeta: {
+      label: 'dev',
+    },
+    format: combine(timestamp(), formatter, align()),
+    transports: [consoleTransport, lokiTransport],
   });
 };

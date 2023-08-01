@@ -4,14 +4,18 @@ services:
   server:
     image: node:16
     volumes:
-      - ./server:/code
-    working_dir: /code
+      - ./:/code
+    working_dir: /code/server
     command: npm start
     ports:
       - '8000:8000'
+    environment:
+      - NODE_ENV=dev
+
   mongodb:
     ports:
       - '27017:27017'
+
   client:
     container_name: hhahaiti_client
     image: node:16
@@ -26,10 +30,10 @@ services:
     container_name: hhahaiti_caddy
     restart: unless-stopped
     volumes:
-      - ./caddy/Caddyfile_local:/etc/caddy/Caddyfile
+      - ./caddy/Caddyfile_local:/etc/caddy/Caddyfile_local
       # - ./client/build:/var/www/
     environment:
-      - DOMAIN=myapp.local
+      - DOMAIN=myapp.local.test
       - API_HOSTNAME=hhahaiti_server
     ports:
       - '9080:80'

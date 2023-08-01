@@ -1,12 +1,10 @@
-import passport from 'passport';
-import { Request, Response, NextFunction } from 'express';
-import { User } from 'models/user';
+import { NextFunction, Request, Response } from 'express';
+
 import { HTTP_UNAUTHORIZED_CODE } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
+import { User } from 'models/user';
 import { logger } from 'logger';
-// import * as passport from 'passport';
-
-// const somePassport : passport = passport;
+import passport from 'passport';
 
 const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate('local', (err, user: User, info) => {

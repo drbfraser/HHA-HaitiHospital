@@ -13,6 +13,7 @@ services:
     image: mongo:5.0.6-focal
     volumes:
       - hhahaiti_mongodb_data:/data/db
+
   log_metrics_processor:
     container_name: hhahaiti_fluentbit
     image: fluent/fluent-bit:2.0.11
@@ -21,7 +22,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./fluentbit-config:/fluent-bit/etc
     logging:
-      driver: "none"
+      driver: 'none'
+
   prometheus:
     image: prom/prometheus:latest
     container_name: hhahaiti_prometheus
@@ -37,8 +39,7 @@ services:
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
-    # networks:
-    #   - monitoring
+
   node_exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
@@ -54,8 +55,7 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - 9100:9100
-    # networks:
-    #   - monitoring
+
   mongodb_exporter:
     image: bitnami/mongodb-exporter:latest
     container_name: hhahaiti_mongodb_exporter
@@ -64,13 +64,21 @@ services:
       - 9216:9216
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/
-    
 
+  loki:
+    image: grafana/loki:2.8.0
+    container_name: loki
+    ports:
+      - '3100:3100'
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:2.8.0
+    container_name: pomtail
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yml
 
 volumes:
   hhahaiti_mongodb_data:
   hhahaiti_prometheus_data: {}
-
-# networks:
-#   monitoring:
-#     driver: bridge

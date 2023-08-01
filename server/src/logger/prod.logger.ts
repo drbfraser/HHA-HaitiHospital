@@ -1,5 +1,9 @@
-import { createLogger, format, Logger } from 'winston';
+import * as Transport from 'winston-transport';
+
+import { Logger, createLogger, format } from 'winston';
+
 import DailyRotateFile from 'winston-daily-rotate-file';
+import LokiTransport from 'winston-loki';
 
 const { combine, timestamp, errors, json } = format;
 
@@ -24,17 +28,24 @@ export const buildProdLogger = (): Logger => {
     level: 'error',
   });
 
-  infoTransport.on('rotate', function (oldFilename, newFilename) {
-    // can upload files somewhere
-  });
+  const lokiTransport =
+    process.env.LOKI_HOST &&
+    new LokiTransport({
+      host: process.env.LOKI_HOST,
+      labels: { app: process.env.LOKI_APP_LABEL ?? 'hhahaiti' },
+      json: true,
+      format: format.json(),
+      replaceTimestamp: true,
+      onConnectionError: (err) => console.error(err),
+    });
 
-  errorTransport.on('rotate', function (oldFilename, newFilename) {
-    // can upload files somewhere
-  });
+  const transports: Transport[] = [infoTransport, errorTransport];
+
+  lokiTransport && transports.push(lokiTransport);
 
   return createLogger({
     level: 'info',
     format: combine(timestamp(), errors({ stack: true }), json()),
-    transports: [errorTransport, infoTransport],
+    transports: transports,
   });
 };
