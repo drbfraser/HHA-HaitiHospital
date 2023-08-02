@@ -5,7 +5,7 @@ import { USER_ADDED_SUCCESSFULLY, USER_DELETED_SUCCESSFULLY } from '../support/c
 import { AdminPage } from '../support/pages/AdminPage';
 
 describe('Admin Tests', function () {
-  enum ROLES {
+  enum Roles {
     ADMIN = 'Admin',
     MEDICAL_DIRECTOR = 'Medical Director',
     HEAD_OF_DEPARTMENT = 'Head of Department',
@@ -13,10 +13,10 @@ describe('Admin Tests', function () {
   }
 
   enum Departments {
-    Rehab = 'Rehab',
+    REHAB = 'Rehab',
     NICU = 'NICU/Paeds',
-    Maternity = 'Maternity',
-    Community = 'Community & Health',
+    MATERNITY = 'Maternity',
+    COMMUNITY = 'Community & Health',
   }
 
   const loginPage = new LoginPage();
@@ -31,18 +31,19 @@ describe('Admin Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
+    cy.url().should('include', '/home');
     userIds = new Array();
 
     // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(100);
+    cy.wait(200);
     adminPage.visit();
   });
 
   it('Should Successfully Navigate Back to the Admin Page', function () {
     adminPage.clickAddUserButton();
     cy.url().should('equal', `${baseUrl}/admin/add-user`);
-    adminPage.clickBackAddUserButton();
+    cy.get('[data-testid="back-button"]').click();
     cy.url().should('equal', `${baseUrl}/admin`);
   });
 
@@ -62,25 +63,26 @@ describe('Admin Tests', function () {
   });
 
   it('Should Successfully Add a New User And Login With It', function () {
+    const username = 'username';
+    const password = 'Pas$w0rd';
     adminPage.clickAddUserButton();
     cy.url().should('equal', `${baseUrl}/admin/add-user`);
 
-    adminPage.inputUsername('username');
-    adminPage.inputPassword('password');
+    adminPage.inputUsername(username);
+    adminPage.inputPassword(password);
     adminPage.inputName('Handsome Squidward');
-    adminPage.selectUserRole(ROLES.USER);
-    adminPage.selectUserDepartment(Departments.Rehab);
+    adminPage.selectUserRole(Roles.USER);
+    adminPage.selectUserDepartment(Departments.REHAB);
     adminPage.clickSubmitUserButton();
 
     cy.url().should('equal', `${baseUrl}/admin`);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', USER_ADDED_SUCCESSFULLY);
-    toast.click();
-    cy.wait(1000); // Wait for toast to disappear
+    toast.click({ multiple: true });
 
     adminPage.clickSignout();
-    loginPage.usernameInput('username').passwordInput('password').clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('equal', `${baseUrl}/home`);
   });
 
@@ -91,7 +93,7 @@ describe('Admin Tests', function () {
     adminPage.inputUsername('username');
     adminPage.inputPassword('password');
     adminPage.inputName('Handsome Squidward');
-    adminPage.selectUserRole(ROLES.ADMIN);
+    adminPage.selectUserRole(Roles.ADMIN);
     cy.get('[id="department"]').should('not.exist');
   });
 
@@ -102,7 +104,7 @@ describe('Admin Tests', function () {
     adminPage.inputUsername('username');
     adminPage.inputPassword('password');
     adminPage.inputName('Handsome Squidward');
-    adminPage.selectUserRole(ROLES.MEDICAL_DIRECTOR);
+    adminPage.selectUserRole(Roles.MEDICAL_DIRECTOR);
     cy.get('[id="department"]').should('not.exist');
   });
 

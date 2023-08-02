@@ -13,8 +13,8 @@ import {
 import { History } from 'history';
 import Layout from 'components/layout';
 import {
-  TOAST_EMPLOYEE_OF_THE_MONTH_GET,
-  TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
+  TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
+  TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
 } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
 import { toast } from 'react-toastify';
@@ -50,7 +50,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     const getEmployeeOfTheMonth = async () => {
       const employeeOfTheMonthInfo: EmployeeOfTheMonth = await Api.Get(
         endpoint,
-        TOAST_EMPLOYEE_OF_THE_MONTH_GET,
+        TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
         history,
         controller.signal,
       );
@@ -98,7 +98,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
       formData,
       onSubmitActions,
       history,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
+      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
     );
   };
 

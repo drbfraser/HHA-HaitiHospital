@@ -7,6 +7,7 @@ enum RequestAction {
   UPDATE = 'update',
   FETCH = 'fetch',
   DELETE = 'delete',
+  FEATURE = 'feature',
 }
 
 // Make sure enum values match with i18-next translation JSON
@@ -26,6 +27,10 @@ enum RequestItem {
   REPORT_TEMPLATE = 'report_template',
   USER = 'user',
   USERS = 'users',
+  CASE_STUDY = 'case_study',
+  POST = 'message_board_post',
+  COMMENT = 'message_board_comment',
+  EOTM = 'employee_of_the_month',
 }
 
 // Make sure these keys match with i18-next translation JSON
@@ -231,6 +236,119 @@ const getMsgFetchUsersFailed = (): string => {
   });
 };
 
+// CASE STUDIES
+const getMsgCreateCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgCreateCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgUpdateCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgUpdateCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+const getMsgDeleteCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgDeleteCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgFeatureCaseStudyFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FEATURE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+const getMsgFeatureCaseStudyOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.FEATURE,
+    status: RequestStatus.OK,
+    item: RequestItem.CASE_STUDY,
+  });
+};
+
+// MESSAGE BOARD
+const getMsgCreatePostFailed = () => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.POST,
+  });
+};
+
+const getMsgCreatePostOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.POST,
+  });
+};
+
+const getMsgCreateCommentFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.COMMENT,
+  });
+};
+
+const getMsgCreateCommentOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.CREATE,
+    status: RequestStatus.OK,
+    item: RequestItem.COMMENT,
+  });
+};
+
+const getMsgDeleteEotmFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.EOTM,
+  });
+};
+
+const getMsgDeleteEotmOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.EOTM,
+  });
+};
+
 export const ResponseMessage = {
   getMsgFetchDepartmentFailed,
   getMsgFetchDepartmentsFailed,
@@ -262,4 +380,21 @@ export const ResponseMessage = {
   getMsgDeleteUserFailed,
 
   getMsgFetchUsersFailed,
+
+  getMsgCreateCaseStudyFailed,
+  getMsgCreateCaseStudyOk,
+  getMsgUpdateCaseStudyFailed,
+  getMsgUpdateCaseStudyOk,
+  getMsgDeleteCaseStudyFailed,
+  getMsgDeleteCaseStudyOk,
+  getMsgFeatureCaseStudyFailed,
+  getMsgFeatureCaseStudyOk,
+
+  getMsgCreatePostFailed,
+  getMsgCreatePostOk,
+  getMsgCreateCommentFailed,
+  getMsgCreateCommentOk,
+
+  getMsgDeleteEotmFailed,
+  getMsgDeleteEotmOk,
 };

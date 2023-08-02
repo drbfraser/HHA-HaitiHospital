@@ -14,7 +14,7 @@ describe('Employee Of The Month Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
 
     // Tests run too quickly---cy.visit() is not working without this delay
     cy.wait(100);
@@ -79,7 +79,7 @@ describe('User EOTM Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('include', '/home');
   });
 

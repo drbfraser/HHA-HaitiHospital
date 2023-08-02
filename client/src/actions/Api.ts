@@ -6,6 +6,7 @@ import DbErrorHandler from './http_error_handler';
 import { History } from 'history';
 import { ResponseMessage } from 'utils/response_message';
 import { toast } from 'react-toastify';
+import i18n from 'i18n';
 
 /**
  *
@@ -54,13 +55,14 @@ const Get = async (
  * - Success message for toast
  * @returns void
  */
+
 const Post = async (
   url: string,
   obj: object = {},
   actions: () => void,
   history: History,
-  errorMsg = '',
-  pendingMsg = 'Processing...',
+  errorMsg?: string,
+  pendingMsg?: string,
   successMsg?: string,
 ) => {
   await toast.promise(
@@ -69,9 +71,9 @@ const Post = async (
       (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
     ),
     {
-      error: undefined,
-      pending: pendingMsg,
-      success: successMsg,
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
     },
   );
 };
@@ -100,8 +102,8 @@ const Put = async (
   obj: object = {},
   actions: () => void,
   history: History,
-  errorMsg = '',
-  pendingMsg = 'Processing...',
+  errorMsg?: string,
+  pendingMsg?: string,
   successMsg?: string,
 ): Promise<void> => {
   await toast.promise(
@@ -110,9 +112,9 @@ const Put = async (
       (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
     ),
     {
-      error: undefined,
-      pending: pendingMsg,
-      success: successMsg,
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
     },
   );
 };
@@ -126,27 +128,35 @@ const Put = async (
  * @param actions
  * - Actions that should occur after PATCH request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
  * @returns void
  */
 const Patch = async (
   url: string,
   obj: object = {},
-  actions: any,
-  errorMsg: string,
+  actions: () => void,
   history: History,
+  errorMsg: string,
+  pendingMsg: string,
+  successMsg: string,
 ): Promise<void> => {
-  try {
-    await axios.patch(url, obj);
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  await toast.promise(
+    axios
+      .patch(url, obj)
+      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+    {
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
+    },
+  );
 };
 
 /**
@@ -158,27 +168,35 @@ const Patch = async (
  * @param actions
  * - Actions that should occur after DELETE request is successful
  * - (Eg. Navigate to new page)
- * @param errorMsg
- * - Error message for toast
  * @param history
  * - History instance from navigation
+ * @param errorMsg
+ * - Error message for toast
+ * @param pendingMsg
+ * - Pending message for toast
+ * @param successMsg
+ * - Success message for toast
  * @returns void
  */
 const Delete = async (
   url: string,
   obj: object = {},
-  actions: any,
-  errorMsg: string,
+  actions: () => void,
   history: History,
+  errorMsg?: string,
+  pendingMsg?: string,
+  successMsg?: string,
 ): Promise<void> => {
-  try {
-    await axios.delete(url, { data: obj });
-    actions();
-    return;
-  } catch (error: any) {
-    DbErrorHandler(error, history, errorMsg);
-    return;
-  }
+  await toast.promise(
+    axios
+      .delete(url, obj)
+      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+    {
+      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
+      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
+    },
+  );
 };
 
 /**

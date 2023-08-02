@@ -18,7 +18,6 @@ export const BrokenKitReport = () => {
   const history: History = useHistory<History>();
 
   const onSubmitOk = () => {
-    toast.success(ResponseMessage.getMsgCreateReportOk());
     history.push(Paths.getBioMechMain());
   };
 
@@ -32,11 +31,13 @@ export const BrokenKitReport = () => {
       onSubmitOk,
       history,
       ResponseMessage.getMsgCreateReportFailed(),
+      null,
+      ResponseMessage.getMsgCreateReportOk(),
     );
   };
 
   return (
-    <Layout title={t('headerBiomechanicalSupportForm')}>
+    <Layout showBackButton title={t('headerBiomechanicalSupportForm')}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group col-md-6">
           <label className="font-weight-bold">{t('biomech.report.title')}</label>

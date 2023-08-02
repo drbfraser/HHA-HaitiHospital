@@ -1,31 +1,24 @@
-import { Link, RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
-
 import Api from 'actions/Api';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { TOAST_CASESTUDY_GET } from 'constants/toastErrorMessages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { useTranslation } from 'react-i18next';
-
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
-import { toast } from 'react-toastify';
-
 import { Role } from 'constants/interfaces';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { formatDateString, translateMonth } from 'utils/dateUtils';
-import useDepartmentData from 'hooks/useDepartmentData';
+import { translateMonth } from 'utils/dateUtils';
 import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
+import { ResponseMessage } from 'utils/response_message';
 
 
-interface Props extends RouteComponentProps { }
-
-export const EmployeeOfTheMonthRecord = (props: Props) => {
+export const EmployeeOfTheMonthRecord = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -37,11 +30,12 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     await Api.Delete(
       ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID(id),
       {},
-      () => {
-        toast.success('Employee of the month deleted!');
-      },
-      TOAST_EMPLOYEE_OF_THE_MONTH_GET,
+      resetDeleteModal,
       history,
+      ResponseMessage.getMsgDeleteEotmFailed(),
+      null,
+      ResponseMessage.getMsgDeleteEotmFailed(),
+
     );
   };
 
@@ -51,9 +45,9 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
   };
   
 
-  const onModalDeleteConfirm = async (id: string) => {
-    await deleteEotm(id);
-    setEmployeeOfTheMonthList(employeeOfTheMonthList.filter((eotm: any) => eotm.id !== id));
+  const onModalDeleteConfirm = async () => {
+    await deleteEotm(currentIndex);
+    setEmployeeOfTheMonthList(employeeOfTheMonthList.filter((eotm: any) => eotm.id !== currentIndex));
     resetDeleteModal();
   };
 
@@ -69,7 +63,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     const fetchEmployeeOfTheMonths = async (controller: AbortController) => {
       const data = await Api.Get(
         ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
-        TOAST_CASESTUDY_GET,
+        TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
         history,
         controller.signal,
       );
@@ -141,14 +135,10 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     <Layout showBackButton>
       <DeleteModal
         dataTestId="confirm-delete-eotm-button"
-        currentItem={currentIndex}
         show={showDeleteModal}
-        item={`employee of the month`}
+        itemName={`employee of the month`}
         onModalClose={resetDeleteModal}
         onModalDelete={onModalDeleteConfirm}
-        history={history}
-        location={undefined}
-        match={undefined}
       />
       <div>
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (

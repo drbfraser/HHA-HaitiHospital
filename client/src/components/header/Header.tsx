@@ -75,13 +75,19 @@ const Header = ({ title }: HeaderProps) => {
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item disabled text-muted mb-2">
+                  <button
+                    data-testid="user-role"
+                    className="dropdown-item disabled text-muted mb-2"
+                  >
                     <i className="bi bi-person-badge-fill"></i>
                     {t(userInfo.role)}
                   </button>
                 </li>
                 <li className={`${userInfo.department.name ? 'd-block' : 'd-none'}`}>
-                  <button className="dropdown-item disabled text-muted">
+                  <button
+                    data-testid="user-department"
+                    className="dropdown-item disabled text-muted"
+                  >
                     <i className="bi bi-people-fill"></i>
                     {userInfo.department.name}
                   </button>

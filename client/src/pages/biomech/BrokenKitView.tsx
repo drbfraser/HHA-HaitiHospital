@@ -110,7 +110,6 @@ export const BrokenKitView = () => {
         item={ALT_MESSAGE}
         image={BioReportImage}
         onModalClose={onModalImageClose}
-        history={history}
       ></ImageModal>
       <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
         <div style={{ display: 'flex', flex: '1 1 auto' }}>
@@ -141,7 +140,7 @@ export const BrokenKitView = () => {
                   changeStatus(1);
                 }}
               />
-              <p data-testid="biomech-priority" className="fs-6 lh-base text-break mb-0">
+              <p data-testid="biomech-equipment-status" className="fs-6 lh-base text-break mb-0">
                 <Badge bg={setStatusBadgeColor(status)}>{t(`biomech.status.${status}`)}</Badge>
               </p>
               <i

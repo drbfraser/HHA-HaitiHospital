@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import {
   EmployeeOfTheMonth,
   EmployeeViewParams,
@@ -11,12 +10,13 @@ import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/Empl
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/toastErrorMessages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { currentYearAndMonth, translateMonth } from 'utils/dateUtils';
+import { translateMonth } from 'utils/dateUtils';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 
-interface Props extends RouteComponentProps<EmployeeViewParams> { }
+interface Props extends RouteComponentProps<EmployeeViewParams> {}
 
 export const EmployeeOfTheMonthView = (props: Props) => {
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
@@ -63,7 +63,7 @@ export const EmployeeOfTheMonthView = (props: Props) => {
     const getEmployeeOfTheMonth = async () => {
       let employeeOfTheMonth: EmployeeOfTheMonth | EmployeeOfTheMonth[] = await Api.Get(
         endpoint,
-        TOAST_EMPLOYEE_OF_THE_MONTH_GET,
+        TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
         history,
         controller.signal,
       );
@@ -101,7 +101,7 @@ export const EmployeeOfTheMonthView = (props: Props) => {
           return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
         })}
       </div>
-      {!employeesOfTheMonth && <h2>No employee of the month found</h2>}
+      {employeesOfTheMonth?.length == 0 && <h2 className="pl-3">No employee of the month for this month found</h2>}
     </Layout>
   );
 };

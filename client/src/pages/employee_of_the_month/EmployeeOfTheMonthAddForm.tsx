@@ -5,9 +5,8 @@ import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST } from 'constants/endpoints';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './typing';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/toastErrorMessages';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
-import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -26,7 +25,6 @@ export const EmployeeOfTheMonthAddForm = () => {
   };
 
   const onSubmitActions = () => {
-    toast.success('Employee of the month successfully updated!');
     reset({});
     setSelectedFile(null);
     history.push('/employee-of-the-month');
@@ -44,7 +42,7 @@ export const EmployeeOfTheMonthAddForm = () => {
       formData,
       onSubmitActions,
       history,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT,
+      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
     );
   };
 

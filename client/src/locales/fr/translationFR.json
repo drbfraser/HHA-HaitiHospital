@@ -325,13 +325,19 @@
   "request_response": {
     "ok": "Avec succès {{action}} {{item}}!",
     "pending": "Traitement {{action}} {{item}}...",
-    "failed": "Échec de {{action}} {{item}}"
+    "failed": "Échec de {{action}} {{item}}",
+    "default": {
+      "ok": "Succès!",
+      "pending": "En cours...",
+      "failed": "une erreur s'est produite"
+    }
   },
   "request_action": {
     "create": "créer",
     "fetch": "la récupération de(s)",
     "update": "la mise à jour de(s)",
-    "delete": "la suppression de(s)"
+    "delete": "la suppression de(s)",
+    "feature": "la mise en vedette de(s)"
   },
   "item": {
     "department": "départment",
@@ -341,7 +347,11 @@
     "reports": "rapports",
     "report_template": "modèle de rapport",
     "user": "l'utilisateur",
-    "users": "utilisateurs"
+    "users": "utilisateurs",
+    "case_study": "étude de cas",
+    "message_board_post": "posté",
+    "message_board_comment": "coƒemmentaire",
+    "employee_of_the_month": "Employé du mois"
   },
   "error_message": {
     "compress": {

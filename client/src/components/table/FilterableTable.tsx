@@ -17,6 +17,7 @@ import Filter, { FILTER_DEFAULT_VALUE, FilterType, FilterValue } from '../filter
 import { useMemo, useState } from 'react';
 
 import { EnumOption } from 'components/filter/EnumFilter';
+import { FILTER_FUNCTIONS } from 'components/filter/StringFilter';
 import { FilterableHeader } from './FilterableHeader';
 import Pagination from 'components/pagination/Pagination';
 import { Table } from 'react-bootstrap';
@@ -42,6 +43,7 @@ interface FilterableTableProps {
   enableGlobalFilter?: boolean;
   enableFilters?: boolean;
   enableSorting?: boolean;
+  rowTestId?: string;
   rowClickHandler?: (row: any) => void;
   globalFilterType?: FilterType;
 }
@@ -53,6 +55,7 @@ const FilterableTable = ({
   enableGlobalFilter = false,
   enableFilters = false,
   enableSorting = false,
+  rowTestId,
   rowClickHandler,
   globalFilterType = FilterType.STRING,
 }: FilterableTableProps) => {
@@ -83,7 +86,7 @@ const FilterableTable = ({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    globalFilterFn: 'includesString',
+    globalFilterFn: FILTER_FUNCTIONS.contains,
     state: {
       globalFilter,
       sorting,
@@ -98,7 +101,7 @@ const FilterableTable = ({
   console.log("columns", columns);
 
   return (
-    <div className="px-4 pt-3">
+    <div className="p-2">
       {enableFilters && enableGlobalFilter && (
         <Filter
           placeholder={t('FilterableTable.GlobalSearch')}
@@ -113,20 +116,23 @@ const FilterableTable = ({
 
       <Table hover responsive>
         <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) =>
-                FilterableHeader({
-                  header,
-                  enableSorting,
-                }),
-              )}
-            </tr>
-          ))}
+          {table.getHeaderGroups().map(
+            (headerGroup) =>
+              headerGroup.headers.some((header) => header.column.columnDef.header) && (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) =>
+                    FilterableHeader({
+                      header,
+                      enableSorting,
+                    }),
+                  )}
+                </tr>
+              ),
+          )}
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} {...getRowProps(row)}>
+            <tr data-testid="row-data" key={row.id} {...getRowProps(row)}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}

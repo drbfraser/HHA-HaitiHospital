@@ -6,15 +6,14 @@ import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
+import DeleteModal from 'components/popup_modal/DeleteModal';
 import { FilterType } from 'components/filter/Filter';
 import { History } from 'history';
 import Layout from 'components/layout';
-import ModalDelete from 'components/popup_modal/DeleteModal';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 import { Role } from 'constants/interfaces';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
@@ -48,9 +47,9 @@ const statusSort = enumSort('equipmentStatus', Status);
 export const BiomechanicalList = () => {
   const authState = useAuthState();
   const history: History = useHistory<History>();
-
   const { t } = useTranslation();
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [biomechData, setBiomechData] = useState([]);
 
@@ -140,7 +139,6 @@ export const BiomechanicalList = () => {
   );
 
   const deleteBioMechCallback = () => {
-    toast.success(ResponseMessage.getMsgDeleteReportOk());
     setBiomechData(biomechData.filter((item) => item.id !== currentIndex));
     setCurrentIndex(null);
   };
@@ -150,25 +148,27 @@ export const BiomechanicalList = () => {
       ENDPOINT_BIOMECH_DELETE_BY_ID(id),
       {},
       deleteBioMechCallback,
-      ResponseMessage.getMsgDeleteReportFailed(),
       history,
+      ResponseMessage.getMsgDeleteReportFailed(),
+      null,
+      ResponseMessage.getMsgDeleteReportOk(),
     );
   };
 
   const onDeleteBioMech = (event: any, id: string) => {
     event.stopPropagation();
     setCurrentIndex(id);
-    setDeleteModal(true);
+    setIsDeleteModalOpen(true);
   };
 
   const onModalClose = () => {
     setCurrentIndex(null);
-    setDeleteModal(false);
+    setIsDeleteModalOpen(false);
   };
 
-  const onModalDelete = async (id: string) => {
-    await deleteBioMech(id);
-    setDeleteModal(false);
+  const onModalDelete = async () => {
+    await deleteBioMech(currentIndex);
+    setIsDeleteModalOpen(false);
   };
 
   useEffect(() => {
@@ -191,17 +191,13 @@ export const BiomechanicalList = () => {
 
   return (
     <Layout title={t('headerBiomechanicalSupport')}>
-      <ModalDelete
+      <DeleteModal
         dataTestId="confirm-delete-biomech-button"
-        currentItem={currentIndex}
-        show={deleteModal}
-        item={t('item.report')}
+        show={isDeleteModalOpen}
+        itemName={t('item.report')}
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
-        history={history}
-        location={undefined}
-        match={undefined}
-      ></ModalDelete>
+      ></DeleteModal>
 
       <div className="row justify-items-center">
         <div className="col-sm-6">
@@ -215,6 +211,7 @@ export const BiomechanicalList = () => {
           data={biomechData}
           columns={columns}
           rowClickHandler={(item) => history.push(`${Paths.getBioMechViewId(item.id)}`)}
+          rowTestId="view-biomech-report"
           enableFilters
           enableGlobalFilter
           enableSorting

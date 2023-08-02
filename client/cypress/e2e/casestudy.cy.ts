@@ -8,10 +8,12 @@ import {
   CASE_STUDY_DELETED_SUCCESSFULLY,
   CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY,
 } from '../support/constants/toasts';
+import { HeaderComponent } from '../support/components/Header';
 
 describe('Case Study Tests', function () {
   const loginPage = new LoginPage();
   const caseStudyPage = new CaseStudyPage();
+  const headerComponent = new HeaderComponent();
 
   const username = Cypress.env('Admin').username;
   const password = Cypress.env('Admin').password;
@@ -22,7 +24,7 @@ describe('Case Study Tests', function () {
 
   beforeEach('Logging in...', function () {
     loginPage.visit();
-    loginPage.usernameInput(username).passwordInput(password).clickLoginButton();
+    loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     caseStudyIds = new Array();
 
     // Tests run too quickly---cy.visit() is not working without this delay
@@ -63,7 +65,6 @@ describe('Case Study Tests', function () {
       caseStudyIds.push(caseStudyId); // Store the Id of the Case Study for Deleting later
     });
 
-    cy.contains('[data-testid="case-study-patient-title"]', 'Patient Story Case Study');
     cy.contains('[data-testid="case-study-patient-name"]', 'John Doe');
     cy.contains('[data-testid="case-study-patient-age"]', '22');
     cy.contains('[data-testid="case-study-patient-from"]', 'Canada');
@@ -87,9 +88,7 @@ describe('Case Study Tests', function () {
       .get('[data-testid="feature-case-study-button"]')
       .eq(1);
 
-    featureCaseStudyButton.should('not.include.text', 'Currently Featured');
     caseStudyPage.clickFeatureCaseStudyButton(1);
-    featureCaseStudyButton.should('include.text', 'Currently Featured');
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY);

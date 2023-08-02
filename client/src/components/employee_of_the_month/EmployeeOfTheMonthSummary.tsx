@@ -54,7 +54,6 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         item={ALT_MESSAGE}
         image={employeeImage}
         onModalClose={onModalImageClose}
-        history={history}
       ></ImageModal>
       <div className="d-flex flex-column justify-content-between flex-xl-row">
         <div className="d-flex flex-column mt-3">

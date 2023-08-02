@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react';
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
 import Layout from 'components/layout';
-import { TOAST_CASESTUDY_POST } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
-import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { ResponseMessage } from 'utils';
 
 export const CaseStudyForm = () => {
   const [formOption, setformOption] = useState('');
@@ -28,7 +27,6 @@ export const CaseStudyForm = () => {
   }, [formOption, reset]);
 
   const onSubmitActions = () => {
-    toast.success('Case study successfully submitted!');
     reset({});
     setSelectedFile(null);
     history.push('/case-study');
@@ -46,7 +44,9 @@ export const CaseStudyForm = () => {
       formData,
       onSubmitActions,
       history,
-      TOAST_CASESTUDY_POST,
+      ResponseMessage.getMsgCreateCaseStudyFailed(),
+      null,
+      ResponseMessage.getMsgCreateCaseStudyOk(),
     );
   };
 
@@ -410,6 +410,7 @@ export const CaseStudyForm = () => {
             <>
               <div className="form-check mt-2 mb-2">
                 <input
+                  data-testid="case-study-patient-consent-check"
                   className="form-check-input"
                   type="checkbox"
                   value=""
@@ -421,7 +422,11 @@ export const CaseStudyForm = () => {
                 </label>
               </div>
               <div className="mt-3 mb-5">
-                <button className="btn btn-primary" type="submit">
+                <button
+                  data-testid="case-study-patient-submit-button"
+                  className="btn btn-primary"
+                  type="submit"
+                >
                   {t('caseStudyFormSubmitForm')}
                 </button>
               </div>

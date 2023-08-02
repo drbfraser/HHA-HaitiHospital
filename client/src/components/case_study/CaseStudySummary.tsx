@@ -92,7 +92,6 @@ const CaseStudyInfo = ({
         item={'Case Study'}
         image={caseStudyImage}
         onModalClose={onModalImageClose}
-        history={history}
       ></ImageModal>
       <div className="w-100">
         <div className="d-flex flex-column flex-xl-row">
@@ -148,13 +147,13 @@ const PatientStorySummary = ({ caseStudy, setTitle }) => (
       },
       {
         label: 'caseStudyFormWhyPatientChooseHCBH',
-        testid: 'case-study-patient-how-long',
+        testid: 'case-study-patient-why-come',
         detail: caseStudy.patientStory.whyComeToHcbh,
       },
       {
         label: 'caseStudyFormHowLongAtHCBH',
-        testid: 'case-study-patient-story',
-        detail: caseStudy.patientStory.howLongAtHcbh,
+        testid: 'case-study-patient-how-long',
+        detail: caseStudy.patientStory.howLongWereTheyAtHcbh,
       },
       {
         label: 'caseStudyFormWhatWasTheirDiagnosis',

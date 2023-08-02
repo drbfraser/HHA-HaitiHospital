@@ -5,23 +5,19 @@ import {
 } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  TOAST_CASESTUDY_DELETE,
-  TOAST_CASESTUDY_GET,
-  TOAST_CASESTUDY_PATCH,
-} from 'constants/toastErrorMessages';
+import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
 import { Button } from 'react-bootstrap';
+import { CellContext } from '@tanstack/react-table';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import GenericModal from 'components/popup_modal/GenericModal';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Role } from 'constants/interfaces';
-import { SortOrder } from 'utils';
+import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
-import { toast } from 'react-toastify';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
@@ -36,8 +32,9 @@ export const CaseStudyList = () => {
   // TODO: Create a "CaseStudy" type (instead of using "any")
   const [caseStudies, setCaseStudies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [showWarningModal, setShowWarningModel] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isWarningModalOpen, setIsWarningModelOpen] = useState<boolean>(false);
+
   const authState = useAuthState();
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -46,30 +43,24 @@ export const CaseStudyList = () => {
     await Api.Delete(
       ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
       {},
-      () => {
-        toast.success('Case Study deleted!');
-      },
-      TOAST_CASESTUDY_DELETE,
+      resetModals,
       history,
+      ResponseMessage.getMsgDeleteCaseStudyFailed(),
+      null,
+      ResponseMessage.getMsgDeleteCaseStudyOk(),
     );
   };
 
-  const resetDeleteModel = () => {
+  const resetModals = () => {
     setCurrentIndex(null);
-    setShowDeleteModal(false);
+    setIsDeleteModalOpen(false);
+    setIsWarningModelOpen(false);
   };
 
-  const resetWarningModel = () => {
-    setCurrentIndex(null);
-    setShowWarningModel(false);
-  };
-
-  const onModalDeleteConfirm = async (id: string) => {
-    await deleteCaseStudy(id);
-
-    setCaseStudies(caseStudies.filter((item: any) => item.id !== id));
-
-    resetDeleteModel();
+  const onModalDeleteConfirm = async () => {
+    await deleteCaseStudy(currentIndex);
+    setCaseStudies(caseStudies.filter((item: any) => item.id !== currentIndex));
+    resetModals();
   };
 
   const columns = useMemo(() => {
@@ -78,10 +69,12 @@ export const CaseStudyList = () => {
         ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
         {},
         () => {
-          toast.success('Featured case study has now changed!');
+          history.push('/case-study');
         },
-        TOAST_CASESTUDY_PATCH,
         history,
+        ResponseMessage.getMsgFeatureCaseStudyFailed(),
+        null,
+        ResponseMessage.getMsgFeatureCaseStudyOk(),
       );
     };
 
@@ -90,7 +83,7 @@ export const CaseStudyList = () => {
       event.preventDefault();
 
       setCurrentIndex(item.id);
-      item.featured ? setShowWarningModel(true) : setShowDeleteModal(true);
+      item.featured ? setIsWarningModelOpen(true) : setIsDeleteModalOpen(true);
     };
 
     const columns: FilterableColumnDef[] = [
@@ -113,11 +106,11 @@ export const CaseStudyList = () => {
 
     if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector])) {
       columns.push({
-        header: '',
+        header: 'Actions',
         id: 'featured',
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (row) => {
+        cell: (row: CellContext<any, any>) => {
           const item = row.row.original;
 
           return (
@@ -153,7 +146,7 @@ export const CaseStudyList = () => {
               </Button>
               <Button
                 data-testid="delete-case-study-button"
-                className="text-decoration-none link-secondary"
+                className="text-decoration-none"
                 variant="link"
                 onClick={(event) => {
                   onDeleteButton(event, item);
@@ -174,7 +167,7 @@ export const CaseStudyList = () => {
     const fetchCaseStudies = async (controller: AbortController) => {
       const data = await Api.Get(
         ENDPOINT_CASESTUDY_GET,
-        TOAST_CASESTUDY_GET,
+        TOAST_CASESTUDY_GET_ERROR,
         history,
         controller.signal,
       );
@@ -195,26 +188,19 @@ export const CaseStudyList = () => {
     <Layout title={t('headerCaseStudy')}>
       <GenericModal
         dataTestId="reminder-to-change-featured-before-deleting"
-        show={showWarningModal}
+        show={isWarningModalOpen}
         item={'case study'}
         message={
           'Please select another case study to feature before deleting the featured case study'
         }
-        onModalClose={resetWarningModel}
-        history={history}
-        location={undefined}
-        match={undefined}
+        onModalClose={resetModals}
       />
       <DeleteModal
         dataTestId="confirm-delete-case-study-button"
-        currentItem={currentIndex}
-        show={showDeleteModal}
-        item={'case study'}
-        onModalClose={resetDeleteModel}
+        show={isDeleteModalOpen}
+        itemName={'case study'}
+        onModalClose={resetModals}
         onModalDelete={onModalDeleteConfirm}
-        history={history}
-        location={undefined}
-        match={undefined}
       />
       <div className="w-100">
         <Link to="/case-study/form">
