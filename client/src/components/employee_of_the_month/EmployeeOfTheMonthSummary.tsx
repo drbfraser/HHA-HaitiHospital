@@ -48,7 +48,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   }, [props.employee.imgPath, history]);
 
   return (
-    <div className="p-4 mb-2">
+    <div className="p-4 m-3 border" style={{ width: '100%', maxWidth: '1000px'}}>
       <ImageModal
         show={showImageModal}
         item={ALT_MESSAGE}
@@ -56,7 +56,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         onModalClose={onModalImageClose}
         history={history}
       ></ImageModal>
-      <div className="d-flex flex-column flex-xl-row">
+      <div className="d-flex flex-column justify-content-between flex-xl-row">
         <div className="d-flex flex-column mt-3">
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
         <Link
@@ -76,7 +76,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         </div>
         {employeeImage && (
           <img
-            className="d-flex mx-auto ms-xl-auto mt-3 mb-3"
+            className="d-flex text-left float-left ms-xl-auto mt-3 mb-3"
             style={{ maxWidth: '250px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
             src={employeeImage}
             alt={ALT_MESSAGE}

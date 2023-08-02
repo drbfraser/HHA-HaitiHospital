@@ -96,9 +96,11 @@ export const EmployeeOfTheMonthView = (props: Props) => {
         </button>
       </Link>
       <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
-      {employeesOfTheMonth.map((eotm, i) => {
-        return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
-      })}
+      <div className="d-flex flex-column">
+        {employeesOfTheMonth.map((eotm, i) => {
+          return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
+        })}
+      </div>
       {!employeesOfTheMonth && <h2>No employee of the month found</h2>}
     </Layout>
   );
