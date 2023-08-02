@@ -101,7 +101,9 @@ export const EmployeeOfTheMonthView = (props: Props) => {
           return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
         })}
       </div>
-      {employeesOfTheMonth?.length == 0 && <h2 className="pl-3">No employee of the month for this month found</h2>}
+      {employeesOfTheMonth?.length == 0 && (
+        <h2 className="pl-3">No employee of the month for this month found</h2>
+      )}
     </Layout>
   );
 };

@@ -48,7 +48,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   }, [props.employee.imgPath, history]);
 
   return (
-    <div className="p-4 m-3 border" style={{ width: '100%', maxWidth: '1000px'}}>
+    <div className="p-4 m-3 border" style={{ width: '100%', maxWidth: '1000px' }}>
       <ImageModal
         show={showImageModal}
         item={ALT_MESSAGE}
@@ -57,15 +57,17 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
       ></ImageModal>
       <div className="d-flex flex-column justify-content-between flex-xl-row">
         <div className="d-flex flex-column mt-3">
-        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link
-          to={`/employee-of-the-month/update/${props.employee.id}`}
-        >
-          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark mb-1">
-            {t('employeeOfTheMonthEdit')}
-          </button>
-        </Link>
-      )}
+          {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+            <Link to={`/employee-of-the-month/update/${props.employee.id}`}>
+              <button
+                data-testid="update-eotm-button"
+                type="button"
+                className="btn btn-outline-dark mb-1"
+              >
+                {t('employeeOfTheMonthEdit')}
+              </button>
+            </Link>
+          )}
           <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
           <p className="fs-6 lh-base">{updatedDate}</p>
           <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>

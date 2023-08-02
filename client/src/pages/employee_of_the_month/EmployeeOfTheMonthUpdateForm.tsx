@@ -24,7 +24,7 @@ import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface Props extends RouteComponentProps<EmployeeViewParams> { }
+interface Props extends RouteComponentProps<EmployeeViewParams> {}
 
 export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
@@ -41,7 +41,6 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
       typeof objectName === 'object' && objectName !== null && Object.keys(objectName).length > 0
     );
   };
-
 
   useEffect(() => {
     const controller = new AbortController();
@@ -86,7 +85,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   };
 
   const onSubmit = async (data: any) => {
-    console.log("PONYO")
+    console.log('PONYO');
     let formData = new FormData();
     data.department = departments.get(data.department);
     [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
@@ -151,7 +150,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               aria-label="Default select example"
               required
               value={departmentName}
-              onChange={e => setDepartmentName(e.target.value)}
+              onChange={(e) => setDepartmentName(e.target.value)}
               {...register('department', { required: true })}
             >
               <option value="">{t('employeeOfTheMonthDepartmentOption')}</option>

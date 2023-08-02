@@ -17,7 +17,6 @@ import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import { ResponseMessage } from 'utils/response_message';
 
-
 export const EmployeeOfTheMonthRecord = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
@@ -35,7 +34,6 @@ export const EmployeeOfTheMonthRecord = () => {
       ResponseMessage.getMsgDeleteEotmFailed(),
       null,
       ResponseMessage.getMsgDeleteEotmFailed(),
-
     );
   };
 
@@ -43,11 +41,12 @@ export const EmployeeOfTheMonthRecord = () => {
     setCurrentIndex(null);
     setShowDeleteModal(false);
   };
-  
 
   const onModalDeleteConfirm = async () => {
     await deleteEotm(currentIndex);
-    setEmployeeOfTheMonthList(employeeOfTheMonthList.filter((eotm: any) => eotm.id !== currentIndex));
+    setEmployeeOfTheMonthList(
+      employeeOfTheMonthList.filter((eotm: any) => eotm.id !== currentIndex),
+    );
     resetDeleteModal();
   };
 
@@ -79,7 +78,6 @@ export const EmployeeOfTheMonthRecord = () => {
   }, [history]);
 
   const columns = useMemo(() => {
-
     const columns: FilterableColumnDef[] = [
       {
         header: 'Awarded Month Year',
@@ -105,28 +103,26 @@ export const EmployeeOfTheMonthRecord = () => {
     ];
 
     if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector])) {
-      columns.push(
-        {
-          header: '',
-          id: 'deleteEotm',
-          cell: (row) => {
-            const item = row.row.original;
+      columns.push({
+        header: '',
+        id: 'deleteEotm',
+        cell: (row) => {
+          const item = row.row.original;
 
-            return (
-              <Button
-                data-testid="delete-case-study-button"
-                className="text-decoration-none link-secondary"
-                variant="link"
-                onClick={(event) => {
-                  onDeleteButton(event, item);
-                }}
-              >
-                <i className="bi bi-trash"></i>
-              </Button>
-            );
-          },
+          return (
+            <Button
+              data-testid="delete-case-study-button"
+              className="text-decoration-none link-secondary"
+              variant="link"
+              onClick={(event) => {
+                onDeleteButton(event, item);
+              }}
+            >
+              <i className="bi bi-trash"></i>
+            </Button>
+          );
         },
-      )
+      });
     }
     return columns;
   }, [authState.userDetails.role, history, t]);
@@ -152,9 +148,7 @@ export const EmployeeOfTheMonthRecord = () => {
       <FilterableTable
         columns={columns}
         data={employeeOfTheMonthList}
-        rowClickHandler={(row) =>
-          history.push(`/employee-of-the-month/${row.id}`)
-        }
+        rowClickHandler={(row) => history.push(`/employee-of-the-month/${row.id}`)}
         enableFilters={false}
         enableGlobalFilter={false}
         enableSorting={false}
