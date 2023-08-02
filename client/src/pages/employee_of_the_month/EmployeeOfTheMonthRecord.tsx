@@ -20,12 +20,15 @@ import FilterableTable, { FilterableColumnDef } from 'components/table/Filterabl
 import { formatDateString, translateMonth } from 'utils/dateUtils';
 import useDepartmentData from 'hooks/useDepartmentData';
 import { Button } from 'react-bootstrap';
+import DeleteModal from 'components/popup_modal/DeleteModal';
 
 
 interface Props extends RouteComponentProps { }
 
 export const EmployeeOfTheMonthRecord = (props: Props) => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<string>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -42,13 +45,24 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     );
   };
 
+  const resetDeleteModel = () => {
+    setCurrentIndex(null);
+    setShowDeleteModal(false);
+  };
+  
+
+  const onModalDeleteConfirm = async (id: string) => {
+    await deleteEotm(id);
+    setEmployeeOfTheMonthList(employeeOfTheMonthList.filter((eotm: any) => eotm.id !== id));
+    resetDeleteModel();
+  };
 
   const onDeleteButton = async (event: any, item: any) => {
     event.stopPropagation();
     event.preventDefault();
 
-    await deleteEotm(item.id);
-    // setEmployeeOfTheMonthList(employeeOfTheMonthList.filter((eotm: any) => eotm.id !== item.id));
+    setCurrentIndex(item.id);
+    setShowDeleteModal(true);
   };
 
   useEffect(() => {
@@ -125,6 +139,17 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
 
   return (
     <Layout showBackButton>
+      <DeleteModal
+        dataTestId="confirm-delete-eotm-button"
+        currentItem={currentIndex}
+        show={showDeleteModal}
+        item={`employee of the month`}
+        onModalClose={resetDeleteModel}
+        onModalDelete={onModalDeleteConfirm}
+        history={history}
+        location={undefined}
+        match={undefined}
+      />
       <div>
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
           <Link to="/employee-of-the-month/add">
