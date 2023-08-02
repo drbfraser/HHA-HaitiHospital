@@ -45,7 +45,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
     );
   };
 
-  const resetDeleteModel = () => {
+  const resetDeleteModal = () => {
     setCurrentIndex(null);
     setShowDeleteModal(false);
   };
@@ -54,7 +54,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
   const onModalDeleteConfirm = async (id: string) => {
     await deleteEotm(id);
     setEmployeeOfTheMonthList(employeeOfTheMonthList.filter((eotm: any) => eotm.id !== id));
-    resetDeleteModel();
+    resetDeleteModal();
   };
 
   const onDeleteButton = async (event: any, item: any) => {
@@ -144,7 +144,7 @@ export const EmployeeOfTheMonthRecord = (props: Props) => {
         currentItem={currentIndex}
         show={showDeleteModal}
         item={`employee of the month`}
-        onModalClose={resetDeleteModel}
+        onModalClose={resetDeleteModal}
         onModalDelete={onModalDeleteConfirm}
         history={history}
         location={undefined}
