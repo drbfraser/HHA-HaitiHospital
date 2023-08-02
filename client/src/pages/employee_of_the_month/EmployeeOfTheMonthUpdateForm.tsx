@@ -85,7 +85,6 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   };
 
   const onSubmit = async (data: any) => {
-    console.log('PONYO');
     let formData = new FormData();
     data.department = departments.get(data.department);
     [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
