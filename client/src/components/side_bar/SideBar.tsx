@@ -60,9 +60,19 @@ const Sidebar = ({isExpanded, setIsExpanded}) => {
   const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
+
+  const fetchExpanded = () => {
+    setIsExpanded(localStorage.getItem("isSidebarExpanded") === "true")
+  }
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded)
+    localStorage.setItem("isSidebarExpanded", isExpanded)
+  }
 
   useEffect(() => {
+    fetchExpanded();
     const matchMedia = window.matchMedia('(max-width: 768px)');
 
     const windowSizeCallback = () => {
@@ -89,7 +99,7 @@ const Sidebar = ({isExpanded, setIsExpanded}) => {
     <div
       className={'h-100 bg-dark flex overflow-auto position-fixed'}
       style={{ top: 0, left: 0, zIndex: 1000 }}
-      onClick={() => setIsExpanded(!isExpanded)}
+      onClick={toggleExpanded}
     >
       <div>
         {!isMobile && isExpanded && (
