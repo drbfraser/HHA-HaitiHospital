@@ -18,6 +18,8 @@ services:
 
   client:
     container_name: hhahaiti_client
+    depends_on:
+      - log_metrics_processor
     image: node:16
     volumes:
       - ./:/code
@@ -25,9 +27,14 @@ services:
     command: npm start
     ports:
       - '3000:3000'
+    logging:
+      driver: fluentd
+
   caddy:
     image: caddy:2.6.4
     container_name: hhahaiti_caddy
+    depends_on:
+      - log_metrics_processor
     restart: unless-stopped
     volumes:
       - ./caddy/Caddyfile_local:/etc/caddy/Caddyfile_local
@@ -38,17 +45,20 @@ services:
     ports:
       - '9443:443'
       - '2019:2019'
+    logging:
+      driver: fluentd
+
   grafana:
     image: grafana/grafana-enterprise
     container_name: hha_grafana
     restart: unless-stopped
     ports:
-     - '8443:3000'
+      - '8443:3000'
     volumes:
       - grafana_data:/var/lib/grafana
     environment:
-     - GF_SERVER_ROOT_URL=http://localhost:3000/
-     - GF_INSTALL_PLUGINS=grafana-clock-panel
+      - GF_SERVER_ROOT_URL=http://localhost:3000/
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
 
 volumes:
   grafana_data:
