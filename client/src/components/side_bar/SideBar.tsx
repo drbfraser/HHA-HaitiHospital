@@ -56,7 +56,7 @@ const SidebarItem = ({ path, children }: SideBarItemProps) => {
   );
 };
 
-const Sidebar = () => {
+const Sidebar = ({isExpanded, setIsExpanded}) => {
   const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
@@ -89,9 +89,10 @@ const Sidebar = () => {
     <div
       className={'h-100 bg-dark flex overflow-auto position-fixed'}
       style={{ top: 0, left: 0, zIndex: 1000 }}
+      onClick={() => setIsExpanded(!isExpanded)}
     >
       <div>
-        {!isMobile && (
+        {!isMobile && isExpanded && (
           <div>
             <div className="text-center" style={{ width: 190 }}>
               <HhaLogo style={{ width: 150 }} />
@@ -102,11 +103,11 @@ const Sidebar = () => {
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem path="home">
             <i className="bi bi-house-door-fill" />
-            {!isMobile && <span className={'text-light'}>{t('sidebarHome')}</span>}
+            {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarHome')}</span>}
           </SidebarItem>
           <SidebarItem path="message-board">
             <i className="bi bi-chat-right-text-fill" />
-            {!isMobile && (
+            {!isMobile && isExpanded && (
               <span data-testid="message-board-side-bar" className={'text-light'}>
                 {t('sidebarMessageBoard')}
               </span>
@@ -114,7 +115,7 @@ const Sidebar = () => {
           </SidebarItem>
           <SidebarItem path="leaderboard">
             <i className="bi bi-bar-chart-fill" />
-            {!isMobile && (
+            {!isMobile && isExpanded && (
               <span data-testid="leaderboard-side-bar" className={'text-light'}>
                 {t('sidebarLeaderBoard')}
               </span>
@@ -122,15 +123,15 @@ const Sidebar = () => {
           </SidebarItem>
           <SidebarItem path="case-study">
             <i className="bi bi-award-fill" />
-            {!isMobile && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
+            {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
           </SidebarItem>
           <SidebarItem path="biomechanic">
             <i className="bi bi-wrench" />
-            {!isMobile && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
+            {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
           </SidebarItem>
           <SidebarItem path="employee-of-the-month">
             <i className="bi bi-star-fill" />
-            {!isMobile && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
+            {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-1" />
@@ -142,7 +143,7 @@ const Sidebar = () => {
           ]) && (
             <SidebarItem path="general-reports">
               <i className="bi bi-folder-fill" />
-              {!isMobile && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
+              {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
             </SidebarItem>
           )}
 
@@ -154,7 +155,7 @@ const Sidebar = () => {
               return (
                 <SidebarItem path={`department/${deptId}`} key={dept.id}>
                   <i className="bi bi-brightness-high-fill" />
-                  {!isMobile && <span className={'text-light'}>{t(deptName)}</span>}
+                  {!isMobile && isExpanded && <span className={'text-light'}>{t(deptName)}</span>}
                 </SidebarItem>
               );
             else {
@@ -164,7 +165,7 @@ const Sidebar = () => {
 
           <SidebarItem path="report">
             <i className="bi bi-exclamation-square" />
-            {!isMobile && <span className={'text-light'}>Report</span>}
+            {!isMobile && isExpanded && <span className={'text-light'}>Report</span>}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-2" />
@@ -180,22 +181,22 @@ const Sidebar = () => {
                   <i
                     className={adminToggleState ? 'bi bi-chevron-down' : 'bi bi-chevron-right'}
                   ></i>
-                  {!isMobile && <span className="text text-light">{t('sidebarAdmin')}</span>}
+                  {!isMobile && isExpanded && <span className="text text-light">{t('sidebarAdmin')}</span>}
                 </span>
                 <ul className="nested">
                   <SidebarItem path="admin">
                     <i className="bi bi-exclamation-square" />
-                    {!isMobile && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
+                    {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="upload-report">
                     <i className="bi bi-person-badge-fill" />
-                    {!isMobile && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
+                    {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="update-permissions">
                     <i className="bi bi-person-badge-fill" />
-                    {!isMobile && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
+                    {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
                   </SidebarItem>
                 </ul>
               </li>
@@ -212,7 +213,7 @@ const Sidebar = () => {
               onClick={changeLanguage('en', i18n)}
             >
               <b>EN</b>&ensp;
-              {!isMobile && <span>{t('sidebarEnglish')}</span>}
+              {!isMobile && isExpanded && <span>{t('sidebarEnglish')}</span>}
             </button>
           </li>
 
@@ -225,7 +226,7 @@ const Sidebar = () => {
               onClick={changeLanguage('fr', i18n)}
             >
               <b>FR</b>&ensp;
-              {!isMobile && <span>{t('sidebarFrench')}</span>}
+              {!isMobile && isExpanded &&<span>{t('sidebarFrench')}</span>}
             </button>
           </li>
         </ul>

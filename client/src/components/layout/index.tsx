@@ -4,6 +4,7 @@ import SideBar from 'components/side_bar/SideBar';
 import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 interface LayoutProps {
   className?: string;
@@ -22,13 +23,14 @@ const Layout = ({
 }: LayoutProps) => {
   const history = useHistory();
   const { t } = useTranslation();
+  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <>
       <main className={cn('container-fluid', className)} style={style}>
-        <SideBar />
+        <SideBar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
 
-        <div className="main main-region px-2">
+        <div className={`main main-region px-2 ${isExpanded ? 'expanded' : ''}`}>
           <Header title={title} />
 
           <div className="p-3">
