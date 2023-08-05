@@ -92,7 +92,7 @@ export const EmployeeOfTheMonthView = (props: Props) => {
     <Layout title={t('headerEmployeeOfTheMonth')}>
       <Link to="/employee-of-the-month/record" className="pl-3">
         <button type="button" className="btn btn-outline-dark">
-          Record
+          {t('employeeOfTheMonthRecord')}
         </button>
       </Link>
       <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>

@@ -1,5 +1,4 @@
 import { Department } from 'constants/interfaces';
-import { Types } from 'mongoose';
 import * as H from 'history';
 
 export interface EmployeeOfTheMonth {

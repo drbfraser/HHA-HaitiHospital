@@ -80,23 +80,23 @@ export const EmployeeOfTheMonthRecord = () => {
   const columns = useMemo(() => {
     const columns: FilterableColumnDef[] = [
       {
-        header: 'Awarded Month Year',
+        header: t('employeeOfTheMonthMonthYearAwarded'),
         id: 'awardedMonthYear',
         accessorFn: ({ awardedMonth, awardedYear }) =>
           `${translateMonth(awardedMonth)} ${awardedYear}`,
       },
       {
-        header: 'Employee Name',
+        header: t('employeeOfTheMonthName'),
         id: 'name',
         accessorKey: 'name',
       },
       {
-        header: 'Department',
+        header: t('employeeOfTheMonthDepartment'),
         id: 'department',
         accessorFn: ({ department: { name } }) => name,
       },
       {
-        header: 'Last Updated',
+        header: t('employeeOfTheMonthLastUpdated'),
         id: 'updatedAt',
         accessorFn: ({ updatedAt }) => updatedAt,
       },

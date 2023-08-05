@@ -116,7 +116,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
               {...register('id', { required: true })}
             ></input>
             <label htmlFor="Employee Month Year" className="form-label">
-              Month and Year Awarded
+              {t('employeeOfTheMonthMonthYearAwarded')}
             </label>
             <input
               data-testid="eotm-awarded-at"
