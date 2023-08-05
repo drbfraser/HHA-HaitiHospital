@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Api from '../../actions/Api';
 import {
@@ -9,30 +9,28 @@ import {
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, useParams } from 'react-router-dom';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { translateMonth } from 'utils/dateUtils';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 
-interface Props extends RouteComponentProps<EmployeeViewParams> {}
-
-export const EmployeeOfTheMonthView = (props: Props) => {
+export const EmployeeOfTheMonthView = () => {
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
   const history: History = useHistory<History>();
   const { t } = useTranslation();
-  const [params, setParams] = useState<EmployeeViewParams>();
   const [title, setTitle] = useState('');
+  const params = useParams<EmployeeViewParams>();
 
   const isNonEmptyObject = (objectName) => {
     return Object.keys(objectName).length > 0;
   };
 
-  const getEmployeeViewParams = (): EmployeeViewParams => {
-    if (isNonEmptyObject(props.match.params)) {
-      const { params } = props.match;
-      params.type = params.eotmId.length > 0 ? EmployeeViewType.EotmId : EmployeeViewType.YearMonth;
+  const getDefaultParams = (params: EmployeeViewParams): EmployeeViewParams => {
+    if (isNonEmptyObject(params)) {
+      params.type =
+        params!.eotmId.length > 0 ? EmployeeViewType.EotmId : EmployeeViewType.YearMonth;
       return params;
     } else {
       const date = new Date();
@@ -45,20 +43,18 @@ export const EmployeeOfTheMonthView = (props: Props) => {
     }
   };
 
-  useEffect(() => {
-    setParams(getEmployeeViewParams());
-  }, [history]);
+  const employeeViewParams: EmployeeViewParams = useMemo(() => getDefaultParams(params), [params]);
 
   useEffect(() => {
-    if (!params) {
+    if (!isNonEmptyObject(employeeViewParams)) {
       return;
     }
     const controller = new AbortController();
 
     const endpoint =
       params.type === EmployeeViewType.EotmId
-        ? `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${params.eotmId}`
-        : `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${params.year}/${params.month}`;
+        ? `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${employeeViewParams.eotmId}`
+        : `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${employeeViewParams.year}/${employeeViewParams.month}`;
 
     const getEmployeeOfTheMonth = async () => {
       let employeeOfTheMonth: EmployeeOfTheMonth | EmployeeOfTheMonth[] = await Api.Get(
@@ -75,7 +71,7 @@ export const EmployeeOfTheMonthView = (props: Props) => {
         const emp = employeeOfTheMonthArr[0];
         const monthYearTitle = translateMonth(+emp.awardedMonth) + ' ' + emp.awardedYear.toString();
         const title =
-          params.type === EmployeeViewType.EotmId
+          employeeViewParams.type === EmployeeViewType.EotmId
             ? `${emp.name} - ${monthYearTitle}`
             : monthYearTitle;
 
