@@ -60,23 +60,13 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
   const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
-  const [isMobile, setIsMobile] = useState(true);
 
-  const fetchExpanded = () => {
-    setIsExpanded(localStorage.getItem('isSidebarExpanded') === 'true');
-  };
-
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
-    localStorage.setItem('isSidebarExpanded', isExpanded);
-  };
-
-  useEffect(() => {
-    fetchExpanded();
+  const changeExpanded = () => {
     const matchMedia = window.matchMedia('(max-width: 768px)');
 
     const windowSizeCallback = () => {
-      setIsMobile(matchMedia.matches);
+      const isMobile = matchMedia.matches;
+      setIsExpanded(!isMobile && localStorage.getItem('isSidebarExpanded') === 'true')
     };
 
     matchMedia.addEventListener('change', windowSizeCallback);
@@ -85,6 +75,18 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
     return () => {
       matchMedia.removeEventListener('change', windowSizeCallback);
     };
+  }
+
+  const toggleExpanded = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.target !== e.currentTarget) return; // make sure this triggers only on the parent container, not the child buttons
+    const isToggled = localStorage.getItem('isSidebarExpanded') === "true"
+    const isToggledInverted = isToggled ? "false" :"true";
+    localStorage.setItem('isSidebarExpanded', isToggledInverted)
+    changeExpanded();
+  };
+
+  useEffect(() => {
+    changeExpanded();
   }, []);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
@@ -99,10 +101,10 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
     <div
       className={'h-100 bg-dark flex overflow-auto position-fixed'}
       style={{ top: 0, left: 0, zIndex: 1000 }}
-      onClick={toggleExpanded}
+      onClick={(e) => toggleExpanded(e)}
     >
       <div>
-        {!isMobile && isExpanded && (
+        {isExpanded && (
           <div>
             <div className="text-center" style={{ width: 190 }}>
               <HhaLogo style={{ width: 150 }} />
@@ -113,11 +115,11 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem path="home">
             <i className="bi bi-house-door-fill" />
-            {!isMobile && isExpanded && <span className={'text-light'}>{t('sidebarHome')}</span>}
+            {isExpanded && <span className={'text-light'}>{t('sidebarHome')}</span>}
           </SidebarItem>
           <SidebarItem path="message-board">
             <i className="bi bi-chat-right-text-fill" />
-            {!isMobile && isExpanded && (
+            {isExpanded && (
               <span data-testid="message-board-side-bar" className={'text-light'}>
                 {t('sidebarMessageBoard')}
               </span>
@@ -125,7 +127,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           </SidebarItem>
           <SidebarItem path="leaderboard">
             <i className="bi bi-bar-chart-fill" />
-            {!isMobile && isExpanded && (
+            {isExpanded && (
               <span data-testid="leaderboard-side-bar" className={'text-light'}>
                 {t('sidebarLeaderBoard')}
               </span>
@@ -133,19 +135,19 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           </SidebarItem>
           <SidebarItem path="case-study">
             <i className="bi bi-award-fill" />
-            {!isMobile && isExpanded && (
+            {isExpanded && (
               <span className={'text-light'}>{t('sidebarCaseStudy')}</span>
             )}
           </SidebarItem>
           <SidebarItem path="biomechanic">
             <i className="bi bi-wrench" />
-            {!isMobile && isExpanded && (
+            {isExpanded && (
               <span className={'text-light'}>{t('sidebarBioSupport')}</span>
             )}
           </SidebarItem>
           <SidebarItem path="employee-of-the-month">
             <i className="bi bi-star-fill" />
-            {!isMobile && isExpanded && (
+            {isExpanded && (
               <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>
             )}
           </SidebarItem>
@@ -159,7 +161,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           ]) && (
             <SidebarItem path="general-reports">
               <i className="bi bi-folder-fill" />
-              {!isMobile && isExpanded && (
+              {isExpanded && (
                 <span className={'text-light'}>{t('sidebarGeneral')}</span>
               )}
             </SidebarItem>
@@ -173,7 +175,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
               return (
                 <SidebarItem path={`department/${deptId}`} key={dept.id}>
                   <i className="bi bi-brightness-high-fill" />
-                  {!isMobile && isExpanded && <span className={'text-light'}>{t(deptName)}</span>}
+                  {isExpanded && <span className={'text-light'}>{t(deptName)}</span>}
                 </SidebarItem>
               );
             else {
@@ -183,7 +185,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
 
           <SidebarItem path="report">
             <i className="bi bi-exclamation-square" />
-            {!isMobile && isExpanded && <span className={'text-light'}>Report</span>}
+            {isExpanded && <span className={'text-light'}>Report</span>}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-2" />
@@ -199,28 +201,28 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                   <i
                     className={adminToggleState ? 'bi bi-chevron-down' : 'bi bi-chevron-right'}
                   ></i>
-                  {!isMobile && isExpanded && (
+                  {isExpanded && (
                     <span className="text text-light">{t('sidebarAdmin')}</span>
                   )}
                 </span>
                 <ul className="nested">
                   <SidebarItem path="admin">
                     <i className="bi bi-exclamation-square" />
-                    {!isMobile && isExpanded && (
+                    {isExpanded && (
                       <span className={'text-light'}>{t('sidebarAdmin')}</span>
                     )}
                   </SidebarItem>
 
                   <SidebarItem path="upload-report">
                     <i className="bi bi-person-badge-fill" />
-                    {!isMobile && isExpanded && (
+                    {isExpanded && (
                       <span className={'text-light'}>{t('sidebarUploadReport')}</span>
                     )}
                   </SidebarItem>
 
                   <SidebarItem path="update-permissions">
                     <i className="bi bi-person-badge-fill" />
-                    {!isMobile && isExpanded && (
+                    {isExpanded && (
                       <span className={'text-light'}>{t('sidebarPermissions')}</span>
                     )}
                   </SidebarItem>
@@ -239,7 +241,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
               onClick={changeLanguage('en', i18n)}
             >
               <b>EN</b>&ensp;
-              {!isMobile && isExpanded && <span>{t('sidebarEnglish')}</span>}
+              {isExpanded && <span>{t('sidebarEnglish')}</span>}
             </button>
           </li>
 
@@ -252,7 +254,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
               onClick={changeLanguage('fr', i18n)}
             >
               <b>FR</b>&ensp;
-              {!isMobile && isExpanded && <span>{t('sidebarFrench')}</span>}
+              {isExpanded && <span>{t('sidebarFrench')}</span>}
             </button>
           </li>
         </ul>
