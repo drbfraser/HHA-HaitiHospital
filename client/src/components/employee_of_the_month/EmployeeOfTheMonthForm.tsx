@@ -27,7 +27,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
       <div className="form-group col-lg-9 col-xl-6">
         <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
         <div>
-          {props.data ? (
+          {props.data && (
             <input
               data-testid="eotm-id"
               className="form-control mb-2 mt-0"
@@ -37,8 +37,6 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
               readOnly
               {...register('id', { required: true })}
             ></input>
-          ) : (
-            <></>
           )}
 
           <label htmlFor="Employee Month Year" className="form-label">
