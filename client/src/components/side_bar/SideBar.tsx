@@ -66,7 +66,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
 
     const windowSizeCallback = () => {
       const isMobile = matchMedia.matches;
-      setIsExpanded(!isMobile && localStorage.getItem('isSidebarExpanded') === 'true')
+      setIsExpanded(!isMobile && localStorage.getItem('isSidebarExpanded') === 'true');
     };
 
     matchMedia.addEventListener('change', windowSizeCallback);
@@ -75,13 +75,13 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
     return () => {
       matchMedia.removeEventListener('change', windowSizeCallback);
     };
-  }
+  };
 
   const toggleExpanded = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target !== e.currentTarget) return; // make sure this triggers only on the parent container, not the child buttons
-    const isToggled = localStorage.getItem('isSidebarExpanded') === "true"
-    const isToggledInverted = isToggled ? "false" :"true";
-    localStorage.setItem('isSidebarExpanded', isToggledInverted)
+    const isToggled = localStorage.getItem('isSidebarExpanded') === 'true';
+    const isToggledInverted = isToggled ? 'false' : 'true';
+    localStorage.setItem('isSidebarExpanded', isToggledInverted);
     changeExpanded();
   };
 
@@ -135,21 +135,15 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           </SidebarItem>
           <SidebarItem path="case-study">
             <i className="bi bi-award-fill" />
-            {isExpanded && (
-              <span className={'text-light'}>{t('sidebarCaseStudy')}</span>
-            )}
+            {isExpanded && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
           </SidebarItem>
           <SidebarItem path="biomechanic">
             <i className="bi bi-wrench" />
-            {isExpanded && (
-              <span className={'text-light'}>{t('sidebarBioSupport')}</span>
-            )}
+            {isExpanded && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
           </SidebarItem>
           <SidebarItem path="employee-of-the-month">
             <i className="bi bi-star-fill" />
-            {isExpanded && (
-              <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>
-            )}
+            {isExpanded && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-1" />
@@ -161,9 +155,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           ]) && (
             <SidebarItem path="general-reports">
               <i className="bi bi-folder-fill" />
-              {isExpanded && (
-                <span className={'text-light'}>{t('sidebarGeneral')}</span>
-              )}
+              {isExpanded && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
             </SidebarItem>
           )}
 
@@ -201,30 +193,22 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                   <i
                     className={adminToggleState ? 'bi bi-chevron-down' : 'bi bi-chevron-right'}
                   ></i>
-                  {isExpanded && (
-                    <span className="text text-light">{t('sidebarAdmin')}</span>
-                  )}
+                  {isExpanded && <span className="text text-light">{t('sidebarAdmin')}</span>}
                 </span>
                 <ul className="nested">
                   <SidebarItem path="admin">
                     <i className="bi bi-exclamation-square" />
-                    {isExpanded && (
-                      <span className={'text-light'}>{t('sidebarAdmin')}</span>
-                    )}
+                    {isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="upload-report">
                     <i className="bi bi-person-badge-fill" />
-                    {isExpanded && (
-                      <span className={'text-light'}>{t('sidebarUploadReport')}</span>
-                    )}
+                    {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="update-permissions">
                     <i className="bi bi-person-badge-fill" />
-                    {isExpanded && (
-                      <span className={'text-light'}>{t('sidebarPermissions')}</span>
-                    )}
+                    {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
                   </SidebarItem>
                 </ul>
               </li>
