@@ -38,3 +38,9 @@ export enum EmployeeViewType {
   YearMonth = 'YEAR_MONTH',
   EotmId = 'EOTM_ID',
 }
+
+export const isNonEmptyObject = (objectName) => {
+  return (
+    typeof objectName === 'object' && objectName !== null && Object.keys(objectName).length > 0
+  );
+};
