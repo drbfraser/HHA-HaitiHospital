@@ -96,6 +96,8 @@
   "addMessageAlertSuccess": "Le message a été ajouté avec succès!",
   "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
   "addMessageAlertFailed": "Échec de la mise à jour du message",
+  "addMessageAlertEmptyMessageHeader": "L'en-tête du message ne peut pas être vide",
+  "addMessageAlertEmptyMessageBody": "Le corps du message ne peut pas être vide",
   "addMessageAlertMustSelectDepartment": "Doit sélectionner un département",
   "editMessage": "Modifier le message",
   "leaderBoardDepartmentLeaderboard": "Classement du département",
@@ -346,9 +348,9 @@
     "user": "l'utilisateur",
     "users": "utilisateurs",
     "case_study": "étude de cas",
-    "message_board_post": "posté",
+    "message_board_message": "message",
     "message_board_comment": "commentaire",
-    "employee_of_the_month": "Employé du mois"
+    "employee_of_the_month": "employé du mois"
   },
   "error_message": {
     "compress": {

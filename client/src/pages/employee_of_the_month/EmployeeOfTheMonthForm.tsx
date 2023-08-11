@@ -5,7 +5,6 @@ import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT } from 'constants/endpoints';
 import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './typing';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR } from 'constants/toastErrorMessages';
 import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';

@@ -29,6 +29,7 @@ const SidebarItem = ({ path, children }: SideBarItemProps) => {
 
   return (
     <li
+      data-testid="sidebar-li"
       key={path}
       onMouseEnter={() => {
         setActive(true);
@@ -99,7 +100,7 @@ const Sidebar = () => {
           </div>
         )}
 
-        <ul className="nav nav-pills flex-column mb-auto p-2">
+        <ul data-testid="sidebar-ul" className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem path="home">
             <i className="bi bi-house-door-fill" />
             {!isMobile && <span className={'text-light'}>{t('sidebarHome')}</span>}

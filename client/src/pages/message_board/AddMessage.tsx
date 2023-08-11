@@ -21,9 +21,9 @@ const AddMessage = () => {
       data,
       onSubmitActions,
       history,
-      ResponseMessage.getMsgCreatePostFailed(),
+      ResponseMessage.getMsgCreateMessageFailed(),
       null,
-      ResponseMessage.getMsgCreatePostOk(),
+      ResponseMessage.getMsgCreateMessageOk(),
     );
   };
 

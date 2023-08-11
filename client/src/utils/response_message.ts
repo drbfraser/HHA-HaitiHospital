@@ -28,7 +28,7 @@ enum RequestItem {
   USER = 'user',
   USERS = 'users',
   CASE_STUDY = 'case_study',
-  POST = 'message_board_post',
+  MESSAGE = 'message_board_message',
   COMMENT = 'message_board_comment',
   EOTM = 'employee_of_the_month',
 }
@@ -301,19 +301,35 @@ const getMsgFeatureCaseStudyOk = (): string => {
 };
 
 // MESSAGE BOARD
-const getMsgCreatePostFailed = () => {
+const getMsgCreateMessageFailed = () => {
   return getResponseMessage({
     action: RequestAction.CREATE,
     status: RequestStatus.FAILED,
-    item: RequestItem.POST,
+    item: RequestItem.MESSAGE,
   });
 };
 
-const getMsgCreatePostOk = (): string => {
+const getMsgCreateMessageOk = (): string => {
   return getResponseMessage({
     action: RequestAction.CREATE,
     status: RequestStatus.OK,
-    item: RequestItem.POST,
+    item: RequestItem.MESSAGE,
+  });
+};
+
+const getMsgUpdateMessageFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.MESSAGE,
+  });
+};
+
+const getMsgUpdateMessageOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.OK,
+    item: RequestItem.MESSAGE,
   });
 };
 
@@ -406,8 +422,10 @@ export const ResponseMessage = {
   getMsgFeatureCaseStudyFailed,
   getMsgFeatureCaseStudyOk,
 
-  getMsgCreatePostFailed,
-  getMsgCreatePostOk,
+  getMsgCreateMessageFailed,
+  getMsgCreateMessageOk,
+  getMsgUpdateMessageFailed,
+  getMsgUpdateMessageOk,
   getMsgCreateCommentFailed,
   getMsgCreateCommentOk,
 

@@ -10,11 +10,11 @@ import Api from 'actions/Api';
 import { History } from 'history';
 import Layout from 'components/layout';
 import MessageForm from 'components/message/MessageForm';
-import i18n from 'i18next';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { ResponseMessage } from 'utils';
 
 const EditMessage = () => {
   const { id } = useParams<{ id?: string }>();
@@ -61,9 +61,9 @@ const EditMessage = () => {
       data,
       updateMessageActions,
       history,
-      i18n.t('addMessageAlertFailed'),
+      ResponseMessage.getMsgUpdateMessageFailed(),
       null,
-      i18n.t('addMessageAlertSuccess'),
+      ResponseMessage.getMsgUpdateMessageOk(),
     );
   };
 

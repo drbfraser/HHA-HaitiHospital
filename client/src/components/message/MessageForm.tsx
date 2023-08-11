@@ -15,14 +15,26 @@ const MessageForm = (props: MessageFormProps) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
 
   const { t, i18n } = useTranslation();
-  const { register, handleSubmit, reset } = useForm({});
+  const { register, getValues, handleSubmit, reset } = useForm({});
   const [department, setDepartment] = useState<string>('');
 
   const onSubmit = (data: any) => {
+    const values = getValues();
     if (data.department === '') {
       toast.error(i18n.t('addMessageAlertMustSelectDepartment'));
       return;
     }
+
+    if (data.messageHeader === '') {
+      toast.error(i18n.t('addMessageAlertEmptyMessageHeader'));
+      return;
+    }
+
+    if (data.messageBody === '') {
+      toast.error(i18n.t('addMessageAlertEmptyMessageBody'));
+      return;
+    }
+
     data.department = departments.get(data.department);
     props.submitAction(data);
 

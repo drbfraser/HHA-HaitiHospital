@@ -30,6 +30,16 @@ export class MessageboardPage {
     return this;
   }
 
+  clearMessageTitle() {
+    cy.get('[data-testid="add-message-title-input"]').clear();
+    return this;
+  }
+
+  clearMessageBody() {
+    cy.get('[data-testid="add-message-body"]').clear();
+    return this;
+  }
+
   inputMessageTitle(input: string) {
     cy.get('[data-testid="add-message-title-input"]').clear().type(input);
     return this;

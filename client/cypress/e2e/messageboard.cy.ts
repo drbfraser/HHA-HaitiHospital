@@ -5,13 +5,18 @@ import { MessageboardPage } from '../support/pages/MessageboardPage';
 import {
   MESSAGE_ADDED_SUCCESSFULLY,
   MESSAGE_DELETED_SUCCESSFULLY,
+  MESSAGE_EMPTY_MESSAGE_BODY_ERROR,
+  MESSAGE_EMPTY_MESSAGE_HEADER_ERROR,
   MESSAGE_ERROR,
   MESSAGE_NO_DEPARTMENT_SELECTED,
+  MESSAGE_UPDATED_SUCCESSFULLY,
 } from '../support/constants/toasts';
+import { LayoutComponent } from '../support/components/Layout';
 
 describe('Messageboard Tests', function () {
   const loginPage = new LoginPage();
   const messageboardPage = new MessageboardPage();
+  const layoutComponent = new LayoutComponent();
 
   const username = Cypress.env('Admin').username;
   const password = Cypress.env('Admin').password;
@@ -28,7 +33,7 @@ describe('Messageboard Tests', function () {
 
   it('Should Navigate Back to the Messageboard', function () {
     messageboardPage.clickAddMessageButton();
-    messageboardPage.clickEditMessageBackButton();
+    layoutComponent.clickBackButton();
     cy.url().should('equal', `${baseUrl}/message-board`);
   });
 
@@ -46,8 +51,8 @@ describe('Messageboard Tests', function () {
     toast.should('include.text', MESSAGE_ADDED_SUCCESSFULLY);
     toast.click();
 
-    cy.get('div.message-info').eq(0).contains('p', 'Test Title');
-    cy.get('div.message-info').eq(0).contains('p', 'Test Body');
+    cy.get('[data-testid="message-title"]').eq(0).contains('Test Title');
+    cy.get('[data-testid="message-body"]').eq(0).contains('Test Body');
   });
 
   it('Should Edit a Message', function () {
@@ -61,11 +66,11 @@ describe('Messageboard Tests', function () {
     cy.url().should('equal', `${baseUrl}/message-board`);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', MESSAGE_ADDED_SUCCESSFULLY);
+    toast.should('include.text', MESSAGE_UPDATED_SUCCESSFULLY);
     toast.click();
 
-    cy.get('div.message-info').eq(0).contains('p', 'Test Title EDITED');
-    cy.get('div.message-info').eq(0).contains('p', 'Test Body EDITED');
+    cy.get('[data-testid="message-title"]').eq(0).contains('Test Title EDITED');
+    cy.get('[data-testid="message-body"]').eq(0).contains('Test Body EDITED');
   });
 
   it('Should Delete a New Message', function () {
@@ -92,32 +97,53 @@ describe('Messageboard Tests', function () {
     cy.contains('div.message-panel', 'Test Body TO BE DELETED').should('not.exist');
   });
 
-  it('Should Fail to Add a New Message Due to Invalid Department', function () {
+  it('Should Fail to Add a New Message Due to Empty Inputs', function () {
     messageboardPage.clickAddMessageButton();
     cy.url().should('equal', `${baseUrl}/message-board/add-message`);
 
+    // Should fail due to empty Department Input
     messageboardPage.inputMessageTitle('Test Title');
     messageboardPage.inputMessageBody('Test Body');
     messageboardPage.addMessage();
     cy.url().should('equal', `${baseUrl}/message-board/add-message`);
 
-    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', MESSAGE_NO_DEPARTMENT_SELECTED);
-    toast.click();
-  });
-
-  it('Should Fail to Add a New Message Due to Empty Message', function () {
-    messageboardPage.clickAddMessageButton();
-    cy.url().should('equal', `${baseUrl}/message-board/add-message`);
+    const toast1: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast1.should('include.text', MESSAGE_NO_DEPARTMENT_SELECTED);
 
     messageboardPage.selectDepartment('General');
+    messageboardPage.clearMessageTitle();
     messageboardPage.addMessage();
     cy.url().should('equal', `${baseUrl}/message-board/add-message`);
 
-    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', MESSAGE_ERROR);
-    toast.click();
+    const toast2: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast2.should('include.text', MESSAGE_EMPTY_MESSAGE_HEADER_ERROR);
+
+    messageboardPage.inputMessageTitle('Test Title');
+    messageboardPage.clearMessageBody();
+    messageboardPage.addMessage();
+    cy.url().should('equal', `${baseUrl}/message-board/add-message`);
+
+    const toast3: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast3.should('include.text', MESSAGE_EMPTY_MESSAGE_BODY_ERROR);
   });
+
+  // it('Should Fail to Add a New Message Due to Empty Inputs', function () {
+  //   messageboardPage.clickAddMessageButton();
+  //   cy.url().should('equal', `${baseUrl}/message-board/add-message`);
+
+  //   messageboardPage.addMessage();
+  //   let toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+  //   toast.should('include.text');
+  //   toast.click;
+
+  //   messageboardPage.selectDepartment('General');
+  //   messageboardPage.addMessage();
+  //   cy.url().should('equal', `${baseUrl}/message-board/add-message`);
+
+  //   toast = cy.get('div.Toastify__toast');
+  //   toast.should('include.text', MESSAGE_ERROR);
+  //   toast.click();
+  // });
 });
 
 describe('Messageboard Test for User', function () {

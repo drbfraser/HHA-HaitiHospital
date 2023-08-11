@@ -96,6 +96,8 @@
   "addMessageAlertSuccess": "Message is successfully added!",
   "addMessageAlertUnauthorized": "Update message failed: unauthorized",
   "addMessageAlertFailed": "Update message failed",
+  "addMessageAlertEmptyMessageHeader": "Message header cannot be empty",
+  "addMessageAlertEmptyMessageBody": "Message body cannot be empty",
   "addMessageAlertMustSelectDepartment": "Must select a department",
   "editMessage": "Edit Message",
   "leaderBoardDepartmentLeaderboard": "Department Leaderboard",
@@ -346,7 +348,7 @@
     "user": "User",
     "users": "Users",
     "case_study": "Case study",
-    "message_board_post": "Post",
+    "message_board_message": "Message",
     "message_board_comment": "Comment",
     "employee_of_the_month": "Employee of the month"
   },

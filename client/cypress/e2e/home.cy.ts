@@ -21,8 +21,10 @@ describe('Admin Home Page Tests', function () {
     cy.contains(en.leaderBoardOverviewDepartmentLeader).should('be.visible');
     cy.contains(en.dashboardMessageOverviewMessages).should('be.visible');
 
-    cy.get('.sidebar_logo').should('be.visible');
-    cy.get('.Sidebar').find('ul li').as('Sidebar Items');
+    cy.get('.hha-logo').should('be.visible');
+    cy.get('[data-testid="sidebar-ul"]').should('be.visible');
+
+    cy.get('[data-testid="sidebar-li"]').as('Sidebar Items');
 
     // Check that the sidebar links correspond to the User role
     cy.get('@Sidebar Items').eq(0).should('include.text', en.sidebarHome);
@@ -74,8 +76,10 @@ describe('User Home Page Tests', function () {
     cy.contains(en.leaderBoardOverviewDepartmentLeader).should('be.visible');
     cy.contains(en.dashboardMessageOverviewMessages).should('be.visible');
 
-    cy.get('.sidebar_logo').should('be.visible');
-    cy.get('.Sidebar').find('ul li').as('Sidebar Items');
+    cy.get('.hha-logo').should('be.visible');
+    cy.get('[data-testid="sidebar-ul"]').should('be.visible');
+
+    cy.get('[data-testid="sidebar-li"]').as('Sidebar Items');
 
     // Check that the sidebar links correspond to the User role
     cy.get('@Sidebar Items').eq(0).should('include.text', en.sidebarHome);
