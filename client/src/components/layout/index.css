@@ -1,15 +1,13 @@
 .main.main-region {
   position: absolute;
-  left: 70px;
-  width: calc(100% - 70px);
+  left: 88px;
+  width: calc(100% - 88px);
   transition: width 0.5s, left 0.5s;
 }
 
-@media screen and (min-width: 769px) {
-  .main.main-region.expanded {
-    left: 245px;
-    width: calc(100% - 245px);
-  }  
+.main.main-region.expanded {
+  left: 275px;
+  width: calc(100% - 275px);
 }
 
 .errorMsg {

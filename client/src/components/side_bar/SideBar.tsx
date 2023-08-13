@@ -10,7 +10,13 @@ import { NavLink } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
-type SideBarItemProps = { path: string; children: ReactNode };
+const NAV_ITEM_CLASSES = 'nav-link link-light d-flex gap-0 gap-sm-2 w-100';
+
+type SideBarItemProps = {
+  path?: string;
+  children: ReactNode;
+  onClick?: () => void;
+};
 
 export const changeLanguage = (ln, i18n) => {
   return () => {
@@ -19,7 +25,7 @@ export const changeLanguage = (ln, i18n) => {
   };
 };
 
-const SidebarItem = ({ path, children }: SideBarItemProps) => {
+const SidebarItem = ({ path, children, onClick }: SideBarItemProps) => {
   const [active, setActive] = useState(false);
 
   const focusHoverState = {
@@ -43,15 +49,26 @@ const SidebarItem = ({ path, children }: SideBarItemProps) => {
         setActive(false);
       }}
     >
-      <NavLink
-        to={`/${path}`}
-        className="nav-link link-light d-flex gap-0 gap-sm-2"
-        exact
-        activeClassName="active"
-        {...(active && { style: focusHoverState })}
-      >
-        {children}
-      </NavLink>
+      {path ? (
+        <NavLink
+          to={`/${path}`}
+          className={NAV_ITEM_CLASSES}
+          exact
+          activeClassName="active"
+          {...(active && { style: focusHoverState })}
+        >
+          {children}
+        </NavLink>
+      ) : (
+        <Button
+          className={NAV_ITEM_CLASSES}
+          variant="link"
+          {...(active && { style: focusHoverState })}
+          onClick={onClick}
+        >
+          {children}
+        </Button>
+      )}
     </li>
   );
 };
@@ -61,12 +78,16 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
 
-  const changeExpanded = () => {
+  const languages = [
+    { name: t('sidebarEnglish'), code: 'en' },
+    { name: t('sidebarFrench'), code: 'fr' },
+  ];
+
+  useEffect(() => {
     const matchMedia = window.matchMedia('(max-width: 768px)');
 
     const windowSizeCallback = () => {
-      const isMobile = matchMedia.matches;
-      setIsExpanded(!isMobile && localStorage.getItem('isSidebarExpanded') === 'true');
+      setIsExpanded((isExpanded) => !matchMedia.matches && isExpanded);
     };
 
     matchMedia.addEventListener('change', windowSizeCallback);
@@ -75,19 +96,11 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
     return () => {
       matchMedia.removeEventListener('change', windowSizeCallback);
     };
-  };
-
-  const toggleExpanded = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.target !== e.currentTarget) return; // make sure this triggers only on the parent container, not the child buttons
-    const isToggled = localStorage.getItem('isSidebarExpanded') === 'true';
-    const isToggledInverted = isToggled ? 'false' : 'true';
-    localStorage.setItem('isSidebarExpanded', isToggledInverted);
-    changeExpanded();
-  };
+  });
 
   useEffect(() => {
-    changeExpanded();
-  }, []);
+    localStorage.setItem('isSidebarExpanded', isExpanded);
+  }, [isExpanded]);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
     if (authState.userDetails.role === Role.User) {
@@ -95,30 +108,34 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
     }
     return true;
   };
-  const { adminToggleState, setAdminToggleState } = useAdminToggleState();
+
+    const { adminToggleState: isAdminExpanded, setAdminToggleState: setIsAdminExpanded } = useAdminToggleState();
+
+  const iconMargins = isExpanded ? 'ms-2' : 'mx-auto';
 
   return (
     <div
-      className={'h-100 bg-dark flex overflow-auto position-fixed'}
+      className={'h-100 bg-dark position-fixed d-flex flex-column'}
       style={{ top: 0, left: 0, zIndex: 1000 }}
-      onClick={(e) => toggleExpanded(e)}
     >
       <div>
-        {isExpanded && (
-          <div>
-            <div className="text-center" style={{ width: 190 }}>
-              <HhaLogo style={{ width: 150 }} />
-            </div>
-          </div>
-        )}
+        {isExpanded && <HhaLogo className="mx-auto d-flex" style={{ width: 150 }} />}
 
         <ul className="nav nav-pills flex-column mb-auto p-2">
+          <SidebarItem onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
+            <i
+              className={`${iconMargins} ms-auto bi bi-chevron-bar-${
+                isExpanded ? 'left' : 'right'
+              }`}
+            />
+          </SidebarItem>
+
           <SidebarItem path="home">
-            <i className="bi bi-house-door-fill" />
+            <i className={`${iconMargins} bi bi-house-door-fill`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarHome')}</span>}
           </SidebarItem>
           <SidebarItem path="message-board">
-            <i className="bi bi-chat-right-text-fill" />
+            <i className={`${iconMargins} bi bi-chat-right-text-fill`} />
             {isExpanded && (
               <span data-testid="message-board-side-bar" className={'text-light'}>
                 {t('sidebarMessageBoard')}
@@ -126,7 +143,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
             )}
           </SidebarItem>
           <SidebarItem path="leaderboard">
-            <i className="bi bi-bar-chart-fill" />
+            <i className={`${iconMargins} bi bi-bar-chart-fill`} />
             {isExpanded && (
               <span data-testid="leaderboard-side-bar" className={'text-light'}>
                 {t('sidebarLeaderBoard')}
@@ -134,15 +151,15 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
             )}
           </SidebarItem>
           <SidebarItem path="case-study">
-            <i className="bi bi-award-fill" />
+            <i className={`${iconMargins} bi bi-award-fill`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
           </SidebarItem>
           <SidebarItem path="biomechanic">
-            <i className="bi bi-wrench" />
+            <i className={`${iconMargins} bi bi-wrench`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
           </SidebarItem>
           <SidebarItem path="employee-of-the-month">
-            <i className="bi bi-star-fill" />
+            <i className={`${iconMargins} bi bi-star-fill`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
           </SidebarItem>
 
@@ -154,19 +171,19 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
             Role.HeadOfDepartment,
           ]) && (
             <SidebarItem path="general-reports">
-              <i className="bi bi-folder-fill" />
+              <i className={`${iconMargins} bi bi-folder-fill`} />
               {isExpanded && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
             </SidebarItem>
           )}
 
-          {departments?.map((dept: Department, index: number) => {
+          {departments?.map((dept: Department) => {
             const deptName = dept.name;
             const deptId = dept.id;
 
             if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
               return (
                 <SidebarItem path={`department/${deptId}`} key={dept.id}>
-                  <i className="bi bi-brightness-high-fill" />
+                  <i className={`${iconMargins} bi bi-brightness-high-fill`} />
                   {isExpanded && <span className={'text-light'}>{t(deptName)}</span>}
                 </SidebarItem>
               );
@@ -176,71 +193,53 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           })}
 
           <SidebarItem path="report">
-            <i className="bi bi-exclamation-square" />
+            <i className={`${iconMargins} bi bi-exclamation-square`} />
             {isExpanded && <span className={'text-light'}>Report</span>}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) && (
-            <>
-              <li key="admin_toggle" className={adminToggleState ? 'active' : ''}>
-                <span
-                  className="nav-link link-light"
-                  onClick={() => {
-                    setAdminToggleState(!adminToggleState);
-                  }}
-                >
-                  <i
-                    className={adminToggleState ? 'bi bi-chevron-down' : 'bi bi-chevron-right'}
-                  ></i>
-                  {isExpanded && <span className="text text-light">{t('sidebarAdmin')}</span>}
-                </span>
-                <ul className="nested">
-                  <SidebarItem path="admin">
-                    <i className="bi bi-exclamation-square" />
-                    {isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
-                  </SidebarItem>
+            <li key="admin_toggle" className={isAdminExpanded ? 'active' : ''}>
+              <SidebarItem
+                onClick={() => {
+                  setIsAdminExpanded((isAdminExpanded) => !isAdminExpanded);
+                }}
+              >
+                <i className={`${iconMargins} bi bi-person-fill`}></i>
+                {isExpanded && <span className="text-light">{t('sidebarAdmin')}</span>}
+                <i
+                  className={`ms-auto ${
+                    isAdminExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'
+                  }`}
+                ></i>
+              </SidebarItem>
+              <ul className="nested">
+                <SidebarItem path="admin">
+                  <i className={`${iconMargins} bi bi-people-fill`} />
+                  {isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
+                </SidebarItem>
 
-                  <SidebarItem path="upload-report">
-                    <i className="bi bi-person-badge-fill" />
-                    {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
-                  </SidebarItem>
+                <SidebarItem path="upload-report">
+                  <i className={`${iconMargins} bi bi-file-earmark-arrow-up-fill`} />
+                  {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
+                </SidebarItem>
 
-                  <SidebarItem path="update-permissions">
-                    <i className="bi bi-person-badge-fill" />
-                    {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
-                  </SidebarItem>
-                </ul>
-              </li>
+                <SidebarItem path="update-permissions">
+                  <i className={`${iconMargins} bi bi-file-earmark-lock2-fill`} />
+                  {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
+                </SidebarItem>
+              </ul>
 
               <li className="border-top my-2" key="border-3" />
-            </>
+            </li>
           )}
 
-          <li className="btn-group-toggle" data-toggle="buttons" key="english">
-            <button
-              className={`btn-group-toggle nav-link ${
-                localStorage.getItem('lang') === 'en' ? 'link-primary' : 'link-light'
-              }`}
-              onClick={changeLanguage('en', i18n)}
-            >
-              <b>EN</b>&ensp;
-              {isExpanded && <span>{t('sidebarEnglish')}</span>}
-            </button>
-          </li>
-
-          <li key="french">
-            <button
-              className={`nav-link ${
-                localStorage.getItem('lang') === 'fr' ? 'link-primary' : 'link-light'
-              }`}
-              id="fc"
-              onClick={changeLanguage('fr', i18n)}
-            >
-              <b>FR</b>&ensp;
-              {isExpanded && <span>{t('sidebarFrench')}</span>}
-            </button>
-          </li>
+          {languages.map((language) => (
+            <SidebarItem key={language.code} onClick={changeLanguage(language.code, i18n)}>
+              <i className={`${iconMargins} bi bi-translate text-white`} />
+              <span>{isExpanded ? language.name : language.code.toLocaleUpperCase()}</span>
+            </SidebarItem>
+          ))}
         </ul>
       </div>
     </div>

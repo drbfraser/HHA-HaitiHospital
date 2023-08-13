@@ -1,10 +1,11 @@
 import './index.css';
+
 import Header from 'components/header/Header';
 import SideBar from 'components/side_bar/SideBar';
 import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LayoutProps {
   className?: string;
@@ -23,7 +24,7 @@ const Layout = ({
 }: LayoutProps) => {
   const history = useHistory();
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(localStorage.getItem('isSidebarExpanded') === 'true');
 
   return (
     <>
