@@ -5,6 +5,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { useAdminToggleState, useAuthState } from 'contexts';
 
+import { Button } from 'react-bootstrap';
 import HhaLogo from 'components/hha_logo/Logo';
 import { NavLink } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
@@ -109,7 +110,8 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
     return true;
   };
 
-    const { adminToggleState: isAdminExpanded, setAdminToggleState: setIsAdminExpanded } = useAdminToggleState();
+  const { adminToggleState: isAdminExpanded, setAdminToggleState: setIsAdminExpanded } =
+    useAdminToggleState();
 
   const iconMargins = isExpanded ? 'ms-2' : 'mx-auto';
 
@@ -176,21 +178,17 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
             </SidebarItem>
           )}
 
-          {departments?.map((dept: Department) => {
-            const deptName = dept.name;
-            const deptId = dept.id;
-
-            if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
-              return (
-                <SidebarItem path={`department/${deptId}`} key={dept.id}>
+          {departments &&
+            departments
+              .filter(
+                (d: Department) => renderDeptIfUserInDept(d.name) && d.name !== GeneralDepartment,
+              )
+              .map((dept: Department) => (
+                <SidebarItem path={`department/${dept.id}`} key={dept.id}>
                   <i className={`${iconMargins} bi bi-brightness-high-fill`} />
-                  {isExpanded && <span className={'text-light'}>{t(deptName)}</span>}
+                  {isExpanded && <span className={'text-light'}>{t(dept.name)}</span>}
                 </SidebarItem>
-              );
-            else {
-              return null;
-            }
-          })}
+              ))}
 
           <SidebarItem path="report">
             <i className={`${iconMargins} bi bi-exclamation-square`} />
@@ -199,7 +197,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
 
           <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) && (
-            <li key="admin_toggle" className={isAdminExpanded ? 'active' : ''}>
+            <>
               <SidebarItem
                 onClick={() => {
                   setIsAdminExpanded((isAdminExpanded) => !isAdminExpanded);
@@ -213,25 +211,27 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                   }`}
                 ></i>
               </SidebarItem>
-              <ul className="nested">
-                <SidebarItem path="admin">
-                  <i className={`${iconMargins} bi bi-people-fill`} />
-                  {isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
-                </SidebarItem>
+              <li key="admin_toggle" className={isAdminExpanded ? 'active' : ''}>
+                <ul className="nested">
+                  <SidebarItem path="admin">
+                    <i className={`${iconMargins} bi bi-people-fill`} />
+                    {isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
+                  </SidebarItem>
 
-                <SidebarItem path="upload-report">
-                  <i className={`${iconMargins} bi bi-file-earmark-arrow-up-fill`} />
-                  {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
-                </SidebarItem>
+                  <SidebarItem path="upload-report">
+                    <i className={`${iconMargins} bi bi-file-earmark-arrow-up-fill`} />
+                    {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
+                  </SidebarItem>
 
-                <SidebarItem path="update-permissions">
-                  <i className={`${iconMargins} bi bi-file-earmark-lock2-fill`} />
-                  {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
-                </SidebarItem>
-              </ul>
+                  <SidebarItem path="update-permissions">
+                    <i className={`${iconMargins} bi bi-file-earmark-lock2-fill`} />
+                    {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
+                  </SidebarItem>
+                </ul>
+              </li>
 
               <li className="border-top my-2" key="border-3" />
-            </li>
+            </>
           )}
 
           {languages.map((language) => (
