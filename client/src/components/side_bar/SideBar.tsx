@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
-type SideBarItemProps = { path: string; children: ReactNode };
+type SideBarNavItemProps = { path: string; children: ReactNode };
 
 export const changeLanguage = (ln, i18n) => {
   return () => {
@@ -19,7 +19,7 @@ export const changeLanguage = (ln, i18n) => {
   };
 };
 
-const SidebarItem = ({ path, children }: SideBarItemProps) => {
+const SidebarNavItem = ({ path, children }: SideBarNavItemProps) => {
   const [active, setActive] = useState(false);
 
   const focusHoverState = {
@@ -101,38 +101,38 @@ const Sidebar = () => {
         )}
 
         <ul data-testid="sidebar-ul" className="nav nav-pills flex-column mb-auto p-2">
-          <SidebarItem path="home">
+          <SidebarNavItem path="home">
             <i className="bi bi-house-door-fill" />
             {!isMobile && <span className={'text-light'}>{t('sidebarHome')}</span>}
-          </SidebarItem>
-          <SidebarItem path="message-board">
+          </SidebarNavItem>
+          <SidebarNavItem path="message-board">
             <i className="bi bi-chat-right-text-fill" />
             {!isMobile && (
               <span data-testid="message-board-side-bar" className={'text-light'}>
                 {t('sidebarMessageBoard')}
               </span>
             )}
-          </SidebarItem>
-          <SidebarItem path="leaderboard">
+          </SidebarNavItem>
+          <SidebarNavItem path="leaderboard">
             <i className="bi bi-bar-chart-fill" />
             {!isMobile && (
               <span data-testid="leaderboard-side-bar" className={'text-light'}>
                 {t('sidebarLeaderBoard')}
               </span>
             )}
-          </SidebarItem>
-          <SidebarItem path="case-study">
+          </SidebarNavItem>
+          <SidebarNavItem path="case-study">
             <i className="bi bi-award-fill" />
             {!isMobile && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
-          </SidebarItem>
-          <SidebarItem path="biomechanic">
+          </SidebarNavItem>
+          <SidebarNavItem path="biomechanic">
             <i className="bi bi-wrench" />
             {!isMobile && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
-          </SidebarItem>
-          <SidebarItem path="employee-of-the-month">
+          </SidebarNavItem>
+          <SidebarNavItem path="employee-of-the-month">
             <i className="bi bi-star-fill" />
             {!isMobile && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
-          </SidebarItem>
+          </SidebarNavItem>
 
           <li className="border-top my-2" key="border-1" />
 
@@ -141,10 +141,10 @@ const Sidebar = () => {
             Role.MedicalDirector,
             Role.HeadOfDepartment,
           ]) && (
-            <SidebarItem path="general-reports">
+            <SidebarNavItem path="general-reports">
               <i className="bi bi-folder-fill" />
               {!isMobile && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
-            </SidebarItem>
+            </SidebarNavItem>
           )}
 
           {departments?.map((dept: Department, index: number) => {
@@ -153,20 +153,20 @@ const Sidebar = () => {
 
             if (renderDeptIfUserInDept(deptName) && deptName !== GeneralDepartment)
               return (
-                <SidebarItem path={`department/${deptId}`} key={dept.id}>
+                <SidebarNavItem path={`department/${deptId}`} key={dept.id}>
                   <i className="bi bi-brightness-high-fill" />
                   {!isMobile && <span className={'text-light'}>{t(deptName)}</span>}
-                </SidebarItem>
+                </SidebarNavItem>
               );
             else {
               return null;
             }
           })}
 
-          <SidebarItem path="report">
+          <SidebarNavItem path="report">
             <i className="bi bi-exclamation-square" />
             {!isMobile && <span className={'text-light'}>Report</span>}
-          </SidebarItem>
+          </SidebarNavItem>
 
           <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) && (
@@ -184,20 +184,20 @@ const Sidebar = () => {
                   {!isMobile && <span className="text text-light">{t('sidebarAdmin')}</span>}
                 </span>
                 <ul className="nested">
-                  <SidebarItem path="admin">
+                  <SidebarNavItem path="admin">
                     <i className="bi bi-exclamation-square" />
                     {!isMobile && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
-                  </SidebarItem>
+                  </SidebarNavItem>
 
-                  <SidebarItem path="upload-report">
+                  <SidebarNavItem path="upload-report">
                     <i className="bi bi-person-badge-fill" />
                     {!isMobile && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
-                  </SidebarItem>
+                  </SidebarNavItem>
 
-                  <SidebarItem path="update-permissions">
+                  <SidebarNavItem path="update-permissions">
                     <i className="bi bi-person-badge-fill" />
                     {!isMobile && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
-                  </SidebarItem>
+                  </SidebarNavItem>
                 </ul>
               </li>
 
@@ -205,7 +205,12 @@ const Sidebar = () => {
             </>
           )}
 
-          <li className="btn-group-toggle" data-toggle="buttons" key="english">
+          <li
+            data-testid="english-translation"
+            className="btn-group-toggle"
+            data-toggle="buttons"
+            key="english"
+          >
             <button
               className={`btn-group-toggle nav-link ${
                 localStorage.getItem('lang') === 'en' ? 'link-primary' : 'link-light'
@@ -217,7 +222,7 @@ const Sidebar = () => {
             </button>
           </li>
 
-          <li key="french">
+          <li data-testid="french-translation" key="french">
             <button
               className={`nav-link ${
                 localStorage.getItem('lang') === 'fr' ? 'link-primary' : 'link-light'

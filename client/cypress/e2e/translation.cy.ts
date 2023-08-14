@@ -3,10 +3,12 @@
 import { HomePage } from '../support/pages/HomePage';
 import { LoginPage } from '../support/pages/LoginPage';
 import fr from '../../src/locales/fr/translationFR.json';
+import { HeaderComponent } from '../support/components/Header';
 
 describe('French Translation Tests', function () {
   const loginPage = new LoginPage();
   const homePage = new HomePage();
+  const headerComponent = new HeaderComponent();
 
   const username = Cypress.env('Admin').username;
   const password = Cypress.env('Admin').password;
@@ -20,22 +22,22 @@ describe('French Translation Tests', function () {
     // Tests run too quickly---cy.visit() is not working without this delay
     cy.wait(100);
 
-    cy.get('.Sidebar').find('ul li').as('Sidebar Items');
-    cy.get('@Sidebar Items').eq(18).click();
+    cy.get('[data-testid="sidebar-li"]').as('Sidebar Items');
+    cy.get('[data-testid="french-translation"]').click();
   });
 
   it('Should Check That Messageboard Is In French', function () {
     cy.get('@Sidebar Items').eq(1).click();
-    cy.get('[data-testid="messageboard-header"]').should('include.text', fr.headerMessageBoard);
+    headerComponent.getHeader().should('include.text', fr.headerMessageBoard);
     cy.get('[data-testid="add-message-button"]').should('include.text', fr.messageBoardAddMessage);
   });
 
   it('Should Check That Leaderboard Page Is In French', function () {
     cy.get('@Sidebar Items').eq(2).click();
-    cy.get('[data-testid="leaderboard-header"]').should('include.text', fr.headerLeaderBoard);
-    cy.get('[data-testid="case-study-patient-title"]')
+    headerComponent.getHeader().should('include.text', fr.headerLeaderBoard);
+    cy.get('[data-testid="leaderboard-case-study-header"]')
       .parent()
-      .should('include.text', fr.caseStudyFormPatientStoryCaseStudy);
+      .should('include.text', fr.headerCaseStudy);
     cy.get('[data-testid="case-study-patient-name"]')
       .parent()
       .should('include.text', fr.caseStudyFormPatientName);
@@ -61,7 +63,7 @@ describe('French Translation Tests', function () {
 
   it('Should Check That Case Study Page Is In French', function () {
     cy.get('@Sidebar Items').eq(3).click();
-    cy.get('[data-testid="case-study-header"]').should('include.text', fr.headerCaseStudy);
+    headerComponent.getHeader().should('include.text', fr.headerCaseStudy);
     cy.get('[data-testid="add-case-study-button"]').should(
       'include.text',
       fr.CaseStudy.Main.AddCaseStudy,
@@ -86,12 +88,12 @@ describe('French Translation Tests', function () {
 
   it('Should Check That Bio Support Page Is In French', function () {
     cy.get('@Sidebar Items').eq(4).click();
-    cy.get('[data-testid="biomech-header"]').should('include.text', fr.headerBiomechanicalSupport);
+    headerComponent.getHeader().should('include.text', fr.headerBiomechanicalSupport);
   });
 
   it('Should Check That EOTM Page Is In French', function () {
     cy.get('@Sidebar Items').eq(5).click();
-    cy.get('[data-testid="eotm-header"]').should('include.text', fr.headerEmployeeOfTheMonth);
+    headerComponent.getHeader().should('include.text', fr.headerEmployeeOfTheMonth);
     cy.get('[data-testid="update-eotm-button"]').should('include.text', fr.employeeOfTheMonthEdit);
   });
 });

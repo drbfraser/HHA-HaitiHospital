@@ -5,6 +5,8 @@ import {
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
 
+import { t } from 'i18next';
+
 import Api from 'actions/Api';
 import { CaseStudySummary } from 'components/case_study/CaseStudySummary';
 import { History } from 'history';
@@ -100,6 +102,9 @@ export const LeaderBoard = () => {
 
       {caseStudy && (
         <div className="my-3 p-2 bg-body rounded shadow-sm mb-3">
+          <h1 data-testid="leaderboard-case-study-header" className="my-4">
+            {t('headerCaseStudy')}
+          </h1>
           <CaseStudySummary caseStudy={caseStudy} />
         </div>
       )}

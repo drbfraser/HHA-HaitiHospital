@@ -75,3 +75,9 @@ export class MessageboardPage {
     return this;
   }
 }
+
+export class MessageBoardForm {
+  visitAddMessage() {
+    cy.visit('/message-board/add-message');
+  }
+}
