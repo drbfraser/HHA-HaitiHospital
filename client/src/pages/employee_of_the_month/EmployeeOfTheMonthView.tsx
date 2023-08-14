@@ -70,7 +70,7 @@ export const EmployeeOfTheMonthView = () => {
 
       const employeeOfTheMonthArr: EmployeeOfTheMonth[] = [employeeOfTheMonth].flat();
 
-      if (employeeOfTheMonthArr.length > 0) {
+      if (employeeOfTheMonthArr.length > 0 && isNonEmptyObject(employeeOfTheMonthArr[0])) {
         setEmployeesOfTheMonth(employeeOfTheMonthArr);
         const emp = employeeOfTheMonthArr[0];
         const monthYearTitle = translateMonth(+emp.awardedMonth) + ' ' + emp.awardedYear.toString();
@@ -96,20 +96,20 @@ export const EmployeeOfTheMonthView = () => {
         </button>
       </Link>
       {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-          <Link to="/employee-of-the-month/add">
-            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-              {t('employeeOfTheMonthAdd')}
-            </button>
-          </Link>
-        )}
+        <Link to="/employee-of-the-month/add">
+          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+            {t('employeeOfTheMonthAdd')}
+          </button>
+        </Link>
+      )}
       <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
-      <div className="d-flex flex-column">
-        {employeesOfTheMonth.map((eotm, i) => {
+      <div className="d-flex flex-column"></div>
+      {employeesOfTheMonth?.length == 0 ? (
+        <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
+      ) : (
+        employeesOfTheMonth.map((eotm, i) => {
           return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
-        })}
-      </div>
-      {employeesOfTheMonth?.length == 0 && (
-        <h2 className="pl-3">No employee of the month for this month found</h2>
+        })
       )}
     </Layout>
   );

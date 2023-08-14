@@ -232,6 +232,7 @@
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
   "employeeOfTheMonthLastUpdated": "Last updated",
+  "employeeOfTheMonthNotFound": "No employee of the month found",
   "template": {
     "change_template": "Change template",
     "department": "Department",

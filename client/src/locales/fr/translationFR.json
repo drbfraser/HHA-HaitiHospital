@@ -232,6 +232,7 @@
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
   "employeeOfTheMonthLastUpdated": "Dernière mise à jour",
+  "employeeOfTheMonthNotFound": "Aucun employé du mois trouvé",
   "template": {
     "change_template": "Changer de modèle",
     "department": "Département",
