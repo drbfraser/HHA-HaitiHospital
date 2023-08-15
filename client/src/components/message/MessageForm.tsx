@@ -19,7 +19,6 @@ const MessageForm = (props: MessageFormProps) => {
   const [department, setDepartment] = useState<string>('');
 
   const onSubmit = (data: any) => {
-    const values = getValues();
     if (data.department === '') {
       toast.error(i18n.t('addMessageAlertMustSelectDepartment'));
       return;
