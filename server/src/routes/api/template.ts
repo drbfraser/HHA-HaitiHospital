@@ -13,30 +13,39 @@ import { roleAuth } from 'middleware/roleAuth';
 const router: IRouter = require('express').Router();
 
 //get template by department id
-router.route(`/:${DEPARTMENT_ID_URL_SLUG}`).get(
-  requireJwtAuth,
-  roleAuth(Role.Admin, Role.MedicalDirector),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
-      if (!(await Departments.Database.validateDeptId(deptId))) {
-        throw new NotFound(`Invalid department id ${deptId}`);
-      }
-      let serializedTemplate = await TemplateCollection.findOne({ departmentId: deptId }).lean();
-      if (!serializedTemplate) {
-        throw new NotFound(`No template for department found`);
-      }
+router
+  .route(`/:${DEPARTMENT_ID_URL_SLUG}`)
+  .get(
+    requireJwtAuth,
+    roleAuth(Role.Admin, Role.MedicalDirector),
+    async (req: RequestWithUser, res: Response, next: NextFunction) => {
+      try {
+        const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
+        if (!(await Departments.Database.validateDeptId(deptId))) {
+          throw new NotFound(`Invalid department id ${deptId}`);
+        }
+        let serializedTemplate = await TemplateCollection.findOne({ departmentId: deptId }).lean();
+        if (!serializedTemplate) {
+          throw new NotFound(`No template for department found`);
+        }
 
-      // Check if the client requested the French version
-      const languagePreference = req.headers['accept-language'];
-      const isFrenchRequested = languagePreference && languagePreference.includes('fr');
+        console.log('server routes/api/template get template', serializedTemplate);
+        console.log('server routes/api/template get template', serializedTemplate.reportObject);
+        // print where id: '14' of questionItems in reportObject
+        // Find the element with id: '14' in questionItems
+        const questionIdToFind = '14';
+        const questionItem = serializedTemplate.reportObject.questionItems.find(
+          (item) => item.id === questionIdToFind,
+        );
 
-      res.status(HTTP_OK_CODE).json({ template: serializedTemplate });
-    } catch (e) {
-      next(e);
-    }
-  },
-);
+        console.log('numeric table question', questionItem.questionTable);
+
+        res.status(HTTP_OK_CODE).json({ template: serializedTemplate });
+      } catch (e) {
+        next(e);
+      }
+    },
+  );
 
 //Save report template
 router.put(

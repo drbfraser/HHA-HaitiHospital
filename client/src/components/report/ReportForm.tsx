@@ -14,6 +14,8 @@ import Pagination from 'components/pagination/Pagination';
 import SubmitButton from './SubmitButton';
 import { useTranslation } from 'react-i18next';
 
+console.log('ReportForm.tsx');
+
 export const QuestionFormFields = ({
   applyReportChanges,
   questions,
@@ -64,7 +66,7 @@ export const QuestionFormFields = ({
     </>
   );
 };
-
+console.log('ReportForm2.tsx');
 interface ReportFormProps {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -121,5 +123,5 @@ const ReportForm = ({
     </div>
   );
 };
-
+console.log('ReportForm3.tsx');
 export default ReportForm;

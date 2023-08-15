@@ -83,7 +83,6 @@ export abstract class QuestionTable<
     );
   }
 
-
   // Returns undefined if given numbers are out of bound OR if no question has
   // been defined in the given cell.
   // public getQuestionAt(row: number, col: number): QuestionType | undefined {
@@ -140,5 +139,4 @@ export abstract class QuestionTable<
       return row.map(mapper);
     });
   }
-
 }
