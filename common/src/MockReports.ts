@@ -16,8 +16,8 @@ type ErrorType = string;
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
-  (questionGroupIndex: number): ID =>
-    `${questionId}_${questionGroupIndex}`;
+    (questionGroupIndex: number): ID =>
+      `${questionId}_${questionGroupIndex}`;
 
 export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('ROOT', {
@@ -675,523 +675,835 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   return rehabReport;
 };
 
-// export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
-//   const reportID: ID = 'nicu-paeds-report_1';
-//   const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-//     'MSPP Data',
-//     reportID,
-//   );
+export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
+  const reportID: ID = 'nicu-paeds-report_1';
+  const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
+    en: 'MSPP Data',
+    fr: 'Données MSPP',
+  });
 
-//   // Questions 1 to 3
-//   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '1',
-//     'Beds available',
-//   );
-//   const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('2', 'Beds days');
-//   const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '3',
-//     'Patient days',
-//   );
+  // Questions 1 to 3
+  const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '1',
+    {
+      en: 'Beds available',
+      fr: 'Lits disponibles',
+    }
+  );
+  const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '2',
+    {
+      en: 'Beds days',
+      fr: 'Jours de lits',
+    }
+  );
+  const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '3',
+    {
+      en: 'Patient days',
+      fr: 'Jours de patient',
+    }
+  );
 
-//   // Question 4 "Hospitalized"
-//   const q4_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '4_1_1',
-//     'Hospitalized NICU',
-//   );
-//   const q4_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '4_1_2',
-//     'Hospitalised Paed',
-//   );
-//   const q4_1: SpecializedGroup<
-//     ID,
-//     ErrorType,
-//     NumericQuestion<ID, ErrorType>
-//   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
-//     '4_1',
-//     'Departments',
-//     q4_1_1,
-//     q4_1_2,
-//   );
-//   const q4: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-//     '4',
-//     'Hospitalized',
-//     q4_1,
-//   );
+  // Question 4 "Hospitalized"
+  const q4_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '4_1_1',
+    {
+      en: 'Hospitalized NICU',
+      fr: 'Hospitalisé NICU',
+    }
+  );
+  const q4_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '4_1_2',
+    {
+      en: 'Hospitalised Paed',
+      fr: 'Hospitalisé Paed',
+    }
+  );
+  const q4_1: SpecializedGroup<
+    ID,
+    ErrorType,
+    NumericQuestion<ID, ErrorType>
+  > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
+    '4_1',
+    {
+      en: 'Departments',
+      fr: 'Départements',
+    },
+    q4_1_1,
+    q4_1_2,
+  );
+  const q4: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '4',
+    {
+      en: 'Hospitalized',
+      fr: 'Hospitalisé',
+    },
+    q4_1,
+  );
 
-//   // Question 5 "Discharged alive"
-//   const q5_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '5_1_1',
-//     '# Discharged from NICU',
-//   );
-//   const q5_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '5_1_2',
-//     '# Discharged from elsewhere',
-//   );
-//   const q5_1: SpecializedGroup<
-//     ID,
-//     ErrorType,
-//     NumericQuestion<ID, ErrorType>
-//   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
-//     '5_1',
-//     'By Department',
-//     q5_1_1,
-//     q5_1_2,
-//   );
-//   const q5: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-//     '5',
-//     'Discharged Alive',
-//     q5_1,
-//   );
+  // Question 5 "Discharged alive"
+  const q5_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '5_1_1',
+    {
+      en: '# Discharged from NICU',
+      fr: '# Déchargé de NICU',
+    },
+  );
+  const q5_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '5_1_2',
+    {
+      en: '# Discharged from elsewhere',
+      fr: '# Déchargé d\'ailleurs',
+    },
+  );
+  const q5_1: SpecializedGroup<
+    ID,
+    ErrorType,
+    NumericQuestion<ID, ErrorType>
+  > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
+    '5_1',
+    {
+      en: 'By Department',
+      fr: 'Par Département',
+    },
+    q5_1_1,
+    q5_1_2,
+  );
+  const q5: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '5',
+    {
+      en: 'Discharged Alive',
+      fr: 'Déchargé Vivant',
+    },
+    q5_1,
+  );
 
-//   // Question 6 "Died before 48h"
-//   const q6_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '6_1_1',
-//     'Died in NICU',
-//   );
-//   const q6_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '6_1_2',
-//     'Died in Paed',
-//   );
-//   const q6_1: SpecializedGroup<
-//     ID,
-//     ErrorType,
-//     NumericQuestion<ID, ErrorType>
-//   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
-//     '6_1',
-//     'By Department',
-//     q6_1_1,
-//     q6_1_2,
-//   );
-//   const q6: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-//     '6',
-//     'Died before 48h',
-//     q6_1,
-//   );
+  // Question 6 "Died before 48h"
+  const q6_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '6_1_1',
+    {
+      en: 'Died in NICU',
+      fr: 'Décédé en NICU',
+    }
+  );
+  const q6_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '6_1_2',
+    {
+      en: 'Died in Paed',
+      fr: 'Décédé en Pédiatrie',
+    }
+  );
+  const q6_1: SpecializedGroup<
+    ID,
+    ErrorType,
+    NumericQuestion<ID, ErrorType>
+  > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
+    '6_1',
+    {
+      en: 'By Department',
+      fr: 'Par Département',
+    },
+    q6_1_1,
+    q6_1_2,
+  );
+  const q6: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '6',
+    {
+      en: 'Died before 48h',
+      fr: 'Décédé avant 48h',
+    },
+    q6_1,
+  );
 
-//   // Question 7 "Died after 48h"
-//   const q7_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '7_1_1',
-//     'Died in NICU',
-//   );
-//   const q7_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '7_1_2',
-//     'Died in Paed',
-//   );
-//   const q7_1: SpecializedGroup<
-//     ID,
-//     ErrorType,
-//     NumericQuestion<ID, ErrorType>
-//   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
-//     '7_1',
-//     'By Department',
-//     q7_1_1,
-//     q7_1_2,
-//   );
-//   const q7: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-//     '7',
-//     'Died after 48h',
-//     q7_1,
-//   );
+  // Question 7 "Died after 48h"
+  const q7_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '7_1_1',
+    {
+      en: 'Died in NICU',
+      fr: 'Décédé en NICU',
+    }
+  );
+  const q7_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '7_1_2',
+    {
+      en: 'Died in Paed',
+      fr: 'Décédé en Pédiatrie',
+    }
+  );
+  const q7_1: SpecializedGroup<
+    ID,
+    ErrorType,
+    NumericQuestion<ID, ErrorType>
+  > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
+    '7_1',
+    {
+      en: 'By Department',
+      fr: 'Par Département',
+    },
+    q7_1_1,
+    q7_1_2,
+  );
+  const q7: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '7',
+    {
+      en: 'Died after 48h',
+      fr: 'Décédé après 48h',
+    },
+    q7_1,
+  );
 
-//   // Questions 8 to 10
-//   const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '8',
-//     'Days hospitalised',
-//   );
-//   const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('9', 'Referrals');
-//   const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('10', 'Transfers');
+  // Questions 8 to 10
+  const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '8',
+    {
+      en: 'Days hospitalised',
+      fr: 'Jours hospitalisés',
+    }
+  );
+  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '9',
+    {
+      en: 'Referrals',
+      fr: 'Références',
+    }
+  );
+  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '10',
+    {
+      en: 'Transfers',
+      fr: 'Transferts',
+    }
+  );
 
-//   // Question 11 "Self-discharged"
-//   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-//     '11',
-//     'Reason for self-discharge',
-//   );
+  // Question 11 "Self-discharged"
+  const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '11',
+    {
+      en: 'Reason for self-discharge',
+      fr: 'Raison de l\'auto-décharge',
+    }
+  );
 
-//   // 11_1 "Reason for self-discharge"
-//   const q11_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-//     '11_1',
-//     'Reason for self-discharge (Group 1)',
-//   );
-//   const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '11_1_1',
-//     'Finance: Leave as cannot afford care',
-//   );
-//   const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '11_1_2',
-//     'Finance: Left to avoid paying',
-//   );
-//   const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '11_1_3',
-//     'Religious/Cultural',
-//   );
-//   const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '11_1_4',
-//     'Personal/ Family',
-//   );
-//   const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '11_1_5',
-//     'Other',
-//   );
-//   q11_1.addAll(q11_1_1, q11_1_2, q11_1_3, q11_1_4, q11_1_5);
-//   // TODO: Add q11_1 to q11
+  // 11_1 "Reason for self-discharge"
+  const q11_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    '11_1',
+    {
+      en: 'Reason for self-discharge (Group 1)',
+      fr: 'Raison de l\'auto-décharge (Groupe 1)',
+    }
+  );
+  const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_1',
+    {
+      en: 'Finance: Leave as cannot afford care',
+      fr: 'Finances: Partir car incapable de payer les soins',
+    }
+  );
+  const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_2',
+    {
+      en: 'Finance: Left to avoid paying',
+      fr: 'Finances: Parti pour éviter de payer',
+    }
+  );
+  const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_3',
+    {
+      en: 'Religious/Cultural',
+      fr: 'Religieuse/Culturelle',
+    }
+  );
+  const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_4',
+    {
+      en: 'Personal/ Family',
+      fr: 'Personnelle/ Familiale',
+    }
+  );
+  const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_5',
+    {
+      en: 'Other',
+      fr: 'Autre',
+    }
+  );
+  q11_1.addAll(q11_1_1, q11_1_2, q11_1_3, q11_1_4, q11_1_5);
+  // TODO: Add q11_1 to q11
 
-//   // Question 12
-//   const q12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '12',
-//     'Stayed in the ward',
-//   );
+  // Question 12
+  const q12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '12',
+    {
+      en: 'Stayed in the ward',
+      fr: 'Séjour à l\'hôpital',
+    }
+  );
 
-//   // Question 13 "Admissions"
-//   const q13: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-//     '13',
-//     'Where do patients come from?',
-//   );
+  // Question 13 "Admissions"
+  const q13: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '13',
+    {
+      en: 'Where do patients come from?',
+      fr: 'D\'où viennent les patients?',
+    }
+  );
 
-//   // 13_1 "Where do patients come from?"
-//   const q13_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-//     '13_1',
-//     'Where do patients come from? (Group 1)',
-//   );
-//   const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_1_1',
-//     'Quarter Morin',
-//   );
-//   const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_1_2',
-//     'Cap Haitian',
-//   );
-//   const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_1_3',
-//     'Department Nord',
-//   );
-//   const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_1_4',
-//     'Other departments',
-//   );
-//   q13_1.addAll(q13_1_1, q13_1_2, q13_1_3, q13_1_4);
-//   // TODO: Add q13_1 to q13
+  // 13_1 "Where do patients come from?"
+  const q13_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    '13_1',
+    {
+      en: 'Where do patients come from? (Group 1)',
+      fr: 'D\'où viennent les patients? (Groupe 1)',
+    }
+  );
+  const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_1',
+    {
+      en: 'Quarter Morin',
+      fr: 'Quartier Morin',
+    }
+  );
+  const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_2',
+    {
+      en: 'Cap Haitian',
+      fr: 'Cap Haïtien',
+    }
+  );
+  const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_3',
+    {
+      en: 'Department Nord',
+      fr: 'Département du Nord',
+    }
+  );
+  const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_4',
+    {
+      en: 'Other departments',
+      fr: 'Autres départements',
+    }
+  );
+  q13_1.addAll(q13_1_1, q13_1_2, q13_1_3, q13_1_4);
+  // TODO: Add q13_1 to q13
 
-//   // 13_2 "Age of infant admitted"
-//   const q13_2: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-//     '13_2',
-//     'Age of infant admitted',
-//   );
-//   const q13_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_1',
-//     'Extremely preterm (less than 28 weeks)',
-//   );
-//   const q13_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_2',
-//     'Very preterm (28 to 32 weeks)',
-//   );
-//   const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_3',
-//     'Moderate to late preterm (32 to 37 weeks)',
-//   );
-//   const q13_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_4',
-//     'Full term (37 weeks plus)',
-//   );
-//   const q13_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_5',
-//     'Older than neonate (>4 weeks old)',
-//   );
-//   const q13_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_6',
-//     'Age 4 weeks -5',
-//   );
-//   const q13_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_7',
-//     'Age 6-11',
-//   );
-//   const q13_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_2_8',
-//     'Age 12-18',
-//   );
-//   q13_2.addAll(q13_2_1, q13_2_2, q13_2_3, q13_2_4, q13_2_5, q13_2_6, q13_2_7, q13_2_8);
-//   // TODO: Add q13_2 to q13
+  // 13_2 "Age of infant admitted"
+  const q13_2: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    '13_2',
+    {
+      en: 'Age of infant admitted',
+      fr: 'Âge du nourrisson admis',
+    }
+  );
+  const q13_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_1',
+    {
+      en: 'Extremely preterm (less than 28 weeks)',
+      fr: 'Extrêmement prématuré (moins de 28 semaines)',
+    }
+  );
+  const q13_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_2',
+    {
+      en: 'Very preterm (28 to 32 weeks)',
+      fr: 'Très prématuré (28 à 32 semaines)',
+    }
+  );
+  const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_3',
+    {
+      en: 'Moderate to late preterm (32 to 37 weeks)',
+      fr: 'Prématuré modéré à tardif (32 à 37 semaines)',
+    }
+  );
+  const q13_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_4',
+    {
+      en: 'Full term (37 weeks plus)',
+      fr: 'À terme (37 semaines et plus)',
+    }
+  );
+  const q13_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_5',
+    {
+      en: 'Older than neonate (>4 weeks old)',
+      fr: 'Plus âgé que le nouveau-né (> 4 semaines)',
+    }
+  );
+  const q13_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_6',
+    {
+      en: 'Age 4 weeks -5',
+      fr: 'Âge de 4 semaines -5',
+    }
+  );
+  const q13_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_7',
+    {
+      en: 'Age 6-11',
+      fr: 'Âge 6-11',
+    }
+  );
+  const q13_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_8',
+    {
+      en: 'Age 12-18',
+      fr: 'Âge 12-18',
+    }
+  );
+  q13_2.addAll(q13_2_1, q13_2_2, q13_2_3, q13_2_4, q13_2_5, q13_2_6, q13_2_7, q13_2_8);
+  // TODO: Add q13_2 to q13
 
-//   // 13_3 "Gender"
-//   // const q13_3: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('Gender', '13_3');
-//   const q13_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_3_1',
-//     'Male',
-//   );
-//   const q13_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_3_2',
-//     'Female',
-//   );
-//   q13_1.addAll(q13_3_1, q13_3_2);
-//   // TODO: Add q13_3 to q13
+  // 13_3 "Gender"
+  const q13_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_3_1',
+    {
+      en: 'Male',
+      fr: 'Masculin',
+    }
+  );
+  const q13_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_3_2',
+    {
+      en: 'Female',
+      fr: 'Féminin',
+    }
+  );
+  q13_1.addAll(q13_3_1, q13_3_2);
+  // TODO: Add q13_3 to q13
 
-//   // 13_4 "Main Condition"
-//   const q13_4: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-//     '13_4',
-//     'Main condition',
-//   );
-//   const q13_4_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_1',
-//     'Respiratory arrest',
-//   );
-//   const q13_4_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_2',
-//     'Traumatic injury',
-//   );
-//   const q13_4_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_3',
-//     'Septic Shock',
-//   );
-//   const q13_4_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_4',
-//     'Hypovolemic shock',
-//   );
-//   const q13_4_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_5',
-//     'Seizures/convulsions',
-//   );
-//   const q13_4_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_6',
-//     'Poisoning',
-//   );
-//   const q13_4_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_7',
-//     'Altered mental status',
-//   );
-//   const q13_4_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_8',
-//     'Gastroenteritis',
-//   );
-//   const q13_4_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_9',
-//     'Hemorrhage',
-//   );
-//   const q13_4_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_10',
-//     'Hypothermia',
-//   );
-//   const q13_4_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_11',
-//     'Cardiac congenital anomaly',
-//   );
-//   const q13_4_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_12',
-//     'Other congenital anomaly',
-//   );
-//   const q13_4_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_13',
-//     'Malnutrition',
-//   );
-//   const q13_4_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_14',
-//     'Meningitis',
-//   );
-//   const q13_4_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_15',
-//     'Community acquired pneumonia',
-//   );
-//   const q13_4_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_16',
-//     'Aspiration pneumonia',
-//   );
-//   const q13_4_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_17',
-//     'Moderate prematurity (32-36 weeks gestation)',
-//   );
-//   const q13_4_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_18',
-//     'Severe prematurity (<32 weeks)',
-//   );
-//   const q13_4_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '13_4_19',
-//     'Other',
-//   );
-//   q13_4.addAll(
-//     q13_4_1,
-//     q13_4_2,
-//     q13_4_3,
-//     q13_4_4,
-//     q13_4_5,
-//     q13_4_6,
-//     q13_4_7,
-//     q13_4_8,
-//     q13_4_9,
-//     q13_4_10,
-//     q13_4_11,
-//     q13_4_12,
-//     q13_4_13,
-//     q13_4_14,
-//     q13_4_15,
-//     q13_4_16,
-//     q13_4_17,
-//     q13_4_18,
-//     q13_4_19,
-//   );
-//   // TODO: Add q13_4 to q13
+  // 13_4 "Main Condition"
+  const q13_4: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    '13_4',
+    {
+      en: 'Main condition',
+      fr: 'Condition principale',
+    }
+  );
+  const q13_4_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_1',
+    {
+      en: 'Respiratory arrest',
+      fr: 'Arrêt respiratoire',
+    }
+  );
+  const q13_4_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_2',
+    {
+      en: 'Traumatic injury',
+      fr: 'Blessure traumatique',
+    }
+  );
+  const q13_4_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_3',
+    {
+      en: 'Septic Shock',
+      fr: 'Choc septique',
+    }
+  );
+  const q13_4_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_4',
+    {
+      en: 'Hypovolemic shock',
+      fr: 'Choc hypovolémique',
+    }
+  );
+  const q13_4_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_5',
+    {
+      en: 'Seizures/convulsions',
+      fr: 'Crises/convulsions',
+    }
+  );
+  const q13_4_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_6',
+    {
+      en: 'Poisoning',
+      fr: 'Empoisonnement',
+    }
+  );
+  const q13_4_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_7',
+    {
+      en: 'Altered mental status',
+      fr: 'État mental altéré',
+    }
+  );
+  const q13_4_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_8',
+    {
+      en: 'Gastroenteritis',
+      fr: 'Gastro-entérite',
+    }
+  );
+  const q13_4_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_9',
+    {
+      en: 'Hemorrhage',
+      fr: 'Hémorragie',
+    }
+  );
+  const q13_4_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_10',
+    {
+      en: 'Hypothermia',
+      fr: 'Hypothermie',
+    }
+  );
+  const q13_4_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_11',
+    {
+      en: 'Cardiac congenital anomaly',
+      fr: 'Anomalie congénitale cardiaque',
+    }
+  );
+  const q13_4_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_12',
+    {
+      en: 'Other congenital anomaly',
+      fr: 'Autre anomalie congénitale',
+    }
+  );
+  const q13_4_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_13',
+    {
+      en: 'Malnutrition',
+      fr: 'Malnutrition',
+    }
+  );
+  const q13_4_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_14',
+    {
+      en: 'Meningitis',
+      fr: 'Méningite',
+    }
+  );
+  const q13_4_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_15',
+    {
+      en: 'Community acquired pneumonia',
+      fr: 'Pneumonie communautaire acquise',
+    }
+  );
+  const q13_4_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_16',
+    {
+      en: 'Aspiration pneumonia',
+      fr: 'Pneumonie par aspiration',
+    }
+  );
+  const q13_4_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_17',
+    {
+      en: 'Moderate prematurity (32-36 weeks gestation)',
+      fr: 'Prématurité modérée (32-36 semaines de gestation)',
+    }
+  );
+  const q13_4_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_18',
+    {
+      en: 'Severe prematurity (<32 weeks)',
+      fr: 'Prématurité sévère (<32 semaines)',
+    }
+  );
+  const q13_4_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_19',
+    {
+      en: 'Other',
+      fr: 'Autre',
+    }
+  );
+  q13_4.addAll(
+    q13_4_1,
+    q13_4_2,
+    q13_4_3,
+    q13_4_4,
+    q13_4_5,
+    q13_4_6,
+    q13_4_7,
+    q13_4_8,
+    q13_4_9,
+    q13_4_10,
+    q13_4_11,
+    q13_4_12,
+    q13_4_13,
+    q13_4_14,
+    q13_4_15,
+    q13_4_16,
+    q13_4_17,
+    q13_4_18,
+    q13_4_19,
+  );
+  // TODO: Add q13_4 to q13
 
-//   // Question 14 "Number of outpatients"
-//   const q14: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-//     '14',
-//     'Number of outpatients',
-//   );
+  const q14: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '14',
+    {
+      en: 'Number of outpatients',
+      fr: 'Nombre de patients externes',
+    }
+  );
 
-//   // 14_1 "Age"
-//   const q14_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('14_1', 'Age');
-//   const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_1,',
-//     'Extremely preterm (less than 28 weeks)',
-//   );
-//   const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_2,',
-//     'Very preterm (28 to 32 weeks)',
-//   );
-//   const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_3,',
-//     'Moderate to late preterm (32 to 37 weeks)',
-//   );
-//   const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_4,',
-//     'Full term (37 weeks plus)',
-//   );
-//   const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_5,',
-//     'Older than neonate (>4 weeks old)',
-//   );
-//   const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_6,',
-//     'Age 4 weeks -5',
-//   );
-//   const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_7,',
-//     'Age 6-11',
-//   );
-//   const q14_1_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_1_8,',
-//     'Age 12-18',
-//   );
-//   q14_1.addAll(q14_1_1, q14_1_2, q14_1_3, q14_1_4, q14_1_5, q14_1_6, q14_1_7, q14_1_8);
+  // 14_1 "Age"
+  const q14_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    '14_1',
+    {
+      en: 'Age',
+      fr: 'Âge',
+    }
+  );
+  const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_1',
+    {
+      en: 'Extremely preterm (less than 28 weeks)',
+      fr: 'Extrêmement prématuré (moins de 28 semaines)',
+    }
+  );
+  const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_2',
+    {
+      en: 'Very preterm (28 to 32 weeks)',
+      fr: 'Très prématuré (28 à 32 semaines)',
+    }
+  );
+  const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_3',
+    {
+      en: 'Moderate to late preterm (32 to 37 weeks)',
+      fr: 'Prématuré modéré à tardif (32 à 37 semaines)',
+    }
+  );
+  const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_4',
+    {
+      en: 'Full term (37 weeks plus)',
+      fr: 'À terme (37 semaines et plus)',
+    }
+  );
+  const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_5',
+    {
+      en: 'Older than neonate (>4 weeks old)',
+      fr: 'Plus âgé que le nouveau-né (> 4 semaines)',
+    }
+  );
+  const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_6',
+    {
+      en: 'Age 4 weeks -5',
+      fr: 'Âge de 4 semaines -5',
+    }
+  );
+  const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_7',
+    {
+      en: 'Age 6-11',
+      fr: 'Âge 6-11',
+    }
+  );
+  const q14_1_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_8',
+    {
+      en: 'Age 12-18',
+      fr: 'Âge 12-18',
+    }
+  );
+  q14_1.addAll(q14_1_1, q14_1_2, q14_1_3, q14_1_4, q14_1_5, q14_1_6, q14_1_7, q14_1_8);
+  // TODO: Add q14_1 to q14
 
-//   // TODO: Add q14_1 to q14
+  // 14_2 "Main Condition"
+  const q14_2: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    '14_2',
+    {
+      en: 'Main condition',
+      fr: 'Condition principale',
+    }
+  );
+  const q14_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_1',
+    {
+      en: 'Respiratory arrest',
+      fr: 'Arrêt respiratoire',
+    }
+  );
+  const q14_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_2',
+    {
+      en: 'Traumatic injury',
+      fr: 'Blessure traumatique',
+    }
+  );
+  const q14_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_3',
+    {
+      en: 'Septic Shock',
+      fr: 'Choc septique',
+    }
+  );
+  const q14_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_4',
+    {
+      en: 'Hypovolemic shock',
+      fr: 'Choc hypovolémique',
+    }
+  );
+  const q14_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_5',
+    {
+      en: 'Seizures/convulsions',
+      fr: 'Crises/convulsions',
+    }
+  );
+  const q14_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_6',
+    {
+      en: 'Poisoning',
+      fr: 'Empoisonnement',
+    }
+  );
+  const q14_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_7',
+    {
+      en: 'Altered mental status',
+      fr: 'État mental altéré',
+    }
+  );
+  const q14_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_8',
+    {
+      en: 'Gastroenteritis',
+      fr: 'Gastro-entérite',
+    }
+  );
+  const q14_2_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_9',
+    {
+      en: 'Hemorrhage',
+      fr: 'Hémorragie',
+    }
+  );
+  const q14_2_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_10',
+    {
+      en: 'Hypothermia',
+      fr: 'Hypothermie',
+    }
+  );
+  const q14_2_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_11',
+    {
+      en: 'Cardiac congenital anomaly',
+      fr: 'Anomalie congénitale cardiaque',
+    }
+  );
+  const q14_2_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_12',
+    {
+      en: 'Other congenital anomaly',
+      fr: 'Autre anomalie congénitale',
+    }
+  );
+  const q14_2_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_13',
+    {
+      en: 'Malnutrition',
+      fr: 'Malnutrition',
+    }
+  );
+  const q14_2_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_14',
+    {
+      en: 'Meningitis',
+      fr: 'Méningite',
+    }
+  );
+  const q14_2_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_15',
+    {
+      en: 'Community acquired pneumonia',
+      fr: 'Pneumonie communautaire acquise',
+    }
+  );
+  const q14_2_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_16',
+    {
+      en: 'Aspiration pneumonia',
+      fr: 'Pneumonie par aspiration',
+    }
+  );
+  const q14_2_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_17',
+    {
+      en: 'Moderate prematurity (32-36 weeks gestation)',
+      fr: 'Prématurité modérée (32-36 semaines de gestation)',
+    }
+  );
+  const q14_2_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_18',
+    {
+      en: 'Severe prematurity (<32 weeks)',
+      fr: 'Prématurité sévère (<32 semaines)',
+    }
+  );
+  const q14_2_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_19',
+    {
+      en: 'Other',
+      fr: 'Autre',
+    }
+  );
+  q14_2.addAll(
+    q14_2_1,
+    q14_2_2,
+    q14_2_3,
+    q14_2_4,
+    q14_2_5,
+    q14_2_6,
+    q14_2_7,
+    q14_2_8,
+    q14_2_9,
+    q14_2_10,
+    q14_2_11,
+    q14_2_12,
+    q14_2_13,
+    q14_2_14,
+    q14_2_15,
+    q14_2_16,
+    q14_2_17,
+    q14_2_18,
+    q14_2_19
+  );
+  // TODO: Add q14_2 to q14
 
-//   // 14_2 "Main Condition"
-//   const q14_2: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-//     '14_2',
-//     'Main condition',
-//   );
-//   const q14_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_1',
-//     'Respiratory arrest',
-//   );
-//   const q14_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_2',
-//     'Traumatic injury',
-//   );
-//   const q14_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_3',
-//     'Septic Shock',
-//   );
-//   const q14_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_4',
-//     'Hypovolemic shock',
-//   );
-//   const q14_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_5',
-//     'Seizures/convulsions',
-//   );
-//   const q14_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_6',
-//     'Poisoning',
-//   );
-//   const q14_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_7',
-//     'Altered mental status',
-//   );
-//   const q14_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_8',
-//     'Gastroenteritis',
-//   );
-//   const q14_2_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_9',
-//     'Hemorrhage',
-//   );
-//   const q14_2_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_10',
-//     'Hypothermia',
-//   );
-//   const q14_2_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_11',
-//     'Cardiac congenital anomaly',
-//   );
-//   const q14_2_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_12',
-//     'Other congenital anomaly',
-//   );
-//   const q14_2_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_13',
-//     'Malnutrition',
-//   );
-//   const q14_2_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_14',
-//     'Meningitis',
-//   );
-//   const q14_2_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_15',
-//     'Community acquired pneumonia',
-//   );
-//   const q14_2_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_16',
-//     'Aspiration pneumonia',
-//   );
-//   const q14_2_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_17',
-//     'Moderate prematurity (32-36 weeks gestation)',
-//   );
-//   const q14_2_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_18',
-//     'Severe prematurity (<32 weeks)',
-//   );
-//   const q14_2_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_2_19',
-//     'Other',
-//   );
-//   q14_2.addAll(
-//     q14_2_1,
-//     q14_2_2,
-//     q14_2_3,
-//     q14_2_4,
-//     q14_2_5,
-//     q14_2_6,
-//     q14_2_7,
-//     q14_2_8,
-//     q14_2_9,
-//     q14_2_10,
-//     q14_2_11,
-//     q14_2_12,
-//     q14_2_13,
-//     q14_2_14,
-//     q14_2_15,
-//     q14_2_16,
-//     q14_2_17,
-//     q14_2_18,
-//     q14_2_19,
-//   );
-//   // TODO: Add q14_2 to q14
+  // 14_3 "Gender"
+  const q14_3: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    '14_3',
+    {
+      en: 'Gender',
+      fr: 'Genre',
+    }
+  );
+  const q14_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_3_1',
+    {
+      en: 'Male',
+      fr: 'Homme',
+    }
+  );
+  const q14_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_3_2',
+    {
+      en: 'Female',
+      fr: 'Femme',
+    }
+  );
+  q14_3.addAll(q14_3_1, q14_3_2);
+  // TODO: Add q14_3 to q14
 
-//   // 14_3 "Gender"
-//   const q14_3: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('14_3', 'Gender');
-//   const q14_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_3_1',
-//     'Male',
-//   );
-//   const q14_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-//     '14_3_2',
-//     'Female',
-//   );
-//   q14_3.addAll(q14_3_1, q14_3_2);
-//   // TODO: Add q14_3 to q14
-
-//   nicuPaedsReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
-//   return nicuPaedsReport;
-// };
+  nicuPaedsReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
+  return nicuPaedsReport;
+};
 
 export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
   const translations = {
@@ -1363,13 +1675,6 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
   ];
   const q14_columns: string[] = ['Births', 'Normal', 'Césarienne', 'Instrumentalsé', 'test'];
 
-  // const q14: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
-  //   '14', // ID of the table
-  //   { en: 'Question 14', fr: 'Question 14 (French)' }, // Prompt translation object
-  //   q14_rows, // Array of row headers
-  //   q14_columns, // Array of column headers
-  //   (row: number, col: number) => undefined // questionCreator callback (in this case, returning undefined)
-  // );
 
   const q14: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '14',
@@ -1396,188 +1701,213 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Mock Report', fr: 'Rapport fictif' },
   );
 
-  // Table: Deliveries
-  const deliveriesTable: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
-    'deliveriesTable',
-    { en: 'Deliveries', fr: 'Accouchements' },
-    ['Age des mères', 'Matrones formées', 'Autres'],
-    ['<15 ans', '15-19 ans', '20-24 ans', '25-29 ans', '30 ans et plus', 'Inconnu'],
-    (row, col) => new NumericQuestion<ID, ErrorType>(`question${row}-${col}`, { en: '', fr: '' }),
+  const q1_rows: string[] = [
+    '< 15 years',
+    '15-19 years',
+    '20-24 years',
+    '25-29 years',
+    '30 years plus',
+    'Unknown',
+  ];
+
+  const q1_columns: string[] = ['Age of Mothers', 'Matrones formèes', 'Autres'];
+
+  // Create the NumericTable
+  const q1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '1',
+    { en: 'Question 1', fr: 'Question 1 (French)' },
+    q1_rows,
+    q1_columns,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q1_${row}_${col}`, {
+        en: `Question for ${q1_rows[row]} and ${q1_columns[col]}`,
+        fr: `Question pour ${q1_rows[row]} et ${q1_columns[col]} (French)`,
+      }),
   );
 
-  // Add questions to Age of Mothers table
-  // deliveriesTable.add(new NumericQuestion<ID, ErrorType>('question1', { en: '< 15 ans', fr: '< 15 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question2', { en: '15-19 ans', fr: '15-19 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question3', { en: '20-24 ans', fr: '20-24 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question4', { en: '25-29 ans', fr: '25-29 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question5', { en: '30 ans et plus', fr: '30 ans et plus' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question6', { en: 'Inconnu', fr: 'Inconnu' }));
+  const q2_rows: string[] = [
+    'Weight <1.5kg',
+    '1.5kg ≤ Weight <2.5kg',
+    '2.5kg and over',
+    'Not weighed',
+    'Immediately breastfed',
+    'Skin to skin therapy',
+  ];
+
+  const q2_columns: string[] = ['Births', 'Matrones', 'Autres'];
+
+  // Create the NumericTable
+  const q2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '2',
+    { en: 'Question 2', fr: 'Question 2 (French)' },
+    q2_rows,
+    q2_columns,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q2_${row}_${col}`, {
+        en: `Question for ${q2_rows[row]} and ${q2_columns[col]}`,
+        fr: `Question pour ${q2_rows[row]} et ${q2_columns[col]} (French)`,
+      }),
+  );
+
+  const q3_rows: string[] = [
+    'Breastfeeding women receiving vitamin A',
+    'Breastfeeding women with MUAC <210mm',
+    'Breastfeeding women with malnutrition support',
+    'Domestic visits in 0-3 days',
+  ];
+
+  const q3_columns: string[] = ['Post Natal', 'Matrones', 'Autres'];
+
+  const q3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '3',
+    { en: 'Question 3', fr: 'Question 3 (French)' },
+    q3_rows,
+    q3_columns,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q3_${row}_${col}`, {
+        en: `Question for ${q3_rows[row]} and ${q3_columns[col]}`,
+        fr: `Question pour ${q3_rows[row]} et ${q3_columns[col]} (French)`,
+      }),
+  );
+
+  const q4_rows: string[] = [
+    'Methods/ Sex',
+    '?? OCP',
+    '?? Patch',
+    'Depo injection',
+    'Implant',
+    'Inter uterine devices (IUD)',
+    'Vaginal ring',
+    'Breastfeeding as birth control',
+    'Female condom',
+    'Sterilisation',
+    'Male condom',
+    'Vasectomy',
+    '',
+    'Quantity (number)',
+    'Sterilisation',
+    'Vasectomy',
+  ];
+
+  const q4_columns: string[] = ['Birth Control', 'Acceptants <25 ans', 'Acceptants 25 ans et plus', 'Total utilisateurs <25 ans', 'Total utilisateurs 25 ans et plus', 'Unité', 'Quantité', 'Nbre de jours rupture de stocks/ mois'];
+
+  // Create the NumericTable
+  const q4: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '4',
+    { en: 'Question 4', fr: 'Question 4 (French)' },
+    q4_rows,
+    q4_columns,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q4_${row}_${col}`, {
+        en: `Question for ${q4_rows[row]} and ${q4_columns[col]}`,
+        fr: `Question pour ${q4_rows[row]} et ${q4_columns[col]} (French)`,
+      }),
+  );
+
+  const q5_rows: string[] = [
+    'BCG',
+    'VPO',
+    'Penta',
+    'Rota',
+    'RR',
+    'dT',
+    'VPI',
+    'Pneumo',
+    'DTP',
+    'COVID-19',
+  ];
+
+  const q5_columns: string[] = ['Type of Vaccine', 'Quantité disponible au cours du mois', 'Balance en fin de mois', 'Nombre de jours de rupture de stocks'];
+
+  // Create the NumericTable
+  const q5: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '5',
+    { en: 'Question 5', fr: 'Question 5 (French)' },
+    q5_rows,
+    q5_columns,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q5_${row}_${col}`, {
+        en: `Question for ${q5_rows[row]} and ${q5_columns[col]}`,
+        fr: `Question pour ${q5_rows[row]} et ${q5_columns[col]} (French)`,
+      }),
+  );
+
+  const q6_rows: string[] = [
+    'SAB 0.05ml',
+    'SAB 0.5ml',
+    'Sdil_2ml',
+    'Sdil_5ml',
+    'Boîtes Séc',
+    'Coton',
+  ];
+
+  const q6_columns: string[] = ['Consumables', 'Quantité disponible au cours du mois', 'Balance en fin de mois', 'Nombre de jours de rupture de stocks'];
+
+  // Create the NumericTable
+  const q6: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '6',
+    { en: 'Question 6', fr: 'Question 6 (French)' },
+    q6_rows,
+    q6_columns,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q6_${row}_${col}`, {
+        en: `Question for ${q6_rows[row]} and ${q6_columns[col]}`,
+        fr: `Question pour ${q6_rows[row]} et ${q6_columns[col]} (French)`,
+      }),
+  );
+
+  const q7_rows: string[] = [
+    'BCG',
+    'VPO (Polio)',
+    'VPO 1 (Polio)',
+    'VPO 2 (Polio)',
+    'Rappel VPO (Polio)',
+    'VPI',
+    'Penta 1',
+    'Penta 2',
+    'Penta 3',
+    'Rota 1',
+    'Rota 2',
+    'RR 1',
+    'RR 2',
+    'Pneumo 1',
+    'Pneumo 2',
+    'Pneumo 3',
+    'DTp Rappel',
+    'ECV',
+  ];
+
+  const q7_columns: string[] = [
+    '0-11 Mois Inst.',
+    '0-11 Mois Comm.',
+    '12-32 Mois Inst.',
+    '12-32 Mois Comm.',
+    '0-11 Mois Inst.',
+    '0-11 Mois Comm.',
+    '12-23 Mois Inst.',
+    '12-23 Mois Comm.',
+    'Utilisées Inst.',
+    'Utilisées Comm.',
+    'Administrées Inst.',
+    'Administrées Comm.',
+  ];
+
+  // Create the NumericTable
+  const q7: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '7',
+    { en: 'Question 7', fr: 'Question 7 (French)' },
+    q7_rows,
+    q7_columns,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q7_${row}_${col}`, {
+        en: `Question for ${q7_rows[row]} and ${q7_columns[col]}`,
+        fr: `Question pour ${q7_rows[row]} et ${q7_columns[col]} (French)`,
+      }),
+  );
 
   // Add Age of Mothers table to the report
-  communityhealthReport.add(deliveriesTable);
+  communityhealthReport.addAll(q1, q2, q3, q4, q5, q6, q7);
 
-  // // Table: Deliveries
-  // const deliveriesTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'deliveriesTable',
-  //   { en: 'Deliveries', fr: 'Accouchments' },
-  //   ['Age des méres', 'Matrones formèes', 'Autres'],
-  //   ['<15 ans', '15-19 ans', '20-24 ans', '25-29 ans', '30 ans et plus', 'Inconnu'],
-  // );
-
-  // // Add questions to Age of Mothers table
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question1', { en: '< 15 ans', fr: '< 15 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question2', { en: '15-19 ans', fr: '15-19 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question3', { en: '20-24 ans', fr: '20-24 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question4', { en: '25-29 ans', fr: '25-29 ans' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question5', { en: '30 ans et plus', fr: '30 ans et plus' }));
-  // deliveriesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question6', { en: 'Inconnu', fr: 'Inconnu' }));
-
-  // // Add Age of Mothers table to the report
-  // report.add(deliveriesTable);
-
-  // // Table: Naissances
-  // const birthsTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'birthsTable',
-  //   { en: 'Naissances', fr: 'Births' },
-  //   ['Poids <1.5kg', '1.5kg ≤ Poids <2.5kg', '2.5kg et plus', 'Non pesées', 'Milses au sein immédiatement', 'Bénéficares de méthode Kangourou'],
-  //   ['Matrones', 'Autres'],
-  // );
-
-  // // Add questions to Naissances table
-  // birthsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question7', { en: 'Poids <1.5kg', fr: 'Poids <1.5kg' }));
-  // birthsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question8', { en: '1.5kg ≤ Poids <2.5kg', fr: '1.5kg ≤ Poids <2.5kg' }));
-  // birthsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question9', { en: '2.5kg et plus', fr: '2.5kg et plus' }));
-  // birthsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question10', { en: 'Non pesées', fr: 'Non pesées' }));
-  // birthsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question11', { en: 'Milses au sein immédiatement', fr: 'Milses au sein immédiatement' }));
-  // birthsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question12', { en: 'Bénéficares de méthode Kangourou', fr: 'Bénéficares de méthode Kangourou' }));
-
-  // // Add Naissances table to the report
-  // report.add(birthsTable);
-
-  // // Table: Suivi Post Natal
-  // const suiviPostNatalTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'suiviPostNatalTable',
-  //   { en: 'Suivi Post Natal', fr: 'Post Natal' },
-  //   ['Femmes allaitantes recevant de la vitamine A', 'Femmes allaitantes avec PB <210mm', 'Femmes allaitantes avec MAM/MAS prises en charge', 'Visites domicllaries 0-3 jours'],
-  //   ['Matrones', 'Autres'],
-  // );
-
-  // // Add questions to Suivi Post Natal table
-  // suiviPostNatalTable.addQuestion(new NumericQuestion<ID, ErrorType>('question13', { en: 'Femmes allaitantes recevant de la vitamine A', fr: 'Femmes allaitantes recevant de la vitamine A' }));
-  // suiviPostNatalTable.addQuestion(new NumericQuestion<ID, ErrorType>('question14', { en: 'Femmes allaitantes avec PB <210mm', fr: 'Femmes allaitantes avec PB <210mm' }));
-  // suiviPostNatalTable.addQuestion(new NumericQuestion<ID, ErrorType>('question15', { en: 'Femmes allaitantes avec MAM/MAS prises en charge', fr: 'Femmes allaitantes avec MAM/MAS prises en charge' }));
-  // suiviPostNatalTable.addQuestion(new NumericQuestion<ID, ErrorType>('question16', { en: 'Visites domicllaries 0-3 jours', fr: 'Visites domicllaries 0-3 jours' }));
-
-  // // Add Suivi Post Natal table to the report
-  // report.add(suiviPostNatalTable);
-
-  // // Table: Contraceptifs distribués
-  // const contraceptifsTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'contraceptifsTable',
-  //   { en: 'Contraceptifs distribués', fr: 'Contraceptifs distribués' },
-  //   ['Mèthodes/ Sexe', '<25 ans', '25 ans et plus'],
-  //   ['?? OCP', '?? Patch', 'Dépoprovera', 'Implant', 'DIU (stèrilet)', 'Collier', 'MAMA', 'Condom', 'Ligature', 'Vasectomie'],
-  // );
-
-  // // Add questions to Contraceptifs distribués table
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question17', { en: '?? OCP', fr: '?? OCP' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question18', { en: '?? Patch', fr: '?? Patch' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question19', { en: 'Dépoprovera', fr: 'Dépoprovera' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question20', { en: 'Implant', fr: 'Implant' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question21', { en: 'DIU (stèrilet)', fr: 'DIU (stèrilet)' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question22', { en: 'Collier', fr: 'Collier' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question23', { en: 'MAMA', fr: 'MAMA' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question24', { en: 'Condom', fr: 'Condom' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question25', { en: 'Ligature', fr: 'Ligature' }));
-  // contraceptifsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question26', { en: 'Vasectomie', fr: 'Vasectomie' }));
-
-  // // Add Contraceptifs distribués table to the report
-  // report.add(contraceptifsTable);
-
-  // // Table: Gestion des vaccins & Consommables
-  // const gestionVaccinsTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'gestionVaccinsTable',
-  //   { en: 'Gestion des vaccins & Consommables', fr: 'Vaccines and consumables' },
-  //   ['Antigène', 'Type of Vaccine', 'Quantité disponible au cours du mois', 'Balance en fin de mois', 'Nombre de jours de rupture de stocks'],
-  // );
-
-  // // Add questions to Gestion des vaccins & Consommables table
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question27', { en: 'BCG', fr: 'BCG' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question28', { en: 'VPO', fr: 'VPO' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question29', { en: 'Penta', fr: 'Penta' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question30', { en: 'Rota', fr: 'Rota' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question31', { en: 'RR', fr: 'RR' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question32', { en: 'dT', fr: 'dT' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question33', { en: 'VPI', fr: 'VPI' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question34', { en: 'Pneumo', fr: 'Pneumo' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question35', { en: 'DTP', fr: 'DTP' }));
-  // gestionVaccinsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question36', { en: 'COVID-19', fr: 'COVID-19' }));
-
-  // // Add Gestion des vaccins & Consommables table to the report
-  // report.add(gestionVaccinsTable);
-
-  // // Table: Intrants
-  // const intrantsTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'intrantsTable',
-  //   { en: 'Intrants', fr: 'Consumables' },
-  //   ['SAB 0.05ml', 'SAB 0.5ml', 'Sdil_2ml', 'Sdil_5ml', 'Boîtes Séc', 'Coton'],
-  // );
-
-  // // Add questions to Intrants table
-  // intrantsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question37', { en: 'SAB 0.05ml', fr: 'SAB 0.05ml' }));
-  // intrantsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question38', { en: 'SAB 0.5ml', fr: 'SAB 0.5ml' }));
-  // intrantsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question39', { en: 'Sdil_2ml', fr: 'Sdil_2ml' }));
-  // intrantsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question40', { en: 'Sdil_5ml', fr: 'Sdil_5ml' }));
-  // intrantsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question41', { en: 'Boîtes Séc', fr: 'Boîtes Séc' }));
-  // intrantsTable.addQuestion(new NumericQuestion<ID, ErrorType>('question42', { en: 'Coton', fr: 'Coton' }));
-
-  // // Add Intrants table to the report
-  // report.add(intrantsTable);
-
-  // // Table: Vaccination
-  // const vaccinationTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'vaccinationTable',
-  //   { en: 'Vaccination', fr: 'Vaccination' },
-  //   ['Vaccins', '0-11 Mois', '12-32 Mois', '0-11 mois', '12-23 mois'],
-  //   ['Inst.', 'Comm.', 'Inst.', 'Comm.', 'Inst.', 'Comm.', 'Inst.', 'Comm.', 'Utilisées', 'Administrées'],
-  // );
-
-  // // Add questions to Vaccination table
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question43', { en: 'BCG', fr: 'BCG' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question44', { en: 'VPO (Polio)', fr: 'VPO (Polio)' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question45', { en: 'VPO 1 (Polio)', fr: 'VPO 1 (Polio)' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question46', { en: 'VPO 2 (Polio)', fr: 'VPO 2 (Polio)' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question47', { en: 'Rappel VPO (Polio)', fr: 'Rappel VPO (Polio)' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question48', { en: 'VPI', fr: 'VPI' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question49', { en: 'Penta 1', fr: 'Penta 1' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question50', { en: 'Penta 2', fr: 'Penta 2' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question51', { en: 'Penta 3', fr: 'Penta 3' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question52', { en: 'Rota 1', fr: 'Rota 1' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question53', { en: 'Rota 2', fr: 'Rota 2' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question54', { en: 'RR 1', fr: 'RR 1' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question55', { en: 'RR 2', fr: 'RR 2' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question56', { en: 'Pneumo 1', fr: 'Pneumo 1' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question57', { en: 'Pneumo 2', fr: 'Pneumo 2' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question58', { en: 'Pneumo 3', fr: 'Pneumo 3' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question59', { en: 'DTp Rappel', fr: 'DTp Rappel' }));
-  // vaccinationTable.addQuestion(new NumericQuestion<ID, ErrorType>('question60', { en: 'ECV', fr: 'ECV' }));
-
-  // // Add Vaccination table to the report
-  // report.add(vaccinationTable);
-
-  // // Table: Vaccin Femmes Enceintes
-  // const vaccinFemmesEnceintesTable: QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>> = new QuestionTable<ID, number, ErrorType, NumericQuestion<ID, ErrorType>>(
-  //   'vaccinFemmesEnceintesTable',
-  //   { en: 'Vaccin Femmes Enceintes', fr: 'Vaccin Femmes Enceintes' },
-  //   ['Inst.', 'Comm.', 'Total', 'Doses Vaccins'],
-  // );
-
-  // // Add questions to Vaccin Femmes Enceintes table
-  // vaccinFemmesEnceintesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question61', { en: 'dT1', fr: 'dT1' }));
-  // vaccinFemmesEnceintesTable.addQuestion(new NumericQuestion<ID, ErrorType>('question62', { en: 'dT2+', fr: 'dT2+' }));
-
-  // // Add Vaccin Femmes Enceintes table to the report
-  // report.add(vaccinFemmesEnceintesTable);
 
   return communityhealthReport;
 };
