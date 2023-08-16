@@ -24,7 +24,9 @@ const Layout = ({
 }: LayoutProps) => {
   const history = useHistory();
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(localStorage.getItem('isSidebarExpanded') === 'true');
+  const [isExpanded, setIsExpanded] = useState(
+    localStorage.getItem('isSidebarExpanded') === 'true',
+  );
 
   return (
     <>
