@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
-import { NumericTable, NumericQuestion } from '@hha/common';
+import { NumericTable } from '@hha/common';
 import { FormField, FormFieldCheck } from './index';
 
 interface NumericTableFormFieldProps {
@@ -18,8 +18,7 @@ const NumericTableFormField = ({
     readOnly,
 }: NumericTableFormFieldProps): JSX.Element => {
 
-    //const inputState = numericTable.getValidationResults();
-    const nameId = `${numericTable.getId()}${suffixName}`;
+    console.log('NumericTableFormField');
     
     const updateErrorSetFromSelf = useCallback(
         (questionId: string) =>
@@ -35,30 +34,8 @@ const NumericTableFormField = ({
         [numericTable, setErrorSet, suffixName],
     );
 
-    const handleCellChange = (row: number, col: number, newValue: number) => {
-        const question = numericTable.getQuestionAt(row, col);
-        if (question) {
-            question.setAnswer(newValue);
-            updateErrorSetFromSelf(question.getId());
-            applyReportChanges();
-        }
-    };
-
-    const handleChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        row: number,
-        col: number
-      ) => {
-        const newValue = parseFloat(event.target.value); // Assuming the input value is a number
-        const question = numericTable.getQuestionAt(row, col);
-        if (question) {
-          question.setAnswer(newValue);
-          updateErrorSetFromSelf(question.getId());
-          applyReportChanges();
-        }
-      };
-
     useEffect(() => {
+        console.log('Numeric table form field useEffect');
         const numRows = numericTable.getRowHeaders().length;
         const numCols = numericTable.getColumnHeaders().length;
         for (let row = 0; row < numRows; row++) {
@@ -86,50 +63,21 @@ const NumericTableFormField = ({
         };
     }, [numericTable, setErrorSet, suffixName, updateErrorSetFromSelf]);
 
-    // return (
-    //     <table>
-    //         <thead>
-    //             <tr>
-    //                 <th></th>
-    //                 {numericTable.getColumnHeaders().map((colHeader, colIndex) => (
-    //                     <th key={colIndex}>{colHeader}</th>
-    //                 ))}
-    //             </tr>
-    //         </thead>
-    //         <tbody>
-    //             {numericTable.getRowHeaders().map((rowHeader, rowIndex) => (
-    //                 <tr key={rowIndex}>
-    //                     <th>{rowHeader}</th>
-    //                     {numericTable.getColumnHeaders().map((_colHeader, colIndex) => (
-    //                         <td key={`${rowIndex}_${colIndex}`}>
-    //                             <FormField
-    //                                 handleChange={handleChange}
-    //                                 inputState={inputState}
-    //                                 min={0}
-    //                                 nameId={`${numericTable.getQuestionAt(rowIndex, colIndex)}${suffixName}`}
-    //                                 prompt=""
-    //                                 type="number"
-    //                                 value={numericTable.getQuestionAt(rowIndex, colIndex)?.getAnswer() || ''}
-    //                                 readOnly={readOnly}
-    //                             />
-    //                         </td>
-    //                     ))}
-    //                 </tr>
-    //             ))}
-    //         </tbody>
-    //     </table>
-    // );
-
     return (
         <table>
           <thead>
-            {/* ... */}
+            <tr>
+                <th></th>
+                {numericTable.getColumnHeaders().map((colHeader, colIndex) => (
+                    <th key={colIndex}>{colHeader}</th>
+                ))}
+            </tr>
           </thead>
           <tbody>
             {numericTable.getRowHeaders().map((rowHeader, rowIndex) => (
               <tr key={rowIndex}>
                 <th>{rowHeader}</th>
-                {numericTable.getColumnHeaders().map((_colHeader, colIndex) => {
+                {numericTable.getColumnHeaders().map((colHeader, colIndex) => {
                   const question = numericTable.getQuestionAt(rowIndex, colIndex);
                   
                   // Calculate inputState for the current cell
@@ -154,7 +102,7 @@ const NumericTableFormField = ({
                         inputState={inputState}
                         min={0}
                         nameId={`${question?.getId() ?? ''}${suffixName}`}
-                        prompt=""
+                        prompt={colHeader}
                         type="number"
                         value={question?.getAnswer() ?? ''}
                         readOnly={readOnly}
