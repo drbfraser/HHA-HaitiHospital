@@ -2,7 +2,7 @@ import AddMessage from 'pages/message_board/AddMessage';
 import { AddUserForm } from 'pages/admin/AddUserForm';
 import AdminList from 'pages/admin/AdminList';
 import { BiomechanicalList } from 'pages/biomech/BiomechanicalList';
-import { BrokenKitReport } from 'pages/biomech/BrokenKitReport';
+import { BrokenKitAdd } from 'pages/biomech/BrokenKitAdd';
 import { BrokenKitView } from 'pages/biomech/BrokenKitView';
 import { CaseStudyForm } from 'pages/case_study/CaseStudyForm';
 import { CaseStudyList } from 'pages/case_study/CaseStudyList';
@@ -129,7 +129,7 @@ const routes = [
   {
     path: `${PathPatterns.BIOMECH_REPORT}`,
     key: 'bio_support',
-    component: BrokenKitReport,
+    component: BrokenKitAdd,
     isPrivate: true,
     rolesAllowed: [],
     departmentsAllowed: [],
