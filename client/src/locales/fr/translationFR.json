@@ -233,6 +233,7 @@
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
   "employeeOfTheMonthLastUpdated": "Dernière mise à jour",
   "employeeOfTheMonthNotFound": "Aucun employé du mois trouvé",
+  "employeeOfTheMonthSuccessfullyUpdated": "Employé du mois mis à jour avec succès !",
   "template": {
     "change_template": "Changer de modèle",
     "department": "Département",
