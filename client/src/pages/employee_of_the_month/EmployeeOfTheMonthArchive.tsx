@@ -17,7 +17,7 @@ import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import { ResponseMessage } from 'utils/response_message';
 
-export const EmployeeOfTheMonthRecord = () => {
+export const EmployeeOfTheMonthArchive = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
