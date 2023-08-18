@@ -59,7 +59,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   };
 
   const onSubmitActions = () => {
-    toast.success('Employee of the month successfully updated!');
+    toast.success(t('employeeOfTheMonthSuccessfullyUpdated'));
     reset({});
     setSelectedFile(null);
     history.push('/employee-of-the-month');
