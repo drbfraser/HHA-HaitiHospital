@@ -1,5 +1,6 @@
 import { Department, GeneralDepartment } from 'constants/interfaces';
 import { EmployeeOfTheMonth, isNonEmptyObject } from '../../pages/employee_of_the_month/typing';
+
 import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
@@ -17,7 +18,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
   const { register, handleSubmit } = useForm<EmployeeOfTheMonth>({});
 
   const toAwardedAt = (awardedMonth: String, awardedYear: String) => {
-    const awardedMonthUpdated = awardedMonth.length == 1 ? `0${awardedMonth}` : `${awardedMonth}`;
+    const awardedMonthUpdated = awardedMonth.length === 1 ? `0${awardedMonth}` : `${awardedMonth}`;
     const awardedAt = `${awardedYear}-${awardedMonthUpdated}`;
     return awardedAt;
   };

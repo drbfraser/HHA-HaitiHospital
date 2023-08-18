@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ImmutableChoice, SingleSelectionQuestion } from '@hha/common';
 
 import { FormFieldCheck } from './index';
@@ -21,8 +20,6 @@ const SingleSelectionQuestionFormField = ({
 }: SingleSelectionQuestionFormFieldProps) => {
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
-  const { i18n } = useTranslation();
-  const language = i18n.language;
 
   const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {

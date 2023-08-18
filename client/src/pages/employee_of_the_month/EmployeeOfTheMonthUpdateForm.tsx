@@ -1,4 +1,3 @@
-import Api from '../../actions/Api';
 import {
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
@@ -9,19 +8,21 @@ import {
   EmployeeViewParams,
   isNonEmptyObject,
 } from './typing';
-import { History } from 'history';
-import Layout from 'components/layout';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import {
   TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
   TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
 } from 'constants/toastErrorMessages';
+import { useEffect, useState } from 'react';
+
+import Api from '../../actions/Api';
+import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
+import { History } from 'history';
+import Layout from 'components/layout';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
-import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
 
 interface Props extends RouteComponentProps<EmployeeViewParams> {}
 
@@ -52,7 +53,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     return () => {
       controller.abort();
     };
-  }, [history]);
+  }, [history, props.match.params]);
 
   const onImageUpload = (item: File) => {
     setSelectedFile(item);

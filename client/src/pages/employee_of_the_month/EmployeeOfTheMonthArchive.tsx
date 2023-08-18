@@ -1,21 +1,22 @@
+import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
+
 import Api from 'actions/Api';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID } from 'constants/endpoints';
-import { History } from 'history';
-import Layout from 'components/layout';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
-import { useTranslation } from 'react-i18next';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
-import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
-import { Role } from 'constants/interfaces';
-import { renderBasedOnRole } from 'actions/roleActions';
-import { useAuthState } from 'contexts';
-import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { translateMonth } from 'utils/dateUtils';
 import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID } from 'constants/endpoints';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
+import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
+import { History } from 'history';
+import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
+import { Role } from 'constants/interfaces';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { translateMonth } from 'utils/dateUtils';
+import { useAuthState } from 'contexts';
+import { useTranslation } from 'react-i18next';
 
 export const EmployeeOfTheMonthArchive = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
@@ -125,7 +126,7 @@ export const EmployeeOfTheMonthArchive = () => {
       });
     }
     return columns;
-  }, [authState.userDetails.role, history, t]);
+  }, [authState.userDetails.role, t]);
 
   return (
     <Layout showBackButton>

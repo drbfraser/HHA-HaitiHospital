@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { ImmutableChoice, MultipleSelectionQuestion } from '@hha/common';
 
 import FormFieldCheck from './FormFieldCheck';
-import { useTranslation } from 'react-i18next';
 
 interface MultiSelectionQuestionFormFieldProps {
   applyReportChanges: () => void;
@@ -21,8 +20,6 @@ const MultiSelectionQuestionFormField = ({
 }: MultiSelectionQuestionFormFieldProps) => {
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
-  const { i18n } = useTranslation();
-  const language = i18n.language;
 
   const updateErrorSetFromSelf = useCallback(() => {
     setErrorSet((prevErrorSet: Set<ID>) => {

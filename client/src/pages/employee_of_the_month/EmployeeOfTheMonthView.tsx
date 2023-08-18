@@ -1,23 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
-
-import Api from '../../actions/Api';
 import {
   EmployeeOfTheMonth,
   EmployeeViewParams,
   EmployeeViewType,
 } from 'pages/employee_of_the_month/typing';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+
+import Api from '../../actions/Api';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Link, RouteComponentProps, useParams } from 'react-router-dom';
-import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { translateMonth } from 'utils/dateUtils';
+import { useAuthState } from 'contexts';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { translateMonth } from 'utils/dateUtils';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
-import { renderBasedOnRole } from 'actions/roleActions';
 
 export const EmployeeOfTheMonthView = () => {
   const authState = useAuthState();
@@ -31,23 +31,25 @@ export const EmployeeOfTheMonthView = () => {
     return Object.keys(objectName).length > 0;
   };
 
-  const getDefaultParams = (params: EmployeeViewParams): EmployeeViewParams => {
-    if (isNonEmptyObject(params)) {
-      params.type =
-        params!.eotmId.length > 0 ? EmployeeViewType.EotmId : EmployeeViewType.YearMonth;
-      return params;
-    } else {
-      const date = new Date();
-      return {
-        year: date.getFullYear().toString(),
-        month: (date.getMonth() + 1).toString(),
-        eotmId: '',
-        type: EmployeeViewType.YearMonth,
-      };
-    }
-  };
+  const employeeViewParams: EmployeeViewParams = useMemo(() => {
+    const getDefaultParams = (params: EmployeeViewParams): EmployeeViewParams => {
+      if (isNonEmptyObject(params)) {
+        params.type =
+          params!.eotmId.length > 0 ? EmployeeViewType.EotmId : EmployeeViewType.YearMonth;
+        return params;
+      } else {
+        const date = new Date();
+        return {
+          year: date.getFullYear().toString(),
+          month: (date.getMonth() + 1).toString(),
+          eotmId: '',
+          type: EmployeeViewType.YearMonth,
+        };
+      }
+    };
 
-  const employeeViewParams: EmployeeViewParams = useMemo(() => getDefaultParams(params), [params]);
+    return getDefaultParams(params);
+  }, [params]);
 
   useEffect(() => {
     if (!isNonEmptyObject(employeeViewParams)) {
@@ -86,7 +88,7 @@ export const EmployeeOfTheMonthView = () => {
     return () => {
       controller.abort();
     };
-  }, [params]);
+  }, [employeeViewParams, history, params]);
 
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
@@ -104,7 +106,7 @@ export const EmployeeOfTheMonthView = () => {
       )}
       <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
       <div className="d-flex flex-column"></div>
-      {employeesOfTheMonth?.length == 0 ? (
+      {employeesOfTheMonth?.length === 0 ? (
         <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
       ) : (
         employeesOfTheMonth.map((eotm, i) => {
