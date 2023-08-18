@@ -4,8 +4,12 @@ import {
   BiomechPriority,
   BiomechStatus,
 } from 'pages/biomech/typing';
+import { FormControl, FormSelect } from 'react-bootstrap';
+import { getEntriesFromEnum, imageCompressor } from 'utils';
 
-import { imageCompressor } from 'utils';
+import { ChangeEvent } from 'react';
+import { Form } from 'components/form/Form';
+import { FormField } from 'components/form/FormField';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -20,112 +24,88 @@ const BrokenKitForm = ({ onSubmit, biomechForm }: BrokenKitFormProps) => {
   const { register, handleSubmit, setValue } = useForm<BiomechForm>({});
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="form-group col-md-6">
-        <label htmlFor="Equipment Name" className="form-label">
-          {t('biomech.report.equipment_name')}
-        </label>
-        <input
-          className="form-control mb-2 mt-0"
-          type="text"
+    <Form onSubmit={handleSubmit(onSubmit)} className="col-md-6">
+      <FormField htmlFor="Equipment Name" label={t('biomech.report.equipment_name')} required>
+        <FormControl
+          className="mb-2 mt-0"
           id="Equipment Name"
           required
           defaultValue={biomechForm?.equipmentName}
           {...register(BIOMECH_REPORT_FIELDS.equipmentName)}
-        ></input>
+        />
+      </FormField>
 
-        <label htmlFor="Equipment Fault" className="form-label">
-          {t('biomech.report.issue')}
-        </label>
-        <textarea
-          className="form-control mb-2 mt-0"
+      <FormField htmlFor="Equipment Fault" label={t('biomech.report.issue')} required>
+        <FormControl
+          as="textarea"
+          className="mb-2 mt-0"
           id="Equipment Fault"
           defaultValue={biomechForm?.equipmentFault}
           required
+          rows={5}
           {...register(BIOMECH_REPORT_FIELDS.equipmentFault)}
-        ></textarea>
-        <label htmlFor="Equipment Priority" className="form-label">
-          {t('biomech.report.priority')}
-        </label>
-        <select
-          className="form-select"
+        ></FormControl>
+      </FormField>
+
+      <FormField htmlFor="Equipment Priority" label={t('biomech.report.priority')} required>
+        <FormSelect
           id="Equipment Priority"
           aria-label="Default select example"
           required
           defaultValue={biomechForm?.equipmentPriority}
           {...register(BIOMECH_REPORT_FIELDS.equipmentPriority)}
         >
-          <option value="" disabled hidden>
-            {t('biomech.report.inquiry_priority')}
-          </option>
-          <option value={BiomechPriority.URGENT}>
-            {t(`biomech.priority.${BiomechPriority.URGENT}`)}
-          </option>
-          <option value={BiomechPriority.IMPORTANT}>
-            {t(`biomech.priority.${BiomechPriority.IMPORTANT}`)}
-          </option>
-          <option value={BiomechPriority.NONURGENT}>
-            {t(`biomech.priority.${BiomechPriority.NONURGENT}`)}
-          </option>
-        </select>
+          {!biomechForm && <option value="">{t('biomech.report.inquiry_priority')}</option>}
+          {getEntriesFromEnum(BiomechPriority).map(({ value }) => (
+            <option key={value} value={value}>
+              {t(`biomech.priority.${value}`)}
+            </option>
+          ))}
+        </FormSelect>
+      </FormField>
 
-        <label htmlFor="Equipment Status" className="form-label">
-          {t('biomech.report.status')}
-        </label>
-        <select
+      <FormField htmlFor="Equipment Status" label={t('biomech.report.status')} required>
+        <FormSelect
           required
           id="Equipment Status"
           aria-label="Default select example"
-          className="form-select"
           defaultValue={biomechForm?.equipmentStatus}
           {...register(BIOMECH_REPORT_FIELDS.equipmentStatus)}
         >
-          <option value="" disabled hidden>
-            {t('biomech.report.inquiry_status')}
-          </option>
-          <option value={BiomechStatus.FIXED}>{t(`biomech.status.${BiomechStatus.FIXED}`)}</option>
-          <option value={BiomechStatus.INPROGRESS}>
-            {t(`biomech.status.${BiomechStatus.INPROGRESS}`)}
-          </option>
-          <option value={BiomechStatus.BACKLOG}>
-            {t(`biomech.status.${BiomechStatus.BACKLOG}`)}
-          </option>
-        </select>
+          {!biomechForm && <option value="">{t('biomech.report.inquiry_status')}</option>}
+          {getEntriesFromEnum(BiomechStatus).map(({ value }) => (
+            <option key={value} value={value}>
+              {t(`biomech.status.${value}`)}
+            </option>
+          ))}
+        </FormSelect>
+      </FormField>
 
-        <label htmlFor="customFile" className="form-label mt-2" >
-          {t('button.add_image')}{biomechForm?.file === null && <>*</>}
-        </label>
-        <input
+      <FormField htmlFor="customFile" label={t('button.add_image')} required={!biomechForm}>
+        <FormControl
           type="file"
+          as="input"
           accept="image/png,image/jpeg,image/jpg"
-          className="form-control"
           id="customFileBioMech"
-          required={biomechForm?.file === null}
+          required={!biomechForm}
+          multiple={false}
           {...(register(BIOMECH_REPORT_FIELDS.file),
           {
-            onChange: (e) => {
-              if (e.target.files.length === 0) return;
-              return imageCompressor(
-                e.target.files.item(0),
-                (result) => {
-                  setValue(BIOMECH_REPORT_FIELDS.file, result);
-                },
-                (error) => {
-                  e.target.files = null;
-                  e.target.value = '';
-                  setValue(BIOMECH_REPORT_FIELDS.file, '');
-                  toast.error(error.message);
-                },
-              );
+            onChange: (e: ChangeEvent<HTMLInputElement>) => {
+              if (e.target.files && e.target.files.length > 0) {
+                const file = e.target.files[0];
+
+                imageCompressor(
+                  file,
+                  (compressedImage) => setValue(BIOMECH_REPORT_FIELDS.file, compressedImage),
+                  (error) => toast.error(error.message),
+                );
+              }
             },
           })}
         />
-
-        <button data-testid="submit-biomech-button" className="btn btn-primary mt-4 " type="submit">
-          {t('button.submit')}
-        </button>
-      </div>
-    </form>
+      </FormField>
+    </Form>
   );
 };
 
