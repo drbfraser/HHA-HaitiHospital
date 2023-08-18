@@ -272,7 +272,8 @@
       "author": "Author",
       "priority": "Priority",
       "issue": "Issue",
-      "status": "Status"
+      "status": "Status",
+      "created_at": "Date Created"
     },
     "report": {
       "title": "Broken Kit Report",

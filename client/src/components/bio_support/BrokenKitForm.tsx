@@ -10,29 +10,6 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-interface FormattedInputProps {
-  label: string;
-  id: string;
-  value?: string;
-  register: any;
-}
-
-const FormattedInput = ({ label, id, value, register }: FormattedInputProps) => (
-  <>
-    <label htmlFor={id} className="form-label">
-      {label}
-    </label>
-    <input
-      className="form-control mb-2 mt-0"
-      type="text"
-      id={id}
-      defaultValue={value}
-      required
-      {...register}
-    ></input>
-  </>
-);
-
 interface BrokenKitFormProps {
   onSubmit: (data: BiomechForm) => void;
   biomechForm?: BiomechForm;
@@ -45,11 +22,17 @@ const BrokenKitForm = ({ onSubmit, biomechForm }: BrokenKitFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-group col-md-6">
-        <FormattedInput
-          label={t('biomech.report.equipment_name')}
+        <label htmlFor="Equipment Name" className="form-label">
+          {t('biomech.report.equipment_name')}
+        </label>
+        <input
+          className="form-control mb-2 mt-0"
+          type="text"
           id="Equipment Name"
-          register={register(BIOMECH_REPORT_FIELDS.equipmentName)}
-        />
+          required
+          defaultValue={biomechForm?.equipmentName}
+          {...register(BIOMECH_REPORT_FIELDS.equipmentName)}
+        ></input>
 
         <label htmlFor="Equipment Fault" className="form-label">
           {t('biomech.report.issue')}
@@ -57,10 +40,10 @@ const BrokenKitForm = ({ onSubmit, biomechForm }: BrokenKitFormProps) => {
         <textarea
           className="form-control mb-2 mt-0"
           id="Equipment Fault"
+          defaultValue={biomechForm?.equipmentFault}
           required
           {...register(BIOMECH_REPORT_FIELDS.equipmentFault)}
         ></textarea>
-
         <label htmlFor="Equipment Priority" className="form-label">
           {t('biomech.report.priority')}
         </label>
@@ -69,7 +52,7 @@ const BrokenKitForm = ({ onSubmit, biomechForm }: BrokenKitFormProps) => {
           id="Equipment Priority"
           aria-label="Default select example"
           required
-          defaultValue=""
+          defaultValue={biomechForm?.equipmentPriority}
           {...register(BIOMECH_REPORT_FIELDS.equipmentPriority)}
         >
           <option value="" disabled hidden>
@@ -85,6 +68,7 @@ const BrokenKitForm = ({ onSubmit, biomechForm }: BrokenKitFormProps) => {
             {t(`biomech.priority.${BiomechPriority.NONURGENT}`)}
           </option>
         </select>
+
         <label htmlFor="Equipment Status" className="form-label">
           {t('biomech.report.status')}
         </label>
@@ -93,7 +77,7 @@ const BrokenKitForm = ({ onSubmit, biomechForm }: BrokenKitFormProps) => {
           id="Equipment Status"
           aria-label="Default select example"
           className="form-select"
-          defaultValue=""
+          defaultValue={biomechForm?.equipmentStatus}
           {...register(BIOMECH_REPORT_FIELDS.equipmentStatus)}
         >
           <option value="" disabled hidden>
@@ -107,15 +91,16 @@ const BrokenKitForm = ({ onSubmit, biomechForm }: BrokenKitFormProps) => {
             {t(`biomech.status.${BiomechStatus.BACKLOG}`)}
           </option>
         </select>
-        <label htmlFor="customFile" className="form-label mt-2">
-          {t('button.add_image')}
+
+        <label htmlFor="customFile" className="form-label mt-2" >
+          {t('button.add_image')}{biomechForm?.file === null && <>*</>}
         </label>
         <input
           type="file"
           accept="image/png,image/jpeg,image/jpg"
           className="form-control"
           id="customFileBioMech"
-          required
+          required={biomechForm?.file === null}
           {...(register(BIOMECH_REPORT_FIELDS.file),
           {
             onChange: (e) => {

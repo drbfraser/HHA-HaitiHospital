@@ -3,6 +3,7 @@ import { AddUserForm } from 'pages/admin/AddUserForm';
 import AdminList from 'pages/admin/AdminList';
 import { BiomechanicalList } from 'pages/biomech/BiomechanicalList';
 import { BrokenKitAdd } from 'pages/biomech/BrokenKitAdd';
+import { BrokenKitEdit } from 'pages/biomech/BrokenKitEdit';
 import { BrokenKitView } from 'pages/biomech/BrokenKitView';
 import { CaseStudyForm } from 'pages/case_study/CaseStudyForm';
 import { CaseStudyList } from 'pages/case_study/CaseStudyList';
@@ -138,6 +139,14 @@ const routes = [
     path: `${PathPatterns.BIOMECH_VIEW}`,
     key: 'bio_support',
     component: BrokenKitView,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: `${PathPatterns.BIOMECH_EDIT}`,
+    key: 'bio_support',
+    component: BrokenKitEdit,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],

@@ -146,7 +146,7 @@ const Sidebar = () => {
             </SidebarItem>
           )}
 
-          {departments?.map((dept: Department, index: number) => {
+          {departments && departments?.map((dept: Department, index: number) => {
             const deptName = dept.name;
             const deptId = dept.id;
 

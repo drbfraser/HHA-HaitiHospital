@@ -1,4 +1,5 @@
 import './index.css';
+
 import Header from 'components/header/Header';
 import SideBar from 'components/side_bar/SideBar';
 import cn from 'classnames';
@@ -11,6 +12,7 @@ interface LayoutProps {
   style?: React.CSSProperties;
   showBackButton?: boolean;
   title?: string;
+  additionalButtons?: React.ReactNode;
 }
 
 const Layout = ({
@@ -18,6 +20,7 @@ const Layout = ({
   children,
   style,
   showBackButton = false,
+  additionalButtons = null,
   title = '',
 }: LayoutProps) => {
   const history = useHistory();
@@ -32,15 +35,18 @@ const Layout = ({
           <Header title={title} />
 
           <div className="p-3">
-            {showBackButton && (
-              <button
-                className="btn btn-md btn-outline-secondary mb-3"
-                data-testid="back-button"
-                onClick={history.goBack}
-              >
-                {t('button.back')}
-              </button>
-            )}
+            <div className="d-flex gap-2">
+              {showBackButton && (
+                <button
+                  className="btn btn-md btn-outline-secondary mb-3"
+                  data-testid="back-button"
+                  onClick={history.goBack}
+                >
+                  {t('button.back')}
+                </button>
+              )}
+              {additionalButtons}
+            </div>
             {children}
           </div>
         </div>
