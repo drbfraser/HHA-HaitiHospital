@@ -132,7 +132,7 @@ export const EmployeeOfTheMonthRecord = () => {
       <DeleteModal
         dataTestId="confirm-delete-eotm-button"
         show={showDeleteModal}
-        itemName={`employee of the month`}
+        itemName={t('headerEmployeeOfTheMonth')}
         onModalClose={resetDeleteModal}
         onModalDelete={onModalDeleteConfirm}
       />

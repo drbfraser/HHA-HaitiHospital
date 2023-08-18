@@ -220,9 +220,9 @@
 
   "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
-  "employeeOfTheMonthRecord": "Enregistrer",
+  "employeeOfTheMonthHistory": "Histoire",
   "employeeOfTheMonthTitle": "Employé du mois - ",
-  "employeeOfTheMonthMonthYearAwarded": "Mois et année d'attribution",
+  "employeeOfTheMonthDateAwarded": "Date d'attribution",
   "employeeOfTheMonthDate": "Date de mise à jour",
   "employeeOfTheMonthName": "Nom",
   "employeeOfTheMonthDepartment": "Département",
@@ -233,6 +233,7 @@
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
   "employeeOfTheMonthLastUpdated": "Dernière mise à jour",
   "employeeOfTheMonthNotFound": "Aucun employé du mois trouvé",
+  "employeeOfTheMonthSuccessfullyUpdated": "Employé du mois mis à jour avec succès !",
   "template": {
     "change_template": "Changer de modèle",
     "department": "Département",
