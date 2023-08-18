@@ -1,10 +1,3 @@
-import { Router, Response, NextFunction } from 'express';
-import requireJwtAuth from 'middleware/requireJwtAuth';
-import { oneImageUploader } from 'middleware/multer';
-import { validateInput } from 'middleware/inputSanitization';
-import BioMechCollection, { BioMech } from 'models/bioMech';
-import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
-import { deleteUploadedImage } from 'utils/unlinkImage';
 import {
   BadRequest,
   HTTP_CREATED_CODE,
@@ -13,10 +6,18 @@ import {
   InternalError,
   NotFound,
 } from 'exceptions/httpException';
-import { RequestWithUser } from 'utils/definitions/express';
-import { roleAuth } from 'middleware/roleAuth';
-import { Role } from 'models/user';
+import BioMechCollection, { BioMech } from 'models/bioMech';
+import { NextFunction, Response, Router } from 'express';
+
 import { BiomechApiIn } from './jsons/biomech';
+import { ImageUploader } from 'middleware/multer';
+import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
+import { RequestWithUser } from 'utils/definitions/express';
+import { Role } from 'models/user';
+import { deleteUploadedImage } from 'utils/unlinkImage';
+import requireJwtAuth from 'middleware/requireJwtAuth';
+import { roleAuth } from 'middleware/roleAuth';
+import { validateInput } from 'middleware/inputSanitization';
 
 const router = Router();
 
@@ -52,16 +53,16 @@ const FILE_FIELD = BiomechApiIn.BIOMECH_POST_PROPERTIES.file;
 router.post(
   '/',
   requireJwtAuth,
-  oneImageUploader(FILE_FIELD),
+  ImageUploader(FILE_FIELD),
   InputSchema.post,
   validateInput,
   (req: RequestWithUser, res: Response, next: NextFunction) => {
     const user = req.user;
-    const userId = user._id!;
     const department = user.departmentId;
-    let submitData: BiomechApiIn.BiomechPost = req.body;
+    const submitData: BiomechApiIn.BiomechPost = req.body;
+
     const bioMech: BioMech = {
-      userId: userId,
+      userId: user._id!,
       departmentId: department,
       equipmentName: submitData.equipmentName,
       equipmentFault: submitData.equipmentFault,
@@ -71,7 +72,9 @@ router.post(
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
     const doc = new BioMechCollection(bioMech);
+
     doc
       .save()
       .then(() => res.sendStatus(HTTP_CREATED_CODE))
@@ -88,12 +91,14 @@ router.delete(
   roleAuth(Role.Admin, Role.BioMechanic),
   (req: RequestWithUser, res: Response, next: NextFunction) => {
     const bioId = req.params.id;
+
     BioMechCollection.findByIdAndRemove(bioId)
       .exec()
       .then((data) => {
         if (!data) {
           return next(new BadRequest(`No biomech post with id ${bioId} available`));
         }
+
         deleteUploadedImage(data.imgPath);
         res.sendStatus(HTTP_NOCONTENT_CODE);
       })
@@ -106,16 +111,29 @@ router.delete(
 router.put(
   '/:id',
   requireJwtAuth,
+  ImageUploader(FILE_FIELD, false),
+  InputSchema.post,
   roleAuth(Role.Admin, Role.BioMechanic),
   async (req: RequestWithUser, res: Response) => {
     const bioId = req.params.id;
-    const { status } = req.body;
+    const submitData: BiomechApiIn.BiomechPost = req.body;
     const report = await BioMechCollection.findById(bioId);
+
     if (!report) {
       throw new NotFound(`No report with id ${bioId}`);
     }
 
-    report.equipmentStatus = status;
+    report.equipmentName = submitData.equipmentName;
+    report.equipmentFault = submitData.equipmentFault;
+    report.equipmentPriority = submitData.equipmentPriority;
+    report.equipmentStatus = submitData.equipmentStatus;
+
+    if (submitData.file) {
+      deleteUploadedImage(report.imgPath);
+      report.imgPath = submitData.file.path;
+    }
+
+    report.updatedAt = new Date();
 
     await report.save();
 

@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 import { logger } from '../logger';
 
 export const deleteUploadedImage = (filepath: string) => {
