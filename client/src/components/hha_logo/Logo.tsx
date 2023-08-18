@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 
 interface LogoProps {
   style: React.CSSProperties;
+  className?: string;
 }
 
 const Logo = (props: LogoProps) => {
   return (
     <Link to="/home">
-      <img className={'hha-logo'} src={HHALogoSvg} alt="HHA Logo" style={props.style}></img>
+      <img
+        className={`hha-logo ${props.className ?? ''}`}
+        src={HHALogoSvg}
+        alt="HHA Logo"
+        style={props.style}
+      ></img>
     </Link>
   );
 };
