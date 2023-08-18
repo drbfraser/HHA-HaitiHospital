@@ -10,13 +10,17 @@ import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/Empl
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Link, RouteComponentProps, useParams } from 'react-router-dom';
+import { useAuthState } from 'contexts';
+import { Role } from 'constants/interfaces';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { translateMonth } from 'utils/dateUtils';
 import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
+import { renderBasedOnRole } from 'actions/roleActions';
 
 export const EmployeeOfTheMonthView = () => {
+  const authState = useAuthState();
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -86,11 +90,18 @@ export const EmployeeOfTheMonthView = () => {
 
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
-      <Link to="/employee-of-the-month/record" className="pl-3">
+      <Link to="/employee-of-the-month/record" className="pl-3 mr-3">
         <button type="button" className="btn btn-outline-dark">
           {t('employeeOfTheMonthRecord')}
         </button>
       </Link>
+      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+        <Link to="/employee-of-the-month/add">
+          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+            {t('employeeOfTheMonthAdd')}
+          </button>
+        </Link>
+      )}
       <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
       <div className="d-flex flex-column">
         {employeesOfTheMonth.map((eotm, i) => {
