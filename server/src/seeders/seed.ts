@@ -1269,9 +1269,9 @@ const seedPermissions = async () => {
                   isChecked: true,
                 },
                 {
-                  path: '/employee-of-the-month/record',
+                  path: '/employee-of-the-month/archive',
                   name: 'Record of all Employee of the months',
-                  key: 'employee_of_the_month_record',
+                  key: 'employee_of_the_month_archive',
                   isChecked: true,
                 },
               ],
