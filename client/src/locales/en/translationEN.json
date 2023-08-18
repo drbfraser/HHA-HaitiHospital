@@ -233,6 +233,7 @@
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
   "employeeOfTheMonthLastUpdated": "Last updated",
   "employeeOfTheMonthNotFound": "No employee of the month found",
+  "employeeOfTheMonthSuccessfullyUpdated": "Employee of the month successfully updated!",
   "template": {
     "change_template": "Change template",
     "department": "Department",
