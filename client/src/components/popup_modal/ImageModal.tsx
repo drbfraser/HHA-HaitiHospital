@@ -5,12 +5,13 @@ interface ModalImageProps {
   show: boolean;
   image: string;
   item: string;
+  size?: 'sm' | 'lg' | 'xl';
 }
 
-const ImageModal = (props: ModalImageProps) => {
+const ImageModal = ({ show, onModalClose, image, item, size = 'xl' }: ModalImageProps) => {
   return (
-    <Modal show={props.show} onHide={props.onModalClose}>
-      <Image src={props.image} alt={props.item}></Image>
+    <Modal show={show} onHide={onModalClose} size={size}>
+      <Image src={image} alt={item}></Image>
     </Modal>
   );
 };
