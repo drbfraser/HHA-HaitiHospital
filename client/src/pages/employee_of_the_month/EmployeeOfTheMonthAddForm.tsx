@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
 
+// Previously was EmployeeOfTheMonthForm
 export const EmployeeOfTheMonthAddForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
