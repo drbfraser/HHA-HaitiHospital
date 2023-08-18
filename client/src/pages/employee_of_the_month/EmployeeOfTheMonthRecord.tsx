@@ -80,7 +80,7 @@ export const EmployeeOfTheMonthRecord = () => {
   const columns = useMemo(() => {
     const columns: FilterableColumnDef[] = [
       {
-        header: t('employeeOfTheMonthMonthYearAwarded'),
+        header: t('employeeOfTheMonthDateAwarded'),
         id: 'awardedMonthYear',
         accessorFn: ({ awardedMonth, awardedYear }) =>
           `${translateMonth(awardedMonth)} ${awardedYear}`,
