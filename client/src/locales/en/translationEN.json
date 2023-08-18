@@ -220,9 +220,9 @@
 
   "employeeOfTheMonthAdd": "Add new employee of the month",
   "employeeOfTheMonthEdit": "Update",
-  "employeeOfTheMonthRecord": "Record",
+  "employeeOfTheMonthHistory": "History",
   "employeeOfTheMonthTitle": "Employee of the month - ",
-  "employeeOfTheMonthMonthYearAwarded": "Month and Year Awarded",
+  "employeeOfTheMonthDateAwarded": "Date awarded",
   "employeeOfTheMonthDate": "Date updated",
   "employeeOfTheMonthName": "Name",
   "employeeOfTheMonthDepartment": "Department",
@@ -232,6 +232,7 @@
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
   "employeeOfTheMonthLastUpdated": "Last updated",
+  "employeeOfTheMonthNotFound": "No employee of the month found",
   "template": {
     "change_template": "Change template",
     "department": "Department",
