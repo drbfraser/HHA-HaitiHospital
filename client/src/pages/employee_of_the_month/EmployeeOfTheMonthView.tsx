@@ -92,7 +92,7 @@ export const EmployeeOfTheMonthView = () => {
     <Layout title={t('headerEmployeeOfTheMonth')}>
       <Link to="/employee-of-the-month/record" className="pl-3 mr-3">
         <button type="button" className="btn btn-outline-dark">
-          {t('employeeOfTheMonthRecord')}
+          {t('employeeOfTheMonthHistory')}
         </button>
       </Link>
       {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
