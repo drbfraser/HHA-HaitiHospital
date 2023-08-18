@@ -35,7 +35,7 @@ const Layout = ({
       <main className={cn('container-fluid', className)} style={style}>
         <SideBar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
 
-        <div className={`main main-region px-2 ${isExpanded ? 'expanded' : ''}`}>
+        <div className={`main main-region px-2 ${isExpanded ? 'expanded' : 'collasped'}`}>
           <Header title={title} />
 
           <div className="p-3">
