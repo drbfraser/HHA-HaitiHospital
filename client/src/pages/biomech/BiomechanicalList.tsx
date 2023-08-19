@@ -2,7 +2,7 @@ import { Badge, Button } from 'react-bootstrap';
 import { ENDPOINT_BIOMECH_DELETE_BY_ID, ENDPOINT_BIOMECH_GET } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import { setPriority, setStatusBadgeColor } from 'pages/biomech/utils';
+import { PriorityBadge, StatusBadge } from 'pages/biomech/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -60,7 +60,9 @@ export const BiomechanicalList = () => {
         id: 'equipmentPriority',
         header: t('biomech.main_page.priority_col'),
         cell: (row) => (
-          <Badge bg={setPriority(row.getValue())}>{t(`biomech.priority.${row.getValue()}`)}</Badge>
+          <Badge bg={PriorityBadge[row.getValue()]}>
+            {t(`biomech.priority.${row.getValue()}`)}
+          </Badge>
         ),
         accessorKey: 'equipmentPriority',
         sortingFn: prioritySort,
@@ -78,9 +80,7 @@ export const BiomechanicalList = () => {
         id: 'equipmentStatus',
         header: t('biomech.main_page.status_col'),
         cell: (row) => (
-          <Badge bg={setStatusBadgeColor(row.getValue())}>
-            {t(`biomech.status.${row.getValue()}`)}
-          </Badge>
+          <Badge bg={StatusBadge[row.getValue()]}>{t(`biomech.status.${row.getValue()}`)}</Badge>
         ),
         accessorKey: 'equipmentStatus',
         sortingFn: statusSort,
@@ -119,15 +119,26 @@ export const BiomechanicalList = () => {
         cell: (row) => (
           <>
             {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-              <Button
-                data-testid="delete-biomech-button"
-                onClick={(event) => onDeleteBioMech(event, row.getValue())}
-                variant="link"
-                title={t('button.delete')}
-                className="text-decoration-none link-secondary"
-              >
-                <i className="bi bi-trash"></i>
-              </Button>
+              <>
+                <Button
+                  data-testid="delete-biomech-button"
+                  onClick={(event) => onDeleteBioMech(event, row.getValue())}
+                  variant="link"
+                  title={t('button.delete')}
+                  className="text-decoration-none link-secondary"
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
+                <Link
+                  data-testid="edit-biomech-button"
+                  title={t('button.delete')}
+                  className="text-decoration-none link-secondary"
+                  to={Paths.getBioMechEditId(row.getValue())}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <i className="bi bi-pencil"></i>
+                </Link>
+              </>
             )}
           </>
         ),

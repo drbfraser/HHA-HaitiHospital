@@ -69,8 +69,8 @@ const Login = () => {
   });
 
   return (
-    <div className={'login'}>
-      <img className="login-logo user-select-none" src={logo} alt="logo logo" />
+    <div className={'login vh-100 d-flex flex-column justify-content-center'}>
+      <img className="login-logo user-select-none w-100" src={logo} alt="logo logo" />
       <h4 className="text-center mt-4 mb-4 user-select-none fw-bold">{t('signInPleaseSignIn')}</h4>
       <form className="login-form mb-5" onSubmit={formik.handleSubmit}>
         <div>

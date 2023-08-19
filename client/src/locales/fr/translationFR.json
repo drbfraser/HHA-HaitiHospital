@@ -168,6 +168,7 @@
   "caseStudyFormAnErrorOccurred": "Une erreur s'est produite lors de la soumission. Veuillez réessayer.",
   "caseStudyViewAuthor": "Auteur: ",
   "caseStudyViewDate": "Date: ",
+  "caseStudyViewCreatedAt": "Date de création: ",
   "departmentPageNICU/PAED": "Département de NICU/PAED",
   "departmentPageDepartmentOf": "Département de ",
   "departmentPageSubmitData": "Soumettre des données",
@@ -280,7 +281,8 @@
       "author": "Auteur",
       "priority": "Priorité",
       "issue": "Problème",
-      "status": "Statut"
+      "status": "Statut",
+      "created_at": "Date de création"
     },
     "report": {
       "title": "Rapport de Kit Cassé",

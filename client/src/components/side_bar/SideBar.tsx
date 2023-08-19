@@ -117,11 +117,20 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
 
   return (
     <div
-      className={'h-100 bg-dark position-fixed d-flex flex-column'}
-      style={{ top: 0, left: 0, zIndex: 1000 }}
+      className={`h-100 bg-dark position-fixed top-0 start-0 d-flex flex-column ${
+        isExpanded ? 'expanded' : 'collapsed'
+      }`}
+      style={{ zIndex: 1000 }}
     >
       <div>
-        {isExpanded && <HhaLogo className="mx-auto d-flex" style={{ width: 150 }} />}
+        <HhaLogo
+          className="mx-auto d-flex"
+          isExpanded={isExpanded}
+          style={{
+            height: '100px',
+            padding: '1.5rem',
+          }}
+        />
 
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>

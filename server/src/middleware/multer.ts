@@ -1,5 +1,6 @@
+import { NextFunction, Request, Response } from 'express';
+
 import { BadRequest } from 'exceptions/httpException';
-import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 
 const maxSize = 200 * 1024 * 1024; // max file size in bytes: 200 MB
@@ -35,15 +36,20 @@ const upload = multer({
 /**
  * @param inputField - is a field of a multipart form with which multer parses the media
  */
-export const oneImageUploader = (inputField: string) => {
+export const ImageUploader = (inputField: string, required = true) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const multerSingle = upload.single(inputField);
-    multerSingle(req, res, (error) => {
+    const uploadSingleFile = upload.single(inputField);
+
+    uploadSingleFile(req, res, (error) => {
       if (error) {
         return next(new BadRequest(error.message));
       } else {
-        if (!req.file) return next(new BadRequest(`Expecting an image`));
-        req.file!.path = req.file!.path.replace(/\\/g, '/');
+        if (required && !req.file) return next(new BadRequest(`Expecting an image`));
+
+        if (req.file) {
+          req.file!.path = req.file!.path.replace(/\\/g, '/');
+        }
+
         req.body.file = req.file;
         return next();
       }

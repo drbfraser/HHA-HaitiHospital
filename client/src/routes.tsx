@@ -2,7 +2,8 @@ import AddMessage from 'pages/message_board/AddMessage';
 import { AddUserForm } from 'pages/admin/AddUserForm';
 import AdminList from 'pages/admin/AdminList';
 import { BiomechanicalList } from 'pages/biomech/BiomechanicalList';
-import { BrokenKitReport } from 'pages/biomech/BrokenKitReport';
+import { BrokenKitAdd } from 'pages/biomech/BrokenKitAdd';
+import { BrokenKitEdit } from 'pages/biomech/BrokenKitEdit';
 import { BrokenKitView } from 'pages/biomech/BrokenKitView';
 import { CaseStudyForm } from 'pages/case_study/CaseStudyForm';
 import { CaseStudyList } from 'pages/case_study/CaseStudyList';
@@ -131,7 +132,7 @@ const routes = [
   {
     path: `${PathPatterns.BIOMECH_REPORT}`,
     key: 'bio_support',
-    component: BrokenKitReport,
+    component: BrokenKitAdd,
     isPrivate: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -140,6 +141,14 @@ const routes = [
     path: `${PathPatterns.BIOMECH_VIEW}`,
     key: 'bio_support',
     component: BrokenKitView,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: `${PathPatterns.BIOMECH_EDIT}`,
+    key: 'bio_support',
+    component: BrokenKitEdit,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],

@@ -168,6 +168,7 @@
   "caseStudyFormAnErrorOccurred": "An error occurred during the submission. Please try again.",
   "caseStudyViewAuthor": "Author: ",
   "caseStudyViewDate": "Date: ",
+  "caseStudyViewCreatedAt": "Date Created: ",
   "departmentPageNICU/PAED": "Department of NICU/PAED",
   "departmentPageDepartmentOf": "Department of ",
   "departmentPageSubmitData": "SubmitData",
@@ -280,7 +281,8 @@
       "author": "Author",
       "priority": "Priority",
       "issue": "Issue",
-      "status": "Status"
+      "status": "Status",
+      "created_at": "Date Created"
     },
     "report": {
       "title": "Broken Kit Report",

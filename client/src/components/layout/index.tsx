@@ -13,6 +13,7 @@ interface LayoutProps {
   style?: React.CSSProperties;
   showBackButton?: boolean;
   title?: string;
+  additionalButtons?: React.ReactNode;
 }
 
 const Layout = ({
@@ -20,6 +21,7 @@ const Layout = ({
   children,
   style,
   showBackButton = false,
+  additionalButtons = null,
   title = '',
 }: LayoutProps) => {
   const history = useHistory();
@@ -33,19 +35,22 @@ const Layout = ({
       <main className={cn('container-fluid', className)} style={style}>
         <SideBar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
 
-        <div className={`main main-region px-2 ${isExpanded ? 'expanded' : ''}`}>
+        <div className={`main main-region px-2 ${isExpanded ? 'expanded' : 'collasped'}`}>
           <Header title={title} />
 
           <div className="p-3">
-            {showBackButton && (
-              <button
-                className="btn btn-md btn-outline-secondary mb-3"
-                data-testid="back-button"
-                onClick={history.goBack}
-              >
-                {t('button.back')}
-              </button>
-            )}
+            <div className="d-flex gap-2">
+              {showBackButton && (
+                <button
+                  className="btn btn-md btn-outline-secondary mb-3"
+                  data-testid="back-button"
+                  onClick={history.goBack}
+                >
+                  {t('button.back')}
+                </button>
+              )}
+              {additionalButtons}
+            </div>
             {children}
           </div>
         </div>

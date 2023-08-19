@@ -21,7 +21,7 @@ const ENDPOINT_BIOMECH_GET: string = '/api/biomech';
 const ENDPOINT_BIOMECH_GET_BY_ID = (id: string): string => {
   return `${ENDPOINT_BIOMECH_GET}/${id}`;
 };
-const ENDPOINT_BIOMECH_UPDATE_STATUS = (id: string): string => {
+const ENDPOINT_BIOMECH_UPDATE_BY_ID = (id: string): string => {
   return `${ENDPOINT_BIOMECH_GET}/${id}`;
 };
 const ENDPOINT_BIOMECH_POST: string = ENDPOINT_BIOMECH_GET;
@@ -132,5 +132,5 @@ export {
   ENDPOINT_REPORT_GET_BY_ID,
   ENDPOINT_TEMPLATE,
   ENDPOINT_PERMISSION,
-  ENDPOINT_BIOMECH_UPDATE_STATUS,
+  ENDPOINT_BIOMECH_UPDATE_BY_ID,
 };

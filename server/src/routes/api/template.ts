@@ -6,6 +6,7 @@ import Departments from 'utils/departments';
 import { RequestWithUser } from 'utils/definitions/express';
 import { Role } from 'models/user';
 import { TemplateCollection } from 'models/template';
+import { logger } from 'logger';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 
@@ -80,7 +81,7 @@ router.put(
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { departmentId, serializedReport } = req.body;
-      console.log('server routes/api/template save report', departmentId, serializedReport);
+      logger.log('server routes/api/template save report', departmentId, serializedReport);
       // NOTE: May need to sanitize the reportTemplate before saving
       let template = new TemplateCollection({
         departmentId: departmentId,
