@@ -43,7 +43,8 @@
   "headerReportChooseDepartment": "Choose a department",
   "headerReportChooseDifferentDepartment": "Choose different department",
   "headerEmployeeOfTheMonth": "Employee Of The Month",
-  "headerEmployeeOfTheMonthForm": "Employee Of The Month Form",
+  "headerEmployeeOfTheMonthAddForm": "Employee Of The Month Add Form",
+  "headerEmployeeOfTheMonthUpdateForm": "Employee Of The Month Update Form",
   "headerBiomechanicalSupport": "Biomechanical Support",
   "headerBiomechanicalSupportForm": "Biomechanical Support Form",
   "headerBrokenKitReport": "Broken Kit Report",
@@ -218,15 +219,22 @@
   "reportsUserId": "User ID",
   "reportsSubmittedBy": "Submitted By",
 
+  "employeeOfTheMonthAdd": "Add new employee of the month",
   "employeeOfTheMonthEdit": "Update",
-  "employeeOfTheMonthTitle": "Employee of the month for ",
+  "employeeOfTheMonthArchive": "Archive",
+  "employeeOfTheMonthTitle": "Employee of the month - ",
+  "employeeOfTheMonthDateAwarded": "Date awarded",
   "employeeOfTheMonthDate": "Date updated",
   "employeeOfTheMonthName": "Name",
   "employeeOfTheMonthDepartment": "Department",
   "employeeOfTheMonthDescription": "Description",
   "employeeOfTheMonthUploadImage": "Upload Image",
+  "employeeOfTheMonthUpdateUploadImage": "Upload Image. Leave if not changed",
   "employeeOfTheMonthSubmitForm": "Submit Form",
   "employeeOfTheMonthDepartmentOption": "Click to select a department",
+  "employeeOfTheMonthLastUpdated": "Last updated",
+  "employeeOfTheMonthNotFound": "No employee of the month found",
+  "employeeOfTheMonthSuccessfullyUpdated": "Employee of the month successfully updated!",
   "template": {
     "change_template": "Change template",
     "department": "Department",
@@ -349,7 +357,8 @@
     "users": "Users",
     "case_study": "Case study",
     "message_board_post": "Post",
-    "message_board_comment": "Comment"
+    "message_board_comment": "Comment",
+    "employee_of_the_month": "Employee of the month"
   },
   "error_message": {
     "compress": {

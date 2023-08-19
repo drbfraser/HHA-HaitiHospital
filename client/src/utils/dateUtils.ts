@@ -55,6 +55,41 @@ const isDateInRange = (dateStr: string | Date, dateRange: DayRange) => {
   return true;
 };
 
+const currentYearAndMonth = () => {
+  const date = new Date();
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+  };
+};
+
+const translateMonth = (index: number): string => {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  return months[index - 1];
+};
+
+const formatDateString = (date: Date): string =>
+  date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+
 export {
   Month,
   currDate,
@@ -67,4 +102,7 @@ export {
   getDateFromDateStr,
   getDateTimeFromDateStr,
   getReformattedDateStr,
+  currentYearAndMonth,
+  translateMonth,
+  formatDateString,
 };
