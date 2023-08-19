@@ -57,7 +57,7 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
     environment:
-      - GF_SERVER_ROOT_URL=http://localhost:3000/
+      - GF_SERVER_ROOT_URL=http://localhost:8443/
       - GF_INSTALL_PLUGINS=grafana-clock-panel
 
 volumes:
