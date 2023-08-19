@@ -1,4 +1,4 @@
-import { currMonth, currYear } from 'utils/dateUtils';
+import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
@@ -6,7 +6,9 @@ import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
-import { useHistory } from 'react-router-dom';
+import { Role } from 'constants/interfaces';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -20,6 +22,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   const [employeeImage, setEmployeeImage] = useState<string>(null);
   const updatedDate = props.employee.updatedAt;
   const history: History = useHistory<History>();
+  const authState = useAuthState();
 
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
@@ -43,50 +46,27 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
     props.employee.imgPath && getEmployeeOfTheMonthImage();
   }, [props.employee.imgPath, history]);
 
-  const translateMonth = (index: number): string => {
-    switch (index) {
-      case 0:
-        return t('monthJanuary');
-      case 1:
-        return t('monthFebruary');
-      case 2:
-        return t('monthMarch');
-      case 3:
-        return t('monthApril');
-      case 4:
-        return t('monthMay');
-      case 5:
-        return t('monthJune');
-      case 6:
-        return t('monthJuly');
-      case 7:
-        return t('monthAugust');
-      case 8:
-        return t('monthSeptember');
-      case 9:
-        return t('monthOctober');
-      case 10:
-        return t('monthNovember');
-      case 11:
-        return t('monthDecember');
-    }
-  };
-
   return (
-    <>
+    <div className="p-4 m-3 border" style={{ width: '100%', maxWidth: '1000px' }}>
       <ImageModal
         show={showImageModal}
         item={ALT_MESSAGE}
         image={employeeImage}
         onModalClose={onModalImageClose}
       ></ImageModal>
-      <div className="d-flex flex-column flex-xl-row">
-        <div className="d-flex flex-column">
-          <h2 className="mt-3 mb-3 fw-bold">
-            {t('employeeOfTheMonthTitle').concat(
-              translateMonth(currMonth).concat(' ').concat(currYear.toString()),
-            )}
-          </h2>
+      <div className="d-flex flex-column justify-content-between flex-xl-row">
+        <div className="d-flex flex-column mt-3">
+          {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+            <Link to={`/employee-of-the-month/update/${props.employee.id}`}>
+              <button
+                data-testid="update-eotm-button"
+                type="button"
+                className="btn btn-outline-dark mb-1"
+              >
+                {t('employeeOfTheMonthEdit')}
+              </button>
+            </Link>
+          )}
           <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
           <p className="fs-6 lh-base">{updatedDate}</p>
           <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
@@ -96,8 +76,8 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         </div>
         {employeeImage && (
           <img
-            className="d-flex mx-auto ms-xl-auto mt-3 mb-3"
-            style={{ maxWidth: '400px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
+            className="d-flex text-left float-left ms-xl-auto mt-3 mb-3"
+            style={{ maxWidth: '250px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
             src={employeeImage}
             alt={ALT_MESSAGE}
             onClick={(event: any) => {
@@ -110,6 +90,6 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
         <p className="fs-6 lh-base">{props.employee.description}</p>
       </>
-    </>
+    </div>
   );
 };

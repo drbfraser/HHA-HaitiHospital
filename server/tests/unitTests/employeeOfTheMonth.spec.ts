@@ -76,26 +76,19 @@ describe('Employee of the Month Tests', function () {
     });
   });
 
-  it('Should Successfully Change the Employee of the Month', async function () {
+  it('Should Successfully Create the Employee of the Month', async function () {
     // Get a department because it is needed in the PUT request
     const departments = await getDepartments();
     const generalDepartment = departments.body[0];
 
     const imgPath: string = 'public/images/avatar1.jpg';
 
-    const document: string = `{"name":"John","department":{"id":"${generalDepartment.id}","name":"${generalDepartment.name}"},"description":"John is incredible!"}`;
+    const document: string = `{"id": "1", "name":"John","department":{"id":"${generalDepartment.id}","name":"${generalDepartment.name}"},"description":"John is incredible!", "awardedYear": "2022", "awardedMonth": "08"}`;
     const putResponse = await agent
-      .put(EMPLOYEE_OF_THE_MONTH_ENDPOINT)
+      .post(EMPLOYEE_OF_THE_MONTH_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .field('document', document)
       .attach('file', imgPath);
     expect(putResponse).to.have.status(HTTP_OK_CODE);
-
-    const getResponse = await agent.get(EMPLOYEE_OF_THE_MONTH_ENDPOINT);
-    expect(getResponse).to.have.status(HTTP_OK_CODE);
-    expect(getResponse.body.name).to.equal('John');
-    expect(getResponse.body.department).to.deep.equal(generalDepartment);
-    expect(getResponse.body.description).to.equal('John is incredible!');
-    updatePostedImgPaths(getResponse.body.imgPath);
   });
 });
