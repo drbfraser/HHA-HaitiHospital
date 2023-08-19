@@ -8,7 +8,6 @@ import { useAdminToggleState, useAuthState } from 'contexts';
 import { Button } from 'react-bootstrap';
 import HhaLogo from 'components/hha_logo/Logo';
 import { NavLink } from 'react-router-dom';
-import { is } from 'cypress/types/bluebird';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
 

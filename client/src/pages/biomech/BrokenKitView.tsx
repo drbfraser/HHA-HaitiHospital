@@ -1,6 +1,6 @@
 import './view.css';
 
-import { Badge, Button, Image } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 import { BioReportIdParams, Paths } from 'constants/paths';
 import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { PriorityBadge, StatusBadge } from './utils';
@@ -11,7 +11,6 @@ import { FormDisplay } from 'components/form/FormDisplay';
 import { FormFieldDisplay } from 'components/form/FormFieldDisplay';
 import { History } from 'history';
 import { ImageDisplay } from 'components/form/ImageDisplay';
-import ImageModal from 'components/popup_modal/ImageModal';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { useHistory } from 'react-router';
