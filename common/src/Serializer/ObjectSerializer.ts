@@ -1,4 +1,4 @@
-import { QuestionTable } from 'src/Questions';
+import { QuestionTable } from 'src/Questions/QuestionTable';
 import { recursiveConsumeObjectHOF } from '../Utils';
 
 /*  Support for object serialization/deserialization without loss of typing
