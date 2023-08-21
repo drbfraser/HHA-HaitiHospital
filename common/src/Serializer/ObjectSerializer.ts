@@ -22,7 +22,7 @@ import { recursiveConsumeObjectHOF } from '../Utils';
     This code was adapted from jcalz answer in the post
     https://stackoverflow.com/questions/54427218/parsing-complex-json-objects-with-inheritance.
 */
-type Constructor = { new(...args: any[]): {} };
+type Constructor = { new (...args: any[]): {} };
 
 export class ObjectSerializer {
   private constructorMapper: { [className: string]: Constructor };

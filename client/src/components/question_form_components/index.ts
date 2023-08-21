@@ -3,7 +3,7 @@ import Group from './Group';
 import FormFieldCheck from './FormFieldCheck';
 import MultiSelectionQuestionFormField from './MultiSelectionQuestionFormField';
 import NumericQuestionFormField from './NumericQuestionFormField';
-import NumericTableFormField from './NumericTableFormField'
+import NumericTableFormField from './NumericTableFormField';
 import TextQuestionFormField from './TextQuestionFormField';
 import CompositionQuestionFormField from './CompositionQuestionFormField';
 import ExpandableQuestionFormField from './ExpandableQuestionFormField';

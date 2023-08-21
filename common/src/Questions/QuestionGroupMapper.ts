@@ -62,9 +62,7 @@ interface MapperQuestions<ID, ErrorType, T> {
 export interface MapperArgs<ID, ErrorType, T> {
   readonly textQuestion: (textQuestion: TextQuestion<ID, ErrorType>) => T;
   readonly numericQuestion: (numericQuestion: NumericQuestion<ID, ErrorType>) => T;
-  readonly numericTableQuestion: (
-    numericTableQuestion: NumericTable<ID, ErrorType>
-  ) => T;
+  readonly numericTableQuestion: (numericTableQuestion: NumericTable<ID, ErrorType>) => T;
   readonly singleSelectionQuestion: (
     singleSelectionQuestion: SingleSelectionQuestion<ID, ErrorType>,
   ) => T;
@@ -83,7 +81,10 @@ export class QuestionMapper<ID, ErrorType, T> {
     this.questionMapper = {
       textQuestion: { className: TextQuestion.name, mapper: questionMapper.textQuestion },
       numericQuestion: { className: NumericQuestion.name, mapper: questionMapper.numericQuestion },
-      numericTableQuestion: { className: NumericTable.name, mapper: questionMapper.numericTableQuestion },
+      numericTableQuestion: {
+        className: NumericTable.name,
+        mapper: questionMapper.numericTableQuestion,
+      },
       singleSelectionQuestion: {
         className: SingleSelectionQuestion.name,
         mapper: questionMapper.singleSelectionQuestion,

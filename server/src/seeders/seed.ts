@@ -328,7 +328,7 @@ export const seedUsers = async () => {
           default:
             break;
         }
-        await user.registerUser(user, () => { });
+        await user.registerUser(user, () => {});
         // check if user is registered
       }
     }
@@ -1088,7 +1088,7 @@ const seedTemplates = async () => {
       [buildRehabMockReport(), DefaultDepartments.Rehab],
       [buildMaternityMockReport(), DefaultDepartments.Maternity],
       [buildNicuPaedsMockReport(), DefaultDepartments.NICU],
-      [buildCommunityHealthMockReport(), DefaultDepartments.Community]
+      [buildCommunityHealthMockReport(), DefaultDepartments.Community],
     ];
     console.log(`Seeding templates buildRehabMockReport ...`);
 
