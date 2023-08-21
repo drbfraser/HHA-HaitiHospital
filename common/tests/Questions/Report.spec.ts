@@ -67,6 +67,7 @@ describe('Mock Reports', function () {
       const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
       const report: QuestionGroup<string, string> = buildMaternityMockReport();
       const serializedObject: Object = objectSerializer.serialize(report);
+      console.log('Serialized Data:', JSON.stringify(serializedObject));
       const deserialized: QuestionGroup<string, string> =
         objectSerializer.deserialize(serializedObject);
 
