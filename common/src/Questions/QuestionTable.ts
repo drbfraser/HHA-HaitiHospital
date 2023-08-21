@@ -53,41 +53,10 @@ export abstract class QuestionTable<
   private readonly columnHeaders: Array<string>;
 
   private readonly questionTable: table<TableCell<ID, T, ErrorType, QuestionType>>;
-  private serializedColumnHeaders: Array<string> = [];
 
   /*  The questionCreator is a callback that takes in the row and column index
         for where the question will be placed and may return a question. 
     */
-
-  public serialize(): any {
-    this.serializedColumnHeaders = this.getColumnHeaders(); // Store columnHeaders
-    return {
-      ...this,
-      __class__: this.constructor.name,
-      ___serializedColumnHeaders__: this.serializedColumnHeaders,
-    };
-  }
-
-  public deserialize(serialized: any): void {
-    if (serialized.___serializedColumnHeaders__) {
-      this.setDeserializedColumnHeaders(serialized.___serializedColumnHeaders__);
-      delete serialized.___serializedColumnHeaders__;
-    }
-
-    Object.assign(this, serialized);
-  }
-
-  public setDeserializedColumnHeaders(headers: Array<string>): void {
-    this.serializedColumnHeaders = headers;
-  }
-
-  // public getColumnHeaders(): Array<string> {
-  //   if (this.serializedColumnHeaders.length > 0) {
-  //     return this.serializedColumnHeaders;
-  //   } else {
-  //     return this.columnHeaders;
-  //   }
-  // }
 
   constructor(
     id: ID,
