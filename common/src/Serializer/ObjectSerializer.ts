@@ -1,3 +1,4 @@
+import { QuestionTable } from 'src/Questions';
 import { recursiveConsumeObjectHOF } from '../Utils';
 
 /*  Support for object serialization/deserialization without loss of typing
@@ -22,7 +23,7 @@ import { recursiveConsumeObjectHOF } from '../Utils';
     This code was adapted from jcalz answer in the post
     https://stackoverflow.com/questions/54427218/parsing-complex-json-objects-with-inheritance.
 */
-type Constructor = { new (...args: any[]): {} };
+type Constructor = { new(...args: any[]): {} };
 
 export class ObjectSerializer {
   private constructorMapper: { [className: string]: Constructor };
@@ -70,6 +71,14 @@ export class ObjectSerializer {
 
   public readonly serialize = (object: Object): Object => {
     this.recursiveAddClassNameProperty(object);
+
+    // Handle QuestionTable instances with columnHeaders
+    if (object instanceof QuestionTable) {
+      const serializedObject: any = object.serialize();
+      this.recursiveRemoveClassNameProperty(object);
+      return serializedObject;
+    }
+
     const ret: Object = JSON.parse(JSON.stringify(object));
     this.recursiveRemoveClassNameProperty(object);
     return ret;
@@ -109,6 +118,12 @@ export class ObjectSerializer {
     }
 
     delete value.__class__;
+
+    // Handle QuestionTable instances with columnHeaders
+    if (returnObject instanceof QuestionTable) {
+      returnObject.deserialize(value);
+      return returnObject;
+    }
 
     Object.assign(returnObject, value);
     return returnObject;
