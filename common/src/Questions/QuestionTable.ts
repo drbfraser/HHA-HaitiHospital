@@ -69,12 +69,6 @@ export abstract class QuestionTable<
     this.rowHeaders = [...rowHeaders];
     this.columnHeaders = [...columnHeaders];
 
-    // this.questionTable = new Array(rowHeaders.length).map((x, row) =>
-    //   new Array(columnHeaders.length)
-    //     .map((x, col) => questionCreator(row, col))
-    //     .map((question) => new TableCell(question)),
-    // );
-
     this.questionTable = new Array(rowHeaders.length).fill(undefined).map((_, row) =>
       new Array(columnHeaders.length).fill(undefined).map((_, col) => {
         const question = questionCreator(row, col);
@@ -82,7 +76,6 @@ export abstract class QuestionTable<
       }),
     );
   }
-
   // Returns undefined if given numbers are out of bound OR if no question has
   // been defined in the given cell.
   // public getQuestionAt(row: number, col: number): QuestionType | undefined {

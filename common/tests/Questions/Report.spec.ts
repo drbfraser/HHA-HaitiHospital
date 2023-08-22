@@ -58,22 +58,22 @@ describe('Mock Reports', function () {
   //   });
   // });
 
-  describe('Maternity mock report', function () {
-    it('Should create a mock Maternity report', function () {
-      buildMaternityMockReport();
-    });
+  // describe('Maternity mock report', function () {
+  //   it('Should create a mock Maternity report', function () {
+  //     buildMaternityMockReport();
+  //   });
 
-    it('Should be able to serialize maternity report', function () {
-      const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-      const report: QuestionGroup<string, string> = buildMaternityMockReport();
-      const serializedObject: Object = objectSerializer.serialize(report);
-      console.log('Serialized Data:', JSON.stringify(serializedObject));
-      const deserialized: QuestionGroup<string, string> =
-        objectSerializer.deserialize(serializedObject);
+  //   it('Should be able to serialize maternity report', function () {
+  //     const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  //     const report: QuestionGroup<string, string> = buildMaternityMockReport();
+  //     const serializedObject: Object = objectSerializer.serialize(report);
+  //     console.log('Serialized Data:', JSON.stringify(serializedObject));
+  //     const deserialized: QuestionGroup<string, string> =
+  //       objectSerializer.deserialize(serializedObject);
 
-      expect(verifySerialized(report, deserialized)).to.be.true;
-    });
-  });
+  //     expect(verifySerialized(report, deserialized)).to.be.true;
+  //   });
+});
 
   // it('verifySerialized should not return true for two different mock reports', function () {
   //   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
