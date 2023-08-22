@@ -43,7 +43,8 @@
   "headerReportChooseDepartment": "Choisir un département",
   "headerReportChooseDifferentDepartment": "Choisir un autre département",
   "headerEmployeeOfTheMonth": "Employé du mois",
-  "headerEmployeeOfTheMonthForm": "Formulaire d'employé du mois",
+  "headerEmployeeOfTheMonthAddForm": "Formulaire d'ajout de l'employé du mois",
+  "headerEmployeeOfTheMonthUpdateForm": "Formulaire de mise à jour de l'employé du mois",
   "headerBiomechanicalSupport": "Soutien biomécanique",
   "headerBiomechanicalSupportForm": "Formulaire de soutien biomécanique",
   "headerBrokenKitReport": "Signaler un kit cassé",
@@ -167,6 +168,7 @@
   "caseStudyFormAnErrorOccurred": "Une erreur s'est produite lors de la soumission. Veuillez réessayer.",
   "caseStudyViewAuthor": "Auteur: ",
   "caseStudyViewDate": "Date: ",
+  "caseStudyViewCreatedAt": "Date de création: ",
   "departmentPageNICU/PAED": "Département de NICU/PAED",
   "departmentPageDepartmentOf": "Département de ",
   "departmentPageSubmitData": "Soumettre des données",
@@ -217,15 +219,22 @@
   "reportsUserId": "ID de l'utilisateur",
   "reportsSubmittedBy": "Proposé par",
 
+  "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
-  "employeeOfTheMonthTitle": "Employé du mois de ",
+  "employeeOfTheMonthArchive": "Archive",
+  "employeeOfTheMonthTitle": "Employé du mois - ",
+  "employeeOfTheMonthDateAwarded": "Date d'attribution",
   "employeeOfTheMonthDate": "Date de mise à jour",
   "employeeOfTheMonthName": "Nom",
   "employeeOfTheMonthDepartment": "Département",
   "employeeOfTheMonthDescription": "La description",
   "employeeOfTheMonthUploadImage": "Télécharger une image",
+  "employeeOfTheMonthUpdateUploadImage": "Télécharger une image. Laisser si non modifid",
   "employeeOfTheMonthSubmitForm": "Soumettre le formulaire",
   "employeeOfTheMonthDepartmentOption": "Cliquez pour sélectionner un département",
+  "employeeOfTheMonthLastUpdated": "Dernière mise à jour",
+  "employeeOfTheMonthNotFound": "Aucun employé du mois trouvé",
+  "employeeOfTheMonthSuccessfullyUpdated": "Employé du mois mis à jour avec succès !",
   "template": {
     "change_template": "Changer de modèle",
     "department": "Département",
@@ -272,7 +281,8 @@
       "author": "Auteur",
       "priority": "Priorité",
       "issue": "Problème",
-      "status": "Statut"
+      "status": "Statut",
+      "created_at": "Date de création"
     },
     "report": {
       "title": "Rapport de Kit Cassé",
@@ -347,7 +357,8 @@
     "users": "utilisateurs",
     "case_study": "étude de cas",
     "message_board_post": "posté",
-    "message_board_comment": "commentaire"
+    "message_board_comment": "coƒemmentaire",
+    "employee_of_the_month": "Employé du mois"
   },
   "error_message": {
     "compress": {

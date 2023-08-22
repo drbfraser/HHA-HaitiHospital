@@ -1,0 +1,53 @@
+import Api from '../../actions/Api';
+import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST } from 'constants/endpoints';
+import { EmployeeOfTheMonth as EmployeeOfTheMonthModel } from './typing';
+import { History } from 'history';
+import Layout from 'components/layout';
+import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR } from 'constants/toastErrorMessages';
+import { useDepartmentData } from 'hooks';
+import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
+
+// Previously was EmployeeOfTheMonthForm
+export const EmployeeOfTheMonthAddForm = () => {
+  const { departmentNameKeyMap: departments } = useDepartmentData();
+  const { t } = useTranslation();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const { reset } = useForm<EmployeeOfTheMonthModel>({});
+  const history: History = useHistory<History>();
+
+  const onImageUpload = (item: File) => {
+    setSelectedFile(item);
+  };
+
+  const onSubmitActions = () => {
+    reset({});
+    setSelectedFile(null);
+    history.push('/employee-of-the-month');
+  };
+
+  const onSubmit = async (data: any) => {
+    let formData = new FormData();
+    data.department = departments.get(data.department);
+    [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
+    let postData = JSON.stringify(data);
+    formData.append('document', postData);
+    formData.append('file', selectedFile);
+    await Api.Post(
+      ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST,
+      formData,
+      onSubmitActions,
+      history,
+      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
+    );
+  };
+
+  return (
+    <Layout showBackButton title={t('headerEmployeeOfTheMonthAddForm')}>
+      <EmployeeOfTheMonthForm onSubmit={onSubmit} onImageUpload={onImageUpload} />
+    </Layout>
+  );
+};

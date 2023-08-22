@@ -6,8 +6,8 @@
 }
 
 .main.main-region.expanded {
-  left: 275px;
-  width: calc(100% - 275px);
+  left: 288px;
+  width: calc(100% - 288px);
 }
 
 .errorMsg {

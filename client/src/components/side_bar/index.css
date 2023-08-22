@@ -1,6 +1,15 @@
 .nested {
   display: none;
 }
+
 .active > .nested {
   display: block;
+}
+
+.collasped {
+  width: 88px;
+}
+
+.expanded {
+  width: 288px;
 }

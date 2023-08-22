@@ -1,33 +1,20 @@
+import { FormFieldDisplay, FormFieldDisplayProps } from 'components/form/FormFieldDisplay';
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
 import { CaseStudyType } from 'pages/case_study/typing';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import { FormDisplay } from 'components/form/FormDisplay';
 import { History } from 'history';
-import ImageModal from 'components/popup_modal/ImageModal';
+import { ImageDisplay } from 'components/form/ImageDisplay';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-
-interface InfoRowProps {
-  label: string;
-  testid?: string;
-  detail: string;
-}
-
-const InfoRow = ({ label, testid = '', detail }: InfoRowProps) => (
-  <>
-    <h6 className="fs-6 fw-bold lh-base">{label}</h6>
-    <p data-testid={testid} className="fs-6 lh-base text-break">
-      {detail}
-    </p>
-  </>
-);
 
 interface CaseStudyInfoProps {
   caseStudy: any;
   setTitle?: (title: string) => void;
   titleLabel?: string;
-  infoRows?: InfoRowProps[];
+  infoRows?: FormFieldDisplayProps[];
   caseStudyStory: string;
 }
 
@@ -41,19 +28,8 @@ const CaseStudyInfo = ({
   const { t } = useTranslation();
   const author = caseStudy?.user?.name ?? t('status.not_available');
 
-  const [imageModal, setImageModal] = useState<boolean>(false);
   const [caseStudyImage, setCaseStudyImage] = useState<string>(null);
   const history: History = useHistory<History>();
-
-  const onEnlargeImage = (event: any) => {
-    event.stopPropagation();
-    event.preventDefault();
-    setImageModal(true);
-  };
-
-  const onModalImageClose = () => {
-    setImageModal(false);
-  };
 
   useEffect(() => {
     console.log('caseStudyStory', titleLabel);
@@ -69,58 +45,25 @@ const CaseStudyInfo = ({
     caseStudy.imgPath && getCaseStudyImage();
   }, [caseStudy, history]);
 
-  const imageComponent = (
-    <>
-      {caseStudyImage && (
-        <img
-          src={caseStudyImage}
-          style={{ maxWidth: '400px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
-          alt="Case Study"
-          className="d-flex mx-auto ms-xl-auto mt-3 mb-3"
-          onClick={(event: any) => {
-            onEnlargeImage(event);
-          }}
-        />
-      )}
-    </>
-  );
-
   return (
-    <>
-      <ImageModal
-        show={imageModal}
-        item={'Case Study'}
-        image={caseStudyImage}
-        onModalClose={onModalImageClose}
-      ></ImageModal>
-      <div className="w-100">
-        <div className="d-flex flex-column flex-xl-row">
-          <div className="d-flex flex-column">
-            <h6 className="fs-6 lh-base">
-              {t('caseStudyViewAuthor')} {author}
-            </h6>
-            <h6 className="fs-6 lh-base">
-              {t('caseStudyViewAuthor')} {caseStudy.createdAt}
-            </h6>
-            {infoRows.map((infoRow, index) => (
-              <InfoRow
-                key={index}
-                label={t(infoRow.label)}
-                testid={infoRow.testid}
-                detail={infoRow.detail}
-              />
-            ))}
-          </div>
-          {imageComponent}
-        </div>
-
-        <InfoRow
+    <FormDisplay>
+      <div className="w-100 pr-2 d-flex flex-column gap-4">
+        <FormFieldDisplay label={t('caseStudyViewAuthor')}>{author}</FormFieldDisplay>
+        <FormFieldDisplay label={t('caseStudyViewCreatedAt')}>
+          {caseStudy.createdAt}
+        </FormFieldDisplay>
+        {infoRows.map(({ label, ...props }, index) => (
+          <FormFieldDisplay key={index} {...props} label={t(label)} />
+        ))}
+        <FormFieldDisplay
           label={t('caseStudyFormCaseStudy/Story')}
           testid="case-study-patient-case-story"
-          detail={caseStudyStory}
-        />
+        >
+          {caseStudyStory}
+        </FormFieldDisplay>
       </div>
-    </>
+      {caseStudyImage && <ImageDisplay image={caseStudyImage} />}
+    </FormDisplay>
   );
 };
 
@@ -133,32 +76,32 @@ const PatientStorySummary = ({ caseStudy, setTitle }) => (
       {
         label: 'caseStudyFormPatientName',
         testid: 'case-study-patient-name',
-        detail: caseStudy.patientStory.patientsName,
+        children: caseStudy.patientStory.patientsName,
       },
       {
         label: 'caseStudyFormPatientAge',
         testid: 'case-study-patient-age',
-        detail: caseStudy.patientStory.patientsAge,
+        children: caseStudy.patientStory.patientsAge,
       },
       {
         label: 'caseStudyFormWherePatientFrom',
         testid: 'case-study-patient-from',
-        detail: caseStudy.patientStory.whereIsThePatientFrom,
+        children: caseStudy.patientStory.whereIsThePatientFrom,
       },
       {
         label: 'caseStudyFormWhyPatientChooseHCBH',
         testid: 'case-study-patient-why-come',
-        detail: caseStudy.patientStory.whyComeToHcbh,
+        children: caseStudy.patientStory.whyComeToHcbh,
       },
       {
         label: 'caseStudyFormHowLongAtHCBH',
         testid: 'case-study-patient-how-long',
-        detail: caseStudy.patientStory.howLongWereTheyAtHcbh,
+        children: caseStudy.patientStory.howLongWereTheyAtHcbh,
       },
       {
         label: 'caseStudyFormWhatWasTheirDiagnosis',
         testid: 'case-study-patient-diagnosis',
-        detail: caseStudy.patientStory.diagnosis,
+        children: caseStudy.patientStory.diagnosis,
       },
     ]}
     caseStudyStory={caseStudy.patientStory.caseStudyStory}
@@ -173,23 +116,23 @@ const StaffRecognitionSummary = ({ caseStudy, setTitle }) => (
     infoRows={[
       {
         label: 'caseStudyFormStaffName',
-        detail: caseStudy.staffRecognition.staffName,
+        children: caseStudy.staffRecognition.staffName,
       },
       {
         label: 'caseStudyFormRoleJobTitle',
-        detail: caseStudy.staffRecognition.jobTitle,
+        children: caseStudy.staffRecognition.jobTitle,
       },
       {
         label: 'caseStudyFormWhichDepartmentWorkIn',
-        detail: caseStudy.staffRecognition.department,
+        children: caseStudy.staffRecognition.department,
       },
       {
         label: 'caseStudyFormHowLongHaveBeenWorkingHCBH',
-        detail: caseStudy.staffRecognition.howLongWorkingAtHcbh,
+        children: caseStudy.staffRecognition.howLongWorkingAtHcbh,
       },
       {
         label: 'caseStudyFormWhatEnjoyTheMostAtHCBH',
-        detail: caseStudy.staffRecognition.mostEnjoy,
+        children: caseStudy.staffRecognition.mostEnjoy,
       },
     ]}
     caseStudyStory={caseStudy.staffRecognition.caseStudyStory}
@@ -204,23 +147,23 @@ const TrainingSessionSummary = ({ caseStudy, setTitle }) => (
     infoRows={[
       {
         label: 'caseStudyFormTrainingDate',
-        detail: caseStudy.trainingSession.trainingDate,
+        children: caseStudy.trainingSession.trainingDate,
       },
       {
         label: 'caseStudyFormWhatWasTrainingOn',
-        detail: caseStudy.trainingSession.trainingOn,
+        children: caseStudy.trainingSession.trainingOn,
       },
       {
         label: 'caseStudyFormWhoConductedTraining',
-        detail: caseStudy.trainingSession.whoConducted,
+        children: caseStudy.trainingSession.whoConducted,
       },
       {
         label: 'caseStudyFormWhoAttendedTraining',
-        detail: caseStudy.trainingSession.whoAttended,
+        children: caseStudy.trainingSession.whoAttended,
       },
       {
         label: 'caseStudyFormHowWillTrainingBenefitHCBH',
-        detail: caseStudy.trainingSession.benefitsFromTraining,
+        children: caseStudy.trainingSession.benefitsFromTraining,
       },
     ]}
     caseStudyStory={caseStudy.trainingSession.caseStudyStory}
@@ -235,23 +178,23 @@ const EquipmentReceivedSummary = ({ caseStudy, setTitle }) => (
     infoRows={[
       {
         label: 'caseStudyFormWhatEquipmentWasReceived',
-        detail: caseStudy.equipmentReceived.equipmentReceived,
+        children: caseStudy.equipmentReceived.equipmentReceived,
       },
       {
         label: 'caseStudyFormWhichDepartmentReceivedIt',
-        detail: caseStudy.equipmentReceived.departmentReceived,
+        children: caseStudy.equipmentReceived.departmentReceived,
       },
       {
         label: 'caseStudyFormWhoWasEquipmentFrom',
-        detail: caseStudy.equipmentReceived.whoSentEquipment,
+        children: caseStudy.equipmentReceived.whoSentEquipment,
       },
       {
         label: 'caseStudyFormWasItDonatedOrPurchased',
-        detail: caseStudy.equipmentReceived.purchasedOrDonated,
+        children: caseStudy.equipmentReceived.purchasedOrDonated,
       },
       {
         label: 'caseStudyFormWhatDoesThisNewEquipmentDo',
-        detail: caseStudy.equipmentReceived.whatDoesEquipmentDo,
+        children: caseStudy.equipmentReceived.whatDoesEquipmentDo,
       },
     ]}
     caseStudyStory={caseStudy.equipmentReceived.caseStudyStory}

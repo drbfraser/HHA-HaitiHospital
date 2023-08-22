@@ -30,6 +30,7 @@ enum RequestItem {
   CASE_STUDY = 'case_study',
   POST = 'message_board_post',
   COMMENT = 'message_board_comment',
+  EOTM = 'employee_of_the_month',
 }
 
 // Make sure these keys match with i18-next translation JSON
@@ -331,6 +332,23 @@ const getMsgCreateCommentOk = (): string => {
     item: RequestItem.COMMENT,
   });
 };
+
+const getMsgDeleteEotmFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.EOTM,
+  });
+};
+
+const getMsgDeleteEotmOk = (): string => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.EOTM,
+  });
+};
+
 export const ResponseMessage = {
   getMsgFetchDepartmentFailed,
   getMsgFetchDepartmentsFailed,
@@ -376,4 +394,7 @@ export const ResponseMessage = {
   getMsgCreatePostOk,
   getMsgCreateCommentFailed,
   getMsgCreateCommentOk,
+
+  getMsgDeleteEotmFailed,
+  getMsgDeleteEotmOk,
 };

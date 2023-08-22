@@ -2,7 +2,8 @@ import AddMessage from 'pages/message_board/AddMessage';
 import { AddUserForm } from 'pages/admin/AddUserForm';
 import AdminList from 'pages/admin/AdminList';
 import { BiomechanicalList } from 'pages/biomech/BiomechanicalList';
-import { BrokenKitReport } from 'pages/biomech/BrokenKitReport';
+import { BrokenKitAdd } from 'pages/biomech/BrokenKitAdd';
+import { BrokenKitEdit } from 'pages/biomech/BrokenKitEdit';
 import { BrokenKitView } from 'pages/biomech/BrokenKitView';
 import { CaseStudyForm } from 'pages/case_study/CaseStudyForm';
 import { CaseStudyList } from 'pages/case_study/CaseStudyList';
@@ -10,8 +11,9 @@ import { CaseStudyView } from 'pages/case_study/CaseStudyView';
 import { Department } from 'pages/department/Department';
 import EditMessage from 'pages/message_board/EditMessage';
 import { EditUserForm } from 'pages/admin/EditUserForm';
-import { EmployeeOfTheMonthForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthForm';
+import { EmployeeOfTheMonthAddForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthAddForm';
 import { EmployeeOfTheMonthView } from 'pages/employee_of_the_month/EmployeeOfTheMonthView';
+import { EmployeeOfTheMonthArchive } from 'pages/employee_of_the_month/EmployeeOfTheMonthArchive';
 import GeneralReports from 'pages/general_reports/GeneralReports';
 import Home from 'pages/home/Home';
 import { LeaderBoard } from 'pages/leader_board/LeaderBoard';
@@ -26,6 +28,7 @@ import ReportView from 'pages/report/ReportView';
 import { Role } from 'constants/interfaces';
 import { UpdatePermissions } from 'pages/permissions/UpdatePermissions';
 import { UploadReport } from 'pages/report/UploadReport';
+import { EmployeeOfTheMonthUpdateForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthUpdateForm';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -129,7 +132,7 @@ const routes = [
   {
     path: `${PathPatterns.BIOMECH_REPORT}`,
     key: 'bio_support',
-    component: BrokenKitReport,
+    component: BrokenKitAdd,
     isPrivate: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -138,6 +141,14 @@ const routes = [
     path: `${PathPatterns.BIOMECH_VIEW}`,
     key: 'bio_support',
     component: BrokenKitView,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: `${PathPatterns.BIOMECH_EDIT}`,
+    key: 'bio_support',
+    component: BrokenKitEdit,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -223,11 +234,43 @@ const routes = [
     departmentsAllowed: [],
   },
   {
-    path: '/employee-of-the-month/form',
+    path: '/employee-of-the-month/archive',
     key: 'employee_of_the_month',
-    component: EmployeeOfTheMonthForm,
+    component: EmployeeOfTheMonthArchive,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/add',
+    key: 'employee_of_the_month',
+    component: EmployeeOfTheMonthAddForm,
     loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/update/:eotmId',
+    key: 'employee_of_the_month',
+    component: EmployeeOfTheMonthUpdateForm,
+    loginRequired: true,
+    rolesAllowed: [Role.Admin, Role.MedicalDirector],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/:year/:month',
+    key: 'employee_of_the_month',
+    component: EmployeeOfTheMonthView,
+    loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+  {
+    path: '/employee-of-the-month/:eotmId',
+    key: 'employee_of_the_month',
+    component: EmployeeOfTheMonthView,
+    loginRequired: true,
+    rolesAllowed: [],
     departmentsAllowed: [],
   },
   {
