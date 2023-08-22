@@ -48,6 +48,15 @@ services:
     logging:
       driver: fluentd
 
+  loki:
+    image: grafana/loki:2.8.0
+    container_name: hhahaiti_loki
+    ports:
+      - '3100:3100'
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+      
   grafana:
     image: grafana/grafana-enterprise
     container_name: hha_grafana
