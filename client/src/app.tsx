@@ -1,13 +1,14 @@
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import { AuthProvider, AdminToggleProvider } from 'contexts';
-
-import routes from './routes';
-import AppRoute from './app-route';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { AdminToggleProvider, AuthProvider } from 'contexts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+
+import AppRoute from './app-route';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ToastContainer } from 'react-toastify';
+import routes from './routes';
 
 const queryClient = new QueryClient();
 

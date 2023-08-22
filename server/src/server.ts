@@ -9,8 +9,21 @@ import httpErrorHandler from 'middleware/httpErrorHandler';
 import { logger } from './logger';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import path from 'path';
+import promBundle from 'express-prom-bundle';
 import routes from './routes/routes';
-const path = require('path');
+
+// Add the options to the prometheus middleware most option are for http_request_duration_seconds histogram metric
+const metricsMiddleware = promBundle({
+  includeMethod: true,
+  includePath: true,
+  includeStatusCode: true,
+  includeUp: true,
+  customLabels: { project_name: 'Haiti_HHA' },
+  promClient: {
+    collectDefaultMetrics: {},
+  },
+});
 
 export const createServer = () => {
   const app = express();
@@ -33,6 +46,9 @@ export const createServer = () => {
   // Bodyparser Middleware
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // add the prometheus middleware to all routes
+  app.use(metricsMiddleware);
 
   app.use(cookieParser());
   app.use(passport.initialize());

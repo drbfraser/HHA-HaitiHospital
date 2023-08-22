@@ -1,19 +1,35 @@
-import { createLogger, format, transports, Logger } from 'winston';
-const { combine, timestamp, printf, colorize, errors } = format;
+import { Logger, createLogger, format, transports } from 'winston';
+
+import LokiTransport from 'winston-loki';
+
+const { combine, timestamp, printf, align, json } = format;
 
 export const buildDevLogger = (): Logger => {
   const formatter = printf(
-    ({ level, message, timestamp, stack }) => `${timestamp} [${level}]: ${stack || message}`,
+    ({ level, message, timestamp, stack, label }) =>
+      `[${timestamp}][${label}][${level}]: ${stack || message}`,
   );
 
-  return createLogger({
+  const lokiTransport = new LokiTransport({
+    host: 'http://loki:3100',
+    labels: { app: 'hhahaiti_local' },
+    json: true,
+    format: combine(timestamp(), json(), align()),
+    replaceTimestamp: true,
+    onConnectionError: (err) => console.error(err),
+    level: 'silly',
+  });
+
+  const consoleTransport = new transports.Console({
     level: 'debug',
-    format: combine(
-      colorize(),
-      timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-      errors({ stack: true }),
-      formatter,
-    ),
-    transports: [new transports.Console({ handleExceptions: true })],
+    handleExceptions: true,
+    format: combine(timestamp(), formatter, align()),
+  });
+
+  return createLogger({
+    defaultMeta: {
+      label: 'dev',
+    },
+    transports: [consoleTransport, lokiTransport],
   });
 };

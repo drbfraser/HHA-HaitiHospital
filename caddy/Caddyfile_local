@@ -1,0 +1,33 @@
+{
+	servers {
+		metrics
+	}
+	admin :2019
+}
+
+{$DOMAIN} {
+	reverse_proxy {$API_HOSTNAME}:8000
+}
+
+# {$DOMAIN} {
+#     encode gzip
+
+#     header {
+#         -Server
+#         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+#         X-Content-Type-Options "nosniff"
+#     }
+
+#     handle /api/* {
+#         reverse_proxy {$API_HOSTNAME}:8000
+#     }
+
+#     handle {
+#         file_server
+#         root * /var/www
+
+#         # If there is a 404, serve index.html (required for React)
+#         try_files {path} index.html
+#     }
+
+# }

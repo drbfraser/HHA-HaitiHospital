@@ -5,24 +5,90 @@ services:
     container_name: hhahaiti_server
     depends_on:
       - mongodb
+      - log_metrics_processor
     environment:
       - MONGO_URI=mongodb://mongodb:27017/
       - SERVER_PORT=8000
+    logging:
+      driver: fluentd
+
+
   mongodb:
     container_name: hhahaiti_mongodb
+    depends_on:
+      - log_metrics_processor
     image: mongo:5.0.6-focal
     volumes:
       - hhahaiti_mongodb_data:/data/db
+    logging:
+      driver: fluentd
+
+
   log_metrics_processor:
     container_name: hhahaiti_fluentbit
-    image: fluent/fluent-bit:2.0.11
+    image: fluent/fluent-bit:2.1.8
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./fluentbit-config:/fluent-bit/etc
+    ports:
+      - 24224:24224
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: hhahaiti_prometheus
+    depends_on:
+      - log_metrics_processor
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - hhahaiti_prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
     logging:
-      driver: "none"
+      driver: fluentd
+
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    depends_on:
+      - log_metrics_processor
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    logging:
+      driver: fluentd
+
+  mongodb_exporter:
+    image: bitnami/mongodb-exporter:latest
+    container_name: hhahaiti_mongodb_exporter
+    restart: unless-stopped
+    ports:
+      - 9216:9216
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/
+
+  promtail:
+    image: grafana/promtail:2.8.0
+    container_name: hhahaiti_promtail
+    volumes:
+      - /var/log:/var/log
+      - ./promtail-config.yaml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
 
 volumes:
   hhahaiti_mongodb_data:
-  fluentbit-config:
+  hhahaiti_prometheus_data: {}

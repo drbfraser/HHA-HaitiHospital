@@ -20,16 +20,17 @@ type FormFieldProps = {
 };
 
 const FormField = (props: FormFieldProps) => {
-  const { i18n } = useTranslation();
-  const language = i18n.language;
-  const prompt = props.prompt[language];
-  const displayPrompt = prompt ?? props.prompt;
-  const value = props.value !== null ? props.value : ''; // Set a default value if props.value is null
+  const {
+    i18n: { language },
+  } = useTranslation();
+
+  const prompt = props.prompt[language.substring(0, 2)] || props.prompt || '';
+  const value = props.value ?? ''; // Set a default value if props.value is null
 
   return (
     <div className="form-group">
       <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>
-        {props.nameId.replaceAll('_', '.')}. {displayPrompt}
+        {props.nameId.replaceAll('_', '.')}. {prompt}
       </label>
       <input
         className={cn(

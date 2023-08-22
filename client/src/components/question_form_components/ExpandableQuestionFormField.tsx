@@ -1,8 +1,9 @@
-import cn from 'classnames';
 import { ChangeEvent, useState } from 'react';
+
 import { ExpandableQuestion } from '@hha/common';
 import { FormField } from './index';
 import { QuestionFormFields } from 'components/report/ReportForm';
+import cn from 'classnames';
 
 const ExpandableQuestionFormField = ({
   applyReportChanges,
