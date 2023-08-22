@@ -8,7 +8,7 @@ at field hospitals. The project uses the MERN stack and used the following as an
 Team Haumea created this project for CMPT 373. It is currently being further developed by CMPT 415
 team to deploy it for summer 2022.
 
-### Documents
+## Documents
 
 - See the project's
   [Google Drive folder](https://drive.google.com/drive/u/1/folders/1gFExr-PnGu1AitOtUZj-w4E_3EmPlD-q)
@@ -18,7 +18,7 @@ team to deploy it for summer 2022.
 - Please update this readme and the files/folders in Google Drive to make them more useful, correct,
   and relevant!
 
-### Features
+## Features
 
 - Message board (viewing and adding messages)
 - Clean User Interface
@@ -37,7 +37,7 @@ team to deploy it for summer 2022.
 - Biomechanical Issues Report Submissions and Display
 - Leaderboard between Departments
 
-### Future Improvements
+## Future Improvements
 
 - Backend Coupling Resolution between API Routing and Backend Logic
 - Frontend Coupling Resolution for API Calls and Business Logic
@@ -53,20 +53,20 @@ team to deploy it for summer 2022.
 ## Demo
 
 The development environment of the project can be viewed using this link:
-https://hhahaiti-dev.cmpt.sfu.ca/
+<https://hhahaiti-dev.cmpt.sfu.ca/>
 
-The staging environment: https://hhahaiti-stg.cmpt.sfu.ca/
+The staging environment: <https://hhahaiti-stg.cmpt.sfu.ca/>
 
 ## Directory Structure
 
 The Directory splits into client and server sides. Here are a few important locations:
 
-#### Serverside
+### Serverside
 
 - /server/src contains resources to database models(/models), routes and API calls(/routes), JSON
   test entries(/tests), and other backend code.
 
-#### Clientside
+### Clientside
 
 - /server/src contains resources to react components(/components), index file(index.ts), and other
   frontend code
@@ -96,7 +96,7 @@ Before starting the server, you will need to define process environment variable
 setup. Environment Variables configure the server. You can configure them by creating a `.env` file
 under the `server` folder. You can use the following example `.env` configurations:
 
-```
+```bash
 # Your MongoDB URI (local or remote). Defaults to localhost:27017
 MONGO_URI=mongodb://localhost:27017/
 # Secret use to generate JWT tokens (You can generate the secret via 'openssl rand -base64 32'on Linux)
@@ -111,16 +111,18 @@ TEST_SERVER_PORT=5001
 PASSWORD_SEED=C@td0g
 ```
 
-##### NOTE: If you are planning to run tests in your local environment and have changed the password variable above, please make sure to update the cypress.config.ts file accordingly.
+> [!IMPORTANT] If you are planning to run tests in your local environment and have changed the
+> password variable above, please make sure to update the cypress.config.ts file accordingly. Please
+> do not commit the updated cypress.config.ts file.
 
 ### Common package
 
 - Navigate to the /common folder from the root directory
 - Run the following commands to install dependencies and build the files
 
-```
-$ npm install
-$ npm build
+```bash
+npm install
+npm build
 ```
 
 _(Outdated)_ Whenever changes are made to `common` folder, you should run `npm run update-common` on
@@ -132,10 +134,10 @@ reinstalls it in `client` and `server`.
 - navigate into/server folder from the root directory
 - run the following:
 
-```
-$ npm install
-$ npm run seed
-$ npm start
+```bash
+npm install
+npm run seed
+npm start
 ```
 
 ### Client Setup
@@ -143,19 +145,19 @@ $ npm start
 - Navigate to the /client folder from the root directory
 - Run the following commands to install dependencies and start the client
 
-```
-$ npm install
-$ npm start
+```bash
+npm install
+npm start
 ```
 
 Alternatively, you can run this command inside the root directory to run the client and server
 concurrently:
 
-```
-$ npm run dev
+```bash
+npm run dev
 ```
 
-Now that everything is up, visit http://localhost:3000 and log in with the seeded users:
+Now that everything is up, visit <http://localhost:3000> and log in with the seeded users:
 
 - Role: Admin
 - Username: user0
@@ -168,11 +170,11 @@ Now that everything is up, visit http://localhost:3000 and log in with the seede
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
 
-### Logging
+## Logging
 
 Log levels:
 
-```
+```json
 levels {
     error: 0,
     warn 1,
@@ -197,7 +199,109 @@ For non-prod env
 - logs will not be exported into a file but only to the console.
 - see `logger/dev.logger.ts`
 
-### Prettier Setup
+### Command to run docker services for local monitoring
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.override.yml up
+```
+
+### Sample Prometheus.yml file
+
+```yaml
+global:
+  scrape_interval: 30s
+
+scrape_configs:
+  - job_name: hha_local_server
+    static_configs:
+      - targets: ['hhahaiti_server:8000']
+
+  - job_name: hha_local_caddy
+    static_configs:
+      - targets: ['hhahaiti_caddy:2019']
+
+  - job_name: hha_local_db
+    static_configs:
+      - targets: ['hhahaiti_mongodb_exporter:9216']
+
+  - job_name: hha_local_host
+    static_configs:
+      - targets: ['node_exporter:9100']
+```
+
+### Sample Promtail-config.yml file fromthe Promtail docker image
+
+```yaml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://hhahaiti_loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          __path__: /var/log/*log
+```
+
+### Sample loki-config.yaml file from the Loki Docker image
+
+```yaml
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+common:
+  path_prefix: /loki
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+ruler:
+  alertmanager_url: http://localhost:9093
+```
+
+### URLs to access the services
+
+Prometheus: <http://localhost:9090/> Grafana: <http://localhost:8443/>
+
+### Default Local Grafana Login
+
+Username: admin Password: admin
+
+### URLs to add Loki and Prometheus as Data Sources in Grafana
+
+Loki: http://hhahaiti_loki:3100 Prometheus: http://hhahaiti_prometheus:9090
+
+### Deployment on staging
+
+We would need a Prometheus config file that would push logs to the production Grafana cloud.
+
+## Prettier Setup
 
 We use prettier as our code formatter. The repo provides a prettier config to unify our styles.
 
@@ -205,30 +309,33 @@ We use prettier as our code formatter. The repo provides a prettier config to un
 - Navigate to the root directory
 - Run the following commands run prettier on the whole project
 
-```
-$ npm install
-$ npm run format
+```bash
+npm install
+npm run format
 ```
 
 Our prettier config is set to format code on file save.
 
-### Docker Setup
+## Docker Setup
 
 - To run the docker containers, run the following commands from the root directory
 
-```
-$ sudo docker-compose build
-$ sudo docker-compose up
+```bash
+sudo docker-compose build
+sudo docker-compose up
 ```
 
 - To seed the database in the containerized deployment, run the following command from the `/src`
   folder in the server containerized
 
-```
-$npm run seed
+```bash
+npm run seed
 ```
 
-### Gitlab Runners
+## Gitlab Runners
+
+> [!WARNING] As of Summer 2023, this project was migrated to Github and all the pipeline steps run
+> on Github runners.
 
 - Gitlab runners are administered directly by Dr Brian
 - It is important to not change how jobs are picked up by runners as this affects projects outside
@@ -249,13 +356,13 @@ To do so:
 5. run: `cd server`
 6. run: `npm run seed`
 
-### License
+## License
 
 GNU GPL
 
 ## Infrastructure Notes
 
-### Overview:
+### Overview
 
 Our infrastructure is composed of frontend and backend projects, utilizing React and Node.js,
 respectively. Both projects rely on a shared package responsible for performing various tasks. The
@@ -267,13 +374,13 @@ consistency across development (dev) and staging environments, with updates push
 respective branch merges. We use fluentbit to collect logs and send them to hosted services like
 cloudwatch and grafana where they can be stored and analyzed.
 
-### Backend:
+### Backend
 
 The backend project, developed using TypeScript, operates within a dedicated Docker container.
 TypeScript code is transpiled to JavaScript using ts-node. The backend container communicates with
 the MongoDB container for data storage and retrieval purposes.
 
-### Frontend:
+### Frontend
 
 The frontend project, built with Create React App and also using Typescript, runs inside a separate
 Docker container. The frontend is served via Caddy, a reverse proxy incorporating TLS, which
@@ -281,32 +388,32 @@ delivers the frontend content as HTML, CSS, and JS files within the Caddy contai
 production is compiled using webpack, which transpiles CRA into an optimized javascript file (more
 on this Webpack and Rewire).
 
-### Docker Containers:
+### Docker Containers
 
 Our application is constructed and deployed within Docker containers. We utilize three containers:
 one each for the frontend, backend, and MongoDB database. This approach ensures component isolation
 and independent scalability. Each container is assembled using a Dockerfile, which outlines the
 necessary dependencies and configurations for that specific component.
 
-### Caddy:
+### Caddy
 
 Caddy serves as the reverse proxy for our frontend, providing built-in TLS to encrypt all incoming
 and outgoing traffic. This additional layer of security enhances the overall protection of our
 application.
 
-### Database:
+### Database
 
 MongoDB functions as our database solution, operating within its own Docker container. It interacts
 with the backend container for data storage and retrieval operations.
 
-### Fluentbit:
+### Fluentbit
 
 Fluent Bit is a lightweight data collector that can efficiently collect log data from various
 sources, including Docker containers, and output it to different destinations like Amazon
 CloudWatch. This setup helps monitor application health and identify issues quickly, ensuring a
 reliable and stable product for our users.
 
-### Dev and Staging:
+### Dev and Staging
 
 Our infrastructure supports two environments: dev and staging. Updates to the dev environment occur
 through merges to the master branch, while the staging environment is updated via merges to the
@@ -314,7 +421,7 @@ staging branch. Consistent infrastructure across both environments ensures appli
 simplifying the process of identifying and resolving issues that may arise in one environment but
 not the other.
 
-### Webpack and Rewire:
+### Webpack and Rewire
 
 Webpack serves as a powerful bundler and transpiler, responsible for transforming and bundling our
 frontend project's assets, including JavaScript, CSS, and images. Webpack is employed by default in
