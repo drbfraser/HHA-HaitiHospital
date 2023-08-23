@@ -12,7 +12,6 @@ services:
     logging:
       driver: fluentd
 
-
   mongodb:
     container_name: hhahaiti_mongodb
     depends_on:
@@ -22,7 +21,6 @@ services:
       - hhahaiti_mongodb_data:/data/db
     logging:
       driver: fluentd
-
 
   log_metrics_processor:
     container_name: hhahaiti_fluentbit

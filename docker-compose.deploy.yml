@@ -23,8 +23,10 @@ services:
       - PASSWORD_SEED=${PASSWORD_SEED}
       - LOKI_URL=${LOKI_URL}
       - LOKI_APP_LABEL=${LOKI_APP_LABEL}
+  
   mongodb:
     restart: always
+
   caddy:
     image: drbfraser/hhahaiti_revproxy_frontend:$IMAGE_TAG
     container_name: hhahaiti_caddy
@@ -43,3 +45,14 @@ services:
       driver: fluentd
   log_metrics_processor:
     restart: always
+
+  prometheus:
+    volumes:
+      - /hha_config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - hhahaiti_prometheus_data:/prometheus
+
+  promtail:
+    volumes:
+      - /var/log:/var/log
+      - /hha_config/promtail-config.yaml:/etc/promtail/config.yml
+    

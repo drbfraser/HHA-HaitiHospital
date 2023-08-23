@@ -9,3 +9,4 @@ build/
 client/hha-common-1.0.0.tgz
 server/hha-common-1.0.0.tgz
 prometheus.yml
+promtail.yaml
