@@ -199,103 +199,22 @@ For non-prod env
 - logs will not be exported into a file but only to the console.
 - see `logger/dev.logger.ts`
 
+### Environment Variables Required for Logging
+
+The following values are needed from a Grafana Cloud account to run with logging
+
+- LOKI_HOST
+- LOKI_USER
+- LOKI_KEY
+- PROMETHEUS_HOST
+- PROMETHEUS_USER
+- PROMETHEUS_KEY
+
 ### Command to run docker services for local monitoring
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.override.yml up
 ```
-
-### Sample Prometheus.yml file
-
-```yaml
-global:
-  scrape_interval: 30s
-
-scrape_configs:
-  - job_name: hha_local_server
-    static_configs:
-      - targets: ['hhahaiti_server:8000']
-
-  - job_name: hha_local_caddy
-    static_configs:
-      - targets: ['hhahaiti_caddy:2019']
-
-  - job_name: hha_local_db
-    static_configs:
-      - targets: ['hhahaiti_mongodb_exporter:9216']
-
-  - job_name: hha_local_host
-    static_configs:
-      - targets: ['node_exporter:9100']
-```
-
-### Sample Promtail-config.yml file fromthe Promtail docker image
-
-```yaml
-server:
-  http_listen_port: 9080
-  grpc_listen_port: 0
-
-positions:
-  filename: /tmp/positions.yaml
-
-clients:
-  - url: http://hhahaiti_loki:3100/loki/api/v1/push
-
-scrape_configs:
-  - job_name: system
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: varlogs
-          __path__: /var/log/*log
-```
-
-### Sample loki-config.yaml file from the Loki Docker image
-
-```yaml
-auth_enabled: false
-
-server:
-  http_listen_port: 3100
-
-common:
-  path_prefix: /loki
-  storage:
-    filesystem:
-      chunks_directory: /loki/chunks
-      rules_directory: /loki/rules
-  replication_factor: 1
-  ring:
-    kvstore:
-      store: inmemory
-
-schema_config:
-  configs:
-    - from: 2020-10-24
-      store: boltdb-shipper
-      object_store: filesystem
-      schema: v11
-      index:
-        prefix: index_
-        period: 24h
-
-ruler:
-  alertmanager_url: http://localhost:9093
-```
-
-### URLs to access the services
-
-Prometheus: <http://localhost:9090/> Grafana: <http://localhost:8443/>
-
-### Default Local Grafana Login
-
-Username: admin Password: admin
-
-### URLs to add Loki and Prometheus as Data Sources in Grafana
-
-Loki: http://hhahaiti_loki:3100 Prometheus: http://hhahaiti_prometheus:9090
 
 ### Deployment on staging
 

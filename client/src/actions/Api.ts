@@ -5,8 +5,8 @@ import axios, { AxiosError } from 'axios';
 import DbErrorHandler from './http_error_handler';
 import { History } from 'history';
 import { ResponseMessage } from 'utils/response_message';
-import { toast } from 'react-toastify';
 import i18n from 'i18n';
+import { toast } from 'react-toastify';
 
 /**
  *
@@ -59,7 +59,7 @@ const Get = async (
 const Post = async (
   url: string,
   obj: object = {},
-  actions: () => void,
+  actions: (data: any) => void,
   history: History,
   errorMsg?: string,
   pendingMsg?: string,
@@ -67,13 +67,16 @@ const Post = async (
 ) => {
   await toast.promise(
     axios.post(url, obj).then(
-      () => actions(),
+      (res) => actions && actions(res.data),
       (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
     ),
     {
       error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
       pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
       success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
+    },
+    {
+      autoClose: 3000,
     },
   );
 };

@@ -43,16 +43,20 @@ services:
       - '2019:2019'
     logging:
       driver: fluentd
-  log_metrics_processor:
-    restart: always
-
-  prometheus:
     volumes:
-      - /hha_config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - hhahaiti_prometheus_data:/prometheus
+      - caddy_log:/var/log/
 
-  promtail:
-    volumes:
-      - /var/log:/var/log
-      - /hha_config/promtail-config.yaml:/etc/promtail/config.yml
-    
+    logger:
+      volumes:
+        - caddy_log:/var/log/
+      environment:      
+        - LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
+        - LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
+        - LOKI_KEY: ${LOKI_KEY} # ADD YOUR PASSWORD
+        - PROMETHEUS_HOST: ${PROMETHEUS_HOST} # ADD YOUR HOST
+        - PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
+        - PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
+      command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-${ENV:-local}.conf"]
+
+volumes:
+  caddy_log:
