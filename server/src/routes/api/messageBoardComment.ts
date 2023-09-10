@@ -72,7 +72,7 @@ router.post(
         .save()
         .then(async (message) => {
           const json = await message.toJson();
-          res.json(json).status(HTTP_CREATED_CODE);
+          res.status(HTTP_CREATED_CODE).json(json);
         })
         .catch((err: any) =>
           next(new InternalError(`Message board comment submission failed: ${err}`)),
