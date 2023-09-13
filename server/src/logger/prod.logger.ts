@@ -29,9 +29,9 @@ export const buildProdLogger = (): Logger => {
   });
 
   const lokiTransport =
-    process.env.LOKI_HOST &&
+    process.env.LOKI_URL &&
     new LokiTransport({
-      host: process.env.LOKI_HOST,
+      host: process.env.LOKI_URL,
       labels: { app: process.env.LOKI_APP_LABEL ?? 'hhahaiti' },
       json: true,
       format: format.json(),

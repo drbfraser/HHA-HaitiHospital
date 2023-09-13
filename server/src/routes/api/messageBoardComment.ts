@@ -1,18 +1,17 @@
-import { Router, Response, NextFunction } from 'express';
-import requireJwtAuth from '../../middleware/requireJwtAuth';
-import { validateInput } from '../../middleware/inputSanitization';
-import MessageBoardCommentModel, { MessageBoardComment } from 'models/messageBoardComment';
 import {
   BadRequest,
   HTTP_CREATED_CODE,
-  HTTP_NOCONTENT_CODE,
   HTTP_OK_CODE,
   InternalError,
   NotFound,
 } from 'exceptions/httpException';
-import { RequestWithUser } from 'utils/definitions/express';
+import MessageBoardCommentModel, { MessageBoardComment } from 'models/messageBoardComment';
+import { NextFunction, Response, Router } from 'express';
+
 import MessageBoard from 'utils/messageboard';
-import MessageCollection from 'models/messageBoard';
+import { RequestWithUser } from 'utils/definitions/express';
+import requireJwtAuth from '../../middleware/requireJwtAuth';
+import { validateInput } from '../../middleware/inputSanitization';
 
 const router = Router();
 
@@ -71,7 +70,10 @@ router.post(
       const doc = new MessageBoardCommentModel(messageBoardComment);
       doc
         .save()
-        .then(() => res.sendStatus(HTTP_CREATED_CODE))
+        .then(async (message) => {
+          const json = await message.toJson();
+          res.status(HTTP_CREATED_CODE).json(json);
+        })
         .catch((err: any) =>
           next(new InternalError(`Message board comment submission failed: ${err}`)),
         );

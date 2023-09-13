@@ -11,6 +11,7 @@ services:
       - '8000:8000'
     environment:
       - NODE_ENV=dev
+      - LOKI_URL=https://${LOKI_HOST}
 
   mongodb:
     ports:
@@ -19,7 +20,7 @@ services:
   client:
     container_name: hhahaiti_client
     depends_on:
-      - log_metrics_processor
+      - logger
     image: node:16
     volumes:
       - ./:/code
@@ -30,44 +31,13 @@ services:
     logging:
       driver: fluentd
 
-  caddy:
-    image: caddy:2.6.4
-    container_name: hhahaiti_caddy
-    depends_on:
-      - log_metrics_processor
-    restart: unless-stopped
-    volumes:
-      - ./caddy/Caddyfile_local:/etc/caddy/Caddyfile_local
-      # - ./client/build:/var/www/
-    environment:
-      - DOMAIN=myapp.local.test
-      - API_HOSTNAME=hhahaiti_server
-    ports:
-      - '9443:443'
-      - '2019:2019'
-    logging:
-      driver: fluentd
+  logger:
+    environment:      
+      LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
+      LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
+      LOKI_KEY: ${LOKI_KEY} # ADD YOUR PASSWORD
+      PROMETHEUS_HOST: ${PROMETHEUS_HOST} # ADD YOUR HOST
+      PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
+      PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
 
-  loki:
-    image: grafana/loki:2.8.0
-    container_name: hhahaiti_loki
-    ports:
-      - '3100:3100'
-    command: -config.file=/etc/loki/local-config.yaml
-    volumes:
-      - ./loki-config.yaml:/etc/loki/local-config.yaml
-      
-  grafana:
-    image: grafana/grafana-enterprise
-    container_name: hha_grafana
-    restart: unless-stopped
-    ports:
-      - '8443:3000'
-    volumes:
-      - grafana_data:/var/lib/grafana
-    environment:
-      - GF_SERVER_ROOT_URL=http://localhost:8443/
-      - GF_INSTALL_PLUGINS=grafana-clock-panel
-
-volumes:
-  grafana_data:
+    command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-development.conf"]

@@ -16,9 +16,9 @@ import Layout from 'components/layout';
 import { Message } from 'constants/interfaces';
 import MessageComment from 'components/message/MessageComment';
 import MessageDisplay from 'components/message/MessageDisplay';
+import { ResponseMessage } from 'utils';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ResponseMessage } from 'utils';
 
 const MessageComments = () => {
   const [comments, setComments] = useState([]);
@@ -42,6 +42,16 @@ const MessageComments = () => {
       setMessage(message);
     };
 
+    const controller = new AbortController();
+
+    getMessage(controller);
+
+    return () => {
+      controller.abort();
+    };
+  }, [message_id, history]);
+
+  useEffect(() => {
     async function getComments(controller: AbortController) {
       const comments = await Api.Get(
         ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
@@ -54,7 +64,6 @@ const MessageComments = () => {
 
     const controller = new AbortController();
 
-    getMessage(controller);
     getComments(controller);
 
     return () => {
@@ -67,13 +76,17 @@ const MessageComments = () => {
     Api.Post(
       ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
       data,
-      null,
+      (comment) => {
+        setComments([...comments, comment]);
+      },
       history,
       ResponseMessage.getMsgCreateCommentFailed(),
       null,
       ResponseMessage.getMsgCreateCommentOk(),
     );
-    reset({});
+    reset({
+      messageComment: '',
+    });
   };
 
   return (
