@@ -10,7 +10,7 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/
       - SERVER_PORT=8000
     volumes:
-      - server_logs:/var/logs
+      - server_logs:/var/log
     logging:
       driver: fluentd
 
@@ -21,7 +21,7 @@ services:
     image: mongo:5.0.6-focal
     volumes:
       - hhahaiti_mongodb_data:/data/db
-      - mongo_logs:/var/logs
+      - mongo_logs:/var/log
     logging:
       driver: fluentd
 
