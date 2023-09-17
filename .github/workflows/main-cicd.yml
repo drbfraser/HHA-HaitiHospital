@@ -175,25 +175,19 @@ jobs:
   # ----------------------------------------------------------------------------
   export-image-tag:
     runs-on: [self-hosted, docker]
-    container:
-      image: node:16
     outputs:
       image_tag: ${{ steps.set_step.outputs.tag }}
     steps:
-      - name: Checkout code into container
-        uses: actions/checkout@v1
-        with: 
-          path: /isolated_build/repo/
+      - uses: actions/checkout@v3
+        # Checkout the code, not into a container, because all work here is not in a container
+        with:
+          fetch-depth: 50
       - id: set_step
         name: Export the IMAGE_TAG
         run: |
           export IMAGE_TAG=v$(git show -s --format=%cs ${{ github.sha }}).`git rev-parse --short=8 ${{ github.sha }}`
           echo "IMAGE_TAG = '$IMAGE_TAG'"
-          # NOTE: On github action runner v2.297 or higher, should redirect echo output to GITHUB_OUTPUT:
-          #    `echo "tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"`
-          # However, as of July 2023, SFU's GitHub runner is v2.296.x, so using old syntax (which works on newer)
-          # https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
-          echo "::set-output name=tag::$IMAGE_TAG"
+          echo "tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
   build-docker-publish-docker-images:
     needs: [test-build-common, test-build-server, test-build-client, export-image-tag]
