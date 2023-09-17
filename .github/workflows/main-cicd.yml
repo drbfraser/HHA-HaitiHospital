@@ -194,6 +194,7 @@ jobs:
           # However, as of July 2023, SFU's GitHub runner is v2.296.x, so using old syntax (which works on newer)
           # https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
           echo "::set-output name=tag::$IMAGE_TAG"
+        working-directory: /isolated_build/repo/
 
   build-docker-publish-docker-images:
     needs: [test-build-common, test-build-server, test-build-client, export-image-tag]
