@@ -98,6 +98,7 @@
   "addMessageAlertUnauthorized": "Update message failed: unauthorized",
   "addMessageAlertFailed": "Update message failed",
   "addMessageAlertMustSelectDepartment": "Must select a department",
+  "addMessageAlertEmptyTitleBody": "Must provide the title and body",
   "editMessage": "Edit Message",
   "leaderBoardDepartmentLeaderboard": "Department Leaderboard",
   "leaderBoardPosition": "Position",

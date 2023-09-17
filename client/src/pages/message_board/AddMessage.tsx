@@ -29,7 +29,7 @@ const AddMessage = () => {
 
   return (
     <Layout showBackButton title={t('addMessageAddMessage')}>
-      <MessageForm submitAction={onSubmit} />
+      <MessageForm submitAction={onSubmit} newForm />
     </Layout>
   );
 };
