@@ -98,6 +98,7 @@
   "addMessageAlertUnauthorized": "Échec de la mise à jour du message : non autorisé",
   "addMessageAlertFailed": "Échec de la mise à jour du message",
   "addMessageAlertMustSelectDepartment": "Doit sélectionner un département",
+  "addMessageAlertEmptyTitleBody": "Doit fournir le titre et le corps",
   "editMessage": "Modifier le message",
   "leaderBoardDepartmentLeaderboard": "Classement du département",
   "leaderBoardPosition": "Position",

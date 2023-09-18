@@ -3,31 +3,47 @@ import { Message } from 'constants/interfaces';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface MessageFormProps {
   message?: Message;
+  newForm?: boolean;
   submitAction: (data: any) => void;
 }
 
 const MessageForm = (props: MessageFormProps) => {
+  const { submitAction, newForm, message } = props;
   const { departmentNameKeyMap: departments } = useDepartmentData();
 
   const { t, i18n } = useTranslation();
-  const { register, handleSubmit, reset } = useForm({});
+  const { register, handleSubmit } = useForm({});
   const [department, setDepartment] = useState<string>('');
 
   const onSubmit = (data: any) => {
-    if (data.department === '') {
+    for (const key in data) {
+      const dataValue = data[key];
+      data[key] = typeof dataValue === 'string' ? dataValue.trim() : dataValue;
+    }
+
+    if (department === '') {
       toast.error(i18n.t('addMessageAlertMustSelectDepartment'));
       return;
     }
-    data.department = departments.get(data.department);
-    props.submitAction(data);
 
-    reset();
+    if (newForm && (data.messageBody === '' || data.messageHeader === '')) {
+      toast.error(i18n.t('addMessageAlertEmptyTitleBody'));
+      return;
+    }
+
+    data.department = departments.get(department);
+    submitAction(data);
   };
+
+  // https://medium.com/@digruby/do-not-use-props-as-default-value-of-react-usestate-directly-818ee192f454
+  useEffect(() => {
+    setDepartment(message?.department?.name || '');
+  }, [message]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,7 +79,7 @@ const MessageForm = (props: MessageFormProps) => {
           className="form-control"
           type="text"
           {...register('messageHeader')}
-          defaultValue={props?.message?.messageHeader || ''}
+          defaultValue={message?.messageHeader || ''}
         />
       </div>
 
@@ -77,7 +93,7 @@ const MessageForm = (props: MessageFormProps) => {
           {...register('messageBody')}
           cols={30}
           rows={10}
-          defaultValue={props?.message?.messageBody || ''}
+          defaultValue={message?.messageBody || ''}
         ></textarea>
       </div>
 
