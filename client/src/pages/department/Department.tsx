@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 const PAGE_SIZE = 10;
 
 export const Department = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDayRange] = useState<DayRange>({
     from: null,
     to: null,
@@ -58,28 +59,37 @@ export const Department = () => {
   useEffect(() => {
     const controller = new AbortController();
     const getDepartmentById = async (id: string) => {
-      setDepartment(
-        await Api.Get(
-          ENDPOINT_DEPARTMENT_GET_BY_ID(id),
-          ResponseMessage.getMsgFetchDepartmentFailed(),
-          history,
-          controller.signal,
-        ),
-      );
+      setIsLoading(true);
+      try {
+        setDepartment(
+          await Api.Get(
+            ENDPOINT_DEPARTMENT_GET_BY_ID(id),
+            ResponseMessage.getMsgFetchDepartmentFailed(),
+            history,
+            controller.signal,
+          ),
+        );
+      } catch (e) {
+        history.push('/notFound');
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    try {
-      getDepartmentById(deptId);
-    } catch (e) {
-      history.push('/notFound');
-    }
+    getDepartmentById(deptId);
+
     return () => {
       controller.abort();
     };
   }, [history, deptId]);
 
-  if (!department) {
-    return null;
+  if (isLoading) {
+    return (
+      <Layout title="Loading Department Info...">
+        {/* Could be replaced with a spinner in the future */}
+        <div className="loader">Loading...</div>
+      </Layout>
+    );
   }
 
   return (
