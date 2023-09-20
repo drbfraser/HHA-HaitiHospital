@@ -85,9 +85,8 @@ export const Department = () => {
 
   if (isLoading) {
     return (
-      <Layout title="Loading Department Info...">
+      <Layout title={`${t('headerDepartmentLoading')}`}>
         {/* Could be replaced with a spinner in the future */}
-        <div className="loader">Loading...</div>
       </Layout>
     );
   }

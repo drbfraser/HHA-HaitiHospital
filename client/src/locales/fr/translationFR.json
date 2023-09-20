@@ -38,6 +38,7 @@
   "headerDepartmentMaternity": "Département de Maternity",
   "headerDepartmentRehab": "Département de Rehab",
   "headerDepartmentCom": "Département de la Com&Health",
+  "headerDepartmentLoading": "Chargement des informations du département...",
   "headerReport": "Présenter un rapport",
   "headerReportDepartmentType": "Type de département",
   "headerReportChooseDepartment": "Choisir un département",
