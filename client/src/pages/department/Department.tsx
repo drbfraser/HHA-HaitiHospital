@@ -136,8 +136,7 @@ export const Department = () => {
         </table>
       ) : (
         <div className="h5 text-primary">
-          No reports have been submitted yet for the {department.name} department. Click Report (on
-          the left) to create a new report.
+          {t('noReportAvailable', { department: department.name })}
         </div>
       )}
       <Pagination

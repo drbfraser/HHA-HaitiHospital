@@ -39,6 +39,7 @@
   "headerDepartmentRehab": "Department of Rehab",
   "headerDepartmentCom": "Department of Com&Health",
   "headerDepartmentLoading": "Loading Department Info...",
+  "noReportAvailable": "No reports have been submitted yet for the {{department}} department. Click Report (on the left) to create a new report.",
   "headerReport": "Submit a report",
   "headerReportDepartmentType": "Department Type",
   "headerReportChooseDepartment": "Choose a department",

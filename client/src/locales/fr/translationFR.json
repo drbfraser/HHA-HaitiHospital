@@ -39,6 +39,7 @@
   "headerDepartmentRehab": "Département de Rehab",
   "headerDepartmentCom": "Département de la Com&Health",
   "headerDepartmentLoading": "Chargement des informations du département...",
+  "noReportAvailable": "Aucun rapport n'a encore été soumis pour le département {{department}}. Cliquez sur Rapport (à gauche) pour créer un nouveau rapport.",
   "headerReport": "Présenter un rapport",
   "headerReportDepartmentType": "Type de département",
   "headerReportChooseDepartment": "Choisir un département",
