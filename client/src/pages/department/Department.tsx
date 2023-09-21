@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 const PAGE_SIZE = 10;
 
 export const Department = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDayRange] = useState<DayRange>({
     from: null,
     to: null,
@@ -58,28 +59,36 @@ export const Department = () => {
   useEffect(() => {
     const controller = new AbortController();
     const getDepartmentById = async (id: string) => {
-      setDepartment(
-        await Api.Get(
-          ENDPOINT_DEPARTMENT_GET_BY_ID(id),
-          ResponseMessage.getMsgFetchDepartmentFailed(),
-          history,
-          controller.signal,
-        ),
-      );
+      setIsLoading(true);
+      try {
+        setDepartment(
+          await Api.Get(
+            ENDPOINT_DEPARTMENT_GET_BY_ID(id),
+            ResponseMessage.getMsgFetchDepartmentFailed(),
+            history,
+            controller.signal,
+          ),
+        );
+      } catch (e) {
+        history.push('/notFound');
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    try {
-      getDepartmentById(deptId);
-    } catch (e) {
-      history.push('/notFound');
-    }
+    getDepartmentById(deptId);
+
     return () => {
       controller.abort();
     };
   }, [history, deptId]);
 
-  if (!department) {
-    return null;
+  if (isLoading) {
+    return (
+      <Layout title={`${t('headerDepartmentLoading')}`}>
+        {/* Could be replaced with a spinner in the future */}
+      </Layout>
+    );
   }
 
   return (
@@ -127,8 +136,7 @@ export const Department = () => {
         </table>
       ) : (
         <div className="h5 text-primary">
-          No reports have been submitted yet for the {department.name} department. Click Report (on
-          the left) to create a new report.
+          {`${t('noReportsAvailable')} ${department.name}. ${t('clickToReport')}`}
         </div>
       )}
       <Pagination
