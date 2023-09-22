@@ -231,6 +231,7 @@
   "employeeOfTheMonthDate": "Date updated",
   "employeeOfTheMonthName": "Name",
   "employeeOfTheMonthDepartment": "Department",
+  "employeeOfTheMonthMonthYearAwarded": "Award date",
   "employeeOfTheMonthDescription": "Description",
   "employeeOfTheMonthUploadImage": "Upload Image",
   "employeeOfTheMonthUpdateUploadImage": "Upload Image. Leave if not changed",
