@@ -13,3 +13,33 @@
 .expanded {
   width: 288px;
 }
+.sidebarDiv
+{
+  /* overflow-y: auto;
+  overflow-x: visible; */
+
+}
+.sidebarTooltip
+{
+  position: absolute;
+  left: 88px;
+  border-radius: 6px;
+  /* height: 35px; */
+  line-height: 35px;
+  width: 150px;
+  background: #343a40;
+  box-shadow: 0 5px 10px rgba((0), 0, 0, 0.2);
+  text-align: center;
+  transition: 0;
+  opacity: 0;
+  pointer-events: none;
+  color: white;
+  transform: translateY(-50%);
+  display: block;
+  z-index: 99;
+  /* border: 2px solid red; */
+}
+.nav-link:hover .sidebarTooltip
+{
+  opacity: 1;
+}
