@@ -136,7 +136,7 @@ export const Department = () => {
         </table>
       ) : (
         <div className="h5 text-primary">
-          {`${t('noReportsAvailable')} ${department.name}. ${t('clickToReport')}`}
+          {`${t('noDepartmentReportAvailable')} ${department.name}. ${t('clickToReport')}`}
         </div>
       )}
       <Pagination

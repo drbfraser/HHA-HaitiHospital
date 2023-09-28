@@ -103,7 +103,7 @@ const GeneralReports = () => {
         </>
       ) : (
         <div className="h5 text-primary">
-          No reports have been submitted yet. Click Report (on the left) to create a new report.
+          {`${t('noGeneralReportAvailable')}. ${t('clickToReport')}`}
         </div>
       )}
     </Layout>
