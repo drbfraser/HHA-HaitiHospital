@@ -14,12 +14,11 @@
   width: 288px;
 }
 
-.sidebarTooltip
-{
+.sidebarTooltip {
   position: absolute;
   left: 88px;
   border-radius: 6px;
- 
+
   line-height: 35px;
   width: 150px;
   background: #343a40;
@@ -32,9 +31,7 @@
   transform: translateY(-50%);
   display: block;
   z-index: 99;
-  
 }
-.nav-link:hover .sidebarTooltip
-{
+.nav-link:hover .sidebarTooltip {
   opacity: 1;
 }
