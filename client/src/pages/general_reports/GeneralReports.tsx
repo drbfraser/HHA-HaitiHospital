@@ -17,8 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { useDepartmentData } from 'hooks';
 import { event } from 'cypress/types/jquery';
 
-
-
 const GeneralReports = () => {
   const [dayRange, setDayRange] = useState<DayRange>({
     from: null,
@@ -44,7 +42,6 @@ const GeneralReports = () => {
   useEffect(() => {
     getReports();
   }, [getReports]);
-  // console.log(getReports);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -55,44 +52,42 @@ const GeneralReports = () => {
     const lastPageIndex: number = firstPageIndex + pageSize;
     return reports.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, reports]);
-  
-  const reportNumberIndex: number = currentPage * pageSize - pageSize;
-  const departments =  useDepartmentData();
- 
-  let departmentsCheckBoxes = [];
-  departments.departmentIdKeyMap.forEach((value: string, key:string)=>
-  {
-    departmentsCheckBoxes.push({departmentId: key, departmentName: value});
 
+  const reportNumberIndex: number = currentPage * pageSize - pageSize;
+  const departments = useDepartmentData();
+
+  let departmentsCheckBoxes = [];
+  departments.departmentIdKeyMap.forEach((value: string, key: string) => {
+    departmentsCheckBoxes.push({ departmentId: key, departmentName: value });
   });
- 
-  
-  
 
   return (
     <Layout title={t('headerGeneralReports')}>
       <div>
         <Link to="report">
-          <button
-            type="button"
-            className="btn btn-primary float-end">
-            create new report
+          <button type="button" className="btn btn-primary float-end">
+            {t('createNewReport')}
           </button>
         </Link>
-        Select departmets: <br></br>
-
+        {t('selectDepartments')}: <br></br>
         {departmentsCheckBoxes.map((department) => (
           <div className="form-check form-check-inline">
-            <input className="form-check-input" type="checkbox" id={department.departmentId} value="" />
-            <label className="form-check-label" >{department.departmentName}</label>
-          </div>))}
-
-
-      
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id={department.departmentId}
+              value=""
+            />
+            <label className="form-check-label" htmlFor={department.departmentId}>
+              {department.departmentName}
+            </label>
+          </div>
+        ))}
       </div>
       {currentTableData.length > 0 ? (
         <>
           <section>
+            {/* TODO: ask Dr. Biran or Michael if we want to filter reports based on date*/}
             {/* <DatePicker value={dayRange} onChange={setDayRange} /> */}
             {/* <ReportSummary dateRange={dayRange} /> */}
           </section>
@@ -102,7 +97,7 @@ const GeneralReports = () => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{t('reportsReportId')}</th>
-                <th scope="col">Department</th>
+                <th scope="col">{t('leaderBoardOverviewDepartment')}</th>
                 <th scope="col">{t('reportsSubmissionDate')}</th>
                 <th scope="col">{t('reportsSubmittedBy')}</th>
               </tr>

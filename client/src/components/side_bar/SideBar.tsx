@@ -153,12 +153,12 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
             Role.HeadOfDepartment,
           ]) && (
             <SidebarItem path="general-reports">
-              <i className={`${iconMargins} bi bi-exclamation-square`} />
+              <i className={`${iconMargins} bi bi-paperclip`} />
               {isExpanded && <span className={'text-light'}>{t('sidebarReports')}</span>}
               {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarReports')}</span>}
             </SidebarItem>
           )}
-          
+
           <SidebarItem path="message-board">
             <i className={`${iconMargins} bi bi-chat-right-text-fill`} />
             {isExpanded && (
@@ -190,39 +190,10 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           <SidebarItem path="employee-of-the-month">
             <i className={`${iconMargins} bi bi-star-fill`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
-            {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarEmployeeOfTheMonth')}</span>}
+            {!isExpanded && (
+              <span className={'sidebarTooltip'}>{t('sidebarEmployeeOfTheMonth')}</span>
+            )}
           </SidebarItem>
-
-          {/* <li className="border-top my-2" key="border-1" />
-
-          {renderBasedOnRole(authState.userDetails.role, [
-            Role.Admin,
-            Role.MedicalDirector,
-            Role.HeadOfDepartment,
-          ]) && (
-            <SidebarItem path="general-reports">
-              <i className={`${iconMargins} bi bi-folder-fill`} />
-              {isExpanded && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
-              {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarGeneral')}</span>}
-            </SidebarItem>
-          )}
-
-          {departments &&
-            departments
-              .filter(
-                (d: Department) => renderDeptIfUserInDept(d.name) && d.name !== GeneralDepartment,
-              )
-              .map((dept: Department) => (
-                <SidebarItem path={`department/${dept.id}`} key={dept.id}>
-                  <i className={`${iconMargins} bi bi-brightness-high-fill`} />
-                  {isExpanded && <span className={'text-light'}>{t(dept.name)}</span>}
-                </SidebarItem>
-              ))}
-
-          <SidebarItem path="report">
-            <i className={`${iconMargins} bi bi-exclamation-square`} />
-            {isExpanded && <span className={'text-light'}>Report</span>}
-          </SidebarItem> */}
 
           <li className="border-top my-2" key="border-2" />
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin]) && (
@@ -252,13 +223,17 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                   <SidebarItem path="upload-report">
                     <i className={`${iconMargins} bi bi-file-earmark-arrow-up-fill`} />
                     {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
-                    {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarUploadReport')}</span>}
+                    {!isExpanded && (
+                      <span className={'sidebarTooltip'}>{t('sidebarUploadReport')}</span>
+                    )}
                   </SidebarItem>
 
                   <SidebarItem path="update-permissions">
                     <i className={`${iconMargins} bi bi-file-earmark-lock2-fill`} />
                     {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
-                    {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarPermissions')}</span>}
+                    {!isExpanded && (
+                      <span className={'sidebarTooltip'}>{t('sidebarPermissions')}</span>
+                    )}
                   </SidebarItem>
                 </ul>
               </li>
