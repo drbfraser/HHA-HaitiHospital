@@ -14,6 +14,8 @@ import Layout from 'components/layout';
 import Pagination from 'components/pagination/Pagination';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
+import { useDepartmentData } from 'hooks';
+import { event } from 'cypress/types/jquery';
 
 const GeneralReports = () => {
   const [dayRange, setDayRange] = useState<DayRange>({
@@ -50,14 +52,43 @@ const GeneralReports = () => {
     const lastPageIndex: number = firstPageIndex + pageSize;
     return reports.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, reports]);
+
   const reportNumberIndex: number = currentPage * pageSize - pageSize;
+  const departments = useDepartmentData();
+
+  let departmentsCheckBoxes = [];
+  departments.departmentIdKeyMap.forEach((value: string, key: string) => {
+    departmentsCheckBoxes.push({ departmentId: key, departmentName: value });
+  });
 
   return (
     <Layout title={t('headerGeneralReports')}>
+      <div>
+        <Link to="report">
+          <button type="button" className="btn btn-primary float-end">
+            {t('createNewReport')}
+          </button>
+        </Link>
+        {t('selectDepartments')}: <br></br>
+        {departmentsCheckBoxes.map((department) => (
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id={department.departmentId}
+              value=""
+            />
+            <label className="form-check-label" htmlFor={department.departmentId}>
+              {department.departmentName}
+            </label>
+          </div>
+        ))}
+      </div>
       {currentTableData.length > 0 ? (
         <>
           <section>
-            <DatePicker value={dayRange} onChange={setDayRange} />
+            {/* TODO: ask Dr. Biran or Michael if we want to filter reports based on date*/}
+            {/* <DatePicker value={dayRange} onChange={setDayRange} /> */}
             {/* <ReportSummary dateRange={dayRange} /> */}
           </section>
           <div className="d-flex justify-content-start mt-3 mb-3"></div>
@@ -66,6 +97,7 @@ const GeneralReports = () => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{t('reportsReportId')}</th>
+                <th scope="col">{t('leaderBoardOverviewDepartment')}</th>
                 <th scope="col">{t('reportsSubmissionDate')}</th>
                 <th scope="col">{t('reportsSubmittedBy')}</th>
               </tr>
@@ -83,6 +115,7 @@ const GeneralReports = () => {
                         {item.reportObject.id}
                       </Link>
                     </td>
+                    <td>{departments.departmentIdKeyMap.get(item.departmentId)}</td>
                     <td>
                       {item.submittedDate &&
                         new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}

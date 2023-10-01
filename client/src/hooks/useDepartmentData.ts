@@ -20,6 +20,7 @@ const useDepartmentData = () => {
       ),
     staleTime: 60000, // 1 Hour
   });
+
   return {
     departments: data,
     departmentNameKeyMap: createDepartmentNameMap(data),

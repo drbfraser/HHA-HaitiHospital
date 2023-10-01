@@ -117,7 +117,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
 
   return (
     <div
-      className={`h-100 bg-dark position-fixed top-0 start-0 d-flex flex-column ${
+      className={`h-100 bg-dark position-fixed top-0 start-0 d-flex flex-column sidebarDiv ${
         isExpanded ? 'expanded' : 'collapsed'
       }`}
       style={{ zIndex: 1000 }}
@@ -144,7 +144,21 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
           <SidebarItem path="home">
             <i className={`${iconMargins} bi bi-house-door-fill`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarHome')}</span>}
+            {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarHome')}</span>}
           </SidebarItem>
+
+          {renderBasedOnRole(authState.userDetails.role, [
+            Role.Admin,
+            Role.MedicalDirector,
+            Role.HeadOfDepartment,
+          ]) && (
+            <SidebarItem path="general-reports">
+              <i className={`${iconMargins} bi bi-paperclip`} />
+              {isExpanded && <span className={'text-light'}>{t('sidebarReports')}</span>}
+              {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarReports')}</span>}
+            </SidebarItem>
+          )}
+
           <SidebarItem path="message-board">
             <i className={`${iconMargins} bi bi-chat-right-text-fill`} />
             {isExpanded && (
@@ -152,6 +166,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                 {t('sidebarMessageBoard')}
               </span>
             )}
+            {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarMessageBoard')}</span>}
           </SidebarItem>
           <SidebarItem path="leaderboard">
             <i className={`${iconMargins} bi bi-bar-chart-fill`} />
@@ -160,48 +175,24 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                 {t('sidebarLeaderBoard')}
               </span>
             )}
+            {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarLeaderBoard')}</span>}
           </SidebarItem>
           <SidebarItem path="case-study">
             <i className={`${iconMargins} bi bi-award-fill`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarCaseStudy')}</span>}
+            {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarCaseStudy')}</span>}
           </SidebarItem>
           <SidebarItem path="biomechanic">
             <i className={`${iconMargins} bi bi-wrench`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarBioSupport')}</span>}
+            {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarBioSupport')}</span>}
           </SidebarItem>
           <SidebarItem path="employee-of-the-month">
             <i className={`${iconMargins} bi bi-star-fill`} />
             {isExpanded && <span className={'text-light'}>{t('sidebarEmployeeOfTheMonth')}</span>}
-          </SidebarItem>
-
-          <li className="border-top my-2" key="border-1" />
-
-          {renderBasedOnRole(authState.userDetails.role, [
-            Role.Admin,
-            Role.MedicalDirector,
-            Role.HeadOfDepartment,
-          ]) && (
-            <SidebarItem path="general-reports">
-              <i className={`${iconMargins} bi bi-folder-fill`} />
-              {isExpanded && <span className={'text-light'}>{t('sidebarGeneral')}</span>}
-            </SidebarItem>
-          )}
-
-          {departments &&
-            departments
-              .filter(
-                (d: Department) => renderDeptIfUserInDept(d.name) && d.name !== GeneralDepartment,
-              )
-              .map((dept: Department) => (
-                <SidebarItem path={`department/${dept.id}`} key={dept.id}>
-                  <i className={`${iconMargins} bi bi-brightness-high-fill`} />
-                  {isExpanded && <span className={'text-light'}>{t(dept.name)}</span>}
-                </SidebarItem>
-              ))}
-
-          <SidebarItem path="report">
-            <i className={`${iconMargins} bi bi-exclamation-square`} />
-            {isExpanded && <span className={'text-light'}>Report</span>}
+            {!isExpanded && (
+              <span className={'sidebarTooltip'}>{t('sidebarEmployeeOfTheMonth')}</span>
+            )}
           </SidebarItem>
 
           <li className="border-top my-2" key="border-2" />
@@ -214,6 +205,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
               >
                 <i className={`${iconMargins} bi bi-person-fill`}></i>
                 {isExpanded && <span className="text-light">{t('sidebarAdmin')}</span>}
+                {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarAdmin')}</span>}
                 <i
                   className={`ms-auto ${
                     isAdminExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'
@@ -225,16 +217,23 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                   <SidebarItem path="admin">
                     <i className={`${iconMargins} bi bi-people-fill`} />
                     {isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
+                    {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarAdmin')}</span>}
                   </SidebarItem>
 
                   <SidebarItem path="upload-report">
                     <i className={`${iconMargins} bi bi-file-earmark-arrow-up-fill`} />
                     {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
+                    {!isExpanded && (
+                      <span className={'sidebarTooltip'}>{t('sidebarUploadReport')}</span>
+                    )}
                   </SidebarItem>
 
                   <SidebarItem path="update-permissions">
                     <i className={`${iconMargins} bi bi-file-earmark-lock2-fill`} />
                     {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
+                    {!isExpanded && (
+                      <span className={'sidebarTooltip'}>{t('sidebarPermissions')}</span>
+                    )}
                   </SidebarItem>
                 </ul>
               </li>

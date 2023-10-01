@@ -15,7 +15,6 @@ import {
 } from './testTools/endPoints';
 import { Done } from 'mocha';
 import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
-import MessageCollection from 'models/messageBoard';
 
 const expect = require('chai').expect;
 const chai = require('chai');

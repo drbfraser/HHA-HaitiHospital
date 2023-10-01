@@ -21,6 +21,7 @@
   "sidebarLeaderBoard": "Classement",
   "sidebarCaseStudy": "Étude de cas",
   "sidebarGeneral": "Général",
+  "sidebarReports": "Rapports",
   "sidebarBioSupport": "Soutien Bio",
   "sidebarEmployeeOfTheMonth": "Employé du mois",
   "sidebarAdmin": "Administrateur",
@@ -115,6 +116,8 @@
   "Training Session": "Session de formation",
   "Equipment Received": "Équipement reçu",
   "Other Story": "Autre histoire",
+  "createNewReport": "Créer un nouveau rapport",
+  "selectDepartments": "Sélectionnez les départements",
 
   "CaseStudy": {
     "Main": {
