@@ -50,15 +50,8 @@ const CompositionQuestionFormField = ({
 
   useEffect(() => {
     updateErrorSetFromSelf();
-
-    return () => {
-      setErrorSet((prevErrorSet: Set<ID>) => {
-        const nextErrorSet = new Set(prevErrorSet);
-        nextErrorSet.delete(nameId);
-        return nextErrorSet;
-      });
-    };
-  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameId]);
 
   return (
     <>
