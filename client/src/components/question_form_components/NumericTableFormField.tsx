@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { NumericTable } from '@hha/common';
-import { FormField, FormFieldCheck } from './index';
+import { FormField } from './index';
 
 interface NumericTableFormFieldProps {
   applyReportChanges: () => void;
