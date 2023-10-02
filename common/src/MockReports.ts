@@ -395,7 +395,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   );
   const q13_2_1 = new CompositionQuestion<ID, ErrorType>(
     '13_2_1',
-    getQuestionContent('question13_2_1_1'),
+    getQuestionContent('question13_2_1'),
     q13_2_1_1,
   );
 
