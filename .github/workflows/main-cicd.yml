@@ -161,7 +161,8 @@ jobs:
           ! npm run test && exit 1
           # TODO: remove "CI=false", temporarily required because the project has warnings during the build
           CI=false GENERATE_SOURCEMAP=false npm run build
-          tar -czf ../client_build.tar.gz .
+          cd build/
+          tar -czf ../../client_build.tar.gz .
       - uses: actions/upload-artifact@v3
         if: success()
         with:
