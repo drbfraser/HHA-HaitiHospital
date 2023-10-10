@@ -216,18 +216,9 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                 <ul className="nested">
                   <SidebarItem path="admin">
                     <i className={`${iconMargins} bi bi-people-fill`} />
-                    {isExpanded && <span className={'text-light'}>{t('sidebarAdmin')}</span>}
-                    {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarAdmin')}</span>}
+                    {isExpanded && <span className={'text-light'}>{t('sidebarUsers')}</span>}
+                    {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarUsers')}</span>}
                   </SidebarItem>
-
-                  <SidebarItem path="upload-report">
-                    <i className={`${iconMargins} bi bi-file-earmark-arrow-up-fill`} />
-                    {isExpanded && <span className={'text-light'}>{t('sidebarUploadReport')}</span>}
-                    {!isExpanded && (
-                      <span className={'sidebarTooltip'}>{t('sidebarUploadReport')}</span>
-                    )}
-                  </SidebarItem>
-
                   <SidebarItem path="update-permissions">
                     <i className={`${iconMargins} bi bi-file-earmark-lock2-fill`} />
                     {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
