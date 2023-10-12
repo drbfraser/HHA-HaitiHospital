@@ -79,7 +79,7 @@ export abstract class QuestionTable<
         return new TableCell(question);
       }),
     );
-    this.columnHeaders = columnHeaders
+    this.columnHeaders = columnHeaders;
   }
 
   // Returns undefined if given numbers are out of bound OR if no question has

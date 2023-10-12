@@ -8,4 +8,4 @@ export class NumericTable<ID, ErrorType> extends QuestionTable<
   number,
   ErrorType,
   NumericQuestion<ID, ErrorType>
-> { }
+> {}
