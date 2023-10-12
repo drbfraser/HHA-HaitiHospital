@@ -1,8 +1,8 @@
 {
-  "NICU/Paeds": "NICU/Paeds",
-  "Maternity": "Maternity",
+  "NICU/Paeds": "NICU/Pédiatrie",
+  "Maternity": "Maternité",
   "Rehab": "Rehab",
-  "Community & Health": "Com & Health",
+  "Community & Health": "Communauté et santé",
   "Report": "Report",
   "signInPleaseSignIn": "S'identifier",
   "signInPleasePlaceHolderEmail": "Nom d'utilisateur",
@@ -35,8 +35,8 @@
   "headerLeaderBoard": "Classement",
   "headerCaseStudy": "Étude de cas",
   "headerCaseStudyForm": "Formulaire d'étude de cas",
-  "headerDepartmentNICU": "Département de NICU/PAED",
-  "headerDepartmentMaternity": "Département de Maternity",
+  "headerDepartmentNICU": "Département de NICU/Pédiatrie",
+  "headerDepartmentMaternity": "Département de Maternité",
   "headerDepartmentRehab": "Département de Rehab",
   "headerDepartmentCom": "Département de la Com&Health",
   "headerDepartmentLoading": "Chargement des informations du département...",
@@ -62,6 +62,7 @@
   "Medical Director": "Directeur médical",
   "Head of Department": "Chef de département",
   "User": "Utilisateur",
+  "Bio Mechanic": "Bio mécanique",
   "leaderBoardOverviewDepartmentLeader": "Classement du département",
   "leaderBoardOverviewPosition": "Position",
   "leaderBoardOverviewDepartment": "département",
@@ -176,7 +177,7 @@
   "caseStudyViewAuthor": "Auteur: ",
   "caseStudyViewDate": "Date: ",
   "caseStudyViewCreatedAt": "Date de création: ",
-  "departmentPageNICU/PAED": "Département de NICU/PAED",
+  "departmentPageNICU/PAED": "Département de NICU/Pédiatrie",
   "departmentPageDepartmentOf": "Département de ",
   "departmentPageSubmitData": "Soumettre des données",
   "departmentPageBiomechanic": "Biomécanique",
@@ -316,10 +317,10 @@
     "not_available": "N/A"
   },
   "role": {
-    "user": "User",
-    "admin": "Admin",
-    "medical_director": "Medical Director",
-    "head_department": "Head of Department",
+    "user": "Utilisateur",
+    "admin": "Administrateur",
+    "medical_director": "Directeur médical",
+    "head_department": "Chef de département",
     "bio_mechanic": "Bio mécanique"
   },
   "modal": {
@@ -333,6 +334,7 @@
     "cancel": "Annuler",
     "back": "Arrière",
     "submit": "Soumettre",
+    "update": "Mise à jour",
     "report": "Rapporter",
     "view": "Regarder",
     "add_image": "Ajouter une Image"
@@ -401,5 +403,14 @@
     "Equals": "Équivaut à",
     "GreaterThan": "Plus grand que",
     "LessThan": "Moins que"
+  },
+
+  "departments": {
+    "General": "Général",
+    "Rehab": "Rehab",
+    "NICU/Paeds": "NICU/Pédiatrie",
+    "Maternity": "Maternité",
+    "Community & Health": "Communauté et santé",
+    "Bio Support": "Soutien Bio"
   }
 }

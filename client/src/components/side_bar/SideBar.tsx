@@ -75,7 +75,6 @@ const SidebarItem = ({ path, children, onClick }: SideBarItemProps) => {
 };
 
 const Sidebar = ({ isExpanded, setIsExpanded }) => {
-  const { departments } = useDepartmentData();
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
 

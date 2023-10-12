@@ -181,7 +181,7 @@ export const Report = () => {
             }}
           >
             <i className="bi bi-chevron-left me-2" />
-            Choose Different Department
+            {t('headerReportChooseDifferentDepartment')}
           </button>
           <ReportForm
             applyReportChanges={applyReportChanges}

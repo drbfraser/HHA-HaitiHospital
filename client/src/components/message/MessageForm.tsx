@@ -63,7 +63,7 @@ const MessageForm = (props: MessageFormProps) => {
             <option value="">{t('addMessageSelect')} </option>
             {Array.from(departments?.values()).map((dept: Department, index: number) => (
               <option key={index} value={dept.name}>
-                {dept.name}
+                {t(`departments.${dept.name}`)}
               </option>
             ))}
           </select>
