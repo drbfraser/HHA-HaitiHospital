@@ -19,8 +19,6 @@ const NumericTableFormField = ({
   suffixName,
   readOnly,
 }: NumericTableFormFieldProps): JSX.Element => {
-  console.log('NumericTableFormField');
-  console.log('1', question);
   const updateErrorSetFromSelf = useCallback(
     (questionId: string) =>
       setErrorSet((prevErrorSet: Set<ID>) => {
@@ -36,7 +34,6 @@ const NumericTableFormField = ({
   );
 
   useEffect(() => {
-    console.log('Numeric table form field useEffect');
     const numRows = question.getRowHeaders().length;
     const numCols = question.getColumnHeaders().length;
     for (let row = 0; row < numRows; row++) {
@@ -63,8 +60,6 @@ const NumericTableFormField = ({
       }
     };
   }, [question, setErrorSet, suffixName, updateErrorSetFromSelf]);
-  console.log('2', question);
-
   return (
     <table>
       <thead>
@@ -79,8 +74,6 @@ const NumericTableFormField = ({
         {question.getRowHeaders().map((rowHeader, rowIndex) => (
           <tr key={rowIndex}>
             <th>{rowHeader}</th>
-            {console.log('table', question)}
-            {console.log('getRowHeaders', question.getRowHeaders())}
             {question.getColumnHeaders().map((colHeader, colIndex) => {
               const sub_question = question.getQuestionAt(rowIndex, colIndex);
 
