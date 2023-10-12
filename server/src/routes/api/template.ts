@@ -28,18 +28,6 @@ router
         if (!serializedTemplate) {
           throw new NotFound(`No template for department found`);
         }
-
-        console.log('server routes/api/template get template', serializedTemplate);
-        console.log('server routes/api/template get template', serializedTemplate.reportObject);
-        // print where id: '14' of questionItems in reportObject
-        // Find the element with id: '14' in questionItems
-        const questionIdToFind = '14';
-        const questionItem = serializedTemplate.reportObject.questionItems.find(
-          (item) => item.id === questionIdToFind,
-        );
-
-        console.log('numeric table question', questionItem.questionTable);
-
         res.status(HTTP_OK_CODE).json({ template: serializedTemplate });
       } catch (e) {
         next(e);

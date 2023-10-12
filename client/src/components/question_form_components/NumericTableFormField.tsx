@@ -4,7 +4,9 @@ import { FormField } from './index';
 
 interface NumericTableFormFieldProps {
   applyReportChanges: () => void;
-  numericTable: NumericTable<ID, ErrorType>;
+  // question: NumericTable
+  // Prop name is set to question for dynamic mapping purpose in ReportForm.tsx
+  question: NumericTable<ID, ErrorType>;
   setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   suffixName: string;
   readOnly?: boolean;
@@ -12,36 +14,36 @@ interface NumericTableFormFieldProps {
 
 const NumericTableFormField = ({
   applyReportChanges,
-  numericTable,
+  question,
   setErrorSet,
   suffixName,
   readOnly,
 }: NumericTableFormFieldProps): JSX.Element => {
   console.log('NumericTableFormField');
-
+  console.log('1', question);
   const updateErrorSetFromSelf = useCallback(
     (questionId: string) =>
       setErrorSet((prevErrorSet: Set<ID>) => {
         const nextErrorSet = new Set(prevErrorSet);
-        if (numericTable.getQuestionAt(0, 0)?.getValidationResults() !== true) {
+        if (question.getQuestionAt(0, 0)?.getValidationResults() !== true) {
           nextErrorSet.add(`${questionId}${suffixName}`);
         } else {
           nextErrorSet.delete(`${questionId}${suffixName}`);
         }
         return nextErrorSet;
       }),
-    [numericTable, setErrorSet, suffixName],
+    [question, setErrorSet, suffixName],
   );
 
   useEffect(() => {
     console.log('Numeric table form field useEffect');
-    const numRows = numericTable.getRowHeaders().length;
-    const numCols = numericTable.getColumnHeaders().length;
+    const numRows = question.getRowHeaders().length;
+    const numCols = question.getColumnHeaders().length;
     for (let row = 0; row < numRows; row++) {
       for (let col = 0; col < numCols; col++) {
-        const question = numericTable.getQuestionAt(row, col);
-        if (question) {
-          updateErrorSetFromSelf(question.getId());
+        const sub_question = question.getQuestionAt(row, col);
+        if (sub_question) {
+          updateErrorSetFromSelf(sub_question.getId());
         }
       }
     }
@@ -49,45 +51,48 @@ const NumericTableFormField = ({
     return () => {
       for (let row = 0; row < numRows; row++) {
         for (let col = 0; col < numCols; col++) {
-          const question = numericTable.getQuestionAt(row, col);
-          if (question) {
+          const sub_question = question.getQuestionAt(row, col);
+          if (sub_question) {
             setErrorSet((prevErrorSet: Set<ID>) => {
               const nextErrorSet = new Set(prevErrorSet);
-              nextErrorSet.delete(`${question.getId()}${suffixName}`);
+              nextErrorSet.delete(`${sub_question.getId()}${suffixName}`);
               return nextErrorSet;
             });
           }
         }
       }
     };
-  }, [numericTable, setErrorSet, suffixName, updateErrorSetFromSelf]);
+  }, [question, setErrorSet, suffixName, updateErrorSetFromSelf]);
+  console.log('2', question);
 
   return (
     <table>
       <thead>
         <tr>
           <th></th>
-          {numericTable.getColumnHeaders().map((colHeader, colIndex) => (
+          {question.getColumnHeaders().map((colHeader, colIndex) => (
             <th key={colIndex}>{colHeader}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {numericTable.getRowHeaders().map((rowHeader, rowIndex) => (
+        {question.getRowHeaders().map((rowHeader, rowIndex) => (
           <tr key={rowIndex}>
             <th>{rowHeader}</th>
-            {numericTable.getColumnHeaders().map((colHeader, colIndex) => {
-              const question = numericTable.getQuestionAt(rowIndex, colIndex);
+            {console.log('table', question)}
+            {console.log('getRowHeaders', question.getRowHeaders())}
+            {question.getColumnHeaders().map((colHeader, colIndex) => {
+              const sub_question = question.getQuestionAt(rowIndex, colIndex);
 
               // Calculate inputState for the current cell
-              const inputState = question ? question.getValidationResults() : true;
+              const inputState = sub_question ? sub_question.getValidationResults() : true;
 
               // Define handleChange for the current cell
               const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                 const newValue = parseFloat(event.target.value); // Assuming the input value is a number
-                if (question) {
-                  question.setAnswer(newValue);
-                  updateErrorSetFromSelf(question.getId());
+                if (sub_question) {
+                  sub_question.setAnswer(newValue);
+                  updateErrorSetFromSelf(sub_question.getId());
                   applyReportChanges();
                 }
               };
@@ -98,10 +103,10 @@ const NumericTableFormField = ({
                     handleChange={handleChange}
                     inputState={inputState}
                     min={0}
-                    nameId={`${question?.getId() ?? ''}${suffixName}`}
+                    nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
                     prompt={colHeader}
                     type="number"
-                    value={question?.getAnswer() ?? ''}
+                    value={sub_question?.getAnswer() ?? ''}
                     readOnly={readOnly}
                   />
                 </td>
