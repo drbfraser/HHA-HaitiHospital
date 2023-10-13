@@ -107,8 +107,8 @@ const AdminList = () => {
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
                 <td>{item.name}</td>
-                <td>{item.role}</td>
-                <td>{item.department.name}</td>
+                <td>{t(`${item.role}`)}</td>
+                <td>{t(`departments.${item.department.name}`)}</td>
                 <td>
                   {new Date(item.createdAt).toLocaleString(language, {
                     timeZone: timezone,

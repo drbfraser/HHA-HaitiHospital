@@ -34,7 +34,7 @@ export const ReportAndTemplateForm = ({
           {departments &&
             departments.map(({ id, name }) => (
               <option key={id} value={id}>
-                {name}
+                {t(`departments.${name}`)}
               </option>
             ))}
         </select>

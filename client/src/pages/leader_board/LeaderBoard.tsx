@@ -88,7 +88,7 @@ export const LeaderBoard = () => {
                     {index === 1 ? <i className="text-secondary bi-trophy-fill" /> : null}
                     {index === 2 ? <i className="text-danger bi-trophy-fill" /> : null}
                   </td>
-                  <td className="text-center">{item.name}</td>
+                  <td className="text-center">{t(`departments.${item.name}`)}</td>
                   <td className="d-none d-sm-table-cell text-center">{item.nCaseStudies}</td>
                   <td className="fw-bold text-center">{item.points}</td>
                 </tr>

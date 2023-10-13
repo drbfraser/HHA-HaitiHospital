@@ -82,7 +82,7 @@ const ReportForm = ({
   btnText = 'Submit',
   readOnly,
 }: ReportFormProps): JSX.Element => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const language = i18n.language;
   const [currentPage, setCurrentPage] = useState(1);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
@@ -106,7 +106,7 @@ const ReportForm = ({
           />
         </Group>
         <SubmitButton
-          buttonText={`${btnText} Report`}
+          buttonText={t(`button.${btnText.toLowerCase()}`)}
           disabled={errorSet.size !== 0 || isSubmitting}
           readOnly={readOnly}
         />
