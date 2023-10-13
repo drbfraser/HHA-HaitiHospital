@@ -31,10 +31,11 @@ export const Report = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
   const { departments } = useDepartmentData();
-  const isReportableDepartment = (department)=>{
-    return (department.name === "Rehab" || department.name === "NICU/Paeds" || department.name === "Maternity" || department.name === "Community & Health");
-  }
-  
+  const reportableDepartments = new Set(['NICU/Paeds', 'Maternity', 'Community & Health', 'Rehab']);
+  const isReportableDepartment = (department) => {
+    return reportableDepartments.has(department.name);
+  };
+
   const { t, i18n } = useTranslation();
 
   const applyReportChanges = () => {
@@ -120,7 +121,6 @@ export const Report = () => {
       window.onbeforeunload = undefined;
     };
   }, [areChangesMade]);
-  
 
   return (
     <Layout title={t('headerReport')}>

@@ -77,45 +77,38 @@ const GeneralReports = () => {
       id: 'submittedDate',
       accessorKey: 'submittedDate',
     },
-    
+
     {
       header: t('reportsSubmittedBy'),
       id: 'submittedBy',
       accessorKey: 'submittedBy',
     },
   ];
-  
-  const gridDate = currentTableData.map(item=>({
+
+  const gridDate = currentTableData.map((item) => ({
     reportId: item.reportObject.id,
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
     submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
-    submittedBy: item.submittedBy
-
+    submittedBy: item.submittedBy,
   }));
-  
-  
-
 
   return (
     <Layout title={t('headerGeneralReports')}>
       <div>
         <Link to="report">
-          <button
-            className="btn btn-outline-dark"
-            type="button"
-          >
+          <button className="btn btn-outline-dark" type="button">
             {t('createNewReport')}
           </button>
         </Link>
       </div>
       {gridDate.length > 0 ? (
         <FilterableTable
-        columns={columns}
-        data={gridDate}
-        enableFilters
-        enableGlobalFilter
-        enableSorting
-      />
+          columns={columns}
+          data={gridDate}
+          enableFilters
+          enableGlobalFilter
+          enableSorting
+        />
       ) : (
         <div className="h5 text-primary">
           No reports have been submitted yet. Click Report (on the left) to create a new report.
