@@ -2,7 +2,7 @@
   "NICU/Paeds": "NICU/Paeds",
   "Maternity": "Maternity",
   "Rehab": "Rehab",
-  "Community & Health": "Com & Health",
+  "Community & Health": "Community & Health",
   "Report": "Report",
   "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
@@ -333,6 +333,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "submit": "Submit",
+    "update": "Update",
     "report": "Report",
     "view": "View",
     "add_image": "Upload Image"
@@ -401,5 +402,14 @@
     "Equals": "Equals",
     "GreaterThan": "Greater Than",
     "LessThan": "Less Than"
+  },
+
+  "departments": {
+    "General": "General",
+    "Rehab": "Rehab",
+    "NICU/Paeds": "NICU/Paeds",
+    "Maternity": "Maternity",
+    "Community & Health": "Community & Health",
+    "Bio Support": "Bio Support"
   }
 }

@@ -72,7 +72,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
           <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
           <p className="fs-6 lh-base">{props.employee.name}</p>
           <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>
-          <p className="fs-6 lh-base">{props.employee.department.name}</p>
+          <p className="fs-6 lh-base">{t(`departments.${props.employee.department.name}`)}</p>
         </div>
         {employeeImage && (
           <img

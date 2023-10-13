@@ -86,7 +86,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
                   value={dept.name}
                   selected={props?.data?.department.name === dept.name}
                 >
-                  {dept.name}
+                  {t(`departments.${dept.name}`)}
                 </option>
               ) : null;
             })}

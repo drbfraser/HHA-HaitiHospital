@@ -152,7 +152,7 @@ export const AdminUserForm = (props: Props) => {
             {Array.from(departments.values()).map((dept: Department, index: number) => {
               return dept.name !== GeneralDepartment ? (
                 <option key={index} value={dept.name}>
-                  {dept.name}
+                  {t(`departments.${dept.name}`)}
                 </option>
               ) : null;
             })}
