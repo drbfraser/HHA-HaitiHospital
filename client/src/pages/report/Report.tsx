@@ -31,6 +31,11 @@ export const Report = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
   const { departments } = useDepartmentData();
+  const reportableDepartments = new Set(['NICU/Paeds', 'Maternity', 'Community & Health', 'Rehab']);
+  const isReportableDepartment = (department) => {
+    return reportableDepartments.has(department.name);
+  };
+
   const { t, i18n } = useTranslation();
 
   const applyReportChanges = () => {
@@ -162,7 +167,7 @@ export const Report = () => {
       {!report && departments && (
         <ReportAndTemplateForm
           departmentLabel={t('headerReportDepartmentType')}
-          departments={departments}
+          departments={departments.filter(isReportableDepartment)}
           currentDepartment={currentDepartment}
           setCurrentDepartment={setCurrentDepartment}
         />

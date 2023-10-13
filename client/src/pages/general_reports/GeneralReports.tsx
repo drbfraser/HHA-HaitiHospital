@@ -15,6 +15,7 @@ import Pagination from 'components/pagination/Pagination';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
 import { useDepartmentData } from 'hooks';
+import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { event } from 'cypress/types/jquery';
 
 const GeneralReports = () => {
@@ -60,80 +61,54 @@ const GeneralReports = () => {
   departments.departmentIdKeyMap.forEach((value: string, key: string) => {
     departmentsCheckBoxes.push({ departmentId: key, departmentName: value });
   });
+  const columns: FilterableColumnDef[] = [
+    {
+      header: t('reportsReportId'),
+      id: 'reportId',
+      accessorKey: 'reportId',
+    },
+    {
+      header: t('leaderBoardOverviewDepartment'),
+      id: 'departmentName',
+      accessorKey: 'departmentName',
+    },
+    {
+      header: t('reportsSubmissionDate'),
+      id: 'submittedDate',
+      accessorKey: 'submittedDate',
+    },
+
+    {
+      header: t('reportsSubmittedBy'),
+      id: 'submittedBy',
+      accessorKey: 'submittedBy',
+    },
+  ];
+
+  const gridDate = currentTableData.map((item) => ({
+    reportId: item.reportObject.id,
+    departmentName: departments.departmentIdKeyMap.get(item.departmentId),
+    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
+    submittedBy: item.submittedBy,
+  }));
 
   return (
     <Layout title={t('headerGeneralReports')}>
       <div>
         <Link to="report">
-          <button type="button" className="btn btn-primary float-end">
+          <button className="btn btn-outline-dark" type="button">
             {t('createNewReport')}
           </button>
         </Link>
-        {t('selectDepartments')}: <br></br>
-        {departmentsCheckBoxes.map((department) => (
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id={department.departmentId}
-              value=""
-            />
-            <label className="form-check-label" htmlFor={department.departmentId}>
-              {department.departmentName}
-            </label>
-          </div>
-        ))}
       </div>
-      {currentTableData.length > 0 ? (
-        <>
-          <section>
-            {/* TODO: ask Dr. Biran or Michael if we want to filter reports based on date*/}
-            {/* <DatePicker value={dayRange} onChange={setDayRange} /> */}
-            {/* <ReportSummary dateRange={dayRange} /> */}
-          </section>
-          <div className="d-flex justify-content-start mt-3 mb-3"></div>
-          <table className="table table-hover mt-3">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{t('reportsReportId')}</th>
-                <th scope="col">{t('leaderBoardOverviewDepartment')}</th>
-                <th scope="col">{t('reportsSubmissionDate')}</th>
-                <th scope="col">{t('reportsSubmittedBy')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentTableData.map((item, index) => {
-                return (
-                  <tr key={item._id}>
-                    <th scope="row">{reportNumberIndex + index + 1}</th>
-                    <td>
-                      <Link
-                        to={'/report-view/' + item._id}
-                        className="btn-link text-decoration-none"
-                      >
-                        {item.reportObject.id}
-                      </Link>
-                    </td>
-                    <td>{departments.departmentIdKeyMap.get(item.departmentId)}</td>
-                    <td>
-                      {item.submittedDate &&
-                        new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions)}
-                    </td>
-                    <td>{item.submittedBy}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <Pagination
-            className="pagination-bar"
-            currentPage={currentPage}
-            totalCount={reports.length}
-            pageSize={pageSize}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </>
+      {gridDate.length > 0 ? (
+        <FilterableTable
+          columns={columns}
+          data={gridDate}
+          enableFilters
+          enableGlobalFilter
+          enableSorting
+        />
       ) : (
         <div className="h5 text-primary">
           No reports have been submitted yet. Click Report (on the left) to create a new report.
