@@ -14,6 +14,7 @@ interface Props {
     departments: Map<string, Department>;
   };
   onSubmit: (data: AdminUserFormData) => Promise<void>;
+  newUser?: boolean;
 }
 
 export const AdminUserForm = (props: Props) => {
@@ -55,11 +56,16 @@ export const AdminUserForm = (props: Props) => {
             className="form-control"
             id="username"
             autoComplete="new-username"
+            required={props.newUser}
+            minLength={2}
+            maxLength={20}
             {...register(ADMIN_USER_FORM_FIELDS.username)}
           ></input>
         </div>
         <div id="usernameHelp" className="form-text">
-          {t('admin.user_form.hint.leave_blank')}
+          {props.newUser
+            ? t('admin.user_form.hint.username_hint')
+            : t('admin.user_form.hint.leave_blank')}
         </div>
       </div>
 
@@ -73,6 +79,9 @@ export const AdminUserForm = (props: Props) => {
             className="form-control"
             id="password"
             autoComplete="new-password"
+            required={props.newUser}
+            minLength={6}
+            maxLength={60}
             {...register(ADMIN_USER_FORM_FIELDS.password)}
           ></input>
           <div data-testid="toggle-password-shown" className="input-group-text">
@@ -93,7 +102,9 @@ export const AdminUserForm = (props: Props) => {
           </div>
         </div>
         <div id="passwordHelp" className="form-text">
-          {t('admin.user_form.hint.leave_blank')}
+          {props.newUser
+            ? t('admin.user_form.hint.password_hint')
+            : t('admin.user_form.hint.leave_blank')}
         </div>
       </div>
 

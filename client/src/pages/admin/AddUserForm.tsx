@@ -35,7 +35,7 @@ export const AddUserForm = () => {
   return (
     <Layout showBackButton title={t('headerAddUser')}>
       <div className="col-md-6">
-        <AdminUserForm data={{ departments: departments }} onSubmit={submitForm}></AdminUserForm>
+        <AdminUserForm data={{ departments: departments }} onSubmit={submitForm} newUser></AdminUserForm>
       </div>
     </Layout>
   );
