@@ -256,7 +256,7 @@
       "name_col": "Nom",
       "role_col": "Rôle",
       "department_col": "Département",
-      "username_col": "ID",
+      "username_col": "Nom d'utilisateur",
       "created_col": "Créé à",
       "options_col": "Choix"
     },
