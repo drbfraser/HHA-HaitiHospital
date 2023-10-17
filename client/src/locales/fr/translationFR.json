@@ -256,8 +256,9 @@
       "name_col": "Nom",
       "role_col": "Rôle",
       "department_col": "Département",
+      "username_col": "ID",
       "created_col": "Créé à",
-      "options_col": "Options"
+      "options_col": "Choix"
     },
     "user_form": {
       "username": "Nom d'utilisateur",

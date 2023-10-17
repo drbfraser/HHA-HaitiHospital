@@ -77,6 +77,7 @@ userSchema.methods.toJson = async function (): Promise<UserApiOut.UserJson> {
   return {
     id: this._id,
     name: this.name,
+    username: this.username,
     role: this.role,
     department: {
       id: this.departmentId,
