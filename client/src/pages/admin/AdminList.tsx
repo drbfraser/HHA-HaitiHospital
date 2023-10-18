@@ -22,21 +22,23 @@ const AdminList = () => {
   const deleteUserActions = () => {
     getUsers();
   };
+  let fetchedUsers = [];
 
   const getUsers = useCallback(async () => {
     const controller = new AbortController();
-    setUsers(
-      await Api.Get(
-        ENDPOINT_ADMIN_GET,
-        ResponseMessage.getMsgFetchUsersFailed(),
-        history,
-        controller.signal,
-      ),
+    fetchedUsers = await Api.Get(
+      ENDPOINT_ADMIN_GET,
+      ResponseMessage.getMsgFetchUsersFailed(),
+      history,
+      controller.signal,
     );
+    // console.log(fetchedUsers);
+    setUsers(fetchedUsers);
     return () => {
       controller.abort();
     };
   }, [history]);
+  
 
   const deleteUser = async (id: string) => {
     await Api.Delete(

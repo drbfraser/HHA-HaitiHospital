@@ -28,6 +28,7 @@ export const UpdatePermissions = () => {
           controller.signal,
         );
         const permissions = fetchedPermissions.permission.permissionObject;
+        console.log(permissions);
 
         setPermissionsData(permissions);
       } catch (e) {
@@ -84,6 +85,7 @@ export const UpdatePermissions = () => {
 
     // Update the state with the updated permissions data
     setPermissionsData(updatedPermissionsData);
+    console.log("updatedPermissionsData", updatedPermissionsData);
   };
 
   useEffect(() => {
@@ -108,6 +110,21 @@ export const UpdatePermissions = () => {
       controller.abort();
     };
   }, [history]);
+  const onSubmit = ()=>{
+    
+  }
+  const updatePermissionHandler = ()=>{
+    const submitForm = async (updatedPermissionsData) => {
+      await Api.Put(
+        `${ENDPOINT_PERMISSION}`,
+        updatedPermissionsData,
+        onSubmit,
+        history,
+        '',
+      );
+    };
+
+  }
 
   return (
     <Layout title={t('permissions.permissionHeader')}>
@@ -136,6 +153,15 @@ export const UpdatePermissions = () => {
           handleCheckboxChange={handleCheckboxChange}
           currentRole={currentRole}
         />
+          <button
+                      
+                      type="button"
+                      className="btn btn-dark col-3"
+                      onClick={updatePermissionHandler}
+                    >
+                      update
+                    </button>
+
       </>
     </Layout>
   );
