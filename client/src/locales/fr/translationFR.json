@@ -256,8 +256,9 @@
       "name_col": "Nom",
       "role_col": "Rôle",
       "department_col": "Département",
+      "username_col": "Nom d'utilisateur",
       "created_col": "Créé à",
-      "options_col": "Options"
+      "options_col": "Choix"
     },
     "user_form": {
       "username": "Nom d'utilisateur",
@@ -268,7 +269,9 @@
       "department": "Départment",
       "inquiry_department": "Sélectionnez Départment",
       "hint": {
-        "leave_blank": "Laissez vide pour le garder inchangé"
+        "leave_blank": "Laissez vide pour le garder inchangé",
+        "username_hint": "Le nom d'utilisateur doit comporter entre 2 et 20 caractères",
+        "password_hint": "Le mot de passe doit comporter entre 6 et 60 caractères"
       }
     }
   },

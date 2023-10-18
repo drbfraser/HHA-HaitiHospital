@@ -122,7 +122,7 @@ PASSWORD_SEED=C@td0g
 
 ```bash
 npm install
-npm build
+npm run build
 ```
 
 _(Outdated)_ Whenever changes are made to `common` folder, you should run `npm run update-common` on

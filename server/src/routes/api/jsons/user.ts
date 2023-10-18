@@ -28,6 +28,7 @@ export namespace UserApiOut {
   export interface UserJson {
     id: string;
     name: string;
+    username: string;
     role: string;
     department: {
       id: string;

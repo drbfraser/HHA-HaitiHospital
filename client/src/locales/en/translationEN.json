@@ -255,6 +255,7 @@
       "name_col": "Name",
       "role_col": "Role",
       "department_col": "Department",
+      "username_col": "Username",
       "created_col": "Created",
       "options_col": "Options"
     },
@@ -267,7 +268,9 @@
       "department": "Department",
       "inquiry_department": "Select Department",
       "hint": {
-        "leave_blank": "Leave blank to keep it unchanged"
+        "leave_blank": "Leave blank to keep it unchanged",
+        "username_hint": "Username must be between 2 and 20 characters",
+        "password_hint": "Password must be between 6 and 60 characters"
       }
     }
   },

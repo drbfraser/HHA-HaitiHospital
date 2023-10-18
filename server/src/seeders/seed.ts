@@ -196,7 +196,7 @@ export const seedUsers = async () => {
               name = 'Michael HOD';
               break;
             case 10:
-              name = 'Michael Communinty User';
+              name = 'Michael Community User';
               break;
             case 11:
               name = 'Michael Rehab User';

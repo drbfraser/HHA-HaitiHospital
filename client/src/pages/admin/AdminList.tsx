@@ -94,6 +94,7 @@ const AdminList = () => {
             <tr>
               <th scope="col">#</th>
               <th scope="col">{t('admin.main_page.name_col')}</th>
+              <th scope="col">{t('admin.main_page.username_col')}</th>
               <th scope="col">{t('admin.main_page.role_col')}</th>
               <th scope="col">{t('admin.main_page.department_col')}</th>
               <th scope="col">{t('admin.main_page.created_col')}</th>
@@ -107,6 +108,7 @@ const AdminList = () => {
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
                 <td>{item.name}</td>
+                <td>{item.username}</td>
                 <td>{t(`${item.role}`)}</td>
                 <td>{t(`departments.${item.department.name}`)}</td>
                 <td>
