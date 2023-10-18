@@ -65,11 +65,17 @@ const GeneralReports = () => {
     {
       header: t('reportsReportId'),
       id: 'reportId',
+      cell: (row) => (
+        <Link to={'/report-view/' + row.getValue().link} className="btn-link text-decoration-none">
+          {row.getValue().displayName}
+        </Link>
+      ),
       accessorKey: 'reportId',
     },
     {
       header: t('leaderBoardOverviewDepartment'),
       id: 'departmentName',
+      cell: (row) => <span>{t(`departments.${row.getValue()}`)}</span>,
       accessorKey: 'departmentName',
     },
     {
@@ -85,8 +91,11 @@ const GeneralReports = () => {
     },
   ];
 
-  const gridDate = currentTableData.map((item) => ({
-    reportId: item.reportObject.id,
+  const gridData = currentTableData.map((item) => ({
+    reportId: {
+      displayName: item.reportObject.id,
+      link: item._id,
+    },
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
     submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
     submittedBy: item.submittedBy,
@@ -101,10 +110,10 @@ const GeneralReports = () => {
           </button>
         </Link>
       </div>
-      {gridDate.length > 0 ? (
+      {gridData.length > 0 ? (
         <FilterableTable
           columns={columns}
-          data={gridDate}
+          data={gridData}
           enableFilters
           enableGlobalFilter
           enableSorting
