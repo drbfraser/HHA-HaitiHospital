@@ -4,6 +4,7 @@ import {
   Group,
   MultiSelectionQuestionFormField,
   NumericQuestionFormField,
+  NumericTableFormField,
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
@@ -13,6 +14,8 @@ import { QuestionGroup, QuestionNode } from '@hha/common';
 import Pagination from 'components/pagination/Pagination';
 import SubmitButton from './SubmitButton';
 import { useTranslation } from 'react-i18next';
+
+console.log('ReportForm.tsx');
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -37,6 +40,7 @@ export const QuestionFormFields = ({
           expandableQuestion: (q) => [q, ExpandableQuestionFormField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
           numericQuestion: (q) => [q, NumericQuestionFormField],
+          numericTableQuestion: (q) => [q, NumericTableFormField],
           questionGroup: (q) => [q, QuestionFormFields],
           singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
           textQuestion: (q) => [q, TextQuestionFormField],
@@ -64,7 +68,7 @@ export const QuestionFormFields = ({
     </>
   );
 };
-
+console.log('ReportForm2.tsx');
 interface ReportFormProps {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -121,5 +125,5 @@ const ReportForm = ({
     </div>
   );
 };
-
+console.log('ReportForm3.tsx');
 export default ReportForm;

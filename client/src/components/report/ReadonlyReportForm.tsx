@@ -4,6 +4,7 @@ import {
   Group,
   MultiSelectionQuestionFormField,
   NumericQuestionFormField,
+  NumericTableFormField,
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
@@ -36,6 +37,7 @@ export const QuestionFormFields = ({
           expandableQuestion: (q) => [q, ExpandableQuestionViewField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
           numericQuestion: (q) => [q, NumericQuestionFormField],
+          numericTableQuestion: (q) => [q, NumericTableFormField],
           questionGroup: (q) => [q, QuestionFormFields],
           singleSelectionQuestion: (q) => [q, SingleSelectionQuestionFormField],
           textQuestion: (q) => [q, TextQuestionFormField],

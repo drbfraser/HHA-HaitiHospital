@@ -16,7 +16,11 @@ type Translation = Record<string, string>;
 
 // The cell must be gray if no question is defined.
 class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, ErrorType>> {
-  private readonly question: QuestionType | undefined;
+  // TODO: Make private and access by getter.
+  // Currently the getter is not working (instance.getQuestion is not a function))
+  // Possibly due to deserialization problem
+  // So this field is temporally set to public for access
+  public readonly question: QuestionType | undefined;
   private gray: boolean;
 
   constructor(question?: QuestionType) {
@@ -38,6 +42,7 @@ class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, Error
     return this.gray;
   }
 
+  // TODO: Getter not functioning after deserializing
   public getQuestion(): QuestionType | undefined {
     return this.question;
   }
@@ -49,10 +54,9 @@ export abstract class QuestionTable<
   ErrorType,
   QuestionType extends QuestionLeaf<ID, T, ErrorType>,
 > extends QuestionParent<ID, ErrorType> {
-  private readonly rowHeaders: Array<string>;
-  private readonly columnHeaders: Array<string>;
-
-  private readonly questionTable: table<TableCell<ID, T, ErrorType, QuestionType>>;
+  protected readonly rowHeaders: Array<string> = [];
+  protected readonly columnHeaders: Array<string> = [];
+  protected readonly questionTable: table<TableCell<ID, T, ErrorType, QuestionType>>;
 
   /*  The questionCreator is a callback that takes in the row and column index
         for where the question will be placed and may return a question. 
@@ -69,22 +73,34 @@ export abstract class QuestionTable<
     this.rowHeaders = [...rowHeaders];
     this.columnHeaders = [...columnHeaders];
 
-    this.questionTable = new Array(rowHeaders.length).map((x, row) =>
-      new Array(columnHeaders.length)
-        .map((x, col) => questionCreator(row, col))
-        .map((question) => new TableCell(question)),
+    this.questionTable = new Array(rowHeaders.length).fill(undefined).map((_, row) =>
+      new Array(columnHeaders.length).fill(undefined).map((_, col) => {
+        const question = questionCreator(row, col);
+        return new TableCell(question);
+      }),
     );
+    this.columnHeaders = columnHeaders;
   }
 
   // Returns undefined if given numbers are out of bound OR if no question has
   // been defined in the given cell.
+  // public getQuestionAt(row: number, col: number): QuestionType | undefined {
+  //   return row >= 0 &&
+  //     row < this.questionTable.length &&
+  //     col >= 0 &&
+  //     col < (this.questionTable[0]?.length ?? 0)
+  //     ? this.questionTable[row]?.[col]?.getQuestion()
+  //     : undefined;
+  // }
+
   public getQuestionAt(row: number, col: number): QuestionType | undefined {
-    return row >= 0 &&
-      row < this.questionTable.length &&
-      col >= 0 &&
-      col < (this.questionTable[0]?.length ?? 0)
-      ? this.questionTable[row]?.[col]?.getQuestion()
-      : undefined;
+    const tableRow = this.questionTable[row];
+    if (tableRow && col >= 0 && col < tableRow.length) {
+      const tableCell = tableRow[col];
+      // TODO: Change this to use getter instead of direct access after fixing the getter issue.
+      return tableCell?.question;
+    }
+    return undefined;
   }
 
   public getRowHeaders(): Array<string> {

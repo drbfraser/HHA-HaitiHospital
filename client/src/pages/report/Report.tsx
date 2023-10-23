@@ -83,6 +83,7 @@ export const Report = () => {
   };
 
   useEffect(() => {
+    console.log('currentDepartment', currentDepartment);
     const controller = new AbortController();
     const getTemplates = async () => {
       try {
@@ -93,6 +94,7 @@ export const Report = () => {
           controller.signal,
         );
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
+        console.log('reportTemplateJson', reportTemplateJson);
 
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
           objectSerializer.deserialize(reportTemplateJson);

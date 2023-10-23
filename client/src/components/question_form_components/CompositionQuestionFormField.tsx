@@ -77,7 +77,7 @@ const CompositionQuestionFormField = ({
                 'text-secondary': !hasErrors,
               })}
             >
-              {`${groupId.replaceAll('_', '.')}. ${promptValue}`}
+              {`${groupId.replaceAll('_', '.')}. ${group.getPrompt()[language]}`}
               {hasErrors && <i className="bi bi-exclamation-circle ms-2" />}
             </legend>
             <Group hasErrors={hasErrors}>

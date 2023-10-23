@@ -65,7 +65,7 @@
     "question13_2_2_1_7": "Other traumatic reason",
     "question13_2_3": "Stroke/CVA",
     "question13_2_4": "Fractured Hip",
-    "question13_2_5": "Fracrtured long bones",
+    "question13_2_5": "Fractured long bones",
     "question13_2_6": "Neurogenerative disease",
     "question13_2_7": "Head injury",
     "question13_2_8": "Wound Care",
@@ -126,7 +126,7 @@
   },
   "nicuQuestions": {
     "question1": "Beds available",
-    "question2": "Beds days",
+    "question2": "Bed days",
     "question3": "Patient days",
     "question4_1_1": "Hospitalized NICU",
     "question4_1_2": "Hospitalised Paed",

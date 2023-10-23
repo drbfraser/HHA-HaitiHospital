@@ -5,9 +5,6 @@
     represents and what other capabilities it should support.
 */
 
-// interface Translation {
-//   [lang: string]: string;
-// }
 type Translation = Record<string, string>;
 
 export abstract class QuestionNode<ID, ErrorType> {

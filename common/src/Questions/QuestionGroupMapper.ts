@@ -26,6 +26,7 @@ import { MultipleSelectionQuestion, SingleSelectionQuestion } from './MultipleCh
 import { QuestionGroup } from './QuestionGroup';
 import { QuestionNode } from './QuestionNode';
 import { NumericQuestion, TextQuestion } from './SimpleQuestionTypes';
+import { NumericTable } from './NumericTable';
 
 export type Mapper<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, T> = (
   question: Question,
@@ -39,6 +40,7 @@ interface MapEntry<Question extends QuestionNode<ID, ErrorType>, ID, ErrorType, 
 interface MapperQuestions<ID, ErrorType, T> {
   readonly textQuestion: MapEntry<TextQuestion<ID, ErrorType>, ID, ErrorType, T>;
   readonly numericQuestion: MapEntry<NumericQuestion<ID, ErrorType>, ID, ErrorType, T>;
+  readonly numericTableQuestion: MapEntry<NumericTable<ID, ErrorType>, ID, ErrorType, T>;
   readonly singleSelectionQuestion: MapEntry<
     SingleSelectionQuestion<ID, ErrorType>,
     ID,
@@ -60,6 +62,7 @@ interface MapperQuestions<ID, ErrorType, T> {
 export interface MapperArgs<ID, ErrorType, T> {
   readonly textQuestion: (textQuestion: TextQuestion<ID, ErrorType>) => T;
   readonly numericQuestion: (numericQuestion: NumericQuestion<ID, ErrorType>) => T;
+  readonly numericTableQuestion: (numericTableQuestion: NumericTable<ID, ErrorType>) => T;
   readonly singleSelectionQuestion: (
     singleSelectionQuestion: SingleSelectionQuestion<ID, ErrorType>,
   ) => T;
@@ -78,6 +81,10 @@ export class QuestionMapper<ID, ErrorType, T> {
     this.questionMapper = {
       textQuestion: { className: TextQuestion.name, mapper: questionMapper.textQuestion },
       numericQuestion: { className: NumericQuestion.name, mapper: questionMapper.numericQuestion },
+      numericTableQuestion: {
+        className: NumericTable.name,
+        mapper: questionMapper.numericTableQuestion,
+      },
       singleSelectionQuestion: {
         className: SingleSelectionQuestion.name,
         mapper: questionMapper.singleSelectionQuestion,
@@ -112,6 +119,7 @@ export class QuestionMapper<ID, ErrorType, T> {
     return new QuestionMapper<ID, ErrorType, T>({
       textQuestion: handler,
       numericQuestion: handler,
+      numericTableQuestion: handler,
       singleSelectionQuestion: handler,
       multipleSelectionQuestion: handler,
       questionGroup: handler,
