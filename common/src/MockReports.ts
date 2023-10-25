@@ -16,8 +16,8 @@ type ErrorType = string;
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
-  (questionGroupIndex: number): ID =>
-    `${questionId}_${questionGroupIndex}`;
+    (questionGroupIndex: number): ID =>
+      `${questionId}_${questionGroupIndex}`;
 
 export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('ROOT', {
@@ -1617,6 +1617,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
   );
 
   nicuPaedsReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
+
   return nicuPaedsReport;
 };
 
@@ -2040,6 +2041,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
 
   // Add Age of Mothers table to the report
   communityhealthReport.addAll(q1, q2, q3, q4, q5, q6, q7);
+  communityhealthReport.addBreakpoints(0, 1, 2, 3, 4, 5, 6);
 
   return communityhealthReport;
 };

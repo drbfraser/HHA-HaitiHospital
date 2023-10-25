@@ -28,8 +28,9 @@ const FormField = (props: FormFieldProps) => {
   const value = props.value ?? ''; // Set a default value if props.value is null
 
   return (
-    <div className="form-group">
-      <label className="fs-6 m-0 text-secondary" htmlFor={props.nameId}>
+    <div className="form-group min-width-form-field">
+      <label className="fs-10 m-0 text-secondary" htmlFor={props.nameId}>
+        
         {props.nameId.replaceAll('_', '.')}. {prompt}
       </label>
       <input
@@ -40,6 +41,7 @@ const FormField = (props: FormFieldProps) => {
             'form-control-plaintext': props.readOnly,
           },
           'w-50',
+          'min-width-input',
         )}
         id={props.nameId}
         min={props.min}
