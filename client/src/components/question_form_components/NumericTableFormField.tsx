@@ -4,9 +4,9 @@ import { FormField } from './index';
 import './FormField.css';
 
 const tableWrapperStyle = {
-  width: 'fit-content', // or any specific width you want
-  height: '100%', // or any specific height you want
-  overflow: 'auto', // Makes it scrollable
+  width: 'fit-content',
+  height: '100%',
+  overflow: 'auto',
 };
 
 interface NumericTableFormFieldProps {
