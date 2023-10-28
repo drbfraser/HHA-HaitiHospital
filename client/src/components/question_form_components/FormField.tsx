@@ -30,7 +30,6 @@ const FormField = (props: FormFieldProps) => {
   return (
     <div className="form-group min-width-form-field">
       <label className="fs-10 m-0 text-secondary" htmlFor={props.nameId}>
-        
         {props.nameId.replaceAll('_', '.')}. {prompt}
       </label>
       <input
