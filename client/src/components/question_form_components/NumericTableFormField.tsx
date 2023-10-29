@@ -1,6 +1,13 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { NumericTable } from '@hha/common';
 import { FormField } from './index';
+import './FormField.css';
+
+const tableWrapperStyle = {
+  width: 'fit-content',
+  height: '100%',
+  overflow: 'auto',
+};
 
 interface NumericTableFormFieldProps {
   applyReportChanges: () => void;
@@ -61,54 +68,56 @@ const NumericTableFormField = ({
     };
   }, [question, setErrorSet, suffixName, updateErrorSetFromSelf]);
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          {question.getColumnHeaders().map((colHeader, colIndex) => (
-            <th key={colIndex}>{colHeader}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {question.getRowHeaders().map((rowHeader, rowIndex) => (
-          <tr key={rowIndex}>
-            <th>{rowHeader}</th>
-            {question.getColumnHeaders().map((colHeader, colIndex) => {
-              const sub_question = question.getQuestionAt(rowIndex, colIndex);
-
-              // Calculate inputState for the current cell
-              const inputState = sub_question ? sub_question.getValidationResults() : true;
-
-              // Define handleChange for the current cell
-              const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-                const newValue = parseFloat(event.target.value); // Assuming the input value is a number
-                if (sub_question) {
-                  sub_question.setAnswer(newValue);
-                  updateErrorSetFromSelf(sub_question.getId());
-                  applyReportChanges();
-                }
-              };
-
-              return (
-                <td key={`${rowIndex}_${colIndex}`}>
-                  <FormField
-                    handleChange={handleChange}
-                    inputState={inputState}
-                    min={0}
-                    nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
-                    prompt={colHeader}
-                    type="number"
-                    value={sub_question?.getAnswer() ?? ''}
-                    readOnly={readOnly}
-                  />
-                </td>
-              );
-            })}
+    <div style={tableWrapperStyle}>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {question.getColumnHeaders().map((colHeader, colIndex) => (
+              <th key={colIndex}>{colHeader}</th>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {question.getRowHeaders().map((rowHeader, rowIndex) => (
+            <tr key={rowIndex}>
+              <th>{rowHeader}</th>
+              {question.getColumnHeaders().map((colHeader, colIndex) => {
+                const sub_question = question.getQuestionAt(rowIndex, colIndex);
+
+                // Calculate inputState for the current cell
+                const inputState = sub_question ? sub_question.getValidationResults() : true;
+
+                // Define handleChange for the current cell
+                const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+                  const newValue = parseFloat(event.target.value); // Assuming the input value is a number
+                  if (sub_question) {
+                    sub_question.setAnswer(newValue);
+                    updateErrorSetFromSelf(sub_question.getId());
+                    applyReportChanges();
+                  }
+                };
+
+                return (
+                  <td key={`${rowIndex}_${colIndex}`}>
+                    <FormField
+                      handleChange={handleChange}
+                      inputState={inputState}
+                      min={0}
+                      nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
+                      prompt={colHeader}
+                      type="number"
+                      value={sub_question?.getAnswer() ?? ''}
+                      readOnly={readOnly}
+                    />
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
