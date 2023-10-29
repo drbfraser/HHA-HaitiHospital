@@ -74,6 +74,7 @@ router.put(
       Object.keys(updatedUser).forEach(
         (k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k],
       );
+
       await UserCollection.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
 
       res.sendStatus(HTTP_NOCONTENT_CODE);
