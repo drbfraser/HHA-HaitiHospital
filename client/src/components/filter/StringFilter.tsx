@@ -5,17 +5,41 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const FILTER_FUNCTIONS = {
-  contains: (row, columnId, value) =>
-    row.getValue(columnId).toLowerCase().includes(value.toLowerCase()),
+  contains: (row, columnId, value) => {
+    const cellValue = getNestedCellValue(row, columnId);
+    return cellValue.toLowerCase().includes(value.toLowerCase());
+  },
 
-  equal: (row, columnId, value) => row.getValue(columnId).toLowerCase() === value.toLowerCase(),
+  equal: (row, columnId, value) => {
+    const cellValue = getNestedCellValue(row, columnId);
+    return cellValue.toLowerCase() === value.toLowerCase();
+  },
 
-  startsWith: (row, columnId, value) =>
-    row.getValue(columnId).toLowerCase().startsWith(value.toLowerCase()),
+  startsWith: (row, columnId, value) => {
+    const cellValue = getNestedCellValue(row, columnId);
+    return cellValue.toLowerCase().startsWith(value.toLowerCase());
+  },
 
-  endsWith: (row, columnId, value) =>
-    row.getValue(columnId).toLowerCase().endsWith(value.toLowerCase()),
+  endsWith: (row, columnId, value) => {
+    const cellValue = getNestedCellValue(row, columnId);
+    return cellValue.toLowerCase().endsWith(value.toLowerCase());
+  },
 };
+
+function getNestedCellValue(row, columnId) {
+  const cellValue = row.getValue(columnId);
+
+  // object consists of a display name and a value
+  if (cellValue && typeof cellValue === 'object') {
+    return cellValue.name.toLowerCase();
+  }
+
+  if (typeof cellValue === 'string') {
+    return cellValue.toLowerCase();
+  }
+
+  return '';
+}
 
 export const StringFilter = ({
   placeholder,

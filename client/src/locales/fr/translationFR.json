@@ -222,12 +222,12 @@
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
   "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",
   "reportAlertReportsDeleted": "Rapport(s) supprimé(s)",
-  "reportsReportId": "ID de rapport",
+  "reportsReportId": "Nom du rapport",
   "reportsDepartment": "Département",
   "reportsSubmissionDate": "Date de soumission",
   "reportsUserId": "ID de l'utilisateur",
   "reportsSubmittedBy": "Proposé par",
-
+  "reportsOptions": "Choix",
   "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthArchive": "Archive",
@@ -284,7 +284,7 @@
       "priority_col": "Priorité",
       "author_col": "Auteur",
       "created_col": "Créé à",
-      "options_col": "Options",
+      "options_col": "Choix",
       "status_col": "Statut",
       "equipment_col": "Équipement"
     },

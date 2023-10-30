@@ -2,30 +2,24 @@
 //https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
-import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
 import { Link, useHistory } from 'react-router-dom';
 import { dateOptions, userLocale } from 'constants/date';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
 import { ENDPOINT_REPORTS } from 'constants/endpoints';
 import { JsonReportDescriptor } from '@hha/common';
 import Layout from 'components/layout';
-import Pagination from 'components/pagination/Pagination';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
 import { useDepartmentData } from 'hooks';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { event } from 'cypress/types/jquery';
+import { Paths } from 'constants/paths';
 
 const GeneralReports = () => {
-  const [dayRange, setDayRange] = useState<DayRange>({
-    from: null,
-    to: null,
-  });
   const { t } = useTranslation();
   const history = useHistory<History>();
-  const [reports, setReports] = useState<JsonReportDescriptor[]>([]);
+  const [reports, setReports] = useState<any[]>([]);
   const getReports = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReports: JsonReportDescriptor[] = await Api.Get(
@@ -44,17 +38,6 @@ const GeneralReports = () => {
     getReports();
   }, [getReports]);
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const pageSize: number = 10;
-  // TODO: add type
-  const currentTableData: any[] = useMemo(() => {
-    const firstPageIndex: number = (currentPage - 1) * pageSize;
-    const lastPageIndex: number = firstPageIndex + pageSize;
-    return reports.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, reports]);
-
-  const reportNumberIndex: number = currentPage * pageSize - pageSize;
   const departments = useDepartmentData();
 
   let departmentsCheckBoxes = [];
@@ -64,13 +47,8 @@ const GeneralReports = () => {
   const columns: FilterableColumnDef[] = [
     {
       header: t('reportsReportId'),
-      id: 'reportId',
-      cell: (row) => (
-        <Link to={'/report-view/' + row.getValue().link} className="btn-link text-decoration-none">
-          {row.getValue().displayName}
-        </Link>
-      ),
-      accessorKey: 'reportId',
+      id: 'reportName',
+      accessorKey: 'reportName',
     },
     {
       header: t('leaderBoardOverviewDepartment'),
@@ -83,19 +61,40 @@ const GeneralReports = () => {
       id: 'submittedDate',
       accessorKey: 'submittedDate',
     },
-
     {
       header: t('reportsSubmittedBy'),
       id: 'submittedBy',
       accessorKey: 'submittedBy',
     },
+    {
+      id: 'Options',
+      header: t('reportsOptions'),
+      enableGlobalFilter: false,
+      enableColumnFilter: false,
+      cell: (row) => (
+        <>
+          <Link
+            title={t('button.edit')}
+            className="text-decoration-none link-secondary"
+            to={Paths.getGeneralReportId(row.getValue())}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <i className="bi bi-pencil"></i>
+          </Link>
+        </>
+      ),
+      accessorKey: '_id',
+      enableSorting: false,
+    },
   ];
 
-  const gridData = currentTableData.map((item) => ({
-    reportId: {
-      displayName: item.reportObject.id,
-      link: item._id,
-    },
+  const getReportName = (item): string => {
+    return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
+  };
+
+  const gridData = reports.map((item) => ({
+    _id: item._id,
+    reportName: getReportName(item),
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
     submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
     submittedBy: item.submittedBy,
@@ -113,6 +112,7 @@ const GeneralReports = () => {
       {gridData.length > 0 ? (
         <FilterableTable
           columns={columns}
+          rowClickHandler={(item) => history.push(`${Paths.getGeneralReportId(item._id)}`)}
           data={gridData}
           enableFilters
           enableGlobalFilter
