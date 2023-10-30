@@ -18,6 +18,8 @@ const BIOMECH_REPORT: string = `${BIOMECH_MAIN}/report-broken-kit`;
 const BIOMECH_VIEW: string = `${BIOMECH_MAIN}/view/:${BIO_REPORT_ID_SLUG}`;
 const BIOMECH_EDIT: string = `${BIOMECH_MAIN}/edit/:${BIO_REPORT_ID_SLUG}`;
 
+const REPORT_VIEW: string = '/report-view';
+
 // URL instances
 const getAdminEditUser = (userId: string): string => {
   return `${ADMIN_MAIN}/edit-user/${userId}`;
@@ -41,6 +43,9 @@ const getBioMechViewId = (reportId: string): string => {
 const getBioMechEditId = (reportId: string): string => {
   return `${BIOMECH_MAIN}/Edit/${reportId}`;
 };
+const getGeneralReportId = (reportId: string): string => {
+  return `${REPORT_VIEW}/${reportId}`;
+};
 
 export const Paths = {
   getAdminMain,
@@ -50,6 +55,7 @@ export const Paths = {
   getBioMechReport,
   getBioMechViewId,
   getBioMechEditId,
+  getGeneralReportId,
 };
 
 export const PathPatterns = {
@@ -60,4 +66,5 @@ export const PathPatterns = {
   BIOMECH_REPORT,
   BIOMECH_VIEW,
   BIOMECH_EDIT,
+  REPORT_VIEW,
 };

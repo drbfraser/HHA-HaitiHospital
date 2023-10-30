@@ -26,7 +26,6 @@ export const DateRangeFilter = ({
 
   return (
     <DatePicker
-      wrapperClassName="w-100"
       onChange={(value) => setFilterValue(value as DayRange)}
       shouldHighlightWeekends
       value={

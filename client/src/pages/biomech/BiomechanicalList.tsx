@@ -113,7 +113,7 @@ export const BiomechanicalList = () => {
       },
       {
         id: 'Options',
-        header: '',
+        header: t('biomech.main_page.options_col'),
         enableGlobalFilter: false,
         enableColumnFilter: false,
         cell: (row) => (
@@ -131,7 +131,7 @@ export const BiomechanicalList = () => {
                 </Button>
                 <Link
                   data-testid="edit-biomech-button"
-                  title={t('button.delete')}
+                  title={t('button.edit')}
                   className="text-decoration-none link-secondary"
                   to={Paths.getBioMechEditId(row.getValue())}
                   onClick={(event) => event.stopPropagation()}

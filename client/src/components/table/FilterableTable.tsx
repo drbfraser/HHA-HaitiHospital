@@ -55,7 +55,6 @@ const FilterableTable = ({
   enableGlobalFilter = false,
   enableFilters = false,
   enableSorting = false,
-  rowTestId,
   rowClickHandler,
   globalFilterType = FilterType.STRING,
 }: FilterableTableProps) => {
@@ -81,7 +80,6 @@ const FilterableTable = ({
     columns: columns,
     data: data,
     getCoreRowModel: getCoreRowModel(),
-    pageCount: Math.ceil(data.length / PAGE_SIZE),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -95,6 +93,11 @@ const FilterableTable = ({
     onSortingChange: setSorting,
     enableFilters: enableFilters,
     enableColumnResizing: false,
+    initialState: {
+      pagination: {
+        pageSize: PAGE_SIZE,
+      },
+    },
   });
 
   return (
@@ -111,7 +114,7 @@ const FilterableTable = ({
         />
       )}
 
-      <Table hover responsive>
+      <Table hover>
         <thead>
           {table.getHeaderGroups().map(
             (headerGroup) =>
