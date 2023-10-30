@@ -114,7 +114,7 @@ const FilterableTable = ({
         />
       )}
 
-      <Table hover responsive>
+      <Table hover>
         <thead>
           {table.getHeaderGroups().map(
             (headerGroup) =>

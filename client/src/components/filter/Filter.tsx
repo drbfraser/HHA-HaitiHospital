@@ -27,25 +27,18 @@ interface ClearFilterButtonProps {
   setFilterValue: (value: FilterValue) => void;
   filterValue: FilterValue;
   initialValue?: FilterValue;
-  executeOnClick?: () => void;
 }
 
 export const ClearFilterButton = ({
   setFilterValue,
   filterValue,
   initialValue,
-  executeOnClick,
 }: ClearFilterButtonProps) => (
   <>
     {filterValue !== initialValue && (
       <Button
         variant="light text-danger border border-right border-top border-bottom"
-        onClick={() => {
-          setFilterValue(initialValue);
-          if (executeOnClick) {
-            executeOnClick();
-          }
-        }}
+        onClick={() => setFilterValue(initialValue)}
         title="clear"
       >
         &#x2715;
