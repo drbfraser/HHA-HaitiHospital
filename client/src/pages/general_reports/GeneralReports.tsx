@@ -5,9 +5,10 @@ import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { Link, useHistory } from 'react-router-dom';
 import { dateOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 import Api from 'actions/Api';
-import { ENDPOINT_REPORTS } from 'constants/endpoints';
+import { ENDPOINT_REPORTS, ENDPOINT_REPORT_DELETE_BY_ID } from 'constants/endpoints';
 import { JsonReportDescriptor } from '@hha/common';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
@@ -15,11 +16,20 @@ import { useTranslation } from 'react-i18next';
 import { useDepartmentData } from 'hooks';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Paths } from 'constants/paths';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { useAuthState } from 'contexts';
+import { Role } from 'constants/interfaces';
+import DeleteModal from 'components/popup_modal/DeleteModal';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
+  const authState = useAuthState();
   const history = useHistory<History>();
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [reports, setReports] = useState<any[]>([]);
+
   const getReports = useCallback(async () => {
     const controller = new AbortController();
     const fetchedReports: JsonReportDescriptor[] = await Api.Get(
@@ -37,6 +47,47 @@ const GeneralReports = () => {
   useEffect(() => {
     getReports();
   }, [getReports]);
+
+  const deleteReportCallback = () => {
+    setReports(reports.filter((item) => item._id !== currentIndex));
+    setCurrentIndex(null);
+  };
+
+  const deleteReport = async (id: string) => {
+    await Api.Delete(
+      ENDPOINT_REPORT_DELETE_BY_ID(id),
+      {},
+      deleteReportCallback,
+      history,
+      ResponseMessage.getMsgDeleteReportFailed(),
+      null,
+      ResponseMessage.getMsgDeleteReportOk(),
+    );
+  };
+
+  const onDeleteReport = (event: any, id: string) => {
+    event.stopPropagation();
+    setCurrentIndex(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const onModalClose = () => {
+    setCurrentIndex(null);
+    setIsDeleteModalOpen(false);
+  };
+
+  const onModalDelete = async () => {
+    await deleteReport(currentIndex);
+    setIsDeleteModalOpen(false);
+  };
+
+  const checkUserDepartmentMatchesReportDepartment = (reportDepartmentId: string) => {
+    const userDetails = authState.userDetails;
+    if (userDetails.role === Role.Admin || userDetails.role === Role.MedicalDirector) {
+      return true;
+    }
+    return userDetails.department.id === reportDepartmentId;
+  };
 
   const departments = useDepartmentData();
 
@@ -73,17 +124,32 @@ const GeneralReports = () => {
       enableColumnFilter: false,
       cell: (row) => (
         <>
+          {renderBasedOnRole(authState.userDetails.role, [
+            Role.Admin,
+            Role.MedicalDirector,
+            Role.HeadOfDepartment,
+          ]) &&
+            checkUserDepartmentMatchesReportDepartment(row.getValue().departmentId) && (
+              <Button
+                onClick={(event) => onDeleteReport(event, row.getValue()._id)}
+                variant="link"
+                title={t('button.delete')}
+                className="text-decoration-none link-secondary"
+              >
+                <i className="bi bi-trash"></i>
+              </Button>
+            )}
           <Link
             title={t('button.edit')}
             className="text-decoration-none link-secondary"
-            to={Paths.getGeneralReportId(row.getValue())}
+            to={Paths.getGeneralReportId(row.getValue()._id)}
             onClick={(event) => event.stopPropagation()}
           >
             <i className="bi bi-pencil"></i>
           </Link>
         </>
       ),
-      accessorKey: '_id',
+      accessorKey: 'item',
       enableSorting: false,
     },
   ];
@@ -93,6 +159,7 @@ const GeneralReports = () => {
   };
 
   const gridData = reports.map((item) => ({
+    item,
     _id: item._id,
     reportName: getReportName(item),
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
@@ -102,6 +169,14 @@ const GeneralReports = () => {
 
   return (
     <Layout title={t('headerGeneralReports')}>
+      <DeleteModal
+        dataTestId="confirm-delete-general-reports-button"
+        show={isDeleteModalOpen}
+        itemName={t('item.report')}
+        onModalClose={onModalClose}
+        onModalDelete={onModalDelete}
+      ></DeleteModal>
+
       <div>
         <Link to="report">
           <button className="btn btn-outline-dark" type="button">
