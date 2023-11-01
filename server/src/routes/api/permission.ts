@@ -38,11 +38,10 @@ router.put(
 
       let updatedDoc = await PermissionCollection.findOneAndUpdate({}, { permissionObject: req.body.permission }, { new: true })
       res.status(HTTP_OK_CODE).json({ permission: updatedDoc.permissionObject });
-      return;
+
     } catch (e) {
       console.log(e);
       next(e);
-      res.status(HTTP_INTERNALERROR_CODE)
     }
   },
 );
