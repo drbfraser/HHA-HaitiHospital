@@ -1,7 +1,12 @@
 import { IRouter, NextFunction, Response } from 'express';
 import { roleAuth } from 'middleware/roleAuth';
 import { RequestWithUser } from 'utils/definitions/express';
-import { HTTP_OK_CODE, HTTP_CREATED_CODE, NotFound, HTTP_INTERNALERROR_CODE } from '../../exceptions/httpException';
+import {
+  HTTP_OK_CODE,
+  HTTP_CREATED_CODE,
+  NotFound,
+  HTTP_INTERNALERROR_CODE,
+} from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { PermissionCollection } from 'models/permission';
 import { Role } from 'models/user';
@@ -35,17 +40,17 @@ router.put(
   roleAuth(Role.Admin),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-
-      let updatedDoc = await PermissionCollection.findOneAndUpdate({}, { permissionObject: req.body.permission }, { new: true })
+      let updatedDoc = await PermissionCollection.findOneAndUpdate(
+        {},
+        { permissionObject: req.body.permission },
+        { new: true },
+      );
       res.status(HTTP_OK_CODE).json({ permission: updatedDoc.permissionObject });
-
     } catch (e) {
       console.log(e);
       next(e);
     }
   },
 );
-
-
 
 export default router;

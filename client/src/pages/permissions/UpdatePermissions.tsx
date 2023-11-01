@@ -109,20 +109,16 @@ export const UpdatePermissions = () => {
     };
   }, [history]);
 
-  const submitHandler = async ()=>
-  {
-    
-    const data = {permission: permissionsData};
+  const submitHandler = async () => {
+    const data = { permission: permissionsData };
     await Api.Put(
       ENDPOINT_PERMISSION,
       data,
-      ()=>{},
+      () => {},
       history,
       ResponseMessage.getMsgUpdatePermissionsFailed(),
     );
-    
-
-  }
+  };
 
   return (
     <Layout title={t('permissions.permissionHeader')}>
@@ -152,11 +148,15 @@ export const UpdatePermissions = () => {
           currentRole={currentRole}
         />
         <div className="mt-5 mb-3 d-flex justify-content-center">
-        <button data-testid="add-user-submit-button" type="submit" 
-        className="btn btn-dark col-3" onClick={submitHandler}>
-          {t('button.submit')}
-        </button>
-      </div>
+          <button
+            data-testid="add-user-submit-button"
+            type="submit"
+            className="btn btn-dark col-3"
+            onClick={submitHandler}
+          >
+            {t('button.submit')}
+          </button>
+        </div>
       </>
     </Layout>
   );

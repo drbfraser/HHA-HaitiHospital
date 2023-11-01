@@ -31,7 +31,7 @@ enum RequestItem {
   POST = 'message_board_post',
   COMMENT = 'message_board_comment',
   EOTM = 'employee_of_the_month',
-  PERMISSION = 'permission'
+  PERMISSION = 'permission',
 }
 
 // Make sure these keys match with i18-next translation JSON
