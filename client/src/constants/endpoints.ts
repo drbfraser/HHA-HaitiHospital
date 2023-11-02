@@ -86,6 +86,7 @@ const ENDPOINT_MESSAGEBOARD_COMMENTS_POST: string = '/api/message-board/comments
 const ENDPOINT_REPORTS: string = '/api/report';
 const ENDPOINT_REPORTS_GET_BY_DEPARTMENT = (id: string) => `/api/report/department/${id}`;
 const ENDPOINT_REPORT_GET_BY_ID = (id: string) => `/api/report/${id}`;
+const ENDPOINT_REPORT_DELETE_BY_ID = (id: string) => `/api/report/${id}`;
 
 // template
 const ENDPOINT_TEMPLATE: string = '/api/template';
@@ -130,6 +131,7 @@ export {
   ENDPOINT_REPORTS,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
   ENDPOINT_REPORT_GET_BY_ID,
+  ENDPOINT_REPORT_DELETE_BY_ID,
   ENDPOINT_TEMPLATE,
   ENDPOINT_PERMISSION,
   ENDPOINT_BIOMECH_UPDATE_BY_ID,

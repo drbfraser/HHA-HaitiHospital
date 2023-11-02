@@ -4,6 +4,7 @@ import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
 import {
   HTTP_CREATED_CODE,
+  HTTP_NOCONTENT_CODE,
   HTTP_OK_CODE,
   NotFound,
   Unauthorized,
@@ -13,6 +14,8 @@ import { ReportCollection } from '../../models/report';
 import { departmentAuth } from 'middleware/departmentAuth';
 import { Router } from 'express';
 import { cloneDeep } from 'lodash';
+import { roleAuth } from 'middleware/roleAuth';
+import { Role } from 'models/user';
 
 const router = Router();
 
@@ -93,23 +96,28 @@ router.get(
   },
 );
 
-router.get(
+// Delete report by id
+router.delete(
   `/:${REPORT_ID_URL_SLUG}`,
   requireJwtAuth,
+  roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const reportId = req.params[REPORT_ID_URL_SLUG];
-      const report = await ReportCollection.findById(reportId).lean();
+      const report = await ReportCollection.findById(reportId);
+
       if (!report) {
-        throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+        throw new NotFound(`No report with id ${reportId}`);
       }
 
-      const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
+      const authorized = checkUserCanEdit(req.user, report);
+
       if (!authorized) {
-        throw new Unauthorized(`User not authorized`);
+        throw new Unauthorized(`User not authorized to delete this report`);
       }
 
-      res.status(HTTP_OK_CODE).json({ report: report });
+      await report.remove();
+      res.status(HTTP_NOCONTENT_CODE).send();
     } catch (e) {
       next(e);
     }
@@ -121,7 +129,7 @@ router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
 
   const report = await ReportCollection.findById(id);
 
-  const authorized = checkUserCanEdit(req.user, report.departmentId);
+  const authorized = checkUserCanEdit(req.user, report);
 
   if (!authorized) {
     throw new Unauthorized(`User not authorized`);
