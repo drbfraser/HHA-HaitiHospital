@@ -31,6 +31,7 @@ enum RequestItem {
   POST = 'message_board_post',
   COMMENT = 'message_board_comment',
   EOTM = 'employee_of_the_month',
+  PERMISSION = 'permission',
 }
 
 // Make sure these keys match with i18-next translation JSON
@@ -198,6 +199,14 @@ const getMsgUpdateUserOk = (): string => {
     item: RequestItem.USER,
   });
 };
+const getMsgUpdatePermissionsFailed = (): string => {
+  return getResponseMessage({
+    action: RequestAction.UPDATE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.USER,
+  });
+};
+
 const getMsgUpdateUserFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.UPDATE,
@@ -375,6 +384,7 @@ export const ResponseMessage = {
   getMsgCreateUserFailed,
   getMsgUpdateUserOk,
   getMsgUpdateUserFailed,
+  getMsgUpdatePermissionsFailed,
   getMsgFetchUserFailed,
   getMsgDeleteUserOk,
   getMsgDeleteUserFailed,
