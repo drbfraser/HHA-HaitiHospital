@@ -1942,12 +1942,12 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Vaginal ring', fr: 'Anneau Vaginal' },
     { en: 'Breastfeeding as birth control', fr: 'Allaitement comme moyen de contraception' },
     { en: 'Female condom', fr: 'Préservatif féminin' },
-    { en: 'Sterilisation', fr: 'Stérilisation' },
+    { en: 'Ligature', fr: 'Ligature' },
     { en: 'Male condom', fr: 'Préservatif masculin' },
     { en: 'Vasectomy', fr: 'Vasectomie' },
     { en: '', fr: '' },
     { en: 'Quantity (number)', fr: 'Quantité (nombre)' },
-    { en: 'Sterilisation', fr: 'Stérilisation' },
+    { en: 'Ligature', fr: 'Ligature' },
     { en: 'Vasectomy', fr: 'Vasectomie' },
   ];
 
