@@ -54,8 +54,8 @@ export abstract class QuestionTable<
   ErrorType,
   QuestionType extends QuestionLeaf<ID, T, ErrorType>,
 > extends QuestionParent<ID, ErrorType> {
-  protected readonly rowHeaders: Array<string> = [];
-  protected readonly columnHeaders: Array<string> = [];
+  protected readonly rowHeaders: Array<Translation> = [];
+  protected readonly columnHeaders: Array<Translation> = [];
   protected readonly questionTable: table<TableCell<ID, T, ErrorType, QuestionType>>;
 
   /*  The questionCreator is a callback that takes in the row and column index
@@ -65,8 +65,8 @@ export abstract class QuestionTable<
   constructor(
     id: ID,
     prompt: Translation,
-    rowHeaders: Array<string>,
-    columnHeaders: Array<string>,
+    rowHeaders: Array<Translation>,
+    columnHeaders: Array<Translation>,
     questionCreator: (row: number, col: number) => QuestionType | undefined,
   ) {
     super(id, prompt);
@@ -103,11 +103,11 @@ export abstract class QuestionTable<
     return undefined;
   }
 
-  public getRowHeaders(): Array<string> {
+  public getRowHeaders(): Array<Translation> {
     return [...this.rowHeaders];
   }
 
-  public getColumnHeaders(): Array<string> {
+  public getColumnHeaders(): Array<Translation> {
     return [...this.columnHeaders];
   }
 

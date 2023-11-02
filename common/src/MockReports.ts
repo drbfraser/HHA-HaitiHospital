@@ -13,6 +13,19 @@ import { QuestionAnswerNode } from './Questions/QuestionAnswer';
 
 type ID = string;
 type ErrorType = string;
+type Translation = Record<string, string>;
+
+const separateLanguages = (translations: Translation[]): { en: string[]; fr: string[] } => {
+  const en: string[] = [];
+  const fr: string[] = [];
+
+  for (const translation of translations) {
+    en.push(translation.en || '');
+    fr.push(translation.fr || '');
+  }
+
+  return { en, fr };
+};
 
 const questionIdGeneratorBuilder =
   (questionId: ID) =>
@@ -1779,34 +1792,43 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
   // TODO: add q13_1 to q13
 
   // Question 14 Table
-  // const q14_rows: string[] = ['Weight <1.5kg', '1.5kg ≤ Weight <2.5kg', '2.5kg and over', 'Not weighed'];
-  // const q14_columns: string[] = ['Births', 'Normal', 'Césarienne', 'Instrumentalsé'];
-  // TODO: Create question table
-  //const q14: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>('Deliveries', '14', q14_rows, q14_columns, () => NumericQuestion<ID, ErrorType>);
-  const q14_rows: string[] = [
-    'Weight <1.5kg',
-    '1.5kg ≤ Weight <2.5kg',
-    '2.5kg and over',
-    'Not weighed',
+
+  const q14_rows: Translation[] = [
+    { en: 'Weight <1.5kg', fr: 'Poids <1,5kg' },
+    { en: '1.5kg ≤ Weight <2.5kg', fr: '1,5kg ≤ Poids <2,5kg' },
+    { en: '2.5kg and over', fr: '2,5kg et plus' },
+    { en: 'Not weighed', fr: 'Non pesé' },
   ];
-  const q14_columns: string[] = ['Births', 'Normal', 'Césarienne', 'Instrumentalsé', 'test'];
+
+  const q14_columns: Translation[] = [
+    { en: 'Births', fr: 'Naissances' },
+    { en: 'Normal', fr: 'Normal' },
+    { en: 'Cesarean', fr: 'Césarienne' },
+    { en: 'Instrumental', fr: 'Instrumentalisé' },
+    { en: 'Test', fr: 'Test' },
+  ];
+
+  const { en: q14_rows_en, fr: q14_rows_fr } = separateLanguages(q14_rows);
+  const { en: q14_columns_en, fr: q14_columns_fr } = separateLanguages(q14_columns);
 
   const q14: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '14',
-    { en: 'Question 14', fr: 'Question 14 (French)' },
+    { en: 'Question 14', fr: 'Question 14' },
     q14_rows,
     q14_columns,
-    (row: number, col: number) =>
+    (row, col) =>
       new NumericQuestion<ID, ErrorType>(`Q14_${row}_${col}`, {
-        en: `Question for ${q14_rows[row]} and ${q14_columns[col]}`,
-        fr: `Question pour ${q14_rows[row]} et ${q14_columns[col]} (French)`,
+        en: `Question for ${q14_rows_en[row]} and ${q14_columns_en[col]}`,
+        fr: `Question pour ${q14_rows_fr[row]} et ${q14_columns_fr[col]}`,
       }),
   );
 
   // Create a NumericTable for q 14
   // Above code is giving the null for the questionTable
 
+  // maternityReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
   maternityReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
+
   return maternityReport;
 };
 
@@ -1816,16 +1838,23 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Mock Report', fr: 'Rapport fictif' },
   );
 
-  const q1_rows: string[] = [
-    '< 15 years',
-    '15-19 years',
-    '20-24 years',
-    '25-29 years',
-    '30 years plus',
-    'Unknown',
+  const q1_rows: Translation[] = [
+    { en: '< 15 years', fr: '< 15 ans' },
+    { en: '15-19 years', fr: '15-19 ans' },
+    { en: '20-24 years', fr: '20-24 ans' },
+    { en: '25-29 years', fr: '25-29 ans' },
+    { en: '30 years plus', fr: '30 ans et plus' },
+    { en: 'Unknown', fr: 'Inconnu' },
   ];
 
-  const q1_columns: string[] = ['Age of Mothers', 'Matrones formèes', 'Autres'];
+  const q1_columns: Translation[] = [
+    { en: 'Age of Mothers', fr: 'Âge des Mères' },
+    { en: 'Trained Midwives', fr: 'Matrones formées' },
+    { en: 'Others', fr: 'Autres' },
+  ];
+
+  const { en: q1_rows_en, fr: q1_rows_fr } = separateLanguages(q1_rows);
+  const { en: q1_columns_en, fr: q1_columns_fr } = separateLanguages(q1_columns);
 
   // Create the NumericTable
   const q1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
@@ -1835,207 +1864,230 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     q1_columns,
     (row: number, col: number) =>
       new NumericQuestion<ID, ErrorType>(`Q1_${row}_${col}`, {
-        en: `Question for ${q1_rows[row]} and ${q1_columns[col]}`,
-        fr: `Question pour ${q1_rows[row]} et ${q1_columns[col]} (French)`,
+        en: `Question for ${q1_rows_en[row]} and ${q1_columns_en[col]}`,
+        fr: `Question pour ${q1_rows_fr[row]} et ${q1_columns_fr[col]}`,
       }),
   );
 
-  const q2_rows: string[] = [
-    'Weight <1.5kg',
-    '1.5kg ≤ Weight <2.5kg',
-    '2.5kg and over',
-    'Not weighed',
-    'Immediately breastfed',
-    'Skin to skin therapy',
+  const q2_rows: Translation[] = [
+    { en: 'Weight <1.5kg', fr: 'Poids <1,5kg' },
+    { en: '1.5kg ≤ Weight <2.5kg', fr: '1,5kg ≤ Poids <2,5kg' },
+    { en: '2.5kg and over', fr: '2,5kg et plus' },
+    { en: 'Not weighed', fr: 'Non pesé' },
+    { en: 'Immediately breastfed', fr: 'Allaité immédiatement' },
+    { en: 'Skin to skin therapy', fr: 'Thérapie peau à peau' },
   ];
 
-  const q2_columns: string[] = ['Births', 'Matrones', 'Autres'];
+  const q2_columns: Translation[] = [
+    { en: 'Births', fr: 'Naissances' },
+    { en: 'Matrones', fr: 'Matrones' },
+    { en: 'Others', fr: 'Autres' },
+  ];
 
-  // Create the NumericTable
+  const { en: q2_rows_en, fr: q2_rows_fr } = separateLanguages(q2_rows);
+  const { en: q2_columns_en, fr: q2_columns_fr } = separateLanguages(q2_columns);
+
   const q2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '2',
-    { en: 'Question 2', fr: 'Question 2 (French)' },
+    { en: 'Question 2', fr: 'Question 2' },
     q2_rows,
     q2_columns,
-    (row: number, col: number) =>
+    (row, col) =>
       new NumericQuestion<ID, ErrorType>(`Q2_${row}_${col}`, {
-        en: `Question for ${q2_rows[row]} and ${q2_columns[col]}`,
-        fr: `Question pour ${q2_rows[row]} et ${q2_columns[col]} (French)`,
+        en: `Question for ${q2_rows_en[row]} and ${q2_columns_en[col]}`,
+        fr: `Question pour ${q2_rows_fr[row]} et ${q2_columns_fr[col]}`,
       }),
   );
 
-  const q3_rows: string[] = [
-    'Breastfeeding women receiving vitamin A',
-    'Breastfeeding women with MUAC <210mm',
-    'Breastfeeding women with malnutrition support',
-    'Domestic visits in 0-3 days',
+  const q3_rows: Translation[] = [
+    {
+      en: 'Breastfeeding women receiving vitamin A',
+      fr: 'Femmes allaitantes recevant de la vitamine A',
+    },
+    { en: 'Breastfeeding women with MUAC <210mm', fr: 'Femmes allaitantes avec un PB <210mm' },
+    {
+      en: 'Breastfeeding women with malnutrition support',
+      fr: 'Femmes allaitantes bénéficiant d’un soutien nutritionnel',
+    },
+    { en: 'Domestic visits in 0-3 days', fr: 'Visites à domicile dans les 0-3 jours' },
   ];
 
-  const q3_columns: string[] = ['Post Natal', 'Matrones', 'Autres'];
+  const q3_columns: Translation[] = [
+    { en: 'Post Natal', fr: 'Post Natal' },
+    { en: 'Matrones', fr: 'Matrones' },
+    { en: 'Others', fr: 'Autres' },
+  ];
+
+  const { en: q3_rows_en, fr: q3_rows_fr } = separateLanguages(q3_rows);
+  const { en: q3_columns_en, fr: q3_columns_fr } = separateLanguages(q3_columns);
 
   const q3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '3',
-    { en: 'Question 3', fr: 'Question 3 (French)' },
+    { en: 'Question 3', fr: 'Question 3' },
     q3_rows,
     q3_columns,
-    (row: number, col: number) =>
+    (row, col) =>
       new NumericQuestion<ID, ErrorType>(`Q3_${row}_${col}`, {
-        en: `Question for ${q3_rows[row]} and ${q3_columns[col]}`,
-        fr: `Question pour ${q3_rows[row]} et ${q3_columns[col]} (French)`,
+        en: `Question for ${q3_rows_en[row]} and ${q3_columns_en[col]}`,
+        fr: `Question pour ${q3_rows_fr[row]} et ${q3_columns_fr[col]}`,
       }),
   );
-
-  const q4_rows: string[] = [
-    'Methods/ Sex',
-    '?? OCP',
-    '?? Patch',
-    'Depo injection',
-    'Implant',
-    'Inter uterine devices (IUD)',
-    'Vaginal ring',
-    'Breastfeeding as birth control',
-    'Female condom',
-    'Sterilisation',
-    'Male condom',
-    'Vasectomy',
-    '',
-    'Quantity (number)',
-    'Sterilisation',
-    'Vasectomy',
+  const q4_rows: Translation[] = [
+    { en: 'Methods/ Sex', fr: 'Méthodes/ Sexe' },
+    { en: 'Female OCP', fr: 'Contraceptifs Oraux pour Femmes' },
+    { en: 'Female PP', fr: 'PP pour Femmes' }, // I'm not sure what "PP" stands for, so you might want to provide a full term for a more accurate translation.
+    { en: 'Depo injection', fr: 'Injection Depo' },
+    { en: 'Implant', fr: 'Implant' },
+    { en: 'Inter uterine devices (IUD)', fr: 'Dispositifs Intra-Utérins (DIU)' },
+    { en: 'Vaginal ring', fr: 'Anneau Vaginal' },
+    { en: 'Breastfeeding as birth control', fr: 'Allaitement comme moyen de contraception' },
+    { en: 'Female condom', fr: 'Préservatif féminin' },
+    { en: 'Sterilisation', fr: 'Stérilisation' },
+    { en: 'Male condom', fr: 'Préservatif masculin' },
+    { en: 'Vasectomy', fr: 'Vasectomie' },
+    { en: '', fr: '' },
+    { en: 'Quantity (number)', fr: 'Quantité (nombre)' },
+    { en: 'Sterilisation', fr: 'Stérilisation' },
+    { en: 'Vasectomy', fr: 'Vasectomie' },
   ];
 
-  const q4_columns: string[] = [
-    'Birth Control',
-    'Acceptants <25 ans',
-    'Acceptants 25 ans et plus',
-    'Total utilisateurs <25 ans',
-    'Total utilisateurs 25 ans et plus',
-    'Unité',
-    'Quantité',
-    'Nbre de jours rupture de stocks/ mois',
+  const q4_columns: Translation[] = [
+    { en: 'Birth Control', fr: 'Contraception' },
+    { en: 'Acceptors <25 years', fr: 'Acceptants <25 ans' },
+    { en: 'Acceptors 25 years and older', fr: 'Acceptants 25 ans et plus' },
+    { en: 'Total Users <25 years', fr: 'Total Utilisateurs <25 ans' },
+    { en: 'Total Users 25 years and older', fr: 'Total Utilisateurs 25 ans et plus' },
+    { en: 'Unit', fr: 'Unité' },
+    { en: 'Quantity', fr: 'Quantité' },
+    {
+      en: 'Number of Days Out of Stock per Month',
+      fr: 'Nombre de Jours de Rupture de Stock par Mois',
+    },
   ];
 
-  // Create the NumericTable
+  const { en: q4_rows_en, fr: q4_rows_fr } = separateLanguages(q4_rows);
+  const { en: q4_columns_en, fr: q4_columns_fr } = separateLanguages(q4_columns);
+
   const q4: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '4',
-    { en: 'Question 4', fr: 'Question 4 (French)' },
+    { en: 'Question 4', fr: 'Question 4' },
     q4_rows,
     q4_columns,
-    (row: number, col: number) =>
+    (row, col) =>
       new NumericQuestion<ID, ErrorType>(`Q4_${row}_${col}`, {
-        en: `Question for ${q4_rows[row]} and ${q4_columns[col]}`,
-        fr: `Question pour ${q4_rows[row]} et ${q4_columns[col]} (French)`,
+        en: `Question for ${q4_rows_en[row]} and ${q4_columns_en[col]}`,
+        fr: `Question pour ${q4_rows_fr[row]} et ${q4_columns_fr[col]}`,
       }),
   );
 
-  const q5_rows: string[] = [
-    'BCG',
-    'VPO',
-    'Penta',
-    'Rota',
-    'RR',
-    'dT',
-    'VPI',
-    'Pneumo',
-    'DTP',
-    'COVID-19',
+  const q5_rows: Translation[] = [
+    { en: 'BCG', fr: 'BCG' },
+    { en: 'VPO', fr: 'VPO' },
+    { en: 'Penta', fr: 'Penta' },
+    { en: 'Rota', fr: 'Rota' },
+    { en: 'RR', fr: 'RR' },
+    { en: 'dT', fr: 'dT' },
+    { en: 'VPI', fr: 'VPI' },
+    { en: 'Pneumo', fr: 'Pneumo' },
+    { en: 'DTP', fr: 'DTP' },
+    { en: 'COVID-19', fr: 'COVID-19' },
   ];
 
-  const q5_columns: string[] = [
-    'Type of Vaccine',
-    'Quantité disponible au cours du mois',
-    'Balance en fin de mois',
-    'Nombre de jours de rupture de stocks',
+  const q5_columns: Translation[] = [
+    { en: 'Type of Vaccine', fr: 'Type de vaccin' },
+    { en: 'Quantity available during the month', fr: 'Quantité disponible au cours du mois' },
+    { en: 'Balance at the end of the month', fr: 'Solde en fin de mois' },
+    { en: 'Number of days of stock outs', fr: 'Nombre de jours de rupture de stocks' },
   ];
 
-  // Create the NumericTable
+  const { en: q5_rows_en, fr: q5_rows_fr } = separateLanguages(q5_rows);
+  const { en: q5_columns_en, fr: q5_columns_fr } = separateLanguages(q5_columns);
+
   const q5: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '5',
-    { en: 'Question 5', fr: 'Question 5 (French)' },
+    { en: 'Question 5', fr: 'Question 5' },
     q5_rows,
     q5_columns,
-    (row: number, col: number) =>
+    (row, col) =>
       new NumericQuestion<ID, ErrorType>(`Q5_${row}_${col}`, {
-        en: `Question for ${q5_rows[row]} and ${q5_columns[col]}`,
-        fr: `Question pour ${q5_rows[row]} et ${q5_columns[col]} (French)`,
+        en: `Question for ${q5_rows_en[row]} and ${q5_columns_en[col]}`,
+        fr: `Question pour ${q5_rows_fr[row]} et ${q5_columns_fr[col]}`,
       }),
   );
 
-  const q6_rows: string[] = [
-    'SAB 0.05ml',
-    'SAB 0.5ml',
-    'Sdil_2ml',
-    'Sdil_5ml',
-    'Boîtes Séc',
-    'Coton',
+  const q6_rows: Translation[] = [
+    { en: 'SAB 0.05ml', fr: 'SAB 0.05ml' },
+    { en: 'SAB 0.5ml', fr: 'SAB 0.5ml' },
+    { en: 'Sdil_2ml', fr: 'Sdil_2ml' },
+    { en: 'Sdil_5ml', fr: 'Sdil_5ml' },
+    { en: 'Boîtes Séc', fr: 'Boîtes Séc' },
+    { en: 'Cotton', fr: 'Coton' },
   ];
 
-  const q6_columns: string[] = [
-    'Consumables',
-    'Quantité disponible au cours du mois',
-    'Balance en fin de mois',
-    'Nombre de jours de rupture de stocks',
+  const q6_columns: Translation[] = [
+    { en: 'Consumables', fr: 'Consommables' },
+    { en: 'Quantity available during the month', fr: 'Quantité disponible au cours du mois' },
+    { en: 'Balance at the end of the month', fr: 'Solde en fin de mois' },
   ];
 
-  // Create the NumericTable
+  const { en: q6_rows_en, fr: q6_rows_fr } = separateLanguages(q6_rows);
+  const { en: q6_columns_en, fr: q6_columns_fr } = separateLanguages(q6_columns);
+
   const q6: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '6',
-    { en: 'Question 6', fr: 'Question 6 (French)' },
+    { en: 'Question 6', fr: 'Question 6' },
     q6_rows,
     q6_columns,
-    (row: number, col: number) =>
+    (row, col) =>
       new NumericQuestion<ID, ErrorType>(`Q6_${row}_${col}`, {
-        en: `Question for ${q6_rows[row]} and ${q6_columns[col]}`,
-        fr: `Question pour ${q6_rows[row]} et ${q6_columns[col]} (French)`,
+        en: `Question for ${q6_rows_en[row]} and ${q6_columns_en[col]}`,
+        fr: `Question pour ${q6_rows_fr[row]} et ${q6_columns_fr[col]}`,
       }),
   );
 
-  const q7_rows: string[] = [
-    'BCG',
-    'VPO (Polio)',
-    'VPO 1 (Polio)',
-    'VPO 2 (Polio)',
-    'Rappel VPO (Polio)',
-    'VPI',
-    'Penta 1',
-    'Penta 2',
-    'Penta 3',
-    'Rota 1',
-    'Rota 2',
-    'RR 1',
-    'RR 2',
-    'Pneumo 1',
-    'Pneumo 2',
-    'Pneumo 3',
-    'DTp Rappel',
-    'ECV',
+  const q7_rows: Translation[] = [
+    { en: 'BCG', fr: 'BCG' },
+    { en: 'OPV (Polio)', fr: 'VPO (Polio)' },
+    { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
+    { en: 'OPV 2 (Polio)', fr: 'VPO 2 (Polio)' },
+    { en: 'OPV Booster', fr: 'Rappel VPO (Polio)' },
+    { en: 'IPV', fr: 'VPI' },
+    { en: 'Penta 1', fr: 'Penta 1' },
+    { en: 'Penta 2', fr: 'Penta 2' },
+    { en: 'Penta 3', fr: 'Penta 3' },
+    { en: 'Rota 1', fr: 'Rota 1' },
+    { en: 'Rota 2', fr: 'Rota 2' },
+    { en: 'RR 1', fr: 'RR 1' },
+    { en: 'RR 2', fr: 'RR 2' },
+    { en: 'Pneumo 1', fr: 'Pneumo 1' },
+    { en: 'Pneumo 2', fr: 'Pneumo 2' },
+    { en: 'Pneumo 3', fr: 'Pneumo 3' },
+    { en: 'DTP Booster', fr: 'DTP Rappel' },
+    { en: 'ECV', fr: 'ECV' },
   ];
 
-  const q7_columns: string[] = [
-    '0-11 Mois Inst.',
-    '0-11 Mois Comm.',
-    '12-32 Mois Inst.',
-    '12-32 Mois Comm.',
-    '0-11 Mois Inst.',
-    '0-11 Mois Comm.',
-    '12-23 Mois Inst.',
-    '12-23 Mois Comm.',
-    'Utilisées Inst.',
-    'Utilisées Comm.',
-    'Administrées Inst.',
-    'Administrées Comm.',
+  const q7_columns: Translation[] = [
+    { en: '0-11 Months Inst.', fr: '0-11 Mois Inst.' },
+    { en: '0-11 Months Comm.', fr: '0-11 Mois Comm.' },
+    { en: '12-32 Months Inst.', fr: '12-32 Mois Inst.' },
+    { en: '12-32 Months Comm.', fr: '12-32 Mois Comm.' },
+    { en: 'Used Inst.', fr: 'Utilisées Inst.' },
+    { en: 'Used Comm.', fr: 'Utilisées Comm.' },
+    { en: 'Administered Inst.', fr: 'Administrées Inst.' },
+    { en: 'Administered Comm.', fr: 'Administrées Comm.' },
   ];
+  const { en: q7_rows_en, fr: q7_rows_fr } = separateLanguages(q7_rows);
+  const { en: q7_columns_en, fr: q7_columns_fr } = separateLanguages(q7_columns);
 
-  // Create the NumericTable
   const q7: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7',
-    { en: 'Question 7', fr: 'Question 7 (French)' },
+    { en: 'Question 7', fr: 'Question 7' },
     q7_rows,
     q7_columns,
-    (row: number, col: number) =>
+    (row, col) =>
       new NumericQuestion<ID, ErrorType>(`Q7_${row}_${col}`, {
-        en: `Question for ${q7_rows[row]} and ${q7_columns[col]}`,
-        fr: `Question pour ${q7_rows[row]} et ${q7_columns[col]} (French)`,
+        en: `Question for ${q7_rows_en[row]} and ${q7_columns_en[col]}`,
+        fr: `Question pour ${q7_rows_fr[row]} et ${q7_columns_fr[col]}`,
       }),
   );
 
