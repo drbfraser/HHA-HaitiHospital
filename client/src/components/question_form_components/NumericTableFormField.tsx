@@ -11,6 +11,25 @@ const tableWrapperStyle = {
   overflow: 'auto',
 };
 
+type Translation = Record<string, string>;
+
+const extractSpanRow = (record: Translation): Translation => {
+  // The regex pattern to match <spanRow:anything>
+  const spanRowPattern = /<spanRow:(.*?)>/;
+
+  // Attempt to match the pattern for both 'en' and 'fr'
+  const enMatch = record['en']?.match(spanRowPattern);
+  const frMatch = record['fr']?.match(spanRowPattern);
+
+  // If both 'en' and 'fr' contain a match, return a new record with the extracted string
+  if (enMatch && frMatch) {
+    return { en: enMatch[1], fr: frMatch[1] };
+  }
+
+  // Otherwise, return the original record
+  return record;
+};
+
 interface NumericTableFormFieldProps {
   applyReportChanges: () => void;
   // question: NumericTable
@@ -70,10 +89,11 @@ const NumericTableFormField = ({
       }
     };
   }, [question, setErrorSet, suffixName, updateErrorSetFromSelf]);
+
   return (
     <div style={tableWrapperStyle}>
-      <table>
-        <thead>
+      <table className="table table-bordered">
+        <thead className="thead-light">
           <tr>
             <th></th>
             {question.getColumnHeaders().map((colHeader, colIndex) => (
@@ -100,19 +120,28 @@ const NumericTableFormField = ({
                     applyReportChanges();
                   }
                 };
-
+                const disabled =
+                  readOnly ||
+                  (rowHeader['fr'] === '' && rowHeader['en'] === '') ||
+                  colHeader['en'].includes('(Read Only)');
                 return (
-                  <td key={`${rowIndex}_${colIndex}`}>
-                    <FormField
-                      handleChange={handleChange}
-                      inputState={inputState}
-                      min={0}
-                      nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
-                      prompt={colHeader}
-                      type="number"
-                      value={sub_question?.getAnswer() ?? ''}
-                      readOnly={readOnly}
-                    />
+                  <td key={`${rowIndex}_${colIndex}`} className={disabled ? 'bg-light' : ''}>
+                    {disabled ? (
+                      <div style={{ minWidth: 'max-content' }}>
+                        <label className="fs-10 m-0 text-secondary">{'Place Holder'}</label>
+                      </div>
+                    ) : (
+                      <FormField
+                        handleChange={handleChange}
+                        inputState={inputState}
+                        min={0}
+                        nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
+                        prompt={colHeader}
+                        type="number"
+                        value={sub_question?.getAnswer() ?? ''}
+                        readOnly={disabled}
+                      />
+                    )}
                   </td>
                 );
               })}

@@ -1971,7 +1971,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
   const q4_rows: Translation[] = [
     { en: 'Methods/ Sex', fr: 'Méthodes/ Sexe' },
     { en: 'Female OCP', fr: 'Contraceptifs Oraux pour Femmes' },
-    { en: 'Female PP', fr: 'PP pour Femmes' }, // I'm not sure what "PP" stands for, so you might want to provide a full term for a more accurate translation.
+    { en: 'Female PP', fr: 'PP pour Femmes' },
     { en: 'Depo injection', fr: 'Injection Depo' },
     { en: 'Implant', fr: 'Implant' },
     { en: 'Inter uterine devices (IUD)', fr: 'Dispositifs Intra-Utérins (DIU)' },
@@ -1981,10 +1981,6 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Ligature', fr: 'Ligature' },
     { en: 'Male condom', fr: 'Préservatif masculin' },
     { en: 'Vasectomy', fr: 'Vasectomie' },
-    { en: '', fr: '' },
-    { en: 'Quantity (number)', fr: 'Quantité (nombre)' },
-    { en: 'Ligature', fr: 'Ligature' },
-    { en: 'Vasectomy', fr: 'Vasectomie' },
   ];
 
   const q4_columns: Translation[] = [
@@ -1993,7 +1989,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Acceptors 25 years and older', fr: 'Acceptants 25 ans et plus' },
     { en: 'Total Users <25 years', fr: 'Total Utilisateurs <25 ans' },
     { en: 'Total Users 25 years and older', fr: 'Total Utilisateurs 25 ans et plus' },
-    { en: 'Unit', fr: 'Unité' },
+    { en: 'Unit (Read Only)', fr: 'Unité' },
     { en: 'Quantity', fr: 'Quantité' },
     {
       en: 'Number of Days Out of Stock per Month',
