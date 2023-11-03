@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { NumericTable } from '@hha/common';
 import { FormField } from './index';
+import { useTranslation } from 'react-i18next';
+
 import './FormField.css';
 
 const tableWrapperStyle = {
@@ -26,6 +28,7 @@ const NumericTableFormField = ({
   suffixName,
   readOnly,
 }: NumericTableFormFieldProps): JSX.Element => {
+  const { t, i18n } = useTranslation(); // Use the hook to get the translation function and current language
   const updateErrorSetFromSelf = useCallback(
     (questionId: string) =>
       setErrorSet((prevErrorSet: Set<ID>) => {
@@ -74,14 +77,14 @@ const NumericTableFormField = ({
           <tr>
             <th></th>
             {question.getColumnHeaders().map((colHeader, colIndex) => (
-              <th key={colIndex}>{colHeader}</th>
+              <th key={colIndex}>{t(colHeader[i18n.language])}</th> // Translate the column header
             ))}
           </tr>
         </thead>
         <tbody>
           {question.getRowHeaders().map((rowHeader, rowIndex) => (
             <tr key={rowIndex}>
-              <th>{rowHeader}</th>
+              <th>{t(rowHeader[i18n.language])}</th>
               {question.getColumnHeaders().map((colHeader, colIndex) => {
                 const sub_question = question.getQuestionAt(rowIndex, colIndex);
 
