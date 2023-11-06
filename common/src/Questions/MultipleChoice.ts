@@ -14,14 +14,14 @@ type Translation = Record<string, string>;
 // Choice for multiple choice questions
 @serializable('')
 class Choice {
-  private readonly description: string;
+  private readonly description: Translation;
   private chosen: boolean = false;
 
-  constructor(description: string) {
+  constructor(description: Translation) {
     this.description = description;
   }
 
-  public getDescription(): string {
+  public getDescription(): Translation {
     return this.description;
   }
 
@@ -39,7 +39,7 @@ class Choice {
 }
 
 export class ImmutableChoice {
-  private readonly description: string;
+  private readonly description: Translation;
   private readonly chosen: boolean;
 
   constructor(choice: Choice) {
@@ -63,7 +63,7 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
 > {
   protected readonly choices: Array<Choice> = new Array<Choice>();
 
-  constructor(id: ID, prompt: Translation, choices: string[], defaultAnswer?: T) {
+  constructor(id: ID, prompt: Translation, choices: Translation[], defaultAnswer?: T) {
     super(id, prompt);
     this.addChoices(choices);
     if (defaultAnswer !== undefined) {
@@ -71,7 +71,7 @@ export abstract class MultipleChoiceQuestion<ID, T, ErrorType> extends QuestionL
     }
   }
 
-  private addChoices(choicesDescriptions: string[]): void {
+  private addChoices(choicesDescriptions: Translation[]): void {
     choicesDescriptions.forEach((choiceDescription) =>
       this.choices.push(new Choice(choiceDescription)),
     );
