@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { ImmutableChoice, SingleSelectionQuestion } from '@hha/common';
 
 import { FormFieldCheck } from './index';
+import { useTranslation } from 'react-i18next';
 
 interface SingleSelectionQuestionFormFieldProps {
   applyReportChanges: () => void;
@@ -18,6 +19,8 @@ const SingleSelectionQuestionFormField = ({
   suffixName,
   readOnly,
 }: SingleSelectionQuestionFormFieldProps) => {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
 
@@ -71,7 +74,7 @@ const SingleSelectionQuestionFormField = ({
               disabled={readOnly}
             />
             <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
-              {choice.getDescription()}
+              {choice.getDescription()[language]}
             </label>
           </div>
         ))}
