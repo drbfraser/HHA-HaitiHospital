@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { ImmutableChoice, MultipleSelectionQuestion } from '@hha/common';
 
 import FormFieldCheck from './FormFieldCheck';
+import { useTranslation } from 'react-i18next';
 
 interface MultiSelectionQuestionFormFieldProps {
   applyReportChanges: () => void;
@@ -18,6 +19,8 @@ const MultiSelectionQuestionFormField = ({
   suffixName,
   readOnly,
 }: MultiSelectionQuestionFormFieldProps) => {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
 
@@ -75,7 +78,7 @@ const MultiSelectionQuestionFormField = ({
               disabled={readOnly}
             />
             <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
-              {choice.getDescription()}
+              {choice.getDescription()[language]}
             </label>
           </div>
         ))}

@@ -99,7 +99,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q5_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_1',
     getQuestionContent('question5_1'),
-    ['SCI', 'Stroke', 'Other'],
+    [
+      { en: 'SCI', fr: 'SCI' },
+      { en: 'Stroke', fr: 'Accident vasculaire cérébral' },
+      { en: 'Other', fr: 'Autre' },
+    ],
     0,
   );
   const q5_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -111,9 +115,15 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     '5_3',
     getQuestionContent('question5_3'),
     [
-      'All goals met',
-      'Goals partially met, sufficient for discharge',
-      'Goals not met, discharged for alternate reason',
+      { en: 'All goals met', fr: 'Tous les objectifs atteints' },
+      {
+        en: 'Goals partially met, sufficient for discharge',
+        fr: 'Objectifs partiellement atteints, suffisants pour la décharge',
+      },
+      {
+        en: 'Goals not met, discharged for alternate reason',
+        fr: 'Objectifs non atteints, renvoyé pour une autre raison',
+      },
     ],
     0,
   );
@@ -121,13 +131,13 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     '5_4',
     getQuestionContent('question5_4'),
     [
-      'Independent',
-      'Modified Independent',
-      'Supervision',
-      'Minimum Assistance',
-      'Moderate Assistance',
-      'Maximum Assistance',
-      'Dependent',
+      { en: 'Independent', fr: 'Indépendant' },
+      { en: 'Modified Independent', fr: 'Indépendant modifié' },
+      { en: 'Supervision', fr: 'Surveillance' },
+      { en: 'Minimum Assistance', fr: 'Assistance minimale' },
+      { en: 'Moderate Assistance', fr: 'Assistance modérée' },
+      { en: 'Maximum Assistance', fr: 'Assistance maximale' },
+      { en: 'Dependent', fr: 'Dépendant' },
     ],
     0,
   );
@@ -135,34 +145,55 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     '5_5',
     getQuestionContent('question5_5'),
     [
-      'Independent',
-      'Modified Independent',
-      'Supervision',
-      'Minimum Assistance',
-      'Moderate Assistance',
-      'Maximum Assistance',
-      'Dependent',
+      { en: 'Independent', fr: 'Indépendant' },
+      { en: 'Modified Independent', fr: 'Indépendant modifié' },
+      { en: 'Supervision', fr: 'Surveillance' },
+      { en: 'Minimum Assistance', fr: 'Assistance minimale' },
+      { en: 'Moderate Assistance', fr: 'Assistance modérée' },
+      { en: 'Maximum Assistance', fr: 'Assistance maximale' },
+      { en: 'Dependent', fr: 'Dépendant' },
     ],
     0,
   );
   const q5_6: MultipleSelectionQuestion<ID, ErrorType> = new MultipleSelectionQuestion<
     ID,
     ErrorType
-  >('5_6', getQuestionContent('question5_6'), ['Wheelchair', 'Walker', 'Cane', 'Crutches'], []);
+  >(
+    '5_6',
+    getQuestionContent('question5_6'),
+    [
+      { en: 'Wheelchair', fr: 'Fauteuil roulant' },
+      { en: 'Walker', fr: 'Marcheur' },
+      { en: 'Cane', fr: 'Canne' },
+      { en: 'Crutches', fr: 'Béquilles' },
+      { en: 'None', fr: 'Aucun' },
+    ],
+    [],
+  );
   const q5_7: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_7',
     getQuestionContent('question5_7'),
-    ['Return home, alone', 'Return home, with family/caregiver(s)', 'Admitted to hospital'],
+    [
+      { en: 'Return home, alone', fr: 'Retourner à la maison, seul' },
+      {
+        en: 'Return home, with family/caregiver(s)',
+        fr: 'Retourner à la maison, avec la famille/les aidants',
+      },
+      { en: 'Admitted to hospital', fr: "Admis à l'hôpital" },
+    ],
     0,
   );
   const q5_8: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_8',
     getQuestionContent('question5_8'),
     [
-      'Employed',
-      'Unemployed, unable to find work',
-      'Unemployed, due to condition',
-      'Retired, not working due to age',
+      { en: 'Employed', fr: 'Employé' },
+      { en: 'Unemployed, unable to find work', fr: 'Sans emploi, incapable de trouver du travail' },
+      { en: 'Unemployed, due to condition', fr: 'Sans emploi, en raison de la condition' },
+      {
+        en: 'Retired, not working due to age',
+        fr: "Retraité, ne travaille pas en raison de l'âge",
+      },
     ],
     0,
   );
@@ -177,7 +208,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q6_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '6_1',
     getQuestionContent('question6_1'),
-    ['SCI', 'CVA', 'Other'],
+    [
+      { en: 'SCI', fr: 'SCI' },
+      { en: 'CVA', fr: 'CVA' },
+      { en: 'Other', fr: 'Autre' },
+    ],
   );
   const q6_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '6_2',
@@ -186,7 +221,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q6_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '6_3',
     getQuestionContent('question6_3'),
-    ['Suspected CVA'],
+    [{ en: 'Suspected CVA', fr: 'CVA suspecté' }],
   );
   q6.addAllToTemplate(q6_1, q6_2, q6_3);
 
@@ -199,7 +234,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   const q7_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '7_1',
     getQuestionContent('question7_1'),
-    ['SCI', 'CVA', 'Other'],
+    [
+      { en: 'SCI', fr: 'SCI' },
+      { en: 'CVA', fr: 'CVA' },
+      { en: 'Other', fr: 'Autre' },
+    ],
   );
   const q7_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '7_2',
