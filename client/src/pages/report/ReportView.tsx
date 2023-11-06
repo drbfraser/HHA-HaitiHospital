@@ -202,22 +202,21 @@ const ReportView = () => {
           />
 
           <header>
-            <div>
-              {(user.userDetails.role === Role.Admin || user.userDetails.role === Role.MedicalDirector || 
+            <div>{(user.userDetails.role === Role.Admin || user.userDetails.role === Role.MedicalDirector || 
   (user.userDetails.role === Role.HeadOfDepartment && user.userDetails.department.name === department)) && (
-                <button className="btn btn-primary" onClick={btnHandler}>
+                <button className="btn btn-primary mr-3" onClick={btnHandler}>
                   {readOnly
                     ? t('departmentReportDisplayEditForm')
                     : t('departmentReportDisplayViewForm')}
                 </button>
               )}
               {readOnly && (
-                <button className="btn btn-outline-dark ml-3" onClick={handleExportWithComponent}>
+                <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
                   {t('departmentReportDisplayGeneratePDF')}
                 </button>
               )}
               {readOnly && (
-                <button className="btn btn-outline-dark ml-3" onClick={toggleTable}>
+                <button className="btn btn-outline-dark" onClick={toggleTable}>
                   {isUsingTable ? 'Hide Table' : 'Show Table'}
                 </button>
               )}
