@@ -8,6 +8,12 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+// no whitespace
+const USERNAME_PATTERN = /^\S*$/;
+
+// at least one uppercase letter, one lowercase letter, one number and one special character
+const PASSWORD_PATTERN = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*]).{6,}$/;
+
 interface Props {
   data: {
     userData?: UserDetails;
@@ -20,6 +26,9 @@ interface Props {
 export const AdminUserForm = (props: Props) => {
   const { t } = useTranslation();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+
   const userData: UserDetails = props.data.userData ? props.data.userData : EMPTY_USER_JSON;
   const { register, handleSubmit, setValue } = useForm<AdminUserFormData>({
     defaultValues: initAdminForm(userData),
@@ -44,6 +53,14 @@ export const AdminUserForm = (props: Props) => {
     await props.onSubmit(data);
   };
 
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
   return (
     <form onSubmit={handleSubmit(submitForm)}>
       <div className="mb-3">
@@ -59,13 +76,18 @@ export const AdminUserForm = (props: Props) => {
             required={props.newUser}
             minLength={2}
             maxLength={20}
-            {...register(ADMIN_USER_FORM_FIELDS.username)}
+            {...register(ADMIN_USER_FORM_FIELDS.username, {
+              pattern: USERNAME_PATTERN,
+            })}
+            onChange={handleUsernameChange}
           ></input>
         </div>
         <div id="usernameHelp" className="form-text">
-          {props.newUser
-            ? t('admin.user_form.hint.username_hint')
-            : t('admin.user_form.hint.leave_blank')}
+          {props.newUser && t('admin.user_form.hint.username_hint')}
+          {!props.newUser &&
+            (username.length > 0
+              ? t('admin.user_form.hint.username_hint')
+              : t('admin.user_form.hint.leave_blank'))}
         </div>
       </div>
 
@@ -82,7 +104,10 @@ export const AdminUserForm = (props: Props) => {
             required={props.newUser}
             minLength={6}
             maxLength={60}
-            {...register(ADMIN_USER_FORM_FIELDS.password)}
+            {...register(ADMIN_USER_FORM_FIELDS.password, {
+              pattern: PASSWORD_PATTERN,
+            })}
+            onChange={handlePasswordChange}
           ></input>
           <div data-testid="toggle-password-shown" className="input-group-text">
             <i
@@ -102,9 +127,11 @@ export const AdminUserForm = (props: Props) => {
           </div>
         </div>
         <div id="passwordHelp" className="form-text">
-          {props.newUser
-            ? t('admin.user_form.hint.password_hint')
-            : t('admin.user_form.hint.leave_blank')}
+          {props.newUser && t('admin.user_form.hint.password_hint')}
+          {!props.newUser &&
+            (password.length > 0
+              ? t('admin.user_form.hint.password_hint')
+              : t('admin.user_form.hint.leave_blank'))}
         </div>
       </div>
 

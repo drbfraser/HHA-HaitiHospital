@@ -270,8 +270,8 @@
       "inquiry_department": "Sélectionnez Départment",
       "hint": {
         "leave_blank": "Laissez vide pour le garder inchangé",
-        "username_hint": "Le nom d'utilisateur doit comporter entre 2 et 20 caractères",
-        "password_hint": "Le mot de passe doit comporter entre 6 et 60 caractères"
+        "username_hint": "Entre 2 et 20 caractères et ne peut contenir aucun espace",
+        "password_hint": "Entre 6 et 60 caractères et contenir au moins 1 chiffre, 1 caractère spécial, 1 majuscule et 1 lettre minuscule"
       }
     }
   },
