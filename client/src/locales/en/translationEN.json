@@ -269,8 +269,8 @@
       "inquiry_department": "Select Department",
       "hint": {
         "leave_blank": "Leave blank to keep it unchanged",
-        "username_hint": "Username must be between 2 and 20 characters",
-        "password_hint": "Password must be between 6 and 60 characters"
+        "username_hint": "Between 2 and 20 characters and cannot contain any spaces",
+        "password_hint": "Between 6 and 60 characters long and contain at least 1 number, 1 special character, 1 uppercase and 1 lowercase letter"
       }
     }
   },
