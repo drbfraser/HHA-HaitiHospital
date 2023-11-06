@@ -23,7 +23,6 @@ export const UploadReport = () => {
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const { departments } = useDepartmentData();
- 
 
   const confirmSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

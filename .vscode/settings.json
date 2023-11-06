@@ -13,5 +13,6 @@
     "editor.wordWrap": "on",
     "editor.renderWhitespace": "all",
     "editor.acceptSuggestionOnEnter": "off"
-  }
+  },
+  "editor.formatOnSave": true
 }
