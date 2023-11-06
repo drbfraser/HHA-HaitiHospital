@@ -95,7 +95,7 @@ const routes = [
     key: 'general_reports',
     component: GeneralReports,
     loginRequired: true,
-    rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment],
+    rolesAllowed: [Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment, Role.User],
     departmentsAllowed: [],
   },
   {
@@ -190,7 +190,7 @@ const routes = [
     key: 'report',
     component: Report,
     loginRequired: true,
-    rolesAllowed: [],
+    rolesAllowed: [Role.Admin, Role.HeadOfDepartment,Role.MedicalDirector],
     departmentsAllowed: [],
   },
   {

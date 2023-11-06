@@ -150,6 +150,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
             Role.Admin,
             Role.MedicalDirector,
             Role.HeadOfDepartment,
+            Role.User,
           ]) && (
             <SidebarItem path="general-reports">
               <i className={`${iconMargins} bi bi-paperclip`} />

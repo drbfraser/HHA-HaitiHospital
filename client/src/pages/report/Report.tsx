@@ -6,7 +6,7 @@ import { Prompt, useHistory } from 'react-router-dom';
 
 import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
-import { Department } from 'constants/interfaces';
+import { Department, Role } from 'constants/interfaces';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { ReportAndTemplateForm } from 'components/report/ReportAndTemplateForm';
@@ -30,7 +30,12 @@ export const Report = () => {
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
-  const { departments } = useDepartmentData();
+  
+  let { departments } = useDepartmentData();
+  if (user.userDetails.role === Role.HeadOfDepartment)
+  {
+    departments = departments.filter(department => department.id === user.userDetails.department.id);
+  }
   const reportableDepartments = new Set(['NICU/Paeds', 'Maternity', 'Community & Health', 'Rehab']);
   const isReportableDepartment = (department) => {
     return reportableDepartments.has(department.name);
@@ -74,7 +79,7 @@ export const Report = () => {
     Api.Post(
       ENDPOINT_REPORTS,
       reportObject,
-      () => history.push(`/department/${currentDepartment.id}`),
+      () => history.push(`general-reports`),
       history,
       ResponseMessage.getMsgCreateReportFailed(),
       ResponseMessage.getMsgCreateReportPending(),
@@ -130,7 +135,7 @@ export const Report = () => {
         messages={[
           <>
             Please click <strong>Confirm</strong> to proceed with your submission. You'll be
-            redirected to the main list of {currentDepartment?.name} reports.
+            redirected to the main list of reports.
           </>,
           <>
             If you've made a mistake, please click <strong>Cancel</strong> instead.
