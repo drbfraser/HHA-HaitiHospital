@@ -30,11 +30,12 @@ export const Report = () => {
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
-  
+
   let { departments } = useDepartmentData();
-  if (user.userDetails.role === Role.HeadOfDepartment)
-  {
-    departments = departments.filter(department => department.id === user.userDetails.department.id);
+  if (user.userDetails.role === Role.HeadOfDepartment) {
+    departments = departments.filter(
+      (department) => department.id === user.userDetails.department.id,
+    );
   }
   const reportableDepartments = new Set(['NICU/Paeds', 'Maternity', 'Community & Health', 'Rehab']);
   const isReportableDepartment = (department) => {

@@ -190,7 +190,7 @@ const routes = [
     key: 'report',
     component: Report,
     loginRequired: true,
-    rolesAllowed: [Role.Admin, Role.HeadOfDepartment,Role.MedicalDirector],
+    rolesAllowed: [Role.Admin, Role.HeadOfDepartment, Role.MedicalDirector],
     departmentsAllowed: [],
   },
   {

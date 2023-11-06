@@ -19,8 +19,6 @@ import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { Role } from 'constants/interfaces';
 
-
-
 const ReportView = () => {
   const user = useAuthState();
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -35,18 +33,8 @@ const ReportView = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const { departmentIdKeyMap } = useDepartmentData();
   const department = departmentIdKeyMap.get(metaData?.departmentId);
- 
- 
 
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
-  
-
-  
- 
-  
-  
-  
-  
 
   const { t } = useTranslation();
   const history: History = useHistory<History>();
@@ -57,8 +45,6 @@ const ReportView = () => {
     userLocale,
     dateOptions,
   );
-  
-  
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -102,8 +88,6 @@ const ReportView = () => {
       ResponseMessage.getMsgUpdateReportPending(),
       ResponseMessage.getMsgUpdateReportOk(),
     );
-    
-    
   };
 
   const togglePagination = () => setIsUsingPagination(!isUsingPagination);
@@ -120,7 +104,7 @@ const ReportView = () => {
     );
 
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
-    
+
     setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
       _id: fetchedReport?.report?._id,
@@ -129,8 +113,6 @@ const ReportView = () => {
       submittedDate: fetchedReport?.report?.submittedDate,
       submittedBy: fetchedReport?.report?.submittedBy,
     });
-    
-    
 
     return () => {
       controller.abort();
@@ -140,10 +122,7 @@ const ReportView = () => {
 
   useEffect(() => {
     getReport();
-    
   }, [getReport]);
-  
- 
 
   useEffect(() => {
     if (areChangesMade && !readOnly) {
@@ -156,7 +135,6 @@ const ReportView = () => {
       window.onbeforeunload = undefined;
     };
   }, [areChangesMade, readOnly]);
-  
 
   return (
     <>
@@ -202,8 +180,11 @@ const ReportView = () => {
           />
 
           <header>
-            <div>{(user.userDetails.role === Role.Admin || user.userDetails.role === Role.MedicalDirector || 
-  (user.userDetails.role === Role.HeadOfDepartment && user.userDetails.department.name === department)) && (
+            <div>
+              {(user.userDetails.role === Role.Admin ||
+                user.userDetails.role === Role.MedicalDirector ||
+                (user.userDetails.role === Role.HeadOfDepartment &&
+                  user.userDetails.department.name === department)) && (
                 <button className="btn btn-primary mr-3" onClick={btnHandler}>
                   {readOnly
                     ? t('departmentReportDisplayEditForm')

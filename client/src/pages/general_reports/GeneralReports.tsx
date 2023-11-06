@@ -8,7 +8,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
 import Api from 'actions/Api';
-import { ENDPOINT_REPORTS, ENDPOINT_REPORT_DELETE_BY_ID, ENDPOINT_REPORTS_GET_BY_DEPARTMENT } from 'constants/endpoints';
+import {
+  ENDPOINT_REPORTS,
+  ENDPOINT_REPORT_DELETE_BY_ID,
+  ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
+} from 'constants/endpoints';
 import { JsonReportDescriptor } from '@hha/common';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
@@ -33,8 +37,7 @@ const GeneralReports = () => {
   const getReports = useCallback(async () => {
     const controller = new AbortController();
     let getReportsEndPoint = ENDPOINT_REPORTS;
-    if (authState.userDetails.role === Role.User)
-    {
+    if (authState.userDetails.role === Role.User) {
       getReportsEndPoint = ENDPOINT_REPORTS_GET_BY_DEPARTMENT(authState.userDetails.department.id);
     }
     let fetchedReports: JsonReportDescriptor[] = await Api.Get(
@@ -137,26 +140,23 @@ const GeneralReports = () => {
             checkUserDepartmentMatchesReportDepartment(row.getValue().departmentId) && (
               <div>
                 <Button
-                onClick={(event) => onDeleteReport(event, row.getValue()._id)}
-                variant="link"
-                title={t('button.delete')}
-                className="text-decoration-none link-secondary"
-              >
-                <i className="bi bi-trash"></i>
-              </Button>
-              <Link
-            title={t('button.edit')}
-            className="text-decoration-none link-secondary"
-            to={Paths.getGeneralReportId(row.getValue()._id)}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <i className="bi bi-pencil"></i>
-          </Link>
-
+                  onClick={(event) => onDeleteReport(event, row.getValue()._id)}
+                  variant="link"
+                  title={t('button.delete')}
+                  className="text-decoration-none link-secondary"
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
+                <Link
+                  title={t('button.edit')}
+                  className="text-decoration-none link-secondary"
+                  to={Paths.getGeneralReportId(row.getValue()._id)}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <i className="bi bi-pencil"></i>
+                </Link>
               </div>
-              
             )}
-         
         </>
       ),
       accessorKey: 'item',
@@ -187,21 +187,20 @@ const GeneralReports = () => {
         onModalDelete={onModalDelete}
       ></DeleteModal>
 
-     
       {renderBasedOnRole(authState.userDetails.role, [
-            Role.Admin,
-            Role.MedicalDirector,
-            Role.HeadOfDepartment,
-          ]) && <div>
+        Role.Admin,
+        Role.MedicalDirector,
+        Role.HeadOfDepartment,
+      ]) && (
+        <div>
           <Link to="report">
             <button className="btn btn-outline-dark" type="button">
               {t('createNewReport')}
             </button>
           </Link>
         </div>
-      }
+      )}
 
-      
       {gridData.length > 0 ? (
         <FilterableTable
           columns={columns}
