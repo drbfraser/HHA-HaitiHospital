@@ -17,8 +17,10 @@ import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import { Role } from 'constants/interfaces';
 
 const ReportView = () => {
+  const user = useAuthState();
   const [areChangesMade, setAreChangesMade] = useState(false);
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
   const [isUsingPagination, setIsUsingPagination] = useState(true);
@@ -29,10 +31,12 @@ const ReportView = () => {
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showViewEditBtn, setShowViewEditBtn] = useState(true);
   const { departmentIdKeyMap } = useDepartmentData();
-  const { t } = useTranslation();
   const department = departmentIdKeyMap.get(metaData?.departmentId);
+
+  const [showViewEditBtn, setShowViewEditBtn] = useState(true);
+
+  const { t } = useTranslation();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const pdfExportComponent = useRef(null);
@@ -41,7 +45,6 @@ const ReportView = () => {
     userLocale,
     dateOptions,
   );
-  const user = useAuthState();
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -101,7 +104,7 @@ const ReportView = () => {
     );
 
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
-    console.log(report);
+
     setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
       _id: fetchedReport?.report?._id,
@@ -178,20 +181,23 @@ const ReportView = () => {
 
           <header>
             <div>
-              {showViewEditBtn && (
-                <button className="btn btn-primary" onClick={btnHandler}>
+              {(user.userDetails.role === Role.Admin ||
+                user.userDetails.role === Role.MedicalDirector ||
+                (user.userDetails.role === Role.HeadOfDepartment &&
+                  user.userDetails.department.name === department)) && (
+                <button className="btn btn-primary mr-3" onClick={btnHandler}>
                   {readOnly
                     ? t('departmentReportDisplayEditForm')
                     : t('departmentReportDisplayViewForm')}
                 </button>
               )}
               {readOnly && (
-                <button className="btn btn-outline-dark ml-3" onClick={handleExportWithComponent}>
+                <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
                   {t('departmentReportDisplayGeneratePDF')}
                 </button>
               )}
               {readOnly && (
-                <button className="btn btn-outline-dark ml-3" onClick={toggleTable}>
+                <button className="btn btn-outline-dark" onClick={toggleTable}>
                   {isUsingTable ? 'Hide Table' : 'Show Table'}
                 </button>
               )}

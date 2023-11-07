@@ -17,7 +17,7 @@ router
   .route(`/:${DEPARTMENT_ID_URL_SLUG}`)
   .get(
     requireJwtAuth,
-    roleAuth(Role.Admin, Role.MedicalDirector),
+    roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
     async (req: RequestWithUser, res: Response, next: NextFunction) => {
       try {
         const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
