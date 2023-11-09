@@ -2035,12 +2035,6 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Acceptors 25 years and older', fr: 'Acceptants 25 ans et plus' },
     { en: 'Total Users <25 years', fr: 'Total Utilisateurs <25 ans' },
     { en: 'Total Users 25 years and older', fr: 'Total Utilisateurs 25 ans et plus' },
-    { en: 'Unit (Read Only)', fr: 'Unité' },
-    { en: 'Quantity', fr: 'Quantité' },
-    {
-      en: 'Number of Days Out of Stock per Month',
-      fr: 'Nombre de Jours de Rupture de Stock par Mois',
-    },
   ];
 
   const q4_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
@@ -2064,6 +2058,48 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
       new NumericQuestion<ID, ErrorType>(`q4_${row}_${col}`, {
         en: `Question for ${q4_rows_en[row]} and ${q4_columns_en[col]}`,
         fr: `Question pour ${q4_rows_fr[row]} et ${q4_columns_fr[col]}`,
+      }),
+  );
+
+  const q4_1_rows: Translation[] = [
+    { en: 'Female OCP Cycle', fr: 'Contraceptifs Oraux pour Femmes Cycle' },
+    { en: 'Female PP Cycle', fr: 'PP pour Femmes Cycle' },
+    { en: 'Depo injection Vial', fr: 'Injection Depo Vial' },
+    { en: 'Implant Paquet', fr: 'Implant Paquet' },
+    { en: 'Inter uterine devices (IUD) Piece', fr: 'Dispositifs Intra-Utérins (DIU) Pièce' },
+    { en: 'Vaginal ring Pièce', fr: 'Anneau Vaginal Pièce' },
+    { en: 'Female condom Pièce', fr: 'Préservatif féminin Pièce' },
+  ];
+
+  const q4_1_columns: Translation[] = [
+    { en: 'Quantity', fr: 'Quantité' },
+    { en: 'Number of days out of stock/month', fr: 'Nbre de jours rupture de stocks/ mois' },
+  ];
+
+  const q4_1_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+    q4_1_rows.length,
+    q4_1_columns.length,
+  );
+
+  const { en: q4_1_rows_en, fr: q4_1_rows_fr } = separateLanguages(q4_1_rows);
+  const { en: q4_1_columns_en, fr: q4_1_columns_fr } = separateLanguages(q4_1_columns);
+
+  const q4_1_table_title: Translation = {
+    en: 'Contraceptives distributed',
+    fr: 'Contraceptifs distribués',
+  };
+
+  const q4_1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '4_1',
+    { en: 'Question 4', fr: 'Question 4 (French)' },
+    q4_1_rows,
+    q4_1_columns,
+    q4_1_table_title,
+    q4_1_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`q4_1_${row}_${col}`, {
+        en: `Question for ${q4_1_rows_en[row]} and ${q4_1_columns_en[col]}`,
+        fr: `Question pour ${q4_1_rows_fr[row]} et ${q4_1_columns_fr[col]}`,
       }),
   );
 
@@ -2206,7 +2242,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
       }),
   );
 
-  const q8_rows: Translation[] = [
+  const q7_1_rows: Translation[] = [
     { en: 'BCG', fr: 'BCG' },
     { en: 'OPV (Polio)', fr: 'VPO (Polio)' },
     { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
@@ -2227,7 +2263,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'ECV', fr: 'ECV' },
   ];
 
-  const q8_columns: Translation[] = [
+  const q7_1_columns: Translation[] = [
     { en: '0-11 Months Inst.', fr: '0-11 Mois Inst.' },
     { en: '0-11 Months Comm.', fr: '0-11 Mois Comm.' },
     { en: '12-32 Months Inst.', fr: '12-32 Mois Inst.' },
@@ -2238,34 +2274,34 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Administered Comm.', fr: 'Administrées Comm.' },
   ];
 
-  const q8_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
-    q8_rows.length,
-    q8_columns.length,
+  const q7_1_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+    q7_1_rows.length,
+    q7_1_columns.length,
   );
 
-  const { en: q8_rows_en, fr: q8_rows_fr } = separateLanguages(q8_rows);
-  const { en: q8_columns_en, fr: q8_columns_fr } = separateLanguages(q8_columns);
+  const { en: q7_1_rows_en, fr: q7_1_rows_fr } = separateLanguages(q7_1_rows);
+  const { en: q7_1_columns_en, fr: q7_1_columns_fr } = separateLanguages(q7_1_columns);
 
-  const q8_table_title: Translation = {
+  const q7_1_table_title: Translation = {
     en: 'Boy Vaccination',
     fr: 'Garçon Vaccination',
   };
 
-  const q8: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
-    '8',
+  const q7_1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '7_1',
     { en: 'Question 8', fr: 'Question 8 (French)' },
-    q8_rows,
-    q8_columns,
-    q8_table_title,
-    q8_grey_mask,
+    q7_1_rows,
+    q7_1_columns,
+    q7_1_table_title,
+    q7_1_grey_mask,
     (row: number, col: number) =>
-      new NumericQuestion<ID, ErrorType>(`q8_${row}_${col}`, {
-        en: `Question for ${q8_rows_en[row]} and ${q8_columns_en[col]}`,
-        fr: `Question pour ${q8_rows_fr[row]} et ${q8_columns_fr[col]}`,
+      new NumericQuestion<ID, ErrorType>(`q7_1_${row}_${col}`, {
+        en: `Question for ${q7_1_rows_en[row]} and ${q7_1_columns_en[col]}`,
+        fr: `Question pour ${q7_1_rows_fr[row]} et ${q7_1_columns_fr[col]}`,
       }),
   );
 
-  const q9_rows: Translation[] = [
+  const q7_2_rows: Translation[] = [
     { en: 'BCG', fr: 'BCG' },
     { en: 'OPV (Polio)', fr: 'VPO (Polio)' },
     { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
@@ -2286,40 +2322,40 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'ECV', fr: 'ECV' },
   ];
 
-  const q9_columns: Translation[] = [
+  const q7_2_columns: Translation[] = [
     { en: 'Used', fr: 'Utilisées' },
     { en: 'Administered', fr: 'Administrées' },
   ];
 
-  const q9_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
-    q9_rows.length,
-    q9_columns.length,
+  const q7_2_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+    q7_2_rows.length,
+    q7_2_columns.length,
   );
 
-  const { en: q9_rows_en, fr: q9_rows_fr } = separateLanguages(q9_rows);
-  const { en: q9_columns_en, fr: q9_columns_fr } = separateLanguages(q9_columns);
+  const { en: q7_2_rows_en, fr: q7_2_rows_fr } = separateLanguages(q7_2_rows);
+  const { en: q7_2_columns_en, fr: q7_2_columns_fr } = separateLanguages(q7_2_columns);
 
-  const q9_table_title: Translation = {
+  const q7_2_table_title: Translation = {
     en: 'Vaccine Doses',
     fr: 'Doses de vaccin',
   };
 
-  const q9: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
-    '9',
-    { en: 'Question 9', fr: 'Question 9 (French)' },
-    q9_rows,
-    q9_columns,
-    q9_table_title,
-    q9_grey_mask,
+  const q7_2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '7_2',
+    { en: 'Question 7_2', fr: 'Question 7_2 (French)' },
+    q7_2_rows,
+    q7_2_columns,
+    q7_2_table_title,
+    q7_2_grey_mask,
     (row: number, col: number) =>
-      new NumericQuestion<ID, ErrorType>(`q9_${row}_${col}`, {
-        en: `Question for ${q9_rows_en[row]} and ${q9_columns_en[col]}`,
-        fr: `Question pour ${q9_rows_fr[row]} et ${q9_columns_fr[col]}`,
+      new NumericQuestion<ID, ErrorType>(`q7_2_${row}_${col}`, {
+        en: `Question for ${q7_2_rows_en[row]} and ${q7_2_columns_en[col]}`,
+        fr: `Question pour ${q7_2_rows_fr[row]} et ${q7_2_columns_fr[col]}`,
       }),
   );
 
   // Add Age of Mothers table to the report
-  communityhealthReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9);
+  communityhealthReport.addAll(q1, q2, q3, q4, q4_1, q5, q6, q7, q7_1, q7_2);
   communityhealthReport.addBreakpoints(0, 1, 2, 3, 4, 5, 6);
 
   return communityhealthReport;
