@@ -17,6 +17,7 @@ type FormFieldProps = {
   type: HTMLInputTypeAttribute;
   value: number | string;
   readOnly?: boolean;
+  style?: React.CSSProperties;
 };
 
 const FormField = (props: FormFieldProps) => {
@@ -26,11 +27,12 @@ const FormField = (props: FormFieldProps) => {
 
   const prompt = props.prompt[language.substring(0, 2)] || props.prompt || '';
   const value = props.value ?? ''; // Set a default value if props.value is null
+  const label = props.nameId.replaceAll('_', '.');
 
   return (
     <div className="form-group min-width-form-field">
       <label className="fs-10 m-0 text-secondary" htmlFor={props.nameId}>
-        {props.nameId.replaceAll('_', '.')}. {prompt}
+        {label}. {prompt}
       </label>
       <input
         className={cn(
@@ -49,8 +51,9 @@ const FormField = (props: FormFieldProps) => {
         type={props.type}
         value={value}
         disabled={props.readOnly}
+        style={props.style}
       />
-      {props.inputState !== true && (
+      {props.inputState !== true && !props.readOnly && (
         <div className="invalid-feedback">{props.inputState.message}</div>
       )}
     </div>

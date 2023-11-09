@@ -9,7 +9,10 @@ const tableWrapperStyle = {
   width: 'fit-content',
   height: '100%',
   overflow: 'auto',
+  marginBottom: '24px',
 };
+
+type Translation = Record<string, string>;
 
 interface NumericTableFormFieldProps {
   applyReportChanges: () => void;
@@ -70,10 +73,12 @@ const NumericTableFormField = ({
       }
     };
   }, [question, setErrorSet, suffixName, updateErrorSetFromSelf]);
+
   return (
     <div style={tableWrapperStyle}>
-      <table>
-        <thead>
+      <h4>{t(question.getTableTitle()[i18n.language])}</h4>
+      <table className="table table-bordered">
+        <thead className="thead-light">
           <tr>
             <th></th>
             {question.getColumnHeaders().map((colHeader, colIndex) => (
@@ -100,19 +105,25 @@ const NumericTableFormField = ({
                     applyReportChanges();
                   }
                 };
+                const greyMask = question.getGreyMask();
+                const disabled = readOnly || greyMask[rowIndex][colIndex];
 
                 return (
-                  <td key={`${rowIndex}_${colIndex}`}>
-                    <FormField
-                      handleChange={handleChange}
-                      inputState={inputState}
-                      min={0}
-                      nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
-                      prompt={colHeader}
-                      type="number"
-                      value={sub_question?.getAnswer() ?? ''}
-                      readOnly={readOnly}
-                    />
+                  <td key={`${rowIndex}_${colIndex}`} className={disabled ? 'bg-light' : ''}>
+                    {disabled ? (
+                      <div style={{ minWidth: 'max-content' }}></div>
+                    ) : (
+                      <FormField
+                        handleChange={handleChange}
+                        inputState={inputState}
+                        min={0}
+                        nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
+                        prompt={colHeader}
+                        type="number"
+                        value={sub_question?.getAnswer() ?? ''}
+                        readOnly={disabled}
+                      />
+                    )}
                   </td>
                 );
               })}
