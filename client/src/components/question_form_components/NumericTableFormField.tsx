@@ -92,6 +92,7 @@ const NumericTableFormField = ({
 
   return (
     <div style={tableWrapperStyle}>
+      <h4>{t(question.getTableTitle()[i18n.language])}</h4>
       <table className="table table-bordered">
         <thead className="thead-light">
           <tr>
@@ -120,10 +121,7 @@ const NumericTableFormField = ({
                     applyReportChanges();
                   }
                 };
-                const disabled =
-                  readOnly ||
-                  (rowHeader['fr'] === '' && rowHeader['en'] === '') ||
-                  colHeader['en'].includes('(Read Only)');
+                const disabled = readOnly;
                 return (
                   <td key={`${rowIndex}_${colIndex}`} className={disabled ? 'bg-light' : ''}>
                     {disabled ? (
