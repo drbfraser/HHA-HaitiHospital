@@ -15,7 +15,7 @@ type ID = string;
 type ErrorType = string;
 type Translation = Record<string, string>;
 
-function createTableGreyMask(rows: number, cols: number): Array<Array<Boolean>> {
+function createTableGreyMask(rows: number, cols: number): Array<Array<boolean>> {
   // Create an array with 'rows' number of elements, each initialized to an array of 'cols' false values
   const mask = new Array(rows).fill(null).map(() => new Array(cols).fill(false));
   return mask;
@@ -1854,7 +1854,7 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q14_table_title: Translation = { en: 'Births', fr: 'Naissances' };
 
-  const q14_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q14_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q14_rows.length,
     q14_columns.length,
   );
@@ -1905,7 +1905,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Others', fr: 'Autres' },
   ];
 
-  const q1_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q1_rows.length,
     q1_columns.length,
   );
@@ -1942,7 +1942,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Others', fr: 'Autres' },
   ];
 
-  const q2_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q2_rows.length,
     q2_columns.length,
   );
@@ -1984,7 +1984,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Others', fr: 'Autres' },
   ];
 
-  const q3_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q3_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q3_rows.length,
     q3_columns.length,
   );
@@ -2033,7 +2033,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Total Users 25 years and older', fr: 'Total Utilisateurs 25 ans et plus' },
   ];
 
-  const q4_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q4_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_rows.length,
     q4_columns.length,
   );
@@ -2072,7 +2072,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Number of days out of stock/month', fr: 'Nbre de jours rupture de stocks/ mois' },
   ];
 
-  const q4_1_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q4_1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_1_rows.length,
     q4_1_columns.length,
   );
@@ -2118,7 +2118,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Number of days of stock outs', fr: 'Nombre de jours de rupture de stocks' },
   ];
 
-  const q5_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q5_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q5_rows.length,
     q5_columns.length,
   );
@@ -2156,7 +2156,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Balance at the end of the month', fr: 'Solde en fin de mois' },
   ];
 
-  const q6_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q6_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q6_rows.length,
     q6_columns.length,
   );
@@ -2211,7 +2211,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Administered Comm.', fr: 'Administrées Comm.' },
   ];
 
-  const q7_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q7_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_rows.length,
     q7_columns.length,
   );
@@ -2270,7 +2270,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Administered Comm.', fr: 'Administrées Comm.' },
   ];
 
-  const q7_1_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q7_1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_1_rows.length,
     q7_1_columns.length,
   );
@@ -2323,7 +2323,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Administered', fr: 'Administrées' },
   ];
 
-  const q7_2_grey_mask: Array<Array<Boolean>> = createTableGreyMask(
+  const q7_2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_2_rows.length,
     q7_2_columns.length,
   );

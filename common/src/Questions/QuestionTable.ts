@@ -58,7 +58,7 @@ export abstract class QuestionTable<
   protected readonly columnHeaders: Array<Translation> = [];
   protected readonly questionTable: table<TableCell<ID, T, ErrorType, QuestionType>>;
   protected readonly tableTitle: Translation = { en: '', fr: '' };
-  protected readonly greyMask: Array<Array<Boolean>> = [[]];
+  protected readonly greyMask: Array<Array<boolean>> = [[]];
 
   /*  The questionCreator is a callback that takes in the row and column index
         for where the question will be placed and may return a question. 
@@ -70,7 +70,7 @@ export abstract class QuestionTable<
     rowHeaders: Array<Translation>,
     columnHeaders: Array<Translation>,
     tableTitle: Translation,
-    greyMask: Array<Array<Boolean>>,
+    greyMask: Array<Array<boolean>>,
     questionCreator: (row: number, col: number) => QuestionType | undefined,
   ) {
     super(id, prompt);
@@ -120,7 +120,7 @@ export abstract class QuestionTable<
   public getTableTitle(): Translation {
     return this.tableTitle;
   }
-  public getGreyMask(): Array<Array<Boolean>> {
+  public getGreyMask(): Array<Array<boolean>> {
     return this.greyMask;
   }
 

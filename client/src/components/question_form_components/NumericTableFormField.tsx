@@ -9,26 +9,10 @@ const tableWrapperStyle = {
   width: 'fit-content',
   height: '100%',
   overflow: 'auto',
+  marginBottom: '24px',
 };
 
 type Translation = Record<string, string>;
-
-const extractSpanRow = (record: Translation): Translation => {
-  // The regex pattern to match <spanRow:anything>
-  const spanRowPattern = /<spanRow:(.*?)>/;
-
-  // Attempt to match the pattern for both 'en' and 'fr'
-  const enMatch = record['en']?.match(spanRowPattern);
-  const frMatch = record['fr']?.match(spanRowPattern);
-
-  // If both 'en' and 'fr' contain a match, return a new record with the extracted string
-  if (enMatch && frMatch) {
-    return { en: enMatch[1], fr: frMatch[1] };
-  }
-
-  // Otherwise, return the original record
-  return record;
-};
 
 interface NumericTableFormFieldProps {
   applyReportChanges: () => void;
@@ -121,7 +105,9 @@ const NumericTableFormField = ({
                     applyReportChanges();
                   }
                 };
-                const disabled = readOnly;
+                const greyMask = question.getGreyMask();
+                const disabled = readOnly || greyMask[rowIndex][colIndex];
+
                 return (
                   <td key={`${rowIndex}_${colIndex}`} className={disabled ? 'bg-light' : ''}>
                     {disabled ? (
