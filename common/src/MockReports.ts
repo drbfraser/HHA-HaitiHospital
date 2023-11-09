@@ -1938,7 +1938,6 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
   ];
 
   const q2_columns: Translation[] = [
-    { en: 'Births', fr: 'Naissances' },
     { en: 'Matrones', fr: 'Matrones' },
     { en: 'Others', fr: 'Autres' },
   ];
@@ -1951,10 +1950,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
   const { en: q2_rows_en, fr: q2_rows_fr } = separateLanguages(q2_rows);
   const { en: q2_columns_en, fr: q2_columns_fr } = separateLanguages(q2_columns);
 
-  const q2_table_title: Translation = {
-    en: 'Title for Q2 in English',
-    fr: 'Titre pour Q2 en Français',
-  };
+  const q2_table_title: Translation = { en: 'Births', fr: 'Naissances' };
 
   const q2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '2',
@@ -2356,7 +2352,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
 
   // Add Age of Mothers table to the report
   communityhealthReport.addAll(q1, q2, q3, q4, q4_1, q5, q6, q7, q7_1, q7_2);
-  communityhealthReport.addBreakpoints(0, 1, 2, 3, 4, 5, 6);
+  communityhealthReport.addBreakpoints(0, 1, 2, 3, 5, 6);
 
   return communityhealthReport;
 };
