@@ -14,10 +14,22 @@ import { QuestionAnswerNode } from './Questions/QuestionAnswer';
 type ID = string;
 type ErrorType = string;
 type Translation = Record<string, string>;
+type maskIndex = [number, number]; // Define a tuple type for row and column indices
 
-function createTableGreyMask(rows: number, cols: number): Array<Array<boolean>> {
-  // Create an array with 'rows' number of elements, each initialized to an array of 'cols' false values
-  const mask = new Array(rows).fill(null).map(() => new Array(cols).fill(false));
+function createTableGreyMask(rows: number, cols: number, greyIndices?: maskIndex[]): boolean[][] {
+  // Create a mask with all values set to false
+  const mask: boolean[][] = new Array(rows).fill(null).map(() => new Array(cols).fill(false));
+
+  // If greyIndices is provided, set the specified cells to true
+  if (greyIndices) {
+    greyIndices.forEach(([row, col]) => {
+      if (mask[row] !== undefined) {
+        if (mask[row]![col] !== undefined) {
+          mask[row]![col] = true;
+        }
+      }
+    });
+  }
   return mask;
 }
 
@@ -2211,9 +2223,12 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
     { en: 'Administered Comm.', fr: 'Administrées Comm.' },
   ];
 
+  // Test functionality of grey table cell
+  const q7_grey_index: maskIndex[] = [[2, 3]];
   const q7_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_rows.length,
     q7_columns.length,
+    q7_grey_index,
   );
 
   const { en: q7_rows_en, fr: q7_rows_fr } = separateLanguages(q7_rows);

@@ -111,9 +111,7 @@ const NumericTableFormField = ({
                 return (
                   <td key={`${rowIndex}_${colIndex}`} className={disabled ? 'bg-light' : ''}>
                     {disabled ? (
-                      <div style={{ minWidth: 'max-content' }}>
-                        <label className="fs-10 m-0 text-secondary">{'Place Holder'}</label>
-                      </div>
+                      <div style={{ minWidth: 'max-content' }}></div>
                     ) : (
                       <FormField
                         handleChange={handleChange}
