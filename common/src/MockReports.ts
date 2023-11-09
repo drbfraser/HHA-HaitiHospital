@@ -2367,7 +2367,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
 
   // Add Age of Mothers table to the report
   communityhealthReport.addAll(q1, q2, q3, q4, q4_1, q5, q6, q7, q7_1, q7_2);
-  communityhealthReport.addBreakpoints(0, 1, 2, 3, 5, 6);
+  communityhealthReport.addBreakpoints(0, 1, 2, 3, 5, 7);
 
   return communityhealthReport;
 };
