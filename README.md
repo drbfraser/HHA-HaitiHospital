@@ -352,3 +352,11 @@ our specific requirements, granting us the flexibility to adapt our project's bu
 maintaining the simplicity and ease of use provided by CRA. An example use of rewire is preventing
 webpack from changing class and function names which are shortened by default in CRA's webpack
 config.
+
+### API End-points
+
+Please import “hha.postman_collection” file from the repository to your postman. This collection
+contains all the api requests to the database.To send a request to the database from postman, please
+run “Step 1. CSRF Token” and “Step 2. Login” requests inside the Authentication folder first. These
+two requests set up the value for the CSRF token variable. This token is required in some requests.
+If you create a new api request, please remember to update this file.
