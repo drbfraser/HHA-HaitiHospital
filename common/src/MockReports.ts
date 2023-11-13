@@ -1777,18 +1777,8 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     '10',
     getQuestionContent('question10'),
   );
-
-  // Question 11 "Self-discharged"
-  const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
-    '11',
-    getQuestionContent('question11'),
-  );
-
   // 11_1 "Reason for self-discharged"
-  const q11_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-    '11_1',
-    getQuestionContent('question11_1'),
-  );
+
   const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_1',
     getQuestionContent('question11_1_1'),
@@ -1809,8 +1799,27 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     '11_1_5',
     getQuestionContent('question11_1_5'),
   );
-  q11_1.addAll(q11_1_1, q11_1_2, q11_1_3, q11_1_4, q11_1_5);
-  // TODO: add q11_1 to q11
+
+  const q11_1: SpecializedGroup<
+    ID,
+    ErrorType,
+    NumericQuestion<ID, ErrorType>
+  > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
+    '11_1',
+    getQuestionContent('question11_1'),
+    q11_1_1,
+    q11_1_2,
+    q11_1_3,
+    q11_1_4,
+    q11_1_5,
+  );
+
+  // Question 11 "Self-discharged"
+  const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '11',
+    getQuestionContent('question11'),
+    q11_1,
+  );
 
   // Question 12
   const q12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -1818,53 +1827,60 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question12'),
   );
 
+  const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_1',
+    getQuestionContent('question13_1_1'),
+  );
+  const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_2',
+    getQuestionContent('question13_1_2'),
+  );
+  const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_3',
+    getQuestionContent('question13_1_3'),
+  );
+  const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_4',
+    getQuestionContent('question13_1_4'),
+  );
+  // 13_1 "Where do patients come from?"
+  const q13_1: SpecializedGroup<
+    ID,
+    ErrorType,
+    NumericQuestion<ID, ErrorType>
+  > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
+    '13_1',
+    getQuestionContent('question13_1'),
+    q13_1_1,
+    q13_1_2,
+    q13_1_3,
+    q13_1_4,
+  );
+
   // Question 13 "Admissions"
   const q13: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '13',
     getQuestionContent('question13'),
+    q13_1,
   );
-
-  // 13_1 "Where do patients come from?"
-  const q13_1: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-    '11_3',
-    getQuestionContent('question11_3'),
-  );
-  const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '11_3_1',
-    getQuestionContent('question11_3_1'),
-  );
-  const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '11_3_2',
-    getQuestionContent('question11_3_2'),
-  );
-  const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '11_3_3',
-    getQuestionContent('question11_3_3'),
-  );
-  const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
-    '11_3_4',
-    getQuestionContent('question11_3_4'),
-  );
-  q13_1.addAll(q13_1_1, q13_1_2, q13_1_3, q13_1_4);
-  // TODO: add q13_1 to q13
 
   // Question 14 Table
 
   const q14_rows: Translation[] = [
-    { en: 'Weight <1.5kg', fr: 'Poids <1,5kg' },
-    { en: '1.5kg ≤ Weight <2.5kg', fr: '1,5kg ≤ Poids <2,5kg' },
-    { en: '2.5kg and over', fr: '2,5kg et plus' },
-    { en: 'Not weighed', fr: 'Non pesé' },
+    getQuestionContent('question14_row_1'),
+    getQuestionContent('question14_row_2'),
+    getQuestionContent('question14_row_3'),
+    getQuestionContent('question14_row_4'),
   ];
 
   const q14_columns: Translation[] = [
-    { en: 'Normal', fr: 'Normal' },
-    { en: 'Cesarean', fr: 'Césarienne' },
-    { en: 'Instrumental', fr: 'Instrumentalisé' },
-    { en: 'Test', fr: 'Test' },
+    getQuestionContent('question14_col_1'),
+    getQuestionContent('question14_col_2'),
+    getQuestionContent('question14_col_3'),
+    getQuestionContent('question14_col_4'),
   ];
 
-  const q14_table_title: Translation = { en: 'Births', fr: 'Naissances' };
+  const q14_table_title: Translation = getQuestionContent('question14_title');
 
   const q14_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q14_rows.length,
@@ -1889,8 +1905,410 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  // Create a NumericTable for q 14
-  maternityReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
+  // Question 15 Table
+
+  const q15_rows: Translation[] = [
+    getQuestionContent('question15_row_1'),
+    getQuestionContent('question15_row_2'),
+    getQuestionContent('question15_row_3'),
+    getQuestionContent('question15_row_4'),
+  ];
+
+  const q15_columns: Translation[] = [getQuestionContent('question15_col_1')];
+
+  const q15_table_title: Translation = getQuestionContent('question15_title');
+
+  const q15_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q15_rows.length,
+    q15_columns.length,
+  );
+
+  const { en: q15_rows_en, fr: q15_rows_fr } = separateLanguages(q15_rows);
+  const { en: q15_columns_en, fr: q15_columns_fr } = separateLanguages(q15_columns);
+
+  // Create the NumericTable
+  const q15: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '15',
+    { en: 'Question 15', fr: 'Question 15 (French)' },
+    q15_rows,
+    q15_columns,
+    q15_table_title,
+    q15_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q15_${row}_${col}`, {
+        en: `Question for ${q15_rows_en[row]} and ${q15_columns_en[col]}`,
+        fr: `Question pour ${q15_rows_fr[row]} et ${q15_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 16 Table
+
+  const q16_rows: Translation[] = [
+    getQuestionContent('question16_row_1'),
+    getQuestionContent('question16_row_2'),
+  ];
+
+  const q16_columns: Translation[] = [getQuestionContent('question15_col_1')];
+
+  const q16_table_title: Translation = getQuestionContent('question16_title');
+
+  const q16_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q16_rows.length,
+    q16_columns.length,
+  );
+
+  const { en: q16_rows_en, fr: q16_rows_fr } = separateLanguages(q16_rows);
+  const { en: q16_columns_en, fr: q16_columns_fr } = separateLanguages(q16_columns);
+
+  // Create the NumericTable
+  const q16: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '16',
+    { en: 'Question 16', fr: 'Question 16 (French)' },
+    q16_rows,
+    q16_columns,
+    q16_table_title,
+    q16_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q16_${row}_${col}`, {
+        en: `Question for ${q16_rows_en[row]} and ${q16_columns_en[col]}`,
+        fr: `Question pour ${q16_rows_fr[row]} et ${q16_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 17 Table
+
+  const q17_rows: Translation[] = [
+    getQuestionContent('question17_row_1'),
+    getQuestionContent('question17_row_2'),
+  ];
+
+  const q17_columns: Translation[] = [getQuestionContent('question15_col_1')];
+
+  const q17_table_title: Translation = getQuestionContent('question17_title');
+
+  const q17_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q17_rows.length,
+    q17_columns.length,
+  );
+
+  const { en: q17_rows_en, fr: q17_rows_fr } = separateLanguages(q17_rows);
+  const { en: q17_columns_en, fr: q17_columns_fr } = separateLanguages(q17_columns);
+
+  // Create the NumericTable
+  const q17: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '17',
+    { en: 'Question 17', fr: 'Question 17 (French)' },
+    q17_rows,
+    q17_columns,
+    q17_table_title,
+    q17_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q17_${row}_${col}`, {
+        en: `Question for ${q17_rows_en[row]} and ${q17_columns_en[col]}`,
+        fr: `Question pour ${q17_rows_fr[row]} et ${q17_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 18 Table
+
+  const q18_rows: Translation[] = [
+    getQuestionContent('question18_row_1'),
+    getQuestionContent('question18_row_2'),
+  ];
+
+  const q18_columns: Translation[] = [getQuestionContent('question15_col_1')];
+
+  const q18_table_title: Translation = getQuestionContent('question18_title');
+
+  const q18_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q18_rows.length,
+    q18_columns.length,
+  );
+
+  const { en: q18_rows_en, fr: q18_rows_fr } = separateLanguages(q18_rows);
+  const { en: q18_columns_en, fr: q18_columns_fr } = separateLanguages(q18_columns);
+
+  // Create the NumericTable
+  const q18: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '18',
+    { en: 'Question 18', fr: 'Question 18 (French)' },
+    q18_rows,
+    q18_columns,
+    q18_table_title,
+    q18_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q18_${row}_${col}`, {
+        en: `Question for ${q18_rows_en[row]} and ${q18_columns_en[col]}`,
+        fr: `Question pour ${q18_rows_fr[row]} et ${q18_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 19 Table
+
+  const q19_rows: Translation[] = [
+    getQuestionContent('question19_row_1'),
+    getQuestionContent('question19_row_2'),
+    getQuestionContent('question19_row_3'),
+    getQuestionContent('question19_row_4'),
+  ];
+
+  const q19_columns: Translation[] = [
+    getQuestionContent('question19_col_1'),
+    getQuestionContent('question19_col_2'),
+    getQuestionContent('question19_col_3'),
+    getQuestionContent('question19_col_4'),
+    getQuestionContent('question19_col_5'),
+    getQuestionContent('question19_col_6'),
+  ];
+
+  const q19_table_title: Translation = getQuestionContent('question19_title');
+
+  const q19_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q19_rows.length,
+    q19_columns.length,
+  );
+
+  const { en: q19_rows_en, fr: q19_rows_fr } = separateLanguages(q19_rows);
+  const { en: q19_columns_en, fr: q19_columns_fr } = separateLanguages(q19_columns);
+
+  // Create the NumericTable
+  const q19: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '19',
+    { en: 'Question 19', fr: 'Question 19 (French)' },
+    q19_rows,
+    q19_columns,
+    q19_table_title,
+    q19_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q19_${row}_${col}`, {
+        en: `Question for ${q19_rows_en[row]} and ${q19_columns_en[col]}`,
+        fr: `Question pour ${q19_rows_fr[row]} et ${q19_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 20 Table
+
+  const q20_rows: Translation[] = [
+    getQuestionContent('question20_row_1'),
+    getQuestionContent('question20_row_2'),
+    getQuestionContent('question20_row_3'),
+    getQuestionContent('question20_row_4'),
+    getQuestionContent('question20_row_5'),
+    getQuestionContent('question20_row_6'),
+    getQuestionContent('question20_row_7'),
+    getQuestionContent('question20_row_8'),
+    getQuestionContent('question20_row_9'),
+  ];
+
+  const q20_columns: Translation[] = [getQuestionContent('question15_col_1')];
+
+  const q20_table_title: Translation = getQuestionContent('question20_title');
+
+  const q20_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q20_rows.length,
+    q20_columns.length,
+  );
+
+  const { en: q20_rows_en, fr: q20_rows_fr } = separateLanguages(q20_rows);
+  const { en: q20_columns_en, fr: q20_columns_fr } = separateLanguages(q20_columns);
+
+  // Create the NumericTable
+  const q20: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '20',
+    { en: 'Question 20', fr: 'Question 20 (French)' },
+    q20_rows,
+    q20_columns,
+    q20_table_title,
+    q20_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q20_${row}_${col}`, {
+        en: `Question for ${q20_rows_en[row]} and ${q20_columns_en[col]}`,
+        fr: `Question pour ${q20_rows_fr[row]} et ${q20_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 21 Table
+
+  const q21_rows: Translation[] = [
+    getQuestionContent('question21_row_1'),
+    getQuestionContent('question21_row_2'),
+    getQuestionContent('question21_row_3'),
+    getQuestionContent('question21_row_4'),
+    getQuestionContent('question21_row_5'),
+  ];
+
+  const q21_columns: Translation[] = [getQuestionContent('question15_col_1')];
+
+  const q21_table_title: Translation = getQuestionContent('question21_title');
+
+  const q21_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q21_rows.length,
+    q21_columns.length,
+  );
+
+  const { en: q21_rows_en, fr: q21_rows_fr } = separateLanguages(q21_rows);
+  const { en: q21_columns_en, fr: q21_columns_fr } = separateLanguages(q21_columns);
+
+  // Create the NumericTable
+  const q21: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '21',
+    { en: 'Question 21', fr: 'Question 21 (French)' },
+    q21_rows,
+    q21_columns,
+    q21_table_title,
+    q21_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q21_${row}_${col}`, {
+        en: `Question for ${q21_rows_en[row]} and ${q21_columns_en[col]}`,
+        fr: `Question pour ${q21_rows_fr[row]} et ${q21_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 22 Table
+
+  const q22_rows: Translation[] = [
+    getQuestionContent('question22_row_1'),
+    getQuestionContent('question22_row_2'),
+    getQuestionContent('question22_row_3'),
+    getQuestionContent('question22_row_4'),
+    getQuestionContent('question22_row_5'),
+    getQuestionContent('question22_row_6'),
+  ];
+
+  const q22_columns: Translation[] = [
+    getQuestionContent('question22_col_1'),
+    getQuestionContent('question22_col_2'),
+    getQuestionContent('question22_col_3'),
+  ];
+
+  const q22_table_title: Translation = getQuestionContent('question22_title');
+
+  const q22_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q22_rows.length,
+    q22_columns.length,
+  );
+
+  const { en: q22_rows_en, fr: q22_rows_fr } = separateLanguages(q22_rows);
+  const { en: q22_columns_en, fr: q22_columns_fr } = separateLanguages(q22_columns);
+
+  // Create the NumericTable
+  const q22: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '22',
+    { en: 'Question 22', fr: 'Question 22 (French)' },
+    q22_rows,
+    q22_columns,
+    q22_table_title,
+    q22_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q22_${row}_${col}`, {
+        en: `Question for ${q22_rows_en[row]} and ${q22_columns_en[col]}`,
+        fr: `Question pour ${q22_rows_fr[row]} et ${q22_columns_fr[col]}`,
+      }),
+  );
+
+  // Question 23 Table
+
+  const q23_rows: Translation[] = [
+    getQuestionContent('question23_row_1'),
+    getQuestionContent('question23_row_2'),
+  ];
+
+  const q23_columns: Translation[] = [
+    getQuestionContent('question23_col_1'),
+    getQuestionContent('question23_col_2'),
+    getQuestionContent('question23_col_3'),
+  ];
+
+  const q23_table_title: Translation = getQuestionContent('question23_title');
+
+  const q23_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q23_rows.length,
+    q23_columns.length,
+  );
+
+  const { en: q23_rows_en, fr: q23_rows_fr } = separateLanguages(q23_rows);
+  const { en: q23_columns_en, fr: q23_columns_fr } = separateLanguages(q23_columns);
+
+  // Create the NumericTable
+  const q23: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '23',
+    { en: 'Question 23', fr: 'Question 23 (French)' },
+    q23_rows,
+    q23_columns,
+    q23_table_title,
+    q23_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q23_${row}_${col}`, {
+        en: `Question for ${q23_rows_en[row]} and ${q23_columns_en[col]}`,
+        fr: `Question pour ${q23_rows_fr[row]} et ${q23_columns_fr[col]}`,
+      }),
+  );
+
+  // question 24"
+
+  const q24_rows: Translation[] = [
+    getQuestionContent('question24_row_1'),
+    getQuestionContent('question24_row_2'),
+    getQuestionContent('question24_row_3'),
+    getQuestionContent('question24_row_4'),
+    getQuestionContent('question24_row_5'),
+    getQuestionContent('question24_row_6'),
+    getQuestionContent('question24_row_7'),
+  ];
+
+  const q24_columns: Translation[] = [getQuestionContent('question15_col_1')];
+
+  const q24_table_title: Translation = getQuestionContent('question24_title');
+
+  const q24_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q24_rows.length,
+    q24_columns.length,
+  );
+
+  const { en: q24_rows_en, fr: q24_rows_fr } = separateLanguages(q24_rows);
+  const { en: q24_columns_en, fr: q24_columns_fr } = separateLanguages(q24_columns);
+
+  // Create the NumericTable
+  const q24: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '24',
+    { en: 'Question 24', fr: 'Question 24 (French)' },
+    q24_rows,
+    q24_columns,
+    q24_table_title,
+    q24_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`Q24_${row}_${col}`, {
+        en: `Question for ${q24_rows_en[row]} and ${q24_columns_en[col]}`,
+        fr: `Question pour ${q24_rows_fr[row]} et ${q24_columns_fr[col]}`,
+      }),
+  );
+
+  maternityReport.addAll(
+    q1,
+    q2,
+    q3,
+    q4,
+    q5,
+    q6,
+    q7,
+    q8,
+    q9,
+    q10,
+    q11,
+    q12,
+    q13,
+    q14,
+    q15,
+    q16,
+    q17,
+    q18,
+    q19,
+    q20,
+    q21,
+    q22,
+    q23,
+    q24,
+  );
 
   return maternityReport;
 };
