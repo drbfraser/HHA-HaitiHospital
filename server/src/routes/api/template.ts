@@ -1,4 +1,9 @@
-import { HTTP_CREATED_CODE, HTTP_OK_CODE, NotFound } from '../../exceptions/httpException';
+import {
+  HTTP_CREATED_CODE,
+  HTTP_OK_CODE,
+  NotFound,
+  Unauthorized,
+} from '../../exceptions/httpException';
 import { IRouter, NextFunction, Response } from 'express';
 
 import { DEPARTMENT_ID_URL_SLUG } from './../../utils/constants';
@@ -24,6 +29,11 @@ router
         if (!(await Departments.Database.validateDeptId(deptId))) {
           throw new NotFound(`Invalid department id ${deptId}`);
         }
+
+        if (req.user.role === Role.HeadOfDepartment && deptId !== req.user.departmentId) {
+          throw new Unauthorized('User not authorized to view template');
+        }
+
         let serializedTemplate = await TemplateCollection.findOne({ departmentId: deptId }).lean();
         if (!serializedTemplate) {
           throw new NotFound(`No template for department found`);

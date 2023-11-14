@@ -1,5 +1,10 @@
 import { NextFunction, Response } from 'express';
-import { checkUserIsDepartmentAuthed, checkUserCanEdit } from 'utils/authUtils';
+import {
+  checkUserCanViewReport,
+  checkUserCanEditReport,
+  filterViewableReports,
+  checkUserCanCreateReport,
+} from 'utils/authUtils';
 import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
 import { RequestWithUser } from 'utils/definitions/express';
 import {
@@ -27,6 +32,13 @@ router.post(
     try {
       const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport } =
         req.body;
+
+      const authorized = checkUserCanCreateReport(req.user, departmentId);
+
+      if (!authorized) {
+        throw new Unauthorized('User not authorized to create report');
+      }
+
       // NOTE: May need to sanitize the reportObject before saving
       const newReport = new ReportCollection({
         departmentId,
@@ -35,6 +47,7 @@ router.post(
         reportMonth,
         reportObject: serializedReport,
       });
+
       const saved = await newReport.save();
       return res.status(HTTP_CREATED_CODE).json({ message: 'Report saved', report: saved });
     } catch (e) {
@@ -55,9 +68,9 @@ router.get(
         throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
       }
 
-      const authorized = checkUserIsDepartmentAuthed(req.user, report.departmentId);
+      const authorized = checkUserCanViewReport(req.user, report.departmentId);
       if (!authorized) {
-        throw new Unauthorized(`User not authorized`);
+        throw new Unauthorized('User not authorized to view report');
       }
 
       res.status(HTTP_OK_CODE).json({ report: report });
@@ -71,13 +84,14 @@ router.get(
 router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const reports = await ReportCollection.find();
-    res.status(HTTP_OK_CODE).json(reports);
+    const filteredReports = filterViewableReports(req.user, reports);
+    res.status(HTTP_OK_CODE).json(filteredReports);
   } catch (e) {
     next(e);
   }
 });
 
-//Fetch reports of a department with department id
+// Fetch reports of a department with department id
 router.get(
   `/department/:${DEPARTMENT_ID_URL_SLUG}`,
   requireJwtAuth,
@@ -88,6 +102,12 @@ router.get(
       const reports = await ReportCollection.find({ departmentId: deptId }).sort({
         reportMonth: 'desc',
       });
+
+      const authorized = checkUserCanViewReport(req.user, deptId);
+
+      if (!authorized) {
+        throw new Unauthorized('User not authorized to view reports');
+      }
 
       res.status(HTTP_OK_CODE).json(reports);
     } catch (e) {
@@ -110,10 +130,10 @@ router.delete(
         throw new NotFound(`No report with id ${reportId}`);
       }
 
-      const authorized = checkUserCanEdit(req.user, report);
+      const authorized = checkUserCanEditReport(req.user, report);
 
       if (!authorized) {
-        throw new Unauthorized(`User not authorized to delete this report`);
+        throw new Unauthorized('User not authorized to delete report');
       }
 
       await report.remove();
@@ -129,14 +149,14 @@ router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
 
   const report = await ReportCollection.findById(id);
 
-  const authorized = checkUserCanEdit(req.user, report);
-
-  if (!authorized) {
-    throw new Unauthorized(`User not authorized`);
+  if (!report) {
+    throw new NotFound(`No report with id ${id}`);
   }
 
-  if (!report) {
-    throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+  const authorized = checkUserCanEditReport(req.user, report);
+
+  if (!authorized) {
+    throw new Unauthorized('User not authorized to update report');
   }
 
   report.reportObject = cloneDeep(serializedReport);

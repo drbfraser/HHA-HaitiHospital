@@ -211,9 +211,7 @@ const GeneralReports = () => {
           enableSorting
         />
       ) : (
-        <div className="h5 text-primary">
-          No reports have been submitted yet. Click Report (on the left) to create a new report.
-        </div>
+        <div className="h5 text-primary my-3">{t('noViewableReports')}</div>
       )}
     </Layout>
   );
