@@ -119,6 +119,7 @@
   "Other Story": "Other Story",
   "createNewReport": "Create new report",
   "selectDepartments": "Select departments",
+  "noViewableReports": "No reports have been submitted yet.",
 
   "CaseStudy": {
     "Main": {

@@ -3,7 +3,7 @@ import { Response, NextFunction } from 'express';
 import { InvalidInput } from 'exceptions/systemException';
 import { Unauthorized } from 'exceptions/httpException';
 import { DEPARTMENT_ID_URL_SLUG } from 'utils/constants';
-import { checkUserIsDepartmentAuthed } from 'utils/authUtils';
+import { checkUserCanViewReport } from 'utils/authUtils';
 import Departments from 'utils/departments';
 import type { Middleware } from 'utils/definitions/middleware';
 
@@ -19,7 +19,7 @@ export const departmentAuth: Middleware = async (
     return next(new InvalidInput(`Department Id ${deptId} is not valid`));
   }
 
-  const authorized = checkUserIsDepartmentAuthed(req.user, deptId);
+  const authorized = checkUserCanViewReport(req.user, deptId);
   if (authorized) {
     return next();
   }

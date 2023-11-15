@@ -120,6 +120,7 @@
   "Other Story": "Autre histoire",
   "createNewReport": "Créer un nouveau rapport",
   "selectDepartments": "Sélectionnez les départements",
+  "noViewableReports": "Aucun rapport n'a encore été soumis.",
 
   "CaseStudy": {
     "Main": {
