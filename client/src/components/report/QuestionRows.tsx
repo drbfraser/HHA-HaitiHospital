@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { QuestionRow } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
-import { table } from 'console';
 
 const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Element => {
   const [questionRowElements, setQuestionRowElements] = useState<QuestionRow[]>([]);
