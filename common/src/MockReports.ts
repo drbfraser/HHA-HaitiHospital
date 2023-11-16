@@ -2340,7 +2340,7 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
 export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> => {
   const communityhealthReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
     'ROOT',
-    { en: 'Mock Report', fr: 'Rapport fictif' },
+    { en: 'Community Health Report', fr: 'Rapport sur la santé communautaire' },
   );
 
   const q1_table_title: Translation = { en: 'Age of Mothers', fr: 'Âge des Mères' };
@@ -2425,12 +2425,12 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
       en: 'Breastfeeding women receiving vitamin A',
       fr: 'Femmes allaitantes recevant de la vitamine A',
     },
-    { en: 'Breastfeeding women with MUAC <210mm', fr: 'Femmes allaitantes avec un PB <210mm' },
+    { en: 'Breastfeeding women with MUAC <210mm', fr: 'Femmes allaitantes avec PB <210mm' },
     {
       en: 'Breastfeeding women with malnutrition support',
-      fr: 'Femmes allaitantes bénéficiant d’un soutien nutritionnel',
+      fr: 'Femmes allaitantes avec MAM/MAS prises en charge',
     },
-    { en: 'Domestic visits in 0-3 days', fr: 'Visites à domicile dans les 0-3 jours' },
+    { en: 'Domestic visits in 0-3 days', fr: 'Visites domicllaries 0-3 jours' },
   ];
 
   const q3_columns: Translation[] = [
@@ -2447,7 +2447,7 @@ export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> =
   const { en: q3_columns_en, fr: q3_columns_fr } = separateLanguages(q3_columns);
 
   const q3_table_title: Translation = {
-    en: 'Post Natal',
+    en: 'Suivi Post Natal',
     fr: 'Post Natal',
   };
 
