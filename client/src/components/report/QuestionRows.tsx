@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { QuestionRow } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
+import { table } from 'console';
 
 const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Element => {
   const [questionRowElements, setQuestionRowElements] = useState<QuestionRow[]>([]);
@@ -32,6 +33,23 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
 
       return array;
     };
+    const processTableQuestion = (tableItem): QuestionRow[] => {
+      let array: QuestionRow[] = [];
+      const questionTable = tableItem.questionTable;
+      for (let questionRows of questionTable) {
+        for (let tableCell of questionRows) {
+          const questionItem = tableCell.question;
+          const element: QuestionRow = {
+            id: questionItem.id,
+            prompt: questionItem.prompt[language],
+            answer: questionItem?.answer,
+          };
+          array.push(element);
+        }
+      }
+
+      return array;
+    };
 
     const processQuestionItem = (questionItems): QuestionRow[] => {
       let array: QuestionRow[] = [];
@@ -45,6 +63,8 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
         array.push(element);
         if (questionItem.__class__ === 'CompositionQuestion') {
           for (let nestedQuestionItem of questionItem.compositionGroups) {
+            console.log(nestedQuestionItem);
+
             const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
             array = array.concat(subArray);
           }
@@ -54,6 +74,11 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
             const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
             array = array.concat(subArray);
           }
+        }
+        if (questionItem.__class__ === 'NumericTable') {
+          console.log(questionItem);
+          const subArray = processTableQuestion(questionItem);
+          array = array.concat(subArray);
         }
       }
 

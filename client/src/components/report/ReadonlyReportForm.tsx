@@ -117,6 +117,8 @@ const ReadonlyReportForm = ({
                 </tr>
               </thead>
               <tbody>
+                {console.log('dbg')}
+                {console.log(questionItems)}
                 <QuestionRows questionItems={questionItems} />
               </tbody>
             </table>
