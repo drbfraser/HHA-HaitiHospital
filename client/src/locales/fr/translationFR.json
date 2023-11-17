@@ -219,6 +219,8 @@
   "departmentReportDisplayViewForm": "Voir le Formulaire",
   "departmentReportDisplayHidePagination": "Masquer la Pagination",
   "departmentReportDisplayShowPagination": "Afficher la Pagination",
+  "departmentReportDisplayHideTable": "Masquer le Tableau",
+  "departmentReportDisplayShowTable": "Afficher le tableau",
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
   "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",

@@ -218,6 +218,8 @@
   "departmentReportDisplayViewForm": "View Form",
   "departmentReportDisplayHidePagination": "Hide Pagination",
   "departmentReportDisplayShowPagination": "Show Pagination",
+  "departmentReportDisplayHideTable": "Hide Table",
+  "departmentReportDisplayShowTable": "Show Table",
   "departmentReportDisplayDownloadCSV": "Download CSV",
   "departmentReportDisplayGeneratePDF": "Generate PDF",
   "reportAlertDeleteReportsFailed": "Delete report(s) failed",

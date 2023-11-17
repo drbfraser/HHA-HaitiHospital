@@ -193,7 +193,9 @@ const ReportView = () => {
               )}
               {readOnly && (
                 <button className="btn btn-outline-dark" onClick={toggleTable}>
-                  {isUsingTable ? 'Hide Table' : 'Show Table'}
+                  {isUsingTable
+                    ? t('departmentReportDisplayHideTable')
+                    : t('departmentReportDisplayShowTable')}
                 </button>
               )}
 
