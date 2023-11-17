@@ -13,10 +13,9 @@ import { PDFExport } from '@progress/kendo-react-pdf';
 import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import ReportForm from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
-import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'constants/interfaces';
 
 const ReportView = () => {
@@ -142,20 +141,16 @@ const ReportView = () => {
         <Layout showBackButton>
           <ConfirmationModal
             messages={[
-              <>
-                Please click <strong>Confirm</strong> to proceed with your edits.
-              </>,
-              <>
-                If you've made a mistake, please click <strong>Cancel</strong> instead.
-              </>,
+              <Trans i18nKey="reportConfirmationModal.editReportConfirmBody" />,
+              <Trans i18nKey="reportConfirmationModal.editReportCancelBody" />,
             ]}
             onModalCancel={() => setShowEditModal(false)}
             onModalProceed={reportHandler}
             show={showEditModal}
-            title={'Confirm Edit'}
+            title={t('reportConfirmationModal.editReportHeader')}
           />
           <ConfirmationModal
-            messages={[UNSAVED_CHANGES_MSG]}
+            messages={[t('reportConfirmationModal.LeaveWithUnsavedChanges')]}
             onModalCancel={() => {
               setIsShowingNavigationModal(false);
               setNavigationInfo(null);
@@ -165,7 +160,7 @@ const ReportView = () => {
               navigate(history, navigationInfo, () => {});
             }}
             show={isShowingNavigationModal}
-            title={'Discard Edit?'}
+            title={t('reportConfirmationModal.discardEditReportHeader')}
           />
           <Prompt
             message={(location, action) => {
@@ -198,7 +193,9 @@ const ReportView = () => {
               )}
               {readOnly && (
                 <button className="btn btn-outline-dark" onClick={toggleTable}>
-                  {isUsingTable ? 'Hide Table' : 'Show Table'}
+                  {isUsingTable
+                    ? t('departmentReportDisplayHideTable')
+                    : t('departmentReportDisplayShowTable')}
                 </button>
               )}
 

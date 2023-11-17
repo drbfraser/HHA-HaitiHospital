@@ -36,7 +36,7 @@ const ConfirmationModal = (props: ComfirmationModalProps) => {
           {t('button.cancel')}
         </Button>
         <Button variant="primary" onClick={props.onModalProceed}>
-          Confirm
+          {t('button.confirm')}
         </Button>
       </Modal.Footer>
     </Modal>

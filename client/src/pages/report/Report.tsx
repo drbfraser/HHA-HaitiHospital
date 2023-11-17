@@ -12,12 +12,11 @@ import Layout from 'components/layout';
 import { ReportAndTemplateForm } from 'components/report/ReportAndTemplateForm';
 import ReportForm from 'components/report/ReportForm';
 import { ResponseMessage } from 'utils/response_message';
-import { UNSAVED_CHANGES_MSG } from 'constants/modal_messages';
 import axios from 'axios';
 import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -134,21 +133,16 @@ export const Report = () => {
     <Layout title={t('headerReport')}>
       <ConfirmationModal
         messages={[
-          <>
-            Please click <strong>Confirm</strong> to proceed with your submission. You'll be
-            redirected to the main list of reports.
-          </>,
-          <>
-            If you've made a mistake, please click <strong>Cancel</strong> instead.
-          </>,
+          <Trans i18nKey="reportConfirmationModal.submitReportConfirmBody" />,
+          <Trans i18nKey="reportConfirmationModal.editReportCancelBody" />,
         ]}
         onModalCancel={() => setIsShowingSubmissionModal(false)}
         onModalProceed={submitReport}
         show={isShowingSubmissionModal}
-        title={'Confirm Submission'}
+        title={t('reportConfirmationModal.submitReportHeader')}
       />
       <ConfirmationModal
-        messages={[UNSAVED_CHANGES_MSG]}
+        messages={[t('reportConfirmationModal.LeaveWithUnsavedChanges')]}
         onModalCancel={() => {
           setIsShowingNavigationModal(false);
           setNavigationInfo(null);
@@ -159,7 +153,7 @@ export const Report = () => {
           navigate(history, navigationInfo, clearCurrentDepartment);
         }}
         show={isShowingNavigationModal}
-        title={'Discard Submission?'}
+        title={t('reportConfirmationModal.discardSubmitReportHeader')}
       />
       <Prompt
         message={(location, action) => {
