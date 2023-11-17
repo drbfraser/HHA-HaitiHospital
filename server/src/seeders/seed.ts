@@ -1114,15 +1114,15 @@ const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
     await ReportCollection.deleteMany({});
-    const user = await UserCollection.findOne({ username: 'user0' });
+    const user = await UserCollection.findOne({ username: 'user2' });
     const serializer = ObjectSerializer.getObjectSerializer();
-    const serialized = serializer.serialize(buildMaternityMockReport());
+    const serialized = serializer.serialize(buildNicuPaedsMockReport());
     let report = new ReportCollection({
       departmentId: user?.departmentId,
       submittedUserId: user?._id,
       submittedBy: user?.username,
-      reportMonth: new Date(),
-      reportObject: serializer.deserialize(serialized),
+      reportMonth: new Date(new Date().getFullYear(), new Date().getMonth()),
+      reportObject: serialized,
     });
     await report.save();
     console.log(`Reports seeded`);

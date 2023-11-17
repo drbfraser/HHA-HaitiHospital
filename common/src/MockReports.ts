@@ -753,18 +753,30 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
   });
 
   // Questions 1 to 3
-  const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('1', {
-    en: 'Beds available',
-    fr: 'Lits disponibles',
-  });
-  const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('2', {
-    en: 'Bed days',
-    fr: 'Jours-lit',
-  });
-  const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('3', {
-    en: 'Patient days',
-    fr: 'Jours-patient',
-  });
+  const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '1',
+    {
+      en: 'Beds available',
+      fr: 'Lits disponibles',
+    },
+    0,
+  );
+  const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '2',
+    {
+      en: 'Bed days',
+      fr: 'Jours-lit',
+    },
+    0,
+  );
+  const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '3',
+    {
+      en: 'Patient days',
+      fr: 'Jours-patient',
+    },
+    0,
+  );
 
   // Question 4 "Hospitalized"
   const q4_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -923,18 +935,30 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
   );
 
   // Questions 8 to 10
-  const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('8', {
-    en: 'Days hospitalised',
-    fr: 'Jours hospitalisés',
-  });
-  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('9', {
-    en: 'Referrals',
-    fr: 'Références',
-  });
-  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('10', {
-    en: 'Transfers',
-    fr: 'Transferts',
-  });
+  const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '8',
+    {
+      en: 'Days hospitalised',
+      fr: 'Jours hospitalisés',
+    },
+    0,
+  );
+  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '9',
+    {
+      en: 'Referrals',
+      fr: 'Références',
+    },
+    0,
+  );
+  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '10',
+    {
+      en: 'Transfers',
+      fr: 'Transferts',
+    },
+    0,
+  );
 
   const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_1',
