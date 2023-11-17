@@ -118,7 +118,7 @@ const ReportView = () => {
       controller.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history]);
+  }, [history, readOnly]);
 
   useEffect(() => {
     getReport();
