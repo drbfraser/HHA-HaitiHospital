@@ -342,6 +342,7 @@
     "update": "Mise à jour",
     "report": "Rapporter",
     "view": "Regarder",
+    "confirm": "Confirmer",
     "add_image": "Ajouter une Image"
   },
   "request_response": {
@@ -417,5 +418,16 @@
     "Maternity": "Maternité",
     "Community & Health": "Communauté et santé",
     "Bio Support": "Soutien Bio"
+  },
+
+  "reportConfirmationModal": {
+    "editReportHeader": "Confirmer la modification",
+    "discardEditReportHeader": "Supprimer la modification?",
+    "editReportConfirmBody": "Veuillez cliquer sur <strong>Confirmer</strong> pour poursuivre vos modifications.",
+    "editReportCancelBody": "Si vous avez commis une erreur, veuillez plutôt cliquer sur <strong>Annuler</strong>.",
+    "LeaveWithUnsavedChanges": "Êtes-vous sûr de vouloir quitter? Vous avez peut-être des modifications non enregistrées!",
+    "submitReportHeader": "Confirmer la soumission",
+    "discardSubmitReportHeader": "Supprimer la soumission ?",
+    "submitReportConfirmBody": "Veuillez cliquer sur <strong>Confirmer</strong> pour procéder à votre soumission. Vous serez redirigé vers la liste principale des rapports."
   }
 }

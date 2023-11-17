@@ -341,6 +341,7 @@
     "update": "Update",
     "report": "Report",
     "view": "View",
+    "confirm": "Confirm",
     "add_image": "Upload Image"
   },
   "request_response": {
@@ -416,5 +417,16 @@
     "Maternity": "Maternity",
     "Community & Health": "Community & Health",
     "Bio Support": "Bio Support"
+  },
+
+  "reportConfirmationModal": {
+    "editReportHeader": "Confirm Edit",
+    "discardEditReportHeader": "Discard Edit?",
+    "editReportConfirmBody": "Please click <strong>Confirm</strong> to proceed with your edits.",
+    "editReportCancelBody": "If you've made a mistake, please click <strong>Cancel</strong> instead.",
+    "LeaveWithUnsavedChanges": "Are you sure you want to leave? You may have unsaved changes!",
+    "submitReportHeader": "Confirm Submission",
+    "discardSubmitReportHeader": "Discard Submission?",
+    "submitReportConfirmBody": "Please click <strong>Confirm</strong> to proceed with your submission. You'll be redirected to the main list of reports."
   }
 }
