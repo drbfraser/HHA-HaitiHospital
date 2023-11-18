@@ -106,7 +106,7 @@ const NumericTableFormField = ({
                   }
                 };
                 const greyMask = question.getGreyMask();
-                const disabled = readOnly || greyMask[rowIndex][colIndex];
+                const disabled = greyMask[rowIndex][colIndex];
 
                 return (
                   <td key={`${rowIndex}_${colIndex}`} className={disabled ? 'bg-light' : ''}>
@@ -121,7 +121,7 @@ const NumericTableFormField = ({
                         prompt={colHeader}
                         type="number"
                         value={sub_question?.getAnswer() ?? ''}
-                        readOnly={disabled}
+                        readOnly={readOnly}
                       />
                     )}
                   </td>
