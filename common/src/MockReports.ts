@@ -287,20 +287,24 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     0,
   );
 
-  // Question 11
-  const q11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+  const q11: ExpandableQuestion<ID, ErrorType> = new ExpandableQuestion<ID, ErrorType>(
     '11',
     getQuestionContent('question11'),
-    0,
+    questionIdGeneratorBuilder('11'),
   );
-  /* UNUSED
-  const q11_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>('11_1', 'Reason for self-discharge', [
-    'Finance: Left as cannot afford care',
-    'Finance: Left to avoid paying',
-    'Religious/Cultural',
-    'Personal/Family',
-    'Other'
-  ]);*/
+
+  const q11_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
+    '11_1',
+    getQuestionContent('question11_1'),
+    [
+      getQuestionContent('question11_1_option1'),
+      getQuestionContent('question11_1_option2'),
+      getQuestionContent('question11_1_option3'),
+      getQuestionContent('question11_1_option4'),
+      getQuestionContent('question11_1_option5'),
+    ],
+  );
+  q11.addAllToTemplate(q11_1);
 
   // Question 12
   const q12_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -318,7 +322,11 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     getQuestionContent('question12_1_3'),
     0,
   );
-  // const q12_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('12_1_4', 'Financial/no place to discharge to');
+  const q12_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '12_1_4',
+    getQuestionContent('question12_1_4'),
+    0,
+  );
   const q12_1: SpecializedGroup<
     ID,
     ErrorType,
@@ -329,6 +337,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     q12_1_1,
     q12_1_2,
     q12_1_3,
+    q12_1_4,
   );
 
   const q12_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -2333,6 +2342,7 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
     q23,
     q24,
   );
+  maternityReport.addBreakpoints(0, 5, 10, 14, 16, 18, 20, 22);
 
   return maternityReport;
 };

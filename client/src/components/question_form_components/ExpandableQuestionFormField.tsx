@@ -46,7 +46,7 @@ const ExpandableQuestionFormField = ({
         type="number"
         value={question.getAnswer()}
       />
-      <div className="accordion mb-3" id={nameId}>
+      <div className="accordion mb-3 w-50" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
           const isOpen = openClosedStates[index];
           const itemId: string = `accordion-item-${nameId}_${index + 1}`;
