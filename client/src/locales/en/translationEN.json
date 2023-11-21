@@ -259,8 +259,9 @@
       "role_col": "Role",
       "department_col": "Department",
       "username_col": "Username",
-      "created_col": "Created",
-      "options_col": "Options"
+      "created_col": "Created on",
+      "options_col": "Options",
+      "noUsers": "No user exists in the application"
     },
     "user_form": {
       "username": "Username",
