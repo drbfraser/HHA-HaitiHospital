@@ -138,9 +138,12 @@ router.delete(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin),
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const userId = req.params.id;
+      if (userId == req.user._id) {
+        throw new BadRequest('User cannot delete their own account');
+      }
       const user = await UserCollection.findByIdAndRemove(userId);
       if (!user) {
         throw new NotFound(`No user with provided id found`);
