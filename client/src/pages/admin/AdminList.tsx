@@ -2,7 +2,6 @@ import { ENDPOINT_ADMIN_DELETE_BY_ID, ENDPOINT_ADMIN_GET } from 'constants/endpo
 import { Link, useHistory } from 'react-router-dom';
 import { language, timezone } from 'constants/timezones';
 import { useCallback, useEffect, useState } from 'react';
-
 import Api from 'actions/Api';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import { History } from 'history';
@@ -10,6 +9,8 @@ import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
+import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
+import { Button } from 'react-bootstrap';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -71,6 +72,72 @@ const AdminList = () => {
     getUsers();
   }, [getUsers]);
 
+  const gridData = users.map((item) => ({
+    item,
+    id: item.id,
+    createdAt: new Date(item.createdAt).toLocaleDateString(language, {
+      timeZone: timezone,
+    }),
+  }));
+
+  const columns: FilterableColumnDef[] = [
+    {
+      header: t('admin.main_page.name_col'),
+      id: 'item.name',
+      accessorKey: 'item.name',
+    },
+    {
+      header: t('admin.main_page.username_col'),
+      id: 'item.username',
+      accessorKey: 'item.username',
+    },
+    {
+      header: t('admin.main_page.role_col'),
+      id: 'item.role',
+      accessorKey: 'item.role',
+    },
+    {
+      header: t('admin.main_page.department_col'),
+      id: 'item.department.name',
+      accessorKey: 'item.department.name',
+    },
+    {
+      header: t('admin.main_page.created_col'),
+      id: 'createdAt',
+      accessorKey: 'createdAt',
+    },
+    {
+      id: 'Options',
+      header: t('reportsOptions'),
+      enableGlobalFilter: false,
+      enableColumnFilter: false,
+      cell: (row) => (
+        <>
+          <div>
+            <Button
+              onClick={(event) => onDeleteUser(event, row.getValue().id)}
+              variant="link"
+              title={t('button.delete')}
+              className="text-decoration-none link-secondary"
+            >
+              <i className="bi bi-trash"></i>
+            </Button>
+            <Link
+              title={t('button.edit')}
+              className="text-decoration-none link-secondary"
+              to={Paths.getAdminEditUser(row.getValue().id)}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <i className="bi bi-pencil"></i>
+            </Link>
+          </div>
+        </>
+      ),
+      accessorKey: 'item',
+      enableSorting: false,
+    },
+  ];
+
   return (
     <Layout title={t('headerAdmin')}>
       <DeleteModal
@@ -80,6 +147,7 @@ const AdminList = () => {
         onModalClose={onModalClose}
         onModalDelete={onModalDelete}
       ></DeleteModal>
+
       <div className="d-flex justify-content-start">
         <Link to={Paths.getAdminAddUser()}>
           <button data-testid="add-user-button" type="button" className="btn btn-outline-dark">
@@ -89,60 +157,17 @@ const AdminList = () => {
       </div>
 
       <div className="table-responsive">
-        <table className="table table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">{t('admin.main_page.name_col')}</th>
-              <th scope="col">{t('admin.main_page.username_col')}</th>
-              <th scope="col">{t('admin.main_page.role_col')}</th>
-              <th scope="col">{t('admin.main_page.department_col')}</th>
-              <th scope="col">{t('admin.main_page.created_col')}</th>
-              <th scope="col" className="text-center">
-                {t('admin.main_page.options_col')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((item, index) => (
-              <tr key={index}>
-                <th scope="row">{index + 1}</th>
-                <td>{item.name}</td>
-                <td>{item.username}</td>
-                <td>{t(`${item.role}`)}</td>
-                <td>{t(`departments.${item.department.name}`)}</td>
-                <td>
-                  {new Date(item.createdAt).toLocaleString(language, {
-                    timeZone: timezone,
-                  })}
-                </td>
-                <td>
-                  <div className="text-center">
-                    <button
-                      data-testid="edit-user-button"
-                      type="button"
-                      className="btn btn-link text-decoration-none"
-                      onClick={() => history.push(`${Paths.getAdminEditUser(item.id)}`)}
-                    >
-                      {t('button.edit')}
-                    </button>
-
-                    <button
-                      data-testid="delete-user-button"
-                      type="button"
-                      className="btn btn-link text-decoration-none"
-                      onClick={(event) => {
-                        onDeleteUser(event, item.id);
-                      }}
-                    >
-                      {t('button.delete')}
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {gridData.length > 0 ? (
+          <FilterableTable
+            columns={columns}
+            data={gridData}
+            enableFilters
+            enableGlobalFilter
+            enableSorting
+          />
+        ) : (
+          <p>{t('admin.main_page.noUsers')}</p>
+        )}
       </div>
     </Layout>
   );

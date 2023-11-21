@@ -261,7 +261,8 @@
       "department_col": "Département",
       "username_col": "Nom d'utilisateur",
       "created_col": "Créé à",
-      "options_col": "Choix"
+      "options_col": "Choix",
+      "noUsers": "Aucun utilisateur n'existe dans l'application"
     },
     "user_form": {
       "username": "Nom d'utilisateur",
