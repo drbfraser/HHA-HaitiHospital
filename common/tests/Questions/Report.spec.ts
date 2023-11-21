@@ -3,7 +3,7 @@ import {
   buildNicuPaedsReport,
   buildMaternityReport,
   oneQuestionReport,
-} from '../../src/Reports';
+} from '../../src/ReportTemplates';
 import { QuestionGroup } from '../../src/Questions';
 import { ObjectSerializer } from '../../src/Serializer';
 import { verifySerialized } from '../../tests/Utils';
