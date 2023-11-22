@@ -11,11 +11,13 @@ import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Button } from 'react-bootstrap';
+import { useAuthState } from 'contexts';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [users, setUsers] = useState([]);
+  const user = useAuthState();
 
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -115,6 +117,7 @@ const AdminList = () => {
         <>
           <div>
             <Button
+              disabled={user.userDetails.id === row.getValue().id}
               onClick={(event) => onDeleteUser(event, row.getValue().id)}
               variant="link"
               title={t('button.delete')}
