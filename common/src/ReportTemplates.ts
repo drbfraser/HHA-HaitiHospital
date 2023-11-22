@@ -50,7 +50,7 @@ const questionIdGeneratorBuilder =
   (questionGroupIndex: number): ID =>
     `${questionId}_${questionGroupIndex}`;
 
-export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
+export const oneQuestionReport = (): QuestionGroup<ID, ErrorType> => {
   const report: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>('ROOT', {
     en: 'OneQuestionReport',
     fr: 'test',
@@ -61,7 +61,7 @@ export const oneQuestionMockReport = (): QuestionGroup<ID, ErrorType> => {
   return report;
 };
 
-export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
+export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   const translations = {
     en: require('../src/locales/en/translationEN.json'),
     fr: require('../src/locales/fr/translationFR.json'),
@@ -74,7 +74,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
     };
   };
 
-  console.log('Here is the buildRehabMockReport');
+  console.log('Here is the buildRehabReport');
   const reportID: ID = 'rehab-report_1_1';
 
   const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
@@ -754,7 +754,7 @@ export const buildRehabMockReport = (): QuestionGroup<ID, ErrorType> => {
   return rehabReport;
 };
 
-export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
+export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
   const reportID: ID = 'nicu-paeds-report_1';
   const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
     en: 'MSPP Data',
@@ -1724,7 +1724,7 @@ export const buildNicuPaedsMockReport = (): QuestionGroup<ID, ErrorType> => {
   return nicuPaedsReport;
 };
 
-export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
+export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   const translations = {
     en: require('../src/locales/en/translationEN.json'),
     fr: require('../src/locales/fr/translationFR.json'),
@@ -2347,7 +2347,7 @@ export const buildMaternityMockReport = (): QuestionGroup<ID, ErrorType> => {
   return maternityReport;
 };
 
-export const buildCommunityHealthMockReport = (): QuestionGroup<ID, ErrorType> => {
+export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
   const communityhealthReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
     'ROOT',
     { en: 'Community Health Report', fr: 'Rapport sur la santé communautaire' },

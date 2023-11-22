@@ -1,5 +1,5 @@
 export * from './Form_Validators';
-export * from './MockReports';
+export * from './ReportTemplates';
 export * from './Questions';
 export * from './Serializer';
 export * from './json_report';

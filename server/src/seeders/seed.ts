@@ -7,10 +7,10 @@ import Departments, { DefaultDepartments } from 'utils/departments';
 import {
   ObjectSerializer,
   QuestionGroup,
-  buildMaternityMockReport,
-  buildNicuPaedsMockReport,
-  buildCommunityHealthMockReport,
-  buildRehabMockReport,
+  buildMaternityReport,
+  buildNicuPaedsReport,
+  buildCommunityHealthReport,
+  buildRehabReport,
 } from '@hha/common';
 import UserCollection, { Role, User } from 'models/user';
 
@@ -1085,12 +1085,12 @@ const seedTemplates = async () => {
     const serializer = ObjectSerializer.getObjectSerializer();
 
     const reportDepartmentMap: [Report, string][] = [
-      [buildRehabMockReport(), DefaultDepartments.Rehab],
-      [buildMaternityMockReport(), DefaultDepartments.Maternity],
-      [buildNicuPaedsMockReport(), DefaultDepartments.NICU],
-      [buildCommunityHealthMockReport(), DefaultDepartments.Community],
+      [buildRehabReport(), DefaultDepartments.Rehab],
+      [buildMaternityReport(), DefaultDepartments.Maternity],
+      [buildNicuPaedsReport(), DefaultDepartments.NICU],
+      [buildCommunityHealthReport(), DefaultDepartments.Community],
     ];
-    console.log(`Seeding templates buildRehabMockReport ...`);
+    console.log(`Seeding templates buildRehabReport ...`);
 
     for (const tuple of reportDepartmentMap) {
       const report: Report = tuple[0];
@@ -1116,7 +1116,7 @@ const seedReports = async () => {
     await ReportCollection.deleteMany({});
     const user = await UserCollection.findOne({ username: 'user2' });
     const serializer = ObjectSerializer.getObjectSerializer();
-    const serialized = serializer.serialize(buildNicuPaedsMockReport());
+    const serialized = serializer.serialize(buildNicuPaedsReport());
     let report = new ReportCollection({
       departmentId: user?.departmentId,
       submittedUserId: user?._id,

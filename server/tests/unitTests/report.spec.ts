@@ -1,6 +1,6 @@
 import { ReportCollection, IReport } from 'models/report';
 import { QuestionGroup } from '@hha/common';
-import { ObjectSerializer, buildRehabMockReport } from '@hha/common';
+import { ObjectSerializer, buildRehabReport } from '@hha/common';
 import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
@@ -66,7 +66,7 @@ describe('report tests', function () {
   xit('should save report correctly', function (done) {
     console.warn('WARNING: Saving report test is pending due to an issue');
     const objectSerializer = ObjectSerializer.getObjectSerializer();
-    const serializedReport = objectSerializer.serialize(buildRehabMockReport());
+    const serializedReport = objectSerializer.serialize(buildRehabReport());
     agent
       .post(REPORT_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
