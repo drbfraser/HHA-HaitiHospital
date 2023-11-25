@@ -13,6 +13,10 @@ import { QuestionNode } from './QuestionNode';
 
 type table<T> = Array<Array<T>>;
 type Translation = Record<string, string>;
+// A tuple representing a row and column index
+type maskIndex = [number, number];
+// An array of such tuples'
+type CellIndices = Array<maskIndex>;
 
 // The cell must be gray if no question is defined.
 class TableCell<ID, T, ErrorType, QuestionType extends QuestionLeaf<ID, T, ErrorType>> {
@@ -59,6 +63,7 @@ export abstract class QuestionTable<
   protected readonly questionTable: table<TableCell<ID, T, ErrorType, QuestionType>>;
   protected readonly tableTitle: Translation = { en: '', fr: '' };
   protected readonly greyMask: Array<Array<boolean>> = [[]];
+  protected readonly calculationMask?: Array<Array<CellIndices>> = [[]];
 
   /*  The questionCreator is a callback that takes in the row and column index
         for where the question will be placed and may return a question. 
@@ -72,20 +77,20 @@ export abstract class QuestionTable<
     tableTitle: Translation,
     greyMask: Array<Array<boolean>>,
     questionCreator: (row: number, col: number) => QuestionType | undefined,
+    calculationMask?: Array<Array<CellIndices>>,
   ) {
     super(id, prompt);
     this.rowHeaders = [...rowHeaders];
     this.columnHeaders = [...columnHeaders];
     this.tableTitle = tableTitle;
     this.greyMask = greyMask;
-
+    this.calculationMask = calculationMask ?? [];
     this.questionTable = new Array(rowHeaders.length).fill(undefined).map((_, row) =>
       new Array(columnHeaders.length).fill(undefined).map((_, col) => {
         const question = questionCreator(row, col);
         return new TableCell(question);
       }),
     );
-    this.columnHeaders = columnHeaders;
   }
 
   // Returns undefined if given numbers are out of bound OR if no question has
@@ -122,6 +127,10 @@ export abstract class QuestionTable<
   }
   public getGreyMask(): Array<Array<boolean>> {
     return this.greyMask;
+  }
+
+  public getCalculationMask(): Array<Array<CellIndices>> | undefined {
+    return this.calculationMask;
   }
 
   public searchById(id: ID): QuestionNode<ID, ErrorType> | undefined {
