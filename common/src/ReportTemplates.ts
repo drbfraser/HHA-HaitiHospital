@@ -2873,8 +2873,8 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
   const { en: q7_3_columns_en, fr: q7_3_columns_fr } = separateLanguages(q7_3_columns);
 
   const q7_3_table_title: Translation = {
-    en: 'Vaccine Doses',
-    fr: 'Doses de vaccin',
+    en: 'Pregnant Women',
+    fr: 'Femmes enceintes',
   };
 
   const q7_3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
