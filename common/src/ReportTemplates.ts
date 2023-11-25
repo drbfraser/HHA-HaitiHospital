@@ -14,7 +14,8 @@ import { QuestionAnswerNode } from './Questions/QuestionAnswer';
 type ID = string;
 type ErrorType = string;
 type Translation = Record<string, string>;
-type maskIndex = [number, number]; // Define a tuple type for row and column indices
+type maskIndex = [number, number];
+type cellIndices = Array<maskIndex>;
 
 function createTableGreyMask(rows: number, cols: number, greyIndices?: maskIndex[]): boolean[][] {
   // Create a mask with all values set to false
@@ -2752,7 +2753,7 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q7_1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7_1',
-    { en: 'Question 8', fr: 'Question 8 (French)' },
+    { en: 'Question 7_1', fr: 'Question 7_1 (French)' },
     q7_1_rows,
     q7_1_columns,
     q7_1_table_title,
@@ -2817,8 +2818,82 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
+  const q7_3_rows: Translation[] = [
+    { en: 'dT1', fr: 'dT1' },
+    { en: 'dT2+', fr: 'dT2+' },
+  ];
+
+  const q7_3_columns: Translation[] = [
+    { en: 'Inst.', fr: 'Inst.' },
+    { en: 'Comm.', fr: 'Comm.' },
+    { en: 'Total', fr: 'Total' },
+  ];
+
+  // Example of setting up calculationMask for a specific table
+  // Note that in the future, when we have the feature to let user define questions on the APP's frontend
+  // This calculation masks can be set with a proper interface
+  // For now devs need to hard code to define calculation cells
+  const q7_3_calculationMask: Array<Array<cellIndices>> = [
+    // For each row
+    // Row 0
+    [
+      // For each cell in the row
+      [], // No calculation for this cell (row 0 column 0)
+      [], // No calculation for this cell (row 0 column 1)
+
+      // Calculation Cell (row 0 column 2)
+      [
+        // Sum of the values from cells [0,0] and [0,1]
+        [0, 0],
+        [0, 1],
+      ],
+      // ...other columns on row 0
+    ],
+    // For each row
+    [
+      // For each cell in the row
+      [], // No calculation for these cell
+      [],
+
+      [
+        [1, 0],
+        [1, 1],
+      ], // Sum of the values from cells [1,0] and [1,1]
+      // ...other columns on row 1
+    ],
+    // ...other rows
+  ];
+
+  const q7_3_grey_mask: Array<Array<boolean>> = createTableGreyMask(
+    q7_2_rows.length,
+    q7_2_columns.length,
+  );
+
+  const { en: q7_3_rows_en, fr: q7_3_rows_fr } = separateLanguages(q7_3_rows);
+  const { en: q7_3_columns_en, fr: q7_3_columns_fr } = separateLanguages(q7_3_columns);
+
+  const q7_3_table_title: Translation = {
+    en: 'Pregnant Women',
+    fr: 'Femmes enceintes',
+  };
+
+  const q7_3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
+    '7_3',
+    { en: 'Question 7_3', fr: 'Question 7_3 (French)' },
+    q7_3_rows,
+    q7_3_columns,
+    q7_3_table_title,
+    q7_3_grey_mask,
+    (row: number, col: number) =>
+      new NumericQuestion<ID, ErrorType>(`q7_3_${row}_${col}`, {
+        en: `Question for ${q7_3_rows_en[row]} and ${q7_3_columns_en[col]}`,
+        fr: `Question pour ${q7_3_rows_fr[row]} et ${q7_3_columns_fr[col]}`,
+      }),
+    q7_3_calculationMask,
+  );
+
   // Add Age of Mothers table to the report
-  communityhealthReport.addAll(q1, q2, q3, q4, q4_1, q5, q6, q7, q7_1, q7_2);
+  communityhealthReport.addAll(q1, q2, q3, q4, q4_1, q5, q6, q7, q7_1, q7_2, q7_3);
   communityhealthReport.addBreakpoints(0, 1, 2, 3, 5, 7);
 
   return communityhealthReport;

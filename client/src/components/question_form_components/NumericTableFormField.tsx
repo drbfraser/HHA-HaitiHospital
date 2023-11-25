@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react';
 import { NumericTable } from '@hha/common';
 import { FormField } from './index';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,10 @@ const tableWrapperStyle = {
 };
 
 type Translation = Record<string, string>;
+// A tuple representing a row and column index
+type CellIndex = [number, number];
+// An array of such tuples'
+type CellIndices = Array<CellIndex>;
 
 interface NumericTableFormFieldProps {
   applyReportChanges: () => void;
@@ -23,6 +27,18 @@ interface NumericTableFormFieldProps {
   suffixName: string;
   readOnly?: boolean;
 }
+
+const calculateSum = (cellIndices: CellIndices, question: NumericTable<ID, ErrorType>): number => {
+  let sum = 0;
+  cellIndices.forEach(([row, col]) => {
+    const subQuestion = question.getQuestionAt(row, col);
+    const answer = subQuestion?.getAnswer();
+    if (answer !== undefined && !isNaN(answer)) {
+      sum += answer;
+    }
+  });
+  return sum;
+};
 
 const NumericTableFormField = ({
   applyReportChanges,
@@ -74,6 +90,19 @@ const NumericTableFormField = ({
     };
   }, [question, setErrorSet, suffixName, updateErrorSetFromSelf]);
 
+  const memoizedSumCalculation = useMemo(() => {
+    const sums = {};
+    question.getRowHeaders().forEach((_, rowIndex) => {
+      question.getColumnHeaders().forEach((_, colIndex) => {
+        const cellIndices = question.getCalculationMask()?.[rowIndex]?.[colIndex];
+        if (cellIndices && cellIndices.length > 0) {
+          sums[`${rowIndex}_${colIndex}`] = calculateSum(cellIndices, question);
+        }
+      });
+    });
+    return sums;
+  }, [question, question.getCalculationMask()]); // Including calculationMask in dependencies
+
   return (
     <div style={tableWrapperStyle}>
       <h4>{t(question.getTableTitle()[i18n.language])}</h4>
@@ -106,6 +135,10 @@ const NumericTableFormField = ({
                   }
                 };
                 const greyMask = question.getGreyMask();
+                const calculationMask = question.getCalculationMask();
+                const cellIndices = calculationMask && calculationMask[rowIndex]?.[colIndex];
+                const isCalculatedCell = cellIndices && cellIndices.length > 0;
+                const sumValue = memoizedSumCalculation[`${rowIndex}_${colIndex}`];
                 const disabled = greyMask[rowIndex][colIndex];
 
                 return (
@@ -120,8 +153,8 @@ const NumericTableFormField = ({
                         nameId={`${sub_question?.getId() ?? ''}${suffixName}`}
                         prompt={colHeader}
                         type="number"
-                        value={sub_question?.getAnswer() ?? ''}
-                        readOnly={readOnly}
+                        value={isCalculatedCell ? sumValue : sub_question?.getAnswer() ?? ''}
+                        readOnly={readOnly || isCalculatedCell}
                       />
                     )}
                   </td>
