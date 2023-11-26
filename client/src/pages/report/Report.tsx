@@ -149,7 +149,6 @@ export const Report = () => {
         }}
         onModalProceed={() => {
           setIsShowingNavigationModal(false);
-          setIsSubmitting(true);
           navigate(history, navigationInfo, clearCurrentDepartment);
         }}
         show={isShowingNavigationModal}
