@@ -54,7 +54,7 @@ const FormField = (props: FormFieldProps) => {
         style={props.style}
       />
       {props.inputState !== true && !props.readOnly && (
-        <div className="invalid-feedback">{props.inputState.message}</div>
+        <div className="invalid-feedback">{props.inputState.message[language]}</div>
       )}
     </div>
   );
