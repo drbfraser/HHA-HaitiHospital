@@ -61,7 +61,7 @@ const SingleSelectionQuestionFormField = ({
   return (
     <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       <div>
-        {inputState !== true && <div className="text-danger">{inputState.message}</div>}
+        {inputState !== true && <div className="text-danger">{inputState.message[language]}</div>}
         {question.getChoices().map((choice: ImmutableChoice, index) => (
           <div className="form-check" key={`${nameId}_${index}`}>
             <input
