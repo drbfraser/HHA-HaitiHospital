@@ -126,7 +126,6 @@ const ReportForm = ({
   }, [currentPage, errorSet.size]);
 
   useEffect(() => {
-    console.log(reportStatus);
     const completedPagesCount = reportStatus.filter((page) => page.completed).length;
     setNumberOfCompletedPages(completedPagesCount);
   }, [reportStatus]);
@@ -134,8 +133,6 @@ const ReportForm = ({
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
-      <p>{errorSet.size}</p>
-      <p>{numberOfCompletedPages}</p>
       <form onSubmit={formHandler} noValidate>
         <Group isRootNode>
           <QuestionFormFields
