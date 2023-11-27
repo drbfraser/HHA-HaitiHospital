@@ -147,6 +147,7 @@ const ReportForm = ({
             suffixName=""
           />
         </Group>
+        {/* Need to handle updating forms -> user shouldn't have to click on every report page to update validity count */}
         <SubmitButton
           buttonText={t(`button.${btnText.toLowerCase()}`)}
           disabled={
