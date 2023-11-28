@@ -8,7 +8,7 @@ import {
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { QuestionGroup, QuestionNode } from '@hha/common';
 
 import Pagination from 'components/pagination/Pagination';
@@ -68,7 +68,12 @@ export const QuestionFormFields = ({
     </>
   );
 };
-console.log('ReportForm2.tsx');
+
+interface ReportStatus {
+  page: number;
+  completed: boolean;
+}
+
 interface ReportFormProps {
   applyReportChanges?: () => void;
   formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -88,12 +93,42 @@ const ReportForm = ({
 }: ReportFormProps): JSX.Element => {
   const { t, i18n } = useTranslation();
   const language = i18n.language;
+  const numberOfPages = reportData.getPagination().length;
   const [currentPage, setCurrentPage] = useState(1);
+  const [numberOfCompletedPages, setNumberOfCompletedPages] = useState(0);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
+
   const pageSize = reportData
     .getPagination()
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
+
+  const initialReportStatus: ReportStatus[] = Array.from({ length: numberOfPages }, (_, index) => ({
+    page: index + 1,
+    completed: false,
+  }));
+
+  const [reportStatus, setReportStatus] = useState<ReportStatus[]>(initialReportStatus);
+
+  useEffect(() => {
+    const updatedReportStatus = reportStatus.map((page, index) => {
+      if (index === currentPage - 1) {
+        return {
+          ...page,
+          completed: errorSet.size === 0,
+        };
+      }
+      return page;
+    });
+
+    setReportStatus(updatedReportStatus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, errorSet.size]);
+
+  useEffect(() => {
+    const completedPagesCount = reportStatus.filter((page) => page.completed).length;
+    setNumberOfCompletedPages(completedPagesCount);
+  }, [reportStatus]);
 
   return (
     <div className="mt-3 p-3">
@@ -109,9 +144,14 @@ const ReportForm = ({
             suffixName=""
           />
         </Group>
+        {/* Need to handle updating forms -> user shouldn't have to click on every report page to update validity count */}
         <SubmitButton
           buttonText={t(`button.${btnText.toLowerCase()}`)}
-          disabled={errorSet.size !== 0 || isSubmitting}
+          disabled={
+            (btnText === 'Submit'
+              ? numberOfCompletedPages !== numberOfPages
+              : errorSet.size !== 0) || isSubmitting
+          }
           readOnly={readOnly}
         />
       </form>

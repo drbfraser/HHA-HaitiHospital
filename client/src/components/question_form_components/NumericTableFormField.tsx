@@ -12,7 +12,6 @@ const tableWrapperStyle = {
   marginBottom: '24px',
 };
 
-type Translation = Record<string, string>;
 // A tuple representing a row and column index
 type CellIndex = [number, number];
 // An array of such tuples'
@@ -48,18 +47,26 @@ const NumericTableFormField = ({
   readOnly,
 }: NumericTableFormFieldProps): JSX.Element => {
   const { t, i18n } = useTranslation(); // Use the hook to get the translation function and current language
+  const greyMask = question.getGreyMask();
+  const calculationMask = question.getCalculationMask();
+
   const updateErrorSetFromSelf = useCallback(
-    (questionId: string) =>
+    (questionId: string, rowIndex: number, colIndex: number) =>
       setErrorSet((prevErrorSet: Set<ID>) => {
         const nextErrorSet = new Set(prevErrorSet);
-        if (question.getQuestionAt(0, 0)?.getValidationResults() !== true) {
+        const question_cell = question.getQuestionAt(rowIndex, colIndex);
+        const cellIndices = calculationMask && calculationMask[rowIndex]?.[colIndex];
+        const isCalculatedCell = cellIndices && cellIndices.length > 0;
+        const isUneditableCell = greyMask[rowIndex][colIndex] || isCalculatedCell;
+
+        if (question_cell?.getValidationResults() !== true && !isUneditableCell) {
           nextErrorSet.add(`${questionId}${suffixName}`);
         } else {
           nextErrorSet.delete(`${questionId}${suffixName}`);
         }
         return nextErrorSet;
       }),
-    [question, setErrorSet, suffixName],
+    [calculationMask, greyMask, question, setErrorSet, suffixName],
   );
 
   useEffect(() => {
@@ -69,7 +76,7 @@ const NumericTableFormField = ({
       for (let col = 0; col < numCols; col++) {
         const sub_question = question.getQuestionAt(row, col);
         if (sub_question) {
-          updateErrorSetFromSelf(sub_question.getId());
+          updateErrorSetFromSelf(sub_question.getId(), row, col);
         }
       }
     }
@@ -94,14 +101,14 @@ const NumericTableFormField = ({
     const sums = {};
     question.getRowHeaders().forEach((_, rowIndex) => {
       question.getColumnHeaders().forEach((_, colIndex) => {
-        const cellIndices = question.getCalculationMask()?.[rowIndex]?.[colIndex];
+        const cellIndices = calculationMask?.[rowIndex]?.[colIndex];
         if (cellIndices && cellIndices.length > 0) {
           sums[`${rowIndex}_${colIndex}`] = calculateSum(cellIndices, question);
         }
       });
     });
     return sums;
-  }, [question, question.getCalculationMask()]); // Including calculationMask in dependencies
+  }, [question, calculationMask]);
 
   return (
     <div style={tableWrapperStyle}>
@@ -130,12 +137,11 @@ const NumericTableFormField = ({
                   const newValue = parseFloat(event.target.value); // Assuming the input value is a number
                   if (sub_question) {
                     sub_question.setAnswer(newValue);
-                    updateErrorSetFromSelf(sub_question.getId());
+                    updateErrorSetFromSelf(sub_question.getId(), rowIndex, colIndex);
                     applyReportChanges();
                   }
                 };
-                const greyMask = question.getGreyMask();
-                const calculationMask = question.getCalculationMask();
+
                 const cellIndices = calculationMask && calculationMask[rowIndex]?.[colIndex];
                 const isCalculatedCell = cellIndices && cellIndices.length > 0;
                 const sumValue = memoizedSumCalculation[`${rowIndex}_${colIndex}`];
