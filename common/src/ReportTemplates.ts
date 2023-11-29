@@ -2677,7 +2677,46 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
   ];
 
   // Test functionality of grey table cell
-  const q7_grey_index: maskIndex[] = [[2, 3]];
+
+  const q7_grey_index: maskIndex[] = [
+    [12, 0],
+    [16, 0],
+    [12, 1],
+    [16, 1],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+    [3, 2],
+    [4, 2],
+    [5, 2],
+    [6, 2],
+    [7, 2],
+    [8, 2],
+    [9, 2],
+    [10, 2],
+    [11, 2],
+    [13, 2],
+    [14, 2],
+    [15, 2],
+    [17, 2],
+    [0, 3],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [5, 3],
+    [6, 3],
+    [7, 3],
+    [8, 3],
+    [9, 3],
+    [10, 3],
+    [11, 3],
+    [13, 3],
+    [14, 3],
+    [15, 3],
+
+    [17, 3],
+  ];
   const q7_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_rows.length,
     q7_columns.length,
@@ -2737,10 +2776,49 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: 'Administered Inst.', fr: 'Administrées Inst.' },
     { en: 'Administered Comm.', fr: 'Administrées Comm.' },
   ];
+  const q7_1_grey_index: maskIndex[] = [
+    [12, 0],
+    [16, 0],
+    [12, 1],
+    [16, 1],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+    [3, 2],
+    [4, 2],
+    [5, 2],
+    [6, 2],
+    [7, 2],
+    [8, 2],
+    [9, 2],
+    [10, 2],
+    [11, 2],
+    [13, 2],
+    [14, 2],
+    [15, 2],
+    [17, 2],
+    [0, 3],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [5, 3],
+    [6, 3],
+    [7, 3],
+    [8, 3],
+    [9, 3],
+    [10, 3],
+    [11, 3],
+    [13, 3],
+    [14, 3],
+    [15, 3],
+    [17, 3],
+  ];
 
   const q7_1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_1_rows.length,
     q7_1_columns.length,
+    q7_1_grey_index,
   );
 
   const { en: q7_1_rows_en, fr: q7_1_rows_fr } = separateLanguages(q7_1_rows);
@@ -2790,7 +2868,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: 'Used', fr: 'Utilisées' },
     { en: 'Administered', fr: 'Administrées' },
   ];
-
   const q7_2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_2_rows.length,
     q7_2_columns.length,
