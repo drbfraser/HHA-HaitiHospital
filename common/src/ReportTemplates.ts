@@ -2865,7 +2865,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       [],
       [],
       [],
-
       [],
       [
         [11, 0],
