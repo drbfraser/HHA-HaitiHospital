@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { NumericTable } from '@hha/common';
 import { FormField } from './index';
 import { useTranslation } from 'react-i18next';
@@ -49,6 +49,7 @@ const NumericTableFormField = ({
   const { t, i18n } = useTranslation(); // Use the hook to get the translation function and current language
   const greyMask = question.getGreyMask();
   const calculationMask = question.getCalculationMask();
+  const [calculatedCellsUpdated, setCalculatedCellsUpdated] = useState(false);
 
   const updateErrorSetFromSelf = useCallback(
     (questionId: string, rowIndex: number, colIndex: number) =>
@@ -70,6 +71,27 @@ const NumericTableFormField = ({
   );
 
   useEffect(() => {
+    const updateCalculatedCells = () => {
+      let calculatedUpdated = false;
+      question.getRowHeaders().forEach((_, rowIndex) => {
+        question.getColumnHeaders().forEach((_, colIndex) => {
+          const cellIndices = calculationMask?.[rowIndex]?.[colIndex];
+          if (cellIndices && cellIndices.length > 0) {
+            const sumValue = calculateSum(cellIndices, question);
+            const sub_question = question.getQuestionAt(rowIndex, colIndex);
+            if (sub_question && sub_question.getAnswer() !== sumValue) {
+              sub_question.setAnswer(sumValue);
+              calculatedUpdated = true;
+            }
+          }
+        });
+      });
+      return calculatedUpdated;
+    };
+
+    // Update calculated cells and error sets
+    const calculatedUpdated = updateCalculatedCells();
+    setCalculatedCellsUpdated(calculatedUpdated);
     const numRows = question.getRowHeaders().length;
     const numCols = question.getColumnHeaders().length;
     for (let row = 0; row < numRows; row++) {
@@ -95,7 +117,7 @@ const NumericTableFormField = ({
         }
       }
     };
-  }, [question, setErrorSet, suffixName, updateErrorSetFromSelf]);
+  }, [question, setErrorSet, suffixName, updateErrorSetFromSelf, calculationMask, greyMask]);
 
   const memoizedSumCalculation = useMemo(() => {
     const sums = {};

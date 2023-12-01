@@ -2644,23 +2644,32 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
         fr: `Question pour ${q6_rows_fr[row]} et ${q6_columns_fr[col]}`,
       }),
   );
+
   const q7_rows: Translation[] = [
     { en: 'BCG', fr: 'BCG' },
     { en: 'OPV (Polio)', fr: 'VPO (Polio)' },
     { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
     { en: 'OPV 2 (Polio)', fr: 'VPO 2 (Polio)' },
     { en: 'OPV Booster', fr: 'Rappel VPO (Polio)' },
+    {
+      en: 'OPV + OPV 1 + OPV 2 + OPV Booster (Polio)',
+      fr: 'VPO + VPO 1 + VPO 2 + VPO Booster (Polio)',
+    },
     { en: 'IPV', fr: 'VPI' },
     { en: 'Penta 1', fr: 'Penta 1' },
     { en: 'Penta 2', fr: 'Penta 2' },
     { en: 'Penta 3', fr: 'Penta 3' },
+    { en: 'Penta 1 + Penta 2 + Penta 3', fr: 'Penta 1 + Penta 2 + Penta 3' },
     { en: 'Rota 1', fr: 'Rota 1' },
     { en: 'Rota 2', fr: 'Rota 2' },
+    { en: 'Rota 1 + Rota 2', fr: 'Rota 1 + Rota 2' },
     { en: 'RR 1', fr: 'RR 1' },
     { en: 'RR 2', fr: 'RR 2' },
+    { en: 'RR 1 + RR 2', fr: 'RR 1 + RR 2' },
     { en: 'Pneumo 1', fr: 'Pneumo 1' },
     { en: 'Pneumo 2', fr: 'Pneumo 2' },
     { en: 'Pneumo 3', fr: 'Pneumo 3' },
+    { en: 'Pneumo 1 + Pneumo 2 + Pneumo 3', fr: 'Pneumo 1 + Pneumo 2 + Pneumo 3' },
     { en: 'DTP Booster', fr: 'DTP Rappel' },
     { en: 'ECV', fr: 'ECV' },
   ];
@@ -2670,19 +2679,269 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: '0-11 Months Comm.', fr: '0-11 Mois Comm.' },
     { en: '12-32 Months Inst.', fr: '12-32 Mois Inst.' },
     { en: '12-32 Months Comm.', fr: '12-32 Mois Comm.' },
-    { en: 'Used Inst.', fr: 'Utilisées Inst.' },
-    { en: 'Used Comm.', fr: 'Utilisées Comm.' },
-    { en: 'Administered Inst.', fr: 'Administrées Inst.' },
-    { en: 'Administered Comm.', fr: 'Administrées Comm.' },
+    { en: 'Used', fr: 'Utilisées' },
+    { en: 'Administered', fr: 'Administrées' },
   ];
 
   // Test functionality of grey table cell
-  const q7_grey_index: maskIndex[] = [[2, 3]];
+
+  const q7_grey_index: maskIndex[] = [
+    [5, 0],
+    [5, 1],
+    [13, 0],
+    [13, 1],
+    [15, 0],
+    [15, 1],
+    [16, 0],
+    [16, 1],
+    [16, 2],
+    [16, 3],
+    [20, 0],
+    [20, 1],
+    [21, 0],
+    [21, 1],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+    [3, 2],
+    [4, 2],
+    [5, 2],
+    [6, 2],
+    [7, 2],
+    [8, 2],
+    [9, 2],
+    [10, 0],
+    [10, 1],
+    [10, 2],
+    [11, 2],
+    [12, 2],
+    [13, 2],
+    [14, 2],
+    [17, 2],
+    [18, 2],
+    [19, 2],
+    [20, 2],
+    [22, 2],
+    [0, 3],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [5, 3],
+    [6, 3],
+    [7, 3],
+    [8, 3],
+    [9, 3],
+    [10, 3],
+    [11, 3],
+    [12, 3],
+    [13, 3],
+    [14, 3],
+    [17, 3],
+    [18, 3],
+    [19, 3],
+    [20, 3],
+    [22, 3],
+    [1, 4],
+    [1, 5],
+    [2, 4],
+    [2, 5],
+    [3, 4],
+    [3, 5],
+    [4, 4],
+    [4, 5],
+    [7, 4],
+    [7, 5],
+    [8, 4],
+    [8, 5],
+    [9, 4],
+    [9, 5],
+    [11, 4],
+    [11, 5],
+    [12, 4],
+    [12, 5],
+    [14, 4],
+    [14, 5],
+    [15, 4],
+    [15, 5],
+    [17, 4],
+    [17, 5],
+    [18, 4],
+    [18, 5],
+    [19, 4],
+    [19, 5],
+  ];
   const q7_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_rows.length,
     q7_columns.length,
     q7_grey_index,
   );
+
+  const q7_calculationMask: Array<Array<cellIndices>> = [
+    [
+      // For each cell in the row
+      [], // No calculation for this cell (row 0 column 0)
+      [], // No calculation for this cell (row 0 column 1)
+      [], // ... etc
+      [],
+      [],
+
+      // Calculation Cell (row 0 column 2)
+      // BCG Administered
+      [
+        [0, 0],
+        [0, 1],
+      ],
+    ],
+    // OPVs
+    [],
+    [],
+    [],
+    [],
+
+    // OPV total
+    [
+      [],
+      [],
+      [],
+      [],
+
+      [],
+      // Calculation Cell (row 1 column 2)
+      [
+        [1, 0],
+        [1, 1],
+        [2, 0],
+        [2, 1],
+        [3, 0],
+        [3, 1],
+        [4, 0],
+        [4, 1],
+      ],
+    ],
+
+    // IPV
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [6, 0],
+        [6, 1],
+      ],
+    ],
+
+    // Pentas
+    [],
+    [],
+    [],
+
+    // Penta total
+    [
+      [],
+      [],
+      [],
+      [],
+
+      [],
+      [
+        [7, 0],
+        [7, 1],
+        [8, 0],
+        [8, 1],
+        [9, 0],
+        [9, 1],
+      ],
+    ],
+    // Rotas
+    [],
+    [],
+
+    // Rota total
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [11, 0],
+        [11, 1],
+        [12, 0],
+        [12, 1],
+      ],
+    ],
+
+    // RRs
+    [],
+    [],
+
+    // RR total
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+
+      [
+        [14, 0],
+        [14, 1],
+        [15, 2],
+        [15, 3],
+      ],
+    ],
+
+    // Pneumos
+    [],
+    [],
+    [],
+
+    // Pneumos total
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [17, 0],
+        [17, 1],
+        [18, 0],
+        [18, 1],
+        [19, 0],
+        [19, 1],
+      ],
+    ],
+
+    // DTP booster
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [21, 2],
+        [21, 3],
+      ],
+    ],
+
+    // ECV
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [22, 0],
+        [22, 1],
+      ],
+    ],
+  ];
 
   const { en: q7_rows_en, fr: q7_rows_fr } = separateLanguages(q7_rows);
   const { en: q7_columns_en, fr: q7_columns_fr } = separateLanguages(q7_columns);
@@ -2704,6 +2963,7 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
         en: `Question for ${q7_rows_en[row]} and ${q7_columns_en[col]}`,
         fr: `Question pour ${q7_rows_fr[row]} et ${q7_columns_fr[col]}`,
       }),
+    q7_calculationMask,
   );
 
   const q7_1_rows: Translation[] = [
@@ -2712,17 +2972,25 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
     { en: 'OPV 2 (Polio)', fr: 'VPO 2 (Polio)' },
     { en: 'OPV Booster', fr: 'Rappel VPO (Polio)' },
+    {
+      en: 'OPV + OPV 1 + OPV 2 + OPV Booster (Polio)',
+      fr: 'VPO + VPO 1 + VPO 2 + VPO Booster (Polio)',
+    },
     { en: 'IPV', fr: 'VPI' },
     { en: 'Penta 1', fr: 'Penta 1' },
     { en: 'Penta 2', fr: 'Penta 2' },
     { en: 'Penta 3', fr: 'Penta 3' },
+    { en: 'Penta 1 + Penta 2 + Penta 3', fr: 'Penta 1 + Penta 2 + Penta 3' },
     { en: 'Rota 1', fr: 'Rota 1' },
     { en: 'Rota 2', fr: 'Rota 2' },
+    { en: 'Rota 1 + Rota 2', fr: 'Rota 1 + Rota 2' },
     { en: 'RR 1', fr: 'RR 1' },
     { en: 'RR 2', fr: 'RR 2' },
+    { en: 'RR 1 + RR 2', fr: 'RR 1 + RR 2' },
     { en: 'Pneumo 1', fr: 'Pneumo 1' },
     { en: 'Pneumo 2', fr: 'Pneumo 2' },
     { en: 'Pneumo 3', fr: 'Pneumo 3' },
+    { en: 'Pneumo 1 + Pneumo 2 + Pneumo 3', fr: 'Pneumo 1 + Pneumo 2 + Pneumo 3' },
     { en: 'DTP Booster', fr: 'DTP Rappel' },
     { en: 'ECV', fr: 'ECV' },
   ];
@@ -2732,16 +3000,268 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: '0-11 Months Comm.', fr: '0-11 Mois Comm.' },
     { en: '12-32 Months Inst.', fr: '12-32 Mois Inst.' },
     { en: '12-32 Months Comm.', fr: '12-32 Mois Comm.' },
-    { en: 'Used Inst.', fr: 'Utilisées Inst.' },
-    { en: 'Used Comm.', fr: 'Utilisées Comm.' },
-    { en: 'Administered Inst.', fr: 'Administrées Inst.' },
-    { en: 'Administered Comm.', fr: 'Administrées Comm.' },
+    { en: 'Used', fr: 'Utilisées' },
+    { en: 'Administered', fr: 'Administrées' },
+  ];
+  const q7_1_grey_index: maskIndex[] = [
+    [5, 0],
+    [5, 1],
+    [13, 0],
+    [13, 1],
+    [15, 0],
+    [15, 1],
+    [16, 0],
+    [16, 1],
+    [16, 2],
+    [16, 3],
+    [20, 0],
+    [20, 1],
+    [21, 0],
+    [21, 1],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+    [3, 2],
+    [4, 2],
+    [5, 2],
+    [6, 2],
+    [7, 2],
+    [8, 2],
+    [9, 2],
+    [10, 0],
+    [10, 1],
+    [10, 2],
+    [11, 2],
+    [12, 2],
+    [13, 2],
+    [14, 2],
+    [17, 2],
+    [18, 2],
+    [19, 2],
+    [20, 2],
+    [22, 2],
+    [0, 3],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [5, 3],
+    [6, 3],
+    [7, 3],
+    [8, 3],
+    [9, 3],
+    [10, 3],
+    [11, 3],
+    [12, 3],
+    [13, 3],
+    [14, 3],
+    [17, 3],
+    [18, 3],
+    [19, 3],
+    [20, 3],
+    [22, 3],
+    [1, 4],
+    [1, 5],
+    [2, 4],
+    [2, 5],
+    [3, 4],
+    [3, 5],
+    [4, 4],
+    [4, 5],
+    [7, 4],
+    [7, 5],
+    [8, 4],
+    [8, 5],
+    [9, 4],
+    [9, 5],
+    [11, 4],
+    [11, 5],
+    [12, 4],
+    [12, 5],
+    [14, 4],
+    [14, 5],
+    [15, 4],
+    [15, 5],
+    [17, 4],
+    [17, 5],
+    [18, 4],
+    [18, 5],
+    [19, 4],
+    [19, 5],
   ];
 
   const q7_1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_1_rows.length,
     q7_1_columns.length,
+    q7_1_grey_index,
   );
+
+  const q7_1_calculationMask: Array<Array<cellIndices>> = [
+    [
+      // For each cell in the row
+      [], // No calculation for this cell (row 0 column 0)
+      [], // No calculation for this cell (row 0 column 1)
+      [], // ... etc
+      [],
+      [],
+
+      // Calculation Cell (row 0 column 2)
+      // BCG Administered
+      [
+        [0, 0],
+        [0, 1],
+      ],
+    ],
+    // OPVs
+    [],
+    [],
+    [],
+    [],
+
+    // OPV total
+    [
+      [],
+      [],
+      [],
+      [],
+
+      [],
+      // Calculation Cell (row 1 column 2)
+      [
+        [1, 0],
+        [1, 1],
+        [2, 0],
+        [2, 1],
+        [3, 0],
+        [3, 1],
+        [4, 0],
+        [4, 1],
+      ],
+    ],
+
+    // IPV
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [6, 0],
+        [6, 1],
+      ],
+    ],
+
+    // Pentas
+    [],
+    [],
+    [],
+
+    // Penta total
+    [
+      [],
+      [],
+      [],
+      [],
+
+      [],
+      [
+        [7, 0],
+        [7, 1],
+        [8, 0],
+        [8, 1],
+        [9, 0],
+        [9, 1],
+      ],
+    ],
+    // Rotas
+    [],
+    [],
+
+    // Rota total
+    [
+      [],
+      [],
+      [],
+      [],
+
+      [],
+      [
+        [11, 0],
+        [11, 1],
+        [12, 0],
+        [12, 1],
+      ],
+    ],
+
+    // RRs
+    [],
+    [],
+
+    // RR total
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+
+      [
+        [14, 0],
+        [14, 1],
+        [15, 2],
+        [15, 3],
+      ],
+    ],
+
+    // Pneumos
+    [],
+    [],
+    [],
+
+    // Pneumos total
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [17, 0],
+        [17, 1],
+        [18, 0],
+        [18, 1],
+        [19, 0],
+        [19, 1],
+      ],
+    ],
+
+    // DTP booster
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [21, 2],
+        [21, 3],
+      ],
+    ],
+
+    // ECV
+    [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+        [22, 0],
+        [22, 1],
+      ],
+    ],
+  ];
 
   const { en: q7_1_rows_en, fr: q7_1_rows_fr } = separateLanguages(q7_1_rows);
   const { en: q7_1_columns_en, fr: q7_1_columns_fr } = separateLanguages(q7_1_columns);
@@ -2763,25 +3283,20 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
         en: `Question for ${q7_1_rows_en[row]} and ${q7_1_columns_en[col]}`,
         fr: `Question pour ${q7_1_rows_fr[row]} et ${q7_1_columns_fr[col]}`,
       }),
+    q7_1_calculationMask,
   );
 
   const q7_2_rows: Translation[] = [
     { en: 'BCG', fr: 'BCG' },
-    { en: 'OPV (Polio)', fr: 'VPO (Polio)' },
-    { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
-    { en: 'OPV 2 (Polio)', fr: 'VPO 2 (Polio)' },
-    { en: 'OPV Booster', fr: 'Rappel VPO (Polio)' },
+    {
+      en: 'OPV + OPV 1 + OPV 2 + OPV Booster (Polio)',
+      fr: 'VPO + VPO 1 + VPO 2 + VPO Booster (Polio)',
+    },
     { en: 'IPV', fr: 'VPI' },
-    { en: 'Penta 1', fr: 'Penta 1' },
-    { en: 'Penta 2', fr: 'Penta 2' },
-    { en: 'Penta 3', fr: 'Penta 3' },
-    { en: 'Rota 1', fr: 'Rota 1' },
-    { en: 'Rota 2', fr: 'Rota 2' },
-    { en: 'RR 1', fr: 'RR 1' },
-    { en: 'RR 2', fr: 'RR 2' },
-    { en: 'Pneumo 1', fr: 'Pneumo 1' },
-    { en: 'Pneumo 2', fr: 'Pneumo 2' },
-    { en: 'Pneumo 3', fr: 'Pneumo 3' },
+    { en: 'Penta 1 + Penta 2 + Penta 3', fr: 'Penta 1 + Penta 2 + Penta 3' },
+    { en: 'Rota 1 + Rota 2', fr: 'Rota 1 + Rota 2' },
+    { en: 'RR 1 + RR 2', fr: 'RR 1 + RR 2' },
+    { en: 'Pneumo 1 + Pneumo 2 + Pneumo 3', fr: 'Pneumo 1 + Pneumo 2 + Pneumo 3' },
     { en: 'DTP Booster', fr: 'DTP Rappel' },
     { en: 'ECV', fr: 'ECV' },
   ];
@@ -2790,7 +3305,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: 'Used', fr: 'Utilisées' },
     { en: 'Administered', fr: 'Administrées' },
   ];
-
   const q7_2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_2_rows.length,
     q7_2_columns.length,
@@ -2821,6 +3335,7 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
   const q7_3_rows: Translation[] = [
     { en: 'dT1', fr: 'dT1' },
     { en: 'dT2+', fr: 'dT2+' },
+    { en: 'dT1+dT2+', fr: 'dT1+dT2+' },
   ];
 
   const q7_3_columns: Translation[] = [
@@ -2849,24 +3364,44 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       ],
       // ...other columns on row 0
     ],
-    // For each row
+    // Row 1
     [
       // For each cell in the row
       [], // No calculation for these cell
       [],
 
+      // Calculation Cell (row 1 column 2)
       [
         [1, 0],
         [1, 1],
       ], // Sum of the values from cells [1,0] and [1,1]
       // ...other columns on row 1
     ],
-    // ...other rows
+    // Row 2
+    [
+      // For each cell in the row
+      [], // No calculation for these cell
+      [],
+
+      // Calculation Cell (row 2 column 2)
+      [
+        [0, 0],
+        [0, 1],
+        [1, 0],
+        [1, 1],
+      ],
+    ],
+  ];
+
+  const q7_3_grey_index: maskIndex[] = [
+    [2, 0],
+    [2, 1],
   ];
 
   const q7_3_grey_mask: Array<Array<boolean>> = createTableGreyMask(
-    q7_2_rows.length,
-    q7_2_columns.length,
+    q7_3_rows.length,
+    q7_3_columns.length,
+    q7_3_grey_index,
   );
 
   const { en: q7_3_rows_en, fr: q7_3_rows_fr } = separateLanguages(q7_3_rows);
