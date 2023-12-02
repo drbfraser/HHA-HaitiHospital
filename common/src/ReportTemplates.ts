@@ -288,24 +288,49 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     0,
   );
 
-  const q11: ExpandableQuestion<ID, ErrorType> = new ExpandableQuestion<ID, ErrorType>(
-    '11',
-    getQuestionContent('question11'),
-    questionIdGeneratorBuilder('11'),
+  // 11_1 "Reason for self-discharged"
+
+  const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_1',
+    getQuestionContent('question11_1_option1'),
+  );
+  const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_2',
+    getQuestionContent('question11_1_option2'),
+  );
+  const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_3',
+    getQuestionContent('question11_1_option3'),
+  );
+  const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_4',
+    getQuestionContent('question11_1_option4'),
+  );
+  const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_5',
+    getQuestionContent('question11_1_option5'),
   );
 
-  const q11_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
+  const q11_1: SpecializedGroup<
+    ID,
+    ErrorType,
+    NumericQuestion<ID, ErrorType>
+  > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '11_1',
     getQuestionContent('question11_1'),
-    [
-      getQuestionContent('question11_1_option1'),
-      getQuestionContent('question11_1_option2'),
-      getQuestionContent('question11_1_option3'),
-      getQuestionContent('question11_1_option4'),
-      getQuestionContent('question11_1_option5'),
-    ],
+    q11_1_1,
+    q11_1_2,
+    q11_1_3,
+    q11_1_4,
+    q11_1_5,
   );
-  q11.addAllToTemplate(q11_1);
+
+  // Question 11 "Self-discharged"
+  const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
+    '11',
+    getQuestionContent('question11'),
+    q11_1,
+  );
 
   // Question 12
   const q12_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -758,8 +783,8 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
   const reportID: ID = 'nicu-paeds-report_1';
   const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
-    en: 'MSPP Data',
-    fr: 'Données MSPP',
+    en: 'NICU/Paeds Report ',
+    fr: 'Rapport de NICU/Paeds',
   });
 
   // Questions 1 to 3
@@ -1721,6 +1746,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
   );
 
   nicuPaedsReport.addAll(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14);
+  nicuPaedsReport.addBreakpoints(0, 4, 7, 11, 13);
 
   return nicuPaedsReport;
 };
@@ -1811,6 +1837,7 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
     '10',
     getQuestionContent('question10'),
   );
+
   // 11_1 "Reason for self-discharged"
 
   const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
