@@ -24,6 +24,10 @@ export class QuestionGroup<ID, ErrorType> extends QuestionParent<ID, ErrorType> 
     return this.breakpointPairs;
   }
 
+  public getQuestionItems() {
+    return this.questionItems;
+  }
+
   public getSize() {
     return this.questionItems.length;
   }
