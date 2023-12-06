@@ -53,6 +53,8 @@ const MultiSelectionQuestionFormField = ({
   useEffect(() => {
     updateErrorSetFromSelf();
 
+    // cleanup function that removes this question from the errorSet when the question is removed or unmounted
+    // e.g. when an expandable question shrinks or removes its child questions
     return () => {
       setErrorSet((prevErrorSet: Set<ID>) => {
         const nextErrorSet = new Set(prevErrorSet);
@@ -60,7 +62,8 @@ const MultiSelectionQuestionFormField = ({
         return nextErrorSet;
       });
     };
-  }, [nameId, setErrorSet, updateErrorSetFromSelf]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameId]);
 
   return (
     <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>

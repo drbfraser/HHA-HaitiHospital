@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import { ExpandableQuestion } from '@hha/common';
 import { FormField } from './index';
@@ -20,6 +20,35 @@ const ExpandableQuestionFormField = ({
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
 
+  const updateErrorSetFromSelf = useCallback(() => {
+    setErrorSet((prevErrorSet: Set<ID>) => {
+      const nextErrorSet = new Set(prevErrorSet);
+
+      if (question.getValidationResults() !== true) {
+        nextErrorSet.add(nameId);
+      } else {
+        nextErrorSet.delete(nameId);
+      }
+
+      return nextErrorSet;
+    });
+  }, [nameId, question, setErrorSet]);
+
+  useEffect(() => {
+    updateErrorSetFromSelf();
+
+    // cleanup function that removes this question from the errorSet when the question is removed or unmounted
+    // e.g. when an expandable question shrinks or removes its child questions
+    return () => {
+      setErrorSet((prevErrorSet: Set<ID>) => {
+        const nextErrorSet = new Set(prevErrorSet);
+        nextErrorSet.delete(nameId);
+        return nextErrorSet;
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameId]);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value);
 
@@ -33,6 +62,7 @@ const ExpandableQuestionFormField = ({
     } else if (value < openClosedStates.length) {
       setOpenClosedStates(openClosedStates.slice(0, value));
     }
+    updateErrorSetFromSelf();
   };
 
   return (
