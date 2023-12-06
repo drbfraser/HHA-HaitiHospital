@@ -15,7 +15,26 @@ import Pagination from 'components/pagination/Pagination';
 import SubmitButton from './SubmitButton';
 import { useTranslation } from 'react-i18next';
 
-console.log('ReportForm.tsx');
+const getCurrentPageQuestions = (reportData: QuestionGroup<ID, ErrorType>, currentPage: number) => {
+  return reportData
+    .getQuestionItems()
+    .slice(
+      currentPage === undefined ? 0 : reportData.getPagination()[currentPage - 1][0],
+      currentPage === undefined
+        ? reportData.getSize()
+        : reportData.getPagination()[currentPage - 1][1],
+    );
+};
+
+// converts q_1_1_0 to 1
+const getQuestionFromQuestionId = (questionId: string) => {
+  return parseInt(
+    questionId
+      .trim()
+      .replace(/^[A-Za-z]+/, '')
+      .split('_')[0],
+  );
+};
 
 export const QuestionFormFields = ({
   applyReportChanges,
@@ -97,35 +116,76 @@ const ReportForm = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfCompletedPages, setNumberOfCompletedPages] = useState(0);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
+  const isNewReport = btnText === 'Submit';
 
   const pageSize = reportData
     .getPagination()
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
     .reduce((prev, curr) => (curr > prev ? curr : prev));
 
+  /*
+   * Initialize the report status array with the number of pages
+   * Each page is initialized with a boolean status of completed or not completed
+   * New reports are not completed by default, existing reports are completed by default
+   */
   const initialReportStatus: ReportStatus[] = Array.from({ length: numberOfPages }, (_, index) => ({
     page: index + 1,
-    completed: false,
+    completed: isNewReport ? false : true,
   }));
 
+  // states responsible for form validation across pages
   const [reportStatus, setReportStatus] = useState<ReportStatus[]>(initialReportStatus);
+  const [currentPageQuestionRange, setCurrentPageQuestionRange] = useState<Set<number>>(new Set());
+  const [currentPageErrorsExist, setCurrentPageErrorsExist] = useState(false);
 
+  /*
+    Sets the question ids for the current page to be used for validation.
+    The error set is compared against the current page question ids to determine if any errors exist for the current page.
+  */
   useEffect(() => {
-    const updatedReportStatus = reportStatus.map((page, index) => {
-      if (index === currentPage - 1) {
-        return {
-          ...page,
-          completed: errorSet.size === 0,
-        };
-      }
-      return page;
+    const currentPageQuestions = getCurrentPageQuestions(reportData, currentPage);
+    setCurrentPageQuestionRange(
+      new Set(currentPageQuestions.map((question) => getQuestionFromQuestionId(question.getId()))),
+    );
+  }, [currentPage, reportData]);
+
+  /*
+    Checks if any errors exist for the current page
+  */
+  useEffect(() => {
+    const currentPageErrors = [...errorSet].some((error) => {
+      const questionId = getQuestionFromQuestionId(error);
+      return currentPageQuestionRange.has(questionId);
     });
+    setCurrentPageErrorsExist(currentPageErrors);
+  }, [errorSet, currentPageQuestionRange]);
 
-    setReportStatus(updatedReportStatus);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, errorSet.size]);
-
+  /*
+    Updates the report status for the current page.
+    If there are no errors for the current page, the current page is marked as completed.
+  */
   useEffect(() => {
+    setReportStatus((prev) => {
+      const updatedReportStatus = prev.map((status) => {
+        if (status.page === currentPage) {
+          return {
+            ...status,
+            completed: currentPageErrorsExist === false,
+          };
+        }
+        return status;
+      });
+      return updatedReportStatus;
+    });
+  }, [currentPage, currentPageErrorsExist]);
+
+  /*
+    Updates the count for the number of completed pages.
+    If all pages are completed, the submit button is enabled.
+  */
+  useEffect(() => {
+    // uncomment to view the validity of each page
+    // console.log(reportStatus);
     const completedPagesCount = reportStatus.filter((page) => page.completed).length;
     setNumberOfCompletedPages(completedPagesCount);
   }, [reportStatus]);
@@ -144,14 +204,9 @@ const ReportForm = ({
             suffixName=""
           />
         </Group>
-        {/* Need to handle updating forms -> user shouldn't have to click on every report page to update validity count */}
         <SubmitButton
           buttonText={t(`button.${btnText.toLowerCase()}`)}
-          disabled={
-            (btnText === 'Submit'
-              ? numberOfCompletedPages !== numberOfPages
-              : errorSet.size !== 0) || isSubmitting
-          }
+          disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
           readOnly={readOnly}
         />
       </form>
@@ -165,5 +220,5 @@ const ReportForm = ({
     </div>
   );
 };
-console.log('ReportForm3.tsx');
+
 export default ReportForm;
