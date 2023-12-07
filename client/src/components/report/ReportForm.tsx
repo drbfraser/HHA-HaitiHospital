@@ -158,6 +158,8 @@ const ReportForm = ({
       return currentPageQuestionRange.has(questionId);
     });
     setCurrentPageErrorsExist(currentPageErrors);
+    // console.log(errorSet);
+    console.log('Current page has error: ' + currentPageErrors);
   }, [errorSet, currentPageQuestionRange]);
 
   /*
@@ -185,7 +187,7 @@ const ReportForm = ({
   */
   useEffect(() => {
     // uncomment to view the validity of each page
-    // console.log(reportStatus);
+    console.log(reportStatus);
     const completedPagesCount = reportStatus.filter((page) => page.completed).length;
     setNumberOfCompletedPages(completedPagesCount);
   }, [reportStatus]);
