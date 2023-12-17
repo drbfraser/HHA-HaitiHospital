@@ -142,13 +142,17 @@ router.post(
   upload.single('file'),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
+      console.log('api req = ', req);
       const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
         req.body.document,
       );
 
       let imgPath: string = '';
+      console.log('req.file = ', req.file);
       if (req.file) {
         imgPath = req.file.path.replace(/\\/g, '/');
+      } else {
+        imgPath = 'no image';
       }
 
       if (!Departments.Database.validateDeptId(department.id)) {

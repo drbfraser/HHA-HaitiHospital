@@ -11,7 +11,9 @@ router.get(
   requireJwtAuth,
   (req: RequestWithUser, res: Response, next: NextFunction) => {
     const imgPath: string = req.params.imgPath;
-    res.status(HTTP_OK_CODE).sendFile(path.join(__dirname, `../../../public/images/${imgPath}`));
+    if (imgPath !== 'undefined') {
+      res.status(HTTP_OK_CODE).sendFile(path.join(__dirname, `../../../public/images/${imgPath}`));
+    }
   },
 );
 

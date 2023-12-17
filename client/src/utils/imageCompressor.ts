@@ -10,6 +10,7 @@ const imageCompressor = (
   okActions: (result: File) => void,
   failedActions?: (e: Error) => void,
 ) => {
+  console.log('image compressor');
   new Compressor(image, {
     quality: 0.8,
     success: (result) => {

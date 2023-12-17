@@ -77,6 +77,7 @@ export const EmployeeOfTheMonthArchive = () => {
       controller.abort();
     };
   }, [history]);
+  console.log('employeeOfTheMonthList = ', employeeOfTheMonthList);
 
   const columns = useMemo(() => {
     const columns: FilterableColumnDef[] = [
@@ -105,22 +106,32 @@ export const EmployeeOfTheMonthArchive = () => {
 
     if (renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector])) {
       columns.push({
-        header: '',
+        header: 'Action',
         id: 'deleteEotm',
         cell: (row) => {
           const item = row.row.original;
 
           return (
-            <Button
-              data-testid="delete-case-study-button"
-              className="text-decoration-none link-secondary"
-              variant="link"
-              onClick={(event) => {
-                onDeleteButton(event, item);
-              }}
-            >
-              <i className="bi bi-trash"></i>
-            </Button>
+            <div>
+              <Button
+                data-testid="delete-case-study-button"
+                className="text-decoration-none link-secondary"
+                variant="link"
+                onClick={(event) => {
+                  onDeleteButton(event, item);
+                }}
+              >
+                <i className="bi bi-trash"></i>
+              </Button>
+              <Link
+                to={`/employee-of-the-month/update/` + item.id}
+                data-testid="update-eotm-button"
+                type="button"
+                className="text-decoration-none link-secondary"
+              >
+                <i className="bi bi-pencil"></i>
+              </Link>
+            </div>
           );
         },
       });
@@ -149,10 +160,13 @@ export const EmployeeOfTheMonthArchive = () => {
       <FilterableTable
         columns={columns}
         data={employeeOfTheMonthList}
-        rowClickHandler={(row) => history.push(`/employee-of-the-month/${row.id}`)}
-        enableFilters={false}
-        enableGlobalFilter={false}
-        enableSorting={false}
+        enableFilters
+        enableGlobalFilter
+        enableSorting
+        // rowClickHandler={(row) => history.push(`/employee-of-the-month/${row.id}`)}
+        // enableFilters={true}
+        // enableGlobalFilter={false}
+        // enableSorting={false}
       />
     </Layout>
   );

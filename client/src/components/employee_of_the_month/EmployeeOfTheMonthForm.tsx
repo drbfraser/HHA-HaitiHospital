@@ -28,7 +28,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
       <div className="form-group col-lg-9 col-xl-6">
         <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
         <div>
-          {props.data && (
+          {/* {props.data && (
             <input
               data-testid="eotm-id"
               className="form-control mb-2 mt-0"
@@ -38,7 +38,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
               readOnly
               {...register('id', { required: true })}
             ></input>
-          )}
+          )} */}
 
           <label htmlFor="Employee Month Year" className="form-label">
             {t('employeeOfTheMonthMonthYearAwarded')}
@@ -52,7 +52,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
               props.data &&
               toAwardedAt(props.data.awardedMonth.toString(), props.data.awardedYear.toString())
             }
-            required
+            // required
             {...register('awardedMonth', { required: true })}
           ></input>
           <label htmlFor="Employee Name" className="form-label">
@@ -110,7 +110,8 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
             className="form-control"
             id="employee-image"
             onChange={(e) => imageCompressor(e.target.files[0], props.onImageUpload)}
-            required={!isNonEmptyObject(props.data)}
+            required={false}
+            // required={!isNonEmptyObject(props.data)}
           />
         </div>
         <div>
