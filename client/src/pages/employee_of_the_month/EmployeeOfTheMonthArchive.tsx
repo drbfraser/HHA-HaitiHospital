@@ -77,7 +77,6 @@ export const EmployeeOfTheMonthArchive = () => {
       controller.abort();
     };
   }, [history]);
-  console.log('employeeOfTheMonthList = ', employeeOfTheMonthList);
 
   const columns = useMemo(() => {
     const columns: FilterableColumnDef[] = [
@@ -163,10 +162,6 @@ export const EmployeeOfTheMonthArchive = () => {
         enableFilters
         enableGlobalFilter
         enableSorting
-        // rowClickHandler={(row) => history.push(`/employee-of-the-month/${row.id}`)}
-        // enableFilters={true}
-        // enableGlobalFilter={false}
-        // enableSorting={false}
       />
     </Layout>
   );

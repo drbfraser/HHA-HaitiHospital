@@ -142,7 +142,6 @@ router.post(
   upload.single('file'),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      console.log('api req = ', req);
       const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
         req.body.document,
       );
