@@ -2710,8 +2710,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: 'Administered', fr: 'Administrées' },
   ];
 
-  // Test functionality of grey table cell
-
+  // Manual definition of grey table cell
+  // Guide on how to manually define grey and calcualtion table cells:
+  // https://docs.google.com/document/d/1mYgMfttisqM9zXPbe77ezRdivqxFtik6/edit
   const q7_grey_index: maskIndex[] = [
     [5, 0],
     [5, 1],
@@ -2804,6 +2805,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     q7_grey_index,
   );
 
+  // Manual definition of calculation table cell
+  // Guide on how to manually define grey and calcualtion table cells:
+  // https://docs.google.com/document/d/1mYgMfttisqM9zXPbe77ezRdivqxFtik6/edit
   const q7_calculationMask: Array<Array<cellIndices>> = [
     [
       // For each cell in the row
