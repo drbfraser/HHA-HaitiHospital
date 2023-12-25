@@ -92,6 +92,49 @@ export const EmployeeOfTheMonthView = () => {
 
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
+      {employeesOfTheMonth?.length === 0 ? (
+        <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
+      ) : (
+        <div
+          id="carouselExampleAutoplaying"
+          className="carousel carousel-dark slide"
+          data-bs-ride="carousel"
+        >
+          <div className="carousel-inner">
+            <div className="carousel-item active">
+              <div className="d-block w-100 ">
+                <div className="p-4 m-3  w-100" style={{ height: '500px' }}>
+                  <h2 className="pl-3 mt-3 mb-3 fw-bold">
+                    {t('employeeOfTheMonthTitle').concat(title)}
+                  </h2>
+                </div>
+              </div>
+            </div>
+
+            {employeesOfTheMonth.map((eotm, i) => {
+              return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
+            })}
+          </div>
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="prev"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Next</span>
+          </button>
+        </div>
+      )}
       <Link to="/employee-of-the-month/archive" className="pl-3 mr-3">
         <button type="button" className="btn btn-outline-dark">
           {t('employeeOfTheMonthArchive')}
@@ -103,15 +146,6 @@ export const EmployeeOfTheMonthView = () => {
             {t('employeeOfTheMonthAdd')}
           </button>
         </Link>
-      )}
-      <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
-      <div className="d-flex flex-column"></div>
-      {employeesOfTheMonth?.length === 0 ? (
-        <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
-      ) : (
-        employeesOfTheMonth.map((eotm, i) => {
-          return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
-        })
       )}
     </Layout>
   );
