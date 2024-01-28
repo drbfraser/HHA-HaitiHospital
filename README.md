@@ -158,7 +158,7 @@ npm run dev
 ```
 
 
-> [!Note]: If you are using wsl2 you may face the login problem because the wsl is not coonecting to mongoDB correctly. 
+> Note: If you are using wsl2 you may face the login problem because the wsl is not coonecting to mongoDB correctly. 
 Here is the solution: https://github.sfu.ca/bfraser/415-HHA-Haiti/wiki/Troubleshoot-windows-MongoDB-on-WSL2
 
 
