@@ -63,27 +63,25 @@ describe('Message Board Comments Test', function () {
       console.log(response.body[0]);
       const messageId = response.body[0].id;
 
-      agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${messageId}`).end(function (
-        error: any,
-        response: any,
-      ) {
-        if (error) done(error);
+      agent
+        .get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${messageId}`)
+        .end(function (error: any, response: any) {
+          if (error) done(error);
 
-        expect(response).to.have.status(HTTP_OK_CODE);
-        done();
-      });
+          expect(response).to.have.status(HTTP_OK_CODE);
+          done();
+        });
     });
   });
 
   it('Should Unsuccessfully Get Message Comments Due to Invalid Message Parent Id', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${'Invalid'}`).end(function (
-      error: any,
-      response: any,
-    ) {
-      if (error) done(error);
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-      done();
-    });
+    agent
+      .get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${'Invalid'}`)
+      .end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+        done();
+      });
   });
 
   it('Should Successfully Post a Comment', function (done: Done) {

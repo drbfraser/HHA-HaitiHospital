@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true
   },
-  "include": ["./src/**/*", "./tests/**/*", "*.ts"],
+  "include": ["./src/**/*", "./tests/**/*", "*.ts"]
 }
