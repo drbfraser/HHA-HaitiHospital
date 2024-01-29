@@ -136,31 +136,29 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Fail to Get Messages Due To Invalid Department', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`).end(function (
-      error: any,
-      response: any,
-    ) {
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-      done();
-    });
+    agent
+      .get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`)
+      .end(function (error: any, response: any) {
+        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+        done();
+      });
   });
 
   it('Should Get Messages From General Department', function (done: Done) {
     const generalDeptId: string = departmentIds[0];
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${generalDeptId}`).end(function (
-      error: any,
-      response: any,
-    ) {
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      const entries: Array<Object> = Object.entries(response.body);
-      const results: boolean = entries.every(
-        (element) => element[1].department.id === generalDeptId,
-      );
-      expect(results).to.be.true;
+    agent
+      .get(`${MESSAGEBOARD_ENDPOINT}/department/${generalDeptId}`)
+      .end(function (error: any, response: any) {
+        expect(error).to.be.null;
+        expect(response).to.have.status(HTTP_OK_CODE);
+        const entries: Array<Object> = Object.entries(response.body);
+        const results: boolean = entries.every(
+          (element) => element[1].department.id === generalDeptId,
+        );
+        expect(results).to.be.true;
 
-      done();
-    });
+        done();
+      });
   });
 
   it('Should Fail Posting a New Message due to Invalid Department ID', function (done: Done) {
@@ -243,14 +241,13 @@ describe('Messageboard Tests', function () {
             expect(response).to.have.status(HTTP_NOCONTENT_CODE);
 
             // Check that the message does not exist anymore
-            agent.get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).end(function (
-              error: any,
-              response: any,
-            ) {
-              if (error) done(error);
-              expect(response).to.have.status(HTTP_NOTFOUND_CODE);
-              done();
-            });
+            agent
+              .get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
+              .end(function (error: any, response: any) {
+                if (error) done(error);
+                expect(response).to.have.status(HTTP_NOTFOUND_CODE);
+                done();
+              });
           });
       });
     });
