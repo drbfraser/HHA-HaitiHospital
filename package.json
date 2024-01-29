@@ -13,7 +13,7 @@
     "dev": "npm run server & npm run client",
     "e2e": "cypress open",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
-    "format": "npm run prettier -- --write",
+    "format": "prettier --write $(git diff --name-only --diff-filter d | grep -E \"\\.(js|jsx|ts|tsx|json)$\" | xargs)",
     "check-format": "npm run prettier -- --list-different",
     "precommit": "npm run format",
     "prepare": "husky"
