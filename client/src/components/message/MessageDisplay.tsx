@@ -107,6 +107,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
                 <Link className="align-self-center" to={`/message-board/edit/${message.id}`}>
                   <Button
                     data-testid="edit-message-button"
+                    title={t('messageBoardEdit')}
                     type="button"
                     variant="link"
                     size="sm"
@@ -115,6 +116,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
                 </Link>
                 <Button
                   data-testid="delete-message-button"
+                  title={t('messageBoardDelete')}
                   type="button"
                   variant="link"
                   size="sm"
