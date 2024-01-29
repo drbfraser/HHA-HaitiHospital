@@ -227,7 +227,7 @@ We would need a Prometheus config file that would push logs to the production Gr
 
 ## Prettier Setup
 
-We use prettier as our code formatter. The repo provides a prettier config to unify our styles.
+We use prettier as our code formatter. The repo provides a prettier config to unify our styles. Prettier is ran automatically on staged files whenever code is committed.
 
 - Install Prettier as a VSCode extension
 - Navigate to the root directory
@@ -239,6 +239,10 @@ npm run format
 ```
 
 Our prettier config is set to format code on file save.
+
+Note:
+- `npm run format` - formats all the files, usually not needed since we added husky precommit on staged files
+- `npm run format-staged` - formats only staged files, ran automatically by husky git pre-commit hook 
 
 ## Docker Setup
 
