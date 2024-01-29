@@ -242,7 +242,7 @@ Our prettier config is set to format code on file save.
 
 Note:
 - `npm run format` - formats all the files, usually not needed since we added husky precommit on staged files
-- `npm run format-staged` - formats only staged files, ran automatically by husky git pre-commit hook 
+- `npm run format-staged` - formats only staged files, ran automatically by husky git pre-commit hook
 
 ## Docker Setup
 
