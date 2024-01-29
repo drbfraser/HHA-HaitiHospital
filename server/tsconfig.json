@@ -14,7 +14,7 @@
     "strictNullChecks": false,
     "skipLibCheck": true,
     "downlevelIteration": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
   },
-  "include": ["./src/**/*", "./tests/**/*"]
+  "include": ["./src/**/*", "./tests/**/*"],
 }
