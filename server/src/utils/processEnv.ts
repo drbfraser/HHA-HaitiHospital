@@ -7,13 +7,8 @@ class EnviromentConfigurationError extends Error {
   }
 }
 
-
-
-
-
 // Options with default values.
-export const MONGO_DB = process.env.MONGO_URI ?? 
-  'mongodb://localhost:27017/';
+export const MONGO_DB = process.env.MONGO_URI ?? 'mongodb://localhost:27017/';
 export const CORS = process.env.CORS ?? 'http://localhost:3000';
 export const SERVER_PORT = parseInt(process.env.SERVER_PORT ?? '5000');
 export const TEST_SERVER_PORT = parseInt(process.env.TEST_PORT ?? '5001');
