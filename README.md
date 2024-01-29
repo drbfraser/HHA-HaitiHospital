@@ -6,7 +6,7 @@ at field hospitals. The project uses the MERN stack and used the following as an
 [boiler plate](https://github.com/nemanjam/mern-boilerplate).
 
 Team Haumea created this project for CMPT 373. It is currently being further developed by CMPT 415
-team to deploy it for summer 2022.
+team to deploy it for Spring 2024.
 
 ## Documents
 
