@@ -14,7 +14,9 @@
     "e2e": "cypress open",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "format": "npm run prettier -- --write",
-    "check-format": "npm run prettier -- --list-different"
+    "check-format": "npm run prettier -- --list-different",
+    "precommit": "npm run format",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -25,5 +27,8 @@
   "license": "ISC",
   "dependencies": {
     "prettier": "^2.8.3"
+  },
+  "devDependencies": {
+    "husky": "^9.0.6"
   }
 }
