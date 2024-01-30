@@ -13,11 +13,8 @@
     "dev": "npm run server & npm run client",
     "e2e": "cypress open",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
-    "format-staged": "FILES=$(git diff --name-only --diff-filter d | grep -E '\\.(js|jsx|ts|tsx|json)$'); if [ -n \"$FILES\" ]; then prettier --write $FILES; else echo 'No files to format.'; fi",
     "format": "npm run prettier -- --write",
-    "check-format": "npm run prettier -- --list-different",
-    "precommit": "npm run format-staged",
-    "prepare": "husky"
+    "check-format": "npm run prettier -- --list-different"
   },
   "repository": {
     "type": "git",
@@ -28,8 +25,5 @@
   "license": "ISC",
   "dependencies": {
     "prettier": "^2.8.3"
-  },
-  "devDependencies": {
-    "husky": "^9.0.6"
   }
 }

@@ -6,7 +6,7 @@ at field hospitals. The project uses the MERN stack and used the following as an
 [boiler plate](https://github.com/nemanjam/mern-boilerplate).
 
 Team Haumea created this project for CMPT 373. It is currently being further developed by CMPT 415
-team to deploy it for Spring 2024.
+team to deploy it for summer 2022.
 
 ## Documents
 
@@ -227,7 +227,7 @@ We would need a Prometheus config file that would push logs to the production Gr
 
 ## Prettier Setup
 
-We use prettier as our code formatter. The repo provides a prettier config to unify our styles. Prettier is ran automatically on staged files whenever code is committed.
+We use prettier as our code formatter. The repo provides a prettier config to unify our styles.
 
 - Install Prettier as a VSCode extension
 - Navigate to the root directory
@@ -239,10 +239,6 @@ npm run format
 ```
 
 Our prettier config is set to format code on file save.
-
-Note:
-- `npm run format` - formats all the files, usually not needed since we added husky precommit on staged files
-- `npm run format-staged` - formats only staged files, ran automatically by husky git pre-commit hook
 
 ## Docker Setup
 
