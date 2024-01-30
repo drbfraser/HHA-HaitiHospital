@@ -87,17 +87,18 @@ echo -e "\n${BLUE}Clone project code from GitHub...${COLOR_OFF}\n"
 
 cd ~
 if [ ! -d haiti ]; then
-    git clone https://github.sfu.ca/bfraser/415-HHA-Haiti.git haiti
+    git clone https://github.com/drbfraser/HHA-HaitiHospital.git haiti
 fi    
 cd ~/haiti/
 git pull
-git checkout production
+# git checkout production
+git checkout staging
 
 
-echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
+# echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
 
-chmod +X ~/haiti/scripts/update.sh
-ln -s -f ~/haiti/scripts/update.sh ~/update.sh
+# chmod +X ~/haiti/scripts/update.sh
+# ln -s -f ~/haiti/scripts/update.sh ~/update.sh
 
 
 # .env file creation
@@ -161,7 +162,7 @@ fi
 # 0 0 1 * * /bin/bash ~/haiti/scripts/backup_volume_to_s3.sh monthly >> ~/monthly_backup_log.txt 2>&1
 # EOF
 
-# echo -e "\n${BLUE}Downloading Docker images and spinning up Docker containers...${COLOR_OFF}\n"
+echo -e "\n${BLUE}Downloading Docker images and spinning up Docker containers...${COLOR_OFF}\n"
 
 # Version of the form v2022-12-31.abcd5678, based on date and short SHA1 of last commit on branch
 export COMMIT_SHA=`git show -s --format=%H`
