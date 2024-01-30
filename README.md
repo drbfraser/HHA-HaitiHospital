@@ -227,7 +227,7 @@ We would need a Prometheus config file that would push logs to the production Gr
 
 ## Prettier Setup
 
-We use prettier as our code formatter. The repo provides a prettier config to unify our styles. Prettier is ran automatically on staged files whenever code is committed.
+We use prettier as our code formatter. The repo provides a prettier config to unify our styles. Prettier is run automatically on staged files whenever code is committed.
 
 - Install Prettier as a VSCode extension
 - Navigate to the root directory
