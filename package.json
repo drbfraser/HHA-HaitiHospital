@@ -34,8 +34,5 @@
   "dependencies": {
     "lint-staged": "^15.2.0",
     "prettier": "^2.8.3"
-  },
-  "devDependencies": {
-    "husky": "^9.0.6"
   }
 }

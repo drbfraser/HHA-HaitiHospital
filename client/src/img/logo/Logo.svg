@@ -1,299 +1,177 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
-   version="1.1"
-   id="svg2"
-   width="533.33331"
-   height="533.33331"
-   viewBox="0 0 533.33331 533.33331"
-   sodipodi:docname="Logo.ai"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs6">
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath16">
-      <path
-         d="M 0,400 H 400 V 0 H 0 Z"
-         id="path14" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath24">
-      <path
-         d="M 73.4243,175.667 H 123.247 V 26.5538 H 73.4243 Z"
-         id="path22" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath40">
-      <path
-         d="M 27.7829,176.112 H 122.624 V 81.1367 H 27.7829 Z"
-         id="path38" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath56">
-      <path
-         d="M 73.2908,175.934 H 167.999 V 80.9142 H 73.2908 Z"
-         id="path54" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath72">
-      <path
-         d="M 0,400 H 400 V 0 H 0 Z"
-         id="path70" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath80">
-      <path
-         d="m 174.911,282.87 h 49.823 V 133.046 h -49.823 z"
-         id="path78" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath96">
-      <path
-         d="M 125.443,233.047 H 274.556 V 183.918 H 125.443 Z"
-         id="path94" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath112">
-      <path
-         d="M 0,400 H 400 V 0 H 0 Z"
-         id="path110" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath120">
-      <path
-         d="M 224.734,341.764 H 373.847 V 292.621 H 224.734 Z"
-         id="path118" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath136">
-      <path
-         d="m 279.316,386.871 h 94.975 V 292.03 h -94.975 z"
-         id="path134" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath152">
-      <path
-         d="m 279.45,341.497 h 94.841 V 246.655 H 279.45 Z"
-         id="path150" />
-    </clipPath>
-  </defs>
-  <sodipodi:namedview
-     id="namedview4"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1" />
-  <g
-     id="g8"
-     inkscape:groupmode="layer"
-     inkscape:label="Logo"
-     transform="matrix(1.3333333,0,0,-1.3333333,0,533.33333)">
-    <g
-       id="g10">
-      <g
-         id="g12"
-         clip-path="url(#clipPath16)">
-        <g
-           id="g18">
-          <g
-             id="g20" />
-          <g
-             id="g32">
-            <g
-               clip-path="url(#clipPath24)"
-               opacity="0.550003"
-               id="g30">
-              <g
-                 transform="translate(97.98,26.5537)"
-                 id="g28">
-                <path
-                   d="m 0,0 v 0 c -13.702,0 -24.556,11.032 -24.556,24.556 v 100.002 c 0,13.701 11.033,24.555 24.912,24.555 13.701,0 24.911,-11.032 24.911,-24.555 V 24.556 C 24.733,11.032 13.523,0 0,0"
-                   style="fill:#7c359d;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path26" />
+      xmlns="http://www.w3.org/2000/svg"
+      width="533.333"
+      height="533.333"
+      version="1.1"
+      viewBox="0 0 533.333 533.333"
+    >
+      <defs>
+        <clipPath id="clipPath16" clipPathUnits="userSpaceOnUse">
+          <path d="M0 400h400V0H0z"></path>
+        </clipPath>
+        <clipPath id="clipPath24" clipPathUnits="userSpaceOnUse">
+          <path d="M73.424 175.667h49.823V26.554H73.424z"></path>
+        </clipPath>
+        <clipPath id="clipPath40" clipPathUnits="userSpaceOnUse">
+          <path d="M27.783 176.112h94.841V81.137H27.783z"></path>
+        </clipPath>
+        <clipPath id="clipPath56" clipPathUnits="userSpaceOnUse">
+          <path d="M73.29 175.934H168v-95.02H73.291z"></path>
+        </clipPath>
+        <clipPath id="clipPath72" clipPathUnits="userSpaceOnUse">
+          <path d="M0 400h400V0H0z"></path>
+        </clipPath>
+        <clipPath id="clipPath80" clipPathUnits="userSpaceOnUse">
+          <path d="M174.911 282.87h49.823V133.046h-49.823z"></path>
+        </clipPath>
+        <clipPath id="clipPath96" clipPathUnits="userSpaceOnUse">
+          <path d="M125.443 233.047h149.113v-49.129H125.443z"></path>
+        </clipPath>
+        <clipPath id="clipPath112" clipPathUnits="userSpaceOnUse">
+          <path d="M0 400h400V0H0z"></path>
+        </clipPath>
+        <clipPath id="clipPath120" clipPathUnits="userSpaceOnUse">
+          <path d="M224.734 341.764h149.113v-49.143H224.734z"></path>
+        </clipPath>
+        <clipPath id="clipPath136" clipPathUnits="userSpaceOnUse">
+          <path d="M279.316 386.871h94.975V292.03h-94.975z"></path>
+        </clipPath>
+        <clipPath id="clipPath152" clipPathUnits="userSpaceOnUse">
+          <path d="M279.45 341.497h94.841v-94.842H279.45z"></path>
+        </clipPath>
+      </defs>
+      <g transform="matrix(1.33333 0 0 -1.33333 0 533.333)">
+        <g>
+          <g clipPath="url(#clipPath16)">
+            <g>
+              <g>
+                <g clipPath="url(#clipPath24)" opacity="0.55">
+                  <g transform="translate(97.98 26.554)">
+                    <path
+                      fill="#7c359d"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c-13.702 0-24.556 11.032-24.556 24.556v100.002c0 13.701 11.033 24.555 24.912 24.555 13.701 0 24.911-11.032 24.911-24.555V24.556C24.733 11.032 13.523 0 0 0"
+                    ></path>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g>
+              <g>
+                <g clipPath="url(#clipPath40)" opacity="0.55">
+                  <g transform="translate(34.99 88.477)">
+                    <path
+                      fill="#7c359d"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c-9.608 9.608-9.608 25.268 0 35.054l45.375 45.375c9.608 9.608 25.267 9.608 35.054 0 9.609-9.609 9.609-25.268 0-35.054L35.054 0C25.268-9.786 9.609-9.786 0 0"
+                    ></path>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g>
+              <g>
+                <g clipPath="url(#clipPath56)" opacity="0.55">
+                  <g transform="translate(80.364 168.727)">
+                    <path
+                      fill="#7c359d"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c9.609 9.608 25.268 9.608 35.054 0l45.375-45.553c9.608-9.608 9.608-25.267 0-35.053-9.609-9.61-25.268-9.61-35.054 0L0-35.232C-9.431-25.445-9.431-9.787 0 0"
+                    ></path>
+                  </g>
+                </g>
               </g>
             </g>
           </g>
         </g>
-        <g
-           id="g34">
-          <g
-             id="g36" />
-          <g
-             id="g48">
-            <g
-               clip-path="url(#clipPath40)"
-               opacity="0.550003"
-               id="g46">
-              <g
-                 transform="translate(34.9893,88.4766)"
-                 id="g44">
-                <path
-                   d="m 0,0 v 0 c -9.608,9.608 -9.608,25.268 0,35.054 l 45.375,45.375 c 9.608,9.608 25.267,9.608 35.054,0 9.609,-9.609 9.609,-25.268 0,-35.054 L 35.054,0 C 25.268,-9.786 9.609,-9.786 0,0"
-                   style="fill:#7c359d;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path42" />
+        <g>
+          <g clipPath="url(#clipPath72)">
+            <g>
+              <g>
+                <g clipPath="url(#clipPath80)" opacity="0.6">
+                  <g transform="translate(200.178 282.87)">
+                    <path
+                      fill="#50be39"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c13.701 0 24.556-11.032 24.556-24.912v-100.002c0-13.701-11.033-24.911-24.911-24.911-13.702 0-24.912 11.033-24.912 24.911v100.18C-24.733-11.21-13.523 0 0 0"
+                    ></path>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g>
+              <g>
+                <g clipPath="url(#clipPath96)" opacity="0.6">
+                  <g transform="translate(125.443 208.136)">
+                    <path
+                      fill="#50be39"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c0 13.702 11.032 24.912 24.556 24.912h100.002c13.701 0 24.555-11.033 24.555-24.556 0-13.702-11.032-24.555-24.555-24.555H24.734C11.032-24.733 0-13.701 0 0"
+                    ></path>
+                  </g>
+                </g>
               </g>
             </g>
           </g>
         </g>
-        <g
-           id="g50">
-          <g
-             id="g52" />
-          <g
-             id="g64">
-            <g
-               clip-path="url(#clipPath56)"
-               opacity="0.550003"
-               id="g62">
-              <g
-                 transform="translate(80.3638,168.7275)"
-                 id="g60">
-                <path
-                   d="m 0,0 v 0 c 9.609,9.608 25.268,9.608 35.054,0 l 45.375,-45.553 c 9.608,-9.608 9.608,-25.267 0,-35.053 -9.609,-9.61 -25.268,-9.61 -35.054,0 L 0,-35.232 C -9.431,-25.445 -9.431,-9.787 0,0"
-                   style="fill:#7c359d;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path58" />
+        <g>
+          <g clipPath="url(#clipPath112)">
+            <g>
+              <g>
+                <g clipPath="url(#clipPath120)" opacity="0.5">
+                  <g transform="translate(224.733 316.853)">
+                    <path
+                      fill="#40a2c7"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c0 13.701 11.032 24.911 24.556 24.911h100.002c13.701 0 24.555-11.032 24.555-24.555 0-13.702-11.032-24.556-24.555-24.556H24.556C11.21-24.912 0-13.702 0 0"
+                    ></path>
+                  </g>
+                </g>
               </g>
             </g>
-          </g>
-        </g>
-      </g>
-    </g>
-    <g
-       id="g66">
-      <g
-         id="g68"
-         clip-path="url(#clipPath72)">
-        <g
-           id="g74">
-          <g
-             id="g76" />
-          <g
-             id="g88">
-            <g
-               clip-path="url(#clipPath80)"
-               opacity="0.600006"
-               id="g86">
-              <g
-                 transform="translate(200.1777,282.8706)"
-                 id="g84">
-                <path
-                   d="m 0,0 v 0 c 13.701,0 24.556,-11.032 24.556,-24.912 v -100.002 c 0,-13.701 -11.033,-24.911 -24.911,-24.911 -13.702,0 -24.912,11.033 -24.912,24.911 v 100.18 C -24.733,-11.21 -13.523,0 0,0"
-                   style="fill:#50be39;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path82" />
+            <g>
+              <g>
+                <g clipPath="url(#clipPath136)" opacity="0.5">
+                  <g transform="translate(286.656 379.665)">
+                    <path
+                      fill="#40a2c7"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c9.608 9.608 25.268 9.608 35.054 0l45.375-45.375c9.608-9.608 9.608-25.267 0-35.054-9.609-9.608-25.268-9.608-35.054 0L0-35.054C-9.786-25.268-9.786-9.609 0 0"
+                    ></path>
+                  </g>
+                </g>
               </g>
             </g>
-          </g>
-        </g>
-        <g
-           id="g90">
-          <g
-             id="g92" />
-          <g
-             id="g104">
-            <g
-               clip-path="url(#clipPath96)"
-               opacity="0.600006"
-               id="g102">
-              <g
-                 transform="translate(125.4434,208.1357)"
-                 id="g100">
-                <path
-                   d="m 0,0 v 0 c 0,13.702 11.032,24.912 24.556,24.912 h 100.002 c 13.701,0 24.555,-11.033 24.555,-24.556 0,-13.702 -11.032,-24.555 -24.555,-24.555 H 24.734 C 11.032,-24.733 0,-13.701 0,0"
-                   style="fill:#50be39;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path98" />
+            <g>
+              <g>
+                <g clipPath="url(#clipPath152)" opacity="0.5">
+                  <g transform="translate(367.085 334.29)">
+                    <path
+                      fill="#40a2c7"
+                      fillOpacity="1"
+                      fillRule="nonzero"
+                      stroke="none"
+                      d="M0 0c9.608-9.609 9.608-25.268 0-35.054l-45.375-45.375c-9.608-9.608-25.267-9.608-35.054 0-9.608 9.609-9.608 25.268 0 35.054L-35.054 0C-25.268 9.608-9.608 9.608 0 0"
+                    ></path>
+                  </g>
+                </g>
               </g>
             </g>
           </g>
         </g>
       </g>
-    </g>
-    <g
-       id="g106">
-      <g
-         id="g108"
-         clip-path="url(#clipPath112)">
-        <g
-           id="g114">
-          <g
-             id="g116" />
-          <g
-             id="g128">
-            <g
-               clip-path="url(#clipPath120)"
-               opacity="0.5"
-               id="g126">
-              <g
-                 transform="translate(224.7334,316.8525)"
-                 id="g124">
-                <path
-                   d="m 0,0 v 0 c 0,13.701 11.032,24.911 24.556,24.911 h 100.002 c 13.701,0 24.555,-11.032 24.555,-24.555 0,-13.702 -11.032,-24.556 -24.555,-24.556 H 24.556 C 11.21,-24.912 0,-13.702 0,0"
-                   style="fill:#40a2c7;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path122" />
-              </g>
-            </g>
-          </g>
-        </g>
-        <g
-           id="g130">
-          <g
-             id="g132" />
-          <g
-             id="g144">
-            <g
-               clip-path="url(#clipPath136)"
-               opacity="0.5"
-               id="g142">
-              <g
-                 transform="translate(286.6562,379.665)"
-                 id="g140">
-                <path
-                   d="m 0,0 v 0 c 9.608,9.608 25.268,9.608 35.054,0 l 45.375,-45.375 c 9.608,-9.608 9.608,-25.267 0,-35.054 -9.609,-9.608 -25.268,-9.608 -35.054,0 L 0,-35.054 C -9.786,-25.268 -9.786,-9.609 0,0"
-                   style="fill:#40a2c7;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path138" />
-              </g>
-            </g>
-          </g>
-        </g>
-        <g
-           id="g146">
-          <g
-             id="g148" />
-          <g
-             id="g160">
-            <g
-               clip-path="url(#clipPath152)"
-               opacity="0.5"
-               id="g158">
-              <g
-                 transform="translate(367.085,334.2905)"
-                 id="g156">
-                <path
-                   d="m 0,0 v 0 c 9.608,-9.609 9.608,-25.268 0,-35.054 l -45.375,-45.375 c -9.608,-9.608 -25.267,-9.608 -35.054,0 -9.608,9.609 -9.608,25.268 0,35.054 L -35.054,0 C -25.268,9.608 -9.608,9.608 0,0"
-                   style="fill:#40a2c7;fill-opacity:1;fill-rule:nonzero;stroke:none"
-                   id="path154" />
-              </g>
-            </g>
-          </g>
-        </g>
-      </g>
-    </g>
-  </g>
-</svg>
+    </svg>

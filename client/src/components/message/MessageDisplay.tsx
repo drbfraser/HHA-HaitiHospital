@@ -105,22 +105,24 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
             {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
               <>
                 <Link className="align-self-center" to={`/message-board/edit/${message.id}`}>
-                  <button
+                  <Button
                     data-testid="edit-message-button"
+                    title={t('messageBoardEdit')}
                     type="button"
-                    className="btn btn-sm btn-link text-decoration-none small border-0 p-0 me-2"
-                  >
-                    {t('messageBoardEdit')}
-                  </button>
+                    variant="link"
+                    size="sm"
+                    className="p-0 me-2 bi bi-pencil-fill"
+                  />
                 </Link>
                 <Button
                   data-testid="delete-message-button"
+                  title={t('messageBoardDelete')}
                   type="button"
-                  className="btn btn-sm btn-link text-decoration-none border-0 p-0"
+                  variant="link"
+                  size="sm"
+                  className="p-0 bi bi-trash-fill"
                   onClick={onDeleteMessage}
-                >
-                  {t('messageBoardDelete')}
-                </Button>
+                />
               </>
             )}
 
