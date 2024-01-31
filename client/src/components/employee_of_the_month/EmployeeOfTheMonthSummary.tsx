@@ -47,8 +47,8 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   }, [props.employee.imgPath, history]);
 
   return (
-    <div className="d-block w-100 ">
-      <div className="p-4 m-3  w-100" style={{ height: '500px' }}>
+    <div className="d-block w-100">
+      <div className="p-4 m-3  w-100  overflow-auto" style={{ height: '500px' }}>
         <ImageModal
           show={showImageModal}
           item={ALT_MESSAGE}

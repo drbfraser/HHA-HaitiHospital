@@ -92,6 +92,18 @@ export const EmployeeOfTheMonthView = () => {
 
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
+      <Link to="/employee-of-the-month/archive" className="pl-3 mr-3">
+        <button type="button" className="btn btn-outline-dark">
+          {t('employeeOfTheMonthArchive')}
+        </button>
+      </Link>
+      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+        <Link to="/employee-of-the-month/add">
+          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+            {t('employeeOfTheMonthAdd')}
+          </button>
+        </Link>
+      )}
       {employeesOfTheMonth?.length === 0 ? (
         <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
       ) : (
@@ -103,7 +115,7 @@ export const EmployeeOfTheMonthView = () => {
             data-bs-ride="carousel"
           >
             <div className="carousel-inner">
-              <div className="carousel-item active">
+              <div className="carousel-item active border">
                 <EmployeeOfTheMonthSummary employee={employeesOfTheMonth[0]} />
               </div>
 
@@ -135,18 +147,6 @@ export const EmployeeOfTheMonthView = () => {
             </button>
           </div>
         </div>
-      )}
-      <Link to="/employee-of-the-month/archive" className="pl-3 mr-3">
-        <button type="button" className="btn btn-outline-dark">
-          {t('employeeOfTheMonthArchive')}
-        </button>
-      </Link>
-      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link to="/employee-of-the-month/add">
-          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-            {t('employeeOfTheMonthAdd')}
-          </button>
-        </Link>
       )}
     </Layout>
   );
