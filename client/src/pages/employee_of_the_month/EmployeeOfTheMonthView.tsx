@@ -114,18 +114,30 @@ export const EmployeeOfTheMonthView = () => {
             className="carousel carousel-dark slide"
             data-bs-ride="carousel"
           >
+            <div className="carousel-indicators">
+              {new Array(employeesOfTheMonth.length).fill(0).map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide-to={index}
+                  className="active"
+                  aria-current="true"
+                  aria-label={`Slide ${index + 1}`}
+                ></button>
+              ))}
+            </div>
+
             <div className="carousel-inner">
               <div className="carousel-item active border">
                 <EmployeeOfTheMonthSummary employee={employeesOfTheMonth[0]} />
               </div>
 
-              {employeesOfTheMonth.slice(1).map((eotm, i) => {
-                return (
-                  <div className="carousel-item">
-                    <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
-                  </div>
-                );
-              })}
+              {employeesOfTheMonth.slice(1).map((eotm, i) => (
+                <div className="carousel-item border" key={i}>
+                  <EmployeeOfTheMonthSummary employee={eotm} />;
+                </div>
+              ))}
             </div>
             <button
               className="carousel-control-prev"

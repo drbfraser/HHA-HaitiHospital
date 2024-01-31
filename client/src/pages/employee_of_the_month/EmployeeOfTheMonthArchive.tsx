@@ -138,7 +138,7 @@ export const EmployeeOfTheMonthArchive = () => {
   }, [authState.userDetails.role, t]);
 
   return (
-    <Layout showBackButton>
+    <Layout showBackButton title={t('headerEmployeeOfTheMonth')}>
       <DeleteModal
         dataTestId="confirm-delete-eotm-button"
         show={showDeleteModal}
