@@ -9,7 +9,7 @@ jobs:
   mirror-to-githubcom:
     runs-on: [self-hosted, docker]
     container:
-      image: node:16
+      image: node:18
     steps:
       - uses: bfraser/cicd/actions/mirror_to_github@v1
         with:
