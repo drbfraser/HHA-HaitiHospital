@@ -158,8 +158,7 @@ npm run dev
 ```
 
 
-> Note: If you are using wsl2 you may face the login problem because the wsl is not coonecting to mongoDB correctly. 
-Here is the solution: https://github.sfu.ca/bfraser/415-HHA-Haiti/wiki/Troubleshoot-windows-MongoDB-on-WSL2
+> Note: If you are using wsl2 you may face the login problem because the wsl is not coonecting to mongoDB correctly. [Here is the Solution.](https://github.sfu.ca/bfraser/415-HHA-Haiti/wiki/Troubleshoot-windows-MongoDB-on-WSL2)
 
 
 Now that everything is up, visit <http://localhost:3000> and log in with the seeded users:
