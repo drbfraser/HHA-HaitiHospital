@@ -109,17 +109,13 @@ export const EmployeeOfTheMonthView = () => {
       ) : (
         <div className="">
           <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
-          <div
-            id="carouselExampleAutoplaying"
-            className="carousel carousel-dark slide"
-            data-bs-ride="carousel"
-          >
+          <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
             <div className="carousel-indicators">
               {new Array(employeesOfTheMonth.length).fill(0).map((_, index) => (
                 <button
                   key={index}
                   type="button"
-                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-target="#eotmCarousel"
                   data-bs-slide-to={index}
                   className="active"
                   aria-current="true"
@@ -129,12 +125,8 @@ export const EmployeeOfTheMonthView = () => {
             </div>
 
             <div className="carousel-inner">
-              <div className="carousel-item active border">
-                <EmployeeOfTheMonthSummary employee={employeesOfTheMonth[0]} />
-              </div>
-
-              {employeesOfTheMonth.slice(1).map((eotm, i) => (
-                <div className="carousel-item border" key={i}>
+              {employeesOfTheMonth.map((eotm, i) => (
+                <div className={`carousel-item border ${i == 0 ? 'active' : ''}`} key={i}>
                   <EmployeeOfTheMonthSummary employee={eotm} />;
                 </div>
               ))}
@@ -142,7 +134,7 @@ export const EmployeeOfTheMonthView = () => {
             <button
               className="carousel-control-prev"
               type="button"
-              data-bs-target="#carouselExampleAutoplaying"
+              data-bs-target="#eotmCarousel"
               data-bs-slide="prev"
             >
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -151,7 +143,7 @@ export const EmployeeOfTheMonthView = () => {
             <button
               className="carousel-control-next"
               type="button"
-              data-bs-target="#carouselExampleAutoplaying"
+              data-bs-target="#eotmCarousel"
               data-bs-slide="next"
             >
               <span className="carousel-control-next-icon" aria-hidden="true"></span>
