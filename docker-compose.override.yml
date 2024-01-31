@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   server:
-    image: node:16
+    image: node:18
     volumes:
       - ./server:/code
     working_dir: /code
@@ -21,7 +21,7 @@ services:
     container_name: hhahaiti_client
     depends_on:
       - logger
-    image: node:16
+    image: node:18
     volumes:
       - ./:/code
     working_dir: /code/client
