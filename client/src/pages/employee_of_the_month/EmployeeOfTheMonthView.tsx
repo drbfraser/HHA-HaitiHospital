@@ -92,22 +92,24 @@ export const EmployeeOfTheMonthView = () => {
 
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
-      <Link to="/employee-of-the-month/archive" className="pl-3 mr-3">
-        <button type="button" className="btn btn-outline-dark">
-          {t('employeeOfTheMonthArchive')}
-        </button>
-      </Link>
-      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link to="/employee-of-the-month/add">
-          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-            {t('employeeOfTheMonthAdd')}
+      <div className="d-flex flex-column flex-sm-row gap-2">
+        <Link to="/employee-of-the-month/archive" className="mr-3">
+          <button type="button" className="btn btn-outline-dark">
+            {t('employeeOfTheMonthArchive')}
           </button>
         </Link>
-      )}
+        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+          <Link to="/employee-of-the-month/add" className="">
+            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+              {t('employeeOfTheMonthAdd')}
+            </button>
+          </Link>
+        )}
+      </div>
       {employeesOfTheMonth?.length === 0 ? (
         <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
       ) : (
-        <div className="">
+        <div>
           <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
           <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
             <div className="carousel-indicators">
@@ -124,7 +126,7 @@ export const EmployeeOfTheMonthView = () => {
               ))}
             </div>
 
-            <div className="carousel-inner">
+            <div className="carousel-inner px-sm-3 px-md-5">
               {employeesOfTheMonth.map((eotm, i) => (
                 <div className={`carousel-item border ${i == 0 ? 'active' : ''}`} key={i}>
                   <EmployeeOfTheMonthSummary employee={eotm} />;
@@ -136,6 +138,7 @@ export const EmployeeOfTheMonthView = () => {
               type="button"
               data-bs-target="#eotmCarousel"
               data-bs-slide="prev"
+              style={{ width: '10%' }}
             >
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
               <span className="visually-hidden">Previous</span>
@@ -145,6 +148,7 @@ export const EmployeeOfTheMonthView = () => {
               type="button"
               data-bs-target="#eotmCarousel"
               data-bs-slide="next"
+              style={{ width: '10%' }}
             >
               <span className="carousel-control-next-icon" aria-hidden="true"></span>
               <span className="visually-hidden">Next</span>
