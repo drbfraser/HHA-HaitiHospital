@@ -31,7 +31,7 @@ router.get(
       const { awardedYear, awardedMonth } = req.params;
       const doc = await EOTMCollection.find({
         awardedYear: +awardedYear,
-        awardedMonth: +awardedMonth,
+        awardedMonth: +1,
       });
       // find eotm with current year and month, if not found, find the closest below it.
 

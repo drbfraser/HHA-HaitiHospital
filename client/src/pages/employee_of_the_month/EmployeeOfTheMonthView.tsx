@@ -90,9 +90,36 @@ export const EmployeeOfTheMonthView = () => {
     };
   }, [employeeViewParams, history, params]);
 
+  interface CarouselButtonGroupProps {
+    className?: string;
+  }
+
+  const CarouselButtonGroup: React.FC<CarouselButtonGroupProps> = ({ className }) => (
+    <div className={`d-flex gap-1 ${className || ''}`}>
+      <button
+        type="button"
+        data-bs-target="#eotmCarousel"
+        data-bs-slide="prev"
+        className="btn btn-outline-dark "
+      >
+        <i className="bi bi-caret-left" aria-hidden="true"></i>
+        <span className="visually-hidden">Previous</span>
+      </button>
+      <button
+        type="button"
+        data-bs-target="#eotmCarousel"
+        data-bs-slide="next"
+        className="btn btn-outline-dark"
+      >
+        <span className="bi bi-caret-right" aria-hidden="true"></span>
+        <span className="visually-hidden">Next</span>
+      </button>
+    </div>
+  );
+
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
-      <div className="d-flex flex-column flex-sm-row gap-2">
+      <div className="d-flex flex-column flex-sm-row gap-1">
         <Link to="/employee-of-the-month/archive" className="mr-3">
           <button type="button" className="btn btn-outline-dark">
             {t('employeeOfTheMonthArchive')}
@@ -110,7 +137,8 @@ export const EmployeeOfTheMonthView = () => {
         <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
       ) : (
         <div>
-          <h2 className="pl-3 mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
+          <h2 className="mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
+          <CarouselButtonGroup className="d-block d-md-none" />
           <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
             <div className="carousel-indicators">
               {new Array(employeesOfTheMonth.length).fill(0).map((_, index) => (
@@ -126,33 +154,14 @@ export const EmployeeOfTheMonthView = () => {
               ))}
             </div>
 
-            <div className="carousel-inner px-sm-3 px-md-5">
+            <div className="carousel-inner my-2">
               {employeesOfTheMonth.map((eotm, i) => (
-                <div className={`carousel-item border ${i == 0 ? 'active' : ''}`} key={i}>
-                  <EmployeeOfTheMonthSummary employee={eotm} />;
+                <div className={`carousel-item ${i == 0 ? 'active' : ''}`} key={i}>
+                  <EmployeeOfTheMonthSummary employee={eotm} />
                 </div>
               ))}
             </div>
-            <button
-              className="carousel-control-prev"
-              type="button"
-              data-bs-target="#eotmCarousel"
-              data-bs-slide="prev"
-              style={{ width: '10%' }}
-            >
-              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button
-              className="carousel-control-next"
-              type="button"
-              data-bs-target="#eotmCarousel"
-              data-bs-slide="next"
-              style={{ width: '10%' }}
-            >
-              <span className="carousel-control-next-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Next</span>
-            </button>
+            <CarouselButtonGroup />
           </div>
         </div>
       )}
