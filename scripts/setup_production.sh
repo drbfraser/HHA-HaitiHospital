@@ -99,10 +99,11 @@ git checkout production
 
 echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
 
-# chmod +X ~/haiti/scripts/update.sh
-# ln -s -f ~/haiti/scripts/update.sh ~/update.sh
-chmod +x ~/update.sh
-# ln -s -f ~/update.sh ~/update.sh
+# TODO: Untested, becuase we have no update.sh file in scripts now
+chmod +X ~/haiti/scripts/update.sh
+ln -s -f ~/haiti/scripts/update.sh ~/update.sh
+
+# chmod +x ~/update.sh
 
 
 # .env file creation
