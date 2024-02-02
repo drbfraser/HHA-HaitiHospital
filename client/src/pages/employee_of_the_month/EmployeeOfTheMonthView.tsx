@@ -90,12 +90,8 @@ export const EmployeeOfTheMonthView = () => {
     };
   }, [employeeViewParams, history, params]);
 
-  interface CarouselButtonGroupProps {
-    className?: string;
-  }
-
-  const CarouselButtonGroup: React.FC<CarouselButtonGroupProps> = ({ className }) => (
-    <div className={`d-flex gap-1 ${className || ''}`}>
+  const CarouselButtonGroup: React.FC = () => (
+    <div className="d-flex gap-1">
       <button
         type="button"
         data-bs-target="#eotmCarousel"
@@ -138,7 +134,6 @@ export const EmployeeOfTheMonthView = () => {
       ) : (
         <div>
           <h2 className="mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
-          <CarouselButtonGroup className="d-block d-md-none" />
           <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
             <div className="carousel-indicators">
               {new Array(employeesOfTheMonth.length).fill(0).map((_, index) => (
