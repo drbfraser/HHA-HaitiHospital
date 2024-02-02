@@ -24,7 +24,7 @@ const CompositionQuestionFormField = ({
   const { i18n } = useTranslation();
   const prompt = question.getPrompt();
   const language = i18n.language;
-  const promptValue = prompt && prompt[language] ? prompt[language] : '';
+  const promptValue = prompt && prompt[language.substring(0, 2)] ? prompt[language.substring(0, 2)] : '';
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -87,7 +87,7 @@ const CompositionQuestionFormField = ({
                 'text-secondary': !hasErrors,
               })}
             >
-              {`${groupId.replaceAll('_', '.')}. ${group.getPrompt()[language]}`}
+              {`${groupId.replaceAll('_', '.')}. ${group.getPrompt()[language.substring(0, 2)]}`}
               {hasErrors && <i className="bi bi-exclamation-circle ms-2" />}
             </legend>
             <Group hasErrors={hasErrors}>

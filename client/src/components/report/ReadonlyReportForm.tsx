@@ -103,7 +103,7 @@ const ReadonlyReportForm = ({
   return (
     <div className="mt-3 p-3">
       <h3 className="mb-3">
-        {reportData.getPrompt()[language]} - {author} - {date}{' '}
+        {reportData.getPrompt()[language.substring(0, 2)]} - {author} - {date}{' '}
       </h3>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (
