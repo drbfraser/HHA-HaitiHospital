@@ -47,41 +47,39 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   }, [props.employee.imgPath, history]);
 
   return (
-    <div className="carousel-item">
-      <div className="d-block w-100 ">
-        <div className="p-4 m-3  w-100" style={{ height: '500px' }}>
-          <ImageModal
-            show={showImageModal}
-            item={ALT_MESSAGE}
-            image={employeeImage}
-            onModalClose={onModalImageClose}
-          ></ImageModal>
-          <div className="d-flex flex-column justify-content-between flex-xl-row">
-            <div className="d-flex flex-column mt-3">
-              <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
-              <p className="fs-6 lh-base">{updatedDate}</p>
-              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
-              <p className="fs-6 lh-base">{props.employee.name}</p>
-              <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>
-              <p className="fs-6 lh-base">{t(`departments.${props.employee.department.name}`)}</p>
-            </div>
-            {employeeImage && (
-              <img
-                className="d-flex text-left float-left ms-xl-auto mt-3 mb-3"
-                style={{ maxWidth: '250px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
-                src={employeeImage}
-                alt={ALT_MESSAGE}
-                onClick={(event: any) => {
-                  onEnlargeImage(event);
-                }}
-              />
-            )}
+    <div className="d-block w-100">
+      <div className="p-3 w-100 overflow-auto border" style={{ height: '500px' }}>
+        <ImageModal
+          show={showImageModal}
+          item={ALT_MESSAGE}
+          image={employeeImage}
+          onModalClose={onModalImageClose}
+        ></ImageModal>
+        <div className="d-flex flex-column justify-content-between flex-xl-row">
+          <div className="d-flex flex-column mt-3">
+            <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
+            <p className="fs-6 lh-base">{updatedDate}</p>
+            <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
+            <p className="fs-6 lh-base">{props.employee.name}</p>
+            <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>
+            <p className="fs-6 lh-base">{t(`departments.${props.employee.department.name}`)}</p>
           </div>
-          <>
-            <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
-            <p className="fs-6 lh-base">{props.employee.description}</p>
-          </>
+          {employeeImage && (
+            <img
+              className="d-flex text-left float-left ms-xl-auto mt-3 mb-3"
+              style={{ maxWidth: '250px', width: '100%', maxHeight: '500', cursor: 'pointer' }}
+              src={employeeImage}
+              alt={ALT_MESSAGE}
+              onClick={(event: any) => {
+                onEnlargeImage(event);
+              }}
+            />
+          )}
         </div>
+        <>
+          <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDescription')}</h6>
+          <p className="fs-6 lh-base">{props.employee.description}</p>
+        </>
       </div>
     </div>
   );
