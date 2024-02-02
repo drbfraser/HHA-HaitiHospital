@@ -92,13 +92,16 @@ fi
 cd ~/haiti/
 git pull
 # git checkout production
+echo -e "\n${BLUE}We are testing in staging for now...${COLOR_OFF}\n"
 git checkout staging
 
 
-# echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
+echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
 
 # chmod +X ~/haiti/scripts/update.sh
 # ln -s -f ~/haiti/scripts/update.sh ~/update.sh
+chmod +x ~/update.sh
+# ln -s -f ~/update.sh ~/update.sh
 
 
 # .env file creation
@@ -117,7 +120,8 @@ if [ ! -f .env ]; then
     echo "CORS=http://localhost:3000" >> .env
     echo "SERVER_PORT=8000" >> .env
     echo "TEST_SERVER_PORT=5001" >> .env
-    echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
+    # echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
+    echo "PASSWORD_SEED=C@td0g" >> .env
 
     # echo "SECRET_KEY=${RAND_SECRET}" >> .env
     # echo "POSTGRES_USER=dbuser" >> .env
@@ -125,13 +129,14 @@ if [ ! -f .env ]; then
 
     # this is necessary because the Postgres DB password has now been changed
     # For Haiti project, not too sure if we need this    
+
     echo -e "\n${BLUE}Removing previous Docker containers and volumes...${COLOR_OFF}\n"
     docker compose -f docker-compose.yml -f docker-compose.deploy.yml down
     docker volume prune -f
 
-    echo -e "\n${BLUE}Enter the name of the S3 bucket you want to sync with:${COLOR_OFF}"
-    read;
-    echo "S3_BUCKET_NAME=${REPLY}" >> .env
+    # echo -e "\n${BLUE}Enter the name of the S3 bucket you want to sync with:${COLOR_OFF}"
+    # read;
+    # echo "S3_BUCKET_NAME=${REPLY}" >> .env
 fi
 
 # TODO: AWS is the next step for Haiti project
@@ -176,26 +181,25 @@ docker compose -f docker-compose.yml -f docker-compose.deploy.yml up -d
 echo -e "\n${BLUE}Waiting for database container to start...${COLOR_OFF}"
 sleep 10;
 
-echo -e "${BLUE}Upgrading database schema...${COLOR_OFF}\n"
-# TODO: Modify this to with Haiti project
-# docker exec cbr_django python manage.py migrate
+# echo -e "${BLUE}Upgrading database schema...${COLOR_OFF}\n"
 
-echo -e "\n${BLUE}"
+# Seed the database in the containerized deployment
+# echo -e "\n${BLUE}"
+
 echo -e "Data seeding options:"
 echo -e "   0: No data seeding"
-echo -e "   1: Seed one admin user"
-echo -e "   2: Seed one admin user, defalut zones, and default disabilities (recommended)"
+echo -e "   1: Data seeding (Recommended)"
+# echo -e "   2: Seed one admin user, defalut zones, and default disabilities (recommended)"
 read -p "Enter an option: " OPTION
 echo -e "${COLOR_OFF}"
 
-# TODO: Modify this to with Haiti project
-# case $OPTION in
-#     1)
+case $OPTION in
+    1)
 
-#         docker exec cbr_django python ./manage.py seedadminuser
-        
-#         echo -e "\n${RED}** WRITE DOWN AND SAVE THE USERNAME AND PASSWORD ABOVE! **${COLOR_OFF}"
-#         ;;
+        docker exec -it hhahaiti_server /bin/bash
+        cd /src
+        npm run seed
+        ;;
 
 #     2)
 
@@ -205,6 +209,6 @@ echo -e "${COLOR_OFF}"
         
 #         echo -e "\n${RED}** WRITE DOWN AND SAVE THE USERNAME AND PASSWORD ABOVE! **${COLOR_OFF}"
 #         ;;
-# esac
+esac
 
 echo -e "\n${BLUE}Finished${COLOR_OFF}\n"
