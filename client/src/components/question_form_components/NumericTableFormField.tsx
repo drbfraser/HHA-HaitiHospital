@@ -47,6 +47,7 @@ const NumericTableFormField = ({
   readOnly,
 }: NumericTableFormFieldProps): JSX.Element => {
   const { t, i18n } = useTranslation(); // Use the hook to get the translation function and current language
+  const language = i18n.language.substring(0, 2);
   const greyMask = question.getGreyMask();
   const calculationMask = question.getCalculationMask();
   const [calculatedCellsUpdated, setCalculatedCellsUpdated] = useState(false);
@@ -134,20 +135,20 @@ const NumericTableFormField = ({
 
   return (
     <div style={tableWrapperStyle}>
-      <h4>{t(question.getTableTitle()[i18n.language])}</h4>
+      <h4>{t(question.getTableTitle()[language])}</h4>
       <table className="table table-bordered">
         <thead className="thead-light">
           <tr>
             <th></th>
             {question.getColumnHeaders().map((colHeader, colIndex) => (
-              <th key={colIndex}>{t(colHeader[i18n.language])}</th> // Translate the column header
+              <th key={colIndex}>{t(colHeader[language])}</th> // Translate the column header
             ))}
           </tr>
         </thead>
         <tbody>
           {question.getRowHeaders().map((rowHeader, rowIndex) => (
             <tr key={rowIndex}>
-              <th>{t(rowHeader[i18n.language])}</th>
+              <th>{t(rowHeader[language])}</th>
               {question.getColumnHeaders().map((colHeader, colIndex) => {
                 const sub_question = question.getQuestionAt(rowIndex, colIndex);
 
