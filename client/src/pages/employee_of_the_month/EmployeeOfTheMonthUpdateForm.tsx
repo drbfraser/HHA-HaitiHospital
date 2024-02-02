@@ -32,6 +32,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const { reset } = useForm<EmployeeOfTheMonthModel>({});
+  const [imageIsDeleted, setImageIsDeleted] = useState<boolean>(false);
   const history: History = useHistory<History>();
 
   useEffect(() => {
@@ -88,6 +89,8 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
         onSubmit={onSubmit}
         onImageUpload={onImageUpload}
         data={employeeOfTheMonth}
+        imageIsDeleted={imageIsDeleted}
+        setImageIsDeleted={setImageIsDeleted}
       />
     </Layout>
   );
