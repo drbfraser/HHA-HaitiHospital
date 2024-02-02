@@ -40,8 +40,8 @@ if [ ! -d haiti ]; then
 fi    
 cd ~/haiti/
 git pull
-# git checkout production
-git checkout staging
+git checkout production
+# git checkout staging
 
 
 echo -e "\n${BLUE}Downloading Docker images and spinning up Docker containers...${COLOR_OFF}\n"

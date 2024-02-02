@@ -91,9 +91,10 @@ if [ ! -d haiti ]; then
 fi    
 cd ~/haiti/
 git pull
-# git checkout production
-echo -e "\n${BLUE}We are testing in staging for now...${COLOR_OFF}\n"
-git checkout staging
+git checkout production
+
+# echo -e "\n${BLUE}We are testing in staging for now...${COLOR_OFF}\n"
+# git checkout staging
 
 
 echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
