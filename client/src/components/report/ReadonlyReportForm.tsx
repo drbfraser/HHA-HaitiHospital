@@ -99,11 +99,11 @@ const ReadonlyReportForm = ({
     .reduce((prev, curr) => (curr > prev ? curr : prev));
   const totalCount = reportData.getPagination().length * pageSize;
   const { i18n } = useTranslation();
-  const language = i18n.language;
+  const language = i18n.language.substring(0, 2);
   return (
     <div className="mt-3 p-3">
       <h3 className="mb-3">
-        {reportData.getPrompt()[language.substring(0, 2)]} - {author} - {date}{' '}
+        {reportData.getPrompt()[language]} - {author} - {date}{' '}
       </h3>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (
