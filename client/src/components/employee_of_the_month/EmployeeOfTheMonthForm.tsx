@@ -110,7 +110,6 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
             className="form-control"
             id="employee-image"
             onChange={(e) => imageCompressor(e.target.files[0], props.onImageUpload)}
-            required={!isNonEmptyObject(props.data)}
           />
         </div>
         <div>
