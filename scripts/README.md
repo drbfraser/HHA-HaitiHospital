@@ -52,6 +52,15 @@ This will put the current version of the code from the source branch into the pr
 depends on a docker image for a commit being built just once (when merged to `main`). And commits to
 either the `staging` or `production` branches will break the deployment process.
 
+## Debug
+
+You may need to remove the local repo and re-run the script to debug.
+
+```bash
+$ rm -rf haiti
+$ ./setup_production.sh
+```
+
 ## Tags on Docker Hub
 
 Development, staging, and deployment servers will run docker images pulled from Docker Hub. Images
@@ -61,6 +70,18 @@ are tagged as follows:
 - The build of the latest code on `main` is additionally tagged with `:dev`
 - The build of the latest code on `staging` is additionally tagged with `:staging`
 - The build of the latest code on `production` is additionally tagged with `:prod`
+
+Check docker container status:
+
+```bash
+$ docker ps
+```
+
+or
+
+```bash
+$ docker ps -a
+```
 
 ### Docker Hub Tag Details
 
