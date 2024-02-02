@@ -130,7 +130,7 @@ export const EmployeeOfTheMonthView = () => {
         )}
       </div>
       {employeesOfTheMonth?.length === 0 ? (
-        <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
+        <h2 className="mt-3 fw-bold">{t('employeeOfTheMonthNotFound')}</h2>
       ) : (
         <div>
           <h2 className="mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
