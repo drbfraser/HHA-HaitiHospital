@@ -41,7 +41,6 @@ fi
 cd ~/haiti/
 git pull
 git checkout production
-# git checkout staging
 
 
 echo -e "\n${BLUE}Downloading Docker images and spinning up Docker containers...${COLOR_OFF}\n"
@@ -58,7 +57,7 @@ docker compose -f docker-compose.yml -f docker-compose.deploy.yml up -d
 echo -e "\n${BLUE}Waiting for database to start...${COLOR_OFF}"
 sleep 10;
 
-
+# TODO: Still investigating if we need this in mongoDB
 # echo -e "${BLUE}Upgrading database schema...${COLOR_OFF}\n"
 # docker exec cbr_django python manage.py migrate
 

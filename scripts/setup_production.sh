@@ -93,17 +93,12 @@ cd ~/haiti/
 git pull
 git checkout production
 
-# echo -e "\n${BLUE}We are testing in staging for now...${COLOR_OFF}\n"
-# git checkout staging
-
 
 echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
 
 # TODO: Untested, becuase we have no update.sh file in scripts now
-chmod +X ~/haiti/scripts/update.sh
-ln -s -f ~/haiti/scripts/update.sh ~/update.sh
-
-# chmod +x ~/update.sh
+# chmod +X ~/haiti/scripts/update.sh
+# ln -s -f ~/haiti/scripts/update.sh ~/update.sh
 
 
 # .env file creation
@@ -122,15 +117,8 @@ if [ ! -f .env ]; then
     echo "CORS=http://localhost:3000" >> .env
     echo "SERVER_PORT=8000" >> .env
     echo "TEST_SERVER_PORT=5001" >> .env
-    # echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
-    echo "PASSWORD_SEED=C@td0g" >> .env
+    echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
 
-    # echo "SECRET_KEY=${RAND_SECRET}" >> .env
-    # echo "POSTGRES_USER=dbuser" >> .env
-    # echo "POSTGRES_PASSWORD=${RAND_PASSWORD}" >> .env
-
-    # this is necessary because the Postgres DB password has now been changed
-    # For Haiti project, not too sure if we need this    
 
     echo -e "\n${BLUE}Removing previous Docker containers and volumes...${COLOR_OFF}\n"
     docker compose -f docker-compose.yml -f docker-compose.deploy.yml down
@@ -183,34 +171,29 @@ docker compose -f docker-compose.yml -f docker-compose.deploy.yml up -d
 echo -e "\n${BLUE}Waiting for database container to start...${COLOR_OFF}"
 sleep 10;
 
+# TODO: Still investigating if we need this in mongoDB
 # echo -e "${BLUE}Upgrading database schema...${COLOR_OFF}\n"
 
 # Seed the database in the containerized deployment
 # echo -e "\n${BLUE}"
 
+# print out RAND_PASSWORD for user to save
+echo -e "\n${RED}** This is the password: $RAND_PASSWORD **${COLOR_OFF}"
+echo -e "\n${RED}** WRITE DOWN AND SAVE THE USERNAME AND PASSWORD ABOVE! **${COLOR_OFF}"
+
 echo -e "Data seeding options:"
 echo -e "   0: No data seeding"
 echo -e "   1: Data seeding (Recommended)"
-# echo -e "   2: Seed one admin user, defalut zones, and default disabilities (recommended)"
 read -p "Enter an option: " OPTION
 echo -e "${COLOR_OFF}"
 
 case $OPTION in
     1)
-
+        echo -e "\n${BLUE}Seed the database...${COLOR_OFF}\n"
         docker exec -it hhahaiti_server /bin/bash
         cd /src
         npm run seed
         ;;
-
-#     2)
-
-#         docker exec cbr_django python ./manage.py seedzones
-#         docker exec cbr_django python ./manage.py seeddisabilities
-#         docker exec cbr_django python ./manage.py seedadminuser
-        
-#         echo -e "\n${RED}** WRITE DOWN AND SAVE THE USERNAME AND PASSWORD ABOVE! **${COLOR_OFF}"
-#         ;;
 esac
 
 echo -e "\n${BLUE}Finished${COLOR_OFF}\n"
