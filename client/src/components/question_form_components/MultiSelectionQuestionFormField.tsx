@@ -68,7 +68,7 @@ const MultiSelectionQuestionFormField = ({
   return (
     <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       <div>
-        {inputState !== true && <div className="text-danger">{inputState.message[language.substring(0, 2)]}</div>}
+        {inputState !== true && <div className="text-danger">{inputState.message[language]}</div>}
         {question.getChoices().map((choice: ImmutableChoice, index) => (
           <div className="form-check" key={`${nameId}_${index}`}>
             <input
@@ -81,7 +81,7 @@ const MultiSelectionQuestionFormField = ({
               disabled={readOnly}
             />
             <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
-              {choice.getDescription()[language.substring(0, 2)]}
+              {choice.getDescription()[language]}
             </label>
           </div>
         ))}

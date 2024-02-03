@@ -17,14 +17,14 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
       let array: QuestionRow[] = [];
       const element: QuestionRow = {
         id: specialQuestionItem.id,
-        prompt: specialQuestionItem.prompt[language.substring(0, 2)],
+        prompt: specialQuestionItem.prompt[language],
         answer: specialQuestionItem?.answer,
       };
       array.push(element);
       for (let questionItem of specialQuestionItem.questions) {
         const element: QuestionRow = {
           id: questionItem.id,
-          prompt: questionItem.prompt[language.substring(0, 2)],
+          prompt: questionItem.prompt[language],
           answer: questionItem?.answer,
         };
         array.push(element);
@@ -40,7 +40,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
           const questionItem = tableCell.question;
           const element: QuestionRow = {
             id: questionItem.id,
-            prompt: questionItem.prompt[language.substring(0, 2)],
+            prompt: questionItem.prompt[language],
             answer: questionItem?.answer,
           };
           array.push(element);
@@ -56,7 +56,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
       for (let questionItem of questionItems) {
         const element: QuestionRow = {
           id: questionItem.id,
-          prompt: questionItem.prompt[language.substring(0, 2)],
+          prompt: questionItem.prompt[language],
           answer: questionItem?.answer,
         };
         array.push(element);
