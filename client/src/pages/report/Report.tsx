@@ -62,7 +62,7 @@ export const Report = () => {
   const submitReport = () => {
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
-    const reportPrompt = serializedReport['prompt'][i18n.language || 'en'];
+    const reportPrompt = serializedReport['prompt'][i18n.resolvedLanguage];
     serializedReport['id'] = generateFormId(user?.userDetails?.name, reportPrompt);
     const reportObject = {
       departmentId: currentDepartment.id,
@@ -111,11 +111,11 @@ export const Report = () => {
     };
     currentDepartment && getTemplates();
     // Set the Accept-Language header for Axios requests
-    axios.defaults.headers.common['Accept-Language'] = i18n.language;
+    axios.defaults.headers.common['Accept-Language'] = i18n.resolvedLanguage;
     return () => {
       controller.abort();
     };
-  }, [currentDepartment, history, objectSerializer, i18n.language]);
+  }, [currentDepartment, history, objectSerializer, i18n.resolvedLanguage]);
 
   useEffect(() => {
     if (areChangesMade) {
