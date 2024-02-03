@@ -47,6 +47,7 @@ const NumericTableFormField = ({
   readOnly,
 }: NumericTableFormFieldProps): JSX.Element => {
   const { t, i18n } = useTranslation(); // Use the hook to get the translation function and current language
+  const language = i18n.resolvedLanguage;
   const greyMask = question.getGreyMask();
   const calculationMask = question.getCalculationMask();
   const [calculatedCellsUpdated, setCalculatedCellsUpdated] = useState(false);
