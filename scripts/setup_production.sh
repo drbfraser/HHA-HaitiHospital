@@ -97,14 +97,14 @@ git checkout production
 echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
 
 # TODO: Untested, becuase we have no update.sh file in scripts now
-# chmod +X ~/haiti/scripts/update.sh
-# ln -s -f ~/haiti/scripts/update.sh ~/update.sh
+chmod +X ~/haiti/scripts/update.sh
+ln -s -f ~/haiti/scripts/update.sh ~/update.sh
 
 
 # .env file creation
 if [ ! -f .env ]; then
-    RAND_PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
-    RAND_SECRET=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
+    RAND_PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)
+    RAND_SECRET=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)
 
     echo -e "\n${BLUE}Please enter the domain for this server installation (blank to use IP over HTTP only):${COLOR_OFF}"
     read;
@@ -177,9 +177,42 @@ sleep 10;
 # Seed the database in the containerized deployment
 # echo -e "\n${BLUE}"
 
-# print out RAND_PASSWORD for user to save
-echo -e "\n${RED}** This is the password: $RAND_PASSWORD **${COLOR_OFF}"
-echo -e "\n${RED}** WRITE DOWN AND SAVE THE USERNAME AND PASSWORD ABOVE! **${COLOR_OFF}"
+# print out username and RAND_PASSWORD for user to save
+
+# echo -e "\n${BLUE}"
+# echo "Usernames and roles:"
+# echo "Role: Admin"
+# echo "Username: user0"
+# echo "Role: Medical Director"
+# echo "Username: user1"
+# echo "Role: Head of Department"
+# echo "Username: user2"
+# echo "Role: User"
+# for i in {3..6}
+# do
+#    echo "Username: user$i"
+# done
+# echo -e "${COLOR_OFF}"
+
+# echo -e "\n${RED}** This is the password: $RAND_PASSWORD **${COLOR_OFF}"
+# echo -e "\n${RED}** WRITE DOWN AND SAVE THE USERNAME AND PASSWORD ABOVE! **${COLOR_OFF}"
+
+echo -e "\n${BLUE}Roles and Usernames:"
+echo "----------------------------------"
+echo -e "Role\t\t\tUsername"
+echo "----------------------------------"
+echo -e "Admin\t\t\tuser0"
+echo -e "Medical Director\tuser1"
+echo -e "Head of Department\tuser2"
+echo -e "User\t\t\tuser3 to user6"
+echo "----------------------------------"
+echo -e "${COLOR_OFF}"
+
+echo -e "\n${RED}** IMPORTANT **"
+echo -e "The password for all users is: $RAND_PASSWORD"
+echo -e "Please write down and save this password along with the usernames above."
+echo -e "You will need these credentials to log in to the system."
+echo -e "${COLOR_OFF}"
 
 echo -e "Data seeding options:"
 echo -e "   0: No data seeding"
@@ -190,9 +223,7 @@ echo -e "${COLOR_OFF}"
 case $OPTION in
     1)
         echo -e "\n${BLUE}Seed the database...${COLOR_OFF}\n"
-        docker exec -it hhahaiti_server /bin/bash
-        cd /src
-        npm run seed
+        docker exec -it hhahaiti_server /bin/bash -c "npm run seed"
         ;;
 esac
 
