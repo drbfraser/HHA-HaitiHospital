@@ -5,10 +5,13 @@ import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import ImageModal from 'components/popup_modal/ImageModal';
+import path from 'path';
 
 interface Props {
   onImageUpload: (item: File) => void;
+  removeImageUpload: () => void;
   onSubmit: (data: any) => Promise<void>;
 
   // below is only for update form
@@ -21,6 +24,20 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
   const { register, handleSubmit } = useForm<EmployeeOfTheMonth>({});
+  const [employeeImageSrc, setEmployeeImageSrc] = useState<string | null>(null);
+
+  function handleUploadImage(e) {
+    console.log(e.target.files);
+    imageCompressor(e.target.files[0], props.onImageUpload);
+    setEmployeeImageSrc(URL.createObjectURL(e.target.files[0]));
+  }
+
+  function handleRemoveImage() {
+    props.removeImageUpload();
+    setEmployeeImageSrc(null);
+    const inputElement = document.getElementById("employee-image") as HTMLInputElement
+    inputElement.value = ""
+  }
 
   const toAwardedAt = (awardedMonth: String, awardedYear: String) => {
     const awardedMonthUpdated = awardedMonth.length === 1 ? `0${awardedMonth}` : `${awardedMonth}`;
@@ -30,9 +47,9 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
-      <div className="form-group col-lg-9 col-xl-6">
-        <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
-        <div>
+      <label className="font-weight-bold">{t('headerEmployeeOfTheMonth')}</label>
+      <div className="container-fluid d-flex flex-column flex-lg-row gap-3">
+        <div className="flex-grow-1">
           {props.data && (
             <input
               data-testid="eotm-id"
@@ -116,8 +133,10 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
               <span>Completely delete image</span>
             </label>
           )}
+        </div>
+        <div className="flex-grow-1">
           {(!props.data || (props.data && !props.imageIsDeleted)) && (
-            <div className="">
+            <div>
               <label htmlFor="Employee Image" className="form-label mb-2">
                 Update image
               </label>
@@ -126,16 +145,29 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
                 accept="image/*"
                 className="form-control"
                 id="employee-image"
-                onChange={(e) => imageCompressor(e.target.files[0], props.onImageUpload)}
+                onChange={handleUploadImage}
               />
             </div>
           )}
+          <div className="d-flex flex-column align-items-start mt-3 gap-2">
+          <img
+            className="border"
+            style={{ maxWidth: '250px', width: '100%', maxHeight: '500' }}
+            src={employeeImageSrc || 'https://placehold.co/600x400?font=roboto'}
+            alt={'Employee of the Month Image'}
+          />
+          {employeeImageSrc && (
+            <button className="btn btn-danger" onClick={handleRemoveImage}>
+              Remove Image
+            </button>
+          )}
+          </div>
         </div>
-        <div>
-          <button data-testid="eotm-submit-button" className="btn btn-primary mt-4 " type="submit">
-            {t('employeeOfTheMonthSubmitForm')}
-          </button>
-        </div>
+      </div>
+      <div>
+        <button data-testid="eotm-submit-button" className="btn btn-primary mt-4" type="submit">
+          {t('employeeOfTheMonthSubmitForm')}
+        </button>
       </div>
     </form>
   );

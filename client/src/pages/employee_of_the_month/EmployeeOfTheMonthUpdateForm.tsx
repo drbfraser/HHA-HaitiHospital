@@ -29,7 +29,7 @@ interface Props extends RouteComponentProps<EmployeeViewParams> {}
 export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const { reset } = useForm<EmployeeOfTheMonthModel>({});
   const [imageIsDeleted, setImageIsDeleted] = useState<boolean>(false);
@@ -60,6 +60,10 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     setSelectedFile(item);
   };
 
+  const removeImageUpload = () => {
+    setSelectedFile(null);
+  }
+
   const onSubmitActions = () => {
     toast.success(t('employeeOfTheMonthSuccessfullyUpdated'));
     reset({});
@@ -88,6 +92,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
       <EmployeeOfTheMonthForm
         onSubmit={onSubmit}
         onImageUpload={onImageUpload}
+        removeImageUpload={removeImageUpload}
         data={employeeOfTheMonth}
         imageIsDeleted={imageIsDeleted}
         setImageIsDeleted={setImageIsDeleted}
