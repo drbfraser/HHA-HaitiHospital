@@ -20,7 +20,7 @@ const SingleSelectionQuestionFormField = ({
   readOnly,
 }: SingleSelectionQuestionFormFieldProps) => {
   const { i18n } = useTranslation();
-  const language = i18n.language.substring(0, 2);
+  const language = i18n.language;
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
 
@@ -64,7 +64,7 @@ const SingleSelectionQuestionFormField = ({
   return (
     <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       <div>
-        {inputState !== true && <div className="text-danger">{inputState.message[language]}</div>}
+        {inputState !== true && <div className="text-danger">{inputState.message[language.substring(0, 2)]}</div>}
         {question.getChoices().map((choice: ImmutableChoice, index) => (
           <div className="form-check" key={`${nameId}_${index}`}>
             <input
@@ -77,7 +77,7 @@ const SingleSelectionQuestionFormField = ({
               disabled={readOnly}
             />
             <label className="form-check-label" htmlFor={`${nameId}_${index}`}>
-              {choice.getDescription()[language]}
+              {choice.getDescription()[language.substring(0, 2)]}
             </label>
           </div>
         ))}

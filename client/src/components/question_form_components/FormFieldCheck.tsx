@@ -13,8 +13,8 @@ type FormFieldCheckProps = {
 
 const FormFieldCheck = ({ children, nameId, prompt }: FormFieldCheckProps) => {
   const { i18n } = useTranslation();
-  const language = i18n.language.substring(0, 2);
-  const displayPrompt = prompt[language] || prompt; // Fallback to default prompt if translation is not available
+  const language = i18n.language;
+  const displayPrompt = prompt[language.substring(0, 2)] || prompt; // Fallback to default prompt if translation is not available
 
   return (
     <fieldset className="form-group">

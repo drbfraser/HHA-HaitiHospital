@@ -111,7 +111,7 @@ const ReportForm = ({
   readOnly,
 }: ReportFormProps): JSX.Element => {
   const { t, i18n } = useTranslation();
-  const language = i18n.language.substring(0, 2);
+  const language = i18n.language;
   const numberOfPages = reportData.getPagination().length;
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfCompletedPages, setNumberOfCompletedPages] = useState(0);
@@ -194,7 +194,7 @@ const ReportForm = ({
 
   return (
     <div className="mt-3 p-3">
-      <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
+      <h2 className="mb-3">{reportData.getPrompt()[language.substring(0, 2)]}</h2>
       <form onSubmit={formHandler} noValidate>
         <Group isRootNode>
           <QuestionFormFields
