@@ -19,11 +19,10 @@ const resources = {
 };
 
 i18n.use(initReactI18next).init({
+  debug: true,
   resources,
-  lng: 'en',
-
+  fallbackLng: ['en', 'fr'],
   keySeparator: '.',
-
   interpolation: {
     escapeValue: false,
   },
