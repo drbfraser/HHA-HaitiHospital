@@ -31,11 +31,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "lint-staged": "^15.2.0",
-    "prettier": "^2.8.3"
-  },
   "devDependencies": {
-    "husky": "^9.0.10"
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.1",
+    "prettier": "^3.2.5"
   }
 }
