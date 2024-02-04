@@ -111,7 +111,7 @@ const ReportForm = ({
   readOnly,
 }: ReportFormProps): JSX.Element => {
   const { t, i18n } = useTranslation();
-  const language = i18n.language;
+  const language = i18n.resolvedLanguage;
   const numberOfPages = reportData.getPagination().length;
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfCompletedPages, setNumberOfCompletedPages] = useState(0);
