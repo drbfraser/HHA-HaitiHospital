@@ -218,13 +218,6 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                     {isExpanded && <span className={'text-light'}>{t('sidebarUsers')}</span>}
                     {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarUsers')}</span>}
                   </SidebarItem>
-                  <SidebarItem path="update-permissions">
-                    <i className={`${iconMargins} bi bi-file-earmark-lock2-fill`} />
-                    {isExpanded && <span className={'text-light'}>{t('sidebarPermissions')}</span>}
-                    {!isExpanded && (
-                      <span className={'sidebarTooltip'}>{t('sidebarPermissions')}</span>
-                    )}
-                  </SidebarItem>
                 </ul>
               </li>
 
