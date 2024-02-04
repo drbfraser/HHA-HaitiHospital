@@ -5,9 +5,13 @@ import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ImageModal from 'components/popup_modal/ImageModal';
 import path from 'path';
+import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import Api from '../../actions/Api';
+import { History } from 'history';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   onImageUpload: (item: File) => void;
@@ -25,9 +29,17 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
   const { t } = useTranslation();
   const { register, handleSubmit } = useForm<EmployeeOfTheMonth>({});
   const [employeeImageSrc, setEmployeeImageSrc] = useState<string | null>(null);
+  const history: History = useHistory<History>();
+
+  useEffect(() => {
+    const getEmployeeOfTheMonthImage = async () => {
+      const employeeImage = await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.data.imgPath), history);
+      setEmployeeImageSrc(employeeImage);
+    };
+    props.data?.imgPath && getEmployeeOfTheMonthImage();
+  }, [props.data?.imgPath, history]);
 
   function handleUploadImage(e) {
-    console.log(e.target.files);
     imageCompressor(e.target.files[0], props.onImageUpload);
     setEmployeeImageSrc(URL.createObjectURL(e.target.files[0]));
   }
@@ -35,8 +47,8 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
   function handleRemoveImage() {
     props.removeImageUpload();
     setEmployeeImageSrc(null);
-    const inputElement = document.getElementById("employee-image") as HTMLInputElement
-    inputElement.value = ""
+    // const inputElement = document.getElementById('employee-image') as HTMLInputElement;
+    // inputElement.value = null;  
   }
 
   const toAwardedAt = (awardedMonth: String, awardedYear: String) => {
@@ -44,6 +56,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
     const awardedAt = `${awardedYear}-${awardedMonthUpdated}`;
     return awardedAt;
   };
+
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
@@ -53,7 +66,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
           {props.data && (
             <input
               data-testid="eotm-id"
-              className="form-control mb-2 mt-0"
+              className="form-control mb-2 mt-0 d-none"
               type="text"
               id="employee-eotmid"
               defaultValue={props?.data?.id}
@@ -123,23 +136,13 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
             required
             {...register('description', { required: true })}
           ></textarea>
-          {props.data && (
-            <label className="text-wrap d-flex gap-2">
-              <input
-                type="checkbox"
-                checked={props.imageIsDeleted}
-                onClick={() => props.setImageIsDeleted(!props.imageIsDeleted)}
-              />
-              <span>Completely delete image</span>
-            </label>
-          )}
         </div>
         <div className="flex-grow-1">
-          {(!props.data || (props.data && !props.imageIsDeleted)) && (
-            <div>
-              <label htmlFor="Employee Image" className="form-label mb-2">
-                Update image
-              </label>
+          <div>
+            <label htmlFor="Employee Image" className="form-label mb-2">
+              Image
+            </label>
+            {!employeeImageSrc && (
               <input
                 type="file"
                 accept="image/*"
@@ -147,20 +150,20 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
                 id="employee-image"
                 onChange={handleUploadImage}
               />
-            </div>
-          )}
+            )}
+          </div>
           <div className="d-flex flex-column align-items-start mt-3 gap-2">
-          <img
-            className="border"
-            style={{ maxWidth: '250px', width: '100%', maxHeight: '500' }}
-            src={employeeImageSrc || 'https://placehold.co/600x400?font=roboto'}
-            alt={'Employee of the Month Image'}
-          />
-          {employeeImageSrc && (
-            <button className="btn btn-danger" onClick={handleRemoveImage}>
-              Remove Image
-            </button>
-          )}
+            <img
+              className="border"
+              style={{ maxWidth: '250px', width: '100%', maxHeight: '500' }}
+              src={employeeImageSrc || 'https://placehold.co/600x400?font=roboto'}
+              alt={'Employee of the Month Image'}
+            />
+            {employeeImageSrc && (
+              <button className="btn btn-danger" onClick={handleRemoveImage}>
+                Remove Image
+              </button>
+            )}
           </div>
         </div>
       </div>
