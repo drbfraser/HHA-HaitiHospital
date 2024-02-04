@@ -31,7 +31,7 @@ router.get(
       const { awardedYear, awardedMonth } = req.params;
       const doc = await EOTMCollection.find({
         awardedYear: +awardedYear,
-        awardedMonth: +1,
+        awardedMonth: +awardedMonth,
       });
       // find eotm with current year and month, if not found, find the closest below it.
 
@@ -106,7 +106,7 @@ router.put(
 
       if (imageIsUpdatedBool) {
         deleteUploadedImage(preUpdatedEmployeeOfTheMonth.imgPath);
-        imgPath = req.file ? req.file.path.replace(/\\/g, '/') : "";
+        imgPath = req.file ? req.file.path.replace(/\\/g, '/') : '';
       }
 
       if (!Departments.Database.validateDeptId(department.id)) {

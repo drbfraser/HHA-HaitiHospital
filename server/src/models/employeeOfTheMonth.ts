@@ -44,7 +44,7 @@ const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethod
     awardedYear: { type: Number },
     updatedAt: { type: Date },
     createdAt: { type: Date },
-    imgPath: { type: String }
+    imgPath: { type: String },
   },
   {
     timestamps: true,

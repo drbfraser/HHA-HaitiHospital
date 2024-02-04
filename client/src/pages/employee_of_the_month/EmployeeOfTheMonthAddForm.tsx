@@ -25,7 +25,7 @@ export const EmployeeOfTheMonthAddForm = () => {
 
   const removeImageUpload = () => {
     setSelectedFile(null);
-  }
+  };
 
   const onSubmitActions = () => {
     reset({});
@@ -51,7 +51,11 @@ export const EmployeeOfTheMonthAddForm = () => {
 
   return (
     <Layout showBackButton title={t('headerEmployeeOfTheMonthAddForm')}>
-      <EmployeeOfTheMonthForm onSubmit={onSubmit} onImageUpload={onImageUpload} removeImageUpload={removeImageUpload}/>
+      <EmployeeOfTheMonthForm
+        onSubmit={onSubmit}
+        onImageUpload={onImageUpload}
+        removeImageUpload={removeImageUpload}
+      />
     </Layout>
   );
 };
