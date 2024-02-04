@@ -20,8 +20,7 @@ interface Props {
 
   // below is only for update form
   data?: EmployeeOfTheMonth;
-  imageIsDeleted?: boolean;
-  setImageIsDeleted?: Dispatch<SetStateAction<boolean>>;
+  setImageIsUpdated?: () => void;
 }
 
 export const EmployeeOfTheMonthForm = (props: Props) => {
@@ -41,14 +40,14 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
 
   function handleUploadImage(e) {
     imageCompressor(e.target.files[0], props.onImageUpload);
+    props?.setImageIsUpdated();
     setEmployeeImageSrc(URL.createObjectURL(e.target.files[0]));
   }
 
   function handleRemoveImage() {
     props.removeImageUpload();
+    props?.setImageIsUpdated();
     setEmployeeImageSrc(null);
-    // const inputElement = document.getElementById('employee-image') as HTMLInputElement;
-    // inputElement.value = null;  
   }
 
   const toAwardedAt = (awardedMonth: String, awardedYear: String) => {
@@ -56,7 +55,6 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
     const awardedAt = `${awardedYear}-${awardedMonthUpdated}`;
     return awardedAt;
   };
-
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>

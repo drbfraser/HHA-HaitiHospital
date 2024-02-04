@@ -97,16 +97,16 @@ router.put(
   upload.single('file'),
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { id, name, department, description, awardedMonth, awardedYear } = JSON.parse(
-        req.body.document,
-      );
-
+      const { id, name, department, description, awardedMonth, awardedYear, imageIsUpdated } =
+        JSON.parse(req.body.document);
+      const imageIsUpdatedBool = Boolean(imageIsUpdated);
       const preUpdatedEmployeeOfTheMonth = await EOTMCollection.findById(id);
 
       let imgPath: string = preUpdatedEmployeeOfTheMonth.imgPath;
-      if (req.file) {
-        imgPath = req.file.path.replace(/\\/g, '/');
+
+      if (imageIsUpdatedBool) {
         deleteUploadedImage(preUpdatedEmployeeOfTheMonth.imgPath);
+        imgPath = req.file ? req.file.path.replace(/\\/g, '/') : "";
       }
 
       if (!Departments.Database.validateDeptId(department.id)) {
