@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Element => {
   const [questionRowElements, setQuestionRowElements] = useState<QuestionRow[]>([]);
   const { i18n } = useTranslation();
-  const language = i18n.language;
+  const language = i18n.resolvedLanguage;
 
   const underscoreAmount = (str: string): number => {
     return (str.match(/_/g) || []).length;

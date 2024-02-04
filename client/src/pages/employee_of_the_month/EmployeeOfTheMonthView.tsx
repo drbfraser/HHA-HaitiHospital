@@ -90,62 +90,75 @@ export const EmployeeOfTheMonthView = () => {
     };
   }, [employeeViewParams, history, params]);
 
+  const CarouselButtonGroup: React.FC = () => (
+    <div className="d-flex gap-1">
+      <button
+        type="button"
+        data-bs-target="#eotmCarousel"
+        data-bs-slide="prev"
+        className="btn btn-outline-dark "
+      >
+        <i className="bi bi-caret-left" aria-hidden="true"></i>
+        <span className="visually-hidden">Previous</span>
+      </button>
+      <button
+        type="button"
+        data-bs-target="#eotmCarousel"
+        data-bs-slide="next"
+        className="btn btn-outline-dark"
+      >
+        <span className="bi bi-caret-right" aria-hidden="true"></span>
+        <span className="visually-hidden">Next</span>
+      </button>
+    </div>
+  );
+
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
-      {employeesOfTheMonth?.length === 0 ? (
-        <h2 className="pl-3">{t('employeeOfTheMonthNotFound')}</h2>
-      ) : (
-        <div
-          id="carouselExampleAutoplaying"
-          className="carousel carousel-dark slide"
-          data-bs-ride="carousel"
-        >
-          <div className="carousel-inner">
-            <div className="carousel-item active">
-              <div className="d-block w-100 ">
-                <div className="p-4 m-3  w-100" style={{ height: '500px' }}>
-                  <h2 className="pl-3 mt-3 mb-3 fw-bold">
-                    {t('employeeOfTheMonthTitle').concat(title)}
-                  </h2>
-                </div>
-              </div>
-            </div>
-
-            {employeesOfTheMonth.map((eotm, i) => {
-              return <EmployeeOfTheMonthSummary employee={eotm} key={i} />;
-            })}
-          </div>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="prev"
-          >
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="next"
-          >
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-          </button>
-        </div>
-      )}
-      <Link to="/employee-of-the-month/archive" className="pl-3 mr-3">
-        <button type="button" className="btn btn-outline-dark">
-          {t('employeeOfTheMonthArchive')}
-        </button>
-      </Link>
-      {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-        <Link to="/employee-of-the-month/add">
-          <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-            {t('employeeOfTheMonthAdd')}
+      <div className="d-flex flex-column flex-sm-row gap-1">
+        <Link to="/employee-of-the-month/archive" className="mr-3">
+          <button type="button" className="btn btn-outline-dark">
+            {t('employeeOfTheMonthArchive')}
           </button>
         </Link>
+        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+          <Link to="/employee-of-the-month/add" className="">
+            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+              {t('employeeOfTheMonthAdd')}
+            </button>
+          </Link>
+        )}
+      </div>
+      {employeesOfTheMonth?.length === 0 ? (
+        <h2 className="mt-3 fw-bold">{t('employeeOfTheMonthNotFound')}</h2>
+      ) : (
+        <div>
+          <h2 className="mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
+          <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div className="carousel-indicators">
+              {new Array(employeesOfTheMonth.length).fill(0).map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  data-bs-target="#eotmCarousel"
+                  data-bs-slide-to={index}
+                  className="active"
+                  aria-current="true"
+                  aria-label={`Slide ${index + 1}`}
+                ></button>
+              ))}
+            </div>
+
+            <div className="carousel-inner my-2">
+              {employeesOfTheMonth.map((eotm, i) => (
+                <div className={`carousel-item ${i == 0 ? 'active' : ''}`} key={i}>
+                  <EmployeeOfTheMonthSummary employee={eotm} />
+                </div>
+              ))}
+            </div>
+            <CarouselButtonGroup />
+          </div>
+        </div>
       )}
     </Layout>
   );
