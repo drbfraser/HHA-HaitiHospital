@@ -1,7 +1,6 @@
-import { useReducer, useEffect, createContext, useContext, useState, Dispatch } from 'react';
+import { useReducer, createContext, useContext, useState, Dispatch } from 'react';
 import { initialState, AuthReducer } from './reducer';
 import { UserJson } from 'constants/interfaces';
-import { useTranslation } from 'react-i18next';
 
 const AuthStateContext = createContext<any>({} as any);
 
@@ -27,12 +26,6 @@ export function useAuthDispatch() {
 
 export const AuthProvider = ({ children }) => {
   const [user, dispatch] = useReducer(AuthReducer, initialState);
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    i18n.changeLanguage(localStorage.getItem('lang') ?? window.navigator.language);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <AuthStateContext.Provider value={user}>

@@ -21,7 +21,6 @@ type SideBarItemProps = {
 
 export const changeLanguage = (ln, i18n) => {
   return () => {
-    localStorage.setItem('lang', ln);
     i18n.changeLanguage(ln);
   };
 };

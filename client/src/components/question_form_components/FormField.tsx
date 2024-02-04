@@ -21,11 +21,10 @@ type FormFieldProps = {
 };
 
 const FormField = (props: FormFieldProps) => {
-  const {
-    i18n: { language },
-  } = useTranslation();
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage;
 
-  const prompt = props.prompt[language.substring(0, 2)] || props.prompt || '';
+  const prompt = props.prompt[language] || props.prompt || '';
   const value = props.value ?? ''; // Set a default value if props.value is null
   const label = props.nameId.replaceAll('_', '.');
 

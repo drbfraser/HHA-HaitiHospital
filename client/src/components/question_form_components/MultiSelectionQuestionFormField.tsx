@@ -20,7 +20,7 @@ const MultiSelectionQuestionFormField = ({
   readOnly,
 }: MultiSelectionQuestionFormFieldProps) => {
   const { i18n } = useTranslation();
-  const language = i18n.language;
+  const language = i18n.resolvedLanguage;
   const nameId = `${question.getId()}${suffixName}`;
   const inputState = question.getValidationResults();
 

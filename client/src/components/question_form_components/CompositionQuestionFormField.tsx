@@ -23,7 +23,7 @@ const CompositionQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
   const { i18n } = useTranslation();
   const prompt = question.getPrompt();
-  const language = i18n.language;
+  const language = i18n.resolvedLanguage;
   const promptValue = prompt && prompt[language] ? prompt[language] : '';
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
