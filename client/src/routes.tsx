@@ -26,7 +26,6 @@ import { PathPatterns } from 'constants/paths';
 import { Report } from 'pages/report/Report';
 import ReportView from 'pages/report/ReportView';
 import { Role } from 'constants/interfaces';
-import { UpdatePermissions } from 'pages/permissions/UpdatePermissions';
 import { UploadReport } from 'pages/report/UploadReport';
 import { EmployeeOfTheMonthUpdateForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthUpdateForm';
 
@@ -70,14 +69,6 @@ const routes = [
     path: '/upload-report',
     key: 'upload_report',
     component: UploadReport,
-    loginRequired: true,
-    rolesAllowed: [Role.Admin],
-    departmentsAllowed: [],
-  },
-  {
-    path: '/update-permissions',
-    key: 'update_permissions',
-    component: UpdatePermissions,
     loginRequired: true,
     rolesAllowed: [Role.Admin],
     departmentsAllowed: [],

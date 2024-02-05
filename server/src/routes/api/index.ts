@@ -9,7 +9,6 @@ import imageRoutes from './image';
 import authRoutes from './authentication';
 import employeeOfTheMonthRoutes from './employeeOfTheMonth';
 import templateRoutes from './template';
-import permissionRoutes from './permission';
 import departmentRoutes from './departments';
 import messageBoardCommentRoutes from './messageBoardComment';
 
@@ -25,7 +24,6 @@ router.use('/image', imageRoutes);
 router.use('/message-board', messageBoardRoutes);
 router.use('/employee-of-the-month', employeeOfTheMonthRoutes);
 router.use('/template', templateRoutes);
-router.use('/permission', permissionRoutes);
 router.use('/department', departmentRoutes);
 router.use('/message-board/comments/', messageBoardCommentRoutes);
 
