@@ -14,7 +14,6 @@ import {
   TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
-
 import Api from '../../actions/Api';
 import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
 import { History } from 'history';
