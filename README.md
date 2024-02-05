@@ -226,7 +226,7 @@ We would need a Prometheus config file that would push logs to the production Gr
 
 ## Prettier Setup
 
-We use prettier as our code formatter. The repo provides a prettier config to unify our styles.
+We use prettier as our code formatter. The repo provides a prettier config to unify our styles. Prettier is run automatically on staged files whenever code is committed.
 
 - Install Prettier as a VSCode extension
 - Navigate to the root directory
@@ -238,6 +238,36 @@ npm run format
 ```
 
 Our prettier config is set to format code on file save.
+
+Note:
+- `npm run format` - formats all the files, usually not needed since we added husky precommit on staged files
+- `npm run precommit` - formats only staged files. This is git-precommit hook to do prettier on staged files
+
+### Troubleshooting commit error
+
+If you encounter:
+
+```
+> lint-staged
+
+⚠ Some of your tasks use `git add` command. Please remove it from the config since all modifications made by tasks will be automatically added to the git commit index.
+
+✔ Preparing lint-staged...
+✔ Hiding unstaged changes to partially staged files...
+✔ Running tasks for staged files...
+✖ Prevented an empty git commit!
+↓
+  ✖ lint-staged failed due to a git error.
+✔ Reverting to original state because of errors...
+✔ Cleaning up temporary files...
+
+  ⚠ lint-staged prevented an empty git commit.
+  Use the --allow-empty option to continue, or check your task configuration
+
+husky - pre-commit script failed (code 1)
+```
+
+This means the code that you change is only due to formatting reason - the code after formatted is the same as latest commit. You need to make a change that does not only contain formatting.
 
 ## Docker Setup
 
