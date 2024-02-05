@@ -15,12 +15,16 @@ import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/Employe
 export const EmployeeOfTheMonthAddForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { reset } = useForm<EmployeeOfTheMonthModel>({});
   const history: History = useHistory<History>();
 
   const onImageUpload = (item: File) => {
     setSelectedFile(item);
+  };
+
+  const removeImageUpload = () => {
+    setSelectedFile(null);
   };
 
   const onSubmitActions = () => {
@@ -47,7 +51,11 @@ export const EmployeeOfTheMonthAddForm = () => {
 
   return (
     <Layout showBackButton title={t('headerEmployeeOfTheMonthAddForm')}>
-      <EmployeeOfTheMonthForm onSubmit={onSubmit} onImageUpload={onImageUpload} />
+      <EmployeeOfTheMonthForm
+        onSubmit={onSubmit}
+        onImageUpload={onImageUpload}
+        removeImageUpload={removeImageUpload}
+      />
     </Layout>
   );
 };

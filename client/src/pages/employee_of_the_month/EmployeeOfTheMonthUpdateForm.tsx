@@ -14,7 +14,6 @@ import {
   TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
 } from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
-
 import Api from '../../actions/Api';
 import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
 import { History } from 'history';
@@ -29,9 +28,10 @@ interface Props extends RouteComponentProps<EmployeeViewParams> {}
 export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
   const { reset } = useForm<EmployeeOfTheMonthModel>({});
+  const [imageIsUpdated, setImageIsUpdated] = useState<boolean>(false);
   const history: History = useHistory<History>();
 
   useEffect(() => {
@@ -59,6 +59,10 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     setSelectedFile(item);
   };
 
+  const removeImageUpload = () => {
+    setSelectedFile(null);
+  };
+
   const onSubmitActions = () => {
     toast.success(t('employeeOfTheMonthSuccessfullyUpdated'));
     reset({});
@@ -70,9 +74,14 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     let formData = new FormData();
     data.department = departments.get(data.department);
     [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
+    data.imageIsUpdated = imageIsUpdated.toString();
     let postData = JSON.stringify(data);
+
     formData.append('document', postData);
-    formData.append('file', selectedFile);
+    if (imageIsUpdated && selectedFile) {
+      formData.append('file', selectedFile);
+    }
+
     await Api.Put(
       ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
       formData,
@@ -87,7 +96,9 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
       <EmployeeOfTheMonthForm
         onSubmit={onSubmit}
         onImageUpload={onImageUpload}
+        removeImageUpload={removeImageUpload}
         data={employeeOfTheMonth}
+        setImageIsUpdated={() => setImageIsUpdated(true)}
       />
     </Layout>
   );

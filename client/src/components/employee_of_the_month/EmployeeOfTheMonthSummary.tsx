@@ -6,8 +6,6 @@ import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
-import { Role } from 'constants/interfaces';
-import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
@@ -42,13 +40,12 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
       );
       setEmployeeImage(employeeImage);
     };
-
     props.employee.imgPath && getEmployeeOfTheMonthImage();
   }, [props.employee.imgPath, history]);
 
   return (
     <div className="d-block w-100">
-      <div className="p-3 w-100 overflow-auto border" style={{ height: '500px' }}>
+      <div className="p-3 w-100 overflow-auto border rounded shadow-sm" style={{ height: '500px' }}>
         <ImageModal
           show={showImageModal}
           item={ALT_MESSAGE}

@@ -6,11 +6,11 @@ export interface EmployeeOfTheMonth {
   name: string;
   department: Department;
   description: string;
-  imgPath: string;
   awardedMonth: number;
   awardedYear: number;
   createdAt: string;
   updatedAt: string;
+  imgPath?: string;
 }
 
 export interface RouteComponentProps<P> {
