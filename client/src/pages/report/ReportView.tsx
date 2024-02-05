@@ -17,6 +17,7 @@ import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'constants/interfaces';
+import CsvGenerator from 'components/report/CSVExport';
 
 const ReportView = () => {
   const user = useAuthState();
@@ -235,6 +236,8 @@ const ReportView = () => {
           )}
 
           {readOnly ? (
+            <div>
+            <CsvGenerator questionItems={report}/>
             <ReadonlyReportForm
               applyReportChanges={applyReportChanges}
               btnText="Edit"
@@ -247,6 +250,7 @@ const ReportView = () => {
               author={metaData?.submittedBy}
               questionItems={questionItems}
             />
+            </div>
           ) : (
             <ReportForm
               applyReportChanges={applyReportChanges}
