@@ -4,8 +4,8 @@ services:
   server:
     image: node:18
     volumes:
-      - ./server:/code
-    working_dir: /code
+      - ./:/code
+    working_dir: /code/server
     command: npm start
     ports:
       - '8000:8000'
