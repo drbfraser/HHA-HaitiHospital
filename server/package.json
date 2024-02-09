@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": {
-    "node": "16"
-  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --trace-warnings --transpile-only src/app.ts",
