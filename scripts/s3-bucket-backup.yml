@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   S3BucketName:
     Type: String
-    Default: hha-cbr-backup
+    Default: hha-haiti-backup
   IAMUserName:
     Type: String
     Default: BackupUser

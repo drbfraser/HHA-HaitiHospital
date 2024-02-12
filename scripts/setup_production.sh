@@ -97,7 +97,7 @@ git checkout production
 echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
 
 # TODO: Untested, becuase we have no update.sh file in scripts now
-chmod +X ~/haiti/scripts/update.sh
+chmod +x ~/haiti/scripts/update.sh
 ln -s -f ~/haiti/scripts/update.sh ~/update.sh
 
 
@@ -119,26 +119,29 @@ if [ ! -f .env ]; then
     echo "TEST_SERVER_PORT=5001" >> .env
     echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
 
+    # Set the default username
+    echo "MONGO_USER=user0" >> .env
+
 
     echo -e "\n${BLUE}Removing previous Docker containers and volumes...${COLOR_OFF}\n"
     docker compose -f docker-compose.yml -f docker-compose.deploy.yml down
     docker volume prune -f
 
-    # echo -e "\n${BLUE}Enter the name of the S3 bucket you want to sync with:${COLOR_OFF}"
-    # read;
-    # echo "S3_BUCKET_NAME=${REPLY}" >> .env
+    echo -e "\n${BLUE}Enter the name of the S3 bucket you want to sync with:${COLOR_OFF}"
+    read;
+    echo "S3_BUCKET_NAME=${REPLY}" >> .env
 fi
 
 # TODO: AWS is the next step for Haiti project
 
-# echo -e "\n${BLUE}Installing AWS CLI..."
-# echo -e "  If you have not already done so, create the AWS S3 bucket and user by uploading"
-# echo -e "  the s3-bucket-backups.yml file to AWS CloudFormation on your AWS account."
-# echo -e "  Once you setup the IAM user it will give you the public and secret key that"
-# echo -e "  AWS CLI needs here.${COLOR_OFF}\n"
+echo -e "\n${BLUE}Installing AWS CLI..."
+echo -e "  If you have not already done so, create the AWS S3 bucket and user by uploading"
+echo -e "  the s3-bucket-backups.yml file to AWS CloudFormation on your AWS account."
+echo -e "  Once you setup the IAM user it will give you the public and secret key that"
+echo -e "  AWS CLI needs here.${COLOR_OFF}\n"
 
-# sudo apt-get install awscli
-# aws configure
+sudo apt-get install awscli
+aws configure
 
 # echo -e "\n${BLUE}Creating backup log files & setting up cron jobs...${COLOR_OFF}\n"
 
@@ -174,29 +177,6 @@ sleep 10;
 # TODO: Still investigating if we need this in mongoDB
 # echo -e "${BLUE}Upgrading database schema...${COLOR_OFF}\n"
 
-# Seed the database in the containerized deployment
-# echo -e "\n${BLUE}"
-
-# print out username and RAND_PASSWORD for user to save
-
-# echo -e "\n${BLUE}"
-# echo "Usernames and roles:"
-# echo "Role: Admin"
-# echo "Username: user0"
-# echo "Role: Medical Director"
-# echo "Username: user1"
-# echo "Role: Head of Department"
-# echo "Username: user2"
-# echo "Role: User"
-# for i in {3..6}
-# do
-#    echo "Username: user$i"
-# done
-# echo -e "${COLOR_OFF}"
-
-# echo -e "\n${RED}** This is the password: $RAND_PASSWORD **${COLOR_OFF}"
-# echo -e "\n${RED}** WRITE DOWN AND SAVE THE USERNAME AND PASSWORD ABOVE! **${COLOR_OFF}"
-
 echo -e "\n${BLUE}Roles and Usernames:"
 echo "----------------------------------"
 echo -e "Role\t\t\tUsername"
@@ -222,7 +202,7 @@ echo -e "${COLOR_OFF}"
 
 case $OPTION in
     1)
-        echo -e "\n${BLUE}Seed the database...${COLOR_OFF}\n"
+        echo -e "\n${BLUE}Seed the database in the containerized deployment${COLOR_OFF}\n"
         docker exec -it hhahaiti_server /bin/bash -c "npm run seed"
         ;;
 esac
