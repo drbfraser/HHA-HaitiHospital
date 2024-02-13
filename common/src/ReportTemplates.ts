@@ -2132,6 +2132,98 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   const { en: q19_rows_en, fr: q19_rows_fr } = separateLanguages(q19_rows);
   const { en: q19_columns_en, fr: q19_columns_fr } = separateLanguages(q19_columns);
 
+  const q19_calculationMask: Array<Array<cellIndices>> = [
+    [
+      // For each cell in row 0 (0-3 Months)
+      [],
+      [],
+      [],
+      [],
+      [],
+      // Total Visits for 0-3 Months
+      [
+        [0, 0], // 1st Visit
+        [0, 1], // 2nd Visit
+        [0, 2], // 3rd Visit
+        [0, 3], // 4th Visit
+        [0, 4], // 5th+ Visit
+      ],
+    ],
+    [
+      // For each cell in row 1 (4-6 Months)
+      [],
+      [],
+      [],
+      [],
+      [],
+      // Total Visits for 4-6 Months
+      [
+        [1, 0], // 1st Visit
+        [1, 1], // 2nd Visit
+        [1, 2], // 3rd Visit
+        [1, 3], // 4th Visit
+        [1, 4], // 5th+ Visit
+      ],
+    ],
+    [
+      // For each cell in row 2 (7-9 Months)
+      [],
+      [],
+      [],
+      [],
+      [],
+      // Total Visits for 7-9 Months
+      [
+        [2, 0], // 1st Visit
+        [2, 1], // 2nd Visit
+        [2, 2], // 3rd Visit
+        [2, 3], // 4th Visit
+        [2, 4], // 5th+ Visit
+      ],
+    ],
+    // Total Visits Row
+    [
+      // 1st Visit
+      [
+        [0, 0], // 0-3 Months
+        [1, 0], // 4-6 Months
+        [2, 0], // 7-9 Months
+      ],
+      // 2nd Visit
+      [
+        [0, 1], // 0-3 Months
+        [1, 1], // 4-6 Months
+        [2, 1], // 7-9 Months
+      ],
+      // 3rd Visit
+      [
+        [0, 2], // 0-3 Months
+        [1, 2], // 4-6 Months
+        [2, 2], // 7-9 Months
+      ],
+      // 4th Visit
+      [
+        [0, 3], // 0-3 Months
+        [1, 3], // 4-6 Months
+        [2, 3], // 7-9 Months
+      ],
+      // 5th+ Visit
+      [
+        [0, 4], // 0-3 Months
+        [1, 4], // 4-6 Months
+        [2, 4], // 7-9 Months
+      ],
+      // Total Visits
+      [
+        [3, 0], // 1st Visit
+        [3, 1], // 2nd Visit
+        [3, 2], // 3rd Visit
+        [3, 3], // 4th Visit
+        [3, 4], // 5th+ Visit
+      ],
+    ],
+  ];
+
   // Create the NumericTable
   const q19: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '19',
@@ -2145,6 +2237,7 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
         en: `Question for ${q19_rows_en[row]} and ${q19_columns_en[col]}`,
         fr: `Question pour ${q19_rows_fr[row]} et ${q19_columns_fr[col]}`,
       }),
+    q19_calculationMask,
   );
 
   // Question 20 Table
