@@ -2215,11 +2215,26 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
       ],
       // Total Visits
       [
-        [3, 0], // 1st Visit
-        [3, 1], // 2nd Visit
-        [3, 2], // 3rd Visit
-        [3, 3], // 4th Visit
-        [3, 4], // 5th+ Visit
+        // 0 - 3 Months
+        [0, 0], // 1st Visit
+        [0, 1], // 2nd Visit
+        [0, 2], // 3rd Visit
+        [0, 3], // 4th Visit
+        [0, 4], // 5th+ Visit
+
+        // 4 - 6 Months
+        [1, 0], // 1st Visit
+        [1, 1], // 2nd Visit
+        [1, 2], // 3rd Visit
+        [1, 3], // 4th Visit
+        [1, 4], // 5th+ Visit
+
+        // 7 - 9 Months
+        [2, 0], // 1st Visit
+        [2, 1], // 2nd Visit
+        [2, 2], // 3rd Visit
+        [2, 3], // 4th Visit
+        [2, 4], // 5th+ Visit
       ],
     ],
   ];
