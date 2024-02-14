@@ -95,7 +95,7 @@ interface ReportStatus {
 
 interface ReportFormProps {
   applyReportChanges?: () => void;
-  formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
+  formHandler?: (event: React.FormEvent<HTMLFormElement>, isDraft?: boolean) => void;
   isSubmitting: boolean;
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
@@ -194,23 +194,17 @@ const ReportForm = ({
 
   // formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
 
-  const ponyoHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const clickedButton = event.currentTarget.querySelector('input[type="submit"]:focus');
-    console.log(
-      'clickedButton',
-      clickedButton.getAttribute('name'),
-      clickedButton.getAttribute('value'),
-    );
-    console.log(event.currentTarget);
-    formHandler(event);
+    const isDraft = clickedButton.getAttribute('name') === 'save';
+    formHandler(event, isDraft);
   };
 
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
-      <form onSubmit={ponyoHandler} noValidate>
+      <form onSubmit={formHandlerWrapper} noValidate>
         <Group isRootNode>
           <QuestionFormFields
             applyReportChanges={applyReportChanges}
@@ -230,10 +224,9 @@ const ReportForm = ({
           <div className="position-sticky bottom-0 py-3">
             <input
               className={`btn btn-secondary`}
-              name="action"
+              name="save"
               type="submit"
-              formAction="save"
-              value="save_draft"
+              value="Save as Draft"
             />
           </div>
         </div>

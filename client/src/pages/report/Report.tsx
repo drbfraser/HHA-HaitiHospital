@@ -25,6 +25,7 @@ export const Report = () => {
   const [isShowingSubmissionModal, setIsShowingSubmissionModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
+  const [isDraft, setIsDraft] = useState<boolean>(false);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
@@ -54,16 +55,13 @@ export const Report = () => {
     setReport(undefined);
   };
 
-  const confirmSubmission = (event: FormEvent<HTMLFormElement>) => {
-    console.log('EVENT', event);
-    // console.log("EVENT", event.);
-    console.log('THIS', this);
+  const confirmSubmission = (event: FormEvent<HTMLFormElement>, isDraft: boolean) => {
     event.preventDefault();
+    setIsDraft(isDraft);
     setIsShowingSubmissionModal(true);
   };
 
   const submitReport = () => {
-    console.log('Submitted report', report);
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportPrompt = serializedReport['prompt'][i18n.resolvedLanguage];
@@ -74,8 +72,8 @@ export const Report = () => {
       serializedReport,
       submittedUserId: user?.userDetails?.id,
       submittedBy: user?.userDetails?.name,
+      isDraft: isDraft,
     };
-    console.log('reportObject', reportObject);
     setIsSubmitting(true);
     setIsShowingSubmissionModal(false);
     setAreChangesMade(false);
@@ -92,7 +90,6 @@ export const Report = () => {
   };
 
   useEffect(() => {
-    console.log('currentDepartment', currentDepartment);
     const controller = new AbortController();
     const getTemplates = async () => {
       try {
@@ -103,7 +100,6 @@ export const Report = () => {
           controller.signal,
         );
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
-        console.log('reportTemplateJson', reportTemplateJson);
 
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
           objectSerializer.deserialize(reportTemplateJson);

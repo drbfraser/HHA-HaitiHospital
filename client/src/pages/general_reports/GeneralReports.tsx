@@ -47,6 +47,7 @@ const GeneralReports = () => {
       controller.signal,
     );
     setReports(fetchedReports);
+    console.log('fetchedReports', fetchedReports);
     return () => {
       controller.abort();
     };
@@ -126,8 +127,14 @@ const GeneralReports = () => {
       accessorKey: 'submittedBy',
     },
     {
-      id: 'Options',
+      header: 'isDraft',
+      id: 'isDraft',
+      cell: (row) => <span>{row?.getValue() ? 'HELLO' : 'WOW'}</span>,
+      accessorKey: 'isDraft',
+    },
+    {
       header: t('reportsOptions'),
+      id: 'Options',
       enableGlobalFilter: false,
       enableColumnFilter: false,
       cell: (row) => (

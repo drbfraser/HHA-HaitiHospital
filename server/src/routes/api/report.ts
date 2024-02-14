@@ -24,14 +24,16 @@ import { Role } from 'models/user';
 
 const router = Router();
 
-// Save report
+// Submit or Save as Draft - report
 router.post(
   '/',
   requireJwtAuth,
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport } =
+      const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport, isDraft } =
         req.body;
+
+      console.log(`isDraft ${typeof isDraft} ${isDraft}`);
 
       const authorized = checkUserCanCreateReport(req.user, departmentId);
 
@@ -46,6 +48,7 @@ router.post(
         submittedBy,
         reportMonth,
         reportObject: serializedReport,
+        isDraft: isDraft,
       });
 
       const saved = await newReport.save();
