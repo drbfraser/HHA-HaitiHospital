@@ -55,11 +55,15 @@ export const Report = () => {
   };
 
   const confirmSubmission = (event: FormEvent<HTMLFormElement>) => {
+    console.log('EVENT', event);
+    // console.log("EVENT", event.);
+    console.log('THIS', this);
     event.preventDefault();
     setIsShowingSubmissionModal(true);
   };
 
   const submitReport = () => {
+    console.log('Submitted report', report);
     const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportPrompt = serializedReport['prompt'][i18n.resolvedLanguage];
@@ -71,7 +75,7 @@ export const Report = () => {
       submittedUserId: user?.userDetails?.id,
       submittedBy: user?.userDetails?.name,
     };
-
+    console.log('reportObject', reportObject);
     setIsSubmitting(true);
     setIsShowingSubmissionModal(false);
     setAreChangesMade(false);

@@ -8,7 +8,7 @@ import {
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { QuestionGroup, QuestionNode } from '@hha/common';
 
 import Pagination from 'components/pagination/Pagination';
@@ -192,10 +192,25 @@ const ReportForm = ({
     setNumberOfCompletedPages(completedPagesCount);
   }, [reportStatus]);
 
+  // formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
+
+  const ponyoHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const clickedButton = event.currentTarget.querySelector('input[type="submit"]:focus');
+    console.log(
+      'clickedButton',
+      clickedButton.getAttribute('name'),
+      clickedButton.getAttribute('value'),
+    );
+    console.log(event.currentTarget);
+    formHandler(event);
+  };
+
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
-      <form onSubmit={formHandler} noValidate>
+      <form onSubmit={ponyoHandler} noValidate>
         <Group isRootNode>
           <QuestionFormFields
             applyReportChanges={applyReportChanges}
@@ -206,12 +221,24 @@ const ReportForm = ({
             suffixName=""
           />
         </Group>
-        <SubmitButton
-          buttonText={t(`button.${btnText.toLowerCase()}`)}
-          disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
-          readOnly={readOnly}
-        />
+        <div className="d-flex gap-2">
+          <SubmitButton
+            buttonText={t(`button.${btnText.toLowerCase()}`)}
+            disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
+            readOnly={readOnly}
+          />
+          <div className="position-sticky bottom-0 py-3">
+            <input
+              className={`btn btn-secondary`}
+              name="action"
+              type="submit"
+              formAction="save"
+              value="save_draft"
+            />
+          </div>
+        </div>
       </form>
+
       <Pagination
         className="pagination-bar"
         currentPage={currentPage}
