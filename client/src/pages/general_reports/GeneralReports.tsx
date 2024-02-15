@@ -108,7 +108,12 @@ const GeneralReports = () => {
     {
       header: t('reportsReportId'),
       id: 'reportName',
-      accessorKey: 'reportName',
+      cell: (row) => (
+        <span>
+          {row.getValue().reportName} {row.getValue().isDraft ? 'Draft' : ''}
+        </span>
+      ),
+      accessorFn: (row) => row,
     },
     {
       header: t('leaderBoardOverviewDepartment'),
@@ -125,12 +130,6 @@ const GeneralReports = () => {
       header: t('reportsSubmittedBy'),
       id: 'submittedBy',
       accessorKey: 'submittedBy',
-    },
-    {
-      header: 'isDraft',
-      id: 'isDraft',
-      cell: (row) => <span>{row?.getValue() ? 'HELLO' : 'WOW'}</span>,
-      accessorKey: 'isDraft',
     },
     {
       header: t('reportsOptions'),
@@ -182,6 +181,7 @@ const GeneralReports = () => {
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
     submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
     submittedBy: item.submittedBy,
+    isDraft: item.isDraft,
   }));
 
   return (
