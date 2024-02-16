@@ -33,8 +33,6 @@ router.post(
       const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport, isDraft } =
         req.body;
 
-      console.log(`isDraft ${typeof isDraft} ${isDraft}`);
-
       const authorized = checkUserCanCreateReport(req.user, departmentId);
 
       if (!authorized) {
@@ -148,7 +146,7 @@ router.delete(
 );
 
 router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
-  const { id, serializedReport } = req.body;
+  const { id, serializedReport, isDraft } = req.body;
 
   const report = await ReportCollection.findById(id);
 
@@ -163,6 +161,7 @@ router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
   }
 
   report.reportObject = cloneDeep(serializedReport);
+  report.isDraft = isDraft;
 
   await report.save();
 
