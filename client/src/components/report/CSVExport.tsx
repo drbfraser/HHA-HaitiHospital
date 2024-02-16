@@ -1,42 +1,97 @@
-import { QuestionGroup, QuestionNode } from '@hha/common';
-import { ExpandableQuestion, CompositionQuestion } from '@hha/common';
+import { QuestionRow } from 'constants/interfaces';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { underscoreAmount } from './utils';
 
-export const CsvGenerator = ({questionItems}:{questionItems: QuestionGroup<ID, ErrorType>}) => {
-  const [csvData, setCsvData] = useState<string | null>(null);
-  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
-
-  const generateColumnNames = () => {
-
-  }
-
-  const handleComposite = (q:CompositionQuestion<string,string>) => {
-    // parse composite
-  }
-
-  const handleExpandable = (q:ExpandableQuestion<string,string>) => {
-  
-  }
-  
-  const handleIndividualQuestion = (q:any) => {
-  
-  }
-
-  const handleGenerateCsv = () => {
-    const rows = questionItems
-        .map<[QuestionNode<ID, ErrorType>, void]>({
-          compositionQuestion: (q) => [q, handleComposite(q)],
-          expandableQuestion: (q) => [q, handleExpandable(q)],
-          multipleSelectionQuestion: (q) => [q, handleIndividualQuestion(q)],
-          numericQuestion: (q) => [q, handleIndividualQuestion(q)],
-          numericTableQuestion: (q) => [q, handleIndividualQuestion(q)],
-          questionGroup: (q) => [q, handleIndividualQuestion(q)],
-          singleSelectionQuestion: (q) => [q, handleIndividualQuestion(q)],
-          textQuestion: (q) => [q, handleIndividualQuestion(q)],
-        })
-    // setCsvData(csvContent);
+export const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {
+  let array: QuestionRow[] = [];
+  const element: QuestionRow = {
+    id: specialQuestionItem.id,
+    prompt_fr: specialQuestionItem.prompt.fr,
+    prompt_en: specialQuestionItem.prompt.en,
+    answer: specialQuestionItem?.answer,
   };
+  array.push(element);
+  for (let questionItem of specialQuestionItem.questions) {
+    const element: QuestionRow = {
+      id: questionItem.id,
+      prompt_fr: questionItem.prompt.fr,
+      prompt_en: questionItem.prompt.en,
+      answer: questionItem?.answer,
+    };
+    array.push(element);
+  }
+
+  return array;
+};
+
+export const processTableQuestion = (tableItem): QuestionRow[] => {
+  let array: QuestionRow[] = [];
+  const questionTable = tableItem.questionTable;
+  for (let questionRows of questionTable) {
+    for (let tableCell of questionRows) {
+      const questionItem = tableCell.question;
+      const element: QuestionRow = {
+        id: questionItem.id,
+        prompt_fr: questionItem.prompt.fr,
+        prompt_en: questionItem.prompt.en,
+        answer: questionItem?.answer,
+      };
+      array.push(element);
+    }
+  }
+
+  return array;
+};
+
+export const CsvGenerator = ({questionItems}:{questionItems: any[]}) => {
+  const [csvData, setCsvData] = useState<string | null>(null);
+  const handleGenerateCsv = () => { 
+    const generateCsv = () => {
+      let array: QuestionRow[] = []
+      for (let questionItem of questionItems) {
+          const element: QuestionRow = {
+            id: questionItem.id,
+            prompt_en: questionItem.prompt?.en,
+            prompt_fr: questionItem?.prompt?.fr,
+            answer: questionItem?.answer,
+          };
+          array.push(element);
+          if (questionItem.__class__ === 'CompositionQuestion') {
+            for (let nestedQuestionItem of questionItem.compositionGroups) {
+              const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
+              array = array.concat(subArray);
+            }
+          }
+          if (questionItem.__class__ === 'SpecializedGroup') {
+            for (let nestedQuestionItem of questionItem.questions) {
+              const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
+              array = array.concat(subArray);
+            }
+          }
+          if (questionItem.__class__ === 'NumericTable') {
+            const subArray = processTableQuestion(questionItem);
+            array = array.concat(subArray);
+          }
+        }
+
+        let csvString = "";
+        let separator = ",";
+        for (const row of array) {
+          csvString += separator.repeat(underscoreAmount(row.id)*3);
+          csvString += row.id.replaceAll('_', '.');
+          csvString += separator;
+          csvString += row.prompt_fr;
+          csvString += separator;
+          csvString += row.prompt_en;
+          csvString += separator;
+          csvString += row.answer || "";
+          csvString += '\n';
+        }
+        return csvString;
+    };
+    setCsvData(generateCsv());
+  }
 
   const handleDownloadCsv = () => {
     if (csvData) {

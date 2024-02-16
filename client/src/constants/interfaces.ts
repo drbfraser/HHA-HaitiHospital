@@ -123,6 +123,8 @@ export interface RolesData {
 
 export interface QuestionRow {
   id: string;
-  prompt: string;
+  prompt?: string;
   answer: string;
+  prompt_en?: string;
+  prompt_fr?: string;
 }

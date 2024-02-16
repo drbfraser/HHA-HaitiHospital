@@ -18,6 +18,7 @@ import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'constants/interfaces';
 import CsvGenerator from 'components/report/CSVExport';
+import { XlsxGenerator } from 'components/report/XlsxExport';
 
 const ReportView = () => {
   const user = useAuthState();
@@ -237,7 +238,8 @@ const ReportView = () => {
 
           {readOnly ? (
             <div>
-            <CsvGenerator questionItems={report}/>
+            <CsvGenerator questionItems={questionItems}/>
+            <XlsxGenerator questionItems={questionItems}/>
             <ReadonlyReportForm
               applyReportChanges={applyReportChanges}
               btnText="Edit"

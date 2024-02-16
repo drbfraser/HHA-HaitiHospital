@@ -29,3 +29,7 @@ export type NavigationInfo = null | {
   action: Action;
   location: Location;
 };
+
+export const underscoreAmount = (str: string): number => {
+  return (str.match(/_/g) || []).length;
+};
