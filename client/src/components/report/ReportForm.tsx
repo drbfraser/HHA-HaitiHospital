@@ -10,7 +10,6 @@ import {
 } from '../question_form_components';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { QuestionGroup, QuestionNode } from '@hha/common';
-
 import Pagination from 'components/pagination/Pagination';
 import SubmitButton from './SubmitButton';
 import { useTranslation } from 'react-i18next';
@@ -95,7 +94,7 @@ interface ReportStatus {
 
 interface ReportFormProps {
   applyReportChanges?: () => void;
-  formHandler?: (event: React.FormEvent<HTMLFormElement>, isDraft?: boolean) => void;
+  formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: boolean) => void;
   isSubmitting: boolean;
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
@@ -192,8 +191,6 @@ const ReportForm = ({
     setNumberOfCompletedPages(completedPagesCount);
   }, [reportStatus]);
 
-  // formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
-
   const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const clickedButton = event.currentTarget.querySelector('input[type="submit"]:focus');
@@ -222,12 +219,7 @@ const ReportForm = ({
             readOnly={readOnly}
           />
           <div className="position-sticky bottom-0 py-3">
-            <input
-              className={`btn btn-secondary`}
-              name="save"
-              type="submit"
-              value="Save as Draft"
-            />
+            <input className="btn btn-secondary" name="save" type="submit" value="Save as Draft" />
           </div>
         </div>
       </form>

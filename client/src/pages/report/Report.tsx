@@ -25,7 +25,7 @@ export const Report = () => {
   const [isShowingSubmissionModal, setIsShowingSubmissionModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
-  const [isDraft, setIsDraft] = useState<boolean>(false);
+  const [isDraft, setIsDraft] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();

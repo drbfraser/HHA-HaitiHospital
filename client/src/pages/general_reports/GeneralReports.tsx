@@ -24,6 +24,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import DeleteModal from 'components/popup_modal/DeleteModal';
+import DraftIcon from 'components/report/DraftIcon';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -110,12 +111,7 @@ const GeneralReports = () => {
       id: 'reportName',
       cell: (row) => (
         <span>
-          {row.getValue().isDraft ? (
-            <span className="border border-danger rounded p-1 mr-1 text-danger">Draft</span>
-          ) : (
-            ''
-          )}
-
+          {row.getValue().isDraft ? <DraftIcon /> : <></>}
           {row.getValue().reportName}
         </span>
       ),
