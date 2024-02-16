@@ -110,7 +110,13 @@ const GeneralReports = () => {
       id: 'reportName',
       cell: (row) => (
         <span>
-          {row.getValue().reportName} {row.getValue().isDraft ? 'Draft' : ''}
+          {row.getValue().isDraft ? (
+            <span className="border border-danger rounded p-1 mr-1 text-danger">Draft</span>
+          ) : (
+            ''
+          )}
+
+          {row.getValue().reportName}
         </span>
       ),
       accessorFn: (row) => row,
