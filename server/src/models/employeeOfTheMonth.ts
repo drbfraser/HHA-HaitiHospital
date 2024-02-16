@@ -9,11 +9,11 @@ export interface EmployeeOfTheMonth {
   name: string;
   departmentId: string;
   description: string;
-  imgPath: string;
   awardedMonth: number;
   awardedYear: number;
   updatedAt?: Date;
   createdAt?: Date;
+  imgPath?: string;
 }
 
 export interface EmployeeOfTheMonthJson {
@@ -40,11 +40,11 @@ const employeeOfTheMonthSchema = new Schema<EmployeeOfTheMonthWithInstanceMethod
     name: { type: String, required: true },
     departmentId: { type: String, required: true },
     description: { type: String, required: true },
-    imgPath: { type: String, required: true },
     awardedMonth: { type: Number },
     awardedYear: { type: Number },
     updatedAt: { type: Date },
     createdAt: { type: Date },
+    imgPath: { type: String },
   },
   {
     timestamps: true,
