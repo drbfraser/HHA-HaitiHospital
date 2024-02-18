@@ -230,6 +230,8 @@
   "reportsUserId": "User ID",
   "reportsSubmittedBy": "Submitted by",
   "reportsOptions": "Options",
+  "reportDraft": "Draft",
+  "reportSaveAsDraft": "Save as Draft",
   "employeeOfTheMonthAdd": "Add new employee of the month",
   "employeeOfTheMonthEdit": "Update",
   "employeeOfTheMonthArchive": "Archive",

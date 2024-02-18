@@ -219,7 +219,12 @@ const ReportForm = ({
             readOnly={readOnly}
           />
           <div className="position-sticky bottom-0 py-3">
-            <input className="btn btn-secondary" name="save" type="submit" value="Save as Draft" />
+            <input
+              className="btn btn-secondary"
+              name="save"
+              type="submit"
+              value={t('reportSaveAsDraft')}
+            />
           </div>
         </div>
       </form>

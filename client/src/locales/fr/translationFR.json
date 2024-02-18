@@ -231,6 +231,8 @@
   "reportsUserId": "ID de l'utilisateur",
   "reportsSubmittedBy": "Proposé par",
   "reportsOptions": "Choix",
+  "reportDraft": "Brouillon",
+  "reportSaveAsDraft": "Enregistrer comme brouillon",
   "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthArchive": "Archive",
