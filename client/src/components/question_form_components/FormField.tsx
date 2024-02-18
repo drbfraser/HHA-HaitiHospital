@@ -1,4 +1,4 @@
-import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
+import { ChangeEvent, HTMLInputTypeAttribute, useEffect, useState } from 'react';
 
 import { ValidationResult } from '@hha/common';
 import cn from 'classnames';
@@ -22,6 +22,7 @@ type FormFieldProps = {
 
 const FormField = (props: FormFieldProps) => {
   const { i18n } = useTranslation();
+  const [touched, setTouched] = useState<boolean>(false);
   const language = i18n.resolvedLanguage;
 
   const prompt = props.prompt[language] || props.prompt || '';
@@ -36,7 +37,7 @@ const FormField = (props: FormFieldProps) => {
       <input
         className={cn(
           {
-            'is-invalid': props.inputState !== true,
+            'is-invalid': touched && props.inputState !== true,
             'form-control': !props.readOnly,
             'form-control-plaintext': props.readOnly,
           },
@@ -51,8 +52,9 @@ const FormField = (props: FormFieldProps) => {
         value={value}
         disabled={props.readOnly}
         style={props.style}
+        onBlur={() => setTouched(true)}
       />
-      {props.inputState !== true && !props.readOnly && (
+      {!props.readOnly && touched && props.inputState !== true && (
         <div className="invalid-feedback">{props.inputState.message[language]}</div>
       )}
     </div>
