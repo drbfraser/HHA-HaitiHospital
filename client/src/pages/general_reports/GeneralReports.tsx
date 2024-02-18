@@ -48,7 +48,6 @@ const GeneralReports = () => {
       controller.signal,
     );
     setReports(fetchedReports);
-    console.log('fetchedReports', fetchedReports);
     return () => {
       controller.abort();
     };
