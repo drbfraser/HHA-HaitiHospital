@@ -19,7 +19,7 @@ const FormFieldCheck = ({ children, nameId, prompt }: FormFieldCheckProps) => {
   return (
     <fieldset className="form-group">
       <legend className="fs-6 m-0 text-secondary">
-        {nameId.replaceAll('_', '.')}. {displayPrompt}wedwed
+        {nameId.replaceAll('_', '.')}. {displayPrompt}
       </legend>
       {children}
     </fieldset>
