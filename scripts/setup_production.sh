@@ -120,7 +120,7 @@ if [ ! -f .env ]; then
     echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
 
     # Set the default username
-    echo "MONGO_USER=user0" >> .env
+    echo "MONGO_USER=userDB" >> .env
 
 
     echo -e "\n${BLUE}Removing previous Docker containers and volumes...${COLOR_OFF}\n"
