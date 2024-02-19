@@ -24,6 +24,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import DeleteModal from 'components/popup_modal/DeleteModal';
+import DraftIcon from 'components/report/DraftIcon';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -107,7 +108,13 @@ const GeneralReports = () => {
     {
       header: t('reportsReportId'),
       id: 'reportName',
-      accessorKey: 'reportName',
+      cell: (row) => (
+        <span>
+          {row.getValue().isDraft ? <DraftIcon /> : <></>}
+          {row.getValue().reportName}
+        </span>
+      ),
+      accessorFn: (row) => row,
     },
     {
       header: t('leaderBoardOverviewDepartment'),
@@ -126,8 +133,8 @@ const GeneralReports = () => {
       accessorKey: 'submittedBy',
     },
     {
-      id: 'Options',
       header: t('reportsOptions'),
+      id: 'Options',
       enableGlobalFilter: false,
       enableColumnFilter: false,
       cell: (row) => (
@@ -175,6 +182,7 @@ const GeneralReports = () => {
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
     submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
     submittedBy: item.submittedBy,
+    isDraft: item.isDraft,
   }));
 
   return (

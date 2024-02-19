@@ -51,5 +51,6 @@ export interface ReportDescriptor {
   reportMonth?: Date;
   submittedUserId: string;
   submittedBy: string;
+  isDraft: boolean;
   items: ReportItems;
 }

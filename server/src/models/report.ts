@@ -14,6 +14,7 @@ export interface IReport {
   submittedUserId: string;
   submittedBy: string;
   reportObject: object;
+  isDraft: boolean;
 }
 
 const PATH_TO_DEPARTMENT_ID = 'departmentId';
@@ -44,6 +45,7 @@ const reportSchema = new Schema({
     ref: USER_MODEL_NAME,
   },
   reportObject: { type: Object, required: true },
+  isDraft: { type: Boolean, required: true },
 });
 
 export const REPORT_MODEL_NAME = 'Report';

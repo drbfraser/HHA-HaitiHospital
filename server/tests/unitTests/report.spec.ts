@@ -76,6 +76,7 @@ describe('report tests', function () {
         submittedBy: '123',
         reportMonth: new Date(),
         serializedReport,
+        isDraft: true,
       })
       .end(function (err: any, res: any) {
         expect(err).to.be.null;

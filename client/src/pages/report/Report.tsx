@@ -25,6 +25,7 @@ export const Report = () => {
   const [isShowingSubmissionModal, setIsShowingSubmissionModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
+  const [isDraft, setIsDraft] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
@@ -54,8 +55,9 @@ export const Report = () => {
     setReport(undefined);
   };
 
-  const confirmSubmission = (event: FormEvent<HTMLFormElement>) => {
+  const confirmSubmission = (event: FormEvent<HTMLFormElement>, isDraft: boolean) => {
     event.preventDefault();
+    setIsDraft(isDraft);
     setIsShowingSubmissionModal(true);
   };
 
@@ -70,8 +72,8 @@ export const Report = () => {
       serializedReport,
       submittedUserId: user?.userDetails?.id,
       submittedBy: user?.userDetails?.name,
+      isDraft: isDraft,
     };
-
     setIsSubmitting(true);
     setIsShowingSubmissionModal(false);
     setAreChangesMade(false);
@@ -88,7 +90,6 @@ export const Report = () => {
   };
 
   useEffect(() => {
-    console.log('currentDepartment', currentDepartment);
     const controller = new AbortController();
     const getTemplates = async () => {
       try {
@@ -99,7 +100,6 @@ export const Report = () => {
           controller.signal,
         );
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
-        console.log('reportTemplateJson', reportTemplateJson);
 
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =
           objectSerializer.deserialize(reportTemplateJson);

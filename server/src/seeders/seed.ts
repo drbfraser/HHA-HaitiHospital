@@ -1122,6 +1122,7 @@ const seedReports = async () => {
       submittedBy: user?.username,
       reportMonth: new Date(new Date().getFullYear(), new Date().getMonth()),
       reportObject: serialized,
+      isDraft: false,
     });
     await report.save();
     console.log(`Reports seeded`);

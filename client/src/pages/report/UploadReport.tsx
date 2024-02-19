@@ -35,7 +35,6 @@ export const UploadReport = () => {
       departmentId: currentDepartment.id,
       serializedReport,
     };
-
     setIsShowingModal(false);
     setIsSubmitting(true);
     await Api.Put(

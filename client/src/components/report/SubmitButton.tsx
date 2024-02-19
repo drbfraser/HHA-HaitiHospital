@@ -9,6 +9,7 @@ const SubmitButton = ({ buttonText, disabled, readOnly }: SubmitButtonProps) => 
     {!readOnly && (
       <input
         className={`btn ${disabled ? 'btn-secondary' : 'btn-primary'}`}
+        name="submit"
         disabled={disabled}
         type="submit"
         value={buttonText}

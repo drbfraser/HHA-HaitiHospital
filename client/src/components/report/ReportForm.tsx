@@ -8,9 +8,8 @@ import {
   SingleSelectionQuestionFormField,
   TextQuestionFormField,
 } from '../question_form_components';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { QuestionGroup, QuestionNode } from '@hha/common';
-
 import Pagination from 'components/pagination/Pagination';
 import SubmitButton from './SubmitButton';
 import { useTranslation } from 'react-i18next';
@@ -95,7 +94,7 @@ interface ReportStatus {
 
 interface ReportFormProps {
   applyReportChanges?: () => void;
-  formHandler?: (event: React.FormEvent<HTMLFormElement>) => void;
+  formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: boolean) => void;
   isSubmitting: boolean;
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
@@ -192,10 +191,17 @@ const ReportForm = ({
     setNumberOfCompletedPages(completedPagesCount);
   }, [reportStatus]);
 
+  const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const clickedButton = event.currentTarget.querySelector('input[type="submit"]:focus');
+    const isDraft = clickedButton.getAttribute('name') === 'save';
+    formHandler(event, isDraft);
+  };
+
   return (
     <div className="mt-3 p-3">
       <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
-      <form onSubmit={formHandler} noValidate>
+      <form onSubmit={formHandlerWrapper} noValidate>
         <Group isRootNode>
           <QuestionFormFields
             applyReportChanges={applyReportChanges}
@@ -206,12 +212,23 @@ const ReportForm = ({
             suffixName=""
           />
         </Group>
-        <SubmitButton
-          buttonText={t(`button.${btnText.toLowerCase()}`)}
-          disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
-          readOnly={readOnly}
-        />
+        <div className="d-flex gap-2">
+          <SubmitButton
+            buttonText={t(`button.${btnText.toLowerCase()}`)}
+            disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
+            readOnly={readOnly}
+          />
+          <div className="position-sticky bottom-0 py-3">
+            <input
+              className="btn btn-secondary"
+              name="save"
+              type="submit"
+              value={t('reportSaveAsDraft')}
+            />
+          </div>
+        </div>
       </form>
+
       <Pagination
         className="pagination-bar"
         currentPage={currentPage}
