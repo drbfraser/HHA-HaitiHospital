@@ -222,6 +222,7 @@
   "departmentReportDisplayHideTable": "Masquer le Tableau",
   "departmentReportDisplayShowTable": "Afficher le tableau",
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
+  "departmentReportDisplayDownloadExcel": "Télécharger Excel",
   "departmentReportDisplayGeneratePDF": "Générer un PDF",
   "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",
   "reportAlertReportsDeleted": "Rapport(s) supprimé(s)",

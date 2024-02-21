@@ -221,6 +221,7 @@
   "departmentReportDisplayHideTable": "Hide Table",
   "departmentReportDisplayShowTable": "Show Table",
   "departmentReportDisplayDownloadCSV": "Download CSV",
+  "departmentReportDisplayDownloadExcel": "Download Excel",
   "departmentReportDisplayGeneratePDF": "Generate PDF",
   "reportAlertDeleteReportsFailed": "Delete report(s) failed",
   "reportAlertReportsDeleted": "Report(s) deleted",
