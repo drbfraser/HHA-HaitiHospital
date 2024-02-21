@@ -146,8 +146,8 @@ touch ~/daily_backup_log.txt
 touch ~/monthly_backup_log.txt
 
 chmod +x ~/haiti/scripts/backup_volume_to_s3.sh
-# chmod +x ~/haiti/scripts/restore_volume_from_s3.sh
-# ln -s -f ~/haiti/scripts/restore_volume_from_s3.sh ~/restore_volume_from_s3.sh
+chmod +x ~/haiti/scripts/restore_volume_from_s3.sh
+ln -s -f ~/haiti/scripts/restore_volume_from_s3.sh ~/restore_volume_from_s3.sh
 
 # Add cron job for hourly/daily/monthly backups and redirect output to ~/..._backup_log.txt
 crontab - <<EOF
