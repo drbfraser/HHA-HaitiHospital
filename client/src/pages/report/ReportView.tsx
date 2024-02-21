@@ -1,40 +1,28 @@
-import {
-  ENDPOINT_REPORTS,
-  ENDPOINT_REPORT_GET_BY_ID,
-} from "constants/endpoints";
-import {
-  FormEvent,
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { NavigationInfo, navigate } from "components/report/utils";
-import { ObjectSerializer, QuestionGroup, ReportMetaData } from "@hha/common";
-import { Prompt, useHistory, useLocation } from "react-router-dom";
-import { dateOptions, userLocale } from "constants/date";
+import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
+import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { NavigationInfo, navigate } from 'components/report/utils';
+import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
+import { Prompt, useHistory, useLocation } from 'react-router-dom';
+import { dateOptions, userLocale } from 'constants/date';
 
-import Api from "actions/Api";
-import ConfirmationModal from "components/popup_modal/ConfirmationModal";
-import { History } from "history";
-import Layout from "components/layout";
-import { PDFExport } from "@progress/kendo-react-pdf";
-import ReadonlyReportForm from "components/report/ReadonlyReportForm";
-import ReportForm from "components/report/ReportForm";
-import { ResponseMessage } from "utils/response_message";
-import { useAuthState } from "contexts";
-import { useDepartmentData } from "hooks";
-import { Trans, useTranslation } from "react-i18next";
-import { Role } from "constants/interfaces";
-import CsvGenerator from "components/report/CSVExport";
-import { XlsxGenerator } from "components/report/XlsxExport";
+import Api from 'actions/Api';
+import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
+import { History } from 'history';
+import Layout from 'components/layout';
+import { PDFExport } from '@progress/kendo-react-pdf';
+import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
+import ReportForm from 'components/report/ReportForm';
+import { ResponseMessage } from 'utils/response_message';
+import { useAuthState } from 'contexts';
+import { useDepartmentData } from 'hooks';
+import { Trans, useTranslation } from 'react-i18next';
+import { Role } from 'constants/interfaces';
+import { XlsxGenerator } from 'components/report/XlsxExport';
 
 const ReportView = () => {
   const user = useAuthState();
   const [areChangesMade, setAreChangesMade] = useState(false);
-  const [isShowingNavigationModal, setIsShowingNavigationModal] =
-    useState(false);
+  const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
   const [isUsingPagination, setIsUsingPagination] = useState(true);
   const [isUsingTable, setIsUsingTable] = useState(true);
   const [metaData, setMetaData] = useState<ReportMetaData>(null);
@@ -50,10 +38,9 @@ const ReportView = () => {
 
   const { t } = useTranslation();
   const history: History = useHistory<History>();
-  const objectSerializer: ObjectSerializer =
-    ObjectSerializer.getObjectSerializer();
+  const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const pdfExportComponent = useRef(null);
-  const report_id = useLocation().pathname.split("/")[2];
+  const report_id = useLocation().pathname.split('/')[2];
   const submittedDate = new Date(metaData?.submittedDate).toLocaleDateString(
     userLocale,
     dateOptions,
@@ -116,9 +103,7 @@ const ReportView = () => {
       controller.signal,
     );
 
-    setReport(
-      objectSerializer.deserialize(fetchedReport?.report?.reportObject),
-    );
+    setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
 
     setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
@@ -163,10 +148,10 @@ const ReportView = () => {
             onModalCancel={() => setShowEditModal(false)}
             onModalProceed={reportHandler}
             show={showEditModal}
-            title={t("reportConfirmationModal.editReportHeader")}
+            title={t('reportConfirmationModal.editReportHeader')}
           />
           <ConfirmationModal
-            messages={[t("reportConfirmationModal.LeaveWithUnsavedChanges")]}
+            messages={[t('reportConfirmationModal.LeaveWithUnsavedChanges')]}
             onModalCancel={() => {
               setIsShowingNavigationModal(false);
               setNavigationInfo(null);
@@ -176,7 +161,7 @@ const ReportView = () => {
               navigate(history, navigationInfo, () => {});
             }}
             show={isShowingNavigationModal}
-            title={t("reportConfirmationModal.discardEditReportHeader")}
+            title={t('reportConfirmationModal.discardEditReportHeader')}
           />
           <Prompt
             message={(location, action) => {
@@ -198,17 +183,14 @@ const ReportView = () => {
                   user.userDetails.department.name === department)) && (
                 <button className="btn btn-primary mr-3" onClick={btnHandler}>
                   {readOnly
-                    ? t("departmentReportDisplayEditForm")
-                    : t("departmentReportDisplayViewForm")}
+                    ? t('departmentReportDisplayEditForm')
+                    : t('departmentReportDisplayViewForm')}
                 </button>
               )}
               {readOnly && (
                 <span>
-                  <button
-                    className="btn btn-outline-dark mr-3"
-                    onClick={handleExportWithComponent}
-                  >
-                    {t("departmentReportDisplayGeneratePDF")}
+                  <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
+                    {t('departmentReportDisplayGeneratePDF')}
                   </button>
                   <XlsxGenerator questionItems={questionItems} />
                 </span>
@@ -216,19 +198,16 @@ const ReportView = () => {
               {readOnly && (
                 <button className="btn btn-outline-dark" onClick={toggleTable}>
                   {isUsingTable
-                    ? t("departmentReportDisplayHideTable")
-                    : t("departmentReportDisplayShowTable")}
+                    ? t('departmentReportDisplayHideTable')
+                    : t('departmentReportDisplayShowTable')}
                 </button>
               )}
 
               {readOnly && !isUsingTable && (
-                <button
-                  className="btn btn-outline-dark ml-3"
-                  onClick={togglePagination}
-                >
+                <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
                   {isUsingPagination
-                    ? t("departmentReportDisplayHidePagination")
-                    : t("departmentReportDisplayShowPagination")}
+                    ? t('departmentReportDisplayHidePagination')
+                    : t('departmentReportDisplayShowPagination')}
                 </button>
               )}
             </div>
