@@ -1,3 +1,18 @@
+#!/bin/bash
+# Backup user data from the running docker volumes to Amazon S3
+# Includes:
+#  - Mongo DB
+#  - uploads/ directory (user-uploaded images)
+#  - .env file
+#  - Info about the system (date/time, host, docker info, etc.)
+# 
+# Usage (from any directory): 
+#   ./backup_volume_to_s3.sh <S3 folder name>
+#
+# Note: Creates and deletes ~/db-backup-temp/ folder to store the backup files.
+# This script expects to be in the scripts/ folder of the project
+# in order to find the .env file.
+
 # What S3 folder should be backup to?
 S3_FOLDER=$1
 if [ -z "$S3_FOLDER" ]
@@ -18,14 +33,11 @@ if [ ! -f "$SCRIPT_DIR/../.env" ]; then
 fi
 
 # Needed from .env
-# MONGO_USER (Set it to user0 for now)
-# RAND_PASSWORD
-# MONGO_URI
 # S3_BUCKET_NAME
 source "$SCRIPT_DIR/../.env"
 
 # Constants
-DB_NAME= haiti
+DB_NAME=haiti
 ENV_FILE="$SCRIPT_DIR/../.env"
 FOLDER="$HOME/db-backup-temp"
 BACKUP_FILENAME_BASE="${DB_NAME}_db_backup_$(date +%Y%m%d_%H%M%S)"
@@ -54,8 +66,7 @@ ip addr                             >> $FOLDER/info.txt
 cp $ENV_FILE $FOLDER/backup.env
 
 # Export DB from running MongoDB into BSON file
-docker exec mongodb_container \
-   mongodump --username=$MONGO_USER --password=$RAND_PASSWORD --db=$DB_NAME --archive > $FOLDER/$BACKUP_FILENAME_BASE.bson
+docker exec hhahaiti_mongodb mongodump --archive > $FOLDER/$BACKUP_FILENAME_BASE.bson
 
 # Compress files (in sub-shell so we don't encode leading folder names)
 (cd "$FOLDER"; tar -czvf "$FOLDER/$BACKUP_FILENAME_BASE.tar.gz" *)
