@@ -96,7 +96,6 @@ git checkout production
 
 echo -e "\n${BLUE}Linking update script into /root/update.sh...${COLOR_OFF}\n"
 
-# TODO: Untested, becuase we have no update.sh file in scripts now
 chmod +x ~/haiti/scripts/update.sh
 ln -s -f ~/haiti/scripts/update.sh ~/update.sh
 
@@ -119,9 +118,6 @@ if [ ! -f .env ]; then
     echo "TEST_SERVER_PORT=5001" >> .env
     echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
 
-    # Set the default username
-    echo "MONGO_USER=userDB" >> .env
-
 
     echo -e "\n${BLUE}Removing previous Docker containers and volumes...${COLOR_OFF}\n"
     docker compose -f docker-compose.yml -f docker-compose.deploy.yml down
@@ -143,22 +139,22 @@ echo -e "  AWS CLI needs here.${COLOR_OFF}\n"
 sudo apt-get install awscli
 aws configure
 
-# echo -e "\n${BLUE}Creating backup log files & setting up cron jobs...${COLOR_OFF}\n"
+echo -e "\n${BLUE}Creating backup log files & setting up cron jobs...${COLOR_OFF}\n"
 
-# touch ~/hourly_backup_log.txt
-# touch ~/daily_backup_log.txt
-# touch ~/monthly_backup_log.txt
+touch ~/hourly_backup_log.txt
+touch ~/daily_backup_log.txt
+touch ~/monthly_backup_log.txt
 
-# chmod +x ~/haiti/scripts/backup_volume_to_s3.sh
+chmod +x ~/haiti/scripts/backup_volume_to_s3.sh
 # chmod +x ~/haiti/scripts/restore_volume_from_s3.sh
 # ln -s -f ~/haiti/scripts/restore_volume_from_s3.sh ~/restore_volume_from_s3.sh
 
-# # Add cron job for hourly/daily/monthly backups and redirect output to ~/..._backup_log.txt
-# crontab - <<EOF
-# 0 * * * * /bin/bash ~/haiti/scripts/backup_volume_to_s3.sh hourly >> ~/hourly_backup_log.txt 2>&1
-# 0 2 * * * /bin/bash ~/haiti/scripts/backup_volume_to_s3.sh daily >> ~/daily_backup_log.txt 2>&1
-# 0 0 1 * * /bin/bash ~/haiti/scripts/backup_volume_to_s3.sh monthly >> ~/monthly_backup_log.txt 2>&1
-# EOF
+# Add cron job for hourly/daily/monthly backups and redirect output to ~/..._backup_log.txt
+crontab - <<EOF
+0 * * * * /bin/bash ~/haiti/scripts/backup_volume_to_s3.sh hourly >> ~/hourly_backup_log.txt 2>&1
+0 2 * * * /bin/bash ~/haiti/scripts/backup_volume_to_s3.sh daily >> ~/daily_backup_log.txt 2>&1
+0 0 1 * * /bin/bash ~/haiti/scripts/backup_volume_to_s3.sh monthly >> ~/monthly_backup_log.txt 2>&1
+EOF
 
 echo -e "\n${BLUE}Downloading Docker images and spinning up Docker containers...${COLOR_OFF}\n"
 
