@@ -128,8 +128,6 @@ if [ ! -f .env ]; then
     echo "S3_BUCKET_NAME=${REPLY}" >> .env
 fi
 
-# TODO: AWS is the next step for Haiti project
-
 echo -e "\n${BLUE}Installing AWS CLI..."
 echo -e "  If you have not already done so, create the AWS S3 bucket and user by uploading"
 echo -e "  the s3-bucket-backups.yml file to AWS CloudFormation on your AWS account."
