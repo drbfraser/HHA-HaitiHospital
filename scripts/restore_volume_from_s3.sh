@@ -41,20 +41,50 @@ if [ -z "$backups" ]; then
     exit 1
 fi
 
-echo "Available backups:"
-echo "$backups"
-read -p "Enter the name of the backup you want to restore: " selected_backup
-
 echo -e "${BLUE}Available backups:${NC}"
-printf "${GREEN}%-19s %-5s %s${NC}\n" "Date and Time" "Size" "Backup Name"
+# Print a numbered list of backups
+backup_count=1
 while IFS= read -r line; do
     # Split the line into fields
     datetime=$(echo $line | cut -d' ' -f1-3)
     size=$(echo $line | cut -d' ' -f4)
     backup_name=$(echo $line | cut -d' ' -f5-)
-    printf "%-19s %-5s %s\n" "$datetime" "$size" "$backup_name"
+    printf "${GREEN}%d.${NC} %-19s %-5s %s\n" "$backup_count" "$datetime" "$size" "$backup_name"
+    ((backup_count++))
 done <<< "$backups"
-read -p "Enter the name of the backup you want to restore: " selected_backup
+
+# Prompt the user to select a backup by number
+read -p "Enter the number of the backup you want to restore: " selected_backup_number
+
+# Validate the user input
+if ! [[ "$selected_backup_number" =~ ^[0-9]+$ ]]; then
+    echo "Error: Please enter a valid number."
+    exit 1
+fi
+
+# Extract the selected backup name based on the user's input
+selected_backup=$(echo "$backups" | sed -n "${selected_backup_number}p" | awk '{print $NF}')
+
+# Check if the selected backup exists
+if [ -z "$selected_backup" ]; then
+    echo "Error: Invalid backup number."
+    exit 1
+fi
+
+# echo "Available backups:"
+# echo "$backups"
+# read -p "Enter the name of the backup you want to restore: " selected_backup
+
+# echo -e "${BLUE}Available backups:${NC}"
+# printf "${GREEN}%-19s %-5s %s${NC}\n" "Date and Time" "Size" "Backup Name"
+# while IFS= read -r line; do
+#     # Split the line into fields
+#     datetime=$(echo $line | cut -d' ' -f1-3)
+#     size=$(echo $line | cut -d' ' -f4)
+#     backup_name=$(echo $line | cut -d' ' -f5-)
+#     printf "%-19s %-5s %s\n" "$datetime" "$size" "$backup_name"
+# done <<< "$backups"
+# read -p "Enter the name of the backup you want to restore: " selected_backup
 
 aws s3 cp "s3://$S3_BUCKET_NAME/$FOLDER/$selected_backup" ~/
 
