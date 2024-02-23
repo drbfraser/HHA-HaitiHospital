@@ -50,7 +50,6 @@ export const seedDb = async () => {
     await seedCaseStudies();
     await seedTemplates();
     await seedReports();
-    // await seedPermissions();
 
     console.log('Database seeding completed.');
     process.exit();

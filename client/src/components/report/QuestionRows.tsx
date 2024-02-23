@@ -2,15 +2,12 @@ import { useEffect, useState } from 'react';
 
 import { QuestionRow } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
+import { underscoreAmount } from './utils';
 
 const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Element => {
   const [questionRowElements, setQuestionRowElements] = useState<QuestionRow[]>([]);
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage;
-
-  const underscoreAmount = (str: string): number => {
-    return (str.match(/_/g) || []).length;
-  };
 
   useEffect(() => {
     const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {

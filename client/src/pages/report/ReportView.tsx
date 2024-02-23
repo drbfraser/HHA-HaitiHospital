@@ -17,6 +17,7 @@ import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { Role } from 'constants/interfaces';
+import { XlsxGenerator } from 'components/report/XlsxExport';
 
 const ReportView = () => {
   const user = useAuthState();
@@ -190,9 +191,12 @@ const ReportView = () => {
                 </button>
               )}
               {readOnly && (
-                <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
-                  {t('departmentReportDisplayGeneratePDF')}
-                </button>
+                <span>
+                  <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
+                    {t('departmentReportDisplayGeneratePDF')}
+                  </button>
+                  <XlsxGenerator questionItems={questionItems} />
+                </span>
               )}
               {readOnly && (
                 <button className="btn btn-outline-dark" onClick={toggleTable}>
@@ -238,18 +242,20 @@ const ReportView = () => {
           )}
 
           {readOnly ? (
-            <ReadonlyReportForm
-              applyReportChanges={applyReportChanges}
-              btnText="Edit"
-              formHandler={confirmEdit}
-              isSubmitting={false}
-              isUsingPagination={isUsingPagination}
-              isUsingTable={isUsingTable}
-              reportData={report}
-              date={submittedDate}
-              author={metaData?.submittedBy}
-              questionItems={questionItems}
-            />
+            <div>
+              <ReadonlyReportForm
+                applyReportChanges={applyReportChanges}
+                btnText="Edit"
+                formHandler={confirmEdit}
+                isSubmitting={false}
+                isUsingPagination={isUsingPagination}
+                isUsingTable={isUsingTable}
+                reportData={report}
+                date={submittedDate}
+                author={metaData?.submittedBy}
+                questionItems={questionItems}
+              />
+            </div>
           ) : (
             <ReportForm
               applyReportChanges={applyReportChanges}
