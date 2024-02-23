@@ -222,7 +222,7 @@
   "departmentReportDisplayShowTable": "Show Table",
   "departmentReportDisplayDownloadCSV": "Download CSV",
   "departmentReportDisplayDownloadExcel": "Download Excel",
-  "departmentReportDisplayGeneratePDF": "Generate PDF",
+  "departmentReportDisplayGeneratePDF": "Download PDF",
   "reportAlertDeleteReportsFailed": "Delete report(s) failed",
   "reportAlertReportsDeleted": "Report(s) deleted",
   "reportsReportId": "Report name",

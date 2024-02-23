@@ -43,6 +43,26 @@ export const processTableQuestion = (tableItem): QuestionRow[] => {
   return array;
 };
 
+const sheetColumnFormat = (
+  sheet: ExcelJS.Worksheet,
+  columns: string[],
+  width: number,
+  font: any,
+) => {
+  if (columns && columns.length) {
+    for (const column of columns) {
+      if (width) sheet.getColumn(column).width = width;
+      if (font) sheet.getColumn(column).font = font;
+    }
+  }
+};
+
+const sheetCellFill = (sheet: ExcelJS.Worksheet, cells: string[], fill: any) => {
+  for (const cell of cells) {
+    sheet.getCell(cell).fill = fill;
+  }
+};
+
 export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
   const { t } = useTranslation();
 
@@ -100,137 +120,54 @@ export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
       }
       sheet['_rows'][i + 1]['_outlineLevel'] = level;
     }
-    sheet.getColumn('B').width = 28;
-    sheet.getColumn('C').width = 28;
-    sheet.getColumn('F').width = 28;
-    sheet.getColumn('G').width = 28;
-    sheet.getColumn('J').width = 28;
-    sheet.getColumn('K').width = 28;
-    sheet.getColumn('D').width = 10;
-    sheet.getColumn('H').width = 10;
-    sheet.getColumn('L').width = 10;
-    sheet.getColumn('D').font = {
-      name: 'Calibri',
-      color: { argb: 'FF702BF5' },
-      size: 12,
-    };
-    sheet.getColumn('H').font = {
-      name: 'Calibri',
-      color: { argb: 'FF702BF5' },
-      size: 12,
-    };
-    sheet.getColumn('L').font = {
-      name: 'Calibri',
-      color: { argb: 'FF702BF5' },
-      size: 12,
-    };
-    sheet.getColumn('A').font = {
-      name: 'Calibri',
-      color: { argb: 'FFFF0000' },
-      size: 12,
-    };
-    sheet.getColumn('B').font = {
-      name: 'Calibri',
-      color: { argb: 'FFFF0000' },
-      size: 12,
-    };
-    sheet.getColumn('C').font = {
-      name: 'Calibri',
-      color: { argb: 'FFFF0000' },
-      size: 12,
-    };
-    sheet.getColumn('E').font = {
-      name: 'Calibri',
-      color: { argb: 'FF008E00' },
-      size: 12,
-    };
-    sheet.getColumn('F').font = {
-      name: 'Calibri',
-      color: { argb: 'FF008E00' },
-      size: 12,
-    };
-    sheet.getColumn('G').font = {
-      name: 'Calibri',
-      color: { argb: 'FF008E00' },
-      size: 12,
-    };
-    sheet.getColumn('I').font = {
-      color: { argb: 'FF1B2BF5' },
-      size: 12,
-    };
 
-    sheet.getColumn('J').font = {
+    sheetColumnFormat(sheet, ['A', 'B', 'C'], 28, {
+      name: 'Calibri',
+      color: { argb: 'FFFF0000' },
+      size: 12,
+    });
+    sheetColumnFormat(sheet, ['E', 'F', 'G'], 28, {
+      name: 'Calibri',
+      color: { argb: 'FF008E00' },
+      size: 12,
+    });
+    sheetColumnFormat(sheet, ['I', 'J', 'K'], 28, {
       color: { argb: 'FF1B2BF5' },
       size: 12,
-    };
+    });
+    sheetColumnFormat(sheet, ['D', 'H', 'L'], 10, {
+      name: 'Calibri',
+      color: { argb: 'FF702BF5' },
+      size: 12,
+    });
+    sheetColumnFormat(sheet, ['A', 'E', 'I'], 10, null);
 
-    sheet.getColumn('K').font = {
-      color: { argb: 'FF1B2BF5' },
-      size: 12,
-    };
     for (let i = 1; i <= array.length; i++) {
       const row = sheet['_rows'][i];
       const r = i + 1;
       if (row) {
         const outlineLevel = row['_outlineLevel'];
         if (outlineLevel === 0) {
-          sheet.getCell('A' + r).fill = {
+          sheetCellFill(sheet, ['A' + r, 'B' + r, 'C' + r], {
             type: 'pattern',
             pattern: 'solid',
             fgColor: { argb: 'FFEFEFF0' },
             bgColor: { argb: 'FFEFEFF0' },
-          };
-
-          sheet.getCell('B' + r).fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          };
-          sheet.getCell('C' + r).fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          };
+          });
         } else if (outlineLevel === 1) {
-          sheet.getCell('E' + r).fill = {
+          sheetCellFill(sheet, ['E' + r, 'F' + r, 'G' + r], {
             type: 'pattern',
             pattern: 'solid',
             fgColor: { argb: 'FFEFEFF0' },
             bgColor: { argb: 'FFEFEFF0' },
-          };
-          sheet.getCell('F' + r).fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          };
-          sheet.getCell('G' + r).fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          };
+          });
         } else if (outlineLevel === 2) {
-          sheet.getCell('I' + r).fill = {
+          sheetCellFill(sheet, ['I' + r, 'J' + r, 'K' + r], {
             type: 'pattern',
             pattern: 'solid',
             fgColor: { argb: 'FFEFEFF0' },
             bgColor: { argb: 'FFEFEFF0' },
-          };
-          sheet.getCell('J' + r).fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          };
-          sheet.getCell('K' + r).fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          };
+          });
         }
       }
     }

@@ -223,7 +223,7 @@
   "departmentReportDisplayShowTable": "Afficher le tableau",
   "departmentReportDisplayDownloadCSV": "Télécharger CSV",
   "departmentReportDisplayDownloadExcel": "Télécharger Excel",
-  "departmentReportDisplayGeneratePDF": "Générer un PDF",
+  "departmentReportDisplayGeneratePDF": "Télécharger PDF",
   "reportAlertDeleteReportsFailed": "Échec de la suppression des rapports",
   "reportAlertReportsDeleted": "Rapport(s) supprimé(s)",
   "reportsReportId": "Nom du rapport",

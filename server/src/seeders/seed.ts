@@ -1123,15 +1123,6 @@ const seedReports = async () => {
       reportObject: serialized,
     });
     await report.save();
-    const serialized2 = serializer.serialize(buildRehabReport());
-    let report2 = new ReportCollection({
-      departmentId: user?.departmentId,
-      submittedUserId: user?._id,
-      submittedBy: user?.username,
-      reportMonth: new Date(new Date().getFullYear(), new Date().getMonth()),
-      reportObject: serialized2,
-    });
-    await report2.save();
     console.log(`Reports seeded`);
   } catch (err) {
     console.log(err);
