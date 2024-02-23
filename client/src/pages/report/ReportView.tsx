@@ -31,6 +31,7 @@ const ReportView = () => {
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
   const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [isDraft, setIsDraft] = useState<boolean>(true);
   const { departmentIdKeyMap } = useDepartmentData();
   const department = departmentIdKeyMap.get(metaData?.departmentId);
 
@@ -46,8 +47,9 @@ const ReportView = () => {
     dateOptions,
   );
 
-  const confirmEdit = (event: FormEvent<HTMLFormElement>) => {
+  const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
+    setIsDraft(isDraft);
     setShowEditModal(true);
   };
 
@@ -71,6 +73,7 @@ const ReportView = () => {
       id: report_id,
       serializedReport,
       submittedBy: user?.userDetails?.name,
+      isDraft: isDraft,
     };
 
     setAreChangesMade(false);

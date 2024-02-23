@@ -24,13 +24,13 @@ import { Role } from 'models/user';
 
 const router = Router();
 
-// Save report
+// Submit or Save as Draft - report
 router.post(
   '/',
   requireJwtAuth,
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport } =
+      const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport, isDraft } =
         req.body;
 
       const authorized = checkUserCanCreateReport(req.user, departmentId);
@@ -46,6 +46,7 @@ router.post(
         submittedBy,
         reportMonth,
         reportObject: serializedReport,
+        isDraft: isDraft,
       });
 
       const saved = await newReport.save();
@@ -145,7 +146,7 @@ router.delete(
 );
 
 router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
-  const { id, serializedReport } = req.body;
+  const { id, serializedReport, isDraft } = req.body;
 
   const report = await ReportCollection.findById(id);
 
@@ -160,6 +161,7 @@ router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
   }
 
   report.reportObject = cloneDeep(serializedReport);
+  report.isDraft = isDraft;
 
   await report.save();
 
