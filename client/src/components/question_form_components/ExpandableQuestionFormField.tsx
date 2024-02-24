@@ -4,6 +4,7 @@ import { ExpandableQuestion } from '@hha/common';
 import { FormField } from './index';
 import { QuestionFormFields } from 'components/report/ReportForm';
 import cn from 'classnames';
+import { Button } from 'react-bootstrap';
 
 const ExpandableQuestionFormField = ({
   applyReportChanges,
@@ -65,6 +66,18 @@ const ExpandableQuestionFormField = ({
     updateErrorSetFromSelf();
   };
 
+  const handleDeleteAccordionItem = (e: any, index: number) => {
+    e.preventDefault();
+    question.removeQuestionGroup(index);
+    applyReportChanges();
+  };
+
+  const handleAddAccordionItem = (e: any) => {
+    e.preventDefault();
+    question.addQuestionGroup();
+    applyReportChanges();
+  };
+
   return (
     <>
       <FormField
@@ -76,6 +89,7 @@ const ExpandableQuestionFormField = ({
         type="number"
         value={question.getAnswer()}
       />
+
       <div className="accordion mb-3 w-50" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
           const isOpen = openClosedStates[index];
@@ -103,10 +117,9 @@ const ExpandableQuestionFormField = ({
                   >
                     {`Patient ${index + 1}`}
                   </button>
-                  {/* TODO: Add a way to individually delete accordion items */}
-                  {/*<button
+                  <button
                     className="btn btn-outline-danger col-1 mr-2 p-0 rounded-circle"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => handleDeleteAccordionItem(e, index)}
                     style={{
                       alignItems: 'center',
                       display: 'flex',
@@ -116,7 +129,7 @@ const ExpandableQuestionFormField = ({
                     }}
                   >
                     <i className="fa fa-close"></i>
-                  </button>*/}
+                  </button>
                 </div>
               </h6>
               <div
@@ -136,6 +149,15 @@ const ExpandableQuestionFormField = ({
             </div>
           );
         })}
+        <div>
+          <Button
+            variant="link"
+            disabled={question.getAnswer() <= question.getQuestionGroupCount()}
+            onClick={(e) => handleAddAccordionItem(e)}
+          >
+            Add
+          </Button>
+        </div>
       </div>
     </>
   );
