@@ -112,10 +112,7 @@ echo -e "${RED}4. Restore the BSON file to the MongoDB volume:${NC}"
 echo "   docker cp ~/restore/haiti_db_backup_*.bson hhahaiti_mongodb:/restore.bson"
 echo "   docker exec hhahaiti_mongodb mongorestore --drop --archive=/restore.bson"
 echo
-echo -e "${RED}5. Reseed the server or database:${NC}"
-echo "   docker exec -it hhahaiti_server /bin/bash -c 'npm run seed'"
-echo
-echo -e "${RED}6. Restart all the containers:${NC}"
+echo -e "${RED}5. Restart all the containers:${NC}"
 echo "   docker compose -f docker-compose.yml -f docker-compose.deploy.yml down"
 echo "   docker compose -f docker-compose.yml -f docker-compose.deploy.yml up -d"
 echo
