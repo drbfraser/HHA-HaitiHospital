@@ -143,6 +143,36 @@ export class ExpandableQuestion<ID, ErrorType> extends QuestionAnswerParent<ID, 
     return true;
   }
 
+  public getQuestionGroupCount() {
+    return this.questionGroups.length;
+  }
+
+  public removeQuestionGroup(index: number) {
+    this.questionGroups.splice(index, 1);
+  }
+
+  public addQuestionGroup() {
+    if (this.getAnswer() == this.questionGroups.length) {
+      return;
+    }
+    const lang = 'en';
+    const promptValue = this.getPrompt();
+    const promptText = promptValue || { '': '' };
+    const questionGroupName = {
+      [lang]: `${promptText}-${this.questionGroups.length}`,
+    };
+    this.questionGroups.push(
+      new QuestionGroup(
+        this.idGenerator(this.questionGroups.length + 1),
+        questionGroupName,
+        ...this.questionsTemplate.genericMap<QuestionNode<ID, ErrorType>>((q) => {
+          let serializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+          return serializer.deserialize(serializer.serialize(q));
+        }),
+      ),
+    );
+  }
+
   public forEach(groupHandler: (groupInstance: QuestionGroup<ID, ErrorType>) => void): void {
     this.questionGroups.forEach(groupHandler);
   }
