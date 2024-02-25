@@ -11,6 +11,7 @@ import {
   hasGroupType,
 } from '../report/json_item';
 import { isSumCorrect } from '../report/item';
+import { ItemType } from '@hha/common';
 
 export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
   const typeKey = getItemTypeFromValue(type);
@@ -18,7 +19,9 @@ export const getParserJsonToItem = (type: string): JsonToItem.ItemParser => {
   return parser!;
 };
 
-export const getParserItemToJson = (typeKey: _JsonDefs.ItemTypeKeys): ItemToJson.ItemParser => {
+export const getParserItemToJson = (
+  typeKey: _JsonDefs.ItemTypeKeys,
+): ItemToJson.ItemParser | ItemToJson.SumItemParser => {
   const parser = ItemToJson.getParserByType(typeKey);
   return parser!;
 };
@@ -256,6 +259,10 @@ namespace ItemToJson {
     (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem;
   }
 
+  export interface SumItemParser {
+    (item: _ReportDefs.ReportSumItem): _JsonDefs.JsonReportItem;
+  }
+
   const baseParser: ItemParser = (item: _ReportDefs.ReportItem): _JsonDefs.JsonReportItem => {
     const jsonType: string = _JsonDefs.ItemType[item.type].toString();
     const jsonDescription: string = item.description;
@@ -278,21 +285,23 @@ namespace ItemToJson {
     return jsonItem;
   };
 
-  const parseFromSumItem: ItemParser = (
-    item: _ReportDefs.ReportSumItem,
+  const parseFromSumItem: SumItemParser = (
+    item2: _ReportDefs.ReportSumItem,
   ): _JsonDefs.JsonReportItem => {
-    const base: _JsonDefs.JsonReportItem = baseParser(item);
-    const jsonChildren: _JsonDefs.JsonItemChildren = item.children.map((child) => {
-      const parser = getParserByType(child.type);
-      return parser(child);
-    });
+    const base: _JsonDefs.JsonReportItem = baseParser(item2);
+    const jsonChildren: _JsonDefs.JsonReportItem[] = item2.children
+      .filter((child) => child.type === _JsonDefs.ItemType.SUM.toString())
+      .map((child) => {
+        const parser = getParserByType((child as _ReportDefs.ReportSumItem).type);
+        return parser(child as _ReportDefs.ReportSumItem);
+      });
 
     const jsonItem: _JsonDefs.JsonReportItem = { ...base, items: jsonChildren };
     return jsonItem;
   };
 
-  type ParserByType = Map<_JsonDefs.ItemType, ItemParser>;
-  const parserByType: ParserByType = new Map<_JsonDefs.ItemType, ItemParser>();
+  type ParserByType = Map<_JsonDefs.ItemType, ItemParser | SumItemParser>;
+  const parserByType: ParserByType = new Map<_JsonDefs.ItemType, ItemParser | SumItemParser>();
   const initParserByType = (map: ParserByType) => {
     map.set(_JsonDefs.ItemType.NUMERIC, parseFromNumericItem);
     map.set(_JsonDefs.ItemType.SUM, parseFromSumItem);
@@ -308,13 +317,13 @@ namespace ItemToJson {
   };
   initParserByType(parserByType);
 
-  export const getParserByType = (typeKey: _JsonDefs.ItemTypeKeys): ItemParser => {
+  export const getParserByType = (typeKey: _JsonDefs.ItemTypeKeys): ItemParser | SumItemParser => {
     const type = _JsonDefs.ItemType[typeKey];
     const parser = parserByType.get(type);
     if (!parser) {
       throw new InvalidInput(`Parser from item to json for item type ${type} is not supported`);
     }
-    return parser!;
+    return parser;
   };
 }
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HELPERS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

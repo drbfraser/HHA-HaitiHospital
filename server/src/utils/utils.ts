@@ -13,7 +13,7 @@ import { promisify } from 'util';
 const readdir = promisify(fs.readdir);
 const unlink = promisify(fs.unlink);
 
-export const deleteAllAvatars = async (absoluteFolderPath) => {
+export const deleteAllAvatars = async (absoluteFolderPath: string) => {
   try {
     const files = await readdir(absoluteFolderPath);
     const unlinkPromises = files.map((filename) => {
@@ -28,7 +28,7 @@ export const deleteAllAvatars = async (absoluteFolderPath) => {
   }
 };
 
-export const isValidUrl = (str) => {
+export const isValidUrl = (str: string) => {
   var urlRegex =
     '^(?!mailto:)(?:(?:http|https|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$';
   var url = new RegExp(urlRegex, 'i');
