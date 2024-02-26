@@ -88,7 +88,6 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     '1',
     getQuestionContent('question1'),
   );
-  q1.addValidator('isPositive');
 
   const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '2',
