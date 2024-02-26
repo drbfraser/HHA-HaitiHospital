@@ -15,7 +15,8 @@
     "strictNullChecks": true,
     "skipLibCheck": true,
     "downlevelIteration": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "typeRoots": ["./types"]
   },
   "include": ["./src/**/*", "./tests/**/*"]
 }
