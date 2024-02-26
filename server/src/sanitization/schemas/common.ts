@@ -8,5 +8,5 @@ export const nonFalsyBodyField = <IObj>(field: keyof IObj): ValidationChain => {
       checkNull: true,
     })
     .withMessage(`Expecting a value`)
-    .if((value) => value);
+    .if((value: IObj) => value);
 };

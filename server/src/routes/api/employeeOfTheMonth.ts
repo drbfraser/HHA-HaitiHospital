@@ -1,4 +1,4 @@
-import { Router, Response, NextFunction } from 'express';
+import { Request, Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
@@ -7,11 +7,9 @@ import EOTMCollection, {
   EmployeeOfTheMonthJson,
 } from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';
-// import { registerEmployeeOfTheMonthEdit } from '../../sanitization/schemas/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import {
   BadRequest,
-  HTTP_CREATED_CODE,
   HTTP_NOCONTENT_CODE,
   HTTP_OK_CODE,
   InternalError,
@@ -19,7 +17,6 @@ import {
 } from 'exceptions/httpException';
 import Departments from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
-import { Request } from 'express';
 
 const router = Router();
 

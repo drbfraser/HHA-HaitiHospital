@@ -1,7 +1,6 @@
-import { Router, Response, NextFunction } from 'express';
+import { Request, Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { HTTP_OK_CODE } from 'exceptions/httpException';
-import { RequestWithUser } from 'utils/definitions/express';
 import { DefaultDepartments } from 'utils/departments';
 import Department from 'models/departments';
 import { LeaderboardJson } from 'models/leaderboard';
@@ -9,7 +8,7 @@ import { LeaderboardJson } from 'models/leaderboard';
 const router = Router();
 const POINTS_PER_CASE_STUDY: number = 10;
 
-router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Find all departments except for General
     const departments = await Department.find({ name: { $ne: DefaultDepartments.General } });
