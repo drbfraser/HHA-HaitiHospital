@@ -226,11 +226,6 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     '6_2',
     getQuestionContent('question6_2'),
   );
-  // const q6_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
-  //   '6_3',
-  //   getQuestionContent('question6_3'),
-  //   [{ en: 'Suspected CVA', fr: 'CVA suspecté' }],
-  // );
 
   const q6_3: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '6_3',
