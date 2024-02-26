@@ -35,7 +35,7 @@ export const ClearFilterButton = ({
   initialValue,
 }: ClearFilterButtonProps) => (
   <>
-    {filterValue !== initialValue && (
+    {initialValue && filterValue !== initialValue && (
       <Button
         variant="light text-danger border border-right border-top border-bottom"
         onClick={() => setFilterValue(initialValue)}

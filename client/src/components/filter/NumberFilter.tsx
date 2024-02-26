@@ -3,13 +3,14 @@ import { Form, InputGroup } from 'react-bootstrap';
 
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Row } from '@tanstack/react-table';
 
 export const FILTER_FUNCTIONS = {
-  equal: (row, columnId, value) => row.getValue(columnId) === value,
+  equal: (row: Row<T>, columnId, value) => row.getValue(columnId) === value,
 
-  greaterThan: (row, columnId, value) => row.getValue(columnId) > value,
+  greaterThan: (row: Row<T>, columnId, value) => row.getValue(columnId) > value,
 
-  lessThan: (row, columnId, value) => row.getValue(columnId) < value,
+  lessThan: (row: Row<T>, columnId, value) => row.getValue(columnId) < value,
 };
 
 export const NumberFilter = ({
