@@ -1,6 +1,6 @@
 import * as ApiError from './ApiError';
 
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import DbErrorHandler from './http_error_handler';
 import { History } from 'history';
@@ -28,7 +28,7 @@ const Get = async (
   signal: AbortSignal = new AbortController().signal,
 ): Promise<any> => {
   try {
-    const response: AxiosResponse<any, any> = await axios.get(url, { signal: signal });
+    const response: any = await axios.get(url, { signal: signal });
     return response.data;
   } catch (error: any) {
     DbErrorHandler(error, history, errorMsg);
