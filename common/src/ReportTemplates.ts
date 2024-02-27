@@ -17,6 +17,11 @@ type Translation = Record<string, string>;
 type maskIndex = [number, number];
 type cellIndices = Array<maskIndex>;
 
+const translations = {
+  en: require('../src/locales/en/translationEN.json'),
+  fr: require('../src/locales/fr/translationFR.json'),
+};
+
 function createTableGreyMask(rows: number, cols: number, greyIndices?: maskIndex[]): boolean[][] {
   // Create a mask with all values set to false
   const mask: boolean[][] = new Array(rows).fill(null).map(() => new Array(cols).fill(false));
@@ -63,11 +68,6 @@ export const oneQuestionReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
-  const translations = {
-    en: require('../src/locales/en/translationEN.json'),
-    fr: require('../src/locales/fr/translationFR.json'),
-  };
-
   const getQuestionContent = (questionKey: string) => {
     return {
       en: translations['en'].rehabReportQuestions[questionKey],
@@ -718,60 +718,61 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     fr: 'Rapport de NICU/Paeds',
   });
 
+  const getQuestionContent = (questionKey: string) => {
+    return {
+      en: translations['en'].nicuQuestions[questionKey],
+      fr: translations['fr'].nicuQuestions[questionKey],
+    };
+  };
+
   // Questions 1 to 3
-  const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('1', {
-    en: 'Beds available',
-    fr: 'Lits disponibles',
-  });
-  const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('2', {
-    en: 'Bed days',
-    fr: 'Jours-lit',
-  });
-  const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('3', {
-    en: 'Patient days',
-    fr: 'Jours-patient',
-  });
+  const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '1',
+    getQuestionContent('question1'),
+  );
+  const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '2',
+    getQuestionContent('question2'),
+  );
+  const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '3',
+    getQuestionContent('question3'),
+  );
 
   // Question 4 "Hospitalized"
-  const q4_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('4_1_1', {
-    en: 'Hospitalized NICU',
-    fr: 'Hospitalisé NICU',
-  });
-  const q4_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('4_1_2', {
-    en: 'Hospitalised Paed',
-    fr: 'Hospitalisé Paed',
-  });
+  const q4_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '4_1_1',
+    getQuestionContent('question4_1_1'),
+  );
+  const q4_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '4_1_2',
+    getQuestionContent('question4_1_2'),
+  );
   const q4_1: SpecializedGroup<
     ID,
     ErrorType,
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '4_1',
-    {
-      en: 'Departments',
-      fr: 'Départements',
-    },
+    getQuestionContent('question4_1'),
     q4_1_1,
     q4_1_2,
   );
   const q4: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '4',
-    {
-      en: 'Hospitalized',
-      fr: 'Hospitalisé',
-    },
+    getQuestionContent('question4'),
     q4_1,
   );
 
   // Question 5 "Discharged alive"
-  const q5_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('5_1_1', {
-    en: '# Discharged from NICU',
-    fr: '# Déchargé de NICU',
-  });
-  const q5_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('5_1_2', {
-    en: '# Discharged from elsewhere',
-    fr: "# Déchargé d'ailleurs",
-  });
+  const q5_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '5_1_1',
+    getQuestionContent('question5_1_1'),
+  );
+  const q5_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '5_1_2',
+    getQuestionContent('question5_1_2'),
+  );
   const q5_1: SpecializedGroup<
     ID,
     ErrorType,
@@ -787,109 +788,94 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
   );
   const q5: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '5',
-    {
-      en: 'Discharged Alive',
-      fr: 'Déchargé Vivant',
-    },
+    getQuestionContent('question5'),
     q5_1,
   );
 
   // Question 6 "Died before 48h"
-  const q6_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('6_1_1', {
-    en: 'Died in NICU',
-    fr: 'Décédé en NICU',
-  });
-  const q6_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('6_1_2', {
-    en: 'Died in Paed',
-    fr: 'Décédé en Pédiatrie',
-  });
+  const q6_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '6_1_1',
+    getQuestionContent('question6_1_1'),
+  );
+  const q6_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '6_1_2',
+    getQuestionContent('question6_1_2'),
+  );
   const q6_1: SpecializedGroup<
     ID,
     ErrorType,
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '6_1',
-    {
-      en: 'By Department',
-      fr: 'Par Département',
-    },
+    getQuestionContent('question6_1'),
     q6_1_1,
     q6_1_2,
   );
   const q6: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '6',
-    {
-      en: 'Died before 48h',
-      fr: 'Décédé avant 48h',
-    },
+    getQuestionContent('question6'),
     q6_1,
   );
 
   // Question 7 "Died after 48h"
-  const q7_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('7_1_1', {
-    en: 'Died in NICU',
-    fr: 'Décédé en NICU',
-  });
-  const q7_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('7_1_2', {
-    en: 'Died in Paed',
-    fr: 'Décédé en Pédiatrie',
-  });
+  const q7_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '7_1_1',
+    getQuestionContent('question7_1_1'),
+  );
+  const q7_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '7_1_2',
+    getQuestionContent('question7_1_2'),
+  );
   const q7_1: SpecializedGroup<
     ID,
     ErrorType,
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '7_1',
-    {
-      en: 'By Department',
-      fr: 'Par Département',
-    },
+    getQuestionContent('question7_1'),
     q7_1_1,
     q7_1_2,
   );
   const q7: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '7',
-    {
-      en: 'Died after 48h',
-      fr: 'Décédé après 48h',
-    },
+    getQuestionContent('question7'),
     q7_1,
   );
 
   // Questions 8 to 10
-  const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('8', {
-    en: 'Days hospitalised',
-    fr: 'Jours hospitalisés',
-  });
-  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('9', {
-    en: 'Referrals',
-    fr: 'Références',
-  });
-  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('10', {
-    en: 'Transfers',
-    fr: 'Transferts',
-  });
+  const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '8',
+    getQuestionContent('question8'),
+  );
+  const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '9',
+    getQuestionContent('question9'),
+  );
+  const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '10',
+    getQuestionContent('question10'),
+  );
 
-  const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('11_1_1', {
-    en: 'Finance: Leave as cannot afford care',
-    fr: 'Finances: Partir car incapable de payer les soins',
-  });
-  const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('11_1_2', {
-    en: 'Finance: Left to avoid paying',
-    fr: 'Finances: Parti pour éviter de payer',
-  });
-  const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('11_1_3', {
-    en: 'Religious/Cultural',
-    fr: 'Religieuse/Culturelle',
-  });
-  const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('11_1_4', {
-    en: 'Personal/ Family',
-    fr: 'Personnelle/ Familiale',
-  });
-  const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('11_1_5', {
-    en: 'Other',
-    fr: 'Autre',
-  });
+  const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_1',
+    getQuestionContent('question11_1_1'),
+  );
+  const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_2',
+    getQuestionContent('question11_1_2'),
+  );
+  const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_3',
+    getQuestionContent('question11_1_3'),
+  );
+  const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_4',
+    getQuestionContent('question11_1_4'),
+  );
+  const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '11_1_5',
+    getQuestionContent('question11_1_5'),
+  );
 
   const q11_1: SpecializedGroup<
     ID,
@@ -897,10 +883,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '11_1',
-    {
-      en: 'Reason for self-discharge',
-      fr: "Raison de l'auto-décharge",
-    },
+    getQuestionContent('question11_1'),
     q11_1_1,
     q11_1_2,
     q11_1_3,
@@ -910,35 +893,32 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '11',
-    {
-      en: 'Self-discharged',
-      fr: 'PSA',
-    },
+    getQuestionContent('question11'),
     q11_1,
   );
 
   // Question 12
-  const q12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('12', {
-    en: 'Stayed in the ward',
-    fr: "Séjour à l'hôpital",
-  });
+  const q12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '12',
+    getQuestionContent('question12'),
+  );
 
-  const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_1_1', {
-    en: 'Quarter Morin',
-    fr: 'Quartier Morin',
-  });
-  const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_1_2', {
-    en: 'Cap Haitian',
-    fr: 'Cap Haïtien',
-  });
-  const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_1_3', {
-    en: 'Department Nord',
-    fr: 'Département du Nord',
-  });
-  const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_1_4', {
-    en: 'Other departments',
-    fr: 'Autres départements',
-  });
+  const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_1',
+    getQuestionContent('question13_1_1'),
+  );
+  const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_2',
+    getQuestionContent('question13_1_2'),
+  );
+  const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_3',
+    getQuestionContent('question13_1_3'),
+  );
+  const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_1_4',
+    getQuestionContent('question13_1_4'),
+  );
 
   const q13_1: SpecializedGroup<
     ID,
@@ -946,48 +926,45 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_1',
-    {
-      en: 'Where do patients come from?',
-      fr: "D'où viennent les patients?",
-    },
+    getQuestionContent('question13_1'),
     q13_1_1,
     q13_1_2,
     q13_1_3,
     q13_1_4,
   );
 
-  const q13_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_1', {
-    en: 'Extremely preterm (less than 28 weeks)',
-    fr: 'Extrêmement prématuré (moins de 28 semaines)',
-  });
-  const q13_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_2', {
-    en: 'Very preterm (28 to 32 weeks)',
-    fr: 'Très prématuré (28 à 32 semaines)',
-  });
-  const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_3', {
-    en: 'Moderate to late preterm (32 to 37 weeks)',
-    fr: 'Prématuré modéré à tardif (32 à 37 semaines)',
-  });
-  const q13_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_4', {
-    en: 'Full term (37 weeks plus)',
-    fr: 'À terme (37 semaines et plus)',
-  });
-  const q13_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_5', {
-    en: 'Older than neonate (>4 weeks old)',
-    fr: 'Plus âgé que le nouveau-né (> 4 semaines)',
-  });
-  const q13_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_6', {
-    en: 'Age 4 weeks - 5',
-    fr: 'Âge de 4 semaines - 5',
-  });
-  const q13_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_7', {
-    en: 'Age 6-11',
-    fr: 'Âge 6-11',
-  });
-  const q13_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_2_8', {
-    en: 'Age 12-18',
-    fr: 'Âge 12-18',
-  });
+  const q13_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_1',
+    getQuestionContent('question13_2_1'),
+  );
+  const q13_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_2',
+    getQuestionContent('question13_2_2'),
+  );
+  const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_3',
+    getQuestionContent('question13_2_3'),
+  );
+  const q13_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_4',
+    getQuestionContent('question13_2_4'),
+  );
+  const q13_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_5',
+    getQuestionContent('question13_2_5'),
+  );
+  const q13_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_6',
+    getQuestionContent('question13_2_6'),
+  );
+  const q13_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_7',
+    getQuestionContent('question13_2_7'),
+  );
+  const q13_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_2_8',
+    getQuestionContent('question13_2_8'),
+  );
 
   const q13_2: SpecializedGroup<
     ID,
@@ -995,10 +972,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_2',
-    {
-      en: 'Age of infant admitted',
-      fr: 'Âge du nourrisson admis',
-    },
+    getQuestionContent('question13_2'),
     q13_2_1,
     q13_2_2,
     q13_2_3,
@@ -1010,14 +984,14 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
   );
 
   // 13_3 "Gender"
-  const q13_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_3_1', {
-    en: 'Male',
-    fr: 'Masculin',
-  });
-  const q13_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_3_2', {
-    en: 'Female',
-    fr: 'Féminin',
-  });
+  const q13_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_3_1',
+    getQuestionContent('question13_3_1'),
+  );
+  const q13_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_3_2',
+    getQuestionContent('question13_3_2'),
+  );
 
   const q13_3: SpecializedGroup<
     ID,
@@ -1025,92 +999,88 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_3',
-    {
-      en: 'Gender',
-      fr: 'Gendre',
-    },
+    getQuestionContent('question13_3'),
     q13_3_1,
     q13_3_2,
   );
 
-  const q13_4_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_1', {
-    en: 'Respiratory arrest',
-    fr: 'Arrêt respiratoire',
-  });
-  const q13_4_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_2', {
-    en: 'Traumatic injury',
-    fr: 'Blessure traumatique',
-  });
-  const q13_4_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_3', {
-    en: 'Septic Shock',
-    fr: 'Choc septique',
-  });
-  const q13_4_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_4', {
-    en: 'Hypovolemic shock',
-    fr: 'Choc hypovolémique',
-  });
-  const q13_4_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_5', {
-    en: 'Seizures/convulsions',
-    fr: 'Crises/convulsions',
-  });
-  const q13_4_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_6', {
-    en: 'Poisoning',
-    fr: 'Empoisonnement',
-  });
-  const q13_4_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_7', {
-    en: 'Altered mental status',
-    fr: 'État mental altéré',
-  });
-  const q13_4_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_8', {
-    en: 'Gastroenteritis',
-    fr: 'Gastro-entérite',
-  });
-  const q13_4_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_9', {
-    en: 'Hemorrhage',
-    fr: 'Hémorragie',
-  });
+  const q13_4_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_1',
+    getQuestionContent('question13_4_1'),
+  );
+  const q13_4_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_2',
+    getQuestionContent('question13_4_2'),
+  );
+  const q13_4_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_3',
+    getQuestionContent('question13_4_3'),
+  );
+  const q13_4_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_4',
+    getQuestionContent('question13_4_4'),
+  );
+  const q13_4_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_5',
+    getQuestionContent('question13_4_5'),
+  );
+  const q13_4_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_6',
+    getQuestionContent('question13_4_6'),
+  );
+  const q13_4_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_7',
+    getQuestionContent('question13_4_7'),
+  );
+  const q13_4_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_8',
+    getQuestionContent('question13_4_8'),
+  );
+  const q13_4_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_9',
+    getQuestionContent('question13_4_9'),
+  );
 
-  const q13_4_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_10', {
-    en: 'Hypothermia',
-    fr: 'Hypothermie',
-  });
-
-  const q13_4_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_11', {
-    en: 'Cardiac congenital anomaly',
-    fr: 'Anomalie congénitale cardiaque',
-  });
-  const q13_4_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_12', {
-    en: 'Other congenital anomaly',
-    fr: 'Autre anomalie congénitale',
-  });
-  const q13_4_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_13', {
-    en: 'Malnutrition',
-    fr: 'Malnutrition',
-  });
-  const q13_4_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_14', {
-    en: 'Meningitis',
-    fr: 'Méningite',
-  });
-  const q13_4_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_15', {
-    en: 'Community acquired pneumonia',
-    fr: 'Pneumonie communautaire acquise',
-  });
-  const q13_4_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_16', {
-    en: 'Aspiration pneumonia',
-    fr: 'Pneumonie par aspiration',
-  });
-  const q13_4_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_17', {
-    en: 'Moderate prematurity (32-36 weeks gestation)',
-    fr: 'Prématurité modérée (32-36 semaines de gestation)',
-  });
-  const q13_4_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_18', {
-    en: 'Severe prematurity (<32 weeks)',
-    fr: 'Prématurité sévère (<32 semaines)',
-  });
-  const q13_4_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('13_4_19', {
-    en: 'Other',
-    fr: 'Autre',
-  });
+  const q13_4_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_10',
+    getQuestionContent('question13_4_10'),
+  );
+  const q13_4_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_11',
+    getQuestionContent('question13_4_11'),
+  );
+  const q13_4_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_12',
+    getQuestionContent('question13_4_12'),
+  );
+  const q13_4_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_13',
+    getQuestionContent('question13_4_13'),
+  );
+  const q13_4_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_14',
+    getQuestionContent('question13_4_14'),
+  );
+  const q13_4_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_15',
+    getQuestionContent('question13_4_15'),
+  );
+  const q13_4_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_16',
+    getQuestionContent('question13_4_16'),
+  );
+  const q13_4_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_17',
+    getQuestionContent('question13_4_17'),
+  );
+  const q13_4_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_18',
+    getQuestionContent('question13_4_18'),
+  );
+  const q13_4_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '13_4_19',
+    getQuestionContent('question13_4_19'),
+  );
 
   const q13_4: SpecializedGroup<
     ID,
@@ -1118,10 +1088,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_4',
-    {
-      en: 'Main condition',
-      fr: 'Condition principale',
-    },
+    getQuestionContent('question13_4'),
     q13_4_1,
     q13_4_2,
     q13_4_3,
@@ -1145,48 +1112,45 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q13: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '13',
-    {
-      en: 'Admissions',
-      fr: 'Admissions',
-    },
+    getQuestionContent('question13'),
     q13_1,
     q13_2,
     q13_3,
     q13_4,
   );
 
-  const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_1', {
-    en: 'Extremely preterm (less than 28 weeks)',
-    fr: 'Extrêmement prématuré (moins de 28 semaines)',
-  });
-  const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_2', {
-    en: 'Very preterm (28 to 32 weeks)',
-    fr: 'Très prématuré (28 à 32 semaines)',
-  });
-  const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_3', {
-    en: 'Moderate to late preterm (32 to 37 weeks)',
-    fr: 'Prématuré modéré à tardif (32 à 37 semaines)',
-  });
-  const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_4', {
-    en: 'Full term (37 weeks plus)',
-    fr: 'À terme (37 semaines et plus)',
-  });
-  const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_5', {
-    en: 'Older than neonate (>4 weeks old)',
-    fr: 'Plus âgé que le nouveau-né (> 4 semaines)',
-  });
-  const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_6', {
-    en: 'Age 4 weeks -5',
-    fr: 'Âge de 4 semaines -5',
-  });
-  const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_7', {
-    en: 'Age 6-11',
-    fr: 'Âge 6-11',
-  });
-  const q14_1_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_1_8', {
-    en: 'Age 12-18',
-    fr: 'Âge 12-18',
-  });
+  const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_1',
+    getQuestionContent('question14_1_1'),
+  );
+  const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_2',
+    getQuestionContent('question14_1_2'),
+  );
+  const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_3',
+    getQuestionContent('question14_1_3'),
+  );
+  const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_4',
+    getQuestionContent('question14_1_4'),
+  );
+  const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_5',
+    getQuestionContent('question14_1_5'),
+  );
+  const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_6',
+    getQuestionContent('question14_1_6'),
+  );
+  const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_7',
+    getQuestionContent('question14_1_7'),
+  );
+  const q14_1_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_1_8',
+    getQuestionContent('question14_1_8'),
+  );
 
   const q14_1: SpecializedGroup<
     ID,
@@ -1194,10 +1158,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_1',
-    {
-      en: 'Age',
-      fr: 'Âge',
-    },
+    getQuestionContent('question14_1'),
     q14_1_1,
     q14_1_2,
     q14_1_3,
@@ -1208,82 +1169,82 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     q14_1_8,
   );
 
-  const q14_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_1', {
-    en: 'Respiratory arrest',
-    fr: 'Arrêt respiratoire',
-  });
-  const q14_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_2', {
-    en: 'Traumatic injury',
-    fr: 'Blessure traumatique',
-  });
-  const q14_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_3', {
-    en: 'Septic Shock',
-    fr: 'Choc septique',
-  });
-  const q14_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_4', {
-    en: 'Hypovolemic shock',
-    fr: 'Choc hypovolémique',
-  });
-  const q14_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_5', {
-    en: 'Seizures/convulsions',
-    fr: 'Crises/convulsions',
-  });
-  const q14_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_6', {
-    en: 'Poisoning',
-    fr: 'Empoisonnement',
-  });
-  const q14_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_7', {
-    en: 'Altered mental status',
-    fr: 'État mental altéré',
-  });
-  const q14_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_8', {
-    en: 'Gastroenteritis',
-    fr: 'Gastro-entérite',
-  });
-  const q14_2_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_9', {
-    en: 'Hemorrhage',
-    fr: 'Hémorragie',
-  });
-  const q14_2_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_10', {
-    en: 'Hypothermia',
-    fr: 'Hypothermie',
-  });
-  const q14_2_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_11', {
-    en: 'Cardiac congenital anomaly',
-    fr: 'Anomalie congénitale cardiaque',
-  });
-  const q14_2_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_12', {
-    en: 'Other congenital anomaly',
-    fr: 'Autre anomalie congénitale',
-  });
-  const q14_2_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_13', {
-    en: 'Malnutrition',
-    fr: 'Malnutrition',
-  });
-  const q14_2_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_14', {
-    en: 'Meningitis',
-    fr: 'Méningite',
-  });
-  const q14_2_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_15', {
-    en: 'Community acquired pneumonia',
-    fr: 'Pneumonie communautaire acquise',
-  });
-  const q14_2_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_16', {
-    en: 'Aspiration pneumonia',
-    fr: 'Pneumonie par aspiration',
-  });
-  const q14_2_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_17', {
-    en: 'Moderate prematurity (32-36 weeks gestation)',
-    fr: 'Prématurité modérée (32-36 semaines de gestation)',
-  });
-  const q14_2_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_18', {
-    en: 'Severe prematurity (<32 weeks)',
-    fr: 'Prématurité sévère (<32 semaines)',
-  });
-  const q14_2_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_2_19', {
-    en: 'Other',
-    fr: 'Autre',
-  });
+  const q14_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_1',
+    getQuestionContent('question14_2_1'),
+  );
+  const q14_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_2',
+    getQuestionContent('question14_2_2'),
+  );
+  const q14_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_3',
+    getQuestionContent('question14_2_3'),
+  );
+  const q14_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_4',
+    getQuestionContent('question14_2_4'),
+  );
+  const q14_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_5',
+    getQuestionContent('question14_2_5'),
+  );
+  const q14_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_6',
+    getQuestionContent('question14_2_6'),
+  );
+  const q14_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_7',
+    getQuestionContent('question14_2_7'),
+  );
+  const q14_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_8',
+    getQuestionContent('question14_2_8'),
+  );
+  const q14_2_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_9',
+    getQuestionContent('question14_2_9'),
+  );
+  const q14_2_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_10',
+    getQuestionContent('question14_2_10'),
+  );
+  const q14_2_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_11',
+    getQuestionContent('question14_2_11'),
+  );
+  const q14_2_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_12',
+    getQuestionContent('question14_2_12'),
+  );
+  const q14_2_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_13',
+    getQuestionContent('question14_2_13'),
+  );
+  const q14_2_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_14',
+    getQuestionContent('question14_2_14'),
+  );
+  const q14_2_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_15',
+    getQuestionContent('question14_2_15'),
+  );
+  const q14_2_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_16',
+    getQuestionContent('question14_2_16'),
+  );
+  const q14_2_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_17',
+    getQuestionContent('question14_2_17'),
+  );
+  const q14_2_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_18',
+    getQuestionContent('question14_2_18'),
+  );
+  const q14_2_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_2_19',
+    getQuestionContent('question14_2_19'),
+  );
 
   const q14_2: SpecializedGroup<
     ID,
@@ -1291,10 +1252,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_2',
-    {
-      en: 'Main condition',
-      fr: 'Condition principale',
-    },
+    getQuestionContent('question14_2'),
     q14_2_1,
     q14_2_2,
     q14_2_3,
@@ -1316,14 +1274,14 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     q14_2_19,
   );
 
-  const q14_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_3_1', {
-    en: 'Male',
-    fr: 'Homme',
-  });
-  const q14_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>('14_3_2', {
-    en: 'Female',
-    fr: 'Femme',
-  });
+  const q14_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_3_1',
+    getQuestionContent('question14_3_1'),
+  );
+  const q14_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
+    '14_3_2',
+    getQuestionContent('question14_3_2'),
+  );
 
   const q14_3: SpecializedGroup<
     ID,
@@ -1331,20 +1289,14 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_3',
-    {
-      en: 'Gender',
-      fr: 'Gendre',
-    },
+    getQuestionContent('question14_3'),
     q14_3_1,
     q14_3_2,
   );
 
   const q14: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '14',
-    {
-      en: 'Number of outpatients',
-      fr: 'Nombre de patients externes',
-    },
+    getQuestionContent('question14'),
     q14_1,
     q14_2,
     q14_3,
@@ -1357,11 +1309,6 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
-  const translations = {
-    en: require('../src/locales/en/translationEN.json'),
-    fr: require('../src/locales/fr/translationFR.json'),
-  };
-
   const getQuestionContent = (questionKey: string) => {
     return {
       en: translations['en'].maternityQuestions[questionKey],
