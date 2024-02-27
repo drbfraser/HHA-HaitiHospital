@@ -1333,7 +1333,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     '14_3',
     {
       en: 'Gender',
-      fr: 'Genre',
+      fr: 'Gendre',
     },
     q14_3_1,
     q14_3_2,
