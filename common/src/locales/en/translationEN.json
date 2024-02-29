@@ -349,6 +349,6 @@
       "30 years plus",
       "Unknown"
     ],
-    "question1_columns": "Trained Midwives"
+    "question1_columns": ["Trained Midwives", "Others"]
   }
 }

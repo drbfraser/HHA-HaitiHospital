@@ -348,6 +348,6 @@
       "30 ans et plus",
       "Inconnu"
     ],
-    "question1_columns": "Matrones formées"
+    "question1_columns": ["Matrones formées", "Autres"]
   }
 }

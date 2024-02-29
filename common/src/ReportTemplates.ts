@@ -2041,21 +2041,30 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     { en: 'Community Health Report', fr: 'Rapport sur la santé communautaire' },
   );
 
-  const q1_table_title: Translation = { en: 'Age of Mothers', fr: 'Âge des Mères' };
+  const getQuestionContent = (questionKey: string) => {
+    return {
+      en: translations['en'].communityHealthQuestions[questionKey],
+      fr: translations['fr'].communityHealthQuestions[questionKey],
+    };
+  };
 
-  const q1_rows: Translation[] = [
-    { en: '< 15 years', fr: '< 15 ans' },
-    { en: '15-19 years', fr: '15-19 ans' },
-    { en: '20-24 years', fr: '20-24 ans' },
-    { en: '25-29 years', fr: '25-29 ans' },
-    { en: '30 years plus', fr: '30 ans et plus' },
-    { en: 'Unknown', fr: 'Inconnu' },
-  ];
+  const getQuestionList = (questionKey: string) => {
+    const list_en = translations['en'].communityHealthQuestions[questionKey];
+    const list_fr = translations['fr'].communityHealthQuestions[questionKey];
 
-  const q1_columns: Translation[] = [
-    { en: 'Trained Midwives', fr: 'Matrones formées' },
-    { en: 'Others', fr: 'Autres' },
-  ];
+    const result = list_en.map((item: any, idx: string | number) => ({
+      en: item,
+      fr: list_fr[idx],
+    }));
+
+    console.log(result); // TODO: Remove when finished migrating translation
+
+    return result;
+  };
+
+  const q1_table_title: Translation = getQuestionContent('question1_table_title');
+  const q1_rows: Translation[] = getQuestionList('question1_rows');
+  const q1_columns: Translation[] = getQuestionList('question1_columns');
 
   const q1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q1_rows.length,
