@@ -2219,19 +2219,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q6_rows: Translation[] = [
-    { en: 'SAB 0.05ml', fr: 'SAB 0.05ml' },
-    { en: 'SAB 0.5ml', fr: 'SAB 0.5ml' },
-    { en: 'Sdil_2ml', fr: 'Sdil_2ml' },
-    { en: 'Sdil_5ml', fr: 'Sdil_5ml' },
-    { en: 'Boîtes Séc', fr: 'Boîtes Séc' },
-    { en: 'Cotton', fr: 'Coton' },
-  ];
-
-  const q6_columns: Translation[] = [
-    { en: 'Quantity available during the month', fr: 'Quantité disponible au cours du mois' },
-    { en: 'Balance at the end of the month', fr: 'Solde en fin de mois' },
-  ];
+  const q6_table_title: Translation = getQuestionContent('question6_table_title');
+  const q6_rows: Translation[] = getQuestionList('question6_rows');
+  const q6_columns: Translation[] = getQuestionList('question6_columns');
 
   const q6_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q6_rows.length,
@@ -2240,8 +2230,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q6_rows_en, fr: q6_rows_fr } = separateLanguages(q6_rows);
   const { en: q6_columns_en, fr: q6_columns_fr } = separateLanguages(q6_columns);
-
-  const q6_table_title: Translation = { en: 'Consumables', fr: 'Intrants' };
 
   const q6: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '6',

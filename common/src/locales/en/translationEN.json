@@ -417,6 +417,9 @@
       "Quantity available during the month",
       "Balance at the end of the month",
       "Number of days of stock outs"
-    ]
+    ],
+    "question6_table_title": "Consumables",
+    "question6_rows": ["SAB 0.05ml", "SAB 0.5ml", "Sdil_2ml", "Sdil_5ml", "Dry boxes", "Cotton"],
+    "question6_columns": ["Quantity available during the month", "Balance at the end of the month"]
   }
 }

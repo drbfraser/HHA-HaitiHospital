@@ -416,6 +416,9 @@
       "Quantité disponible au cours du mois",
       "Solde en fin de mois",
       "Nombre de jours de rupture de stocks"
-    ]
+    ],
+    "question6_table_title": "Intrants",
+    "question6_rows": ["SAB 0.05ml", "SAB 0.5ml", "Sdil_2ml", "Sdil_5ml", "Boîtes Séc", "Coton"],
+    "question6_columns": ["Quantité disponible au cours du mois", "Solde en fin de mois"]
   }
 }
