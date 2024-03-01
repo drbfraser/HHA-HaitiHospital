@@ -488,6 +488,22 @@
       "12-32 Months Comm.",
       "Used",
       "Administered"
-    ]
+    ],
+    "question7_2_table_title": "Vaccine Doses",
+    "question7_2_rows": [
+      "BCG",
+      "OPV + OPV 1 + OPV 2 + OPV Booster (Polio)",
+      "IPV",
+      "Penta 1 + Penta 2 + Penta 3",
+      "Rota 1 + Rota 2",
+      "RR 1 + RR 2",
+      "Pneumo 1 + Pneumo 2 + Pneumo 3",
+      "DTP Booster",
+      "ECV"
+    ],
+    "question7_2_columns": ["Used", "Administered"],
+    "question7_3_table_title": "Pregnant Women",
+    "question7_3_rows": ["dT1", "dT2+", "dT1+dT2+"],
+    "question7_3_columns": ["Inst.", "Comm.", "Total"]
   }
 }

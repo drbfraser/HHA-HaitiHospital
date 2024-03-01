@@ -2813,25 +2813,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     q7_1_calculationMask,
   );
 
-  const q7_2_rows: Translation[] = [
-    { en: 'BCG', fr: 'BCG' },
-    {
-      en: 'OPV + OPV 1 + OPV 2 + OPV Booster (Polio)',
-      fr: 'VPO + VPO 1 + VPO 2 + VPO Booster (Polio)',
-    },
-    { en: 'IPV', fr: 'VPI' },
-    { en: 'Penta 1 + Penta 2 + Penta 3', fr: 'Penta 1 + Penta 2 + Penta 3' },
-    { en: 'Rota 1 + Rota 2', fr: 'Rota 1 + Rota 2' },
-    { en: 'RR 1 + RR 2', fr: 'RR 1 + RR 2' },
-    { en: 'Pneumo 1 + Pneumo 2 + Pneumo 3', fr: 'Pneumo 1 + Pneumo 2 + Pneumo 3' },
-    { en: 'DTP Booster', fr: 'DTP Rappel' },
-    { en: 'ECV', fr: 'ECV' },
-  ];
+  const q7_2_table_title: Translation = getQuestionContent('question7_2_table_title');
+  const q7_2_rows: Translation[] = getQuestionList('question7_2_rows');
+  const q7_2_columns: Translation[] = getQuestionList('question7_2_columns');
 
-  const q7_2_columns: Translation[] = [
-    { en: 'Used', fr: 'Utilisées' },
-    { en: 'Administered', fr: 'Administrées' },
-  ];
   const q7_2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_2_rows.length,
     q7_2_columns.length,
@@ -2839,11 +2824,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q7_2_rows_en, fr: q7_2_rows_fr } = separateLanguages(q7_2_rows);
   const { en: q7_2_columns_en, fr: q7_2_columns_fr } = separateLanguages(q7_2_columns);
-
-  const q7_2_table_title: Translation = {
-    en: 'Vaccine Doses',
-    fr: 'Doses de vaccin',
-  };
 
   const q7_2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7_2',
@@ -2859,17 +2839,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q7_3_rows: Translation[] = [
-    { en: 'dT1', fr: 'dT1' },
-    { en: 'dT2+', fr: 'dT2+' },
-    { en: 'dT1+dT2+', fr: 'dT1+dT2+' },
-  ];
-
-  const q7_3_columns: Translation[] = [
-    { en: 'Inst.', fr: 'Inst.' },
-    { en: 'Comm.', fr: 'Comm.' },
-    { en: 'Total', fr: 'Total' },
-  ];
+  const q7_3_table_title: Translation = getQuestionContent('question7_3_table_title');
+  const q7_3_rows: Translation[] = getQuestionList('question7_3_rows');
+  const q7_3_columns: Translation[] = getQuestionList('question7_3_columns');
 
   // Example of setting up calculationMask for a specific table
   // Note that in the future, when we have the feature to let user define questions on the APP's frontend
@@ -2933,11 +2905,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q7_3_rows_en, fr: q7_3_rows_fr } = separateLanguages(q7_3_rows);
   const { en: q7_3_columns_en, fr: q7_3_columns_fr } = separateLanguages(q7_3_columns);
-
-  const q7_3_table_title: Translation = {
-    en: 'Pregnant Women',
-    fr: 'Femmes enceintes',
-  };
 
   const q7_3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7_3',

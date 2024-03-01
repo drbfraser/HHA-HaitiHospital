@@ -487,6 +487,22 @@
       "12-32 Mois Comm.",
       "Utilisées",
       "Administrées"
-    ]
+    ],
+    "question7_2_table_title": "Doses de vaccin",
+    "question7_2_rows": [
+      "BCG",
+      "VPO + VPO 1 + VPO 2 + VPO Booster (Polio)",
+      "VPI",
+      "Penta 1 + Penta 2 + Penta 3",
+      "Rota 1 + Rota 2",
+      "RR 1 + RR 2",
+      "Pneumo 1 + Pneumo 2 + Pneumo 3",
+      "DTP Rappel",
+      "ECV"
+    ],
+    "question7_2_columns": ["Utilisées", "Administrées"],
+    "question7_3_table_title": "Femmes enceintes",
+    "question7_3_rows": ["dT1", "dT2+", "dT1+dT2+"],
+    "question7_3_columns": ["Inst.", "Comm.", "Total"]
   }
 }
