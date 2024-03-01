@@ -348,6 +348,16 @@
       "30 ans et plus",
       "Inconnu"
     ],
-    "question1_columns": ["Matrones formées", "Autres"]
+    "question1_columns": ["Matrones formées", "Autres"],
+    "question2_table_title": "Naissances",
+    "question2_rows": [
+      "Poids <1,5kg",
+      "1,5kg ≤ Poids <2,5kg",
+      "2,5kg et plus",
+      "Non pesé",
+      "Allaité immédiatement",
+      "Thérapie peau à peau"
+    ],
+    "question2_columns": ["Matrones formées", "Autres"]
   }
 }

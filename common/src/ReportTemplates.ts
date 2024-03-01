@@ -2089,19 +2089,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q2_rows: Translation[] = [
-    { en: 'Weight <1.5kg', fr: 'Poids <1,5kg' },
-    { en: '1.5kg ≤ Weight <2.5kg', fr: '1,5kg ≤ Poids <2,5kg' },
-    { en: '2.5kg and over', fr: '2,5kg et plus' },
-    { en: 'Not weighed', fr: 'Non pesé' },
-    { en: 'Immediately breastfed', fr: 'Allaité immédiatement' },
-    { en: 'Skin to skin therapy', fr: 'Thérapie peau à peau' },
-  ];
-
-  const q2_columns: Translation[] = [
-    { en: 'Matrones', fr: 'Matrones' },
-    { en: 'Others', fr: 'Autres' },
-  ];
+  const q2_table_title: Translation = getQuestionContent('question2_table_title');
+  const q2_rows: Translation[] = getQuestionList('question2_rows');
+  const q2_columns: Translation[] = getQuestionList('question2_columns');
 
   const q2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q2_rows.length,
@@ -2110,8 +2100,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q2_rows_en, fr: q2_rows_fr } = separateLanguages(q2_rows);
   const { en: q2_columns_en, fr: q2_columns_fr } = separateLanguages(q2_columns);
-
-  const q2_table_title: Translation = { en: 'Births', fr: 'Naissances' };
 
   const q2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '2',

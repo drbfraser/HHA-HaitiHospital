@@ -349,6 +349,16 @@
       "30 years plus",
       "Unknown"
     ],
-    "question1_columns": ["Trained Midwives", "Others"]
+    "question1_columns": ["Trained Midwives", "Others"],
+    "question2_table_title": "Births",
+    "question2_rows": [
+      "Weight <1.5kg",
+      "1.5kg ≤ Weight <2.5kg",
+      "2.5kg and over",
+      "Not weighed",
+      "Immediately breastfed",
+      "Skin to skin therapy"
+    ],
+    "question2_columns": ["Trained Midwives", "Others"]
   }
 }
