@@ -7,19 +7,57 @@
     "question4": "Hospitalisés",
     "question5": "Sortis vivants",
     "question5_1": "Diagnostic à la sortie",
+    "question5_1_options": ["SCI", "Accident vasculaire cérébral", "Autre"],
     "question5_2": "Nombre de jours en unité de rééducation de l'admission à la sortie",
     "question5_3": "Motif de sortie",
+    "question5_3_options": [
+      "Tous les objectifs atteints",
+      "Objectifs partiellement atteints, suffisants pour la décharge",
+      "Objectifs non atteints, renvoyé pour une autre raison"
+    ],
     "question5_4": "Résultat de la sortie (AVQ/AIV)",
+    "question5_4_options": [
+      "Indépendant",
+      "Indépendant modifié",
+      "Surveillance",
+      "Assistance minimale",
+      "Assistance modérée",
+      "Assistance maximale",
+      "Dépendant"
+    ],
     "question5_5": "Résultat de la sortie (Transferts et mobilité)",
+    "question5_5_options": [
+      "Indépendant",
+      "Indépendant modifié",
+      "Surveillance",
+      "Assistance minimale",
+      "Assistance modérée",
+      "Assistance maximale",
+      "Dépendant"
+    ],
     "question5_6": "Aide à la mobilité / Dispositif d'assistance fourni ?",
+    "question5_6_options": ["Fauteuil roulant", "Marcheur", "Canne", "Béquilles", "Aucun"],
     "question5_7": "Lieu de sortie",
+    "question5_7_options": [
+      "Retourner à la maison, seul",
+      "Retourner à la maison, avec la famille/les aidants",
+      "Admis à l'hôpital"
+    ],
     "question5_8": "Statut d'emploi à la sortie",
+    "question5_8_options": [
+      "Employé",
+      "Sans emploi, incapable de trouver du travail",
+      "Sans emploi, en raison de la condition",
+      "Retraité, ne travaille pas en raison de l'âge"
+    ],
     "question6": "Décès avant 48h",
     "question6_1": "Diagnostic",
+    "question6_1_options": ["SCI", "CVA", "Autre"],
     "question6_2": "Âge",
     "question6_3": "Cause du décès",
     "question7": "Décès après 48h",
     "question7_1": "Diagnostic",
+    "question7_1_options": ["SCI", "CVA", "Autre"],
     "question7_2": "Âge",
     "question7_3": "Cause du décès",
     "question8": "Jours d'hospitalisation",

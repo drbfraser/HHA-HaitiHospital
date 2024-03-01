@@ -7,19 +7,57 @@
     "question4": "Hospitalized",
     "question5": "Discharged Alive",
     "question5_1": "Discharged diagnosis",
+    "question5_1_options": ["SCI", "Stroke", "Other"],
     "question5_2": "No. Days in Rehab Unit from admission to discharge",
     "question5_3": "Discharged reason",
+    "question5_3_options": [
+      "All goals met",
+      "Goals partially met, sufficient for discharge",
+      "Goals not met, discharged for alternate reason"
+    ],
     "question5_4": "Discharge Outcome (ADLs/Self-Care)",
+    "question5_4_options": [
+      "Independent",
+      "Modified Independent",
+      "Supervision",
+      "Minimum Assistance",
+      "Moderate Assistance",
+      "Maximum Assistance",
+      "Dependent"
+    ],
     "question5_5": "Discharge Outcome (Transfers and Mobility)",
+    "question5_5_options": [
+      "Independent",
+      "Modified Independent",
+      "Supervision",
+      "Minimum Assistance",
+      "Moderate Assistance",
+      "Maximum Assistance",
+      "Dependent"
+    ],
     "question5_6": "Mobility Aid/Assistive Device Given?",
+    "question5_6_options": ["Wheelchair", "Walker", "Cane", "Crutches", "None"],
     "question5_7": "Discharge Location",
+    "question5_7_options": [
+      "Return home, alone",
+      "Return home, with family/caregiver(s)",
+      "Admitted to hospital"
+    ],
     "question5_8": "Discharge Employment Status",
+    "question5_8_options": [
+      "Employed",
+      "Unemployed, unable to find work",
+      "Unemployed, due to condition",
+      "Retired, not working due to age"
+    ],
     "question6": "Died before 48h",
     "question6_1": "Diagnosis",
+    "question6_1_options": ["SCI", "CVA", "Other"],
     "question6_2": "Age",
     "question6_3": "Cause of death",
     "question7": "Died after 48h",
     "question7_1": "Diagnosis",
+    "question7_1_options": ["SCI", "CVA", "Other"],
     "question7_2": "Age",
     "question7_3": "Cause of death",
     "question8": "Days hospitalized",
