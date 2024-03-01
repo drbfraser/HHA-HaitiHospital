@@ -2052,14 +2052,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     const list_en = translations['en'].communityHealthQuestions[questionKey];
     const list_fr = translations['fr'].communityHealthQuestions[questionKey];
 
-    const result = list_en.map((item: any, idx: string | number) => ({
+    return list_en.map((item: any, idx: string | number) => ({
       en: item,
       fr: list_fr[idx],
     }));
-
-    console.log(result); // TODO: Remove when finished migrating translation
-
-    return result;
   };
 
   const q1_table_title: Translation = getQuestionContent('question1_table_title');
