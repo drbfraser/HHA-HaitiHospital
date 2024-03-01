@@ -388,6 +388,17 @@
       "Acceptors 25 years and older",
       "Total Users <25 years",
       "Total Users 25 years and older"
-    ]
+    ],
+    "question4_1_table_title": "Contraceptives distributed",
+    "question4_1_rows": [
+      "Female OCP Cycle",
+      "Female PP Cycle",
+      "Depo injection Vial",
+      "Implant Paquet",
+      "Inter uterine devices (IUD) Piece",
+      "Vaginal ring Pièce",
+      "Female condom Pièce"
+    ],
+    "question4_1_columns": ["Quantity", "Number of days out of stock/month"]
   }
 }

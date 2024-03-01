@@ -2167,20 +2167,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q4_1_rows: Translation[] = [
-    { en: 'Female OCP Cycle', fr: 'Contraceptifs Oraux pour Femmes Cycle' },
-    { en: 'Female PP Cycle', fr: 'PP pour Femmes Cycle' },
-    { en: 'Depo injection Vial', fr: 'Injection Depo Vial' },
-    { en: 'Implant Paquet', fr: 'Implant Paquet' },
-    { en: 'Inter uterine devices (IUD) Piece', fr: 'Dispositifs Intra-Utérins (DIU) Pièce' },
-    { en: 'Vaginal ring Pièce', fr: 'Anneau Vaginal Pièce' },
-    { en: 'Female condom Pièce', fr: 'Préservatif féminin Pièce' },
-  ];
-
-  const q4_1_columns: Translation[] = [
-    { en: 'Quantity', fr: 'Quantité' },
-    { en: 'Number of days out of stock/month', fr: 'Nbre de jours rupture de stocks/ mois' },
-  ];
+  const q4_1_table_title: Translation = getQuestionContent('question4_1_table_title');
+  const q4_1_rows: Translation[] = getQuestionList('question4_1_rows');
+  const q4_1_columns: Translation[] = getQuestionList('question4_1_columns');
 
   const q4_1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_1_rows.length,
@@ -2189,11 +2178,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q4_1_rows_en, fr: q4_1_rows_fr } = separateLanguages(q4_1_rows);
   const { en: q4_1_columns_en, fr: q4_1_columns_fr } = separateLanguages(q4_1_columns);
-
-  const q4_1_table_title: Translation = {
-    en: 'Contraceptives distributed',
-    fr: 'Contraceptifs distribués',
-  };
 
   const q4_1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '4_1',

@@ -387,6 +387,17 @@
       "Acceptants 25 ans et plus",
       "Total Utilisateurs <25 ans",
       "Total Utilisateurs 25 ans et plus"
-    ]
+    ],
+    "question4_1_table_title": "Contraceptifs distribués",
+    "question4_1_rows": [
+      "Contraceptifs Oraux pour Femmes Cycle",
+      "PP pour Femmes Cycle",
+      "Injection Depo Vial",
+      "Implant Paquet",
+      "Dispositifs Intra-Utérins (DIU) Pièce",
+      "Anneau Vaginal Pièce",
+      "Préservatif féminin Pièce"
+    ],
+    "question4_1_columns": ["Quantité", "Nombre de jours de rupture de stocks/ mois"]
   }
 }
