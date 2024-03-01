@@ -170,6 +170,7 @@
     ]
   },
   "nicuQuestions": {
+    "title": "NICU/Paeds Report",
     "question1": "Beds available",
     "question2": "Bed days",
     "question3": "Patient days",
@@ -273,6 +274,7 @@
     "question14_3_2": "Female"
   },
   "maternityQuestions": {
+    "title": "Maternity Report",
     "question1": "Beds available",
     "question2": "Beds days",
     "question3": "Patient days",
@@ -378,6 +380,7 @@
     "question24_title": "24 Main Condition of Patient"
   },
   "communityHealthQuestions": {
+    "title": "Community Health Report",
     "question1_table_title": "Age of Mothers",
     "question1_rows": [
       "< 15 years",

@@ -88,10 +88,10 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   console.log('Here is the buildRehabReport');
   const reportID: ID = 'rehab-report_1_1';
 
-  const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
-    en: 'Rehab Report',
-    fr: 'Rapport de Rehab',
-  });
+  const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    reportID,
+    getQuestionContent('title'),
+  );
 
   // Questions 1 to 4
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -658,18 +658,17 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
-  const reportID: ID = 'nicu-paeds-report_1';
-  const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
-    en: 'NICU/Paeds Report ',
-    fr: 'Rapport de NICU/Paeds',
-  });
-
   const getQuestionContent = (questionKey: string) => {
     return {
       en: translations['en'].nicuQuestions[questionKey],
       fr: translations['fr'].nicuQuestions[questionKey],
     };
   };
+  const reportID: ID = 'nicu-paeds-report_1';
+  const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    reportID,
+    getQuestionContent('title'),
+  );
 
   // Questions 1 to 3
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -1260,10 +1259,10 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   };
 
   const reportID: ID = 'maternity-report_1';
-  const maternityReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
-    en: 'Maternity Report',
-    fr: 'Rapport de maternité',
-  });
+  const maternityReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    reportID,
+    getQuestionContent('title'),
+  );
 
   // Questions 1 to 5
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -1979,11 +1978,6 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
-  const communityhealthReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-    'ROOT',
-    { en: 'Community Health Report', fr: 'Rapport sur la santé communautaire' },
-  );
-
   const getQuestionContent = (questionKey: string) => {
     return {
       en: translations['en'].communityHealthQuestions[questionKey],
@@ -2000,6 +1994,11 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       fr: list_fr[idx],
     }));
   };
+
+  const communityhealthReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    'community-health-report_1',
+    getQuestionContent('title'),
+  );
 
   const q1_table_title: Translation = getQuestionContent('question1_table_title');
   const q1_rows: Translation[] = getQuestionList('question1_rows');

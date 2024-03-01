@@ -1,6 +1,6 @@
 {
   "rehabReportQuestions": {
-    "title": "Rapport de Réadaptation",
+    "title": "Rapport de Rehab",
     "question1": "Lits disponibles",
     "question2": "Jours de lits",
     "question3": "Jours de patient",
@@ -169,6 +169,7 @@
     ]
   },
   "maternityQuestions": {
+    "title": "Rapport de maternité",
     "question1": "Lits disponibles",
     "question2": "Jours de lits",
     "question3": "Jours de patients",
@@ -274,6 +275,7 @@
     "question24_title": "24 État principal du patient"
   },
   "nicuQuestions": {
+    "title": "Rapport de NICU/Paeds",
     "question1": "Lits disponibles",
     "question2": "Jours-lit",
     "question3": "Jours-patient",
@@ -377,6 +379,7 @@
     "question14_3_2": "Femme"
   },
   "communityHealthQuestions": {
+    "title": "Rapport sur la santé communautaire",
     "question1_table_title": "Âge des Mères",
     "question1_rows": [
       "< 15 ans",
