@@ -399,6 +399,24 @@
       "Vaginal ring Pièce",
       "Female condom Pièce"
     ],
-    "question4_1_columns": ["Quantity", "Number of days out of stock/month"]
+    "question4_1_columns": ["Quantity", "Number of days out of stock/month"],
+    "question5_table_title": "Type of Vaccine",
+    "question5_rows": [
+      "BCG",
+      "VPO",
+      "Penta",
+      "Rota",
+      "RR",
+      "dT",
+      "VPI",
+      "Pneumo",
+      "DTP",
+      "COVID-19"
+    ],
+    "question5_columns": [
+      "Quantity available during the month",
+      "Balance at the end of the month",
+      "Number of days of stock outs"
+    ]
   }
 }

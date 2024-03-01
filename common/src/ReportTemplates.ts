@@ -2193,24 +2193,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q5_rows: Translation[] = [
-    { en: 'BCG', fr: 'BCG' },
-    { en: 'VPO', fr: 'VPO' },
-    { en: 'Penta', fr: 'Penta' },
-    { en: 'Rota', fr: 'Rota' },
-    { en: 'RR', fr: 'RR' },
-    { en: 'dT', fr: 'dT' },
-    { en: 'VPI', fr: 'VPI' },
-    { en: 'Pneumo', fr: 'Pneumo' },
-    { en: 'DTP', fr: 'DTP' },
-    { en: 'COVID-19', fr: 'COVID-19' },
-  ];
-
-  const q5_columns: Translation[] = [
-    { en: 'Quantity available during the month', fr: 'Quantité disponible au cours du mois' },
-    { en: 'Balance at the end of the month', fr: 'Solde en fin de mois' },
-    { en: 'Number of days of stock outs', fr: 'Nombre de jours de rupture de stocks' },
-  ];
+  const q5_table_title: Translation = getQuestionContent('question5_table_title');
+  const q5_rows: Translation[] = getQuestionList('question5_rows');
+  const q5_columns: Translation[] = getQuestionList('question5_columns');
 
   const q5_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q5_rows.length,
@@ -2219,8 +2204,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q5_rows_en, fr: q5_rows_fr } = separateLanguages(q5_rows);
   const { en: q5_columns_en, fr: q5_columns_fr } = separateLanguages(q5_columns);
-
-  const q5_table_title: Translation = { en: 'Type of Vaccine', fr: 'Type de vaccin' };
 
   const q5: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '5',
