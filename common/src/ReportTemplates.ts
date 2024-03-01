@@ -779,10 +779,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '5_1',
-    {
-      en: 'By Department',
-      fr: 'Par Département',
-    },
+    getQuestionContent('question5_1'),
     q5_1_1,
     q5_1_2,
   );
