@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  S3BucketName:
+    Type: String
+    Default: hha-haiti-backup
+  IAMUserName:
+    Type: String
+    Default: BackupUser
+Resources:
+  S3BucketForBackups:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref S3BucketName
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteHourlyAfterWeek
+            Prefix: hourly/
+            Status: Enabled
+            ExpirationInDays: 7
+            NoncurrentVersionExpirationInDays: 7
+          - Id: DeleteDailyAfterMonth
+            Prefix: daily/
+            Status: Enabled
+            ExpirationInDays: 30
+            NoncurrentVersionExpirationInDays: 30
+  BackupUser:
+    Type: AWS::IAM::User
+    DeletionPolicy: Retain
+    Properties:
+      UserName: !Ref IAMUserName
+      Policies:
+        - PolicyName: PolicyForBackupUser
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "${S3BucketForBackups.Arn}/*"
+                  - !Sub "${S3BucketForBackups.Arn}"

@@ -44,7 +44,7 @@ export const createServer = () => {
   app.use(cors(corsOptions));
 
   // Bodyparser Middleware
-  app.use(express.json());
+  app.use(express.json({ limit: '150kb' }));
   app.use(express.urlencoded({ extended: true }));
 
   // add the prometheus middleware to all routes
