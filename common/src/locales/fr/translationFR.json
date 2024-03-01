@@ -366,6 +366,27 @@
       "Femmes allaitantes avec MAM/MAS prises en charge",
       "Visites domicillaries 0-3 jours"
     ],
-    "question3_columns": ["Matrones formées", "Autres"]
+    "question3_columns": ["Matrones formées", "Autres"],
+    "question4_table_title": "Clients PF",
+    "question4_rows": [
+      "Méthodes/ Sexe",
+      "Contraceptifs Oraux pour Femmes",
+      "PP pour Femmes",
+      "Injection Depo",
+      "Implant",
+      "Dispositifs Intra-Utérins (DIU)",
+      "Anneau Vaginal",
+      "Allaitement comme moyen de contraception",
+      "Préservatif féminin",
+      "Ligature",
+      "Préservatif masculin",
+      "Vasectomie"
+    ],
+    "question4_columns": [
+      "Acceptants <25 ans",
+      "Acceptants 25 ans et plus",
+      "Total Utilisateurs <25 ans",
+      "Total Utilisateurs 25 ans et plus"
+    ]
   }
 }

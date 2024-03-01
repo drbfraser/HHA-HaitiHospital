@@ -367,6 +367,27 @@
       "Breastfeeding women with malnutrition support",
       "Domestic visits in 0-3 days"
     ],
-    "question3_columns": ["Trained Midwives", "Others"]
+    "question3_columns": ["Trained Midwives", "Others"],
+    "question4_table_title": "Birth Control",
+    "question4_rows": [
+      "Methods/ Sex",
+      "Female OCP",
+      "Female PP",
+      "Depo injection",
+      "Implant",
+      "Inter uterine devices (IUD)",
+      "Vaginal ring",
+      "Breastfeeding as birth control",
+      "Female condom",
+      "Ligature",
+      "Male condom",
+      "Vasectomy"
+    ],
+    "question4_columns": [
+      "Acceptors <25 years",
+      "Acceptors 25 years and older",
+      "Total Users <25 years",
+      "Total Users 25 years and older"
+    ]
   }
 }

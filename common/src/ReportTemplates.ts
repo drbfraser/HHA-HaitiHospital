@@ -2141,27 +2141,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q4_rows: Translation[] = [
-    { en: 'Methods/ Sex', fr: 'Méthodes/ Sexe' },
-    { en: 'Female OCP', fr: 'Contraceptifs Oraux pour Femmes' },
-    { en: 'Female PP', fr: 'PP pour Femmes' },
-    { en: 'Depo injection', fr: 'Injection Depo' },
-    { en: 'Implant', fr: 'Implant' },
-    { en: 'Inter uterine devices (IUD)', fr: 'Dispositifs Intra-Utérins (DIU)' },
-    { en: 'Vaginal ring', fr: 'Anneau Vaginal' },
-    { en: 'Breastfeeding as birth control', fr: 'Allaitement comme moyen de contraception' },
-    { en: 'Female condom', fr: 'Préservatif féminin' },
-    { en: 'Ligature', fr: 'Ligature' },
-    { en: 'Male condom', fr: 'Préservatif masculin' },
-    { en: 'Vasectomy', fr: 'Vasectomie' },
-  ];
-
-  const q4_columns: Translation[] = [
-    { en: 'Acceptors <25 years', fr: 'Acceptants <25 ans' },
-    { en: 'Acceptors 25 years and older', fr: 'Acceptants 25 ans et plus' },
-    { en: 'Total Users <25 years', fr: 'Total Utilisateurs <25 ans' },
-    { en: 'Total Users 25 years and older', fr: 'Total Utilisateurs 25 ans et plus' },
-  ];
+  const q4_table_title: Translation = getQuestionContent('question4_table_title');
+  const q4_rows: Translation[] = getQuestionList('question4_rows');
+  const q4_columns: Translation[] = getQuestionList('question4_columns');
 
   const q4_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_rows.length,
@@ -2170,8 +2152,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q4_rows_en, fr: q4_rows_fr } = separateLanguages(q4_rows);
   const { en: q4_columns_en, fr: q4_columns_fr } = separateLanguages(q4_columns);
-
-  const q4_table_title: Translation = { en: 'Birth Control', fr: 'Clients PF' };
 
   const q4: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '4',
