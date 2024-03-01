@@ -359,6 +359,14 @@
       "Immediately breastfed",
       "Skin to skin therapy"
     ],
-    "question2_columns": ["Trained Midwives", "Others"]
+    "question2_columns": ["Trained Midwives", "Others"],
+    "question3_table_title": "Post Natal",
+    "question3_rows": [
+      "Breastfeeding women receiving vitamin A",
+      "Breastfeeding women with MUAC <210mm",
+      "Breastfeeding women with malnutrition support",
+      "Domestic visits in 0-3 days"
+    ],
+    "question3_columns": ["Trained Midwives", "Others"]
   }
 }

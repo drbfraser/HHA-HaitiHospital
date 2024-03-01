@@ -358,6 +358,14 @@
       "Allaité immédiatement",
       "Thérapie peau à peau"
     ],
-    "question2_columns": ["Matrones formées", "Autres"]
+    "question2_columns": ["Matrones formées", "Autres"],
+    "question3_table_title": "Suivi Post Natal",
+    "question3_rows": [
+      "Femmes allaitantes recevant de la vitamine A",
+      "Femmes allaitantes avec PB <210mm",
+      "Femmes allaitantes avec MAM/MAS prises en charge",
+      "Visites domicillaries 0-3 jours"
+    ],
+    "question3_columns": ["Matrones formées", "Autres"]
   }
 }

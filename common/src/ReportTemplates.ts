@@ -2115,23 +2115,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q3_rows: Translation[] = [
-    {
-      en: 'Breastfeeding women receiving vitamin A',
-      fr: 'Femmes allaitantes recevant de la vitamine A',
-    },
-    { en: 'Breastfeeding women with MUAC <210mm', fr: 'Femmes allaitantes avec PB <210mm' },
-    {
-      en: 'Breastfeeding women with malnutrition support',
-      fr: 'Femmes allaitantes avec MAM/MAS prises en charge',
-    },
-    { en: 'Domestic visits in 0-3 days', fr: 'Visites domicllaries 0-3 jours' },
-  ];
-
-  const q3_columns: Translation[] = [
-    { en: 'Matrones', fr: 'Matrones' },
-    { en: 'Others', fr: 'Autres' },
-  ];
+  const q3_table_title: Translation = getQuestionContent('question3_table_title');
+  const q3_rows: Translation[] = getQuestionList('question3_rows');
+  const q3_columns: Translation[] = getQuestionList('question3_columns');
 
   const q3_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q3_rows.length,
@@ -2140,11 +2126,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q3_rows_en, fr: q3_rows_fr } = separateLanguages(q3_rows);
   const { en: q3_columns_en, fr: q3_columns_fr } = separateLanguages(q3_columns);
-
-  const q3_table_title: Translation = {
-    en: 'Suivi Post Natal',
-    fr: 'Post Natal',
-  };
 
   const q3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '3',
