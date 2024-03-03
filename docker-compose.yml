@@ -36,13 +36,13 @@ services:
       - fluentbit_logs_db:/persist
       - server_logs:/logs/server:ro
       - mongo_logs:/logs/mongodb:ro
-    command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-local.conf"]
+    command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-local.conf']
 
 volumes:
   hhahaiti_mongodb_data:
 
   fluentbit_logs_db:
   fluentbit_logs_output:
-  
+
   mongo_logs:
   server_logs:

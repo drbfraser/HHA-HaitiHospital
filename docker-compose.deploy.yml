@@ -23,7 +23,7 @@ services:
       - PASSWORD_SEED=${PASSWORD_SEED}
       - LOKI_URL=${LOKI_URL}
       - LOKI_APP_LABEL=${LOKI_APP_LABEL}
-  
+
   mongodb:
     restart: always
 
@@ -49,14 +49,18 @@ services:
   logger:
     volumes:
       - caddy_log:/var/log/
-    environment:      
+    environment:
       LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
       LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
       LOKI_KEY: ${LOKI_KEY} # ADD YOUR PASSWORD
       PROMETHEUS_HOST: ${PROMETHEUS_HOST} # ADD YOUR HOST
       PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
       PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
-    command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-${ENV:-local}.conf"]
+      AWS_LOGGING_REGION: ${AWS_LOGGING_REGION}
+      # Used in staging/prod environment
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-${ENV:-local}.conf']
 
 volumes:
   caddy_log:
