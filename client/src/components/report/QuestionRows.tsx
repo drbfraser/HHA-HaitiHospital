@@ -10,7 +10,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
   const language = i18n.resolvedLanguage;
 
   useEffect(() => {
-    const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {
+    const processCompositionOrSpecializedQuestion = (specialQuestionItem: any): QuestionRow[] => {
       let array: QuestionRow[] = [];
       const element: QuestionRow = {
         id: specialQuestionItem.id,
@@ -29,7 +29,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
 
       return array;
     };
-    const processTableQuestion = (tableItem): QuestionRow[] => {
+    const processTableQuestion = (tableItem: any): QuestionRow[] => {
       let array: QuestionRow[] = [];
       const questionTable = tableItem.questionTable;
       for (let questionRows of questionTable) {
@@ -47,7 +47,7 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
       return array;
     };
 
-    const processQuestionItem = (questionItems): QuestionRow[] => {
+    const processQuestionItem = (questionItems: any): QuestionRow[] => {
       let array: QuestionRow[] = [];
 
       for (let questionItem of questionItems) {

@@ -120,8 +120,12 @@ const NumericTableFormField = ({
     };
   }, [question, setErrorSet, suffixName, updateErrorSetFromSelf, calculationMask, greyMask]);
 
+  interface Sums {
+    [key: string]: number;
+  }
+
   const memoizedSumCalculation = useMemo(() => {
-    const sums = {};
+    const sums: Sums = {};
     question.getRowHeaders().forEach((_, rowIndex) => {
       question.getColumnHeaders().forEach((_, colIndex) => {
         const cellIndices = calculationMask?.[rowIndex]?.[colIndex];

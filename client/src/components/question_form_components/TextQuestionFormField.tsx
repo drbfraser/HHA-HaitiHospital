@@ -28,7 +28,7 @@ const TextQuestionFormField = ({
       nameId={nameId}
       prompt={question.getPrompt()}
       type="text"
-      value={question.getAnswer()}
+      value={question.getAnswer() || ''}
       readOnly={readOnly}
     />
   );

@@ -17,8 +17,6 @@ export const ReportAndTemplateForm = ({
   setCurrentDepartment,
 }: ReportAndTemplateFormProps): JSX.Element => {
   const { t } = useTranslation();
-  console.log('ReportAndTemplateForm', departments);
-
   return (
     <div className="col-md-6 mb-2">
       <fieldset>
