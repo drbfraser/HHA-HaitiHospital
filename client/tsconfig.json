@@ -20,8 +20,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "react": ["./node_modules/@types/react"]
+    }
   },
   "include": ["./src/**/*", "./tests/**/*", "*.ts"]
 }

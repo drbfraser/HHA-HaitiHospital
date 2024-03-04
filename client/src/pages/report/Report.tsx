@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
-
+import * as React from 'react';
 import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
 import { Department, Role } from 'constants/interfaces';
@@ -38,7 +38,7 @@ export const Report = () => {
     );
   }
   const reportableDepartments = new Set(['NICU/Paeds', 'Maternity', 'Community & Health', 'Rehab']);
-  const isReportableDepartment = (department) => {
+  const isReportableDepartment = (department: Department) => {
     return reportableDepartments.has(department.name);
   };
 
@@ -46,7 +46,7 @@ export const Report = () => {
 
   const applyReportChanges = () => {
     !areChangesMade && setAreChangesMade(true);
-    setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
+    setReport(objectSerializer.deserialize(objectSerializer.serialize(report! as Object)));
   };
 
   const clearCurrentDepartment = () => {
@@ -62,8 +62,13 @@ export const Report = () => {
   };
 
   const submitReport = () => {
+    if (currentDepartment === undefined) {
+      console.error('Department is undefined in submitReport');
+      return;
+    }
+
     const today = new Date();
-    const serializedReport = objectSerializer.serialize(report);
+    const serializedReport = objectSerializer.serialize(report! as Object) as any; // TBD
     const reportPrompt = serializedReport['prompt'][i18n.resolvedLanguage];
     serializedReport['id'] = generateFormId(user?.userDetails?.name, reportPrompt);
     const reportObject = {
@@ -93,6 +98,10 @@ export const Report = () => {
     const controller = new AbortController();
     const getTemplates = async () => {
       try {
+        if (currentDepartment === undefined) {
+          console.error('Department is undefined when fetching in getTemplates');
+          return;
+        }
         const fetchedTemplateObject = await Api.Get(
           `${ENDPOINT_TEMPLATE}/${currentDepartment.id}`,
           '',
@@ -121,11 +130,11 @@ export const Report = () => {
     if (areChangesMade) {
       window.onbeforeunload = () => true;
     } else {
-      window.onbeforeunload = undefined;
+      window.onbeforeunload = () => false;
     }
 
     return () => {
-      window.onbeforeunload = undefined;
+      window.onbeforeunload = () => false;
     };
   }, [areChangesMade]);
 
@@ -169,7 +178,7 @@ export const Report = () => {
         <ReportAndTemplateForm
           departmentLabel={t('headerReportDepartmentType')}
           departments={departments.filter(isReportableDepartment)}
-          currentDepartment={currentDepartment}
+          currentDepartment={currentDepartment!}
           setCurrentDepartment={setCurrentDepartment}
         />
       )}
