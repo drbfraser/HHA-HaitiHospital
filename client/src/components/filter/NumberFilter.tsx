@@ -5,17 +5,21 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Row } from '@tanstack/react-table';
 
-export const FILTER_FUNCTIONS = {
-  equal: (row: Row<T>, columnId, value) => row.getValue(columnId) === value,
+export type FilterFunction = (row: Row<any>, columnId: string, value: any) => boolean;
 
-  greaterThan: (row: Row<T>, columnId, value) => row.getValue(columnId) > value,
-
-  lessThan: (row: Row<T>, columnId, value) => row.getValue(columnId) < value,
+export const FILTER_FUNCTIONS: {
+  equal: FilterFunction;
+  greaterThan: FilterFunction;
+  lessThan: FilterFunction;
+} = {
+  equal: (row, columnId, value) => row.getValue(columnId) === value,
+  greaterThan: (row, columnId, value) => (row.getValue(columnId) as number) > value,
+  lessThan: (row, columnId, value) => (row.getValue(columnId) as number) < value,
 };
 
 export const NumberFilter = ({
   placeholder,
-  setFilterFn = (_) => {},
+  setFilterFn = (_: any) => {},
   allowFilterFnChange = false,
   setFilterValue,
   filterValue = FILTER_DEFAULT_VALUE.NUMBER,

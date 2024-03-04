@@ -34,5 +34,8 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.1",
     "prettier": "^3.2.5"
+  },
+  "dependencies": {
+    "@types/react-table": "^7.7.19"
   }
 }
