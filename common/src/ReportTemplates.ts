@@ -75,13 +75,23 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     };
   };
 
+  const getQuestionOptions = (questionKey: string) => {
+    const list_en = translations['en'].rehabReportQuestions[questionKey];
+    const list_fr = translations['fr'].rehabReportQuestions[questionKey];
+
+    return list_en.map((item: any, idx: string | number) => ({
+      en: item,
+      fr: list_fr[idx],
+    }));
+  };
+
   console.log('Here is the buildRehabReport');
   const reportID: ID = 'rehab-report_1_1';
 
-  const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
-    en: 'Rehab Report',
-    fr: 'Rapport de Rehab',
-  });
+  const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    reportID,
+    getQuestionContent('title'),
+  );
 
   // Questions 1 to 4
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -113,11 +123,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   const q5_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_1',
     getQuestionContent('question5_1'),
-    [
-      { en: 'SCI', fr: 'SCI' },
-      { en: 'Stroke', fr: 'Accident vasculaire cérébral' },
-      { en: 'Other', fr: 'Autre' },
-    ],
+    getQuestionOptions('question5_1_options'),
   );
   const q5_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '5_2',
@@ -126,83 +132,31 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   const q5_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_3',
     getQuestionContent('question5_3'),
-    [
-      { en: 'All goals met', fr: 'Tous les objectifs atteints' },
-      {
-        en: 'Goals partially met, sufficient for discharge',
-        fr: 'Objectifs partiellement atteints, suffisants pour la décharge',
-      },
-      {
-        en: 'Goals not met, discharged for alternate reason',
-        fr: 'Objectifs non atteints, renvoyé pour une autre raison',
-      },
-    ],
+    getQuestionOptions('question5_3_options'),
   );
   const q5_4: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_4',
     getQuestionContent('question5_4'),
-    [
-      { en: 'Independent', fr: 'Indépendant' },
-      { en: 'Modified Independent', fr: 'Indépendant modifié' },
-      { en: 'Supervision', fr: 'Surveillance' },
-      { en: 'Minimum Assistance', fr: 'Assistance minimale' },
-      { en: 'Moderate Assistance', fr: 'Assistance modérée' },
-      { en: 'Maximum Assistance', fr: 'Assistance maximale' },
-      { en: 'Dependent', fr: 'Dépendant' },
-    ],
+    getQuestionOptions('question5_4_options'),
   );
   const q5_5: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_5',
     getQuestionContent('question5_5'),
-    [
-      { en: 'Independent', fr: 'Indépendant' },
-      { en: 'Modified Independent', fr: 'Indépendant modifié' },
-      { en: 'Supervision', fr: 'Surveillance' },
-      { en: 'Minimum Assistance', fr: 'Assistance minimale' },
-      { en: 'Moderate Assistance', fr: 'Assistance modérée' },
-      { en: 'Maximum Assistance', fr: 'Assistance maximale' },
-      { en: 'Dependent', fr: 'Dépendant' },
-    ],
+    getQuestionOptions('question5_5_options'),
   );
   const q5_6: MultipleSelectionQuestion<ID, ErrorType> = new MultipleSelectionQuestion<
     ID,
     ErrorType
-  >(
-    '5_6',
-    getQuestionContent('question5_6'),
-    [
-      { en: 'Wheelchair', fr: 'Fauteuil roulant' },
-      { en: 'Walker', fr: 'Marcheur' },
-      { en: 'Cane', fr: 'Canne' },
-      { en: 'Crutches', fr: 'Béquilles' },
-      { en: 'None', fr: 'Aucun' },
-    ],
-    [],
-  );
+  >('5_6', getQuestionContent('question5_6'), getQuestionOptions('question5_6_options'), []);
   const q5_7: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_7',
     getQuestionContent('question5_7'),
-    [
-      { en: 'Return home, alone', fr: 'Retourner à la maison, seul' },
-      {
-        en: 'Return home, with family/caregiver(s)',
-        fr: 'Retourner à la maison, avec la famille/les aidants',
-      },
-      { en: 'Admitted to hospital', fr: "Admis à l'hôpital" },
-    ],
+    getQuestionOptions('question5_7_options'),
   );
   const q5_8: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_8',
     getQuestionContent('question5_8'),
-    [
-      { en: 'Employed', fr: 'Employé' },
-      { en: 'Unemployed, unable to find work', fr: 'Sans emploi, incapable de trouver du travail' },
-      { en: 'Unemployed, due to condition', fr: 'Sans emploi, en raison de la condition' },
-      {
-        en: 'Retired, not working due to age',
-        fr: "Retraité, ne travaille pas en raison de l'âge",
-      },
-    ],
+    getQuestionOptions('question5_8_options'),
   );
   q5.addAllToTemplate(q5_1, q5_2, q5_3, q5_4, q5_5, q5_6, q5_7, q5_8);
 
@@ -215,11 +169,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   const q6_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '6_1',
     getQuestionContent('question6_1'),
-    [
-      { en: 'SCI', fr: 'SCI' },
-      { en: 'CVA', fr: 'CVA' },
-      { en: 'Other', fr: 'Autre' },
-    ],
+    getQuestionOptions('question6_1_options'),
   );
   const q6_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '6_2',
@@ -241,11 +191,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   const q7_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '7_1',
     getQuestionContent('question7_1'),
-    [
-      { en: 'SCI', fr: 'SCI' },
-      { en: 'CVA', fr: 'CVA' },
-      { en: 'Other', fr: 'Autre' },
-    ],
+    getQuestionOptions('question7_1_options'),
   );
   const q7_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '7_2',
@@ -712,18 +658,17 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
-  const reportID: ID = 'nicu-paeds-report_1';
-  const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
-    en: 'NICU/Paeds Report ',
-    fr: 'Rapport de NICU/Paeds',
-  });
-
   const getQuestionContent = (questionKey: string) => {
     return {
       en: translations['en'].nicuQuestions[questionKey],
       fr: translations['fr'].nicuQuestions[questionKey],
     };
   };
+  const reportID: ID = 'nicu-paeds-report_1';
+  const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    reportID,
+    getQuestionContent('title'),
+  );
 
   // Questions 1 to 3
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -779,10 +724,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '5_1',
-    {
-      en: 'By Department',
-      fr: 'Par Département',
-    },
+    getQuestionContent('question5_1'),
     q5_1_1,
     q5_1_2,
   );
@@ -1317,10 +1259,10 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   };
 
   const reportID: ID = 'maternity-report_1';
-  const maternityReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(reportID, {
-    en: 'Maternity Report',
-    fr: 'Rapport de maternité',
-  });
+  const maternityReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
+    reportID,
+    getQuestionContent('title'),
+  );
 
   // Questions 1 to 5
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
@@ -2036,26 +1978,31 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
+  const getQuestionContent = (questionKey: string) => {
+    return {
+      en: translations['en'].communityHealthQuestions[questionKey],
+      fr: translations['fr'].communityHealthQuestions[questionKey],
+    };
+  };
+
+  const getQuestionList = (questionKey: string) => {
+    const list_en = translations['en'].communityHealthQuestions[questionKey];
+    const list_fr = translations['fr'].communityHealthQuestions[questionKey];
+
+    return list_en.map((item: any, idx: string | number) => ({
+      en: item,
+      fr: list_fr[idx],
+    }));
+  };
+
   const communityhealthReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
-    'ROOT',
-    { en: 'Community Health Report', fr: 'Rapport sur la santé communautaire' },
+    'community-health-report_1',
+    getQuestionContent('title'),
   );
 
-  const q1_table_title: Translation = { en: 'Age of Mothers', fr: 'Âge des Mères' };
-
-  const q1_rows: Translation[] = [
-    { en: '< 15 years', fr: '< 15 ans' },
-    { en: '15-19 years', fr: '15-19 ans' },
-    { en: '20-24 years', fr: '20-24 ans' },
-    { en: '25-29 years', fr: '25-29 ans' },
-    { en: '30 years plus', fr: '30 ans et plus' },
-    { en: 'Unknown', fr: 'Inconnu' },
-  ];
-
-  const q1_columns: Translation[] = [
-    { en: 'Trained Midwives', fr: 'Matrones formées' },
-    { en: 'Others', fr: 'Autres' },
-  ];
+  const q1_table_title: Translation = getQuestionContent('question1_table_title');
+  const q1_rows: Translation[] = getQuestionList('question1_rows');
+  const q1_columns: Translation[] = getQuestionList('question1_columns');
 
   const q1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q1_rows.length,
@@ -2080,19 +2027,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q2_rows: Translation[] = [
-    { en: 'Weight <1.5kg', fr: 'Poids <1,5kg' },
-    { en: '1.5kg ≤ Weight <2.5kg', fr: '1,5kg ≤ Poids <2,5kg' },
-    { en: '2.5kg and over', fr: '2,5kg et plus' },
-    { en: 'Not weighed', fr: 'Non pesé' },
-    { en: 'Immediately breastfed', fr: 'Allaité immédiatement' },
-    { en: 'Skin to skin therapy', fr: 'Thérapie peau à peau' },
-  ];
-
-  const q2_columns: Translation[] = [
-    { en: 'Matrones', fr: 'Matrones' },
-    { en: 'Others', fr: 'Autres' },
-  ];
+  const q2_table_title: Translation = getQuestionContent('question2_table_title');
+  const q2_rows: Translation[] = getQuestionList('question2_rows');
+  const q2_columns: Translation[] = getQuestionList('question2_columns');
 
   const q2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q2_rows.length,
@@ -2101,8 +2038,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q2_rows_en, fr: q2_rows_fr } = separateLanguages(q2_rows);
   const { en: q2_columns_en, fr: q2_columns_fr } = separateLanguages(q2_columns);
-
-  const q2_table_title: Translation = { en: 'Births', fr: 'Naissances' };
 
   const q2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '2',
@@ -2118,23 +2053,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q3_rows: Translation[] = [
-    {
-      en: 'Breastfeeding women receiving vitamin A',
-      fr: 'Femmes allaitantes recevant de la vitamine A',
-    },
-    { en: 'Breastfeeding women with MUAC <210mm', fr: 'Femmes allaitantes avec PB <210mm' },
-    {
-      en: 'Breastfeeding women with malnutrition support',
-      fr: 'Femmes allaitantes avec MAM/MAS prises en charge',
-    },
-    { en: 'Domestic visits in 0-3 days', fr: 'Visites domicllaries 0-3 jours' },
-  ];
-
-  const q3_columns: Translation[] = [
-    { en: 'Matrones', fr: 'Matrones' },
-    { en: 'Others', fr: 'Autres' },
-  ];
+  const q3_table_title: Translation = getQuestionContent('question3_table_title');
+  const q3_rows: Translation[] = getQuestionList('question3_rows');
+  const q3_columns: Translation[] = getQuestionList('question3_columns');
 
   const q3_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q3_rows.length,
@@ -2143,11 +2064,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q3_rows_en, fr: q3_rows_fr } = separateLanguages(q3_rows);
   const { en: q3_columns_en, fr: q3_columns_fr } = separateLanguages(q3_columns);
-
-  const q3_table_title: Translation = {
-    en: 'Suivi Post Natal',
-    fr: 'Post Natal',
-  };
 
   const q3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '3',
@@ -2163,27 +2079,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q4_rows: Translation[] = [
-    { en: 'Methods/ Sex', fr: 'Méthodes/ Sexe' },
-    { en: 'Female OCP', fr: 'Contraceptifs Oraux pour Femmes' },
-    { en: 'Female PP', fr: 'PP pour Femmes' },
-    { en: 'Depo injection', fr: 'Injection Depo' },
-    { en: 'Implant', fr: 'Implant' },
-    { en: 'Inter uterine devices (IUD)', fr: 'Dispositifs Intra-Utérins (DIU)' },
-    { en: 'Vaginal ring', fr: 'Anneau Vaginal' },
-    { en: 'Breastfeeding as birth control', fr: 'Allaitement comme moyen de contraception' },
-    { en: 'Female condom', fr: 'Préservatif féminin' },
-    { en: 'Ligature', fr: 'Ligature' },
-    { en: 'Male condom', fr: 'Préservatif masculin' },
-    { en: 'Vasectomy', fr: 'Vasectomie' },
-  ];
-
-  const q4_columns: Translation[] = [
-    { en: 'Acceptors <25 years', fr: 'Acceptants <25 ans' },
-    { en: 'Acceptors 25 years and older', fr: 'Acceptants 25 ans et plus' },
-    { en: 'Total Users <25 years', fr: 'Total Utilisateurs <25 ans' },
-    { en: 'Total Users 25 years and older', fr: 'Total Utilisateurs 25 ans et plus' },
-  ];
+  const q4_table_title: Translation = getQuestionContent('question4_table_title');
+  const q4_rows: Translation[] = getQuestionList('question4_rows');
+  const q4_columns: Translation[] = getQuestionList('question4_columns');
 
   const q4_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_rows.length,
@@ -2192,8 +2090,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q4_rows_en, fr: q4_rows_fr } = separateLanguages(q4_rows);
   const { en: q4_columns_en, fr: q4_columns_fr } = separateLanguages(q4_columns);
-
-  const q4_table_title: Translation = { en: 'Birth Control', fr: 'Clients PF' };
 
   const q4: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '4',
@@ -2209,20 +2105,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q4_1_rows: Translation[] = [
-    { en: 'Female OCP Cycle', fr: 'Contraceptifs Oraux pour Femmes Cycle' },
-    { en: 'Female PP Cycle', fr: 'PP pour Femmes Cycle' },
-    { en: 'Depo injection Vial', fr: 'Injection Depo Vial' },
-    { en: 'Implant Paquet', fr: 'Implant Paquet' },
-    { en: 'Inter uterine devices (IUD) Piece', fr: 'Dispositifs Intra-Utérins (DIU) Pièce' },
-    { en: 'Vaginal ring Pièce', fr: 'Anneau Vaginal Pièce' },
-    { en: 'Female condom Pièce', fr: 'Préservatif féminin Pièce' },
-  ];
-
-  const q4_1_columns: Translation[] = [
-    { en: 'Quantity', fr: 'Quantité' },
-    { en: 'Number of days out of stock/month', fr: 'Nbre de jours rupture de stocks/ mois' },
-  ];
+  const q4_1_table_title: Translation = getQuestionContent('question4_1_table_title');
+  const q4_1_rows: Translation[] = getQuestionList('question4_1_rows');
+  const q4_1_columns: Translation[] = getQuestionList('question4_1_columns');
 
   const q4_1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_1_rows.length,
@@ -2231,11 +2116,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q4_1_rows_en, fr: q4_1_rows_fr } = separateLanguages(q4_1_rows);
   const { en: q4_1_columns_en, fr: q4_1_columns_fr } = separateLanguages(q4_1_columns);
-
-  const q4_1_table_title: Translation = {
-    en: 'Contraceptives distributed',
-    fr: 'Contraceptifs distribués',
-  };
 
   const q4_1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '4_1',
@@ -2251,24 +2131,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q5_rows: Translation[] = [
-    { en: 'BCG', fr: 'BCG' },
-    { en: 'VPO', fr: 'VPO' },
-    { en: 'Penta', fr: 'Penta' },
-    { en: 'Rota', fr: 'Rota' },
-    { en: 'RR', fr: 'RR' },
-    { en: 'dT', fr: 'dT' },
-    { en: 'VPI', fr: 'VPI' },
-    { en: 'Pneumo', fr: 'Pneumo' },
-    { en: 'DTP', fr: 'DTP' },
-    { en: 'COVID-19', fr: 'COVID-19' },
-  ];
-
-  const q5_columns: Translation[] = [
-    { en: 'Quantity available during the month', fr: 'Quantité disponible au cours du mois' },
-    { en: 'Balance at the end of the month', fr: 'Solde en fin de mois' },
-    { en: 'Number of days of stock outs', fr: 'Nombre de jours de rupture de stocks' },
-  ];
+  const q5_table_title: Translation = getQuestionContent('question5_table_title');
+  const q5_rows: Translation[] = getQuestionList('question5_rows');
+  const q5_columns: Translation[] = getQuestionList('question5_columns');
 
   const q5_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q5_rows.length,
@@ -2277,8 +2142,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q5_rows_en, fr: q5_rows_fr } = separateLanguages(q5_rows);
   const { en: q5_columns_en, fr: q5_columns_fr } = separateLanguages(q5_columns);
-
-  const q5_table_title: Translation = { en: 'Type of Vaccine', fr: 'Type de vaccin' };
 
   const q5: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '5',
@@ -2294,19 +2157,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q6_rows: Translation[] = [
-    { en: 'SAB 0.05ml', fr: 'SAB 0.05ml' },
-    { en: 'SAB 0.5ml', fr: 'SAB 0.5ml' },
-    { en: 'Sdil_2ml', fr: 'Sdil_2ml' },
-    { en: 'Sdil_5ml', fr: 'Sdil_5ml' },
-    { en: 'Boîtes Séc', fr: 'Boîtes Séc' },
-    { en: 'Cotton', fr: 'Coton' },
-  ];
-
-  const q6_columns: Translation[] = [
-    { en: 'Quantity available during the month', fr: 'Quantité disponible au cours du mois' },
-    { en: 'Balance at the end of the month', fr: 'Solde en fin de mois' },
-  ];
+  const q6_table_title: Translation = getQuestionContent('question6_table_title');
+  const q6_rows: Translation[] = getQuestionList('question6_rows');
+  const q6_columns: Translation[] = getQuestionList('question6_columns');
 
   const q6_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q6_rows.length,
@@ -2315,8 +2168,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q6_rows_en, fr: q6_rows_fr } = separateLanguages(q6_rows);
   const { en: q6_columns_en, fr: q6_columns_fr } = separateLanguages(q6_columns);
-
-  const q6_table_title: Translation = { en: 'Consumables', fr: 'Intrants' };
 
   const q6: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '6',
@@ -2332,43 +2183,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q7_rows: Translation[] = [
-    { en: 'BCG', fr: 'BCG' },
-    { en: 'OPV (Polio)', fr: 'VPO (Polio)' },
-    { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
-    { en: 'OPV 2 (Polio)', fr: 'VPO 2 (Polio)' },
-    { en: 'OPV Booster', fr: 'Rappel VPO (Polio)' },
-    {
-      en: 'OPV + OPV 1 + OPV 2 + OPV Booster (Polio)',
-      fr: 'VPO + VPO 1 + VPO 2 + VPO Booster (Polio)',
-    },
-    { en: 'IPV', fr: 'VPI' },
-    { en: 'Penta 1', fr: 'Penta 1' },
-    { en: 'Penta 2', fr: 'Penta 2' },
-    { en: 'Penta 3', fr: 'Penta 3' },
-    { en: 'Penta 1 + Penta 2 + Penta 3', fr: 'Penta 1 + Penta 2 + Penta 3' },
-    { en: 'Rota 1', fr: 'Rota 1' },
-    { en: 'Rota 2', fr: 'Rota 2' },
-    { en: 'Rota 1 + Rota 2', fr: 'Rota 1 + Rota 2' },
-    { en: 'RR 1', fr: 'RR 1' },
-    { en: 'RR 2', fr: 'RR 2' },
-    { en: 'RR 1 + RR 2', fr: 'RR 1 + RR 2' },
-    { en: 'Pneumo 1', fr: 'Pneumo 1' },
-    { en: 'Pneumo 2', fr: 'Pneumo 2' },
-    { en: 'Pneumo 3', fr: 'Pneumo 3' },
-    { en: 'Pneumo 1 + Pneumo 2 + Pneumo 3', fr: 'Pneumo 1 + Pneumo 2 + Pneumo 3' },
-    { en: 'DTP Booster', fr: 'DTP Rappel' },
-    { en: 'ECV', fr: 'ECV' },
-  ];
-
-  const q7_columns: Translation[] = [
-    { en: '0-11 Months Inst.', fr: '0-11 Mois Inst.' },
-    { en: '0-11 Months Comm.', fr: '0-11 Mois Comm.' },
-    { en: '12-32 Months Inst.', fr: '12-32 Mois Inst.' },
-    { en: '12-32 Months Comm.', fr: '12-32 Mois Comm.' },
-    { en: 'Used', fr: 'Utilisées' },
-    { en: 'Administered', fr: 'Administrées' },
-  ];
+  const q7_table_title: Translation = getQuestionContent('question7_table_title');
+  const q7_rows: Translation[] = getQuestionList('question7_rows');
+  const q7_columns: Translation[] = getQuestionList('question7_columns');
 
   // Manual definition of grey table cell
   // Guide on how to manually define grey and calcualtion table cells:
@@ -2637,11 +2454,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
   const { en: q7_rows_en, fr: q7_rows_fr } = separateLanguages(q7_rows);
   const { en: q7_columns_en, fr: q7_columns_fr } = separateLanguages(q7_columns);
 
-  const q7_table_title: Translation = {
-    en: 'Girl Vaccination',
-    fr: 'Filles Vaccination',
-  };
-
   const q7: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7',
     { en: 'Question 7', fr: 'Question 7 (French)' },
@@ -2657,43 +2469,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     q7_calculationMask,
   );
 
-  const q7_1_rows: Translation[] = [
-    { en: 'BCG', fr: 'BCG' },
-    { en: 'OPV (Polio)', fr: 'VPO (Polio)' },
-    { en: 'OPV 1 (Polio)', fr: 'VPO 1 (Polio)' },
-    { en: 'OPV 2 (Polio)', fr: 'VPO 2 (Polio)' },
-    { en: 'OPV Booster', fr: 'Rappel VPO (Polio)' },
-    {
-      en: 'OPV + OPV 1 + OPV 2 + OPV Booster (Polio)',
-      fr: 'VPO + VPO 1 + VPO 2 + VPO Booster (Polio)',
-    },
-    { en: 'IPV', fr: 'VPI' },
-    { en: 'Penta 1', fr: 'Penta 1' },
-    { en: 'Penta 2', fr: 'Penta 2' },
-    { en: 'Penta 3', fr: 'Penta 3' },
-    { en: 'Penta 1 + Penta 2 + Penta 3', fr: 'Penta 1 + Penta 2 + Penta 3' },
-    { en: 'Rota 1', fr: 'Rota 1' },
-    { en: 'Rota 2', fr: 'Rota 2' },
-    { en: 'Rota 1 + Rota 2', fr: 'Rota 1 + Rota 2' },
-    { en: 'RR 1', fr: 'RR 1' },
-    { en: 'RR 2', fr: 'RR 2' },
-    { en: 'RR 1 + RR 2', fr: 'RR 1 + RR 2' },
-    { en: 'Pneumo 1', fr: 'Pneumo 1' },
-    { en: 'Pneumo 2', fr: 'Pneumo 2' },
-    { en: 'Pneumo 3', fr: 'Pneumo 3' },
-    { en: 'Pneumo 1 + Pneumo 2 + Pneumo 3', fr: 'Pneumo 1 + Pneumo 2 + Pneumo 3' },
-    { en: 'DTP Booster', fr: 'DTP Rappel' },
-    { en: 'ECV', fr: 'ECV' },
-  ];
+  const q7_1_table_title: Translation = getQuestionContent('question7_1_table_title');
+  const q7_1_rows: Translation[] = getQuestionList('question7_1_rows');
+  const q7_1_columns: Translation[] = getQuestionList('question7_1_columns');
 
-  const q7_1_columns: Translation[] = [
-    { en: '0-11 Months Inst.', fr: '0-11 Mois Inst.' },
-    { en: '0-11 Months Comm.', fr: '0-11 Mois Comm.' },
-    { en: '12-32 Months Inst.', fr: '12-32 Mois Inst.' },
-    { en: '12-32 Months Comm.', fr: '12-32 Mois Comm.' },
-    { en: 'Used', fr: 'Utilisées' },
-    { en: 'Administered', fr: 'Administrées' },
-  ];
   const q7_1_grey_index: maskIndex[] = [
     [5, 0],
     [5, 1],
@@ -2957,11 +2736,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
   const { en: q7_1_rows_en, fr: q7_1_rows_fr } = separateLanguages(q7_1_rows);
   const { en: q7_1_columns_en, fr: q7_1_columns_fr } = separateLanguages(q7_1_columns);
 
-  const q7_1_table_title: Translation = {
-    en: 'Boy Vaccination',
-    fr: 'Garçon Vaccination',
-  };
-
   const q7_1: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7_1',
     { en: 'Question 7_1', fr: 'Question 7_1 (French)' },
@@ -2977,25 +2751,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     q7_1_calculationMask,
   );
 
-  const q7_2_rows: Translation[] = [
-    { en: 'BCG', fr: 'BCG' },
-    {
-      en: 'OPV + OPV 1 + OPV 2 + OPV Booster (Polio)',
-      fr: 'VPO + VPO 1 + VPO 2 + VPO Booster (Polio)',
-    },
-    { en: 'IPV', fr: 'VPI' },
-    { en: 'Penta 1 + Penta 2 + Penta 3', fr: 'Penta 1 + Penta 2 + Penta 3' },
-    { en: 'Rota 1 + Rota 2', fr: 'Rota 1 + Rota 2' },
-    { en: 'RR 1 + RR 2', fr: 'RR 1 + RR 2' },
-    { en: 'Pneumo 1 + Pneumo 2 + Pneumo 3', fr: 'Pneumo 1 + Pneumo 2 + Pneumo 3' },
-    { en: 'DTP Booster', fr: 'DTP Rappel' },
-    { en: 'ECV', fr: 'ECV' },
-  ];
+  const q7_2_table_title: Translation = getQuestionContent('question7_2_table_title');
+  const q7_2_rows: Translation[] = getQuestionList('question7_2_rows');
+  const q7_2_columns: Translation[] = getQuestionList('question7_2_columns');
 
-  const q7_2_columns: Translation[] = [
-    { en: 'Used', fr: 'Utilisées' },
-    { en: 'Administered', fr: 'Administrées' },
-  ];
   const q7_2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_2_rows.length,
     q7_2_columns.length,
@@ -3003,11 +2762,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q7_2_rows_en, fr: q7_2_rows_fr } = separateLanguages(q7_2_rows);
   const { en: q7_2_columns_en, fr: q7_2_columns_fr } = separateLanguages(q7_2_columns);
-
-  const q7_2_table_title: Translation = {
-    en: 'Vaccine Doses',
-    fr: 'Doses de vaccin',
-  };
 
   const q7_2: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7_2',
@@ -3023,17 +2777,9 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q7_3_rows: Translation[] = [
-    { en: 'dT1', fr: 'dT1' },
-    { en: 'dT2+', fr: 'dT2+' },
-    { en: 'dT1+dT2+', fr: 'dT1+dT2+' },
-  ];
-
-  const q7_3_columns: Translation[] = [
-    { en: 'Inst.', fr: 'Inst.' },
-    { en: 'Comm.', fr: 'Comm.' },
-    { en: 'Total', fr: 'Total' },
-  ];
+  const q7_3_table_title: Translation = getQuestionContent('question7_3_table_title');
+  const q7_3_rows: Translation[] = getQuestionList('question7_3_rows');
+  const q7_3_columns: Translation[] = getQuestionList('question7_3_columns');
 
   // Example of setting up calculationMask for a specific table
   // Note that in the future, when we have the feature to let user define questions on the APP's frontend
@@ -3097,11 +2843,6 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
 
   const { en: q7_3_rows_en, fr: q7_3_rows_fr } = separateLanguages(q7_3_rows);
   const { en: q7_3_columns_en, fr: q7_3_columns_fr } = separateLanguages(q7_3_columns);
-
-  const q7_3_table_title: Translation = {
-    en: 'Pregnant Women',
-    fr: 'Femmes enceintes',
-  };
 
   const q7_3: NumericTable<ID, ErrorType> = new NumericTable<ID, ErrorType>(
     '7_3',
