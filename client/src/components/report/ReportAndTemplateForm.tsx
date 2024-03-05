@@ -21,7 +21,6 @@ export const ReportAndTemplateForm = ({
   setReportMonth,
 }: ReportAndTemplateFormProps): JSX.Element => {
   const { t } = useTranslation();
-  console.log('ReportAndTemplateForm', departments);
 
   return (
     <div className="col-md-6 mb-2">
@@ -51,7 +50,7 @@ export const ReportAndTemplateForm = ({
           className="form-control"
           id="Report-Month"
           onChange={(e) => setReportMonth(new Date(e.target.value))}
-          value={reportMonth?.toISOString().substring(0, 7)}
+          value={reportMonth.toISOString().slice(0, 7)}
         />
       </fieldset>
     </div>
