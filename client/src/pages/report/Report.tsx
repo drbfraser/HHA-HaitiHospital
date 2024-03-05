@@ -27,6 +27,7 @@ export const Report = () => {
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
+  const [reportMonth, setReportMonth] = useState<Date>(new Date());
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
@@ -171,6 +172,8 @@ export const Report = () => {
           departments={departments.filter(isReportableDepartment)}
           currentDepartment={currentDepartment}
           setCurrentDepartment={setCurrentDepartment}
+          reportMonth={reportMonth}
+          setReportMonth={setReportMonth}
         />
       )}
       {report && (

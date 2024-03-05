@@ -22,6 +22,7 @@ export const UploadReport = () => {
   const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType>>();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
+  const [reportMonth, setReportMonth] = useState<Date>(new Date());
   const { departments } = useDepartmentData();
 
   const confirmSubmission = (event: React.FormEvent<HTMLFormElement>) => {
@@ -73,6 +74,8 @@ export const UploadReport = () => {
           departments={departments}
           currentDepartment={currentDepartment}
           setCurrentDepartment={setCurrentDepartment}
+          reportMonth={reportMonth}
+          setReportMonth={setReportMonth}
         />
       )}
       {currentDepartment && (

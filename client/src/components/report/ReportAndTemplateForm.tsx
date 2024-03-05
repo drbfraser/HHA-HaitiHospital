@@ -8,6 +8,8 @@ interface ReportAndTemplateFormProps {
   departments: any;
   currentDepartment: Department;
   setCurrentDepartment: Dispatch<SetStateAction<Department>>;
+  reportMonth: Date;
+  setReportMonth: Dispatch<SetStateAction<Date>>;
 }
 
 export const ReportAndTemplateForm = ({
@@ -15,6 +17,8 @@ export const ReportAndTemplateForm = ({
   departments,
   currentDepartment,
   setCurrentDepartment,
+  reportMonth,
+  setReportMonth,
 }: ReportAndTemplateFormProps): JSX.Element => {
   const { t } = useTranslation();
   console.log('ReportAndTemplateForm', departments);
@@ -39,6 +43,14 @@ export const ReportAndTemplateForm = ({
               </option>
             ))}
         </select>
+        <label htmlFor="Report-Month">Month</label>
+        <input
+          type="month"
+          className="form-control"
+          id="Report-Month"
+          onChange={(e) => setReportMonth(new Date(e.target.value))}
+          value={new Date(reportMonth).toISOString()}
+        />
       </fieldset>
     </div>
   );
