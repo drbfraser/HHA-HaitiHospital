@@ -44,6 +44,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
 
   function handleRemoveImage() {
     props.removeImageUpload();
+    p;
     props?.setImageIsUpdated();
     setEmployeeImageSrc(null);
   }
