@@ -49,7 +49,7 @@ export const ReportAndTemplateForm = ({
           className="form-control"
           id="Report-Month"
           onChange={(e) => setReportMonth(new Date(e.target.value))}
-          value={new Date(reportMonth).toISOString()}
+          value={reportMonth.toISOString().substring(0, 7)}
         />
       </fieldset>
     </div>
