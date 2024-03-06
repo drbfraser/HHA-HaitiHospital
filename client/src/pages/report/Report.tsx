@@ -27,7 +27,7 @@ export const Report = () => {
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
-  const [reportMonth, setReportMonth] = useState<Date>(new Date());
+  const [reportMonth, setReportMonth] = useState<Date>();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
@@ -50,10 +50,11 @@ export const Report = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
-  const clearCurrentDepartment = () => {
+  const clearCurrentReport = () => {
     setAreChangesMade(false);
     setCurrentDepartment(undefined);
     setReport(undefined);
+    setReportMonth(undefined);
   };
 
   const confirmSubmission = (event: FormEvent<HTMLFormElement>, isDraft: boolean) => {
@@ -107,7 +108,7 @@ export const Report = () => {
 
         setReport(deserializedReportTemplate);
       } catch (e) {
-        clearCurrentDepartment();
+        clearCurrentReport();
       }
     };
     currentDepartment && getTemplates();
@@ -116,7 +117,7 @@ export const Report = () => {
     return () => {
       controller.abort();
     };
-  }, [currentDepartment, history, objectSerializer, i18n.resolvedLanguage]);
+  }, [currentDepartment, reportMonth, history, objectSerializer, i18n.resolvedLanguage]);
 
   useEffect(() => {
     if (areChangesMade) {
@@ -150,7 +151,7 @@ export const Report = () => {
         }}
         onModalProceed={() => {
           setIsShowingNavigationModal(false);
-          navigate(history, navigationInfo, clearCurrentDepartment);
+          navigate(history, navigationInfo, clearCurrentReport);
         }}
         show={isShowingNavigationModal}
         title={t('reportConfirmationModal.discardSubmitReportHeader')}
@@ -166,7 +167,7 @@ export const Report = () => {
         }}
         when={areChangesMade}
       />
-      {!report && departments && (
+      {!(report && reportMonth) && departments && (
         <ReportAndTemplateForm
           departmentLabel={t('headerReportDepartmentType')}
           departments={departments.filter(isReportableDepartment)}
@@ -176,7 +177,7 @@ export const Report = () => {
           setReportMonth={setReportMonth}
         />
       )}
-      {report && (
+      {report && reportMonth && (
         <>
           <button
             className="btn btn-outline-secondary"
@@ -185,7 +186,7 @@ export const Report = () => {
                 setIsShowingNavigationModal(true);
                 setNavigationInfo(null);
               } else {
-                clearCurrentDepartment();
+                clearCurrentReport();
               }
             }}
           >
