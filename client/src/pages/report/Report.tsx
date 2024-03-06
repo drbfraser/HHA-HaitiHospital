@@ -64,13 +64,12 @@ export const Report = () => {
   };
 
   const submitReport = () => {
-    const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportPrompt = serializedReport['prompt'][i18n.resolvedLanguage];
     serializedReport['id'] = generateFormId(user?.userDetails?.name, reportPrompt);
     const reportObject = {
       departmentId: currentDepartment.id,
-      reportMonth: new Date(today.getFullYear(), today.getMonth()),
+      reportMonth: reportMonth,
       serializedReport,
       submittedUserId: user?.userDetails?.id,
       submittedBy: user?.userDetails?.name,
