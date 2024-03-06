@@ -7,7 +7,7 @@ import { logger } from 'logger';
 import passport from 'passport';
 
 const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate('local', (err, user: User, info) => {
+  passport.authenticate('local', (err: Error, user: User, info: string) => {
     if (err) {
       return next(err);
     }

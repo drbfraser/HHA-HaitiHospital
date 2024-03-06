@@ -18,6 +18,7 @@
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "@hha/common": "file:../common",
+    "@types/express-serve-static-core": "^4.17.43",
     "@types/multer": "^1.4.7",
     "@types/passport": "^1.0.7",
     "@types/passport-local": "^1.0.38",
