@@ -46,6 +46,11 @@ const ReportView = () => {
     userLocale,
     dateOptions,
   );
+  const reportMonth = new Date(metaData?.reportMonth).toLocaleDateString(userLocale, {
+    timeZone: 'UTC',
+    month: 'long',
+    year: 'numeric',
+  });
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
@@ -199,7 +204,7 @@ const ReportView = () => {
                 </span>
               )}
               {readOnly && (
-                <button className="btn btn-outline-dark" onClick={toggleTable}>
+                <button className="btn bgtn-outline-dark" onClick={toggleTable}>
                   {isUsingTable
                     ? t('departmentReportDisplayHideTable')
                     : t('departmentReportDisplayShowTable')}
@@ -219,9 +224,7 @@ const ReportView = () => {
           {readOnly && (
             <div className="visually-hidden">
               <PDFExport
-                fileName={`${department}_${new Date(
-                  metaData?.submittedDate,
-                ).toLocaleDateString()}__${metaData?.submittedBy}`}
+                fileName={`${department}_${reportMonth.replace(/\s/g, '')}__${metaData?.submittedBy}`}
                 paperSize="A4"
                 ref={pdfExportComponent}
                 scale={0.75}
@@ -233,7 +236,7 @@ const ReportView = () => {
                   isUsingPagination={false}
                   isUsingTable={true}
                   reportData={report}
-                  date={submittedDate}
+                  date={reportMonth}
                   author={metaData?.submittedBy}
                   questionItems={questionItems}
                 />
@@ -251,7 +254,7 @@ const ReportView = () => {
                 isUsingPagination={isUsingPagination}
                 isUsingTable={isUsingTable}
                 reportData={report}
-                date={submittedDate}
+                date={reportMonth}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
               />
