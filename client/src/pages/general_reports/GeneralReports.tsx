@@ -123,14 +123,19 @@ const GeneralReports = () => {
       accessorKey: 'departmentName',
     },
     {
-      header: t('reportsSubmissionDate'),
-      id: 'submittedDate',
-      accessorKey: 'submittedDate',
+      header: 'Month of Report',
+      id: 'reportMonth',
+      accessorKey: 'reportMonth',
     },
     {
       header: t('reportsSubmittedBy'),
       id: 'submittedBy',
       accessorKey: 'submittedBy',
+    },
+    {
+      header: t('reportsSubmissionDate'),
+      id: 'submittedDate',
+      accessorKey: 'submittedDate',
     },
     {
       header: t('reportsOptions'),
@@ -175,6 +180,15 @@ const GeneralReports = () => {
     return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
   };
 
+  const getReportMonth = (item): string => {
+    return new Date(item.reportMonth).toLocaleDateString(userLocale, {
+      timeZone: 'UTC',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  //TODO: Add interface for item
   const gridData = reports.map((item) => ({
     item,
     _id: item._id,
@@ -182,6 +196,7 @@ const GeneralReports = () => {
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
     submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
     submittedBy: item.submittedBy,
+    reportMonth: getReportMonth(item),
     isDraft: item.isDraft,
   }));
 
