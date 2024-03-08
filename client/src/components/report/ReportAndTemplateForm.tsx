@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 
 interface ReportAndTemplateFormProps {
   departmentLabel: string;
-  departments: any;
+  departments: Department[];
   currentDepartment: Department;
-  setCurrentDepartment: Dispatch<SetStateAction<Department>>;
+  setCurrentDepartment: Dispatch<SetStateAction<Department | undefined>>;
 }
 
 export const ReportAndTemplateForm = ({
