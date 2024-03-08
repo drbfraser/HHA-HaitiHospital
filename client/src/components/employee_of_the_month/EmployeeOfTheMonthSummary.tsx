@@ -6,7 +6,6 @@ import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
-import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
