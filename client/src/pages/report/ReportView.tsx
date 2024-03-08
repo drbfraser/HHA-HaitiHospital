@@ -25,41 +25,43 @@ const ReportView = () => {
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
   const [isUsingPagination, setIsUsingPagination] = useState(true);
   const [isUsingTable, setIsUsingTable] = useState(true);
-  const [metaData, setMetaData] = useState<ReportMetaData>(null);
+  const [metaData, setMetaData] = useState<ReportMetaData | null>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
-  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
+  const [report, setReport] = useState<QuestionGroup<ID, ErrorType> | null>(null);
   const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const { departmentIdKeyMap } = useDepartmentData();
-  const department = departmentIdKeyMap.get(metaData?.departmentId);
+  const department = metaData ? departmentIdKeyMap.get(metaData.departmentId) : null;
 
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
 
   const { t } = useTranslation();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-  const pdfExportComponent = useRef(null);
+  const pdfExportComponent = useRef<PDFExport | null>(null);
   const report_id = useLocation().pathname.split('/')[2];
-  const submittedDate = new Date(metaData?.submittedDate).toLocaleDateString(
-    userLocale,
-    dateOptions,
-  );
+  const submittedDate =
+    metaData && metaData.submittedDate
+      ? new Date(metaData.submittedDate).toLocaleDateString(userLocale, dateOptions)
+      : null;
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
-    setIsDraft(isDraft);
+    if (typeof isDraft === 'boolean') {
+      setIsDraft(isDraft);
+    }
     setShowEditModal(true);
   };
 
   const applyReportChanges = () => {
     setAreChangesMade(true);
-    setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
+    setReport(objectSerializer.deserialize(objectSerializer.serialize(report as Object)));
   };
 
   const handleExportWithComponent = () => {
-    pdfExportComponent.current.save();
+    pdfExportComponent.current ? pdfExportComponent.current.save() : null;
   };
 
   const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -68,7 +70,7 @@ const ReportView = () => {
   };
 
   const reportHandler = () => {
-    const serializedReport = objectSerializer.serialize(report);
+    const serializedReport = objectSerializer.serialize(report as Object);
     const editedReportObject = {
       id: report_id,
       serializedReport,
@@ -131,11 +133,11 @@ const ReportView = () => {
     if (areChangesMade && !readOnly) {
       window.onbeforeunload = () => true;
     } else {
-      window.onbeforeunload = undefined;
+      window.onbeforeunload = () => false;
     }
 
     return () => {
-      window.onbeforeunload = undefined;
+      window.onbeforeunload = () => false;
     };
   }, [areChangesMade, readOnly]);
 
@@ -219,25 +221,22 @@ const ReportView = () => {
           {readOnly && (
             <div className="visually-hidden">
               <PDFExport
-                fileName={`${department}_${new Date(
-                  metaData?.submittedDate,
-                ).toLocaleDateString()}__${metaData?.submittedBy}`}
+                fileName={`${department}_${(metaData?.submittedDate ? new Date(metaData?.submittedDate) : new Date()).toLocaleDateString()}__${metaData?.submittedBy}`}
                 paperSize="A4"
                 ref={pdfExportComponent}
                 scale={0.75}
-              >
-                <ReadonlyReportForm
-                  applyReportChanges={applyReportChanges}
-                  formHandler={() => {}}
-                  isSubmitting={false}
-                  isUsingPagination={false}
-                  isUsingTable={true}
-                  reportData={report}
-                  date={submittedDate}
-                  author={metaData?.submittedBy}
-                  questionItems={questionItems}
-                />
-              </PDFExport>
+              />
+              <ReadonlyReportForm
+                applyReportChanges={applyReportChanges}
+                formHandler={() => {}}
+                isSubmitting={false}
+                isUsingPagination={false}
+                isUsingTable={true}
+                reportData={report}
+                date={submittedDate!}
+                author={metaData?.submittedBy}
+                questionItems={questionItems}
+              />
             </div>
           )}
 
@@ -251,7 +250,7 @@ const ReportView = () => {
                 isUsingPagination={isUsingPagination}
                 isUsingTable={isUsingTable}
                 reportData={report}
-                date={submittedDate}
+                date={submittedDate!}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
               />
