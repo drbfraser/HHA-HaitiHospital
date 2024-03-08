@@ -42,10 +42,6 @@ const ReportView = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const pdfExportComponent = useRef(null);
   const report_id = useLocation().pathname.split('/')[2];
-  const submittedDate = new Date(metaData?.submittedDate).toLocaleDateString(
-    userLocale,
-    dateOptions,
-  );
   const reportMonth = new Date(metaData?.reportMonth).toLocaleDateString(userLocale, {
     timeZone: 'UTC',
     month: 'long',
@@ -210,7 +206,6 @@ const ReportView = () => {
                     : t('departmentReportDisplayShowTable')}
                 </button>
               )}
-
               {readOnly && !isUsingTable && (
                 <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
                   {isUsingPagination
