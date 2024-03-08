@@ -17,7 +17,7 @@ const AppRoutes = ({
   departmentsAllowed,
   ...rest
 }: {
-  component: JSX.Element;
+  component: (_: any) => JSX.Element;
   path: string;
   loginRequired: boolean;
   rolesAllowed: Role[];

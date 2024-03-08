@@ -28,13 +28,11 @@ const CaseStudyInfo = ({
   const { t } = useTranslation();
   const author = caseStudy?.user?.name ?? t('status.not_available');
 
-  const [caseStudyImage, setCaseStudyImage] = useState<string>(null);
+  const [caseStudyImage, setCaseStudyImage] = useState<string>('');
   const history: History = useHistory<History>();
 
   useEffect(() => {
-    console.log('caseStudyStory', titleLabel);
-    console.log('caseStudyStory', setTitle);
-    setTitle && setTitle(t(titleLabel));
+    setTitle && titleLabel && setTitle(t(titleLabel));
   }, [setTitle, t, titleLabel]);
 
   useEffect(() => {
@@ -67,7 +65,12 @@ const CaseStudyInfo = ({
   );
 };
 
-const PatientStorySummary = ({ caseStudy, setTitle }) => (
+interface CaseStudySummaryProps {
+  caseStudy: any;
+  setTitle?: (title: string) => void;
+}
+
+const PatientStorySummary = ({ caseStudy, setTitle }: CaseStudySummaryProps) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
     setTitle={setTitle}
@@ -108,7 +111,7 @@ const PatientStorySummary = ({ caseStudy, setTitle }) => (
   />
 );
 
-const StaffRecognitionSummary = ({ caseStudy, setTitle }) => (
+const StaffRecognitionSummary = ({ caseStudy, setTitle }: CaseStudySummaryProps) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
     setTitle={setTitle}
@@ -139,7 +142,7 @@ const StaffRecognitionSummary = ({ caseStudy, setTitle }) => (
   />
 );
 
-const TrainingSessionSummary = ({ caseStudy, setTitle }) => (
+const TrainingSessionSummary = ({ caseStudy, setTitle }: CaseStudySummaryProps) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
     setTitle={setTitle}
@@ -170,7 +173,7 @@ const TrainingSessionSummary = ({ caseStudy, setTitle }) => (
   />
 );
 
-const EquipmentReceivedSummary = ({ caseStudy, setTitle }) => (
+const EquipmentReceivedSummary = ({ caseStudy, setTitle }: CaseStudySummaryProps) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
     setTitle={setTitle}
@@ -201,7 +204,7 @@ const EquipmentReceivedSummary = ({ caseStudy, setTitle }) => (
   />
 );
 
-const OtherStorySummary = ({ caseStudy, setTitle }) => (
+const OtherStorySummary = ({ caseStudy, setTitle }: CaseStudySummaryProps) => (
   <CaseStudyInfo
     caseStudy={caseStudy}
     setTitle={setTitle}
@@ -209,11 +212,6 @@ const OtherStorySummary = ({ caseStudy, setTitle }) => (
     caseStudyStory={caseStudy.otherStory.caseStudyStory}
   />
 );
-
-interface CaseStudySummaryProps {
-  caseStudy: any;
-  setTitle?: (title: string) => void;
-}
 
 export const CaseStudySummary = ({ caseStudy, setTitle }: CaseStudySummaryProps) => (
   <>
