@@ -169,6 +169,7 @@ export const Report = () => {
       {!(report && reportMonth) && departments && (
         <ReportAndTemplateForm
           departmentLabel={t('headerReportDepartmentType')}
+          monthLabel={t('headerReportMonth')}
           departments={departments.filter(isReportableDepartment)}
           currentDepartment={currentDepartment}
           setCurrentDepartment={setCurrentDepartment}

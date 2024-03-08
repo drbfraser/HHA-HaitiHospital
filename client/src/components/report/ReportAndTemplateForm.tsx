@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 interface ReportAndTemplateFormProps {
   departmentLabel: string;
+  monthLabel: string;
   departments: any;
   currentDepartment: Department;
   setCurrentDepartment: Dispatch<SetStateAction<Department>>;
@@ -14,6 +15,7 @@ interface ReportAndTemplateFormProps {
 
 export const ReportAndTemplateForm = ({
   departmentLabel,
+  monthLabel,
   departments,
   currentDepartment,
   setCurrentDepartment,
@@ -43,7 +45,7 @@ export const ReportAndTemplateForm = ({
             ))}
         </select>
         <label htmlFor="Report-Month" className="mt-2">
-          Month
+          {monthLabel}
         </label>
         <input
           type="month"

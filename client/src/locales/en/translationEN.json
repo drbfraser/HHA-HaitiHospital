@@ -45,6 +45,7 @@
   "clickToReport": "Click Report (on the left) to create a new report.",
   "headerReport": "Submit a report",
   "headerReportDepartmentType": "Department Type",
+  "headerReportMonth": "Month",
   "headerReportChooseDepartment": "Choose a department",
   "headerReportChooseDifferentDepartment": "Choose different department",
   "headerEmployeeOfTheMonth": "Employee Of The Month",

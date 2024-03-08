@@ -71,6 +71,7 @@ export const UploadReport = () => {
       {departments && (
         <ReportAndTemplateForm
           departmentLabel={t('template.select_department')}
+          monthLabel={t('headerReportMonth')}
           departments={departments}
           currentDepartment={currentDepartment}
           setCurrentDepartment={setCurrentDepartment}
