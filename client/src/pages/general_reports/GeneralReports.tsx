@@ -117,13 +117,13 @@ const GeneralReports = () => {
       accessorFn: (row) => row,
     },
     {
-      header: t('leaderBoardOverviewDepartment'),
+      header: t('reportsDepartment'),
       id: 'departmentName',
       cell: (row) => <span>{t(`departments.${row.getValue()}`)}</span>,
       accessorKey: 'departmentName',
     },
     {
-      header: 'Month of Report',
+      header: t('reportsMonth'),
       id: 'reportMonth',
       accessorKey: 'reportMonth',
     },
