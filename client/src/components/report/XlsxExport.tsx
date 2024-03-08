@@ -3,170 +3,152 @@ import saveAs from 'file-saver';
 import { QuestionRow } from 'constants/interfaces';
 import { underscoreAmount } from './utils';
 import { useTranslation } from 'react-i18next';
+import { processCompositionOrSpecializedQuestion, processTableQuestion } from './QuestionRows';
 
-export const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {
-  let array: QuestionRow[] = [];
+export const processSingleSelectionQuestion = (
+  singleSelectionItem,
+  language: string,
+): QuestionRow => {
   const element: QuestionRow = {
-    id: specialQuestionItem.id,
-    prompt_fr: specialQuestionItem.prompt.fr,
-    prompt_en: specialQuestionItem.prompt.en,
-    answer: specialQuestionItem?.answer,
+    id: singleSelectionItem.id,
+    prompt: singleSelectionItem.prompt[language],
+    answer: singleSelectionItem.choices[singleSelectionItem.answer].description[language],
   };
-  array.push(element);
-  for (let questionItem of specialQuestionItem.questions) {
-    const element: QuestionRow = {
-      id: questionItem.id,
-      prompt_fr: questionItem.prompt.fr,
-      prompt_en: questionItem.prompt.en,
-      answer: questionItem?.answer,
-    };
-    array.push(element);
-  }
-  return array;
+  return element;
 };
 
-export const processTableQuestion = (tableItem): QuestionRow[] => {
+export const processMultiSelectionQuestion = (
+  multiSelectionItem,
+  language: string,
+): QuestionRow => {
+  const element: QuestionRow = {
+    id: multiSelectionItem.id,
+    prompt: multiSelectionItem.prompt[language],
+    answer: JSON.stringify(
+      multiSelectionItem.answer.map((index: number) => multiSelectionItem.choices[index]),
+    ),
+  };
+  return element;
+};
+
+export const processExpandableQuestion = (expandableItem, language: string): QuestionRow[] => {
   let array: QuestionRow[] = [];
-  const questionTable = tableItem.questionTable;
-  for (let questionRows of questionTable) {
-    for (let tableCell of questionRows) {
-      const questionItem = tableCell.question;
-      const element: QuestionRow = {
-        id: questionItem.id,
-        prompt_fr: questionItem.prompt.fr,
-        prompt_en: questionItem.prompt.en,
-        answer: questionItem?.answer,
-      };
-      array.push(element);
+  for (const questionGroup of expandableItem.questionGroups) {
+    for (let questionItem of questionGroup.questionItems) {
+      if (questionItem.__class__ === 'SingleSelectionQuestion') {
+        const element = processSingleSelectionQuestion(questionItem, language);
+        array.push(element);
+      } else if (questionItem.__class__ === 'MultiSelectionQuestion') {
+        const element = processMultiSelectionQuestion(questionItem, language);
+        array.push(element);
+      } else {
+        const element: QuestionRow = {
+          id: questionItem.id,
+          prompt: questionItem.prompt[language],
+          answer: questionItem?.answer,
+        };
+        array.push(element);
+      }
     }
   }
+
   return array;
 };
 
-const sheetColumnFormat = (
-  sheet: ExcelJS.Worksheet,
-  columns: string[],
-  width: number,
-  font: any,
-) => {
-  if (columns && columns.length) {
-    for (const column of columns) {
-      if (width) sheet.getColumn(column).width = width;
-      if (font) sheet.getColumn(column).font = font;
-    }
-  }
-};
-
-const sheetCellFill = (sheet: ExcelJS.Worksheet, cells: string[], fill: any) => {
+const sheetRowStyle = (sheet: ExcelJS.Worksheet, cells: string[], style: any) => {
   for (const cell of cells) {
-    sheet.getCell(cell).fill = fill;
+    sheet.getCell(cell).style = style;
   }
 };
 
 export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
   const { t } = useTranslation();
-
-  const generateExcel = () => {
+  const generateQuestionRows = (language: string): QuestionRow[] => {
     let array: QuestionRow[] = [];
     for (let questionItem of questionItems) {
       const element: QuestionRow = {
         id: questionItem.id,
-        prompt_en: questionItem.prompt?.en,
-        prompt_fr: questionItem?.prompt?.fr,
+        prompt: questionItem.prompt[language],
         answer: questionItem?.answer,
       };
       array.push(element);
       if (questionItem.__class__ === 'CompositionQuestion') {
         for (let nestedQuestionItem of questionItem.compositionGroups) {
-          const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
+          const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
           array = array.concat(subArray);
         }
       }
       if (questionItem.__class__ === 'SpecializedGroup') {
         for (let nestedQuestionItem of questionItem.questions) {
-          const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
+          const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
           array = array.concat(subArray);
         }
       }
       if (questionItem.__class__ === 'NumericTable') {
-        const subArray = processTableQuestion(questionItem);
+        const subArray = processTableQuestion(questionItem, language);
+        array = array.concat(subArray);
+      }
+      if (questionItem.__class__ === 'ExpandableQuestion') {
+        const subArray = processExpandableQuestion(questionItem, language);
         array = array.concat(subArray);
       }
     }
+    return array;
+  };
+
+  const generateExcel = () => {
     // Create a new Excel Workbook
     const workbook = new ExcelJS.Workbook();
-    const sheetName = 'Sheet1';
-    const sheet = workbook.addWorksheet(sheetName);
-
-    sheet.columns = [
-      { header: 'Id', key: 'id', width: 10 },
-      { header: 'English', key: 'prompt_en', width: 28 },
-      { header: 'French', key: 'prompt_fr', width: 28 },
-      { header: 'Answer', key: 'answer', width: 10 },
-    ];
-    for (let i = 0; i < array.length; ++i) {
-      const level = underscoreAmount(array[i].id);
-      if (level === 0) {
-        const row = { id: array[i].id.replaceAll('_', '.'), ...array[i] };
-        sheet.addRow(row).commit();
-      } else {
-        const row = [];
-
-        row[0 + level * 4 + 1] = array[i].id.replaceAll('_', '.');
-        row[1 + level * 4 + 1] = array[i].prompt_en;
-        row[2 + level * 4 + 1] = array[i].prompt_fr;
-        row[3 + level * 4 + 1] = array[i].answer;
-        sheet.addRow(row).commit();
+    const languages = ['en', 'fr'];
+    for (const language of languages) {
+      const worksheet = workbook.addWorksheet(language);
+      const array = generateQuestionRows(language);
+      worksheet.columns = [
+        { header: 'Id', key: 'id', width: 10 },
+        { header: 'Prompt', key: 'prompt', width: 28 },
+        { header: 'Answer', key: 'answer', width: 10 },
+      ];
+      for (let i = 0; i < array.length; ++i) {
+        const level = underscoreAmount(array[i].id);
+        // if (level === 0) {
+        const row = {
+          id: array[i].id.replaceAll('_', '.'),
+          prompt: array[i].prompt,
+          answer: array[i].answer,
+        };
+        worksheet.addRow(row).commit();
+        worksheet['_rows'][i + 1]['_outlineLevel'] = level;
       }
-      sheet['_rows'][i + 1]['_outlineLevel'] = level;
-    }
 
-    sheetColumnFormat(sheet, ['A', 'B', 'C'], 28, {
-      name: 'Calibri',
-      color: { argb: 'FFFF0000' },
-      size: 12,
-    });
-    sheetColumnFormat(sheet, ['E', 'F', 'G'], 28, {
-      name: 'Calibri',
-      color: { argb: 'FF008E00' },
-      size: 12,
-    });
-    sheetColumnFormat(sheet, ['I', 'J', 'K'], 28, {
-      color: { argb: 'FF1B2BF5' },
-      size: 12,
-    });
-    sheetColumnFormat(sheet, ['D', 'H', 'L'], 10, {
-      name: 'Calibri',
-      color: { argb: 'FF702BF5' },
-      size: 12,
-    });
-    sheetColumnFormat(sheet, ['A', 'E', 'I'], 10, null);
+      const rowFontStyles = [
+        {
+          name: 'Calibri',
+          color: { argb: 'FFFF0000' },
+          size: 12,
+        },
+        {
+          name: 'Calibri',
+          color: { argb: 'FF008E00' },
+          size: 12,
+        },
+        {
+          color: { argb: 'FF1B2BF5' },
+          size: 12,
+        },
+        {
+          name: 'Calibri',
+          color: { argb: 'FF702BF5' },
+          size: 12,
+        },
+      ];
+      for (let i = 1; i <= array.length; i++) {
+        const row = worksheet['_rows'][i];
+        const r = i + 1;
 
-    for (let i = 1; i <= array.length; i++) {
-      const row = sheet['_rows'][i];
-      const r = i + 1;
-      if (row) {
-        const outlineLevel = row['_outlineLevel'];
-        if (outlineLevel === 0) {
-          sheetCellFill(sheet, ['A' + r, 'B' + r, 'C' + r], {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          });
-        } else if (outlineLevel === 1) {
-          sheetCellFill(sheet, ['E' + r, 'F' + r, 'G' + r], {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
-          });
-        } else if (outlineLevel === 2) {
-          sheetCellFill(sheet, ['I' + r, 'J' + r, 'K' + r], {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFEFEFF0' },
-            bgColor: { argb: 'FFEFEFF0' },
+        if (row) {
+          const outlineLevel = row['_outlineLevel'];
+          sheetRowStyle(worksheet, ['A' + r, 'B' + r, 'C' + r], {
+            font: rowFontStyles[outlineLevel],
           });
         }
       }

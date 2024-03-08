@@ -4,49 +4,52 @@ import { QuestionRow } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
 import { underscoreAmount } from './utils';
 
+export const processCompositionOrSpecializedQuestion = (
+  specialQuestionItem,
+  language,
+): QuestionRow[] => {
+  let array: QuestionRow[] = [];
+  const element: QuestionRow = {
+    id: specialQuestionItem.id,
+    prompt: specialQuestionItem.prompt[language],
+    answer: specialQuestionItem?.answer,
+  };
+  array.push(element);
+  for (let questionItem of specialQuestionItem.questions) {
+    const element: QuestionRow = {
+      id: questionItem.id,
+      prompt: questionItem.prompt[language],
+      answer: questionItem?.answer,
+    };
+    array.push(element);
+  }
+
+  return array;
+};
+
+export const processTableQuestion = (tableItem, language): QuestionRow[] => {
+  let array: QuestionRow[] = [];
+  const questionTable = tableItem.questionTable;
+  for (let questionRows of questionTable) {
+    for (let tableCell of questionRows) {
+      const questionItem = tableCell.question;
+      const element: QuestionRow = {
+        id: questionItem.id,
+        prompt: questionItem.prompt[language],
+        answer: questionItem?.answer,
+      };
+      array.push(element);
+    }
+  }
+  return array;
+};
+
 const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Element => {
   const [questionRowElements, setQuestionRowElements] = useState<QuestionRow[]>([]);
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage;
 
   useEffect(() => {
-    const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {
-      let array: QuestionRow[] = [];
-      const element: QuestionRow = {
-        id: specialQuestionItem.id,
-        prompt: specialQuestionItem.prompt[language],
-        answer: specialQuestionItem?.answer,
-      };
-      array.push(element);
-      for (let questionItem of specialQuestionItem.questions) {
-        const element: QuestionRow = {
-          id: questionItem.id,
-          prompt: questionItem.prompt[language],
-          answer: questionItem?.answer,
-        };
-        array.push(element);
-      }
-
-      return array;
-    };
-    const processTableQuestion = (tableItem): QuestionRow[] => {
-      let array: QuestionRow[] = [];
-      const questionTable = tableItem.questionTable;
-      for (let questionRows of questionTable) {
-        for (let tableCell of questionRows) {
-          const questionItem = tableCell.question;
-          const element: QuestionRow = {
-            id: questionItem.id,
-            prompt: questionItem.prompt[language],
-            answer: questionItem?.answer,
-          };
-          array.push(element);
-        }
-      }
-
-      return array;
-    };
-
     const processQuestionItem = (questionItems): QuestionRow[] => {
       let array: QuestionRow[] = [];
 
@@ -59,18 +62,18 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
         array.push(element);
         if (questionItem.__class__ === 'CompositionQuestion') {
           for (let nestedQuestionItem of questionItem.compositionGroups) {
-            const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
+            const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
             array = array.concat(subArray);
           }
         }
         if (questionItem.__class__ === 'SpecializedGroup') {
           for (let nestedQuestionItem of questionItem.questions) {
-            const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem);
+            const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
             array = array.concat(subArray);
           }
         }
         if (questionItem.__class__ === 'NumericTable') {
-          const subArray = processTableQuestion(questionItem);
+          const subArray = processTableQuestion(questionItem, language);
           array = array.concat(subArray);
         }
       }
