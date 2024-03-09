@@ -1,4 +1,4 @@
-import { Router, Response, NextFunction } from 'express';
+import { Request, Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
@@ -7,11 +7,9 @@ import EOTMCollection, {
   EmployeeOfTheMonthJson,
 } from 'models/employeeOfTheMonth';
 import { Role } from '../../models/user';
-import { registerEmployeeOfTheMonthEdit } from '../../sanitization/schemas/registerEmployeeOfTheMonth';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import {
   BadRequest,
-  HTTP_CREATED_CODE,
   HTTP_NOCONTENT_CODE,
   HTTP_OK_CODE,
   InternalError,
@@ -19,14 +17,13 @@ import {
 } from 'exceptions/httpException';
 import Departments from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
-import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
 router.get(
   '/:awardedYear/:awardedMonth',
   requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { awardedYear, awardedMonth } = req.params;
       const doc = await EOTMCollection.find({
@@ -50,28 +47,24 @@ router.get(
   },
 );
 
-router.get(
-  '/:eotmId',
-  requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const { eotmId } = req.params;
-      const doc = await EOTMCollection.findById(eotmId);
+router.get('/:eotmId', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { eotmId } = req.params;
+    const doc = await EOTMCollection.findById(eotmId);
 
-      if (!doc) {
-        throw new NotFound(`No employee of the month found`);
-      }
-
-      const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
-
-      res.status(HTTP_OK_CODE).json(json);
-    } catch (e) {
-      next(e);
+    if (!doc) {
+      throw new NotFound(`No employee of the month found`);
     }
-  },
-);
 
-router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const json = (await doc.toJson()) as EmployeeOfTheMonthJson;
+
+    res.status(HTTP_OK_CODE).json(json);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const doc = await EOTMCollection.find({});
     if (!doc) {
@@ -92,20 +85,25 @@ router.put(
   '/',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  registerEmployeeOfTheMonthEdit,
   validateInput,
   upload.single('file'),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id, name, department, description, awardedMonth, awardedYear, imageIsUpdated } =
         JSON.parse(req.body.document);
       const imageIsUpdatedBool = Boolean(imageIsUpdated);
       const preUpdatedEmployeeOfTheMonth = await EOTMCollection.findById(id);
 
-      let imgPath: string = preUpdatedEmployeeOfTheMonth.imgPath;
+      if (preUpdatedEmployeeOfTheMonth === null) {
+        throw new BadRequest(`Employee of the month id=${id} is not found!`);
+      }
 
-      if (imageIsUpdatedBool) {
-        deleteUploadedImage(preUpdatedEmployeeOfTheMonth.imgPath);
+      let imgPath: string | undefined = preUpdatedEmployeeOfTheMonth.imgPath;
+
+      if (imgPath && imageIsUpdatedBool) {
+        if (preUpdatedEmployeeOfTheMonth.imgPath) {
+          deleteUploadedImage(preUpdatedEmployeeOfTheMonth.imgPath);
+        }
         imgPath = req.file ? req.file.path.replace(/\\/g, '/') : '';
       }
 
@@ -137,10 +135,9 @@ router.post(
   '/',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  registerEmployeeOfTheMonthEdit,
   validateInput,
   upload.single('file'),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { name, department, description, awardedMonth, awardedYear } = JSON.parse(
         req.body.document,
@@ -175,7 +172,7 @@ router.delete(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  (req: RequestWithUser, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const eotmId = req.params.id;
     EOTMCollection.findByIdAndRemove(eotmId)
       .exec()

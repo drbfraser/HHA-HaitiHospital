@@ -1,12 +1,6 @@
 import http from 'http';
 import { Application } from 'express';
-import {
-  setupApp,
-  setupHttpServer,
-  attemptAuthentication,
-  Accounts,
-  closeServer,
-} from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
 import {
   CASE_STUDIES_ENDPOINT,
   CASE_STUDIES_FEATURED_ENDPOINT,
@@ -45,7 +39,7 @@ function postCaseStudy(
     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
     .field('document', document)
     .attach('file', imgPath)
-    .end(function (error, response) {
+    .end(function (error: Error, response: any) {
       if (error) done(error);
       expect(error).to.be.null;
       expect(response).to.have.status(expectedStatus);
@@ -293,7 +287,7 @@ describe('Case Study Tests', function () {
 
   it('Should Successfully Delete a Case Study', function (done) {
     // Need to perform a GET to get a case Study's ID
-    agent.get(CASE_STUDIES_ENDPOINT).end(function (error, response) {
+    agent.get(CASE_STUDIES_ENDPOINT).end(function (error: Error, response: any) {
       if (error) done(error);
 
       const caseStudy = response.body[1];
@@ -302,13 +296,13 @@ describe('Case Study Tests', function () {
       agent
         .delete(`${CASE_STUDIES_ENDPOINT}/${id}`)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .end(function (error, response) {
+        .end(function (error: Error, response: any) {
           if (error) done(error);
           expect(response).to.have.status(HTTP_NOCONTENT_CODE);
           // caseStudyIds = caseStudyIds.filter((caseStudyId) => caseStudyId !== id);
 
           // Check that the case study is no longer in the database
-          agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error, response) {
+          agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: Error, response: any) {
             if (error) done(error);
 
             expect(response).to.have.status(HTTP_NOTFOUND_CODE);
@@ -322,7 +316,7 @@ describe('Case Study Tests', function () {
     agent
       .delete(`${CASE_STUDIES_ENDPOINT}/${'Invalid ID'}`)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-      .end(function (error, response) {
+      .end(function (error: Error, response: any) {
         if (error) done(error);
         expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
         done();
@@ -358,7 +352,7 @@ describe('Case Study Tests', function () {
       agent
         .patch(`${CASE_STUDIES_ENDPOINT}/${id}`)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .end(function (error, response) {
+        .end(function (error: Error, response: any) {
           if (error) done(error);
           expect(response).to.have.status(HTTP_NOCONTENT_CODE);
           done();
@@ -370,7 +364,7 @@ describe('Case Study Tests', function () {
     agent
       .patch(`${CASE_STUDIES_ENDPOINT}/${'Invalid Id'}`)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-      .end(function (error, response) {
+      .end(function (error: Error, response: any) {
         if (error) done(error);
         expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
         done();

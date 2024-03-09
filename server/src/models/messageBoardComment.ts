@@ -1,5 +1,5 @@
 import { IllegalState } from 'exceptions/systemException';
-import { UserApiOut } from '../routes/api/jsons/user';
+import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
 import UserModel from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';
@@ -38,7 +38,7 @@ const messageBoardCommentSchema = new Schema<MessageBoardCommentWithInstanceMeth
 
 messageBoardCommentSchema.methods.toJson = async function (): Promise<MessageBoardCommentJson> {
   const userDoc = await UserModel.findOne({ _id: this.userId }).exec();
-  const userJson = await userDoc?.toJson();
+  const userJson = userDoc ? await userDoc.toJson() : unknownUserJson;
 
   const json: MessageBoardCommentJson = {
     id: this._id,

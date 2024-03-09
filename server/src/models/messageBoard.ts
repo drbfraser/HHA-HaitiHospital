@@ -1,8 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import Departments from 'utils/departments';
-import { IllegalState } from 'exceptions/systemException';
-import { UserApiOut } from '../routes/api/jsons/user';
+import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
 
@@ -48,7 +47,7 @@ const messageBodySchema = new Schema<MessageWithInstanceMethods>(
 );
 messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
   const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
-  const userJson = await userDoc?.toJson();
+  const userJson = userDoc ? await userDoc.toJson() : unknownUserJson;
 
   const json: MessageJson = {
     id: this._id,

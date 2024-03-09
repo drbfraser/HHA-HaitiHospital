@@ -1,6 +1,5 @@
 import Departments from 'utils/departments';
-import { IllegalState } from 'exceptions/systemException';
-import { UserApiOut } from '../routes/api/jsons/user';
+import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';
@@ -164,7 +163,7 @@ const caseStudySchema = new Schema<CaseStudyWithInstanceMethods>(
 );
 caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
   const userDoc = await UserCollection.findById(this.userId);
-  const userJson = await userDoc?.toJson();
+  const userJson = userDoc ? await userDoc.toJson() : unknownUserJson;
   const json: CaseStudyJson = {
     id: this._id,
     caseStudyType: this.caseStudyType,
@@ -194,3 +193,6 @@ const CaseStudyModel = mongoose.model<CaseStudyWithInstanceMethods>(
 );
 
 export default CaseStudyModel;
+function cb(err: any, user: any) {
+  throw new Error('Function not implemented.');
+}

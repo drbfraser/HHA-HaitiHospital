@@ -1,26 +1,26 @@
 const router = require('express').Router();
 import MessageCollection from 'models/messageBoard';
-import { NextFunction, Response } from 'express';
+import { Request, NextFunction, Response } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { validateInput } from 'middleware/inputSanitization';
 import { Role } from 'models/user';
-import { registerMessageBoardCreate } from 'sanitization/schemas/registerMessageBoard';
 import {
   BadRequest,
   HTTP_CREATED_CODE,
   HTTP_NOCONTENT_CODE,
   HTTP_OK_CODE,
-  InternalError,
   NotFound,
   Unauthorized,
 } from 'exceptions/httpException';
 import Departments, { DefaultDepartments } from 'utils/departments';
 import { roleAuth } from 'middleware/roleAuth';
-import { RequestWithUser } from 'utils/definitions/express';
-import MessageBoard from 'utils/messageboard';
 import { checkUserHasMessageAdminLevelAuth } from 'utils/authUtils';
-router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+
+router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) {
+      throw new NotFound('User not logged in');
+    }
     let docs;
     if (req.user.role == Role.User) {
       const userDeptId = req.user.departmentId;
@@ -41,8 +41,11 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 router.get(
   '/department/:departmentId',
   requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const deptId = req.params.departmentId;
       if (!(await Departments.Database.validateDeptId(deptId))) {
         throw new BadRequest(`Invalid department id: ${deptId}`);
@@ -65,41 +68,40 @@ router.get(
   },
 );
 
-router.get(
-  '/:id',
-  requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const msgId = req.params.id;
-      const doc = await MessageCollection.findById(msgId);
-      if (!doc) {
-        throw new NotFound(`No message with id ${msgId} available`);
-      }
-      if (req.user.role == Role.User) {
-        const userDeptId = req.user.departmentId;
-        const generalDeptId = await Departments.Database.getDeptIdByName(
-          DefaultDepartments.General,
-        );
-        if (doc.departmentId != userDeptId && doc.departmentId != generalDeptId) {
-          throw new Unauthorized(`Do not have access to message with id: ${msgId}`);
-        }
-      }
-      const json = await doc.toJson();
-      res.status(HTTP_OK_CODE).json(json);
-    } catch (e) {
-      next(e);
+router.get('/:id', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) {
+      throw new NotFound('User not logged in');
     }
-  },
-);
+    const msgId = req.params.id;
+    const doc = await MessageCollection.findById(msgId);
+    if (!doc) {
+      throw new NotFound(`No message with id ${msgId} available`);
+    }
+    if (req.user.role == Role.User) {
+      const userDeptId = req.user.departmentId;
+      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
+      if (doc.departmentId != userDeptId && doc.departmentId != generalDeptId) {
+        throw new Unauthorized(`Do not have access to message with id: ${msgId}`);
+      }
+    }
+    const json = await doc.toJson();
+    res.status(HTTP_OK_CODE).json(json);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.post(
   '/',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
-  registerMessageBoardCreate,
   validateInput,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const departmentId: string = req.body.department.id;
       if (!(await Departments.Database.validateDeptId(departmentId))) {
         throw new BadRequest(`Invalid department id ${departmentId}`);
@@ -133,15 +135,14 @@ router.put(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
-  registerMessageBoardCreate,
   validateInput,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const departmentId: string = req.body.department.id;
       if (!(await Departments.Database.validateDeptId(departmentId))) {
         throw new BadRequest(`Invalid department id ${departmentId}`);
       }
-      if (!checkUserHasMessageAdminLevelAuth(req.user, departmentId)) {
+      if (req.user && !checkUserHasMessageAdminLevelAuth(req.user, departmentId)) {
         throw new Unauthorized(
           `Do not have access to post messages to department id: ${departmentId}`,
         );
@@ -149,8 +150,17 @@ router.put(
       const date: Date = new Date();
       const messageBody: string = req.body.messageBody;
       const messageHeader: string = req.body.messageHeader;
-      const userId: string = req.user._id!;
-      const updatedMessage = {
+      const userId: string = req?.user?._id || '-1';
+
+      interface UpdatedMessage {
+        departmentId: string;
+        userId: string;
+        date: Date;
+        messageBody: string;
+        messageHeader: string;
+      }
+
+      const updatedMessage: UpdatedMessage = {
         departmentId: departmentId,
         userId: userId,
         date: date,
@@ -159,7 +169,9 @@ router.put(
       };
 
       Object.keys(updatedMessage).forEach(
-        (k) => (!updatedMessage[k] || updatedMessage[k] === undefined) && delete updatedMessage[k],
+        (k) =>
+          updatedMessage[k as keyof UpdatedMessage] === undefined &&
+          delete updatedMessage[k as keyof UpdatedMessage],
       );
 
       const msg = await MessageCollection.findByIdAndUpdate(
@@ -182,8 +194,11 @@ router.delete(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const msgId: string = req.params.id;
       const msg = await MessageCollection.findByIdAndRemove(msgId);
       if (!msg) {

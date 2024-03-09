@@ -1,10 +1,9 @@
-import { Router, Response, NextFunction } from 'express';
+import { Router, Response, NextFunction, Request } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
 import CaseStudyCollection, { CaseStudy } from '../../models/caseStudies';
 import { Role } from '../../models/user';
-import { registerCaseStudiesCreate } from '../../sanitization/schemas/registerCaseStudies';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import {
   HTTP_CREATED_CODE,
@@ -14,7 +13,6 @@ import {
   NotFound,
 } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
-import { RequestWithUser } from 'utils/definitions/express';
 
 const router = Router();
 
@@ -22,7 +20,7 @@ const setFeatured = (flag: boolean): object => {
   return { featured: flag };
 };
 
-router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const postDocs = await CaseStudyCollection.find().sort({ featured: -1, updatedAt: -1 });
     const jsonPosts = await Promise.all(postDocs.map((post) => post.toJson()));
@@ -32,49 +30,43 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
   }
 });
 
-router.get(
-  '/featured',
-  requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const postDoc = await CaseStudyCollection.findOne({ featured: true });
-      if (!postDoc) {
-        return res.sendStatus(HTTP_NOCONTENT_CODE);
-      }
-      const jsonPost = await postDoc.toJson();
-      res.status(HTTP_OK_CODE).json(jsonPost);
-    } catch (e) {
-      next(e);
+router.get('/featured', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const postDoc = await CaseStudyCollection.findOne({ featured: true });
+    if (!postDoc) {
+      return res.sendStatus(HTTP_NOCONTENT_CODE);
     }
-  },
-);
+    const jsonPost = await postDoc.toJson();
+    res.status(HTTP_OK_CODE).json(jsonPost);
+  } catch (e) {
+    next(e);
+  }
+});
 
-router.get(
-  '/:id',
-  requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const caseId = req.params.id;
-      const postDoc = await CaseStudyCollection.findById(caseId);
-      if (!postDoc) {
-        throw new NotFound(`No case study with id ${caseId} available`);
-      }
-      const postJson = await postDoc.toJson();
-      res.status(HTTP_OK_CODE).json(postJson);
-    } catch (e) {
-      next(e);
+router.get('/:id', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const caseId = req.params.id;
+    const postDoc = await CaseStudyCollection.findById(caseId);
+    if (!postDoc) {
+      throw new NotFound(`No case study with id ${caseId} available`);
     }
-  },
-);
+    const postJson = await postDoc.toJson();
+    res.status(HTTP_OK_CODE).json(postJson);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.post(
   '/',
   requireJwtAuth,
-  registerCaseStudiesCreate,
   validateInput,
   upload.single('file'),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const {
         caseStudyType,
         patientStory,
@@ -84,7 +76,7 @@ router.post(
         otherStory,
       } = JSON.parse(req.body.document);
       const user = req.user;
-      const userId = user._id!;
+      const userId = user._id || '-1';
       const userDepartment = user.departmentId;
       let imgPath: string = '';
       if (req.file) {
@@ -127,7 +119,7 @@ router.delete(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  (req: RequestWithUser, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const caseId = req.params.id;
     CaseStudyCollection.findByIdAndRemove(caseId)
       .exec()
@@ -150,7 +142,7 @@ router.patch(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const caseId = req.params.id;
       const postDoc = await CaseStudyCollection.findById(caseId);
