@@ -27,7 +27,7 @@ export const AddUserForm = () => {
       onSubmit,
       history,
       ResponseMessage.getMsgCreateUserFailed(),
-      null,
+      'Pending create user',
       ResponseMessage.getMsgCreateUserOk(),
     );
   };

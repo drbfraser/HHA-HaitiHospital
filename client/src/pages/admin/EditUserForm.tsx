@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export const EditUserForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const [fetch, setFetch] = useState<boolean>(false);
-  const [user, setUser] = useState<UserDetails>(undefined);
+  const [user, setUser] = useState<UserDetails>();
   const params = useParams<UserIdParams>();
   const id = useMemo<string>(() => params.userId, [params.userId]);
   const history: History = useHistory<History>();
