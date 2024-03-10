@@ -53,7 +53,7 @@ export const QuestionFormFields = ({
   return (
     <>
       {questions
-        .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
+        .map<[QuestionNode<ID, ErrorType>, any]>({
           compositionQuestion: (q) => [q, CompositionQuestionFormField],
           expandableQuestion: (q) => [q, ExpandableQuestionFormField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
@@ -93,12 +93,12 @@ interface ReportStatus {
 }
 
 interface ReportFormProps {
-  applyReportChanges?: () => void;
+  applyReportChanges: () => void;
   formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: boolean) => void;
   isSubmitting: boolean;
   reportData: QuestionGroup<ID, ErrorType>;
   btnText?: string;
-  readOnly?: boolean;
+  readOnly: boolean;
 }
 
 const ReportForm = ({
@@ -107,7 +107,7 @@ const ReportForm = ({
   isSubmitting,
   reportData,
   btnText = 'Submit',
-  readOnly,
+  readOnly = false,
 }: ReportFormProps): JSX.Element => {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage;
@@ -193,7 +193,9 @@ const ReportForm = ({
 
   const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const clickedButton = event.currentTarget.querySelector('input[type="submit"]:focus');
+    const clickedButton = event.currentTarget.querySelector(
+      'input[type="submit"]:focus',
+    ) as Element;
     const isDraft = clickedButton.getAttribute('name') === 'save';
     formHandler(event, isDraft);
   };
