@@ -16,11 +16,15 @@ import { Role } from 'constants/interfaces';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { Row } from '@tanstack/react-table';
+import { Variant } from 'react-bootstrap/esm/types';
+import { BiomechPriority, BiomechStatus } from './typing';
+import { BiomechGet } from 'constants/jsons';
 
-const enumSort = (key, e) => {
+const enumSort = (key: string, e: any) => {
   type enumKey = keyof typeof e;
 
-  return (rowA, rowB) => {
+  return (rowA: Row<any>, rowB: Row<any>) => {
     const reportA = rowA.getValue(key) as enumKey;
     const reportB = rowB.getValue(key) as enumKey;
 
@@ -50,8 +54,8 @@ export const BiomechanicalList = () => {
   const { t } = useTranslation();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [biomechData, setBiomechData] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState<string>();
+  const [biomechData, setBiomechData] = useState<BiomechGet[]>([]);
 
   // Github co-pilot assited in filling this array
   const columns = useMemo(
@@ -60,7 +64,7 @@ export const BiomechanicalList = () => {
         id: 'equipmentPriority',
         header: t('biomech.main_page.priority_col'),
         cell: (row) => (
-          <Badge bg={PriorityBadge[row.getValue()]}>
+          <Badge bg={PriorityBadge[row.getValue() as BiomechPriority]}>
             {t(`biomech.priority.${row.getValue()}`)}
           </Badge>
         ),
@@ -80,7 +84,9 @@ export const BiomechanicalList = () => {
         id: 'equipmentStatus',
         header: t('biomech.main_page.status_col'),
         cell: (row) => (
-          <Badge bg={StatusBadge[row.getValue()]}>{t(`biomech.status.${row.getValue()}`)}</Badge>
+          <Badge bg={StatusBadge[row.getValue() as BiomechStatus]}>
+            {t(`biomech.status.${row.getValue()}`)}
+          </Badge>
         ),
         accessorKey: 'equipmentStatus',
         sortingFn: statusSort,
@@ -151,7 +157,7 @@ export const BiomechanicalList = () => {
 
   const deleteBioMechCallback = () => {
     setBiomechData(biomechData.filter((item) => item.id !== currentIndex));
-    setCurrentIndex(null);
+    setCurrentIndex('');
   };
 
   const deleteBioMech = async (id: string) => {
@@ -161,7 +167,7 @@ export const BiomechanicalList = () => {
       deleteBioMechCallback,
       history,
       ResponseMessage.getMsgDeleteReportFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteReportOk(),
     );
   };
@@ -173,18 +179,20 @@ export const BiomechanicalList = () => {
   };
 
   const onModalClose = () => {
-    setCurrentIndex(null);
+    setCurrentIndex(undefined);
     setIsDeleteModalOpen(false);
   };
 
   const onModalDelete = async () => {
-    await deleteBioMech(currentIndex);
+    if (currentIndex) {
+      await deleteBioMech(currentIndex);
+    }
     setIsDeleteModalOpen(false);
   };
 
   useEffect(() => {
     const getBioReport = async (controller?: AbortController) => {
-      const data = await Api.Get(
+      const data: BiomechGet[] = await Api.Get(
         ENDPOINT_BIOMECH_GET,
         ResponseMessage.getMsgFetchReportsFailed(),
         history,

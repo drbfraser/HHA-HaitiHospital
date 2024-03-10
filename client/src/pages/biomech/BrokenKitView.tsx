@@ -16,6 +16,8 @@ import { ResponseMessage } from 'utils/response_message';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { BiomechGet } from 'constants/jsons';
+import { BiomechPriority, BiomechStatus } from './typing';
 
 const ALT_MESSAGE: string = 'Broken kit report...';
 
@@ -23,14 +25,14 @@ export const BrokenKitView = () => {
   const { bioId: id } = useParams<BioReportIdParams>();
   const { t } = useTranslation();
 
-  const [bioReport, setBioReport] = useState<any>({});
+  const [bioReport, setBioReport] = useState<BiomechGet>();
   const [bioReportImage, setBioReportImage] = useState<string>('');
 
   const history: History = useHistory<History>();
 
   useEffect(() => {
     const getBioReport = async (controller: AbortController) => {
-      const report = await Api.Get(
+      const report: BiomechGet = await Api.Get(
         ENDPOINT_BIOMECH_GET_BY_ID(id),
         ResponseMessage.getMsgFetchReportFailed(),
         history,
@@ -49,10 +51,12 @@ export const BrokenKitView = () => {
 
   useEffect(() => {
     const getBioReportImage = async () => {
-      setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(bioReport.imgPath), history));
+      if (bioReport?.imgPath) {
+        setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(bioReport.imgPath), history));
+      }
     };
 
-    bioReport.imgPath && getBioReportImage();
+    getBioReportImage();
   }, [bioReport, history]);
 
   return (
@@ -82,13 +86,13 @@ export const BrokenKitView = () => {
             </FormFieldDisplay>
 
             <FormFieldDisplay label={t('biomech.view_report.priority')}>
-              <Badge bg={PriorityBadge[bioReport.equipmentPriority]}>
+              <Badge bg={PriorityBadge[bioReport.equipmentPriority as BiomechPriority]}>
                 {t(`biomech.priority.${bioReport.equipmentPriority}`)}
               </Badge>
             </FormFieldDisplay>
 
             <FormFieldDisplay label={t('biomech.view_report.status')}>
-              <Badge bg={StatusBadge[bioReport.equipmentStatus]}>
+              <Badge bg={StatusBadge[bioReport.equipmentStatus as BiomechStatus]}>
                 {t(`biomech.status.${bioReport.equipmentStatus}`)}
               </Badge>
             </FormFieldDisplay>

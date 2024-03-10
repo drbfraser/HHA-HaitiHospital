@@ -31,7 +31,7 @@ export const BrokenKitEdit = () => {
       () => history.goBack(),
       history,
       ResponseMessage.getMsgCreateReportFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgCreateReportOk(),
     );
   };
