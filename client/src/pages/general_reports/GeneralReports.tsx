@@ -32,8 +32,8 @@ const GeneralReports = () => {
   const history = useHistory<History>();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [reports, setReports] = useState<any[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<string | null>(null);
+  const [reports, setReports] = useState<JsonReportDescriptor[]>([]);
 
   const getReports = useCallback(async () => {
     const controller = new AbortController();
@@ -69,7 +69,7 @@ const GeneralReports = () => {
       deleteReportCallback,
       history,
       ResponseMessage.getMsgDeleteReportFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteReportOk(),
     );
   };
@@ -86,7 +86,9 @@ const GeneralReports = () => {
   };
 
   const onModalDelete = async () => {
-    await deleteReport(currentIndex);
+    if (currentIndex) {
+      await deleteReport(currentIndex);
+    }
     setIsDeleteModalOpen(false);
   };
 

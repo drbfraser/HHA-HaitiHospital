@@ -1,5 +1,5 @@
 import { CaseStudyModel, CaseStudyType } from './typing';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
 import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
@@ -12,7 +12,7 @@ import { ResponseMessage } from 'utils';
 
 export const CaseStudyForm = () => {
   const [formOption, setformOption] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File>();
   const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
 
   const { t } = useTranslation();
@@ -22,13 +22,19 @@ export const CaseStudyForm = () => {
     setSelectedFile(item);
   };
 
+  const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      imageCompressor(e.target.files[0], onImageUpload);
+    }
+  };
+
   useEffect(() => {
     reset({});
   }, [formOption, reset]);
 
   const onSubmitActions = () => {
     reset({});
-    setSelectedFile(null);
+    setSelectedFile(undefined);
     history.push('/case-study');
   };
 
@@ -37,7 +43,9 @@ export const CaseStudyForm = () => {
     let formData = new FormData();
     let postData = JSON.stringify(data);
     formData.append('document', postData);
-    formData.append('file', selectedFile);
+    if (selectedFile) {
+      formData.append('file', selectedFile);
+    }
 
     await Api.Post(
       ENDPOINT_CASESTUDY_POST,
@@ -45,7 +53,7 @@ export const CaseStudyForm = () => {
       onSubmitActions,
       history,
       ResponseMessage.getMsgCreateCaseStudyFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgCreateCaseStudyOk(),
     );
   };
@@ -155,7 +163,7 @@ export const CaseStudyForm = () => {
                 className="form-control"
                 id="customFilePatientStory"
                 required
-                onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
+                onChange={onImageChange}
               />
             </>
           )}
@@ -226,7 +234,7 @@ export const CaseStudyForm = () => {
                 className="form-control"
                 id="customFileStaffRecognition"
                 required
-                onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
+                onChange={onImageChange}
               />
             </>
           )}
@@ -294,7 +302,7 @@ export const CaseStudyForm = () => {
                 className="form-control"
                 id="customFileTrainingSession"
                 required
-                onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
+                onChange={onImageChange}
               />
             </>
           )}
@@ -377,7 +385,7 @@ export const CaseStudyForm = () => {
                 className="form-control"
                 id="customFileEquipmentReceived"
                 required
-                onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
+                onChange={onImageChange}
               />
             </>
           )}
@@ -401,7 +409,7 @@ export const CaseStudyForm = () => {
                   className="form-control"
                   id="customFileOtherCaseStudy"
                   required
-                  onChange={(e) => imageCompressor(e.target.files[0], onImageUpload)}
+                  onChange={onImageChange}
                 />
               </div>
             </>

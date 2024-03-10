@@ -27,7 +27,7 @@ export const EmployeeOfTheMonthView = () => {
   const [title, setTitle] = useState('');
   const params = useParams<EmployeeViewParams>();
 
-  const isNonEmptyObject = (objectName) => {
+  const isNonEmptyObject = (objectName: any) => {
     return Object.keys(objectName).length > 0;
   };
 
