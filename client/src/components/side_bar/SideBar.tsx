@@ -1,14 +1,11 @@
 import './index.css';
-
-import { Department, GeneralDepartment, Role } from 'constants/interfaces';
+import { Role } from 'constants/interfaces';
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { useAdminToggleState, useAuthState } from 'contexts';
-
 import { Button } from 'react-bootstrap';
 import HhaLogo from 'components/hha_logo/Logo';
 import { NavLink } from 'react-router-dom';
-import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { i18n } from 'i18next';
 

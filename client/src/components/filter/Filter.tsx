@@ -16,10 +16,10 @@ export const enum FilterType {
 }
 
 export const FILTER_DEFAULT_VALUE = {
-  STRING: '',
-  NUMBER: 0,
-  DATE: { from: null, to: null },
-  ENUM: [],
+  [FilterType.STRING]: '',
+  [FilterType.NUMBER]: 0,
+  [FilterType.DATE]: { from: null, to: null },
+  [FilterType.ENUM]: [],
 };
 
 interface ClearFilterButtonProps {

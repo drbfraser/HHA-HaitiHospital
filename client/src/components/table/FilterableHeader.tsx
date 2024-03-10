@@ -35,14 +35,17 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
   const columnMeta = header.column.columnDef.meta;
 
   let columnType = columnMeta?.dataType;
-  let enumOptions = columnMeta?.enumOptions ?? FILTER_DEFAULT_VALUE.ENUM;
+  let enumOptions = columnMeta?.enumOptions ?? FILTER_DEFAULT_VALUE[FilterType.ENUM];
 
   if (!columnType) {
     // First value to infer column type
-    const firstValue = header
-      .getContext()
-      .table.getPreFilteredRowModel()
-      .flatRows[0]?.getValue(header.column.columnDef.id) as string;
+    const firstValueId = header.column.columnDef?.id;
+    const firstValue = firstValueId
+      ? (header
+          .getContext()
+          .table.getPreFilteredRowModel()
+          .flatRows[0]?.getValue(firstValueId) as string)
+      : undefined;
 
     if (firstValue && typeof firstValue === 'string') {
       const date = getDateFromDateStr(firstValue);
@@ -107,7 +110,7 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
       {header.column.getCanFilter() &&
         showAdvancedFilters &&
         Filter({
-          placeholder: header.column.columnDef.header.toString(),
+          placeholder: header.column.columnDef.header?.toString() ?? '',
           setFilterValue,
           filterValue,
           setFilterFn: (fn) => (header.column.columnDef.filterFn = fn),
