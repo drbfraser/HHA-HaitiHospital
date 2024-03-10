@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   server:
+    image: node:18
     container_name: hhahaiti_server
     depends_on:
       - mongodb
@@ -11,12 +12,18 @@ services:
       - SERVER_PORT=8000
     volumes:
       - server_logs:/var/log
+      - ./:/code
+    working_dir: /code/server
+    command: npm start
+    ports:
+      - '8000:8000'
+
     logging:
       driver: fluentd
       options:
         tag: docker.{{.Name}}.{{.ID}}
-        fluentd_async: 'true'
-        fluentd-address: tcp://localhost:24224
+        # fluentd_async: 'true'
+        # fluentd-address: tcp://localhost:24224
 
   mongodb:
     container_name: hhahaiti_mongodb
@@ -33,13 +40,19 @@ services:
     container_name: hhahaiti_fluentbit
     image: fluent/fluent-bit:2.1.8
     ports:
-      - 24224:24224
+      - '24224:24224'
     volumes:
       - ./fluentbit-config:/fluent-bit/etc
       - fluentbit_logs_output:/output
       - fluentbit_logs_db:/persist
       - server_logs:/logs/server:ro
       - mongo_logs:/logs/mongodb:ro
+    environment:
+      # Test in local environment if cloudwatch logging is working
+      # Make sure to set the AWS environment variables in .env file in root directory
+      AWS_LOGGING_REGION: ${AWS_LOGGING_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-local.conf']
 
 volumes:
