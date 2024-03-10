@@ -47,8 +47,9 @@ export const AdminUserForm = (props: Props) => {
     hasDepartmentEnumKeyByStringValue(userData.role),
   );
 
-  const onRoleChange = (newRole: keyof typeof Role | any) => {
-    const isShown = hasDepartment(newRole);
+  const onRoleChange = (newRole: string) => {
+    const newRoleEnum = getEnumKeyByStringValue(Role, newRole);
+    const isShown = newRoleEnum ? hasDepartment(newRoleEnum) : false;
     setShowDepartment(isShown);
 
     if (!isShown) {
@@ -173,7 +174,7 @@ export const AdminUserForm = (props: Props) => {
           defaultValue={userData.role}
           required
           {...register(ADMIN_USER_FORM_FIELDS.role)}
-          onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
+          onChange={(e) => onRoleChange(e.target.value)}
         >
           <option value="" disabled hidden>
             {t('admin.user_form.inquiry_role')}
