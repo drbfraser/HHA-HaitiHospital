@@ -262,6 +262,7 @@ const ReportView = () => {
               formHandler={confirmEdit}
               isSubmitting={false}
               reportData={report}
+              readOnly={false}
             />
           )}
         </Layout>

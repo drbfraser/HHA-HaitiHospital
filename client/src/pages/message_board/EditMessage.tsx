@@ -17,7 +17,7 @@ import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 const EditMessage = () => {
-  const { id } = useParams<{ id?: string }>();
+  const { id } = useParams<{ id: string }>();
   const [msg, setMsg] = useState<Message>(emptyMessage);
   const history: History = useHistory<History>();
   const { t } = useTranslation();
@@ -62,7 +62,7 @@ const EditMessage = () => {
       updateMessageActions,
       history,
       i18n.t('addMessageAlertFailed'),
-      null,
+      undefined,
       i18n.t('addMessageAlertSuccess'),
     );
   };

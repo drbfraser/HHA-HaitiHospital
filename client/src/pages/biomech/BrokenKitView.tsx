@@ -60,21 +60,23 @@ export const BrokenKitView = () => {
   }, [bioReport, history]);
 
   return (
-    bioReport && (
-      <Layout
-        showBackButton
-        title={t('biomech.view_report.title')}
-        additionalButtons={
-          <Button
-            className="mb-3"
-            onClick={() => {
+    <Layout
+      showBackButton
+      title={t('biomech.view_report.title')}
+      additionalButtons={
+        <Button
+          className="mb-3"
+          onClick={() => {
+            if (bioReport) {
               history.push(`${Paths.getBioMechEditId(bioReport.id)}`);
-            }}
-          >
-            Edit
-          </Button>
-        }
-      >
+            }
+          }}
+        >
+          Edit
+        </Button>
+      }
+    >
+      {bioReport && (
         <FormDisplay>
           <div className="w-100 pr-2 d-flex flex-column gap-4">
             <FormFieldDisplay label={t('biomech.view_report.equipment_name')}>
@@ -108,7 +110,7 @@ export const BrokenKitView = () => {
 
           {bioReportImage && <ImageDisplay image={bioReportImage} altMessage={ALT_MESSAGE} />}
         </FormDisplay>
-      </Layout>
-    )
+      )}
+    </Layout>
   );
 };

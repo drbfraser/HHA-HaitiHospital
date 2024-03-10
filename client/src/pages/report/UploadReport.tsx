@@ -19,7 +19,7 @@ export const UploadReport = () => {
   const [currentDepartment, setCurrentDepartment] = useState<Department>();
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType>>();
+  const [reportTemplate, setReportTemplate] = useState<QuestionGroup<ID, ErrorType> | null>(null);
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const { departments } = useDepartmentData();
@@ -30,6 +30,14 @@ export const UploadReport = () => {
   };
 
   const submitReport = async () => {
+    if (!reportTemplate) {
+      console.error('Report template is not found when submitting report.');
+      return;
+    }
+    if (!currentDepartment) {
+      console.error('Current department is not found when submitting report.');
+      return;
+    }
     const serializedReport = objectSerializer.serialize(reportTemplate);
     const reportObject = {
       departmentId: currentDepartment.id,

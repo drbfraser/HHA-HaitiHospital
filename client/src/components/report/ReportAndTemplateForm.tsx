@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 interface ReportAndTemplateFormProps {
   departmentLabel: string;
   departments: Department[];
-  currentDepartment: Department;
+  currentDepartment: Department | undefined;
   setCurrentDepartment: Dispatch<SetStateAction<Department | undefined>>;
 }
 
