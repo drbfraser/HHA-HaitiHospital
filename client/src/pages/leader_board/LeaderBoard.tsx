@@ -11,10 +11,11 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Leaderboard } from './typing';
 
 export const LeaderBoard = () => {
   const { t } = useTranslation();
-  const [leaderboard, setLeaderboard] = useState([]);
+  const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [caseStudy, setCaseStudy] = useState(null);
   const history: History = useHistory<History>();
 

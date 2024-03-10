@@ -13,7 +13,7 @@ import {
   ENDPOINT_REPORT_DELETE_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
 } from 'constants/endpoints';
-import { JsonReportDescriptor } from '@hha/common';
+import { JsonReportDescriptor, JsonReportMeta } from '@hha/common';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +33,7 @@ const GeneralReports = () => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string | null>(null);
-  const [reports, setReports] = useState<JsonReportDescriptor[]>([]);
+  const [reports, setReports] = useState<any[]>([]);
 
   const getReports = useCallback(async () => {
     const controller = new AbortController();
@@ -41,7 +41,7 @@ const GeneralReports = () => {
     if (authState.userDetails.role === Role.User) {
       getReportsEndPoint = ENDPOINT_REPORTS_GET_BY_DEPARTMENT(authState.userDetails.department.id);
     }
-    let fetchedReports: JsonReportDescriptor[] = await Api.Get(
+    let fetchedReports: any[] = await Api.Get(
       getReportsEndPoint,
       ResponseMessage.getMsgFetchReportsFailed(),
       history,
@@ -173,7 +173,7 @@ const GeneralReports = () => {
     },
   ];
 
-  const getReportName = (item): string => {
+  const getReportName = (item: any): string => {
     return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
   };
 

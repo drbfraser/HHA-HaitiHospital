@@ -20,7 +20,7 @@ import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
-import { CaseStudyModel } from './typing';
+import { CaseStudy } from './typing';
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -31,7 +31,7 @@ export type CaseStudySortOrder = SortOrder<CaseStudyCol>;
 
 export const CaseStudyList = () => {
   // TODO: Create a "CaseStudy" type (instead of using "any")
-  const [caseStudies, setCaseStudies] = useState<CaseStudyModel[]>([]);
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [currentIndex, setCurrentIndex] = useState<string>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isWarningModalOpen, setIsWarningModelOpen] = useState<boolean>(false);
@@ -168,7 +168,7 @@ export const CaseStudyList = () => {
 
   useEffect(() => {
     const fetchCaseStudies = async (controller: AbortController) => {
-      const data: CaseStudyModel[] = await Api.Get(
+      const data: CaseStudy[] = await Api.Get(
         ENDPOINT_CASESTUDY_GET,
         TOAST_CASESTUDY_GET_ERROR,
         history,

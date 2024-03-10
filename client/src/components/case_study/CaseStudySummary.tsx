@@ -2,7 +2,7 @@ import { FormFieldDisplay, FormFieldDisplayProps } from 'components/form/FormFie
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
-import { CaseStudyType } from 'pages/case_study/typing';
+import { CaseStudy, CaseStudyType } from 'pages/case_study/typing';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { FormDisplay } from 'components/form/FormDisplay';
 import { History } from 'history';
@@ -11,7 +11,7 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 interface CaseStudyInfoProps {
-  caseStudy: any;
+  caseStudy: CaseStudy;
   setTitle?: (title: string) => void;
   titleLabel?: string;
   infoRows?: FormFieldDisplayProps[];

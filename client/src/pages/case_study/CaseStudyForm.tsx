@@ -1,4 +1,4 @@
-import { CaseStudyModel, CaseStudyType } from './typing';
+import { CaseStudy, CaseStudyType } from './typing';
 import React, { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -13,7 +13,7 @@ import { ResponseMessage } from 'utils';
 export const CaseStudyForm = () => {
   const [formOption, setformOption] = useState('');
   const [selectedFile, setSelectedFile] = useState<File>();
-  const { register, handleSubmit, reset } = useForm<CaseStudyModel>({});
+  const { register, handleSubmit, reset } = useForm<CaseStudy>({});
 
   const { t } = useTranslation();
   const history = useHistory<History>();
