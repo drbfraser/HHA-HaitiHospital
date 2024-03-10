@@ -11,7 +11,7 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Leaderboard } from './typing';
+import { Leaderboard } from 'constants/interfaces';
 
 export const LeaderBoard = () => {
   const { t } = useTranslation();
