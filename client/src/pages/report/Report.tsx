@@ -17,6 +17,7 @@ import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
+import { monthYearOptions, userLocale } from 'constants/date';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -130,6 +131,8 @@ export const Report = () => {
     };
   }, [areChangesMade]);
 
+  const reportMonthString: string = reportMonth?.toLocaleDateString(userLocale, monthYearOptions);
+
   return (
     <Layout title={t('headerReport')}>
       <ConfirmationModal
@@ -198,6 +201,7 @@ export const Report = () => {
             formHandler={confirmSubmission}
             isSubmitting={isSubmitting}
             reportData={report}
+            reportMonth={reportMonthString}
           />
         </>
       )}

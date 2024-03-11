@@ -3,7 +3,7 @@
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { Link, useHistory } from 'react-router-dom';
-import { dateOptions, userLocale } from 'constants/date';
+import { monthYearOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -181,11 +181,7 @@ const GeneralReports = () => {
   };
 
   const getReportMonth = (item): string => {
-    return new Date(item.reportMonth).toLocaleDateString(userLocale, {
-      timeZone: 'UTC',
-      month: 'long',
-      year: 'numeric',
-    });
+    return new Date(item.reportMonth).toLocaleDateString(userLocale, monthYearOptions);
   };
 
   //TODO: Add interface for item
@@ -194,7 +190,7 @@ const GeneralReports = () => {
     _id: item._id,
     reportName: getReportName(item),
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
-    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
+    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, monthYearOptions),
     submittedBy: item.submittedBy,
     reportMonth: getReportMonth(item),
     isDraft: item.isDraft,
