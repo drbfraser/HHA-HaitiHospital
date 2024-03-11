@@ -34,6 +34,7 @@ const ReportView = () => {
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const { departmentIdKeyMap } = useDepartmentData();
   const department = departmentIdKeyMap.get(metaData?.departmentId);
+  const [editMonth, setEditMonth] = useState(false);
 
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
 
@@ -62,9 +63,14 @@ const ReportView = () => {
     pdfExportComponent.current.save();
   };
 
-  const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
+  const editBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setReadOnly((prev) => !prev);
+  };
+
+  const editMonthBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setEditMonth((prev) => !prev);
   };
 
   const reportHandler = () => {
@@ -183,14 +189,25 @@ const ReportView = () => {
               {(user.userDetails.role === Role.Admin ||
                 user.userDetails.role === Role.MedicalDirector ||
                 (user.userDetails.role === Role.HeadOfDepartment &&
-                  user.userDetails.department.name === department)) && (
-                <button className="btn btn-primary mr-3" onClick={btnHandler}>
-                  {readOnly
-                    ? t('departmentReportDisplayEditForm')
-                    : t('departmentReportDisplayViewForm')}
-                </button>
-              )}
-              {readOnly && (
+                  user.userDetails.department.name === department)) &&
+                !editMonth && (
+                  <button className="btn btn-primary mr-3" onClick={editBtnHandler}>
+                    {readOnly
+                      ? t('departmentReportDisplayEditForm')
+                      : t('departmentReportDisplayViewForm')}
+                  </button>
+                )}
+              {(user.userDetails.role === Role.Admin ||
+                user.userDetails.role === Role.MedicalDirector ||
+                (user.userDetails.role === Role.HeadOfDepartment &&
+                  user.userDetails.department.name === department)) &&
+                readOnly && (
+                  <button className="btn btn-primary mr-3" onClick={editMonthBtnHandler}>
+                    {readOnly && !editMonth ? 'Edit Month' : 'View Form Month'}
+                  </button>
+                )}
+              {/* Other buttons */}
+              {readOnly && !editMonth && (
                 <span>
                   <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
                     {t('departmentReportDisplayGeneratePDF')}
@@ -198,14 +215,14 @@ const ReportView = () => {
                   <XlsxGenerator questionItems={questionItems} />
                 </span>
               )}
-              {readOnly && (
-                <button className="btn btn-outline-dark" onClick={toggleTable}>
+              {readOnly && !editMonth && (
+                <button className="btn bgtn-outline-dark" onClick={toggleTable}>
                   {isUsingTable
                     ? t('departmentReportDisplayHideTable')
                     : t('departmentReportDisplayShowTable')}
                 </button>
               )}
-              {readOnly && !isUsingTable && (
+              {readOnly && !editMonth && !isUsingTable && (
                 <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
                   {isUsingPagination
                     ? t('departmentReportDisplayHidePagination')
@@ -215,7 +232,7 @@ const ReportView = () => {
             </div>
           </header>
 
-          {readOnly && (
+          {readOnly && !editMonth && (
             <div className="visually-hidden">
               <PDFExport
                 fileName={`${department}_${reportMonthString.replace(/\s/g, '')}__${metaData?.submittedBy}`}
@@ -238,7 +255,7 @@ const ReportView = () => {
             </div>
           )}
 
-          {readOnly ? (
+          {readOnly && !editMonth ? (
             <div>
               <ReadonlyReportForm
                 applyReportChanges={applyReportChanges}
