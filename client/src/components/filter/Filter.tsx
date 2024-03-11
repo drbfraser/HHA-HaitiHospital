@@ -9,17 +9,17 @@ import { StringFilter } from './StringFilter';
 export type FilterValue = string | number | string[] | DayRange;
 
 export const enum FilterType {
-  STRING,
-  NUMBER,
-  DATE,
-  ENUM,
+  STRING = 'STRING',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  ENUM = 'ENUM',
 }
 
 export const FILTER_DEFAULT_VALUE = {
-  [FilterType.STRING]: '',
-  [FilterType.NUMBER]: 0,
-  [FilterType.DATE]: { from: null, to: null },
-  [FilterType.ENUM]: [],
+  STRING: '',
+  NUMBER: 0,
+  DATE: { from: null, to: null },
+  ENUM: [],
 };
 
 interface ClearFilterButtonProps {

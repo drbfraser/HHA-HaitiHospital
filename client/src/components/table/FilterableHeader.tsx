@@ -35,7 +35,7 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
   const columnMeta = header.column.columnDef.meta;
 
   let columnType = columnMeta?.dataType;
-  let enumOptions = columnMeta?.enumOptions ?? FILTER_DEFAULT_VALUE[FilterType.ENUM];
+  let enumOptions = columnMeta?.enumOptions ?? FILTER_DEFAULT_VALUE.ENUM;
 
   if (!columnType) {
     // First value to infer column type
@@ -70,7 +70,6 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
 
   // default to string if no column type is inferred
   columnType = columnType ?? FilterType.STRING;
-
   const [filterValue, setFilterValue] = useState<FilterValue>(FILTER_DEFAULT_VALUE[columnType]);
 
   useEffect(() => {

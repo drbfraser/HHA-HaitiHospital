@@ -96,7 +96,7 @@ export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
       }
     }
     // Create a new Excel Workbook
-    const workbook = new ExcelJS.Workbook();
+    const workbook: any = new ExcelJS.Workbook();
     const sheetName = 'Sheet1';
     const sheet = workbook.addWorksheet(sheetName);
 

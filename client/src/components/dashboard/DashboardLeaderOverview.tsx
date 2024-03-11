@@ -7,7 +7,7 @@ import { History } from 'history';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Leaderboard } from 'pages/leader_board/typing';
+import { Leaderboard } from 'constants/interfaces';
 
 const DashboardLeaderOverview = () => {
   const [leaderboards, setLeaderboards] = useState<Leaderboard[]>([]);
