@@ -22,7 +22,7 @@ describe('report tests', function () {
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF_ENDPOINT).end(function (error, res) {
+    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 

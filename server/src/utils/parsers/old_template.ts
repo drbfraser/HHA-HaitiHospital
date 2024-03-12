@@ -38,6 +38,7 @@ export const fromReportToTemplate = (report: ReportDescriptor): Template => {
     submittedBy: report.submittedBy,
     submittedDate: report.submittedDate,
     items: emptyItems,
+    isDraft: report.isDraft,
   };
 
   return template;
@@ -57,6 +58,7 @@ export const fromTemplateToReport = (doc: Template): ReportDescriptor => {
     submittedDate: doc.submittedDate,
     submittedUserId: doc.submittedByUserId,
     submittedBy: doc.submittedBy,
+    isDraft: doc.isDraft,
   };
   let items: ReportItems = doc.items;
   return (report = { ...meta, items: items });
@@ -71,12 +73,17 @@ export const generateNewReportFromTemplate = (doc: Template): ReportDescriptor =
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 namespace ItemToTemplate {
   export const getEmptyItems = (report: ReportDescriptor): TemplateItems => {
-    const emptyItems: TemplateItems = report.items.map((item) => {
-      const templateParser: ItemTemplateParser = getParserForType(item.type);
-      return templateParser(item);
-    });
+    // const emptyItems: TemplateItems = report.items
+    //   .filter(item => ItemType.)
+    //   .map((item) => {
+    //   const templateParser: ItemTemplateParser  = getParserForType(
+    //     item.type,
+    //   );
+    //   return templateParser(item);
+    // });
 
-    return emptyItems;
+    // unused right now, commented due to TS migration
+    return [];
   };
 
   const mapToDefaultAnswer = new Map<ItemType, string>();
@@ -105,6 +112,11 @@ namespace ItemToTemplate {
   interface ItemTemplateParser {
     (item: ReportItem): TemplateItem;
   }
+
+  interface SumItemTemplateParser {
+    (item: ReportSumItem): TemplateSumItem;
+  }
+
   const baseItemParser = (item: ReportItem): TemplateItem => {
     let answer: TemplateAnswer;
     answer = item.answer.map(() => {
@@ -124,26 +136,28 @@ namespace ItemToTemplate {
     return numItem;
   };
 
-  const sumParser: ItemTemplateParser = (item: ReportSumItem): TemplateSumItem => {
+  const sumParser: SumItemTemplateParser = (item: ReportSumItem): TemplateSumItem => {
     let base: TemplateItem = baseItemParser(item);
-    let children: TemplateItem[] = item.children.map((child) => {
-      const parser = getParserForType(child.type);
-      return parser(child);
-    });
+    let children: TemplateItem[] = item.children
+      .filter((child) => child.type == ItemType.SUM.toString())
+      .map((child) => {
+        const parser = getParserForType((child as ReportSumItem).type);
+        return parser(child as ReportSumItem);
+      });
     let sumItem: TemplateSumItem = { ...base, children: children };
     return sumItem;
   };
 
-  const equalParser: ItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
+  const equalParser: SumItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
     return sumParser(item) as TemplateEqualItem;
   };
 
-  const groupParser: ItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
+  const groupParser: SumItemTemplateParser = (item: ReportEqualItem): TemplateEqualItem => {
     return sumParser(item) as TemplateGroupItem;
   };
 
-  const typeToParser = new Map<ItemType, ItemTemplateParser>();
-  const initTypeToParserMap = (map: Map<ItemType, ItemTemplateParser>) => {
+  const typeToParser = new Map<ItemType, ItemTemplateParser | SumItemTemplateParser>();
+  const initTypeToParserMap = (map: Map<ItemType, ItemTemplateParser | SumItemTemplateParser>) => {
     map.clear();
     map.set(ItemType.NUMERIC, numericParser);
     map.set(ItemType.SUM, sumParser);
@@ -156,7 +170,7 @@ namespace ItemToTemplate {
     }
   };
   initTypeToParserMap(typeToParser);
-  const getParserForType = (typeKey: ItemTypeKeys): ItemTemplateParser => {
+  const getParserForType = (typeKey: ItemTypeKeys): ItemTemplateParser | SumItemTemplateParser => {
     const type = ItemType[typeKey];
     const parser = typeToParser.get(type);
     if (!parser) {

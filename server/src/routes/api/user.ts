@@ -14,11 +14,8 @@ import {
   NotFound,
 } from 'exceptions/httpException';
 import { roleAuth } from 'middleware/roleAuth';
-import { RequestWithUser } from 'utils/definitions/express';
 import { IllegalState } from 'exceptions/systemException';
 import { user as inputValidator } from 'sanitization/schemas/user';
-import { logger } from 'logger';
-import { send } from 'process';
 import { isValidPasswordString } from 'utils/utils';
 
 const router = Router();
@@ -37,8 +34,17 @@ router.put(
         throw new NotFound(`No user with provided Id found`);
       }
 
-      const updatedUser = {
-        hashAlgorithm: null,
+      interface UpdatedUser {
+        hashAlgorithm: string;
+        name: string;
+        username: string;
+        password: string;
+        role: string;
+        departmentId: string;
+      }
+
+      const updatedUser: UpdatedUser = {
+        hashAlgorithm: hashAlgorithm.bcrypt,
         name: req.body.name,
         username: req.body.username,
         password: req.body.password,
@@ -72,7 +78,10 @@ router.put(
         throw new BadRequest(`Invalid department id ${updatedUser.departmentId}`);
       }
       Object.keys(updatedUser).forEach(
-        (k) => !updatedUser[k] && updatedUser[k] !== undefined && delete updatedUser[k],
+        (k) =>
+          !updatedUser[k as keyof UpdatedUser] &&
+          updatedUser[k as keyof UpdatedUser] !== undefined &&
+          delete updatedUser[k as keyof UpdatedUser],
       );
 
       await UserCollection.findByIdAndUpdate(targetUser.id, { $set: updatedUser }, { new: true });
@@ -84,22 +93,21 @@ router.put(
   },
 );
 
-router.get(
-  '/me',
-  requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const doc = await UserCollection.findOne({ username: req.user.username });
-      if (!doc) {
-        throw new IllegalState(`Can not find username for the requesting user`);
-      }
-      const json = await doc.toJson();
-      res.status(HTTP_OK_CODE).json(json);
-    } catch (e) {
-      next(e);
+router.get('/me', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) {
+      throw new NotFound('User not logged in');
     }
-  },
-);
+    const doc = await UserCollection.findOne({ username: req.user.username });
+    if (!doc) {
+      throw new IllegalState(`Can not find username for the requesting user`);
+    }
+    const json = await doc.toJson();
+    res.status(HTTP_OK_CODE).json(json);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.get(
   '/:id',
@@ -138,8 +146,11 @@ router.delete(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const userId = req.params.id;
       if (userId == req.user._id) {
         throw new BadRequest('User cannot delete their own account');

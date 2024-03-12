@@ -14,6 +14,7 @@ export interface Template {
   submittedDate: Date;
   submittedByUserId: string;
   submittedBy: string;
+  isDraft: boolean;
   items: TemplateItems;
 }
 export interface TemplateWithInstanceMethods extends Template {

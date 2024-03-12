@@ -50,7 +50,7 @@ export const getCSRFToken = (app: Application, done: Mocha.Done) => {
   chai.request
     .agent(app)
     .get(CSRF_ENDPOINT)
-    .end((error, res) => {
+    .end((error: Error, res: any) => {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
       done();

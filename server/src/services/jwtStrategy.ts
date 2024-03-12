@@ -1,16 +1,15 @@
 import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as JwtStrategy } from 'passport-jwt';
 import * as ENV from '../utils/processEnv';
 import User from '../models/user';
-import { expression } from 'joi';
 
 // JWT strategy
 const jwtLogin = new JwtStrategy(
   {
-    jwtFromRequest: (req) => req.cookies.jwt,
+    jwtFromRequest: (req: { cookies: { jwt: any } }) => req.cookies.jwt,
     secretOrKey: ENV.JWT_SECRET,
   },
-  async (payload, done) => {
+  async (payload: { id: any }, done) => {
     try {
       const user = await User.findById(payload.id).lean();
 

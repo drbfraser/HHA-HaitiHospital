@@ -5,7 +5,7 @@ import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
 import { UserApiOut } from '../routes/api/jsons/user';
 import { logger } from '../logger';
-import { isMatch, reject } from 'lodash';
+
 const argon2 = require('argon2');
 
 const { Schema } = mongoose;
@@ -112,7 +112,7 @@ userSchema.methods.registerUser = async (newUser, callback) => {
       })
       .then(() => newUser.save({ new: true }, callback));
   } catch (err) {
-    logger.log(err);
+    logger.error(err);
   }
 };
 
@@ -151,14 +151,14 @@ userSchema.methods.comparePassword = async function (plainTextPassword, callback
   }
 };
 
-export async function hashPassword(password): Promise<string> {
+export async function hashPassword(password: string): Promise<string> {
   // Using Argon2id June 12, 2023. Password is automatically hashed using this algorithm
   try {
     const hashedPassword = await argon2.hash(password, { type: argon2.argon2id });
     return hashedPassword;
   } catch (err) {
-    logger.log(err);
-    return err;
+    logger.error(err);
+    throw err;
   }
 }
 

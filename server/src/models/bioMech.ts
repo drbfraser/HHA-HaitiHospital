@@ -5,6 +5,7 @@ import Departments from 'utils/departments';
 import { IllegalState } from 'exceptions/systemException';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
+import { unknownUserJson } from 'routes/api/jsons/user';
 
 const { Schema } = mongoose;
 
@@ -51,7 +52,7 @@ const bioMechSchema = new Schema<BioMechWithInstanceMethods>(
 );
 bioMechSchema.methods.toJson = async function (): Promise<BiomechJson> {
   const userDoc = await UserCollection.findOne({ _id: this.userId }).exec();
-  const userJson = await userDoc?.toJson();
+  const userJson = (await userDoc?.toJson()) || unknownUserJson;
 
   const json: BiomechJson = {
     id: this._id,

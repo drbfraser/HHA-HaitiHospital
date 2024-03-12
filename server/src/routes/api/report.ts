@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express';
+import { Request, NextFunction, Response } from 'express';
 import {
   checkUserCanViewReport,
   checkUserCanEditReport,
@@ -6,7 +6,6 @@ import {
   checkUserCanCreateReport,
 } from 'utils/authUtils';
 import { DEPARTMENT_ID_URL_SLUG, REPORT_ID_URL_SLUG } from 'utils/constants';
-import { RequestWithUser } from 'utils/definitions/express';
 import {
   HTTP_CREATED_CODE,
   HTTP_NOCONTENT_CODE,
@@ -25,44 +24,46 @@ import { Role } from 'models/user';
 const router = Router();
 
 // Submit or Save as Draft - report
-router.post(
-  '/',
-  requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport, isDraft } =
-        req.body;
-
-      const authorized = checkUserCanCreateReport(req.user, departmentId);
-
-      if (!authorized) {
-        throw new Unauthorized('User not authorized to create report');
-      }
-
-      // NOTE: May need to sanitize the reportObject before saving
-      const newReport = new ReportCollection({
-        departmentId,
-        submittedUserId,
-        submittedBy,
-        reportMonth,
-        reportObject: serializedReport,
-        isDraft: isDraft,
-      });
-
-      const saved = await newReport.save();
-      return res.status(HTTP_CREATED_CODE).json({ message: 'Report saved', report: saved });
-    } catch (e) {
-      next(e);
+router.post('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) {
+      throw new NotFound('User not logged in');
     }
-  },
-);
+    const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport, isDraft } =
+      req.body;
+
+    const authorized = checkUserCanCreateReport(req.user, departmentId);
+
+    if (!authorized) {
+      throw new Unauthorized('User not authorized to create report');
+    }
+
+    // NOTE: May need to sanitize the reportObject before saving
+    const newReport = new ReportCollection({
+      departmentId,
+      submittedUserId,
+      submittedBy,
+      reportMonth,
+      reportObject: serializedReport,
+      isDraft: isDraft,
+    });
+
+    const saved = await newReport.save();
+    return res.status(HTTP_CREATED_CODE).json({ message: 'Report saved', report: saved });
+  } catch (e) {
+    next(e);
+  }
+});
 
 // Fetch report by id
 router.get(
   `/:${REPORT_ID_URL_SLUG}`,
   requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const reportId = req.params[REPORT_ID_URL_SLUG];
       const report = await ReportCollection.findById(reportId).lean();
       if (!report) {
@@ -82,8 +83,11 @@ router.get(
 );
 
 // Fetch all reports
-router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) {
+      throw new NotFound('User not logged in');
+    }
     const reports = await ReportCollection.find();
     const filteredReports = filterViewableReports(req.user, reports);
     res.status(HTTP_OK_CODE).json(filteredReports);
@@ -96,9 +100,11 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
 router.get(
   `/department/:${DEPARTMENT_ID_URL_SLUG}`,
   requireJwtAuth,
-  departmentAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
       const reports = await ReportCollection.find({ departmentId: deptId }).sort({
         reportMonth: 'desc',
@@ -122,8 +128,11 @@ router.delete(
   `/:${REPORT_ID_URL_SLUG}`,
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const reportId = req.params[REPORT_ID_URL_SLUG];
       const report = await ReportCollection.findById(reportId);
 
@@ -145,7 +154,10 @@ router.delete(
   },
 );
 
-router.put(`/`, requireJwtAuth, async (req: RequestWithUser, res: Response) => {
+router.put(`/`, requireJwtAuth, async (req: Request, res: Response) => {
+  if (!req.user) {
+    throw new NotFound('User not logged in');
+  }
   const { id, serializedReport, isDraft } = req.body;
 
   const report = await ReportCollection.findById(id);

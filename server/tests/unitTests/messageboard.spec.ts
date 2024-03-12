@@ -56,7 +56,7 @@ function postMessage(message: MessageObject, done: Done, expectedStatus: Number,
 function getDepartmentIds(done: Done) {
   agent.get(DEPARTMENT_ENDPOINT).end(function (error: any, response: any) {
     if (error) done(error);
-    departmentIds = response.body.map((department) => department.id);
+    departmentIds = response.body.map((department: any) => department.id);
     done();
   });
 }
@@ -76,7 +76,7 @@ describe('Messageboard Tests', function () {
     agent = chai.request.agent(app);
     messageIds = new Array<string>();
 
-    agent.get(CSRF_ENDPOINT).end(function (error, res) {
+    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 
@@ -155,7 +155,7 @@ describe('Messageboard Tests', function () {
       expect(response).to.have.status(HTTP_OK_CODE);
       const entries: Array<Object> = Object.entries(response.body);
       const results: boolean = entries.every(
-        (element) => element[1].department.id === generalDeptId,
+        (element: any) => element[1].department.id === generalDeptId,
       );
       expect(results).to.be.true;
 
@@ -214,7 +214,7 @@ describe('Messageboard Tests', function () {
     agent
       .delete(`${MESSAGEBOARD_ENDPOINT}/${'invalidId'}`)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-      .end(function (error, response) {
+      .end(function (error: Error, response: any) {
         // Cannot check if a particular type of error has been thrown: https://stackoverflow.com/questions/53140856/how-to-throw-error-in-node-js-and-catch-it-mocha
         expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
         done();
@@ -238,7 +238,7 @@ describe('Messageboard Tests', function () {
         agent
           .delete(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
           .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-          .end(function (error, response) {
+          .end(function (error: Error, response: any) {
             if (error) done(error);
             expect(response).to.have.status(HTTP_NOCONTENT_CODE);
 
@@ -281,7 +281,7 @@ describe('Messageboard Tests', function () {
           .put(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
           .send(newMessage)
           .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-          .end(function (error, response) {
+          .end(function (error: Error, response: any) {
             if (error) done(error);
             expect(response).to.have.status(HTTP_OK_CODE);
             updatePostedMessageIds(done);

@@ -12,9 +12,8 @@ import * as _ItemParser from './item';
 export const parseToReport = async (
   jsonReport: JsonReportDescriptor,
 ): Promise<ReportDescriptor> => {
-  const { id, departmentId, submittedDate, submittedUserId, submittedBy } = await parseToReportMeta(
-    jsonReport.meta,
-  );
+  const { id, departmentId, submittedDate, submittedUserId, submittedBy, isDraft } =
+    await parseToReportMeta(jsonReport.meta);
   const items: ReportItems = _JsonUtils.getReportItems(jsonReport).map((jsonItem) => {
     const itemConstructor = _ItemParser.getParserJsonToItem(_JsonUtils.getItemType(jsonItem));
     return itemConstructor(jsonItem);
@@ -27,6 +26,7 @@ export const parseToReport = async (
     submittedUserId: submittedUserId,
     submittedBy: submittedBy,
     items: items,
+    isDraft: isDraft,
   };
   return report;
 };
@@ -56,12 +56,18 @@ const parseToReportMeta = async (jsonMeta: JsonReportMeta) => {
     submittedBy = jsonMeta.submittedBy;
   }
 
+  let isDraft: boolean = false;
+  if (jsonMeta.isDraft) {
+    isDraft = jsonMeta.isDraft;
+  }
+
   let meta = {
     id: jsonMeta.id,
     departmentId: jsonMeta.department.id,
     submittedDate: submittedDate,
     submittedBy: jsonMeta?.submittedBy ?? '',
     submittedUserId: submittedUserId,
+    isDraft: isDraft,
   };
   return meta;
 };

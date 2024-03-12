@@ -18,7 +18,7 @@ import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import MessageCollection from 'models/messageBoard';
 import { ReportCollection } from 'models/report';
 import { TemplateCollection } from 'models/template';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 
 let nameMapper: Map<string, string>;
@@ -209,7 +209,7 @@ export const seedUsers = async () => {
               break;
           }
         } else {
-          name = faker.name.findName();
+          name = faker.person.fullName();
         }
         const user = new UserCollection({
           username: `user${index}`,
@@ -694,7 +694,7 @@ export const seedMessageBoard = async () => {
   }
 };
 
-const setDefaultFeaturedCaseStudy = (user: User, caseStudyTemplate) => {
+const setDefaultFeaturedCaseStudy = (user: User, caseStudyTemplate: string[]) => {
   try {
     let caseStudy = new CaseStudy({
       caseStudyType: CaseStudyOptions.PatientStory,
@@ -724,7 +724,7 @@ export const seedCaseStudies = async () => {
     await CaseStudy.deleteMany({});
     const users = await UserCollection.find().lean();
     const randomDefaultUser = selectRandomUser(users);
-    const caseStudies = [
+    const caseStudies: (string | string[])[][] = [
       [
         'Patient Story',
         'Linda Etienne',
@@ -825,11 +825,15 @@ export const seedCaseStudies = async () => {
       ],
     ];
 
-    setDefaultFeaturedCaseStudy(randomDefaultUser, caseStudies[0]);
+    setDefaultFeaturedCaseStudy(randomDefaultUser, caseStudies[0] as string[]);
 
     for (let i = 1; i < caseStudies.length; i++) {
       const randomUser = selectRandomUser(users);
-      generateRandomCaseStudy(caseStudies[i][0], randomUser, caseStudies[i]);
+      generateRandomCaseStudy(
+        caseStudies[i][0] as string,
+        randomUser,
+        caseStudies[i] as (string | string[])[],
+      );
     }
     console.log('Case studies seeded');
   } catch (err: any) {
@@ -842,9 +846,9 @@ export const seedDepartments = async () => {
   try {
     await DepartmentCollection.deleteMany({});
     // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
-    for (let deptName in DefaultDepartments) {
+    for (let deptName of Object.values(DefaultDepartments)) {
       const department = new DepartmentCollection({
-        name: DefaultDepartments[deptName],
+        name: deptName,
       });
       await department.save();
     }
@@ -976,7 +980,11 @@ export const seedEmployeeOfTheMonth = async () => {
   }
 };
 
-const generateRandomCaseStudy = (caseStudyType, user: User, caseStudyTemplate) => {
+const generateRandomCaseStudy = (
+  caseStudyType: string,
+  user: User,
+  caseStudyTemplate: (string | string[])[],
+) => {
   try {
     let caseStudy;
     switch (caseStudyType) {
@@ -1007,7 +1015,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User, caseStudyTemplate) =
           imgPath: 'public/images/case2.jpg',
           featured: false,
           staffRecognition: {
-            staffName: faker.name.findName(),
+            staffName: faker.person.fullName(),
             jobTitle: faker.lorem.words(),
             department: faker.lorem.words(),
             howLongWorkingAtHcbh: faker.lorem.words(),
@@ -1045,7 +1053,7 @@ const generateRandomCaseStudy = (caseStudyType, user: User, caseStudyTemplate) =
           equipmentReceived: {
             equipmentReceived: faker.lorem.words(),
             departmentReceived: faker.lorem.words(),
-            whoSentEquipment: faker.name.findName(),
+            whoSentEquipment: faker.person.fullName(),
             purchasedOrDonated: faker.lorem.words(),
             whatDoesEquipmentDo: faker.lorem.sentences(),
             caseStudyStory: faker.lorem.paragraph(10),
@@ -1141,7 +1149,6 @@ mongoose
   .then(() => {
     console.log('MongoDB Connected...');
     const readline = require('readline');
-    const IS_GITLAB_CI = process.env.IS_GITLAB_CI ?? 'false';
     if (process.env.IS_GITLAB_CI === 'true') {
       (async () => await seedDb())(); // anonymous async function
     } else {
@@ -1152,7 +1159,7 @@ mongoose
 
       rl.question(
         `Confirm to reseed database (old data will be discarded) (Y to confirm): `,
-        async function (answer) {
+        async function (answer: string) {
           if (answer === 'Y') await seedDb();
           rl.close();
         },

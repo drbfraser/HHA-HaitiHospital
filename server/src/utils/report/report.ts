@@ -42,6 +42,7 @@ export const generateReportForMonth = async (
       submittedBy: requestor.name,
       reportMonth: reportMonth,
       items: [],
+      isDraft: true,
     };
     return newEmptyReport;
   } else {
