@@ -61,7 +61,7 @@ const ReportView = () => {
   };
 
   const handleExportWithComponent = () => {
-    pdfExportComponent.current ? pdfExportComponent.current.save() : null;
+    pdfExportComponent.current?.save();
   };
 
   const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {

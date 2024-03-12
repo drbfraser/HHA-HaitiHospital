@@ -6,23 +6,27 @@ import { Row } from '@tanstack/react-table';
 
 export const FILTER_FUNCTIONS = {
   contains: (row: Row<any>, columnId: string, value: any) => {
-    const cellValue = getNestedCellValue(row, columnId);
-    return cellValue.toLowerCase().includes(value.toLowerCase());
+    // const cellValue = getNestedCellValue(row, columnId);
+    // return cellValue.toLowerCase().includes(value.toLowerCase());
+    return true;
   },
 
   equal: (row: Row<any>, columnId: string, value: any) => {
-    const cellValue = getNestedCellValue(row, columnId);
-    return cellValue.toLowerCase() === value.toLowerCase();
+    // const cellValue = getNestedCellValue(row, columnId);
+    // return cellValue.toLowerCase() === value.toLowerCase();
+    return true;
   },
 
   startsWith: (row: Row<any>, columnId: string, value: any) => {
-    const cellValue = getNestedCellValue(row, columnId);
-    return cellValue.toLowerCase().startsWith(value.toLowerCase());
+    // const cellValue = getNestedCellValue(row, columnId);
+    // return cellValue.toLowerCase().startsWith(value.toLowerCase());
+    return true;
   },
 
   endsWith: (row: Row<any>, columnId: string, value: any) => {
-    const cellValue = getNestedCellValue(row, columnId);
-    return cellValue.toLowerCase().endsWith(value.toLowerCase());
+    // const cellValue = getNestedCellValue(row, columnId);
+    // return cellValue.toLowerCase().endsWith(value.toLowerCase());
+    return true;
   },
 };
 

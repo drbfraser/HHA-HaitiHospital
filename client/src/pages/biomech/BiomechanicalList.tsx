@@ -17,11 +17,10 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { Row } from '@tanstack/react-table';
-import { Variant } from 'react-bootstrap/esm/types';
 import { BiomechPriority, BiomechStatus } from './typing';
 import { BiomechGet } from 'constants/jsons';
 
-const enumSort = (key: string, e: any) => {
+const enumSort = (key: any, e: any) => {
   type enumKey = keyof typeof e;
 
   return (rowA: Row<any>, rowB: Row<any>) => {
@@ -72,7 +71,7 @@ export const BiomechanicalList = () => {
         sortingFn: prioritySort,
         sortDescFirst: true,
         meta: {
-          dataType: FilterType.ENUM,
+          dataType: FilterType.STRING,
           enumOptions: [
             { value: 'non-urgent', label: t('biomech.priority.non-urgent') },
             { value: 'important', label: t('biomech.priority.important') },
@@ -91,7 +90,7 @@ export const BiomechanicalList = () => {
         accessorKey: 'equipmentStatus',
         sortingFn: statusSort,
         meta: {
-          dataType: FilterType.ENUM,
+          dataType: FilterType.STRING,
           enumOptions: [
             { value: 'in-progress', label: t('biomech.status.in-progress') },
             { value: 'fixed', label: t('biomech.status.fixed') },
