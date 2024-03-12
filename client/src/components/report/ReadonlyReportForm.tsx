@@ -100,7 +100,6 @@ const ReadonlyReportForm = ({
   const totalCount = reportData.getPagination().length * pageSize;
   const { i18n } = useTranslation();
   const language = i18n.resolvedLanguage;
-  console.log(reportMonth);
   return (
     <div className="mt-3 p-3">
       <h3 className="mb-3">
