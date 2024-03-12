@@ -1,19 +1,30 @@
-import { Dispatch, SetStateAction } from 'react';
+import { set } from 'lodash';
+import { useState } from 'react';
 
 interface ReportMonthFormProps {
   monthLabel: string;
   reportMonth: Date;
-  setReportMonth: Dispatch<SetStateAction<Date>>;
+  applyMonthChanges: (reportMonth: Date) => void;
+  formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: Boolean) => void;
 }
 
 const ReportMonthForm = ({
   monthLabel,
   reportMonth,
-  setReportMonth,
+  applyMonthChanges,
+  formHandler,
 }: ReportMonthFormProps): JSX.Element => {
+  const [currentReportMonth, setCurrentReportMonth] = useState<Date>(reportMonth);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    applyMonthChanges(currentReportMonth);
+    formHandler(event, false);
+  };
+
   return (
     <div className="col-md-6 mb-2">
-      <fieldset>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="Report-Month" className="mt-2">
           {monthLabel}
         </label>
@@ -21,10 +32,13 @@ const ReportMonthForm = ({
           type="month"
           className="form-control"
           id="Report-Month"
-          onChange={(e) => setReportMonth(new Date(e.target.value))}
-          value={reportMonth?.toISOString().slice(0, 7)}
+          onChange={(e) => setCurrentReportMonth(new Date(e.target.value))}
+          value={currentReportMonth?.toISOString().slice(0, 7)}
         />
-      </fieldset>
+        <button type="submit" className="btn btn-primary mt-2">
+          Apply Changes
+        </button>
+      </form>
     </div>
   );
 };

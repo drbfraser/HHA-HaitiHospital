@@ -154,11 +154,12 @@ router.delete(
   },
 );
 
+// Update report by id
 router.put(`/`, requireJwtAuth, async (req: Request, res: Response) => {
   if (!req.user) {
     throw new NotFound('User not logged in');
   }
-  const { id, serializedReport, isDraft } = req.body;
+  const { id, serializedReport, reportMonth, isDraft } = req.body;
 
   const report = await ReportCollection.findById(id);
 
@@ -173,6 +174,7 @@ router.put(`/`, requireJwtAuth, async (req: Request, res: Response) => {
   }
 
   report.reportObject = cloneDeep(serializedReport);
+  report.reportMonth = reportMonth;
   report.isDraft = isDraft;
 
   await report.save();

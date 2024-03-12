@@ -60,6 +60,11 @@ const ReportView = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
+  const applyMonthChanges = (reportMonth: Date) => {
+    setAreChangesMade(true);
+    setReportMonth(reportMonth);
+  };
+
   const handleExportWithComponent = () => {
     pdfExportComponent.current.save();
   };
@@ -76,10 +81,13 @@ const ReportView = () => {
 
   const reportHandler = () => {
     const serializedReport = objectSerializer.serialize(report);
+
+    console.log('report Handler:', reportMonth);
     const editedReportObject = {
       id: report_id,
       serializedReport,
       submittedBy: user?.userDetails?.name,
+      reportMonth: reportMonth,
       isDraft: isDraft,
     };
 
@@ -261,7 +269,8 @@ const ReportView = () => {
             <ReportMonthForm
               monthLabel="Month of Report"
               reportMonth={reportMonth}
-              setReportMonth={setReportMonth}
+              applyMonthChanges={applyMonthChanges}
+              formHandler={confirmEdit}
             />
           )}
 
