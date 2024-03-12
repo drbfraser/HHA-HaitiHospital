@@ -199,7 +199,7 @@ const ReportView = () => {
                 </span>
               )}
               {readOnly && (
-                <button className="btn bgtn-outline-dark" onClick={toggleTable}>
+                <button className="btn btn-outline-dark" onClick={toggleTable}>
                   {isUsingTable
                     ? t('departmentReportDisplayHideTable')
                     : t('departmentReportDisplayShowTable')}
