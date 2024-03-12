@@ -25,6 +25,7 @@ import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import DraftIcon from 'components/report/DraftIcon';
+import moment from 'moment';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -33,7 +34,7 @@ const GeneralReports = () => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string | null>(null);
-  const [reports, setReports] = useState<any[]>([]);
+  const [reports, setReports] = useState<IReportObject<any>[]>([]);
 
   const getReports = useCallback(async () => {
     const controller = new AbortController();
@@ -127,7 +128,10 @@ const GeneralReports = () => {
     {
       header: t('reportsSubmissionDate'),
       id: 'submittedDate',
+      cell: (row) => <span>{moment(row.getValue()).format('dd/MM/yyyy')}</span>,
       accessorKey: 'submittedDate',
+      // enableGlobalFilter: false,
+      // enableColumnFilter: false
     },
     {
       header: t('reportsSubmittedBy'),
