@@ -12,6 +12,7 @@ import Layout from 'components/layout';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import ReportForm from 'components/report/ReportForm';
+import ReportMonthForm from 'components/report/ReportMonthForm';
 import { ResponseMessage } from 'utils/response_message';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
@@ -35,7 +36,7 @@ const ReportView = () => {
   const { departmentIdKeyMap } = useDepartmentData();
   const department = departmentIdKeyMap.get(metaData?.departmentId);
   const [editMonth, setEditMonth] = useState(false);
-
+  const [reportMonth, setReportMonth] = useState<Date>(null);
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
 
   const { t } = useTranslation();
@@ -113,6 +114,7 @@ const ReportView = () => {
     );
 
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
+    setReportMonth(new Date(fetchedReport?.report?.reportMonth));
 
     setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
@@ -255,6 +257,14 @@ const ReportView = () => {
             </div>
           )}
 
+          {readOnly && editMonth && (
+            <ReportMonthForm
+              monthLabel="Month of Report"
+              reportMonth={reportMonth}
+              setReportMonth={setReportMonth}
+            />
+          )}
+
           {readOnly && !editMonth ? (
             <div>
               <ReadonlyReportForm
@@ -271,14 +281,16 @@ const ReportView = () => {
               />
             </div>
           ) : (
-            <ReportForm
-              applyReportChanges={applyReportChanges}
-              btnText="Update"
-              formHandler={confirmEdit}
-              isSubmitting={false}
-              reportData={report}
-              reportMonth={reportMonthString}
-            />
+            !editMonth && (
+              <ReportForm
+                applyReportChanges={applyReportChanges}
+                btnText="Update"
+                formHandler={confirmEdit}
+                isSubmitting={false}
+                reportData={report}
+                reportMonth={reportMonthString}
+              />
+            )
           )}
         </Layout>
       )}
