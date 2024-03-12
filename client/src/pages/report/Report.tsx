@@ -17,7 +17,6 @@ import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
-import { monthYearOptions, userLocale } from 'constants/date';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -28,7 +27,6 @@ export const Report = () => {
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
-  const [reportMonth, setReportMonth] = useState<Date>();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
@@ -51,11 +49,10 @@ export const Report = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
   };
 
-  const clearCurrentReport = () => {
+  const clearCurrentDepartment = () => {
     setAreChangesMade(false);
     setCurrentDepartment(undefined);
     setReport(undefined);
-    setReportMonth(undefined);
   };
 
   const confirmSubmission = (event: FormEvent<HTMLFormElement>, isDraft: boolean) => {
@@ -65,12 +62,13 @@ export const Report = () => {
   };
 
   const submitReport = () => {
+    const today = new Date();
     const serializedReport = objectSerializer.serialize(report);
     const reportPrompt = serializedReport['prompt'][i18n.resolvedLanguage];
     serializedReport['id'] = generateFormId(user?.userDetails?.name, reportPrompt);
     const reportObject = {
       departmentId: currentDepartment.id,
-      reportMonth: reportMonth,
+      reportMonth: new Date(today.getFullYear(), today.getMonth()),
       serializedReport,
       submittedUserId: user?.userDetails?.id,
       submittedBy: user?.userDetails?.name,
@@ -108,7 +106,7 @@ export const Report = () => {
 
         setReport(deserializedReportTemplate);
       } catch (e) {
-        clearCurrentReport();
+        clearCurrentDepartment();
       }
     };
     currentDepartment && getTemplates();
@@ -117,7 +115,7 @@ export const Report = () => {
     return () => {
       controller.abort();
     };
-  }, [currentDepartment, reportMonth, history, objectSerializer, i18n.resolvedLanguage]);
+  }, [currentDepartment, history, objectSerializer, i18n.resolvedLanguage]);
 
   useEffect(() => {
     if (areChangesMade) {
@@ -130,8 +128,6 @@ export const Report = () => {
       window.onbeforeunload = undefined;
     };
   }, [areChangesMade]);
-
-  const reportMonthString: string = reportMonth?.toLocaleDateString(userLocale, monthYearOptions);
 
   return (
     <Layout title={t('headerReport')}>
@@ -153,7 +149,7 @@ export const Report = () => {
         }}
         onModalProceed={() => {
           setIsShowingNavigationModal(false);
-          navigate(history, navigationInfo, clearCurrentReport);
+          navigate(history, navigationInfo, clearCurrentDepartment);
         }}
         show={isShowingNavigationModal}
         title={t('reportConfirmationModal.discardSubmitReportHeader')}
@@ -169,18 +165,15 @@ export const Report = () => {
         }}
         when={areChangesMade}
       />
-      {!(report && reportMonth) && departments && (
+      {!report && departments && (
         <ReportAndTemplateForm
           departmentLabel={t('headerReportDepartmentType')}
-          monthLabel={t('headerReportMonth')}
           departments={departments.filter(isReportableDepartment)}
           currentDepartment={currentDepartment}
           setCurrentDepartment={setCurrentDepartment}
-          reportMonth={reportMonth}
-          setReportMonth={setReportMonth}
         />
       )}
-      {report && reportMonth && (
+      {report && (
         <>
           <button
             className="btn btn-outline-secondary"
@@ -189,7 +182,7 @@ export const Report = () => {
                 setIsShowingNavigationModal(true);
                 setNavigationInfo(null);
               } else {
-                clearCurrentReport();
+                clearCurrentDepartment();
               }
             }}
           >
@@ -201,7 +194,6 @@ export const Report = () => {
             formHandler={confirmSubmission}
             isSubmitting={isSubmitting}
             reportData={report}
-            reportMonth={reportMonthString}
           />
         </>
       )}

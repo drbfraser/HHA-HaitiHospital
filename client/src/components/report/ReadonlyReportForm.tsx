@@ -76,7 +76,7 @@ interface ReadonlyReportFormProps {
   isTemplate?: boolean;
   isUsingPagination?: boolean;
   isUsingTable?: boolean;
-  reportMonth?: string;
+  date?: string;
   author?: string;
   questionItems?: any[];
 }
@@ -88,7 +88,7 @@ const ReadonlyReportForm = ({
   isTemplate = false,
   isUsingPagination = true,
   isUsingTable = true,
-  reportMonth,
+  date,
   author,
   questionItems = [],
 }: ReadonlyReportFormProps): JSX.Element => {
@@ -103,7 +103,7 @@ const ReadonlyReportForm = ({
   return (
     <div className="mt-3 p-3">
       <h3 className="mb-3">
-        {reportData.getPrompt()[language]} - {author} - {reportMonth}{' '}
+        {reportData.getPrompt()[language]} - {author} - {date}{' '}
       </h3>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (

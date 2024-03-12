@@ -7,10 +7,4 @@ export const dateOptions = {
   hour12: true,
 } as const;
 
-export const monthYearOptions = {
-  timeZone: 'UTC',
-  month: 'long',
-  year: 'numeric',
-} as const;
-
 export const userLocale = navigator.language;
