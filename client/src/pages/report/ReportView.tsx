@@ -37,6 +37,7 @@ const ReportView = () => {
   const department = departmentIdKeyMap.get(metaData?.departmentId);
   const [editMonth, setEditMonth] = useState(false);
   const [reportMonth, setReportMonth] = useState<Date>(null);
+  const [reportMonthString, setReportMonthString] = useState('');
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
 
   const { t } = useTranslation();
@@ -44,10 +45,13 @@ const ReportView = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const pdfExportComponent = useRef(null);
   const report_id = useLocation().pathname.split('/')[2];
-  const reportMonthString = new Date(metaData?.reportMonth).toLocaleDateString(
-    userLocale,
-    monthYearOptions,
-  );
+
+  useEffect(() => {
+    if (reportMonth) {
+      const newReportMonthString = reportMonth.toLocaleDateString(userLocale, monthYearOptions);
+      setReportMonthString(newReportMonthString);
+    }
+  }, [reportMonth]);
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
@@ -81,8 +85,6 @@ const ReportView = () => {
 
   const reportHandler = () => {
     const serializedReport = objectSerializer.serialize(report);
-
-    console.log('report Handler:', reportMonth);
     const editedReportObject = {
       id: report_id,
       serializedReport,
@@ -98,7 +100,11 @@ const ReportView = () => {
       ENDPOINT_REPORTS,
       editedReportObject,
       () => {
-        setReadOnly((prev) => !prev);
+        if (!readOnly) {
+          setReadOnly((prev) => !prev);
+        } else {
+          setEditMonth((prev) => !prev);
+        }
         setShowViewEditBtn(true);
       },
       history,
@@ -290,7 +296,8 @@ const ReportView = () => {
               />
             </div>
           ) : (
-            !editMonth && (
+            !editMonth &&
+            !readOnly && (
               <ReportForm
                 applyReportChanges={applyReportChanges}
                 btnText="Update"

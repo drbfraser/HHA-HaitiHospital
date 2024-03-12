@@ -1,4 +1,3 @@
-import { set } from 'lodash';
 import { useState } from 'react';
 
 interface ReportMonthFormProps {
