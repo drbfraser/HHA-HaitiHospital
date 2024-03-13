@@ -85,12 +85,13 @@ const FilterableTable = ({
     getSortedRowModel: getSortedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     globalFilterFn: (row, columnId, filterValue) => {
-      const safeValue: string = (() => {
-        const value: any = row.getValue(columnId);
-        return typeof value === 'number' ? String(value) : value?.toString() ?? value;
-      })();
+      return true;
+      // const safeValue: string = (() => {
+      //   const value: any = row.getValue(columnId);
+      //   return typeof value === 'number' ? String(value) : value?.toString() ?? value;
+      // })();
 
-      return safeValue?.toLowerCase().includes(filterValue.toLowerCase());
+      // return safeValue?.toLowerCase().includes(filterValue.toLowerCase());
     },
     state: {
       globalFilter,
@@ -164,7 +165,7 @@ const FilterableTable = ({
       <Pagination
         className="pagination-bar"
         currentPage={table.getState().pagination.pageIndex + 1}
-        totalCount={table.getFilteredRowModel().rows.length}
+        totalCount={table.getCoreRowModel().rows.length}
         pageSize={table.getState().pagination.pageSize}
         onPageChange={(page) => table.setPageIndex(page - 1)}
       />

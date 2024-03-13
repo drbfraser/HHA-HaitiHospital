@@ -126,7 +126,13 @@ const GeneralReports = () => {
     {
       header: t('reportsMonth'),
       id: 'reportMonth',
+      cell: (row) => <span>{row.getValue().toString()}</span>,
       accessorKey: 'reportMonth',
+      enableColumnFilter: false,
+      enableGlobalFilter: false,
+      enableGrouping: false,
+      enableMultiSort: false,
+      enableSorting: false,
     },
     {
       header: t('reportsSubmittedBy'),
