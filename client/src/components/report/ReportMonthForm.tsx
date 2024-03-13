@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ReportMonthFormProps {
   monthLabel: string;
@@ -14,6 +15,7 @@ const ReportMonthForm = ({
   formHandler,
 }: ReportMonthFormProps): JSX.Element => {
   const [currentReportMonth, setCurrentReportMonth] = useState<Date>(reportMonth);
+  const { t } = useTranslation();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,7 +37,7 @@ const ReportMonthForm = ({
           value={currentReportMonth?.toISOString().slice(0, 7)}
         />
         <button type="submit" className="btn btn-primary mt-2">
-          Apply Changes
+          {t('departmentReportDisplayMonthApplyChanges')}
         </button>
       </form>
     </div>

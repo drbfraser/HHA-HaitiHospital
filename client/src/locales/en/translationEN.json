@@ -217,6 +217,8 @@
   "departmentReportDisplaySubmit": "Submit",
   "departmentReportDisplayEditForm": "Edit Form",
   "departmentReportDisplayViewForm": "View Form",
+  "departmentReportDisplayEditMonth": "Edit Month",
+  "departmentReportDisplayMonthApplyChanges": "Apply Changes",
   "departmentReportDisplayHidePagination": "Hide Pagination",
   "departmentReportDisplayShowPagination": "Show Pagination",
   "departmentReportDisplayHideTable": "Hide Table",

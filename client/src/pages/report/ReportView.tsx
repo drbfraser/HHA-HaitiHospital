@@ -219,7 +219,9 @@ const ReportView = () => {
                   user.userDetails.department.name === department)) &&
                 readOnly && (
                   <button className="btn btn-primary mr-3" onClick={editMonthBtnHandler}>
-                    {readOnly && !editMonth ? 'Edit Month' : 'View Form Month'}
+                    {readOnly && !editMonth
+                      ? t('departmentReportDisplayEditMonth')
+                      : t('departmentReportDisplayViewForm')}
                   </button>
                 )}
               {/* Other buttons */}
@@ -273,7 +275,7 @@ const ReportView = () => {
 
           {readOnly && editMonth && (
             <ReportMonthForm
-              monthLabel="Month of Report"
+              monthLabel={t('reportsMonth')}
               reportMonth={reportMonth}
               applyMonthChanges={applyMonthChanges}
               formHandler={confirmEdit}
