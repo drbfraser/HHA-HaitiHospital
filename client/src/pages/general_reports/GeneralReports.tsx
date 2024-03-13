@@ -3,7 +3,7 @@
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { Link, useHistory } from 'react-router-dom';
-import { dateOptions, userLocale } from 'constants/date';
+import { monthYearOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -13,7 +13,6 @@ import {
   ENDPOINT_REPORT_DELETE_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
 } from 'constants/endpoints';
-import { JsonReportDescriptor, JsonReportMeta } from '@hha/common';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +24,6 @@ import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import DraftIcon from 'components/report/DraftIcon';
-import moment from 'moment';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -120,23 +118,25 @@ const GeneralReports = () => {
       accessorFn: (row) => row,
     },
     {
-      header: t('leaderBoardOverviewDepartment'),
+      header: t('reportsDepartment'),
       id: 'departmentName',
       cell: (row) => <span>{t(`departments.${row.getValue()}`)}</span>,
       accessorKey: 'departmentName',
     },
     {
-      header: t('reportsSubmissionDate'),
-      id: 'submittedDate',
-      cell: (row) => <span>{moment(row.getValue()).format('dd/MM/yyyy')}</span>,
-      accessorKey: 'submittedDate',
-      // enableGlobalFilter: false,
-      // enableColumnFilter: false
+      header: t('reportsMonth'),
+      id: 'reportMonth',
+      accessorKey: 'reportMonth',
     },
     {
       header: t('reportsSubmittedBy'),
       id: 'submittedBy',
       accessorKey: 'submittedBy',
+    },
+    {
+      header: t('reportsSubmissionDate'),
+      id: 'submittedDate',
+      accessorKey: 'submittedDate',
     },
     {
       header: t('reportsOptions'),
@@ -181,13 +181,19 @@ const GeneralReports = () => {
     return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
   };
 
+  const getReportMonth = (item: IReportObject<any>): string => {
+    return new Date(item.reportMonth).toLocaleDateString(userLocale, monthYearOptions);
+  };
+
+  //TODO: Add interface for item
   const gridData = reports.map((item) => ({
     item,
     _id: item._id,
     reportName: getReportName(item),
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
-    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
+    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, monthYearOptions),
     submittedBy: item.submittedBy,
+    reportMonth: getReportMonth(item),
     isDraft: item.isDraft,
   }));
 

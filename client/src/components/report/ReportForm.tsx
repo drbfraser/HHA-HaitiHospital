@@ -97,6 +97,7 @@ interface ReportFormProps {
   formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: boolean) => void;
   isSubmitting: boolean;
   reportData: QuestionGroup<ID, ErrorType>;
+  reportMonth?: string;
   btnText?: string;
   readOnly: boolean;
 }
@@ -106,6 +107,7 @@ const ReportForm = ({
   formHandler,
   isSubmitting,
   reportData,
+  reportMonth,
   btnText = 'Submit',
   readOnly = false,
 }: ReportFormProps): JSX.Element => {
@@ -202,7 +204,9 @@ const ReportForm = ({
 
   return (
     <div className="mt-3 p-3">
-      <h2 className="mb-3">{reportData.getPrompt()[language]}</h2>
+      <h2 className="mb-3">
+        {reportData.getPrompt()[language]} - {reportMonth}
+      </h2>
       <form onSubmit={formHandlerWrapper} noValidate>
         <Group isRootNode>
           <QuestionFormFields

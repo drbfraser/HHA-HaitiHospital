@@ -3,7 +3,7 @@ import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 
 import { NavigationInfo, navigate } from 'components/report/utils';
 import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
 import { Prompt, useHistory, useLocation } from 'react-router-dom';
-import { dateOptions, userLocale } from 'constants/date';
+import { monthYearOptions, userLocale } from 'constants/date';
 
 import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
@@ -44,8 +44,10 @@ const ReportView = () => {
   const report_id = useLocation().pathname.split('/')[2];
   const submittedDate =
     metaData && metaData.submittedDate
-      ? new Date(metaData.submittedDate).toLocaleDateString(userLocale, dateOptions)
+      ? new Date(metaData.submittedDate).toLocaleDateString(userLocale, monthYearOptions)
       : null;
+  const reportMonthDate = metaData?.reportMonth ? new Date(metaData?.reportMonth) : new Date();
+  const reportMonthString = reportMonthDate.toLocaleDateString(userLocale, monthYearOptions);
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
@@ -207,7 +209,6 @@ const ReportView = () => {
                     : t('departmentReportDisplayShowTable')}
                 </button>
               )}
-
               {readOnly && !isUsingTable && (
                 <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
                   {isUsingPagination
@@ -221,7 +222,7 @@ const ReportView = () => {
           {readOnly && (
             <div className="visually-hidden">
               <PDFExport
-                fileName={`${department}_${(metaData?.submittedDate ? new Date(metaData?.submittedDate) : new Date()).toLocaleDateString()}__${metaData?.submittedBy}`}
+                fileName={`${department}_${reportMonthString.replace(/\s/g, '')}__${metaData?.submittedBy}`}
                 paperSize="A4"
                 ref={pdfExportComponent}
                 scale={0.75}
@@ -233,7 +234,7 @@ const ReportView = () => {
                 isUsingPagination={false}
                 isUsingTable={true}
                 reportData={report}
-                date={submittedDate!}
+                reportMonth={reportMonthString}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
               />
@@ -250,7 +251,7 @@ const ReportView = () => {
                 isUsingPagination={isUsingPagination}
                 isUsingTable={isUsingTable}
                 reportData={report}
-                date={submittedDate!}
+                reportMonth={reportMonthString}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
               />
@@ -263,6 +264,7 @@ const ReportView = () => {
               isSubmitting={false}
               reportData={report}
               readOnly={false}
+              reportMonth={reportMonthString}
             />
           )}
         </Layout>
