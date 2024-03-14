@@ -109,7 +109,8 @@ const AdminList = () => {
     {
       header: t('admin.main_page.created_col'),
       id: 'createdAt',
-      accessorKey: 'createdAt',
+      cell: (row) => <span>{row.getValue().createdAt}</span>,
+      accessorFn: (row) => row,
     },
     {
       id: 'Options',

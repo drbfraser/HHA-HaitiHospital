@@ -165,7 +165,7 @@ const FilterableTable = ({
       <Pagination
         className="pagination-bar"
         currentPage={table.getState().pagination.pageIndex + 1}
-        totalCount={table.getCoreRowModel().rows.length}
+        totalCount={table.getFilteredRowModel().rows.length}
         pageSize={table.getState().pagination.pageSize}
         onPageChange={(page) => table.setPageIndex(page - 1)}
       />
