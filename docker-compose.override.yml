@@ -12,6 +12,9 @@ services:
     environment:
       - NODE_ENV=dev
       - LOKI_URL=https://${LOKI_HOST}
+      - LOKI_APP_LABEL=${LOKI_APP_LABEL} 
+      - LOKI_USER=${LOKI_USER}
+      - LOKI_KEY=${LOKI_KEY}
 
   mongodb:
     ports:

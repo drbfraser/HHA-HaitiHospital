@@ -75,6 +75,9 @@ export const createServer = () => {
     })
     .catch((err) => logger.error(err));
 
+  logger.info('Server started');
+  logger.verbose('lol');
+
   // Use Routes
   app.use('/', routes);
   app.use('/public', express.static('public'));

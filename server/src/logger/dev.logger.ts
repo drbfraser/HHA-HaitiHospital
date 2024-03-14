@@ -14,9 +14,12 @@ export const buildDevLogger = (): Logger => {
 
   const lokiTransport =
     process.env.LOKI_URL &&
+    process.env.LOKI_USER &&
+    process.env.LOKI_KEY &&
     new LokiTransport({
       host: process.env.LOKI_URL,
-      labels: { app: 'hhahaiti_local' },
+      basicAuth: `${process.env.LOKI_USER}:${process.env.LOKI_KEY}`,
+      labels: { app: process.env.LOKI_APP_LABEL ?? 'hhahaiti_local' },
       json: true,
       format: combine(timestamp(), json(), align()),
       replaceTimestamp: true,
