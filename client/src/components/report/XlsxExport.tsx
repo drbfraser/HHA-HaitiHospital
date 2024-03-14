@@ -4,52 +4,56 @@ import { QuestionRow } from 'constants/interfaces';
 import { underscoreAmount } from './utils';
 import { useTranslation } from 'react-i18next';
 import { processCompositionOrSpecializedQuestion, processTableQuestion } from './QuestionRows';
+import { ReportMetaData } from '@hha/common';
+import { useState } from 'react';
 
-export const processSingleSelectionQuestion = (
-  singleSelectionItem,
-  language: string,
-): QuestionRow => {
+interface reportType {
+  questionItems: any[];
+  metaData: ReportMetaData;
+}
+
+export const processSelectionQuestion = (selectionItem, language: string): QuestionRow[] => {
+  const array: QuestionRow[] = [];
   const element: QuestionRow = {
-    id: singleSelectionItem.id,
-    prompt: singleSelectionItem.prompt[language],
-    answer: singleSelectionItem.choices[singleSelectionItem.answer].description[language],
+    id: selectionItem.id,
+    prompt: selectionItem.prompt[language],
+    answer: '',
   };
-  return element;
+  array.push(element);
+  const selectionRows: QuestionRow[] = [];
+  for (let i = 0; i < selectionItem.choices.length; ++i) {
+    const selectionElement: QuestionRow = {
+      id: selectionItem.id + '_' + (i + 1).toString(),
+      prompt: selectionItem.choices[i].description[language],
+      answer: selectionItem.choices[i].chosen ? '1' : '0',
+    };
+    selectionRows.push(selectionElement);
+  }
+
+  return array.concat(selectionRows);
 };
 
-export const processMultiSelectionQuestion = (
-  multiSelectionItem,
-  language: string,
-): QuestionRow => {
-  const element: QuestionRow = {
-    id: multiSelectionItem.id,
-    prompt: multiSelectionItem.prompt[language],
-    answer: JSON.stringify(
-      multiSelectionItem.answer.map((index: number) => multiSelectionItem.choices[index]),
-    ),
-  };
-  return element;
-};
-
-export const processExpandableQuestion = (expandableItem, language: string): QuestionRow[] => {
-  let array: QuestionRow[] = [];
+export const processExpandableQuestion = (expandableItem, language: string): any[] => {
+  let array: any[] = [];
   for (const questionGroup of expandableItem.questionGroups) {
+    let subArray: any[] = [];
     for (let questionItem of questionGroup.questionItems) {
       if (questionItem.__class__ === 'SingleSelectionQuestion') {
-        const element = processSingleSelectionQuestion(questionItem, language);
-        array.push(element);
+        const element = processSelectionQuestion(questionItem, language);
+        subArray = subArray.concat(element);
       } else if (questionItem.__class__ === 'MultiSelectionQuestion') {
-        const element = processMultiSelectionQuestion(questionItem, language);
-        array.push(element);
+        const element = processSelectionQuestion(questionItem, language);
+        subArray = subArray.concat(element);
       } else {
         const element: QuestionRow = {
           id: questionItem.id,
           prompt: questionItem.prompt[language],
-          answer: questionItem?.answer,
+          answer: questionItem.answer,
         };
-        array.push(element);
+        subArray.push(element);
       }
     }
+    array.push(subArray);
   }
 
   return array;
@@ -61,39 +65,46 @@ const sheetRowStyle = (sheet: ExcelJS.Worksheet, cells: string[], style: any) =>
   }
 };
 
-export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
+export const XlsxGenerator = ({ questionItems, metaData }: reportType) => {
   const { t } = useTranslation();
-  const generateQuestionRows = (language: string): QuestionRow[] => {
-    let array: QuestionRow[] = [];
+  const generateQuestionRows = (language: string): any[][] => {
+    let questionArray: QuestionRow[] = [];
+    let patientsInfo: any[] = [];
     for (let questionItem of questionItems) {
       const element: QuestionRow = {
         id: questionItem.id,
         prompt: questionItem.prompt[language],
         answer: questionItem?.answer,
       };
-      array.push(element);
+      questionArray.push(element);
       if (questionItem.__class__ === 'CompositionQuestion') {
         for (let nestedQuestionItem of questionItem.compositionGroups) {
-          const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
-          array = array.concat(subArray);
+          const subQuestionArray = processCompositionOrSpecializedQuestion(
+            nestedQuestionItem,
+            language,
+          );
+          questionArray = questionArray.concat(subQuestionArray);
         }
       }
       if (questionItem.__class__ === 'SpecializedGroup') {
         for (let nestedQuestionItem of questionItem.questions) {
-          const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
-          array = array.concat(subArray);
+          const subQuestionArray = processCompositionOrSpecializedQuestion(
+            nestedQuestionItem,
+            language,
+          );
+          questionArray = questionArray.concat(subQuestionArray);
         }
       }
       if (questionItem.__class__ === 'NumericTable') {
-        const subArray = processTableQuestion(questionItem, language);
-        array = array.concat(subArray);
+        const subQuestionArray = processTableQuestion(questionItem, language);
+        questionArray = questionArray.concat(subQuestionArray);
       }
       if (questionItem.__class__ === 'ExpandableQuestion') {
-        const subArray = processExpandableQuestion(questionItem, language);
-        array = array.concat(subArray);
+        const subQuestionArray = processExpandableQuestion(questionItem, language);
+        patientsInfo.push(subQuestionArray);
       }
     }
-    return array;
+    return [questionArray, patientsInfo];
   };
 
   const generateExcel = () => {
@@ -102,24 +113,44 @@ export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
     const languages = ['en', 'fr'];
     for (const language of languages) {
       const worksheet = workbook.addWorksheet(language);
-      const array = generateQuestionRows(language);
-      worksheet.columns = [
-        { header: 'Id', key: 'id', width: 10 },
-        { header: 'Prompt', key: 'prompt', width: 28 },
-        { header: 'Answer', key: 'answer', width: 10 },
-      ];
-      for (let i = 0; i < array.length; ++i) {
-        const level = underscoreAmount(array[i].id);
-        // if (level === 0) {
-        const row = {
-          id: array[i].id.replaceAll('_', '.'),
-          prompt: array[i].prompt,
-          answer: array[i].answer,
-        };
-        worksheet.addRow(row).commit();
+      const meta = metaData;
+      const reportDate = new Date(metaData.reportMonth.substring(0, 10));
+      const month = reportDate.toLocaleString('default', { month: 'long' });
+      const year = reportDate.getFullYear().toString();
+      const [questionArray, patientsInfo] = generateQuestionRows(language);
+
+      // custom only for Rehab reports
+      if (patientsInfo) {
+        const patientsInfoSheet = workbook.addWorksheet('PatientsInfo' + language);
+        const dischargedAliveColumns = [];
+        const dischargedAlivePatient1 = patientsInfo[0][0];
+        for (let i = 0; i < dischargedAlivePatient1.length; i++) {
+          dischargedAliveColumns.push(dischargedAlivePatient1[i].prompt);
+        }
+        patientsInfoSheet.addTable({
+          name: 'MyTable' + language,
+          ref: 'A1',
+          columns: [{ name: 'Prompt' }],
+          rows: [['Discharged Alive'], ['Days'], ['New']],
+        });
+        const table = patientsInfoSheet.getTable('MyTable' + language);
+        table.addColumn({ name: 'Patient1' }, ['1', '2', '3'], 2);
+        table.commit();
+      }
+      const headerRow = [];
+      headerRow[1] = 'ID';
+      headerRow[4] = 'Prompt';
+      headerRow[7] = 'Answers - ' + month + ' ' + year;
+      worksheet.addRow(headerRow);
+      for (let i = 0; i < questionArray.length; ++i) {
+        const level = underscoreAmount(questionArray[i].id);
+        const rowCells = [];
+        rowCells[1 + level] = questionArray[i].id.replaceAll('_', '.');
+        rowCells[4 + level] = questionArray[i].prompt;
+        rowCells[7 + level] = questionArray[i].answer;
+        worksheet.addRow(rowCells).commit();
         worksheet['_rows'][i + 1]['_outlineLevel'] = level;
       }
-
       const rowFontStyles = [
         {
           name: 'Calibri',
@@ -141,26 +172,25 @@ export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
           size: 12,
         },
       ];
-      for (let i = 1; i <= array.length; i++) {
+
+      for (let i = 1; i < questionArray.length + 1; i++) {
         const row = worksheet['_rows'][i];
         const r = i + 1;
 
         if (row) {
           const outlineLevel = row['_outlineLevel'];
-          sheetRowStyle(worksheet, ['A' + r, 'B' + r, 'C' + r], {
-            font: rowFontStyles[outlineLevel],
-          });
+          worksheet.getRow(r).font = rowFontStyles[outlineLevel];
         }
       }
     }
 
     // workbook.xlsx.writeFile('./data.xlsx');
-    workbook.xlsx.writeBuffer().then((data) => {
-      const blob = new Blob([data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      saveAs(blob, 'data.xlsx');
-    });
+    // workbook.xlsx.writeBuffer().then((data) => {
+    //   const blob = new Blob([data], {
+    //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    //   });
+    //   saveAs(blob, 'data.xlsx');
+    // });
   };
 
   return (
