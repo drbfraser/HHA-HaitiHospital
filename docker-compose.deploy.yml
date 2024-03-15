@@ -71,6 +71,7 @@ services:
       AWS_LOGGING_REGION: ${AWS_LOGGING_REGION}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      ENV: ${ENV}
     command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-${ENV:-local}.conf']
 
 volumes:
