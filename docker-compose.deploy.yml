@@ -21,8 +21,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - CORS=${CORS}
       - PASSWORD_SEED=${PASSWORD_SEED}
-      - LOKI_URL=${LOKI_URL}
-      - LOKI_APP_LABEL=${LOKI_APP_LABEL}
+      # - LOKI_URL=${LOKI_URL}
+      # - LOKI_APP_LABEL=${LOKI_APP_LABEL}
 
   mongodb:
     restart: always
@@ -40,7 +40,7 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      - '2019:2019'
+      # - '2019:2019'
     logging:
       driver: fluentd
     volumes:
