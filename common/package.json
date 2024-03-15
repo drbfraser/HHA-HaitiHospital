@@ -7,7 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "nyc ts-mocha -p tsconfig.json ./tests/**/*.spec.ts",
-    "build": "tsc -p tsconfig.json --build",
+    "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "keywords": [],
