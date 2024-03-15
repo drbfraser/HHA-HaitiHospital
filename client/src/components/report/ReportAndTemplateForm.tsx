@@ -53,6 +53,7 @@ export const ReportAndTemplateForm = ({
           id="Report-Month"
           onChange={(e) => setReportMonth(new Date(e.target.value))}
           value={reportMonth?.toISOString().slice(0, 7)}
+          max={new Date().toISOString().slice(0, 7)}
         />
       </fieldset>
     </div>

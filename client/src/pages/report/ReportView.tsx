@@ -12,6 +12,7 @@ import Layout from 'components/layout';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import ReportForm from 'components/report/ReportForm';
+import ReportMonthForm from 'components/report/ReportMonthForm';
 import { ResponseMessage } from 'utils/response_message';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
@@ -33,8 +34,10 @@ const ReportView = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const { departmentIdKeyMap } = useDepartmentData();
-  const department = metaData ? departmentIdKeyMap.get(metaData.departmentId) : null;
 
+  const department = metaData?.departmentId ? departmentIdKeyMap.get(metaData.departmentId) : null;
+  const [editMonth, setEditMonth] = useState(false);
+  const [reportMonth, setReportMonth] = useState<Date>();
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
 
   const { t } = useTranslation();
@@ -42,12 +45,9 @@ const ReportView = () => {
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const pdfExportComponent = useRef<PDFExport | null>(null);
   const report_id = useLocation().pathname.split('/')[2];
-  const submittedDate =
-    metaData && metaData.submittedDate
-      ? new Date(metaData.submittedDate).toLocaleDateString(userLocale, monthYearOptions)
-      : null;
-  const reportMonthDate = metaData?.reportMonth ? new Date(metaData?.reportMonth) : new Date();
-  const reportMonthString = reportMonthDate.toLocaleDateString(userLocale, monthYearOptions);
+
+  const getReportMonthString = () =>
+    reportMonth?.toLocaleDateString(userLocale, monthYearOptions) || '';
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
@@ -62,13 +62,23 @@ const ReportView = () => {
     setReport(objectSerializer.deserialize(objectSerializer.serialize(report as Object)));
   };
 
+  const applyMonthChanges = (reportMonth: Date) => {
+    setAreChangesMade(true);
+    setReportMonth(reportMonth);
+  };
+
   const handleExportWithComponent = () => {
     pdfExportComponent.current?.save();
   };
 
-  const btnHandler = (e: MouseEvent<HTMLButtonElement>) => {
+  const editBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setReadOnly((prev) => !prev);
+  };
+
+  const editMonthBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setEditMonth((prev) => !prev);
   };
 
   const reportHandler = () => {
@@ -77,6 +87,7 @@ const ReportView = () => {
       id: report_id,
       serializedReport,
       submittedBy: user?.userDetails?.name,
+      reportMonth: reportMonth,
       isDraft: isDraft,
     };
 
@@ -87,7 +98,11 @@ const ReportView = () => {
       ENDPOINT_REPORTS,
       editedReportObject,
       () => {
-        setReadOnly((prev) => !prev);
+        if (!readOnly) {
+          setReadOnly((prev) => !prev);
+        } else {
+          setEditMonth((prev) => !prev);
+        }
         setShowViewEditBtn(true);
       },
       history,
@@ -111,7 +126,8 @@ const ReportView = () => {
     );
 
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
-
+    const reportDate = new Date(fetchedReport?.report?.reportMonth);
+    setReportMonth(reportDate);
     setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
       _id: fetchedReport?.report?._id,
@@ -187,14 +203,27 @@ const ReportView = () => {
               {(user.userDetails.role === Role.Admin ||
                 user.userDetails.role === Role.MedicalDirector ||
                 (user.userDetails.role === Role.HeadOfDepartment &&
-                  user.userDetails.department.name === department)) && (
-                <button className="btn btn-primary mr-3" onClick={btnHandler}>
-                  {readOnly
-                    ? t('departmentReportDisplayEditForm')
-                    : t('departmentReportDisplayViewForm')}
-                </button>
-              )}
-              {readOnly && (
+                  user.userDetails.department.name === department)) &&
+                !editMonth && (
+                  <button className="btn btn-primary mr-3" onClick={editBtnHandler}>
+                    {readOnly
+                      ? t('departmentReportDisplayEditForm')
+                      : t('departmentReportDisplayViewForm')}
+                  </button>
+                )}
+              {(user.userDetails.role === Role.Admin ||
+                user.userDetails.role === Role.MedicalDirector ||
+                (user.userDetails.role === Role.HeadOfDepartment &&
+                  user.userDetails.department.name === department)) &&
+                readOnly && (
+                  <button className="btn btn-primary mr-3" onClick={editMonthBtnHandler}>
+                    {readOnly && !editMonth
+                      ? t('departmentReportDisplayEditMonth')
+                      : t('departmentReportDisplayViewForm')}
+                  </button>
+                )}
+              {/* Other buttons */}
+              {readOnly && !editMonth && (
                 <span>
                   <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
                     {t('departmentReportDisplayGeneratePDF')}
@@ -202,14 +231,14 @@ const ReportView = () => {
                   <XlsxGenerator questionItems={questionItems} />
                 </span>
               )}
-              {readOnly && (
-                <button className="btn btn-outline-dark" onClick={toggleTable}>
+              {readOnly && !editMonth && (
+                <button className="btn bgtn-outline-dark" onClick={toggleTable}>
                   {isUsingTable
                     ? t('departmentReportDisplayHideTable')
                     : t('departmentReportDisplayShowTable')}
                 </button>
               )}
-              {readOnly && !isUsingTable && (
+              {readOnly && !editMonth && !isUsingTable && (
                 <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
                   {isUsingPagination
                     ? t('departmentReportDisplayHidePagination')
@@ -219,10 +248,10 @@ const ReportView = () => {
             </div>
           </header>
 
-          {readOnly && (
+          {readOnly && !editMonth && (
             <div className="visually-hidden">
               <PDFExport
-                fileName={`${department}_${reportMonthString.replace(/\s/g, '')}__${metaData?.submittedBy}`}
+                fileName={`${department}_${getReportMonthString().replace(/\s/g, '')}__${metaData?.submittedBy}`}
                 paperSize="A4"
                 ref={pdfExportComponent}
                 scale={0.75}
@@ -234,14 +263,23 @@ const ReportView = () => {
                 isUsingPagination={false}
                 isUsingTable={true}
                 reportData={report}
-                reportMonth={reportMonthString}
+                reportMonth={getReportMonthString()}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
               />
             </div>
           )}
 
-          {readOnly ? (
+          {readOnly && editMonth && (
+            <ReportMonthForm
+              monthLabel={t('reportsMonth')}
+              reportMonth={reportMonth}
+              applyMonthChanges={applyMonthChanges}
+              formHandler={confirmEdit}
+            />
+          )}
+
+          {readOnly && !editMonth ? (
             <div>
               <ReadonlyReportForm
                 applyReportChanges={applyReportChanges}
@@ -251,21 +289,24 @@ const ReportView = () => {
                 isUsingPagination={isUsingPagination}
                 isUsingTable={isUsingTable}
                 reportData={report}
-                reportMonth={reportMonthString}
+                reportMonth={getReportMonthString()}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
               />
             </div>
           ) : (
-            <ReportForm
-              applyReportChanges={applyReportChanges}
-              btnText="Update"
-              formHandler={confirmEdit}
-              isSubmitting={false}
-              reportData={report}
-              readOnly={false}
-              reportMonth={reportMonthString}
-            />
+            !editMonth &&
+            !readOnly && (
+              <ReportForm
+                applyReportChanges={applyReportChanges}
+                btnText="Update"
+                formHandler={confirmEdit}
+                isSubmitting={false}
+                reportData={report}
+                reportMonth={getReportMonthString()}
+                readOnly={false}
+              />
+            )
           )}
         </Layout>
       )}
