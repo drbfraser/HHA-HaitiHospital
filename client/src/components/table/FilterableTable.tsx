@@ -84,15 +84,7 @@ const FilterableTable = ({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    globalFilterFn: (row, columnId, filterValue) => {
-      return true;
-      // const safeValue: string = (() => {
-      //   const value: any = row.getValue(columnId);
-      //   return typeof value === 'number' ? String(value) : value?.toString() ?? value;
-      // })();
-
-      // return safeValue?.toLowerCase().includes(filterValue.toLowerCase());
-    },
+    globalFilterFn: FILTER_FUNCTIONS.contains,
     state: {
       globalFilter,
       sorting,

@@ -7,6 +7,7 @@ import { Row } from '@tanstack/react-table';
 export const FILTER_FUNCTIONS = {
   contains: (row: Row<any>, columnId: string, value: any) => {
     const cellValue = getNestedCellValue(row, columnId);
+    console.log('contains', cellValue.toLowerCase(), value.toLowerCase());
     return cellValue.toLowerCase().includes(value.toLowerCase());
   },
 
@@ -42,7 +43,7 @@ function getNestedCellValue(row: Row<any>, columnId: string) {
     return cellValue.toLowerCase();
   }
 
-  return '';
+  return JSON.stringify(cellValue as any)?.toString() || '';
 }
 
 export const StringFilter = ({

@@ -24,6 +24,7 @@ import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import DraftIcon from 'components/report/DraftIcon';
+import { Row } from '@tanstack/react-table';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -126,8 +127,11 @@ const GeneralReports = () => {
     {
       header: t('reportsMonth'),
       id: 'reportMonth',
-      cell: (row) => <span>{row.getValue().reportMonth.toString()}</span>,
-      accessorFn: (row) => row,
+      cell: (row) => <span>{row.getValue()}</span>,
+      accessorFn: (row) => row.reportMonth,
+      filterFn: (row: Row<any>, columnId: string, value: any) => {
+        return true;
+      },
     },
     {
       header: t('reportsSubmittedBy'),
@@ -137,8 +141,11 @@ const GeneralReports = () => {
     {
       header: t('reportsSubmissionDate'),
       id: 'submittedDate',
-      cell: (row) => <span>{row.getValue()?.submittedDate.toString()}</span>,
-      accessorFn: (row) => row,
+      cell: (row) => <span>{row.getValue()}</span>,
+      accessorFn: (row) => row.submittedDate,
+      filterFn: (row: Row<any>, columnId: string, value: any) => {
+        return true;
+      },
     },
     {
       header: t('reportsOptions'),
