@@ -35,6 +35,7 @@ const ReportMonthForm = ({
           id="Report-Month"
           onChange={(e) => setCurrentReportMonth(new Date(e.target.value))}
           value={currentReportMonth?.toISOString().slice(0, 7)}
+          max={new Date().toISOString().slice(0, 7)}
         />
         <button type="submit" className="btn btn-primary mt-2">
           {t('departmentReportDisplayMonthApplyChanges')}
