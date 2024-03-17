@@ -18,7 +18,7 @@ import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
-export const EmployeeOfTheMonthArchive = () => {
+export const EmployeeOfTheMonthList = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
   const [currentIndex, setCurrentIndex] = useState<string>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);

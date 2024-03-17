@@ -118,7 +118,7 @@ export const EmployeeOfTheMonthView = () => {
       <div className="d-flex flex-column flex-sm-row gap-1">
         <Link to="/employee-of-the-month/archive" className="mr-3">
           <button type="button" className="btn btn-outline-dark">
-            {t('employeeOfTheMonthArchive')}
+            {t('employeeOfTheMonthList')}
           </button>
         </Link>
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
