@@ -49,7 +49,7 @@ const AdminList = () => {
       deleteUserActions,
       history,
       ResponseMessage.getMsgDeleteUserFailed(),
-      'Pending Delete',
+      undefined,
       ResponseMessage.getMsgDeleteUserOk(),
     );
   };
