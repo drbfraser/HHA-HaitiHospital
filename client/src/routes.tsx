@@ -13,7 +13,7 @@ import EditMessage from 'pages/message_board/EditMessage';
 import { EditUserForm } from 'pages/admin/EditUserForm';
 import { EmployeeOfTheMonthAddForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthAddForm';
 import { EmployeeOfTheMonthView } from 'pages/employee_of_the_month/EmployeeOfTheMonthView';
-import { EmployeeOfTheMonthList } from 'pages/employee_of_the_month/EmployeeOfTheMonthArchive';
+import { EmployeeOfTheMonthList } from 'pages/employee_of_the_month/EmployeeOfTheMonthList';
 import GeneralReports from 'pages/general_reports/GeneralReports';
 import Home from 'pages/home/Home';
 import { LeaderBoard } from 'pages/leader_board/LeaderBoard';

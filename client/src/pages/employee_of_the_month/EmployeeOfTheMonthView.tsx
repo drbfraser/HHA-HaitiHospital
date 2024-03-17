@@ -116,7 +116,7 @@ export const EmployeeOfTheMonthView = () => {
   return (
     <Layout title={t('headerEmployeeOfTheMonth')}>
       <div className="d-flex flex-column flex-sm-row gap-1">
-        <Link to="/employee-of-the-month/archive" className="mr-3">
+        <Link to="/employee-of-the-month/archive" className="mr-2">
           <button type="button" className="btn btn-outline-dark">
             {t('employeeOfTheMonthList')}
           </button>

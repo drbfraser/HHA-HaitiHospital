@@ -12,6 +12,7 @@ interface LayoutProps {
   children: React.ReactNode;
   style?: React.CSSProperties;
   showBackButton?: boolean;
+  backButtonName?: string;
   title?: string;
   additionalButtons?: React.ReactNode;
 }
@@ -21,6 +22,7 @@ const Layout = ({
   children,
   style,
   showBackButton = false,
+  backButtonName = 'button.back',
   additionalButtons = null,
   title = '',
 }: LayoutProps) => {
@@ -46,7 +48,7 @@ const Layout = ({
                   data-testid="back-button"
                   onClick={history.goBack}
                 >
-                  {t('button.back')}
+                  {t(backButtonName)}
                 </button>
               )}
               {additionalButtons}
