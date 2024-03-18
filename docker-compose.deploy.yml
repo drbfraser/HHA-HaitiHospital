@@ -45,6 +45,8 @@ services:
       - '2019:2019'
     logging:
       driver: fluentd
+      options:
+        tag: docker.{{.Name}}.{{.ID}}
     volumes:
       - caddy_log:/var/log/
 

@@ -13,6 +13,8 @@ services:
       - server_logs:/var/log
     logging:
       driver: fluentd
+      options:
+        tag: docker.{{.Name}}.{{.ID}}
 
   mongodb:
     container_name: hhahaiti_mongodb
@@ -24,6 +26,8 @@ services:
       - mongo_logs:/var/log
     logging:
       driver: fluentd
+      options:
+        tag: docker.{{.Name}}.{{.ID}}
 
   logger:
     container_name: hhahaiti_fluentbit
