@@ -90,6 +90,22 @@ export const EmployeeOfTheMonthView = () => {
     };
   }, [employeeViewParams, history, params]);
 
+  const CarouselIndicators: React.FC = () => (
+    <div className="carousel-indicators">
+      {new Array(employeesOfTheMonth.length).fill(0).map((_, index) => (
+        <button
+          key={index}
+          type="button"
+          data-bs-target="#eotmCarousel"
+          data-bs-slide-to={index}
+          className="active"
+          aria-current="true"
+          aria-label={`Slide ${index + 1}`}
+        ></button>
+      ))}
+    </div>
+  );
+
   const CarouselButtonGroup: React.FC = () => (
     <div className="d-flex gap-1">
       <button
@@ -135,28 +151,15 @@ export const EmployeeOfTheMonthView = () => {
         <div>
           <h2 className="mt-3 mb-3 fw-bold">{t('employeeOfTheMonthTitle').concat(title)}</h2>
           <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
-            <div className="carousel-indicators">
-              {new Array(employeesOfTheMonth.length).fill(0).map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  data-bs-target="#eotmCarousel"
-                  data-bs-slide-to={index}
-                  className="active"
-                  aria-current="true"
-                  aria-label={`Slide ${index + 1}`}
-                ></button>
-              ))}
-            </div>
-
             <div className="carousel-inner my-2">
               {employeesOfTheMonth.map((eotm, i) => (
                 <div className={`carousel-item ${i == 0 ? 'active' : ''}`} key={i}>
                   <EmployeeOfTheMonthSummary employee={eotm} />
                 </div>
               ))}
+              {employeesOfTheMonth.length > 1 ? <CarouselIndicators /> : <></>}
             </div>
-            <CarouselButtonGroup />
+            {employeesOfTheMonth.length > 1 ? <CarouselButtonGroup /> : <></>}
           </div>
         </div>
       )}
