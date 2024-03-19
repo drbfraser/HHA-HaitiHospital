@@ -40,11 +40,11 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      # - '2019:2019'
+      - '2019:2019'
     logging:
       driver: fluentd
     volumes:
-      - caddy_log:/var/log/
+      - caddy_log:/var/log
 
   logger:
     container_name: hhahaiti_fluentbit
@@ -52,7 +52,7 @@ services:
     ports:
       - 24224:24224
     volumes:
-      - caddy_log:/var/log/
+      - caddy_log:/logs/caddy:ro
       - ./fluentbit-config:/fluent-bit/etc
       - fluentbit_logs_output:/output
       - fluentbit_logs_db:/persist
