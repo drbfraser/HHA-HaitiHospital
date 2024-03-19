@@ -35,7 +35,7 @@ export const processTableQuestion = (tableItem, language): QuestionRow[] => {
       const questionItem = tableCell.question;
       const element: QuestionRow = {
         id: questionItem.id,
-        prompt: questionItem.prompt[language],
+        prompt: questionItem.prompt[language].replace(/^(Question for|Question pour)\s*/i, ''),
         answer: questionItem?.answer,
       };
       array.push(element);
@@ -54,27 +54,40 @@ const QuestionRows = ({ questionItems = [] }: { questionItems: any[] }): JSX.Ele
       let array: QuestionRow[] = [];
 
       for (let questionItem of questionItems) {
-        const element: QuestionRow = {
-          id: questionItem.id,
-          prompt: questionItem.prompt[language],
-          answer: questionItem?.answer,
-        };
-        array.push(element);
-        if (questionItem.__class__ === 'CompositionQuestion') {
-          for (let nestedQuestionItem of questionItem.compositionGroups) {
-            const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
-            array = array.concat(subArray);
-          }
-        }
-        if (questionItem.__class__ === 'SpecializedGroup') {
-          for (let nestedQuestionItem of questionItem.questions) {
-            const subArray = processCompositionOrSpecializedQuestion(nestedQuestionItem, language);
-            array = array.concat(subArray);
-          }
-        }
         if (questionItem.__class__ === 'NumericTable') {
-          const subArray = processTableQuestion(questionItem, language);
-          array = array.concat(subArray);
+          const element: QuestionRow = {
+            id: questionItem.id,
+            prompt: questionItem.tableTitle[language].replace(/\d+/g, ''),
+            answer: questionItem?.answer,
+          };
+          array.push(element);
+          const subQuestionArray = processTableQuestion(questionItem, language);
+          array = array.concat(subQuestionArray);
+        } else {
+          const element: QuestionRow = {
+            id: questionItem.id,
+            prompt: questionItem.prompt[language],
+            answer: questionItem?.answer,
+          };
+          array.push(element);
+          if (questionItem.__class__ === 'CompositionQuestion') {
+            for (let nestedQuestionItem of questionItem.compositionGroups) {
+              const subArray = processCompositionOrSpecializedQuestion(
+                nestedQuestionItem,
+                language,
+              );
+              array = array.concat(subArray);
+            }
+          }
+          if (questionItem.__class__ === 'SpecializedGroup') {
+            for (let nestedQuestionItem of questionItem.questions) {
+              const subArray = processCompositionOrSpecializedQuestion(
+                nestedQuestionItem,
+                language,
+              );
+              array = array.concat(subArray);
+            }
+          }
         }
       }
 
