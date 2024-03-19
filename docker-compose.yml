@@ -22,7 +22,6 @@ services:
       driver: fluentd
       options:
         tag: docker.{{.Name}}.{{.ID}}
-        # fluentd_async: 'true'
         fluentd-address: tcp://localhost:24224
 
   mongodb:

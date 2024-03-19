@@ -21,8 +21,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - CORS=${CORS}
       - PASSWORD_SEED=${PASSWORD_SEED}
-      # - LOKI_URL=${LOKI_URL}
-      # - LOKI_APP_LABEL=${LOKI_APP_LABEL}
+      - LOKI_URL=${LOKI_URL}
+      - LOKI_APP_LABEL=${LOKI_APP_LABEL}
 
   mongodb:
     restart: always
@@ -60,12 +60,12 @@ services:
       - mongo_logs:/logs/mongodb:ro
 
     environment:
-      # LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
-      # LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
-      # LOKI_KEY: ${LOKI_KEY} # ADD YOUR PASSWORD
-      # PROMETHEUS_HOST: ${PROMETHEUS_HOST} # ADD YOUR HOST
-      # PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
-      # PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
+      LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
+      LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
+      LOKI_KEY: ${LOKI_KEY} # ADD YOUR PASSWORD
+      PROMETHEUS_HOST: ${PROMETHEUS_HOST} # ADD YOUR HOST
+      PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
+      PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
 
       # Used in staging/prod environment, for AWS CloudWatch logging
       AWS_LOGGING_REGION: ${AWS_LOGGING_REGION}
@@ -75,8 +75,3 @@ services:
 
 volumes:
   caddy_log:
-  hhahaiti_mongodb_data:
-  fluentbit_logs_db:
-  fluentbit_logs_output:
-  mongo_logs:
-  server_logs:
