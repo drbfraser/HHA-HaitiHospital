@@ -13,7 +13,6 @@ import {
   ENDPOINT_REPORT_DELETE_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
 } from 'constants/endpoints';
-import { JsonReportDescriptor } from '@hha/common';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +24,7 @@ import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import DraftIcon from 'components/report/DraftIcon';
+import { Row } from '@tanstack/react-table';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -32,8 +32,8 @@ const GeneralReports = () => {
   const history = useHistory<History>();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [reports, setReports] = useState<any[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<string | null>(null);
+  const [reports, setReports] = useState<IReportObject<any>[]>([]);
 
   const getReports = useCallback(async () => {
     const controller = new AbortController();
@@ -41,7 +41,7 @@ const GeneralReports = () => {
     if (authState.userDetails.role === Role.User) {
       getReportsEndPoint = ENDPOINT_REPORTS_GET_BY_DEPARTMENT(authState.userDetails.department.id);
     }
-    let fetchedReports: JsonReportDescriptor[] = await Api.Get(
+    let fetchedReports: any[] = await Api.Get(
       getReportsEndPoint,
       ResponseMessage.getMsgFetchReportsFailed(),
       history,
@@ -69,7 +69,7 @@ const GeneralReports = () => {
       deleteReportCallback,
       history,
       ResponseMessage.getMsgDeleteReportFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteReportOk(),
     );
   };
@@ -86,7 +86,9 @@ const GeneralReports = () => {
   };
 
   const onModalDelete = async () => {
-    await deleteReport(currentIndex);
+    if (currentIndex) {
+      await deleteReport(currentIndex);
+    }
     setIsDeleteModalOpen(false);
   };
 
@@ -125,7 +127,11 @@ const GeneralReports = () => {
     {
       header: t('reportsMonth'),
       id: 'reportMonth',
-      accessorKey: 'reportMonth',
+      cell: (row) => <span>{row.getValue()}</span>,
+      accessorFn: (row) => row.reportMonth,
+      filterFn: (row: Row<any>, columnId: string, value: any) => {
+        return true;
+      },
     },
     {
       header: t('reportsSubmittedBy'),
@@ -135,7 +141,11 @@ const GeneralReports = () => {
     {
       header: t('reportsSubmissionDate'),
       id: 'submittedDate',
-      accessorKey: 'submittedDate',
+      cell: (row) => <span>{row.getValue()}</span>,
+      accessorFn: (row) => row.submittedDate,
+      filterFn: (row: Row<any>, columnId: string, value: any) => {
+        return true;
+      },
     },
     {
       header: t('reportsOptions'),
@@ -176,11 +186,11 @@ const GeneralReports = () => {
     },
   ];
 
-  const getReportName = (item): string => {
+  const getReportName = (item: any): string => {
     return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
   };
 
-  const getReportMonth = (item): string => {
+  const getReportMonth = (item: IReportObject<any>): string => {
     return new Date(item.reportMonth).toLocaleDateString(userLocale, monthYearOptions);
   };
 

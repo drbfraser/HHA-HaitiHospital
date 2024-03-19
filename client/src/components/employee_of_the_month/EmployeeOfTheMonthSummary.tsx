@@ -6,7 +6,6 @@ import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
-import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -17,10 +16,9 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
   const ALT_MESSAGE: string = 'Employee Of The Month...';
   const { t } = useTranslation();
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
-  const [employeeImage, setEmployeeImage] = useState<string>(null);
+  const [employeeImage, setEmployeeImage] = useState<string>('');
   const updatedDate = props.employee.updatedAt;
   const history: History = useHistory<History>();
-  const authState = useAuthState();
 
   const onEnlargeImage = (event: any) => {
     event.stopPropagation();
@@ -34,13 +32,15 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
 
   useEffect(() => {
     const getEmployeeOfTheMonthImage = async () => {
-      const employeeImage = await Api.Image(
-        ENDPOINT_IMAGE_BY_PATH(props.employee.imgPath),
-        history,
-      );
-      setEmployeeImage(employeeImage);
+      if (props.employee.imgPath) {
+        const employeeImage = await Api.Image(
+          ENDPOINT_IMAGE_BY_PATH(props.employee.imgPath),
+          history,
+        );
+        setEmployeeImage(employeeImage);
+      }
     };
-    props.employee.imgPath && getEmployeeOfTheMonthImage();
+    getEmployeeOfTheMonthImage();
   }, [props.employee.imgPath, history]);
 
   return (

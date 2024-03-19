@@ -39,7 +39,9 @@ export const EmployeeOfTheMonthAddForm = () => {
     [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
     let postData = JSON.stringify(data);
     formData.append('document', postData);
-    formData.append('file', selectedFile);
+    if (selectedFile) {
+      formData.append('file', selectedFile);
+    }
     await Api.Post(
       ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST,
       formData,

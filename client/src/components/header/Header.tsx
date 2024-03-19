@@ -17,7 +17,7 @@ interface HeaderProps {
 const Header = ({ title }: HeaderProps) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
   const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState<UserDetails>();
   const { t } = useTranslation();
 
   const logout = () => {

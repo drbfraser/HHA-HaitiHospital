@@ -29,7 +29,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>(null);
+  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>();
   const { reset } = useForm<EmployeeOfTheMonthModel>({});
   const [imageIsUpdated, setImageIsUpdated] = useState<boolean>(false);
   const history: History = useHistory<History>();

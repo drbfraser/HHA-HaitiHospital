@@ -68,7 +68,7 @@ const Post = async (
   await toast.promise(
     axios.post(url, obj).then(
       (res) => actions && actions(res.data),
-      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
+      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string),
     ),
     {
       error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
@@ -112,7 +112,7 @@ const Put = async (
   await toast.promise(
     axios.put(url, obj).then(
       () => actions(),
-      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg),
+      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string),
     ),
     {
       error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
@@ -193,7 +193,7 @@ const Delete = async (
   await toast.promise(
     axios
       .delete(url, obj)
-      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string)),
     {
       error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
       pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),

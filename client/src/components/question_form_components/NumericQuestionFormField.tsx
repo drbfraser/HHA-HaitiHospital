@@ -72,7 +72,7 @@ const NumericQuestionFormField = ({
       nameId={nameId}
       prompt={question.getPrompt()}
       type="number"
-      value={question.getAnswer()}
+      value={question.getAnswer() || ''}
       readOnly={readOnly}
     />
   );

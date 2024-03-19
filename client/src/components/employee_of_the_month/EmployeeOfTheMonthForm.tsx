@@ -5,7 +5,7 @@ import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import Api from '../../actions/Api';
 import { History } from 'history';
@@ -30,21 +30,25 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
 
   useEffect(() => {
     const getEmployeeOfTheMonthImage = async () => {
-      const employeeImage = await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.data.imgPath), history);
-      setEmployeeImageSrc(employeeImage);
+      if (props?.data?.imgPath) {
+        const employeeImage = await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.data.imgPath), history);
+        setEmployeeImageSrc(employeeImage);
+      }
     };
     props.data?.imgPath && getEmployeeOfTheMonthImage();
   }, [props.data?.imgPath, history]);
 
-  function handleUploadImage(e) {
-    imageCompressor(e.target.files[0], props.onImageUpload);
-    props?.setImageIsUpdated();
-    setEmployeeImageSrc(URL.createObjectURL(e.target.files[0]));
+  function handleUploadImage(e: ChangeEvent<HTMLInputElement>) {
+    if (e?.target?.files) {
+      imageCompressor(e.target.files[0], props.onImageUpload);
+      props?.setImageIsUpdated && props.setImageIsUpdated();
+      setEmployeeImageSrc(URL.createObjectURL(e.target.files[0]));
+    }
   }
 
   function handleRemoveImage() {
     props.removeImageUpload();
-    props?.setImageIsUpdated();
+    props?.setImageIsUpdated && props.setImageIsUpdated();
     setEmployeeImageSrc(null);
   }
 

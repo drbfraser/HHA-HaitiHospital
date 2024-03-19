@@ -7,6 +7,11 @@ import { createDepartmentNameMap, createDepartmentIdMap } from 'utils/department
 import { useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 
+export interface Department {
+  id: string;
+  name: string;
+}
+
 const useDepartmentData = () => {
   const history: History = useHistory<History>();
 
@@ -22,7 +27,7 @@ const useDepartmentData = () => {
   });
 
   return {
-    departments: data,
+    departments: data as Department[],
     departmentNameKeyMap: createDepartmentNameMap(data),
     departmentIdKeyMap: createDepartmentIdMap(data),
   };

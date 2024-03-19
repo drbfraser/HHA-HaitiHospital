@@ -3,17 +3,16 @@ import { EnumFilter, EnumOption } from './EnumFilter';
 import { Button } from 'react-bootstrap';
 import { DateRangeFilter } from './DateRangeFilter';
 import { DayRange } from 'react-modern-calendar-datepicker';
-import { NumberFilter } from './NumberFilter';
-import { Row } from '@tanstack/react-table';
+import { FilterFunction, NumberFilter } from './NumberFilter';
 import { StringFilter } from './StringFilter';
 
 export type FilterValue = string | number | string[] | DayRange;
 
 export const enum FilterType {
-  STRING,
-  NUMBER,
-  DATE,
-  ENUM,
+  STRING = 'STRING',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  ENUM = 'ENUM',
 }
 
 export const FILTER_DEFAULT_VALUE = {
@@ -35,7 +34,7 @@ export const ClearFilterButton = ({
   initialValue,
 }: ClearFilterButtonProps) => (
   <>
-    {filterValue !== initialValue && (
+    {initialValue && filterValue !== initialValue && (
       <Button
         variant="light text-danger border border-right border-top border-bottom"
         onClick={() => setFilterValue(initialValue)}
@@ -49,7 +48,7 @@ export const ClearFilterButton = ({
 
 export interface FilterProps {
   placeholder: string;
-  setFilterFn?: (fn: (row: Row<any>, columnId: string, value: FilterValue) => boolean) => void;
+  setFilterFn?: (fn: FilterFunction) => void;
   setFilterValue: (value: FilterValue) => void;
   allowFilterFnChange?: boolean;
   filterValue: FilterValue;
@@ -58,15 +57,19 @@ export interface FilterProps {
   enumOptions?: EnumOption[];
 }
 
-const Filter = (props: FilterProps) => {
-  return (
-    <>
-      {props.type === FilterType.STRING && <StringFilter {...props} />}
-      {props.type === FilterType.NUMBER && <NumberFilter {...props} />}
-      {props.type === FilterType.DATE && <DateRangeFilter {...props} />}
-      {props.type === FilterType.ENUM && <EnumFilter {...props} />}
-    </>
-  );
+const Filter: React.FC<FilterProps> = (props) => {
+  switch (props.type) {
+    case FilterType.STRING:
+      return <StringFilter {...props} />;
+    case FilterType.NUMBER:
+      return <NumberFilter {...props} />;
+    case FilterType.DATE:
+      return <DateRangeFilter {...props} />;
+    case FilterType.ENUM:
+      return <EnumFilter {...props} />;
+    default:
+      return null;
+  }
 };
 
 export default Filter;

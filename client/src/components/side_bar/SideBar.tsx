@@ -1,15 +1,13 @@
 import './index.css';
-
-import { Department, GeneralDepartment, Role } from 'constants/interfaces';
-import { ReactNode, useEffect, useState } from 'react';
+import { Role } from 'constants/interfaces';
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { useAdminToggleState, useAuthState } from 'contexts';
-
 import { Button } from 'react-bootstrap';
 import HhaLogo from 'components/hha_logo/Logo';
 import { NavLink } from 'react-router-dom';
-import { useDepartmentData } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import { i18n } from 'i18next';
 
 const NAV_ITEM_CLASSES = 'nav-link link-light d-flex gap-0 gap-sm-2 w-100';
 
@@ -19,7 +17,7 @@ type SideBarItemProps = {
   onClick?: () => void;
 };
 
-export const changeLanguage = (ln, i18n) => {
+export const changeLanguage = (ln: string, i18n: i18n) => {
   return () => {
     i18n.changeLanguage(ln);
   };
@@ -73,7 +71,13 @@ const SidebarItem = ({ path, children, onClick }: SideBarItemProps) => {
   );
 };
 
-const Sidebar = ({ isExpanded, setIsExpanded }) => {
+const Sidebar = ({
+  isExpanded,
+  setIsExpanded,
+}: {
+  isExpanded: boolean;
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { t, i18n } = useTranslation();
   const authState = useAuthState();
 
@@ -98,7 +102,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('isSidebarExpanded', isExpanded);
+    localStorage.setItem('isSidebarExpanded', isExpanded.toString());
   }, [isExpanded]);
 
   const renderDeptIfUserInDept = (departmentName: string): boolean => {
@@ -129,7 +133,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
             padding: '1.5rem',
           }}
         />
-
+        ``
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
             <i

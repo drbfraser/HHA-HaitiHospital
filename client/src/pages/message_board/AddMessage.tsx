@@ -22,7 +22,7 @@ const AddMessage = () => {
       onSubmitActions,
       history,
       ResponseMessage.getMsgCreatePostFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgCreatePostOk(),
     );
   };

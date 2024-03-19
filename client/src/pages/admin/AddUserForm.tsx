@@ -27,7 +27,7 @@ export const AddUserForm = () => {
       onSubmit,
       history,
       ResponseMessage.getMsgCreateUserFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgCreateUserOk(),
     );
   };

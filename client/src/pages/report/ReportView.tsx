@@ -26,42 +26,40 @@ const ReportView = () => {
   const [isShowingNavigationModal, setIsShowingNavigationModal] = useState(false);
   const [isUsingPagination, setIsUsingPagination] = useState(true);
   const [isUsingTable, setIsUsingTable] = useState(true);
-  const [metaData, setMetaData] = useState<ReportMetaData>(null);
+  const [metaData, setMetaData] = useState<ReportMetaData | null>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
-  const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>(null);
+  const [report, setReport] = useState<QuestionGroup<ID, ErrorType> | null>(null);
   const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const { departmentIdKeyMap } = useDepartmentData();
-  const department = departmentIdKeyMap.get(metaData?.departmentId);
+
+  const department = metaData?.departmentId ? departmentIdKeyMap.get(metaData.departmentId) : null;
   const [editMonth, setEditMonth] = useState(false);
-  const [reportMonth, setReportMonth] = useState<Date>(null);
-  const [reportMonthString, setReportMonthString] = useState('');
+  const [reportMonth, setReportMonth] = useState<Date>();
   const [showViewEditBtn, setShowViewEditBtn] = useState(true);
 
   const { t } = useTranslation();
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
-  const pdfExportComponent = useRef(null);
+  const pdfExportComponent = useRef<PDFExport | null>(null);
   const report_id = useLocation().pathname.split('/')[2];
 
-  useEffect(() => {
-    if (reportMonth) {
-      const newReportMonthString = reportMonth.toLocaleDateString(userLocale, monthYearOptions);
-      setReportMonthString(newReportMonthString);
-    }
-  }, [reportMonth]);
+  const getReportMonthString = () =>
+    reportMonth?.toLocaleDateString(userLocale, monthYearOptions) || '';
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
-    setIsDraft(isDraft);
+    if (typeof isDraft === 'boolean') {
+      setIsDraft(isDraft);
+    }
     setShowEditModal(true);
   };
 
   const applyReportChanges = () => {
     setAreChangesMade(true);
-    setReport(objectSerializer.deserialize(objectSerializer.serialize(report)));
+    setReport(objectSerializer.deserialize(objectSerializer.serialize(report as Object)));
   };
 
   const applyMonthChanges = (reportMonth: Date) => {
@@ -70,7 +68,7 @@ const ReportView = () => {
   };
 
   const handleExportWithComponent = () => {
-    pdfExportComponent.current.save();
+    pdfExportComponent.current?.save();
   };
 
   const editBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -84,7 +82,7 @@ const ReportView = () => {
   };
 
   const reportHandler = () => {
-    const serializedReport = objectSerializer.serialize(report);
+    const serializedReport = objectSerializer.serialize(report as Object);
     const editedReportObject = {
       id: report_id,
       serializedReport,
@@ -128,8 +126,8 @@ const ReportView = () => {
     );
 
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
-    setReportMonth(new Date(fetchedReport?.report?.reportMonth));
-
+    const reportDate = new Date(fetchedReport?.report?.reportMonth);
+    setReportMonth(reportDate);
     setQuestionItems(fetchedReport?.report?.reportObject?.questionItems);
     setMetaData({
       _id: fetchedReport?.report?._id,
@@ -153,11 +151,11 @@ const ReportView = () => {
     if (areChangesMade && !readOnly) {
       window.onbeforeunload = () => true;
     } else {
-      window.onbeforeunload = undefined;
+      window.onbeforeunload = () => false;
     }
 
     return () => {
-      window.onbeforeunload = undefined;
+      window.onbeforeunload = () => false;
     };
   }, [areChangesMade, readOnly]);
 
@@ -253,23 +251,22 @@ const ReportView = () => {
           {readOnly && !editMonth && (
             <div className="visually-hidden">
               <PDFExport
-                fileName={`${department}_${reportMonthString.replace(/\s/g, '')}__${metaData?.submittedBy}`}
+                fileName={`${department}_${getReportMonthString().replace(/\s/g, '')}__${metaData?.submittedBy}`}
                 paperSize="A4"
                 ref={pdfExportComponent}
                 scale={0.75}
-              >
-                <ReadonlyReportForm
-                  applyReportChanges={applyReportChanges}
-                  formHandler={() => {}}
-                  isSubmitting={false}
-                  isUsingPagination={false}
-                  isUsingTable={true}
-                  reportData={report}
-                  reportMonth={reportMonthString}
-                  author={metaData?.submittedBy}
-                  questionItems={questionItems}
-                />
-              </PDFExport>
+              />
+              <ReadonlyReportForm
+                applyReportChanges={applyReportChanges}
+                formHandler={() => {}}
+                isSubmitting={false}
+                isUsingPagination={false}
+                isUsingTable={true}
+                reportData={report}
+                reportMonth={getReportMonthString()}
+                author={metaData?.submittedBy}
+                questionItems={questionItems}
+              />
             </div>
           )}
 
@@ -292,7 +289,7 @@ const ReportView = () => {
                 isUsingPagination={isUsingPagination}
                 isUsingTable={isUsingTable}
                 reportData={report}
-                reportMonth={reportMonthString}
+                reportMonth={getReportMonthString()}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
               />
@@ -306,7 +303,8 @@ const ReportView = () => {
                 formHandler={confirmEdit}
                 isSubmitting={false}
                 reportData={report}
-                reportMonth={reportMonthString}
+                reportMonth={getReportMonthString()}
+                readOnly={false}
               />
             )
           )}

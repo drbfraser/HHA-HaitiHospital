@@ -128,3 +128,10 @@ export interface QuestionRow {
   prompt_en?: string;
   prompt_fr?: string;
 }
+
+export interface Leaderboard {
+  id: string;
+  name: string;
+  points: number;
+  nCaseStudies: number;
+}
