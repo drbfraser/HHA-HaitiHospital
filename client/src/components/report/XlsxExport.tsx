@@ -7,9 +7,13 @@ import { processCompositionOrSpecializedQuestion, processTableQuestion } from '.
 import { ReportMetaData } from '@hha/common';
 import { useState } from 'react';
 
-interface reportType {
+interface ReportType {
   questionItems: any[];
   metaData: ReportMetaData;
+}
+
+export interface ExpandableQuestionList {
+  [parentPrompt: string]: any[];
 }
 
 export const processSelectionQuestion = (selectionItem, language: string): QuestionRow[] => {
@@ -65,11 +69,11 @@ const sheetRowStyle = (sheet: ExcelJS.Worksheet, cells: string[], style: any) =>
   }
 };
 
-export const XlsxGenerator = ({ questionItems, metaData }: reportType) => {
+export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
   const { t } = useTranslation();
-  const generateQuestionRows = (language: string): any[][] => {
+  const generateQuestionRows = (language: string): any => {
     let questionArray: QuestionRow[] = [];
-    let patientsInfo: any[] = [];
+    let patientsInfo: ExpandableQuestionList = {};
     for (let questionItem of questionItems) {
       const element: QuestionRow = {
         id: questionItem.id,
@@ -100,8 +104,12 @@ export const XlsxGenerator = ({ questionItems, metaData }: reportType) => {
         questionArray = questionArray.concat(subQuestionArray);
       }
       if (questionItem.__class__ === 'ExpandableQuestion') {
+        const parentPrompt = questionItem.prompt[language];
         const subQuestionArray = processExpandableQuestion(questionItem, language);
-        patientsInfo.push(subQuestionArray);
+        if (!patientsInfo[parentPrompt]) {
+          patientsInfo[parentPrompt] = [];
+        }
+        patientsInfo[parentPrompt] = patientsInfo[parentPrompt].concat(subQuestionArray);
       }
     }
     return [questionArray, patientsInfo];
@@ -113,26 +121,43 @@ export const XlsxGenerator = ({ questionItems, metaData }: reportType) => {
     const languages = ['en', 'fr'];
     for (const language of languages) {
       const worksheet = workbook.addWorksheet(language);
-      const meta = metaData;
       const reportDate = new Date(metaData.reportMonth.substring(0, 10));
       const month = reportDate.toLocaleString('default', { month: 'long' });
       const year = reportDate.getFullYear().toString();
-      const [questionArray, patientsInfo] = generateQuestionRows(language);
-
+      const [q, p] = generateQuestionRows(language);
+      const questionArray: QuestionRow[] = q;
+      const patientsInfo: ExpandableQuestionList = p;
       // custom only for Rehab reports
       if (patientsInfo) {
         const patientsInfoSheet = workbook.addWorksheet('PatientsInfo' + language);
-        const dischargedAliveColumns = [];
-        const dischargedAlivePatient1 = patientsInfo[0][0];
-        for (let i = 0; i < dischargedAlivePatient1.length; i++) {
-          dischargedAliveColumns.push(dischargedAlivePatient1[i].prompt);
+        for (const [expandableQuestionKey, nestedQuestionsList] of Object.entries(patientsInfo)) {
+          if (nestedQuestionsList.length < 1) continue;
+          const promptRows = [];
+          // get column of prompts using patient 1:
+          for (const q of nestedQuestionsList[0]) {
+            promptRows.push([q.prompt]);
+          }
+          const tableName = toCamelCase(expandableQuestionKey) + language;
+          patientsInfoSheet.addTable({
+            name: tableName,
+            ref: 'A1',
+            columns: [{ name: expandableQuestionKey }],
+            rows: promptRows,
+          });
+          const table = patientsInfoSheet.getTable(tableName);
+          for (let i = 1; i <= nestedQuestionsList.length; i++) {
+            const answers = [];
+            for (const q of nestedQuestionsList[i]) {
+              answers.push(q.answer);
+            }
+            table.addColumn(
+              { name: 'Patient ' + i.toString(), filterButton: false },
+              answers,
+              i + 1,
+            );
+          }
         }
-        patientsInfoSheet.addTable({
-          name: 'MyTable' + language,
-          ref: 'A1',
-          columns: [{ name: 'Prompt' }],
-          rows: [['Discharged Alive'], ['Days'], ['New']],
-        });
+
         const table = patientsInfoSheet.getTable('MyTable' + language);
         table.addColumn({ name: 'Patient1' }, ['1', '2', '3'], 2);
         table.commit();
@@ -199,3 +224,13 @@ export const XlsxGenerator = ({ questionItems, metaData }: reportType) => {
     </button>
   );
 };
+
+function toCamelCase(str) {
+  let words = str.split(/\s+/);
+
+  for (let i = 1; i < words.length; i++) {
+    words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+  }
+
+  return words.join('');
+}
