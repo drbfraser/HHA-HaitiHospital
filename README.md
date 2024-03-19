@@ -214,6 +214,14 @@ The following values are needed from a Grafana Cloud account to run with logging
 - PROMETHEUS_USER
 - PROMETHEUS_KEY
 
+### App Labels for Logging in Dev, Staging, and Prod
+
+We now have logs coming from the docker containers and the app server itself. For the app server, if we want to know from which environment it's from, we can set the `LOKI_APP_LABEL` in the .env file. By default, it's going to be `hhahaiti_local` for local testing.
+
+- Dev: `hhahaiti_dev`
+- Staging: `hhahaiti_stg`
+- Prod: `hhahaiti_prod`
+
 ### Command to run docker services for local monitoring
 
 ```bash
