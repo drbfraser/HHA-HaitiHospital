@@ -72,7 +72,7 @@ const CompositionQuestionFormField = ({
         nameId={nameId}
         prompt={promptValue}
         type="number"
-        value={question.getAnswer()}
+        value={question.getAnswer() || ''}
         readOnly={readOnly}
       />
       {question.map<JSX.Element>((group, index) => {

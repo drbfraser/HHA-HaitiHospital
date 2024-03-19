@@ -50,9 +50,9 @@ const Login = () => {
             .then((res: any) => {
               if (!res.success) {
                 setErrorMessage(i18n.t('signInInvalidLoginCredentials'));
-                document.querySelector('.login-form').classList.remove('shaked'); // do nothing if no class yet
-                document.querySelector('.login-form').scrollBy(0, 0); // allows animation to happen again
-                document.querySelector('.login-form').classList.add('shaked');
+                document.querySelector('.login-form')?.classList.remove('shaked'); // do nothing if no class yet
+                document.querySelector('.login-form')?.scrollBy(0, 0); // allows animation to happen again
+                document.querySelector('.login-form')?.classList.add('shaked');
                 return;
               }
               setUsername(res.user.name);

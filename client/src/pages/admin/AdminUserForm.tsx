@@ -34,30 +34,45 @@ export const AdminUserForm = (props: Props) => {
     defaultValues: initAdminForm(userData),
   });
   const departments: Map<string, Department> = props.data.departments;
+
   const hasDepartment = (role: keyof typeof Role): boolean =>
     Role[role] === Role.User || Role[role] === Role.HeadOfDepartment;
+
+  const hasDepartmentEnumKeyByStringValue = (userRole: Role): boolean => {
+    const deptKeyOrNull = getEnumKeyByStringValue(Role, userRole);
+    return deptKeyOrNull ? hasDepartment(deptKeyOrNull) : false;
+  };
+
   const [showDepartment, setShowDepartment] = useState<boolean>(
-    hasDepartment(getEnumKeyByStringValue(Role, userData.role)),
+    hasDepartmentEnumKeyByStringValue(userData.role),
   );
 
-  const onRoleChange = (newRole: keyof typeof Role) => {
-    const isShown = hasDepartment(newRole);
+  const onRoleChange = (newRole: string) => {
+    const newRoleEnum = getEnumKeyByStringValue(Role, newRole);
+    const isShown = newRoleEnum ? hasDepartment(newRoleEnum) : false;
     setShowDepartment(isShown);
+
     if (!isShown) {
-      setValue(ADMIN_USER_FORM_FIELDS.department.this, departments.get(GeneralDepartment));
+      setValue(
+        ADMIN_USER_FORM_FIELDS.department.this,
+        departments.get(GeneralDepartment) as Department,
+      );
     }
   };
 
   const submitForm = async (data: AdminUserFormData) => {
-    data.department.id = departments.get(data.department.name).id;
+    const deptName = departments.get(data.department.name);
+    if (typeof deptName !== 'undefined') {
+      data.department.id = deptName.id;
+    }
     await props.onSubmit(data);
   };
 
-  const handleUsernameChange = (event) => {
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
   };
 
-  const handlePasswordChange = (event) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
@@ -159,7 +174,7 @@ export const AdminUserForm = (props: Props) => {
           defaultValue={userData.role}
           required
           {...register(ADMIN_USER_FORM_FIELDS.role)}
-          onChange={(e) => onRoleChange(getEnumKeyByStringValue(Role, e.target.value))}
+          onChange={(e) => onRoleChange(e.target.value)}
         >
           <option value="" disabled hidden>
             {t('admin.user_form.inquiry_role')}

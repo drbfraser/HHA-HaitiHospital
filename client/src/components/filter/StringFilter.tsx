@@ -1,44 +1,49 @@
 import { ClearFilterButton, FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
 import { Form, InputGroup } from 'react-bootstrap';
-
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Row } from '@tanstack/react-table';
 
 export const FILTER_FUNCTIONS = {
-  contains: (row, columnId, value) => {
+  contains: (row: Row<any>, columnId: string, value: any) => {
     const cellValue = getNestedCellValue(row, columnId);
+    console.log('contains', cellValue.toLowerCase(), value.toLowerCase());
     return cellValue.toLowerCase().includes(value.toLowerCase());
   },
 
-  equal: (row, columnId, value) => {
+  equal: (row: Row<any>, columnId: string, value: any) => {
     const cellValue = getNestedCellValue(row, columnId);
     return cellValue.toLowerCase() === value.toLowerCase();
   },
 
-  startsWith: (row, columnId, value) => {
+  startsWith: (row: Row<any>, columnId: string, value: any) => {
     const cellValue = getNestedCellValue(row, columnId);
     return cellValue.toLowerCase().startsWith(value.toLowerCase());
   },
 
-  endsWith: (row, columnId, value) => {
+  endsWith: (row: Row<any>, columnId: string, value: any) => {
     const cellValue = getNestedCellValue(row, columnId);
     return cellValue.toLowerCase().endsWith(value.toLowerCase());
   },
 };
 
-function getNestedCellValue(row, columnId) {
+interface CellObject {
+  name: string;
+}
+
+function getNestedCellValue(row: Row<any>, columnId: string) {
   const cellValue = row.getValue(columnId);
 
   // object consists of a display name and a value
-  if (cellValue && typeof cellValue === 'object') {
-    return cellValue.name.toLowerCase();
+  if (cellValue && typeof cellValue === 'object' && 'name' in cellValue) {
+    return (cellValue as CellObject).name.toLowerCase();
   }
 
   if (typeof cellValue === 'string') {
     return cellValue.toLowerCase();
   }
 
-  return '';
+  return JSON.stringify(cellValue as any)?.toString() || '';
 }
 
 export const StringFilter = ({

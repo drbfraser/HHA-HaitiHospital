@@ -2,7 +2,7 @@ import { FILTER_DEFAULT_VALUE, FilterProps } from './Filter';
 import { useCallback, useEffect } from 'react';
 
 import { InputGroup } from 'react-bootstrap';
-import Select from 'react-select';
+import Select, { ActionMeta, MultiValue } from 'react-select';
 
 export type EnumOption = Record<string, string>;
 
@@ -23,7 +23,7 @@ export const EnumFilter = ({
   const value: string[] = (filterValue as string[]) ?? FILTER_DEFAULT_VALUE.ENUM;
 
   const filterSelected = useCallback(
-    (value: string[]) => enumOptions.filter((option) => value.includes(option.value)),
+    (value: string[]) => enumOptions?.filter((option) => value.includes(option.value)),
     [enumOptions],
   );
 
@@ -33,9 +33,8 @@ export const EnumFilter = ({
         <Select
           defaultValue={filterSelected(value)}
           placeholder={placeholder}
-          onChange={(value: EnumOption[]) => {
-            const values = value.map((option) => option.value);
-
+          onChange={(newValue: MultiValue<EnumOption>, actionMeta: ActionMeta<EnumOption>) => {
+            const values = newValue.map((option) => option.value);
             setFilterValue(values);
           }}
           options={enumOptions}

@@ -8,4 +8,5 @@ type IReportObject<ReportType> = {
   reportObject: ReportType;
   submittedBy: string;
   submittedDate: Date;
+  isDraft: boolean;
 };

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 interface ReportMonthFormProps {
   monthLabel: string;
-  reportMonth: Date;
+  reportMonth: Date | undefined;
   applyMonthChanges: (reportMonth: Date) => void;
-  formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: Boolean) => void;
+  formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: boolean) => void;
 }
 
 const ReportMonthForm = ({
@@ -14,12 +14,14 @@ const ReportMonthForm = ({
   applyMonthChanges,
   formHandler,
 }: ReportMonthFormProps): JSX.Element => {
-  const [currentReportMonth, setCurrentReportMonth] = useState<Date>(reportMonth);
+  const [currentReportMonth, setCurrentReportMonth] = useState<Date | undefined>(reportMonth);
   const { t } = useTranslation();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    applyMonthChanges(currentReportMonth);
+    if (currentReportMonth) {
+      applyMonthChanges(currentReportMonth);
+    }
     formHandler(event, false);
   };
 

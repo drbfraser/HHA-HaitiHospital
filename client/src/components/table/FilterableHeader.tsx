@@ -39,10 +39,13 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
 
   if (!columnType) {
     // First value to infer column type
-    const firstValue = header
-      .getContext()
-      .table.getPreFilteredRowModel()
-      .flatRows[0]?.getValue(header.column.columnDef.id) as string;
+    const firstValueId = header.column.columnDef?.id;
+    const firstValue = firstValueId
+      ? (header
+          .getContext()
+          .table.getPreFilteredRowModel()
+          .flatRows[0]?.getValue(firstValueId) as string)
+      : undefined;
 
     if (firstValue && typeof firstValue === 'string') {
       const date = getDateFromDateStr(firstValue);
@@ -67,7 +70,6 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
 
   // default to string if no column type is inferred
   columnType = columnType ?? FilterType.STRING;
-
   const [filterValue, setFilterValue] = useState<FilterValue>(FILTER_DEFAULT_VALUE[columnType]);
 
   useEffect(() => {
@@ -107,7 +109,7 @@ export const FilterableHeader = ({ header, enableSorting }: SortableHeaderProps)
       {header.column.getCanFilter() &&
         showAdvancedFilters &&
         Filter({
-          placeholder: header.column.columnDef.header.toString(),
+          placeholder: header.column.columnDef.header?.toString() ?? '',
           setFilterValue,
           filterValue,
           setFilterFn: (fn) => (header.column.columnDef.filterFn = fn),

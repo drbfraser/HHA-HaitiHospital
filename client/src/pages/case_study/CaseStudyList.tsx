@@ -20,6 +20,7 @@ import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { CaseStudy } from './typing';
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -30,8 +31,8 @@ export type CaseStudySortOrder = SortOrder<CaseStudyCol>;
 
 export const CaseStudyList = () => {
   // TODO: Create a "CaseStudy" type (instead of using "any")
-  const [caseStudies, setCaseStudies] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<string>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isWarningModalOpen, setIsWarningModelOpen] = useState<boolean>(false);
 
@@ -46,19 +47,21 @@ export const CaseStudyList = () => {
       resetModals,
       history,
       ResponseMessage.getMsgDeleteCaseStudyFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteCaseStudyOk(),
     );
   };
 
   const resetModals = () => {
-    setCurrentIndex(null);
+    setCurrentIndex(undefined);
     setIsDeleteModalOpen(false);
     setIsWarningModelOpen(false);
   };
 
   const onModalDeleteConfirm = async () => {
-    await deleteCaseStudy(currentIndex);
+    if (currentIndex) {
+      await deleteCaseStudy(currentIndex);
+    }
     setCaseStudies(caseStudies.filter((item: any) => item.id !== currentIndex));
     resetModals();
   };
@@ -73,7 +76,7 @@ export const CaseStudyList = () => {
         },
         history,
         ResponseMessage.getMsgFeatureCaseStudyFailed(),
-        null,
+        'Get case study pending',
         ResponseMessage.getMsgFeatureCaseStudyOk(),
       );
     };
@@ -165,7 +168,7 @@ export const CaseStudyList = () => {
 
   useEffect(() => {
     const fetchCaseStudies = async (controller: AbortController) => {
-      const data = await Api.Get(
+      const data: CaseStudy[] = await Api.Get(
         ENDPOINT_CASESTUDY_GET,
         TOAST_CASESTUDY_GET_ERROR,
         history,

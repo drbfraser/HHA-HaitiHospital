@@ -59,10 +59,10 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
     await Api.Delete(
       ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(message.id),
       {},
-      null,
+      () => {},
       history,
       TOAST_MESSAGEBOARD_DELETE_ERROR,
-      null,
+      undefined,
       i18n.t('MessageAlertMessageDeleted'),
     );
     onDelete && onDelete(message);

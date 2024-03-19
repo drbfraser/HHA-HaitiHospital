@@ -27,12 +27,12 @@ const MessageForm = (props: MessageFormProps) => {
     }
 
     if (department === '') {
-      toast.error(i18n.t('addMessageAlertMustSelectDepartment'));
+      toast.error(i18n.t('addMessageAlertMustSelectDepartment') as string);
       return;
     }
 
     if (newForm && (data.messageBody === '' || data.messageHeader === '')) {
-      toast.error(i18n.t('addMessageAlertEmptyTitleBody'));
+      toast.error(i18n.t('addMessageAlertEmptyTitleBody') as string);
       return;
     }
 

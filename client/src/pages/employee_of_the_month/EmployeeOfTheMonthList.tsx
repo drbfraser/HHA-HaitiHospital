@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 
 export const EmployeeOfTheMonthList = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
+  const [currentIndex, setCurrentIndex] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
@@ -33,7 +33,7 @@ export const EmployeeOfTheMonthList = () => {
       resetDeleteModal,
       history,
       ResponseMessage.getMsgDeleteEotmFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteEotmFailed(),
     );
   };
@@ -44,7 +44,9 @@ export const EmployeeOfTheMonthList = () => {
   };
 
   const onModalDeleteConfirm = async () => {
-    await deleteEotm(currentIndex);
+    if (currentIndex) {
+      await deleteEotm(currentIndex);
+    }
     setEmployeeOfTheMonthList(
       employeeOfTheMonthList.filter((eotm: any) => eotm.id !== currentIndex),
     );

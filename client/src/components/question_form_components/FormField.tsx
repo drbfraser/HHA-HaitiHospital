@@ -25,7 +25,7 @@ const FormField = (props: FormFieldProps) => {
   const [touched, setTouched] = useState<boolean>(false);
   const language = i18n.resolvedLanguage;
 
-  const prompt = props.prompt[language] || props.prompt || '';
+  const prompt = typeof props.prompt !== 'string' ? props.prompt[language] : props.prompt;
   const value = props.value ?? ''; // Set a default value if props.value is null
   const label = props.nameId.replaceAll('_', '.');
 
@@ -55,7 +55,7 @@ const FormField = (props: FormFieldProps) => {
         onBlur={() => setTouched(true)}
       />
       {!props.readOnly && touched && props.inputState !== true && (
-        <div className="invalid-feedback">{props.inputState.message[language]}</div>
+        <div className="invalid-feedback">{props.inputState.message?.[language]}</div>
       )}
     </div>
   );
