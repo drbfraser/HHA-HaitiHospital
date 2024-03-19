@@ -218,6 +218,8 @@
   "departmentReportDisplaySubmit": "Soumettre",
   "departmentReportDisplayEditForm": "Modifier le Formulaire",
   "departmentReportDisplayViewForm": "Voir le Formulaire",
+  "departmentReportDisplayEditMonth": "Modifier le Mois",
+  "departmentReportDisplayMonthApplyChanges": "Appliquer les Modifications",
   "departmentReportDisplayHidePagination": "Masquer la Pagination",
   "departmentReportDisplayShowPagination": "Afficher la Pagination",
   "departmentReportDisplayHideTable": "Masquer le Tableau",
