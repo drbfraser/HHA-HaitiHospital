@@ -7,13 +7,12 @@ import {
   NotFound,
 } from 'exceptions/httpException';
 import BioMechCollection, { BioMech } from 'models/bioMech';
-import { NextFunction, Response, Router } from 'express';
+import { Request, NextFunction, Response, Router } from 'express';
 
 import { BiomechApiIn } from './jsons/biomech';
 import { ImageUploader } from 'middleware/multer';
 import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
-import { RequestWithUser } from 'utils/definitions/express';
-import { Role } from 'models/user';
+import { Role, User } from 'models/user';
 import { deleteUploadedImage } from 'utils/unlinkImage';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
@@ -21,7 +20,7 @@ import { validateInput } from 'middleware/inputSanitization';
 
 const router = Router();
 
-router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next: NextFunction) => {
+router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const docs = await BioMechCollection.find({}).sort({ createdAt: 'desc' });
     const jsons = await Promise.all(docs.map((post) => post.toJson()));
@@ -31,23 +30,19 @@ router.get('/', requireJwtAuth, async (req: RequestWithUser, res: Response, next
   }
 });
 
-router.get(
-  '/:id',
-  requireJwtAuth,
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const bioId = req.params.id;
-      const doc = await BioMechCollection.findById(bioId);
-      if (!doc) {
-        throw new NotFound(`No biomech post with id ${bioId} available`);
-      }
-      const json = await doc.toJson();
-      res.status(HTTP_OK_CODE).json(json);
-    } catch (e) {
-      next(e);
+router.get('/:id', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const bioId = req.params.id;
+    const doc = await BioMechCollection.findById(bioId);
+    if (!doc) {
+      throw new NotFound(`No biomech post with id ${bioId} available`);
     }
-  },
-);
+    const json = await doc.toJson();
+    res.status(HTTP_OK_CODE).json(json);
+  } catch (e) {
+    next(e);
+  }
+});
 
 const FILE_FIELD = BiomechApiIn.BIOMECH_POST_PROPERTIES.file;
 router.post(
@@ -56,14 +51,17 @@ router.post(
   ImageUploader(FILE_FIELD),
   InputSchema.post,
   validateInput,
-  (req: RequestWithUser, res: Response, next: NextFunction) => {
-    const user = req.user;
-    const department = user.departmentId;
+  (req: Request, res: Response, next: NextFunction) => {
+    const user: User | undefined = req.user;
+    if (!req.user) {
+      throw new NotFound(`No user found`);
+    }
+    const department = user?.departmentId;
     const submitData: BiomechApiIn.BiomechPost = req.body;
 
     const bioMech: BioMech = {
-      userId: user._id!,
-      departmentId: department,
+      userId: user?._id || '-1',
+      departmentId: department || 'Unknown department',
       equipmentName: submitData.equipmentName,
       equipmentFault: submitData.equipmentFault,
       equipmentPriority: submitData.equipmentPriority,
@@ -89,7 +87,7 @@ router.delete(
   '/:id',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.BioMechanic),
-  (req: RequestWithUser, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const bioId = req.params.id;
 
     BioMechCollection.findByIdAndRemove(bioId)
@@ -114,7 +112,7 @@ router.put(
   ImageUploader(FILE_FIELD, false),
   InputSchema.post,
   roleAuth(Role.Admin, Role.BioMechanic),
-  async (req: RequestWithUser, res: Response) => {
+  async (req: Request, res: Response) => {
     const bioId = req.params.id;
     const submitData: BiomechApiIn.BiomechPost = req.body;
     const report = await BioMechCollection.findById(bioId);

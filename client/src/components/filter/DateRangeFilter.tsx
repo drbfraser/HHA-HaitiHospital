@@ -4,18 +4,19 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { getDateFromDateStr, isDateInRange } from 'utils';
 
 import { useEffect } from 'react';
+import { Row } from '@tanstack/react-table';
 
 const getDateStrFromDayValue = (day: DayValue) =>
   day ? `${day.day}/${day.month}/${day.year}` : '';
 
-export const dateRangeFilterFn = (row, columnId, value: DayRange) => {
-  const dateStr = row.getValue(columnId);
+export const dateRangeFilterFn = (row: Row<string>, columnId: string, value: DayRange) => {
+  const dateStr: string = row.getValue(columnId);
   return isDateInRange(getDateFromDateStr(dateStr), value);
 };
 
 export const DateRangeFilter = ({
   placeholder,
-  setFilterFn,
+  setFilterFn = (_) => {},
   setFilterValue,
   filterValue = FILTER_DEFAULT_VALUE.DATE,
   inputProps,

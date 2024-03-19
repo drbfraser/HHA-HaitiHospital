@@ -150,7 +150,7 @@ describe('Test Equal questions', () => {
       const parser = ItemParsers.getParserJsonToItem(invalidChildrenAnswers.items[0].type);
       const item = parser(invalidChildrenAnswers.items[0]);
       done('Expected exception thrown');
-    } catch (e) {
+    } catch (e: any) {
       console.log(e.message);
       assert(e instanceof InvalidInput);
       done();

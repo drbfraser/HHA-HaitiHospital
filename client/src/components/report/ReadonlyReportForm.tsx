@@ -28,11 +28,11 @@ export const QuestionFormFields = ({
   suffixName,
   currentPage,
   isTemplate = false,
-}: QuestionFormFieldsProps) => {
+}: QuestionFormFieldsProps): JSX.Element => {
   return (
     <>
       {questions
-        .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
+        .map<[QuestionNode<ID, ErrorType>, any]>({
           compositionQuestion: (q) => [q, CompositionQuestionFormField],
           expandableQuestion: (q) => [q, ExpandableQuestionViewField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
@@ -76,7 +76,7 @@ interface ReadonlyReportFormProps {
   isTemplate?: boolean;
   isUsingPagination?: boolean;
   isUsingTable?: boolean;
-  date?: string;
+  reportMonth?: string;
   author?: string;
   questionItems?: any[];
 }
@@ -88,7 +88,7 @@ const ReadonlyReportForm = ({
   isTemplate = false,
   isUsingPagination = true,
   isUsingTable = true,
-  date,
+  reportMonth,
   author,
   questionItems = [],
 }: ReadonlyReportFormProps): JSX.Element => {
@@ -103,7 +103,7 @@ const ReadonlyReportForm = ({
   return (
     <div className="mt-3 p-3">
       <h3 className="mb-3">
-        {reportData.getPrompt()[language]} - {author} - {date}{' '}
+        {reportData.getPrompt()[language]} - {author} - {reportMonth}{' '}
       </h3>
       <form onSubmit={formHandler} noValidate>
         {isUsingTable ? (
@@ -124,7 +124,7 @@ const ReadonlyReportForm = ({
         ) : (
           <Group isRootNode>
             <QuestionFormFields
-              applyReportChanges={applyReportChanges}
+              applyReportChanges={applyReportChanges!}
               currentPage={isUsingPagination ? currentPage : undefined}
               isTemplate={isTemplate}
               questions={reportData}

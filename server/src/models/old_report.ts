@@ -99,7 +99,6 @@ reportSchema.path(`${PATH_TO_USER_ID}`).validate({
 const uniqueReportMonth = async function (value: Date) {
   const count = await ReportCollection.countDocuments({
     reportMonth: value,
-    departmentId: this.departmentId,
   });
   return count === 0;
 };

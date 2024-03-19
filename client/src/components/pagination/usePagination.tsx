@@ -66,5 +66,5 @@ export const usePagination = ({
     }
   }, [totalCount, pageSize, siblingCount, currentPage]);
 
-  return paginationRange;
+  return paginationRange || [];
 };

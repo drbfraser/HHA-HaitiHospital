@@ -13,7 +13,7 @@ import EditMessage from 'pages/message_board/EditMessage';
 import { EditUserForm } from 'pages/admin/EditUserForm';
 import { EmployeeOfTheMonthAddForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthAddForm';
 import { EmployeeOfTheMonthView } from 'pages/employee_of_the_month/EmployeeOfTheMonthView';
-import { EmployeeOfTheMonthArchive } from 'pages/employee_of_the_month/EmployeeOfTheMonthArchive';
+import { EmployeeOfTheMonthList } from 'pages/employee_of_the_month/EmployeeOfTheMonthList';
 import GeneralReports from 'pages/general_reports/GeneralReports';
 import Home from 'pages/home/Home';
 import { LeaderBoard } from 'pages/leader_board/LeaderBoard';
@@ -31,8 +31,17 @@ import { EmployeeOfTheMonthUpdateForm } from 'pages/employee_of_the_month/Employ
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
+interface Routes {
+  path: string;
+  key: string;
+  component: (_: any) => JSX.Element;
+  loginRequired: boolean;
+  rolesAllowed: Role[];
+  departmentsAllowed: any[];
+  isPrivate?: boolean;
+}
 
-const routes = [
+const routes: Routes[] = [
   {
     path: '/login',
     key: 'login',
@@ -100,9 +109,10 @@ const routes = [
   // Explicitly setting department 0 (General) to be non-accessible
   {
     path: '/department/0',
+    key: 'department_0',
     component: Department,
     loginRequired: true,
-    rolesAllowed: ['None'],
+    rolesAllowed: [],
     departmentsAllowed: ['None'],
   },
   /*{
@@ -124,6 +134,7 @@ const routes = [
     path: `${PathPatterns.BIOMECH_REPORT}`,
     key: 'bio_support',
     component: BrokenKitAdd,
+    loginRequired: true,
     isPrivate: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -148,6 +159,7 @@ const routes = [
     path: `${PathPatterns.BIOMECH_MAIN}`,
     key: 'bio_support',
     component: BiomechanicalList,
+    loginRequired: true,
     isPrivate: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -197,6 +209,7 @@ const routes = [
     component: EditMessage,
     key: 'message_board',
     isPrivate: true,
+    loginRequired: true,
     rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
   },
@@ -227,7 +240,7 @@ const routes = [
   {
     path: '/employee-of-the-month/archive',
     key: 'employee_of_the_month',
-    component: EmployeeOfTheMonthArchive,
+    component: EmployeeOfTheMonthList,
     loginRequired: true,
     rolesAllowed: [],
     departmentsAllowed: [],
@@ -274,6 +287,7 @@ const routes = [
   },
   {
     path: '/notFound',
+    key: 'notFound',
     component: NotFound,
     loginRequired: false,
     rolesAllowed: [],
@@ -281,6 +295,7 @@ const routes = [
   },
   {
     path: '/unauthorized',
+    key: 'unauthorized',
     component: NotAuthorized,
     loginRequired: true,
     rolesAllowed: [],
@@ -290,6 +305,7 @@ const routes = [
   // Have new routes above otherwise routing may not work properly.
   {
     path: '/',
+    key: 'login',
     component: Login,
     loginRequired: false,
     rolesAllowed: [],

@@ -1,23 +1,17 @@
 import http, { request } from 'http';
 import { Application } from 'express';
-import {
-  setupApp,
-  setupHttpServer,
-  attemptAuthentication,
-  Accounts,
-  closeServer,
-} from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
 import {
   CSRF_ENDPOINT,
   LOGIN_ENDPOINT,
   USERS_ENDPOINT,
   LOGOUT_ENDPOINT,
 } from './testTools/endPoints';
-import { HTTP_OK_CODE } from 'exceptions/httpException';
+import { HTTP_OK_CODE } from '../../src/exceptions/httpException';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import chaiHttp from 'chai-http';
 
-const expect = require('chai').expect;
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 let agent: any;
@@ -29,8 +23,7 @@ describe('Test Admin Authorization', function () {
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
-
-    agent.get(CSRF_ENDPOINT).end(function (error, res) {
+    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
       if (error) done(error);
       csrf = res?.body?.CSRFToken;
 

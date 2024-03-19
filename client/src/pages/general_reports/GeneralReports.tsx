@@ -3,7 +3,7 @@
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { Link, useHistory } from 'react-router-dom';
-import { dateOptions, userLocale } from 'constants/date';
+import { monthYearOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -13,7 +13,6 @@ import {
   ENDPOINT_REPORT_DELETE_BY_ID,
   ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
 } from 'constants/endpoints';
-import { JsonReportDescriptor } from '@hha/common';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +24,7 @@ import { useAuthState } from 'contexts';
 import { Role } from 'constants/interfaces';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import DraftIcon from 'components/report/DraftIcon';
+import { Row } from '@tanstack/react-table';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -32,8 +32,8 @@ const GeneralReports = () => {
   const history = useHistory<History>();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [reports, setReports] = useState<any[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<string | null>(null);
+  const [reports, setReports] = useState<IReportObject<any>[]>([]);
 
   const getReports = useCallback(async () => {
     const controller = new AbortController();
@@ -41,7 +41,7 @@ const GeneralReports = () => {
     if (authState.userDetails.role === Role.User) {
       getReportsEndPoint = ENDPOINT_REPORTS_GET_BY_DEPARTMENT(authState.userDetails.department.id);
     }
-    let fetchedReports: JsonReportDescriptor[] = await Api.Get(
+    let fetchedReports: any[] = await Api.Get(
       getReportsEndPoint,
       ResponseMessage.getMsgFetchReportsFailed(),
       history,
@@ -69,7 +69,7 @@ const GeneralReports = () => {
       deleteReportCallback,
       history,
       ResponseMessage.getMsgDeleteReportFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteReportOk(),
     );
   };
@@ -86,7 +86,9 @@ const GeneralReports = () => {
   };
 
   const onModalDelete = async () => {
-    await deleteReport(currentIndex);
+    if (currentIndex) {
+      await deleteReport(currentIndex);
+    }
     setIsDeleteModalOpen(false);
   };
 
@@ -117,20 +119,33 @@ const GeneralReports = () => {
       accessorFn: (row) => row,
     },
     {
-      header: t('leaderBoardOverviewDepartment'),
+      header: t('reportsDepartment'),
       id: 'departmentName',
       cell: (row) => <span>{t(`departments.${row.getValue()}`)}</span>,
       accessorKey: 'departmentName',
     },
     {
-      header: t('reportsSubmissionDate'),
-      id: 'submittedDate',
-      accessorKey: 'submittedDate',
+      header: t('reportsMonth'),
+      id: 'reportMonth',
+      cell: (row) => <span>{row.getValue()}</span>,
+      accessorFn: (row) => row.reportMonth,
+      filterFn: (row: Row<any>, columnId: string, value: any) => {
+        return true;
+      },
     },
     {
       header: t('reportsSubmittedBy'),
       id: 'submittedBy',
       accessorKey: 'submittedBy',
+    },
+    {
+      header: t('reportsSubmissionDate'),
+      id: 'submittedDate',
+      cell: (row) => <span>{row.getValue()}</span>,
+      accessorFn: (row) => row.submittedDate,
+      filterFn: (row: Row<any>, columnId: string, value: any) => {
+        return true;
+      },
     },
     {
       header: t('reportsOptions'),
@@ -171,17 +186,23 @@ const GeneralReports = () => {
     },
   ];
 
-  const getReportName = (item): string => {
+  const getReportName = (item: any): string => {
     return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
   };
 
+  const getReportMonth = (item: IReportObject<any>): string => {
+    return new Date(item.reportMonth).toLocaleDateString(userLocale, monthYearOptions);
+  };
+
+  //TODO: Add interface for item
   const gridData = reports.map((item) => ({
     item,
     _id: item._id,
     reportName: getReportName(item),
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
-    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions),
+    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, monthYearOptions),
     submittedBy: item.submittedBy,
+    reportMonth: getReportMonth(item),
     isDraft: item.isDraft,
   }));
 

@@ -58,7 +58,8 @@
     "build": "node ./build.js",
     "test": "ts-mocha -p testconfig.json ./src/tests/**/*.spec.tsx",
     "eject": "react-scripts eject",
-    "e2e": "npx cypress open"
+    "e2e": "npx cypress open",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -81,11 +82,13 @@
     "@types/bootstrap": "^5.1.9",
     "@types/chai-enzyme": "^0.6.9",
     "@types/enzyme": "^3.10.13",
+    "@types/exceljs": "^1.3.0",
+    "@types/file-saver": "^2.0.7",
     "@types/jest": "^27.5.2",
     "@types/mocha": "^9.1.1",
-    "@types/react": "^16.14.23",
+    "@types/react": "^18.2.64",
     "@types/react-bootstrap": "^0.32.29",
-    "@types/react-dom": "^16.9.14",
+    "@types/react-dom": "^18.2.21",
     "@types/react-redux": "^7.1.22",
     "@types/react-router-dom": "^5.3.3",
     "@types/yup": "^0.29.13",

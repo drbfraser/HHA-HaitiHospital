@@ -1,6 +1,6 @@
 import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import SubmitButton from 'components/report/SubmitButton';
-import { FormEvent, Dispatch, SetStateAction, useState } from 'react';
+import React, { FormEvent, Dispatch, SetStateAction, useState } from 'react';
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
 import { useTranslation } from 'react-i18next';
 
@@ -12,19 +12,26 @@ export const UploadForm = ({
 }: {
   formHandler: (event: FormEvent<HTMLFormElement>) => void;
   isSubmitting: boolean;
-  reportTemplateData: QuestionGroup<ID, ErrorType>;
-  updateReport: Dispatch<SetStateAction<QuestionGroup<string, string>>>;
+  reportTemplateData: QuestionGroup<ID, ErrorType> | null;
+  updateReport: Dispatch<SetStateAction<QuestionGroup<string, string> | null>>;
 }): JSX.Element => {
   const { t } = useTranslation();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) {
+      console.error('No file added');
+      return;
+    }
     const file = event.target.files[0];
     const reader = new FileReader();
 
     reader.onload = (event) => {
       try {
+        if (!event.target || !event.target.result) {
+          throw 'Error no file result';
+        }
         const data = JSON.parse(String(event.target.result));
         updateReport(objectSerializer.deserialize(data.reportObject));
         setError(null);
@@ -51,7 +58,7 @@ export const UploadForm = ({
             className="form-control"
             onChange={handleFileChange}
             onClick={(event) => {
-              event.currentTarget.value = null;
+              event.currentTarget.value = '';
               updateReport(null);
               setError(null);
             }}

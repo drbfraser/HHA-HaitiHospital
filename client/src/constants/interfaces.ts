@@ -126,3 +126,10 @@ export interface QuestionRow {
   prompt?: string;
   answer: string;
 }
+
+export interface Leaderboard {
+  id: string;
+  name: string;
+  points: number;
+  nCaseStudies: number;
+}

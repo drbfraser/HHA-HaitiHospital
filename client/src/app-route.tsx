@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { Role } from 'constants/interfaces';
+import { Department, Role } from 'constants/interfaces';
 import {
   isRoleRequired,
   isRoleAuthenticated,
@@ -16,6 +16,12 @@ const AppRoutes = ({
   rolesAllowed,
   departmentsAllowed,
   ...rest
+}: {
+  component: (_: any) => JSX.Element;
+  path: string;
+  loginRequired: boolean;
+  rolesAllowed: Role[];
+  departmentsAllowed: any[];
 }) => {
   const currentUserInfo = useAuthState();
   const currentUserRole = currentUserInfo.userDetails.role;
@@ -32,16 +38,16 @@ const AppRoutes = ({
   let departmentAccess = true;
   // Theoretically the Admin and Medical director should be able to access all departmental pages.
   if (![Role.Admin, Role.MedicalDirector].includes(currentUserRole)) {
-    if (isDepartmentRequired(departmentsAllowed)) {
+    if (isDepartmentRequired(departmentsAllowed as Department[])) {
       departmentAccess = false;
-      if (isDepartmentAllowed(departmentsAllowed, currentUserDepartment.name)) {
+      if (isDepartmentAllowed(departmentsAllowed as Role[], currentUserDepartment.name)) {
         departmentAccess = true;
       }
     }
   }
 
   // This function renders content based on role and department
-  const renderContent = (props) => {
+  const renderContent = (props: any) => {
     // The reason we have role access or departmentAccess is because we will always allow someone with RoleAccess to enter
     // Thus, will short circuit even if they don't have departmentAccess (e.g. DepartmentHeads)
     // however user's with role User won't be able to enter unless they have departmentAccess

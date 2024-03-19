@@ -9,12 +9,15 @@
     "baseUrl": "./src/",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": false,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
     "skipLibCheck": true,
     "downlevelIteration": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "typeRoots": ["./types"]
+    // "types": ["jest", "node", "chai"]
   },
   "include": ["./src/**/*", "./tests/**/*"]
 }

@@ -4,11 +4,10 @@ import {
   NotFound,
   Unauthorized,
 } from '../../exceptions/httpException';
-import { IRouter, NextFunction, Response } from 'express';
+import { Request, IRouter, NextFunction, Response } from 'express';
 
 import { DEPARTMENT_ID_URL_SLUG } from './../../utils/constants';
 import Departments from 'utils/departments';
-import { RequestWithUser } from 'utils/definitions/express';
 import { Role } from 'models/user';
 import { TemplateCollection } from 'models/template';
 import { logger } from 'logger';
@@ -23,8 +22,11 @@ router
   .get(
     requireJwtAuth,
     roleAuth(Role.Admin, Role.MedicalDirector, Role.HeadOfDepartment),
-    async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
+        if (!req.user) {
+          throw new NotFound('User not logged in');
+        }
         const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
         if (!(await Departments.Database.validateDeptId(deptId))) {
           throw new NotFound(`Invalid department id ${deptId}`);
@@ -50,8 +52,11 @@ router.put(
   '/',
   requireJwtAuth,
   roleAuth(Role.Admin),
-  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.user) {
+        throw new NotFound('User not logged in');
+      }
       const { departmentId, serializedReport } = req.body;
       logger.log('server routes/api/template save report', departmentId, serializedReport);
       // NOTE: May need to sanitize the reportTemplate before saving

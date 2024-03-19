@@ -1,11 +1,9 @@
 import passport from 'passport';
 import { Strategy as PassportLocalStrategy } from 'passport-local';
-import Joi from 'joi';
 import { Request } from 'express';
 import { validationResult } from 'express-validator';
 
 import UserCollection, { User } from '../models/user';
-import { loginSchema } from './validators';
 
 const passportLogin = new PassportLocalStrategy(
   {
@@ -45,11 +43,11 @@ const passportLogin = new PassportLocalStrategy(
 );
 
 // Serializing required for sessions
-passport.serializeUser(function (user: User, done) {
+passport.serializeUser(function (user: Express.User, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function (user: User, done) {
+passport.deserializeUser(function (user: Express.User, done) {
   done(null, user);
 });
 

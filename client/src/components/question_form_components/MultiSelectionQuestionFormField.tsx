@@ -41,7 +41,7 @@ const MultiSelectionQuestionFormField = ({
   const getChangeHandler = (choice: ImmutableChoice, index: number) => () => {
     question.setAnswer(
       choice.wasChosen()
-        ? question.getAnswer().filter((choiceIndex) => choiceIndex !== index)
+        ? question.getAnswer()?.filter((choiceIndex) => choiceIndex !== index)
         : question.getAnswer()?.concat(index) ?? [index],
     );
     updateErrorSetFromSelf();
@@ -68,7 +68,7 @@ const MultiSelectionQuestionFormField = ({
   return (
     <FormFieldCheck nameId={nameId} prompt={question.getPrompt()}>
       <div>
-        {inputState !== true && <div className="text-danger">{inputState.message[language]}</div>}
+        {inputState !== true && <div className="text-danger">{inputState.message?.[language]}</div>}
         {question.getChoices().map((choice: ImmutableChoice, index) => (
           <div className="form-check" key={`${nameId}_${index}`}>
             <input

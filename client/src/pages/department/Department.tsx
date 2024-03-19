@@ -92,7 +92,9 @@ export const Department = () => {
   }
 
   return (
-    <Layout title={`${t('departmentPageDepartmentOf')} ${department.name}`}>
+    <Layout
+      title={`${t('departmentPageDepartmentOf')} ${department?.name ? department.name : 'loading...'}`}
+    >
       <div className="mt-3">
         <section>
           {currentTableData.length > 0 && (
@@ -136,7 +138,7 @@ export const Department = () => {
         </table>
       ) : (
         <div className="h5 text-primary">
-          {`${t('noReportsAvailable')} ${department.name}. ${t('clickToReport')}`}
+          {`${t('noReportsAvailable')} ${department?.name ? department.name : 'loading...'}. ${t('clickToReport')}`}
         </div>
       )}
       <Pagination
