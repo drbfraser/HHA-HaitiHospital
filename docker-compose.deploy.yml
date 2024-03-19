@@ -21,7 +21,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - CORS=${CORS}
       - PASSWORD_SEED=${PASSWORD_SEED}
-      - LOKI_URL=${LOKI_URL}
+      - LOKI_URL=https://${LOKI_HOST}
       - LOKI_APP_LABEL=${LOKI_APP_LABEL} 
       - LOKI_USER=${LOKI_USER}
       - LOKI_KEY=${LOKI_KEY}
