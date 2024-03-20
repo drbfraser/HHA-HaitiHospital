@@ -23,7 +23,7 @@ services:
       - PASSWORD_SEED=${PASSWORD_SEED}
       - LOKI_URL=${LOKI_URL}
       - LOKI_APP_LABEL=${LOKI_APP_LABEL}
-  
+
   mongodb:
     restart: always
 
@@ -44,19 +44,34 @@ services:
     logging:
       driver: fluentd
     volumes:
-      - caddy_log:/var/log/
+      - caddy_log:/var/log
 
   logger:
+    container_name: hhahaiti_fluentbit
+    image: fluent/fluent-bit:2.1.8
+    ports:
+      - 24224:24224
     volumes:
-      - caddy_log:/var/log/
-    environment:      
+      - caddy_log:/logs/caddy:ro
+      - ./fluentbit-config:/fluent-bit/etc
+      - fluentbit_logs_output:/output
+      - fluentbit_logs_db:/persist
+      - server_logs:/logs/server:ro
+      - mongo_logs:/logs/mongodb:ro
+
+    environment:
       LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
       LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
       LOKI_KEY: ${LOKI_KEY} # ADD YOUR PASSWORD
       PROMETHEUS_HOST: ${PROMETHEUS_HOST} # ADD YOUR HOST
       PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
       PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
-    command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-${ENV:-local}.conf"]
+
+      # Used in staging/prod environment, for AWS CloudWatch logging
+      AWS_LOGGING_REGION: ${AWS_LOGGING_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-${ENV:-local}.conf']
 
 volumes:
   caddy_log:
