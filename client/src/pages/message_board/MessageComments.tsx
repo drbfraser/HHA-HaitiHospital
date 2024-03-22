@@ -19,10 +19,11 @@ import MessageDisplay from 'components/message/MessageDisplay';
 import { ResponseMessage } from 'utils';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Comment } from 'constants/interfaces';
 
 const MessageComments = () => {
-  const [comments, setComments] = useState([]);
-  const [message, setMessage] = useState<Message>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [message, setMessage] = useState<Message>();
 
   const { register, handleSubmit, reset } = useForm({});
   const { t } = useTranslation();
@@ -33,7 +34,7 @@ const MessageComments = () => {
 
   useEffect(() => {
     const getMessage = async (controller: AbortController) => {
-      const message = await Api.Get(
+      const message: Message = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET_BY_ID(message_id),
         TOAST_MESSAGEBOARD_GET_ERROR,
         history,
@@ -53,7 +54,7 @@ const MessageComments = () => {
 
   useEffect(() => {
     async function getComments(controller: AbortController) {
-      const comments = await Api.Get(
+      const comments: Comment[] = await Api.Get(
         ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message_id),
         TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
         history,
@@ -76,12 +77,12 @@ const MessageComments = () => {
     Api.Post(
       ENDPOINT_MESSAGEBOARD_COMMENTS_POST,
       data,
-      (comment) => {
+      (comment: Comment) => {
         setComments([...comments, comment]);
       },
       history,
       ResponseMessage.getMsgCreateCommentFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgCreateCommentOk(),
     );
     reset({

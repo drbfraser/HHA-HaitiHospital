@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  LogGroupPrefix:
+    Type: String
+Resources:
+  FluentBitUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Join ['-', ['FluentBitUser', !Ref LogGroupPrefix]]
+      Policies:
+        - PolicyName: !Join ['-', ['PolicyForFluentBitUser', !Ref LogGroupPrefix]]
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - cloudwatch:PutMetricData
+                  - cloudwatch:StartMetricStreams
+
+                # Resource: !Sub "arn:aws:logs:us-east-1:cmpt415-student-access:log-group:cbr-staging/*"
+                Resource: !Sub 'arn:aws:logs:us-east-2:851725443396:log-group:haiti-staging:*'
+                # Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LogGroupPrefix}:*'
+    UpdateReplacePolicy: Retain

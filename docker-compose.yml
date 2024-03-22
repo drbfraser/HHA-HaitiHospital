@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   server:
+    image: node:18
     container_name: hhahaiti_server
     depends_on:
       - mongodb
@@ -11,10 +12,17 @@ services:
       - SERVER_PORT=8000
     volumes:
       - server_logs:/var/log
+      - ./:/code
+    working_dir: /code/server
+    command: npm start
+    ports:
+      - '8000:8000'
+
     logging:
       driver: fluentd
       options:
         tag: docker.{{.Name}}.{{.ID}}
+        fluentd-address: tcp://localhost:24224
 
   mongodb:
     container_name: hhahaiti_mongodb
@@ -26,8 +34,6 @@ services:
       - mongo_logs:/var/log
     logging:
       driver: fluentd
-      options:
-        tag: docker.{{.Name}}.{{.ID}}
 
   logger:
     container_name: hhahaiti_fluentbit
@@ -44,9 +50,7 @@ services:
 
 volumes:
   hhahaiti_mongodb_data:
-
   fluentbit_logs_db:
   fluentbit_logs_output:
-  
   mongo_logs:
   server_logs:

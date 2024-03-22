@@ -37,7 +37,7 @@ services:
         tag: docker.{{.Name}}.{{.ID}}
 
   logger:
-    environment:      
+    environment:
       LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
       LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
       LOKI_KEY: ${LOKI_KEY} # ADD YOUR PASSWORD
@@ -45,4 +45,4 @@ services:
       PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
       PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
 
-    command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-development.conf"]
+    command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-development.conf']

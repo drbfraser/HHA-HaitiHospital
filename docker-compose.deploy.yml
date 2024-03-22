@@ -48,11 +48,15 @@ services:
       options:
         tag: docker.{{.Name}}.{{.ID}}
     volumes:
-      - caddy_log:/var/log/
+      - caddy_log:/var/log
 
   logger:
+    container_name: hhahaiti_fluentbit
+    image: fluent/fluent-bit:2.1.8
+    ports:
+      - 24224:24224
     volumes:
-      - caddy_log:/var/log/
+      - caddy_log:/logs/caddy:ro
     environment:
       LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
       LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
@@ -60,6 +64,11 @@ services:
       PROMETHEUS_HOST: ${PROMETHEUS_HOST} # ADD YOUR HOST
       PROMETHEUS_USER: ${PROMETHEUS_USER} # ADD YOUR USERNAME
       PROMETHEUS_KEY: ${PROMETHEUS_KEY} # ADD YOUR PASSWORD
+
+      # Used in staging/prod environment, for AWS CloudWatch logging
+      AWS_LOGGING_REGION: ${AWS_LOGGING_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-${ENV:-local}.conf']
 
 volumes:

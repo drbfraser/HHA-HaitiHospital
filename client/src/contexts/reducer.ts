@@ -1,9 +1,6 @@
-let user = localStorage.getItem('currentUser')
-  ? JSON.parse(localStorage.getItem('currentUser')).user
-  : '';
-let isAuth = localStorage.getItem('currentUser')
-  ? JSON.parse(localStorage.getItem('currentUser')).isAuth
-  : '';
+const userJson = localStorage.getItem('currentUser');
+const user = userJson ? JSON.parse(userJson)?.user : '';
+const isAuth = userJson ? JSON.parse(userJson).isAuth : '';
 
 export const initialState = {
   userDetails: '' || user,
@@ -12,7 +9,7 @@ export const initialState = {
   errorMessage: null,
 };
 
-export const AuthReducer = (initialState, action) => {
+export const AuthReducer = (initialState: any, action: any) => {
   switch (action.type) {
     case 'REQUEST_LOGIN':
       return {

@@ -1,3 +1,5 @@
+import { UserDetails, UserJson } from 'constants/interfaces';
+
 export enum CaseStudyType {
   PatientStory = 'Patient Story',
   StaffRecognition = 'Staff Recognition',
@@ -47,14 +49,18 @@ interface OtherStory {
   caseStudyStory: { type: string; required: true };
 }
 
-export interface CaseStudyModel {
+export interface CaseStudy {
   caseStudyType: { type: CaseStudyType; required: true };
   // TODO: add created by user. right now JWT is not yet applied
   // createdByUser: { type: string},
+  user: UserDetails;
   patientStory: PatientStory;
   staffRecognition: StaffRecognition;
   trainingSession: TrainingSession;
   equipmentReceived: EquipmentReceived;
   otherStory: OtherStory;
-  imgPath: { type: string };
+  imgPath: string;
+  featured: boolean;
+  createdAt: string;
+  updatedAt: string;
 }

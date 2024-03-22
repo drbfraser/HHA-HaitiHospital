@@ -18,9 +18,9 @@ import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
-export const EmployeeOfTheMonthArchive = () => {
+export const EmployeeOfTheMonthList = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
+  const [currentIndex, setCurrentIndex] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
@@ -33,7 +33,7 @@ export const EmployeeOfTheMonthArchive = () => {
       resetDeleteModal,
       history,
       ResponseMessage.getMsgDeleteEotmFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteEotmFailed(),
     );
   };
@@ -44,7 +44,9 @@ export const EmployeeOfTheMonthArchive = () => {
   };
 
   const onModalDeleteConfirm = async () => {
-    await deleteEotm(currentIndex);
+    if (currentIndex) {
+      await deleteEotm(currentIndex);
+    }
     setEmployeeOfTheMonthList(
       employeeOfTheMonthList.filter((eotm: any) => eotm.id !== currentIndex),
     );
@@ -138,7 +140,26 @@ export const EmployeeOfTheMonthArchive = () => {
   }, [authState.userDetails.role, t]);
 
   return (
-    <Layout showBackButton title={t('headerEmployeeOfTheMonth')}>
+    <Layout
+      showBackButton
+      backButtonName="employeeOfTheMonthViewCurrent"
+      title={t('headerEmployeeOfTheMonth')}
+      additionalButtons={
+        <div>
+          {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
+            <Link to="/employee-of-the-month/add">
+              <button
+                data-testid="update-eotm-button"
+                type="button"
+                className="btn btn-outline-dark"
+              >
+                {t('employeeOfTheMonthAdd')}
+              </button>
+            </Link>
+          )}
+        </div>
+      }
+    >
       <DeleteModal
         dataTestId="confirm-delete-eotm-button"
         show={showDeleteModal}
@@ -146,18 +167,10 @@ export const EmployeeOfTheMonthArchive = () => {
         onModalClose={resetDeleteModal}
         onModalDelete={onModalDeleteConfirm}
       />
-      <div>
-        {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
-          <Link to="/employee-of-the-month/add">
-            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
-              {t('employeeOfTheMonthAdd')}
-            </button>
-          </Link>
-        )}
-      </div>
       <FilterableTable
         columns={columns}
         data={employeeOfTheMonthList}
+        rowClickHandler={(item) => history.push(`/employee-of-the-month/${item.id}`)}
         enableFilters
         enableGlobalFilter
         enableSorting

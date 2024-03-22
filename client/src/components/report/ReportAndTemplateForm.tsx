@@ -6,11 +6,11 @@ import { useTranslation } from 'react-i18next';
 interface ReportAndTemplateFormProps {
   departmentLabel: string;
   monthLabel: string;
-  departments: any;
-  currentDepartment: Department;
-  setCurrentDepartment: Dispatch<SetStateAction<Department>>;
-  reportMonth: Date;
-  setReportMonth: Dispatch<SetStateAction<Date>>;
+  departments: Department[];
+  currentDepartment: Department | undefined;
+  setCurrentDepartment: Dispatch<SetStateAction<Department | undefined>>;
+  reportMonth: Date | undefined;
+  setReportMonth: Dispatch<SetStateAction<Date | undefined>>;
 }
 
 export const ReportAndTemplateForm = ({

@@ -28,11 +28,11 @@ export const QuestionFormFields = ({
   suffixName,
   currentPage,
   isTemplate = false,
-}: QuestionFormFieldsProps) => {
+}: QuestionFormFieldsProps): JSX.Element => {
   return (
     <>
       {questions
-        .map<[QuestionNode<ID, ErrorType>, FunctionalComponent]>({
+        .map<[QuestionNode<ID, ErrorType>, any]>({
           compositionQuestion: (q) => [q, CompositionQuestionFormField],
           expandableQuestion: (q) => [q, ExpandableQuestionViewField],
           multipleSelectionQuestion: (q) => [q, MultiSelectionQuestionFormField],
@@ -124,7 +124,7 @@ const ReadonlyReportForm = ({
         ) : (
           <Group isRootNode>
             <QuestionFormFields
-              applyReportChanges={applyReportChanges}
+              applyReportChanges={applyReportChanges!}
               currentPage={isUsingPagination ? currentPage : undefined}
               isTemplate={isTemplate}
               questions={reportData}

@@ -12,11 +12,12 @@ import { useTranslation } from 'react-i18next';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Button } from 'react-bootstrap';
 import { useAuthState } from 'contexts';
+import { UserDetails } from 'constants/interfaces';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<string>(null);
-  const [users, setUsers] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState<string | null>(null);
+  const [users, setUsers] = useState<UserDetails[]>([]);
   const user = useAuthState();
 
   const history: History = useHistory<History>();
@@ -48,7 +49,7 @@ const AdminList = () => {
       deleteUserActions,
       history,
       ResponseMessage.getMsgDeleteUserFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgDeleteUserOk(),
     );
   };
@@ -66,7 +67,9 @@ const AdminList = () => {
   };
 
   const onModalDelete = () => {
-    deleteUser(currentIndex);
+    if (currentIndex) {
+      deleteUser(currentIndex);
+    }
     setShowDeleteModal(false);
   };
 
@@ -106,7 +109,8 @@ const AdminList = () => {
     {
       header: t('admin.main_page.created_col'),
       id: 'createdAt',
-      accessorKey: 'createdAt',
+      cell: (row) => <span>{row.getValue().createdAt}</span>,
+      accessorFn: (row) => row,
     },
     {
       id: 'Options',

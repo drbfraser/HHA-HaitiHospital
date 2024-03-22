@@ -7,15 +7,16 @@ import { History } from 'history';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Leaderboard } from 'constants/interfaces';
 
 const DashboardLeaderOverview = () => {
-  const [leaderboard, setLeaderboard] = useState([]);
+  const [leaderboards, setLeaderboards] = useState<Leaderboard[]>([]);
   const history: History = useHistory<History>();
 
   useEffect(() => {
     const controller = new AbortController();
     const getLeaderboard = async () => {
-      setLeaderboard(
+      setLeaderboards(
         await Api.Get(
           ENDPOINT_LEADERBOARD_GET,
           TOAST_LEADERBOARD_GET_ERROR,
@@ -60,7 +61,7 @@ const DashboardLeaderOverview = () => {
               </tr>
             </thead>
             <tbody>
-              {leaderboard.map((item, index) => {
+              {leaderboards.map((item, index) => {
                 return (
                   <tr key={index} className={`${index === 0 ? 'table-warning' : ''}`}>
                     <th scope="row" className="text-center">

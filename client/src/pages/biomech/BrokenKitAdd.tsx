@@ -17,7 +17,7 @@ export const BrokenKitAdd = () => {
     // Parse to FormData() to support multipart/data-form form
     const formData = new FormData();
 
-    Object.keys(data).forEach((key) => formData.append(key, data[key]));
+    Object.keys(data).forEach((key) => formData.append(key, data[key as keyof BiomechForm]));
 
     await Api.Post(
       ENDPOINT_BIOMECH_POST,
@@ -25,7 +25,7 @@ export const BrokenKitAdd = () => {
       () => history.push(Paths.getBioMechMain()),
       history,
       ResponseMessage.getMsgCreateReportFailed(),
-      null,
+      undefined,
       ResponseMessage.getMsgCreateReportOk(),
     );
   };

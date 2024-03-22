@@ -4,7 +4,9 @@ import { QuestionRow } from 'constants/interfaces';
 import { underscoreAmount } from './utils';
 import { useTranslation } from 'react-i18next';
 
-export const processCompositionOrSpecializedQuestion = (specialQuestionItem): QuestionRow[] => {
+export const processCompositionOrSpecializedQuestion = (
+  specialQuestionItem: any,
+): QuestionRow[] => {
   let array: QuestionRow[] = [];
   const element: QuestionRow = {
     id: specialQuestionItem.id,
@@ -25,7 +27,7 @@ export const processCompositionOrSpecializedQuestion = (specialQuestionItem): Qu
   return array;
 };
 
-export const processTableQuestion = (tableItem): QuestionRow[] => {
+export const processTableQuestion = (tableItem: any): QuestionRow[] => {
   let array: QuestionRow[] = [];
   const questionTable = tableItem.questionTable;
   for (let questionRows of questionTable) {
@@ -94,7 +96,7 @@ export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
       }
     }
     // Create a new Excel Workbook
-    const workbook = new ExcelJS.Workbook();
+    const workbook: any = new ExcelJS.Workbook();
     const sheetName = 'Sheet1';
     const sheet = workbook.addWorksheet(sheetName);
 
@@ -107,7 +109,7 @@ export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
     for (let i = 0; i < array.length; ++i) {
       const level = underscoreAmount(array[i].id);
       if (level === 0) {
-        const row = { id: array[i].id.replaceAll('_', '.'), ...array[i] };
+        const row = { ...array[i], id: array[i].id.replaceAll('_', '.') };
         sheet.addRow(row).commit();
       } else {
         const row = [];
@@ -173,7 +175,7 @@ export const XlsxGenerator = ({ questionItems }: { questionItems: any[] }) => {
     }
 
     // workbook.xlsx.writeFile('./data.xlsx');
-    workbook.xlsx.writeBuffer().then((data) => {
+    workbook.xlsx.writeBuffer().then((data: any) => {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });

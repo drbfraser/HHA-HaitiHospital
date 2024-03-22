@@ -1,4 +1,4 @@
-import { useReducer, createContext, useContext, useState, Dispatch } from 'react';
+import { useReducer, createContext, useContext, useState, Dispatch, SetStateAction } from 'react';
 import { initialState, AuthReducer } from './reducer';
 import { UserJson } from 'constants/interfaces';
 
@@ -24,7 +24,7 @@ export function useAuthDispatch() {
   return context;
 }
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [user, dispatch] = useReducer(AuthReducer, initialState);
 
   return (
@@ -34,9 +34,11 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const AdminToggle = createContext(null);
+export const AdminToggle = createContext<
+  { adminToggleState: boolean; setAdminToggleState: Dispatch<SetStateAction<boolean>> } | undefined
+>(undefined);
 
-export const AdminToggleProvider = ({ children }) => {
+export const AdminToggleProvider = ({ children }: { children: any }) => {
   const [adminToggleState, setAdminToggleState] = useState(false);
 
   return (
