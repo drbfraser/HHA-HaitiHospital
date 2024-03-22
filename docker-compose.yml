@@ -34,6 +34,9 @@ services:
       - mongo_logs:/var/log
     logging:
       driver: fluentd
+      options:
+        tag: docker.{{.Name}}.{{.ID}}
+        fluentd-address: tcp://localhost:24224
 
   logger:
     container_name: hhahaiti_fluentbit
@@ -46,7 +49,7 @@ services:
       - fluentbit_logs_db:/persist
       - server_logs:/logs/server:ro
       - mongo_logs:/logs/mongodb:ro
-    command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-local.conf"]
+    command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-local.conf']
 
 volumes:
   hhahaiti_mongodb_data:
