@@ -33,8 +33,6 @@ services:
       - '3000:3000'
     logging:
       driver: fluentd
-      options:
-        tag: docker.{{.Name}}.{{.ID}}
 
   logger:
     environment:
