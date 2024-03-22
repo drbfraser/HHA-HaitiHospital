@@ -1,3 +1,16 @@
+{
+    # Global caddy configuration for logging
+    log caddy-runtime {
+        output file /var/log/runtime.log {
+            roll_keep_for 60d
+        }
+        format json
+        level INFO
+        exclude http.log.access
+         # exclude access log as it is configured in the Domain block
+    }
+}
+
 {$DOMAIN} {
     encode gzip
 
@@ -17,5 +30,13 @@
 
         # If there is a 404, serve index.html (required for React)
         try_files {path} index.html
+    }
+
+    log {
+	    output file /var/log/access.log {
+            roll_keep_for 60d
+        }
+        format json
+        level INFO
     }
 }
