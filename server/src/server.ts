@@ -74,7 +74,6 @@ export const createServer = () => {
       logger.info('Connect to MongDB');
     })
     .catch((err) => logger.error(err));
-
   // Use Routes
   app.use('/', routes);
   app.use('/public', express.static('public'));

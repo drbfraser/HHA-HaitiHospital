@@ -21,8 +21,10 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - CORS=${CORS}
       - PASSWORD_SEED=${PASSWORD_SEED}
-      - LOKI_URL=${LOKI_URL}
-      - LOKI_APP_LABEL=${LOKI_APP_LABEL}
+      - LOKI_URL=https://${LOKI_HOST}
+      - LOKI_APP_LABEL=${LOKI_APP_LABEL} 
+      - LOKI_USER=${LOKI_USER}
+      - LOKI_KEY=${LOKI_KEY}
 
   mongodb:
     restart: always
@@ -43,6 +45,8 @@ services:
       - '2019:2019'
     logging:
       driver: fluentd
+      options:
+        tag: docker.{{.Name}}.{{.ID}}
     volumes:
       - caddy_log:/var/log
 
@@ -53,12 +57,6 @@ services:
       - 24224:24224
     volumes:
       - caddy_log:/logs/caddy:ro
-      - ./fluentbit-config:/fluent-bit/etc
-      - fluentbit_logs_output:/output
-      - fluentbit_logs_db:/persist
-      - server_logs:/logs/server:ro
-      - mongo_logs:/logs/mongodb:ro
-
     environment:
       LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
       LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
