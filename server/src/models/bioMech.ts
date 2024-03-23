@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import Departments from 'utils/departments';
-import UserCollection from '@hha/common';
+import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
 import {
   BiomechPriority,

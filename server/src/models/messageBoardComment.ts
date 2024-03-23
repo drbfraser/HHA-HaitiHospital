@@ -1,5 +1,5 @@
 import { IllegalState } from 'exceptions/systemException';
-import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
+import { unknownUserJson, UserApiOut } from '@hha/common';
 import UserModel from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';
