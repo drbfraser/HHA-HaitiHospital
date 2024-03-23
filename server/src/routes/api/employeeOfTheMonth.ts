@@ -2,10 +2,8 @@ import { Request, Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
-import EOTMCollection, {
-  EmployeeOfTheMonth,
-  EmployeeOfTheMonthJson,
-} from 'models/employeeOfTheMonth';
+import EOTMCollection, { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from '@hha/common';
+
 import { Role } from '../../models/user';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import {
