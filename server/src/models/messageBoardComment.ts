@@ -1,5 +1,5 @@
 import { IllegalState } from 'exceptions/systemException';
-import { unknownUserJson, UserApiOut } from '@hha/common';
+import { unknownUserJson, UserApiOut, UserJson } from '@hha/common';
 import UserModel from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';
@@ -16,7 +16,7 @@ export interface MessageBoardComment {
 
 export interface MessageBoardCommentJson {
   id: string;
-  user: UserApiOut.UserJson;
+  user: UserJson;
   parentMessageId: string;
   messageComment: string;
   createdAt: string;

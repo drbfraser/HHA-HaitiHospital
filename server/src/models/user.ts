@@ -12,7 +12,7 @@ const argon2 = require('argon2');
 const { Schema } = mongoose;
 
 interface UserWithInstanceMethods extends User {
-  toJson: () => Promise<UserApiOut.UserJson>;
+  toJson: () => Promise<UserApiOut.UserGet>;
   generateJWT: () => any;
   registerUser: (newUser: any, callback: Function) => void;
   comparePassword: (otherPw: any, callback: Function) => void;
@@ -47,7 +47,7 @@ const userSchema = new Schema<UserWithInstanceMethods>(
   },
 );
 
-userSchema.methods.toJson = async function (): Promise<UserApiOut.UserJson> {
+userSchema.methods.toJson = async function (): Promise<UserApiOut.UserGet> {
   return {
     id: this._id,
     name: this.name,

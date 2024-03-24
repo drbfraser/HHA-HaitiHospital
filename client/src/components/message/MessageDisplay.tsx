@@ -3,7 +3,7 @@ import {
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
 } from 'constants/endpoints';
 import { Link, useHistory } from 'react-router-dom';
-import { Message, Role } from 'constants/interfaces';
+import { MessageJson as Message, Role } from '@hha/common';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
   TOAST_MESSAGEBOARD_DELETE_ERROR,

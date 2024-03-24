@@ -126,7 +126,7 @@ export interface CaseStudy {
 export interface CaseStudyJson {
   id: string;
   caseStudyType: CaseStudyOptions;
-  user: UserApiOut.UserJson;
+  user: UserApiOut.UserGet;
   department: {
     id: string;
     name: string;

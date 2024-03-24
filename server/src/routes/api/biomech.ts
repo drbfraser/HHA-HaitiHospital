@@ -6,13 +6,13 @@ import {
   InternalError,
   NotFound,
 } from 'exceptions/httpException';
-import BioMechCollection, { BioMech } from 'models/bioMech';
+import BioMechCollection from 'models/bioMech';
 import { Request, NextFunction, Response, Router } from 'express';
 
-import { BiomechApiIn } from './jsons/biomech';
+import { BioMech, BiomechApiIn } from '@hha/common';
 import { ImageUploader } from 'middleware/multer';
 import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
-import { Role, User } from 'models/user';
+import { Role, User } from '@hha/common';
 import { deleteUploadedImage } from 'utils/unlinkImage';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';

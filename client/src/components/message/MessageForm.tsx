@@ -1,5 +1,4 @@
-import { Department } from 'constants/interfaces';
-import { Message } from 'constants/interfaces';
+import { MessageJson as Message, DepartmentJson as Department } from '@hha/common';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';

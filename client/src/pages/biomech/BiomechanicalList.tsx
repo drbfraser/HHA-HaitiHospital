@@ -17,8 +17,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { Row } from '@tanstack/react-table';
-import { BiomechPriority, BiomechStatus } from './typing';
-import { BiomechGet } from 'constants/jsons';
+import { BiomechPriority, BiomechStatus, BiomechJson as Biomech } from '@hha/common';
 
 const enumSort = (key: any, e: any) => {
   type enumKey = keyof typeof e;
@@ -54,7 +53,7 @@ export const BiomechanicalList = () => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>();
-  const [biomechData, setBiomechData] = useState<BiomechGet[]>([]);
+  const [biomechData, setBiomechData] = useState<Biomech[]>([]);
 
   // Github co-pilot assited in filling this array
   const columns = useMemo(
@@ -191,7 +190,7 @@ export const BiomechanicalList = () => {
 
   useEffect(() => {
     const getBioReport = async (controller?: AbortController) => {
-      const data: BiomechGet[] = await Api.Get(
+      const data: Biomech[] = await Api.Get(
         ENDPOINT_BIOMECH_GET,
         ResponseMessage.getMsgFetchReportsFailed(),
         history,

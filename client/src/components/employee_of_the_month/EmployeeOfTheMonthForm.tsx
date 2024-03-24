@@ -5,7 +5,7 @@ import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import Api from '../../actions/Api';
 import { History } from 'history';

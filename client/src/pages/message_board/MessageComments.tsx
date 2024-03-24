@@ -13,13 +13,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Api from 'actions/Api';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Message } from 'constants/interfaces';
+import { MessageJson as Message, MessageBoardCommentJson as Comment } from '@hha/common';
 import MessageComment from 'components/message/MessageComment';
 import MessageDisplay from 'components/message/MessageDisplay';
 import { ResponseMessage } from 'utils';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Comment } from 'constants/interfaces';
 
 const MessageComments = () => {
   const [comments, setComments] = useState<Comment[]>([]);

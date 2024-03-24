@@ -1,9 +1,8 @@
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
 import Api from '../../actions/Api';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
-import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
+import { EmployeeOfTheMonthJson as EmployeeOfTheMonth } from '@hha/common';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
 import { useTranslation } from 'react-i18next';
