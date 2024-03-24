@@ -93,13 +93,7 @@ const MessageComments = () => {
     <Layout showBackButton title={t('headerMessageComments')}>
       {message && (
         <>
-          <MessageDisplay
-            message={message}
-            showCommentsLink={false}
-            onDelete={() => {
-              history.goBack();
-            }}
-          />
+          <MessageDisplay message={message} showCommentsLink={false} onDelete={history.goBack} />
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pt-5 pb-2 mb-0">
               {t('messageBoardCommentsComment') + ' (' + comments.length + ')'}
