@@ -12,12 +12,11 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { Role } from 'constants/interfaces';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { Row } from '@tanstack/react-table';
-import { BiomechPriority, BiomechStatus, BiomechJson as Biomech } from '@hha/common';
+import { BiomechPriority, BiomechStatus, BiomechJson as Biomech, Role } from '@hha/common';
 
 const enumSort = (key: any, e: any) => {
   type enumKey = keyof typeof e;

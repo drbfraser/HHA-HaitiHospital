@@ -17,7 +17,7 @@ import { ResponseMessage } from 'utils/response_message';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
-import { Role } from 'constants/interfaces';
+import { Role } from '@hha/commmon';
 import { XlsxGenerator } from 'components/report/XlsxExport';
 
 const ReportView = () => {
