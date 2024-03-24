@@ -1,42 +1,42 @@
 {
-    # Global caddy configuration for logging
-    log caddy-runtime {
-        output file /var/log/runtime.log {
-            roll_keep_for 60d
-        }
-        format json
-        level INFO
-        exclude http.log.access
-         # exclude access log as it is configured in the Domain block
-    }
+	# Global caddy configuration for logging
+	log caddy-runtime {
+		output file /var/log/runtime.log {
+			roll_keep_for 60d
+		}
+		format json
+		level INFO
+		exclude http.log.access
+		# exclude access log as it is configured in the Domain block
+	}
 }
 
 {$DOMAIN} {
-    encode gzip
+	encode gzip
 
-    header {
-        -Server
-        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-        X-Content-Type-Options "nosniff"
-    }
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+	}
 
-    handle /api/* {
-        reverse_proxy {$API_HOSTNAME}:8000
-    }
+	handle /api/* {
+		reverse_proxy {$API_HOSTNAME}:8000
+	}
 
-    handle {
-        file_server
-        root * /var/www
+	handle {
+		file_server
+		root * /var/www
 
-        # If there is a 404, serve index.html (required for React)
-        try_files {path} index.html
-    }
+		# If there is a 404, serve index.html (required for React)
+		try_files {path} index.html
+	}
 
-    log {
-	    output file /var/log/access.log {
-            roll_keep_for 60d
-        }
-        format json
-        level INFO
-    }
+	log {
+		output file /var/log/access.log {
+			roll_keep_for 60d
+		}
+		format json
+		level INFO
+	}
 }
