@@ -209,7 +209,7 @@ export const Report = () => {
             formHandler={confirmSubmission}
             isSubmitting={isSubmitting}
             reportData={report}
-            readOnly={true}
+            readOnly={false}
             reportMonth={reportMonthString}
           />
         </>

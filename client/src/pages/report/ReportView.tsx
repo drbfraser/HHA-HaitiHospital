@@ -65,6 +65,7 @@ const ReportView = () => {
   const applyMonthChanges = (reportMonth: Date) => {
     setAreChangesMade(true);
     setReportMonth(reportMonth);
+    setMetaData((prev) => ({ ...prev!, reportMonth: reportMonth }));
   };
 
   const handleExportWithComponent = () => {
