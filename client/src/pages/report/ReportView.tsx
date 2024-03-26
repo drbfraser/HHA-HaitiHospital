@@ -133,8 +133,8 @@ const ReportView = () => {
     setMetaData({
       _id: fetchedReport?.report?._id,
       departmentId: fetchedReport?.report?.departmentId,
-      reportMonth: fetchedReport?.report?.reportMonth,
-      submittedDate: fetchedReport?.report?.submittedDate,
+      reportMonth: reportDate,
+      submittedDate: new Date(fetchedReport?.report?.submittedDate),
       submittedBy: fetchedReport?.report?.submittedBy,
     });
 
