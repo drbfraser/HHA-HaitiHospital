@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { Department } from 'constants/interfaces';
+import { DepartmentJson as Department } from '@hha/common';
 import { useTranslation } from 'react-i18next';
 
 interface ReportAndTemplateFormProps {

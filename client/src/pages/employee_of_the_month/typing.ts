@@ -1,5 +1,3 @@
-import { Department } from 'constants/interfaces';
-import * as H from 'history';
 import { EmployeeOfTheMonthJson } from '@hha/common';
 
 export interface EmployeeOfTheMonth extends EmployeeOfTheMonthJson {}

@@ -1,4 +1,4 @@
-import { Department, GeneralDepartment } from 'constants/interfaces';
+import { DepartmentJson as Department, GeneralDepartment } from '@hha/common';
 import { EmployeeOfTheMonth } from '../../pages/employee_of_the_month/typing';
 
 import { imageCompressor } from 'utils/imageCompressor';
