@@ -1,7 +1,7 @@
 import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
 import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { NavigationInfo, navigate } from 'components/report/utils';
-import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
+import { ObjectSerializer, QuestionGroup, ReportMetaData, Role } from '@hha/common';
 import { Prompt, useHistory, useLocation } from 'react-router-dom';
 import { monthYearOptions, userLocale } from 'constants/date';
 
@@ -17,7 +17,6 @@ import { ResponseMessage } from 'utils/response_message';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
-import { Role } from '@hha/commmon';
 import { XlsxGenerator } from 'components/report/XlsxExport';
 
 const ReportView = () => {

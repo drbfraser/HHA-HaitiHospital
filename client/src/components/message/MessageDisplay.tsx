@@ -3,7 +3,7 @@ import {
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
 } from 'constants/endpoints';
 import { Link, useHistory } from 'react-router-dom';
-import { MessageJson as Message, Role } from '@hha/common';
+import { MessageJson, Role } from '@hha/common';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
   TOAST_MESSAGEBOARD_DELETE_ERROR,
@@ -21,8 +21,8 @@ import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 
 interface MessageDisplayProps {
-  message: Message;
-  onDelete?: (message: Message) => void;
+  message: MessageJson;
+  onDelete?: (message: MessageJson) => void;
   showCommentsLink?: boolean;
 }
 
@@ -38,7 +38,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
   const author = !!message.user ? message.user.name : t('status.not_available');
 
   useEffect(() => {
-    const getCommentCount = async (controller: AbortController, message: Message) => {
+    const getCommentCount = async (controller: AbortController, message: MessageJson) => {
       let comments = await Api.Get(
         ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message.id),
         TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
@@ -93,7 +93,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
         onModalDelete={onModalDelete}
       ></DeleteModal>
 
-      {/* Message content */}
+      {/* MessageJson content */}
       <div className="flex-grow-1">
         <div className="d-flex">
           <div className="mr-auto p-2">

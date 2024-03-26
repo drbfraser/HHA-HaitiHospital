@@ -1,4 +1,4 @@
-import { MessageJson as Message, DepartmentJson as Department } from '@hha/common';
+import { MessageJson, DepartmentJson as Department } from '@hha/common';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface MessageFormProps {
-  message?: Message;
+  message?: MessageJson;
   newForm?: boolean;
   submitAction: (data: any) => void;
 }
