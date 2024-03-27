@@ -65,6 +65,7 @@ const ReportView = () => {
   const applyMonthChanges = (reportMonth: Date) => {
     setAreChangesMade(true);
     setReportMonth(reportMonth);
+    setMetaData((prev) => ({ ...prev!, reportMonth: reportMonth }));
   };
 
   const handleExportWithComponent = () => {
@@ -132,8 +133,8 @@ const ReportView = () => {
     setMetaData({
       _id: fetchedReport?.report?._id,
       departmentId: fetchedReport?.report?.departmentId,
-      reportMonth: fetchedReport?.report?.reportMonth,
-      submittedDate: fetchedReport?.report?.submittedDate,
+      reportMonth: reportDate,
+      submittedDate: new Date(fetchedReport?.report?.submittedDate),
       submittedBy: fetchedReport?.report?.submittedBy,
     });
 

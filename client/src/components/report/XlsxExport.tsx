@@ -5,6 +5,7 @@ import { underscoreAmount } from './utils';
 import { useTranslation } from 'react-i18next';
 import { ReportMetaData } from '@hha/common';
 import { processCompositionOrSpecializedQuestion, processTableQuestion } from './QuestionRows';
+import { monthYearOptions, userLocale } from 'constants/date';
 
 interface ReportType {
   questionItems: any[];
@@ -177,18 +178,16 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
   };
 
   const generateMainWorksheet = (worksheet: any, questionArray: QuestionRow[]) => {
-    let month = '';
-    let year = '';
+    let reportMonth = '';
     if (metaData) {
-      const reportDate = new Date(metaData.reportMonth.substring(0, 10));
-      month = reportDate.toLocaleString('default', { month: 'long' });
-      year = reportDate.getFullYear().toString();
+      const reportDate = metaData.reportMonth;
+      reportMonth = reportDate?.toLocaleDateString(userLocale, monthYearOptions) || '';
     }
 
     const headerRow = [];
     headerRow[1] = 'ID';
     headerRow[5] = 'Prompt';
-    headerRow[8] = 'Answers - ' + month + ' ' + year;
+    headerRow[8] = 'Answers - ' + reportMonth;
     worksheet.addRow(headerRow);
     for (let i = 0; i < questionArray.length; ++i) {
       const level = underscoreAmount(questionArray[i].id);
