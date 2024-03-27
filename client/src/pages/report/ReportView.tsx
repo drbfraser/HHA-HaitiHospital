@@ -229,7 +229,7 @@ const ReportView = () => {
                   <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
                     {t('departmentReportDisplayGeneratePDF')}
                   </button>
-                  <XlsxGenerator questionItems={questionItems} />
+                  <XlsxGenerator questionItems={questionItems} metaData={metaData} />
                 </span>
               )}
               {readOnly && !editMonth && (
