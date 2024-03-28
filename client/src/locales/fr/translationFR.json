@@ -122,7 +122,8 @@
   "createNewReport": "Créer un nouveau rapport",
   "selectDepartments": "Sélectionnez les départements",
   "noViewableReports": "Aucun rapport n'a encore été soumis.",
-
+  "month": "Mois",
+  "year": "Année",
   "CaseStudy": {
     "Main": {
       "AddCaseStudy": "Ajouter une étude de cas",

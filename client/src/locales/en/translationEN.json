@@ -121,7 +121,8 @@
   "createNewReport": "Create new report",
   "selectDepartments": "Select departments",
   "noViewableReports": "No reports have been submitted yet.",
-
+  "month": "Month",
+  "year": "Year",
   "CaseStudy": {
     "Main": {
       "AddCaseStudy": "Add Case Study",
