@@ -1,3 +1,4 @@
+import { UserJson as User } from '@hha/common';
 export interface Json {
   [x: string]: string | number | boolean | Date | Json | JsonArray;
 }
@@ -13,112 +14,11 @@ export interface MessageProps {
   [index: string]: MessageEntry;
 }
 
-export const GeneralDepartment: string = 'General';
-
-export enum Role {
-  Admin = 'Admin',
-  MedicalDirector = 'Medical Director',
-  HeadOfDepartment = 'Head of Department',
-  BioMechanic = 'Bio Mechanic',
-  User = 'User',
-}
-
-export interface Department {
-  id: string;
-  name: string;
-}
-
-export interface DepartmentJson {
-  departments: Department[];
-}
-
-export const EMPTY_DEPARTMENT: Department = {
-  id: '',
-  name: '',
-};
-
-export interface Message {
-  id: string;
-  department: Department;
-  date: Date;
-  user: UserDetails;
-  messageBody: string;
-  messageHeader: string;
-}
-
-export const emptyMessage: Message = {
-  id: '',
-  department: { id: '', name: '' },
-  date: new Date(),
-  user: {
-    id: '',
-    name: '',
-    role: Role.Admin,
-    department: EMPTY_DEPARTMENT,
-    createdAt: '',
-    updatedAt: '',
-  },
-  messageBody: '',
-  messageHeader: '',
-};
-
-export interface Comment {
-  id: string;
-  createdAt: Date;
-  user: UserDetails;
-  messageComment: string;
-}
-
-export const emptyMessageComment: Comment = {
-  id: '',
-  createdAt: new Date(),
-  user: {
-    id: '',
-    name: '',
-    role: Role.Admin,
-    department: EMPTY_DEPARTMENT,
-    createdAt: '',
-    updatedAt: '',
-  },
-  messageComment: '',
-};
-
 export interface UserJson {
   errorMessage: string;
   isAuth: boolean;
   loading: boolean;
-  userDetails: UserDetails;
-}
-export interface UserDetails {
-  id: string;
-  name: string;
-  role: Role;
-  department: Department;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Permission {
-  path: string;
-  name: string;
-  key: string;
-  isChecked: boolean;
-}
-export interface Page {
-  name: string;
-  key: string;
-  permissions: Permission[];
-}
-
-export interface RoleWithPermissions {
-  name: string;
-  key: string;
-  pages: Page[];
-}
-export interface RolesData {
-  roles: {
-    [key: string]: RoleWithPermissions;
-  };
+  userDetails: User;
 }
 
 export interface QuestionRow {
@@ -127,11 +27,4 @@ export interface QuestionRow {
   answer: string;
   prompt_en?: string;
   prompt_fr?: string;
-}
-
-export interface Leaderboard {
-  id: string;
-  name: string;
-  points: number;
-  nCaseStudies: number;
 }

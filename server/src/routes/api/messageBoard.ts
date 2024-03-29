@@ -3,7 +3,7 @@ import MessageCollection from 'models/messageBoard';
 import { Request, NextFunction, Response } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { validateInput } from 'middleware/inputSanitization';
-import { Role } from 'models/user';
+import { Role } from '@hha/common';
 import {
   BadRequest,
   HTTP_CREATED_CODE,

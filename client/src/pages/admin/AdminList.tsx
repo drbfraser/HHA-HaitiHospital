@@ -12,12 +12,12 @@ import { useTranslation } from 'react-i18next';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Button } from 'react-bootstrap';
 import { useAuthState } from 'contexts';
-import { UserDetails } from 'constants/interfaces';
+import { UserJson as User } from '@hha/common';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string | null>(null);
-  const [users, setUsers] = useState<UserDetails[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const user = useAuthState();
 
   const history: History = useHistory<History>();
