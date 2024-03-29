@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Button } from 'react-bootstrap';
 import { useAuthState } from 'contexts';
-import { UserJson as User } from '@hha/common';
+import { UserClientModel as User } from '@hha/common';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);

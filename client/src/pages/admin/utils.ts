@@ -1,4 +1,4 @@
-import { UserJson as User } from '@hha/common';
+import { UserClientModel as User } from '@hha/common';
 import { AdminUserFormData } from './typing';
 
 export const initAdminForm = (data: User): AdminUserFormData => {

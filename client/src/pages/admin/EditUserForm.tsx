@@ -10,7 +10,7 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { Spinner } from 'components/spinner/Spinner';
-import { UserJson as User } from '@hha/common';
+import { UserClientModel as User } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import useDidMountEffect from 'utils/custom_hooks';
 import { useTranslation } from 'react-i18next';

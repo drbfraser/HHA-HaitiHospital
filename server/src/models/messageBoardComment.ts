@@ -1,5 +1,4 @@
-import { IllegalState } from 'exceptions/systemException';
-import { unknownUserJson, UserApiOut, UserJson } from '@hha/common';
+import { unknownUserJson, UserJson } from '@hha/common';
 import UserModel from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';

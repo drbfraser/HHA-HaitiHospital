@@ -1,4 +1,4 @@
-import { UserJson as User } from '@hha/common';
+import { UserClientModel } from '@hha/common';
 export interface Json {
   [x: string]: string | number | boolean | Date | Json | JsonArray;
 }
@@ -18,7 +18,7 @@ export interface UserJson {
   errorMessage: string;
   isAuth: boolean;
   loading: boolean;
-  userDetails: User;
+  userDetails: UserClientModel;
 }
 
 export interface QuestionRow {

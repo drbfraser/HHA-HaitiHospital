@@ -3,7 +3,7 @@ import {
   DepartmentJson as Department,
   GeneralDepartment,
   Role,
-  UserJson as User,
+  UserClientModel as User,
 } from '@hha/common';
 
 import { EMPTY_USER_JSON } from 'constants/default_values';

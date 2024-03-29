@@ -1,4 +1,4 @@
-import { UserJson as User, Role } from '@hha/common';
+import { UserClientModel as User, Role } from '@hha/common';
 
 export const EMPTY_USER_JSON: User = {
   id: '',

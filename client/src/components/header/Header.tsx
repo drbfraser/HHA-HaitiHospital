@@ -8,7 +8,7 @@ import { logOutUser } from '../../actions/authActions';
 import { useAuthDispatch } from '../../contexts';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { UserJson as User } from '@hha/common';
+import { UserClientModel as User } from '@hha/common';
 
 interface HeaderProps {
   title?: string;
