@@ -1,6 +1,7 @@
 import { NotFound } from 'exceptions/httpException';
 import { IllegalState } from 'exceptions/systemException';
-import DepartmentCollection, { Department } from 'models/departments';
+import DepartmentCollection from 'models/departments';
+import { Department } from '@hha/common';
 
 export enum DefaultDepartments {
   General = 'General',

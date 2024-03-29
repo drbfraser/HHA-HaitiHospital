@@ -1,5 +1,5 @@
 import { CustomValidator } from 'express-validator';
-import { DepartmentJson } from 'models/departments';
+import { DepartmentJson } from '@hha/common';
 import Departments from 'utils/departments';
 
 export const isDepartment: CustomValidator = async (value: DepartmentJson) => {
