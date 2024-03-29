@@ -11,8 +11,8 @@ interface MonthFieldProps {
 }
 
 export const MonthField = () => {
-  const [month, setMonth] = useState<number>(currMonth);
-  const [year, setYear] = useState<number>(currYear);
+  const [month, setMonth] = useState<number>();
+  const [year, setYear] = useState<number>();
   const [reportMonth, setReportMonth] = useState<Date | undefined>();
   const { t } = useTranslation();
 
@@ -22,7 +22,13 @@ export const MonthField = () => {
         <Col>
           <Form.Group className="mb-3" controlId="month">
             <Form.Label htmlFor="month">{t('month')}</Form.Label>
-            <Form.Select id="month" name="month">
+            <Form.Select
+              id="month"
+              name="month"
+              value={month}
+              onChange={(e) => setMonth(parseInt(e.target.value))}
+            >
+              <option>{t('monthSelect')}</option>
               <option value={0}>{t('monthJanuary')}</option>
               <option value={1}>{t('monthFebruary')}</option>
               <option value={2}>{t('monthMarch')}</option>
@@ -46,9 +52,11 @@ export const MonthField = () => {
               id="year"
               name="year"
               min="1900"
-              max={year}
-              defaultValue={year}
+              max={currYear}
+              value={year}
+              onChange={(e) => setYear(parseInt(e.target.value))}
               step="1"
+              isInvalid={year !== undefined && (year < 1900 || year > currYear)}
             />
           </Form.Group>
         </Col>

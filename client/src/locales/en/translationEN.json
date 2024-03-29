@@ -392,6 +392,7 @@
       "image": "Can't compress this image file"
     }
   },
+  "monthSelect": "Select Month",
   "monthJanuary": "January",
   "monthFebruary": "February",
   "monthMarch": "March",
