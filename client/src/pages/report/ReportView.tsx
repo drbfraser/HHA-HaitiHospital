@@ -273,7 +273,6 @@ const ReportView = () => {
 
           {readOnly && editMonth && (
             <ReportMonthForm
-              monthLabel={t('reportsMonth')}
               reportMonth={reportMonth}
               applyMonthChanges={applyMonthChanges}
               formHandler={confirmEdit}

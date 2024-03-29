@@ -9,11 +9,16 @@ const maxYear = currYear;
 const minYear = 1900;
 interface MonthFieldProps {
   setReportMonth: Dispatch<SetStateAction<Date | undefined>>;
+  previousReportMonth?: Date;
 }
 
-export const MonthField = ({ setReportMonth }: MonthFieldProps) => {
-  const [month, setMonth] = useState<number>();
-  const [year, setYear] = useState<number>();
+export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldProps) => {
+  const [month, setMonth] = useState<number | undefined>(
+    previousReportMonth?.getMonth() ?? undefined,
+  );
+  const [year, setYear] = useState<number | undefined>(
+    previousReportMonth?.getUTCFullYear() ?? undefined,
+  );
   const { t } = useTranslation();
 
   useEffect(() => {
