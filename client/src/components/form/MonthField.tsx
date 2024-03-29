@@ -1,26 +1,32 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { currMonth, currYear } from 'utils';
+import { currYear } from 'utils';
 import { useTranslation } from 'react-i18next';
 
+const maxYear = currYear;
+const minYear = 1900;
 interface MonthFieldProps {
   setReportMonth: Dispatch<SetStateAction<Date | undefined>>;
-  reportMonth: Date | undefined;
 }
 
-export const MonthField = () => {
+export const MonthField = ({ setReportMonth }: MonthFieldProps) => {
   const [month, setMonth] = useState<number>();
   const [year, setYear] = useState<number>();
-  const [reportMonth, setReportMonth] = useState<Date | undefined>();
   const { t } = useTranslation();
 
+  useEffect(() => {
+    if (month !== undefined && year !== undefined && year >= minYear && year < currYear) {
+      setReportMonth(new Date(year, month));
+    }
+  }, [month, setReportMonth, year]);
+
   return (
-    <div className="">
+    <div className="mt-3">
       <Row>
         <Col>
-          <Form.Group className="mb-3" controlId="month">
+          <Form.Group className="mb-3">
             <Form.Label htmlFor="month">{t('month')}</Form.Label>
             <Form.Select
               id="month"
@@ -45,7 +51,7 @@ export const MonthField = () => {
           </Form.Group>
         </Col>
         <Col>
-          <Form.Group className="mb-3" controlId="year">
+          <Form.Group className="mb-3">
             <Form.Label htmlFor="year">{t('year')}</Form.Label>
             <Form.Control
               type="number"
@@ -56,7 +62,8 @@ export const MonthField = () => {
               value={year}
               onChange={(e) => setYear(parseInt(e.target.value))}
               step="1"
-              isInvalid={year !== undefined && (year < 1900 || year > currYear)}
+              isInvalid={year !== undefined && (year < minYear || year > maxYear)}
+              placeholder={t('yearPlaceholder')}
             />
           </Form.Group>
         </Col>

@@ -122,8 +122,7 @@
   "createNewReport": "Créer un nouveau rapport",
   "selectDepartments": "Sélectionnez les départements",
   "noViewableReports": "Aucun rapport n'a encore été soumis.",
-  "month": "Mois",
-  "year": "Année",
+
   "CaseStudy": {
     "Main": {
       "AddCaseStudy": "Ajouter une étude de cas",
@@ -393,6 +392,7 @@
       "image": "Impossible de compresser ce fichier image"
     }
   },
+  "month": "Mois",
   "monthSelect": "Sélectionnez un mois",
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",
@@ -406,6 +406,8 @@
   "monthOctober": "Octobre",
   "monthNovember": "Novembre",
   "monthDecember": "Décembre",
+  "year": "Année",
+  "yearPlaceholder": "Entrez l'année",
 
   "FilterableTable": {
     "GlobalSearch": "Recherche"

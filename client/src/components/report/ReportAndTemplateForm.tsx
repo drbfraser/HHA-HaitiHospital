@@ -48,7 +48,7 @@ export const ReportAndTemplateForm = ({
               </option>
             ))}
         </select>
-        <label htmlFor="Report-Month" className="mt-2">
+        {/* <label htmlFor="Report-Month" className="mt-2">
           {monthLabel}
         </label>
         <input
@@ -59,8 +59,8 @@ export const ReportAndTemplateForm = ({
           value={reportMonth?.toISOString().slice(0, 7)}
           max={new Date().toISOString().slice(0, 7)}
           required
-        />
-        <MonthField />
+        /> */}
+        <MonthField setReportMonth={setReportMonth} />
       </fieldset>
     </div>
   );
