@@ -1,5 +1,6 @@
 import Departments from 'utils/departments';
-import { unknownUserJson, UserApiOut } from '@hha/common';
+import { unknownUserJson } from '@hha/common';
+import { UserApiOut } from 'routes/api/jsons/user';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';

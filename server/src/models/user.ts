@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as ENV from 'utils/processEnv';
 import Departments from 'utils/departments';
-import { UserApiOut } from '@hha/common';
+import { UserApiOut } from 'routes/api/jsons/user';
 import { logger } from '../logger';
 import { Role, hashAlgorithm, User } from '@hha/common';
 

@@ -9,7 +9,8 @@ import {
 import BioMechCollection from 'models/bioMech';
 import { Request, NextFunction, Response, Router } from 'express';
 
-import { BioMech, BiomechApiIn } from '@hha/common';
+import { BioMech } from '@hha/common';
+import { BiomechApiIn } from './jsons/biomech';
 import { ImageUploader } from 'middleware/multer';
 import { Biomech as InputSchema } from 'sanitization/schemas/biomech';
 import { Role, User } from '@hha/common';

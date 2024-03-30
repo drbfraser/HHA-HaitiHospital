@@ -1,4 +1,4 @@
-import { BiomechApiIn } from '@hha/common';
+import { BiomechApiIn } from 'routes/api/jsons/biomech';
 import { msgString } from 'sanitization/messages';
 import { isImage, MUST_BE_AN_IMAGE_FILE } from 'sanitization/validators/isImage';
 import {

@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import Departments from 'utils/departments';
-import { unknownUserJson, UserApiOut } from '@hha/common';
+import { unknownUserJson } from '@hha/common';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
 import { Message, MessageJson } from '@hha/common';
