@@ -1,19 +1,5 @@
-import { UserApiOut } from './user';
+import { UserJson } from './user';
 
-// To extract a TS type's properties to string
-// Ref: https://stackoverflow.com/a/42516869
-const proxiedPropertyOf = <IObj>() =>
-  new Proxy(
-    {},
-    {
-      get: (_, prop) => prop,
-      set: () => {
-        throw new Error(`Setter not supported`);
-      },
-    },
-  ) as {
-    [P in keyof IObj]: P;
-  };
 export enum BiomechPriority {
   URGENT = 'urgent',
   IMPORTANT = 'important',
@@ -38,34 +24,18 @@ export interface BioMech {
   imgPath: string;
 }
 
-export type BiomechJson = BiomechApiOut.BiomechGet;
-
-export namespace BiomechApiIn {
-  export interface BiomechPost {
-    equipmentName: string;
-    equipmentFault: string;
-    equipmentPriority: BiomechPriority;
-    equipmentStatus: BiomechStatus;
-    file: Express.Multer.File;
-  }
-
-  export const BIOMECH_POST_PROPERTIES = proxiedPropertyOf<BiomechPost>();
-}
-
-export namespace BiomechApiOut {
-  export interface BiomechGet {
+export interface BiomechJson {
+  id: string;
+  user: UserJson;
+  department: {
     id: string;
-    user: UserApiOut.UserGet;
-    department: {
-      id: string;
-      name: string;
-    };
-    equipmentName: string;
-    equipmentFault: string;
-    equipmentPriority: string;
-    equipmentStatus: string;
-    createdAt: string;
-    updatedAt: string;
-    imgPath: string;
-  }
+    name: string;
+  };
+  equipmentName: string;
+  equipmentFault: string;
+  equipmentPriority: string;
+  equipmentStatus: string;
+  createdAt: string;
+  updatedAt: string;
+  imgPath: string;
 }
