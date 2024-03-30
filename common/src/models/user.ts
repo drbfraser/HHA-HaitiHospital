@@ -52,3 +52,24 @@ export interface UserClientModel {
   createdAt: Date;
   updatedAt: Date;
 }
+
+const unknownDepartmentId = '-1';
+const unknownDepartmentName = 'Unknown Department';
+const unknownUserId = '-1';
+const unknownUserName = 'Unknown User';
+const unknownUsername = 'unknown';
+const unknownRole = 'User';
+const unknownDate = new Date(0);
+
+export const unknownUserJson: UserJson = {
+  id: unknownUserId,
+  name: unknownUserName,
+  username: unknownUsername,
+  role: unknownRole,
+  department: {
+    id: unknownDepartmentId,
+    name: unknownDepartmentName,
+  },
+  createdAt: unknownDate,
+  updatedAt: unknownDate,
+};

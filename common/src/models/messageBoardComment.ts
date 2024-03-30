@@ -1,4 +1,4 @@
-import { UserApiOut } from './user';
+import { UserJson } from './user';
 
 export interface MessageBoardComment {
   userId: string;
@@ -10,7 +10,7 @@ export interface MessageBoardComment {
 
 export interface MessageBoardCommentJson {
   id: string;
-  user: UserApiOut.UserGet;
+  user: UserJson;
   parentMessageId: string;
   messageComment: string;
   createdAt: string;
