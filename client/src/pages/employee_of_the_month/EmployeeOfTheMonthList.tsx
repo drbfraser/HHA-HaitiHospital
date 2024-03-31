@@ -1,6 +1,6 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
 import { Button } from 'react-bootstrap';
@@ -24,7 +24,7 @@ export const EmployeeOfTheMonthList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const deleteEotm = async (id: string) => {
     await Api.Delete(
@@ -37,6 +37,10 @@ export const EmployeeOfTheMonthList = () => {
       ResponseMessage.getMsgDeleteEotmFailed(),
     );
   };
+
+  useEffect(() => {
+    console.log(t);
+  }, [t]);
 
   const resetDeleteModal = () => {
     setCurrentIndex(null);
@@ -80,13 +84,13 @@ export const EmployeeOfTheMonthList = () => {
     };
   }, [history]);
 
-  const columns = useMemo(() => {
+  const columns = useCallback(() => {
     const columns: FilterableColumnDef[] = [
       {
         header: t('employeeOfTheMonthDateAwarded'),
         id: 'awardedMonthYear',
         accessorFn: ({ awardedMonth, awardedYear }) =>
-          `${translateMonth(awardedMonth)} ${awardedYear}`,
+          `${t(translateMonth(awardedMonth))} ${awardedYear}`,
       },
       {
         header: t('employeeOfTheMonthName'),
@@ -137,7 +141,7 @@ export const EmployeeOfTheMonthList = () => {
       });
     }
     return columns;
-  }, [authState.userDetails.role, t]);
+  }, [authState.userDetails.role, i18n.resolvedLanguage]);
 
   return (
     <Layout
@@ -168,7 +172,7 @@ export const EmployeeOfTheMonthList = () => {
         onModalDelete={onModalDeleteConfirm}
       />
       <FilterableTable
-        columns={columns}
+        columns={columns()}
         data={employeeOfTheMonthList}
         rowClickHandler={(item) => history.push(`/employee-of-the-month/${item.id}`)}
         enableFilters
