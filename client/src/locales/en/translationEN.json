@@ -121,7 +121,6 @@
   "createNewReport": "Create new report",
   "selectDepartments": "Select departments",
   "noViewableReports": "No reports have been submitted yet.",
-
   "CaseStudy": {
     "Main": {
       "AddCaseStudy": "Add Case Study",
@@ -391,6 +390,8 @@
       "image": "Can't compress this image file"
     }
   },
+  "month": "Month",
+  "monthSelect": "Select Month",
   "monthJanuary": "January",
   "monthFebruary": "February",
   "monthMarch": "March",
@@ -403,6 +404,8 @@
   "monthOctober": "October",
   "monthNovember": "November",
   "monthDecember": "December",
+  "year": "Year",
+  "yearPlaceholder": "Enter year",
 
   "FilterableTable": {
     "GlobalSearch": "Search"
