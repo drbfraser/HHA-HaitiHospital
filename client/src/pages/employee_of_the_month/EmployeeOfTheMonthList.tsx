@@ -38,10 +38,6 @@ export const EmployeeOfTheMonthList = () => {
     );
   };
 
-  useEffect(() => {
-    console.log(t);
-  }, [t]);
-
   const resetDeleteModal = () => {
     setCurrentIndex(null);
     setShowDeleteModal(false);
@@ -84,13 +80,15 @@ export const EmployeeOfTheMonthList = () => {
     };
   }, [history]);
 
-  const columns = useCallback(() => {
+  const columns = useMemo(() => {
     const columns: FilterableColumnDef[] = [
       {
         header: t('employeeOfTheMonthDateAwarded'),
         id: 'awardedMonthYear',
-        accessorFn: ({ awardedMonth, awardedYear }) =>
-          `${t(translateMonth(awardedMonth))} ${awardedYear}`,
+        cell: (row) => {
+          const { awardedMonth, awardedYear } = row.row.original;
+          return `${t(translateMonth(awardedMonth))} ${awardedYear}`;
+        },
       },
       {
         header: t('employeeOfTheMonthName'),
@@ -100,7 +98,7 @@ export const EmployeeOfTheMonthList = () => {
       {
         header: t('employeeOfTheMonthDepartment'),
         id: 'department',
-        accessorFn: ({ department: { name } }) => name,
+        cell: (row) => t(row.row.original.department.name),
       },
       {
         header: t('employeeOfTheMonthLastUpdated'),
@@ -172,7 +170,7 @@ export const EmployeeOfTheMonthList = () => {
         onModalDelete={onModalDeleteConfirm}
       />
       <FilterableTable
-        columns={columns()}
+        columns={columns}
         data={employeeOfTheMonthList}
         rowClickHandler={(item) => history.push(`/employee-of-the-month/${item.id}`)}
         enableFilters

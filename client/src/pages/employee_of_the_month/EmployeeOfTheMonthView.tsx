@@ -23,7 +23,7 @@ export const EmployeeOfTheMonthView = () => {
   const authState = useAuthState();
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
   const history: History = useHistory<History>();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const params = useParams<EmployeeViewParams>();
 
@@ -89,7 +89,7 @@ export const EmployeeOfTheMonthView = () => {
     return () => {
       controller.abort();
     };
-  }, [employeeViewParams, history, params, i18n.resolvedLanguage]);
+  }, [employeeViewParams, history, params]);
 
   const CarouselIndicators: React.FC = () => (
     <div className="carousel-indicators">

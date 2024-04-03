@@ -1,5 +1,5 @@
 // Reference :
-//https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
+// https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { Link, useHistory } from 'react-router-dom';
