@@ -1,11 +1,11 @@
 import { UserDetails, UserJson } from 'constants/interfaces';
 
 export enum CaseStudyType {
-  PatientStory = 'Patient Story',
-  StaffRecognition = 'Staff Recognition',
-  TrainingSession = 'Training Session',
-  EquipmentReceived = 'Equipment Received',
-  OtherStory = 'Other Story',
+  PatientStory = 'PatientStory',
+  StaffRecognition = 'StaffRecognition',
+  TrainingSession = 'TrainingSession',
+  EquipmentReceived = 'EquipmentReceived',
+  OtherStory = 'OtherStory',
 }
 
 interface PatientStory {

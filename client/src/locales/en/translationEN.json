@@ -133,6 +133,13 @@
       "Delete": "Delete",
       "Featured": "Set as Featured",
       "UnFeatured": "Currently Featured"
+    },
+    "Type": {
+      "Patient Story": "Patient Story",
+      "Staff Recognition": "Staff Recognition",
+      "Training Session": "Training Session",
+      "Equipment Received": "Equipment Received",
+      "Other Story": "Other Story"
     }
   },
 

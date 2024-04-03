@@ -17,6 +17,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { FilterType } from 'components/filter/Filter';
 
 export const EmployeeOfTheMonthList = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
@@ -24,7 +25,7 @@ export const EmployeeOfTheMonthList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const deleteEotm = async (id: string) => {
     await Api.Delete(
@@ -89,6 +90,7 @@ export const EmployeeOfTheMonthList = () => {
           const { awardedMonth, awardedYear } = row.row.original;
           return `${t(translateMonth(awardedMonth))} ${awardedYear}`;
         },
+        accessorFn: (row) => `${t(translateMonth(row.awardedMonth))} ${row.awardedYear}`,
       },
       {
         header: t('employeeOfTheMonthName'),
@@ -99,6 +101,7 @@ export const EmployeeOfTheMonthList = () => {
         header: t('employeeOfTheMonthDepartment'),
         id: 'department',
         cell: (row) => t(row.row.original.department.name),
+        accessorFn: (row) => t(row.department.name),
       },
       {
         header: t('employeeOfTheMonthLastUpdated'),
@@ -139,7 +142,7 @@ export const EmployeeOfTheMonthList = () => {
       });
     }
     return columns;
-  }, [authState.userDetails.role, i18n.resolvedLanguage]);
+  }, [authState.userDetails.role, t]);
 
   return (
     <Layout

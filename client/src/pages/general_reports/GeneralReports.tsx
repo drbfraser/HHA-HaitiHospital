@@ -106,6 +106,16 @@ const GeneralReports = () => {
   departments.departmentIdKeyMap.forEach((value: string, key: string) => {
     departmentsCheckBoxes.push({ departmentId: key, departmentName: value });
   });
+
+  const translateMonthYearString = (monthYear: string) => {
+    const monthYearArr = monthYear.split(' ');
+    if (monthYearArr.length !== 2) {
+      return monthYear;
+    }
+    const [month, year] = monthYearArr;
+    const translatedMonth = t(`month${month}`);
+    return `${translatedMonth} ${year}`;
+  };
   const columns: FilterableColumnDef[] = [
     {
       header: t('reportsReportId'),
@@ -127,7 +137,7 @@ const GeneralReports = () => {
     {
       header: t('reportsMonth'),
       id: 'reportMonth',
-      cell: (row) => <span>{row.getValue()}</span>,
+      cell: (row) => <span>{translateMonthYearString(row.getValue())}</span>,
       accessorFn: (row) => row.reportMonth,
       filterFn: (row: Row<any>, columnId: string, value: any) => {
         return true;
@@ -141,7 +151,7 @@ const GeneralReports = () => {
     {
       header: t('reportsSubmissionDate'),
       id: 'submittedDate',
-      cell: (row) => <span>{row.getValue()}</span>,
+      cell: (row) => <span>{translateMonthYearString(row.getValue())}</span>,
       accessorFn: (row) => row.submittedDate,
       filterFn: (row: Row<any>, columnId: string, value: any) => {
         return true;

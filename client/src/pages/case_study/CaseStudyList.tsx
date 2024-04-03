@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
 import { Button } from 'react-bootstrap';
-import { CellContext } from '@tanstack/react-table';
+import { CellContext, Row } from '@tanstack/react-table';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import GenericModal from 'components/popup_modal/GenericModal';
 import { History } from 'history';
@@ -93,7 +93,13 @@ export const CaseStudyList = () => {
       {
         header: t('CaseStudy.Main.CaseStudyType'),
         id: 'type',
-        accessorKey: 'caseStudyType',
+        cell: (row) => t(`CaseStudy.Type.${row.row.original.caseStudyType}`),
+        accessorFn: (row) => t(row.caseStudyType),
+        // filterFn: (row: Row<any>, columnId: string, value: any) => {
+        //   alert(row.getValue(columnId))
+        //   console.log("A", row.getValue(columnId), value)
+        //   return true;
+        // },
       },
       {
         header: t('CaseStudy.Main.Author'),
