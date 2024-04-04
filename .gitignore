@@ -11,3 +11,5 @@ server/hha-common-1.0.0.tgz
 prometheus.yml
 promtail.yaml
 client_build.tar.gz
+server_build.tar.gz
+common_build.tar.gz
