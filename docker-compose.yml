@@ -12,8 +12,6 @@ services:
       - SERVER_PORT=8000
     volumes:
       - server_logs:/var/log
-      - ./:/code
-    working_dir: /code/server
     ports:
       - '8000:8000'
 
