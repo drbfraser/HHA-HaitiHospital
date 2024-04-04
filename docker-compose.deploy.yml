@@ -14,8 +14,6 @@ services:
     build:
       context: .
       dockerfile: server/Dockerfile
-    depends_on:
-      - mongodb
     restart: always
     environment:
       - JWT_SECRET=${JWT_SECRET}
@@ -47,6 +45,8 @@ services:
       driver: fluentd
       options:
         tag: docker.{{.Name}}.{{.ID}}
+    depends_on:
+      - logger
     volumes:
       - caddy_log:/var/log
 
