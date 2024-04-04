@@ -26,7 +26,6 @@ const ExpandableQuestionFormField = ({
   const nameId = `${question.getId()}${suffixName}`;
 
   const updateErrorSetFromSelf = useCallback(() => {
-    console.log('aaaaaaaaaaa', nameId);
     setErrorSet((prevErrorSet: Set<ID>) => {
       const nextErrorSet = new Set(prevErrorSet);
 
