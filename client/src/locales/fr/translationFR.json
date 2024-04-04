@@ -119,7 +119,9 @@
   "Training Session": "Session de formation",
   "Equipment Received": "Équipement reçu",
   "Other Story": "Autre histoire",
+  "accordionItemsHaveErrors": "Veuillez corriger les erreurs dans les éléments ci-dessous",
   "createNewReport": "Créer un nouveau rapport",
+  "reportNotFound": "Aucun rapport trouvé",
   "selectDepartments": "Sélectionnez les départements",
   "noViewableReports": "Aucun rapport n'a encore été soumis.",
 

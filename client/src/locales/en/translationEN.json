@@ -118,7 +118,9 @@
   "Training Session": "Training Session",
   "Equipment Received": "Equipment Received",
   "Other Story": "Other Story",
+  "accordionItemsHaveErrors": "Please fix errors in the items below",
   "createNewReport": "Create new report",
+  "reportNotFound": "No Report Found",
   "selectDepartments": "Select departments",
   "noViewableReports": "No reports have been submitted yet.",
   "CaseStudy": {
