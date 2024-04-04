@@ -71,7 +71,7 @@ export const createServer = () => {
       useFindAndModify: false,
     })
     .then(() => {
-      logger.info('Connect to MongDB');
+      logger.info('Connect to MongoDB');
     })
     .catch((err) => logger.error(err));
   // Use Routes
