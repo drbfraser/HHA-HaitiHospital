@@ -3,7 +3,7 @@
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { Link, useHistory } from 'react-router-dom';
-import { monthYearOptions, userLocale } from 'constants/date';
+import { monthYearOptions, dateOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -190,9 +190,11 @@ const GeneralReports = () => {
     return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
   };
 
-  const getReportMonth = (item: IReportObject<any>): string => {
-    return new Date(item.reportMonth).toLocaleDateString(userLocale, monthYearOptions);
-  };
+  const getReportMonth = (item: IReportObject<any>): string =>
+    new Date(item.reportMonth).toLocaleDateString(userLocale, monthYearOptions);
+
+  const getSubmittedDate = (item: IReportObject<any>): string =>
+    new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions);
 
   //TODO: Add interface for item
   const gridData = reports.map((item) => ({
@@ -200,7 +202,7 @@ const GeneralReports = () => {
     _id: item._id,
     reportName: getReportName(item),
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
-    submittedDate: new Date(item.submittedDate).toLocaleDateString(userLocale, monthYearOptions),
+    submittedDate: getSubmittedDate(item),
     submittedBy: item.submittedBy,
     reportMonth: getReportMonth(item),
     isDraft: item.isDraft,

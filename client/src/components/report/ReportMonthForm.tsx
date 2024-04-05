@@ -1,15 +1,14 @@
+import { MonthField } from 'components/form/MonthField';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ReportMonthFormProps {
-  monthLabel: string;
   reportMonth: Date | undefined;
   applyMonthChanges: (reportMonth: Date) => void;
   formHandler: (event: React.FormEvent<HTMLFormElement>, isDraft: boolean) => void;
 }
 
 const ReportMonthForm = ({
-  monthLabel,
   reportMonth,
   applyMonthChanges,
   formHandler,
@@ -28,16 +27,9 @@ const ReportMonthForm = ({
   return (
     <div className="col-md-6 mb-2">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="Report-Month" className="mt-2">
-          {monthLabel}
-        </label>
-        <input
-          type="month"
-          className="form-control"
-          id="Report-Month"
-          onChange={(e) => setCurrentReportMonth(new Date(e.target.value))}
-          value={currentReportMonth?.toISOString().slice(0, 7)}
-          max={new Date().toISOString().slice(0, 7)}
+        <MonthField
+          setReportMonth={setCurrentReportMonth}
+          previousReportMonth={currentReportMonth}
         />
         <button type="submit" className="btn btn-primary mt-2">
           {t('departmentReportDisplayMonthApplyChanges')}

@@ -64,6 +64,7 @@ const ReportView = () => {
   const applyMonthChanges = (reportMonth: Date) => {
     setAreChangesMade(true);
     setReportMonth(reportMonth);
+    setMetaData((prev) => ({ ...prev!, reportMonth: reportMonth }));
   };
 
   const handleExportWithComponent = () => {
@@ -131,8 +132,8 @@ const ReportView = () => {
     setMetaData({
       _id: fetchedReport?.report?._id,
       departmentId: fetchedReport?.report?.departmentId,
-      reportMonth: fetchedReport?.report?.reportMonth,
-      submittedDate: fetchedReport?.report?.submittedDate,
+      reportMonth: reportDate,
+      submittedDate: new Date(fetchedReport?.report?.submittedDate),
       submittedBy: fetchedReport?.report?.submittedBy,
     });
 
@@ -227,7 +228,7 @@ const ReportView = () => {
                   <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
                     {t('departmentReportDisplayGeneratePDF')}
                   </button>
-                  <XlsxGenerator questionItems={questionItems} />
+                  <XlsxGenerator questionItems={questionItems} metaData={metaData} />
                 </span>
               )}
               {readOnly && !editMonth && (
@@ -271,7 +272,6 @@ const ReportView = () => {
 
           {readOnly && editMonth && (
             <ReportMonthForm
-              monthLabel={t('reportsMonth')}
               reportMonth={reportMonth}
               applyMonthChanges={applyMonthChanges}
               formHandler={confirmEdit}

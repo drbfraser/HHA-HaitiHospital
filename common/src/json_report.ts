@@ -80,7 +80,7 @@ export interface JsonReportDescriptor {
 
 export interface ReportMetaData {
   departmentId: string;
-  reportMonth: string;
+  reportMonth: Date | undefined;
   _id: string;
   submittedDate?: Date | undefined;
   submittedUserId?: string;

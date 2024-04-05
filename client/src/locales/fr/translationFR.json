@@ -392,6 +392,8 @@
       "image": "Impossible de compresser ce fichier image"
     }
   },
+  "month": "Mois",
+  "monthSelect": "Sélectionnez un mois",
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",
   "monthMarch": "Mars",
@@ -404,6 +406,8 @@
   "monthOctober": "Octobre",
   "monthNovember": "Novembre",
   "monthDecember": "Décembre",
+  "year": "Année",
+  "yearPlaceholder": "Entrez l'année",
 
   "FilterableTable": {
     "GlobalSearch": "Recherche"
