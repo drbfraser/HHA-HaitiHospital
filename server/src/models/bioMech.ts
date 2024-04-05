@@ -1,39 +1,12 @@
 import * as mongoose from 'mongoose';
 
-import { BiomechApiOut } from 'routes/api/jsons/biomech';
 import Departments from 'utils/departments';
-import { IllegalState } from 'exceptions/systemException';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
-import { unknownUserJson } from 'routes/api/jsons/user';
+import { BiomechPriority, BiomechStatus, BioMech, BiomechJson, unknownUserJson } from '@hha/common';
 
 const { Schema } = mongoose;
 
-export enum BiomechPriority {
-  URGENT = 'urgent',
-  IMPORTANT = 'important',
-  NONURGENT = 'non-urgent',
-}
-
-export enum BiomechStatus {
-  FIXED = 'fixed',
-  INPROGRESS = 'in-progress',
-  BACKLOG = 'backlog',
-}
-
-export interface BioMech {
-  userId: string;
-  departmentId: string;
-  equipmentName: string;
-  equipmentFault: string;
-  equipmentPriority: BiomechPriority;
-  equipmentStatus: BiomechStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  imgPath: string;
-}
-
-type BiomechJson = BiomechApiOut.BiomechGet;
 interface BioMechWithInstanceMethods extends BioMech {
   toJson: () => Promise<BiomechJson>;
 }

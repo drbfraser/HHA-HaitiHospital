@@ -11,7 +11,7 @@ import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Role } from 'constants/interfaces';
+import { Role } from '@hha/common';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';

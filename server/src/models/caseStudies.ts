@@ -1,5 +1,6 @@
 import Departments from 'utils/departments';
-import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
+import { unknownUserJson } from '@hha/common';
+import { UserApiOut } from 'routes/api/jsons/user';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';
@@ -126,7 +127,7 @@ export interface CaseStudy {
 export interface CaseStudyJson {
   id: string;
   caseStudyType: CaseStudyOptions;
-  user: UserApiOut.UserJson;
+  user: UserApiOut.UserGet;
   department: {
     id: string;
     name: string;

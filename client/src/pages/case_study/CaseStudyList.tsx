@@ -15,7 +15,7 @@ import DeleteModal from 'components/popup_modal/DeleteModal';
 import GenericModal from 'components/popup_modal/GenericModal';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Role } from 'constants/interfaces';
+import { Role } from '@hha/common';
 import { ResponseMessage, SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';

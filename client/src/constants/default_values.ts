@@ -1,10 +1,14 @@
-import { UserDetails, Role, EMPTY_DEPARTMENT } from './interfaces';
+import { UserClientModel as User, Role } from '@hha/common';
 
-export const EMPTY_USER_JSON: UserDetails = {
+export const EMPTY_USER_JSON: User = {
   id: '',
   name: '',
+  username: '',
   role: Role.User,
-  department: EMPTY_DEPARTMENT,
-  createdAt: '',
-  updatedAt: '',
+  department: {
+    id: '',
+    name: '',
+  },
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };

@@ -1,5 +1,5 @@
-import { Comment } from 'constants/interfaces';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
+import { MessageBoardCommentJson as Comment } from '@hha/common';
 
 interface MessageCommentProps {
   comment: Comment;

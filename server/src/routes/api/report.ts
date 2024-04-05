@@ -19,7 +19,7 @@ import { departmentAuth } from 'middleware/departmentAuth';
 import { Router } from 'express';
 import { cloneDeep } from 'lodash';
 import { roleAuth } from 'middleware/roleAuth';
-import { Role } from 'models/user';
+import { Role } from '@hha/common';
 
 const router = Router();
 

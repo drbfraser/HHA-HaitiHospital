@@ -3,7 +3,7 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { HTTP_OK_CODE } from 'exceptions/httpException';
 import { DefaultDepartments } from 'utils/departments';
 import Department from 'models/departments';
-import { LeaderboardJson } from 'models/leaderboard';
+import { LeaderboardJson } from '@hha/common';
 
 const router = Router();
 const POINTS_PER_CASE_STUDY: number = 10;

@@ -21,7 +21,7 @@ import FilterableTable, { FilterableColumnDef } from 'components/table/Filterabl
 import { Paths } from 'constants/paths';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
-import { Role } from 'constants/interfaces';
+import { Role } from '@hha/common';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import DraftIcon from 'components/report/DraftIcon';
 import { Row } from '@tanstack/react-table';

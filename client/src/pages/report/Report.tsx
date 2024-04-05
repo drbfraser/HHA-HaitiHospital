@@ -1,11 +1,10 @@
 import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { FormEvent, useEffect, useState } from 'react';
 import { NavigationInfo, navigate } from '../../components/report/utils';
-import { ObjectSerializer, QuestionGroup } from '@hha/common';
+import { ObjectSerializer, QuestionGroup, DepartmentJson as Department, Role } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
 import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
-import { Department, Role } from 'constants/interfaces';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { ReportAndTemplateForm } from 'components/report/ReportAndTemplateForm';

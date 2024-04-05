@@ -1,4 +1,4 @@
-import { Role } from './interfaces';
+import { Role } from '@hha/common';
 
 export enum Permission {
   ACCESS_PAGE = 'can_view_dashboard',

@@ -2,7 +2,7 @@ import { FormFieldDisplay, FormFieldDisplayProps } from 'components/form/FormFie
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
-import { CaseStudy, CaseStudyType } from 'pages/case_study/typing';
+import { CaseStudy, CaseStudyType } from '@hha/common';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { FormDisplay } from 'components/form/FormDisplay';
 import { History } from 'history';

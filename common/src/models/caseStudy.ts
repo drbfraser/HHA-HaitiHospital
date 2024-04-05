@@ -1,5 +1,4 @@
-import { UserClientModel as User } from '@hha/common';
-
+import { UserJson } from './user';
 export enum CaseStudyType {
   PatientStory = 'Patient Story',
   StaffRecognition = 'Staff Recognition',
@@ -53,7 +52,7 @@ export interface CaseStudy {
   caseStudyType: { type: CaseStudyType; required: true };
   // TODO: add created by user. right now JWT is not yet applied
   // createdByUser: { type: string},
-  user: User;
+  user: UserJson;
   patientStory: PatientStory;
   staffRecognition: StaffRecognition;
   trainingSession: TrainingSession;

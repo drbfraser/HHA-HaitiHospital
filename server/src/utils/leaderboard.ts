@@ -1,7 +1,6 @@
 import CaseStudyModel, { CaseStudy } from 'models/caseStudies';
 import { currYear, currMonth } from 'utils/dateFormatting';
-import { LeaderboardJson } from 'models/leaderboard';
-import { Department } from 'models/departments';
+import { Department, LeaderboardJson } from '@hha/common';
 
 export const leaderboardPointsCalculator = async (
   pointsFactor: number,

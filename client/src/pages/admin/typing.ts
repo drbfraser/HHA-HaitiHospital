@@ -1,4 +1,4 @@
-import { Role, Department } from '../../constants/interfaces';
+import { Role, DepartmentJson as Department } from '@hha/common';
 import { Path } from 'react-hook-form';
 
 export interface AdminUserFormData {

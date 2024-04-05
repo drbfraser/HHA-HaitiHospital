@@ -1,6 +1,5 @@
 // Common utility functions used throughout the client
-import { Role } from 'constants/interfaces';
-import { Department } from 'constants/interfaces';
+import { Role, DepartmentJson as Department } from '@hha/common';
 
 export const isUserInDepartment = (userDepartment: string, wantedDepartment: string): boolean => {
   return userDepartment === wantedDepartment;

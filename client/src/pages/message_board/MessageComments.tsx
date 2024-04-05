@@ -13,13 +13,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Api from 'actions/Api';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Message } from 'constants/interfaces';
+import { MessageJson as Message, MessageBoardCommentJson as Comment } from '@hha/common';
 import MessageComment from 'components/message/MessageComment';
 import MessageDisplay from 'components/message/MessageDisplay';
 import { ResponseMessage } from 'utils';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Comment } from 'constants/interfaces';
 
 const MessageComments = () => {
   const [comments, setComments] = useState<Comment[]>([]);
@@ -95,13 +94,7 @@ const MessageComments = () => {
     <Layout showBackButton title={t('headerMessageComments')}>
       {message && (
         <>
-          <MessageDisplay
-            message={message}
-            showCommentsLink={false}
-            onDelete={() => {
-              history.goBack();
-            }}
-          />
+          <MessageDisplay message={message} showCommentsLink={false} onDelete={history.goBack} />
           <div className="d-sm-flex align-items-center">
             <h6 className="border-bottom pt-5 pb-2 mb-0">
               {t('messageBoardCommentsComment') + ' (' + comments.length + ')'}

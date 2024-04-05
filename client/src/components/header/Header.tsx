@@ -4,11 +4,11 @@ import Api from 'actions/Api';
 import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
 import { History } from 'history';
 import { ResponseMessage } from 'utils/response_message';
-import { UserDetails } from 'constants/interfaces';
 import { logOutUser } from '../../actions/authActions';
 import { useAuthDispatch } from '../../contexts';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { UserClientModel as User } from '@hha/common';
 
 interface HeaderProps {
   title?: string;
@@ -17,7 +17,7 @@ interface HeaderProps {
 const Header = ({ title }: HeaderProps) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
   const history: History = useHistory<History>();
-  const [userInfo, setUserInfo] = useState<UserDetails>();
+  const [userInfo, setUserInfo] = useState<User>();
   const { t } = useTranslation();
 
   const logout = () => {
@@ -27,7 +27,7 @@ const Header = ({ title }: HeaderProps) => {
 
   useEffect(() => {
     const getUserInfo = async (controller: AbortController) => {
-      const user: UserDetails = await Api.Get(
+      const user: User = await Api.Get(
         ENDPOINT_ADMIN_ME,
         ResponseMessage.getMsgFetchUserFailed(),
         history,
