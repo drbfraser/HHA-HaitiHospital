@@ -8,6 +8,7 @@ import {
   BadRequest,
   HTTP_CREATED_CODE,
   HTTP_NOCONTENT_CODE,
+  HTTP_NOTFOUND_CODE,
   HTTP_OK_CODE,
   NotFound,
   Unauthorized,
@@ -183,7 +184,7 @@ router.put(
         return res.sendStatus(HTTP_OK_CODE);
       }
 
-      return res.sendStatus(HTTP_CREATED_CODE);
+      throw new NotFound(`Update failed: No message with id ${req.params.id} available`);
     } catch (e) {
       next(e);
     }

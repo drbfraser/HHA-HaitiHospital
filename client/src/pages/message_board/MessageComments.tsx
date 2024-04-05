@@ -39,6 +39,7 @@ const MessageComments = () => {
         history,
         controller.signal,
       );
+      if (Object.keys(message).length === 0) return;
       setMessage(message);
     };
 

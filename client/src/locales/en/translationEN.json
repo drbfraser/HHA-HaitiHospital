@@ -4,6 +4,7 @@
   "Rehab": "Rehab",
   "Community & Health": "Community & Health",
   "Report": "Report",
+  "networkError": "Network Error",
   "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
   "signInPleasePlaceHolderPassword": "Password",
@@ -118,7 +119,9 @@
   "Training Session": "Training Session",
   "Equipment Received": "Equipment Received",
   "Other Story": "Other Story",
+  "accordionItemsHaveErrors": "Please fix errors in the items below",
   "createNewReport": "Create new report",
+  "reportNotFound": "No Report Found",
   "selectDepartments": "Select departments",
   "noViewableReports": "No reports have been submitted yet.",
   "CaseStudy": {

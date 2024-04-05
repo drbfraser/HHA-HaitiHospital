@@ -38,6 +38,7 @@ const getQuestionFromQuestionId = (questionId: string) => {
 export const QuestionFormFields = ({
   applyReportChanges,
   questions,
+  errorSet,
   setErrorSet,
   suffixName,
   currentPage,
@@ -45,6 +46,7 @@ export const QuestionFormFields = ({
 }: {
   applyReportChanges: () => void;
   questions: QuestionGroup<ID, ErrorType>;
+  errorSet: Set<ID>;
   setErrorSet: Dispatch<SetStateAction<Set<ID>>>;
   suffixName: string;
   currentPage?: number;
@@ -71,6 +73,7 @@ export const QuestionFormFields = ({
               applyReportChanges={applyReportChanges}
               key={`${question.getId()}${suffixName}`}
               question={question}
+              errorSet={errorSet}
               setErrorSet={setErrorSet}
               readOnly={readOnly}
               suffixName={suffixName}
@@ -214,6 +217,7 @@ const ReportForm = ({
             currentPage={currentPage}
             questions={reportData}
             readOnly={readOnly}
+            errorSet={errorSet}
             setErrorSet={setErrorSet}
             suffixName=""
           />
