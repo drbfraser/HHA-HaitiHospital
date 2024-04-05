@@ -168,7 +168,7 @@ const ReportView = () => {
   if (!isLoading && !report)
     return (
       <Layout showBackButton>
-        <div>{t('reportNotFound')}</div>
+        <h1>{t('reportNotFound')}</h1>
       </Layout>
     );
   return (
