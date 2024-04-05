@@ -59,6 +59,7 @@ const Login = () => {
               history.push('/home');
             })
             .catch((error) => {
+              if (error.message.includes('Network')) setErrorMessage(i18n.t('networkError'));
               console.error('Logging in failed: ', error);
             });
         })

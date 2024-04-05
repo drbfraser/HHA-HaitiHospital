@@ -29,6 +29,7 @@ const ReportView = () => {
   const [metaData, setMetaData] = useState<ReportMetaData | null>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType> | null>(null);
   const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -126,6 +127,10 @@ const ReportView = () => {
       controller.signal,
     );
 
+    if (Object.keys(fetchedReport).length === 0) {
+      return;
+    }
+
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
     const reportDate = new Date(fetchedReport?.report?.reportMonth);
     setReportMonth(reportDate);
@@ -146,6 +151,7 @@ const ReportView = () => {
 
   useEffect(() => {
     getReport();
+    setIsLoading(false);
   }, [getReport]);
 
   useEffect(() => {
@@ -159,7 +165,12 @@ const ReportView = () => {
       window.onbeforeunload = () => false;
     };
   }, [areChangesMade, readOnly]);
-
+  if (!isLoading && !report)
+    return (
+      <Layout showBackButton>
+        <h1>{t('reportNotFound')}</h1>
+      </Layout>
+    );
   return (
     <>
       {!!report && (

@@ -31,6 +31,7 @@ const EditMessage = () => {
         history,
         controller.signal,
       );
+      if (Object.keys(msgData).length === 0) return;
       const msg: Message = {
         id: msgData.id,
         messageBody: msgData.messageBody,

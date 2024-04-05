@@ -5,18 +5,22 @@ import { FormField } from './index';
 import { QuestionFormFields } from 'components/report/ReportForm';
 import cn from 'classnames';
 import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const ExpandableQuestionFormField = ({
   applyReportChanges,
   question,
+  errorSet,
   setErrorSet,
   suffixName,
 }: {
   applyReportChanges: () => void;
   question: ExpandableQuestion<ID, ErrorType>;
+  errorSet: Set<ID>;
   setErrorSet: React.Dispatch<React.SetStateAction<Set<string>>>;
   suffixName: string;
 }): JSX.Element => {
+  const { t } = useTranslation();
   const [openClosedStates, setOpenClosedStates] = useState<boolean[]>([]);
   const inputState = question.getValidationResults();
   const nameId = `${question.getId()}${suffixName}`;
@@ -37,7 +41,6 @@ const ExpandableQuestionFormField = ({
 
   useEffect(() => {
     updateErrorSetFromSelf();
-
     // cleanup function that removes this question from the errorSet when the question is removed or unmounted
     // e.g. when an expandable question shrinks or removes its child questions
     return () => {
@@ -89,13 +92,26 @@ const ExpandableQuestionFormField = ({
         type="number"
         value={question.getAnswer()}
       />
-
+      {Array.from(errorSet).some((str) => str.includes(nameId)) && (
+        <div className="text-danger">{t('accordionItemsHaveErrors')}</div>
+      )}
       <div className="accordion mb-3 w-50" id={nameId}>
         {question.map<JSX.Element>((questionGroup, index) => {
           const isOpen = openClosedStates[index];
           const itemId: string = `accordion-item-${nameId}_${index + 1}`;
+
           return (
-            <div className="accordion-item" key={itemId}>
+            <div
+              className="accordion-item"
+              key={itemId}
+              style={{
+                borderColor: Array.from(errorSet).some(
+                  (str) => str.includes(nameId) && str.charAt(str.length - 1) === `${index + 1}`,
+                )
+                  ? 'red'
+                  : '',
+              }}
+            >
               <h6
                 className="accordion-header container-fluid m-0 p-0 text-lg uppercase"
                 id={`${itemId}-header`}
@@ -141,6 +157,7 @@ const ExpandableQuestionFormField = ({
                   <QuestionFormFields
                     applyReportChanges={applyReportChanges}
                     questions={questionGroup}
+                    errorSet={errorSet}
                     setErrorSet={setErrorSet}
                     suffixName={`_${index + 1}`}
                   />
