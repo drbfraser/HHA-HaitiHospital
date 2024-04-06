@@ -4,6 +4,7 @@
   "Rehab": "Rehab",
   "Community & Health": "Community & Health",
   "Report": "Report",
+  "networkError": "Network Error",
   "signInPleaseSignIn": "Sign In",
   "signInPleasePlaceHolderEmail": "Username",
   "signInPleasePlaceHolderPassword": "Password",
@@ -118,10 +119,11 @@
   "Training Session": "Training Session",
   "Equipment Received": "Equipment Received",
   "Other Story": "Other Story",
+  "accordionItemsHaveErrors": "Please fix errors in the items below",
   "createNewReport": "Create new report",
+  "reportNotFound": "No Report Found",
   "selectDepartments": "Select departments",
   "noViewableReports": "No reports have been submitted yet.",
-
   "CaseStudy": {
     "Main": {
       "AddCaseStudy": "Add Case Study",
@@ -398,6 +400,8 @@
       "image": "Can't compress this image file"
     }
   },
+  "month": "Month",
+  "monthSelect": "Select Month",
   "monthJanuary": "January",
   "monthFebruary": "February",
   "monthMarch": "March",
@@ -410,6 +414,8 @@
   "monthOctober": "October",
   "monthNovember": "November",
   "monthDecember": "December",
+  "year": "Year",
+  "yearPlaceholder": "Enter year",
 
   "FilterableTable": {
     "GlobalSearch": "Search"

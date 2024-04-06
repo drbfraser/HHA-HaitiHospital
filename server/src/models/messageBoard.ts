@@ -1,31 +1,12 @@
 import * as mongoose from 'mongoose';
 
 import Departments from 'utils/departments';
-import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
+import { unknownUserJson } from '@hha/common';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
+import { Message, MessageJson } from '@hha/common';
 
 const { Schema } = mongoose;
-
-interface Message {
-  departmentId: string;
-  userId: string;
-  date: Date;
-  messageBody: string;
-  messageHeader: string;
-}
-
-interface MessageJson {
-  id: string;
-  department: {
-    id: string;
-    name: string;
-  };
-  user: UserApiOut.UserJson | null;
-  date: string;
-  messageBody: string;
-  messageHeader: string;
-}
 
 interface MessageWithInstanceMethods extends Message {
   toJson: () => Promise<MessageJson>;

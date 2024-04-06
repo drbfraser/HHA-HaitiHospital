@@ -2,8 +2,7 @@ import passport from 'passport';
 import { Strategy as PassportLocalStrategy } from 'passport-local';
 import { Request } from 'express';
 import { validationResult } from 'express-validator';
-
-import UserCollection, { User } from '../models/user';
+import UserCollection from '../models/user';
 
 const passportLogin = new PassportLocalStrategy(
   {

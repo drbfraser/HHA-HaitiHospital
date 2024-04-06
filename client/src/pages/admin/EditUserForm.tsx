@@ -10,7 +10,7 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { ResponseMessage } from 'utils/response_message';
 import { Spinner } from 'components/spinner/Spinner';
-import { UserDetails } from 'constants/interfaces';
+import { UserClientModel as User } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import useDidMountEffect from 'utils/custom_hooks';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export const EditUserForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const [fetch, setFetch] = useState<boolean>(false);
-  const [user, setUser] = useState<UserDetails>();
+  const [user, setUser] = useState<User>();
   const params = useParams<UserIdParams>();
   const id = useMemo<string>(() => params.userId, [params.userId]);
   const history: History = useHistory<History>();
@@ -27,7 +27,7 @@ export const EditUserForm = () => {
   useEffect(() => {
     const controller = new AbortController();
     const fetchAndSetUser = async () => {
-      const fetchedUser: UserDetails = await Api.Get(
+      const fetchedUser: User = await Api.Get(
         ENDPOINT_ADMIN_GET_BY_ID(id),
         ResponseMessage.getMsgFetchUserFailed(),
         history,

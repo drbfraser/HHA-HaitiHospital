@@ -1,4 +1,4 @@
-import { BiomechPriority, BiomechStatus } from 'models/bioMech';
+import { BiomechPriority, BiomechStatus } from '@hha/common';
 import { UserApiOut } from 'routes/api/jsons/user';
 import { proxiedPropertyOf } from 'utils/utils';
 
@@ -17,7 +17,7 @@ export namespace BiomechApiIn {
 export namespace BiomechApiOut {
   export interface BiomechGet {
     id: string;
-    user: UserApiOut.UserJson;
+    user: UserApiOut.UserGet;
     department: {
       id: string;
       name: string;

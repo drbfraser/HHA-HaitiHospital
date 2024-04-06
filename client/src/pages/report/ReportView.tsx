@@ -1,7 +1,7 @@
 import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
 import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { NavigationInfo, navigate } from 'components/report/utils';
-import { ObjectSerializer, QuestionGroup, ReportMetaData } from '@hha/common';
+import { ObjectSerializer, QuestionGroup, ReportMetaData, Role } from '@hha/common';
 import { Prompt, useHistory, useLocation } from 'react-router-dom';
 import { monthYearOptions, userLocale } from 'constants/date';
 
@@ -17,7 +17,6 @@ import { ResponseMessage } from 'utils/response_message';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
-import { Role } from 'constants/interfaces';
 import { XlsxGenerator } from 'components/report/XlsxExport';
 
 const ReportView = () => {
@@ -29,6 +28,7 @@ const ReportView = () => {
   const [metaData, setMetaData] = useState<ReportMetaData | null>(null);
   const [navigationInfo, setNavigationInfo] = useState<NavigationInfo>(null);
   const [readOnly, setReadOnly] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType> | null>(null);
   const [questionItems, setQuestionItems] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -126,6 +126,10 @@ const ReportView = () => {
       controller.signal,
     );
 
+    if (Object.keys(fetchedReport).length === 0) {
+      return;
+    }
+
     setReport(objectSerializer.deserialize(fetchedReport?.report?.reportObject));
     const reportDate = new Date(fetchedReport?.report?.reportMonth);
     setReportMonth(reportDate);
@@ -146,6 +150,7 @@ const ReportView = () => {
 
   useEffect(() => {
     getReport();
+    setIsLoading(false);
   }, [getReport]);
 
   useEffect(() => {
@@ -159,7 +164,12 @@ const ReportView = () => {
       window.onbeforeunload = () => false;
     };
   }, [areChangesMade, readOnly]);
-
+  if (!isLoading && !report)
+    return (
+      <Layout showBackButton>
+        <h1>{t('reportNotFound')}</h1>
+      </Layout>
+    );
   return (
     <>
       {!!report && (
@@ -273,7 +283,6 @@ const ReportView = () => {
 
           {readOnly && editMonth && (
             <ReportMonthForm
-              monthLabel={t('reportsMonth')}
               reportMonth={reportMonth}
               applyMonthChanges={applyMonthChanges}
               formHandler={confirmEdit}

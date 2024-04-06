@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { HTTP_UNAUTHORIZED_CODE } from 'exceptions/httpException';
 import { RequestWithUser } from 'utils/definitions/express';
-import { User } from 'models/user';
+import { User } from '@hha/common';
 import { logger } from 'logger';
 import passport from 'passport';
 

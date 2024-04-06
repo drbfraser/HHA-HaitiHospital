@@ -4,6 +4,7 @@
   "Rehab": "Rehab",
   "Community & Health": "Communauté et santé",
   "Report": "Report",
+  "networkError": "Erreur Réseau",
   "signInPleaseSignIn": "S'identifier",
   "signInPleasePlaceHolderEmail": "Nom d'utilisateur",
   "signInPleasePlaceHolderPassword": "Mot de passe",
@@ -119,7 +120,9 @@
   "Training Session": "Session de formation",
   "Equipment Received": "Équipement reçu",
   "Other Story": "Autre histoire",
+  "accordionItemsHaveErrors": "Veuillez corriger les erreurs dans les éléments ci-dessous",
   "createNewReport": "Créer un nouveau rapport",
+  "reportNotFound": "Aucun rapport trouvé",
   "selectDepartments": "Sélectionnez les départements",
   "noViewableReports": "Aucun rapport n'a encore été soumis.",
 
@@ -399,6 +402,8 @@
       "image": "Impossible de compresser ce fichier image"
     }
   },
+  "month": "Mois",
+  "monthSelect": "Sélectionnez un mois",
   "monthJanuary": "Janvier",
   "monthFebruary": "Février",
   "monthMarch": "Mars",
@@ -411,6 +416,8 @@
   "monthOctober": "Octobre",
   "monthNovember": "Novembre",
   "monthDecember": "Décembre",
+  "year": "Année",
+  "yearPlaceholder": "Entrez l'année",
 
   "FilterableTable": {
     "GlobalSearch": "Recherche"

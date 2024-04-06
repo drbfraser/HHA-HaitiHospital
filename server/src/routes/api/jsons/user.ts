@@ -1,4 +1,4 @@
-import { Role } from 'models/user';
+import { Role, UserJson } from '@hha/common';
 
 export namespace UserApiIn {
   export interface Post {
@@ -25,53 +25,8 @@ export namespace UserApiIn {
 }
 
 export namespace UserApiOut {
-  export interface UserJson {
-    id: string;
-    name: string;
-    username: string;
-    role: string;
-    department: {
-      id: string;
-      name: string;
-    };
-    createdAt: Date;
-    updatedAt: Date;
-  }
-
+  export interface UserGet extends UserJson {}
   export interface GetMe extends UserJson {}
   export interface GetId extends UserJson {}
   export interface GetAll extends Array<UserJson> {}
-
-  export interface UnknownUserJson extends UserJson {
-    id: string;
-    name: string;
-    username: string;
-    role: string;
-    department: {
-      id: string;
-      name: string;
-    };
-    createdAt: Date;
-    updatedAt: Date;
-  }
 }
-const unknownDepartmentId = '-1';
-const unknownDepartmentName = 'Unknown Department';
-const unknownUserId = '-1';
-const unknownUserName = 'Unknown User';
-const unknownUsername = 'unknown';
-const unknownRole = 'User';
-const unknownDate = new Date(0);
-
-export const unknownUserJson: UserApiOut.UnknownUserJson = {
-  id: unknownUserId,
-  name: unknownUserName,
-  username: unknownUsername,
-  role: unknownRole,
-  department: {
-    id: unknownDepartmentId,
-    name: unknownDepartmentName,
-  },
-  createdAt: unknownDate,
-  updatedAt: unknownDate,
-};

@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { Department, Role } from 'constants/interfaces';
+import { DepartmentJson as Department, Role } from '@hha/common';
 import {
   isRoleRequired,
   isRoleAuthenticated,
