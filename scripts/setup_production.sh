@@ -15,6 +15,7 @@ echo -e "It installs the config and deployment files in /root/haiti/"
 echo -e "${COLOR_OFF}${RED}"
 echo -e "WARNING: If run on an existing server instance, this will likely delete data."
 read -p "Continue (y/n)? " CONT
+CONT=${CONT,,}  # Convert to lowercase
 echo -e "${COLOR_OFF}"
 
 if [ "$CONT" != "y" ]; then
@@ -195,6 +196,9 @@ read -p "Enter an option: " OPTION
 echo -e "${COLOR_OFF}"
 
 case $OPTION in
+    0)
+        echo -e "\n${BLUE}No data seeding selected${COLOR_OFF}\n"
+        ;;
     1)
         echo -e "\n${BLUE}Seed the database in the containerized deployment${COLOR_OFF}\n"
         docker exec -it hhahaiti_server /bin/bash -c "npm run seed"
