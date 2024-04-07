@@ -13,4 +13,13 @@ export const monthYearOptions = {
   year: 'numeric',
 } as const;
 
+export const toI18nDateString = (dateIsoString: string, locale: string = 'en-us'): string =>
+  new Date(dateIsoString).toLocaleDateString(locale, dateOptions);
+
+export const getMonthYear = (item: IReportObject<any>, locale: string = 'en-us'): string =>
+  new Date(item.reportMonth).toLocaleDateString(locale, monthYearOptions);
+
+export const getDate = (item: IReportObject<any>, locale: string = 'en-us'): string =>
+  new Date(item.submittedDate).toLocaleDateString(locale, dateOptions);
+
 export const userLocale = navigator.language;

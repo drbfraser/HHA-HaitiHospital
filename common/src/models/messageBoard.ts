@@ -18,15 +18,6 @@ export interface MessageJson {
   messageHeader: string;
 }
 
-export interface MessageClientModel {
-  id: string;
-  department: DepartmentJson;
-  user: UserJson | null;
-  date: Date;
-  messageBody: string;
-  messageHeader: string;
-}
-
 export const emptyMessage: MessageJson = {
   id: '',
   department: { id: '', name: '' },

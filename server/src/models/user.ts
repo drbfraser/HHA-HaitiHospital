@@ -57,8 +57,8 @@ userSchema.methods.toJson = async function (): Promise<UserApiOut.UserGet> {
       id: this.departmentId,
       name: await Departments.Database.getDeptNameById(this.departmentId),
     },
-    createdAt: this.createdAt,
-    updatedAt: this.updatedAt,
+    createdAt: this.createdAt.toISOString(),
+    updatedAt: this.updatedAt.toISOString(),
   };
 };
 

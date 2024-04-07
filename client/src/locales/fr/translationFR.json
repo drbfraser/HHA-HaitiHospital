@@ -346,7 +346,7 @@
     "user": "Utilisateur",
     "admin": "Administrateur",
     "medical_director": "Directeur médical",
-    "head_department": "Chef de département",
+    "head_of_department": "Chef de département",
     "bio_mechanic": "Bio mécanique"
   },
   "modal": {

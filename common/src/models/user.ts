@@ -36,8 +36,8 @@ export interface UserJson {
     id: string;
     name: string;
   };
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserClientModel {
@@ -49,8 +49,8 @@ export interface UserClientModel {
     id: string;
     name: string;
   };
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const unknownDepartmentId = '-1';
@@ -59,7 +59,7 @@ const unknownUserId = '-1';
 const unknownUserName = 'Unknown User';
 const unknownUsername = 'unknown';
 const unknownRole = 'User';
-const unknownDate = new Date(0);
+const unknownDate = new Date(0).toISOString();
 
 export const unknownUserJson: UserJson = {
   id: unknownUserId,

@@ -36,8 +36,8 @@ employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfT
     imgPath: this.imgPath,
     awardedMonth: this.awardedMonth,
     awardedYear: this.awardedYear,
-    updatedAt: formatDateString(this.updatedAt!),
-    createdAt: formatDateString(this.createdAt!),
+    updatedAt: this.updatedAt.toISOString(),
+    createdAt: this.createdAt.toISOString(),
   };
   return json;
 };

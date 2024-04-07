@@ -18,6 +18,7 @@ import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { FilterType } from 'components/filter/Filter';
+import { toI18nDateString } from 'constants/date';
 
 export const EmployeeOfTheMonthList = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
@@ -25,7 +26,7 @@ export const EmployeeOfTheMonthList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const deleteEotm = async (id: string) => {
     await Api.Delete(
@@ -106,6 +107,7 @@ export const EmployeeOfTheMonthList = () => {
       {
         header: t('employeeOfTheMonthLastUpdated'),
         id: 'updatedAt',
+        cell: (row) => toI18nDateString(row.row.original.updatedAt, i18n.resolvedLanguage),
         accessorFn: ({ updatedAt }) => updatedAt,
       },
     ];

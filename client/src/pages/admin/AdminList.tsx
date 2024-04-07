@@ -13,6 +13,7 @@ import FilterableTable, { FilterableColumnDef } from 'components/table/Filterabl
 import { Button } from 'react-bootstrap';
 import { useAuthState } from 'contexts';
 import { UserClientModel as User } from '@hha/common';
+import { toI18nDateString } from 'constants/date';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -21,7 +22,7 @@ const AdminList = () => {
   const user = useAuthState();
 
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const deleteUserActions = () => {
     getUsers();
@@ -77,12 +78,12 @@ const AdminList = () => {
     getUsers();
   }, [getUsers]);
 
+  const toSnakeCase = (str: string) => str.toLowerCase().replaceAll(' ', '_');
+
   const gridData = users.map((item) => ({
     item,
     id: item.id,
-    createdAt: new Date(item.createdAt).toLocaleDateString(language, {
-      timeZone: timezone,
-    }),
+    createdAt: toI18nDateString(item.createdAt, i18n.resolvedLanguage),
   }));
 
   const columns: FilterableColumnDef[] = [
@@ -99,12 +100,14 @@ const AdminList = () => {
     {
       header: t('admin.main_page.role_col'),
       id: 'item.role',
-      accessorKey: 'item.role',
+      // accessorKey: 'item.role',
+      accessorFn: (row) => t(`role.${toSnakeCase(row.item.role)}`),
     },
     {
       header: t('admin.main_page.department_col'),
       id: 'item.department.name',
-      accessorKey: 'item.department.name',
+      // accessorKey: 'item.department.name',
+      accessorFn: (row) => t(row.item.department.name),
     },
     {
       header: t('admin.main_page.created_col'),

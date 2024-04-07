@@ -21,6 +21,7 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { CaseStudy } from './typing';
+import { toI18nDateString } from 'constants/date';
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -38,7 +39,7 @@ export const CaseStudyList = () => {
 
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const deleteCaseStudy = async (id: string) => {
     await Api.Delete(
@@ -110,6 +111,7 @@ export const CaseStudyList = () => {
         header: t('CaseStudy.Main.Created'),
         id: 'createdAt',
         accessorKey: 'createdAt',
+        cell: (row) => toI18nDateString(row.row.original.createdAt, i18n.resolvedLanguage),
       },
     ];
 

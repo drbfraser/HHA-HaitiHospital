@@ -17,12 +17,13 @@ import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BiomechPriority, BiomechStatus, BiomechJson as Biomech } from '@hha/common';
+import { toI18nDateString } from 'constants/date';
 
 const ALT_MESSAGE: string = 'Broken kit report...';
 
 export const BrokenKitView = () => {
   const { bioId: id } = useParams<BioReportIdParams>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [bioReport, setBioReport] = useState<Biomech>();
   const [bioReportImage, setBioReportImage] = useState<string>('');
@@ -103,7 +104,7 @@ export const BrokenKitView = () => {
             </FormFieldDisplay>
 
             <FormFieldDisplay label={t('biomech.view_report.created_at')}>
-              {bioReport.createdAt}
+              {toI18nDateString(bioReport.createdAt, i18n.resolvedLanguage)}
             </FormFieldDisplay>
           </div>
 
