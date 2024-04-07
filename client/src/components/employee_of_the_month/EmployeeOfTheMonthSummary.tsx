@@ -6,6 +6,7 @@ import { EmployeeOfTheMonthJson as EmployeeOfTheMonth } from '@hha/common';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
 import { useTranslation } from 'react-i18next';
+import { toI18nDateString } from 'constants/date';
 
 interface Props {
   employee: EmployeeOfTheMonth;
@@ -13,7 +14,7 @@ interface Props {
 
 export const EmployeeOfTheMonthSummary = (props: Props) => {
   const ALT_MESSAGE: string = 'Employee Of The Month...';
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
   const [employeeImage, setEmployeeImage] = useState<string>('');
   const updatedDate = props.employee.updatedAt;
@@ -54,7 +55,7 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
         <div className="d-flex flex-column justify-content-between flex-xl-row">
           <div className="d-flex flex-column mt-3">
             <h6 className="fs-6 lh-base fw-bold">{t('employeeOfTheMonthDate')}</h6>
-            <p className="fs-6 lh-base">{updatedDate}</p>
+            <p className="fs-6 lh-base">{toI18nDateString(updatedDate, i18n.resolvedLanguage)}</p>
             <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthName')}</h6>
             <p className="fs-6 lh-base">{props.employee.name}</p>
             <h6 className="fs-6 fw-bold lh-base">{t('employeeOfTheMonthDepartment')}</h6>

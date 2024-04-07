@@ -23,7 +23,7 @@ export const EmployeeOfTheMonthView = () => {
   const authState = useAuthState();
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [title, setTitle] = useState('');
   const params = useParams<EmployeeViewParams>();
 
