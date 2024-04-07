@@ -1160,7 +1160,7 @@ mongoose
       rl.question(
         `Confirm to reseed database (old data will be discarded) (Y to confirm): `,
         async function (answer: string) {
-          if (answer === 'Y') await seedDb();
+          if (answer.toUpperCase() === 'Y') await seedDb();
           rl.close();
         },
       );
