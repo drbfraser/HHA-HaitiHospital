@@ -38,4 +38,5 @@ export interface BiomechJson {
   createdAt: string;
   updatedAt: string;
   imgPath: string;
+  file: File;
 }

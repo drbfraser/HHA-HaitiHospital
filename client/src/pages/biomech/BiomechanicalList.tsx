@@ -1,9 +1,8 @@
 import { Badge, Button } from 'react-bootstrap';
-import { ENDPOINT_BIOMECH_DELETE_BY_ID, ENDPOINT_BIOMECH_GET } from 'constants/endpoints';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
 import { PriorityBadge, StatusBadge } from 'pages/biomech/utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
 import DeleteModal from 'components/popup_modal/DeleteModal';
@@ -11,12 +10,12 @@ import { FilterType } from 'components/filter/Filter';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { Row } from '@tanstack/react-table';
 import { BiomechPriority, BiomechStatus, BiomechJson as Biomech, Role } from '@hha/common';
+import { deleteBiomech, getAllBiomechs } from 'api/biomech';
 
 const enumSort = (key: any, e: any) => {
   type enumKey = keyof typeof e;
@@ -157,17 +156,7 @@ export const BiomechanicalList = () => {
     setCurrentIndex('');
   };
 
-  const deleteBioMech = async (id: string) => {
-    await Api.Delete(
-      ENDPOINT_BIOMECH_DELETE_BY_ID(id),
-      {},
-      deleteBioMechCallback,
-      history,
-      ResponseMessage.getMsgDeleteReportFailed(),
-      undefined,
-      ResponseMessage.getMsgDeleteReportOk(),
-    );
-  };
+  const deleteBioMechById = async (id: string) => deleteBiomech(id, deleteBioMechCallback, history);
 
   const onDeleteBioMech = (event: any, id: string) => {
     event.stopPropagation();
@@ -182,28 +171,19 @@ export const BiomechanicalList = () => {
 
   const onModalDelete = async () => {
     if (currentIndex) {
-      await deleteBioMech(currentIndex);
+      await deleteBioMechById(currentIndex);
     }
     setIsDeleteModalOpen(false);
   };
 
-  useEffect(() => {
-    const getBioReport = async (controller?: AbortController) => {
-      const data: Biomech[] = await Api.Get(
-        ENDPOINT_BIOMECH_GET,
-        ResponseMessage.getMsgFetchReportsFailed(),
-        history,
-        controller && controller.signal,
-      );
-
-      setBiomechData(data);
-    };
-
-    const controller = new AbortController();
-    getBioReport(controller);
-
-    return () => controller.abort();
+  const getBiomechs = useCallback(async () => {
+    const biomechs = await getAllBiomechs(history);
+    setBiomechData(biomechs);
   }, [history]);
+
+  useEffect(() => {
+    getBiomechs();
+  }, [getBiomechs]);
 
   return (
     <Layout title={t('headerBiomechanicalSupport')}>
