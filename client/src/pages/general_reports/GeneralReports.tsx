@@ -3,7 +3,7 @@
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { Link, useHistory } from 'react-router-dom';
-import { monthYearOptions, dateOptions, userLocale, getMonthYear, getDate } from 'constants/date';
+import { getMonthYear, getDate } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 

@@ -1,6 +1,6 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
 import { Button } from 'react-bootstrap';
@@ -17,7 +17,6 @@ import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
-import { FilterType } from 'components/filter/Filter';
 import { toI18nDateString } from 'constants/date';
 
 export const EmployeeOfTheMonthList = () => {

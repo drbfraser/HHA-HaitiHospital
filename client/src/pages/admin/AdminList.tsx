@@ -14,6 +14,7 @@ import { Button } from 'react-bootstrap';
 import { useAuthState } from 'contexts';
 import { UserClientModel as User } from '@hha/common';
 import { toI18nDateString } from 'constants/date';
+import { toSnakeCase } from 'utils/string';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -77,8 +78,6 @@ const AdminList = () => {
   useEffect(() => {
     getUsers();
   }, [getUsers]);
-
-  const toSnakeCase = (str: string) => str.toLowerCase().replaceAll(' ', '_');
 
   const gridData = users.map((item) => ({
     item,
