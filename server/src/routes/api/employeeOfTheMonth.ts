@@ -115,6 +115,8 @@ router.put(
         imgPath: imgPath,
         awardedMonth: awardedMonth,
         awardedYear: awardedYear,
+        createdAt: preUpdatedEmployeeOfTheMonth.createdAt,
+        updatedAt: new Date(),
       };
       await EOTMCollection.findByIdAndUpdate(
         { _id: id },
@@ -155,6 +157,8 @@ router.post(
         imgPath: imgPath,
         awardedMonth: awardedMonth,
         awardedYear: awardedYear,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       await EOTMCollection.create(addedEmployeeOfTheMonth);

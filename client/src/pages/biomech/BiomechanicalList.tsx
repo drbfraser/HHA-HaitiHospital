@@ -17,6 +17,7 @@ import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { Row } from '@tanstack/react-table';
 import { BiomechPriority, BiomechStatus, BiomechJson as Biomech, Role } from '@hha/common';
+import { toI18nDateString } from 'constants/date';
 
 const enumSort = (key: any, e: any) => {
   type enumKey = keyof typeof e;
@@ -48,7 +49,7 @@ const statusSort = enumSort('equipmentStatus', Status);
 export const BiomechanicalList = () => {
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>();
@@ -107,12 +108,14 @@ export const BiomechanicalList = () => {
         header: t('biomech.main_page.author_col'),
         accessorFn: (row) => row.user?.name ?? t('status.not_available'),
       },
-
       {
         id: 'createdAt',
         header: t('biomech.main_page.created_col'),
         enableGlobalFilter: false,
         accessorKey: 'createdAt',
+        cell: (row) => (
+          <span>{toI18nDateString(row.row.original.createdAt, i18n.resolvedLanguage)}</span>
+        ),
       },
       {
         id: 'Options',

@@ -1,9 +1,9 @@
 // Reference :
-//https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
+// https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/typescript
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { Link, useHistory } from 'react-router-dom';
-import { monthYearOptions, dateOptions, userLocale } from 'constants/date';
+import { getMonthYear, getDate } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -27,7 +27,7 @@ import DraftIcon from 'components/report/DraftIcon';
 import { Row } from '@tanstack/react-table';
 
 const GeneralReports = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const authState = useAuthState();
   const history = useHistory<History>();
 
@@ -106,6 +106,7 @@ const GeneralReports = () => {
   departments.departmentIdKeyMap.forEach((value: string, key: string) => {
     departmentsCheckBoxes.push({ departmentId: key, departmentName: value });
   });
+
   const columns: FilterableColumnDef[] = [
     {
       header: t('reportsReportId'),
@@ -127,8 +128,8 @@ const GeneralReports = () => {
     {
       header: t('reportsMonth'),
       id: 'reportMonth',
-      cell: (row) => <span>{row.getValue()}</span>,
       accessorFn: (row) => row.reportMonth,
+      cell: (row) => <span>{row.getValue()}</span>,
       filterFn: (row: Row<any>, columnId: string, value: any) => {
         return true;
       },
@@ -187,14 +188,10 @@ const GeneralReports = () => {
   ];
 
   const getReportName = (item: any): string => {
-    return `${departments.departmentIdKeyMap.get(item.departmentId)} Report - ${item.submittedBy}`;
+    const deptName = departments.departmentIdKeyMap.get(item.departmentId) || 'Unknown';
+    const translatedDeptName = t(deptName);
+    return `${translatedDeptName} - ${item.submittedBy}`;
   };
-
-  const getReportMonth = (item: IReportObject<any>): string =>
-    new Date(item.reportMonth).toLocaleDateString(userLocale, monthYearOptions);
-
-  const getSubmittedDate = (item: IReportObject<any>): string =>
-    new Date(item.submittedDate).toLocaleDateString(userLocale, dateOptions);
 
   //TODO: Add interface for item
   const gridData = reports.map((item) => ({
@@ -202,9 +199,9 @@ const GeneralReports = () => {
     _id: item._id,
     reportName: getReportName(item),
     departmentName: departments.departmentIdKeyMap.get(item.departmentId),
-    submittedDate: getSubmittedDate(item),
+    submittedDate: getDate(item, i18n.resolvedLanguage),
     submittedBy: item.submittedBy,
-    reportMonth: getReportMonth(item),
+    reportMonth: getMonthYear(item, i18n.resolvedLanguage),
     isDraft: item.isDraft,
   }));
 

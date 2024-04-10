@@ -9,6 +9,6 @@ export const EMPTY_USER_JSON: User = {
     id: '',
     name: '',
   },
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: new Date(0).toISOString(),
+  updatedAt: new Date(0).toISOString(),
 };

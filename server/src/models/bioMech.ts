@@ -38,8 +38,8 @@ bioMechSchema.methods.toJson = async function (): Promise<BiomechJson> {
     equipmentPriority: this.equipmentPriority,
     equipmentFault: this.equipmentFault,
     equipmentStatus: this.equipmentStatus,
-    createdAt: formatDateString(this.createdAt),
-    updatedAt: formatDateString(this.createdAt),
+    createdAt: this.createdAt.toISOString(),
+    updatedAt: this.createdAt.toISOString(),
     imgPath: this.imgPath,
   };
   return json;

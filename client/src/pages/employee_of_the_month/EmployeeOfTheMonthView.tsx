@@ -23,7 +23,7 @@ export const EmployeeOfTheMonthView = () => {
   const authState = useAuthState();
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [title, setTitle] = useState('');
   const params = useParams<EmployeeViewParams>();
 
@@ -75,7 +75,8 @@ export const EmployeeOfTheMonthView = () => {
       if (employeeOfTheMonthArr.length > 0 && isNonEmptyObject(employeeOfTheMonthArr[0])) {
         setEmployeesOfTheMonth(employeeOfTheMonthArr);
         const emp = employeeOfTheMonthArr[0];
-        const monthYearTitle = translateMonth(+emp.awardedMonth) + ' ' + emp.awardedYear.toString();
+        const monthYearTitle =
+          t(translateMonth(+emp.awardedMonth)) + ' ' + emp.awardedYear.toString();
         const title =
           employeeViewParams.type === EmployeeViewType.EotmId
             ? `${emp.name} - ${monthYearTitle}`

@@ -137,6 +137,13 @@
       "Delete": "Effacer",
       "Featured": "Définir comme présenté ",
       "UnFeatured": "Actuellement en vedette "
+    },
+    "Type": {
+      "Patient Story": "Témoignage de patients",
+      "Staff Recognition": "Reconnaissance du personnel",
+      "Training Session": "Session de formation",
+      "Equipment Received": "Équipement reçu",
+      "Other Story": "Autre histoire"
     }
   },
 
@@ -192,7 +199,7 @@
   "departmentPageLastUpdatedUserID": "Dernière mise à jour par l'ID utilisateur",
   "departmentPageEdit": "Éditer",
   "departmentPageDelete": "Effacer",
-  "departmentPageAction": "action",
+  "departmentPageAction": "Action",
   "departmentPageAccumulate": "Accumuler",
   "departmentFormSteps": "Pas:",
   "departmentFormSelectPatient": "Sélectionner un patient",
@@ -339,7 +346,7 @@
     "user": "Utilisateur",
     "admin": "Administrateur",
     "medical_director": "Directeur médical",
-    "head_department": "Chef de département",
+    "head_of_department": "Chef de département",
     "bio_mechanic": "Bio mécanique"
   },
   "modal": {
@@ -431,7 +438,7 @@
 
   "departments": {
     "General": "Général",
-    "Rehab": "Rehab",
+    "Rehab": "Désintox",
     "NICU/Paeds": "NICU/Pédiatrie",
     "Maternity": "Maternité",
     "Community & Health": "Communauté et santé",

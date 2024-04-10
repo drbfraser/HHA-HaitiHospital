@@ -1,10 +1,9 @@
 import * as mongoose from 'mongoose';
 
 import Departments from 'utils/departments';
-import { unknownUserJson } from '@hha/common';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
-import { Message, MessageJson } from '@hha/common';
+import { Message, MessageJson, unknownUserJson } from '@hha/common';
 
 const { Schema } = mongoose;
 
@@ -37,7 +36,7 @@ messageBodySchema.methods.toJson = async function (): Promise<MessageJson> {
       name: await Departments.Database.getDeptNameById(this.departmentId),
     },
     user: userJson,
-    date: formatDateString(this.date),
+    date: this.date.toISOString(),
     messageBody: this.messageBody,
     messageHeader: this.messageHeader,
   };
