@@ -108,7 +108,6 @@ export const BiomechanicalList = () => {
         header: t('biomech.main_page.author_col'),
         accessorFn: (row) => row.user?.name ?? t('status.not_available'),
       },
-
       {
         id: 'createdAt',
         header: t('biomech.main_page.created_col'),

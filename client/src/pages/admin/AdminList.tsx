@@ -82,7 +82,7 @@ const AdminList = () => {
   const gridData = users.map((item) => ({
     item,
     id: item.id,
-    createdAt: toI18nDateString(item.createdAt, i18n.resolvedLanguage),
+    createdAt: item.createdAt,
   }));
 
   const columns: FilterableColumnDef[] = [
@@ -99,20 +99,22 @@ const AdminList = () => {
     {
       header: t('admin.main_page.role_col'),
       id: 'item.role',
-      // accessorKey: 'item.role',
       accessorFn: (row) => t(`role.${toSnakeCase(row.item.role)}`),
     },
     {
       header: t('admin.main_page.department_col'),
       id: 'item.department.name',
-      // accessorKey: 'item.department.name',
       accessorFn: (row) => t(row.item.department.name),
     },
     {
-      header: t('admin.main_page.created_col'),
       id: 'createdAt',
-      cell: (row) => <span>{row.getValue().createdAt}</span>,
-      accessorFn: (row) => row,
+      header: t('biomech.main_page.created_col'),
+      enableGlobalFilter: false,
+      accessorKey: 'createdAt',
+      cell: (row) => (
+        <span>{toI18nDateString(row.row.original.createdAt, i18n.resolvedLanguage)}</span>
+      ),
+      filterFn: () => true, // had to include to remove filterValue.toLowerCase is not a func error
     },
     {
       id: 'Options',
