@@ -37,7 +37,7 @@ services:
 
   logger:
     container_name: hhahaiti_fluentbit
-    image: fluent/fluent-bit:2.1.8
+    image: fluent/fluent-bit:3.0.1
     ports:
       - 24224:24224
     volumes:
