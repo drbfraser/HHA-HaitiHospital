@@ -92,7 +92,7 @@ const ExpandableQuestionFormField = ({
         type="number"
         value={question.getAnswer()}
       />
-      {Array.from(errorSet).some((str) => str.includes(nameId)) && (
+      {Array.from(errorSet).some((str) => str[0] === nameId) && (
         <div className="text-danger">{t('accordionItemsHaveErrors')}</div>
       )}
       <div className="accordion mb-3 w-50" id={nameId}>
