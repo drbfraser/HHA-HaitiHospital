@@ -16,7 +16,7 @@ const MessageForm = (props: MessageFormProps) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
 
   const { t, i18n } = useTranslation();
-  const { register, handleSubmit } = useForm({});
+  const { register, handleSubmit, getFieldState } = useForm({});
   const [department, setDepartment] = useState<string>('');
 
   const onSubmit = (data: any) => {
@@ -33,6 +33,14 @@ const MessageForm = (props: MessageFormProps) => {
     if (newForm && (data.messageBody === '' || data.messageHeader === '')) {
       toast.error(i18n.t('addMessageAlertEmptyTitleBody') as string);
       return;
+    }
+
+    if (data.messageBody === '' && !getFieldState('messageBody').isTouched) {
+      data.messageBody = message?.messageBody;
+    }
+
+    if (data.messageHeader === '' && !getFieldState('messageHeader').isTouched) {
+      data.messageHeader = message?.messageHeader;
     }
 
     data.department = departments.get(department);
