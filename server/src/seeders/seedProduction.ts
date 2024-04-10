@@ -18,11 +18,13 @@ import readline from 'readline';
 
 let nameMapper: Map<string, string>;
 
-export const seedDb = async () => {
+const seedDb = async (startFromScratch: boolean) => {
   try {
-    await seedDepartments();
-    await setupDepartmentMap();
-    await seedAdmin();
+    if (startFromScratch) {
+      await seedDepartments();
+      await setupDepartmentMap();
+      await seedAdmin();
+    }
     await seedTemplates();
 
     console.log('Database seeding completed.');
@@ -32,12 +34,20 @@ export const seedDb = async () => {
   }
 };
 
+const startFromScratch = async () => {
+  seedDb(true); // Delete everything and reseed everything from scratch
+};
+
+const updateTemplate = async () => {
+  seedDb(false); // Ensure that only report template is reseeded
+};
+
 const setupDepartmentMap = async () => {
   const departments: Department[] = await DepartmentCollection.find();
   nameMapper = Departments.Hashtable.initNameToId(departments);
 };
 
-export const seedAdmin = async () => {
+const seedAdmin = async () => {
   console.log('Seeding users...');
   try {
     // Delete seeded users on server start so we can reseed them.
@@ -59,7 +69,7 @@ export const seedAdmin = async () => {
   }
 };
 
-export const seedDepartments = async () => {
+const seedDepartments = async () => {
   console.log('Seeding departments...');
   try {
     await DepartmentCollection.deleteMany({});
@@ -121,25 +131,30 @@ mongoose
   .then(() => {
     console.log('MongoDB Connected...');
     if (process.env.IS_GITLAB_CI === 'true') {
-      (async () => await seedDb())(); // anonymous async function
+      (async () => await seedDb(true))(); // anonymous async function
     } else {
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
       });
 
-      // rl.question(
-      //   'Confirm to reseed database (old data will be discarded) (y / Y to confirm): ',
-      //   async function (answer: string) {
-      //     if (answer.toUpperCase() === 'Y') await seedDb();
-      //     else console.log('Database seeding cancelled');
-      //     rl.close();
-      //   },
-      // );
-
-      // rl.question(
-      //   'Are you starting from scratch ? '
-      // )
+      rl.question(
+        'Are you starting from scratch? (old data will be discarded) (y / Y to confirm)',
+        async function (answer: string) {
+          if (answer.toUpperCase() === 'Y') {
+            startFromScratch();
+          } else {
+            rl.question(
+              'Confirm to reseed template (old templates will be discarded) (y / Y to confirm): ',
+              async function (answer: string) {
+                if (answer.toUpperCase() === 'Y') await updateTemplate();
+                else console.log('Database seeding cancelled');
+                rl.close();
+              },
+            );
+          }
+        },
+      );
 
       rl.on('close', function () {
         process.exit(0);
