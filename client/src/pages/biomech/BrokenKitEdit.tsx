@@ -6,7 +6,7 @@ import BrokenKitForm from 'components/bio_support/BrokenKitForm';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { useTranslation } from 'react-i18next';
-import { getBiomechById, updateBiomech } from 'api/biomech';
+import { getBiomechFormById, updateBiomech } from 'api/biomech';
 
 export const BrokenKitEdit = () => {
   const { t } = useTranslation();
@@ -21,8 +21,8 @@ export const BrokenKitEdit = () => {
   };
 
   const getABiomech = useCallback(async () => {
-    const biomech = await getBiomechById(id, history);
-    setBioReport(biomech as BiomechForm);
+    const biomechForm = await getBiomechFormById(id, history);
+    setBioReport(biomechForm);
   }, [history]);
 
   useEffect(() => {
