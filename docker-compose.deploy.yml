@@ -53,8 +53,6 @@ services:
   logger:
     volumes:
       - caddy_log:/logs/caddy:ro
-      - /proc:/host/proc
-      - /sys:/host/sys
     environment:
       LOKI_HOST: ${LOKI_HOST} # ADD YOUR HOST
       LOKI_USER: ${LOKI_USER} # ADD YOUR USERNAME
