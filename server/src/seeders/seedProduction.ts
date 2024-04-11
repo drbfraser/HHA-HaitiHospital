@@ -100,7 +100,6 @@ const seedTemplates = async () => {
       [buildNicuPaedsReport(), DefaultDepartments.NICU],
       [buildCommunityHealthReport(), DefaultDepartments.Community],
     ];
-    console.log(`Seeding templates buildRehabReport ...`);
 
     for (const tuple of reportDepartmentMap) {
       const report: Report = tuple[0];
@@ -120,45 +119,56 @@ const seedTemplates = async () => {
   }
 };
 
-// Connect to Mongo
-mongoose
-  .connect(ENV.MONGO_DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
+const askQuestion = (question: string): Promise<string> => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question(question, (answer: string) => {
+      rl.close();
+      resolve(answer);
+    });
+  });
+};
+
+const main = async () => {
+  try {
+    // Connect to Mongo
+    await mongoose.connect(ENV.MONGO_DB, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    });
     console.log('MongoDB Connected...');
+
+    // Check if running in CI
     if (process.env.IS_GITLAB_CI === 'true') {
-      (async () => await seedDb(true))(); // anonymous async function
+      await updateTemplate();
     } else {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      rl.question(
-        'Are you starting from scratch? (old data will be discarded) (y / Y to confirm)',
-        async function (answer: string) {
-          if (answer.toUpperCase() === 'Y') {
-            startFromScratch();
-          } else {
-            rl.question(
-              'Confirm to reseed template (old templates will be discarded) (y / Y to confirm): ',
-              async function (answer: string) {
-                if (answer.toUpperCase() === 'Y') await updateTemplate();
-                else console.log('Database seeding cancelled');
-                rl.close();
-              },
-            );
-          }
-        },
+      // 1. Ask if starting from scratch
+      const isStartingFromScratch = await askQuestion(
+        'Are you starting from scratch? (old data will be discarded) (y / Y to confirm): ',
       );
-
-      rl.on('close', function () {
-        process.exit(0);
-      });
+      if (isStartingFromScratch.toUpperCase() === 'Y') {
+        await startFromScratch();
+      } else {
+        // 2. Ask if reseeding template
+        const isReseedingTemplate = await askQuestion(
+          'Confirm to reseed template (old templates will be discarded) (y / Y to confirm): ',
+        );
+        if (isReseedingTemplate.toUpperCase() === 'Y') await updateTemplate();
+        else {
+          console.log('Database seeding cancelled');
+          process.exit();
+        }
+      }
     }
-  })
-  .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+main();
