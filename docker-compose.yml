@@ -46,6 +46,8 @@ services:
       - fluentbit_logs_db:/persist
       - server_logs:/logs/server:ro
       - mongo_logs:/logs/mongodb:ro
+      - /proc:/host/proc
+      - /sys:/host/sys
     command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-local.conf']
 
 volumes:
