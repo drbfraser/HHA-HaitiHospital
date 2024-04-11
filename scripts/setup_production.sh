@@ -201,7 +201,7 @@ case $OPTION in
         ;;
     1)
         echo -e "\n${BLUE}Seed the database in the containerized deployment${COLOR_OFF}\n"
-        docker exec -it hhahaiti_server /bin/bash -c "npm run seed"
+        docker exec -it hhahaiti_server /bin/bash -c "npm run seed-prod"
         ;;
 esac
 
