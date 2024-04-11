@@ -133,7 +133,6 @@ const Sidebar = ({
             padding: '1.5rem',
           }}
         />
-        ``
         <ul className="nav nav-pills flex-column mb-auto p-2">
           <SidebarItem onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
             <i
