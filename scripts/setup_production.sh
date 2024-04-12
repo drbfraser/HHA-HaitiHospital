@@ -103,7 +103,8 @@ ln -s -f ~/haiti/scripts/update.sh ~/update.sh
 
 # .env file creation
 if [ ! -f .env ]; then
-    RAND_PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)
+    RAND_PASSWORD_SEED=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)
+    PASSWORD_SEED="C@td0g"
     RAND_SECRET=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)
 
     echo -e "\n${BLUE}Please enter the domain for this server installation (blank to use IP over HTTP only):${COLOR_OFF}"
@@ -117,7 +118,8 @@ if [ ! -f .env ]; then
     echo "CORS=http://localhost:3000" >> .env
     echo "SERVER_PORT=8000" >> .env
     echo "TEST_SERVER_PORT=5001" >> .env
-    echo "PASSWORD_SEED=${RAND_PASSWORD}" >> .env
+    echo "RAND_PASSWORD_SEED=${RAND_PASSWORD_SEED}" >> .env
+    echo "PASSWORD_SEED=${PASSWORD_SEED}" >> .env
 
 
     echo -e "\n${BLUE}Removing previous Docker containers and volumes...${COLOR_OFF}\n"
@@ -184,7 +186,7 @@ echo "----------------------------------"
 echo -e "${COLOR_OFF}"
 
 echo -e "\n${RED}** IMPORTANT **"
-echo -e "The password for all users is: $RAND_PASSWORD"
+echo -e "The password for admin user is: $RAND_PASSWORD_SEED"
 echo -e "Please write down and save this password along with the usernames above."
 echo -e "You will need these credentials to log in to the system."
 echo -e "${COLOR_OFF}"
