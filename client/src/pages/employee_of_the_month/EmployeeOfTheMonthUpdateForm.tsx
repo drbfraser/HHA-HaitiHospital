@@ -2,12 +2,7 @@ import {
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
   ENDPOINT_EMPLOYEE_OF_THE_MONTH_PUT,
 } from 'constants/endpoints';
-import {
-  EmployeeOfTheMonth,
-  EmployeeOfTheMonth as EmployeeOfTheMonthModel,
-  EmployeeViewParams,
-  isNonEmptyObject,
-} from './typing';
+import { EmployeeViewParams, isNonEmptyObject } from './typing';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import {
   TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
@@ -22,6 +17,7 @@ import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { EmployeeOfTheMonthJson } from '@hha/common';
 
 interface Props extends RouteComponentProps<EmployeeViewParams> {}
 
@@ -29,8 +25,8 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonth>();
-  const { reset } = useForm<EmployeeOfTheMonthModel>({});
+  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<EmployeeOfTheMonthJson>();
+  const { reset } = useForm<EmployeeOfTheMonthJson>({});
   const [imageIsUpdated, setImageIsUpdated] = useState<boolean>(false);
   const history: History = useHistory<History>();
 
@@ -39,7 +35,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
     const { eotmId } = props.match.params;
     const endpoint = `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${eotmId}`;
     const getEmployeeOfTheMonth = async () => {
-      const employeeOfTheMonthInfo: EmployeeOfTheMonth = await Api.Get(
+      const employeeOfTheMonthInfo: EmployeeOfTheMonthJson = await Api.Get(
         endpoint,
         TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
         history,

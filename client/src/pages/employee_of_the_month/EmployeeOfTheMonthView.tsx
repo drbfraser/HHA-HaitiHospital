@@ -1,8 +1,4 @@
-import {
-  EmployeeOfTheMonth,
-  EmployeeViewParams,
-  EmployeeViewType,
-} from 'pages/employee_of_the_month/typing';
+import { EmployeeViewParams, EmployeeViewType } from 'pages/employee_of_the_month/typing';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -11,7 +7,7 @@ import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Role } from '@hha/common';
+import { EmployeeOfTheMonthJson, Role } from '@hha/common';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';
@@ -21,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 export const EmployeeOfTheMonthView = () => {
   const authState = useAuthState();
-  const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
+  const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonthJson[]>([]);
   const history: History = useHistory<History>();
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
@@ -63,14 +59,14 @@ export const EmployeeOfTheMonthView = () => {
         : `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${employeeViewParams.year}/${employeeViewParams.month}`;
 
     const getEmployeeOfTheMonth = async () => {
-      let employeeOfTheMonth: EmployeeOfTheMonth | EmployeeOfTheMonth[] = await Api.Get(
+      let employeeOfTheMonth: EmployeeOfTheMonthJson | EmployeeOfTheMonthJson[] = await Api.Get(
         endpoint,
         TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
         history,
         controller.signal,
       );
 
-      const employeeOfTheMonthArr: EmployeeOfTheMonth[] = [employeeOfTheMonth].flat();
+      const employeeOfTheMonthArr: EmployeeOfTheMonthJson[] = [employeeOfTheMonth].flat();
 
       if (employeeOfTheMonthArr.length > 0 && isNonEmptyObject(employeeOfTheMonthArr[0])) {
         setEmployeesOfTheMonth(employeeOfTheMonthArr);

@@ -1,5 +1,8 @@
-import { DepartmentJson as Department, GeneralDepartment } from '@hha/common';
-import { EmployeeOfTheMonth } from '../../pages/employee_of_the_month/typing';
+import {
+  DepartmentJson as Department,
+  EmployeeOfTheMonthJson,
+  GeneralDepartment,
+} from '@hha/common';
 
 import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
@@ -17,14 +20,14 @@ interface Props {
   onSubmit: (data: any) => Promise<void>;
 
   // below is only for update form
-  data?: EmployeeOfTheMonth;
+  data?: EmployeeOfTheMonthJson;
   setImageIsUpdated?: () => void;
 }
 
 export const EmployeeOfTheMonthForm = (props: Props) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
   const { t } = useTranslation();
-  const { register, handleSubmit } = useForm<EmployeeOfTheMonth>({});
+  const { register, handleSubmit } = useForm<EmployeeOfTheMonthJson>({});
   const [employeeImageSrc, setEmployeeImageSrc] = useState<string | null>(null);
   const history: History = useHistory<History>();
 
