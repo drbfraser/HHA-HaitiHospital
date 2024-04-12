@@ -45,7 +45,11 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
 
   return (
     <div className="d-block w-100">
-      <div className="p-3 w-100 overflow-auto border rounded shadow-sm" style={{ height: '500px' }}>
+      <div
+        className="p-3 w-100 overflow-auto border rounded shadow-sm"
+        id="employee-subcontainer"
+        style={{ height: '500px' }}
+      >
         <ImageModal
           show={showImageModal}
           item={ALT_MESSAGE}

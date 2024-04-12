@@ -15,6 +15,7 @@ type SideBarItemProps = {
   path?: string;
   children: ReactNode;
   onClick?: () => void;
+  testid?: string;
 };
 
 export const changeLanguage = (ln: string, i18n: i18n) => {
@@ -23,7 +24,7 @@ export const changeLanguage = (ln: string, i18n: i18n) => {
   };
 };
 
-const SidebarItem = ({ path, children, onClick }: SideBarItemProps) => {
+const SidebarItem = ({ path, children, onClick, testid }: SideBarItemProps) => {
   const [active, setActive] = useState(false);
 
   const focusHoverState = {
@@ -60,6 +61,7 @@ const SidebarItem = ({ path, children, onClick }: SideBarItemProps) => {
       ) : (
         <Button
           className={NAV_ITEM_CLASSES}
+          data-testid={testid}
           variant="link"
           {...(active && { style: focusHoverState })}
           onClick={onClick}
@@ -135,7 +137,10 @@ const Sidebar = ({
         />
         ``
         <ul className="nav nav-pills flex-column mb-auto p-2">
-          <SidebarItem onClick={() => setIsExpanded((isExpanded) => !isExpanded)}>
+          <SidebarItem
+            testid="expand-sidebar"
+            onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
+          >
             <i
               className={`${iconMargins} ms-auto bi bi-chevron-bar-${
                 isExpanded ? 'left' : 'right'

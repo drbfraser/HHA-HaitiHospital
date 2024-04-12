@@ -92,6 +92,6 @@ describe('French Translation Tests', function () {
   it('Should Check That EOTM Page Is In French', function () {
     cy.get('@Sidebar Items').eq(5).click();
     cy.get('[data-testid="eotm-header"]').should('include.text', fr.headerEmployeeOfTheMonth);
-    cy.get('[data-testid="update-eotm-button"]').should('include.text', fr.employeeOfTheMonthEdit);
+    cy.get('[data-testid="add-eotm-button"]').should('include.text', fr.employeeOfTheMonthEdit);
   });
 });

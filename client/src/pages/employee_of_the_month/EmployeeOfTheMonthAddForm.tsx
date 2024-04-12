@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
+import { ResponseMessage } from 'utils';
 
 // Previously was EmployeeOfTheMonthForm
 export const EmployeeOfTheMonthAddForm = () => {
@@ -47,7 +48,9 @@ export const EmployeeOfTheMonthAddForm = () => {
       formData,
       onSubmitActions,
       history,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
+      ResponseMessage.getMsgAddEotmFailed(),
+      undefined,
+      ResponseMessage.getMsgAddEotmOk(),
     );
   };
 

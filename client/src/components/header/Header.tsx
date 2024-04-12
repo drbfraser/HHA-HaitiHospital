@@ -68,7 +68,10 @@ const Header = ({ title }: HeaderProps) => {
               >
                 <span className="d-none d-sm-inline fw-bold">{userInfo.name}</span>
               </button>
-              <ul className="dropdown-menu dropdown-menu-end rounded shadow">
+              <ul
+                className="dropdown-menu dropdown-menu-end rounded shadow"
+                data-testid="user-dropdown-list"
+              >
                 <li className="d-block d-sm-none">
                   <button className="dropdown-item disabled fw-bold text-muted mb-2">
                     {userInfo.name}

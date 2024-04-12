@@ -22,6 +22,7 @@ import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { ResponseMessage } from 'utils';
 
 interface Props extends RouteComponentProps<EmployeeViewParams> {}
 
@@ -87,7 +88,9 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
       formData,
       onSubmitActions,
       history,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
+      ResponseMessage.getMsgUpdateEotmFailed(),
+      undefined,
+      ResponseMessage.getMsgUpdateEotmOk(),
     );
   };
 

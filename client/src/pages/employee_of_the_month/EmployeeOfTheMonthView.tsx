@@ -134,13 +134,13 @@ export const EmployeeOfTheMonthView = () => {
     <Layout title={t('headerEmployeeOfTheMonth')}>
       <div className="d-flex flex-column flex-sm-row gap-1">
         <Link to="/employee-of-the-month/archive" className="mr-2">
-          <button type="button" className="btn btn-outline-dark">
+          <button type="button" className="btn btn-outline-dark" data-testid="see-past-eotm-button">
             {t('employeeOfTheMonthList')}
           </button>
         </Link>
         {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
           <Link to="/employee-of-the-month/add" className="">
-            <button data-testid="update-eotm-button" type="button" className="btn btn-outline-dark">
+            <button data-testid="add-eotm-button" type="button" className="btn btn-outline-dark">
               {t('employeeOfTheMonthAdd')}
             </button>
           </Link>

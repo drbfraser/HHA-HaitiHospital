@@ -125,6 +125,7 @@ const AdminList = () => {
         <>
           <div>
             <Button
+              data-testid="delete-user-button"
               disabled={user.userDetails.id === row.getValue().id}
               onClick={(event) => onDeleteUser(event, row.getValue().id)}
               variant="link"
@@ -134,6 +135,7 @@ const AdminList = () => {
               <i className="bi bi-trash"></i>
             </Button>
             <Link
+              data-testid="edit-user-button"
               title={t('button.edit')}
               className="text-decoration-none link-secondary"
               to={Paths.getAdminEditUser(row.getValue().id)}

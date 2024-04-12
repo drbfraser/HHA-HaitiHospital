@@ -1,7 +1,12 @@
 /// <reference types="cypress" />
 
 import { LoginPage } from '../support/pages/LoginPage';
-import { USER_ADDED_SUCCESSFULLY, USER_DELETED_SUCCESSFULLY } from '../support/constants/toasts';
+import {
+  USER_ADDED_FAILURE,
+  USER_ADDED_SUCCESSFULLY,
+  USER_DELETED_SUCCESSFULLY,
+  USER_UPDATED_SUCCESSFULLY,
+} from '../support/constants/toasts';
 import { AdminPage } from '../support/pages/AdminPage';
 
 describe('Admin Tests', function () {
@@ -35,8 +40,6 @@ describe('Admin Tests', function () {
     cy.url().should('include', '/home');
     userIds = new Array();
 
-    // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(200);
     adminPage.visit();
   });
 
@@ -86,6 +89,24 @@ describe('Admin Tests', function () {
     cy.url().should('equal', `${baseUrl}/home`);
   });
 
+  it('Should Not Be Able to Create a New User with an Existing Username', function () {
+    const username = 'username';
+    const password = 'Pas$w0rd';
+    adminPage.clickAddUserButton();
+    cy.url().should('equal', `${baseUrl}/admin/add-user`);
+
+    adminPage.inputUsername(username);
+    adminPage.inputPassword(password);
+    adminPage.inputName('Handsome Squidward');
+    adminPage.selectUserRole(Roles.USER);
+    adminPage.selectUserDepartment(Departments.REHAB);
+    adminPage.clickSubmitUserButton();
+
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', USER_ADDED_FAILURE);
+    toast.click({ multiple: true });
+  });
+
   it('Should Not Be Able to Set Department For a New Admin User', function () {
     adminPage.clickAddUserButton();
     cy.url().should('equal', `${baseUrl}/admin/add-user`);
@@ -106,6 +127,21 @@ describe('Admin Tests', function () {
     adminPage.inputName('Handsome Squidward');
     adminPage.selectUserRole(Roles.MEDICAL_DIRECTOR);
     cy.get('[id="department"]').should('not.exist');
+  });
+
+  it('Should Successfully Edit a User', function () {
+    adminPage.clickEditUserButton(0);
+    adminPage.inputUsername('username1');
+    adminPage.inputName('Handsome Squidward Edited');
+    adminPage.selectUserRole(Roles.USER);
+    adminPage.selectUserDepartment(Departments.REHAB);
+    adminPage.clickSubmitUserButton();
+
+    cy.url().should('equal', `${baseUrl}/admin`);
+
+    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    toast.should('include.text', USER_UPDATED_SUCCESSFULLY);
+    toast.click({ multiple: true });
   });
 
   it('Should Successfully Delete a User', function () {

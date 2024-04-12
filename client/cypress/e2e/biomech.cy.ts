@@ -41,8 +41,6 @@ describe('Bio Mech Tests', function () {
     cy.url().should('include', '/home');
     bioMechIds = new Array();
 
-    // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(200);
     bioMechPage.visit();
   });
 

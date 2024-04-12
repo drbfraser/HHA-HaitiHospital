@@ -59,6 +59,8 @@ export const EditUserForm = () => {
       onSubmit,
       history,
       ResponseMessage.getMsgUpdateUserFailed(),
+      undefined,
+      ResponseMessage.getMsgUpdateUserOk(),
     );
   };
 

@@ -32,7 +32,15 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
     }
     case CONFLICT_CODE:
     case BADREQUEST_CODE: {
-      toast.error(`${toastMsg}: Invalid input`);
+      const regex = /Username.*exists/i;
+      const responseData = err.response?.data;
+
+      if (responseData && regex.test(responseData)) {
+        toast.error(`${toastMsg}: Username exists`);
+      } else {
+        toast.error(`${toastMsg}: Invalid input`);
+      }
+
       break;
     }
     case UNPROCCESABLENTITY_CODE: {
@@ -44,7 +52,9 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
     }
     default:
       console.error('Error Needs a Handler');
+      throw new Error('Error Needs a Handler');
   }
+  throw new Error(err.response?.data);
 };
 
 export default DbErrorHandler;

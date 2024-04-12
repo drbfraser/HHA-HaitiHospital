@@ -16,6 +16,7 @@ const Logo = ({ style = {}, className = '', isExpanded = false }: LogoProps) => 
         src={isExpanded ? HHALogoSvg : HHALogo}
         alt="HHA Logo"
         style={style}
+        id="sidebar-logo"
       />
     </Link>
   );

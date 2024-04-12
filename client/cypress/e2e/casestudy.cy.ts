@@ -26,9 +26,8 @@ describe('Case Study Tests', function () {
     loginPage.visit();
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     caseStudyIds = new Array();
+    cy.url().should('include', '/home');
 
-    // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(100);
     caseStudyPage.visit();
   });
 
@@ -84,10 +83,6 @@ describe('Case Study Tests', function () {
   });
 
   it('Should Successfully Feature a New Case Study', function () {
-    const featureCaseStudyButton: Cypress.Chainable<JQuery<HTMLElement>> = cy
-      .get('[data-testid="feature-case-study-button"]')
-      .eq(1);
-
     caseStudyPage.clickFeatureCaseStudyButton(1);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');

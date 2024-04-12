@@ -4,13 +4,45 @@ export class EOTMPage {
     return this;
   }
 
-  clickUpdateEOTMButton() {
-    cy.get('[data-testid="update-eotm-button"]').click();
+  clickSeePastEOTMButton() {
+    cy.get('[data-testid="see-past-eotm-button"]').click();
+    return this;
+  }
+
+  clickAddEOTMButton() {
+    cy.get('[data-testid="add-eotm-button"]').click();
     return this;
   }
 
   clickBackEOTMButton() {
-    cy.get('[data-testid="back-eotm-button"').click();
+    cy.get('[data-testid="back-button"]').click();
+    return this;
+  }
+
+  clickSortUpdated() {
+    cy.contains('span', 'Last updated').click();
+    return this;
+  }
+
+  clickViewEOTMRow(index: number) {
+    cy.get('[data-testid="row-data"]').eq(index).click();
+    return this;
+  }
+
+  clickDeleteEOTM(index: number) {
+    // Delete the index-th EOTM
+    cy.get('[data-testid="delete-eotm-button"]').eq(index).click();
+    return this;
+  }
+
+  clickDeleteEOTMConfirmButton() {
+    cy.get('[data-testid="confirm-delete-eotm-button"]').click();
+    return this;
+  }
+
+  clickEditEOTMButton(index: number) {
+    // Delete the index-th EOTM
+    cy.get('[data-testid="edit-eotm-button"]').eq(index).click();
     return this;
   }
 
@@ -26,6 +58,11 @@ export class EOTMPage {
 
   inputDescription(input: string) {
     cy.get('[id="employee-description"]').clear().type(input);
+    return this;
+  }
+
+  inputAwardDate(input: string) {
+    cy.get('[id="employee-month"]').clear().type(input);
     return this;
   }
 
