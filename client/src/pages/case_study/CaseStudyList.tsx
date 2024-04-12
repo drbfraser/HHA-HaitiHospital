@@ -1,7 +1,6 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { Button } from 'react-bootstrap';
 import { CellContext } from '@tanstack/react-table';
 import DeleteModal from 'components/popup_modal/DeleteModal';
@@ -9,7 +8,7 @@ import GenericModal from 'components/popup_modal/GenericModal';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { Role } from '@hha/common';
-import { ResponseMessage, SortOrder } from 'utils';
+import { SortOrder } from 'utils';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';

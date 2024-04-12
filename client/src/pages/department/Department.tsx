@@ -14,6 +14,8 @@ import Layout from 'components/layout';
 import Pagination from 'components/pagination/Pagination';
 import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
+import { getDepartmentById } from 'api/department';
+import { getReportsByDeptId } from 'api/report';
 
 const PAGE_SIZE = 10;
 
@@ -39,48 +41,20 @@ export const Department = () => {
   const reportNumberIndex = currentPage * PAGE_SIZE - PAGE_SIZE;
 
   const getReports = useCallback(async () => {
-    const controller = new AbortController();
-    const fetchedReports: IReportObject<any>[] = await Api.Get(
-      ENDPOINT_REPORTS_GET_BY_DEPARTMENT(deptId),
-      ResponseMessage.getMsgFetchReportsFailed(),
-      history,
-      controller.signal,
-    );
-    setReports(fetchedReports);
-    return () => {
-      controller.abort();
-    };
-  }, [deptId, history]);
+    const reports = await getReportsByDeptId(deptId, history);
+    setReports(reports);
+  }, [history]);
+  const getDepartment = useCallback(async () => {
+    const department = await getDepartmentById(deptId, history);
+    setDepartment(department);
+  }, [history]);
 
   useEffect(() => {
     getReports();
-  }, [getReports]);
-
+  }, [history, deptId]);
   useEffect(() => {
-    const controller = new AbortController();
-    const getDepartmentById = async (id: string) => {
-      setIsLoading(true);
-      try {
-        setDepartment(
-          await Api.Get(
-            ENDPOINT_DEPARTMENT_GET_BY_ID(id),
-            ResponseMessage.getMsgFetchDepartmentFailed(),
-            history,
-            controller.signal,
-          ),
-        );
-      } catch (e) {
-        history.push('/notFound');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getDepartmentById(deptId);
-
-    return () => {
-      controller.abort();
-    };
+    setIsLoading(true);
+    getDepartment().then(() => setIsLoading(false));
   }, [history, deptId]);
 
   if (isLoading) {
