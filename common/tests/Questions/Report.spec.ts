@@ -8,6 +8,7 @@ import { QuestionGroup } from '../../src/Questions';
 import { ObjectSerializer } from '../../src/Serializer';
 import { verifySerialized } from '../../tests/Utils';
 import { expect } from 'chai';
+import { describe, it } from 'mocha';
 
 describe('Mock Reports', function () {
   describe('One question mock report', function () {
