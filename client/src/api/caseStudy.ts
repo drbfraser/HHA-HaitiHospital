@@ -12,6 +12,7 @@ import {
   ENDPOINT_CASESTUDY_PATCH_BY_ID,
   ENDPOINT_CASESTUDY_POST,
   ENDPOINT_CASESTUDY_GET_BY_ID,
+  ENDPOINT_CASESTUDY_FEATURED,
 } from 'constants/endpoints';
 import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
 import { History } from 'history';
@@ -77,6 +78,24 @@ export const getCaseStudyById = async (id: string, history: History): Promise<Ca
     return caseStudy;
   } catch (error) {
     console.error('Error fetching case study:', error);
+    throw error;
+  } finally {
+    controller.abort();
+  }
+};
+
+export const getFeaturedCaseStudy = async (history: History): Promise<CaseStudy> => {
+  const controller = new AbortController();
+  try {
+    const caseStudy: CaseStudy = await Api.Get(
+      ENDPOINT_CASESTUDY_FEATURED,
+      TOAST_CASESTUDY_GET_ERROR,
+      history,
+      controller.signal,
+    );
+    return caseStudy;
+  } catch (error) {
+    console.error('Error fetching featured case study:', error);
     throw error;
   } finally {
     controller.abort();
