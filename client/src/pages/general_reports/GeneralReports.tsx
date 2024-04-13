@@ -6,15 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { monthYearOptions, dateOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-
-import Api from 'actions/Api';
-import {
-  ENDPOINT_REPORTS,
-  ENDPOINT_REPORT_DELETE_BY_ID,
-  ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
-} from 'constants/endpoints';
 import Layout from 'components/layout';
-import { ResponseMessage } from 'utils/response_message';
 import { useTranslation } from 'react-i18next';
 import { useDepartmentData } from 'hooks';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
@@ -25,6 +17,7 @@ import { Role } from '@hha/common';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import DraftIcon from 'components/report/DraftIcon';
 import { Row } from '@tanstack/react-table';
+import { deleteReport, getAllReports, getReportsByDeptId } from 'api/report';
 
 const GeneralReports = () => {
   const { t } = useTranslation();
@@ -36,21 +29,12 @@ const GeneralReports = () => {
   const [reports, setReports] = useState<IReportObject<any>[]>([]);
 
   const getReports = useCallback(async () => {
-    const controller = new AbortController();
-    let getReportsEndPoint = ENDPOINT_REPORTS;
-    if (authState.userDetails.role === Role.User) {
-      getReportsEndPoint = ENDPOINT_REPORTS_GET_BY_DEPARTMENT(authState.userDetails.department.id);
-    }
-    let fetchedReports: any[] = await Api.Get(
-      getReportsEndPoint,
-      ResponseMessage.getMsgFetchReportsFailed(),
-      history,
-      controller.signal,
-    );
-    setReports(fetchedReports);
-    return () => {
-      controller.abort();
-    };
+    const reports =
+      authState.userDetails.role === Role.User
+        ? await getReportsByDeptId(authState.userDetails.department.id, history)
+        : await getAllReports(history);
+
+    setReports(reports);
   }, [history]);
 
   useEffect(() => {
@@ -62,17 +46,7 @@ const GeneralReports = () => {
     setCurrentIndex(null);
   };
 
-  const deleteReport = async (id: string) => {
-    await Api.Delete(
-      ENDPOINT_REPORT_DELETE_BY_ID(id),
-      {},
-      deleteReportCallback,
-      history,
-      ResponseMessage.getMsgDeleteReportFailed(),
-      undefined,
-      ResponseMessage.getMsgDeleteReportOk(),
-    );
-  };
+  const deleteAReport = async (id: string) => deleteReport(id, deleteReportCallback, history);
 
   const onDeleteReport = (event: any, id: string) => {
     event.stopPropagation();
@@ -87,7 +61,7 @@ const GeneralReports = () => {
 
   const onModalDelete = async () => {
     if (currentIndex) {
-      await deleteReport(currentIndex);
+      await deleteAReport(currentIndex);
     }
     setIsDeleteModalOpen(false);
   };
