@@ -148,18 +148,17 @@ const main = async () => {
     if (process.env.IS_GITLAB_CI === 'true') {
       await updateTemplate();
     } else {
-      // 1. Ask if starting from scratch
-      const isStartingFromScratch = await askQuestion(
-        'Are you starting from scratch? (old data will be discarded) (y / Y to confirm): ',
+      // 1. Ask if reseeding templatae only
+      const isOnlyReseedingTemplate = await askQuestion(
+        'Confirm to reseed template only (old templates will be discarded) (y / Y to confirm): ',
       );
-      if (isStartingFromScratch.toUpperCase() === 'Y') {
-        await startFromScratch();
-      } else {
-        // 2. Ask if reseeding template
-        const isReseedingTemplate = await askQuestion(
-          'Confirm to reseed template (old templates will be discarded) (y / Y to confirm): ',
+      if (isOnlyReseedingTemplate.toUpperCase() === 'Y') await updateTemplate();
+      else {
+        // 2. Ask if starting from scratch
+        const isStartingFromScratch = await askQuestion(
+          'Are you starting from scratch? (old data will be discarded) (y / Y to confirm): ',
         );
-        if (isReseedingTemplate.toUpperCase() === 'Y') await updateTemplate();
+        if (isStartingFromScratch.toUpperCase() === 'Y') await startFromScratch();
         else {
           console.log('Database seeding cancelled');
           process.exit();
