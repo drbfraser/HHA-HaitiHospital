@@ -1,8 +1,5 @@
-import Api from '../../actions/Api';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR } from 'constants/toastErrorMessages';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -10,6 +7,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EmployeeOfTheMonthForm } from 'components/employee_of_the_month/EmployeeOfTheMonthForm';
 import { EmployeeOfTheMonthJson } from '@hha/common';
+import { addEotm } from 'api/eotm';
 
 // Previously was EmployeeOfTheMonthForm
 export const EmployeeOfTheMonthAddForm = () => {
@@ -33,8 +31,8 @@ export const EmployeeOfTheMonthAddForm = () => {
     history.push('/employee-of-the-month');
   };
 
-  const onSubmit = async (data: any) => {
-    let formData = new FormData();
+  const toFormData = (data: any) => {
+    const formData = new FormData();
     data.department = departments.get(data.department);
     [data.awardedYear, data.awardedMonth] = data.awardedMonth.split('-'); // ex: 2023-08
     let postData = JSON.stringify(data);
@@ -42,13 +40,12 @@ export const EmployeeOfTheMonthAddForm = () => {
     if (selectedFile) {
       formData.append('file', selectedFile);
     }
-    await Api.Post(
-      ENDPOINT_EMPLOYEE_OF_THE_MONTH_POST,
-      formData,
-      onSubmitActions,
-      history,
-      TOAST_EMPLOYEE_OF_THE_MONTH_PUT_ERROR,
-    );
+    return formData;
+  };
+
+  const onSubmit = async (data: any) => {
+    const formData = toFormData(data);
+    addEotm(formData, onSubmitActions, history);
   };
 
   return (

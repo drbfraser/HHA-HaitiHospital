@@ -29,7 +29,7 @@ export const BrokenKitView = () => {
   const getABiomech = useCallback(async () => {
     const biomech = await getBiomechById(id, history);
     setBioReport(biomech);
-  }, [history]);
+  }, [id, history]);
 
   const getABiomechImage = useCallback(async () => {
     if (bioReport) {
@@ -40,11 +40,11 @@ export const BrokenKitView = () => {
 
   useEffect(() => {
     getABiomech();
-  }, [history, id]);
+  }, [getABiomech]);
 
   useEffect(() => {
     getABiomechImage();
-  }, [bioReport, history]);
+  }, [getABiomechImage]);
 
   return (
     <Layout

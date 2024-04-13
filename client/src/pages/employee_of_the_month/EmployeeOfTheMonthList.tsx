@@ -1,17 +1,11 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-import Api from 'actions/Api';
 import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID } from 'constants/endpoints';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { ResponseMessage } from 'utils/response_message';
 import { EmployeeOfTheMonthJson, Role } from '@hha/common';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
