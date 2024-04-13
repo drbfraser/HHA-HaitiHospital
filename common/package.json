@@ -5,7 +5,7 @@
   "private": true,
   "main": "dist/index.js",
   "scripts": {
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha",
+    "test": "mocha",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
