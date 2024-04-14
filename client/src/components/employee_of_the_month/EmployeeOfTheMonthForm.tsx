@@ -9,10 +9,10 @@ import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
-import Api from '../../actions/Api';
+
 import { History } from 'history';
 import { useHistory } from 'react-router-dom';
+import { getImage } from 'api/image';
 
 interface Props {
   onImageUpload: (item: File) => void;
@@ -30,16 +30,6 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
   const { register, handleSubmit } = useForm<EmployeeOfTheMonthJson>({});
   const [employeeImageSrc, setEmployeeImageSrc] = useState<string | null>(null);
   const history: History = useHistory<History>();
-
-  useEffect(() => {
-    const getEmployeeOfTheMonthImage = async () => {
-      if (props?.data?.imgPath) {
-        const employeeImage = await Api.Image(ENDPOINT_IMAGE_BY_PATH(props.data.imgPath), history);
-        setEmployeeImageSrc(employeeImage);
-      }
-    };
-    props.data?.imgPath && getEmployeeOfTheMonthImage();
-  }, [props.data?.imgPath, history]);
 
   function handleUploadImage(e: ChangeEvent<HTMLInputElement>) {
     if (e?.target?.files) {
@@ -60,6 +50,17 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
     const awardedAt = `${awardedYear}-${awardedMonthUpdated}`;
     return awardedAt;
   };
+
+  const fetchImage = async () => {
+    if (!props.data?.imgPath) {
+      return;
+    }
+    const image = await getImage(props.data.imgPath, history);
+    setEmployeeImageSrc(image);
+  };
+  useEffect(() => {
+    fetchImage();
+  }, [props.data?.imgPath, history]);
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>

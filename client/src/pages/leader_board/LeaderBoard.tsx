@@ -1,20 +1,14 @@
-import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import {
-  TOAST_CASESTUDY_GET_ERROR,
-  TOAST_LEADERBOARD_GET_ERROR,
-} from 'constants/toastErrorMessages';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import Api from 'actions/Api';
-import { CaseStudySummary } from 'components/case_study/CaseStudySummary';
-import { History } from 'history';
-import Layout from 'components/layout';
-import { useHistory } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { LeaderboardJson as Leaderboard } from '@hha/common';
-import { getLeaderboard } from 'api/leaderboard';
 import { getFeaturedCaseStudy } from 'api/caseStudy';
+import { getLeaderboard } from 'api/leaderboard';
+import { CaseStudySummary } from 'components/case_study/CaseStudySummary';
+import Layout from 'components/layout';
+import { History } from 'history';
 import { CaseStudy } from 'pages/case_study/typing';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 
 export const LeaderBoard = () => {
   const { t } = useTranslation();

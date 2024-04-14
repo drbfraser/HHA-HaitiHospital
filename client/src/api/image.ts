@@ -1,6 +1,6 @@
 import Api from 'actions/Api';
-import { History } from 'history';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import { History } from 'history';
 
 export const getImage = async (imgPath: string, history: History): Promise<string> => {
   try {

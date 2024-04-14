@@ -9,6 +9,7 @@ import { useAuthDispatch } from '../../contexts';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserClientModel as User } from '@hha/common';
+import { getCurrentUser } from 'api/user';
 
 interface HeaderProps {
   title?: string;
@@ -25,25 +26,12 @@ const Header = ({ title }: HeaderProps) => {
     history.push('/login');
   };
 
+  const fetchUser = async () => {
+    const user = await getCurrentUser(history);
+    setUserInfo(user);
+  };
   useEffect(() => {
-    const getUserInfo = async (controller: AbortController) => {
-      const user: User = await Api.Get(
-        ENDPOINT_ADMIN_ME,
-        ResponseMessage.getMsgFetchUserFailed(),
-        history,
-        controller.signal,
-      );
-
-      setUserInfo(user);
-    };
-
-    const controller = new AbortController();
-
-    getUserInfo(controller);
-
-    return () => {
-      controller.abort();
-    };
+    fetchUser();
   }, [history]);
 
   return (

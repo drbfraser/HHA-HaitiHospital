@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { History } from 'history';
 import Layout from 'components/layout';
@@ -32,16 +32,16 @@ const MessageComments = () => {
     });
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const messageBoard = await getMessageBoard(message_id, history);
     const messageComments = await getMessageComments(message_id, history);
     setMessage(messageBoard);
     setComments(messageComments);
-  };
+  }, [message_id, history]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <Layout showBackButton title={t('headerMessageComments')}>

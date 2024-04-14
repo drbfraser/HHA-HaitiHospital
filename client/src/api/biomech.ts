@@ -1,12 +1,11 @@
 import { BiomechJson } from '@hha/common';
 import Api from 'actions/Api';
 import {
-  ENDPOINT_BIOMECH_GET,
   ENDPOINT_BIOMECH_DELETE_BY_ID,
+  ENDPOINT_BIOMECH_GET,
   ENDPOINT_BIOMECH_GET_BY_ID,
-  ENDPOINT_IMAGE_BY_PATH,
-  ENDPOINT_BIOMECH_UPDATE_BY_ID,
   ENDPOINT_BIOMECH_POST,
+  ENDPOINT_BIOMECH_UPDATE_BY_ID,
 } from 'constants/endpoints';
 import { History } from 'history';
 import { BiomechForm } from 'pages/biomech/typing';

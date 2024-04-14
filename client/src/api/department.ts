@@ -1,36 +1,24 @@
-import { BiomechJson, DepartmentJson } from '@hha/common';
+import { DepartmentJson } from '@hha/common';
 import Api from 'actions/Api';
-import {
-  ENDPOINT_BIOMECH_GET,
-  ENDPOINT_BIOMECH_DELETE_BY_ID,
-  ENDPOINT_BIOMECH_GET_BY_ID,
-  ENDPOINT_IMAGE_BY_PATH,
-  ENDPOINT_BIOMECH_UPDATE_BY_ID,
-  ENDPOINT_BIOMECH_POST,
-  ENDPOINT_DEPARTMENT_GET_BY_ID,
-} from 'constants/endpoints';
+import { ENDPOINT_DEPARTMENTS_GET, ENDPOINT_DEPARTMENT_GET_BY_ID } from 'constants/endpoints';
 import { History } from 'history';
-import { BiomechForm } from 'pages/biomech/typing';
 import { ResponseMessage } from 'utils/response_message';
 
-export const addBiomech = async (data: BiomechForm, onSubmit: () => void, history: History) => {
+export const getAllDepartments = async (history: History): Promise<DepartmentJson[]> => {
+  const controller = new AbortController();
   try {
-    // Parse to FormData() to support multipart/data-form form
-    const formData = new FormData();
-
-    Object.keys(data).forEach((key) => formData.append(key, data[key as keyof BiomechForm]));
-
-    await Api.Post(
-      ENDPOINT_BIOMECH_POST,
-      formData,
-      onSubmit,
+    const departments: DepartmentJson[] = await Api.Get(
+      ENDPOINT_DEPARTMENTS_GET,
+      ResponseMessage.getMsgFetchReportsFailed(),
       history,
-      ResponseMessage.getMsgCreateReportOk(),
-      undefined,
-      ResponseMessage.getMsgCreateReportFailed(),
+      controller.signal,
     );
+    return departments;
   } catch (error) {
-    console.error('Error adding biomech:', error);
+    console.error('Error fetching all departments:', error);
+    throw error;
+  } finally {
+    controller.abort();
   }
 };
 
