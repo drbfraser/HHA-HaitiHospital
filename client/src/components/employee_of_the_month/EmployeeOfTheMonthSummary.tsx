@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { EmployeeOfTheMonthJson as EmployeeOfTheMonth } from '@hha/common';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
@@ -29,16 +29,17 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
     setShowImageModal(false);
   };
 
-  const fetchImage = async () => {
+  const fetchImage = useCallback(async () => {
     if (!props.employee.imgPath) {
       return;
     }
     const image = await getImage(props.employee.imgPath, history);
     setEmployeeImage(image);
-  };
+  }, [props.employee.imgPath, history]);
+
   useEffect(() => {
     fetchImage();
-  }, [props.employee.imgPath, history]);
+  }, [fetchImage]);
 
   return (
     <div className="d-block w-100">

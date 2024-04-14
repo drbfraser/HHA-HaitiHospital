@@ -59,7 +59,7 @@ export const EmployeeOfTheMonthUpdateForm = (props: Props) => {
   const getEotm = useCallback(async () => {
     const { eotmId } = props.match.params;
     const eotm = await getEotmById(eotmId, history);
-    if (eotm.length == 1) {
+    if (eotm.length === 1) {
       setEmployeeOfTheMonth(eotm[0]);
     }
   }, [props.match.params, history]);

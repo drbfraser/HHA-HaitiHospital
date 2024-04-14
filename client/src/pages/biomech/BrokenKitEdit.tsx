@@ -23,11 +23,11 @@ export const BrokenKitEdit = () => {
   const getABiomech = useCallback(async () => {
     const biomechForm = await getBiomechFormById(id, history);
     setBioReport(biomechForm);
-  }, [history]);
+  }, [id, history]);
 
   useEffect(() => {
     getABiomech();
-  }, [history, id]);
+  }, [getABiomech]);
 
   return (
     <Layout showBackButton title={t('headerBiomechanicalSupportForm')}>

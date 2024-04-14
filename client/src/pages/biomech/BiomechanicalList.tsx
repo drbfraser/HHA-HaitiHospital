@@ -1,22 +1,20 @@
-import { Badge, Button } from 'react-bootstrap';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { Link, useHistory } from 'react-router-dom';
 import { PriorityBadge, StatusBadge } from 'pages/biomech/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-import Api from 'actions/Api';
-import DeleteModal from 'components/popup_modal/DeleteModal';
-import { FilterType } from 'components/filter/Filter';
-import { History } from 'history';
-import Layout from 'components/layout';
-import { Paths } from 'constants/paths';
-import { renderBasedOnRole } from 'actions/roleActions';
-import { useAuthState } from 'contexts';
-import { useTranslation } from 'react-i18next';
+import { Badge, Button } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom';
+import { BiomechJson as Biomech, BiomechPriority, BiomechStatus, Role } from '@hha/common';
 import { Row } from '@tanstack/react-table';
-import { BiomechPriority, BiomechStatus, BiomechJson as Biomech, Role } from '@hha/common';
+import { renderBasedOnRole } from 'actions/roleActions';
 import { deleteBiomech, getAllBiomechs } from 'api/biomech';
+import { FilterType } from 'components/filter/Filter';
+import Layout from 'components/layout';
+import DeleteModal from 'components/popup_modal/DeleteModal';
 import { toI18nDateString } from 'constants/date';
+import { Paths } from 'constants/paths';
+import { useAuthState } from 'contexts';
+import { History } from 'history';
+import { useTranslation } from 'react-i18next';
 
 const enumSort = (key: any, e: any) => {
   type enumKey = keyof typeof e;
@@ -151,7 +149,7 @@ export const BiomechanicalList = () => {
         enableSorting: false,
       },
     ],
-    [authState.userDetails.role, t],
+    [authState.userDetails.role, i18n.resolvedLanguage, t],
   );
 
   const deleteBioMechCallback = () => {

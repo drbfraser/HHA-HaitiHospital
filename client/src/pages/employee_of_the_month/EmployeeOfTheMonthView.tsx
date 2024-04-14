@@ -66,11 +66,11 @@ export const EmployeeOfTheMonthView = () => {
 
       setTitle(title);
     }
-  }, [employeeViewParams, history]);
+  }, [params.type, employeeViewParams, t, history]);
 
   useEffect(() => {
     getEotm();
-  }, []);
+  }, [getEotm]);
 
   const CarouselIndicators: React.FC = () => (
     <div className="carousel-indicators">
@@ -135,7 +135,7 @@ export const EmployeeOfTheMonthView = () => {
           <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
             <div className="carousel-inner my-2">
               {employeesOfTheMonth.map((eotm, i) => (
-                <div className={`carousel-item ${i == 0 ? 'active' : ''}`} key={i}>
+                <div className={`carousel-item ${i === 0 ? 'active' : ''}`} key={i}>
                   <EmployeeOfTheMonthSummary employee={eotm} />
                 </div>
               ))}

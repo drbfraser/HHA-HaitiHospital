@@ -14,11 +14,11 @@ export const CaseStudyView = () => {
   const getCaseStudy = useCallback(async () => {
     const caseStudy = await getCaseStudyById(id, history);
     setCaseStudy(caseStudy);
-  }, [history]);
+  }, [id, history]);
 
   useEffect(() => {
     getCaseStudy();
-  }, [history, id]);
+  }, [getCaseStudy]);
 
   return (
     <Layout showBackButton title={title}>

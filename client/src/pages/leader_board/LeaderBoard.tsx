@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { LeaderboardJson as Leaderboard } from '@hha/common';
 import { getFeaturedCaseStudy } from 'api/caseStudy';
@@ -16,16 +16,16 @@ export const LeaderBoard = () => {
   const [caseStudy, setCaseStudy] = useState<CaseStudy>();
   const history: History = useHistory<History>();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const leaderboard = await getLeaderboard(history);
     const caseStudy = await getFeaturedCaseStudy(history);
     setLeaderboard(leaderboard);
     setCaseStudy(caseStudy);
-  };
+  }, [history]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <Layout title={t('headerLeaderBoard')}>

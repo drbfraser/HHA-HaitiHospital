@@ -1,7 +1,7 @@
 import { History } from 'history';
 import { MessageJson } from '@hha/common';
 import { NavLink } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,14 +13,14 @@ const DashboardMessageOverview = () => {
   const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();
 
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     const messages = await getAllMessageBoards(history);
     setMessages(messages);
-  };
+  }, [history]);
 
   useEffect(() => {
     fetchMessages();
-  }, []);
+  }, [fetchMessages]);
 
   return (
     <div className={'dashboard-message-overview'}>

@@ -1,6 +1,6 @@
 import { Link, useHistory } from 'react-router-dom';
 import { MessageJson, Role } from '@hha/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import { History } from 'history';
@@ -29,14 +29,14 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
   const readableDate = toI18nDateString(message.date, i18n.resolvedLanguage);
   const author = !!message.user ? message.user.name : t('status.not_available');
 
-  const fetchCommentAmount = async () => {
+  const fetchCommentAmount = useCallback(async () => {
     const comments = await getMessageComments(message.id, history);
     setCommentCount(comments.length);
-  };
+  }, [message.id, history]);
 
   useEffect(() => {
     fetchCommentAmount();
-  }, []);
+  }, [fetchCommentAmount]);
 
   const deleteMessage = async () => {
     deleteMessageBoard(message.id, i18n.t('MessageAlertMessageDeleted'), history);

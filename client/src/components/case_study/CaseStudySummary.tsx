@@ -1,5 +1,5 @@
 import { FormFieldDisplay, FormFieldDisplayProps } from 'components/form/FormFieldDisplay';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CaseStudy, CaseStudyType } from '@hha/common';
 import { FormDisplay } from 'components/form/FormDisplay';
 import { History } from 'history';
@@ -30,17 +30,18 @@ const CaseStudyInfo = ({
   const [caseStudyImage, setCaseStudyImage] = useState<string>('');
   const history: History = useHistory<History>();
 
-  const getCaseStudyImage = async () => {
+  const getCaseStudyImage = useCallback(async () => {
     const img = await getImage(caseStudy.imgPath, history);
     setCaseStudyImage(img);
-  };
+  }, [caseStudy.imgPath, history]);
+
   useEffect(() => {
     setTitle && titleLabel && setTitle(t(titleLabel));
   }, [setTitle, t, titleLabel]);
 
   useEffect(() => {
-    caseStudy.imgPath && getCaseStudyImage();
-  }, [caseStudy, history]);
+    getCaseStudyImage();
+  }, [getCaseStudyImage]);
 
   return (
     <FormDisplay>

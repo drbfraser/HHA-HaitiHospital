@@ -1,21 +1,15 @@
-import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
-import {
-  ENDPOINT_DEPARTMENT_GET_BY_ID,
-  ENDPOINT_REPORTS_GET_BY_DEPARTMENT,
-} from 'constants/endpoints';
-import { Link, useHistory, useParams } from 'react-router-dom';
 import { dateOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import DatePicker, { DayRange } from 'react-modern-calendar-datepicker';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
-import Api from 'actions/Api';
 import { DepartmentJson as DepartmentModel } from '@hha/common';
-import { History } from 'history';
-import Layout from 'components/layout';
-import Pagination from 'components/pagination/Pagination';
-import { ResponseMessage } from 'utils/response_message';
-import { useTranslation } from 'react-i18next';
 import { getDepartmentById } from 'api/department';
 import { getReportsByDeptId } from 'api/report';
+import Layout from 'components/layout';
+import Pagination from 'components/pagination/Pagination';
+import { History } from 'history';
+import { useTranslation } from 'react-i18next';
 
 const PAGE_SIZE = 10;
 
@@ -43,19 +37,20 @@ export const Department = () => {
   const getReports = useCallback(async () => {
     const reports = await getReportsByDeptId(deptId, history);
     setReports(reports);
-  }, [history]);
+  }, [deptId, history]);
   const getDepartment = useCallback(async () => {
     const department = await getDepartmentById(deptId, history);
     setDepartment(department);
-  }, [history]);
+  }, [deptId, history]);
 
   useEffect(() => {
     getReports();
-  }, [history, deptId]);
+  }, [getReports]);
+
   useEffect(() => {
     setIsLoading(true);
     getDepartment().then(() => setIsLoading(false));
-  }, [history, deptId]);
+  }, [getDepartment]);
 
   if (isLoading) {
     return (

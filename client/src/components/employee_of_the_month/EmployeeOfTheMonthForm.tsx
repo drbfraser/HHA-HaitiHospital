@@ -8,7 +8,7 @@ import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import { History } from 'history';
 import { useHistory } from 'react-router-dom';
@@ -51,16 +51,17 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
     return awardedAt;
   };
 
-  const fetchImage = async () => {
+  const fetchImage = useCallback(async () => {
     if (!props.data?.imgPath) {
       return;
     }
     const image = await getImage(props.data.imgPath, history);
     setEmployeeImageSrc(image);
-  };
+  }, [props.data?.imgPath, history]);
+
   useEffect(() => {
     fetchImage();
-  }, [props.data?.imgPath, history]);
+  }, [fetchImage]);
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
@@ -161,7 +162,7 @@ export const EmployeeOfTheMonthForm = (props: Props) => {
               className="border"
               style={{ maxWidth: '250px', width: '100%', maxHeight: '500' }}
               src={employeeImageSrc || 'https://placehold.co/600x400?font=roboto'}
-              alt={'Employee of the Month Image'}
+              alt="Employee of the Month"
             />
             {employeeImageSrc && (
               <button className="btn btn-danger" onClick={handleRemoveImage}>

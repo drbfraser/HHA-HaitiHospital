@@ -1,5 +1,5 @@
 import { Paths, UserIdParams } from 'constants/paths';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { AdminUserForm } from 'pages/admin/AdminUserForm';
 import { AdminUserFormData } from 'pages/admin/typing';
@@ -21,14 +21,14 @@ export const EditUserForm = () => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
-  const fetchAndSetUser = async () => {
+  const fetchAndSetUser = useCallback(async () => {
     const fetchedUser: User = await getUserById(id, history);
     setUser(fetchedUser);
-  };
+  }, [id, history]);
 
   useEffect(() => {
     fetchAndSetUser();
-  }, [history, id]);
+  }, [fetchAndSetUser]);
 
   useDidMountEffect(
     function signalInitDataReady() {

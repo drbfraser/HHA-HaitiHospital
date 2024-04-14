@@ -1,7 +1,7 @@
 import './index.css';
 import { Role } from '@hha/common';
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
+import { renderBasedOnRole } from 'actions/roleActions';
 import { useAdminToggleState, useAuthState } from 'contexts';
 import { Button } from 'react-bootstrap';
 import HhaLogo from 'components/hha_logo/Logo';
@@ -104,13 +104,6 @@ const Sidebar = ({
   useEffect(() => {
     localStorage.setItem('isSidebarExpanded', isExpanded.toString());
   }, [isExpanded]);
-
-  const renderDeptIfUserInDept = (departmentName: string): boolean => {
-    if (authState.userDetails.role === Role.User) {
-      return isUserInDepartment(authState.userDetails.department.name, departmentName);
-    }
-    return true;
-  };
 
   const { adminToggleState: isAdminExpanded, setAdminToggleState: setIsAdminExpanded } =
     useAdminToggleState();

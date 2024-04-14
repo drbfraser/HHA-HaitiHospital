@@ -1,7 +1,7 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
 import { MessageJson as Message, Role } from '@hha/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CellContext } from '@tanstack/react-table';
 import { History } from 'history';
 import MessageDisplay from './MessageDisplay';
@@ -31,14 +31,14 @@ const MessagePanel = () => {
     },
   ];
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const messages = await getAllMessageBoards(history);
     setMessages(messages);
-  };
+  }, [history]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <>

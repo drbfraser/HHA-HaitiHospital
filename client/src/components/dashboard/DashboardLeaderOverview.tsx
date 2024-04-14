@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { History } from 'history';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
@@ -10,13 +10,13 @@ const DashboardLeaderOverview = () => {
   const [leaderboards, setLeaderboards] = useState<Leaderboard[]>([]);
   const history: History = useHistory<History>();
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     const leaderboard = await getLeaderboard(history);
     setLeaderboards(leaderboard);
-  };
+  }, [history]);
   useEffect(() => {
     fetchLeaderboard();
-  }, []);
+  }, [fetchLeaderboard]);
 
   const { t } = useTranslation();
 

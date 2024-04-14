@@ -1,5 +1,5 @@
 import { MessageJson, emptyMessage } from '@hha/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { History } from 'history';
 import Layout from 'components/layout';
 import MessageForm from 'components/message/MessageForm';
@@ -31,16 +31,16 @@ const EditMessage = () => {
     return msg;
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const msgData = await getMessageBoard(id, history);
     if (Object.keys(msgData).length === 0) return;
     const msg = toCorrectMsg(msgData);
     setMsg(msg);
-  };
+  }, [id, history]);
 
   useEffect(() => {
     fetchData();
-  }, [id, history]);
+  }, [fetchData]);
 
   const updateMessageActions = () => {
     history.push('/message-board');

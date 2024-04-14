@@ -1,8 +1,8 @@
-import { ENDPOINT_LOGIN, ENDPOINT_LOGOUT } from 'constants/endpoints';
-import axios, { AxiosError } from 'axios';
-import { Dispatch } from 'react';
-import { History } from 'history';
 import { logoutUser } from 'api/user';
+import axios, { AxiosError } from 'axios';
+import { ENDPOINT_LOGIN } from 'constants/endpoints';
+import { History } from 'history';
+import { Dispatch } from 'react';
 
 interface FormData {
   username: string;

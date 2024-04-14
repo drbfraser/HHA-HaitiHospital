@@ -1,20 +1,20 @@
-import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { Link, useHistory } from 'react-router-dom';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { CellContext, Row } from '@tanstack/react-table';
+import { Role } from '@hha/common';
+import { CellContext } from '@tanstack/react-table';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { deleteCaseStudy, featureCaseStudy, getAllCaseStudies } from 'api/caseStudy';
+import Layout from 'components/layout';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import GenericModal from 'components/popup_modal/GenericModal';
-import { History } from 'history';
-import Layout from 'components/layout';
-import { Role } from '@hha/common';
-import { SortOrder } from 'utils';
-import { renderBasedOnRole } from 'actions/roleActions';
-import { useAuthState } from 'contexts';
-import { useTranslation } from 'react-i18next';
-import { CaseStudy } from './typing';
-import { getAllCaseStudies, deleteCaseStudy, featureCaseStudy } from 'api/caseStudy';
+import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { toI18nDateString } from 'constants/date';
+import { useAuthState } from 'contexts';
+import { History } from 'history';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { Link, useHistory } from 'react-router-dom';
+import { SortOrder } from 'utils';
+import { CaseStudy } from './typing';
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -150,7 +150,7 @@ export const CaseStudyList = () => {
     }
 
     return columns;
-  }, [authState.userDetails.role, history, t]);
+  }, [authState.userDetails.role, history, i18n.resolvedLanguage, t]);
 
   return (
     <Layout title={t('headerCaseStudy')}>

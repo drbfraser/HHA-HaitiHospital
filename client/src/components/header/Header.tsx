@@ -1,15 +1,11 @@
-import { useEffect, useState } from 'react';
-
-import Api from 'actions/Api';
-import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
-import { History } from 'history';
-import { ResponseMessage } from 'utils/response_message';
-import { logOutUser } from '../../actions/authActions';
-import { useAuthDispatch } from '../../contexts';
-import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useCallback, useEffect, useState } from 'react';
 import { UserClientModel as User } from '@hha/common';
 import { getCurrentUser } from 'api/user';
+import { History } from 'history';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { logOutUser } from '../../actions/authActions';
+import { useAuthDispatch } from '../../contexts';
 
 interface HeaderProps {
   title?: string;
@@ -26,13 +22,14 @@ const Header = ({ title }: HeaderProps) => {
     history.push('/login');
   };
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     const user = await getCurrentUser(history);
     setUserInfo(user);
-  };
+  }, [history]);
+
   useEffect(() => {
     fetchUser();
-  }, [history]);
+  }, [fetchUser]);
 
   return (
     <>

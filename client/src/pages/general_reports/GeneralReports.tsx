@@ -35,11 +35,11 @@ const GeneralReports = () => {
         : await getAllReports(history);
 
     setReports(reports);
-  }, [history]);
+  }, [authState.userDetails, history]);
 
   useEffect(() => {
     getReports();
-  }, []);
+  }, [getReports]);
 
   const deleteReportCallback = () => {
     setReports(reports.filter((item) => item._id !== currentIndex));

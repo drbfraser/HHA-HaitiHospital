@@ -1,5 +1,4 @@
-import { ChangeEvent, HTMLInputTypeAttribute, useEffect, useState } from 'react';
-
+import { ChangeEvent, HTMLInputTypeAttribute, useState } from 'react';
 import { ValidationResult } from '@hha/common';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';

@@ -121,7 +121,7 @@ export const EmployeeOfTheMonthList = () => {
       });
     }
     return columns;
-  }, [authState.userDetails.role, t]);
+  }, [authState.userDetails.role, i18n.resolvedLanguage, t]);
 
   return (
     <Layout
