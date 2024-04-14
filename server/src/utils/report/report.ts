@@ -1,6 +1,6 @@
 import { SystemException } from 'exceptions/systemException';
 import { TemplateCollection } from 'models/old_template';
-import { User } from 'models/user';
+import { User } from '@hha/common';
 import { ReportDescriptor, ReportItems } from 'utils/definitions/report';
 import Departments from 'utils/departments';
 import { generateNewReportFromTemplate } from 'utils/parsers/old_template';

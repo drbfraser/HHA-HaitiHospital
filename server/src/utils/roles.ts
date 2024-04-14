@@ -1,4 +1,4 @@
-import { Role } from 'models/user';
+import { Role } from '@hha/common';
 import { getEnumKeyByStringValue } from './utils';
 
 export const isOneOfRoles = (role: string): boolean => {

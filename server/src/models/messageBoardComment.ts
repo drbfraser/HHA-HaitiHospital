@@ -1,5 +1,4 @@
-import { IllegalState } from 'exceptions/systemException';
-import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
+import { unknownUserJson, UserJson } from '@hha/common';
 import UserModel from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';
@@ -16,7 +15,7 @@ export interface MessageBoardComment {
 
 export interface MessageBoardCommentJson {
   id: string;
-  user: UserApiOut.UserJson;
+  user: UserJson;
   parentMessageId: string;
   messageComment: string;
   createdAt: string;
@@ -45,8 +44,8 @@ messageBoardCommentSchema.methods.toJson = async function (): Promise<MessageBoa
     user: userJson,
     parentMessageId: this.parentMessageId,
     messageComment: this.messageComment,
-    createdAt: formatDateString(this.createdAt),
-    updatedAt: formatDateString(this.createdAt),
+    createdAt: this.createdAt.toISOString(),
+    updatedAt: this.createdAt.toISOString(),
   };
 
   return json;

@@ -1,35 +1,9 @@
 import Departments from 'utils/departments';
 import * as mongoose from 'mongoose';
 import { formatDateString } from 'utils/utils';
-import { number } from 'joi';
+import { EmployeeOfTheMonth, EmployeeOfTheMonthJson } from '@hha/common';
 
 const { Schema } = mongoose;
-
-export interface EmployeeOfTheMonth {
-  name: string;
-  departmentId: string;
-  description: string;
-  awardedMonth: number;
-  awardedYear: number;
-  updatedAt?: Date;
-  createdAt?: Date;
-  imgPath?: string;
-}
-
-export interface EmployeeOfTheMonthJson {
-  id: string;
-  name: string;
-  department: {
-    id: string;
-    name: string;
-  };
-  description: string;
-  imgPath?: string;
-  awardedMonth: number;
-  awardedYear: number;
-  updatedAt: string;
-  createdAt: string;
-}
 
 export interface EmployeeOfTheMonthWithInstanceMethods extends EmployeeOfTheMonth {
   toJson: () => Promise<EmployeeOfTheMonthJson>;
@@ -62,8 +36,8 @@ employeeOfTheMonthSchema.methods.toJson = async function (): Promise<EmployeeOfT
     imgPath: this.imgPath,
     awardedMonth: this.awardedMonth,
     awardedYear: this.awardedYear,
-    updatedAt: formatDateString(this.updatedAt!),
-    createdAt: formatDateString(this.createdAt!),
+    updatedAt: this.updatedAt.toISOString(),
+    createdAt: this.createdAt.toISOString(),
   };
   return json;
 };

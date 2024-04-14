@@ -3,7 +3,7 @@ import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
 import CaseStudyCollection, { CaseStudy } from '../../models/caseStudies';
-import { Role } from '../../models/user';
+import { Role } from '@hha/common';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import {
   HTTP_CREATED_CODE,

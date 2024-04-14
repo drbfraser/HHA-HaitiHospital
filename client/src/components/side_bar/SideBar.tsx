@@ -1,5 +1,5 @@
 import './index.css';
-import { Role } from 'constants/interfaces';
+import { Role } from '@hha/common';
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { isUserInDepartment, renderBasedOnRole } from 'actions/roleActions';
 import { useAdminToggleState, useAuthState } from 'contexts';

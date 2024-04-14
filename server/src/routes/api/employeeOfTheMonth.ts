@@ -2,11 +2,8 @@ import { Request, Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import upload from '../../middleware/multer';
 import { validateInput } from '../../middleware/inputSanitization';
-import EOTMCollection, {
-  EmployeeOfTheMonth,
-  EmployeeOfTheMonthJson,
-} from 'models/employeeOfTheMonth';
-import { Role } from '../../models/user';
+import EOTMCollection from '../../models/employeeOfTheMonth';
+import { EmployeeOfTheMonth, EmployeeOfTheMonthJson, Role } from '@hha/common';
 import { deleteUploadedImage } from '../../utils/unlinkImage';
 import {
   BadRequest,
@@ -118,6 +115,8 @@ router.put(
         imgPath: imgPath,
         awardedMonth: awardedMonth,
         awardedYear: awardedYear,
+        createdAt: preUpdatedEmployeeOfTheMonth.createdAt,
+        updatedAt: new Date(),
       };
       await EOTMCollection.findByIdAndUpdate(
         { _id: id },
@@ -158,6 +157,8 @@ router.post(
         imgPath: imgPath,
         awardedMonth: awardedMonth,
         awardedYear: awardedYear,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       await EOTMCollection.create(addedEmployeeOfTheMonth);

@@ -12,13 +12,12 @@ import { History } from 'history';
 import Layout from 'components/layout';
 import { Paths } from 'constants/paths';
 import { ResponseMessage } from 'utils/response_message';
-import { Role } from 'constants/interfaces';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { Row } from '@tanstack/react-table';
-import { BiomechPriority, BiomechStatus } from './typing';
-import { BiomechGet } from 'constants/jsons';
+import { BiomechPriority, BiomechStatus, BiomechJson as Biomech, Role } from '@hha/common';
+import { toI18nDateString } from 'constants/date';
 
 const enumSort = (key: any, e: any) => {
   type enumKey = keyof typeof e;
@@ -50,11 +49,11 @@ const statusSort = enumSort('equipmentStatus', Status);
 export const BiomechanicalList = () => {
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string>();
-  const [biomechData, setBiomechData] = useState<BiomechGet[]>([]);
+  const [biomechData, setBiomechData] = useState<Biomech[]>([]);
 
   // Github co-pilot assited in filling this array
   const columns = useMemo(
@@ -109,12 +108,14 @@ export const BiomechanicalList = () => {
         header: t('biomech.main_page.author_col'),
         accessorFn: (row) => row.user?.name ?? t('status.not_available'),
       },
-
       {
         id: 'createdAt',
         header: t('biomech.main_page.created_col'),
         enableGlobalFilter: false,
         accessorKey: 'createdAt',
+        cell: (row) => (
+          <span>{toI18nDateString(row.row.original.createdAt, i18n.resolvedLanguage)}</span>
+        ),
       },
       {
         id: 'Options',
@@ -191,7 +192,7 @@ export const BiomechanicalList = () => {
 
   useEffect(() => {
     const getBioReport = async (controller?: AbortController) => {
-      const data: BiomechGet[] = await Api.Get(
+      const data: Biomech[] = await Api.Get(
         ENDPOINT_BIOMECH_GET,
         ResponseMessage.getMsgFetchReportsFailed(),
         history,

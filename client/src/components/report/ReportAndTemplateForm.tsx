@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
+
+import { DepartmentJson as Department } from '@hha/common';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { Department } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
 import { MonthField } from 'components/form/MonthField';
 
