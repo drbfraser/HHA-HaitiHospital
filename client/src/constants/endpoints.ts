@@ -93,6 +93,7 @@ const ENDPOINT_REPORT_DELETE_BY_ID = (id: string) => `/api/report/${id}`;
 
 // template
 const ENDPOINT_TEMPLATE: string = '/api/template';
+const ENDPOINT_TEMPLATE_BY_DEPARTMENT = (id: string) => `${ENDPOINT_TEMPLATE}/${id}`;
 
 export {
   ENDPOINT_ADMIN_DELETE_BY_ID,
@@ -134,5 +135,6 @@ export {
   ENDPOINT_REPORT_GET_BY_ID,
   ENDPOINT_REPORT_DELETE_BY_ID,
   ENDPOINT_TEMPLATE,
+  ENDPOINT_TEMPLATE_BY_DEPARTMENT,
   ENDPOINT_BIOMECH_UPDATE_BY_ID,
 };

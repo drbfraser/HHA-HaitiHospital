@@ -1,21 +1,19 @@
-import { ENDPOINT_REPORTS, ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { FormEvent, useEffect, useState } from 'react';
 import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup, DepartmentJson as Department, Role } from '@hha/common';
 import { Prompt, useHistory } from 'react-router-dom';
-import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { ReportAndTemplateForm } from 'components/report/ReportAndTemplateForm';
 import ReportForm from 'components/report/ReportForm';
-import { ResponseMessage } from 'utils/response_message';
 import axios from 'axios';
 import { generateFormId } from 'utils/generate_report_name';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { monthYearOptions, userLocale } from 'constants/date';
+import { addReport, getReportTemplate } from 'api/report';
 
 export const Report = () => {
   const [areChangesMade, setAreChangesMade] = useState(false);
@@ -82,16 +80,7 @@ export const Report = () => {
     setIsSubmitting(true);
     setIsShowingSubmissionModal(false);
     setAreChangesMade(false);
-
-    Api.Post(
-      ENDPOINT_REPORTS,
-      reportObject,
-      () => history.push(`general-reports`),
-      history,
-      ResponseMessage.getMsgCreateReportFailed(),
-      ResponseMessage.getMsgCreateReportPending(),
-      ResponseMessage.getMsgCreateReportOk(),
-    );
+    addReport(reportObject, history);
   };
 
   useEffect(() => {
@@ -102,12 +91,8 @@ export const Report = () => {
           console.error('Department is undefined when fetching in getTemplates');
           return;
         }
-        const fetchedTemplateObject = await Api.Get(
-          `${ENDPOINT_TEMPLATE}/${currentDepartment.id}`,
-          '',
-          history,
-          controller.signal,
-        );
+        const fetchedTemplateObject = await getReportTemplate(currentDepartment.id, history);
+
         const reportTemplateJson = fetchedTemplateObject.template.reportObject;
 
         const deserializedReportTemplate: QuestionGroup<ID, ErrorType> =

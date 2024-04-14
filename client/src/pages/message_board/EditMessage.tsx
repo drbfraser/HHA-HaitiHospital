@@ -1,12 +1,5 @@
-import {
-  ENDPOINT_MESSAGEBOARD_GET_BY_ID,
-  ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
-} from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { MessageJson, emptyMessage } from '@hha/common';
 import { useEffect, useState } from 'react';
-
-import Api from 'actions/Api';
 import { History } from 'history';
 import Layout from 'components/layout';
 import MessageForm from 'components/message/MessageForm';
