@@ -193,7 +193,8 @@ echo -e "${COLOR_OFF}"
 
 echo -e "Data seeding options:"
 echo -e "   0: No data seeding"
-echo -e "   1: Data seeding (Recommended)"
+echo -e "   1: Data seeding for DEVELOPMENT"
+echo -e "   2: Data seeding for PRODUCTION"
 read -p "Enter an option: " OPTION
 echo -e "${COLOR_OFF}"
 
@@ -202,8 +203,12 @@ case $OPTION in
         echo -e "\n${BLUE}No data seeding selected${COLOR_OFF}\n"
         ;;
     1)
-        echo -e "\n${BLUE}Seed the database in the containerized deployment${COLOR_OFF}\n"
+        echo -e "\n${BLUE}Seed the database in the containerized development deployment${COLOR_OFF}\n"
         docker exec -it hhahaiti_server /bin/bash -c "npm run seed"
+        ;;
+    2)
+        echo -e "\n${BLUE}Seed the database in the containerized production deployment${COLOR_OFF}\n"
+        docker exec -it hhahaiti_server /bin/bash -c "npm run seed-prod"
         ;;
 esac
 

@@ -10,6 +10,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --trace-warnings --transpile-only src/app.ts",
     "seed": "ts-node -r tsconfig-paths/register src/seeders/seed.ts",
+    "seed-prod": "ts-node -r tsconfig-paths/register src/seeders/seedProduction.ts",
     "start-prod": "ts-node -r tsconfig-paths/register --transpile-only src/app.ts",
     "test": "NODE_ENV=test nyc ts-mocha -r tsconfig-paths/register --exit --timeout 10000 -p tsconfig.json tests/unitTests/*.spec.ts",
     "report-parser": "ts-mocha --paths --exit --timeout 10000 -p tsconfig.json tests/unitTests/reportParser.spec.ts",
