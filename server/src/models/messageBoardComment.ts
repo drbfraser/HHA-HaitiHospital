@@ -44,8 +44,8 @@ messageBoardCommentSchema.methods.toJson = async function (): Promise<MessageBoa
     user: userJson,
     parentMessageId: this.parentMessageId,
     messageComment: this.messageComment,
-    createdAt: formatDateString(this.createdAt),
-    updatedAt: formatDateString(this.createdAt),
+    createdAt: this.createdAt.toISOString(),
+    updatedAt: this.createdAt.toISOString(),
   };
 
   return json;

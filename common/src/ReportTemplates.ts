@@ -85,7 +85,6 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     }));
   };
 
-  console.log('Here is the buildRehabReport');
   const reportID: ID = 'rehab-report_1_1';
 
   const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(

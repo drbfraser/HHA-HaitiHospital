@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import { History } from 'history';
-import i18n from 'i18next';
 import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { getMessageComments } from 'api/messageComment';
 import { deleteMessageBoard } from 'api/messageBoard';
+import { toI18nDateString } from 'constants/date';
 
 interface MessageDisplayProps {
   message: MessageJson;
@@ -22,11 +22,11 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [commentCount, setCommentCount] = useState<number>(0);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const history: History = useHistory<History>();
   const authState = useAuthState();
 
-  const readableDate = message.date.toLocaleString();
+  const readableDate = toI18nDateString(message.date, i18n.resolvedLanguage);
   const author = !!message.user ? message.user.name : t('status.not_available');
 
   const fetchCommentAmount = async () => {

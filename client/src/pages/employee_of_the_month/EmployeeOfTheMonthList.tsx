@@ -11,6 +11,7 @@ import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { getAllEotms, deleteEotm } from 'api/eotm';
+import { toI18nDateString } from 'constants/date';
 
 export const EmployeeOfTheMonthList = () => {
   const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonthJson[]>(
@@ -20,7 +21,7 @@ export const EmployeeOfTheMonthList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const resetDeleteModal = () => {
     setCurrentIndex(null);
@@ -63,8 +64,11 @@ export const EmployeeOfTheMonthList = () => {
       {
         header: t('employeeOfTheMonthDateAwarded'),
         id: 'awardedMonthYear',
-        accessorFn: ({ awardedMonth, awardedYear }) =>
-          `${translateMonth(awardedMonth)} ${awardedYear}`,
+        cell: (row) => {
+          const { awardedMonth, awardedYear } = row.row.original;
+          return `${t(translateMonth(awardedMonth))} ${awardedYear}`;
+        },
+        accessorFn: (row) => `${t(translateMonth(row.awardedMonth))} ${row.awardedYear}`,
       },
       {
         header: t('employeeOfTheMonthName'),
@@ -74,11 +78,13 @@ export const EmployeeOfTheMonthList = () => {
       {
         header: t('employeeOfTheMonthDepartment'),
         id: 'department',
-        accessorFn: ({ department: { name } }) => name,
+        cell: (row) => t(row.row.original.department.name),
+        accessorFn: (row) => t(row.department.name),
       },
       {
         header: t('employeeOfTheMonthLastUpdated'),
         id: 'updatedAt',
+        cell: (row) => toI18nDateString(row.row.original.updatedAt, i18n.resolvedLanguage),
         accessorFn: ({ updatedAt }) => updatedAt,
       },
     ];

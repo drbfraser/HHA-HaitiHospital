@@ -57,7 +57,8 @@ export const EmployeeOfTheMonthView = () => {
     if (eotms.length > 0 && isNonEmptyObject(eotms[0])) {
       setEmployeesOfTheMonth(eotms);
       const emp = eotms[0];
-      const monthYearTitle = translateMonth(+emp.awardedMonth) + ' ' + emp.awardedYear.toString();
+      const monthYearTitle =
+        t(translateMonth(+emp.awardedMonth)) + ' ' + emp.awardedYear.toString();
       const title =
         employeeViewParams.type === EmployeeViewType.EotmId
           ? `${emp.name} - ${monthYearTitle}`

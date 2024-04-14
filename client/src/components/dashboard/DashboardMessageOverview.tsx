@@ -1,5 +1,3 @@
-import { language, timezone } from 'constants/timezones';
-
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { History } from 'history';
@@ -10,6 +8,7 @@ import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toI18nDateString } from 'constants/date';
 
 const DashboardMessageOverview = () => {
   const [messages, setMessages] = useState<MessageJson[]>([]);
@@ -35,7 +34,7 @@ const DashboardMessageOverview = () => {
     };
   }, [history]);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className={'dashboard-message-overview'}>
@@ -54,7 +53,7 @@ const DashboardMessageOverview = () => {
             </thead>
 
             <tbody className="text-muted">
-              {messages.map((message: any, index: number) => {
+              {messages.map((message: MessageJson, index: number) => {
                 if (index <= 2) {
                   return (
                     <tr key={index}>
@@ -65,9 +64,7 @@ const DashboardMessageOverview = () => {
                         {!!message.user ? message.user.name : t('status.not_available')}
                       </td>
                       <td className="text-secondary">
-                        {message.date.toLocaleString(language, {
-                          timeZone: timezone,
-                        })}
+                        {toI18nDateString(message.date, i18n.resolvedLanguage)}
                       </td>
                       <td className="text-secondary text-break">
                         {/*show first 70 character of message only*/}

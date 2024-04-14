@@ -2,7 +2,7 @@ import FilterableTable, { FilterableColumnDef } from 'components/table/Filterabl
 import { Link, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { CellContext } from '@tanstack/react-table';
+import { CellContext, Row } from '@tanstack/react-table';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import GenericModal from 'components/popup_modal/GenericModal';
 import { History } from 'history';
@@ -14,6 +14,7 @@ import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
 import { CaseStudy } from './typing';
 import { getAllCaseStudies, deleteCaseStudy, featureCaseStudy } from 'api/caseStudy';
+import { toI18nDateString } from 'constants/date';
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -31,7 +32,7 @@ export const CaseStudyList = () => {
 
   const authState = useAuthState();
   const history: History = useHistory<History>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const resetModals = () => {
     setCurrentIndex(undefined);
@@ -71,7 +72,13 @@ export const CaseStudyList = () => {
       {
         header: t('CaseStudy.Main.CaseStudyType'),
         id: 'type',
-        accessorKey: 'caseStudyType',
+        cell: (row) => t(`CaseStudy.Type.${row.row.original.caseStudyType}`),
+        accessorFn: (row) => t(row.caseStudyType),
+        // filterFn: (row: Row<any>, columnId: string, value: any) => {
+        //   alert(row.getValue(columnId))
+        //   console.log("A", row.getValue(columnId), value)
+        //   return true;
+        // },
       },
       {
         header: t('CaseStudy.Main.Author'),
@@ -82,6 +89,7 @@ export const CaseStudyList = () => {
         header: t('CaseStudy.Main.Created'),
         id: 'createdAt',
         accessorKey: 'createdAt',
+        cell: (row) => toI18nDateString(row.row.original.createdAt, i18n.resolvedLanguage),
       },
     ];
 
