@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { describe, it } from 'mocha';
 import { QuestionLeafTest, QuestionLeafTestArgs } from './QuestionLeaf.spec';
 import {
   MultipleChoiceQuestion,

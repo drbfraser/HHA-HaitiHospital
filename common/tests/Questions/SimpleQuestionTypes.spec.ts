@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, it } from 'mocha';
 import { NumericQuestion, TextQuestion } from '../../src';
 import { QuestionLeafTest } from './QuestionLeaf.spec';
 

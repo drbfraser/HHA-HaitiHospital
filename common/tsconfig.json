@@ -30,6 +30,6 @@
 
     "experimentalDecorators": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*"], // In the future, tests should also be type-checked
   "exclude": ["node_modules", "tests"]
 }
