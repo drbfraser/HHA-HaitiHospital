@@ -70,6 +70,7 @@ The Directory splits into client and server sides. Here are a few important loca
 
 - /server/src contains resources to react components(/components), index file(index.ts), and other
   frontend code
+- All `API` related calls are stored under `API` folder. It is is ordered in `CRUD` format (Create, Read, Update, Delete) for organized and orderly format.
 
 ## Build instructions for Devs
 
