@@ -39,7 +39,7 @@ const GeneralReports = () => {
 
   useEffect(() => {
     getReports();
-  }, [getReports]);
+  }, []);
 
   const deleteReportCallback = () => {
     setReports(reports.filter((item) => item._id !== currentIndex));

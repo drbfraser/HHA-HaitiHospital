@@ -1,16 +1,6 @@
-import {
-  ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID,
-  ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
-} from 'constants/endpoints';
 import { Link, useHistory } from 'react-router-dom';
 import { MessageJson, Role } from '@hha/common';
-import {
-  TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
-  TOAST_MESSAGEBOARD_DELETE_ERROR,
-} from 'constants/toastErrorMessages';
 import { useEffect, useState } from 'react';
-
-import Api from 'actions/Api';
 import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import { History } from 'history';
@@ -19,6 +9,8 @@ import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { getMessageComments } from 'api/messageComment';
+import { deleteMessageBoard } from 'api/messageBoard';
 
 interface MessageDisplayProps {
   message: MessageJson;
@@ -37,34 +29,17 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
   const readableDate = message.date.toLocaleString();
   const author = !!message.user ? message.user.name : t('status.not_available');
 
-  useEffect(() => {
-    const getCommentCount = async (controller: AbortController, message: MessageJson) => {
-      let comments = await Api.Get(
-        ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message.id),
-        TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
-        history,
-        controller.signal,
-      );
-      setCommentCount(comments.length);
-    };
+  const fetchCommentAmount = async () => {
+    const comments = await getMessageComments(message.id, history);
+    setCommentCount(comments.length);
+  };
 
-    const controller = new AbortController();
-    getCommentCount(controller, message);
-    return () => {
-      controller.abort();
-    };
-  }, [message, history]);
+  useEffect(() => {
+    fetchCommentAmount();
+  }, []);
 
   const deleteMessage = async () => {
-    await Api.Delete(
-      ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(message.id),
-      {},
-      () => {},
-      history,
-      TOAST_MESSAGEBOARD_DELETE_ERROR,
-      undefined,
-      i18n.t('MessageAlertMessageDeleted'),
-    );
+    deleteMessageBoard(message.id, i18n.t('MessageAlertMessageDeleted'), history);
     onDelete && onDelete(message);
   };
 

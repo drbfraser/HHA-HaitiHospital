@@ -15,6 +15,7 @@ import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { getMessageBoard, updateMessageBoard } from 'api/messageBoard';
 
 const EditMessage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,34 +23,30 @@ const EditMessage = () => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
+  const toCorrectMsg = (msgData: MessageJson): MessageJson => {
+    const msg: MessageJson = {
+      id: msgData.id,
+      messageBody: msgData.messageBody,
+      messageHeader: msgData.messageHeader,
+      department: {
+        id: msgData.department.id,
+        name: parseEscapedCharacters(msgData.department.name),
+      },
+      user: msgData.user,
+      date: msgData.date,
+    };
+    return msg;
+  };
+
+  const fetchData = async () => {
+    const msgData = await getMessageBoard(id, history);
+    if (Object.keys(msgData).length === 0) return;
+    const msg = toCorrectMsg(msgData);
+    setMsg(msg);
+  };
+
   useEffect(() => {
-    const controller = new AbortController();
-    const getMessage = async (id: string) => {
-      const msgData: MessageJson = await Api.Get(
-        ENDPOINT_MESSAGEBOARD_GET_BY_ID(id),
-        TOAST_MESSAGEBOARD_GET_ERROR,
-        history,
-        controller.signal,
-      );
-      if (Object.keys(msgData).length === 0) return;
-      const msg: MessageJson = {
-        id: msgData.id,
-        messageBody: msgData.messageBody,
-        messageHeader: msgData.messageHeader,
-        department: {
-          id: msgData.department.id,
-          name: parseEscapedCharacters(msgData.department.name),
-        },
-        user: msgData.user,
-        date: msgData.date,
-      };
-      setMsg(msg);
-    };
-    getMessage(id);
-    return () => {
-      setMsg(emptyMessage);
-      controller.abort();
-    };
+    fetchData();
   }, [id, history]);
 
   const updateMessageActions = () => {
@@ -57,14 +54,13 @@ const EditMessage = () => {
   };
 
   const updateMessage = async (data: any) => {
-    await Api.Put(
-      ENDPOINT_MESSAGEBOARD_PUT_BY_ID(id),
+    updateMessageBoard(
+      id,
       data,
       updateMessageActions,
-      history,
       i18n.t('addMessageAlertFailed'),
-      undefined,
       i18n.t('addMessageAlertSuccess'),
+      history,
     );
   };
 

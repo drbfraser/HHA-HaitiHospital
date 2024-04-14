@@ -69,7 +69,7 @@ export const EmployeeOfTheMonthView = () => {
 
   useEffect(() => {
     getEotm();
-  }, [getEotm]);
+  }, []);
 
   const CarouselIndicators: React.FC = () => (
     <div className="carousel-indicators">
