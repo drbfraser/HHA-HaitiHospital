@@ -1,14 +1,12 @@
 import { FormFieldDisplay, FormFieldDisplayProps } from 'components/form/FormFieldDisplay';
 import { useEffect, useState } from 'react';
-
-import Api from '../../actions/Api';
 import { CaseStudy, CaseStudyType } from '@hha/common';
-import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { FormDisplay } from 'components/form/FormDisplay';
 import { History } from 'history';
 import { ImageDisplay } from 'components/form/ImageDisplay';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { getImage } from 'api/image';
 
 interface CaseStudyInfoProps {
   caseStudy: CaseStudy;
@@ -31,15 +29,15 @@ const CaseStudyInfo = ({
   const [caseStudyImage, setCaseStudyImage] = useState<string>('');
   const history: History = useHistory<History>();
 
+  const getCaseStudyImage = async () => {
+    const img = await getImage(caseStudy.imgPath, history);
+    setCaseStudyImage(img);
+  };
   useEffect(() => {
     setTitle && titleLabel && setTitle(t(titleLabel));
   }, [setTitle, t, titleLabel]);
 
   useEffect(() => {
-    const getCaseStudyImage = async () => {
-      setCaseStudyImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(caseStudy.imgPath), history));
-    };
-
     caseStudy.imgPath && getCaseStudyImage();
   }, [caseStudy, history]);
 

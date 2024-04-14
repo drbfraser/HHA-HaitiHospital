@@ -3,7 +3,7 @@ import { language, timezone } from 'constants/timezones';
 import Api from 'actions/Api';
 import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { History } from 'history';
-import { MessageClientModel } from '@hha/common';
+import { MessageJson } from '@hha/common';
 import { NavLink } from 'react-router-dom';
 import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { useEffect } from 'react';
@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const DashboardMessageOverview = () => {
-  const [messages, setMessages] = useState<MessageClientModel[]>([]);
+  const [messages, setMessages] = useState<MessageJson[]>([]);
   const history: History = useHistory<History>();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const DashboardMessageOverview = () => {
             </thead>
 
             <tbody className="text-muted">
-              {messages.map((message: MessageClientModel, index: number) => {
+              {messages.map((message: any, index: number) => {
                 if (index <= 2) {
                   return (
                     <tr key={index}>

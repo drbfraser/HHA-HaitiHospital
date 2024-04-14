@@ -13,7 +13,8 @@ import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BiomechPriority, BiomechStatus, BiomechJson as Biomech } from '@hha/common';
-import { getBiomechById, getBiomechImage } from 'api/biomech';
+import { getBiomechById } from 'api/biomech';
+import { getImage } from 'api/image';
 
 const ALT_MESSAGE: string = 'Broken kit report...';
 
@@ -33,7 +34,7 @@ export const BrokenKitView = () => {
 
   const getABiomechImage = useCallback(async () => {
     if (bioReport) {
-      const biomechImg = await getBiomechImage(bioReport.imgPath, history);
+      const biomechImg = await getImage(bioReport.imgPath, history);
       setBioReportImage(biomechImg);
     }
   }, [bioReport, history]);

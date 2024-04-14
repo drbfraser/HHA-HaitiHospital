@@ -88,16 +88,6 @@ export const getBiomechFormById = async (id: string, history: History): Promise<
   }
 };
 
-export const getBiomechImage = async (imgPath: string, history: History): Promise<string> => {
-  try {
-    const imagePath = await Api.Image(ENDPOINT_IMAGE_BY_PATH(imgPath), history);
-    return imagePath;
-  } catch (error) {
-    console.error('Error getting biomech image:', error);
-    throw error;
-  }
-};
-
 export const updateBiomech = async (
   id: string,
   data: BiomechForm,

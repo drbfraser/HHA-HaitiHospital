@@ -1,35 +1,22 @@
 import { useEffect, useState } from 'react';
-
-import Api from 'actions/Api';
-import { ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import { TOAST_LEADERBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { History } from 'history';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LeaderboardJson as Leaderboard } from '@hha/common';
+import { getLeaderboard } from 'api/leaderboard';
 
 const DashboardLeaderOverview = () => {
   const [leaderboards, setLeaderboards] = useState<Leaderboard[]>([]);
   const history: History = useHistory<History>();
 
+  const fetchLeaderboard = async () => {
+    const leaderboard = await getLeaderboard(history);
+    setLeaderboards(leaderboard);
+  };
   useEffect(() => {
-    const controller = new AbortController();
-    const getLeaderboard = async () => {
-      setLeaderboards(
-        await Api.Get(
-          ENDPOINT_LEADERBOARD_GET,
-          TOAST_LEADERBOARD_GET_ERROR,
-          history,
-          controller.signal,
-        ),
-      );
-    };
-    getLeaderboard();
-    return () => {
-      controller.abort();
-    };
-  }, [history]);
+    fetchLeaderboard();
+  }, []);
 
   const { t } = useTranslation();
 
