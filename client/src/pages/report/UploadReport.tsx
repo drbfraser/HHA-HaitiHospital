@@ -2,7 +2,7 @@ import { ObjectSerializer, QuestionGroup } from '@hha/common';
 
 import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
-import { DepartmentJson as Department } from '@hha/common';
+import { Department } from 'constants/interfaces';
 import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';

@@ -1,5 +1,5 @@
 import { CustomValidator } from 'express-validator';
-import { BiomechPriority } from '@hha/common';
+import { BiomechPriority } from 'models/bioMech';
 import { getEnumKeyByStringValue } from 'utils/utils';
 
 export const isBiomechPriority: CustomValidator = (input: string) => {

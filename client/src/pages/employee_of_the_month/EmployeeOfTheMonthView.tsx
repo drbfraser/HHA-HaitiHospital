@@ -11,7 +11,7 @@ import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Role } from '@hha/common';
+import { Role } from 'constants/interfaces';
 import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';
@@ -23,7 +23,7 @@ export const EmployeeOfTheMonthView = () => {
   const authState = useAuthState();
   const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
   const history: History = useHistory<History>();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const params = useParams<EmployeeViewParams>();
 
@@ -75,8 +75,7 @@ export const EmployeeOfTheMonthView = () => {
       if (employeeOfTheMonthArr.length > 0 && isNonEmptyObject(employeeOfTheMonthArr[0])) {
         setEmployeesOfTheMonth(employeeOfTheMonthArr);
         const emp = employeeOfTheMonthArr[0];
-        const monthYearTitle =
-          t(translateMonth(+emp.awardedMonth)) + ' ' + emp.awardedYear.toString();
+        const monthYearTitle = translateMonth(+emp.awardedMonth) + ' ' + emp.awardedYear.toString();
         const title =
           employeeViewParams.type === EmployeeViewType.EotmId
             ? `${emp.name} - ${monthYearTitle}`

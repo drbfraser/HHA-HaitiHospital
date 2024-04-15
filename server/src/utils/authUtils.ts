@@ -1,5 +1,6 @@
-import { User, Role, IReport } from '@hha/common';
-
+import { User } from '../models/user';
+import { Role } from '../models/user';
+import { IReport } from 'models/report';
 // Make sure provied departmentId is valid
 export const checkUserCanViewReport = (user: User, departmentId: string) => {
   if (

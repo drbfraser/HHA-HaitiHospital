@@ -8,7 +8,7 @@ import { dateOptions, userLocale } from 'constants/date';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Api from 'actions/Api';
-import { DepartmentJson as DepartmentModel } from '@hha/common';
+import { Department as DepartmentModel } from 'constants/interfaces';
 import { History } from 'history';
 import Layout from 'components/layout';
 import Pagination from 'components/pagination/Pagination';

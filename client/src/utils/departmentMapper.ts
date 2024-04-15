@@ -1,4 +1,4 @@
-import { DepartmentJson as Department } from '@hha/common';
+import { Department } from 'constants/interfaces';
 
 export const createDepartmentNameMap = (data: Department[]): Map<string, Department> => {
   if (!data) return new Map<string, Department>();

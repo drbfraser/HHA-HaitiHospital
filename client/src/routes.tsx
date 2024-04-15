@@ -25,7 +25,7 @@ import NotFound from 'pages/not_found/NotFound';
 import { PathPatterns } from 'constants/paths';
 import { Report } from 'pages/report/Report';
 import ReportView from 'pages/report/ReportView';
-import { Role } from '@hha/common';
+import { Role } from 'constants/interfaces';
 import { UploadReport } from 'pages/report/UploadReport';
 import { EmployeeOfTheMonthUpdateForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthUpdateForm';
 

@@ -16,23 +16,23 @@ import { ResponseMessage } from 'utils/response_message';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { BiomechPriority, BiomechStatus, BiomechJson as Biomech } from '@hha/common';
-import { toI18nDateString } from 'constants/date';
+import { BiomechGet } from 'constants/jsons';
+import { BiomechPriority, BiomechStatus } from './typing';
 
 const ALT_MESSAGE: string = 'Broken kit report...';
 
 export const BrokenKitView = () => {
   const { bioId: id } = useParams<BioReportIdParams>();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const [bioReport, setBioReport] = useState<Biomech>();
+  const [bioReport, setBioReport] = useState<BiomechGet>();
   const [bioReportImage, setBioReportImage] = useState<string>('');
 
   const history: History = useHistory<History>();
 
   useEffect(() => {
     const getBioReport = async (controller: AbortController) => {
-      const report: Biomech = await Api.Get(
+      const report: BiomechGet = await Api.Get(
         ENDPOINT_BIOMECH_GET_BY_ID(id),
         ResponseMessage.getMsgFetchReportFailed(),
         history,
@@ -104,7 +104,7 @@ export const BrokenKitView = () => {
             </FormFieldDisplay>
 
             <FormFieldDisplay label={t('biomech.view_report.created_at')}>
-              {toI18nDateString(bioReport.createdAt, i18n.resolvedLanguage)}
+              {bioReport.createdAt}
             </FormFieldDisplay>
           </div>
 

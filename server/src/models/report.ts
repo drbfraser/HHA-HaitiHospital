@@ -1,10 +1,21 @@
 import * as mongoose from 'mongoose';
 import Departments from 'utils/departments';
 import { DEPARTMENT_MODEL_NAME } from './departments';
+
 import UserCollection, { USER_MODEL_NAME } from './user';
-import { IReport } from '@hha/common';
 
 const { Schema } = mongoose;
+
+export interface IReport {
+  _id: string;
+  departmentId: string;
+  reportMonth: Date;
+  submittedDate: Date;
+  submittedUserId: string;
+  submittedBy: string;
+  reportObject: object;
+  isDraft: boolean;
+}
 
 const PATH_TO_DEPARTMENT_ID = 'departmentId';
 const PATH_TO_USER_ID = 'submittedUserId';

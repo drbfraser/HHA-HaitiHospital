@@ -3,7 +3,7 @@ import {
   ENDPOINT_MESSAGEBOARD_PUT_BY_ID,
 } from 'constants/endpoints';
 import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
-import { MessageJson, emptyMessage } from '@hha/common';
+import { Message, emptyMessage } from 'constants/interfaces';
 import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';
@@ -18,21 +18,21 @@ import { useTranslation } from 'react-i18next';
 
 const EditMessage = () => {
   const { id } = useParams<{ id: string }>();
-  const [msg, setMsg] = useState<MessageJson>(emptyMessage);
+  const [msg, setMsg] = useState<Message>(emptyMessage);
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
   useEffect(() => {
     const controller = new AbortController();
     const getMessage = async (id: string) => {
-      const msgData: MessageJson = await Api.Get(
+      const msgData: Message = await Api.Get(
         ENDPOINT_MESSAGEBOARD_GET_BY_ID(id),
         TOAST_MESSAGEBOARD_GET_ERROR,
         history,
         controller.signal,
       );
       if (Object.keys(msgData).length === 0) return;
-      const msg: MessageJson = {
+      const msg: Message = {
         id: msgData.id,
         messageBody: msgData.messageBody,
         messageHeader: msgData.messageHeader,

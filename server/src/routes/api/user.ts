@@ -1,8 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { validateInput } from '../../middleware/inputSanitization';
-import UserCollection, { hashPassword } from '../../models/user';
-import { hashAlgorithm, Role, User } from '@hha/common';
+import UserCollection, { hashAlgorithm, hashPassword, Role, User } from '../../models/user';
 import Departments from 'utils/departments';
 import {
   BadRequest,

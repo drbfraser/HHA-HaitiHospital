@@ -1,7 +1,7 @@
-import { UserClientModel as User } from '@hha/common';
+import { UserDetails } from 'constants/interfaces';
 import { AdminUserFormData } from './typing';
 
-export const initAdminForm = (data: User): AdminUserFormData => {
+export const initAdminForm = (data: UserDetails): AdminUserFormData => {
   return {
     username: '',
     password: '',

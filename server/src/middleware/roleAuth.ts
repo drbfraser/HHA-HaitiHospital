@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Unauthorized } from '../exceptions/httpException';
-import { Role } from '@hha/common';
+import { Role } from '../models/user';
 
 type UserPrivilegeInfo = {
   role: Role;

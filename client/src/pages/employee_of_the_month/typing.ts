@@ -1,6 +1,31 @@
-import { EmployeeOfTheMonthJson } from '@hha/common';
+import { Department } from 'constants/interfaces';
+import * as H from 'history';
 
-export interface EmployeeOfTheMonth extends EmployeeOfTheMonthJson {}
+export interface EmployeeOfTheMonth {
+  id: string;
+  name: string;
+  department: Department;
+  description: string;
+  awardedMonth: number;
+  awardedYear: number;
+  createdAt: string;
+  updatedAt: string;
+  imgPath?: string;
+}
+
+export interface RouteComponentProps<P> {
+  match: match<P>;
+  location: H.Location;
+  history: H.History;
+  staticContext?: any;
+}
+
+export interface match<P> {
+  params: P;
+  isExact: boolean;
+  path: string;
+  url: string;
+}
 
 export interface EmployeeViewParams {
   year: string;

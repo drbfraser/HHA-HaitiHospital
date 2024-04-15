@@ -1,7 +1,6 @@
 import { Request, Router, Response, NextFunction } from 'express';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
-import DepartmentCollection from 'models/departments';
-import { DepartmentJson } from '@hha/common';
+import DepartmentCollection, { DepartmentJson } from 'models/departments';
 import { HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 
 const router = Router();

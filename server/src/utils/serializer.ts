@@ -1,4 +1,5 @@
-import { ObjectSerializer, IReport } from '@hha/common';
+import { ObjectSerializer } from '@hha/common';
+import { IReport } from 'models/report';
 import { ITemplate } from 'models/template';
 
 export const serializeReportObject = (report: IReport) => {

@@ -2,14 +2,13 @@ import { FormFieldDisplay, FormFieldDisplayProps } from 'components/form/FormFie
 import { useEffect, useState } from 'react';
 
 import Api from '../../actions/Api';
-import { CaseStudy, CaseStudyType } from '@hha/common';
+import { CaseStudy, CaseStudyType } from 'pages/case_study/typing';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { FormDisplay } from 'components/form/FormDisplay';
 import { History } from 'history';
 import { ImageDisplay } from 'components/form/ImageDisplay';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { toI18nDateString } from 'constants/date';
 
 interface CaseStudyInfoProps {
   caseStudy: CaseStudy;
@@ -26,7 +25,7 @@ const CaseStudyInfo = ({
   setTitle,
   titleLabel,
 }: CaseStudyInfoProps) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const author = caseStudy?.user?.name ?? t('status.not_available');
 
   const [caseStudyImage, setCaseStudyImage] = useState<string>('');
@@ -49,7 +48,7 @@ const CaseStudyInfo = ({
       <div className="w-100 pr-2 d-flex flex-column gap-4">
         <FormFieldDisplay label={t('caseStudyViewAuthor')}>{author}</FormFieldDisplay>
         <FormFieldDisplay label={t('caseStudyViewCreatedAt')}>
-          {toI18nDateString(caseStudy.createdAt, i18n.resolvedLanguage)}
+          {caseStudy.createdAt}
         </FormFieldDisplay>
         {infoRows.map(({ label, ...props }, index) => (
           <FormFieldDisplay key={index} {...props} label={t(label)} />

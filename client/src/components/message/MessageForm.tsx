@@ -1,4 +1,5 @@
-import { MessageJson, DepartmentJson as Department } from '@hha/common';
+import { Department } from 'constants/interfaces';
+import { Message } from 'constants/interfaces';
 import { toast } from 'react-toastify';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
@@ -6,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface MessageFormProps {
-  message?: MessageJson;
+  message?: Message;
   newForm?: boolean;
   submitAction: (data: any) => void;
 }
@@ -16,7 +17,7 @@ const MessageForm = (props: MessageFormProps) => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
 
   const { t, i18n } = useTranslation();
-  const { register, handleSubmit, getFieldState } = useForm({});
+  const { register, handleSubmit } = useForm({});
   const [department, setDepartment] = useState<string>('');
 
   const onSubmit = (data: any) => {
@@ -33,14 +34,6 @@ const MessageForm = (props: MessageFormProps) => {
     if (newForm && (data.messageBody === '' || data.messageHeader === '')) {
       toast.error(i18n.t('addMessageAlertEmptyTitleBody') as string);
       return;
-    }
-
-    if (data.messageBody === '' && !getFieldState('messageBody').isTouched) {
-      data.messageBody = message?.messageBody;
-    }
-
-    if (data.messageHeader === '' && !getFieldState('messageHeader').isTouched) {
-      data.messageHeader = message?.messageHeader;
     }
 
     data.department = departments.get(department);

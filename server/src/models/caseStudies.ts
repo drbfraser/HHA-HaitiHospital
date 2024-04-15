@@ -1,6 +1,5 @@
 import Departments from 'utils/departments';
-import { unknownUserJson } from '@hha/common';
-import { UserApiOut } from 'routes/api/jsons/user';
+import { unknownUserJson, UserApiOut } from '../routes/api/jsons/user';
 import UserCollection from './user';
 import { formatDateString } from 'utils/utils';
 import mongoose from 'mongoose';
@@ -127,7 +126,7 @@ export interface CaseStudy {
 export interface CaseStudyJson {
   id: string;
   caseStudyType: CaseStudyOptions;
-  user: UserApiOut.UserGet;
+  user: UserApiOut.UserJson;
   department: {
     id: string;
     name: string;
@@ -175,8 +174,8 @@ caseStudySchema.methods.toJson = async function (): Promise<CaseStudyJson> {
     },
     imgPath: this.imgPath,
     featured: this.featured,
-    createdAt: this.createdAt.toISOString(),
-    updatedAt: this.updatedAt.toISOString(),
+    createdAt: formatDateString(this.createdAt),
+    updatedAt: formatDateString(this.updatedAt),
     patientStory: this.patientStory ? this.patientStory : undefined,
     staffRecognition: this.staffRecognition ? this.staffRecognition : undefined,
     trainingSession: this.trainingSession ? this.trainingSession : undefined,

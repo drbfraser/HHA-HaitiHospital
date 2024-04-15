@@ -1,10 +1,5 @@
 import { ADMIN_USER_FORM_FIELDS, AdminUserFormData } from 'pages/admin/typing';
-import {
-  DepartmentJson as Department,
-  GeneralDepartment,
-  Role,
-  UserClientModel as User,
-} from '@hha/common';
+import { Department, GeneralDepartment, Role, UserDetails } from 'constants/interfaces';
 
 import { EMPTY_USER_JSON } from 'constants/default_values';
 import { getEnumKeyByStringValue } from 'utils';
@@ -21,7 +16,7 @@ const PASSWORD_PATTERN = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*])
 
 interface Props {
   data: {
-    userData?: User;
+    userData?: UserDetails;
     departments: Map<string, Department>;
   };
   onSubmit: (data: AdminUserFormData) => Promise<void>;
@@ -34,7 +29,7 @@ export const AdminUserForm = (props: Props) => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
 
-  const userData: User = props.data.userData ? props.data.userData : EMPTY_USER_JSON;
+  const userData: UserDetails = props.data.userData ? props.data.userData : EMPTY_USER_JSON;
   const { register, handleSubmit, setValue } = useForm<AdminUserFormData>({
     defaultValues: initAdminForm(userData),
   });

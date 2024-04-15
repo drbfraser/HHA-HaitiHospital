@@ -1,11 +1,11 @@
-import { DepartmentJson as Department, GeneralDepartment } from '@hha/common';
+import { Department, GeneralDepartment } from 'constants/interfaces';
 import { EmployeeOfTheMonth } from '../../pages/employee_of_the_month/typing';
 
 import { imageCompressor } from 'utils/imageCompressor';
 import { useDepartmentData } from 'hooks';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
 import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import Api from '../../actions/Api';
 import { History } from 'history';

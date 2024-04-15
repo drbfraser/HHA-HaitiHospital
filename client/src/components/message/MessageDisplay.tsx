@@ -3,7 +3,7 @@ import {
   ENDPOINT_MESSAGEBOARD_DELETE_BY_ID,
 } from 'constants/endpoints';
 import { Link, useHistory } from 'react-router-dom';
-import { MessageJson, Role } from '@hha/common';
+import { Message, Role } from 'constants/interfaces';
 import {
   TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
   TOAST_MESSAGEBOARD_DELETE_ERROR,
@@ -19,11 +19,10 @@ import { parseEscapedCharacters } from 'utils/escapeCharacterParser';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
-import { toI18nDateString } from 'constants/date';
 
 interface MessageDisplayProps {
-  message: MessageJson;
-  onDelete?: (message: MessageJson) => void;
+  message: Message;
+  onDelete?: (message: Message) => void;
   showCommentsLink?: boolean;
 }
 
@@ -31,15 +30,15 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [commentCount, setCommentCount] = useState<number>(0);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const history: History = useHistory<History>();
   const authState = useAuthState();
 
-  const readableDate = toI18nDateString(message.date, i18n.resolvedLanguage);
+  const readableDate = message.date.toLocaleString();
   const author = !!message.user ? message.user.name : t('status.not_available');
 
   useEffect(() => {
-    const getCommentCount = async (controller: AbortController, message: MessageJson) => {
+    const getCommentCount = async (controller: AbortController, message: Message) => {
       let comments = await Api.Get(
         ENDPOINT_MESSAGEBOARD_COMMENTS_GET_BY_ID(message.id),
         TOAST_MESSAGEBOARD_COMMENTS_GET_ERROR,
@@ -94,7 +93,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
         onModalDelete={onModalDelete}
       ></DeleteModal>
 
-      {/* MessageJson content */}
+      {/* Message content */}
       <div className="flex-grow-1">
         <div className="d-flex">
           <div className="mr-auto p-2">

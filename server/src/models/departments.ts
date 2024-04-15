@@ -1,9 +1,19 @@
 import mongoose from 'mongoose';
-import { LeaderboardJson } from '@hha/common';
+import { LeaderboardJson } from './leaderboard';
 import { leaderboardPointsCalculator } from 'utils/leaderboard';
-import { Department, DepartmentJson } from '@hha/common';
 
 const { Schema } = mongoose;
+
+// _id will be assigned by MongoDB
+export interface Department {
+  _id?: string;
+  name: string;
+}
+
+export interface DepartmentJson {
+  id: string;
+  name: string;
+}
 
 export interface DepartmentWithInstanceMethods extends Department {
   toJson: () => Promise<DepartmentJson>;

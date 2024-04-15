@@ -1,5 +1,9 @@
-import { BIOMECH_REPORT_FIELDS, BiomechForm } from 'pages/biomech/typing';
-import { BiomechPriority, BiomechStatus } from '@hha/common';
+import {
+  BIOMECH_REPORT_FIELDS,
+  BiomechForm,
+  BiomechPriority,
+  BiomechStatus,
+} from 'pages/biomech/typing';
 import { FormControl, FormSelect } from 'react-bootstrap';
 import { getEntriesFromEnum, imageCompressor } from 'utils';
 

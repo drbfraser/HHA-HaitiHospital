@@ -12,18 +12,16 @@ import { useTranslation } from 'react-i18next';
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Button } from 'react-bootstrap';
 import { useAuthState } from 'contexts';
-import { UserClientModel as User } from '@hha/common';
-import { toI18nDateString } from 'constants/date';
-import { toSnakeCase } from 'utils/string';
+import { UserDetails } from 'constants/interfaces';
 
 const AdminList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<string | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserDetails[]>([]);
   const user = useAuthState();
 
   const history: History = useHistory<History>();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const deleteUserActions = () => {
     getUsers();
@@ -82,7 +80,9 @@ const AdminList = () => {
   const gridData = users.map((item) => ({
     item,
     id: item.id,
-    createdAt: item.createdAt,
+    createdAt: new Date(item.createdAt).toLocaleDateString(language, {
+      timeZone: timezone,
+    }),
   }));
 
   const columns: FilterableColumnDef[] = [
@@ -99,22 +99,18 @@ const AdminList = () => {
     {
       header: t('admin.main_page.role_col'),
       id: 'item.role',
-      accessorFn: (row) => t(`role.${toSnakeCase(row.item.role)}`),
+      accessorKey: 'item.role',
     },
     {
       header: t('admin.main_page.department_col'),
       id: 'item.department.name',
-      accessorFn: (row) => t(row.item.department.name),
+      accessorKey: 'item.department.name',
     },
     {
+      header: t('admin.main_page.created_col'),
       id: 'createdAt',
-      header: t('biomech.main_page.created_col'),
-      enableGlobalFilter: false,
-      accessorKey: 'createdAt',
-      cell: (row) => (
-        <span>{toI18nDateString(row.row.original.createdAt, i18n.resolvedLanguage)}</span>
-      ),
-      filterFn: () => true, // had to include to remove filterValue.toLowerCase is not a func error
+      cell: (row) => <span>{row.getValue().createdAt}</span>,
+      accessorFn: (row) => row,
     },
     {
       id: 'Options',

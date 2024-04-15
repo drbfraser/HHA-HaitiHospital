@@ -1,9 +1,8 @@
 import * as ENV from 'utils/processEnv';
 
-import { BiomechStatus, Department, Role, User } from '@hha/common';
-import BioMech from 'models/bioMech';
+import BioMech, { BiomechStatus } from 'models/bioMech';
 import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
-import DepartmentCollection from 'models/departments';
+import DepartmentCollection, { Department } from 'models/departments';
 import Departments, { DefaultDepartments } from 'utils/departments';
 import {
   ObjectSerializer,
@@ -13,7 +12,7 @@ import {
   buildCommunityHealthReport,
   buildRehabReport,
 } from '@hha/common';
-import UserCollection from 'models/user';
+import UserCollection, { Role, User } from 'models/user';
 
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import MessageCollection from 'models/messageBoard';

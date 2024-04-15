@@ -63,7 +63,6 @@ const currentYearAndMonth = () => {
   };
 };
 
-// Return the translation key string of the translation EN/FR JSON file
 const translateMonth = (index: number): string => {
   const months = [
     'January',
@@ -79,7 +78,7 @@ const translateMonth = (index: number): string => {
     'November',
     'December',
   ];
-  return `month${months[index - 1]}`;
+  return months[index - 1];
 };
 
 const formatDateString = (date: Date): string =>

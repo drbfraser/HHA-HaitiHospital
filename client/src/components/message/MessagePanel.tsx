@@ -1,6 +1,6 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import { MessageJson as Message, Role } from '@hha/common';
+import { Message, Role } from 'constants/interfaces';
 import { useEffect, useState } from 'react';
 
 import Api from 'actions/Api';

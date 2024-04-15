@@ -8,7 +8,7 @@ import { Request, IRouter, NextFunction, Response } from 'express';
 
 import { DEPARTMENT_ID_URL_SLUG } from './../../utils/constants';
 import Departments from 'utils/departments';
-import { Role } from '@hha/common';
+import { Role } from 'models/user';
 import { TemplateCollection } from 'models/template';
 import { logger } from 'logger';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
