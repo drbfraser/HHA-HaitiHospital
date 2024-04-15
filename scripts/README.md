@@ -16,7 +16,7 @@
   `chmod +x ./setup_production.sh`  
   `./setup_production.sh`
   - Tell the script the URL for this server (press ENTER if just using locally)
-  - ~~Script will randomly create some passwords.~~ (Unsure in Haiti porject)
+  - Script will randomly create some passwords.
   - Script will allow you to edit the `.env` file to configure server.
   - Script will link the `update.sh` script into the `/root/` folder for future updates.
 - Validation
