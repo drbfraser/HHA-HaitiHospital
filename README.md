@@ -77,8 +77,8 @@ These instructions are to set up a dev environment.
 
 ### Install Node.js
 
-- You can find it [here](https://nodejs.org/en/download/). Currently, we are support node 18 and 20. Use the LTS version described in the
-  .nvrmc (Please keep this updated to the LTS version of node)
+- You can find it [here](https://nodejs.org/en/download/). Currently, we are support node 18 and 20.
+  Use the LTS version described in the .nvrmc (Please keep this updated to the LTS version of node)
 
 ### Install MongoDB
 
@@ -109,6 +109,7 @@ SERVER_PORT=8000
 TEST_SERVER_PORT=5001
 # Password for seeding users
 PASSWORD_SEED=C@td0g
+RAND_PASSWORD_SEED=d0gC@t
 ```
 
 > [!IMPORTANT] If you are planning to run tests in your local environment and have changed the
@@ -157,9 +158,9 @@ concurrently:
 npm run dev
 ```
 
-
-> Note: If you are using wsl2 you may face the login problem because the wsl is not coonecting to mongoDB correctly. [Here is the Solution.](https://github.sfu.ca/bfraser/415-HHA-Haiti/wiki/Troubleshoot-windows-MongoDB-on-WSL2)
-
+> Note: If you are using wsl2 you may face the login problem because the wsl is not coonecting to
+> mongoDB correctly.
+> [Here is the Solution.](https://github.sfu.ca/bfraser/415-HHA-Haiti/wiki/Troubleshoot-windows-MongoDB-on-WSL2)
 
 Now that everything is up, visit <http://localhost:3000> and log in with the seeded users:
 
@@ -216,7 +217,9 @@ The following values are needed from a Grafana Cloud account to run with logging
 
 ### App Labels for Logging in Dev, Staging, and Prod
 
-We now have logs coming from the docker containers and the app server itself. For the app server, if we want to know from which environment it's from, we can set the `app` label to `LOKI_APP_LABEL` in the .env file. By default, it's going to be `hhahaiti_local` for local testing.
+We now have logs coming from the docker containers and the app server itself. For the app server, if
+we want to know from which environment it's from, we can set the `app` label to `LOKI_APP_LABEL` in
+the .env file. By default, it's going to be `hhahaiti_local` for local testing.
 
 - Dev: `hhahaiti_dev`
 - Staging: `hhahaiti_stg`
@@ -234,7 +237,8 @@ We would need a Prometheus config file that would push logs to the production Gr
 
 ## Prettier Setup
 
-We use prettier as our code formatter. The repo provides a prettier config to unify our styles. Prettier is run automatically on staged files whenever code is committed.
+We use prettier as our code formatter. The repo provides a prettier config to unify our styles.
+Prettier is run automatically on staged files whenever code is committed.
 
 - Install Prettier as a VSCode extension
 - Navigate to the root directory
@@ -248,8 +252,11 @@ npm run format
 Our prettier config is set to format code on file save.
 
 Note:
-- `npm run format` - formats all the files, usually not needed since we added husky precommit on staged files
-- `npm run precommit` - formats only staged files. This is git-precommit hook to do prettier on staged files
+
+- `npm run format` - formats all the files, usually not needed since we added husky precommit on
+  staged files
+- `npm run precommit` - formats only staged files. This is git-precommit hook to do prettier on
+  staged files
 
 ### Troubleshooting commit error
 
@@ -275,7 +282,8 @@ If you encounter:
 husky - pre-commit script failed (code 1)
 ```
 
-This means the code that you change is only due to formatting reason - the code after formatted is the same as latest commit. You need to make a change that does not only contain formatting.
+This means the code that you change is only due to formatting reason - the code after formatted is
+the same as latest commit. You need to make a change that does not only contain formatting.
 
 ## Docker Setup
 
