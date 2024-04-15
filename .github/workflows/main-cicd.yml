@@ -4,32 +4,32 @@ name: 415 HHA Haiti Build Pipeline
 
 on:
   push:
-    branches: [ main, staging ]
+    branches: [main, staging]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 env:
-  # Even values which are not secret (DockerHub user name...) must be in secrets because 
-  # we need to pass them to reusable workflow files, and it is not possible to 
+  # Even values which are not secret (DockerHub user name...) must be in secrets because
+  # we need to pass them to reusable workflow files, and it is not possible to
   # use an `env` variable as an argument to a reusable workflow, but we can pass all secrets.
-  HUB_REPO_BACKEND: "${{ secrets.HUB_REPO_BACKEND }}" #"hhahaiti_backend"
-  HUB_REPO_FRONTEND: "${{ secrets.HUB_REPO_FRONTEND }}" # "hhahaiti_revproxy_frontend"
-  HUB_USER: "${{ secrets.HUB_USER }}" # drbfraser
-  HUB_TOKEN: "${{ secrets.HUB_TOKEN }}"
+  HUB_REPO_BACKEND: '${{ secrets.HUB_REPO_BACKEND }}' #"hhahaiti_backend"
+  HUB_REPO_FRONTEND: '${{ secrets.HUB_REPO_FRONTEND }}' # "hhahaiti_revproxy_frontend"
+  HUB_USER: '${{ secrets.HUB_USER }}' # drbfraser
+  HUB_TOKEN: '${{ secrets.HUB_TOKEN }}'
   NPM_VERSION: 7.19.0
   CLONE_DEPTH: 50
 
   # Keep npm's cache and Cypress's cache out of home directory (mounted from host)
   # otherwise, NPM gives EACCES error trying to mkdir /github/home/.npm
   # Using the /isolated_build/ folder (inside the container) keeps permissions straight
-  npm_config_cache: /isolated_build/.npm-cache    
-  CYPRESS_CACHE_FOLDER: /isolated_build/.cypress-cache    
+  npm_config_cache: /isolated_build/.npm-cache
+  CYPRESS_CACHE_FOLDER: /isolated_build/.cypress-cache
 
   PASSWORD_SEED: 'C@td0g'
+  RAND_PASSWORD_SEED: 'd0gC@t'
   IS_GITLAB_CI: 'true'
 
 jobs:
-
   display_github_contexts:
     runs-on: [self-hosted, docker]
     steps:
@@ -45,7 +45,7 @@ jobs:
     steps:
       - name: Checkout code into container
         uses: bfraser/cicd/actions/checkout@v1
-        with: 
+        with:
           path: /isolated_build/repo/
       - name: NPM install (`npm ci`)
         working-directory: /isolated_build/repo/
@@ -64,7 +64,7 @@ jobs:
     steps:
       - name: Checkout code into container
         uses: bfraser/cicd/actions/checkout@v1
-        with: 
+        with:
           path: /isolated_build/repo/
       - name: NPM install (`npm ci`)
         working-directory: /isolated_build/repo/common/
@@ -79,10 +79,10 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: success()
         with:
-          name: "${{ github.job }}"
+          name: '${{ github.job }}'
           retention-days: 7
           path: /isolated_build/repo/common_build.tar.gz
-  
+
   test-build-server:
     env:
       # Connection string: mongodb://<hostname service name>:<port>/<db name>
@@ -102,7 +102,7 @@ jobs:
     steps:
       - name: Checkout code into container
         uses: bfraser/cicd/actions/checkout@v1
-        with: 
+        with:
           path: /isolated_build/repo/
       - name: Re-Build Common inside Container
         working-directory: /isolated_build/repo/common/
@@ -128,7 +128,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: success()
         with:
-          name: "${{ github.job }}"
+          name: '${{ github.job }}'
           retention-days: 7
           path: /isolated_build/repo/server_build.tar.gz
 
@@ -140,14 +140,14 @@ jobs:
     steps:
       - name: Checkout code into container
         uses: bfraser/cicd/actions/checkout@v1
-        with: 
+        with:
           path: /isolated_build/repo/
       - name: Re-Build Common inside Container
         working-directory: /isolated_build/repo/common/
         run: |
           npm ci
           npm run build
-          tar -czf ../common_build.tar.gz .  
+          tar -czf ../common_build.tar.gz .
       - name: Prepare for tests
         working-directory: /isolated_build/repo/client/
         run: |
@@ -166,10 +166,9 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: success()
         with:
-          name: "${{ github.job }}"
+          name: '${{ github.job }}'
           retention-days: 7
           path: /isolated_build/repo/client_build.tar.gz
-
 
   # ----------------------------------------------------------------------------
   # Publish to DockerHub
@@ -198,56 +197,55 @@ jobs:
     env:
       IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag}}
     steps:
-    - uses: actions/checkout@v3
-      # Checkout the code, not into a container, because all work here is not in a container
-      with:
-        fetch-depth: 50
-    - name: Get all build products (into own folders)
-      uses: actions/download-artifact@v3
-    - name: Move build artifacts into root
-      run: |
-        mv test-build-common/common_build.tar.gz .
-        mv test-build-server/server_build.tar.gz .
-        mv test-build-client/client_build.tar.gz .
-    - name: Printing debug information...
-      run: |
-        echo "IMAGE_TAG = '$IMAGE_TAG'"
-        echo "Files in current folder before building image"
-        ls -al
-    - name: Running 'docker compose'...
-      run: |
-        docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
-        docker images
-    - name: Pushing to docker hub...
-      run: |  
-        docker login -u $HUB_USER -p $HUB_TOKEN
-        docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
-        docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
-        docker logout
-        echo "::notice file=main-cicd.yml::Pushed images to Docker Hub with IMAGE_TAG '$IMAGE_TAG'"
-    - name: Cleaning up...
-      run: |
-        docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' | xargs docker rmi --force
-        docker images
+      - uses: actions/checkout@v3
+        # Checkout the code, not into a container, because all work here is not in a container
+        with:
+          fetch-depth: 50
+      - name: Get all build products (into own folders)
+        uses: actions/download-artifact@v3
+      - name: Move build artifacts into root
+        run: |
+          mv test-build-common/common_build.tar.gz .
+          mv test-build-server/server_build.tar.gz .
+          mv test-build-client/client_build.tar.gz .
+      - name: Printing debug information...
+        run: |
+          echo "IMAGE_TAG = '$IMAGE_TAG'"
+          echo "Files in current folder before building image"
+          ls -al
+      - name: Running 'docker compose'...
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.deploy.yml build
+          docker images
+      - name: Pushing to docker hub...
+        run: |
+          docker login -u $HUB_USER -p $HUB_TOKEN
+          docker push $HUB_USER/$HUB_REPO_BACKEND:$IMAGE_TAG
+          docker push $HUB_USER/$HUB_REPO_FRONTEND:$IMAGE_TAG
+          docker logout
+          echo "::notice file=main-cicd.yml::Pushed images to Docker Hub with IMAGE_TAG '$IMAGE_TAG'"
+      - name: Cleaning up...
+        run: |
+          docker images -a | grep -e "$HUB_REPO_BACKEND" -e "$HUB_REPO_FRONTEND" | awk '{print $3}' | xargs docker rmi --force
+          docker images
 
-
-#   ----------------------------------------------------------------------------
-#   Deployment and Re-tagging Jobs
-#   Note: 
-#     Since these jobs are calling a reusable workflow, they cannot
-#     use 'timeout-minutes:', 'environment:', 'env:', or 'steps:' because
-#     those break the allowable syntax for a job calling a reusable workflow.
-#     https://docs.github.com/en/actions/using-workflows/reusing-workflows
-#   ----------------------------------------------------------------------------
+  #   ----------------------------------------------------------------------------
+  #   Deployment and Re-tagging Jobs
+  #   Note:
+  #     Since these jobs are calling a reusable workflow, they cannot
+  #     use 'timeout-minutes:', 'environment:', 'env:', or 'steps:' because
+  #     those break the allowable syntax for a job calling a reusable workflow.
+  #     https://docs.github.com/en/actions/using-workflows/reusing-workflows
+  #   ----------------------------------------------------------------------------
   # Development (dev) server
   dev-server-deploy-from-dockerhub:
     needs: [build-docker-publish-docker-images, export-image-tag]
     if: ${{ github.ref_name == 'main' }}
     uses: ./.github/workflows/deploy-from-dockerhub.yml
     with:
-      RUNNER_NAME:       deploy-development
-      DOMAIN:            hhahaiti-dev.cmpt.sfu.ca
-      IMAGE_TAG:         ${{ needs.export-image-tag.outputs.image_tag }}
+      RUNNER_NAME: deploy-development
+      DOMAIN: hhahaiti-dev.cmpt.sfu.ca
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
     secrets: inherit
 
   dev-retag-and-upload-to-dockerhub:
@@ -255,10 +253,9 @@ jobs:
     if: ${{ github.ref_name == 'main' }}
     uses: ./.github/workflows/retag-and-upload-dockerhub.yml
     with:
-      IMAGE_TAG:  ${{ needs.export-image-tag.outputs.image_tag }}
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
       BRANCH_TAG: dev
     secrets: inherit
-
 
   # Staging (stg) server
   staging-server-deploy-from-dockerhub:
@@ -266,9 +263,9 @@ jobs:
     if: ${{ github.ref_name == 'staging' }}
     uses: ./.github/workflows/deploy-from-dockerhub.yml
     with:
-        RUNNER_NAME:       deploy-staging
-        DOMAIN:            hhahaiti-stg.cmpt.sfu.ca
-        IMAGE_TAG:         ${{ needs.export-image-tag.outputs.image_tag }}
+      RUNNER_NAME: deploy-staging
+      DOMAIN: hhahaiti-stg.cmpt.sfu.ca
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
     secrets: inherit
 
   staging-retag-and-upload-to-dockerhub:
@@ -276,6 +273,6 @@ jobs:
     if: ${{ github.ref_name == 'staging' }}
     uses: ./.github/workflows/retag-and-upload-dockerhub.yml
     with:
-        IMAGE_TAG:         ${{ needs.export-image-tag.outputs.image_tag }}
-        BRANCH_TAG:        stg
+      IMAGE_TAG: ${{ needs.export-image-tag.outputs.image_tag }}
+      BRANCH_TAG: stg
     secrets: inherit
