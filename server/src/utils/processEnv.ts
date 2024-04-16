@@ -3,7 +3,7 @@ import 'dotenv/config';
 class EnvironmentConfigurationError extends Error {
   constructor(message: string | undefined) {
     super(message);
-    this.name = 'Enviroment Configuration Error';
+    this.name = 'Environment Configuration Error';
   }
 }
 
