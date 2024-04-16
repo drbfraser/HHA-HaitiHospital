@@ -26,6 +26,7 @@ env:
   CYPRESS_CACHE_FOLDER: /isolated_build/.cypress-cache
 
   PASSWORD_SEED: 'C@td0g'
+  RAND_PASSWORD_SEED: 'C@td0g'
   IS_GITLAB_CI: 'true'
 
 jobs:
