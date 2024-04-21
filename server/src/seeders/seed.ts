@@ -71,6 +71,8 @@ export const seedUsers = async () => {
     await UserCollection.deleteMany({});
 
     for (const index of [...Array(15).keys()]) {
+      let password = index === 0 ? ENV.RAND_PASSWORD_SEED : ENV.PASSWORD_SEED; // Select password based on user index
+
       const foundUser = await UserCollection.findOne({ username: `user${index}` }).exec();
       if (foundUser) {
         switch (index) {
@@ -214,7 +216,7 @@ export const seedUsers = async () => {
         }
         const user = new UserCollection({
           username: `user${index}`,
-          password: ENV.PASSWORD_SEED,
+          password: password,
           name: name,
         });
 

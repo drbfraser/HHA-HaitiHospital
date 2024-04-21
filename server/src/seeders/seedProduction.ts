@@ -54,8 +54,8 @@ const seedAdmin = async () => {
     await UserCollection.deleteMany({});
 
     const admin = new UserCollection({
-      username: 'admin', // Should I change it to user0 ?
-      password: ENV.PASSWORD_SEED,
+      username: 'user0',
+      password: ENV.RAND_PASSWORD_SEED,
       name: 'Admin',
       role: Role.Admin,
       departmentId: Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper),
