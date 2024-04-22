@@ -2,21 +2,19 @@ import './view.css';
 
 import { Badge, Button } from 'react-bootstrap';
 import { BioReportIdParams, Paths } from 'constants/paths';
-import { ENDPOINT_BIOMECH_GET_BY_ID, ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
 import { PriorityBadge, StatusBadge } from './utils';
-import { useEffect, useState } from 'react';
-
-import Api from '../../actions/Api';
+import { useCallback, useEffect, useState } from 'react';
 import { FormDisplay } from 'components/form/FormDisplay';
 import { FormFieldDisplay } from 'components/form/FormFieldDisplay';
 import { History } from 'history';
 import { ImageDisplay } from 'components/form/ImageDisplay';
 import Layout from 'components/layout';
-import { ResponseMessage } from 'utils/response_message';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BiomechPriority, BiomechStatus, BiomechJson as Biomech } from '@hha/common';
+import { getBiomechById } from 'api/biomech';
+import { getImage } from 'api/image';
 import { toI18nDateString } from 'constants/date';
 
 const ALT_MESSAGE: string = 'Broken kit report...';
@@ -30,34 +28,25 @@ export const BrokenKitView = () => {
 
   const history: History = useHistory<History>();
 
-  useEffect(() => {
-    const getBioReport = async (controller: AbortController) => {
-      const report: Biomech = await Api.Get(
-        ENDPOINT_BIOMECH_GET_BY_ID(id),
-        ResponseMessage.getMsgFetchReportFailed(),
-        history,
-        controller.signal,
-      );
-      setBioReport(report);
-    };
+  const getABiomech = useCallback(async () => {
+    const biomech = await getBiomechById(id, history);
+    setBioReport(biomech);
+  }, [id, history]);
 
-    const controller = new AbortController();
-    getBioReport(controller);
-
-    return () => {
-      controller.abort();
-    };
-  }, [history, id]);
-
-  useEffect(() => {
-    const getBioReportImage = async () => {
-      if (bioReport?.imgPath) {
-        setBioReportImage(await Api.Image(ENDPOINT_IMAGE_BY_PATH(bioReport.imgPath), history));
-      }
-    };
-
-    getBioReportImage();
+  const getABiomechImage = useCallback(async () => {
+    if (bioReport) {
+      const biomechImg = await getImage(bioReport.imgPath, history);
+      setBioReportImage(biomechImg);
+    }
   }, [bioReport, history]);
+
+  useEffect(() => {
+    getABiomech();
+  }, [getABiomech]);
+
+  useEffect(() => {
+    getABiomechImage();
+  }, [getABiomechImage]);
 
   return (
     <Layout

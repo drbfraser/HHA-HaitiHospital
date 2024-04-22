@@ -1,27 +1,20 @@
-import {
-  ENDPOINT_CASESTUDY_DELETE_BY_ID,
-  ENDPOINT_CASESTUDY_GET,
-  ENDPOINT_CASESTUDY_PATCH_BY_ID,
-} from 'constants/endpoints';
-import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { Link, useHistory } from 'react-router-dom';
-import { TOAST_CASESTUDY_GET_ERROR } from 'constants/toastErrorMessages';
-import { useEffect, useMemo, useState } from 'react';
-
-import Api from 'actions/Api';
-import { Button } from 'react-bootstrap';
-import { CellContext, Row } from '@tanstack/react-table';
+import { Role } from '@hha/common';
+import { CellContext } from '@tanstack/react-table';
+import { renderBasedOnRole } from 'actions/roleActions';
+import { deleteCaseStudy, featureCaseStudy, getAllCaseStudies } from 'api/caseStudy';
+import Layout from 'components/layout';
 import DeleteModal from 'components/popup_modal/DeleteModal';
 import GenericModal from 'components/popup_modal/GenericModal';
-import { History } from 'history';
-import Layout from 'components/layout';
-import { Role } from '@hha/common';
-import { ResponseMessage, SortOrder } from 'utils';
-import { renderBasedOnRole } from 'actions/roleActions';
-import { useAuthState } from 'contexts';
-import { useTranslation } from 'react-i18next';
-import { CaseStudy } from './typing';
+import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { toI18nDateString } from 'constants/date';
+import { useAuthState } from 'contexts';
+import { History } from 'history';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { Link, useHistory } from 'react-router-dom';
+import { SortOrder } from 'utils';
+import { CaseStudy } from './typing';
 
 export enum CaseStudyCol {
   AUTHOR,
@@ -41,47 +34,32 @@ export const CaseStudyList = () => {
   const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();
 
-  const deleteCaseStudy = async (id: string) => {
-    await Api.Delete(
-      ENDPOINT_CASESTUDY_DELETE_BY_ID(id),
-      {},
-      resetModals,
-      history,
-      ResponseMessage.getMsgDeleteCaseStudyFailed(),
-      undefined,
-      ResponseMessage.getMsgDeleteCaseStudyOk(),
-    );
-  };
-
   const resetModals = () => {
     setCurrentIndex(undefined);
     setIsDeleteModalOpen(false);
     setIsWarningModelOpen(false);
   };
 
+  const deleteCaseStudyById = async (id: string) => deleteCaseStudy(id, resetModals, history);
+
   const onModalDeleteConfirm = async () => {
     if (currentIndex) {
-      await deleteCaseStudy(currentIndex);
+      await deleteCaseStudyById(currentIndex);
     }
     setCaseStudies(caseStudies.filter((item: any) => item.id !== currentIndex));
     resetModals();
   };
 
-  const columns = useMemo(() => {
-    const featureCaseStudy = async (id: string) => {
-      await Api.Patch(
-        ENDPOINT_CASESTUDY_PATCH_BY_ID(id),
-        {},
-        () => {
-          history.push('/case-study');
-        },
-        history,
-        ResponseMessage.getMsgFeatureCaseStudyFailed(),
-        'Get case study pending',
-        ResponseMessage.getMsgFeatureCaseStudyOk(),
-      );
-    };
+  const getAllCaseStudiesCallback = useCallback(async () => {
+    const data = await getAllCaseStudies(history);
+    setCaseStudies(data);
+  }, [history]);
 
+  useEffect(() => {
+    getAllCaseStudiesCallback();
+  }, [getAllCaseStudiesCallback]);
+
+  const columns = useMemo(() => {
     const onDeleteButton = (event: any, item: any) => {
       event.stopPropagation();
       event.preventDefault();
@@ -131,7 +109,7 @@ export const CaseStudyList = () => {
                 onClick={async (event) => {
                   event.stopPropagation();
 
-                  await featureCaseStudy(item.id);
+                  await featureCaseStudy(item.id, () => history.push('/case-study'), history);
 
                   setCaseStudies((caseStudies) => {
                     // Reorder the case studies so that the featured case study is first
@@ -172,28 +150,7 @@ export const CaseStudyList = () => {
     }
 
     return columns;
-  }, [authState.userDetails.role, history, t]);
-
-  useEffect(() => {
-    const fetchCaseStudies = async (controller: AbortController) => {
-      const data: CaseStudy[] = await Api.Get(
-        ENDPOINT_CASESTUDY_GET,
-        TOAST_CASESTUDY_GET_ERROR,
-        history,
-        controller.signal,
-      );
-
-      setCaseStudies(data);
-    };
-
-    const controller = new AbortController();
-
-    fetchCaseStudies(controller);
-
-    return () => {
-      controller.abort();
-    };
-  }, [history]);
+  }, [authState.userDetails.role, history, i18n.resolvedLanguage, t]);
 
   return (
     <Layout title={t('headerCaseStudy')}>

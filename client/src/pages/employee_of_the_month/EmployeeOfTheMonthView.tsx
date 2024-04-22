@@ -1,29 +1,22 @@
-import {
-  EmployeeOfTheMonth,
-  EmployeeViewParams,
-  EmployeeViewType,
-} from 'pages/employee_of_the_month/typing';
+import { EmployeeViewParams, EmployeeViewType } from 'pages/employee_of_the_month/typing';
 import { Link, useParams } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
-
-import Api from '../../actions/Api';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { EmployeeOfTheMonthSummary } from 'components/employee_of_the_month/EmployeeOfTheMonthSummary';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { Role } from '@hha/common';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
+import { EmployeeOfTheMonthJson, Role } from '@hha/common';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { getEotmById } from 'api/eotm';
 
 export const EmployeeOfTheMonthView = () => {
   const authState = useAuthState();
-  const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonth[]>([]);
+  const [employeesOfTheMonth, setEmployeesOfTheMonth] = useState<EmployeeOfTheMonthJson[]>([]);
   const history: History = useHistory<History>();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const params = useParams<EmployeeViewParams>();
 
@@ -51,45 +44,33 @@ export const EmployeeOfTheMonthView = () => {
     return getDefaultParams(params);
   }, [params]);
 
-  useEffect(() => {
+  const getEotm = useCallback(async () => {
     if (!isNonEmptyObject(employeeViewParams)) {
       return;
     }
-    const controller = new AbortController();
-
-    const endpoint =
+    const id =
       params.type === EmployeeViewType.EotmId
-        ? `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${employeeViewParams.eotmId}`
-        : `${ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET}/${employeeViewParams.year}/${employeeViewParams.month}`;
+        ? employeeViewParams.eotmId
+        : `${employeeViewParams.year}/${employeeViewParams.month}`;
 
-    const getEmployeeOfTheMonth = async () => {
-      let employeeOfTheMonth: EmployeeOfTheMonth | EmployeeOfTheMonth[] = await Api.Get(
-        endpoint,
-        TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
-        history,
-        controller.signal,
-      );
+    const eotms = await getEotmById(id, history);
+    if (eotms.length > 0 && isNonEmptyObject(eotms[0])) {
+      setEmployeesOfTheMonth(eotms);
+      const emp = eotms[0];
+      const monthYearTitle =
+        t(translateMonth(+emp.awardedMonth)) + ' ' + emp.awardedYear.toString();
+      const title =
+        employeeViewParams.type === EmployeeViewType.EotmId
+          ? `${emp.name} - ${monthYearTitle}`
+          : monthYearTitle;
 
-      const employeeOfTheMonthArr: EmployeeOfTheMonth[] = [employeeOfTheMonth].flat();
+      setTitle(title);
+    }
+  }, [params.type, employeeViewParams, t, history]);
 
-      if (employeeOfTheMonthArr.length > 0 && isNonEmptyObject(employeeOfTheMonthArr[0])) {
-        setEmployeesOfTheMonth(employeeOfTheMonthArr);
-        const emp = employeeOfTheMonthArr[0];
-        const monthYearTitle =
-          t(translateMonth(+emp.awardedMonth)) + ' ' + emp.awardedYear.toString();
-        const title =
-          employeeViewParams.type === EmployeeViewType.EotmId
-            ? `${emp.name} - ${monthYearTitle}`
-            : monthYearTitle;
-
-        setTitle(title);
-      }
-    };
-    getEmployeeOfTheMonth();
-    return () => {
-      controller.abort();
-    };
-  }, [employeeViewParams, history, params]);
+  useEffect(() => {
+    getEotm();
+  }, [getEotm]);
 
   const CarouselIndicators: React.FC = () => (
     <div className="carousel-indicators">
@@ -154,7 +135,7 @@ export const EmployeeOfTheMonthView = () => {
           <div id="eotmCarousel" className="carousel carousel-dark slide" data-bs-ride="carousel">
             <div className="carousel-inner my-2">
               {employeesOfTheMonth.map((eotm, i) => (
-                <div className={`carousel-item ${i == 0 ? 'active' : ''}`} key={i}>
+                <div className={`carousel-item ${i === 0 ? 'active' : ''}`} key={i}>
                   <EmployeeOfTheMonthSummary employee={eotm} />
                 </div>
               ))}

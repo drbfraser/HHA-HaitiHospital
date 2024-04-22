@@ -1,11 +1,9 @@
-import Api from 'actions/Api';
-import { ENDPOINT_MESSAGEBOARD_POST } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
 import MessageForm from '../../components/message/MessageForm';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ResponseMessage } from 'utils';
+import { addMessageBoard } from 'api/messageBoard';
 
 const AddMessage = () => {
   const history: History = useHistory<History>();
@@ -16,15 +14,7 @@ const AddMessage = () => {
   };
 
   const onSubmit = async (data: any) => {
-    await Api.Post(
-      ENDPOINT_MESSAGEBOARD_POST,
-      data,
-      onSubmitActions,
-      history,
-      ResponseMessage.getMsgCreatePostFailed(),
-      undefined,
-      ResponseMessage.getMsgCreatePostOk(),
-    );
+    addMessageBoard(data, onSubmitActions, history);
   };
 
   return (

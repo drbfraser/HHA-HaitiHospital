@@ -11,7 +11,7 @@ const MessageComment = (props: MessageCommentProps) => {
   const author = props.comment.user;
   const comment = props.comment;
   const departmentName = parseEscapedCharacters(author.department.name);
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   return (
     <div className="pt-2 pb-2 border-bottom">

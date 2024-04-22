@@ -1,18 +1,15 @@
 import { ObjectSerializer, QuestionGroup } from '@hha/common';
-
-import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
 import { DepartmentJson as Department } from '@hha/common';
-import { ENDPOINT_TEMPLATE } from 'constants/endpoints';
 import { History } from 'history';
 import Layout from 'components/layout';
 import { ReportAndTemplateForm } from 'components/report/ReportAndTemplateForm';
-import { ResponseMessage } from '../../utils/response_message';
 import { UploadForm } from 'components/upload_template/UploadForm';
 import { useDepartmentData } from 'hooks';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { updateReportTemplate } from 'api/report';
 
 export const UploadReport = () => {
   const { t } = useTranslation();
@@ -46,15 +43,7 @@ export const UploadReport = () => {
     };
     setIsShowingModal(false);
     setIsSubmitting(true);
-    await Api.Put(
-      ENDPOINT_TEMPLATE,
-      reportObject,
-      onSubmit,
-      history,
-      ResponseMessage.getMsgUpdateReportTemplateFailed(),
-      ResponseMessage.getMsgUpdateReportTemplatePending(),
-      ResponseMessage.getMsgUpdateReportTemplateOk(),
-    );
+    await updateReportTemplate(reportObject, onSubmit, history);
   };
 
   const onSubmit = () => history.push(`/home`);

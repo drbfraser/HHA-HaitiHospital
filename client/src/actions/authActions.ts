@@ -1,9 +1,8 @@
-import { ENDPOINT_LOGIN, ENDPOINT_LOGOUT } from 'constants/endpoints';
+import { logoutUser } from 'api/user';
 import axios, { AxiosError } from 'axios';
-
-import Api from './Api';
-import { Dispatch } from 'react';
+import { ENDPOINT_LOGIN } from 'constants/endpoints';
 import { History } from 'history';
+import { Dispatch } from 'react';
 
 interface FormData {
   username: string;
@@ -42,15 +41,7 @@ const onLogout = () => {
 
 export const logOutUser = async (dispatch: Dispatch<any>, history: History) => {
   dispatch({ type: 'LOGOUT' });
-  await Api.Post(
-    ENDPOINT_LOGOUT,
-    {},
-    onLogout,
-    history,
-    'Logging out failed',
-    'Logging out...',
-    'Logged out successfully!',
-  );
+  await logoutUser(history, onLogout);
 };
 
 const deleteAllCookies = () => {

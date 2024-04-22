@@ -1,19 +1,16 @@
-import { ENDPOINT_ADMIN_DELETE_BY_ID, ENDPOINT_ADMIN_GET } from 'constants/endpoints';
-import { Link, useHistory } from 'react-router-dom';
-import { language, timezone } from 'constants/timezones';
-import { useCallback, useEffect, useState } from 'react';
-import Api from 'actions/Api';
-import DeleteModal from 'components/popup_modal/DeleteModal';
-import { History } from 'history';
-import Layout from 'components/layout';
-import { Paths } from 'constants/paths';
-import { ResponseMessage } from 'utils/response_message';
-import { useTranslation } from 'react-i18next';
-import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
-import { Button } from 'react-bootstrap';
-import { useAuthState } from 'contexts';
 import { UserClientModel as User } from '@hha/common';
+import { deleteUser, getAllUsers } from 'api/user';
+import Layout from 'components/layout';
+import DeleteModal from 'components/popup_modal/DeleteModal';
+import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { toI18nDateString } from 'constants/date';
+import { Paths } from 'constants/paths';
+import { useAuthState } from 'contexts';
+import { History } from 'history';
+import { useCallback, useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { Link, useHistory } from 'react-router-dom';
 import { toSnakeCase } from 'utils/string';
 
 const AdminList = () => {
@@ -30,31 +27,11 @@ const AdminList = () => {
   };
 
   const getUsers = useCallback(async () => {
-    const controller = new AbortController();
-    setUsers(
-      await Api.Get(
-        ENDPOINT_ADMIN_GET,
-        ResponseMessage.getMsgFetchUsersFailed(),
-        history,
-        controller.signal,
-      ),
-    );
-    return () => {
-      controller.abort();
-    };
+    const users = await getAllUsers(history);
+    setUsers(users);
   }, [history]);
 
-  const deleteUser = async (id: string) => {
-    await Api.Delete(
-      ENDPOINT_ADMIN_DELETE_BY_ID(id),
-      {},
-      deleteUserActions,
-      history,
-      ResponseMessage.getMsgDeleteUserFailed(),
-      undefined,
-      ResponseMessage.getMsgDeleteUserOk(),
-    );
-  };
+  const deleteUserById = async (id: string) => deleteUser(id, deleteUserActions, history);
 
   const onDeleteUser = (event: any, id: string) => {
     event.stopPropagation();
@@ -70,7 +47,7 @@ const AdminList = () => {
 
   const onModalDelete = () => {
     if (currentIndex) {
-      deleteUser(currentIndex);
+      deleteUserById(currentIndex);
     }
     setShowDeleteModal(false);
   };
