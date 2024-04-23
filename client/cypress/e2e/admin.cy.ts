@@ -1,13 +1,8 @@
 /// <reference types="cypress" />
 
 import { LoginPage } from '../support/pages/LoginPage';
-import {
-  USER_ADDED_FAILURE,
-  USER_ADDED_SUCCESSFULLY,
-  USER_DELETED_SUCCESSFULLY,
-  USER_UPDATED_SUCCESSFULLY,
-} from '../support/constants/toasts';
 import { AdminPage } from '../support/pages/AdminPage';
+import { ResponseMessage } from '../support/constants/response_message';
 
 describe('Admin Tests', function () {
   enum Roles {
@@ -81,7 +76,7 @@ describe('Admin Tests', function () {
     cy.url().should('equal', `${baseUrl}/admin`);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', USER_ADDED_SUCCESSFULLY);
+    toast.should('include.text', ResponseMessage.getMsgCreateUserOk());
     toast.click({ multiple: true });
 
     adminPage.clickSignout();
@@ -103,7 +98,7 @@ describe('Admin Tests', function () {
     adminPage.clickSubmitUserButton();
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', USER_ADDED_FAILURE);
+    toast.should('include.text', ResponseMessage.getMsgCreateUserFailed());
     toast.click({ multiple: true });
   });
 
@@ -140,7 +135,7 @@ describe('Admin Tests', function () {
     cy.url().should('equal', `${baseUrl}/admin`);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', USER_UPDATED_SUCCESSFULLY);
+    toast.should('include.text', ResponseMessage.getMsgUpdateUserOk());
     toast.click({ multiple: true });
   });
 
@@ -149,7 +144,7 @@ describe('Admin Tests', function () {
     adminPage.clickDeleteUserConfirmButton();
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', USER_DELETED_SUCCESSFULLY);
+    toast.should('include.text', ResponseMessage.getMsgDeleteUserOk());
     toast.click();
   });
 });

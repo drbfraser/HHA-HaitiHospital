@@ -326,6 +326,22 @@ const getMsgCreatePostOk = (): string => {
   });
 };
 
+const getMsgDeletePostOk = () => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.OK,
+    item: RequestItem.POST,
+  });
+};
+
+const getMsgDeletePostFailed = () => {
+  return getResponseMessage({
+    action: RequestAction.DELETE,
+    status: RequestStatus.FAILED,
+    item: RequestItem.POST,
+  });
+};
+
 const getMsgCreateCommentFailed = (): string => {
   return getResponseMessage({
     action: RequestAction.CREATE,
@@ -434,6 +450,8 @@ export const ResponseMessage = {
 
   getMsgCreatePostFailed,
   getMsgCreatePostOk,
+  getMsgDeletePostOk,
+  getMsgDeletePostFailed,
   getMsgCreateCommentFailed,
   getMsgCreateCommentOk,
 

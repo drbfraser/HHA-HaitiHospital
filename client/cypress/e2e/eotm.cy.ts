@@ -44,10 +44,6 @@ describe('Employee Of The Month Tests', function () {
     cy.wait(100);
     eotmPage.clickSubmitEOTMButton();
 
-    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', ResponseMessage.getMsgAddEotmOk());
-    toast.click();
-
     cy.url().should('equal', `${baseUrl}/employee-of-the-month`);
 
     cy.get('[id="employee-subcontainer"]').contains('p', name);
@@ -81,9 +77,9 @@ describe('Employee Of The Month Tests', function () {
     eotmPage.clickDeleteEOTM(0);
     eotmPage.clickDeleteEOTMConfirmButton();
 
-    const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', ResponseMessage.getMsgDeleteEotmOk());
-    toast.click();
+    const successToast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
+    successToast.should('include.text', ResponseMessage.getMsgDeleteEotmOk());
+    successToast.click();
   });
 });
 

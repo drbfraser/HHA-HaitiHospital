@@ -256,7 +256,15 @@ const Image = async (url: string, history: History): Promise<string> => {
     });
     return URL.createObjectURL(response.data);
   } catch (error: any) {
-    DbErrorHandler(error, history, ResponseMessage.getMsgFetchImageFailed());
+    try {
+      DbErrorHandler(error, history, ResponseMessage.getMsgFetchImageFailed());
+    } catch (dbErr: any) {
+      // Db Error will throw new error if there is no code to handle it
+      if (dbErr.message?.includes('Error Needs a Handler')) {
+        const errorMsg = i18n.t('request_response.default.failed');
+        toast.error(errorMsg);
+      }
+    }
     return ApiError.ERROR_IMG;
   }
 };

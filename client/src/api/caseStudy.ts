@@ -121,9 +121,9 @@ export const deleteCaseStudy = async (
       {},
       deleteCaseStudyCallback,
       history,
-      ResponseMessage.getMsgDeleteCaseStudyOk(),
-      undefined,
       ResponseMessage.getMsgDeleteCaseStudyFailed(),
+      undefined,
+      ResponseMessage.getMsgDeleteCaseStudyOk(),
     );
   } catch (error) {
     console.error('Error deleting case study:', error);

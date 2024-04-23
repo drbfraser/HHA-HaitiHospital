@@ -23,9 +23,9 @@ export const addBiomech = async (data: BiomechForm, onSubmit: () => void, histor
       formData,
       onSubmit,
       history,
-      ResponseMessage.getMsgCreateReportOk(),
-      undefined,
       ResponseMessage.getMsgCreateReportFailed(),
+      undefined,
+      ResponseMessage.getMsgCreateReportOk(),
     );
   } catch (error) {
     console.error('Error adding biomech:', error);
@@ -128,7 +128,7 @@ export const deleteBiomech = async (
       history,
       ResponseMessage.getMsgDeleteReportFailed(),
       undefined,
-      ResponseMessage.getMsgCreateReportOk(),
+      ResponseMessage.getMsgDeleteReportOk(),
     );
   } catch (error) {
     console.error('Error deleting biomech:', error);

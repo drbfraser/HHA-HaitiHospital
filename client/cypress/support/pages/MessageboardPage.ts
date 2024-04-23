@@ -61,7 +61,7 @@ export class MessageboardPage {
   }
 
   clickEditMessageBackButton() {
-    cy.get('[data-testid="add-message-back-button"]').click();
+    cy.get('[data-testid="back-button"]').click();
     return this;
   }
 }

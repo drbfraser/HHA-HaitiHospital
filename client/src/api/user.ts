@@ -96,6 +96,8 @@ export const updateUser = async (
       onSubmit,
       history,
       ResponseMessage.getMsgUpdateUserFailed(),
+      undefined,
+      ResponseMessage.getMsgUpdateUserOk(),
     );
   } catch (error) {
     console.error('Error cannot logout current user:', error);
