@@ -1,42 +1,26 @@
-import { language, timezone } from 'constants/timezones';
-
-import Api from 'actions/Api';
-import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
 import { History } from 'history';
 import { MessageJson } from '@hha/common';
 import { NavLink } from 'react-router-dom';
-import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toI18nDateString } from 'constants/date';
+import { getAllMessageBoards } from 'api/messageBoard';
 
 const DashboardMessageOverview = () => {
   const [messages, setMessages] = useState<MessageJson[]>([]);
   const history: History = useHistory<History>();
+  const { t, i18n } = useTranslation();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const getMessages = async () => {
-      setMessages(
-        await Api.Get(
-          ENDPOINT_MESSAGEBOARD_GET,
-          TOAST_MESSAGEBOARD_GET_ERROR,
-          history,
-          controller.signal,
-        ),
-      );
-    };
-
-    getMessages();
-    return () => {
-      setMessages([]);
-      controller.abort();
-    };
+  const fetchMessages = useCallback(async () => {
+    const messages = await getAllMessageBoards(history);
+    setMessages(messages);
   }, [history]);
 
-  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
 
   return (
     <div className={'dashboard-message-overview'}>

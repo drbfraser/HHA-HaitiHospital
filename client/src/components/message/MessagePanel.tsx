@@ -1,17 +1,14 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
 import { MessageJson as Message, Role } from '@hha/common';
-import { useEffect, useState } from 'react';
-
-import Api from 'actions/Api';
+import { useCallback, useEffect, useState } from 'react';
 import { CellContext } from '@tanstack/react-table';
-import { ENDPOINT_MESSAGEBOARD_GET } from 'constants/endpoints';
-import { TOAST_MESSAGEBOARD_GET_ERROR } from 'constants/toastErrorMessages';
 import { History } from 'history';
 import MessageDisplay from './MessageDisplay';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { getAllMessageBoards } from 'api/messageBoard';
 
 const MessagePanel = () => {
   const { t } = useTranslation();
@@ -23,25 +20,6 @@ const MessagePanel = () => {
     setMessages(messages.filter((m) => m.id !== message.id));
   };
 
-  useEffect(() => {
-    const getMessages = async (controller: AbortController) => {
-      const messages = await Api.Get(
-        ENDPOINT_MESSAGEBOARD_GET,
-        TOAST_MESSAGEBOARD_GET_ERROR,
-        history,
-        controller.signal,
-      );
-      setMessages(messages);
-    };
-
-    const controller = new AbortController();
-    getMessages(controller);
-    return () => {
-      controller.abort();
-      setMessages([]);
-    };
-  }, [history, authState]);
-
   const columns: FilterableColumnDef[] = [
     {
       header: t('messageBoardRecentUpdates'),
@@ -52,6 +30,16 @@ const MessagePanel = () => {
       ),
     },
   ];
+
+  const fetchData = useCallback(async () => {
+    const messages = await getAllMessageBoards(history);
+    setMessages(messages);
+  }, [history]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   return (
     <>
       <div className="d-flex justify-content-start">

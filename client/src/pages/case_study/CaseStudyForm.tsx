@@ -1,14 +1,11 @@
 import { CaseStudy, CaseStudyType } from './typing';
 import React, { useEffect, useState } from 'react';
-
-import Api from 'actions/Api';
-import { ENDPOINT_CASESTUDY_POST } from 'constants/endpoints';
 import Layout from 'components/layout';
 import { imageCompressor } from 'utils/imageCompressor';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ResponseMessage } from 'utils';
+import { addCaseStudy } from 'api/caseStudy';
 
 export const CaseStudyForm = () => {
   const [formOption, setformOption] = useState('');
@@ -40,22 +37,7 @@ export const CaseStudyForm = () => {
 
   const onSubmit = async (data: any) => {
     data.caseStudyType = formOption;
-    let formData = new FormData();
-    let postData = JSON.stringify(data);
-    formData.append('document', postData);
-    if (selectedFile) {
-      formData.append('file', selectedFile);
-    }
-
-    await Api.Post(
-      ENDPOINT_CASESTUDY_POST,
-      formData,
-      onSubmitActions,
-      history,
-      ResponseMessage.getMsgCreateCaseStudyFailed(),
-      undefined,
-      ResponseMessage.getMsgCreateCaseStudyOk(),
-    );
+    addCaseStudy(data, onSubmitActions, history, selectedFile);
   };
 
   return (

@@ -1,9 +1,9 @@
 import 'dotenv/config';
 
-class EnviromentConfigurationError extends Error {
+class EnvironmentConfigurationError extends Error {
   constructor(message: string | undefined) {
     super(message);
-    this.name = 'Enviroment Configuration Error';
+    this.name = 'Environment Configuration Error';
   }
 }
 
@@ -15,9 +15,13 @@ export const TEST_SERVER_PORT = parseInt(process.env.TEST_PORT ?? '5001');
 
 // Options without default values.
 const passwordSeed = process.env.PASSWORD_SEED;
-if (passwordSeed === undefined) throw new EnviromentConfigurationError('PASSWORD_SEED missing');
+if (passwordSeed === undefined) throw new EnvironmentConfigurationError('PASSWORD_SEED missing');
 export const PASSWORD_SEED = passwordSeed;
 
+const randPassword = process.env.RAND_PASSWORD_SEED;
+if (randPassword === undefined) throw new EnvironmentConfigurationError('RAND_PASSWORD missing');
+export const RAND_PASSWORD_SEED = randPassword;
+
 const secret = process.env.JWT_SECRET;
-if (secret === undefined) throw new EnviromentConfigurationError('JWT_SECRET missing');
+if (secret === undefined) throw new EnvironmentConfigurationError('JWT_SECRET missing');
 export const JWT_SECRET = secret;

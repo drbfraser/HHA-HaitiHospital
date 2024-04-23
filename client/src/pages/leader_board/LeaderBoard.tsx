@@ -1,55 +1,31 @@
-import { ENDPOINT_CASESTUDY_FEATURED, ENDPOINT_LEADERBOARD_GET } from 'constants/endpoints';
-import {
-  TOAST_CASESTUDY_GET_ERROR,
-  TOAST_LEADERBOARD_GET_ERROR,
-} from 'constants/toastErrorMessages';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import Api from 'actions/Api';
-import { CaseStudySummary } from 'components/case_study/CaseStudySummary';
-import { History } from 'history';
-import Layout from 'components/layout';
-import { useHistory } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { LeaderboardJson as Leaderboard } from '@hha/common';
+import { getFeaturedCaseStudy } from 'api/caseStudy';
+import { getLeaderboard } from 'api/leaderboard';
+import { CaseStudySummary } from 'components/case_study/CaseStudySummary';
+import Layout from 'components/layout';
+import { History } from 'history';
+import { CaseStudy } from 'pages/case_study/typing';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 
 export const LeaderBoard = () => {
   const { t } = useTranslation();
   const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
-  const [caseStudy, setCaseStudy] = useState(null);
+  const [caseStudy, setCaseStudy] = useState<CaseStudy>();
   const history: History = useHistory<History>();
 
-  useEffect(() => {
-    const leaderboardController = new AbortController();
-    const caseStudyController = new AbortController();
-    const getLeaderboard = async () => {
-      setLeaderboard(
-        await Api.Get(
-          ENDPOINT_LEADERBOARD_GET,
-          TOAST_LEADERBOARD_GET_ERROR,
-          history,
-          leaderboardController.signal,
-        ),
-      );
-    };
-
-    const getCaseStudy = async () => {
-      setCaseStudy(
-        await Api.Get(
-          ENDPOINT_CASESTUDY_FEATURED,
-          TOAST_CASESTUDY_GET_ERROR,
-          history,
-          caseStudyController.signal,
-        ),
-      );
-    };
-    getLeaderboard();
-    getCaseStudy();
-    return () => {
-      leaderboardController.abort();
-      caseStudyController.abort();
-    };
+  const fetchData = useCallback(async () => {
+    const leaderboard = await getLeaderboard(history);
+    const caseStudy = await getFeaturedCaseStudy(history);
+    setLeaderboard(leaderboard);
+    setCaseStudy(caseStudy);
   }, [history]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <Layout title={t('headerLeaderBoard')}>

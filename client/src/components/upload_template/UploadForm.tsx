@@ -30,7 +30,7 @@ export const UploadForm = ({
     reader.onload = (event) => {
       try {
         if (!event.target || !event.target.result) {
-          throw 'Error no file result';
+          throw Error('Error no file result');
         }
         const data = JSON.parse(String(event.target.result));
         updateReport(objectSerializer.deserialize(data.reportObject));

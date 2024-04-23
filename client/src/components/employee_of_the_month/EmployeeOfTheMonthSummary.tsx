@@ -1,12 +1,11 @@
 import { useHistory } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import Api from '../../actions/Api';
-import { ENDPOINT_IMAGE_BY_PATH } from 'constants/endpoints';
+import { useCallback, useEffect, useState } from 'react';
 import { EmployeeOfTheMonthJson as EmployeeOfTheMonth } from '@hha/common';
 import { History } from 'history';
 import ImageModal from 'components/popup_modal/ImageModal';
 import { useTranslation } from 'react-i18next';
 import { toI18nDateString } from 'constants/date';
+import { getImage } from 'api/image';
 
 interface Props {
   employee: EmployeeOfTheMonth;
@@ -30,18 +29,17 @@ export const EmployeeOfTheMonthSummary = (props: Props) => {
     setShowImageModal(false);
   };
 
-  useEffect(() => {
-    const getEmployeeOfTheMonthImage = async () => {
-      if (props.employee.imgPath) {
-        const employeeImage = await Api.Image(
-          ENDPOINT_IMAGE_BY_PATH(props.employee.imgPath),
-          history,
-        );
-        setEmployeeImage(employeeImage);
-      }
-    };
-    getEmployeeOfTheMonthImage();
+  const fetchImage = useCallback(async () => {
+    if (!props.employee.imgPath) {
+      return;
+    }
+    const image = await getImage(props.employee.imgPath, history);
+    setEmployeeImage(image);
   }, [props.employee.imgPath, history]);
+
+  useEffect(() => {
+    fetchImage();
+  }, [fetchImage]);
 
   return (
     <div className="d-block w-100">

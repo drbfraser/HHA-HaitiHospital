@@ -1,11 +1,8 @@
-import { ENDPOINT_REPORTS, ENDPOINT_REPORT_GET_BY_ID } from 'constants/endpoints';
 import { FormEvent, MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { NavigationInfo, navigate } from 'components/report/utils';
 import { ObjectSerializer, QuestionGroup, ReportMetaData, Role } from '@hha/common';
 import { Prompt, useHistory, useLocation } from 'react-router-dom';
 import { monthYearOptions, userLocale } from 'constants/date';
-
-import Api from 'actions/Api';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
 import { History } from 'history';
 import Layout from 'components/layout';
@@ -13,11 +10,11 @@ import { PDFExport } from '@progress/kendo-react-pdf';
 import ReadonlyReportForm from 'components/report/ReadonlyReportForm';
 import ReportForm from 'components/report/ReportForm';
 import ReportMonthForm from 'components/report/ReportMonthForm';
-import { ResponseMessage } from 'utils/response_message';
 import { useAuthState } from 'contexts';
 import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { XlsxGenerator } from 'components/report/XlsxExport';
+import { getReportById, updateReport } from 'api/report';
 
 const ReportView = () => {
   const user = useAuthState();
@@ -81,8 +78,16 @@ const ReportView = () => {
     e.preventDefault();
     setEditMonth((prev) => !prev);
   };
+  const editReportCallback = () => {
+    if (!readOnly) {
+      setReadOnly((prev) => !prev);
+    } else {
+      setEditMonth((prev) => !prev);
+    }
+    setShowViewEditBtn(true);
+  };
 
-  const reportHandler = () => {
+  const reportHandler = async () => {
     const serializedReport = objectSerializer.serialize(report as Object);
     const editedReportObject = {
       id: report_id,
@@ -91,26 +96,9 @@ const ReportView = () => {
       reportMonth: reportMonth,
       isDraft: isDraft,
     };
-
     setAreChangesMade(false);
     setShowEditModal(false);
-
-    Api.Put(
-      ENDPOINT_REPORTS,
-      editedReportObject,
-      () => {
-        if (!readOnly) {
-          setReadOnly((prev) => !prev);
-        } else {
-          setEditMonth((prev) => !prev);
-        }
-        setShowViewEditBtn(true);
-      },
-      history,
-      ResponseMessage.getMsgUpdateReportFailed(),
-      ResponseMessage.getMsgUpdateReportPending(),
-      ResponseMessage.getMsgUpdateReportOk(),
-    );
+    await updateReport(editedReportObject, editReportCallback, history);
   };
 
   const togglePagination = () => setIsUsingPagination(!isUsingPagination);
@@ -119,12 +107,7 @@ const ReportView = () => {
 
   const getReport = useCallback(async () => {
     const controller = new AbortController();
-    const fetchedReport: any = await Api.Get(
-      ENDPOINT_REPORT_GET_BY_ID(report_id),
-      ResponseMessage.getMsgFetchReportFailed(),
-      history,
-      controller.signal,
-    );
+    const fetchedReport: any = await getReportById(report_id, history);
 
     if (Object.keys(fetchedReport).length === 0) {
       return;

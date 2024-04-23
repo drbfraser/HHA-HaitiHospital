@@ -1,5 +1,6 @@
 import { ObjectSerializer, serializable } from '../../src';
 import { should, expect } from 'chai';
+import { describe, it } from 'mocha';
 import * as sinon from 'sinon';
 
 @serializable()

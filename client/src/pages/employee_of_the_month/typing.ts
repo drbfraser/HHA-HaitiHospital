@@ -1,7 +1,3 @@
-import { EmployeeOfTheMonthJson } from '@hha/common';
-
-export interface EmployeeOfTheMonth extends EmployeeOfTheMonthJson {}
-
 export interface EmployeeViewParams {
   year: string;
   month: string;

@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react';
-
-import Api from 'actions/Api';
-import { ENDPOINT_ADMIN_ME } from 'constants/endpoints';
+import { useCallback, useEffect, useState } from 'react';
+import { UserClientModel as User } from '@hha/common';
+import { getCurrentUser } from 'api/user';
 import { History } from 'history';
-import { ResponseMessage } from 'utils/response_message';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { logOutUser } from '../../actions/authActions';
 import { useAuthDispatch } from '../../contexts';
-import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { UserClientModel as User } from '@hha/common';
 
 interface HeaderProps {
   title?: string;
@@ -25,26 +22,14 @@ const Header = ({ title }: HeaderProps) => {
     history.push('/login');
   };
 
-  useEffect(() => {
-    const getUserInfo = async (controller: AbortController) => {
-      const user: User = await Api.Get(
-        ENDPOINT_ADMIN_ME,
-        ResponseMessage.getMsgFetchUserFailed(),
-        history,
-        controller.signal,
-      );
-
-      setUserInfo(user);
-    };
-
-    const controller = new AbortController();
-
-    getUserInfo(controller);
-
-    return () => {
-      controller.abort();
-    };
+  const fetchUser = useCallback(async () => {
+    const user = await getCurrentUser(history);
+    setUserInfo(user);
   }, [history]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   return (
     <>

@@ -1,43 +1,27 @@
 import FilterableTable, { FilterableColumnDef } from 'components/table/FilterableTable';
 import { Link, useHistory } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
-
-import Api from 'actions/Api';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import DeleteModal from 'components/popup_modal/DeleteModal';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID } from 'constants/endpoints';
-import { ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET } from 'constants/endpoints';
-import { EmployeeOfTheMonth } from 'pages/employee_of_the_month/typing';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { ResponseMessage } from 'utils/response_message';
-import { Role } from '@hha/common';
-import { TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR } from 'constants/toastErrorMessages';
+import { EmployeeOfTheMonthJson, Role } from '@hha/common';
 import { renderBasedOnRole } from 'actions/roleActions';
 import { translateMonth } from 'utils/dateUtils';
 import { useAuthState } from 'contexts';
 import { useTranslation } from 'react-i18next';
+import { getAllEotms, deleteEotm } from 'api/eotm';
 import { toI18nDateString } from 'constants/date';
 
 export const EmployeeOfTheMonthList = () => {
-  const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonth[]>([]);
+  const [employeeOfTheMonthList, setEmployeeOfTheMonthList] = useState<EmployeeOfTheMonthJson[]>(
+    [],
+  );
   const [currentIndex, setCurrentIndex] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const authState = useAuthState();
   const history: History = useHistory<History>();
   const { t, i18n } = useTranslation();
-
-  const deleteEotm = async (id: string) => {
-    await Api.Delete(
-      ENDPOINT_EMPLOYEE_OF_THE_MONTH_DELETE_BY_ID(id),
-      {},
-      resetDeleteModal,
-      history,
-      ResponseMessage.getMsgDeleteEotmFailed(),
-      undefined,
-      ResponseMessage.getMsgDeleteEotmOk(),
-    );
-  };
 
   const resetDeleteModal = () => {
     setCurrentIndex(null);
@@ -46,7 +30,7 @@ export const EmployeeOfTheMonthList = () => {
 
   const onModalDeleteConfirm = async () => {
     if (currentIndex) {
-      await deleteEotm(currentIndex);
+      await deleteEotmById(currentIndex);
     }
     setEmployeeOfTheMonthList(
       employeeOfTheMonthList.filter((eotm: any) => eotm.id !== currentIndex),
@@ -62,24 +46,18 @@ export const EmployeeOfTheMonthList = () => {
     setShowDeleteModal(true);
   };
 
-  useEffect(() => {
-    const fetchEmployeeOfTheMonths = async (controller: AbortController) => {
-      const data = await Api.Get(
-        ENDPOINT_EMPLOYEE_OF_THE_MONTH_GET,
-        TOAST_EMPLOYEE_OF_THE_MONTH_GET_ERROR,
-        history,
-        controller.signal,
-      );
-      setEmployeeOfTheMonthList(data);
-    };
+  const deleteEotmById = async (id: string) => {
+    deleteEotm(id, resetDeleteModal, history);
+  };
 
-    const controller = new AbortController();
-
-    fetchEmployeeOfTheMonths(controller);
-    return () => {
-      controller.abort();
-    };
+  const getEotms = useCallback(async () => {
+    const eotms = await getAllEotms(history);
+    setEmployeeOfTheMonthList(eotms);
   }, [history]);
+
+  useEffect(() => {
+    getEotms();
+  }, [getEotms]);
 
   const columns = useMemo(() => {
     const columns: FilterableColumnDef[] = [
@@ -148,7 +126,7 @@ export const EmployeeOfTheMonthList = () => {
       });
     }
     return columns;
-  }, [authState.userDetails.role, t]);
+  }, [authState.userDetails.role, i18n.resolvedLanguage, t]);
 
   return (
     <Layout

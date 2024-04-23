@@ -1,19 +1,16 @@
-import { ENDPOINT_ADMIN_GET_BY_ID, ENDPOINT_ADMIN_PUT_BY_ID } from 'constants/endpoints';
 import { Paths, UserIdParams } from 'constants/paths';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-
 import { AdminUserForm } from 'pages/admin/AdminUserForm';
 import { AdminUserFormData } from 'pages/admin/typing';
-import Api from 'actions/Api';
 import { History } from 'history';
 import Layout from 'components/layout';
-import { ResponseMessage } from 'utils/response_message';
 import { Spinner } from 'components/spinner/Spinner';
 import { UserClientModel as User } from '@hha/common';
 import { useDepartmentData } from 'hooks';
 import useDidMountEffect from 'utils/custom_hooks';
 import { useTranslation } from 'react-i18next';
+import { getUserById, updateUser } from 'api/user';
 
 export const EditUserForm = () => {
   const { departmentNameKeyMap: departments } = useDepartmentData();
@@ -24,22 +21,14 @@ export const EditUserForm = () => {
   const history: History = useHistory<History>();
   const { t } = useTranslation();
 
+  const fetchAndSetUser = useCallback(async () => {
+    const fetchedUser: User = await getUserById(id, history);
+    setUser(fetchedUser);
+  }, [id, history]);
+
   useEffect(() => {
-    const controller = new AbortController();
-    const fetchAndSetUser = async () => {
-      const fetchedUser: User = await Api.Get(
-        ENDPOINT_ADMIN_GET_BY_ID(id),
-        ResponseMessage.getMsgFetchUserFailed(),
-        history,
-        controller.signal,
-      );
-      setUser(fetchedUser);
-    };
     fetchAndSetUser();
-    return () => {
-      controller.abort();
-    };
-  }, [history, id]);
+  }, [fetchAndSetUser]);
 
   useDidMountEffect(
     function signalInitDataReady() {
@@ -53,15 +42,7 @@ export const EditUserForm = () => {
   };
 
   const submitForm = async (data: AdminUserFormData) => {
-    await Api.Put(
-      ENDPOINT_ADMIN_PUT_BY_ID(id),
-      data,
-      onSubmit,
-      history,
-      ResponseMessage.getMsgUpdateUserFailed(),
-      undefined,
-      ResponseMessage.getMsgUpdateUserOk(),
-    );
+    updateUser(id, data, onSubmit, history);
   };
 
   return (

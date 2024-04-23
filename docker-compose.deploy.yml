@@ -51,10 +51,6 @@ services:
       - caddy_log:/var/log
 
   logger:
-    container_name: hhahaiti_fluentbit
-    image: fluent/fluent-bit:2.1.8
-    ports:
-      - 24224:24224
     volumes:
       - caddy_log:/logs/caddy:ro
     environment:

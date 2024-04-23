@@ -37,7 +37,7 @@ services:
 
   logger:
     container_name: hhahaiti_fluentbit
-    image: fluent/fluent-bit:2.1.8
+    image: fluent/fluent-bit:3.0.1
     ports:
       - 24224:24224
     volumes:
@@ -46,6 +46,8 @@ services:
       - fluentbit_logs_db:/persist
       - server_logs:/logs/server:ro
       - mongo_logs:/logs/mongodb:ro
+      - /proc:/host/proc
+      - /sys:/host/sys
     command: ['fluent-bit', '-c', '/fluent-bit/etc/fluent-local.conf']
 
 volumes:

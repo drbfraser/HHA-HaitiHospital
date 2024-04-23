@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { QuestionNode } from '../../src';
 import { TEST_ARGS_STR, TEST_CLASS_STR } from '../Constants';
 import { TestTemplate } from '../TestTemplate';
+import { describe, it } from 'mocha';
 
 export interface QuestionNodeTestArgs<ID, ErrorType> {
   idEqual: (id1: ID, id2: ID) => boolean;
