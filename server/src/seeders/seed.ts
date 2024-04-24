@@ -729,7 +729,7 @@ export const seedCaseStudies = async () => {
     const randomDefaultUser = selectRandomUser(users);
     const caseStudies: (string | string[])[][] = [
       [
-        'Patient Story',
+        'PatientStory', // will be internationalized, hence no space
         'Linda Etienne',
         '43',
         'Port-au-Prince',
@@ -739,7 +739,7 @@ export const seedCaseStudies = async () => {
         "Linda Etienne, a 43-year-old mother of three, had been experiencing severe stomach pain for several days before she decided to visit the hospital. At first, she thought it was just a stomach bug and tried to tough it out, but the pain only got worse. Finally, her husband convinced her to seek medical attention. When she arrived at the hospital, Linda was seen by a gastroenterologist who suspected that she might have a peptic ulcer. After some tests, the doctor confirmed that Linda did indeed have an ulcer, and that it had caused gastrointestinal bleeding. Linda was admitted to the hospital and given medication to help control the bleeding and reduce the inflammation in her stomach. She was also advised to make some lifestyle changes, such as avoiding spicy and acidic foods, and reducing her stress levels. After three days in the hospital, Linda's condition had improved significantly. She was discharged with a prescription for medication to continue treating her ulcer, and advised to follow up with her gastroenterologist regularly. Although Linda was initially scared and reluctant to seek medical attention, she was grateful to the hospital staff for their kindness and expertise in helping her recover from her illness. She now knows the importance of taking care of her health and seeking medical help when needed.",
       ],
       [
-        'Patient Story',
+        'PatientStory',
         'Jean-Francois Michel',
         '29',
         'Cap-Haitien',
@@ -749,7 +749,7 @@ export const seedCaseStudies = async () => {
         "Jean-Francois Michel, a 29-year-old musician from Cap-Haitien, was rushed to the hospital after experiencing chest pain and shortness of breath. He had been feeling unwell for a few days, but didn't think it was anything serious until the pain became unbearable. When he arrived at the hospital, doctors quickly diagnosed him with a myocardial infarction (heart attack) and began treatment. Jean-Francois underwent surgery to unblock a clogged artery and was monitored closely by hospital staff during his recovery. After two days in the hospital, he was stable enough to be discharged and was advised to make some lifestyle changes, such as quitting smoking and reducing his alcohol intake, to reduce his risk of future heart problems. Jean-Francois was grateful to the hospital staff for their quick and effective treatment, and now takes his health more seriously.",
       ],
       [
-        'Training Session',
+        'TrainingSession',
         '03-01-2023',
         'Patient Communication',
         'Dr. Smith',
@@ -758,7 +758,7 @@ export const seedCaseStudies = async () => {
         'During the training, attendees learned about best practices for communicating with patients and how to handle difficult situations. Nurse Johnson shared a story about a patient who was upset and anxious about their upcoming procedure. She used active listening skills and empathy to help the patient feel more comfortable and informed about what to expect. The patient later wrote a letter thanking Nurse Johnson for her care.',
       ],
       [
-        'Training Session',
+        'TrainingSession',
         '03-07-2023',
         'Infection Control',
         'Dr. Garcia',
@@ -767,7 +767,7 @@ export const seedCaseStudies = async () => {
         "During the training, attendees learned about the importance of proper hand hygiene and how to properly clean and disinfect surfaces. Nurse Kim shared a story about a time when she witnessed a colleague not washing their hands properly before entering a patient's room. She used the opportunity to educate her colleague about the importance of hand hygiene and how it can help protect patients from infections.",
       ],
       [
-        'Patient Story',
+        'PatientStory',
         'Louis Charles',
         '72',
         'Les Cayes',

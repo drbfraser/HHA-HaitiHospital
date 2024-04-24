@@ -72,13 +72,9 @@ export const CaseStudyList = () => {
       {
         header: t('CaseStudy.Main.CaseStudyType'),
         id: 'type',
-        cell: (row) => t(`CaseStudy.Type.${row.row.original.caseStudyType}`),
-        accessorFn: (row) => t(row.caseStudyType),
-        // filterFn: (row: Row<any>, columnId: string, value: any) => {
-        //   alert(row.getValue(columnId))
-        //   console.log("A", row.getValue(columnId), value)
-        //   return true;
-        // },
+        cell: (row) => t(`CaseStudy.Type.${row.getValue()}`),
+        accessorKey: 'caseStudyType',
+        filterFn: () => true,
       },
       {
         header: t('CaseStudy.Main.Author'),
