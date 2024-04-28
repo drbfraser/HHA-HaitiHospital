@@ -39,7 +39,7 @@ const MessageDisplay = ({ message, onDelete, showCommentsLink = true }: MessageD
   }, [fetchCommentAmount]);
 
   const deleteMessage = async () => {
-    deleteMessageBoard(message.id, i18n.t('MessageAlertMessageDeleted'), history);
+    deleteMessageBoard(message.id, history);
     onDelete && onDelete(message);
   };
 

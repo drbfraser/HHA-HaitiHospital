@@ -90,20 +90,16 @@ export const updateMessageBoard = async (
   }
 };
 
-export const deleteMessageBoard = async (
-  messageId: string,
-  onDeletedMessage: string,
-  history: History,
-) => {
+export const deleteMessageBoard = async (messageId: string, history: History) => {
   try {
     await Api.Delete(
       ENDPOINT_MESSAGEBOARD_DELETE_BY_ID(messageId),
       {},
       () => {},
       history,
-      TOAST_MESSAGEBOARD_DELETE_ERROR,
+      ResponseMessage.getMsgDeletePostFailed(),
       undefined,
-      onDeletedMessage,
+      ResponseMessage.getMsgDeletePostOk(),
     );
   } catch (error) {
     console.error('Error deleting message comment:', error);

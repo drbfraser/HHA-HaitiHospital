@@ -9,6 +9,11 @@ export class HomePage {
     return this;
   }
 
+  clickExpandSidebar() {
+    cy.get('[data-testid="expand-sidebar"]').click();
+    return this;
+  }
+
   clickSignout() {
     this.clickUserDropdown();
     cy.get('[data-testid="signout-button"]').click();

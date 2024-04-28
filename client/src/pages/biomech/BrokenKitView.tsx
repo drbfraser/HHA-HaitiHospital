@@ -68,21 +68,27 @@ export const BrokenKitView = () => {
       {bioReport && (
         <FormDisplay>
           <div className="w-100 pr-2 d-flex flex-column gap-4">
-            <FormFieldDisplay label={t('biomech.view_report.equipment_name')}>
+            <FormFieldDisplay
+              label={t('biomech.view_report.equipment_name')}
+              testid="biomech-equipment-name"
+            >
               {bioReport.equipmentName}
             </FormFieldDisplay>
 
-            <FormFieldDisplay label={t('biomech.view_report.issue')}>
+            <FormFieldDisplay label={t('biomech.view_report.issue')} testid="biomech-issue">
               {bioReport.equipmentFault}
             </FormFieldDisplay>
 
-            <FormFieldDisplay label={t('biomech.view_report.priority')}>
+            <FormFieldDisplay label={t('biomech.view_report.priority')} testid="biomech-priority">
               <Badge bg={PriorityBadge[bioReport.equipmentPriority as BiomechPriority]}>
                 {t(`biomech.priority.${bioReport.equipmentPriority}`)}
               </Badge>
             </FormFieldDisplay>
 
-            <FormFieldDisplay label={t('biomech.view_report.status')}>
+            <FormFieldDisplay
+              label={t('biomech.view_report.status')}
+              testid="biomech-equipment-status"
+            >
               <Badge bg={StatusBadge[bioReport.equipmentStatus as BiomechStatus]}>
                 {t(`biomech.status.${bioReport.equipmentStatus}`)}
               </Badge>

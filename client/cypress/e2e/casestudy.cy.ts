@@ -1,19 +1,13 @@
 /// <reference types="cypress" />
 
 import { LoginPage } from '../support/pages/LoginPage';
-import en from '../../src/locales/en/translationEN.json';
 import { CaseStudyPage } from '../support/pages/CaseStudyPage';
-import {
-  CASE_STUDY_ADDED_SUCCESSFULLY,
-  CASE_STUDY_DELETED_SUCCESSFULLY,
-  CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY,
-} from '../support/constants/toasts';
 import { HeaderComponent } from '../support/components/Header';
+import { ResponseMessage } from '../support/constants/response_message';
 
 describe('Case Study Tests', function () {
   const loginPage = new LoginPage();
   const caseStudyPage = new CaseStudyPage();
-  const headerComponent = new HeaderComponent();
 
   const username = Cypress.env('Admin').username;
   const password = Cypress.env('Admin').password;
@@ -26,9 +20,8 @@ describe('Case Study Tests', function () {
     loginPage.visit();
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     caseStudyIds = new Array();
+    cy.url().should('include', '/home');
 
-    // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(100);
     caseStudyPage.visit();
   });
 
@@ -55,7 +48,7 @@ describe('Case Study Tests', function () {
     cy.url().should('equal', `${baseUrl}/case-study`);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', CASE_STUDY_ADDED_SUCCESSFULLY);
+    toast.should('include.text', ResponseMessage.getMsgCreateCaseStudyOk());
     toast.click();
 
     caseStudyPage.clickViewCaseStudyButton(1);
@@ -79,19 +72,15 @@ describe('Case Study Tests', function () {
     caseStudyPage.clickDeleteCaseStudyConfirmButton();
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', CASE_STUDY_DELETED_SUCCESSFULLY);
+    toast.should('include.text', ResponseMessage.getMsgDeleteCaseStudyOk());
     toast.click();
   });
 
   it('Should Successfully Feature a New Case Study', function () {
-    const featureCaseStudyButton: Cypress.Chainable<JQuery<HTMLElement>> = cy
-      .get('[data-testid="feature-case-study-button"]')
-      .eq(1);
-
     caseStudyPage.clickFeatureCaseStudyButton(1);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
-    toast.should('include.text', CASE_STUDY_FEATURED_CHANGED_SUCCESSFULLY);
+    toast.should('include.text', ResponseMessage.getMsgFeatureCaseStudyOk());
     toast.click();
   });
 

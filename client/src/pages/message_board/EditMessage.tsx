@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { getMessageBoard, updateMessageBoard } from 'api/messageBoard';
+import { ResponseMessage } from 'utils';
 
 const EditMessage = () => {
   const { id } = useParams<{ id: string }>();
@@ -51,8 +52,8 @@ const EditMessage = () => {
       id,
       data,
       updateMessageActions,
-      i18n.t('addMessageAlertFailed'),
-      i18n.t('addMessageAlertSuccess'),
+      ResponseMessage.getMsgCreatePostFailed(),
+      ResponseMessage.getMsgCreatePostOk(),
       history,
     );
   };

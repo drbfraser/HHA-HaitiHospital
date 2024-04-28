@@ -104,17 +104,22 @@ export const EmployeeOfTheMonthList = () => {
                 onClick={(event) => {
                   onDeleteButton(event, item);
                 }}
+                data-testid="delete-eotm-button"
               >
                 <i className="bi bi-trash"></i>
               </Button>
-              <Link
-                to={`/employee-of-the-month/update/` + item.id}
-                data-testid="update-eotm-button"
-                type="button"
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  history.push(`/employee-of-the-month/update/` + item.id);
+                }}
+                data-testid="edit-eotm-button"
+                variant="link"
                 className="text-decoration-none link-secondary"
               >
                 <i className="bi bi-pencil"></i>
-              </Link>
+              </Button>
             </div>
           );
         },
@@ -132,11 +137,7 @@ export const EmployeeOfTheMonthList = () => {
         <div>
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
             <Link to="/employee-of-the-month/add">
-              <button
-                data-testid="update-eotm-button"
-                type="button"
-                className="btn btn-outline-dark"
-              >
+              <button data-testid="add-eotm-button" type="button" className="btn btn-outline-dark">
                 {t('employeeOfTheMonthAdd')}
               </button>
             </Link>

@@ -78,7 +78,7 @@ export const deleteEotm = async (id: string, actionCallback: () => void, history
       history,
       ResponseMessage.getMsgDeleteEotmFailed(),
       undefined,
-      ResponseMessage.getMsgDeleteEotmFailed(),
+      ResponseMessage.getMsgDeleteEotmOk(),
     );
   } catch (error) {
     console.error('Error deleting employee of the month:', error);

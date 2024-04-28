@@ -65,20 +65,27 @@ const Post = async (
   pendingMsg?: string,
   successMsg?: string,
 ) => {
-  await toast.promise(
-    axios.post(url, obj).then(
-      (res) => actions && actions(res.data),
-      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string),
-    ),
-    {
-      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
-      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
-      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
-    },
-    {
-      autoClose: 3000,
-    },
-  );
+  try {
+    await toast.promise(
+      axios.post(url, obj).then(
+        (res) => actions && actions(res.data),
+        (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string),
+      ),
+      {
+        pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+        success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
+      },
+      {
+        autoClose: 3000,
+      },
+    );
+  } catch (err: any) {
+    // toast is already shown with DbErrorHandler, only show default toast here if unhandled by DbErrorHandler
+    if (err.message?.includes('Error Needs a Handler')) {
+      errorMsg = errorMsg ? errorMsg : i18n.t('request_response.default.failed');
+      toast.error(errorMsg);
+    }
+  }
 };
 
 /**
@@ -109,17 +116,27 @@ const Put = async (
   pendingMsg?: string,
   successMsg?: string,
 ): Promise<void> => {
-  await toast.promise(
-    axios.put(url, obj).then(
-      () => actions(),
-      (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string),
-    ),
-    {
-      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
-      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
-      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
-    },
-  );
+  try {
+    await toast.promise(
+      axios.put(url, obj).then(
+        () => actions(),
+        (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string),
+      ),
+      {
+        pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+        success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
+      },
+      {
+        autoClose: 3000,
+      },
+    );
+  } catch (err: any) {
+    // toast is already shown with DbErrorHandler, only show default toast here if unhandled by DbErrorHandler
+    if (err.message?.includes('Error Needs a Handler')) {
+      errorMsg = errorMsg ? errorMsg : i18n.t('request_response.default.failed');
+      toast.error(errorMsg);
+    }
+  }
 };
 
 /**
@@ -150,16 +167,26 @@ const Patch = async (
   pendingMsg: string,
   successMsg: string,
 ): Promise<void> => {
-  await toast.promise(
-    axios
-      .patch(url, obj)
-      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
-    {
-      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
-      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
-      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
-    },
-  );
+  try {
+    await toast.promise(
+      axios
+        .patch(url, obj)
+        .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg)),
+      {
+        pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+        success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
+      },
+      {
+        autoClose: 3000,
+      },
+    );
+  } catch (err: any) {
+    // toast is already shown with DbErrorHandler, only show default toast here if unhandled by DbErrorHandler
+    if (err.message?.includes('Error Needs a Handler')) {
+      errorMsg = errorMsg ? errorMsg : i18n.t('request_response.default.failed');
+      toast.error(errorMsg);
+    }
+  }
 };
 
 /**
@@ -190,16 +217,28 @@ const Delete = async (
   pendingMsg?: string,
   successMsg?: string,
 ): Promise<void> => {
-  await toast.promise(
-    axios
-      .delete(url, obj)
-      .then(actions, (err: AxiosError | Error) => DbErrorHandler(err, history, errorMsg as string)),
-    {
-      error: errorMsg ? errorMsg : i18n.t('request_response.default.failed'),
-      pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
-      success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
-    },
-  );
+  try {
+    await toast.promise(
+      axios
+        .delete(url, obj)
+        .then(actions, (err: AxiosError | Error) =>
+          DbErrorHandler(err, history, errorMsg as string),
+        ),
+      {
+        pending: pendingMsg ? pendingMsg : i18n.t('request_response.default.pending'),
+        success: successMsg ? successMsg : i18n.t('request_response.default.ok'),
+      },
+      {
+        autoClose: 3000,
+      },
+    );
+  } catch (err: any) {
+    // toast is already shown with DbErrorHandler, only show default toast here if unhandled by DbErrorHandler
+    if (err.message?.includes('Error Needs a Handler')) {
+      errorMsg = errorMsg ? errorMsg : i18n.t('request_response.default.failed');
+      toast.error(errorMsg);
+    }
+  }
 };
 
 /**
@@ -217,7 +256,15 @@ const Image = async (url: string, history: History): Promise<string> => {
     });
     return URL.createObjectURL(response.data);
   } catch (error: any) {
-    DbErrorHandler(error, history, ResponseMessage.getMsgFetchImageFailed());
+    try {
+      DbErrorHandler(error, history, ResponseMessage.getMsgFetchImageFailed());
+    } catch (dbErr: any) {
+      // Db Error will throw new error if there is no code to handle it
+      if (dbErr.message?.includes('Error Needs a Handler')) {
+        const errorMsg = i18n.t('request_response.default.failed');
+        toast.error(errorMsg);
+      }
+    }
     return ApiError.ERROR_IMG;
   }
 };

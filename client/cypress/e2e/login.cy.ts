@@ -2,6 +2,7 @@
 
 import { LoginPage } from '../support/pages/LoginPage';
 import en from '../../src/locales/en/translationEN.json';
+import fr from '../../src/locales/fr/translationFR.json';
 import { HomePage } from '../support/pages/HomePage';
 
 describe('Admin Login Tests', () => {
@@ -26,8 +27,7 @@ describe('Admin Login Tests', () => {
     cy.intercept('POST', `${serverUrl}/api/auth/login`).as('loginReq');
     loginPage.usernameInput('wrong_username').passwordInput('wrong_password').clickSignIn();
     cy.wait('@loginReq').then((intercept) => {
-      const { statusCode } = intercept.response;
-      expect(statusCode).to.eq(401);
+      expect(intercept.response?.statusCode).to.eq(401);
     });
     cy.contains(en.signInInvalidLoginCredentials).should('be.visible');
   });
@@ -81,7 +81,12 @@ describe('Medical Director Login tests', () => {
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('include', '/home');
     homePage.clickUserDropdown();
-    cy.get('[data-testid="user-role"]').should('contain', 'Medical Director');
+
+    // Check that the sidebar links correspond to the User role
+    cy.get('[data-testid="user-role"]').should('satisfy', (element: any) => {
+      const text = element.text();
+      return text.includes(en.MedicalDirector) || text.includes(fr['Medical Director']);
+    });
   });
 
   it('Should Successfully Signout', () => {
@@ -108,7 +113,12 @@ describe('Head of NICU/Paeds Login tests', () => {
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
     cy.url().should('include', '/home');
     homePage.clickUserDropdown();
-    cy.get('[data-testid="user-role"]').should('contain', 'Head of Department');
+
+    // Check that the sidebar links correspond to the User role
+    cy.get('[data-testid="user-role"]').should('satisfy', (element: any) => {
+      const text = element.text();
+      return text.includes(en.HeadOfDepartment) || text.includes(fr['Head of Department']);
+    });
     cy.get('[data-testid="user-department"]').should('contain', 'NICU/Paeds');
   });
 

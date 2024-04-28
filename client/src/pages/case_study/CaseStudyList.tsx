@@ -181,14 +181,16 @@ export const CaseStudyList = () => {
           </button>
         </Link>
       </div>
-      <FilterableTable
-        columns={columns}
-        data={caseStudies}
-        rowClickHandler={(item) => history.push(`/case-study/view/${item.id}`)}
-        enableFilters
-        enableGlobalFilter
-        enableSorting
-      />
+      <div data-testid="case-study-table">
+        <FilterableTable
+          columns={columns}
+          data={caseStudies}
+          rowClickHandler={(item) => history.push(`/case-study/view/${item.id}`)}
+          enableFilters
+          enableGlobalFilter
+          enableSorting
+        />
+      </div>
     </Layout>
   );
 };

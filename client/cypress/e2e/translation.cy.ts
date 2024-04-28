@@ -16,82 +16,43 @@ describe('French Translation Tests', function () {
 
     loginPage.visit();
     loginPage.usernameInput(username).passwordInput(password).clickSignIn();
+    cy.url().should('include', '/home');
 
-    // Tests run too quickly---cy.visit() is not working without this delay
-    cy.wait(100);
-
-    cy.get('.Sidebar').find('ul li').as('Sidebar Items');
-    cy.get('@Sidebar Items').eq(18).click();
+    cy.get('.sidebarDiv').find('ul li').as('Sidebar Items');
+    cy.get('@Sidebar Items').eq(14).click();
   });
 
   it('Should Check That Messageboard Is In French', function () {
-    cy.get('@Sidebar Items').eq(1).click();
-    cy.get('[data-testid="messageboard-header"]').should('include.text', fr.headerMessageBoard);
+    cy.get('@Sidebar Items').eq(3).click();
+    cy.get('[data-testid="header"]').should('include.text', fr.headerMessageBoard);
     cy.get('[data-testid="add-message-button"]').should('include.text', fr.messageBoardAddMessage);
   });
 
   it('Should Check That Leaderboard Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(2).click();
-    cy.get('[data-testid="leaderboard-header"]').should('include.text', fr.headerLeaderBoard);
-    cy.get('[data-testid="case-study-patient-title"]')
-      .parent()
-      .should('include.text', fr.caseStudyFormPatientStoryCaseStudy);
-    cy.get('[data-testid="case-study-patient-name"]')
-      .parent()
-      .should('include.text', fr.caseStudyFormPatientName);
-    cy.get('[data-testid="case-study-patient-age"]')
-      .parent()
-      .should('include.text', fr.caseStudyFormPatientAge);
-    cy.get('[data-testid="case-study-patient-from"]')
-      .parent()
-      .should('include.text', fr.caseStudyFormWherePatientFrom);
-    cy.get('[data-testid="case-study-patient-why-come"]')
-      .parent()
-      .should('include.text', fr.caseStudyFormWhyPatientChooseHCBH);
-    cy.get('[data-testid="case-study-patient-how-long"]')
-      .parent()
-      .should('include.text', fr.caseStudyFormHowLongAtHCBH);
-    cy.get('[data-testid="case-study-patient-diagnosis"]')
-      .parent()
-      .should('include.text', fr.caseStudyFormWhatWasTheirDiagnosis);
-    cy.get('[data-testid="case-study-patient-case-story"]')
-      .parent()
-      .should('include.text', fr['caseStudyFormCaseStudy/Story']);
+    cy.get('@Sidebar Items').eq(4).click();
+    cy.get('[data-testid="header"]').should('include.text', fr.headerLeaderBoard);
   });
 
   it('Should Check That Case Study Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(3).click();
-    cy.get('[data-testid="case-study-header"]').should('include.text', fr.headerCaseStudy);
+    cy.get('@Sidebar Items').eq(5).click();
+    cy.get('[data-testid="header"]').should('include.text', fr.headerCaseStudy);
     cy.get('[data-testid="add-case-study-button"]').should(
       'include.text',
       fr.CaseStudy.Main.AddCaseStudy,
     );
-    cy.get('[data-testid="case-study-type-title"]').should(
-      'include.text',
-      fr.CaseStudy.Main.CaseStudyType,
-    );
-    cy.get('[data-testid="case-study-author-title"]').should(
-      'include.text',
-      fr.CaseStudy.Main.Author,
-    );
-    cy.get('[data-testid="case-study-created-title"]').should(
-      'include.text',
-      fr.CaseStudy.Main.Created,
-    );
-    cy.get('[data-testid="case-study-options-title"]').should(
-      'include.text',
-      fr.CaseStudy.Main.Link,
-    );
+    cy.get('[data-testid="case-study-table"]').contains('span', fr.CaseStudy.Main.CaseStudyType);
+    cy.get('[data-testid="case-study-table"]').contains('span', fr.CaseStudy.Main.Author);
+    cy.get('[data-testid="case-study-table"]').contains('span', fr.CaseStudy.Main.Created);
   });
 
   it('Should Check That Bio Support Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(4).click();
-    cy.get('[data-testid="biomech-header"]').should('include.text', fr.headerBiomechanicalSupport);
+    cy.get('@Sidebar Items').eq(6).click();
+    cy.get('[data-testid="header"]').should('include.text', fr.headerBiomechanicalSupport);
   });
 
   it('Should Check That EOTM Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(5).click();
-    cy.get('[data-testid="eotm-header"]').should('include.text', fr.headerEmployeeOfTheMonth);
-    cy.get('[data-testid="update-eotm-button"]').should('include.text', fr.employeeOfTheMonthEdit);
+    cy.get('@Sidebar Items').eq(7).click();
+    cy.get('[data-testid="header"]').should('include.text', fr.headerEmployeeOfTheMonth);
+    cy.get('[data-testid="add-eotm-button"]').should('include.text', fr.employeeOfTheMonthAdd);
   });
 });
