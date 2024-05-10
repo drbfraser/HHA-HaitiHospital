@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ReportMetaData } from '@hha/common';
 import { processCompositionOrSpecializedQuestion, processTableQuestion } from './QuestionRows';
 import { monthYearOptions, userLocale } from 'constants/date';
+import { useDepartmentData } from 'hooks';
 
 interface ReportType {
   questionItems: any[];
@@ -17,6 +18,7 @@ interface ExpandableQuestionList {
 }
 
 export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
+  const { departmentIdKeyMap } = useDepartmentData();
   const { t } = useTranslation();
   const generateQuestionRows = (language: string): any => {
     const processSelectionQuestion = (selectionItem: any): QuestionRow[] => {
@@ -240,7 +242,7 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
     };
   };
 
-  const generateExcel = () => {
+  const generateExcel = (metaData: ReportMetaData | null) => {
     // Create a new Excel Workbook
     const workbook = new ExcelJS.Workbook();
     const languages = ['en', 'fr'];
@@ -262,15 +264,21 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
     }
 
     workbook.xlsx.writeBuffer().then((data) => {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const department = metaData?.departmentId ? departmentIdKeyMap.get(metaData.departmentId) : null;
+      const filename = `${year}-${month} ${department} - Data.xlsx`;
+
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'data.xlsx');
+      saveAs(blob, filename);
     });
   };
 
   return (
-    <button className="btn btn-outline-dark mr-3" onClick={generateExcel}>
+    <button className="btn btn-outline-dark mr-3" onClick={() => generateExcel(metaData)}>
       {t('departmentReportDisplayDownloadExcel')}
     </button>
   );
