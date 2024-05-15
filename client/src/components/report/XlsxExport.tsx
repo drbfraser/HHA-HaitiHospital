@@ -23,7 +23,9 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
   const { t } = useTranslation();
   const [reportMonth] = useState<Date>(new Date());
   const getReportMonthString = () =>
-    reportMonth ? `${reportMonth.getFullYear()}-${String(reportMonth.getMonth() + 1).padStart(2, '0')}` : '';
+    reportMonth
+      ? `${reportMonth.getFullYear()}-${String(reportMonth.getMonth() + 1).padStart(2, '0')}`
+      : '';
 
   const generateQuestionRows = (language: string): any => {
     const processSelectionQuestion = (selectionItem: any): QuestionRow[] => {
@@ -269,7 +271,9 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
     }
 
     workbook.xlsx.writeBuffer().then((data) => {
-      const department = metaData?.departmentId ? departmentIdKeyMap.get(metaData.departmentId) : null;
+      const department = metaData?.departmentId
+        ? departmentIdKeyMap.get(metaData.departmentId)
+        : null;
       const filename = `${getReportMonthString()} ${department} - Data.xlsx`;
 
       const blob = new Blob([data], {

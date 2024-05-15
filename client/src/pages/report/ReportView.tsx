@@ -44,7 +44,9 @@ const ReportView = () => {
   const report_id = useLocation().pathname.split('/')[2];
 
   const getReportMonthString = () =>
-    reportMonth ? `${reportMonth.getFullYear()}-${String(reportMonth.getMonth() + 1).padStart(2, '0')}` : '';
+    reportMonth
+      ? `${reportMonth.getFullYear()}-${String(reportMonth.getMonth() + 1).padStart(2, '0')}`
+      : '';
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
