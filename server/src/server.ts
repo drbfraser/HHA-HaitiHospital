@@ -51,7 +51,11 @@ export const createServer = () => {
   app.use(metricsMiddleware);
 
   app.use(cookieParser());
+  app.use(
+    require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }),
+  );
   app.use(passport.initialize());
+  app.use(passport.session());
   require('./services/jwtStrategy');
   require('./services/localStrategy');
 
