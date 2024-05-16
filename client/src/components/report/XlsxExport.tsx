@@ -21,10 +21,9 @@ interface ExpandableQuestionList {
 export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
   const { departmentIdKeyMap } = useDepartmentData();
   const { t } = useTranslation();
-  const [reportMonth] = useState<Date>(new Date());
   const getReportMonthString = () =>
-    reportMonth
-      ? `${reportMonth.getFullYear()}-${String(reportMonth.getMonth() + 1).padStart(2, '0')}`
+    metaData?.reportMonth
+      ? `${metaData?.reportMonth.getFullYear()}-${String(metaData?.reportMonth.getMonth() + 1).padStart(2, '0')}`
       : '';
 
   const generateQuestionRows = (language: string): any => {
