@@ -44,7 +44,9 @@ const ReportView = () => {
   const report_id = useLocation().pathname.split('/')[2];
 
   const getReportMonthString = () =>
-    reportMonth?.toLocaleDateString(userLocale, monthYearOptions) || '';
+    reportMonth
+      ? `${reportMonth.getFullYear()}-${String(reportMonth.getMonth() + 1).padStart(2, '0')}`
+      : '';
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
@@ -245,7 +247,7 @@ const ReportView = () => {
           {readOnly && !editMonth && (
             <div className="visually-hidden">
               <PDFExport
-                fileName={`${department}_${getReportMonthString().replace(/\s/g, '')}__${metaData?.submittedBy}`}
+                fileName={`${getReportMonthString()} ${department} - Report`}
                 paperSize="A4"
                 ref={pdfExportComponent}
                 scale={0.75}
