@@ -64,7 +64,7 @@ export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldPr
               name="year"
               min="1900"
               max={currYear}
-              value={year}
+              value={year ?? currYear}
               onChange={(e) => setYear(parseInt(e.target.value))}
               step="1"
               isInvalid={year !== undefined && (year < minYear || year > maxYear)}
