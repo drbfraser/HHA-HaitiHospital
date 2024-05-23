@@ -120,6 +120,7 @@ const ReportForm = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfCompletedPages, setNumberOfCompletedPages] = useState(0);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
+  const [submitTooltipText, setSubmitTooltipText] = useState<string>();
   const isNewReport = btnText === 'Submit';
 
   const pageSize = reportData
@@ -194,6 +195,8 @@ const ReportForm = ({
     console.log(reportStatus);
     const completedPagesCount = reportStatus.filter((page) => page.completed).length;
     setNumberOfCompletedPages(completedPagesCount);
+    const pagesNotComplete = reportStatus.filter((page) => !page.completed).map((reportPage) => reportPage.page);
+    setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + pagesNotComplete)
   }, [reportStatus]);
 
   const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
@@ -227,6 +230,8 @@ const ReportForm = ({
             buttonText={t(`button.${btnText.toLowerCase()}`)}
             disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
             readOnly={readOnly}
+            showTooltip={true}
+            tooltipText={submitTooltipText}
           />
           <div className="position-sticky bottom-0 py-3">
             <input

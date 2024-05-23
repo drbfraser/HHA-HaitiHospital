@@ -76,6 +76,7 @@ export const UploadForm = ({
             buttonText="Submit Report Template"
             disabled={!reportTemplateData || isSubmitting}
             readOnly={false}
+            showTooltip={false}
           />
         </div>
 
