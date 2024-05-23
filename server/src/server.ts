@@ -12,6 +12,8 @@ import passport from 'passport';
 import path from 'path';
 import promBundle from 'express-prom-bundle';
 import routes from './routes/routes';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 
 // Add the options to the prometheus middleware most option are for http_request_duration_seconds histogram metric
 const metricsMiddleware = promBundle({
@@ -50,9 +52,17 @@ export const createServer = () => {
   // add the prometheus middleware to all routes
   app.use(metricsMiddleware);
 
+  // Passport and session initialization
   app.use(cookieParser());
   app.use(
-    require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }),
+    session({
+      secret: ENV.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({
+        mongoUrl: ENV.MONGO_DB,
+      }),
+    }),
   );
   app.use(passport.initialize());
   app.use(passport.session());

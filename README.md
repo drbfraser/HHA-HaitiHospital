@@ -70,7 +70,8 @@ The Directory splits into client and server sides. Here are a few important loca
 
 - /server/src contains resources to react components(/components), index file(index.ts), and other
   frontend code
-- All `API` related calls are stored under `API` folder. It is is ordered in `CRUD` format (Create, Read, Update, Delete) for organized and orderly format.
+- All `API` related calls are stored under `API` folder. It is is ordered in `CRUD` format (Create,
+  Read, Update, Delete) for organized and orderly format.
 
 ## Build instructions for Devs
 
@@ -102,6 +103,8 @@ under the `server` folder. You can use the following example `.env` configuratio
 MONGO_URI=mongodb://localhost:27017/
 # Secret use to generate JWT tokens (You can generate the secret via 'openssl rand -base64 32'on Linux)
 JWT_SECRET=secret
+# Secret used to generate Express sessions
+SESSION_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
 CORS=http://localhost:3000
 # Port for server
