@@ -195,9 +195,11 @@ const ReportForm = ({
     console.log(reportStatus);
     const completedPagesCount = reportStatus.filter((page) => page.completed).length;
     setNumberOfCompletedPages(completedPagesCount);
-    const pagesNotComplete = reportStatus.filter((page) => !page.completed).map((reportPage) => reportPage.page);
+    const pagesNotComplete = reportStatus
+      .filter((page) => !page.completed)
+      .map((reportPage) => reportPage.page);
     if (pagesNotComplete.length != 0) {
-      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + pagesNotComplete)
+      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + pagesNotComplete);
     } else {
       setSubmitTooltipText('');
     }
