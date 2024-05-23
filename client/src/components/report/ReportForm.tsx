@@ -196,7 +196,11 @@ const ReportForm = ({
     const completedPagesCount = reportStatus.filter((page) => page.completed).length;
     setNumberOfCompletedPages(completedPagesCount);
     const pagesNotComplete = reportStatus.filter((page) => !page.completed).map((reportPage) => reportPage.page);
-    setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + pagesNotComplete)
+    if (pagesNotComplete.length != 0) {
+      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + pagesNotComplete)
+    } else {
+      setSubmitTooltipText('');
+    }
   }, [reportStatus]);
 
   const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
