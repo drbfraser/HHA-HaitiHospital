@@ -25,7 +25,3 @@ export const RAND_PASSWORD_SEED = randPassword;
 const secret = process.env.JWT_SECRET;
 if (secret === undefined) throw new EnvironmentConfigurationError('JWT_SECRET missing');
 export const JWT_SECRET = secret;
-
-const sessionSecret = process.env.SESSION_SECRET;
-if (sessionSecret === undefined) throw new EnvironmentConfigurationError('SESSION_SECRET missing');
-export const SESSION_SECRET = secret;
