@@ -248,6 +248,9 @@ const ReportForm = ({
             />
           </div>
         </div>
+        <div className="text-danger">
+          <p>{submitTooltipText}</p>
+        </div>
       </form>
 
       <Pagination
