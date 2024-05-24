@@ -1,5 +1,3 @@
-import { DepartmentJson } from './department';
-
 export interface EmployeeOfTheMonth {
   name: string;
   departmentId: string;
@@ -14,7 +12,10 @@ export interface EmployeeOfTheMonth {
 export interface EmployeeOfTheMonthJson {
   id: string;
   name: string;
-  department: DepartmentJson;
+  department: {
+    id: string;
+    name: string;
+  };
   description: string;
   imgPath?: string;
   awardedMonth: number;

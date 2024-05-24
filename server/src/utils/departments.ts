@@ -3,6 +3,11 @@ import { IllegalState } from 'exceptions/systemException';
 import DepartmentCollection from 'models/departments';
 import { Department } from '@hha/common';
 
+export type DepartmentInfo = {
+  name: string;
+  hasReport: boolean;
+};
+
 export enum DefaultDepartments {
   General = 'General',
   Rehab = 'Rehab',
@@ -11,6 +16,15 @@ export enum DefaultDepartments {
   Community = 'Community & Health',
   BioMechanic = 'Bio Support',
 }
+
+export const defaultDepartments: DepartmentInfo[] = [
+  { name: 'General', hasReport: false },
+  { name: 'Rehab', hasReport: true },
+  { name: 'NICU/Paeds', hasReport: true },
+  { name: 'Maternity', hasReport: true },
+  { name: 'Community & Health', hasReport: true },
+  { name: 'Bio Support', hasReport: false },
+];
 
 // ***************************************************** Utility functions for hashtable approach *****************************************************
 

@@ -12,12 +12,14 @@ export interface DepartmentWithInstanceMethods extends Department {
 
 export const departmentSchema = new Schema<DepartmentWithInstanceMethods>({
   name: { type: String, required: true },
+  hasReport: { type: Boolean, required: true },
 });
 
 departmentSchema.methods.toJson = async function (): Promise<DepartmentJson> {
   const json: DepartmentJson = {
     id: this._id,
     name: this.name,
+    hasReport: this.hasReport,
   };
   return json;
 };

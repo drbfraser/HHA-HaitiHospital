@@ -4,7 +4,7 @@ import { BiomechStatus, Department, Role, User } from '@hha/common';
 import BioMech from 'models/bioMech';
 import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
 import DepartmentCollection from 'models/departments';
-import Departments, { DefaultDepartments } from 'utils/departments';
+import Departments, { DefaultDepartments, defaultDepartments } from 'utils/departments';
 import {
   ObjectSerializer,
   QuestionGroup,
@@ -849,10 +849,12 @@ export const seedDepartments = async () => {
   try {
     await DepartmentCollection.deleteMany({});
     // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
-    for (let deptName of Object.values(DefaultDepartments)) {
+    for (const departmentInfo of defaultDepartments) {
       const department = new DepartmentCollection({
-        name: deptName,
+        name: departmentInfo.name,
+        hasReport: departmentInfo.hasReport,
       });
+      console.log('Writing hasReport: ' + departmentInfo.hasReport);
       await department.save();
     }
     console.log('Departments seeded');
