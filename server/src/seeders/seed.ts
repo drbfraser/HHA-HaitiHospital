@@ -854,7 +854,6 @@ export const seedDepartments = async () => {
         name: departmentInfo.name,
         hasReport: departmentInfo.hasReport,
       });
-      console.log('Writing hasReport: ' + departmentInfo.hasReport);
       await department.save();
     }
     console.log('Departments seeded');
