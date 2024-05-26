@@ -22,8 +22,16 @@ export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldPr
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (month && month >= 0 && year && year >= minYear && year <= currYear) {
+    if (
+      month !== undefined &&
+      month > -1 &&
+      year !== undefined &&
+      year >= minYear &&
+      year <= currYear
+    ) {
       setReportMonth(new Date(year, month));
+    } else {
+      setReportMonth(undefined);
     }
   }, [month, setReportMonth, year]);
 

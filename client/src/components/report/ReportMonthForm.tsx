@@ -31,7 +31,11 @@ const ReportMonthForm = ({
           setReportMonth={setCurrentReportMonth}
           previousReportMonth={currentReportMonth}
         />
-        <button type="submit" className="btn btn-primary mt-2">
+        <button
+          type="submit"
+          className="btn btn-primary mt-2"
+          disabled={currentReportMonth === undefined}
+        >
           {t('departmentReportDisplayMonthApplyChanges')}
         </button>
       </form>
