@@ -11,7 +11,7 @@ const POINTS_PER_CASE_STUDY: number = 10;
 router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Find all departments except for General
-    const departments = await Department.find({ name: { $ne: DefaultDepartments.General } });
+    const departments = await Department.find({ name: { $ne: DefaultDepartments.General.name } });
     const leaderboardJson: LeaderboardJson[] = await Promise.all(
       departments.map(async (dept) => await dept.toLeaderboard(POINTS_PER_CASE_STUDY)),
     );
