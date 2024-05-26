@@ -15,6 +15,7 @@ const ReportMonthForm = ({
 }: ReportMonthFormProps): JSX.Element => {
   const [currentReportMonth, setCurrentReportMonth] = useState<Date | undefined>(reportMonth);
   const { t } = useTranslation();
+  const isValidMonth = currentReportMonth !== undefined;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,8 +34,8 @@ const ReportMonthForm = ({
         />
         <button
           type="submit"
-          className="btn btn-primary mt-2"
-          disabled={currentReportMonth === undefined}
+          className={`btn ${!isValidMonth ? 'btn-secondary' : 'btn-primary'} mt-2`}
+          disabled={!isValidMonth}
         >
           {t('departmentReportDisplayMonthApplyChanges')}
         </button>
