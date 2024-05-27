@@ -119,6 +119,7 @@ const ReportForm = ({
   const numberOfPages = reportData.getPagination().length;
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfCompletedPages, setNumberOfCompletedPages] = useState(0);
+  const [incompletePages, setIncompletePages] = useState<number[]>([]);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
   const [submitTooltipText, setSubmitTooltipText] = useState<string>();
   const isNewReport = btnText === 'Submit';
@@ -203,7 +204,12 @@ const ReportForm = ({
     } else {
       setSubmitTooltipText('');
     }
+    setIncompletePages(pagesNotComplete);
   }, [reportStatus]);
+
+  useEffect(() => {
+    setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + incompletePages);
+  }, [language]);
 
   const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
