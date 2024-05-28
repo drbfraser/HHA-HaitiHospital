@@ -17,7 +17,7 @@ export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldPr
     previousReportMonth?.getMonth() ?? undefined,
   );
   const [year, setYear] = useState<number | undefined>(
-    previousReportMonth?.getUTCFullYear() ?? undefined,
+    previousReportMonth?.getUTCFullYear() ?? currYear,
   );
   const { t } = useTranslation();
 
