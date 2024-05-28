@@ -124,6 +124,15 @@ const ReportForm = ({
   const [submitTooltipText, setSubmitTooltipText] = useState<string>();
   const isNewReport = btnText === 'Submit';
 
+  // Update the tooltip text for the submit button upon changes to form status or language
+  const updateSubmitTooltipText = (incompletePages: number[]) => {
+    if (incompletePages.length !== 0) {
+      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + incompletePages);
+    } else {
+      setSubmitTooltipText('');
+    }
+  };
+
   const pageSize = reportData
     .getPagination()
     .map((paginationIndices) => paginationIndices[1] - paginationIndices[0])
@@ -199,16 +208,12 @@ const ReportForm = ({
     const pagesNotComplete = reportStatus
       .filter((page) => !page.completed)
       .map((reportPage) => reportPage.page);
-    if (pagesNotComplete.length != 0) {
-      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + pagesNotComplete);
-    } else {
-      setSubmitTooltipText('');
-    }
+    updateSubmitTooltipText(pagesNotComplete);
     setIncompletePages(pagesNotComplete);
   }, [reportStatus]);
 
   useEffect(() => {
-    setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + incompletePages);
+    updateSubmitTooltipText(incompletePages);
   }, [language]);
 
   const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
