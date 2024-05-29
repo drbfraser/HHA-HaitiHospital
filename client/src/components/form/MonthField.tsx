@@ -22,8 +22,16 @@ export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldPr
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (month !== undefined && year !== undefined && year >= minYear && year <= currYear) {
+    if (
+      month !== undefined &&
+      month > -1 &&
+      year !== undefined &&
+      year >= minYear &&
+      year <= currYear
+    ) {
       setReportMonth(new Date(year, month));
+    } else {
+      setReportMonth(undefined);
     }
   }, [month, setReportMonth, year]);
 
@@ -39,7 +47,7 @@ export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldPr
               value={month}
               onChange={(e) => setMonth(parseInt(e.target.value))}
             >
-              <option>{t('monthSelect')}</option>
+              <option value={-1}>{t('monthSelect')}</option>
               <option value={0}>{t('monthJanuary')}</option>
               <option value={1}>{t('monthFebruary')}</option>
               <option value={2}>{t('monthMarch')}</option>
