@@ -127,7 +127,7 @@ const ReportForm = ({
   // Update the tooltip text for the submit button upon changes to form status or language
   const updateSubmitTooltipText = (incompletePages: number[]) => {
     if (incompletePages.length !== 0) {
-      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + incompletePages);
+      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + incompletePages.join(', '));
     } else {
       setSubmitTooltipText('');
     }
@@ -247,7 +247,6 @@ const ReportForm = ({
             buttonText={t(`button.${btnText.toLowerCase()}`)}
             disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
             readOnly={readOnly}
-            showTooltip={true}
             tooltipText={submitTooltipText}
           />
           <div className="position-sticky bottom-0 py-3">
