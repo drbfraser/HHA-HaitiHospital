@@ -224,6 +224,7 @@
   "departmentReportDisplaySave": "Save",
   "departmentReportDisplayDiscard": "Discard",
   "departmentReportDisplaySubmit": "Submit",
+  "departmentReportDisplaySubmitTooltip": "Page(s) not completed: ",
   "departmentReportDisplayEditForm": "Edit Form",
   "departmentReportDisplayViewForm": "View Form",
   "departmentReportDisplayEditMonth": "Edit Month",
