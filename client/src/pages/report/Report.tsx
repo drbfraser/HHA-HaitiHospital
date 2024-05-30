@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { NavigationInfo, navigate } from '../../components/report/utils';
 import { ObjectSerializer, QuestionGroup, DepartmentJson as Department, Role } from '@hha/common';
-import { Prompt, useHistory } from 'react-router-dom';
+import { Link, Prompt, useHistory } from 'react-router-dom';
 import ConfirmationModal from 'components/popup_modal/ConfirmationModal';
 import { History } from 'history';
 import Layout from 'components/layout';
@@ -164,9 +164,15 @@ export const Report = () => {
         }}
         when={areChangesMade}
       />
-      {/* Conditional rendering happens here, see https://react.dev/learn/conditional-rendering#logical-and-operator- */}
       {!isTemplateSelected && departments && (
         <>
+          <Link to="general-reports">
+            <button className="btn btn-outline-secondary">
+              <i className="bi bi-chevron-left me-2" />
+              {t('button.back')}
+            </button>
+          </Link>
+
           <ReportAndTemplateForm
             departmentLabel={t('headerReportDepartmentType')}
             monthLabel={t('headerReportMonth')}
