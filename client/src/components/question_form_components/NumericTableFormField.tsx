@@ -188,6 +188,7 @@ const NumericTableFormField = ({
                         type="number"
                         value={isCalculatedCell ? sumValue : sub_question?.getAnswer() ?? ''}
                         readOnly={readOnly || isCalculatedCell}
+                        hideLabel={true}
                       />
                     )}
                   </td>

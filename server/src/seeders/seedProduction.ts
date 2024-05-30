@@ -58,7 +58,10 @@ const seedAdmin = async () => {
       password: ENV.RAND_PASSWORD_SEED,
       name: 'Admin',
       role: Role.Admin,
-      departmentId: Departments.Hashtable.getDeptIdFromName(DefaultDepartments.General, nameMapper),
+      departmentId: Departments.Hashtable.getDeptIdFromName(
+        DefaultDepartments.General.name,
+        nameMapper,
+      ),
     });
 
     admin.registerUser(admin, () => {}); // Unsure if this should have await or not
@@ -95,10 +98,10 @@ const seedTemplates = async () => {
     const serializer = ObjectSerializer.getObjectSerializer();
 
     const reportDepartmentMap: [Report, string][] = [
-      [buildRehabReport(), DefaultDepartments.Rehab],
-      [buildMaternityReport(), DefaultDepartments.Maternity],
-      [buildNicuPaedsReport(), DefaultDepartments.NICU],
-      [buildCommunityHealthReport(), DefaultDepartments.Community],
+      [buildRehabReport(), DefaultDepartments.Rehab.name],
+      [buildMaternityReport(), DefaultDepartments.Maternity.name],
+      [buildNicuPaedsReport(), DefaultDepartments.NICU.name],
+      [buildCommunityHealthReport(), DefaultDepartments.Community.name],
     ];
 
     for (const tuple of reportDepartmentMap) {

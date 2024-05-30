@@ -226,6 +226,7 @@
   "departmentReportDisplaySave": "sauvegarder",
   "departmentReportDisplayDiscard": "Jeter",
   "departmentReportDisplaySubmit": "Soumettre",
+  "departmentReportDisplaySubmitTooltip": "Page(s) incomplète(s): ",
   "departmentReportDisplayEditForm": "Modifier le Formulaire",
   "departmentReportDisplayViewForm": "Voir le Formulaire",
   "departmentReportDisplayEditMonth": "Modifier le Mois",

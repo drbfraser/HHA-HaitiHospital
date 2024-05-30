@@ -119,8 +119,19 @@ const ReportForm = ({
   const numberOfPages = reportData.getPagination().length;
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfCompletedPages, setNumberOfCompletedPages] = useState(0);
+  const [incompletePages, setIncompletePages] = useState<number[]>([]);
   const [errorSet, setErrorSet] = useState<Set<ID>>(new Set());
+  const [submitTooltipText, setSubmitTooltipText] = useState<string>();
   const isNewReport = btnText === 'Submit';
+
+  // Update the tooltip text for the submit button upon changes to form status or language
+  const updateSubmitTooltipText = (incompletePages: number[]) => {
+    if (incompletePages.length !== 0) {
+      setSubmitTooltipText(t('departmentReportDisplaySubmitTooltip') + incompletePages.join(', '));
+    } else {
+      setSubmitTooltipText('');
+    }
+  };
 
   const pageSize = reportData
     .getPagination()
@@ -194,7 +205,16 @@ const ReportForm = ({
     console.log(reportStatus);
     const completedPagesCount = reportStatus.filter((page) => page.completed).length;
     setNumberOfCompletedPages(completedPagesCount);
+    const pagesNotComplete = reportStatus
+      .filter((page) => !page.completed)
+      .map((reportPage) => reportPage.page);
+    updateSubmitTooltipText(pagesNotComplete);
+    setIncompletePages(pagesNotComplete);
   }, [reportStatus]);
+
+  useEffect(() => {
+    updateSubmitTooltipText(incompletePages);
+  }, [language]);
 
   const formHandlerWrapper = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -227,6 +247,7 @@ const ReportForm = ({
             buttonText={t(`button.${btnText.toLowerCase()}`)}
             disabled={numberOfCompletedPages !== numberOfPages || isSubmitting}
             readOnly={readOnly}
+            tooltipText={submitTooltipText}
           />
           <div className="position-sticky bottom-0 py-3">
             <input
@@ -236,6 +257,9 @@ const ReportForm = ({
               value={t('reportSaveAsDraft')}
             />
           </div>
+        </div>
+        <div className="text-danger">
+          <p>{submitTooltipText}</p>
         </div>
       </form>
 

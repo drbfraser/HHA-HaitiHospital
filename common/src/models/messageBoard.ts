@@ -1,4 +1,3 @@
-import { DepartmentJson } from './department';
 import { unknownUserJson, UserJson } from './user';
 
 export interface Message {
@@ -11,7 +10,10 @@ export interface Message {
 
 export interface MessageJson {
   id: string;
-  department: DepartmentJson;
+  department: {
+    id: string;
+    name: string;
+  };
   user: UserJson | null;
   date: string;
   messageBody: string;
