@@ -25,6 +25,7 @@ export const Report = () => {
   const [isDraft, setIsDraft] = useState<boolean>(true);
   const [report, setReport] = useState<QuestionGroup<ID, ErrorType>>();
   const [reportMonth, setReportMonth] = useState<Date>();
+  const [isTemplateSelected, setIsTemplateSelected] = useState<Boolean>(false);
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const user = useAuthState();
@@ -39,6 +40,7 @@ export const Report = () => {
   const isReportableDepartment = (department: Department) => {
     return reportableDepartments.has(department.name);
   };
+  const isMonthAndDepartmentSelected = !!reportMonth && !!report;
 
   const { t, i18n } = useTranslation();
 
@@ -52,6 +54,7 @@ export const Report = () => {
     setCurrentDepartment(undefined);
     setReport(undefined);
     setReportMonth(undefined);
+    setIsTemplateSelected(false);
   };
 
   const confirmSubmission = (event: FormEvent<HTMLFormElement>, isDraft: boolean) => {
@@ -161,18 +164,30 @@ export const Report = () => {
         }}
         when={areChangesMade}
       />
-      {!(report && reportMonth) && departments && (
-        <ReportAndTemplateForm
-          departmentLabel={t('headerReportDepartmentType')}
-          monthLabel={t('headerReportMonth')}
-          departments={departments.filter(isReportableDepartment)}
-          currentDepartment={currentDepartment!}
-          setCurrentDepartment={setCurrentDepartment}
-          reportMonth={reportMonth!}
-          setReportMonth={setReportMonth}
-        />
+      {/* Conditional rendering happens here, see https://react.dev/learn/conditional-rendering#logical-and-operator- */}
+      {!isTemplateSelected && departments && (
+        <>
+          <ReportAndTemplateForm
+            departmentLabel={t('headerReportDepartmentType')}
+            monthLabel={t('headerReportMonth')}
+            departments={departments.filter(isReportableDepartment)}
+            currentDepartment={currentDepartment!}
+            setCurrentDepartment={setCurrentDepartment}
+            reportMonth={reportMonth!}
+            setReportMonth={setReportMonth}
+          />
+          <button
+            className={`btn ${isMonthAndDepartmentSelected ? 'btn-primary' : 'btn-secondary'}`}
+            name="submit"
+            disabled={!isMonthAndDepartmentSelected}
+            type="submit"
+            onClick={() => setIsTemplateSelected(true)}
+          >
+            {t('departmentFormNext')}
+          </button>
+        </>
       )}
-      {report && reportMonth && (
+      {isTemplateSelected && report && (
         <>
           <button
             className="btn btn-outline-secondary"
