@@ -25,7 +25,9 @@ router.get('/', requireJwtAuth, async (req: Request, res: Response, next: NextFu
     let docs;
     if (req.user.role == Role.User) {
       const userDeptId = req.user.departmentId;
-      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
+      const generalDeptId = await Departments.Database.getDeptIdByName(
+        DefaultDepartments.General.name,
+      );
       docs = await MessageCollection.find()
         .or([{ departmentId: userDeptId }, { departmentId: generalDeptId }])
         .sort({ date: 'desc' });
@@ -54,7 +56,7 @@ router.get(
       if (req.user.role == Role.User) {
         const userDeptId = req.user.departmentId;
         const generalDeptId = await Departments.Database.getDeptIdByName(
-          DefaultDepartments.General,
+          DefaultDepartments.General.name,
         );
         if (deptId != userDeptId && deptId != generalDeptId) {
           throw new Unauthorized(`Do not have access to messages from department id: ${deptId}`);
@@ -81,7 +83,9 @@ router.get('/:id', requireJwtAuth, async (req: Request, res: Response, next: Nex
     }
     if (req.user.role == Role.User) {
       const userDeptId = req.user.departmentId;
-      const generalDeptId = await Departments.Database.getDeptIdByName(DefaultDepartments.General);
+      const generalDeptId = await Departments.Database.getDeptIdByName(
+        DefaultDepartments.General.name,
+      );
       if (doc.departmentId != userDeptId && doc.departmentId != generalDeptId) {
         throw new Unauthorized(`Do not have access to message with id: ${msgId}`);
       }

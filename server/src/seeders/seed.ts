@@ -79,105 +79,105 @@ export const seedUsers = async () => {
           case 0:
             foundUser.role = Role.Admin;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 1:
             foundUser.role = Role.MedicalDirector;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 2:
             foundUser.role = Role.HeadOfDepartment;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 3:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Community,
+              DefaultDepartments.Community.name,
               nameMapper,
             );
             break;
           case 4:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Rehab,
+              DefaultDepartments.Rehab.name,
               nameMapper,
             );
             break;
           case 5:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Maternity,
+              DefaultDepartments.Maternity.name,
               nameMapper,
             );
             break;
           case 6:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 7:
             foundUser.role = Role.Admin;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 8:
             foundUser.role = Role.MedicalDirector;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 9:
             foundUser.role = Role.HeadOfDepartment;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 10:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Community,
+              DefaultDepartments.Community.name,
               nameMapper,
             );
             break;
           case 11:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Rehab,
+              DefaultDepartments.Rehab.name,
               nameMapper,
             );
             break;
           case 12:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Maternity,
+              DefaultDepartments.Maternity.name,
               nameMapper,
             );
             break;
           case 13:
             foundUser.role = Role.User;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 14:
             foundUser.role = Role.BioMechanic;
             foundUser.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.BioMechanic,
+              DefaultDepartments.BioMechanic.name,
               nameMapper,
             );
             break;
@@ -224,105 +224,105 @@ export const seedUsers = async () => {
           case 0:
             user.role = Role.Admin;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 1:
             user.role = Role.MedicalDirector;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 2:
             user.role = Role.HeadOfDepartment;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 3:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Community,
+              DefaultDepartments.Community.name,
               nameMapper,
             );
             break;
           case 4:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Rehab,
+              DefaultDepartments.Rehab.name,
               nameMapper,
             );
             break;
           case 5:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Maternity,
+              DefaultDepartments.Maternity.name,
               nameMapper,
             );
             break;
           case 6:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 7:
             user.role = Role.Admin;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 8:
             user.role = Role.MedicalDirector;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.General,
+              DefaultDepartments.General.name,
               nameMapper,
             );
             break;
           case 9:
             user.role = Role.HeadOfDepartment;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 10:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Community,
+              DefaultDepartments.Community.name,
               nameMapper,
             );
             break;
           case 11:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Rehab,
+              DefaultDepartments.Rehab.name,
               nameMapper,
             );
             break;
           case 12:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.Maternity,
+              DefaultDepartments.Maternity.name,
               nameMapper,
             );
             break;
           case 13:
             user.role = Role.User;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.NICU,
+              DefaultDepartments.NICU.name,
               nameMapper,
             );
             break;
           case 14:
             user.role = Role.BioMechanic;
             user.departmentId = Departments.Hashtable.getDeptIdFromName(
-              DefaultDepartments.BioMechanic,
+              DefaultDepartments.BioMechanic.name,
               nameMapper,
             );
             break;
@@ -849,9 +849,10 @@ export const seedDepartments = async () => {
   try {
     await DepartmentCollection.deleteMany({});
     // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
-    for (let deptName of Object.values(DefaultDepartments)) {
+    for (const departmentInfo of Object.values(DefaultDepartments)) {
       const department = new DepartmentCollection({
-        name: deptName,
+        name: departmentInfo.name,
+        hasReport: departmentInfo.hasReport,
       });
       await department.save();
     }
@@ -967,7 +968,7 @@ export const seedEmployeeOfTheMonth = async () => {
     const employeeOfTheMonth = new EmployeeOfTheMonth({
       name: 'John Doe',
       departmentId: Departments.Hashtable.getDeptIdFromName(
-        DefaultDepartments.Maternity,
+        DefaultDepartments.Maternity.name,
         nameMapper,
       ),
       description:
@@ -1094,10 +1095,10 @@ const seedTemplates = async () => {
     const serializer = ObjectSerializer.getObjectSerializer();
 
     const reportDepartmentMap: [Report, string][] = [
-      [buildRehabReport(), DefaultDepartments.Rehab],
-      [buildMaternityReport(), DefaultDepartments.Maternity],
-      [buildNicuPaedsReport(), DefaultDepartments.NICU],
-      [buildCommunityHealthReport(), DefaultDepartments.Community],
+      [buildRehabReport(), DefaultDepartments.Rehab.name],
+      [buildMaternityReport(), DefaultDepartments.Maternity.name],
+      [buildNicuPaedsReport(), DefaultDepartments.NICU.name],
+      [buildCommunityHealthReport(), DefaultDepartments.Community.name],
     ];
     console.log(`Seeding templates buildRehabReport ...`);
 
