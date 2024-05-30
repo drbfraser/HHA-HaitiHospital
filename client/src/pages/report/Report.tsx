@@ -40,7 +40,7 @@ export const Report = () => {
   const isReportableDepartment = (department: Department) => {
     return reportableDepartments.has(department.name);
   };
-  const isMonthAndDepartmentSelected = !!reportMonth && !!report;
+  const isMonthAndDepartmentSelected = !!reportMonth && !!currentDepartment;
 
   const { t, i18n } = useTranslation();
 
