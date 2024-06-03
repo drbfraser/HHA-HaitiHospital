@@ -77,9 +77,10 @@ const seedDepartments = async () => {
   try {
     await DepartmentCollection.deleteMany({});
     // The idea here is to eventually allow departments be added via a POST request so departments no longer uses enums
-    for (let deptName of Object.values(DefaultDepartments)) {
+    for (let defaultDept of Object.values(DefaultDepartments)) {
       const department = new DepartmentCollection({
-        name: deptName,
+        name: defaultDept.name,
+        hasReport: defaultDept.hasReport,
       });
       await department.save();
     }
