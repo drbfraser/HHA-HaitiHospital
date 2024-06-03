@@ -1,34 +1,48 @@
-import { Role } from '@hha/common';
+import { IReport, Role } from '@hha/common';
 import { HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { ReportCollection } from 'models/report';
 import { ITemplate, TemplateCollection } from 'models/template';
-import { COMMUNITY_AND_HEALTH_QUERY } from 'utils/constants';
-import Departments, { DefaultDepartments } from 'utils/departments';
-import { parseQuestions } from 'utils/utils';
+import {
+  MONTH_AGGREGATE_BY,
+  MONTH_DATE_FORMAT,
+  YEAR_AGGREGATE_BY,
+  YEAR_DATE_FORMAT,
+} from 'utils/constants';
+import {
+  createAnalyticsPipeline,
+  processAnalytics,
+  parseQuestions,
+  removeMonthsByTimeStep,
+} from 'utils/analytics';
 
 const router = Router();
 
+type AnalyticsQuestionQuery = {
+  departmentId: string;
+};
+
+export type AnalyticsQuestionsResponse = {
+  id: string;
+  en: string;
+  fr: string;
+};
 router.get(
   '/questions',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  async (req: Request, res: Response, next: NextFunction) => {
-    let department = req.query.department as string;
-
-    // In database, Community and Health is stored as Community & Health, "&" causes decoding issues in URI search query
-    // So, translate "Community and Health" to "Community & Health"
-    if (department == COMMUNITY_AND_HEALTH_QUERY) {
-      department = DefaultDepartments.Community;
-    }
+  async (
+    req: Request<{}, AnalyticsQuestionsResponse[], {}, AnalyticsQuestionQuery>,
+    res: Response<AnalyticsQuestionsResponse[]>,
+    next: NextFunction,
+  ) => {
+    const { departmentId } = req.query;
 
     try {
-      const departmentId = await Departments.Database.getDeptIdByName(department);
-
       const template: ITemplate = await TemplateCollection.findOne({
-        departmentId: departmentId,
+        departmentId,
       }).lean();
 
       if (!template) {
@@ -44,54 +58,65 @@ router.get(
   },
 );
 
+type AnalyticsQuery = {
+  departmentIds: string;
+  questionId: string;
+  startDate: string;
+  endDate: string;
+  timeStep: string;
+  aggregateBy: string;
+};
+
+export type AnalyticsResponse = {
+  time: string;
+  departmentId: string;
+  answer: number;
+};
+
+export type AnalyticsForMonths = {
+  _id: string;
+  reports: IReport[];
+};
+
 router.get(
   '/',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
-  async (req: Request, res: Response, next: NextFunction) => {
-    const department = req.query.department as string;
-    const category = req.query.category as string;
-    const startDate = req.query.startDate as string;
-    const endDate = req.query.endDate as string;
-    const timeStep = req.query.timeStep as string;
-
-    const dateFormat = timeStep == 'month' ? '%b %Y' : '%Y';
-
-    console.log('dep name:', department);
-
+  async (
+    req: Request<{}, AnalyticsResponse, {}, AnalyticsQuery>,
+    res: Response<AnalyticsResponse[]>,
+    next: NextFunction,
+  ) => {
     try {
-      const departmentId = await Departments.Database.getDeptIdByName(department);
+      const { departmentIds, questionId, startDate, endDate, timeStep, aggregateBy } = req.query;
 
-      const departmentAnalytics = await ReportCollection.aggregate([
-        {
-          $unwind: '$reportObject.questionItems',
-        },
-        {
-          $match: {
-            $and: [
-              {
-                'reportObject.questionItems.prompt.en': { $eq: category },
-              },
-              {
-                departmentId: { $eq: departmentId },
-              },
-              {
-                submittedDate: { $gte: startDate, $lte: endDate },
-              },
-            ],
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-            answer: '$reportObject.questionItems.answer',
-            data: '$reportObject.questionItems.prompt.en',
-            date: { $dateToString: { format: dateFormat, date: '$submittedDate' } },
-          },
-        },
-      ]);
+      let dateFormat = '';
 
-      res.status(HTTP_OK_CODE).json(departmentAnalytics);
+      if (aggregateBy === MONTH_AGGREGATE_BY) {
+        dateFormat = MONTH_DATE_FORMAT;
+      } else if (aggregateBy === YEAR_AGGREGATE_BY) {
+        dateFormat = YEAR_DATE_FORMAT;
+      } else {
+        throw new NotFound('Aggregate by field is incorrect');
+      }
+
+      const departmentIdArray = departmentIds.split(',');
+
+      let analytics: AnalyticsForMonths[] = await ReportCollection.aggregate(
+        createAnalyticsPipeline({ departmentIdArray, startDate, endDate, dateFormat }),
+      );
+
+      // the HHA admins will like to compare data for months only when time step = year and aggregate by = month
+      //eg, data in Jan 2023 is compared to data in Jan 2024
+      // so, all other months are ignored
+
+      if (timeStep === YEAR_AGGREGATE_BY && aggregateBy === MONTH_AGGREGATE_BY) {
+        analytics = removeMonthsByTimeStep(analytics, startDate, endDate);
+      }
+
+      const analyticResponses = processAnalytics(analytics, questionId);
+
+      res.status(HTTP_OK_CODE).json(analyticResponses);
     } catch (e) {
       next(e);
     }
