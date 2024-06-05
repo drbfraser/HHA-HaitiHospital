@@ -13,3 +13,5 @@ export const IMAGE_ENDPOINT: string = '/api/image';
 export const EMPLOYEE_OF_THE_MONTH_ENDPOINT: string = '/api/employee-of-the-month';
 export const REPORT_ENDPOINT: string = '/api/report';
 export const TEMPLATE_ENDPOINT: string = '/api/template';
+export const ANALYTICS_QUESTION_ENDPOINT = '/api/analytics/questions';
+export const ANALYTICS_ENDPOINT = '/api/analytics';

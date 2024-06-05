@@ -9,7 +9,7 @@ import { TEST_SERVER_PORT } from 'utils/processEnv';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-interface UserAccount {
+export interface UserAccount {
   username: string;
   password: string;
 }
@@ -24,9 +24,14 @@ const IncorrectPasswordUser: UserAccount = {
   password: 'INCORRECT PASSWORD',
 };
 
+const NormalUser: UserAccount = {
+  username: 'user3',
+  password: 'C@td0g',
+};
 export const Accounts = {
   AdminUser,
   IncorrectPasswordUser,
+  NormalUser,
 };
 
 export const setupApp = () => {
@@ -44,37 +49,47 @@ export const closeServer = (agent: any, httpServer: http.Server) => {
   httpServer.close();
 };
 
-export const getCSRFToken = (app: Application, done: Mocha.Done) => {
-  let csrf: String = '';
+export const getCSRFToken = async (agent: ChaiHttp.Agent): Promise<string | null> => {
+  try {
+    const res = await agent.get(CSRF_ENDPOINT);
 
-  chai.request
-    .agent(app)
-    .get(CSRF_ENDPOINT)
-    .end((error: Error, res: any) => {
-      if (error) done(error);
-      csrf = res?.body?.CSRFToken;
-      done();
-    });
-
-  return csrf;
+    return res.body.CSRFToken;
+  } catch (error) {
+    return null;
+  }
 };
 
-export function attemptAuthentication(
-  app: Application,
-  csrf: String,
-  done: Mocha.Done,
+export async function authenticate(
+  agent: ChaiHttp.Agent,
+  csrf: string,
   userAccount: UserAccount = AdminUser,
 ) {
-  // Something weird going on with content type, explicitly using a different content type to make it https://stackoverflow.com/questions/38078569/seem-to-have-the-wrong-content-type-when-posting-with-chai-http
-
-  chai.request
-    .agent(app)
+  const res = await agent
     .post(LOGIN_ENDPOINT)
-    .send(userAccount)
-    .set('Content-Type', 'application/json')
-    .set('CSRF-Token', csrf)
-    .end((error: any, response: any) => {
-      if (error) done(error);
-      done();
-    });
+    .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+    .send(userAccount);
+
+  if (res.error) {
+    throw new Error('Authentication failed');
+  }
 }
+
+export const setUpSession = async (user: UserAccount) => {
+  const app = setupApp();
+  const httpServer = setupHttpServer(app);
+  const agent = chai.request.agent(app);
+
+  try {
+    const csrf = await getCSRFToken(agent);
+
+    if (!csrf) {
+      throw new Error('Unable to fetch csrf token');
+    }
+
+    await authenticate(agent, csrf!, user);
+  } catch (error) {
+    return { agent, httpServer, isError: true };
+  }
+
+  return { agent, httpServer, isError: false };
+};

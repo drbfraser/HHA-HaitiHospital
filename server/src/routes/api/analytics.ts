@@ -17,6 +17,7 @@ import {
   parseQuestions,
   removeMonthsByTimeStep,
 } from 'utils/analytics';
+import Departments from 'utils/departments';
 
 const router = Router();
 
@@ -38,9 +39,15 @@ router.get(
     res: Response<AnalyticsQuestionsResponse[]>,
     next: NextFunction,
   ) => {
-    const { departmentId } = req.query;
-
     try {
+      const { departmentId } = req.query;
+
+      const isDepartmentValid = await Departments.Database.validateDeptId(departmentId);
+
+      if (!isDepartmentValid) {
+        throw new NotFound(`No department with id provided`);
+      }
+
       const template: ITemplate = await TemplateCollection.findOne({
         departmentId,
       }).lean();
@@ -101,6 +108,13 @@ router.get(
       }
 
       const departmentIdArray = departmentIds.split(',');
+
+      const areDepartmentsValid =
+        await Departments.Database.validateDepartmentIds(departmentIdArray);
+
+      if (!areDepartmentsValid) {
+        throw new NotFound(`No department with id provided`);
+      }
 
       let analytics: AnalyticsForMonths[] = await ReportCollection.aggregate(
         createAnalyticsPipeline({ departmentIdArray, startDate, endDate, dateFormat }),
