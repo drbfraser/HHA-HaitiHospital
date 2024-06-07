@@ -15,6 +15,11 @@ import UserCollection from 'models/user';
 import { TemplateCollection } from 'models/template';
 import mongoose from 'mongoose';
 import readline from 'readline';
+import { ReportCollection } from 'models/report';
+import MessageCollection from 'models/messageBoard';
+import EmployeeOfTheMonthCollection from 'models/employeeOfTheMonth';
+import CaseStudy from 'models/caseStudies';
+import BioMechCollection from 'models/bioMech';
 
 let nameMapper: Map<string, string>;
 
@@ -24,6 +29,7 @@ const seedDb = async (startFromScratch: boolean) => {
       await seedDepartments();
       await setupDepartmentMap();
       await seedAdmin();
+      await removeOldData();
     }
     await seedTemplates();
 
@@ -120,6 +126,20 @@ const seedTemplates = async () => {
     console.log(`Templates seeded`);
   } catch (err) {
     console.log(err);
+  }
+};
+
+const removeOldData = async () => {
+  console.log('Removing old data...');
+  try {
+    await MessageCollection.deleteMany({});
+    await BioMechCollection.deleteMany({});
+    await EmployeeOfTheMonthCollection.deleteMany({});
+    await CaseStudy.deleteMany({});
+    await ReportCollection.deleteMany({});
+    console.log('Old data removed');
+  } catch (e) {
+    console.log(e);
   }
 };
 
