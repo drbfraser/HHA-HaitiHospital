@@ -135,7 +135,7 @@ jobs:
   test-build-client:
     runs-on: [self-hosted, docker]
     container:
-      image: cypress/included:13.11.0
+      image: node:18
     timeout-minutes: 60
     steps:
       - name: Checkout code into container
@@ -156,10 +156,13 @@ jobs:
           npm ci
           npm install ../common_build.tar.gz
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: /isolated_build/repo/client/
-
+        working-directory: /isolated_build/repo/client/
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus
+          Xvfb :99 -screen 0 1920x1080x24 &
+          export DISPLAY=:99
+          npm run e2e:ci
       - name: Run tests & build
         working-directory: /isolated_build/repo/client/
         run: |
