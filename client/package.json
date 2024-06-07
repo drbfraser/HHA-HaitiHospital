@@ -47,6 +47,7 @@
     "test": "ts-mocha -p testconfig.json ./src/tests/**/*.spec.tsx",
     "eject": "react-scripts eject",
     "e2e": "npx cypress open",
+    "e2e:ci": "npx cypress run --headless --browser chrome",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "eslintConfig": {
@@ -78,7 +79,7 @@
     "@types/yup": "^0.29.13",
     "chai": "^4.3.6",
     "chai-enzyme": "^1.0.0-beta.1",
-    "cypress": "^11.2.0",
+    "cypress": "^13.11.0",
     "enzyme": "^3.11.0",
     "mocha": "^10.0.0",
     "react-scripts": "^5.0.1",
