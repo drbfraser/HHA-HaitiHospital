@@ -190,10 +190,6 @@ const updateDepartments = async () => {
   );
   const newDepartmentNames = Object.values(DefaultDepartments).map((dep) => dep.name);
 
-  console.log(`Old Departments are `, oldDepartmentNames);
-  console.log(`Used Departments are `, usedDepartmentNames);
-  console.log(`New Departments are `, newDepartmentNames);
-
   // departments that are not used should be deleted
   const departmentsToDelete = oldDepartmentNames.filter(
     (dep) => !usedDepartmentNames.includes(dep),
@@ -206,10 +202,6 @@ const updateDepartments = async () => {
 
   // departments that are in the latest list but don't already exist should be added
   const newDepartments = newDepartmentNames.filter((name) => !usedDepartmentNames.includes(name));
-
-  console.log(`\nTo delete are `, departmentsToDelete);
-  console.log(`Flagged for deletion are `, flaggedForDeletion);
-  console.log(`New are `, newDepartments);
 
   await DepartmentCollection.deleteMany({ name: { $in: departmentsToDelete } });
 
