@@ -157,6 +157,92 @@ const askQuestion = (question: string): Promise<string> => {
   });
 };
 
+// get department IDs with pre-existing data, so that we don't create orphaned data
+const getDepartmentsWithData = async () => {
+  const messageDepartments = await MessageCollection.distinct(`departmentId`);
+  const biomechDepartments = await BioMechCollection.distinct(`departmentId`);
+  const employeeOfTheMonthDepartments = await EmployeeOfTheMonthCollection.distinct(`departmentId`);
+  const caseStudyDepartments = await CaseStudy.distinct(`departmentId`);
+  const reportDepartments = await ReportCollection.distinct(`departmentId`);
+
+  const allDepartments = [
+    ...messageDepartments,
+    ...biomechDepartments,
+    ...employeeOfTheMonthDepartments,
+    ...caseStudyDepartments,
+    ...reportDepartments,
+  ];
+
+  const departmentsWithData = [...new Set(allDepartments)];
+
+  return departmentsWithData;
+};
+
+// update departments while taking care to not create orphaned data
+const updateDepartments = async () => {
+  const oldDepartmentNames = await DepartmentCollection.distinct(`name`);
+  const usedDepartmentIds = await getDepartmentsWithData();
+  const usedDepartmentNames = await Promise.all(
+    usedDepartmentIds.map(async (id: string) => {
+      const department = await DepartmentCollection.findById(id);
+      return department ? department.name : 'Unknown Department';
+    }),
+  );
+  const newDepartmentNames = Object.values(DefaultDepartments).map((dep) => dep.name);
+
+  console.log(`Old Departments are `, oldDepartmentNames);
+  console.log(`Used Departments are `, usedDepartmentNames);
+  console.log(`New Departments are `, newDepartmentNames);
+
+  // departments that are not used should be deleted
+  const departmentsToDelete = oldDepartmentNames.filter(
+    (dep) => !usedDepartmentNames.includes(dep),
+  );
+
+  // departments that are used but not present in the latest list should be marked for manual resolution
+  const flaggedForDeletion = usedDepartmentNames.filter(
+    (name) => !newDepartmentNames.includes(name),
+  );
+
+  // departments that are in the latest list but don't already exist should be added
+  const newDepartments = newDepartmentNames.filter((name) => !usedDepartmentNames.includes(name));
+
+  console.log(`\nTo delete are `, departmentsToDelete);
+  console.log(`Flagged for deletion are `, flaggedForDeletion);
+  console.log(`New are `, newDepartments);
+
+  await DepartmentCollection.deleteMany({ name: { $in: departmentsToDelete } });
+
+  for (const depName of flaggedForDeletion) {
+    await DepartmentCollection.updateMany({ name: depName }, { $set: { name: `[!]${depName}` } });
+    console.log(
+      `Marked department [${depName}] for manual resolution due to removal while containing data`,
+    );
+  }
+
+  for (let defaultDept of Object.values(DefaultDepartments)) {
+    if (newDepartments.includes(defaultDept.name)) {
+      const department = new DepartmentCollection({
+        name: defaultDept.name,
+        hasReport: defaultDept.hasReport,
+      });
+      await department.save();
+    }
+  }
+};
+
+const updateAndMergeData = async () => {
+  try {
+    await updateDepartments();
+    await updateTemplate();
+
+    console.log(`Database seeding completed.`);
+    process.exit();
+  } catch (e) {
+    console.log(`Database seeding failed: ${e}`);
+  }
+};
+
 const main = async () => {
   try {
     // Connect to Mongo
@@ -172,20 +258,28 @@ const main = async () => {
     if (process.env.IS_GITLAB_CI === 'true') {
       await updateTemplate();
     } else {
-      // 1. Ask if reseeding templatae only
+      // 1. Ask if reseeding template only
       const isOnlyReseedingTemplate = await askQuestion(
         'Confirm to reseed template only (old templates will be discarded) (y / Y to confirm): ',
       );
       if (isOnlyReseedingTemplate.toUpperCase() === 'Y') await updateTemplate();
       else {
-        // 2. Ask if starting from scratch
-        const isStartingFromScratch = await askQuestion(
-          'Are you starting from scratch? (old data will be discarded) (y / Y to confirm): ',
+        // 2. Ask if reseeding departments
+        const isReseedingDepartment = await askQuestion(
+          'Confirm to reseed departments (y / Y to confirm): ',
         );
-        if (isStartingFromScratch.toUpperCase() === 'Y') await startFromScratch();
-        else {
-          console.log('Database seeding cancelled');
-          process.exit();
+        if (isReseedingDepartment.toUpperCase() === 'Y') {
+          await updateAndMergeData();
+        } else {
+          // 3. Ask if starting from scratch
+          const isStartingFromScratch = await askQuestion(
+            'Are you starting from scratch? (old data will be discarded) (y / Y to confirm): ',
+          );
+          if (isStartingFromScratch.toUpperCase() === 'Y') await startFromScratch();
+          else {
+            console.log('Database seeding cancelled');
+            process.exit();
+          }
         }
       }
     }
