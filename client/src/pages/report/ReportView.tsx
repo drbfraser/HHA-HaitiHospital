@@ -15,6 +15,7 @@ import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { XlsxGenerator } from 'components/report/XlsxExport';
 import { getReportById, updateReport } from 'api/report';
+import ReactPDF from '@react-pdf/renderer';
 
 const ReportView = () => {
   const user = useAuthState();
@@ -69,6 +70,7 @@ const ReportView = () => {
 
   const handleExportWithComponent = () => {
     pdfExportComponent.current?.save();
+    ReactPDF.render(<MyDocument />, `/example.pdf`);
   };
 
   const editBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -132,6 +134,21 @@ const ReportView = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, readOnly]);
+
+  // Create Document Component
+  const MyDocument = () => (
+    <ReadonlyReportForm
+      applyReportChanges={applyReportChanges}
+      formHandler={() => {}}
+      isSubmitting={false}
+      isUsingPagination={false}
+      isUsingTable={true}
+      reportData={report as QuestionGroup<ID, ErrorType>}
+      reportMonth={getReportMonthString()}
+      author={metaData?.submittedBy}
+      questionItems={questionItems}
+    />
+  );
 
   useEffect(() => {
     getReport();
