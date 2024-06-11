@@ -45,8 +45,7 @@ describe('report tests', function () {
     closeServer(agent, httpServer);
   });
 
-  xit('should fetch report correctly', function (done) {
-    console.warn('WARNING: Fetching report test is pending due to an issue');
+  it('should fetch report correctly', function (done) {
     agent
       .get(`${REPORT_ENDPOINT}/${testReport._id}`)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
@@ -62,17 +61,16 @@ describe('report tests', function () {
       });
   });
 
-  xit('should save report correctly', function (done) {
-    console.warn('WARNING: Saving report test is pending due to an issue');
+  it('should save report correctly', function (done) {
     const objectSerializer = ObjectSerializer.getObjectSerializer();
     const serializedReport = objectSerializer.serialize(buildRehabReport());
     agent
       .post(REPORT_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .send({
-        departmentId: '123',
-        submittedUserId: '123',
-        submittedBy: '123',
+        departmentId: '66623f46a596535e40d39bdd',
+        submittedUserId: '66623f46a596535e40d39be8',
+        submittedBy: 'Jamie Doe',
         reportMonth: new Date(),
         serializedReport,
         isDraft: true,
