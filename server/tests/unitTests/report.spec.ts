@@ -4,7 +4,13 @@ import http from 'http';
 import { Application } from 'express';
 import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, REPORT_ENDPOINT } from './testTools/endPoints';
-import { HTTP_NOCONTENT_CODE, HTTP_NOTFOUND_CODE } from 'exceptions/httpException';
+import {
+  HTTP_NOCONTENT_CODE,
+  HTTP_NOTFOUND_CODE,
+  HTTP_OK_CODE,
+  HTTP_UNPROCESSABLE_ENTITY_CODE,
+} from 'exceptions/httpException';
+import DepartmentCollection from 'models/departments';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -43,7 +49,17 @@ describe('report tests', function () {
     });
   });
 
-  after('Close a Working Server and delete any added reports', function () {
+  after('Close a Working Server and delete any added reports', async function () {
+    for (const reportId of newReportIds) {
+      try {
+        await agent
+          .delete(`${REPORT_ENDPOINT}/${reportId}`)
+          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+
     closeServer(agent, httpServer);
   });
 
@@ -60,6 +76,31 @@ describe('report tests', function () {
             QuestionGroup,
         ).to.be.true;
         done();
+      });
+  });
+
+  it(`should get all reports correctly`, (done) => {
+    agent.get(REPORT_ENDPOINT).end((err: any, res: any) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(HTTP_OK_CODE);
+      expect(res.body).to.be.an('array');
+      done();
+    });
+  });
+
+  it(`should get all reports from a specific department correctly`, async () => {
+    const department = await DepartmentCollection.findOne({
+      name: 'Maternity',
+    }).lean();
+
+    agent
+      .get(`${REPORT_ENDPOINT}/department/${department?._id}`)
+      .end(async (err: any, res: any) => {
+        expect(err).to.be.null;
+        expect(res).to.have.status(HTTP_OK_CODE);
+        expect(res.body).to.be.an('array');
+        expect(res.body.every((report: any) => report.PATH_TO_DEPARTMENT_ID == department?._id)).to
+          .be.true;
       });
   });
 
@@ -125,7 +166,7 @@ describe('report tests', function () {
   });
 
   it('should fail to delete a report by an id that does not exist', (done) => {
-    let invalidId = '76687ef1366f942478fa3d80';
+    const invalidId = '76687ef1366f942478fa3d80';
     agent
       .delete(`${REPORT_ENDPOINT}/${invalidId}`)
       .set({ 'CSRF-Token': csrf })
@@ -133,6 +174,42 @@ describe('report tests', function () {
         if (error) done(error);
         expect(response).to.have.status(HTTP_NOTFOUND_CODE);
         expect(response.error.text).to.equal(`No report with id ${invalidId}`);
+        done();
+      });
+  });
+
+  it('should update an existing report by id', (done) => {
+    agent
+      .put(REPORT_ENDPOINT)
+      .set({ 'CSRF-Token': csrf })
+      .send({
+        id: '666757ab7e9e11769488a487',
+        serializedReport: {},
+        submittedBy: 'Ronald Hyatt',
+        reportMonth: '2024-01-01T08:00:00.000Z',
+        isDraft: true,
+      })
+      .end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(response).to.have.status(HTTP_OK_CODE);
+        expect(response.body.message).to.equal('Report updated');
+        done();
+      });
+  });
+
+  it('should fail if the report month is missing', (done) => {
+    agent
+      .put(REPORT_ENDPOINT)
+      .set({ 'CSRF-Token': csrf })
+      .send({
+        id: '666757ab7e9e11769488a487',
+        serializedReport: {},
+        submittedBy: 'Ronald Hyatt',
+        isDraft: true,
+      })
+      .end(function (error: any, response: any) {
+        expect(response).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
+        expect(response.error.text).to.equal(`Report month is required`);
         done();
       });
   });

@@ -876,11 +876,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8000/api/report/department/4",
+              "raw": "http://localhost:8000/api/report/department/66623f46a596535e40d39bdd",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8000",
-              "path": ["api", "report", "department", "4"]
+              "path": ["api", "report", "department", "66623f46a596535e40d39bdd"]
             }
           },
           "response": []
@@ -964,7 +964,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"meta\": {\r\n        \"id\": \"0708c27b746638607aba06578040270a\",\r\n        \"department\": {\r\n            \"id\": \"1\",\r\n            \"name\": \"Maternity\"\r\n        },\r\n        \"submittedDate\": \"April 9, 2022, 5:13:12 PM\",\r\n        \"submittedUserId\": \"624a6e2cbae332370ccd329f\"\r\n    },\r\n    \"items\": [\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 1\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        },\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 2\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        }\r\n    ]\r\n}",
+              "raw": "{\r\n    \"id\": \"666757ab7e9e11769488a487\",\r\n    \"serializedReport\": {},\r\n    \"submittedBy\": \"Ronald Hyatt\",\r\n    \"isDraft\": true\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
