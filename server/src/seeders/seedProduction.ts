@@ -158,6 +158,7 @@ const askQuestion = (question: string): Promise<string> => {
 };
 
 // get department IDs with pre-existing data, so that we don't create orphaned data
+// note: "orphaned data" is data pointing to a department that no longer exists; we want to avoid this when reseeding the departments because it will cause errors during
 const getDepartmentsWithData = async () => {
   const messageDepartments = await MessageCollection.distinct(`departmentId`);
   const biomechDepartments = await BioMechCollection.distinct(`departmentId`);
@@ -196,7 +197,7 @@ const updateDepartments = async () => {
   );
 
   // departments that are used but not present in the latest list should be marked for manual resolution
-  const flaggedForDeletion = usedDepartmentNames.filter(
+  const deletedDepartmentsInUse = usedDepartmentNames.filter(
     (name) => !newDepartmentNames.includes(name),
   );
 
@@ -204,12 +205,15 @@ const updateDepartments = async () => {
   const newDepartments = newDepartmentNames.filter((name) => !usedDepartmentNames.includes(name));
 
   await DepartmentCollection.deleteMany({ name: { $in: departmentsToDelete } });
+  for (let deletedDept of departmentsToDelete) {
+    console.log('Removed department ', deletedDept);
+  }
 
-  for (const depName of flaggedForDeletion) {
-    await DepartmentCollection.updateMany({ name: depName }, { $set: { name: `[!]${depName}` } });
-    console.log(
-      `Marked department [${depName}] for manual resolution due to removal while containing data`,
+  if (deletedDepartmentsInUse.length > 0) {
+    console.error(
+      'Error: attempting to delete a department that has data associated. Please backup and/or remove the data before trying again. Exiting...',
     );
+    process.exit(1);
   }
 
   for (let defaultDept of Object.values(DefaultDepartments)) {
@@ -219,7 +223,12 @@ const updateDepartments = async () => {
         hasReport: defaultDept.hasReport,
       });
       await department.save();
+      console.log('Added department ', defaultDept.name);
     }
+  }
+
+  if (departmentsToDelete.length == 0 && newDepartments.length == 0) {
+    console.log('No updates made to departments');
   }
 };
 
