@@ -158,8 +158,8 @@ jobs:
       - name: Run Cypress tests
         working-directory: /isolated_build/repo/client/
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus
+          apt-get update
+          apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus
           Xvfb :99 -screen 0 1920x1080x24 &
           export DISPLAY=:99
           npm run e2e:ci
