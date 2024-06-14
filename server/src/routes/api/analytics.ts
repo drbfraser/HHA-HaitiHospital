@@ -1,4 +1,4 @@
-import { IReport, Role } from '@hha/common';
+import { AnalyticsQuery, AnalyticsResponse, IReport, Role } from '@hha/common';
 import { HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
@@ -65,21 +65,6 @@ router.get(
   },
 );
 
-type AnalyticsQuery = {
-  departmentIds: string;
-  questionId: string;
-  startDate: string;
-  endDate: string;
-  timeStep: string;
-  aggregateBy: string;
-};
-
-export type AnalyticsResponse = {
-  time: string;
-  departmentId: string;
-  answer: number;
-};
-
 export type AnalyticsForMonths = {
   _id: string;
   reports: IReport[];
@@ -99,9 +84,9 @@ router.get(
 
       let dateFormat = '';
 
-      if (aggregateBy === MONTH_AGGREGATE_BY) {
+      if (aggregateBy.toLowerCase() === MONTH_AGGREGATE_BY) {
         dateFormat = MONTH_DATE_FORMAT;
-      } else if (aggregateBy === YEAR_AGGREGATE_BY) {
+      } else if (aggregateBy.toLowerCase() === YEAR_AGGREGATE_BY) {
         dateFormat = YEAR_DATE_FORMAT;
       } else {
         throw new NotFound('Aggregate by field is incorrect');

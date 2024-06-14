@@ -28,6 +28,7 @@ import ReportView from 'pages/report/ReportView';
 import { Role } from '@hha/common';
 import { UploadReport } from 'pages/report/UploadReport';
 import { EmployeeOfTheMonthUpdateForm } from 'pages/employee_of_the_month/EmployeeOfTheMonthUpdateForm';
+import Analytics from 'pages/analytics/Analytics';
 
 // Remember to keep the low level urls before high level urls
 // Because Switch is picking the first matching url
@@ -298,6 +299,15 @@ const routes: Routes[] = [
     key: 'unauthorized',
     component: NotAuthorized,
     loginRequired: true,
+    rolesAllowed: [],
+    departmentsAllowed: [],
+  },
+
+  {
+    path: '/analytics',
+    key: 'analytics',
+    component: Analytics,
+    loginRequired: false,
     rolesAllowed: [],
     departmentsAllowed: [],
   },
