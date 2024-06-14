@@ -166,12 +166,14 @@ const ReportView = () => {
       window.onbeforeunload = () => false;
     };
   }, [areChangesMade, readOnly]);
+
   if (!isLoading && !report)
     return (
       <Layout showBackButton>
         <h1>{t('reportNotFound')}</h1>
       </Layout>
     );
+
   return (
     <>
       {!!report && (

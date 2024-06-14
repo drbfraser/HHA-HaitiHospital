@@ -26,7 +26,7 @@ export const ReportAndTemplateForm = ({
   const { t } = useTranslation();
 
   return (
-    <div className="col-md-6 mb-2">
+    <div className="col-md-6 mb-2 mt-3 p-3">
       <fieldset>
         <label htmlFor="Report-Department-Type">{departmentLabel}</label>
         <select
