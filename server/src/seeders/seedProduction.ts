@@ -133,10 +133,15 @@ const removeOldData = async () => {
   console.log('Removing old data...');
   try {
     await MessageCollection.deleteMany({});
+    console.log('Messages deleted');
     await BioMechCollection.deleteMany({});
+    console.log('BioMech entries deleted');
     await EmployeeOfTheMonthCollection.deleteMany({});
+    console.log('Employees of the Month deleted');
     await CaseStudy.deleteMany({});
+    console.log('Case Studies deleted');
     await ReportCollection.deleteMany({});
+    console.log('Reports deleted');
     console.log('Old data removed');
   } catch (e) {
     console.log(e);
@@ -181,6 +186,8 @@ const getDepartmentsWithData = async () => {
 
 // update departments while taking care to not create orphaned data
 const updateDepartments = async () => {
+  console.log('Updating departments...');
+
   const oldDepartmentNames = await DepartmentCollection.distinct(`name`);
   const usedDepartmentIds = await getDepartmentsWithData();
   const usedDepartmentNames = await Promise.all(
@@ -244,6 +251,36 @@ const updateAndMergeData = async () => {
   }
 };
 
+const pickSeedingOption = async () => {
+  // 1. Ask if reseeding template only
+  const isOnlyReseedingTemplate = await askQuestion(
+    'Confirm to reseed template only (old templates will be discarded) (y / Y to confirm): ',
+  );
+  if (isOnlyReseedingTemplate.toUpperCase() === 'Y') {
+    await updateTemplate();
+    return;
+  }
+
+  // 2. Ask if reseeding departments
+  const isReseedingDepartment = await askQuestion(
+    'Confirm to reseed departments (y / Y to confirm): ',
+  );
+  if (isReseedingDepartment.toUpperCase() === 'Y') {
+    await updateAndMergeData();
+    return;
+  }
+
+  // 3. Ask if starting from scratch
+  const isStartingFromScratch = await askQuestion(
+    'Are you starting from scratch? (old data will be discarded) (y / Y to confirm): ',
+  );
+  if (isStartingFromScratch.toUpperCase() === 'Y') await startFromScratch();
+  else {
+    console.log('Database seeding cancelled');
+    process.exit();
+  }
+};
+
 const main = async () => {
   try {
     // Connect to Mongo
@@ -259,30 +296,7 @@ const main = async () => {
     if (process.env.IS_GITLAB_CI === 'true') {
       await updateTemplate();
     } else {
-      // 1. Ask if reseeding template only
-      const isOnlyReseedingTemplate = await askQuestion(
-        'Confirm to reseed template only (old templates will be discarded) (y / Y to confirm): ',
-      );
-      if (isOnlyReseedingTemplate.toUpperCase() === 'Y') await updateTemplate();
-      else {
-        // 2. Ask if reseeding departments
-        const isReseedingDepartment = await askQuestion(
-          'Confirm to reseed departments (y / Y to confirm): ',
-        );
-        if (isReseedingDepartment.toUpperCase() === 'Y') {
-          await updateAndMergeData();
-        } else {
-          // 3. Ask if starting from scratch
-          const isStartingFromScratch = await askQuestion(
-            'Are you starting from scratch? (old data will be discarded) (y / Y to confirm): ',
-          );
-          if (isStartingFromScratch.toUpperCase() === 'Y') await startFromScratch();
-          else {
-            console.log('Database seeding cancelled');
-            process.exit();
-          }
-        }
-      }
+      await pickSeedingOption();
     }
   } catch (err) {
     console.log(err);
