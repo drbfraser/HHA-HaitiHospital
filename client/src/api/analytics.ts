@@ -26,11 +26,11 @@ export const getAllQuestionPrompts = async (history: History, departmentId: stri
   }
 };
 
-export const getAnaytics = async (history: History, analyticsQuery: AnalyticsQuery) => {
+export const getAnalyticsData = async (history: History, analyticsQuery: AnalyticsQuery) => {
   const controller = new AbortController();
 
   try {
-    const analytics: AnalyticsResponse = await Api.Get(
+    const analytics: AnalyticsResponse[] = await Api.Get(
       ENDPOINT_ANALYTICS,
       ResponseMessage.getMsgFetchReportFailed(),
       history,

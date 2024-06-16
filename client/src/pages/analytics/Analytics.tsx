@@ -7,14 +7,22 @@ import { useTranslation } from 'react-i18next';
 import { ListGroupItem } from 'react-bootstrap';
 import { getAllDepartments } from 'api/department';
 import { useHistory } from 'react-router-dom';
-import { AnalyticsQuery, DepartmentJson, QuestionPrompt } from '@hha/common';
-import { getAllQuestionPrompts, getAnaytics } from 'api/analytics';
+import { AnalyticsQuery, AnalyticsResponse, DepartmentJson, QuestionPrompt } from '@hha/common';
+import { getAllQuestionPrompts, getAnalyticsData } from 'api/analytics';
 import { refornatQuestionPrompt } from 'utils/string';
 import moment from 'moment';
 import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticQuestions';
 import { TimeOptionModal } from 'components/popup_modal/TimeOptionModal';
-import { findDepartmentIdByName, getAllDepartmentNames } from 'utils/analytics';
+import {
+  findDepartmentIdByName,
+  getAllDepartmentNames,
+  getQuestionFromId,
+  sumUpAnalyticsData,
+} from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
+import LineChart from 'components/charts/Line';
+import PieChart from 'components/charts/Pie';
+import ChartSelector from 'components/charts/ChartSelector';
 
 export type TimeOptions = {
   from: string;
@@ -44,11 +52,11 @@ const Analytics = () => {
   const history = useHistory<History>();
 
   const [departments, setDepartments] = useState<DepartmentJson[]>([]);
-  const [isDepartmentsLoading, setDepartmentLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [questionPrompts, setQuestionPrompts] = useState<QuestionPrompt[]>([]);
 
-  const [selectedQuestion, setSelectedQuestion] = useState('1');
+  const [selectedQuestionId, setSelectedQuestionId] = useState('1');
   const [selectedDepartmentName, setSelectedDepartmentName] = useState('Rehab');
   const [timeOptions, setTimeOptions] = useState<TimeOptions>({
     from: defaultFromDate(),
@@ -57,15 +65,18 @@ const Analytics = () => {
   });
   const [selectedAggregateBy, setSelectedAggregateBy] = useState('month');
 
+  const [selectedChart, setSelectedChart] = useState('Bar');
+
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
+
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsResponse[]>([]);
 
   useEffect(() => {
     const fetchDepartments = async () => {
       const departments = await getAllDepartments(history);
 
       setDepartments(departments);
-      setDepartmentLoading(false);
     };
 
     fetchDepartments();
@@ -73,7 +84,7 @@ const Analytics = () => {
 
   useEffect(() => {
     const fetchQuestionPrompts = async () => {
-      if (isDepartmentsLoading) {
+      if (departments.length == 0) {
         return;
       }
 
@@ -81,17 +92,15 @@ const Analytics = () => {
 
       const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
 
-      console.log('prompts:', questionPrompts);
-
       setQuestionPrompts(questionPrompts!);
     };
 
     fetchQuestionPrompts();
-  }, [isDepartmentsLoading, selectedDepartmentName]);
+  }, [departments, selectedDepartmentName]);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
-      if (isDepartmentsLoading) {
+      if (departments.length == 0) {
         return;
       }
 
@@ -102,18 +111,20 @@ const Analytics = () => {
 
       const analyticsQuery: AnalyticsQuery = {
         departmentIds: selectedDepartmentId,
-        questionId: selectedQuestion,
+        questionId: selectedQuestionId,
         startDate: startDate,
         endDate: endDate,
         aggregateBy: selectedAggregateBy.toLowerCase(),
         timeStep: timeOptions.timeStep.toLowerCase(),
       };
 
-      const analytics = await getAnaytics(history, analyticsQuery);
-      console.log(analytics);
+      const analyticsData = await getAnalyticsData(history, analyticsQuery);
+
+      setAnalyticsData(analyticsData!);
+      setIsLoading(false);
     };
     fetchAnalytics();
-  }, [selectedDepartmentName, selectedQuestion, timeOptions, selectedAggregateBy]);
+  }, [selectedDepartmentName, selectedQuestionId, timeOptions, selectedAggregateBy, departments]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => setShowModalQuestions(true);
@@ -141,12 +152,16 @@ const Analytics = () => {
     setSelectedAggregateBy(aggregateBy);
   };
 
+  const onChartSelected = (chart: string) => {
+    setSelectedChart(chart);
+  };
+
   return (
     <Layout title={t('Analytics')}>
-      {isDepartmentsLoading ? (
+      {isLoading ? (
         <Spinner text="Loading..." size="30px" />
       ) : (
-        <div className="w-100 d-flex flex-col mr-auto">
+        <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
             <div className="d-flex flex-row gap-3">
               <DropDown
@@ -163,7 +178,7 @@ const Analytics = () => {
                 showModal={showModalQuestions}
                 questionPrompts={questionPrompts}
                 handleCloseModal={handleCloseQuestionsModal}
-                setQuestionSelected={setSelectedQuestion}
+                setQuestionSelected={setSelectedQuestionId}
               />
             </div>
 
@@ -189,11 +204,19 @@ const Analytics = () => {
               <DropDown
                 menus={DropDownMenus.charts}
                 title="Charts"
-                selectedMenu=""
-                setDropDownMenu={() => {}}
+                selectedMenu={selectedChart}
+                setDropDownMenu={onChartSelected}
               />
             </div>
           </div>
+          <Col className="mt-5">
+            <h4>{`Total ${getQuestionFromId(questionPrompts, selectedQuestionId)}: ${sumUpAnalyticsData(analyticsData)}`}</h4>
+            <ChartSelector
+              type={selectedChart}
+              analyticsData={analyticsData}
+              questionPrompt={getQuestionFromId(questionPrompts, selectedQuestionId)}
+            />
+          </Col>
         </div>
       )}
     </Layout>
