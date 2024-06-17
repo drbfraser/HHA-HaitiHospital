@@ -66,7 +66,7 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
 const getDeptNameById = async (deptId: string): Promise<string> => {
   const department: Department | null = await DepartmentCollection.findById(deptId);
   if (!department) {
-    throw new NotFound(`No department with id provided`);
+    throw new NotFound(`No department with id ` + deptId + ` provided`);
   }
   return department.name;
 };
@@ -74,7 +74,7 @@ const getDeptNameById = async (deptId: string): Promise<string> => {
 const getDeptIdByName = async (deptName: string): Promise<string> => {
   const department: Department | null = await DepartmentCollection.findOne({ name: deptName });
   if (!department) {
-    throw new NotFound(`No department with id provided`);
+    throw new NotFound(`No department with name ` + deptName + `  provided`);
   }
   return department._id!;
 };
