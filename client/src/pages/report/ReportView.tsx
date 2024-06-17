@@ -15,6 +15,8 @@ import { useDepartmentData } from 'hooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { XlsxGenerator } from 'components/report/XlsxExport';
 import { getReportById, updateReport } from 'api/report';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const ReportView = () => {
   const user = useAuthState();
@@ -41,6 +43,7 @@ const ReportView = () => {
   const history: History = useHistory<History>();
   const objectSerializer: ObjectSerializer = ObjectSerializer.getObjectSerializer();
   const pdfExportComponent = useRef<PDFExport | null>(null);
+  const pdfRef = useRef<HTMLDivElement>(null);
   const report_id = useLocation().pathname.split('/')[2];
 
   const getReportMonthString = () =>
@@ -67,8 +70,50 @@ const ReportView = () => {
     setMetaData((prev) => ({ ...prev!, reportMonth: reportMonth }));
   };
 
+  // const dummyexport = () => {
+  //   return (
+  //     <div className="visually-hidden">
+  //       <ReadonlyReportForm
+  //         ref={pdfRef}
+  //         applyReportChanges={applyReportChanges}
+  //         formHandler={() => {}}
+  //         isSubmitting={false}
+  //         isUsingPagination={false}
+  //         isUsingTable={true}
+  //         reportData={report!}
+  //         reportMonth={getReportMonthString()}
+  //         author={metaData?.submittedBy}
+  //         questionItems={questionItems}
+  //       />
+  //     </div>
+  //   );
+  // };
+
   const handleExportWithComponent = () => {
-    pdfExportComponent.current?.save();
+    //pdfExportComponent.current?.save();
+    console.log('starting export...');
+    const input = pdfRef.current;
+
+    if (!input) {
+      console.error("PDF reference is invalid or the component hasn't been rendered.");
+      console.log(pdfRef);
+      return;
+    }
+
+    html2canvas(input!).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4', true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save('dummy.pdf');
+    });
+    console.log('finished export!');
   };
 
   const editBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -246,7 +291,7 @@ const ReportView = () => {
             </div>
           </header>
 
-          {readOnly && !editMonth && (
+          {/* {readOnly && !editMonth && (
             <div className="visually-hidden">
               <PDFExport
                 fileName={`${getReportMonthString()} ${department} - Report`}
@@ -261,6 +306,22 @@ const ReportView = () => {
                 isUsingPagination={false}
                 isUsingTable={true}
                 reportData={report}
+                reportMonth={getReportMonthString()}
+                author={metaData?.submittedBy}
+                questionItems={questionItems}
+              />
+            </div>
+          )} */}
+
+          {readOnly && !editMonth && (
+            <div ref={pdfRef}>
+              <ReadonlyReportForm
+                applyReportChanges={applyReportChanges}
+                formHandler={() => {}}
+                isSubmitting={false}
+                isUsingPagination={false}
+                isUsingTable={true}
+                reportData={report!}
                 reportMonth={getReportMonthString()}
                 author={metaData?.submittedBy}
                 questionItems={questionItems}
