@@ -7,6 +7,8 @@ import { Accounts, closeServer, setUpSession } from './testTools/mochaHooks';
 import { ANALYTICS_ENDPOINT, ANALYTICS_QUESTION_ENDPOINT } from './testTools/endPoints';
 import DepartmentCollection from 'models/departments';
 import { HTTP_NOTFOUND_CODE, HTTP_OK_CODE, HTTP_UNAUTHORIZED_CODE } from 'exceptions/httpException';
+import { removeMonthsByTimeStep } from 'utils/analytics';
+import { AnalyticsForMonths } from 'routes/api/analytics';
 
 chai.use(chaiHttp);
 
@@ -190,5 +192,49 @@ describe('Analytics API tests for users without privileges', function () {
 
   after('Closing a working server', function () {
     closeServer(agent, httpServer);
+  });
+});
+
+describe('#removeMonthByTimeStep()', function () {
+  it('should remove dates not following time step of a year', function () {
+    const testData: AnalyticsForMonths[] = [
+      {
+        _id: '06 2023',
+        reports: [],
+      },
+      {
+        _id: '08 2023',
+        reports: [],
+      },
+      {
+        _id: '08 2024',
+        reports: [],
+      },
+      {
+        _id: '06 2025',
+        reports: [],
+      },
+      {
+        _id: '06 2024',
+        reports: [],
+      },
+    ];
+
+    const startDate = new Date(Date.parse('2023-06-02'));
+
+    expect(removeMonthsByTimeStep(testData, startDate)).deep.equal([
+      {
+        _id: '06 2023',
+        reports: [],
+      },
+      {
+        _id: '06 2025',
+        reports: [],
+      },
+      {
+        _id: '06 2024',
+        reports: [],
+      },
+    ]);
   });
 });

@@ -17,8 +17,8 @@ import { IReport } from '@hha/common';
 
 type AggregatePiplelineParams = {
   departmentIdArray: string[];
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   dateFormat: string;
 };
 
@@ -39,8 +39,8 @@ export const createAnalyticsPipeline = ({
           },
           {
             reportMonth: {
-              $gte: new Date(startDate),
-              $lte: new Date(endDate),
+              $gte: startDate,
+              $lte: endDate,
             },
           },
         ],
@@ -89,6 +89,8 @@ const recursivelyGetQuestionAnswers = (obj: any, questionId: string, answer: num
 };
 
 export const getAnswerInReport = (report: IReport, questionId: string) => {
+  // using an array of element 1 instread of a variable to pass the variable as a reference in recursive calls
+  // this helps avoid complex logic of the return statements in the recursive function, improving readability
   const answer = [0];
 
   recursivelyGetQuestionAnswers(report, questionId, answer);
@@ -142,36 +144,19 @@ export const parseQuestions = (template: ITemplate) => {
 
 export const removeMonthsByTimeStep = (
   analyticsForMonths: AnalyticsForMonths[],
-  startDateISO: string,
-  endDateISO: string,
+  startDate: Date,
 ) => {
   /**
-   * a sequence of dates that differ by a year are added to a set
-   * the set is in the interval [start date, end date]
-   * remove dates in analytics that are not in set
+   * remove dates that do not follow time step of a year
+   * e.g, assume start date is June 2023, then the valid sequence of dates should be June 2023, June 2024, June 2025 ...
    */
-  const startDate = new Date(startDateISO);
-  const endDate = new Date(endDateISO);
 
-  const dateSet = new Set<string>();
+  return analyticsForMonths.filter((analyticsForMonth) => {
+    const yearMonth = analyticsForMonth._id.split(' ');
 
-  let currDate = new Date(startDate);
+    //getMonth() returns values in the range [0, 11], so Janurary is 0, February is 1
 
-  while (currDate <= endDate) {
-    const month = currDate.getMonth();
-    const year = currDate.getFullYear();
-
-    // dates in analytics result are in the format "0m", where m is a month (integer) < 10
-    //so, append 0 to months < 10
-
-    const monthYear = month <= 9 ? `0${month} ${year}` : `${month} ${year}`;
-
-    dateSet.add(monthYear);
-    currDate.setFullYear(currDate.getFullYear() + 1);
-  }
-
-  return analyticsForMonths.filter((analyticsForMonth: AnalyticsForMonths) => {
-    return dateSet.has(analyticsForMonth._id);
+    return startDate.getMonth() + 1 === +yearMonth[0];
   });
 };
 
@@ -195,11 +180,26 @@ export const processAnalytics = (analyticsForMonths: AnalyticsForMonths[], quest
       }
     });
 
+    //the identifier is either "month year" or "year" from query pipeline
+    //convert string represntation of date to integer representation (month, year)
+    // integer represntation of date is easier to parse on the frontend
+
     const time: string = analyticsForMonth._id;
+    let month = 0;
+    let year = 0;
+
+    if (time.includes(' ')) {
+      const monthYear = time.split(' ');
+      month = +monthYear[0];
+      year = +monthYear[1];
+    } else {
+      year = +time;
+    }
 
     const analyticsResponse = Object.keys(departmentMap).map((departmentId) => {
       const analyticsResponseForDepartment: AnalyticsResponse = {
-        time: time,
+        month,
+        year,
         departmentId,
         answer: departmentMap[departmentId]!,
       };
