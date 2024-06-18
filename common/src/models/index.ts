@@ -8,3 +8,4 @@ export * from './messageBoard';
 export * from './messageBoardComment';
 export * from './report';
 export * from './questionPrompt';
+export * from './analytics';

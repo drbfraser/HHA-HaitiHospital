@@ -45,7 +45,7 @@ router.get(
       const isDepartmentValid = await Departments.Database.validateDeptId(departmentId);
 
       if (!isDepartmentValid) {
-        throw new NotFound(`No department with id provided`);
+        throw new NotFound(`No department with id: ${departmentId} found`);
       }
 
       const template: ITemplate = await TemplateCollection.findOne({
@@ -53,7 +53,7 @@ router.get(
       }).lean();
 
       if (!template) {
-        throw new NotFound('No template for department found');
+        throw new NotFound(`department with id: ${departmentId} does not have a template`);
       }
 
       const questions = parseQuestions(template);
@@ -89,8 +89,11 @@ router.get(
       } else if (aggregateBy.toLowerCase() === YEAR_AGGREGATE_BY) {
         dateFormat = YEAR_DATE_FORMAT;
       } else {
-        throw new NotFound('Aggregate by field is incorrect');
+        throw new BadRequest('Aggregateby field has to be of type month or year');
       }
+
+      const parsedStartDate = new Date(startDate);
+      const parsedEndDate = new Date(endDate);
 
       const departmentIdArray = departmentIds.split(',');
 
@@ -98,11 +101,16 @@ router.get(
         await Departments.Database.validateDepartmentIds(departmentIdArray);
 
       if (!areDepartmentsValid) {
-        throw new NotFound(`No department with id provided`);
+        throw new NotFound(`There exist a department id that was not found`);
       }
 
       let analytics: AnalyticsForMonths[] = await ReportCollection.aggregate(
-        createAnalyticsPipeline({ departmentIdArray, startDate, endDate, dateFormat }),
+        createAnalyticsPipeline({
+          departmentIdArray,
+          startDate: parsedStartDate,
+          endDate: parsedEndDate,
+          dateFormat,
+        }),
       );
 
       // the HHA admins will like to compare data for months only when time step = year and aggregate by = month
@@ -110,7 +118,7 @@ router.get(
       // so, all other months are ignored
 
       if (timeStep === YEAR_AGGREGATE_BY && aggregateBy === MONTH_AGGREGATE_BY) {
-        analytics = removeMonthsByTimeStep(analytics, startDate, endDate);
+        analytics = removeMonthsByTimeStep(analytics, parsedStartDate);
       }
 
       const analyticResponses = processAnalytics(analytics, questionId);

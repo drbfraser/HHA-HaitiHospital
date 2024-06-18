@@ -1,16 +1,7 @@
 import { BadRequest, InternalError, NotFound } from 'exceptions/httpException';
 import { Error, NativeError } from 'mongoose';
 import { ItemType, ItemTypeKeys } from '@hha/common';
-import {
-  CLASS_KEY,
-  COMPOSITE_QUESTION_IDENTIFIER,
-  EXPANDABLE_QUESTION_IDENTIFIER,
-  KEY_FOR_QUESTIONS,
-  MONGOOSE_NO_DOCUMENT_ERROR_NAME,
-  MONGOOSE_VALIDATOR_ERROR_NAME,
-  NUMERIC_QUESTION_IDENTIFIER,
-  QUESTION_IDENTIFIER,
-} from './constants';
+import { MONGOOSE_NO_DOCUMENT_ERROR_NAME, MONGOOSE_VALIDATOR_ERROR_NAME } from './constants';
 
 import { CustomError } from 'exceptions/custom_exception';
 import { InvalidInput } from 'exceptions/systemException';
@@ -18,8 +9,6 @@ import crypto from 'crypto';
 import fs from 'fs';
 import { logger } from '../logger';
 import { promisify } from 'util';
-import { ITemplate } from 'models/template';
-import { template } from 'lodash';
 
 const readdir = promisify(fs.readdir);
 const unlink = promisify(fs.unlink);
