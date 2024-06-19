@@ -15,16 +15,19 @@ Taking a look at our dashboard, looks like we're tracking... for...
 -   put those env variables to the root folder of 415-HHA-HAITI
 -   if you’re using macOS or windows, make sure docker desktop is running in the background
 -   run `docker compose -f docker-compose.yml -f docker-compose.override.yml up`
-	-   but what are we actually doing here?
+	-   but what are we actually doing here? (refer to docker-compose.yml and docker-compose.override.yml files)
 		-   we’re starting services that are defined in our docker-compose.yml and docker-compose.override.yml file, which are:
 			-  A Node.js server (`server` service).
-			   -   A MongoDB instance (`mongodb` service).
-			   -   A Fluent Bit logger (`logger` service) configured to forward logs to Loki and Prometheus.
-			   -   A Node.js client (`client` service) for development.
-		- so what are we actually doing here?
+            -   A MongoDB instance (`mongodb` service).
+            -   A Fluent Bit logger (`logger` service) configured to forward logs to Loki and Prometheus.
+            -   A Node.js client (`client` service) for development.
 
+- you will have to run the seeding script manually by doing `docker exec -it hhahaiti_server npm run seed` 
 my ultimate goal right now:
 - try and interact with local app and see corresponding logs shown in grafana
+- after 30 minutes of searching, couldn't find any behaviour that is reflected by the logs
+  - tried invoking postman endpoints to no avail
+  - 
 
 problem right now
 - after running docker-compose, I'm assuming all the services we need to use the app locally is started. That means I can start using the app like usual
