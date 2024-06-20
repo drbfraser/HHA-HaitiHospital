@@ -2,6 +2,7 @@ import { NotFound } from 'exceptions/httpException';
 import { IllegalState } from 'exceptions/systemException';
 import DepartmentCollection from 'models/departments';
 import { Department } from '@hha/common';
+import { Types } from 'mongoose';
 
 export type DepartmentInfo = {
   name: string;
@@ -84,6 +85,14 @@ const validateDeptId = async (deptId: string): Promise<boolean> => {
   return department !== null;
 };
 
+const validateDepartmentIds = async (departmentIds: string[]): Promise<boolean> => {
+  const departments = await DepartmentCollection.find({
+    _id: { $in: departmentIds },
+  }).lean();
+
+  return departmentIds.length == departments.length;
+};
+
 // ****************************************************************************************************************************************************
 
 // Util functions using a hashtable data structure
@@ -96,7 +105,7 @@ const Hashtable = {
 };
 
 // Util functions from database calls
-const Database = { getDeptNameById, getDeptIdByName, validateDeptId };
+const Database = { getDeptNameById, getDeptIdByName, validateDeptId, validateDepartmentIds };
 
 /**
  * @param Hashtable
