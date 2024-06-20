@@ -18,7 +18,9 @@ const httpErrorMiddleware = (
   } else {
     httpError = new InternalError(error.message || 'Something went wrong');
   }
-  logger.error(httpError);
+  logger.error(
+    `message: ${httpError.message}, status: ${httpError.status} method: ${request.method}, path: ${request.path}`,
+  );
   response.status(httpError.status).send(httpError.message);
 };
 
