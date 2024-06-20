@@ -1,7 +1,7 @@
 import request from 'supertest';
 import http from 'http';
-import { createServer } from '../../src/server';
-import * as ENV from '../../src/utils/processEnv';
+import { createServer } from 'server';
+import * as ENV from 'utils/processEnv';
 import { Application, Request, Response, NextFunction } from 'express';
 const chai = require('chai');
 const chaiHttp = require('chai-http');

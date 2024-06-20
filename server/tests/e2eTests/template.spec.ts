@@ -1,8 +1,8 @@
 import { QuestionGroup } from '@hha/common';
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, TEMPLATE_ENDPOINT } from './testTools/endPoints';
+import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT, TEMPLATE_ENDPOINT } from 'testTools/endPoints';
 import { ITemplate, TemplateCollection } from 'models/template';
 
 const expect = require('chai').expect;

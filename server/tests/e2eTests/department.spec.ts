@@ -1,7 +1,7 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT } from './testTools/endPoints';
+import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
+import { CSRF_ENDPOINT, DEPARTMENT_ENDPOINT, LOGIN_ENDPOINT } from 'testTools/endPoints';
 import { Done } from 'mocha';
 import { HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
 

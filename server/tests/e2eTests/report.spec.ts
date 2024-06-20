@@ -2,8 +2,8 @@ import { ReportCollection } from 'models/report';
 import { IReport, QuestionGroup, ObjectSerializer, buildRehabReport } from '@hha/common';
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, REPORT_ENDPOINT } from './testTools/endPoints';
+import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
+import { CSRF_ENDPOINT, LOGIN_ENDPOINT, REPORT_ENDPOINT } from 'testTools/endPoints';
 import {
   HTTP_NOCONTENT_CODE,
   HTTP_NOTFOUND_CODE,

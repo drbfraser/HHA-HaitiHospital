@@ -99,7 +99,7 @@ setup. Environment Variables configure the server. You can configure them by cre
 under the `server` folder. You can use the following example `.env` configurations:
 
 ```bash
-# Your MongoDB URI (local or remote). Defaults to localhost:27017
+# Your MongoDB URI (local or remote). Defaults to localhost:27017/dev
 MONGO_URI=mongodb://localhost:27017/dev
 # MongoDB URI used when NODE_ENV is set to `test`. Defaults to localhost:27017/test
 MONGO_TEST_URI=mongodb://localhost:27017/test

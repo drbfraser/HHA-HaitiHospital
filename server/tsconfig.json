@@ -16,7 +16,10 @@
     "skipLibCheck": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "typeRoots": ["./types"]
+    "typeRoots": ["./types"],
+    "paths": {
+      "testTools/*": ["../tests/utils/testTools/*"]
+    }
     // "types": ["jest", "node", "chai"]
   },
   "include": ["./src/**/*", "./tests/**/*"]

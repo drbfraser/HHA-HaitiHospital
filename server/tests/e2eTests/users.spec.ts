@@ -1,12 +1,12 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
 import {
   CSRF_ENDPOINT,
   DEPARTMENT_ENDPOINT,
   LOGIN_ENDPOINT,
   USERS_ENDPOINT,
-} from './testTools/endPoints';
+} from 'testTools/endPoints';
 import { Done } from 'mocha';
 import { _ } from 'ajv';
 import {

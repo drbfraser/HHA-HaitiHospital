@@ -1,13 +1,13 @@
 import http, { request } from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools//mochaHooks';
 import {
   CSRF_ENDPOINT,
   LOGIN_ENDPOINT,
   USERS_ENDPOINT,
   LOGOUT_ENDPOINT,
-} from './testTools/endPoints';
-import { HTTP_OK_CODE } from '../../src/exceptions/httpException';
+} from 'testTools/endPoints';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import chaiHttp from 'chai-http';
