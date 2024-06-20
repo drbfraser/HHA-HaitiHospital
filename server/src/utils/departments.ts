@@ -2,6 +2,7 @@ import { NotFound } from 'exceptions/httpException';
 import { IllegalState } from 'exceptions/systemException';
 import DepartmentCollection from 'models/departments';
 import { Department } from '@hha/common';
+import { Types } from 'mongoose';
 
 export type DepartmentInfo = {
   name: string;
@@ -66,7 +67,7 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
 const getDeptNameById = async (deptId: string): Promise<string> => {
   const department: Department | null = await DepartmentCollection.findById(deptId);
   if (!department) {
-    throw new NotFound(`No department with id provided`);
+    throw new NotFound(`No department with id ` + deptId + ` provided`);
   }
   return department.name;
 };
@@ -74,7 +75,7 @@ const getDeptNameById = async (deptId: string): Promise<string> => {
 const getDeptIdByName = async (deptName: string): Promise<string> => {
   const department: Department | null = await DepartmentCollection.findOne({ name: deptName });
   if (!department) {
-    throw new NotFound(`No department with id provided`);
+    throw new NotFound(`No department with name ` + deptName + `  provided`);
   }
   return department._id!;
 };
@@ -82,6 +83,14 @@ const getDeptIdByName = async (deptName: string): Promise<string> => {
 const validateDeptId = async (deptId: string): Promise<boolean> => {
   const department: Department | null = await DepartmentCollection.findById(deptId);
   return department !== null;
+};
+
+const validateDepartmentIds = async (departmentIds: string[]): Promise<boolean> => {
+  const departments = await DepartmentCollection.find({
+    _id: { $in: departmentIds },
+  }).lean();
+
+  return departmentIds.length == departments.length;
 };
 
 // ****************************************************************************************************************************************************
@@ -96,7 +105,7 @@ const Hashtable = {
 };
 
 // Util functions from database calls
-const Database = { getDeptNameById, getDeptIdByName, validateDeptId };
+const Database = { getDeptNameById, getDeptIdByName, validateDeptId, validateDepartmentIds };
 
 /**
  * @param Hashtable

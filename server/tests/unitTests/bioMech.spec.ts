@@ -1,12 +1,6 @@
 import http from 'http';
 import { Application } from 'express';
-import {
-  setupApp,
-  setupHttpServer,
-  attemptAuthentication,
-  Accounts,
-  closeServer,
-} from './testTools/mochaHooks';
+import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, BIOMECH_ENDPOINT } from './testTools/endPoints';
 import { Done } from 'mocha';
 import {
