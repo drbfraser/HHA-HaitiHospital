@@ -13,7 +13,7 @@ const requireLocalAuth = (req: Request, res: Response, next: NextFunction) => {
     }
     if (!user) {
       logger.error(
-        `Failed login attempt, user-password pair does not exist, username: ${req.body.username}`,
+        `Failed login attempt, user-password pair does not exist, username: ${req.body.username}, IP: ${req.ip}`,
       );
       return res.status(HTTP_UNAUTHORIZED_CODE).send(info);
     }
