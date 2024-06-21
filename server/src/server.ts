@@ -97,7 +97,7 @@ export const createServer = () => {
     .then(() => {
       logger.info('Connect to MongoDB');
     })
-    .catch((err) => logger.error(err));
+    .catch((err) => logger.error(`Error connecting to MongoDb with error message: ${err}`));
   // Use Routes
   app.use('/', routes);
   app.use('/public', express.static('public'));
