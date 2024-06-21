@@ -1,6 +1,6 @@
 import * as ENV from './utils/processEnv';
 
-import express, { Application } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 
 import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
@@ -24,6 +24,27 @@ const metricsMiddleware = promBundle({
     collectDefaultMetrics: {},
   },
 });
+
+const logRequest = (req: Request, res: Response, next: NextFunction) => {
+  const sanitizedBody = sanitizeRequestBody(req.body);
+  logger.info(
+    `Incoming Request - Method: ${req.method}, Path: ${req.path}, Body: ${JSON.stringify(sanitizedBody)}`,
+  );
+  next();
+};
+
+interface RequestBody {
+  [key: string]: any;
+  password?: string;
+}
+
+const sanitizeRequestBody = (body: RequestBody): RequestBody => {
+  const sanitizedBody: RequestBody = { ...body };
+  if (sanitizedBody.password) {
+    sanitizedBody.password = '***';
+  }
+  return sanitizedBody;
+};
 
 export const createServer = () => {
   const app = express();
@@ -49,6 +70,9 @@ export const createServer = () => {
 
   // add the prometheus middleware to all routes
   app.use(metricsMiddleware);
+
+  // add logging middleware
+  app.use(logRequest);
 
   app.use(cookieParser());
   app.use(passport.initialize());
