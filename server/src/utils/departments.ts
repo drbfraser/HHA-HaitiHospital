@@ -85,7 +85,10 @@ const validateDepartmentIds = async (departmentIds: string[]): Promise<boolean> 
     _id: { $in: departmentIds },
   }).lean();
 
-  return departmentIds.length == departments.length;
+  // departmentIds may be duplicate, so convert it to a set
+  // this ensures that the result's length that the query returns is good enough to determine if all ids are valid
+
+  return new Set(departmentIds).size == departments.length;
 };
 
 // ****************************************************************************************************************************************************

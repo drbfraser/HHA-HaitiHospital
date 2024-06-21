@@ -21,8 +21,11 @@ type LineChartProps = Omit<ChartProps, 'type'>;
 const LineChart = ({ analyticsData, questionPrompt }: LineChartProps) => {
   const [timeLabels, questionData] = separateTimeAndQuestionData(analyticsData);
 
+  console.log('timeLabels: ', timeLabels);
+  console.log('data: ', questionData);
+
   const data = {
-    timeLabels,
+    labels: timeLabels,
     datasets: [
       {
         label: questionPrompt,

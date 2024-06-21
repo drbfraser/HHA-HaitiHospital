@@ -8,22 +8,23 @@ import {
   NUMERIC_QUESTION_IDENTIFIER,
   QUESTION_IDENTIFIER,
 } from './constants';
+import { AnalyticsForMonths } from 'routes/api/analytics';
 import {
-  AnalyticsForMonths,
-  AnalyticsQuestionsResponse,
+  AnalyticsQuestionResponse,
   AnalyticsResponse,
-} from 'routes/api/analytics';
-import { IReport } from '@hha/common';
+  DepartmentQuestion,
+  IReport,
+} from '@hha/common';
 
 type AggregatePiplelineParams = {
-  departmentIdArray: string[];
+  departmentIds: string[];
   startDate: Date;
   endDate: Date;
   dateFormat: string;
 };
 
 export const createAnalyticsPipeline = ({
-  departmentIdArray,
+  departmentIds: departmentIds,
   startDate,
   endDate,
   dateFormat,
@@ -34,7 +35,7 @@ export const createAnalyticsPipeline = ({
         $and: [
           {
             departmentId: {
-              $in: departmentIdArray,
+              $in: departmentIds,
             },
           },
           {
@@ -97,7 +98,11 @@ export const getAnswerInReport = (report: IReport, questionId: string) => {
 
   return answer[0];
 };
-const recursivelyParseQuestions = (template: any, result: AnalyticsQuestionsResponse[]) => {
+const recursivelyParseQuestions = (
+  template: any,
+  result: AnalyticsQuestionResponse[],
+  departmentId: string,
+) => {
   /***
    * This function extracts all the questions (both nested and not nested) for the analytics feature
    * We want to flatten the questions since questions are nested. This will make it easier to analyze
@@ -118,28 +123,29 @@ const recursivelyParseQuestions = (template: any, result: AnalyticsQuestionsResp
         template[CLASS_KEY] == EXPANDABLE_QUESTION_IDENTIFIER ||
         template[CLASS_KEY] == COMPOSITE_QUESTION_IDENTIFIER)
     ) {
-      result.push({ ...template[key], id: template[QUESTION_IDENTIFIER] });
+      result.push({ ...template[key], id: template[QUESTION_IDENTIFIER], departmentId });
       return;
     }
 
     if (typeof template[key] == 'object') {
       if (Array.isArray(template[key])) {
         template[key].forEach((subTemplate: any) => {
-          recursivelyParseQuestions(subTemplate, result);
+          recursivelyParseQuestions(subTemplate, result, departmentId);
         });
       } else {
-        recursivelyParseQuestions(template[key], result);
+        recursivelyParseQuestions(template[key], result, departmentId);
       }
     }
   });
 };
 
-export const parseQuestions = (template: ITemplate) => {
-  const result: AnalyticsQuestionsResponse[] = [];
+export const parseQuestions = (templates: ITemplate[]) => {
+  const questionResponses: AnalyticsQuestionResponse[] = [];
+  templates.forEach((template) => {
+    recursivelyParseQuestions(template, questionResponses, template.departmentId);
+  });
 
-  recursivelyParseQuestions(template, result);
-
-  return result;
+  return questionResponses;
 };
 
 export const removeMonthsByTimeStep = (
@@ -163,7 +169,11 @@ export const removeMonthsByTimeStep = (
 type DepartmentMap = {
   [key: string]: number | undefined;
 };
-export const processAnalytics = (analyticsForMonths: AnalyticsForMonths[], questionId: string) => {
+const getAnswerFromReports = (
+  analyticsForMonths: AnalyticsForMonths[],
+  questionId: string,
+  departmentId: string,
+) => {
   /**
    * Currently, analytics data is grouped by (month, year)
    * The goal is to sum up answers for each department in each (month, year)
@@ -171,14 +181,20 @@ export const processAnalytics = (analyticsForMonths: AnalyticsForMonths[], quest
   const analyticsResponses: AnalyticsResponse[] = [];
 
   analyticsForMonths.forEach((analyticsForMonth) => {
-    const departmentMap: DepartmentMap = {};
+    let sum = 0;
+
+    let isDepartmentInTimeGroup = false;
     analyticsForMonth.reports.forEach((report) => {
-      if (!departmentMap[report.departmentId]) {
-        departmentMap[report.departmentId] = getAnswerInReport(report, questionId);
-      } else {
-        departmentMap[report.departmentId]! += getAnswerInReport(report, questionId);
+      if (report.departmentId === departmentId) {
+        sum += getAnswerInReport(report, questionId);
+
+        isDepartmentInTimeGroup = true;
       }
     });
+
+    if (!isDepartmentInTimeGroup) {
+      return;
+    }
 
     //the identifier is either "month year" or "year" from query pipeline
     //convert string represntation of date to integer representation (month, year)
@@ -196,17 +212,35 @@ export const processAnalytics = (analyticsForMonths: AnalyticsForMonths[], quest
       year = +time;
     }
 
-    const analyticsResponse = Object.keys(departmentMap).map((departmentId) => {
-      const analyticsResponseForDepartment: AnalyticsResponse = {
-        month,
-        year,
-        departmentId,
-        answer: departmentMap[departmentId]!,
-      };
+    const analyticsResponse: AnalyticsResponse = {
+      month,
+      year,
+      departmentId,
+      answer: sum,
+      questionId,
+    };
+    analyticsResponses.push(analyticsResponse);
+  });
 
-      return analyticsResponseForDepartment;
-    });
-    analyticsResponses.push(...analyticsResponse);
+  return analyticsResponses;
+};
+
+export const getAllAnswersFromReports = (
+  analyticsForMonth: AnalyticsForMonths[],
+  departmentQuestions: DepartmentQuestion[],
+) => {
+  let analyticsResponses: AnalyticsResponse[] = [];
+
+  // using a set because we only want unique questions in each department
+  // same questions in different departments will only need to be processed once
+
+  departmentQuestions.forEach((departmentQuestion) => {
+    const analyticsAnswers = getAnswerFromReports(
+      analyticsForMonth,
+      departmentQuestion.questionId,
+      departmentQuestion.departmentId,
+    );
+    analyticsResponses = analyticsResponses.concat(analyticsAnswers);
   });
 
   return analyticsResponses;

@@ -14,7 +14,7 @@ import moment from 'moment';
 import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticQuestions';
 import { TimeOptionModal } from 'components/popup_modal/TimeOptionModal';
 import {
-  findDepartmentIdByName,
+  findDepartmentIdsByNames,
   getAllDepartmentNames,
   getQuestionFromId,
   sumUpAnalyticsData,
@@ -23,6 +23,7 @@ import { Spinner } from 'components/spinner/Spinner';
 import LineChart from 'components/charts/Line';
 import PieChart from 'components/charts/Pie';
 import ChartSelector from 'components/charts/ChartSelector';
+import { DropDownMultiSelect } from 'components/dropdown/DropDownMultiSelect';
 
 export type TimeOptions = {
   from: string;
@@ -57,7 +58,7 @@ const Analytics = () => {
   const [questionPrompts, setQuestionPrompts] = useState<QuestionPrompt[]>([]);
 
   const [selectedQuestionId, setSelectedQuestionId] = useState('1');
-  const [selectedDepartmentName, setSelectedDepartmentName] = useState('Rehab');
+  const [selectedDepartmentNames, setSelectedDepartmentNames] = useState(['Rehab']);
   const [timeOptions, setTimeOptions] = useState<TimeOptions>({
     from: defaultFromDate(),
     to: defaultToDate(),
@@ -88,15 +89,15 @@ const Analytics = () => {
         return;
       }
 
-      const selectedDepartmentId = findDepartmentIdByName(departments, selectedDepartmentName)!;
+      const selectedDepartmentIds = findDepartmentIdsByNames(departments, selectedDepartmentNames)!;
 
-      const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
+      const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentIds.join(','));
 
       setQuestionPrompts(questionPrompts!);
     };
 
     fetchQuestionPrompts();
-  }, [departments, selectedDepartmentName]);
+  }, [departments, selectedDepartmentNames]);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -104,18 +105,18 @@ const Analytics = () => {
         return;
       }
 
-      const selectedDepartmentId = findDepartmentIdByName(departments, selectedDepartmentName)!;
+      const selectedDepartmentIds = findDepartmentIdsByNames(departments, selectedDepartmentNames)!;
 
       const startDate = moment(timeOptions.from, 'YYYY-MM-DD').toISOString();
       const endDate = moment(timeOptions.to, 'YYYY-MM-DD').toISOString();
 
       const analyticsQuery: AnalyticsQuery = {
-        departmentIds: selectedDepartmentId,
+        departmentIds: selectedDepartmentIds.join(','),
         questionId: selectedQuestionId,
         startDate: startDate,
         endDate: endDate,
-        aggregateBy: selectedAggregateBy.toLowerCase(),
-        timeStep: timeOptions.timeStep.toLowerCase(),
+        aggregateBy: selectedAggregateBy.toLowerCase() as 'month',
+        timeStep: timeOptions.timeStep.toLowerCase() as 'year',
       };
 
       const analyticsData = await getAnalyticsData(history, analyticsQuery);
@@ -124,7 +125,7 @@ const Analytics = () => {
       setIsLoading(false);
     };
     fetchAnalytics();
-  }, [selectedDepartmentName, selectedQuestionId, timeOptions, selectedAggregateBy, departments]);
+  }, [selectedDepartmentNames, selectedQuestionId, timeOptions, selectedAggregateBy, departments]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => setShowModalQuestions(true);
@@ -132,8 +133,8 @@ const Analytics = () => {
   const handleCloseTimeOptionsModal = () => setShowModalTimeOptions(false);
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
 
-  const onDepartmentSelected = (department: string) => {
-    setSelectedDepartmentName(department);
+  const onDepartmentSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    setSelectedDepartmentNames([...selectedDepartmentNames, event.target.id]);
   };
 
   const onFromDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -164,11 +165,18 @@ const Analytics = () => {
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
             <div className="d-flex flex-row gap-3">
-              <DropDown
+              {/* <DropDown
                 menus={getAllDepartmentNames(departments!)}
                 title={'Department'}
                 selectedMenu={selectedDepartmentName}
                 setDropDownMenu={onDepartmentSelected}
+              /> */}
+
+              <DropDownMultiSelect
+                title="Department"
+                dropDowns={getAllDepartmentNames(departments)}
+                selectedDropDowns={selectedDepartmentNames}
+                setSelectedDropDowns={onDepartmentSelected}
               />
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
                 Questions

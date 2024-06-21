@@ -1,10 +1,16 @@
-import { AnalyticsQuery, AnalyticsResponse, IReport, Role } from '@hha/common';
-import { HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
+import {
+  AnalyticsQuestionRequestBody,
+  AnalyticsQuestionResponse,
+  AnalyticsRequestBody,
+  AnalyticsResponse,
+  IReport,
+  Role,
+} from '@hha/common';
+import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 import { ReportCollection } from 'models/report';
-import { ITemplate, TemplateCollection } from 'models/template';
 import {
   MONTH_AGGREGATE_BY,
   MONTH_DATE_FORMAT,
@@ -13,50 +19,36 @@ import {
 } from 'utils/constants';
 import {
   createAnalyticsPipeline,
-  processAnalytics,
+  getAllAnswersFromReports,
   parseQuestions,
   removeMonthsByTimeStep,
 } from 'utils/analytics';
 import Departments from 'utils/departments';
+import { getDepartmentsByTemplate } from 'utils/template';
 
 const router = Router();
 
-type AnalyticsQuestionQuery = {
-  departmentId: string;
-};
-
-export type AnalyticsQuestionsResponse = {
-  id: string;
-  en: string;
-  fr: string;
-};
-router.get(
+router.post(
   '/questions',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
   async (
-    req: Request<{}, AnalyticsQuestionsResponse[], {}, AnalyticsQuestionQuery>,
-    res: Response<AnalyticsQuestionsResponse[]>,
+    req: Request<{}, AnalyticsQuestionResponse[], AnalyticsQuestionRequestBody, {}>,
+    res: Response<AnalyticsQuestionResponse[]>,
     next: NextFunction,
   ) => {
     try {
-      const { departmentId } = req.query;
+      const { departmentIds } = req.body;
 
-      const isDepartmentValid = await Departments.Database.validateDeptId(departmentId);
+      const areDepartmentsValid = await Departments.Database.validateDepartmentIds(departmentIds);
 
-      if (!isDepartmentValid) {
-        throw new NotFound(`No department with id: ${departmentId} found`);
+      if (!areDepartmentsValid) {
+        throw new NotFound(`There exist a department id that was not found`);
       }
 
-      const template: ITemplate = await TemplateCollection.findOne({
-        departmentId,
-      }).lean();
+      const templates = await getDepartmentsByTemplate(departmentIds);
 
-      if (!template) {
-        throw new NotFound(`department with id: ${departmentId} does not have a template`);
-      }
-
-      const questions = parseQuestions(template);
+      const questions = parseQuestions(templates);
 
       res.status(HTTP_OK_CODE).json(questions);
     } catch (e) {
@@ -70,17 +62,17 @@ export type AnalyticsForMonths = {
   reports: IReport[];
 };
 
-router.get(
+router.post(
   '/',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
   async (
-    req: Request<{}, AnalyticsResponse, {}, AnalyticsQuery>,
+    req: Request<{}, AnalyticsResponse, AnalyticsRequestBody, {}>,
     res: Response<AnalyticsResponse[]>,
     next: NextFunction,
   ) => {
     try {
-      const { departmentIds, questionId, startDate, endDate, timeStep, aggregateBy } = req.query;
+      const { departmentQuestions, startDate, endDate, timeStep, aggregateBy } = req.body;
 
       let dateFormat = '';
 
@@ -95,18 +87,19 @@ router.get(
       const parsedStartDate = new Date(startDate);
       const parsedEndDate = new Date(endDate);
 
-      const departmentIdArray = departmentIds.split(',');
+      const departmentIds = departmentQuestions.map(
+        (departmentQuestion) => departmentQuestion.departmentId,
+      );
 
-      const areDepartmentsValid =
-        await Departments.Database.validateDepartmentIds(departmentIdArray);
+      const areDepartmentsValid = await Departments.Database.validateDepartmentIds(departmentIds);
 
       if (!areDepartmentsValid) {
         throw new NotFound(`There exist a department id that was not found`);
       }
 
-      let analytics: AnalyticsForMonths[] = await ReportCollection.aggregate(
+      let analyticsForMonths: AnalyticsForMonths[] = await ReportCollection.aggregate(
         createAnalyticsPipeline({
-          departmentIdArray,
+          departmentIds,
           startDate: parsedStartDate,
           endDate: parsedEndDate,
           dateFormat,
@@ -118,10 +111,10 @@ router.get(
       // so, all other months are ignored
 
       if (timeStep === YEAR_AGGREGATE_BY && aggregateBy === MONTH_AGGREGATE_BY) {
-        analytics = removeMonthsByTimeStep(analytics, parsedStartDate);
+        analyticsForMonths = removeMonthsByTimeStep(analyticsForMonths, parsedStartDate);
       }
 
-      const analyticResponses = processAnalytics(analytics, questionId);
+      const analyticResponses = getAllAnswersFromReports(analyticsForMonths, departmentQuestions);
 
       res.status(HTTP_OK_CODE).json(analyticResponses);
     } catch (e) {

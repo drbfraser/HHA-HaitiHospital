@@ -27,6 +27,7 @@ const BarChart = ({ analyticsData, questionPrompt }: BarChartProps) => {
         label: questionPrompt,
         data: questionData,
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        maxBarThickness: 150,
       },
     ],
   };
