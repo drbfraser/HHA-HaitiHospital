@@ -59,7 +59,7 @@ export const seedDb = async () => {
   }
 };
 
-const setupDepartmentMap = async () => {
+export const setupDepartmentMap = async () => {
   const departments: Department[] = await DepartmentCollection.find();
   nameMapper = Departments.Hashtable.initNameToId(departments);
 };
@@ -1087,7 +1087,7 @@ const generateRandomCaseStudy = (
 };
 
 type Report = QuestionGroup<string, string>;
-const seedTemplates = async () => {
+export const seedTemplates = async () => {
   console.log(`Seeding templates...`);
   try {
     await TemplateCollection.deleteMany({});
@@ -1120,7 +1120,7 @@ const seedTemplates = async () => {
   }
 };
 
-const seedReports = async () => {
+export const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
     await ReportCollection.deleteMany({});
@@ -1142,37 +1142,39 @@ const seedReports = async () => {
   }
 };
 
-// Connect to Mongo
-mongoose
-  .connect(ENV.MONGO_DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
-    console.log('MongoDB Connected...');
-    const readline = require('readline');
-    if (process.env.IS_GITLAB_CI === 'true') {
-      (async () => await seedDb())(); // anonymous async function
-    } else {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
+const test = () => {
+  // Connect to Mongo
+  mongoose
+    .connect(ENV.MONGO_DB, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+    .then(() => {
+      console.log('MongoDB Connected...');
+      const readline = require('readline');
+      if (process.env.IS_GITLAB_CI === 'true') {
+        (async () => await seedDb())(); // anonymous async function
+      } else {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
 
-      rl.question(
-        `Confirm to reseed database (old data will be discarded) (y / Y to confirm): `,
-        async function (answer: string) {
-          if (answer.toUpperCase() === 'Y') await seedDb();
-          else console.log('Database seeding cancelled');
-          rl.close();
-        },
-      );
+        rl.question(
+          `Confirm to reseed database (old data will be discarded) (y / Y to confirm): `,
+          async function (answer: string) {
+            if (answer.toUpperCase() === 'Y') await seedDb();
+            else console.log('Database seeding cancelled');
+            rl.close();
+          },
+        );
 
-      rl.on('close', function () {
-        process.exit(0);
-      });
-    }
-  })
-  .catch((err) => console.log(err));
+        rl.on('close', function () {
+          process.exit(0);
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+};

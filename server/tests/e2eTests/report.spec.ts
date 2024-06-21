@@ -2,7 +2,14 @@ import { ReportCollection } from 'models/report';
 import { IReport, QuestionGroup, ObjectSerializer, buildRehabReport } from '@hha/common';
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
+import {
+  setupApp,
+  setupHttpServer,
+  Accounts,
+  closeServer,
+  setUpMemoryMongo,
+  tearDownUpMemoryMongo,
+} from 'testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, REPORT_ENDPOINT } from 'testTools/endPoints';
 import {
   HTTP_NOCONTENT_CODE,
@@ -11,6 +18,7 @@ import {
   HTTP_UNPROCESSABLE_ENTITY_CODE,
 } from 'exceptions/httpException';
 import DepartmentCollection from 'models/departments';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -22,44 +30,42 @@ let agent: any;
 let csrf: String;
 let testReport: IReport;
 let newReportIds: string[] = [];
+let memoryMongo: MongoMemoryServer;
 
 describe('report tests', function () {
-  before('Create a Working Server and Login With Admin', function (done) {
+  before('Create a Working Server and Login With Admin', async function () {
+    memoryMongo = await setUpMemoryMongo();
     let app: Application = setupApp();
     httpServer = setupHttpServer(app);
     agent = chai.request.agent(app);
 
-    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
-      if (error) done(error);
-      csrf = res?.body?.CSRFToken;
+    let res = await agent.get(CSRF_ENDPOINT);
+    csrf = res?.body?.CSRFToken;
+    console.log('token is ' + csrf);
 
-      agent
-        .post(LOGIN_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(Accounts.AdminUser)
-        .end(function (error: any, response: any) {
-          if (error) return done(error);
-          done();
-        });
-      ReportCollection.find({})
-        .lean()
-        .then((reports: IReport[]) => {
-          testReport = reports[0];
-        });
-    });
+    await agent
+      .post(LOGIN_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send(Accounts.AdminUser);
+
+    ReportCollection.find({})
+      .lean()
+      .then((reports: IReport[]) => {
+        testReport = reports[0];
+      });
   });
 
   after('Close a Working Server and delete any added reports', async function () {
-    for (const reportId of newReportIds) {
-      try {
-        await agent
-          .delete(`${REPORT_ENDPOINT}/${reportId}`)
-          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
-      } catch (error) {
-        console.warn(error);
-      }
-    }
-
+    // for (const reportId of newReportIds) {
+    //   try {
+    //     await agent
+    //       .delete(`${REPORT_ENDPOINT}/${reportId}`)
+    //       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+    //   } catch (error) {
+    //     console.warn(error);
+    //   }
+    // }
+    await tearDownUpMemoryMongo(memoryMongo);
     closeServer(agent, httpServer);
   });
 

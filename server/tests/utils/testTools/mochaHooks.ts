@@ -5,6 +5,20 @@ import { createServer, setServerPort } from '../../../src/server';
 import { endianness } from 'os';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT } from './endPoints';
 import { TEST_SERVER_PORT } from 'utils/processEnv';
+import { connectMongo, connectTestMongo } from 'utils/mongoDb';
+import mongoose, { ClientSession, mongo } from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import {
+  seedDepartments,
+  seedUsers,
+  seedBioMech,
+  seedCaseStudies,
+  seedEmployeeOfTheMonth,
+  seedMessageBoard,
+  seedReports,
+  seedTemplates,
+  setupDepartmentMap,
+} from 'seeders/seed';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -78,6 +92,7 @@ export const setUpSession = async (user: UserAccount) => {
   const app = setupApp();
   const httpServer = setupHttpServer(app);
   const agent = chai.request.agent(app);
+  connectMongo();
 
   try {
     const csrf = await getCSRFToken(agent);
@@ -92,4 +107,27 @@ export const setUpSession = async (user: UserAccount) => {
   }
 
   return { agent, httpServer, isError: false };
+};
+
+export const setUpMemoryMongo = async (): Promise<MongoMemoryServer> => {
+  console.log('starting session!');
+  let mongoServer = await connectTestMongo();
+  await seedDepartments();
+  await setupDepartmentMap();
+  await seedUsers();
+  await seedMessageBoard();
+  await seedBioMech();
+  await seedEmployeeOfTheMonth();
+  await seedCaseStudies();
+  await seedTemplates();
+  await seedReports();
+
+  console.log('Database seeding completed.');
+
+  return mongoServer;
+};
+
+export const tearDownUpMemoryMongo = async (memoryDb: MongoMemoryServer) => {
+  await mongoose.disconnect();
+  await memoryDb.stop();
 };

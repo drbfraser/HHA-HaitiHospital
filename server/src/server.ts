@@ -7,7 +7,6 @@ import csrf from 'csurf';
 import http from 'http';
 import httpErrorHandler from 'middleware/httpErrorHandler';
 import { logger } from './logger';
-import mongoose from 'mongoose';
 import passport from 'passport';
 import path from 'path';
 import promBundle from 'express-prom-bundle';
@@ -62,18 +61,6 @@ export const createServer = () => {
     next();
   });
 
-  // Connect to Mongo
-  mongoose
-    .connect(ENV.MONGO_DB, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-    })
-    .then(() => {
-      logger.info('Connect to MongoDB');
-    })
-    .catch((err) => logger.error(err));
   // Use Routes
   app.use('/', routes);
   app.use('/public', express.static('public'));
