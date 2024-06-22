@@ -1,16 +1,15 @@
-import { ReportCollection } from 'models/report';
-import { IReport, QuestionGroup, ObjectSerializer, buildRehabReport } from '@hha/common';
+import { QuestionGroup, ObjectSerializer, buildRehabReport } from '@hha/common';
 import http from 'http';
-import { Application } from 'express';
 import {
-  setupApp,
-  setupHttpServer,
   Accounts,
   closeServer,
-  setUpMemoryMongo,
-  tearDownUpMemoryMongo,
+  setUpSession,
+  seedMongo,
+  dropMongo,
+  GEN_DEP_ID,
+  ADMIN_USER_ID,
 } from 'testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, REPORT_ENDPOINT } from 'testTools/endPoints';
+import { REPORT_ENDPOINT } from 'testTools/endPoints';
 import {
   HTTP_NOCONTENT_CODE,
   HTTP_NOTFOUND_CODE,
@@ -19,57 +18,43 @@ import {
 } from 'exceptions/httpException';
 import DepartmentCollection from 'models/departments';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { ReportCollection } from 'models/report';
 
 const expect = require('chai').expect;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-let httpServer: http.Server;
-let agent: any;
-let csrf: String;
-let testReport: IReport;
-let newReportIds: string[] = [];
-let memoryMongo: MongoMemoryServer;
-
 describe('report tests', function () {
+  let httpServer: http.Server;
+  let agent: any;
+  let csrf: String;
+  let mongo: MongoMemoryServer;
+
   before('Create a Working Server and Login With Admin', async function () {
-    memoryMongo = await setUpMemoryMongo();
-    let app: Application = setupApp();
-    httpServer = setupHttpServer(app);
-    agent = chai.request.agent(app);
+    const session = await setUpSession(Accounts.AdminUser);
 
-    let res = await agent.get(CSRF_ENDPOINT);
-    csrf = res?.body?.CSRFToken;
-    console.log('token is ' + csrf);
-
-    await agent
-      .post(LOGIN_ENDPOINT)
-      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-      .send(Accounts.AdminUser);
-
-    ReportCollection.find({})
-      .lean()
-      .then((reports: IReport[]) => {
-        testReport = reports[0];
-      });
+    httpServer = session.httpServer;
+    agent = session.agent;
+    csrf = session.csrf;
+    mongo = session.mongo;
   });
 
   after('Close a Working Server and delete any added reports', async function () {
-    // for (const reportId of newReportIds) {
-    //   try {
-    //     await agent
-    //       .delete(`${REPORT_ENDPOINT}/${reportId}`)
-    //       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
-    //   } catch (error) {
-    //     console.warn(error);
-    //   }
-    // }
-    await tearDownUpMemoryMongo(memoryMongo);
-    closeServer(agent, httpServer);
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async () => {
+    await seedMongo();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('should fetch report correctly', function (done) {
+    new ReportCollection();
+
     agent
       .get(`${REPORT_ENDPOINT}/${testReport._id}`)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
@@ -117,8 +102,8 @@ describe('report tests', function () {
       .post(REPORT_ENDPOINT)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .send({
-        departmentId: '66623f46a596535e40d39bdd',
-        submittedUserId: '66623f46a596535e40d39be8',
+        departmentId: GEN_DEP_ID,
+        submittedUserId: ADMIN_USER_ID,
         submittedBy: 'Jamie Doe',
         reportMonth: new Date(),
         serializedReport,
@@ -134,7 +119,6 @@ describe('report tests', function () {
           new QuestionGroup<string, string>('ROOT', res.body.report.reportObject) instanceof
             QuestionGroup,
         ).to.be.true;
-        newReportIds.push(res.body.report._id);
         done();
       });
   });

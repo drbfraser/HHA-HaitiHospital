@@ -1,3 +1,5 @@
+import * as ENV from 'utils/processEnv';
+
 import http from 'http';
 import { Application } from 'express';
 import PORT from './serverPort';
@@ -8,17 +10,13 @@ import { TEST_SERVER_PORT } from 'utils/processEnv';
 import { connectMongo, connectTestMongo } from 'utils/mongoDb';
 import mongoose, { ClientSession, mongo } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import {
-  seedDepartments,
-  seedUsers,
-  seedBioMech,
-  seedCaseStudies,
-  seedEmployeeOfTheMonth,
-  seedMessageBoard,
-  seedReports,
-  seedTemplates,
-  setupDepartmentMap,
-} from 'seeders/seed';
+import UserCollection, { UserWithInstanceMethods } from 'models/user';
+import DepartmentCollection from 'models/departments';
+import { CaseStudyWithInstanceMethods } from 'models/caseStudies';
+
+export const GEN_DEP_ID = '666e07bb81f0646fc4c87c9f';
+export const ADMIN_USER_ID = '666e07bb81f0646fc4c87cae';
+export const REG_USER_ID = '666e07bb81f0646fc4c87cb7';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -30,7 +28,7 @@ export interface UserAccount {
 
 const AdminUser: UserAccount = {
   username: 'user0',
-  password: 'C@td0g',
+  password: ENV.PASSWORD_SEED,
 };
 
 const IncorrectPasswordUser: UserAccount = {
@@ -40,7 +38,7 @@ const IncorrectPasswordUser: UserAccount = {
 
 const NormalUser: UserAccount = {
   username: 'user3',
-  password: 'C@td0g',
+  password: ENV.PASSWORD_SEED,
 };
 export const Accounts = {
   AdminUser,
@@ -58,76 +56,86 @@ export const setupHttpServer = (testApp: Application) => {
   return httpServer;
 };
 
-export const closeServer = (agent: any, httpServer: http.Server) => {
+export const closeServer = async (
+  agent: any,
+  httpServer: http.Server,
+  mongo: MongoMemoryServer,
+) => {
   agent.close();
   httpServer.close();
+  await mongoose.disconnect();
+  await mongo.stop();
 };
-
-export const getCSRFToken = async (agent: ChaiHttp.Agent): Promise<string | null> => {
-  try {
-    const res = await agent.get(CSRF_ENDPOINT);
-
-    return res.body.CSRFToken;
-  } catch (error) {
-    return null;
-  }
-};
-
-export async function authenticate(
-  agent: ChaiHttp.Agent,
-  csrf: string,
-  userAccount: UserAccount = AdminUser,
-) {
-  const res = await agent
-    .post(LOGIN_ENDPOINT)
-    .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-    .send(userAccount);
-
-  if (res.error) {
-    throw new Error('Authentication failed');
-  }
-}
 
 export const setUpSession = async (user: UserAccount) => {
-  const app = setupApp();
-  const httpServer = setupHttpServer(app);
-  const agent = chai.request.agent(app);
-  connectMongo();
+  let mongo = await connectTestMongo();
+  await seedMongo();
+  let app: Application = setupApp();
+  let httpServer = setupHttpServer(app);
+  let agent = chai.request.agent(app);
 
-  try {
-    const csrf = await getCSRFToken(agent);
+  let res = await agent.get(CSRF_ENDPOINT);
+  let csrf = res?.body?.CSRFToken;
 
-    if (!csrf) {
-      throw new Error('Unable to fetch csrf token');
-    }
+  await agent
+    .post(LOGIN_ENDPOINT)
+    .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+    .send(Accounts.AdminUser);
 
-    await authenticate(agent, csrf!, user);
-  } catch (error) {
-    return { agent, httpServer, isError: true };
+  await dropMongo();
+
+  return { agent, httpServer, mongo, csrf, isError: false };
+};
+
+export const seedMongo = async () => {
+  let deps = await DepartmentCollection.insertMany([
+    {
+      _id: mongoose.Types.ObjectId(GEN_DEP_ID),
+      name: 'General',
+      hasReport: false,
+      __v: 0,
+    },
+  ]);
+  for (const dep of deps) {
+    await dep.save();
   }
 
-  return { agent, httpServer, isError: false };
+  let users = await UserCollection.insertMany([
+    {
+      _id: mongoose.Types.ObjectId(ADMIN_USER_ID),
+      role: 'Admin',
+      username: 'user0',
+      password: ENV.PASSWORD_SEED,
+      name: 'Admin User',
+      departmentId: GEN_DEP_ID,
+    },
+    {
+      _id: mongoose.Types.ObjectId(REG_USER_ID),
+      role: 'User',
+      username: 'user3',
+      password: ENV.PASSWORD_SEED,
+      name: 'Regular User',
+      departmentId: GEN_DEP_ID,
+    },
+  ]);
+
+  for (const user of users) {
+    await asyncRegisterUser(user);
+  }
 };
 
-export const setUpMemoryMongo = async (): Promise<MongoMemoryServer> => {
-  console.log('starting session!');
-  let mongoServer = await connectTestMongo();
-  await seedDepartments();
-  await setupDepartmentMap();
-  await seedUsers();
-  await seedMessageBoard();
-  await seedBioMech();
-  await seedEmployeeOfTheMonth();
-  await seedCaseStudies();
-  await seedTemplates();
-  await seedReports();
-
-  console.log('Database seeding completed.');
-
-  return mongoServer;
+export const dropMongo = async () => {
+  await mongoose.connection.dropDatabase();
 };
 
-export const tearDownUpMemoryMongo = async (memoryDb: MongoMemoryServer) => {
-  await mongoose.disconnect();
-  await memoryDb.stop();
-};
+async function asyncRegisterUser(user: UserWithInstanceMethods) {
+  return new Promise((resolve, reject) => {
+    user.registerUser(user, (err: Error, user: UserWithInstanceMethods) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(user);
+      }
+    });
+  });
+}

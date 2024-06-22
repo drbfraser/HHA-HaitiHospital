@@ -1,0 +1,975 @@
+{
+  "_id": {
+    "$oid": "666e07bc81f0646fc4c87de2"
+  },
+  "departmentId": "666e07bb81f0646fc4c87ca3",
+  "submittedUserId": "666e07bb81f0646fc4c87cb4",
+  "submittedBy": "user2",
+  "reportMonth": {
+    "$date": "2024-06-01T07:00:00.000Z"
+  },
+  "reportObject": {
+    "id": "nicu-paeds-report_1",
+    "prompt": {
+      "en": "NICU/Paeds Report",
+      "fr": "Rapport de NICU/Paeds"
+    },
+    "breakpointPairs": [
+      [0, 4],
+      [4, 7],
+      [7, 11],
+      [11, 13],
+      [13, 14]
+    ],
+    "questionItems": [
+      {
+        "id": "1",
+        "prompt": {
+          "en": "Beds available",
+          "fr": "Lits disponibles"
+        },
+        "validators": ["isPositive"],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "2",
+        "prompt": {
+          "en": "Bed days",
+          "fr": "Jours-lit"
+        },
+        "validators": ["isPositive"],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "3",
+        "prompt": {
+          "en": "Patient days",
+          "fr": "Jours-patient"
+        },
+        "validators": ["isPositive"],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "4",
+        "prompt": {
+          "en": "Hospitalized",
+          "fr": "Hospitalisé"
+        },
+        "answer": 0,
+        "validators": ["isPositive"],
+        "compositionGroups": [
+          {
+            "id": "4_1",
+            "prompt": {
+              "en": "Departments",
+              "fr": "Départements"
+            },
+            "questions": [
+              {
+                "id": "4_1_1",
+                "prompt": {
+                  "en": "Hospitalized NICU",
+                  "fr": "Hospitalisé NICU"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "4_1_2",
+                "prompt": {
+                  "en": "Hospitalised Paed",
+                  "fr": "Hospitalisé Paed"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "5",
+        "prompt": {
+          "en": "Discharged Alive",
+          "fr": "Déchargé Vivant"
+        },
+        "answer": 0,
+        "validators": ["isPositive"],
+        "compositionGroups": [
+          {
+            "id": "5_1",
+            "prompt": {
+              "en": "By Department",
+              "fr": "Par Département"
+            },
+            "questions": [
+              {
+                "id": "5_1_1",
+                "prompt": {
+                  "en": "# Discharged from NICU",
+                  "fr": "# Déchargé de NICU"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "5_1_2",
+                "prompt": {
+                  "en": "# Discharged from elsewhere",
+                  "fr": "# Déchargé d'ailleurs"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "6",
+        "prompt": {
+          "en": "Died before 48h",
+          "fr": "Décédé avant 48h"
+        },
+        "answer": 0,
+        "validators": ["isPositive"],
+        "compositionGroups": [
+          {
+            "id": "6_1",
+            "prompt": {
+              "en": "By Department",
+              "fr": "Par Département"
+            },
+            "questions": [
+              {
+                "id": "6_1_1",
+                "prompt": {
+                  "en": "Died in NICU",
+                  "fr": "Décédé en NICU"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "6_1_2",
+                "prompt": {
+                  "en": "Died in Paed",
+                  "fr": "Décédé en Pédiatrie"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "7",
+        "prompt": {
+          "en": "Died after 48h",
+          "fr": "Décédé après 48h"
+        },
+        "answer": 0,
+        "validators": ["isPositive"],
+        "compositionGroups": [
+          {
+            "id": "7_1",
+            "prompt": {
+              "en": "By Department",
+              "fr": "Par Département"
+            },
+            "questions": [
+              {
+                "id": "7_1_1",
+                "prompt": {
+                  "en": "Died in NICU",
+                  "fr": "Décédé en NICU"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "7_1_2",
+                "prompt": {
+                  "en": "Died in Paed",
+                  "fr": "Décédé en Pédiatrie"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "8",
+        "prompt": {
+          "en": "Days hospitalised",
+          "fr": "Jours hospitalisés"
+        },
+        "validators": ["isPositive"],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "9",
+        "prompt": {
+          "en": "Referrals",
+          "fr": "Références"
+        },
+        "validators": ["isPositive"],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "10",
+        "prompt": {
+          "en": "Transfers",
+          "fr": "Transferts"
+        },
+        "validators": ["isPositive"],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "11",
+        "prompt": {
+          "en": "Self-discharged",
+          "fr": "PSA"
+        },
+        "answer": 0,
+        "validators": ["isPositive"],
+        "compositionGroups": [
+          {
+            "id": "11_1",
+            "prompt": {
+              "en": "Reason for self-discharge",
+              "fr": "Raison de l'auto-décharge"
+            },
+            "questions": [
+              {
+                "id": "11_1_1",
+                "prompt": {
+                  "en": "Finance: Leave as cannot afford care",
+                  "fr": "Finances: Partir car incapable de payer les soins"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "11_1_2",
+                "prompt": {
+                  "en": "Finance: Left to avoid paying",
+                  "fr": "Finances: Parti pour éviter de payer"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "11_1_3",
+                "prompt": {
+                  "en": "Religious/Cultural",
+                  "fr": "Religieuse/Culturelle"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "11_1_4",
+                "prompt": {
+                  "en": "Personal/ Family",
+                  "fr": "Personnelle/ Familiale"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "11_1_5",
+                "prompt": {
+                  "en": "Other",
+                  "fr": "Autre"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "12",
+        "prompt": {
+          "en": "Stayed in the ward",
+          "fr": "Séjour à l'hôpital"
+        },
+        "validators": ["isPositive"],
+        "__class__": "NumericQuestion"
+      },
+      {
+        "id": "13",
+        "prompt": {
+          "en": "Admissions",
+          "fr": "Admissions"
+        },
+        "answer": 0,
+        "validators": ["isPositive"],
+        "compositionGroups": [
+          {
+            "id": "13_1",
+            "prompt": {
+              "en": "Where do patients come from?",
+              "fr": "D'où viennent les patients?"
+            },
+            "questions": [
+              {
+                "id": "13_1_1",
+                "prompt": {
+                  "en": "Quarter Morin",
+                  "fr": "Quartier Morin"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_1_2",
+                "prompt": {
+                  "en": "Cap Haitian",
+                  "fr": "Cap Haïtien"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_1_3",
+                "prompt": {
+                  "en": "Department Nord",
+                  "fr": "Département du Nord"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_1_4",
+                "prompt": {
+                  "en": "Other departments",
+                  "fr": "Autres départements"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "13_2",
+            "prompt": {
+              "en": "Age of infant admitted",
+              "fr": "Âge du nourrisson admis"
+            },
+            "questions": [
+              {
+                "id": "13_2_1",
+                "prompt": {
+                  "en": "Extremely preterm (less than 28 weeks)",
+                  "fr": "Extrêmement prématuré (moins de 28 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_2",
+                "prompt": {
+                  "en": "Very preterm (28 to 32 weeks)",
+                  "fr": "Très prématuré (28 à 32 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_3",
+                "prompt": {
+                  "en": "Moderate to late preterm (32 to 37 weeks)",
+                  "fr": "Prématuré modéré à tardif (32 à 37 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_4",
+                "prompt": {
+                  "en": "Full term (37 weeks plus)",
+                  "fr": "À terme (37 semaines et plus)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_5",
+                "prompt": {
+                  "en": "Older than neonate (>4 weeks old)",
+                  "fr": "Plus âgé que le nouveau-né (> 4 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_6",
+                "prompt": {
+                  "en": "Age 4 weeks - 5",
+                  "fr": "Âge de 4 semaines - 5"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_7",
+                "prompt": {
+                  "en": "Age 6-11",
+                  "fr": "Âge 6-11"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_2_8",
+                "prompt": {
+                  "en": "Age 12-18",
+                  "fr": "Âge 12-18"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "13_3",
+            "prompt": {
+              "en": "Gender",
+              "fr": "Gendre"
+            },
+            "questions": [
+              {
+                "id": "13_3_1",
+                "prompt": {
+                  "en": "Male",
+                  "fr": "Masculin"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_3_2",
+                "prompt": {
+                  "en": "Female",
+                  "fr": "Féminin"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "13_4",
+            "prompt": {
+              "en": "Main Condition",
+              "fr": "Condition principale"
+            },
+            "questions": [
+              {
+                "id": "13_4_1",
+                "prompt": {
+                  "en": "Respiratory arrest",
+                  "fr": "Arrêt respiratoire"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_2",
+                "prompt": {
+                  "en": "Traumatic injury",
+                  "fr": "Blessure traumatique"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_3",
+                "prompt": {
+                  "en": "Septic Shock",
+                  "fr": "Choc septique"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_4",
+                "prompt": {
+                  "en": "Hypovolemic shock",
+                  "fr": "Choc hypovolémique"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_5",
+                "prompt": {
+                  "en": "Seizures/convulsions",
+                  "fr": "Crises/convulsions"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_6",
+                "prompt": {
+                  "en": "Poisoning",
+                  "fr": "Empoisonnement"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_7",
+                "prompt": {
+                  "en": "Altered mental status",
+                  "fr": "État mental altéré"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_8",
+                "prompt": {
+                  "en": "Gastroenteritis",
+                  "fr": "Gastro-entérite"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_9",
+                "prompt": {
+                  "en": "Hemorrhage",
+                  "fr": "Hémorragie"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_10",
+                "prompt": {
+                  "en": "Hypothermia",
+                  "fr": "Hypothermie"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_11",
+                "prompt": {
+                  "en": "Cardiac congenital anomaly",
+                  "fr": "Anomalie congénitale cardiaque"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_12",
+                "prompt": {
+                  "en": "Other congenital anomaly",
+                  "fr": "Autre anomalie congénitale"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_13",
+                "prompt": {
+                  "en": "Malnutrition",
+                  "fr": "Malnutrition"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_14",
+                "prompt": {
+                  "en": "Meningitis",
+                  "fr": "Méningite"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_15",
+                "prompt": {
+                  "en": "Community acquired pneumonia",
+                  "fr": "Pneumonie communautaire acquise"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_16",
+                "prompt": {
+                  "en": "Aspiration pneumonia",
+                  "fr": "Pneumonie par aspiration"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_17",
+                "prompt": {
+                  "en": "Moderate prematurity (32-36 weeks gestation)",
+                  "fr": "Prématurité modérée (32-36 semaines de gestation)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_18",
+                "prompt": {
+                  "en": "Severe prematurity (<32 weeks)",
+                  "fr": "Prématurité sévère (<32 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "13_4_19",
+                "prompt": {
+                  "en": "Other",
+                  "fr": "Autre"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      },
+      {
+        "id": "14",
+        "prompt": {
+          "en": "Number of outpatients",
+          "fr": "Nombre de patients externes"
+        },
+        "answer": 0,
+        "validators": ["isPositive"],
+        "compositionGroups": [
+          {
+            "id": "14_1",
+            "prompt": {
+              "en": "Age",
+              "fr": "Âge"
+            },
+            "questions": [
+              {
+                "id": "14_1_1",
+                "prompt": {
+                  "en": "Extremely preterm (less than 28 weeks)",
+                  "fr": "Extrêmement prématuré (moins de 28 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_2",
+                "prompt": {
+                  "en": "Very preterm (28 to 32 weeks)",
+                  "fr": "Très prématuré (28 à 32 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_3",
+                "prompt": {
+                  "en": "Moderate to late preterm (32 to 37 weeks)",
+                  "fr": "Prématuré modéré à tardif (32 à 37 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_4",
+                "prompt": {
+                  "en": "Full term (37 weeks plus)",
+                  "fr": "À terme (37 semaines et plus)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_5",
+                "prompt": {
+                  "en": "Older than neonate (>4 weeks old)",
+                  "fr": "Plus âgé que le nouveau-né (> 4 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_6",
+                "prompt": {
+                  "en": "Age 4 weeks - 5",
+                  "fr": "Âge de 4 semaines -5"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_7",
+                "prompt": {
+                  "en": "Age 6-11",
+                  "fr": "Âge 6-11"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_1_8",
+                "prompt": {
+                  "en": "Age 12-18",
+                  "fr": "Âge 12-18"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "14_2",
+            "prompt": {
+              "en": "Main condition",
+              "fr": "Main condition"
+            },
+            "questions": [
+              {
+                "id": "14_2_1",
+                "prompt": {
+                  "en": "Respiratory arrest",
+                  "fr": "Arrêt respiratoire"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_2",
+                "prompt": {
+                  "en": "Traumatic injury",
+                  "fr": "Blessure traumatique"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_3",
+                "prompt": {
+                  "en": "Septic Shock",
+                  "fr": "Choc septique"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_4",
+                "prompt": {
+                  "en": "Hypovolemic shock",
+                  "fr": "Choc hypovolémique"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_5",
+                "prompt": {
+                  "en": "Seizures/convulsions",
+                  "fr": "Crises/convulsions"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_6",
+                "prompt": {
+                  "en": "Poisoning",
+                  "fr": "Empoisonnement"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_7",
+                "prompt": {
+                  "en": "Altered mental status",
+                  "fr": "État mental altéré"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_8",
+                "prompt": {
+                  "en": "Gastroenteritis",
+                  "fr": "Gastro-entérite"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_9",
+                "prompt": {
+                  "en": "Hemorrhage",
+                  "fr": "Hémorragie"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_10",
+                "prompt": {
+                  "en": "Hypothermia",
+                  "fr": "Hypothermie"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_11",
+                "prompt": {
+                  "en": "Cardiac congenital anomaly",
+                  "fr": "Anomalie congénitale cardiaque"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_12",
+                "prompt": {
+                  "en": "Other congenital anomaly",
+                  "fr": "Autre anomalie congénitaley"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_13",
+                "prompt": {
+                  "en": "Malnutrition",
+                  "fr": "Malnutrition"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_14",
+                "prompt": {
+                  "en": "Meningitis",
+                  "fr": "Méningite"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_15",
+                "prompt": {
+                  "en": "Community acquired pneumonia",
+                  "fr": "Pneumonie communautaire acquise"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_16",
+                "prompt": {
+                  "en": "Aspiration pneumonia",
+                  "fr": "Pneumonie par aspiration"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_17",
+                "prompt": {
+                  "en": "Moderate prematurity (32-36 weeks gestation)",
+                  "fr": "Prématurité modérée (32-36 semaines de gestation)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_18",
+                "prompt": {
+                  "en": "Severe prematurity (<32 weeks)",
+                  "fr": "Prématurité sévère (<32 semaines)"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_2_19",
+                "prompt": {
+                  "en": "Other",
+                  "fr": "Autre"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          },
+          {
+            "id": "14_3",
+            "prompt": {
+              "en": "Gender",
+              "fr": "Gendre"
+            },
+            "questions": [
+              {
+                "id": "14_3_1",
+                "prompt": {
+                  "en": "Male",
+                  "fr": "Homme"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              },
+              {
+                "id": "14_3_2",
+                "prompt": {
+                  "en": "Female",
+                  "fr": "Femme"
+                },
+                "validators": ["isPositive"],
+                "__class__": "NumericQuestion"
+              }
+            ],
+            "__class__": "SpecializedGroup"
+          }
+        ],
+        "__class__": "CompositionQuestion"
+      }
+    ],
+    "__class__": "QuestionGroup"
+  },
+  "isDraft": false,
+  "submittedDate": {
+    "$date": "2024-06-15T21:29:32.200Z"
+  },
+  "__v": 0
+}

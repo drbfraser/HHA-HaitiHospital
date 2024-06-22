@@ -26,9 +26,7 @@ export async function connectTestMongo(): Promise<MongoMemoryServer> {
       useUnifiedTopology: true,
       useFindAndModify: false,
     })
-    .then(() => {
-      logger.info('Connected to in-memory MongoDB');
-    })
+    .then(() => {})
     .catch((err) => logger.error(err));
 
   return mongoServer;
