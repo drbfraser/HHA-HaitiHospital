@@ -14,9 +14,10 @@ import UserCollection, { UserWithInstanceMethods } from 'models/user';
 import DepartmentCollection from 'models/departments';
 import { CaseStudyWithInstanceMethods } from 'models/caseStudies';
 
-export const GEN_DEP_ID = '666e07bb81f0646fc4c87c9f';
-export const ADMIN_USER_ID = '666e07bb81f0646fc4c87cae';
-export const REG_USER_ID = '666e07bb81f0646fc4c87cb7';
+export const DEP_GEN_ID = '666e07bb81f0646fc4c87c9f';
+export const DEP_REHAB_ID = '666e07bb81f0646fc4c87ca1';
+export const USER_ADMIN_ID = '666e07bb81f0646fc4c87cae';
+export const USER_REG_ID = '666e07bb81f0646fc4c87cb7';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -90,8 +91,14 @@ export const setUpSession = async (user: UserAccount) => {
 export const seedMongo = async () => {
   let deps = await DepartmentCollection.insertMany([
     {
-      _id: mongoose.Types.ObjectId(GEN_DEP_ID),
+      _id: mongoose.Types.ObjectId(DEP_GEN_ID),
       name: 'General',
+      hasReport: false,
+      __v: 0,
+    },
+    {
+      _id: mongoose.Types.ObjectId(DEP_REHAB_ID),
+      name: 'Rehab',
       hasReport: false,
       __v: 0,
     },
@@ -102,20 +109,20 @@ export const seedMongo = async () => {
 
   let users = await UserCollection.insertMany([
     {
-      _id: mongoose.Types.ObjectId(ADMIN_USER_ID),
+      _id: mongoose.Types.ObjectId(USER_ADMIN_ID),
       role: 'Admin',
       username: 'user0',
       password: ENV.PASSWORD_SEED,
       name: 'Admin User',
-      departmentId: GEN_DEP_ID,
+      departmentId: DEP_GEN_ID,
     },
     {
-      _id: mongoose.Types.ObjectId(REG_USER_ID),
+      _id: mongoose.Types.ObjectId(USER_REG_ID),
       role: 'User',
       username: 'user3',
       password: ENV.PASSWORD_SEED,
       name: 'Regular User',
-      departmentId: GEN_DEP_ID,
+      departmentId: DEP_GEN_ID,
     },
   ]);
 
