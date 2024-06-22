@@ -8,6 +8,7 @@
     "rootDir": "./",
     "baseUrl": "./src/",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "strict": true,
     "alwaysStrict": true,
@@ -18,7 +19,8 @@
     "experimentalDecorators": true,
     "typeRoots": ["./types"],
     "paths": {
-      "testTools/*": ["../tests/utils/testTools/*"]
+      "testTools/*": ["../tests/utils/testTools/*"],
+      "testData/*": ["../tests/utils/testData/*"]
     }
     // "types": ["jest", "node", "chai"]
   },

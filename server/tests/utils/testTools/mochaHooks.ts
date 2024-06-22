@@ -10,14 +10,21 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import UserCollection, { UserWithInstanceMethods } from 'models/user';
 import DepartmentCollection from 'models/departments';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
 
-export const DEP_GEN_ID = '666e07bb81f0646fc4c87c9f';
-export const DEP_REHAB_ID = '666e07bb81f0646fc4c87ca1';
-export const USER_ADMIN_ID = '666e07bb81f0646fc4c87cae';
-export const USER_REG_ID = '666e07bb81f0646fc4c87cb7';
+export const DEP_ID = {
+  GENERAL: '666e07bb81f0646fc4c87c9f',
+  REHAB: '666e07bb81f0646fc4c87ca1',
+};
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
+export const USER_ID = {
+  ADMIN: '666e07bb81f0646fc4c87cae',
+  REGULAR: '666e07bb81f0646fc4c87cb7',
+  DEP_HEAD: '666e07bb81f0646fc4c87cb4',
+  MED_DIR: '666e07bb81f0646fc4c87cb1',
+};
+
 chai.use(chaiHttp);
 export interface UserAccount {
   username: string;
@@ -38,10 +45,23 @@ const NormalUser: UserAccount = {
   username: 'user3',
   password: ENV.PASSWORD_SEED,
 };
+
+const DepartmentHead: UserAccount = {
+  username: 'user2',
+  password: ENV.PASSWORD_SEED,
+};
+
+const MedicalDirector: UserAccount = {
+  username: 'user1',
+  password: ENV.PASSWORD_SEED,
+};
+
 export const Accounts = {
   AdminUser,
   IncorrectPasswordUser,
   NormalUser,
+  DepartmentHead,
+  MedicalDirector,
 };
 
 export const setupApp = () => {
@@ -68,6 +88,7 @@ export const closeServer = async (
 export const setUpSession = async (user: UserAccount) => {
   let mongo = await connectTestMongo();
   await seedMongo();
+
   let app: Application = setupApp();
   let httpServer = setupHttpServer(app);
   let agent = chai.request.agent(app);
@@ -88,16 +109,14 @@ export const setUpSession = async (user: UserAccount) => {
 export const seedMongo = async () => {
   let deps = await DepartmentCollection.insertMany([
     {
-      _id: mongoose.Types.ObjectId(DEP_GEN_ID),
+      _id: mongoose.Types.ObjectId(DEP_ID.GENERAL),
       name: 'General',
       hasReport: false,
-      __v: 0,
     },
     {
-      _id: mongoose.Types.ObjectId(DEP_REHAB_ID),
+      _id: mongoose.Types.ObjectId(DEP_ID.REHAB),
       name: 'Rehab',
       hasReport: false,
-      __v: 0,
     },
   ]);
   for (const dep of deps) {
@@ -106,20 +125,36 @@ export const seedMongo = async () => {
 
   let users = await UserCollection.insertMany([
     {
-      _id: mongoose.Types.ObjectId(USER_ADMIN_ID),
+      _id: mongoose.Types.ObjectId(USER_ID.ADMIN),
       role: 'Admin',
       username: 'user0',
       password: ENV.PASSWORD_SEED,
       name: 'Admin User',
-      departmentId: DEP_GEN_ID,
+      departmentId: DEP_ID.GENERAL,
     },
     {
-      _id: mongoose.Types.ObjectId(USER_REG_ID),
+      _id: mongoose.Types.ObjectId(USER_ID.MED_DIR),
+      role: 'Medical Director',
+      username: 'user1',
+      password: ENV.PASSWORD_SEED,
+      name: 'Medical Director User',
+      departmentId: DEP_ID.GENERAL,
+    },
+    {
+      _id: mongoose.Types.ObjectId(USER_ID.DEP_HEAD),
+      role: 'Head of Department',
+      username: 'user2',
+      password: ENV.PASSWORD_SEED,
+      name: 'Head of General Department User',
+      departmentId: DEP_ID.GENERAL,
+    },
+    {
+      _id: mongoose.Types.ObjectId(USER_ID.REGULAR),
       role: 'User',
       username: 'user3',
       password: ENV.PASSWORD_SEED,
       name: 'Regular User',
-      departmentId: DEP_GEN_ID,
+      departmentId: DEP_ID.GENERAL,
     },
   ]);
 

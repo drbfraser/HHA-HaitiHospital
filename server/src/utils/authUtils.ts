@@ -37,11 +37,13 @@ export const filterViewableReports = (user: User, reports: IReport[]) => {
     user.role === Role.Admin ||
     user.role === Role.MedicalDirector ||
     user.role === Role.HeadOfDepartment
-  )
+  ) {
     return reports;
+  }
 
-  if (user.role === Role.User)
+  if (user.role === Role.User) {
     return reports.filter((report) => user.departmentId === report.departmentId);
+  }
 
   return [];
 };
