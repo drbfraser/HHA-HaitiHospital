@@ -2,17 +2,14 @@ import * as ENV from 'utils/processEnv';
 
 import http from 'http';
 import { Application } from 'express';
-import PORT from './serverPort';
-import { createServer, setServerPort } from '../../../src/server';
-import { endianness } from 'os';
+import { createServer } from 'server';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT } from './endPoints';
 import { TEST_SERVER_PORT } from 'utils/processEnv';
-import { connectMongo, connectTestMongo } from 'utils/mongoDb';
-import mongoose, { ClientSession, mongo } from 'mongoose';
+import { connectTestMongo } from 'utils/mongoDb';
+import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import UserCollection, { UserWithInstanceMethods } from 'models/user';
 import DepartmentCollection from 'models/departments';
-import { CaseStudyWithInstanceMethods } from 'models/caseStudies';
 
 export const DEP_GEN_ID = '666e07bb81f0646fc4c87c9f';
 export const DEP_REHAB_ID = '666e07bb81f0646fc4c87ca1';
@@ -81,7 +78,7 @@ export const setUpSession = async (user: UserAccount) => {
   await agent
     .post(LOGIN_ENDPOINT)
     .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-    .send(Accounts.AdminUser);
+    .send(user);
 
   await dropMongo();
 

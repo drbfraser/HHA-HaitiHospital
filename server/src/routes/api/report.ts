@@ -71,18 +71,22 @@ router.get(
   `/:${REPORT_ID_URL_SLUG}`,
   requireJwtAuth,
   async (req: Request, res: Response, next: NextFunction) => {
-    const reportId = req.params[REPORT_ID_URL_SLUG];
-    const report = await ReportCollection.findById(reportId).lean();
-    if (!report) {
-      throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
-    }
+    try {
+      const reportId = req.params[REPORT_ID_URL_SLUG];
+      const report = await ReportCollection.findById(reportId).lean();
+      if (!report) {
+        throw new NotFound(`No report with id ${req.params[REPORT_ID_URL_SLUG]}`);
+      }
 
-    const authorized = checkUserCanViewReport(req.user, report.departmentId);
-    if (!authorized) {
-      throw new Unauthorized('User not authorized to view report');
-    }
+      const authorized = checkUserCanViewReport(req.user, report.departmentId);
+      if (!authorized) {
+        throw new Unauthorized('User not authorized to view report');
+      }
 
-    res.status(HTTP_OK_CODE).json({ report: report });
+      res.status(HTTP_OK_CODE).json({ report: report });
+    } catch (e) {
+      next(e);
+    }
   },
 );
 
@@ -98,18 +102,22 @@ router.get(
   `/department/:${DEPARTMENT_ID_URL_SLUG}`,
   requireJwtAuth,
   async (req: Request, res: Response, next: NextFunction) => {
-    const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
-    const reports = await ReportCollection.find({ departmentId: deptId }).sort({
-      reportMonth: 'desc',
-    });
+    try {
+      const deptId = req.params[DEPARTMENT_ID_URL_SLUG];
+      const reports = await ReportCollection.find({ departmentId: deptId }).sort({
+        reportMonth: 'desc',
+      });
 
-    const authorized = checkUserCanViewReport(req.user, deptId);
+      const authorized = checkUserCanViewReport(req.user, deptId);
 
-    if (!authorized) {
-      throw new Unauthorized('User not authorized to view reports');
+      if (!authorized) {
+        throw new Unauthorized('User not authorized to view reports');
+      }
+
+      res.status(HTTP_OK_CODE).json(reports);
+    } catch (e) {
+      next(e);
     }
-
-    res.status(HTTP_OK_CODE).json(reports);
   },
 );
 

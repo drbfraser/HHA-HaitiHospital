@@ -16,6 +16,7 @@ import {
   HTTP_NOCONTENT_CODE,
   HTTP_NOTFOUND_CODE,
   HTTP_OK_CODE,
+  HTTP_UNAUTHORIZED_CODE,
   HTTP_UNPROCESSABLE_ENTITY_CODE,
 } from 'exceptions/httpException';
 import { MongoMemoryServer } from 'mongodb-memory-server';
@@ -80,6 +81,15 @@ describe('report tests', function () {
       new QuestionGroup<string, string>('ROOT', res.body.report.reportObject) instanceof
         QuestionGroup,
     ).to.be.true;
+  });
+
+  it('should fail to retrieve a report with an invalid id', async function () {
+    const reportId = '666e07bc81f0646fc4c87de2';
+
+    const res = await agent.get(`${REPORT_ENDPOINT}/${reportId}`);
+
+    expect(res).to.have.status(HTTP_NOTFOUND_CODE);
+    expect(res.error.text).to.equal(`No report with id ${reportId}`);
   });
 
   it(`should get all reports correctly`, async function () {
@@ -195,5 +205,82 @@ describe('report tests', function () {
 
     expect(res).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
     expect(res.error.text).to.equal(`Report month is required`);
+  });
+});
+
+describe('report tests with regular account', function () {
+  let httpServer: http.Server;
+  let agent: any;
+  let csrf: String;
+  let mongo: MongoMemoryServer;
+
+  before('Create a Working Server and Login With Admin', async function () {
+    const session = await setUpSession(Accounts.NormalUser);
+
+    httpServer = session.httpServer;
+    agent = session.agent;
+    csrf = session.csrf;
+    mongo = session.mongo;
+  });
+
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
+  });
+
+  it('should fail to view a report if the user is not part of that department or not authorized', async function () {
+    const reportId = '666e07bc81f0646fc4c87de2';
+    await createReport(reportId, DEP_REHAB_ID);
+
+    const res = await agent.get(`${REPORT_ENDPOINT}/${reportId}`);
+
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+    expect(res.error.text).to.equal('User not authorized to view report');
+  });
+
+  it('should fail to view a reports from a department if the user is not part of that department or not authorized', async function () {
+    let res = await agent.get(`${REPORT_ENDPOINT}/department/${DEP_REHAB_ID}`);
+
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+    expect(res.error.text).to.equal('User not authorized to view reports');
+  });
+
+  it('should fail to save a report if the user is not authorized', async function () {
+    const objectSerializer = ObjectSerializer.getObjectSerializer();
+    const serializedReport = objectSerializer.serialize(buildRehabReport());
+    let res = await agent
+      .post(REPORT_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .send({
+        departmentId: DEP_GEN_ID,
+        submittedUserId: USER_ADMIN_ID,
+        submittedBy: 'Jamie Doe',
+        reportMonth: new Date(),
+        serializedReport,
+        isDraft: true,
+      });
+
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+    expect(await ReportCollection.find({})).is.empty;
+    expect(res.error.text).to.equal('User not authorized to create report');
+  });
+
+  //needs work in creating consistency for different user roles
+  xit('should fail to delete a report if the user is not authorized to edit it', async function () {
+    const deleteId = '666e07bc81f0646fc4c87de2';
+    await createReport(deleteId, DEP_GEN_ID);
+
+    let res = await agent.delete(`${REPORT_ENDPOINT}/${deleteId}`).set({ 'CSRF-Token': csrf });
+
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+    expect(await ReportCollection.findById(deleteId)).is.not.empty;
+    expect(res.error.text).to.equal('User not authorized to delete report');
   });
 });
