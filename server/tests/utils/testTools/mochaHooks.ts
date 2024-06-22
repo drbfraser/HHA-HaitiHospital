@@ -12,10 +12,15 @@ import UserCollection, { UserWithInstanceMethods } from 'models/user';
 import DepartmentCollection from 'models/departments';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import { tr } from '@faker-js/faker';
 
 export const DEP_ID = {
   GENERAL: '666e07bb81f0646fc4c87c9f',
   REHAB: '666e07bb81f0646fc4c87ca1',
+  MATERNITY: '666e07bb81f0646fc4c87ca5',
+  NICU_PAEDS: '666e07bb81f0646fc4c87ca3',
+  COMMUNITY_HEATH: '666e07bb81f0646fc4c87ca7',
+  INVALID: '776e07bb81f0646fc4c87ca7',
 };
 
 export const USER_ID = {
@@ -116,7 +121,22 @@ export const seedMongo = async () => {
     {
       _id: mongoose.Types.ObjectId(DEP_ID.REHAB),
       name: 'Rehab',
-      hasReport: false,
+      hasReport: true,
+    },
+    {
+      _id: mongoose.Types.ObjectId(DEP_ID.MATERNITY),
+      name: 'Maternity',
+      hasReport: true,
+    },
+    {
+      _id: mongoose.Types.ObjectId(DEP_ID.NICU_PAEDS),
+      name: 'NICU/Paeds',
+      hasReport: true,
+    },
+    {
+      _id: mongoose.Types.ObjectId(DEP_ID.COMMUNITY_HEATH),
+      name: 'Community & Health',
+      hasReport: true,
     },
   ]);
   for (const dep of deps) {

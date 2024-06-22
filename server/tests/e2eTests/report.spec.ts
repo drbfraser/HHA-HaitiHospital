@@ -38,7 +38,7 @@ async function createReport(
     submittedUserId: userId,
     submittedBy: 'user2',
     reportMonth: '2024-06-01T07:00:00.000Z',
-    reportObject: reportObject,
+    reportObject: reportObject.maternity,
     isDraft: false,
     submittedDate: '2024-06-15T21:29:32.200Z',
   }).save();
