@@ -1,6 +1,15 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
+import {
+  setupApp,
+  setupHttpServer,
+  Accounts,
+  closeServer,
+  dropMongo,
+  seedMongo,
+  setUpSession,
+  USER_ID,
+} from 'testTools/mochaHooks';
 import {
   CSRF_ENDPOINT,
   DEPARTMENT_ENDPOINT,
@@ -18,10 +27,11 @@ import {
   HTTP_OK_CODE,
   HTTP_UNPROCESSABLE_ENTITY_CODE,
 } from 'exceptions/httpException';
+import chai, { expect } from 'chai';
+import chaiHttp from 'chai-http';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { seedMessageBoard } from 'seeders/seed';
 
-const expect = require('chai').expect;
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 let httpServer: http.Server;
@@ -44,39 +54,27 @@ async function updatePostedUserIds() {
 }
 
 describe('Users Test', function () {
-  before('Create a Working Server and Login With Admin', function (done: Done) {
-    let app: Application = setupApp();
-    httpServer = setupHttpServer(app);
-    agent = chai.request.agent(app);
-    userIds = Array<string>();
+  let mongo: MongoMemoryServer;
+  before('Create a Working Server and Login With Admin', async function () {
+    const session = await setUpSession(Accounts.AdminUser);
 
-    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
-      if (error) done(error);
-      csrf = res?.body?.CSRFToken;
-
-      agent
-        .post(LOGIN_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(Accounts.AdminUser)
-        .end(function (error: any, response: any) {
-          if (error) return done(error);
-          done();
-        });
-    });
+    httpServer = session.httpServer;
+    agent = session.agent;
+    mongo = session.mongo;
+    csrf = session.csrf;
   });
 
-  after('Close a Working Server', async function () {
-    // Cleaning up created users not deleted during testing
-    for await (const userId of userIds) {
-      try {
-        await agent
-          .delete(`${USERS_ENDPOINT}/${userId}`)
-          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
-      } catch (error: any) {
-        console.log(error);
-      }
-    }
-    closeServer(agent, httpServer);
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+    await seedMessageBoard();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('Should Successfully Get All Users', function (done: Done) {
@@ -155,7 +153,7 @@ describe('Users Test', function () {
     const departmentId: string = departmentResponse.body[0].id;
 
     const newUser: User = {
-      username: 'JohnUsername',
+      username: 'user0',
       password: WORKING_PASSWORD,
       name: 'John',
       role: 'User',
@@ -214,7 +212,7 @@ describe('Users Test', function () {
     };
 
     const userResponse = await agent.get(USERS_ENDPOINT);
-    const userId: string = userResponse.body[0].id;
+    const userId: string = USER_ID.REGULAR;
 
     const updatedResponse = await agent
       .put(`${USERS_ENDPOINT}/${userId}`)
@@ -228,20 +226,19 @@ describe('Users Test', function () {
   });
 
   it('Should Unsuccessfully Update a User Due to Username Conflicts', async function () {
+    const userId = USER_ID.REGULAR;
+
     const departmentResponse = await agent.get(DEPARTMENT_ENDPOINT);
     const departmentName: string = departmentResponse.body[0].name;
     const departmentId: string = departmentResponse.body[0].id;
 
     const newUser: User = {
-      username: 'JohnUsernameUPDATED',
+      username: 'user0',
       password: WORKING_PASSWORD + 'UPDATED',
       name: 'JohnUPDATED',
       role: 'User',
       department: { id: departmentId, name: departmentName },
     };
-
-    const userResponse = await agent.get(USERS_ENDPOINT);
-    const userId: string = userResponse.body[1].id; // Grab the second user because the first user was updated in the previous test
 
     const updatedResponse = await agent
       .put(`${USERS_ENDPOINT}/${userId}`)
@@ -268,6 +265,7 @@ describe('Users Test', function () {
       .send(newUser);
     expect(updatedResponse).to.have.status(HTTP_UNPROCESSABLE_ENTITY_CODE);
   });
+
   it('Should Unsuccessfully Update a User Due to Invalid Password', async function () {
     const newUser: User = {
       username: 'JohnUsernameUPDATED',
@@ -308,7 +306,7 @@ describe('Users Test', function () {
   it('Should Successfully Delete a User', function (done: Done) {
     agent.get(USERS_ENDPOINT).end(function (error: any, response: any) {
       if (error) done(error);
-      const id: string = response.body[0].id; // The first User is not Admin
+      const id: string = USER_ID.REGULAR; // The first User is not Admin
       agent
         .delete(`${USERS_ENDPOINT}/${id}`)
         .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
