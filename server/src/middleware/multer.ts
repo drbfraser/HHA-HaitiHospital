@@ -37,6 +37,7 @@ const upload = multer({
  * @param inputField - is a field of a multipart form with which multer parses the media
  */
 export const ImageUploader = (inputField: string, required = true) => {
+  //TODO: figure out how to prevent files to be created when testing
   return (req: Request, res: Response, next: NextFunction) => {
     const uploadSingleFile = upload.single(inputField);
 

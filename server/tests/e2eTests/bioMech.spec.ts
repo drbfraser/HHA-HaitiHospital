@@ -1,14 +1,25 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
+import {
+  setupApp,
+  setupHttpServer,
+  Accounts,
+  closeServer,
+  dropMongo,
+  seedMongo,
+  setUpSession,
+} from 'testTools/mochaHooks';
 import { CSRF_ENDPOINT, LOGIN_ENDPOINT, BIOMECH_ENDPOINT } from 'testTools/endPoints';
 import { Done } from 'mocha';
 import {
   HTTP_CREATED_CODE,
   HTTP_INTERNALERROR_CODE,
   HTTP_NOCONTENT_CODE,
+  HTTP_NOTFOUND_CODE,
   HTTP_OK_CODE,
 } from 'exceptions/httpException';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { seedBioMech } from 'seeders/seed';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -19,6 +30,8 @@ let httpServer: http.Server;
 let agent: any;
 let csrf: string;
 let bioMechIds: string[];
+
+const invalidId = '123456789012 ';
 
 interface BioMechReport {
   equipmentName: string;
@@ -43,23 +56,7 @@ function postBioMech(
   done: Done,
   expectedStatus: Number,
   next?: Function,
-) {
-  agent
-    .post(BIOMECH_ENDPOINT)
-    .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-    .field('equipmentName', bioMechReport.equipmentName)
-    .field('equipmentFault', bioMechReport.equipmentFault)
-    .field('equipmentPriority', bioMechReport.equipmentPriority)
-    .field('equipmentStatus', bioMechReport.equipmentStatus)
-    .attach('file', imgPath)
-    .end(function (error: any, response: any) {
-      if (error) done(error);
-      expect(error).to.be.null;
-      expect(response).to.have.status(expectedStatus);
-      if (!next) done();
-      else next(done);
-    });
-}
+) {}
 
 function updatePostedBioMechIds(done: Done) {
   agent.get(BIOMECH_ENDPOINT).end(function (error: any, response: any) {
@@ -70,39 +67,31 @@ function updatePostedBioMechIds(done: Done) {
 }
 
 describe('Bio Mech Tests', function () {
-  before('Create a Working Server and Login With Admin', function (done: Done) {
-    let app: Application = setupApp();
-    httpServer = setupHttpServer(app);
-    agent = chai.request.agent(app);
-    bioMechIds = Array<string>();
+  let httpServer: http.Server;
+  let agent: any;
+  let csrf: String;
+  let mongo: MongoMemoryServer;
 
-    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
-      if (error) done(error);
-      csrf = res?.body?.CSRFToken;
+  before('Create a Working Server and Login With Admin', async function () {
+    const session = await setUpSession(Accounts.AdminUser);
 
-      agent
-        .post(LOGIN_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(Accounts.AdminUser)
-        .end(function (error: any, response: any) {
-          if (error) return done(error);
-          done();
-        });
-    });
+    httpServer = session.httpServer;
+    agent = session.agent;
+    csrf = session.csrf;
+    mongo = session.mongo;
   });
 
-  after('Close a Working Server', async function () {
-    // Clean up created bio mechs that were not deleted during testing
-    for await (const bioMechId of bioMechIds) {
-      try {
-        await agent
-          .delete(`${BIOMECH_ENDPOINT}/${bioMechId}`)
-          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
-      } catch (error: any) {
-        console.log(error);
-      }
-    }
-    closeServer(agent, httpServer);
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+    await seedBioMech();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('Should Successfully Get All Biomech Reports', function (done: Done) {
@@ -132,9 +121,9 @@ describe('Bio Mech Tests', function () {
   });
 
   it('Should Unsuccessfully Get a Biomech Report due to Invalid Id', function (done: Done) {
-    agent.get(`${BIOMECH_ENDPOINT}/${'Invalid Id'}`).end(function (error: any, response: any) {
+    agent.get(`${BIOMECH_ENDPOINT}/${invalidId}`).end(function (error: any, response: any) {
       if (error) done(error);
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+      expect(response).to.have.status(HTTP_NOTFOUND_CODE);
       done();
     });
   });
@@ -149,7 +138,20 @@ describe('Bio Mech Tests', function () {
       equipmentStatus: 'fixed',
       file: { path: imgPath },
     };
-    postBioMech(bioMechReport, imgPath, done, HTTP_CREATED_CODE, updatePostedBioMechIds);
+    agent
+      .post(BIOMECH_ENDPOINT)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
+      .field('equipmentName', bioMechReport.equipmentName)
+      .field('equipmentFault', bioMechReport.equipmentFault)
+      .field('equipmentPriority', bioMechReport.equipmentPriority)
+      .field('equipmentStatus', bioMechReport.equipmentStatus)
+      .attach('file', imgPath)
+      .end(function (error: any, response: any) {
+        if (error) done(error);
+        expect(error).to.be.null;
+        expect(response).to.have.status(HTTP_CREATED_CODE);
+        done();
+      });
   });
 
   it('Should Successfully Delete a Biomech Report', function (done: Done) {
@@ -172,11 +174,11 @@ describe('Bio Mech Tests', function () {
 
   it('Should Unsuccessfully Delete a Biomech Report Due to Invalid ID', function (done: Done) {
     agent
-      .delete(`${BIOMECH_ENDPOINT}/${'Invalid'}`)
+      .delete(`${BIOMECH_ENDPOINT}/${invalidId}`)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
       .end(function (error: any, response: any) {
         if (error) done(error);
-        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
+        expect(response).to.have.status(HTTP_NOTFOUND_CODE);
         done();
       });
   });
