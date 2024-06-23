@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import { mongo } from 'mongoose';
 
 class EnvironmentConfigurationError extends Error {
   constructor(message: string | undefined) {
@@ -9,11 +8,7 @@ class EnvironmentConfigurationError extends Error {
 }
 
 // Options with default values.
-let mongoDb = process.env.MONGO_URI ?? 'mongodb://localhost:27017/dev';
-if (process.env.NODE_ENV === 'test') {
-  mongoDb = process.env.MONGO_TEST_URI ?? 'mongodb://localhost:27017/test';
-}
-export const MONGO_DB = mongoDb;
+export const MONGO_DB = process.env.MONGO_URI ?? 'mongodb://localhost:27017/dev';
 
 export const CORS = process.env.CORS ?? 'http://localhost:3000';
 export const SERVER_PORT = parseInt(process.env.SERVER_PORT ?? '5000');

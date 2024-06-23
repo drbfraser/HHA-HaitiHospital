@@ -1,8 +1,5 @@
 import http from 'http';
-import { Application } from 'express';
 import {
-  setupApp,
-  setupHttpServer,
   Accounts,
   closeServer,
   dropMongo,
@@ -10,12 +7,7 @@ import {
   setUpSession,
   USER_ID,
 } from 'testTools/mochaHooks';
-import {
-  CSRF_ENDPOINT,
-  DEPARTMENT_ENDPOINT,
-  LOGIN_ENDPOINT,
-  USERS_ENDPOINT,
-} from 'testTools/endPoints';
+import { DEPARTMENT_ENDPOINT, USERS_ENDPOINT } from 'testTools/endPoints';
 import { Done } from 'mocha';
 import { _ } from 'ajv';
 import {

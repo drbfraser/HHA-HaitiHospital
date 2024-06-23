@@ -1,26 +1,10 @@
-import http, { request } from 'http';
-import { Application } from 'express';
-import {
-  setupApp,
-  setupHttpServer,
-  Accounts,
-  closeServer,
-  seedMongo,
-  setUpSession,
-  dropMongo,
-} from 'testTools//mochaHooks';
-import {
-  CSRF_ENDPOINT,
-  LOGIN_ENDPOINT,
-  USERS_ENDPOINT,
-  LOGOUT_ENDPOINT,
-} from 'testTools/endPoints';
+import http from 'http';
+import { Accounts, closeServer, seedMongo, setUpSession, dropMongo } from 'testTools//mochaHooks';
+import { USERS_ENDPOINT, LOGOUT_ENDPOINT } from 'testTools/endPoints';
 import { HTTP_OK_CODE } from 'exceptions/httpException';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import chaiHttp from 'chai-http';
-import { connectTestMongo } from 'utils/mongoDb';
-import { mongo } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
 chai.use(chaiHttp);

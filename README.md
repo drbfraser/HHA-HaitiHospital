@@ -101,8 +101,6 @@ under the `server` folder. You can use the following example `.env` configuratio
 ```bash
 # Your MongoDB URI (local or remote). Defaults to localhost:27017/dev
 MONGO_URI=mongodb://localhost:27017/dev
-# MongoDB URI used when NODE_ENV is set to `test`. Defaults to localhost:27017/test
-MONGO_TEST_URI=mongodb://localhost:27017/test
 # Secret use to generate JWT tokens (You can generate the secret via 'openssl rand -base64 32'on Linux)
 JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
@@ -182,17 +180,8 @@ The password will be `PASSWORD_SEED` as defined in your `.env`
 
 ## Testing Setup (WIP)
 
-To prevent conflicts during development, testing occurs on a seperate database that needs to be
-seeded before testing. In `server`, run
-
-```bash
-SET NODE_ENV=test&&npm run seed
-```
-
-To seed the testing database (default is `test`) before running any tests. Note: setting `NODE_ENV`
-may be different depending on your OS.
-
-Run tests locally with
+Testing is done with an in-memory MongoDB. Currently some tests use seeding scripts for data but
+ideally each test would generate data relevant to its own test itself. Run tests locally with
 
 ```bash
 npm run test-local

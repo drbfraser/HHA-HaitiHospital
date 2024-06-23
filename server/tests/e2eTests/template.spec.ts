@@ -1,9 +1,6 @@
 import { QuestionGroup } from '@hha/common';
 import http from 'http';
-import { Application } from 'express';
 import {
-  setupApp,
-  setupHttpServer,
   Accounts,
   closeServer,
   dropMongo,
@@ -11,10 +8,9 @@ import {
   setUpSession,
   DEP_ID,
 } from 'testTools/mochaHooks';
-import { CSRF_ENDPOINT, LOGIN_ENDPOINT, TEMPLATE_ENDPOINT } from 'testTools/endPoints';
-import { ITemplate, TemplateCollection } from 'models/template';
+import { TEMPLATE_ENDPOINT } from 'testTools/endPoints';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { seedMessageBoard, seedTemplates } from 'seeders/seed';
+import { seedTemplates } from 'seeders/seed';
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 
