@@ -1,6 +1,6 @@
 import * as ENV from './utils/processEnv';
 
-import express, { Application, NextFunction, Request, Response } from 'express';
+import express, { Application } from 'express';
 
 import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
@@ -12,6 +12,7 @@ import passport from 'passport';
 import path from 'path';
 import promBundle from 'express-prom-bundle';
 import routes from './routes/routes';
+import { logRequest } from './middleware/sanitizeRequestBody';
 
 // Add the options to the prometheus middleware most option are for http_request_duration_seconds histogram metric
 const metricsMiddleware = promBundle({
@@ -24,27 +25,6 @@ const metricsMiddleware = promBundle({
     collectDefaultMetrics: {},
   },
 });
-
-const logRequest = (req: Request, res: Response, next: NextFunction) => {
-  const sanitizedBody = sanitizeRequestBody(req.body);
-  logger.info(
-    `Incoming Request - Method: ${req.method}, Path: ${req.path}, Body: ${JSON.stringify(sanitizedBody)}`,
-  );
-  next();
-};
-
-interface RequestBody {
-  [key: string]: any;
-  password?: string;
-}
-
-const sanitizeRequestBody = (body: RequestBody): RequestBody => {
-  const sanitizedBody: RequestBody = { ...body };
-  if (sanitizedBody.password) {
-    sanitizedBody.password = '***';
-  }
-  return sanitizedBody;
-};
 
 export const createServer = () => {
   const app = express();
