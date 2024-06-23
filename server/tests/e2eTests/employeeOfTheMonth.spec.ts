@@ -1,15 +1,8 @@
 import http from 'http';
-import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
-import {
-  CSRF_ENDPOINT,
-  DEPARTMENT_ENDPOINT,
-  EMPLOYEE_OF_THE_MONTH_ENDPOINT,
-  LOGIN_ENDPOINT,
-} from 'testTools/endPoints';
-import { Done } from 'mocha';
-import { deleteUploadedImage } from 'utils/unlinkImage';
-import { HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import { Accounts, closeServer, setUpSession, seedMongo, dropMongo } from 'testTools/mochaHooks';
+import { DEPARTMENT_ENDPOINT, EMPLOYEE_OF_THE_MONTH_ENDPOINT } from 'testTools/endPoints';
+import { HTTP_OK_CODE } from 'exceptions/httpException';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -30,44 +23,26 @@ function updatePostedImgPaths(imgPath: string) {
 }
 
 describe('Employee of the Month Tests', function () {
-  before('Create a Working Server and Login With Admin', function (done: Done) {
-    let app: Application = setupApp();
-    httpServer = setupHttpServer(app);
-    agent = chai.request.agent(app);
-    imgPaths = Array<string>();
+  let mongo: MongoMemoryServer;
+  before('Create a Working Server and Login With Admin', async function () {
+    const session = await setUpSession(Accounts.AdminUser);
 
-    agent.get(CSRF_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
-      csrf = response?.body?.CSRFToken;
-
-      agent
-        .post(LOGIN_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(Accounts.AdminUser)
-        .end(function (error: any, response: any) {
-          if (error) return done(error);
-          done();
-        });
-    });
+    httpServer = session.httpServer;
+    agent = session.agent;
+    csrf = session.csrf;
+    mongo = session.mongo;
   });
 
-  after('Close a Working Server', async function () {
-    // Delete the images uploaded when EOTM is changed
-    for await (const imgPath of imgPaths) {
-      console.log('deleting: ' + imgPath);
-      deleteUploadedImage(imgPath);
-    }
-
-    closeServer(agent, httpServer);
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
   });
 
-  it('Should Successfully Get the Employee of the Month', function (done: Done) {
-    agent.get(EMPLOYEE_OF_THE_MONTH_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      done();
-    });
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('Should Successfully Create the Employee of the Month', async function () {
