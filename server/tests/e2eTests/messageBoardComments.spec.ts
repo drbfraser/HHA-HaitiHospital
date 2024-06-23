@@ -1,6 +1,14 @@
 import http from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools/mochaHooks';
+import {
+  setupApp,
+  setupHttpServer,
+  Accounts,
+  closeServer,
+  dropMongo,
+  seedMongo,
+  setUpSession,
+} from 'testTools/mochaHooks';
 import {
   CSRF_ENDPOINT,
   LOGIN_ENDPOINT,
@@ -9,6 +17,8 @@ import {
 } from 'testTools/endPoints';
 import { Done } from 'mocha';
 import { HTTP_CREATED_CODE, HTTP_INTERNALERROR_CODE, HTTP_OK_CODE } from 'exceptions/httpException';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { seedMessageBoard } from 'seeders/seed';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -25,28 +35,27 @@ interface MessageComment {
 }
 
 describe('Message Board Comments Test', function () {
-  before('Create a Working Server and Login With Admin', function (done: Done) {
-    let app: Application = setupApp();
-    httpServer = setupHttpServer(app);
-    agent = chai.request.agent(app);
+  let mongo: MongoMemoryServer;
+  before('Create a Working Server and Login With Admin', async function () {
+    const session = await setUpSession(Accounts.AdminUser);
 
-    agent.get(CSRF_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
-      csrf = response?.body?.CSRFToken;
-
-      agent
-        .post(LOGIN_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(Accounts.AdminUser)
-        .end(function (error: any, response: any) {
-          if (error) return done(error);
-          done();
-        });
-    });
+    httpServer = session.httpServer;
+    agent = session.agent;
+    mongo = session.mongo;
+    csrf = session.csrf;
   });
 
-  after('Close a Working Server', function () {
-    closeServer(agent, httpServer);
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+    await seedMessageBoard();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('Should Successfully Get Message Comments', function (done: Done) {
@@ -54,7 +63,6 @@ describe('Message Board Comments Test', function () {
     agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
       expect(error).to.be.null;
       expect(response).to.have.status(HTTP_OK_CODE);
-      console.log(response.body[0]);
       const messageId = response.body[0].id;
 
       agent.get(`${MESSAGEBOARD_COMMENT_ENDPOINT}/${messageId}`).end(function (
