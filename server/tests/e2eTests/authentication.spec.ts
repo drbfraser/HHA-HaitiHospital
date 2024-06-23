@@ -1,6 +1,14 @@
 import http, { request } from 'http';
 import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from 'testTools//mochaHooks';
+import {
+  setupApp,
+  setupHttpServer,
+  Accounts,
+  closeServer,
+  seedMongo,
+  setUpSession,
+  dropMongo,
+} from 'testTools//mochaHooks';
 import {
   CSRF_ENDPOINT,
   LOGIN_ENDPOINT,
@@ -11,35 +19,37 @@ import { HTTP_OK_CODE } from 'exceptions/httpException';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import chaiHttp from 'chai-http';
+import { connectTestMongo } from 'utils/mongoDb';
+import { mongo } from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
 chai.use(chaiHttp);
 
-let agent: any;
-let httpServer: http.Server;
-let csrf: string;
-
 describe('Test Admin Authorization', function () {
-  before('Create a Working Server and Login With Admin', function (done) {
-    let app: Application = setupApp();
-    httpServer = setupHttpServer(app);
-    agent = chai.request.agent(app);
-    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
-      if (error) done(error);
-      csrf = res?.body?.CSRFToken;
+  let httpServer: http.Server;
+  let agent: any;
+  let csrf: String;
+  let mongo: MongoMemoryServer;
 
-      agent
-        .post(LOGIN_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(Accounts.AdminUser)
-        .end(function (error: any, response: any) {
-          if (error) return done(error);
-          done();
-        });
-    });
+  before('Create a Working Server and Login With Admin', async function () {
+    const session = await setUpSession(Accounts.AdminUser);
+
+    httpServer = session.httpServer;
+    agent = session.agent;
+    csrf = session.csrf;
+    mongo = session.mongo;
   });
 
-  after('Close a Working Server', function () {
-    closeServer(agent, httpServer);
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('Should Fetch the Users', function (done) {
