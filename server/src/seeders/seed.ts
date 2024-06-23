@@ -1124,19 +1124,36 @@ const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
     await ReportCollection.deleteMany({});
-    const user = await UserCollection.findOne({ username: 'user2' });
-    const serializer = ObjectSerializer.getObjectSerializer();
-    const serialized = serializer.serialize(buildNicuPaedsReport());
-    let report = new ReportCollection({
-      departmentId: user?.departmentId,
-      submittedUserId: user?._id,
-      submittedBy: user?.username,
-      reportMonth: new Date(new Date().getFullYear(), new Date().getMonth()),
-      reportObject: serialized,
-      isDraft: false,
+    const users = await UserCollection.find({
+      username: { $in: ['user2', 'user5', 'user11', 'user3'] },
     });
-    await report.save();
-    console.log(`Reports seeded`);
+    type UserMap = { [username: string]: (typeof users)[0] };
+    const userMap: UserMap = users.reduce((acc: UserMap, user) => {
+      acc[user.username] = user;
+      return acc;
+    }, {} as UserMap);
+    const serializer = ObjectSerializer.getObjectSerializer();
+
+    const defaultReports = [
+      { defaultReport: buildNicuPaedsReport(), user: userMap['user2'] },
+      { defaultReport: buildMaternityReport(), user: userMap['user5'] },
+      { defaultReport: buildRehabReport(), user: userMap['user11'] },
+      { defaultReport: buildCommunityHealthReport(), user: userMap['user3'] },
+    ];
+
+    for (const { defaultReport, user } of defaultReports) {
+      const serialized = serializer.serialize(defaultReport);
+      let report = new ReportCollection({
+        departmentId: user?.departmentId,
+        submittedUserId: user?._id,
+        submittedBy: user?.username,
+        reportMonth: new Date(new Date().getFullYear(), new Date().getMonth()),
+        reportObject: serialized,
+        isDraft: false,
+      });
+      await report.save();
+      console.log(`Reports seeded`);
+    }
   } catch (err) {
     console.log(err);
   }
