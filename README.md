@@ -242,6 +242,7 @@ the .env file. By default, it's going to be `hhahaiti_local` for local testing.
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.override.yml up
 ```
+For full and detailed guide on running docker services locally, please refer to monitoring.md
 
 ### Deployment on staging
 
