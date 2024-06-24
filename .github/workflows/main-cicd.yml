@@ -118,7 +118,6 @@ jobs:
           node -v
           npm ci
           npm install ../common_build.tar.gz
-          npm run seed
       - name: Run tests & build
         working-directory: /isolated_build/repo/server/
         run: |
