@@ -88,6 +88,7 @@ jobs:
       # Connection string: mongodb://<hostname service name>:<port>/<db name>
       MONGO_URI: mongodb://test_postgres:27017/hhahaiti
       JWT_SECRET: just_some_secret
+      MONGOMS_DOWNLOAD_DIR: /tmp/mongodb-binaries
 
     services:
       test_postgres:
