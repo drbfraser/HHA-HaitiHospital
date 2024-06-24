@@ -26,7 +26,6 @@ router.post('/logout', requireJwtAuth, (req: Request, res: Response, next: NextF
       return next(err);
     }
   });
-  logger.debug('User successfully logged out');
   res.send(true);
 });
 
