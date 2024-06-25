@@ -12,7 +12,7 @@ import { Line } from 'react-chartjs-2';
 import { createDefaultChartOptions } from './options';
 import { ChartProps } from './ChartSelector';
 import { separateTimeAndQuestionData } from 'utils/analytics';
-import { refornatQuestionPrompt } from 'utils/string';
+import { reformatQuestionPrompt } from 'utils/string';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 

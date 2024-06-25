@@ -26,3 +26,6 @@ export const userLocale = navigator.language;
 
 export const YEAR_ONLY_DATE_FORMAT = 'YYYY';
 export const MONTH_AND_YEAR_DATE_FORMAT = 'MMM YYYY';
+export const MONTH_LITERAL = 'month';
+export const YEAR_LITERAL = 'year';
+export const YEAR_DASH_MONTH_FORMAT = 'YYYY-MM-DD';

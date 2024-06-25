@@ -1,10 +1,11 @@
-import { AnalyticsResponse, QuestionPrompt } from '@hha/common';
+import { AnalyticsResponse } from '@hha/common';
 import BarChart from './Bar';
 import LineChart from './Line';
-import PieChart from './Pie';
+
+export type ChartType = 'Bar' | 'Line';
 
 export type ChartProps = {
-  type: string;
+  type: ChartType;
   analyticsData: AnalyticsResponse[];
   questionPrompt: string;
 };
@@ -14,9 +15,6 @@ const ChartSelector = ({ type, analyticsData, questionPrompt }: ChartProps) => {
       return <BarChart analyticsData={analyticsData} questionPrompt={questionPrompt} />;
     case 'Line':
       return <LineChart analyticsData={analyticsData} questionPrompt={questionPrompt} />;
-
-    case 'Pie':
-      return <PieChart analyticsData={analyticsData} questionPrompt={questionPrompt} />;
 
     default:
       return <BarChart analyticsData={analyticsData} questionPrompt={questionPrompt} />;

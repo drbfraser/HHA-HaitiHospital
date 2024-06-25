@@ -4,7 +4,7 @@ import { Dropdown, DropdownButton, DropdownItemText } from 'react-bootstrap';
 export const DropDownMenus = {
   timeStep: ['month', 'year'],
   aggregateBy: ['month', 'year'],
-  charts: ['Bar', 'Line', 'Pie', 'Stacked Bar'],
+  charts: ['Bar', 'Line'],
 };
 
 type DropDownProps = {

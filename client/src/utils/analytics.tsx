@@ -1,13 +1,17 @@
 import { AnalyticsResponse, DepartmentJson, QuestionPrompt } from '@hha/common';
-import { refornatQuestionPrompt } from './string';
+import { reformatQuestionPrompt } from './string';
 import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/date';
 import moment from 'moment';
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
-  return departments.find((department) => department.name == departmentName)?.id;
+  return departments.find((department) => department.name === departmentName)?.id;
 };
 
-export const getAllDepartmentNames = (departments: DepartmentJson[]) => {
+export const filterDepartmentsByReport = (departments: DepartmentJson[]) => {
+  return departments.filter((department) => department.hasReport);
+};
+
+export const getAllDepartmentsByName = (departments: DepartmentJson[]) => {
   return departments.map((department) => department.name);
 };
 
@@ -40,7 +44,7 @@ export const getQuestionFromId = (questionPrompts: QuestionPrompt[], questionId:
     (questionPrompt) => questionPrompt.id === questionId,
   )!;
 
-  return refornatQuestionPrompt(questionPrompt.id, questionPrompt.en);
+  return reformatQuestionPrompt(questionPrompt.id, questionPrompt.en);
 };
 
 export const sumUpAnalyticsData = (analyticsData: AnalyticsResponse[]) => {
@@ -49,4 +53,16 @@ export const sumUpAnalyticsData = (analyticsData: AnalyticsResponse[]) => {
   analyticsData.forEach((analyticData) => (sum += analyticData.answer));
 
   return sum;
+};
+
+export const displayTotal = (
+  questionPrompts: QuestionPrompt[],
+  questionId: string,
+  analyticsData: AnalyticsResponse[],
+) => {
+  const question = getQuestionFromId(questionPrompts, questionId);
+
+  const total = sumUpAnalyticsData(analyticsData);
+
+  return `Total ${question}: ${total}`;
 };

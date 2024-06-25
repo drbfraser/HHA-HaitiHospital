@@ -1,7 +1,6 @@
 import { AnalyticsQuery, AnalyticsResponse, QuestionPrompt } from '@hha/common';
 import Api from 'actions/Api';
 import { ENDPOINT_ANALYTICS, ENDPOINT_ANALYTICS_GET_QUESTIONS } from 'constants/endpoints';
-import { ResponseMessage } from 'utils';
 import { History } from 'history';
 
 export const getAllQuestionPrompts = async (history: History, departmentId: string) => {
@@ -12,7 +11,7 @@ export const getAllQuestionPrompts = async (history: History, departmentId: stri
   try {
     const questionPrompts: QuestionPrompt[] = await Api.Get(
       ENDPOINT_ANALYTICS_GET_QUESTIONS,
-      ResponseMessage.getMsgFetchReportFailed(),
+      'Error fetching questions',
       history,
       controller.signal,
       departmentQuery,
@@ -21,6 +20,7 @@ export const getAllQuestionPrompts = async (history: History, departmentId: stri
     return questionPrompts;
   } catch (error) {
     console.error('Error fetching questions for a department: ', error);
+    throw error;
   } finally {
     controller.abort();
   }
@@ -32,7 +32,7 @@ export const getAnalyticsData = async (history: History, analyticsQuery: Analyti
   try {
     const analytics: AnalyticsResponse[] = await Api.Get(
       ENDPOINT_ANALYTICS,
-      ResponseMessage.getMsgFetchReportFailed(),
+      'Error fetching analytics',
       history,
       controller.signal,
       analyticsQuery,

@@ -2,7 +2,7 @@ import { QuestionPrompt } from '@hha/common';
 import { ChangeEvent, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Col, InputGroup, ListGroup, Modal } from 'react-bootstrap';
-import { refornatQuestionPrompt } from 'utils/string';
+import { reformatQuestionPrompt } from 'utils/string';
 
 type AnalyticsQuestionModalProps = {
   showModal: boolean;
@@ -59,7 +59,7 @@ export const AnalyticsQuestionModal = ({
                       variant="light"
                       onClick={() => setQuestionSelected(question.id)}
                     >
-                      {refornatQuestionPrompt(question.id, question.en)}
+                      {reformatQuestionPrompt(question.id, question.en)}
                     </ListGroup.Item>
                   );
                 },
