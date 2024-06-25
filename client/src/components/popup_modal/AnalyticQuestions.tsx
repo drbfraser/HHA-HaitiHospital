@@ -1,4 +1,4 @@
-import { QuestionPrompt } from '@hha/common';
+import { AnalyticsQuestionResponse } from '@hha/common';
 import { ChangeEvent, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Col, InputGroup, ListGroup, Modal } from 'react-bootstrap';
@@ -6,13 +6,13 @@ import { refornatQuestionPrompt } from 'utils/string';
 
 type AnalyticsQuestionModalProps = {
   showModal: boolean;
-  questionPrompts: QuestionPrompt[];
+  questionPrompts: AnalyticsQuestionResponse[];
   handleCloseModal: () => void;
   setQuestionSelected: (questionId: string) => void;
 };
 
 const getQuestionPromptsFromSearch = (
-  questionPrompts: QuestionPrompt[],
+  questionPrompts: AnalyticsQuestionResponse[],
   questionSearched: string,
 ) => {
   return questionPrompts.filter((question) => {

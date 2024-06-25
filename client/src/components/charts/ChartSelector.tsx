@@ -1,4 +1,4 @@
-import { AnalyticsResponse, QuestionPrompt } from '@hha/common';
+import { AnalyticsResponse } from '@hha/common';
 import BarChart from './Bar';
 import LineChart from './Line';
 import PieChart from './Pie';

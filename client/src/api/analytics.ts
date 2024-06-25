@@ -1,43 +1,36 @@
-import { AnalyticsQuery, AnalyticsResponse, QuestionPrompt } from '@hha/common';
-import Api from 'actions/Api';
+import {
+  AnalyticsQuestionRequestBody,
+  AnalyticsQuestionResponse,
+  AnalyticsRequestBody,
+  AnalyticsResponse,
+} from '@hha/common';
 import { ENDPOINT_ANALYTICS, ENDPOINT_ANALYTICS_GET_QUESTIONS } from 'constants/endpoints';
-import { ResponseMessage } from 'utils';
-import { History } from 'history';
+import axios from 'axios';
 
-export const getAllQuestionPrompts = async (history: History, departmentId: string) => {
-  const controller = new AbortController();
-
-  const departmentQuery = { departmentId };
-
+export const getAllQuestionPrompts = async (
+  analyticsQuestionBody: AnalyticsQuestionRequestBody,
+) => {
   try {
-    const questionPrompts: QuestionPrompt[] = await Api.Get(
+    const response = await axios.post<AnalyticsQuestionResponse[]>(
       ENDPOINT_ANALYTICS_GET_QUESTIONS,
-      ResponseMessage.getMsgFetchReportFailed(),
-      history,
-      controller.signal,
-      departmentQuery,
+      analyticsQuestionBody,
     );
 
-    return questionPrompts;
+    return response.data;
   } catch (error) {
     console.error('Error fetching questions for a department: ', error);
-  } finally {
-    controller.abort();
   }
 };
 
-export const getAnalyticsData = async (history: History, analyticsQuery: AnalyticsQuery) => {
+export const getAnalyticsData = async (analyticsRequestBody: AnalyticsRequestBody) => {
   const controller = new AbortController();
 
   try {
-    const analytics: AnalyticsResponse[] = await Api.Get(
+    const response = await axios.post<AnalyticsResponse[]>(
       ENDPOINT_ANALYTICS,
-      ResponseMessage.getMsgFetchReportFailed(),
-      history,
-      controller.signal,
-      analyticsQuery,
+      analyticsRequestBody,
     );
-    return analytics;
+    return response.data;
   } catch (error) {
     console.error('Error fetching analytics for a department: ', error);
   } finally {

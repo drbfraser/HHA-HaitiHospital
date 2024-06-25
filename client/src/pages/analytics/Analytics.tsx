@@ -7,7 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { ListGroupItem } from 'react-bootstrap';
 import { getAllDepartments } from 'api/department';
 import { useHistory } from 'react-router-dom';
-import { AnalyticsQuery, AnalyticsResponse, DepartmentJson, QuestionPrompt } from '@hha/common';
+import {
+  AnalyticsQuestionRequestBody,
+  AnalyticsQuestionResponse,
+  AnalyticsRequestBody,
+  AnalyticsResponse,
+  DepartmentJson,
+} from '@hha/common';
 import { getAllQuestionPrompts, getAnalyticsData } from 'api/analytics';
 import { refornatQuestionPrompt } from 'utils/string';
 import moment from 'moment';
@@ -55,7 +61,7 @@ const Analytics = () => {
   const [departments, setDepartments] = useState<DepartmentJson[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [questionPrompts, setQuestionPrompts] = useState<QuestionPrompt[]>([]);
+  const [questionPrompts, setQuestionPrompts] = useState<AnalyticsQuestionResponse[]>([]);
 
   const [selectedQuestionId, setSelectedQuestionId] = useState('1');
   const [selectedDepartmentNames, setSelectedDepartmentNames] = useState(['Rehab']);
@@ -91,7 +97,11 @@ const Analytics = () => {
 
       const selectedDepartmentIds = findDepartmentIdsByNames(departments, selectedDepartmentNames)!;
 
-      const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentIds.join(','));
+      const analyticsQuestionBody: AnalyticsQuestionRequestBody = {
+        departmentIds: selectedDepartmentIds,
+      };
+
+      const questionPrompts = await getAllQuestionPrompts(analyticsQuestionBody);
 
       setQuestionPrompts(questionPrompts!);
     };
@@ -110,16 +120,20 @@ const Analytics = () => {
       const startDate = moment(timeOptions.from, 'YYYY-MM-DD').toISOString();
       const endDate = moment(timeOptions.to, 'YYYY-MM-DD').toISOString();
 
-      const analyticsQuery: AnalyticsQuery = {
-        departmentIds: selectedDepartmentIds.join(','),
-        questionId: selectedQuestionId,
-        startDate: startDate,
-        endDate: endDate,
+      const analyticsRequestBody: AnalyticsRequestBody = {
+        departmentQuestions: [
+          {
+            questionId: '1',
+            departmentId: selectedDepartmentIds[0],
+          },
+        ],
+        startDate,
+        endDate,
         aggregateBy: selectedAggregateBy.toLowerCase() as 'month',
         timeStep: timeOptions.timeStep.toLowerCase() as 'year',
       };
 
-      const analyticsData = await getAnalyticsData(history, analyticsQuery);
+      const analyticsData = await getAnalyticsData(analyticsRequestBody);
 
       setAnalyticsData(analyticsData!);
       setIsLoading(false);
@@ -134,7 +148,18 @@ const Analytics = () => {
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
 
   const onDepartmentSelected = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedDepartmentNames([...selectedDepartmentNames, event.target.id]);
+    const targetDepartmentName = event.target.id;
+
+    let newSelectedDepartmentNames: string[] = [];
+
+    if (selectedDepartmentNames.includes(targetDepartmentName)) {
+      newSelectedDepartmentNames = selectedDepartmentNames.filter(
+        (departmentName) => departmentName != targetDepartmentName,
+      );
+      setSelectedDepartmentNames(newSelectedDepartmentNames);
+    } else {
+      setSelectedDepartmentNames([...selectedDepartmentNames, event.target.id]);
+    }
   };
 
   const onFromDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -165,13 +190,6 @@ const Analytics = () => {
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
             <div className="d-flex flex-row gap-3">
-              {/* <DropDown
-                menus={getAllDepartmentNames(departments!)}
-                title={'Department'}
-                selectedMenu={selectedDepartmentName}
-                setDropDownMenu={onDepartmentSelected}
-              /> */}
-
               <DropDownMultiSelect
                 title="Department"
                 dropDowns={getAllDepartmentNames(departments)}
