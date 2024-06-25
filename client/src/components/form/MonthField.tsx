@@ -1,29 +1,76 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { currYear } from 'utils';
+import { currMonth, currYear } from 'utils';
 import { useTranslation } from 'react-i18next';
+
+interface monthInfo {
+  value: number;
+  label: string;
+}
 
 const maxYear = currYear;
 const minYear = 1900;
 interface MonthFieldProps {
   setReportMonth: Dispatch<SetStateAction<Date | undefined>>;
   previousReportMonth?: Date;
+  canSelectFuture?: boolean;
 }
-
-export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldProps) => {
+export const MonthField = ({
+  setReportMonth,
+  previousReportMonth,
+  canSelectFuture = false,
+}: MonthFieldProps) => {
   const [month, setMonth] = useState<number | undefined>(
     previousReportMonth?.getMonth() ?? undefined,
   );
   const [year, setYear] = useState<number | undefined>(
-    previousReportMonth?.getUTCFullYear() ?? undefined,
+    previousReportMonth?.getUTCFullYear() ?? currYear,
   );
+
   const { t } = useTranslation();
 
+  const getMonthOptions = () => {
+    let months: monthInfo[] = [
+      { value: -1, label: t('monthSelect') },
+      { value: 0, label: t('monthJanuary') },
+      { value: 1, label: t('monthFebruary') },
+      { value: 2, label: t('monthMarch') },
+      { value: 3, label: t('monthApril') },
+      { value: 4, label: t('monthMay') },
+      { value: 5, label: t('monthJune') },
+      { value: 6, label: t('monthJuly') },
+      { value: 7, label: t('monthAugust') },
+      { value: 8, label: t('monthSeptember') },
+      { value: 9, label: t('monthOctober') },
+      { value: 10, label: t('monthNovember') },
+      { value: 11, label: t('monthDecember') },
+    ];
+
+    if (!canSelectFuture && year === currYear) {
+      // it's 2 to account for month starting at 0 + the sentinel value
+      months = months.slice(0, currMonth + 2);
+    }
+
+    return months.map((month: monthInfo) => <option value={month.value}>{month.label}</option>);
+  };
+
+  const visibleMonths = useMemo(() => {
+    return getMonthOptions();
+  }, [year]);
+
   useEffect(() => {
-    if (month !== undefined && year !== undefined && year >= minYear && year <= currYear) {
+    if (
+      month !== undefined &&
+      month > -1 &&
+      year !== undefined &&
+      year >= minYear &&
+      year <= currYear
+    ) {
       setReportMonth(new Date(year, month));
+    } else {
+      setReportMonth(undefined);
     }
   }, [month, setReportMonth, year]);
 
@@ -39,19 +86,7 @@ export const MonthField = ({ setReportMonth, previousReportMonth }: MonthFieldPr
               value={month}
               onChange={(e) => setMonth(parseInt(e.target.value))}
             >
-              <option>{t('monthSelect')}</option>
-              <option value={0}>{t('monthJanuary')}</option>
-              <option value={1}>{t('monthFebruary')}</option>
-              <option value={2}>{t('monthMarch')}</option>
-              <option value={3}>{t('monthApril')}</option>
-              <option value={4}>{t('monthMay')}</option>
-              <option value={5}>{t('monthJune')}</option>
-              <option value={6}>{t('monthJuly')}</option>
-              <option value={7}>{t('monthAugust')}</option>
-              <option value={8}>{t('monthSeptember')}</option>
-              <option value={9}>{t('monthOctober')}</option>
-              <option value={10}>{t('monthNovember')}</option>
-              <option value={11}>{t('monthDecember')}</option>
+              {visibleMonths}
             </Form.Select>
           </Form.Group>
         </Col>

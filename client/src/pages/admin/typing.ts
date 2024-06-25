@@ -6,7 +6,10 @@ export interface AdminUserFormData {
   name: string;
   password: string;
   role: Role;
-  department: Department;
+  department: {
+    id: string;
+    name: string;
+  };
 }
 
 export const ADMIN_USER_FORM_FIELDS: {

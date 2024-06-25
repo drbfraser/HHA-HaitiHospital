@@ -4,14 +4,19 @@ import DepartmentCollection from 'models/departments';
 import { Department } from '@hha/common';
 import { Types } from 'mongoose';
 
-export enum DefaultDepartments {
-  General = 'General',
-  Rehab = 'Rehab',
-  NICU = 'NICU/Paeds',
-  Maternity = 'Maternity',
-  Community = 'Community & Health',
-  BioMechanic = 'Bio Support',
-}
+export type DepartmentInfo = {
+  name: string;
+  hasReport: boolean;
+};
+
+export const DefaultDepartments: Record<string, DepartmentInfo> = {
+  General: { name: 'General', hasReport: false },
+  Rehab: { name: 'Rehab', hasReport: true },
+  NICU: { name: 'NICU/Paeds', hasReport: true },
+  Maternity: { name: 'Maternity', hasReport: true },
+  Community: { name: 'Community & Health', hasReport: true },
+  BioMechanic: { name: 'Bio Support', hasReport: false },
+};
 
 // ***************************************************** Utility functions for hashtable approach *****************************************************
 
@@ -62,7 +67,7 @@ const verifyDeptId = (deptId: string, map: Map<string, string>): boolean => {
 const getDeptNameById = async (deptId: string): Promise<string> => {
   const department: Department | null = await DepartmentCollection.findById(deptId);
   if (!department) {
-    throw new NotFound(`No department with id provided`);
+    throw new NotFound(`No department with id ` + deptId + ` provided`);
   }
   return department.name;
 };
@@ -70,7 +75,7 @@ const getDeptNameById = async (deptId: string): Promise<string> => {
 const getDeptIdByName = async (deptName: string): Promise<string> => {
   const department: Department | null = await DepartmentCollection.findOne({ name: deptName });
   if (!department) {
-    throw new NotFound(`No department with id provided`);
+    throw new NotFound(`No department with name ` + deptName + `  provided`);
   }
   return department._id!;
 };

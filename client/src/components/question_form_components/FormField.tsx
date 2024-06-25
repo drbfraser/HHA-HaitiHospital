@@ -17,6 +17,7 @@ type FormFieldProps = {
   value: number | string;
   readOnly?: boolean;
   style?: React.CSSProperties;
+  hideLabel?: boolean;
 };
 
 const FormField = (props: FormFieldProps) => {
@@ -27,11 +28,12 @@ const FormField = (props: FormFieldProps) => {
   const prompt = typeof props.prompt !== 'string' ? props.prompt[language] : props.prompt;
   const value = props.value ?? ''; // Set a default value if props.value is null
   const label = props.nameId.replaceAll('_', '.');
+  const hideLabel = props.hideLabel ?? false;
 
   return (
     <div className="form-group min-width-form-field">
       <label className="fs-10 m-0 text-secondary" htmlFor={props.nameId}>
-        {label}. {prompt}
+        {!hideLabel && `${label}.`} {prompt}
       </label>
       <input
         className={cn(

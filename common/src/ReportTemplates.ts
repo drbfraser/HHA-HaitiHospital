@@ -67,178 +67,188 @@ export const oneQuestionReport = (): QuestionGroup<ID, ErrorType> => {
   return report;
 };
 
+const createQuestionContentFetcher = (reportTemplate: string) => {
+  return {
+    getContent: (questionKey: string) => {
+      return {
+        en: translations['en'][reportTemplate][questionKey],
+        fr: translations['fr'][reportTemplate][questionKey],
+      };
+    },
+    getOptions: (questionKey: string) => {
+      const list_en = translations['en'][reportTemplate][questionKey];
+      const list_fr = translations['fr'][reportTemplate][questionKey];
+
+      return list_en.map((item: any, idx: string | number) => ({
+        en: item,
+        fr: list_fr[idx],
+      }));
+    },
+  };
+};
+
 export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
-  const getQuestionContent = (questionKey: string) => {
-    return {
-      en: translations['en'].rehabReportQuestions[questionKey],
-      fr: translations['fr'].rehabReportQuestions[questionKey],
-    };
-  };
-
-  const getQuestionOptions = (questionKey: string) => {
-    const list_en = translations['en'].rehabReportQuestions[questionKey];
-    const list_fr = translations['fr'].rehabReportQuestions[questionKey];
-
-    return list_en.map((item: any, idx: string | number) => ({
-      en: item,
-      fr: list_fr[idx],
-    }));
-  };
+  const rehabReportFetcher = createQuestionContentFetcher('rehabReportQuestions');
 
   const reportID: ID = 'rehab-report_1_1';
 
   const rehabReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
     reportID,
-    getQuestionContent('title'),
+    rehabReportFetcher.getContent('title'),
   );
 
   // Questions 1 to 4
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '1',
-    getQuestionContent('question1'),
+    rehabReportFetcher.getContent('question1'),
   );
 
   const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '2',
-    getQuestionContent('question2'),
+    rehabReportFetcher.getContent('question2'),
   );
 
   const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '3',
-    getQuestionContent('question3'),
+    rehabReportFetcher.getContent('question3'),
   );
 
   const q4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '4',
-    getQuestionContent('question4'),
+    rehabReportFetcher.getContent('question4'),
   );
 
   // Question 5
   const q5: ExpandableQuestion<ID, ErrorType> = new ExpandableQuestion<ID, ErrorType>(
     '5',
-    getQuestionContent('question5'),
+    rehabReportFetcher.getContent('question5'),
     questionIdGeneratorBuilder('5'),
   );
   const q5_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_1',
-    getQuestionContent('question5_1'),
-    getQuestionOptions('question5_1_options'),
+    rehabReportFetcher.getContent('question5_1'),
+    rehabReportFetcher.getOptions('question5_1_options'),
   );
   const q5_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '5_2',
-    getQuestionContent('question5_2'),
+    rehabReportFetcher.getContent('question5_2'),
   );
   const q5_3: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_3',
-    getQuestionContent('question5_3'),
-    getQuestionOptions('question5_3_options'),
+    rehabReportFetcher.getContent('question5_3'),
+    rehabReportFetcher.getOptions('question5_3_options'),
   );
   const q5_4: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_4',
-    getQuestionContent('question5_4'),
-    getQuestionOptions('question5_4_options'),
+    rehabReportFetcher.getContent('question5_4'),
+    rehabReportFetcher.getOptions('question5_4_options'),
   );
   const q5_5: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_5',
-    getQuestionContent('question5_5'),
-    getQuestionOptions('question5_5_options'),
+    rehabReportFetcher.getContent('question5_5'),
+    rehabReportFetcher.getOptions('question5_5_options'),
   );
   const q5_6: MultipleSelectionQuestion<ID, ErrorType> = new MultipleSelectionQuestion<
     ID,
     ErrorType
-  >('5_6', getQuestionContent('question5_6'), getQuestionOptions('question5_6_options'), []);
+  >(
+    '5_6',
+    rehabReportFetcher.getContent('question5_6'),
+    rehabReportFetcher.getOptions('question5_6_options'),
+    [],
+  );
   const q5_7: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_7',
-    getQuestionContent('question5_7'),
-    getQuestionOptions('question5_7_options'),
+    rehabReportFetcher.getContent('question5_7'),
+    rehabReportFetcher.getOptions('question5_7_options'),
   );
   const q5_8: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '5_8',
-    getQuestionContent('question5_8'),
-    getQuestionOptions('question5_8_options'),
+    rehabReportFetcher.getContent('question5_8'),
+    rehabReportFetcher.getOptions('question5_8_options'),
   );
   q5.addAllToTemplate(q5_1, q5_2, q5_3, q5_4, q5_5, q5_6, q5_7, q5_8);
 
   // Question 6
   const q6: ExpandableQuestion<ID, ErrorType> = new ExpandableQuestion<ID, ErrorType>(
     '6',
-    getQuestionContent('question6'),
+    rehabReportFetcher.getContent('question6'),
     questionIdGeneratorBuilder('6'),
   );
   const q6_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '6_1',
-    getQuestionContent('question6_1'),
-    getQuestionOptions('question6_1_options'),
+    rehabReportFetcher.getContent('question6_1'),
+    rehabReportFetcher.getOptions('question6_1_options'),
   );
   const q6_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '6_2',
-    getQuestionContent('question6_2'),
+    rehabReportFetcher.getContent('question6_2'),
   );
 
   const q6_3: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '6_3',
-    getQuestionContent('question6_3'),
+    rehabReportFetcher.getContent('question6_3'),
   );
   q6.addAllToTemplate(q6_1, q6_2, q6_3);
 
   // Question 7
   const q7: ExpandableQuestion<ID, ErrorType> = new ExpandableQuestion<ID, ErrorType>(
     '7',
-    getQuestionContent('question7'),
+    rehabReportFetcher.getContent('question7'),
     questionIdGeneratorBuilder('7'),
   );
   const q7_1: SingleSelectionQuestion<ID, ErrorType> = new SingleSelectionQuestion<ID, ErrorType>(
     '7_1',
-    getQuestionContent('question7_1'),
-    getQuestionOptions('question7_1_options'),
+    rehabReportFetcher.getContent('question7_1'),
+    rehabReportFetcher.getOptions('question7_1_options'),
   );
   const q7_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '7_2',
-    getQuestionContent('question7_2'),
+    rehabReportFetcher.getContent('question7_2'),
   );
   const q7_3: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '7_3',
-    getQuestionContent('question7_3'),
+    rehabReportFetcher.getContent('question7_3'),
   );
   q7.addAllToTemplate(q7_1, q7_2, q7_3);
 
   // Questions 8 to 10
   const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '8',
-    getQuestionContent('question8'),
+    rehabReportFetcher.getContent('question8'),
   );
 
   const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '9',
-    getQuestionContent('question9'),
+    rehabReportFetcher.getContent('question9'),
   );
 
   const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '10',
-    getQuestionContent('question10'),
+    rehabReportFetcher.getContent('question10'),
   );
 
   // 11_1 "Reason for self-discharged"
 
   const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_1',
-    getQuestionContent('question11_1_option1'),
+    rehabReportFetcher.getContent('question11_1_option1'),
   );
   const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_2',
-    getQuestionContent('question11_1_option2'),
+    rehabReportFetcher.getContent('question11_1_option2'),
   );
   const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_3',
-    getQuestionContent('question11_1_option3'),
+    rehabReportFetcher.getContent('question11_1_option3'),
   );
   const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_4',
-    getQuestionContent('question11_1_option4'),
+    rehabReportFetcher.getContent('question11_1_option4'),
   );
   const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_5',
-    getQuestionContent('question11_1_option5'),
+    rehabReportFetcher.getContent('question11_1_option5'),
   );
 
   const q11_1: SpecializedGroup<
@@ -247,7 +257,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '11_1',
-    getQuestionContent('question11_1'),
+    rehabReportFetcher.getContent('question11_1'),
     q11_1_1,
     q11_1_2,
     q11_1_3,
@@ -258,26 +268,26 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 11 "Self-discharged"
   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '11',
-    getQuestionContent('question11'),
+    rehabReportFetcher.getContent('question11'),
     q11_1,
   );
 
   // Question 12
   const q12_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_1_1',
-    getQuestionContent('question12_1_1'),
+    rehabReportFetcher.getContent('question12_1_1'),
   );
   const q12_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_1_2',
-    getQuestionContent('question12_1_2'),
+    rehabReportFetcher.getContent('question12_1_2'),
   );
   const q12_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_1_3',
-    getQuestionContent('question12_1_3'),
+    rehabReportFetcher.getContent('question12_1_3'),
   );
   const q12_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_1_4',
-    getQuestionContent('question12_1_4'),
+    rehabReportFetcher.getContent('question12_1_4'),
   );
   const q12_1: SpecializedGroup<
     ID,
@@ -285,7 +295,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '12_1',
-    getQuestionContent('question12_1'),
+    rehabReportFetcher.getContent('question12_1'),
     q12_1_1,
     q12_1_2,
     q12_1_3,
@@ -294,27 +304,27 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q12_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_2_1',
-    getQuestionContent('question12_2_1'),
+    rehabReportFetcher.getContent('question12_2_1'),
   );
   const q12_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_2_2',
-    getQuestionContent('question12_2_2'),
+    rehabReportFetcher.getContent('question12_2_2'),
   );
   const q12_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_2_3',
-    getQuestionContent('question12_2_3'),
+    rehabReportFetcher.getContent('question12_2_3'),
   );
   const q12_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_2_4',
-    getQuestionContent('question12_2_4'),
+    rehabReportFetcher.getContent('question12_2_4'),
   );
   const q12_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_2_5',
-    getQuestionContent('question12_2_5'),
+    rehabReportFetcher.getContent('question12_2_5'),
   );
   const q12_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12_2_6',
-    getQuestionContent('question12_2_6'),
+    rehabReportFetcher.getContent('question12_2_6'),
   );
   const q12_2: SpecializedGroup<
     ID,
@@ -322,7 +332,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '12_2',
-    getQuestionContent('question12_2'),
+    rehabReportFetcher.getContent('question12_2'),
     q12_2_1,
     q12_2_2,
     q12_2_3,
@@ -333,7 +343,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q12: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '12',
-    getQuestionContent('question12'),
+    rehabReportFetcher.getContent('question12'),
     q12_1,
     q12_2,
   );
@@ -341,19 +351,19 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 13
   const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_1',
-    getQuestionContent('question13_1_1'),
+    rehabReportFetcher.getContent('question13_1_1'),
   );
   const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_2',
-    getQuestionContent('question13_1_2'),
+    rehabReportFetcher.getContent('question13_1_2'),
   );
   const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_3',
-    getQuestionContent('question13_1_3'),
+    rehabReportFetcher.getContent('question13_1_3'),
   );
   const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_4',
-    getQuestionContent('question13_1_4'),
+    rehabReportFetcher.getContent('question13_1_4'),
   );
   const q13_1: SpecializedGroup<
     ID,
@@ -361,7 +371,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_1',
-    getQuestionContent('question13_1'),
+    rehabReportFetcher.getContent('question13_1'),
     q13_1_1,
     q13_1_2,
     q13_1_3,
@@ -370,35 +380,35 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q13_2_1_1_1 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_1',
-    getQuestionContent('question13_2_1_1_1'),
+    rehabReportFetcher.getContent('question13_2_1_1_1'),
   );
   const q13_2_1_1_2 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_2',
-    getQuestionContent('question13_2_1_1_2'),
+    rehabReportFetcher.getContent('question13_2_1_1_2'),
   );
   const q13_2_1_1_3 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_3',
-    getQuestionContent('question13_2_1_1_3'),
+    rehabReportFetcher.getContent('question13_2_1_1_3'),
   );
   const q13_2_1_1_4 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_4',
-    getQuestionContent('question13_2_1_1_4'),
+    rehabReportFetcher.getContent('question13_2_1_1_4'),
   );
   const q13_2_1_1_5 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_5',
-    getQuestionContent('question13_2_1_1_5'),
+    rehabReportFetcher.getContent('question13_2_1_1_5'),
   );
   const q13_2_1_1_6 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_6',
-    getQuestionContent('question13_2_1_1_6'),
+    rehabReportFetcher.getContent('question13_2_1_1_6'),
   );
   const q13_2_1_1_7 = new NumericQuestion<ID, ErrorType>(
     '13_2_1_1_7',
-    getQuestionContent('question13_2_1_1_7'),
+    rehabReportFetcher.getContent('question13_2_1_1_7'),
   );
   const q13_2_1_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_2_1_1',
-    getQuestionContent('question13_2_1_1'),
+    rehabReportFetcher.getContent('question13_2_1_1'),
     q13_2_1_1_1,
     q13_2_1_1_2,
     q13_2_1_1_3,
@@ -409,41 +419,41 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   );
   const q13_2_1 = new CompositionQuestion<ID, ErrorType>(
     '13_2_1',
-    getQuestionContent('question13_2_1'),
+    rehabReportFetcher.getContent('question13_2_1'),
     q13_2_1_1,
   );
 
   const q13_2_2_1_1 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_1',
-    getQuestionContent('question13_2_2_1_1'),
+    rehabReportFetcher.getContent('question13_2_2_1_1'),
   );
   const q13_2_2_1_2 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_2',
-    getQuestionContent('question13_2_2_1_2'),
+    rehabReportFetcher.getContent('question13_2_2_1_2'),
   );
   const q13_2_2_1_3 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_3',
-    getQuestionContent('question13_2_2_1_3'),
+    rehabReportFetcher.getContent('question13_2_2_1_3'),
   );
   const q13_2_2_1_4 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_4',
-    getQuestionContent('question13_2_2_1_4'),
+    rehabReportFetcher.getContent('question13_2_2_1_4'),
   );
   const q13_2_2_1_5 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_5',
-    getQuestionContent('question13_2_2_1_5'),
+    rehabReportFetcher.getContent('question13_2_2_1_5'),
   );
   const q13_2_2_1_6 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_6',
-    getQuestionContent('question13_2_2_1_6'),
+    rehabReportFetcher.getContent('question13_2_2_1_6'),
   );
   const q13_2_2_1_7 = new NumericQuestion<ID, ErrorType>(
     '13_2_2_1_7',
-    getQuestionContent('question13_2_2_1_7'),
+    rehabReportFetcher.getContent('question13_2_2_1_7'),
   );
   const q13_2_2_1 = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_2_2_1',
-    getQuestionContent('question13_2_2_1'),
+    rehabReportFetcher.getContent('question13_2_2_1'),
     q13_2_2_1_1,
     q13_2_2_1_2,
     q13_2_2_1_3,
@@ -454,41 +464,41 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   );
   const q13_2_2 = new CompositionQuestion<ID, ErrorType>(
     '13_2_2',
-    getQuestionContent('question13_2_2'),
+    rehabReportFetcher.getContent('question13_2_2'),
     q13_2_2_1,
   );
 
   const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_3',
-    getQuestionContent('question13_2_3'),
+    rehabReportFetcher.getContent('question13_2_3'),
   );
   const q13_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_4',
-    getQuestionContent('question13_2_4'),
+    rehabReportFetcher.getContent('question13_2_4'),
   );
   const q13_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_5',
-    getQuestionContent('question13_2_5'),
+    rehabReportFetcher.getContent('question13_2_5'),
   );
   const q13_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_6',
-    getQuestionContent('question13_2_6'),
+    rehabReportFetcher.getContent('question13_2_6'),
   );
   const q13_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_7',
-    getQuestionContent('question13_2_7'),
+    rehabReportFetcher.getContent('question13_2_7'),
   );
   const q13_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_8',
-    getQuestionContent('question13_2_8'),
+    rehabReportFetcher.getContent('question13_2_8'),
   );
   const q13_2_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_9',
-    getQuestionContent('question13_2_9'),
+    rehabReportFetcher.getContent('question13_2_9'),
   );
   const q13_2_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_10',
-    getQuestionContent('question13_2_10'),
+    rehabReportFetcher.getContent('question13_2_10'),
   );
 
   const q13_2: SpecializedGroup<
@@ -497,7 +507,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     QuestionAnswerNode<ID, number, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, QuestionAnswerNode<ID, number, ErrorType>>(
     '13_2',
-    getQuestionContent('question13_2'),
+    rehabReportFetcher.getContent('question13_2'),
     q13_2_1,
     q13_2_2,
     q13_2_3,
@@ -512,7 +522,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q13: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '13',
-    getQuestionContent('question13'),
+    rehabReportFetcher.getContent('question13'),
     q13_1,
     q13_2,
   );
@@ -520,31 +530,31 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 14
   const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_1',
-    getQuestionContent('question14_1_1'),
+    rehabReportFetcher.getContent('question14_1_1'),
   );
   const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_2',
-    getQuestionContent('question14_1_2'),
+    rehabReportFetcher.getContent('question14_1_2'),
   );
   const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_3',
-    getQuestionContent('question14_1_3'),
+    rehabReportFetcher.getContent('question14_1_3'),
   );
   const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_4',
-    getQuestionContent('question14_1_4'),
+    rehabReportFetcher.getContent('question14_1_4'),
   );
   const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_5',
-    getQuestionContent('question14_1_5'),
+    rehabReportFetcher.getContent('question14_1_5'),
   );
   const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_6',
-    getQuestionContent('question14_1_6'),
+    rehabReportFetcher.getContent('question14_1_6'),
   );
   const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_8',
-    getQuestionContent('question14_1_7'),
+    rehabReportFetcher.getContent('question14_1_7'),
   );
   const q14_1: SpecializedGroup<
     ID,
@@ -552,7 +562,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_1',
-    getQuestionContent('question14_1'),
+    rehabReportFetcher.getContent('question14_1'),
     q14_1_1,
     q14_1_2,
     q14_1_3,
@@ -564,11 +574,11 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q14_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_1',
-    getQuestionContent('question14_2_1'),
+    rehabReportFetcher.getContent('question14_2_1'),
   );
   const q14_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_2',
-    getQuestionContent('question14_2_2'),
+    rehabReportFetcher.getContent('question14_2_2'),
   );
   const q14_2: SpecializedGroup<
     ID,
@@ -576,52 +586,52 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_2',
-    getQuestionContent('question14_2'),
+    rehabReportFetcher.getContent('question14_2'),
     q14_2_1,
     q14_2_2,
   );
 
   const q14_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_1',
-    getQuestionContent('question14_3_1'),
+    rehabReportFetcher.getContent('question14_3_1'),
   );
   const q14_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_2',
-    getQuestionContent('question14_3_2'),
+    rehabReportFetcher.getContent('question14_3_2'),
 
     // q13_2_2_1,
   );
   const q14_3_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_3',
-    getQuestionContent('question14_3_3'),
+    rehabReportFetcher.getContent('question14_3_3'),
   );
   const q14_3_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_4',
-    getQuestionContent('question14_3_4'),
+    rehabReportFetcher.getContent('question14_3_4'),
   );
   const q14_3_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_5',
-    getQuestionContent('question14_3_5'),
+    rehabReportFetcher.getContent('question14_3_5'),
   );
   const q14_3_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_6',
-    getQuestionContent('question14_3_6'),
+    rehabReportFetcher.getContent('question14_3_6'),
   );
   const q14_3_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_7',
-    getQuestionContent('question14_3_7'),
+    rehabReportFetcher.getContent('question14_3_7'),
   );
   const q14_3_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_8',
-    getQuestionContent('question14_3_8'),
+    rehabReportFetcher.getContent('question14_3_8'),
   );
   const q14_3_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_9',
-    getQuestionContent('question14_3_9'),
+    rehabReportFetcher.getContent('question14_3_9'),
   );
   const q14_3_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_10',
-    getQuestionContent('question14_3_10'),
+    rehabReportFetcher.getContent('question14_3_10'),
   );
   const q14_3: SpecializedGroup<
     ID,
@@ -629,7 +639,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_3',
-    getQuestionContent('question14_3'),
+    rehabReportFetcher.getContent('question14_3'),
     q14_3_1,
     q14_3_2,
     q14_3_3,
@@ -644,7 +654,7 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q14: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '14',
-    getQuestionContent('question14'),
+    rehabReportFetcher.getContent('question14'),
     q14_1,
     q14_2,
     q14_3,
@@ -657,40 +667,36 @@ export const buildRehabReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
-  const getQuestionContent = (questionKey: string) => {
-    return {
-      en: translations['en'].nicuQuestions[questionKey],
-      fr: translations['fr'].nicuQuestions[questionKey],
-    };
-  };
+  const nicuReportFetcher = createQuestionContentFetcher('nicuQuestions');
+
   const reportID: ID = 'nicu-paeds-report_1';
   const nicuPaedsReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
     reportID,
-    getQuestionContent('title'),
+    nicuReportFetcher.getContent('title'),
   );
 
   // Questions 1 to 3
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '1',
-    getQuestionContent('question1'),
+    nicuReportFetcher.getContent('question1'),
   );
   const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '2',
-    getQuestionContent('question2'),
+    nicuReportFetcher.getContent('question2'),
   );
   const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '3',
-    getQuestionContent('question3'),
+    nicuReportFetcher.getContent('question3'),
   );
 
   // Question 4 "Hospitalized"
   const q4_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '4_1_1',
-    getQuestionContent('question4_1_1'),
+    nicuReportFetcher.getContent('question4_1_1'),
   );
   const q4_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '4_1_2',
-    getQuestionContent('question4_1_2'),
+    nicuReportFetcher.getContent('question4_1_2'),
   );
   const q4_1: SpecializedGroup<
     ID,
@@ -698,24 +704,24 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '4_1',
-    getQuestionContent('question4_1'),
+    nicuReportFetcher.getContent('question4_1'),
     q4_1_1,
     q4_1_2,
   );
   const q4: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '4',
-    getQuestionContent('question4'),
+    nicuReportFetcher.getContent('question4'),
     q4_1,
   );
 
   // Question 5 "Discharged alive"
   const q5_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '5_1_1',
-    getQuestionContent('question5_1_1'),
+    nicuReportFetcher.getContent('question5_1_1'),
   );
   const q5_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '5_1_2',
-    getQuestionContent('question5_1_2'),
+    nicuReportFetcher.getContent('question5_1_2'),
   );
   const q5_1: SpecializedGroup<
     ID,
@@ -723,24 +729,24 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '5_1',
-    getQuestionContent('question5_1'),
+    nicuReportFetcher.getContent('question5_1'),
     q5_1_1,
     q5_1_2,
   );
   const q5: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '5',
-    getQuestionContent('question5'),
+    nicuReportFetcher.getContent('question5'),
     q5_1,
   );
 
   // Question 6 "Died before 48h"
   const q6_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '6_1_1',
-    getQuestionContent('question6_1_1'),
+    nicuReportFetcher.getContent('question6_1_1'),
   );
   const q6_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '6_1_2',
-    getQuestionContent('question6_1_2'),
+    nicuReportFetcher.getContent('question6_1_2'),
   );
   const q6_1: SpecializedGroup<
     ID,
@@ -748,24 +754,24 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '6_1',
-    getQuestionContent('question6_1'),
+    nicuReportFetcher.getContent('question6_1'),
     q6_1_1,
     q6_1_2,
   );
   const q6: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '6',
-    getQuestionContent('question6'),
+    nicuReportFetcher.getContent('question6'),
     q6_1,
   );
 
   // Question 7 "Died after 48h"
   const q7_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '7_1_1',
-    getQuestionContent('question7_1_1'),
+    nicuReportFetcher.getContent('question7_1_1'),
   );
   const q7_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '7_1_2',
-    getQuestionContent('question7_1_2'),
+    nicuReportFetcher.getContent('question7_1_2'),
   );
   const q7_1: SpecializedGroup<
     ID,
@@ -773,49 +779,49 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '7_1',
-    getQuestionContent('question7_1'),
+    nicuReportFetcher.getContent('question7_1'),
     q7_1_1,
     q7_1_2,
   );
   const q7: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '7',
-    getQuestionContent('question7'),
+    nicuReportFetcher.getContent('question7'),
     q7_1,
   );
 
   // Questions 8 to 10
   const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '8',
-    getQuestionContent('question8'),
+    nicuReportFetcher.getContent('question8'),
   );
   const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '9',
-    getQuestionContent('question9'),
+    nicuReportFetcher.getContent('question9'),
   );
   const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '10',
-    getQuestionContent('question10'),
+    nicuReportFetcher.getContent('question10'),
   );
 
   const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_1',
-    getQuestionContent('question11_1_1'),
+    nicuReportFetcher.getContent('question11_1_1'),
   );
   const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_2',
-    getQuestionContent('question11_1_2'),
+    nicuReportFetcher.getContent('question11_1_2'),
   );
   const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_3',
-    getQuestionContent('question11_1_3'),
+    nicuReportFetcher.getContent('question11_1_3'),
   );
   const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_4',
-    getQuestionContent('question11_1_4'),
+    nicuReportFetcher.getContent('question11_1_4'),
   );
   const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_5',
-    getQuestionContent('question11_1_5'),
+    nicuReportFetcher.getContent('question11_1_5'),
   );
 
   const q11_1: SpecializedGroup<
@@ -824,7 +830,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '11_1',
-    getQuestionContent('question11_1'),
+    nicuReportFetcher.getContent('question11_1'),
     q11_1_1,
     q11_1_2,
     q11_1_3,
@@ -834,31 +840,31 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '11',
-    getQuestionContent('question11'),
+    nicuReportFetcher.getContent('question11'),
     q11_1,
   );
 
   // Question 12
   const q12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12',
-    getQuestionContent('question12'),
+    nicuReportFetcher.getContent('question12'),
   );
 
   const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_1',
-    getQuestionContent('question13_1_1'),
+    nicuReportFetcher.getContent('question13_1_1'),
   );
   const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_2',
-    getQuestionContent('question13_1_2'),
+    nicuReportFetcher.getContent('question13_1_2'),
   );
   const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_3',
-    getQuestionContent('question13_1_3'),
+    nicuReportFetcher.getContent('question13_1_3'),
   );
   const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_4',
-    getQuestionContent('question13_1_4'),
+    nicuReportFetcher.getContent('question13_1_4'),
   );
 
   const q13_1: SpecializedGroup<
@@ -867,7 +873,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_1',
-    getQuestionContent('question13_1'),
+    nicuReportFetcher.getContent('question13_1'),
     q13_1_1,
     q13_1_2,
     q13_1_3,
@@ -876,35 +882,35 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q13_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_1',
-    getQuestionContent('question13_2_1'),
+    nicuReportFetcher.getContent('question13_2_1'),
   );
   const q13_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_2',
-    getQuestionContent('question13_2_2'),
+    nicuReportFetcher.getContent('question13_2_2'),
   );
   const q13_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_3',
-    getQuestionContent('question13_2_3'),
+    nicuReportFetcher.getContent('question13_2_3'),
   );
   const q13_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_4',
-    getQuestionContent('question13_2_4'),
+    nicuReportFetcher.getContent('question13_2_4'),
   );
   const q13_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_5',
-    getQuestionContent('question13_2_5'),
+    nicuReportFetcher.getContent('question13_2_5'),
   );
   const q13_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_6',
-    getQuestionContent('question13_2_6'),
+    nicuReportFetcher.getContent('question13_2_6'),
   );
   const q13_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_7',
-    getQuestionContent('question13_2_7'),
+    nicuReportFetcher.getContent('question13_2_7'),
   );
   const q13_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_2_8',
-    getQuestionContent('question13_2_8'),
+    nicuReportFetcher.getContent('question13_2_8'),
   );
 
   const q13_2: SpecializedGroup<
@@ -913,7 +919,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_2',
-    getQuestionContent('question13_2'),
+    nicuReportFetcher.getContent('question13_2'),
     q13_2_1,
     q13_2_2,
     q13_2_3,
@@ -927,11 +933,11 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
   // 13_3 "Gender"
   const q13_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_3_1',
-    getQuestionContent('question13_3_1'),
+    nicuReportFetcher.getContent('question13_3_1'),
   );
   const q13_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_3_2',
-    getQuestionContent('question13_3_2'),
+    nicuReportFetcher.getContent('question13_3_2'),
   );
 
   const q13_3: SpecializedGroup<
@@ -940,87 +946,87 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_3',
-    getQuestionContent('question13_3'),
+    nicuReportFetcher.getContent('question13_3'),
     q13_3_1,
     q13_3_2,
   );
 
   const q13_4_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_1',
-    getQuestionContent('question13_4_1'),
+    nicuReportFetcher.getContent('question13_4_1'),
   );
   const q13_4_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_2',
-    getQuestionContent('question13_4_2'),
+    nicuReportFetcher.getContent('question13_4_2'),
   );
   const q13_4_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_3',
-    getQuestionContent('question13_4_3'),
+    nicuReportFetcher.getContent('question13_4_3'),
   );
   const q13_4_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_4',
-    getQuestionContent('question13_4_4'),
+    nicuReportFetcher.getContent('question13_4_4'),
   );
   const q13_4_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_5',
-    getQuestionContent('question13_4_5'),
+    nicuReportFetcher.getContent('question13_4_5'),
   );
   const q13_4_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_6',
-    getQuestionContent('question13_4_6'),
+    nicuReportFetcher.getContent('question13_4_6'),
   );
   const q13_4_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_7',
-    getQuestionContent('question13_4_7'),
+    nicuReportFetcher.getContent('question13_4_7'),
   );
   const q13_4_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_8',
-    getQuestionContent('question13_4_8'),
+    nicuReportFetcher.getContent('question13_4_8'),
   );
   const q13_4_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_9',
-    getQuestionContent('question13_4_9'),
+    nicuReportFetcher.getContent('question13_4_9'),
   );
 
   const q13_4_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_10',
-    getQuestionContent('question13_4_10'),
+    nicuReportFetcher.getContent('question13_4_10'),
   );
   const q13_4_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_11',
-    getQuestionContent('question13_4_11'),
+    nicuReportFetcher.getContent('question13_4_11'),
   );
   const q13_4_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_12',
-    getQuestionContent('question13_4_12'),
+    nicuReportFetcher.getContent('question13_4_12'),
   );
   const q13_4_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_13',
-    getQuestionContent('question13_4_13'),
+    nicuReportFetcher.getContent('question13_4_13'),
   );
   const q13_4_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_14',
-    getQuestionContent('question13_4_14'),
+    nicuReportFetcher.getContent('question13_4_14'),
   );
   const q13_4_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_15',
-    getQuestionContent('question13_4_15'),
+    nicuReportFetcher.getContent('question13_4_15'),
   );
   const q13_4_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_16',
-    getQuestionContent('question13_4_16'),
+    nicuReportFetcher.getContent('question13_4_16'),
   );
   const q13_4_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_17',
-    getQuestionContent('question13_4_17'),
+    nicuReportFetcher.getContent('question13_4_17'),
   );
   const q13_4_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_18',
-    getQuestionContent('question13_4_18'),
+    nicuReportFetcher.getContent('question13_4_18'),
   );
   const q13_4_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_4_19',
-    getQuestionContent('question13_4_19'),
+    nicuReportFetcher.getContent('question13_4_19'),
   );
 
   const q13_4: SpecializedGroup<
@@ -1029,7 +1035,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_4',
-    getQuestionContent('question13_4'),
+    nicuReportFetcher.getContent('question13_4'),
     q13_4_1,
     q13_4_2,
     q13_4_3,
@@ -1053,7 +1059,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q13: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '13',
-    getQuestionContent('question13'),
+    nicuReportFetcher.getContent('question13'),
     q13_1,
     q13_2,
     q13_3,
@@ -1062,35 +1068,35 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q14_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_1',
-    getQuestionContent('question14_1_1'),
+    nicuReportFetcher.getContent('question14_1_1'),
   );
   const q14_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_2',
-    getQuestionContent('question14_1_2'),
+    nicuReportFetcher.getContent('question14_1_2'),
   );
   const q14_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_3',
-    getQuestionContent('question14_1_3'),
+    nicuReportFetcher.getContent('question14_1_3'),
   );
   const q14_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_4',
-    getQuestionContent('question14_1_4'),
+    nicuReportFetcher.getContent('question14_1_4'),
   );
   const q14_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_5',
-    getQuestionContent('question14_1_5'),
+    nicuReportFetcher.getContent('question14_1_5'),
   );
   const q14_1_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_6',
-    getQuestionContent('question14_1_6'),
+    nicuReportFetcher.getContent('question14_1_6'),
   );
   const q14_1_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_7',
-    getQuestionContent('question14_1_7'),
+    nicuReportFetcher.getContent('question14_1_7'),
   );
   const q14_1_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_1_8',
-    getQuestionContent('question14_1_8'),
+    nicuReportFetcher.getContent('question14_1_8'),
   );
 
   const q14_1: SpecializedGroup<
@@ -1099,7 +1105,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_1',
-    getQuestionContent('question14_1'),
+    nicuReportFetcher.getContent('question14_1'),
     q14_1_1,
     q14_1_2,
     q14_1_3,
@@ -1112,79 +1118,79 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q14_2_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_1',
-    getQuestionContent('question14_2_1'),
+    nicuReportFetcher.getContent('question14_2_1'),
   );
   const q14_2_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_2',
-    getQuestionContent('question14_2_2'),
+    nicuReportFetcher.getContent('question14_2_2'),
   );
   const q14_2_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_3',
-    getQuestionContent('question14_2_3'),
+    nicuReportFetcher.getContent('question14_2_3'),
   );
   const q14_2_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_4',
-    getQuestionContent('question14_2_4'),
+    nicuReportFetcher.getContent('question14_2_4'),
   );
   const q14_2_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_5',
-    getQuestionContent('question14_2_5'),
+    nicuReportFetcher.getContent('question14_2_5'),
   );
   const q14_2_6: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_6',
-    getQuestionContent('question14_2_6'),
+    nicuReportFetcher.getContent('question14_2_6'),
   );
   const q14_2_7: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_7',
-    getQuestionContent('question14_2_7'),
+    nicuReportFetcher.getContent('question14_2_7'),
   );
   const q14_2_8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_8',
-    getQuestionContent('question14_2_8'),
+    nicuReportFetcher.getContent('question14_2_8'),
   );
   const q14_2_9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_9',
-    getQuestionContent('question14_2_9'),
+    nicuReportFetcher.getContent('question14_2_9'),
   );
   const q14_2_10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_10',
-    getQuestionContent('question14_2_10'),
+    nicuReportFetcher.getContent('question14_2_10'),
   );
   const q14_2_11: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_11',
-    getQuestionContent('question14_2_11'),
+    nicuReportFetcher.getContent('question14_2_11'),
   );
   const q14_2_12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_12',
-    getQuestionContent('question14_2_12'),
+    nicuReportFetcher.getContent('question14_2_12'),
   );
   const q14_2_13: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_13',
-    getQuestionContent('question14_2_13'),
+    nicuReportFetcher.getContent('question14_2_13'),
   );
   const q14_2_14: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_14',
-    getQuestionContent('question14_2_14'),
+    nicuReportFetcher.getContent('question14_2_14'),
   );
   const q14_2_15: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_15',
-    getQuestionContent('question14_2_15'),
+    nicuReportFetcher.getContent('question14_2_15'),
   );
   const q14_2_16: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_16',
-    getQuestionContent('question14_2_16'),
+    nicuReportFetcher.getContent('question14_2_16'),
   );
   const q14_2_17: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_17',
-    getQuestionContent('question14_2_17'),
+    nicuReportFetcher.getContent('question14_2_17'),
   );
   const q14_2_18: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_18',
-    getQuestionContent('question14_2_18'),
+    nicuReportFetcher.getContent('question14_2_18'),
   );
   const q14_2_19: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_2_19',
-    getQuestionContent('question14_2_19'),
+    nicuReportFetcher.getContent('question14_2_19'),
   );
 
   const q14_2: SpecializedGroup<
@@ -1193,7 +1199,7 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_2',
-    getQuestionContent('question14_2'),
+    nicuReportFetcher.getContent('question14_2'),
     q14_2_1,
     q14_2_2,
     q14_2_3,
@@ -1217,11 +1223,11 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 
   const q14_3_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_1',
-    getQuestionContent('question14_3_1'),
+    nicuReportFetcher.getContent('question14_3_1'),
   );
   const q14_3_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '14_3_2',
-    getQuestionContent('question14_3_2'),
+    nicuReportFetcher.getContent('question14_3_2'),
   );
 
   const q14_3: SpecializedGroup<
@@ -1230,14 +1236,14 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '14_3',
-    getQuestionContent('question14_3'),
+    nicuReportFetcher.getContent('question14_3'),
     q14_3_1,
     q14_3_2,
   );
 
   const q14: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '14',
-    getQuestionContent('question14'),
+    nicuReportFetcher.getContent('question14'),
     q14_1,
     q14_2,
     q14_3,
@@ -1250,108 +1256,103 @@ export const buildNicuPaedsReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
-  const getQuestionContent = (questionKey: string) => {
-    return {
-      en: translations['en'].maternityQuestions[questionKey],
-      fr: translations['fr'].maternityQuestions[questionKey],
-    };
-  };
+  const maternityReportFetcher = createQuestionContentFetcher('maternityQuestions');
 
   const reportID: ID = 'maternity-report_1';
   const maternityReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
     reportID,
-    getQuestionContent('title'),
+    maternityReportFetcher.getContent('title'),
   );
 
   // Questions 1 to 5
   const q1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '1',
-    getQuestionContent('question1'),
+    maternityReportFetcher.getContent('question1'),
   );
   const q2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '2',
-    getQuestionContent('question2'),
+    maternityReportFetcher.getContent('question2'),
   );
   const q3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '3',
-    getQuestionContent('question3'),
+    maternityReportFetcher.getContent('question3'),
   );
   const q4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '4',
-    getQuestionContent('question4'),
+    maternityReportFetcher.getContent('question4'),
   );
   const q5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '5',
-    getQuestionContent('question5'),
+    maternityReportFetcher.getContent('question5'),
   );
 
   // Question 6 "Died before 48h"
   const q6: ExpandableQuestion<ID, ErrorType> = new ExpandableQuestion<ID, ErrorType>(
     '6',
-    getQuestionContent('question6'),
+    maternityReportFetcher.getContent('question6'),
     questionIdGeneratorBuilder('6'),
   );
   const q6_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '6_1',
-    getQuestionContent('question6_1'),
+    maternityReportFetcher.getContent('question6_1'),
   );
   const q6_2: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '6_2',
-    getQuestionContent('question6_2'),
+    maternityReportFetcher.getContent('question6_2'),
   );
   q6.addAllToTemplate(q6_1, q6_2);
 
   // Question 7 "Died after 48h"
   const q7: ExpandableQuestion<ID, ErrorType> = new ExpandableQuestion<ID, ErrorType>(
     '7',
-    getQuestionContent('question7'),
+    maternityReportFetcher.getContent('question7'),
     questionIdGeneratorBuilder('7'),
   );
   const q7_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '7_1',
-    getQuestionContent('question7_1'),
+    maternityReportFetcher.getContent('question7_1'),
   );
   const q7_2: TextQuestion<ID, ErrorType> = new TextQuestion<ID, ErrorType>(
     '7_2',
-    getQuestionContent('question7_2'),
+    maternityReportFetcher.getContent('question7_2'),
   );
   q7.addAllToTemplate(q7_1, q7_2);
 
   // Questions 8 to 10
   const q8: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '8',
-    getQuestionContent('question8'),
+    maternityReportFetcher.getContent('question8'),
   );
   const q9: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '9',
-    getQuestionContent('question9'),
+    maternityReportFetcher.getContent('question9'),
   );
   const q10: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '10',
-    getQuestionContent('question10'),
+    maternityReportFetcher.getContent('question10'),
   );
 
   // 11_1 "Reason for self-discharged"
 
   const q11_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_1',
-    getQuestionContent('question11_1_1'),
+    maternityReportFetcher.getContent('question11_1_1'),
   );
   const q11_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_2',
-    getQuestionContent('question11_1_2'),
+    maternityReportFetcher.getContent('question11_1_2'),
   );
   const q11_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_3',
-    getQuestionContent('question11_1_3'),
+    maternityReportFetcher.getContent('question11_1_3'),
   );
   const q11_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_4',
-    getQuestionContent('question11_1_4'),
+    maternityReportFetcher.getContent('question11_1_4'),
   );
   const q11_1_5: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '11_1_5',
-    getQuestionContent('question11_1_5'),
+    maternityReportFetcher.getContent('question11_1_5'),
   );
 
   const q11_1: SpecializedGroup<
@@ -1360,7 +1361,7 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '11_1',
-    getQuestionContent('question11_1'),
+    maternityReportFetcher.getContent('question11_1'),
     q11_1_1,
     q11_1_2,
     q11_1_3,
@@ -1371,31 +1372,31 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 11 "Self-discharged"
   const q11: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '11',
-    getQuestionContent('question11'),
+    maternityReportFetcher.getContent('question11'),
     q11_1,
   );
 
   // Question 12
   const q12: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '12',
-    getQuestionContent('question12'),
+    maternityReportFetcher.getContent('question12'),
   );
 
   const q13_1_1: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_1',
-    getQuestionContent('question13_1_1'),
+    maternityReportFetcher.getContent('question13_1_1'),
   );
   const q13_1_2: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_2',
-    getQuestionContent('question13_1_2'),
+    maternityReportFetcher.getContent('question13_1_2'),
   );
   const q13_1_3: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_3',
-    getQuestionContent('question13_1_3'),
+    maternityReportFetcher.getContent('question13_1_3'),
   );
   const q13_1_4: NumericQuestion<ID, ErrorType> = new NumericQuestion<ID, ErrorType>(
     '13_1_4',
-    getQuestionContent('question13_1_4'),
+    maternityReportFetcher.getContent('question13_1_4'),
   );
   // 13_1 "Where do patients come from?"
   const q13_1: SpecializedGroup<
@@ -1404,7 +1405,7 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
     NumericQuestion<ID, ErrorType>
   > = new SpecializedGroup<ID, ErrorType, NumericQuestion<ID, ErrorType>>(
     '13_1',
-    getQuestionContent('question13_1'),
+    maternityReportFetcher.getContent('question13_1'),
     q13_1_1,
     q13_1_2,
     q13_1_3,
@@ -1414,27 +1415,27 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 13 "Admissions"
   const q13: CompositionQuestion<ID, ErrorType> = new CompositionQuestion<ID, ErrorType>(
     '13',
-    getQuestionContent('question13'),
+    maternityReportFetcher.getContent('question13'),
     q13_1,
   );
 
   // Question 14 Table
 
   const q14_rows: Translation[] = [
-    getQuestionContent('question14_row_1'),
-    getQuestionContent('question14_row_2'),
-    getQuestionContent('question14_row_3'),
-    getQuestionContent('question14_row_4'),
+    maternityReportFetcher.getContent('question14_row_1'),
+    maternityReportFetcher.getContent('question14_row_2'),
+    maternityReportFetcher.getContent('question14_row_3'),
+    maternityReportFetcher.getContent('question14_row_4'),
   ];
 
   const q14_columns: Translation[] = [
-    getQuestionContent('question14_col_1'),
-    getQuestionContent('question14_col_2'),
-    getQuestionContent('question14_col_3'),
-    getQuestionContent('question14_col_4'),
+    maternityReportFetcher.getContent('question14_col_1'),
+    maternityReportFetcher.getContent('question14_col_2'),
+    maternityReportFetcher.getContent('question14_col_3'),
+    maternityReportFetcher.getContent('question14_col_4'),
   ];
 
-  const q14_table_title: Translation = getQuestionContent('question14_title');
+  const q14_table_title: Translation = maternityReportFetcher.getContent('question14_title');
 
   const q14_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q14_rows.length,
@@ -1462,15 +1463,15 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 15 Table
 
   const q15_rows: Translation[] = [
-    getQuestionContent('question15_row_1'),
-    getQuestionContent('question15_row_2'),
-    getQuestionContent('question15_row_3'),
-    getQuestionContent('question15_row_4'),
+    maternityReportFetcher.getContent('question15_row_1'),
+    maternityReportFetcher.getContent('question15_row_2'),
+    maternityReportFetcher.getContent('question15_row_3'),
+    maternityReportFetcher.getContent('question15_row_4'),
   ];
 
-  const q15_columns: Translation[] = [getQuestionContent('question15_col_1')];
+  const q15_columns: Translation[] = [maternityReportFetcher.getContent('question15_col_1')];
 
-  const q15_table_title: Translation = getQuestionContent('question15_title');
+  const q15_table_title: Translation = maternityReportFetcher.getContent('question15_title');
 
   const q15_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q15_rows.length,
@@ -1498,13 +1499,13 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 16 Table
 
   const q16_rows: Translation[] = [
-    getQuestionContent('question16_row_1'),
-    getQuestionContent('question16_row_2'),
+    maternityReportFetcher.getContent('question16_row_1'),
+    maternityReportFetcher.getContent('question16_row_2'),
   ];
 
-  const q16_columns: Translation[] = [getQuestionContent('question15_col_1')];
+  const q16_columns: Translation[] = [maternityReportFetcher.getContent('question15_col_1')];
 
-  const q16_table_title: Translation = getQuestionContent('question16_title');
+  const q16_table_title: Translation = maternityReportFetcher.getContent('question16_title');
 
   const q16_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q16_rows.length,
@@ -1532,13 +1533,13 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 17 Table
 
   const q17_rows: Translation[] = [
-    getQuestionContent('question17_row_1'),
-    getQuestionContent('question17_row_2'),
+    maternityReportFetcher.getContent('question17_row_1'),
+    maternityReportFetcher.getContent('question17_row_2'),
   ];
 
-  const q17_columns: Translation[] = [getQuestionContent('question15_col_1')];
+  const q17_columns: Translation[] = [maternityReportFetcher.getContent('question15_col_1')];
 
-  const q17_table_title: Translation = getQuestionContent('question17_title');
+  const q17_table_title: Translation = maternityReportFetcher.getContent('question17_title');
 
   const q17_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q17_rows.length,
@@ -1566,13 +1567,13 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 18 Table
 
   const q18_rows: Translation[] = [
-    getQuestionContent('question18_row_1'),
-    getQuestionContent('question18_row_2'),
+    maternityReportFetcher.getContent('question18_row_1'),
+    maternityReportFetcher.getContent('question18_row_2'),
   ];
 
-  const q18_columns: Translation[] = [getQuestionContent('question15_col_1')];
+  const q18_columns: Translation[] = [maternityReportFetcher.getContent('question15_col_1')];
 
-  const q18_table_title: Translation = getQuestionContent('question18_title');
+  const q18_table_title: Translation = maternityReportFetcher.getContent('question18_title');
 
   const q18_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q18_rows.length,
@@ -1600,22 +1601,22 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 19 Table
 
   const q19_rows: Translation[] = [
-    getQuestionContent('question19_row_1'),
-    getQuestionContent('question19_row_2'),
-    getQuestionContent('question19_row_3'),
-    getQuestionContent('question19_row_4'),
+    maternityReportFetcher.getContent('question19_row_1'),
+    maternityReportFetcher.getContent('question19_row_2'),
+    maternityReportFetcher.getContent('question19_row_3'),
+    maternityReportFetcher.getContent('question19_row_4'),
   ];
 
   const q19_columns: Translation[] = [
-    getQuestionContent('question19_col_1'),
-    getQuestionContent('question19_col_2'),
-    getQuestionContent('question19_col_3'),
-    getQuestionContent('question19_col_4'),
-    getQuestionContent('question19_col_5'),
-    getQuestionContent('question19_col_6'),
+    maternityReportFetcher.getContent('question19_col_1'),
+    maternityReportFetcher.getContent('question19_col_2'),
+    maternityReportFetcher.getContent('question19_col_3'),
+    maternityReportFetcher.getContent('question19_col_4'),
+    maternityReportFetcher.getContent('question19_col_5'),
+    maternityReportFetcher.getContent('question19_col_6'),
   ];
 
-  const q19_table_title: Translation = getQuestionContent('question19_title');
+  const q19_table_title: Translation = maternityReportFetcher.getContent('question19_title');
 
   const q19_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q19_rows.length,
@@ -1751,20 +1752,20 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 20 Table
 
   const q20_rows: Translation[] = [
-    getQuestionContent('question20_row_1'),
-    getQuestionContent('question20_row_2'),
-    getQuestionContent('question20_row_3'),
-    getQuestionContent('question20_row_4'),
-    getQuestionContent('question20_row_5'),
-    getQuestionContent('question20_row_6'),
-    getQuestionContent('question20_row_7'),
-    getQuestionContent('question20_row_8'),
-    getQuestionContent('question20_row_9'),
+    maternityReportFetcher.getContent('question20_row_1'),
+    maternityReportFetcher.getContent('question20_row_2'),
+    maternityReportFetcher.getContent('question20_row_3'),
+    maternityReportFetcher.getContent('question20_row_4'),
+    maternityReportFetcher.getContent('question20_row_5'),
+    maternityReportFetcher.getContent('question20_row_6'),
+    maternityReportFetcher.getContent('question20_row_7'),
+    maternityReportFetcher.getContent('question20_row_8'),
+    maternityReportFetcher.getContent('question20_row_9'),
   ];
 
-  const q20_columns: Translation[] = [getQuestionContent('question15_col_1')];
+  const q20_columns: Translation[] = [maternityReportFetcher.getContent('question15_col_1')];
 
-  const q20_table_title: Translation = getQuestionContent('question20_title');
+  const q20_table_title: Translation = maternityReportFetcher.getContent('question20_title');
 
   const q20_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q20_rows.length,
@@ -1792,16 +1793,16 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 21 Table
 
   const q21_rows: Translation[] = [
-    getQuestionContent('question21_row_1'),
-    getQuestionContent('question21_row_2'),
-    getQuestionContent('question21_row_3'),
-    getQuestionContent('question21_row_4'),
-    getQuestionContent('question21_row_5'),
+    maternityReportFetcher.getContent('question21_row_1'),
+    maternityReportFetcher.getContent('question21_row_2'),
+    maternityReportFetcher.getContent('question21_row_3'),
+    maternityReportFetcher.getContent('question21_row_4'),
+    maternityReportFetcher.getContent('question21_row_5'),
   ];
 
-  const q21_columns: Translation[] = [getQuestionContent('question15_col_1')];
+  const q21_columns: Translation[] = [maternityReportFetcher.getContent('question15_col_1')];
 
-  const q21_table_title: Translation = getQuestionContent('question21_title');
+  const q21_table_title: Translation = maternityReportFetcher.getContent('question21_title');
 
   const q21_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q21_rows.length,
@@ -1829,21 +1830,21 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 22 Table
 
   const q22_rows: Translation[] = [
-    getQuestionContent('question22_row_1'),
-    getQuestionContent('question22_row_2'),
-    getQuestionContent('question22_row_3'),
-    getQuestionContent('question22_row_4'),
-    getQuestionContent('question22_row_5'),
-    getQuestionContent('question22_row_6'),
+    maternityReportFetcher.getContent('question22_row_1'),
+    maternityReportFetcher.getContent('question22_row_2'),
+    maternityReportFetcher.getContent('question22_row_3'),
+    maternityReportFetcher.getContent('question22_row_4'),
+    maternityReportFetcher.getContent('question22_row_5'),
+    maternityReportFetcher.getContent('question22_row_6'),
   ];
 
   const q22_columns: Translation[] = [
-    getQuestionContent('question22_col_1'),
-    getQuestionContent('question22_col_2'),
-    getQuestionContent('question22_col_3'),
+    maternityReportFetcher.getContent('question22_col_1'),
+    maternityReportFetcher.getContent('question22_col_2'),
+    maternityReportFetcher.getContent('question22_col_3'),
   ];
 
-  const q22_table_title: Translation = getQuestionContent('question22_title');
+  const q22_table_title: Translation = maternityReportFetcher.getContent('question22_title');
 
   const q22_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q22_rows.length,
@@ -1871,17 +1872,17 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // Question 23 Table
 
   const q23_rows: Translation[] = [
-    getQuestionContent('question23_row_1'),
-    getQuestionContent('question23_row_2'),
+    maternityReportFetcher.getContent('question23_row_1'),
+    maternityReportFetcher.getContent('question23_row_2'),
   ];
 
   const q23_columns: Translation[] = [
-    getQuestionContent('question23_col_1'),
-    getQuestionContent('question23_col_2'),
-    getQuestionContent('question23_col_3'),
+    maternityReportFetcher.getContent('question23_col_1'),
+    maternityReportFetcher.getContent('question23_col_2'),
+    maternityReportFetcher.getContent('question23_col_3'),
   ];
 
-  const q23_table_title: Translation = getQuestionContent('question23_title');
+  const q23_table_title: Translation = maternityReportFetcher.getContent('question23_title');
 
   const q23_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q23_rows.length,
@@ -1909,18 +1910,18 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
   // question 24"
 
   const q24_rows: Translation[] = [
-    getQuestionContent('question24_row_1'),
-    getQuestionContent('question24_row_2'),
-    getQuestionContent('question24_row_3'),
-    getQuestionContent('question24_row_4'),
-    getQuestionContent('question24_row_5'),
-    getQuestionContent('question24_row_6'),
-    getQuestionContent('question24_row_7'),
+    maternityReportFetcher.getContent('question24_row_1'),
+    maternityReportFetcher.getContent('question24_row_2'),
+    maternityReportFetcher.getContent('question24_row_3'),
+    maternityReportFetcher.getContent('question24_row_4'),
+    maternityReportFetcher.getContent('question24_row_5'),
+    maternityReportFetcher.getContent('question24_row_6'),
+    maternityReportFetcher.getContent('question24_row_7'),
   ];
 
-  const q24_columns: Translation[] = [getQuestionContent('question15_col_1')];
+  const q24_columns: Translation[] = [maternityReportFetcher.getContent('question15_col_1')];
 
-  const q24_table_title: Translation = getQuestionContent('question24_title');
+  const q24_table_title: Translation = maternityReportFetcher.getContent('question24_title');
 
   const q24_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q24_rows.length,
@@ -1977,31 +1978,17 @@ export const buildMaternityReport = (): QuestionGroup<ID, ErrorType> => {
 };
 
 export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
-  const getQuestionContent = (questionKey: string) => {
-    return {
-      en: translations['en'].communityHealthQuestions[questionKey],
-      fr: translations['fr'].communityHealthQuestions[questionKey],
-    };
-  };
-
-  const getQuestionList = (questionKey: string) => {
-    const list_en = translations['en'].communityHealthQuestions[questionKey];
-    const list_fr = translations['fr'].communityHealthQuestions[questionKey];
-
-    return list_en.map((item: any, idx: string | number) => ({
-      en: item,
-      fr: list_fr[idx],
-    }));
-  };
+  const communityHealthReportFetcher = createQuestionContentFetcher('communityHealthQuestions');
 
   const communityhealthReport: QuestionGroup<ID, ErrorType> = new QuestionGroup<ID, ErrorType>(
     'community-health-report_1',
-    getQuestionContent('title'),
+    communityHealthReportFetcher.getContent('title'),
   );
 
-  const q1_table_title: Translation = getQuestionContent('question1_table_title');
-  const q1_rows: Translation[] = getQuestionList('question1_rows');
-  const q1_columns: Translation[] = getQuestionList('question1_columns');
+  const q1_table_title: Translation =
+    communityHealthReportFetcher.getContent('question1_table_title');
+  const q1_rows: Translation[] = communityHealthReportFetcher.getOptions('question1_rows');
+  const q1_columns: Translation[] = communityHealthReportFetcher.getOptions('question1_columns');
 
   const q1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q1_rows.length,
@@ -2026,9 +2013,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q2_table_title: Translation = getQuestionContent('question2_table_title');
-  const q2_rows: Translation[] = getQuestionList('question2_rows');
-  const q2_columns: Translation[] = getQuestionList('question2_columns');
+  const q2_table_title: Translation =
+    communityHealthReportFetcher.getContent('question2_table_title');
+  const q2_rows: Translation[] = communityHealthReportFetcher.getOptions('question2_rows');
+  const q2_columns: Translation[] = communityHealthReportFetcher.getOptions('question2_columns');
 
   const q2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q2_rows.length,
@@ -2052,9 +2040,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q3_table_title: Translation = getQuestionContent('question3_table_title');
-  const q3_rows: Translation[] = getQuestionList('question3_rows');
-  const q3_columns: Translation[] = getQuestionList('question3_columns');
+  const q3_table_title: Translation =
+    communityHealthReportFetcher.getContent('question3_table_title');
+  const q3_rows: Translation[] = communityHealthReportFetcher.getOptions('question3_rows');
+  const q3_columns: Translation[] = communityHealthReportFetcher.getOptions('question3_columns');
 
   const q3_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q3_rows.length,
@@ -2078,9 +2067,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q4_table_title: Translation = getQuestionContent('question4_table_title');
-  const q4_rows: Translation[] = getQuestionList('question4_rows');
-  const q4_columns: Translation[] = getQuestionList('question4_columns');
+  const q4_table_title: Translation =
+    communityHealthReportFetcher.getContent('question4_table_title');
+  const q4_rows: Translation[] = communityHealthReportFetcher.getOptions('question4_rows');
+  const q4_columns: Translation[] = communityHealthReportFetcher.getOptions('question4_columns');
 
   const q4_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_rows.length,
@@ -2104,9 +2094,11 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q4_1_table_title: Translation = getQuestionContent('question4_1_table_title');
-  const q4_1_rows: Translation[] = getQuestionList('question4_1_rows');
-  const q4_1_columns: Translation[] = getQuestionList('question4_1_columns');
+  const q4_1_table_title: Translation =
+    communityHealthReportFetcher.getContent('question4_1_table_title');
+  const q4_1_rows: Translation[] = communityHealthReportFetcher.getOptions('question4_1_rows');
+  const q4_1_columns: Translation[] =
+    communityHealthReportFetcher.getOptions('question4_1_columns');
 
   const q4_1_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q4_1_rows.length,
@@ -2130,9 +2122,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q5_table_title: Translation = getQuestionContent('question5_table_title');
-  const q5_rows: Translation[] = getQuestionList('question5_rows');
-  const q5_columns: Translation[] = getQuestionList('question5_columns');
+  const q5_table_title: Translation =
+    communityHealthReportFetcher.getContent('question5_table_title');
+  const q5_rows: Translation[] = communityHealthReportFetcher.getOptions('question5_rows');
+  const q5_columns: Translation[] = communityHealthReportFetcher.getOptions('question5_columns');
 
   const q5_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q5_rows.length,
@@ -2156,9 +2149,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q6_table_title: Translation = getQuestionContent('question6_table_title');
-  const q6_rows: Translation[] = getQuestionList('question6_rows');
-  const q6_columns: Translation[] = getQuestionList('question6_columns');
+  const q6_table_title: Translation =
+    communityHealthReportFetcher.getContent('question6_table_title');
+  const q6_rows: Translation[] = communityHealthReportFetcher.getOptions('question6_rows');
+  const q6_columns: Translation[] = communityHealthReportFetcher.getOptions('question6_columns');
 
   const q6_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q6_rows.length,
@@ -2182,9 +2176,10 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q7_table_title: Translation = getQuestionContent('question7_table_title');
-  const q7_rows: Translation[] = getQuestionList('question7_rows');
-  const q7_columns: Translation[] = getQuestionList('question7_columns');
+  const q7_table_title: Translation =
+    communityHealthReportFetcher.getContent('question7_table_title');
+  const q7_rows: Translation[] = communityHealthReportFetcher.getOptions('question7_rows');
+  const q7_columns: Translation[] = communityHealthReportFetcher.getOptions('question7_columns');
 
   // Manual definition of grey table cell
   // Guide on how to manually define grey and calcualtion table cells:
@@ -2468,9 +2463,11 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     q7_calculationMask,
   );
 
-  const q7_1_table_title: Translation = getQuestionContent('question7_1_table_title');
-  const q7_1_rows: Translation[] = getQuestionList('question7_1_rows');
-  const q7_1_columns: Translation[] = getQuestionList('question7_1_columns');
+  const q7_1_table_title: Translation =
+    communityHealthReportFetcher.getContent('question7_1_table_title');
+  const q7_1_rows: Translation[] = communityHealthReportFetcher.getOptions('question7_1_rows');
+  const q7_1_columns: Translation[] =
+    communityHealthReportFetcher.getOptions('question7_1_columns');
 
   const q7_1_grey_index: maskIndex[] = [
     [5, 0],
@@ -2750,9 +2747,11 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
     q7_1_calculationMask,
   );
 
-  const q7_2_table_title: Translation = getQuestionContent('question7_2_table_title');
-  const q7_2_rows: Translation[] = getQuestionList('question7_2_rows');
-  const q7_2_columns: Translation[] = getQuestionList('question7_2_columns');
+  const q7_2_table_title: Translation =
+    communityHealthReportFetcher.getContent('question7_2_table_title');
+  const q7_2_rows: Translation[] = communityHealthReportFetcher.getOptions('question7_2_rows');
+  const q7_2_columns: Translation[] =
+    communityHealthReportFetcher.getOptions('question7_2_columns');
 
   const q7_2_grey_mask: Array<Array<boolean>> = createTableGreyMask(
     q7_2_rows.length,
@@ -2776,9 +2775,11 @@ export const buildCommunityHealthReport = (): QuestionGroup<ID, ErrorType> => {
       }),
   );
 
-  const q7_3_table_title: Translation = getQuestionContent('question7_3_table_title');
-  const q7_3_rows: Translation[] = getQuestionList('question7_3_rows');
-  const q7_3_columns: Translation[] = getQuestionList('question7_3_columns');
+  const q7_3_table_title: Translation =
+    communityHealthReportFetcher.getContent('question7_3_table_title');
+  const q7_3_rows: Translation[] = communityHealthReportFetcher.getOptions('question7_3_rows');
+  const q7_3_columns: Translation[] =
+    communityHealthReportFetcher.getOptions('question7_3_columns');
 
   // Example of setting up calculationMask for a specific table
   // Note that in the future, when we have the feature to let user define questions on the APP's frontend

@@ -10,6 +10,7 @@ import { ResponseMessage } from 'utils/response_message';
 export interface Department {
   id: string;
   name: string;
+  hasReport: boolean;
 }
 
 const useDepartmentData = () => {

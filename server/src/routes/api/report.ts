@@ -12,6 +12,7 @@ import {
   HTTP_OK_CODE,
   NotFound,
   Unauthorized,
+  UnprocessableEntity,
 } from '../../exceptions/httpException';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { ReportCollection } from '../../models/report';
@@ -20,6 +21,7 @@ import { Router } from 'express';
 import { cloneDeep } from 'lodash';
 import { roleAuth } from 'middleware/roleAuth';
 import { Role } from '@hha/common';
+import { nextTick } from 'process';
 
 const router = Router();
 
@@ -155,30 +157,38 @@ router.delete(
 );
 
 // Update report by id
-router.put(`/`, requireJwtAuth, async (req: Request, res: Response) => {
-  if (!req.user) {
-    throw new NotFound('User not logged in');
+router.put(`/`, requireJwtAuth, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) {
+      throw new NotFound('User not logged in');
+    }
+    const { id, serializedReport, reportMonth, isDraft } = req.body;
+
+    const report = await ReportCollection.findById(id);
+
+    if (!report) {
+      throw new NotFound(`No report with id ${id}`);
+    }
+
+    const authorized = checkUserCanEditReport(req.user, report);
+
+    if (!authorized) {
+      throw new Unauthorized('User not authorized to update report');
+    }
+
+    if (!reportMonth) {
+      throw new UnprocessableEntity('Report month is required');
+    }
+
+    report.reportObject = cloneDeep(serializedReport);
+    report.reportMonth = reportMonth;
+    report.isDraft = isDraft;
+
+    await report.save();
+
+    res.status(HTTP_OK_CODE).json({ message: 'Report updated' });
+  } catch (e) {
+    next(e);
   }
-  const { id, serializedReport, reportMonth, isDraft } = req.body;
-
-  const report = await ReportCollection.findById(id);
-
-  if (!report) {
-    throw new NotFound(`No report with id ${id}`);
-  }
-
-  const authorized = checkUserCanEditReport(req.user, report);
-
-  if (!authorized) {
-    throw new Unauthorized('User not authorized to update report');
-  }
-
-  report.reportObject = cloneDeep(serializedReport);
-  report.reportMonth = reportMonth;
-  report.isDraft = isDraft;
-
-  await report.save();
-
-  res.status(HTTP_OK_CODE).json({ message: 'Report updated' });
 });
 export default router;

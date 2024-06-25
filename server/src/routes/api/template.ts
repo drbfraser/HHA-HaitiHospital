@@ -6,11 +6,10 @@ import {
 } from '../../exceptions/httpException';
 import { Request, IRouter, NextFunction, Response } from 'express';
 
-import { DEPARTMENT_ID_URL_SLUG } from './../../utils/constants';
+import { DEPARTMENT_ID_URL_SLUG } from '../../utils/constants';
 import Departments from 'utils/departments';
 import { Role } from '@hha/common';
 import { TemplateCollection } from 'models/template';
-import { logger } from 'logger';
 import requireJwtAuth from '../../middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';
 
@@ -58,7 +57,6 @@ router.put(
         throw new NotFound('User not logged in');
       }
       const { departmentId, serializedReport } = req.body;
-      logger.log('server routes/api/template save report', departmentId, serializedReport);
       // NOTE: May need to sanitize the reportTemplate before saving
       let template = new TemplateCollection({
         departmentId: departmentId,

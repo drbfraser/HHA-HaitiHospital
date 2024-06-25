@@ -67,10 +67,6 @@ const ReportView = () => {
     setMetaData((prev) => ({ ...prev!, reportMonth: reportMonth }));
   };
 
-  const handleExportWithComponent = () => {
-    pdfExportComponent.current?.save();
-  };
-
   const editBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setReadOnly((prev) => !prev);
@@ -149,12 +145,14 @@ const ReportView = () => {
       window.onbeforeunload = () => false;
     };
   }, [areChangesMade, readOnly]);
+
   if (!isLoading && !report)
     return (
       <Layout showBackButton>
         <h1>{t('reportNotFound')}</h1>
       </Layout>
     );
+
   return (
     <>
       {!!report && (
@@ -221,9 +219,6 @@ const ReportView = () => {
               {/* Other buttons */}
               {readOnly && !editMonth && (
                 <span>
-                  <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
-                    {t('departmentReportDisplayGeneratePDF')}
-                  </button>
                   <XlsxGenerator questionItems={questionItems} metaData={metaData} />
                 </span>
               )}
