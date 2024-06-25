@@ -23,3 +23,6 @@ export const getDate = (item: IReportObject<any>, locale: string = 'en-us'): str
   new Date(item.submittedDate).toLocaleDateString(locale, dateOptions);
 
 export const userLocale = navigator.language;
+
+export const YEAR_ONLY_DATE_FORMAT = 'YYYY';
+export const MONTH_AND_YEAR_DATE_FORMAT = 'MMM YYYY';

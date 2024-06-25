@@ -1,15 +1,18 @@
 import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import Layout from 'components/layout';
 import { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
 import { Button, Col, Container, Form, InputGroup, Modal, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { ListGroupItem } from 'react-bootstrap';
 import { getAllDepartments } from 'api/department';
 import { useHistory } from 'react-router-dom';
-import { AnalyticsQuery, AnalyticsResponse, DepartmentJson, QuestionPrompt } from '@hha/common';
+import {
+  AnalyticsQuery,
+  AnalyticsResponse,
+  DepartmentJson,
+  MonthOrYearOption,
+  QuestionPrompt,
+} from '@hha/common';
 import { getAllQuestionPrompts, getAnalyticsData } from 'api/analytics';
-import { refornatQuestionPrompt } from 'utils/string';
 import moment from 'moment';
 import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticQuestions';
 import { TimeOptionModal } from 'components/popup_modal/TimeOptionModal';
@@ -20,14 +23,12 @@ import {
   sumUpAnalyticsData,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
-import LineChart from 'components/charts/Line';
-import PieChart from 'components/charts/Pie';
 import ChartSelector from 'components/charts/ChartSelector';
 
 export type TimeOptions = {
   from: string;
   to: string;
-  timeStep: string;
+  timeStep: MonthOrYearOption;
 };
 
 const defaultFromDate = () => {
@@ -63,7 +64,7 @@ const Analytics = () => {
     to: defaultToDate(),
     timeStep: 'month',
   });
-  const [selectedAggregateBy, setSelectedAggregateBy] = useState('month');
+  const [selectedAggregateBy, setSelectedAggregateBy] = useState<MonthOrYearOption>('month');
 
   const [selectedChart, setSelectedChart] = useState('Bar');
 
@@ -114,8 +115,8 @@ const Analytics = () => {
         questionId: selectedQuestionId,
         startDate: startDate,
         endDate: endDate,
-        aggregateBy: selectedAggregateBy.toLowerCase(),
-        timeStep: timeOptions.timeStep.toLowerCase(),
+        aggregateBy: selectedAggregateBy,
+        timeStep: timeOptions.timeStep,
       };
 
       const analyticsData = await getAnalyticsData(history, analyticsQuery);
@@ -144,11 +145,11 @@ const Analytics = () => {
     setTimeOptions({ ...timeOptions, to: event.target.value });
   };
 
-  const onTimeStepChanged = (timeStep: string) => {
+  const onTimeStepChanged = (timeStep: MonthOrYearOption) => {
     setTimeOptions({ ...timeOptions, timeStep });
   };
 
-  const onAggregateBySelected = (aggregateBy: string) => {
+  const onAggregateBySelected = (aggregateBy: MonthOrYearOption) => {
     setSelectedAggregateBy(aggregateBy);
   };
 
@@ -192,14 +193,16 @@ const Analytics = () => {
                 handleCloseModal={handleCloseTimeOptionsModal}
                 onFromDateChanged={onFromDateChanged}
                 onToDateChanged={onToDateChanged}
-                onTimeStepChanged={onTimeStepChanged}
+                onTimeStepChanged={(timeStep) => onTimeStepChanged(timeStep as MonthOrYearOption)}
               />
 
               <DropDown
                 menus={DropDownMenus.aggregateBy}
                 title="Aggregate By"
                 selectedMenu={selectedAggregateBy}
-                setDropDownMenu={onAggregateBySelected}
+                setDropDownMenu={(aggregateBy) =>
+                  onAggregateBySelected(aggregateBy as MonthOrYearOption)
+                }
               />
               <DropDown
                 menus={DropDownMenus.charts}

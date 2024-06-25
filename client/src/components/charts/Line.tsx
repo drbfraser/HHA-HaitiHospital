@@ -22,7 +22,7 @@ const LineChart = ({ analyticsData, questionPrompt }: LineChartProps) => {
   const [timeLabels, questionData] = separateTimeAndQuestionData(analyticsData);
 
   const data = {
-    timeLabels,
+    labels: timeLabels,
     datasets: [
       {
         label: questionPrompt,

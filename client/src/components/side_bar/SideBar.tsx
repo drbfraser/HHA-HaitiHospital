@@ -159,6 +159,12 @@ const Sidebar = ({
             </SidebarItem>
           )}
 
+          <SidebarItem path="analytics">
+            <i className={`${iconMargins} bi bi-graph-up-arrow`} />
+            {isExpanded && <span className={'text-light'}>Analytics</span>}
+            {!isExpanded && <span className={'sidebarTooltip'}>Analytics</span>}
+          </SidebarItem>
+
           <SidebarItem path="message-board">
             <i className={`${iconMargins} bi bi-chat-right-text-fill`} />
             {isExpanded && (

@@ -1,5 +1,5 @@
 import { AnalyticsQuery, AnalyticsResponse, IReport, Role } from '@hha/common';
-import { HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
+import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
 import { roleAuth } from 'middleware/roleAuth';

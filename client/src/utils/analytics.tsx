@@ -1,5 +1,7 @@
 import { AnalyticsResponse, DepartmentJson, QuestionPrompt } from '@hha/common';
 import { refornatQuestionPrompt } from './string';
+import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/date';
+import moment from 'moment';
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
   return departments.find((department) => department.name == departmentName)?.id;
@@ -16,7 +18,17 @@ export const separateTimeAndQuestionData = (
   const questionData: number[] = [];
 
   analyticsData.forEach((analyticData) => {
-    timeData.push(analyticData.time);
+    let dateFormat = MONTH_AND_YEAR_DATE_FORMAT;
+    let { month, year } = analyticData;
+
+    if (month === 0) {
+      dateFormat = YEAR_ONLY_DATE_FORMAT;
+      month = 1;
+    }
+
+    const formattedDate = moment(new Date(year, month - 1)).format(dateFormat);
+    timeData.push(formattedDate);
+    timeData.sort();
     questionData.push(analyticData.answer);
   });
 
