@@ -307,8 +307,8 @@ const routes: Routes[] = [
     path: '/analytics',
     key: 'analytics',
     component: Analytics,
-    loginRequired: false,
-    rolesAllowed: [],
+    loginRequired: true,
+    rolesAllowed: [Role.Admin, Role.MedicalDirector],
     departmentsAllowed: [],
   },
   // WARNING: If adding new routes, do not add anything below the '/' route.
