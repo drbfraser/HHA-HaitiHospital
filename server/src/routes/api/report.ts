@@ -31,6 +31,7 @@ router.post('/', requireJwtAuth, async (req: Request, res: Response, next: NextF
     if (!req.user) {
       throw new NotFound('User not logged in');
     }
+
     const { departmentId, reportMonth, submittedUserId, submittedBy, serializedReport, isDraft } =
       req.body;
 

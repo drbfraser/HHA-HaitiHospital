@@ -26,6 +26,7 @@ import {
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
 import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
+import { DropDownMultiSelect } from 'components/dropdown/DropDownMultiSelect';
 
 export type TimeOptions = {
   from: string;
@@ -54,6 +55,14 @@ type DepartmentQuestion = {
   departmentName: string;
 };
 
+export type QuestionPromptUI = QuestionPrompt & {
+  checked: boolean;
+};
+
+type QuestionMap = {
+  [key: string]: QuestionPrompt[];
+};
+
 const Analytics = () => {
   const { t } = useTranslation();
 
@@ -67,6 +76,7 @@ const Analytics = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [questionPrompts, setQuestionPrompts] = useState<QuestionPrompt[]>([]);
+  const [questionMap, setQuestionMap] = useState<QuestionMap>({});
 
   // state is an object rather than a string because we would like to rerender components even if  question id is the same
   // An example will be to rerender components when the department selection changes but questiond id is the same
@@ -76,7 +86,7 @@ const Analytics = () => {
     departmentName: '',
   });
 
-  const [selectedDepartmentName, setSelectedDepartmentName] = useState('');
+  const [selectedDepartmentNames, setSelectedDepartmentNames] = useState<string[]>([]);
 
   const [timeOptions, setTimeOptions] = useState<TimeOptions>({
     from: defaultFromDate(),
@@ -104,7 +114,7 @@ const Analytics = () => {
         return;
       }
 
-      setSelectedDepartmentName(departmentsWithReport[0].name);
+      setSelectedDepartmentNames([departmentsWithReport[0].name]);
     };
 
     fetchDepartments();
@@ -113,76 +123,91 @@ const Analytics = () => {
   //fetch questions only when a new department is selected
   // technical debt: A new fetch will happen when there is a change in department selection
 
+  const fetchQuestionPrompts = async (departmentName: string) => {
+    // this prevents the fetched questions and analytics data from being in an inconsistent state
+    // if questions are fetched before analytics are fetched, the fetched questions are updated but the analytics data is not updated yet
+    //So, the analytics data will be showing inconsistent result
+    // Solution, only display UI after analytics data have been updated
+
+    setIsLoading(true);
+
+    const selectedDepartmentId = findDepartmentIdByName(departments, departmentName)!;
+
+    const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
+
+    const questionPromptsUI: QuestionPromptUI[] = questionPrompts.map((questionPrompt) => {
+      return { ...questionPrompt, checked: false };
+    });
+
+    setQuestionMap({ ...questionMap, [selectedDepartmentId]: questionPromptsUI });
+
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const fetchQuestionPrompts = async () => {
-      if (departments.length === 0) {
-        return;
-      }
-
-      // this prevents the fetched questions and analytics data from being in an inconsistent state
-      // if questions are fetched before analytics are fetched, the fetched questions are updated but the analytics data is not updated yet
-      //So, the analytics data will be showing inconsistent result
-      // Solution, only display UI after analytics data have been updated
-
-      setIsLoading(true);
-
-      const selectedDepartmentId = findDepartmentIdByName(departments, selectedDepartmentName)!;
-
-      const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
-
-      setQuestionPrompts(questionPrompts);
-
-      // Let the default question be the first question in the list
-
-      setSelectedDepartmentQuestion({
-        departmentName: selectedDepartmentName,
-        questionId: questionPrompts[0].id,
-      });
-    };
-
-    fetchQuestionPrompts();
-  }, [selectedDepartmentName, history]);
+    if (departments.length === 0) {
+      return;
+    }
+    fetchQuestionPrompts(departments[0].name);
+  }, [departments, history]);
 
   // fetch analytics when a new question, time option or aggregate by field is selected
 
-  useEffect(() => {
-    const fetchAnalytics = async () => {
-      if (departments.length === 0) {
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchAnalytics = async () => {
+  //     if (departments.length === 0) {
+  //       return;
+  //     }
 
-      const selectedDepartmentId = findDepartmentIdByName(departments, selectedDepartmentName)!;
+  //     const selectedDepartmentId = findDepartmentIdByName(departments, selectedDepartmentNames[0])!;
 
-      // date in API calls have to be in ISO format as defined by backend
+  //     // date in API calls have to be in ISO format as defined by backend
 
-      const startDate = moment(timeOptions.from, YEAR_DASH_MONTH_FORMAT).toISOString();
-      const endDate = moment(timeOptions.to, YEAR_DASH_MONTH_FORMAT).toISOString();
+  //     const startDate = moment(timeOptions.from, YEAR_DASH_MONTH_FORMAT).toISOString();
+  //     const endDate = moment(timeOptions.to, YEAR_DASH_MONTH_FORMAT).toISOString();
 
-      const analyticsQuery: AnalyticsQuery = {
-        departmentIds: selectedDepartmentId,
-        questionId: selectedDepartmentQuestion.questionId,
-        startDate: startDate,
-        endDate: endDate,
-        aggregateBy: selectedAggregateBy,
-        timeStep: timeOptions.timeStep,
-      };
+  //     const analyticsQuery: AnalyticsQuery = {
+  //       departmentIds: selectedDepartmentId,
+  //       questionId: selectedDepartmentQuestion.questionId,
+  //       startDate: startDate,
+  //       endDate: endDate,
+  //       aggregateBy: selectedAggregateBy,
+  //       timeStep: timeOptions.timeStep,
+  //     };
 
-      const analyticsData = await getAnalyticsData(history, analyticsQuery);
+  //     const analyticsData = await getAnalyticsData(history, analyticsQuery);
 
-      setAnalyticsData(analyticsData!);
-      setIsLoading(false);
-    };
-    fetchAnalytics();
-  }, [selectedDepartmentQuestion, timeOptions, selectedAggregateBy, history]);
+  //     setAnalyticsData(analyticsData!);
+  //     setIsLoading(false);
+  //   };
+  //   fetchAnalytics();
+  // }, [selectedDepartmentQuestion, timeOptions, selectedAggregateBy, history]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
-  const handleShowQuestionsModal = () => setShowModalQuestions(true);
+  const handleShowQuestionsModal = () => {
+    console.log('qmap: ', questionMap);
+    setShowModalQuestions(true);
+  };
 
   const handleCloseTimeOptionsModal = () => setShowModalTimeOptions(false);
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
 
-  const onDepartmentSelected = (department: string) => {
-    setSelectedDepartmentName(department);
+  const onDepartmentSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    let updateDepartmentsSelected: string[] = [];
+
+    const departmentSelected = event.target.id;
+
+    if (!selectedDepartmentNames.includes(departmentSelected)) {
+      updateDepartmentsSelected = [...selectedDepartmentNames, departmentSelected];
+
+      fetchQuestionPrompts(departmentSelected);
+    } else {
+      updateDepartmentsSelected = selectedDepartmentNames.filter(
+        (department) => department !== departmentSelected,
+      );
+    }
+
+    setSelectedDepartmentNames(updateDepartmentsSelected);
   };
 
   const onFromDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -213,11 +238,11 @@ const Analytics = () => {
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
             <div className="d-flex flex-row gap-3">
-              <DropDown
-                menus={getAllDepartmentsByName(departments!)}
+              <DropDownMultiSelect
+                dropDowns={getAllDepartmentsByName(departments!)}
                 title={'Department'}
-                selectedMenu={selectedDepartmentName}
-                setDropDownMenu={onDepartmentSelected}
+                selectedDropDowns={selectedDepartmentNames}
+                setSelectedDropDowns={onDepartmentSelected}
               />
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
                 Questions
@@ -263,17 +288,17 @@ const Analytics = () => {
             </div>
           </div>
           <Col className="mt-5">
-            <h4>
+            {/* <h4>
               {displayTotal(questionPrompts, selectedDepartmentQuestion.questionId, analyticsData)}
-            </h4>
-            <ChartSelector
+            </h4> */}
+            {/* <ChartSelector
               type={selectedChart}
               analyticsData={analyticsData}
               questionPrompt={getQuestionFromId(
                 questionPrompts,
                 selectedDepartmentQuestion.questionId,
               )}
-            />
+            /> */}
           </Col>
         </div>
       )}
