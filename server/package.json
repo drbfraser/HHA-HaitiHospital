@@ -71,5 +71,10 @@
     "supertest": "^6.2.2",
     "ts-mocha": "^9.0.2",
     "ts-node-dev": "^1.1.8"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "debug": 1
+    }
   }
 }
