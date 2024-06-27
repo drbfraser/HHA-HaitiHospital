@@ -14,6 +14,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { seedCaseStudies } from 'seeders/seed';
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
+import CaseStudy from 'models/caseStudies';
 
 chai.use(chaiHttp);
 
@@ -112,8 +113,10 @@ describe('Case Study Tests', function () {
   });
 
   it('Should Successfully Post a New Case Patient Story', function (done: Done) {
-    const imgPath: string = 'public/images/avatar0.jpg';
-    const document: string = `{"patientStory":
+    // just drop database for now to gurantee the response body only has one result
+    CaseStudy.deleteMany({}).then(() => {
+      const imgPath: string = 'public/images/avatar0.jpg';
+      const document: string = `{"patientStory":
         {"patientsName":"John",
         "patientsAge":"22",
         "whereIsThePatientFrom":"Canada",
@@ -123,22 +126,24 @@ describe('Case Study Tests', function () {
         "caseStudyStory":"John recovered!"},
         "caseStudyType":"Patient Story"}`;
 
-    postCaseStudy(document, imgPath, done, HTTP_CREATED_CODE, function () {
-      // Verify that the correct information is stored
-      agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
-        if (error) done(error);
+      postCaseStudy(document, imgPath, done, HTTP_CREATED_CODE, function () {
+        // Verify that the correct information is stored
 
-        const caseStudy = response.body[1]; // Sorted in decesending order, so grab the first one that's not Favourited
+        agent.get(CASE_STUDIES_ENDPOINT).end(async function (error: any, response: any) {
+          if (error) done(error);
 
-        expect(caseStudy.caseStudyType).to.equal('Patient Story');
-        expect(caseStudy.patientStory.patientsName).to.equal('John');
-        expect(caseStudy.patientStory.patientsAge).to.equal(22);
-        expect(caseStudy.patientStory.whereIsThePatientFrom).to.equal('Canada');
-        expect(caseStudy.patientStory.whyComeToHcbh).to.equal('Illness');
-        expect(caseStudy.patientStory.howLongWereTheyAtHcbh).to.equal('3 years');
-        expect(caseStudy.patientStory.diagnosis).to.equal('Flu');
-        expect(caseStudy.patientStory.caseStudyStory).to.equal('John recovered!');
-        done();
+          const caseStudy = response.body[1]; // Sorted in decesending order, so grab the first one that's not Favourited
+
+          expect(caseStudy.caseStudyType).to.equal('Patient Story');
+          expect(caseStudy.patientStory.patientsName).to.equal('John');
+          expect(caseStudy.patientStory.patientsAge).to.equal(22);
+          expect(caseStudy.patientStory.whereIsThePatientFrom).to.equal('Canada');
+          expect(caseStudy.patientStory.whyComeToHcbh).to.equal('Illness');
+          expect(caseStudy.patientStory.howLongWereTheyAtHcbh).to.equal('3 years');
+          expect(caseStudy.patientStory.diagnosis).to.equal('Flu');
+          expect(caseStudy.patientStory.caseStudyStory).to.equal('John recovered!');
+          done();
+        });
       });
     });
   });
