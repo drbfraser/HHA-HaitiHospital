@@ -38,10 +38,5 @@
   },
   "dependencies": {
     "@types/react-table": "^7.7.19"
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "debug": "1"
-    }
   }
 }
