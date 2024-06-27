@@ -59,8 +59,8 @@ export type QuestionPromptUI = QuestionPrompt & {
   checked: boolean;
 };
 
-type QuestionMap = {
-  [key: string]: QuestionPrompt[];
+export type QuestionMap = {
+  [key: string]: QuestionPromptUI[];
 };
 
 const Analytics = () => {
@@ -139,7 +139,7 @@ const Analytics = () => {
       return { ...questionPrompt, checked: false };
     });
 
-    setQuestionMap({ ...questionMap, [selectedDepartmentId]: questionPromptsUI });
+    setQuestionMap({ ...questionMap, [departmentName]: questionPromptsUI });
 
     setIsLoading(false);
   };
@@ -185,7 +185,6 @@ const Analytics = () => {
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => {
-    console.log('qmap: ', questionMap);
     setShowModalQuestions(true);
   };
 
@@ -205,9 +204,26 @@ const Analytics = () => {
       updateDepartmentsSelected = selectedDepartmentNames.filter(
         (department) => department !== departmentSelected,
       );
+
+      delete questionMap[departmentSelected];
+      setQuestionMap({ ...questionMap });
     }
 
     setSelectedDepartmentNames(updateDepartmentsSelected);
+  };
+
+  const onQuestionsSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    const departmentDashQuestion = event.target.id;
+
+    const [department, questionId] = departmentDashQuestion.split('-');
+
+    const questions = questionMap[department];
+
+    const index = questions.findIndex((question) => question.id === questionId);
+
+    questions[index] = { ...questions[index], checked: !questions[index].checked };
+
+    setQuestionMap({ ...questionMap, [department]: questions });
   };
 
   const onFromDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -250,11 +266,9 @@ const Analytics = () => {
 
               <AnalyticsQuestionModal
                 showModal={showModalQuestions}
-                questionPrompts={questionPrompts}
+                questionMap={questionMap}
                 handleCloseModal={handleCloseQuestionsModal}
-                setQuestionSelected={(questionId) =>
-                  setSelectedDepartmentQuestion({ ...selectedDepartmentQuestion, questionId })
-                }
+                setQuestionSelected={onQuestionsSelected}
               />
             </div>
 

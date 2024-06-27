@@ -80,7 +80,7 @@ router.get(
     next: NextFunction,
   ) => {
     try {
-      const { departmentIds, questionId, startDate, endDate, timeStep, aggregateBy } = req.query;
+      const { departmentId, questionId, startDate, endDate, timeStep, aggregateBy } = req.query;
 
       let dateFormat = '';
 
@@ -95,12 +95,9 @@ router.get(
       const parsedStartDate = new Date(startDate);
       const parsedEndDate = new Date(endDate);
 
-      const departmentIdArray = departmentIds.split(',');
+      const isDepartmentsValid = await Departments.Database.validateDeptId(departmentId);
 
-      const areDepartmentsValid =
-        await Departments.Database.validateDepartmentIds(departmentIdArray);
-
-      if (!areDepartmentsValid) {
+      if (!isDepartmentsValid) {
         throw new NotFound(`There exist a department id that was not found`);
       }
 

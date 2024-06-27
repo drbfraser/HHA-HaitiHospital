@@ -11,7 +11,7 @@ export const reformatQuestionPrompt = (questionId: string, questionPrompt: strin
 
   const questionForRegex = QUESTION_FOR_REGEX;
 
-  formattedQuestionId = formattedQuestionId.replace(questionForRegex, '');
+  questionPrompt = questionPrompt.replace(questionForRegex, '');
 
   return formattedQuestionId + '-' + questionPrompt;
 };

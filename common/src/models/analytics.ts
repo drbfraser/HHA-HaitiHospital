@@ -1,5 +1,5 @@
 export type AnalyticsQuery = {
-  departmentIds: string;
+  departmentId: string;
   questionId: string;
   startDate: string;
   endDate: string;
