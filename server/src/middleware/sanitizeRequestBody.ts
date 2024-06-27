@@ -23,7 +23,7 @@ const sanitizeRequestBody = (body: RequestBody, maxLength: number = 1000): strin
     sanitizedBody.password = '***';
   }
 
-  // truncate the body if it's too long
+  // Truncate the request body if its length exceeds maxLength to prevent logs from being overpopulated with excessively long request bodies.
   const bodyString = JSON.stringify(sanitizedBody);
   if (bodyString.length > maxLength) {
     return bodyString.substring(0, maxLength) + '... (truncated)';
