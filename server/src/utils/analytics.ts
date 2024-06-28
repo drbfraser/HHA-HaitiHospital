@@ -196,7 +196,6 @@ export const processAnalytics = (analyticsForMonths: AnalyticsForMonths[], quest
       const analyticsResponseForDepartment: AnalyticsResponse = {
         month,
         year,
-        departmentId,
         answer: departmentMap[departmentId]!,
       };
 

@@ -6,28 +6,27 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartData,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { createDefaultChartOptions } from './options';
-import { ChartProps } from './ChartSelector';
-import { separateTimeAndQuestionData } from 'utils/analytics';
+import { ChartProps, DataSet } from './ChartSelector';
+import { prepareDataSetForChart } from 'utils/analytics';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 type BarChartProps = Omit<ChartProps, 'type'>;
 
-const BarChart = ({ analyticsData, questionPrompt }: BarChartProps) => {
-  const [timeLabels, questionData] = separateTimeAndQuestionData(analyticsData);
-
-  const data = {
-    labels: timeLabels,
-    datasets: [
-      {
-        label: questionPrompt,
-        data: questionData,
+const BarChart = ({ analyticsData }: BarChartProps) => {
+  const dataSets = prepareDataSetForChart(analyticsData);
+  const data: ChartData<'bar', DataSet[]> = {
+    datasets: Object.keys(dataSets).map((label) => {
+      return {
+        label: label,
+        data: dataSets[label],
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
+      };
+    }),
   };
   return (
     <div className="d-flex w-100 flex-row justify-content-center" style={{ height: '450px' }}>

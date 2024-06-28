@@ -17,8 +17,10 @@ import moment from 'moment';
 import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticQuestions';
 import { TimeOptionModal } from 'components/popup_modal/TimeOptionModal';
 import {
+  createAnalyticsMap,
   displayTotal,
   filterDepartmentsByReport,
+  filterQuestionsSelected,
   findDepartmentIdByName,
   getAllDepartmentsByName,
   getQuestionFromId,
@@ -27,6 +29,7 @@ import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
 import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
 import { DropDownMultiSelect } from 'components/dropdown/DropDownMultiSelect';
+import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
 
 export type TimeOptions = {
   from: string;
@@ -61,6 +64,10 @@ export type QuestionPromptUI = QuestionPrompt & {
 
 export type QuestionMap = {
   [key: string]: QuestionPromptUI[];
+};
+
+export type AnalyticsMap = {
+  [key: string]: AnalyticsResponse[];
 };
 
 const Analytics = () => {
@@ -101,7 +108,7 @@ const Analytics = () => {
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
 
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsResponse[]>([]);
+  const [analyticsMap, setAnalyticsMap] = useState<AnalyticsMap>({});
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -123,7 +130,7 @@ const Analytics = () => {
   //fetch questions only when a new department is selected
   // technical debt: A new fetch will happen when there is a change in department selection
 
-  const fetchQuestionPrompts = async (departmentName: string) => {
+  const fetchQuestionPrompts = async (departmentName: string, firstQuestionByDefault: boolean) => {
     // this prevents the fetched questions and analytics data from being in an inconsistent state
     // if questions are fetched before analytics are fetched, the fetched questions are updated but the analytics data is not updated yet
     //So, the analytics data will be showing inconsistent result
@@ -135,8 +142,14 @@ const Analytics = () => {
 
     const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
 
-    const questionPromptsUI: QuestionPromptUI[] = questionPrompts.map((questionPrompt) => {
-      return { ...questionPrompt, checked: false };
+    const questionPromptsUI: QuestionPromptUI[] = questionPrompts.map((questionPrompt, index) => {
+      let checked = false;
+
+      if (index === 0 && firstQuestionByDefault) {
+        checked = true;
+      }
+
+      return { ...questionPrompt, checked };
     });
 
     setQuestionMap({ ...questionMap, [departmentName]: questionPromptsUI });
@@ -148,40 +161,57 @@ const Analytics = () => {
     if (departments.length === 0) {
       return;
     }
-    fetchQuestionPrompts(departments[0].name);
+    fetchQuestionPrompts(departments[0].name, true);
   }, [departments, history]);
 
   // fetch analytics when a new question, time option or aggregate by field is selected
 
-  // useEffect(() => {
-  //   const fetchAnalytics = async () => {
-  //     if (departments.length === 0) {
-  //       return;
-  //     }
+  const fetchAnalytics = async () => {
+    const departmentDashQuestionKeys: string[] = [];
+    const fetchAnalyticsRequests: Promise<AnalyticsResponse[]>[] = [];
 
-  //     const selectedDepartmentId = findDepartmentIdByName(departments, selectedDepartmentNames[0])!;
+    Object.keys(questionMap).forEach((department) => {
+      const selectedQuestions = filterQuestionsSelected(questionMap[department]);
 
-  //     // date in API calls have to be in ISO format as defined by backend
+      selectedQuestions.forEach((selectedQuestion) => {
+        departmentDashQuestionKeys.push(
+          createAnalyticsKey(
+            department,
+            reformatQuestionPrompt(selectedQuestion.id, selectedQuestion.en),
+          ),
+        );
 
-  //     const startDate = moment(timeOptions.from, YEAR_DASH_MONTH_FORMAT).toISOString();
-  //     const endDate = moment(timeOptions.to, YEAR_DASH_MONTH_FORMAT).toISOString();
+        const departmentId = findDepartmentIdByName(departments, department)!;
 
-  //     const analyticsQuery: AnalyticsQuery = {
-  //       departmentIds: selectedDepartmentId,
-  //       questionId: selectedDepartmentQuestion.questionId,
-  //       startDate: startDate,
-  //       endDate: endDate,
-  //       aggregateBy: selectedAggregateBy,
-  //       timeStep: timeOptions.timeStep,
-  //     };
+        // date in API calls have to be in ISO format as defined by backend
 
-  //     const analyticsData = await getAnalyticsData(history, analyticsQuery);
+        const startDate = moment(timeOptions.from, YEAR_DASH_MONTH_FORMAT).toISOString();
+        const endDate = moment(timeOptions.to, YEAR_DASH_MONTH_FORMAT).toISOString();
 
-  //     setAnalyticsData(analyticsData!);
-  //     setIsLoading(false);
-  //   };
-  //   fetchAnalytics();
-  // }, [selectedDepartmentQuestion, timeOptions, selectedAggregateBy, history]);
+        const analyticsQuery: AnalyticsQuery = {
+          departmentId: departmentId,
+          questionId: selectedQuestion.id,
+          startDate: startDate,
+          endDate: endDate,
+          aggregateBy: selectedAggregateBy,
+          timeStep: timeOptions.timeStep,
+        };
+
+        fetchAnalyticsRequests.push(getAnalyticsData(history, analyticsQuery));
+      });
+    });
+
+    const analyticsresponses = await Promise.all(fetchAnalyticsRequests);
+
+    const analyticsMap = createAnalyticsMap(analyticsresponses, departmentDashQuestionKeys);
+
+    setAnalyticsMap(analyticsMap);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [questionMap, timeOptions, selectedAggregateBy, history]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => {
@@ -199,7 +229,7 @@ const Analytics = () => {
     if (!selectedDepartmentNames.includes(departmentSelected)) {
       updateDepartmentsSelected = [...selectedDepartmentNames, departmentSelected];
 
-      fetchQuestionPrompts(departmentSelected);
+      fetchQuestionPrompts(departmentSelected, false);
     } else {
       updateDepartmentsSelected = selectedDepartmentNames.filter(
         (department) => department !== departmentSelected,
@@ -228,6 +258,8 @@ const Analytics = () => {
 
   const onFromDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setTimeOptions({ ...timeOptions, from: event.target.value });
+
+    fetchAnalytics();
   };
 
   const onToDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -244,6 +276,7 @@ const Analytics = () => {
 
   const onChartSelected = (chart: ChartType) => {
     setSelectedChart(chart);
+    // /console.log('ana2:', analyticsMap);
   };
 
   return (
@@ -305,14 +338,7 @@ const Analytics = () => {
             {/* <h4>
               {displayTotal(questionPrompts, selectedDepartmentQuestion.questionId, analyticsData)}
             </h4> */}
-            {/* <ChartSelector
-              type={selectedChart}
-              analyticsData={analyticsData}
-              questionPrompt={getQuestionFromId(
-                questionPrompts,
-                selectedDepartmentQuestion.questionId,
-              )}
-            /> */}
+            <ChartSelector type={selectedChart} analyticsData={analyticsMap} />
           </Col>
         </div>
       )}

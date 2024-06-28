@@ -40,6 +40,7 @@ export const getAnalyticsData = async (history: History, analyticsQuery: Analyti
     return analytics;
   } catch (error) {
     console.error('Error fetching analytics for a department: ', error);
+    throw error;
   } finally {
     controller.abort();
   }

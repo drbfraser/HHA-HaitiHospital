@@ -15,3 +15,7 @@ export const reformatQuestionPrompt = (questionId: string, questionPrompt: strin
 
   return formattedQuestionId + '-' + questionPrompt;
 };
+
+export const createAnalyticsKey = (department: string, questionId: string) => {
+  return `${department}+${questionId}`;
+};
