@@ -8,22 +8,18 @@ import {
   NUMERIC_QUESTION_IDENTIFIER,
   QUESTION_IDENTIFIER,
 } from './constants';
-import {
-  AnalyticsForMonths,
-  AnalyticsQuestionsResponse,
-  AnalyticsResponse,
-} from 'routes/api/analytics';
-import { IReport } from '@hha/common';
+import { AnalyticsForMonths, AnalyticsQuestionsResponse } from 'routes/api/analytics';
+import { AnalyticsResponse, IReport } from '@hha/common';
 
 type AggregatePiplelineParams = {
-  departmentIdArray: string[];
+  departmentId: string;
   startDate: Date;
   endDate: Date;
   dateFormat: string;
 };
 
 export const createAnalyticsPipeline = ({
-  departmentIdArray,
+  departmentId,
   startDate,
   endDate,
   dateFormat,
@@ -34,7 +30,7 @@ export const createAnalyticsPipeline = ({
         $and: [
           {
             departmentId: {
-              $in: departmentIdArray,
+              $eq: departmentId,
             },
           },
           {

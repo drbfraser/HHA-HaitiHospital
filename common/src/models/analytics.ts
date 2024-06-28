@@ -8,7 +8,6 @@ export type AnalyticsQuery = {
 };
 
 export type AnalyticsResponse = {
-  time: string;
   departmentId: string;
   month: number;
   year: number;

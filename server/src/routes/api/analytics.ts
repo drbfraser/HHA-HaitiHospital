@@ -103,7 +103,7 @@ router.get(
 
       let analytics: AnalyticsForMonths[] = await ReportCollection.aggregate(
         createAnalyticsPipeline({
-          departmentIdArray,
+          departmentId,
           startDate: parsedStartDate,
           endDate: parsedEndDate,
           dateFormat,
