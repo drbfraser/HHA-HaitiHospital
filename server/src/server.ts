@@ -12,6 +12,7 @@ import passport from 'passport';
 import path from 'path';
 import promBundle from 'express-prom-bundle';
 import routes from './routes/routes';
+import { logRequest } from './middleware/sanitizeRequestBody';
 
 // Add the options to the prometheus middleware most option are for http_request_duration_seconds histogram metric
 const metricsMiddleware = promBundle({
@@ -50,6 +51,9 @@ export const createServer = () => {
   // add the prometheus middleware to all routes
   app.use(metricsMiddleware);
 
+  // add logging middleware
+  app.use(logRequest);
+
   app.use(cookieParser());
   app.use(passport.initialize());
   require('./services/jwtStrategy');
@@ -73,7 +77,7 @@ export const createServer = () => {
     .then(() => {
       logger.info('Connect to MongoDB');
     })
-    .catch((err) => logger.error(err));
+    .catch((err) => logger.error(`Error connecting to MongoDb with error message: ${err}`));
   // Use Routes
   app.use('/', routes);
   app.use('/public', express.static('public'));

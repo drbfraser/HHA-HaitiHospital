@@ -19,7 +19,8 @@ if (passwordSeed === undefined) throw new EnvironmentConfigurationError('PASSWOR
 export const PASSWORD_SEED = passwordSeed;
 
 const randPassword = process.env.RAND_PASSWORD_SEED;
-if (randPassword === undefined) throw new EnvironmentConfigurationError('RAND_PASSWORD missing');
+if (randPassword === undefined)
+  throw new EnvironmentConfigurationError('RAND_PASSWORD_SEED missing');
 export const RAND_PASSWORD_SEED = randPassword;
 
 const secret = process.env.JWT_SECRET;
