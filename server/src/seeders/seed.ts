@@ -1142,8 +1142,9 @@ export const seedReports = async () => {
   }
 };
 
+// Checks to only connect to MongoDB if run from the command line
+// to prevent connecting to Mongo when using exported functions.
 if (require.main === module) {
-  // Connect to Mongo
   mongoose
     .connect(ENV.MONGO_DB, {
       useNewUrlParser: true,

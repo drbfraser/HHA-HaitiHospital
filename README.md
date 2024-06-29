@@ -184,7 +184,7 @@ Testing is done with an in-memory MongoDB. Currently some tests use seeding scri
 ideally each test would generate data relevant to its own test itself. Run tests locally with
 
 ```bash
-npm run test-local
+npm run test
 ```
 
 ## Logging
@@ -242,6 +242,7 @@ the .env file. By default, it's going to be `hhahaiti_local` for local testing.
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.override.yml up
 ```
+
 For full and detailed guide on running docker services locally, please refer to monitoring.md
 
 ### Deployment on staging
