@@ -21,6 +21,7 @@ import { ReportCollection } from 'models/report';
 import { TemplateCollection } from 'models/template';
 import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
+import reports from './data/defaultReports.json';
 
 let nameMapper: Map<string, string>;
 
@@ -28,17 +29,6 @@ const selectRandomUser = (users: User[]): User => {
   const randomUserIndex = Math.floor(Math.random() * users.length);
   return users[randomUserIndex];
 };
-
-// Random Enum Key function here accepts any enumerations and selects the key of the enum.
-const randomEnumKey = (enumeration: any): any => {
-  const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
-  const enumKey = keys[Math.floor(Math.random() * keys.length)];
-
-  return enumKey;
-};
-
-// Random Enum value function here accepts any enumerations and selects the value of the enum.
-const randomEnumValue = (enumeration: any): any => enumeration[randomEnumKey(enumeration)];
 
 export const seedDb = async () => {
   try {
@@ -1135,10 +1125,10 @@ const seedReports = async () => {
     const serializer = ObjectSerializer.getObjectSerializer();
 
     const defaultReports = [
-      { defaultReport: buildNicuPaedsReport(), user: userMap['user2'] },
-      { defaultReport: buildMaternityReport(), user: userMap['user5'] },
-      { defaultReport: buildRehabReport(), user: userMap['user11'] },
-      { defaultReport: buildCommunityHealthReport(), user: userMap['user3'] },
+      { defaultReport: reports.nicupaeds, user: userMap['user2'] },
+      { defaultReport: reports.maternity, user: userMap['user5'] },
+      { defaultReport: reports.rehab, user: userMap['user11'] },
+      { defaultReport: reports.communityHealth, user: userMap['user3'] },
     ];
 
     for (const { defaultReport, user } of defaultReports) {
@@ -1152,8 +1142,8 @@ const seedReports = async () => {
         isDraft: false,
       });
       await report.save();
-      console.log(`Reports seeded`);
     }
+    console.log(`Reports seeded`);
   } catch (err) {
     console.log(err);
   }

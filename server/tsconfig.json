@@ -16,7 +16,8 @@
     "skipLibCheck": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "typeRoots": ["./types"]
+    "typeRoots": ["./types"],
+    "resolveJsonModule": true
     // "types": ["jest", "node", "chai"]
   },
   "include": ["./src/**/*", "./tests/**/*"]
