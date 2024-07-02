@@ -12,6 +12,7 @@ import { Bar } from 'react-chartjs-2';
 import { createDefaultChartOptions } from './options';
 import { ChartProps, DataSet } from './ChartSelector';
 import { prepareDataSetForChart } from 'utils/analytics';
+import GRAPH_COLOR from 'constants/graphColor';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -19,12 +20,14 @@ type BarChartProps = Omit<ChartProps, 'type'>;
 
 const BarChart = ({ analyticsData }: BarChartProps) => {
   const dataSets = prepareDataSetForChart(analyticsData);
+
+  console.log('datasets:', dataSets);
   const data: ChartData<'bar', DataSet[]> = {
-    datasets: Object.keys(dataSets).map((label) => {
+    datasets: Object.keys(dataSets).map((label, index) => {
       return {
         label: label,
         data: dataSets[label],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: GRAPH_COLOR[index],
       };
     }),
   };

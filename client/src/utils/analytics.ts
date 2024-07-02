@@ -4,6 +4,8 @@ import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/dat
 import moment from 'moment';
 import { AnalyticsMap, QuestionPromptUI } from 'pages/analytics/Analytics';
 import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
+import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
+import { time } from 'drizzle-orm/mysql-core';
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
   return departments.find((department) => department.name === departmentName)?.id;
@@ -21,43 +23,70 @@ export const filterQuestionsSelected = (questions: QuestionPromptUI[]) => {
   return questions.filter((question) => question.checked);
 };
 
-const compareDataSet = (dataSet1: DataSet, dataSet2: DataSet) => {
-  if (dataSet1.x < dataSet2.x) {
-    return -1;
-  } else if (dataSet1.x > dataSet2.x) {
-    return 1;
-  }
+export type DateWithFormat = {
+  time: Date;
+  format: string;
+};
 
-  return 0;
+const getSortedTimeData = (analyticsMap: AnalyticsMap) => {
+  const timeData: DateWithFormat[] = [];
+  Object.keys(analyticsMap).forEach((dataSet) => {
+    analyticsMap[dataSet].forEach((analyticsData) => {
+      const time = getDateForAnalytics(analyticsData);
+      timeData.push(time);
+    });
+  });
+
+  timeData.sort(compareDateWithFormat);
+
+  const formattedTimeData = timeData.map((dateWithFormat) => formatDateForChart(dateWithFormat));
+
+  return formattedTimeData;
+};
+
+const isTimeInAnalyticsData = (analyticsData: AnalyticsResponse, time: string) => {
+  const date = getDateForAnalytics(analyticsData);
+  const formattedDate = formatDateForChart(date);
+  return formattedDate === time;
+};
+
+const fillUpDataSet = (timeData: string[], analyticsData: AnalyticsResponse[]) => {
+  const dataSets: DataSet[] = [];
+
+  timeData.forEach((time) => {
+    const analyticData = analyticsData.find((analyticData) =>
+      isTimeInAnalyticsData(analyticData, time),
+    );
+
+    const dataSet: DataSet = {
+      x: '',
+      y: 0,
+    };
+
+    if (analyticData) {
+      dataSet.x = time;
+      dataSet.y = analyticData.answer;
+    } else {
+      dataSet.x = time;
+      dataSet.y = null;
+    }
+
+    dataSets.push(dataSet);
+  });
+
+  return dataSets;
 };
 export const prepareDataSetForChart = (analyticsMap: AnalyticsMap): DataSetMap => {
   const dataSetMap: DataSetMap = {};
-  Object.keys(analyticsMap).forEach((depatmentQuestion) => {
-    let dateFormat = MONTH_AND_YEAR_DATE_FORMAT;
 
-    const [department, questionId] = depatmentQuestion.split('+');
+  const timeData = getSortedTimeData(analyticsMap);
 
-    const dataSetsByQuestion: DataSet[] = [];
-    analyticsMap[depatmentQuestion].forEach((analyticsData) => {
-      let { month, year } = analyticsData;
+  Object.keys(analyticsMap).forEach((departmentQuestionKey) => {
+    const [department, question] = departmentQuestionKey.split('+');
 
-      if (month === 0) {
-        dateFormat = YEAR_ONLY_DATE_FORMAT;
-        month = 1;
-      }
+    const dataSet = fillUpDataSet(timeData, analyticsMap[departmentQuestionKey]);
 
-      const formattedDate = moment(new Date(year, month - 1)).format(dateFormat);
-
-      const dataSet: DataSet = {
-        x: formattedDate,
-        y: analyticsData.answer,
-      };
-
-      dataSetsByQuestion.push(dataSet);
-    });
-
-    dataSetsByQuestion.sort(compareDataSet);
-    dataSetMap[`${questionId} for ${department}`] = dataSetsByQuestion;
+    dataSetMap[`${question} for ${department}`] = dataSet;
   });
 
   return dataSetMap;

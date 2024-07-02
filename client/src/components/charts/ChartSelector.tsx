@@ -12,7 +12,7 @@ export type ChartProps = {
 
 export type DataSet = {
   x: string;
-  y: number;
+  y: number | null;
 };
 
 export type DataSetMap = {
