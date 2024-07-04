@@ -1,5 +1,5 @@
 import { AnalyticsResponse, DepartmentJson, QuestionPrompt } from '@hha/common';
-import { reformatQuestionPrompt } from './string';
+import { reformatQuestionPrompt, separateDepartmentAndQuestion } from './string';
 import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/date';
 import moment from 'moment';
 import { AnalyticsMap, QuestionPromptUI } from 'pages/analytics/Analytics';
@@ -82,7 +82,7 @@ export const prepareDataSetForChart = (analyticsMap: AnalyticsMap): DataSetMap =
   const timeData = getSortedTimeData(analyticsMap);
 
   Object.keys(analyticsMap).forEach((departmentQuestionKey) => {
-    const [department, question] = departmentQuestionKey.split('+');
+    const [department, question] = separateDepartmentAndQuestion(departmentQuestionKey);
 
     const dataSet = fillUpDataSet(timeData, analyticsMap[departmentQuestionKey]);
 

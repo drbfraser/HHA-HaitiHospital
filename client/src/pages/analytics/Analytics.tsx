@@ -30,6 +30,7 @@ import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
 import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
 import { DropDownMultiSelect } from 'components/dropdown/DropDownMultiSelect';
 import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
+import AnalyticsOverview from 'components/analytics/Overview';
 
 export type TimeOptions = {
   from: string;
@@ -335,9 +336,7 @@ const Analytics = () => {
             </div>
           </div>
           <Col className="mt-5">
-            {/* <h4>
-              {displayTotal(questionPrompts, selectedDepartmentQuestion.questionId, analyticsData)}
-            </h4> */}
+            <AnalyticsOverview analyticsData={analyticsMap} />
             <ChartSelector type={selectedChart} analyticsData={analyticsMap} />
           </Col>
         </div>

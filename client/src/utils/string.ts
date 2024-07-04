@@ -19,3 +19,7 @@ export const reformatQuestionPrompt = (questionId: string, questionPrompt: strin
 export const createAnalyticsKey = (department: string, questionId: string) => {
   return `${department}+${questionId}`;
 };
+
+export const separateDepartmentAndQuestion = (departmentQuestion: string): string[] => {
+  return departmentQuestion.split('+');
+};
