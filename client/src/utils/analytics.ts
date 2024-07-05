@@ -1,8 +1,18 @@
-import { AnalyticsResponse, DepartmentJson, QuestionPrompt } from '@hha/common';
+import {
+  AnalyticsQuery,
+  AnalyticsResponse,
+  DepartmentJson,
+  MonthOrYearOption,
+  QuestionPrompt,
+} from '@hha/common';
 import { reformatQuestionPrompt, separateDepartmentAndQuestion } from './string';
-import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/date';
+import {
+  MONTH_AND_YEAR_DATE_FORMAT,
+  YEAR_DASH_MONTH_FORMAT,
+  YEAR_ONLY_DATE_FORMAT,
+} from 'constants/date';
 import moment from 'moment';
-import { AnalyticsMap, QuestionPromptUI } from 'pages/analytics/Analytics';
+import { AnalyticsMap, QuestionPromptUI, TimeOptions } from 'pages/analytics/Analytics';
 import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
 import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
 import { time } from 'drizzle-orm/mysql-core';
@@ -23,6 +33,29 @@ export const filterQuestionsSelected = (questions: QuestionPromptUI[]) => {
   return questions.filter((question) => question.checked);
 };
 
+export const prepareAnalyticsQuery = (
+  departmentId: string,
+  questionId: string,
+  aggregateBy: MonthOrYearOption,
+  timeOptions: TimeOptions,
+): AnalyticsQuery => {
+  // date in API calls have to be in ISO format as defined by backend
+
+  const startDate = moment(timeOptions.from, YEAR_DASH_MONTH_FORMAT).toISOString();
+  const endDate = moment(timeOptions.to, YEAR_DASH_MONTH_FORMAT).toISOString();
+
+  const analyticsQuery: AnalyticsQuery = {
+    departmentId: departmentId,
+    questionId: questionId,
+    startDate: startDate,
+    endDate: endDate,
+    aggregateBy: aggregateBy,
+    timeStep: timeOptions.timeStep,
+  };
+
+  return analyticsQuery;
+};
+
 export type DateWithFormat = {
   time: Date;
   format: string;
@@ -30,6 +63,7 @@ export type DateWithFormat = {
 
 const getSortedTimeData = (analyticsMap: AnalyticsMap) => {
   const timeData: DateWithFormat[] = [];
+
   Object.keys(analyticsMap).forEach((dataSet) => {
     analyticsMap[dataSet].forEach((analyticsData) => {
       const time = getDateForAnalytics(analyticsData);
@@ -41,7 +75,12 @@ const getSortedTimeData = (analyticsMap: AnalyticsMap) => {
 
   const formattedTimeData = timeData.map((dateWithFormat) => formatDateForChart(dateWithFormat));
 
-  return formattedTimeData;
+  // when multiple questions from the same department are analyzed, they share the same time data
+  //so, use a set to remove duplicate time data
+
+  const noDuplicateTimeData = new Set(formattedTimeData);
+
+  return Array.from(noDuplicateTimeData);
 };
 
 const isTimeInAnalyticsData = (analyticsData: AnalyticsResponse, time: string) => {
@@ -53,6 +92,8 @@ const isTimeInAnalyticsData = (analyticsData: AnalyticsResponse, time: string) =
 const fillUpDataSet = (timeData: string[], analyticsData: AnalyticsResponse[]) => {
   const dataSets: DataSet[] = [];
 
+  //every dataset will have the same sorted time data
+
   timeData.forEach((time) => {
     const analyticData = analyticsData.find((analyticData) =>
       isTimeInAnalyticsData(analyticData, time),
@@ -63,11 +104,14 @@ const fillUpDataSet = (timeData: string[], analyticsData: AnalyticsResponse[]) =
       y: 0,
     };
 
+    // if time data is present in dataset, assign a non-null y value to represent the answer to the question
     if (analyticData) {
       dataSet.x = time;
       dataSet.y = analyticData.answer;
     } else {
       dataSet.x = time;
+
+      //if time data is not present in dataset, assign a null y-value indicating that chartjs should skip that data point
       dataSet.y = null;
     }
 
@@ -77,7 +121,20 @@ const fillUpDataSet = (timeData: string[], analyticsData: AnalyticsResponse[]) =
   return dataSets;
 };
 export const prepareDataSetForChart = (analyticsMap: AnalyticsMap): DataSetMap => {
+  // we would like to sort time data from ascending to descendig order across all datasets
+  // we cannot simply sort each time data in each data set as this does not mean the overall time data will be sorted, example:
+  //  dataset1: {Jan 2024, Feb 2024, Mar 2024, Aug 2024} (sorted), dataset2: {Feb 2024, June 2024} (sorted)
+  //  result: {Jan 2024, Feb 2024, Mar 2024, Aug 2024, June 2024}
+  //solution:
+  // - sort all time data regardless of data set
+  // - every dataset will have the same sorted time data (that is, every time data)
+  // - if time data was not initially present in dataset, then assign the y value of the datapoint as null
+  // - when a datapoint's y value is null, chartjs library ignores the datapoint in the chart
+  // - this guarantees that the timedata is sorted
+
   const dataSetMap: DataSetMap = {};
+
+  // sort all time data regardless of data set
 
   const timeData = getSortedTimeData(analyticsMap);
 
@@ -86,18 +143,12 @@ export const prepareDataSetForChart = (analyticsMap: AnalyticsMap): DataSetMap =
 
     const dataSet = fillUpDataSet(timeData, analyticsMap[departmentQuestionKey]);
 
+    // the key of data set entry in the map is used as the legend in the graph
+
     dataSetMap[`${question} for ${department}`] = dataSet;
   });
 
   return dataSetMap;
-};
-
-export const getQuestionFromId = (questionPrompts: QuestionPrompt[], questionId: string) => {
-  const questionPrompt = questionPrompts.find(
-    (questionPrompt) => questionPrompt.id === questionId,
-  )!;
-
-  return reformatQuestionPrompt(questionPrompt.id, questionPrompt.en);
 };
 
 export const sumUpAnalyticsData = (analyticsData: AnalyticsResponse[]) => {
@@ -106,18 +157,6 @@ export const sumUpAnalyticsData = (analyticsData: AnalyticsResponse[]) => {
   analyticsData.forEach((analyticData) => (sum += analyticData.answer));
 
   return sum;
-};
-
-export const displayTotal = (
-  questionPrompts: QuestionPrompt[],
-  questionId: string,
-  analyticsData: AnalyticsResponse[],
-) => {
-  const question = getQuestionFromId(questionPrompts, questionId);
-
-  const total = sumUpAnalyticsData(analyticsData);
-
-  return `Total ${question}: ${total}`;
 };
 
 export const createAnalyticsMap = (

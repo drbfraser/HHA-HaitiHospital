@@ -8,21 +8,21 @@ import { separateDepartmentAndQuestion } from 'utils/string';
 type AnalyticsOverviewProps = {
   analyticsData: AnalyticsMap;
 };
-const AnalyticsOverview = ({ analyticsData }: AnalyticsOverviewProps) => {
+const AnalyticsTotal = ({ analyticsData }: AnalyticsOverviewProps) => {
   return (
     <Container>
       <Col>
         <h4 className="text-secondary">Total</h4>
         <div className="d-flex flex-row" style={{ gap: '15px', overflowX: 'auto' }}>
-          {Object.keys(analyticsData).map((departmentQuestion, index) => {
-            const [department, question] = separateDepartmentAndQuestion(departmentQuestion);
+          {Object.keys(analyticsData).map((departmentPlusQuestion, index) => {
+            const [department, question] = separateDepartmentAndQuestion(departmentPlusQuestion);
 
             return (
               <TotalCard
                 key={index}
                 question={question}
                 department={department}
-                value={sumUpAnalyticsData(analyticsData[departmentQuestion])}
+                value={sumUpAnalyticsData(analyticsData[departmentPlusQuestion])}
               />
             );
           })}
@@ -32,4 +32,4 @@ const AnalyticsOverview = ({ analyticsData }: AnalyticsOverviewProps) => {
   );
 };
 
-export default AnalyticsOverview;
+export default AnalyticsTotal;

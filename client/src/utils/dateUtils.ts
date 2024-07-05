@@ -112,7 +112,11 @@ const getDateForAnalytics = (analyticsData: AnalyticsResponse) => {
   let { month, year } = analyticsData;
   let dateFormat = MONTH_AND_YEAR_DATE_FORMAT;
 
+  // when the API returns month = 0, this means that only year should be used as time value
+
   if (month === 0) {
+    // set month to 1 so it can be parsed correctly in the Date class
+
     month = 1;
     dateFormat = YEAR_ONLY_DATE_FORMAT;
   }
@@ -130,6 +134,22 @@ const formatDateForChart = (dateWithFormat: DateWithFormat) => {
   const formattedDate = moment(dateWithFormat.time).format(dateWithFormat.format);
 
   return formattedDate;
+};
+
+const defaultFromDate = () => {
+  const now = new Date();
+
+  now.setFullYear(now.getFullYear() - 1);
+
+  return now.toISOString().split('T')[0];
+};
+
+const defaultToDate = () => {
+  const now = new Date();
+
+  now.setFullYear(now.getFullYear() + 1);
+
+  return now.toISOString().split('T')[0];
 };
 
 export {
@@ -150,4 +170,6 @@ export {
   formatDateForChart,
   getDateForAnalytics,
   compareDateWithFormat,
+  defaultFromDate,
+  defaultToDate,
 };

@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import { Col, Collapse, Row, Container } from 'react-bootstrap';
 import './QuestionCollpase.css';
 import { reformatQuestionPrompt } from 'utils/string';
+import classNames from 'classnames';
 
 type QuestionCollapseProps = {
   department: string;
@@ -24,7 +25,14 @@ const QuestionCollapse = ({
         className="question-col d-flex align-items-center"
         style={{ width: '100%', height: '50px' }}
       >
-        <i className="bi bi-chevron-right mr-3" style={{ fontSize: '18px' }}></i>
+        <i
+          className={classNames(
+            'bi mr-3',
+            { 'bi-chevron-right': !open },
+            { 'bi-chevron-down': open },
+          )}
+          style={{ fontSize: '18px' }}
+        ></i>
         <span>{department}</span>
       </Col>
 
@@ -33,6 +41,7 @@ const QuestionCollapse = ({
           {questionPrompts.map((questionPrompt, index) => (
             <Col className="d-flex align-items-center" key={index}>
               <input
+                //we use this id to uniquely identify a question across departments
                 id={`${department}-${questionPrompt.id}`}
                 type="checkbox"
                 className="mr-3"

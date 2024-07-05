@@ -138,7 +138,7 @@ describe('Analytics API test for users with privileges', function () {
   it('should return a list of answers to questions', async function () {
     const departmentId = await getDepartmentId('Rehab');
     const res = await agent.get(ANALYTICS_ENDPOINT).query({
-      departmentIds: departmentId,
+      departmentId: departmentId,
       questionId: '1',
       startDate: '2024-02-30T14:00:00Z',
       endDate: '2025-05-30T14:00:00Z',

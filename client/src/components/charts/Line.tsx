@@ -22,6 +22,7 @@ type LineChartProps = Omit<ChartProps, 'type'>;
 
 const LineChart = ({ analyticsData }: LineChartProps) => {
   const dataSets = prepareDataSetForChart(analyticsData);
+
   const data: ChartData<'line', DataSet[]> = {
     datasets: Object.keys(dataSets).map((label, index) => {
       return {

@@ -15,16 +15,14 @@ export const DropDownMultiSelect = ({
   selectedDropDowns,
   setSelectedDropDowns,
 }: DropDownMultiSelectProps) => {
-  console.log('depts: ', selectedDropDowns);
   return (
     <DropdownButton title={title} variant="outline-dark" autoClose="outside">
-      {dropDowns.map((dropDown, index) => {
-        console.log('dropDown: ', dropDown);
-        console.log(`${dropDown}:${selectedDropDowns.includes(dropDown)}`);
+      {dropDowns.map((dropDown) => {
         return (
           <Dropdown.Item key={dropDown}>
             <div
               className="d-flex flex-row align-items-center"
+              // this enables the checkbox input (direct child) to be checked by preventing this parent element from bubbling down on click events to input checkbox
               onClick={(e) => e.stopPropagation()}
             >
               <input

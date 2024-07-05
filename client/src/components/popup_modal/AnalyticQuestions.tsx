@@ -19,7 +19,6 @@ export const AnalyticsQuestionModal = ({
   handleCloseModal,
   setQuestionSelected,
 }: AnalyticsQuestionModalProps) => {
-  console.log('qMap2: ', questionMap);
   return (
     <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
       <Modal.Header closeButton>

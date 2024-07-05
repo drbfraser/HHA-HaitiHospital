@@ -1,4 +1,4 @@
-import { AnalyticsQuery, AnalyticsResponse, IReport, Role } from '@hha/common';
+import { AnalyticsQuery, AnalyticsResponse, IReport, QuestionPrompt, Role } from '@hha/common';
 import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
@@ -18,6 +18,7 @@ import {
   removeMonthsByTimeStep,
 } from 'utils/analytics';
 import Departments from 'utils/departments';
+import { generateWrongDepartmentIdError } from 'utils/errorUtils';
 
 const router = Router();
 
@@ -25,18 +26,13 @@ type AnalyticsQuestionQuery = {
   departmentId: string;
 };
 
-export type AnalyticsQuestionsResponse = {
-  id: string;
-  en: string;
-  fr: string;
-};
 router.get(
   '/questions',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
   async (
-    req: Request<{}, AnalyticsQuestionsResponse[], {}, AnalyticsQuestionQuery>,
-    res: Response<AnalyticsQuestionsResponse[]>,
+    req: Request<{}, QuestionPrompt[], {}, AnalyticsQuestionQuery>,
+    res: Response<QuestionPrompt[]>,
     next: NextFunction,
   ) => {
     try {
@@ -45,7 +41,7 @@ router.get(
       const isDepartmentValid = await Departments.Database.validateDeptId(departmentId);
 
       if (!isDepartmentValid) {
-        throw new NotFound(`No department with id: ${departmentId} found`);
+        throw new NotFound(generateWrongDepartmentIdError(departmentId));
       }
 
       const template: ITemplate = await TemplateCollection.findOne({
@@ -98,7 +94,7 @@ router.get(
       const isDepartmentsValid = await Departments.Database.validateDeptId(departmentId);
 
       if (!isDepartmentsValid) {
-        throw new NotFound(`There exist a department id that was not found`);
+        throw new NotFound(generateWrongDepartmentIdError(departmentId));
       }
 
       let analytics: AnalyticsForMonths[] = await ReportCollection.aggregate(

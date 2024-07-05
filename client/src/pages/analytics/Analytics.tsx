@@ -18,45 +18,24 @@ import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticQuestions
 import { TimeOptionModal } from 'components/popup_modal/TimeOptionModal';
 import {
   createAnalyticsMap,
-  displayTotal,
   filterDepartmentsByReport,
   filterQuestionsSelected,
   findDepartmentIdByName,
   getAllDepartmentsByName,
-  getQuestionFromId,
+  prepareAnalyticsQuery,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
 import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
 import { DropDownMultiSelect } from 'components/dropdown/DropDownMultiSelect';
 import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
-import AnalyticsOverview from 'components/analytics/Overview';
+import AnalyticsTotal from 'components/analytics/Total';
+import { defaultFromDate, defaultToDate } from 'utils';
 
 export type TimeOptions = {
   from: string;
   to: string;
   timeStep: MonthOrYearOption;
-};
-
-const defaultFromDate = () => {
-  const now = new Date();
-
-  now.setFullYear(now.getFullYear() - 1);
-
-  return now.toISOString().split('T')[0];
-};
-
-const defaultToDate = () => {
-  const now = new Date();
-
-  now.setFullYear(now.getFullYear() + 1);
-
-  return now.toISOString().split('T')[0];
-};
-
-type DepartmentQuestion = {
-  questionId: string;
-  departmentName: string;
 };
 
 export type QuestionPromptUI = QuestionPrompt & {
@@ -83,16 +62,7 @@ const Analytics = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [questionPrompts, setQuestionPrompts] = useState<QuestionPrompt[]>([]);
   const [questionMap, setQuestionMap] = useState<QuestionMap>({});
-
-  // state is an object rather than a string because we would like to rerender components even if  question id is the same
-  // An example will be to rerender components when the department selection changes but questiond id is the same
-
-  const [selectedDepartmentQuestion, setSelectedDepartmentQuestion] = useState<DepartmentQuestion>({
-    questionId: '',
-    departmentName: '',
-  });
 
   const [selectedDepartmentNames, setSelectedDepartmentNames] = useState<string[]>([]);
 
@@ -118,6 +88,9 @@ const Analytics = () => {
 
       setDepartments(departmentsWithReport);
 
+      // should show a pop up communicating that there is no department with report
+      //As of current, this line of code is a technical debt and maybe changed in the future
+
       if (departmentsWithReport.length === 0) {
         return;
       }
@@ -128,23 +101,18 @@ const Analytics = () => {
     fetchDepartments();
   }, [history]);
 
-  //fetch questions only when a new department is selected
-  // technical debt: A new fetch will happen when there is a change in department selection
-
   const fetchQuestionPrompts = async (departmentName: string, firstQuestionByDefault: boolean) => {
-    // this prevents the fetched questions and analytics data from being in an inconsistent state
-    // if questions are fetched before analytics are fetched, the fetched questions are updated but the analytics data is not updated yet
-    //So, the analytics data will be showing inconsistent result
-    // Solution, only display UI after analytics data have been updated
-
-    setIsLoading(true);
-
     const selectedDepartmentId = findDepartmentIdByName(departments, departmentName)!;
 
     const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
 
     const questionPromptsUI: QuestionPromptUI[] = questionPrompts.map((questionPrompt, index) => {
       let checked = false;
+
+      // when the user visits the analytics page, the first question's analytic data in the first department is displayed in the chart
+      //first is defined as the first department or question returned by the API
+      //this ensures the analytics page at the beginning does not have blank data
+      //A checked state is maintained to keep track of user selected questions
 
       if (index === 0 && firstQuestionByDefault) {
         checked = true;
@@ -154,57 +122,60 @@ const Analytics = () => {
     });
 
     setQuestionMap({ ...questionMap, [departmentName]: questionPromptsUI });
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
+    // should show a pop up communicating that there is no department with report
+    //As of current, this line of code is a technical debt and maybe changed in the future
+
     if (departments.length === 0) {
       return;
     }
+
+    //When the page is loaded, the first department's question is loaded
+    //This is an intentional design choice because we want the user to view an analytic data before selecting filters
+
     fetchQuestionPrompts(departments[0].name, true);
   }, [departments, history]);
 
-  // fetch analytics when a new question, time option or aggregate by field is selected
-
   const fetchAnalytics = async () => {
-    const departmentDashQuestionKeys: string[] = [];
+    // department name + question (question id - question text) is used as an identifier (key) for a question
+    // this quarantees uniqueness of the same question in different department
+    // this list keeps track of all the identifier for the questions to be used later in creating a map
+
+    const departmentPlusQuestionKeys: string[] = [];
     const fetchAnalyticsRequests: Promise<AnalyticsResponse[]>[] = [];
 
     Object.keys(questionMap).forEach((department) => {
+      // fetch analytics for only questions selected by checkbox
+
       const selectedQuestions = filterQuestionsSelected(questionMap[department]);
 
       selectedQuestions.forEach((selectedQuestion) => {
-        departmentDashQuestionKeys.push(
-          createAnalyticsKey(
-            department,
-            reformatQuestionPrompt(selectedQuestion.id, selectedQuestion.en),
-          ),
-        );
+        const question = reformatQuestionPrompt(selectedQuestion.id, selectedQuestion.en);
+
+        const departmentPlusQuestionKey = createAnalyticsKey(department, question);
+
+        departmentPlusQuestionKeys.push(departmentPlusQuestionKey);
 
         const departmentId = findDepartmentIdByName(departments, department)!;
 
-        // date in API calls have to be in ISO format as defined by backend
+        const analyticsQuery = prepareAnalyticsQuery(
+          departmentId,
+          selectedQuestion.id,
+          selectedAggregateBy,
+          timeOptions,
+        );
 
-        const startDate = moment(timeOptions.from, YEAR_DASH_MONTH_FORMAT).toISOString();
-        const endDate = moment(timeOptions.to, YEAR_DASH_MONTH_FORMAT).toISOString();
+        const analyticsData = getAnalyticsData(history, analyticsQuery);
 
-        const analyticsQuery: AnalyticsQuery = {
-          departmentId: departmentId,
-          questionId: selectedQuestion.id,
-          startDate: startDate,
-          endDate: endDate,
-          aggregateBy: selectedAggregateBy,
-          timeStep: timeOptions.timeStep,
-        };
-
-        fetchAnalyticsRequests.push(getAnalyticsData(history, analyticsQuery));
+        fetchAnalyticsRequests.push(analyticsData);
       });
     });
 
     const analyticsresponses = await Promise.all(fetchAnalyticsRequests);
 
-    const analyticsMap = createAnalyticsMap(analyticsresponses, departmentDashQuestionKeys);
+    const analyticsMap = createAnalyticsMap(analyticsresponses, departmentPlusQuestionKeys);
 
     setAnalyticsMap(analyticsMap);
     setIsLoading(false);
@@ -227,6 +198,11 @@ const Analytics = () => {
 
     const departmentSelected = event.target.id;
 
+    //If a department has been unchecked then a good heuristic for unchecked is to check if department has been selected previously
+    // If a department has been checked then a good heuristic is to check if a department has not been selected previously
+    // the goal is to fetch department questions when a department is selected
+    // the goal is to remove department's questions when a department is unselected
+
     if (!selectedDepartmentNames.includes(departmentSelected)) {
       updateDepartmentsSelected = [...selectedDepartmentNames, departmentSelected];
 
@@ -246,21 +222,27 @@ const Analytics = () => {
   const onQuestionsSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const departmentDashQuestion = event.target.id;
 
+    // the <department name> - <question prompt> is used to identify a question (key)
+    // this differentiates the same questions but in different departments
+
     const [department, questionId] = departmentDashQuestion.split('-');
 
     const questions = questionMap[department];
 
     const index = questions.findIndex((question) => question.id === questionId);
 
+    //flips the checked state of the selected question, but does not update other question properties
+    // only updates the selected question, does not update other questions in the department
+
     questions[index] = { ...questions[index], checked: !questions[index].checked };
+
+    //only updates the questions in the department that the selected question belongs to
 
     setQuestionMap({ ...questionMap, [department]: questions });
   };
 
   const onFromDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setTimeOptions({ ...timeOptions, from: event.target.value });
-
-    fetchAnalytics();
   };
 
   const onToDateChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -277,7 +259,6 @@ const Analytics = () => {
 
   const onChartSelected = (chart: ChartType) => {
     setSelectedChart(chart);
-    // /console.log('ana2:', analyticsMap);
   };
 
   return (
@@ -336,7 +317,7 @@ const Analytics = () => {
             </div>
           </div>
           <Col className="mt-5">
-            <AnalyticsOverview analyticsData={analyticsMap} />
+            <AnalyticsTotal analyticsData={analyticsMap} />
             <ChartSelector type={selectedChart} analyticsData={analyticsMap} />
           </Col>
         </div>

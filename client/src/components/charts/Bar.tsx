@@ -21,13 +21,13 @@ type BarChartProps = Omit<ChartProps, 'type'>;
 const BarChart = ({ analyticsData }: BarChartProps) => {
   const dataSets = prepareDataSetForChart(analyticsData);
 
-  console.log('datasets:', dataSets);
   const data: ChartData<'bar', DataSet[]> = {
     datasets: Object.keys(dataSets).map((label, index) => {
       return {
         label: label,
         data: dataSets[label],
         backgroundColor: GRAPH_COLOR[index],
+        maxBarThickness: 150,
       };
     }),
   };
