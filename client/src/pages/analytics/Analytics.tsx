@@ -5,15 +5,8 @@ import { Button, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAllDepartments } from 'api/department';
 import { useHistory } from 'react-router-dom';
-import {
-  AnalyticsQuery,
-  AnalyticsResponse,
-  DepartmentJson,
-  MonthOrYearOption,
-  QuestionPrompt,
-} from '@hha/common';
+import { AnalyticsResponse, DepartmentJson, MonthOrYearOption, QuestionPrompt } from '@hha/common';
 import { getAllQuestionPrompts, getAnalyticsData } from 'api/analytics';
-import moment from 'moment';
 import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticQuestions';
 import { TimeOptionModal } from 'components/popup_modal/TimeOptionModal';
 import {
