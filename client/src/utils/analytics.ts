@@ -15,7 +15,6 @@ import moment from 'moment';
 import { AnalyticsMap, QuestionPromptUI, TimeOptions } from 'pages/analytics/Analytics';
 import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
 import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
-import { time } from 'drizzle-orm/mysql-core';
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
   return departments.find((department) => department.name === departmentName)?.id;
