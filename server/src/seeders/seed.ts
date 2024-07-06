@@ -1174,6 +1174,8 @@ const validateReports = async () => {
         defaultReport.prompt.en,
         'does not match template. Please review and update either the template or sample data.',
       );
+      console.log('Sample data:', defaultData);
+      console.log('Template:', templateData);
     }
   }
 };

@@ -1550,7 +1550,8 @@
       {
         "id": "12",
         "prompt": {
-          "en": "Stayed in the ward"
+          "en": "Stayed in the ward",
+          "fr": "Séjour dans le service"
         },
         "promptTranslations": {},
         "answer": 13,
