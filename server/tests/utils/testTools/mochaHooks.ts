@@ -178,9 +178,7 @@ export const seedMongo = async () => {
     },
   ]);
 
-  for (const user of users) {
-    await asyncRegisterUser(user);
-  }
+  await Promise.all(users.map((user) => asyncRegisterUser(user)));
 };
 
 export const dropMongo = async () => {

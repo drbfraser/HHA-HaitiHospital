@@ -10,6 +10,7 @@ const storage = multer.diskStorage({
     cb(null, 'public/images');
   },
   filename: function (req, file, cb) {
+    // in the testing environment, skip the step of saving a new file so it doesn't clutter the project.
     if (process.env.NODE_ENV === 'test') {
       cb(null, file.originalname);
     } else {
