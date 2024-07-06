@@ -1,4 +1,5 @@
 import * as ENV from 'utils/processEnv';
+import _ from 'lodash';
 
 import { BiomechStatus, Department, Role, User } from '@hha/common';
 import BioMech from 'models/bioMech';
@@ -1131,6 +1132,8 @@ const seedReports = async () => {
       { defaultReport: reports.communityHealth, user: userMap['user3'] },
     ];
 
+    validateReports();
+
     for (const { defaultReport, user } of defaultReports) {
       const serialized = serializer.serialize(defaultReport);
       let report = new ReportCollection({
@@ -1146,6 +1149,32 @@ const seedReports = async () => {
     console.log(`Reports seeded`);
   } catch (err) {
     console.log(err);
+  }
+};
+
+const validateReports = async () => {
+  const defaultReports = [
+    { defaultReport: reports.nicupaeds, template: buildNicuPaedsReport() },
+    { defaultReport: reports.maternity, template: buildMaternityReport() },
+    { defaultReport: reports.rehab, template: buildRehabReport() },
+    { defaultReport: reports.communityHealth, template: buildCommunityHealthReport() },
+  ];
+
+  for (const { defaultReport, template } of defaultReports) {
+    const defaultData = defaultReport.questionItems.map((qi) => {
+      return [qi.id, qi.prompt];
+    });
+    const templateData = template.getQuestionItems().map((qi) => {
+      return [qi.getId(), qi.getPrompt()];
+    });
+
+    if (!_.isEqual(defaultData, templateData)) {
+      console.log(
+        'WARNING - template for',
+        defaultReport.prompt.en,
+        'does not match template. Please review and update either the template or sample data.',
+      );
+    }
   }
 };
 
