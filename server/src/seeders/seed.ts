@@ -611,21 +611,26 @@ const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
     await ReportCollection.deleteMany({});
-    const users = await UserCollection.find({
-      username: { $in: ['user2', 'user5', 'user11', 'user3'] },
+    const departments = await DepartmentCollection.find({
+      name: { $in: ['NICU/Paeds', 'Maternity', 'Rehab', 'Community & Health'] },
     });
-    type UserMap = { [username: string]: (typeof users)[0] };
-    const userMap: UserMap = users.reduce((acc: UserMap, user) => {
-      acc[user.username] = user;
-      return acc;
-    }, {} as UserMap);
+    console.log(departments);
+    const departmentIds = departments.map((dep) => dep.id);
+    const users = await Promise.all(
+      departmentIds.map(async (depId) => {
+        let user = await UserCollection.findOne({
+          departmentId: depId,
+        });
+        return user;
+      }),
+    );
     const serializer = ObjectSerializer.getObjectSerializer();
 
     const defaultReports = [
-      { defaultReport: reports.nicupaeds, user: userMap['user2'] },
-      { defaultReport: reports.maternity, user: userMap['user5'] },
-      { defaultReport: reports.rehab, user: userMap['user11'] },
-      { defaultReport: reports.communityHealth, user: userMap['user3'] },
+      { defaultReport: reports.rehab, user: users[0] },
+      { defaultReport: reports.maternity, user: users[1] },
+      { defaultReport: reports.nicupaeds, user: users[2] },
+      { defaultReport: reports.communityHealth, user: users[3] },
     ];
 
     validateReports();
@@ -648,7 +653,7 @@ const seedReports = async () => {
   }
 };
 
-const validateReports = async () => {
+const validateReports = () => {
   const defaultReports = [
     { defaultReport: reports.nicupaeds, template: buildNicuPaedsReport() },
     { defaultReport: reports.maternity, template: buildMaternityReport() },
