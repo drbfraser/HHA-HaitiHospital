@@ -1,12 +1,13 @@
 import http from 'http';
-import { Application } from 'express';
-import { setupApp, setupHttpServer, Accounts, closeServer } from './testTools/mochaHooks';
 import {
-  CSRF_ENDPOINT,
-  LOGIN_ENDPOINT,
-  MESSAGEBOARD_ENDPOINT,
-  DEPARTMENT_ENDPOINT,
-} from './testTools/endPoints';
+  Accounts,
+  closeServer,
+  DEP_ID,
+  dropMongo,
+  seedMongo,
+  setUpSession,
+} from 'testTools/mochaHooks';
+import { MESSAGEBOARD_ENDPOINT, DEPARTMENT_ENDPOINT } from 'testTools/endPoints';
 import { Done } from 'mocha';
 import {
   HTTP_CREATED_CODE,
@@ -15,6 +16,8 @@ import {
   HTTP_NOTFOUND_CODE,
   HTTP_OK_CODE,
 } from 'exceptions/httpException';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { seedMessageBoard } from 'seeders/seed';
 
 const expect = require('chai').expect;
 const chai = require('chai');
@@ -24,8 +27,6 @@ chai.use(chaiHttp);
 let httpServer: http.Server;
 let agent: any;
 let csrf: string;
-let departmentIds: string[];
-let messageIds: string[];
 
 interface MessageObject {
   department: { id: string };
@@ -47,56 +48,35 @@ function postMessage(message: MessageObject, done: Done, expectedStatus: Number,
     });
 }
 
-function getDepartmentIds(done: Done) {
-  agent.get(DEPARTMENT_ENDPOINT).end(function (error: any, response: any) {
-    if (error) done(error);
-    departmentIds = response.body.map((department: any) => department.id);
-    done();
-  });
-}
-
 function updatePostedMessageIds(done: Done) {
   agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
     if (error) done(error);
-    messageIds.push(response.body[0].id);
     done();
   });
 }
 
 describe('Messageboard Tests', function () {
-  before('Create a Working Server and Login With Admin', function (done: Done) {
-    let app: Application = setupApp();
-    httpServer = setupHttpServer(app);
-    agent = chai.request.agent(app);
-    messageIds = new Array<string>();
+  let mongo: MongoMemoryServer;
+  before('Create a Working Server and Login With Admin', async function () {
+    const session = await setUpSession(Accounts.AdminUser);
 
-    agent.get(CSRF_ENDPOINT).end(function (error: Error, res: any) {
-      if (error) done(error);
-      csrf = res?.body?.CSRFToken;
-
-      agent
-        .post(LOGIN_ENDPOINT)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .send(Accounts.AdminUser)
-        .end(function (error: any, response: any) {
-          if (error) return done(error);
-          getDepartmentIds(done);
-        });
-    });
+    httpServer = session.httpServer;
+    agent = session.agent;
+    mongo = session.mongo;
+    csrf = session.csrf;
   });
 
-  after('Close a Working Server', async function () {
-    // Cleaning up posted messages that were not removed during testing
-    for await (const messageId of messageIds) {
-      try {
-        await agent
-          .delete(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
-          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
-      } catch (error: any) {
-        console.log(error);
-      }
-    }
-    closeServer(agent, httpServer);
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+    await seedMessageBoard();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('Should Get All Messages from the Messageboard', function (done: Done) {
@@ -140,8 +120,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Get Messages From General Department', function (done: Done) {
-    const generalDeptId: string = departmentIds[0];
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${generalDeptId}`).end(function (
+    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${DEP_ID.GENERAL}`).end(function (
       error: any,
       response: any,
     ) {
@@ -149,7 +128,7 @@ describe('Messageboard Tests', function () {
       expect(response).to.have.status(HTTP_OK_CODE);
       const entries: Array<Object> = Object.entries(response.body);
       const results: boolean = entries.every(
-        (element: any) => element[1].department.id === generalDeptId,
+        (element: any) => element[1].department.id === DEP_ID.GENERAL,
       );
       expect(results).to.be.true;
 
@@ -168,7 +147,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message', function (done: Done) {
-    const departmentId: string = departmentIds[0]; // Get department id for the General Department
+    const departmentId: string = DEP_ID.GENERAL; // Get department id for the General Department
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
@@ -179,7 +158,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message and Get it', function (done: Done) {
-    const departmentId: string = departmentIds[1];
+    const departmentId: string = DEP_ID.GENERAL;
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header',
@@ -216,7 +195,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message and Delete it', function (done: Done) {
-    const departmentId: string = departmentIds[1];
+    const departmentId: string = DEP_ID.GENERAL;
     const newMessage: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',
@@ -251,7 +230,7 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Successfully Post a New Message and Update It', function (done: Done) {
-    const departmentId: string = departmentIds[1];
+    const departmentId: string = DEP_ID.GENERAL;
     const message: MessageObject = {
       department: { id: departmentId },
       messageHeader: 'test header msg',

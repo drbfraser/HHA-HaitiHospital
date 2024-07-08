@@ -1,7 +1,6 @@
 import request from 'supertest';
-import { expect } from 'chai';
 
-import { createServer } from '../../src/server';
+import { createServer } from 'server';
 const app = createServer();
 
 describe('server checks', () => {

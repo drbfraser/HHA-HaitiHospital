@@ -88,6 +88,8 @@ jobs:
       # Connection string: mongodb://<hostname service name>:<port>/<db name>
       MONGO_URI: mongodb://test_postgres:27017/hhahaiti
       JWT_SECRET: just_some_secret
+      MONGOMS_DOWNLOAD_DIR: /tmp/mongodb-binaries
+      MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-debian12-7.0.9.tgz
 
     services:
       test_postgres:
@@ -118,7 +120,6 @@ jobs:
           node -v
           npm ci
           npm install ../common_build.tar.gz
-          npm run seed
       - name: Run tests & build
         working-directory: /isolated_build/repo/server/
         run: |

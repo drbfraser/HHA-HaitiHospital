@@ -1,9 +1,7 @@
 import { JsonReportDescriptor } from '@hha/common';
-import { InvalidInput } from '../../src/exceptions/systemException';
-import { ReportDescriptor } from '../../src/utils/definitions/report';
-import { jsonStringToReport, reportToJsonReport } from '../../src/utils/parsers/parsers';
-import * as ItemParsers from '../../src/utils/parsers/item';
-const chai = require('chai');
+import { InvalidInput } from 'exceptions/systemException';
+import * as ItemParsers from 'utils/parsers/item';
+import chai from 'chai';
 
 var assert = require('chai').assert;
 
