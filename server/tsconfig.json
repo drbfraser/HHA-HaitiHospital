@@ -17,8 +17,11 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "typeRoots": ["./types"],
-    "resolveJsonModule": true
-    // "types": ["jest", "node", "chai"]
+    "resolveJsonModule": true,
+    "paths": {
+      "testTools/*": ["../tests/utils/testTools/*"],
+      "testData/*": ["../tests/utils/testData/*"]
+    }
   },
   "include": ["./src/**/*", "./tests/**/*"]
 }

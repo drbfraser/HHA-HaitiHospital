@@ -70,7 +70,8 @@ The Directory splits into client and server sides. Here are a few important loca
 
 - /server/src contains resources to react components(/components), index file(index.ts), and other
   frontend code
-- All `API` related calls are stored under `API` folder. It is is ordered in `CRUD` format (Create, Read, Update, Delete) for organized and orderly format.
+- All `API` related calls are stored under `API` folder. It is is ordered in `CRUD` format (Create,
+  Read, Update, Delete) for organized and orderly format.
 
 ## Build instructions for Devs
 
@@ -98,8 +99,8 @@ setup. Environment Variables configure the server. You can configure them by cre
 under the `server` folder. You can use the following example `.env` configurations:
 
 ```bash
-# Your MongoDB URI (local or remote). Defaults to localhost:27017
-MONGO_URI=mongodb://localhost:27017/
+# Your MongoDB URI (local or remote). Defaults to localhost:27017/dev
+MONGO_URI=mongodb://localhost:27017/dev
 # Secret use to generate JWT tokens (You can generate the secret via 'openssl rand -base64 32'on Linux)
 JWT_SECRET=secret
 # CORS origin. Currently only support one and will be re evaluated in the future.
@@ -177,6 +178,18 @@ Now that everything is up, visit <http://localhost:3000> and log in with the see
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
 
+## Testing Setup
+
+Testing is done with an in-memory MongoDB. Currently some tests use seeding scripts for data but
+ideally each test would generate data relevant to its own test itself. Run tests locally with
+
+```bash
+npm run test
+```
+
+The initial run may take longer due to the in-memory MongoDB package installing some files before
+running, however subsequent tests will be faster as this installation only happens once.
+
 ## Logging
 
 Log levels:
@@ -232,6 +245,7 @@ the .env file. By default, it's going to be `hhahaiti_local` for local testing.
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.override.yml up
 ```
+
 For full and detailed guide on running docker services locally, please refer to monitoring.md
 
 ### Deployment on staging

@@ -12,6 +12,9 @@
 ./dist/*
 /dist
 
+# Istanbul HTML report output
+/coverage
+
 # random generated files on MacOS
 .DS_Store
 **/.DS_Store

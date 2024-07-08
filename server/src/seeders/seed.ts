@@ -53,7 +53,7 @@ export const seedDb = async () => {
   }
 };
 
-const setupDepartmentMap = async () => {
+export const setupDepartmentMap = async () => {
   const departments: Department[] = await DepartmentCollection.find();
   nameMapper = Departments.Hashtable.initNameToId(departments);
 };
@@ -575,7 +575,7 @@ const generateRandomCaseStudy = (
 };
 
 type Report = QuestionGroup<string, string>;
-const seedTemplates = async () => {
+export const seedTemplates = async () => {
   console.log(`Seeding templates...`);
   try {
     await TemplateCollection.deleteMany({});
@@ -607,14 +607,13 @@ const seedTemplates = async () => {
   }
 };
 
-const seedReports = async () => {
+export const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
     await ReportCollection.deleteMany({});
     const departments = await DepartmentCollection.find({
       name: { $in: ['NICU/Paeds', 'Maternity', 'Rehab', 'Community & Health'] },
     });
-    console.log(departments);
     const departmentIds = departments.map((dep) => dep.id);
     const users = await Promise.all(
       departmentIds.map(async (depId) => {
@@ -681,37 +680,40 @@ const validateReports = () => {
   }
 };
 
-// Connect to Mongo
-mongoose
-  .connect(ENV.MONGO_DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
-    console.log('MongoDB Connected...');
-    const readline = require('readline');
-    if (process.env.IS_GITLAB_CI === 'true') {
-      (async () => await seedDb())(); // anonymous async function
-    } else {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
+// Checks to only connect to MongoDB if run from the command line
+// to prevent connecting to Mongo when using exported functions.
+if (require.main === module) {
+  mongoose
+    .connect(ENV.MONGO_DB, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+    .then(() => {
+      console.log('MongoDB Connected...');
+      const readline = require('readline');
+      if (process.env.IS_GITLAB_CI === 'true') {
+        (async () => await seedDb())(); // anonymous async function
+      } else {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
 
-      rl.question(
-        `Confirm to reseed database (old data will be discarded) (y / Y to confirm): `,
-        async function (answer: string) {
-          if (answer.toUpperCase() === 'Y') await seedDb();
-          else console.log('Database seeding cancelled');
-          rl.close();
-        },
-      );
+        rl.question(
+          `Confirm to reseed database (old data will be discarded) (y / Y to confirm): `,
+          async function (answer: string) {
+            if (answer.toUpperCase() === 'Y') await seedDb();
+            else console.log('Database seeding cancelled');
+            rl.close();
+          },
+        );
 
-      rl.on('close', function () {
-        process.exit(0);
-      });
-    }
-  })
-  .catch((err) => console.log(err));
+        rl.on('close', function () {
+          process.exit(0);
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+}
