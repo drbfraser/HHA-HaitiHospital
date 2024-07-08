@@ -178,7 +178,7 @@ Now that everything is up, visit <http://localhost:3000> and log in with the see
 
 The password will be `PASSWORD_SEED` as defined in your `.env`
 
-## Testing Setup (WIP)
+## Testing Setup
 
 Testing is done with an in-memory MongoDB. Currently some tests use seeding scripts for data but
 ideally each test would generate data relevant to its own test itself. Run tests locally with
@@ -186,6 +186,9 @@ ideally each test would generate data relevant to its own test itself. Run tests
 ```bash
 npm run test
 ```
+
+The initial run may take longer due to the in-memory MongoDB package installing some files before
+running, however subsequent tests will be faster as this installation only happens once.
 
 ## Logging
 
