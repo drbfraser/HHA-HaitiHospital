@@ -257,16 +257,17 @@ const ReportForm = ({
               value={t('reportSaveAsDraft')}
             />
           </div>
-          <div className="position-sticky py-3">
-            <input
-              className="btn btn-primary"
-              name="next"
-              type="button"
-              disabled={currentPage == numberOfPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-              value={t(`reportNextPage`)}
-            />
-          </div>
+          {currentPage == numberOfPages || (
+            <div className="position-sticky py-3">
+              <input
+                className="btn btn-primary"
+                name="next"
+                type="button"
+                onClick={() => setCurrentPage(currentPage + 1)}
+                value={t(`reportNextPage`)}
+              />
+            </div>
+          )}
         </div>
         <div className="text-danger">
           <p>{submitTooltipText}</p>
