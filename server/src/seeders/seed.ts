@@ -26,6 +26,8 @@ import reports from './data/defaultReports.json';
 import messages from './data/defaultMessages.json';
 import brokenEquipment from './data/defaultBioMech.json';
 import caseStudies from './data/defaultCaseStudies.json';
+type ID = string;
+type ErrorType = string;
 
 let nameMapper: Map<string, string>;
 
@@ -607,6 +609,23 @@ export const seedTemplates = async () => {
   }
 };
 
+export interface IQuestionItem {
+  id: string;
+  prompt: { en: string; fr: string };
+}
+
+export interface IReportTemplate {
+  questionItems: IQuestionItem[];
+  prompt: { en: string; fr: string };
+}
+
+export type ReportData = {
+  nicupaeds: IReportTemplate;
+  maternity: IReportTemplate;
+  rehab: IReportTemplate;
+  communityHealth: IReportTemplate;
+};
+
 export const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
@@ -632,7 +651,12 @@ export const seedReports = async () => {
       { defaultReport: reports.communityHealth, user: users[3] },
     ];
 
-    validateReports();
+    validateReports(reports, [
+      () => buildNicuPaedsReport(),
+      () => buildMaternityReport(),
+      () => buildRehabReport(),
+      () => buildCommunityHealthReport(),
+    ]);
 
     for (const { defaultReport, user } of defaultReports) {
       const serialized = serializer.serialize(defaultReport);
@@ -652,12 +676,18 @@ export const seedReports = async () => {
   }
 };
 
-const validateReports = () => {
+export const validateReports = (
+  reportsToValidate: ReportData,
+  buildReportTemplateFunctions: (() => QuestionGroup<ID, ErrorType>)[],
+) => {
   const defaultReports = [
-    { defaultReport: reports.nicupaeds, template: buildNicuPaedsReport() },
-    { defaultReport: reports.maternity, template: buildMaternityReport() },
-    { defaultReport: reports.rehab, template: buildRehabReport() },
-    { defaultReport: reports.communityHealth, template: buildCommunityHealthReport() },
+    { defaultReport: reportsToValidate.nicupaeds, template: buildReportTemplateFunctions[0]() },
+    { defaultReport: reportsToValidate.maternity, template: buildReportTemplateFunctions[1]() },
+    { defaultReport: reportsToValidate.rehab, template: buildReportTemplateFunctions[2]() },
+    {
+      defaultReport: reportsToValidate.communityHealth,
+      template: buildReportTemplateFunctions[3](),
+    },
   ];
 
   for (const { defaultReport, template } of defaultReports) {
