@@ -26,7 +26,7 @@ const BarChart = ({ analyticsData }: BarChartProps) => {
       return {
         label: label,
         data: dataSets[label],
-        backgroundColor: GRAPH_COLOR[index],
+        backgroundColor: GRAPH_COLOR[index % GRAPH_COLOR.length],
         maxBarThickness: 150,
       };
     }),

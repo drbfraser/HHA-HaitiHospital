@@ -28,7 +28,7 @@ const LineChart = ({ analyticsData }: LineChartProps) => {
       return {
         label: label,
         data: dataSets[label],
-        backgroundColor: GRAPH_COLOR[index],
+        borderColor: GRAPH_COLOR[index % GRAPH_COLOR.length],
       };
     }),
   };
