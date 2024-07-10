@@ -7,7 +7,7 @@ import { getAllDepartments } from 'api/department';
 import { useHistory } from 'react-router-dom';
 import { AnalyticsResponse, DepartmentJson, MonthOrYearOption, QuestionPrompt } from '@hha/common';
 import { getAllQuestionPrompts, getAnalyticsData } from 'api/analytics';
-import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticQuestions';
+import { AnalyticsQuestionModal } from 'components/popup_modal/AnalyticsQuestions';
 import { TimeOptionModal } from 'components/popup_modal/TimeOptionModal';
 import {
   createAnalyticsMap,
