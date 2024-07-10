@@ -148,9 +148,17 @@ jobs:
           npm ci
           npm run build
           tar -czf ../common_build.tar.gz .
-      - name: Prepare for tests
+      - name: Prepare for tests client
         working-directory: /isolated_build/repo/client/
         run: |
+          npm -v
+          node -v
+          npm ci
+          npm install ../common_build.tar.gz
+      - name: Prepare for tests server
+        working-directory: /isolated_build/repo/server/
+        run: |
+          set -x  # echo commands names
           npm -v
           node -v
           npm ci
@@ -162,6 +170,11 @@ jobs:
           apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus
           Xvfb :99 -screen 0 1920x1080x24 &
           export DISPLAY=:99
+          cd ../server
+          npm start &
+          cd ../client
+          npm start &
+          sleep 10
           npm run e2e:ci
       - name: Run tests & build
         working-directory: /isolated_build/repo/client/
