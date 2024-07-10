@@ -265,6 +265,7 @@
   "analyticsBarChart": "Diagramme à bandes",
   "analyticsLineChart": "Graphique en ligne",
   "analyticsFor": "pour",
+  "analyticsInvalidChart": "Avertissement Type de graphique inconnu sélectionné",
   "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthList": "Voir les anciens employés du mois",

@@ -263,6 +263,7 @@
   "analyticsBarChart": "Bar Chart",
   "analyticsLineChart": "Line Chart",
   "analyticsFor": "for",
+  "analyticsInvalidChart": "Warning Unknown chart type selected",
   "employeeOfTheMonthAdd": "Add New Employee of the Month",
   "employeeOfTheMonthEdit": "Update",
   "employeeOfTheMonthList": "See Past Employees of the Month",
