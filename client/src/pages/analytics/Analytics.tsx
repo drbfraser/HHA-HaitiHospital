@@ -184,10 +184,10 @@ const Analytics = () => {
   const handleCloseTimeOptionsModal = () => setShowModalTimeOptions(false);
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
 
-  const onDepartmentSelected = (event: ChangeEvent<HTMLInputElement>) => {
+  const onDepartmentSelected = (event: React.MouseEvent<HTMLElement>) => {
     let updateDepartmentsSelected: string[] = [];
 
-    const departmentSelected = event.target.id;
+    const departmentSelected = event.currentTarget.id;
 
     //If a department has been unchecked then a good heuristic for unchecked is to check if department has been selected previously
     // If a department has been checked then a good heuristic is to check if a department has not been selected previously

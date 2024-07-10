@@ -6,7 +6,7 @@ type DepartmentDropDownProps = {
   dropDowns: string[];
   title: string;
   selectedDropDowns: string[];
-  setSelectedDropDowns: (event: ChangeEvent<HTMLInputElement>) => void;
+  setSelectedDropDowns: (event: React.MouseEvent<HTMLElement>) => void;
 };
 export const DepartmentDropDown = ({
   dropDowns,
@@ -21,17 +21,15 @@ export const DepartmentDropDown = ({
         return (
           <Dropdown.Item key={dropDown}>
             <div
+              id={dropDown}
               className="d-flex flex-row align-items-center"
-              // this enables the checkbox input (direct child) to be checked by preventing this parent element from bubbling down on click events to input checkbox
-              onClick={(e) => e.stopPropagation()}
+              onClick={setSelectedDropDowns}
             >
               <input
-                id={dropDown}
                 type="checkbox"
                 className="mr-2"
-                style={{ width: '15px', height: '15px' }}
+                style={{ width: '15px', height: '15px', cursor: 'pointer' }}
                 checked={selectedDropDowns.includes(dropDown)}
-                onChange={setSelectedDropDowns}
               />
 
               <span>
