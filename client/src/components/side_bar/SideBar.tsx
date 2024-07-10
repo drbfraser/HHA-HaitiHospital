@@ -162,8 +162,8 @@ const Sidebar = ({
           {renderBasedOnRole(authState.userDetails.role, [Role.Admin, Role.MedicalDirector]) && (
             <SidebarItem path="analytics">
               <i className={`${iconMargins} bi bi-graph-up-arrow`} />
-              {isExpanded && <span className={'text-light'}>Analytics</span>}
-              {!isExpanded && <span className={'sidebarTooltip'}>Analytics</span>}
+              {isExpanded && <span className={'text-light'}>{t('sidebarAnalytics')}</span>}
+              {!isExpanded && <span className={'sidebarTooltip'}>{t('sidebarAnalytics')}</span>}
             </SidebarItem>
           )}
 

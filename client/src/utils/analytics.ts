@@ -5,16 +5,22 @@ import {
   MonthOrYearOption,
   QuestionPrompt,
 } from '@hha/common';
-import { reformatQuestionPrompt, separateDepartmentAndQuestion } from './string';
+import { formatQuestion, reformatQuestionPrompt, separateDepartmentAndQuestion } from './string';
 import {
   MONTH_AND_YEAR_DATE_FORMAT,
   YEAR_DASH_MONTH_FORMAT,
   YEAR_ONLY_DATE_FORMAT,
 } from 'constants/date';
 import moment from 'moment';
-import { AnalyticsMap, QuestionPromptUI, TimeOptions } from 'pages/analytics/Analytics';
+import {
+  AnalyticsMap,
+  QuestionMap,
+  QuestionPromptUI,
+  TimeOptions,
+} from 'pages/analytics/Analytics';
 import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
 import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
+import i18next from 'i18next';
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
   return departments.find((department) => department.name === departmentName)?.id;
@@ -32,6 +38,9 @@ export const filterQuestionsSelected = (questions: QuestionPromptUI[]) => {
   return questions.filter((question) => question.checked);
 };
 
+export const findQuestion = (questionId: string, questions: QuestionPromptUI[]) => {
+  return questions.find((question) => question.id === questionId)!;
+};
 export const prepareAnalyticsQuery = (
   departmentId: string,
   questionId: string,
@@ -138,13 +147,9 @@ export const prepareDataSetForChart = (analyticsMap: AnalyticsMap): DataSetMap =
   const timeData = getSortedTimeData(analyticsMap);
 
   Object.keys(analyticsMap).forEach((departmentQuestionKey) => {
-    const [department, question] = separateDepartmentAndQuestion(departmentQuestionKey);
-
     const dataSet = fillUpDataSet(timeData, analyticsMap[departmentQuestionKey]);
 
-    // the key of data set entry in the map is used as the legend in the graph
-
-    dataSetMap[`${question} for ${department}`] = dataSet;
+    dataSetMap[departmentQuestionKey] = dataSet;
   });
 
   return dataSetMap;
@@ -169,4 +174,53 @@ export const createAnalyticsMap = (
   });
 
   return analyticsMap;
+};
+
+export const translateChartLabel = (label: string, questionMap: QuestionMap) => {
+  // provide translations for french and english
+  //label is in the format <department> + <question id>
+
+  const [department, questionId] = separateDepartmentAndQuestion(label);
+
+  // the original question object that contains french and english translation is needed
+
+  const questionPrompt = findQuestion(questionId, questionMap[department]);
+
+  const departmentTranslated = i18next.t(`departments.${department}`);
+
+  const questionTranslated = formatQuestion(questionPrompt, i18next.language);
+
+  const forTranslated = i18next.t('analyticsFor');
+
+  return `${questionTranslated} ${forTranslated} ${departmentTranslated}`;
+};
+
+const isTimeInYearOnlyFormat = (time: string) => {
+  // space is the delimeter in the time format: Jan 2024
+  //there are two time formats: Jan 2024 or 2024 (MMM YYYY or YYYY)
+  return time.split(' ').length <= 1;
+};
+export const translateTimeCategory = (dataSets: DataSet[]) => {
+  if (dataSets.length === 0) {
+    return dataSets;
+  }
+
+  if (isTimeInYearOnlyFormat(dataSets[0].x)) {
+    return dataSets;
+  }
+
+  return dataSets.map((dataSet) => {
+    const time = dataSet.x;
+
+    const [month, year] = time.split(' ');
+
+    const translatedMonth = i18next.t(`months.${month}`);
+
+    const translatedDataSet: DataSet = {
+      x: `${translatedMonth} ${year}`,
+      y: dataSet.y,
+    };
+
+    return translatedDataSet;
+  });
 };

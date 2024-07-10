@@ -1,20 +1,20 @@
 import { Dropdown, DropdownButton, DropdownItemText, Form, Row } from 'react-bootstrap';
-import { DropDown } from './DropdownMenu';
-import { InputGroup } from 'react-bootstrap';
 import { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
-type DropDownMultiSelectProps = {
+type DepartmentDropDownProps = {
   dropDowns: string[];
   title: string;
   selectedDropDowns: string[];
   setSelectedDropDowns: (event: ChangeEvent<HTMLInputElement>) => void;
 };
-export const DropDownMultiSelect = ({
+export const DepartmentDropDown = ({
   dropDowns,
   title,
   selectedDropDowns,
   setSelectedDropDowns,
-}: DropDownMultiSelectProps) => {
+}: DepartmentDropDownProps) => {
+  const { t } = useTranslation();
   return (
     <DropdownButton title={title} variant="outline-dark" autoClose="outside">
       {dropDowns.map((dropDown) => {
@@ -33,7 +33,13 @@ export const DropDownMultiSelect = ({
                 checked={selectedDropDowns.includes(dropDown)}
                 onChange={setSelectedDropDowns}
               />
-              <span>{dropDown}</span>
+
+              <span>
+                {
+                  //technical debt, the translation for departments should come from the backend
+                  t(`departments.${dropDown}`)
+                }
+              </span>
             </div>
           </Dropdown.Item>
         );

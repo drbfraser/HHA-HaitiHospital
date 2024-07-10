@@ -2,8 +2,9 @@ import { QuestionPromptUI } from 'pages/analytics/Analytics';
 import { ChangeEvent, useState } from 'react';
 import { Col, Collapse, Row, Container } from 'react-bootstrap';
 import './QuestionCollpase.css';
-import { reformatQuestionPrompt } from 'utils/string';
+import { formatQuestion, reformatQuestionPrompt } from 'utils/string';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 type QuestionCollapseProps = {
   department: string;
@@ -17,6 +18,8 @@ const QuestionCollapse = ({
   setQuestionPrompts,
 }: QuestionCollapseProps) => {
   const [open, setOpen] = useState(false);
+
+  const { t, i18n } = useTranslation();
 
   return (
     <Container>
@@ -33,7 +36,7 @@ const QuestionCollapse = ({
           )}
           style={{ fontSize: '18px' }}
         ></i>
-        <span>{department}</span>
+        <span>{t(`departments.${department}`)}</span>
       </Col>
 
       <Collapse in={open} className="px-5">
@@ -50,7 +53,7 @@ const QuestionCollapse = ({
                 onChange={setQuestionPrompts}
               ></input>
 
-              <span>{reformatQuestionPrompt(questionPrompt.id, questionPrompt.en)}</span>
+              <span>{formatQuestion(questionPrompt, i18n.language)}</span>
             </Col>
           ))}
         </div>

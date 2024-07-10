@@ -1,10 +1,9 @@
 import { QuestionPrompt } from '@hha/common';
 import QuestionCollapse from 'components/collapse/QuestionCollapse';
-import { QuestionMap, QuestionPromptUI } from 'pages/analytics/Analytics';
-import { ChangeEvent, useState } from 'react';
-import { Button, Container, Form, Row } from 'react-bootstrap';
-import { Col, InputGroup, ListGroup, Modal } from 'react-bootstrap';
-import { reformatQuestionPrompt } from 'utils/string';
+import { QuestionMap } from 'pages/analytics/Analytics';
+import { ChangeEvent } from 'react';
+import { Button, Container, Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 type AnalyticsQuestionModalProps = {
   showModal: boolean;
@@ -19,10 +18,12 @@ export const AnalyticsQuestionModal = ({
   handleCloseModal,
   setQuestionSelected,
 }: AnalyticsQuestionModalProps) => {
+  const { t } = useTranslation();
+
   return (
     <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Questions</Modal.Title>
+        <Modal.Title>{t('analyticsQuestion')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
@@ -39,11 +40,8 @@ export const AnalyticsQuestionModal = ({
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Close
-        </Button>
         <Button variant="primary" onClick={handleCloseModal}>
-          Ok
+          {t('analyticsDone')}
         </Button>
       </Modal.Footer>
     </Modal>

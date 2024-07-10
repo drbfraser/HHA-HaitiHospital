@@ -1,13 +1,14 @@
 import { AnalyticsResponse } from '@hha/common';
 import BarChart from './Bar';
 import LineChart from './Line';
-import { AnalyticsMap } from 'pages/analytics/Analytics';
+import { AnalyticsMap, QuestionMap } from 'pages/analytics/Analytics';
 
-export type ChartType = 'Bar' | 'Line';
+export type ChartType = 'bar' | 'line';
 
 export type ChartProps = {
   type: ChartType;
   analyticsData: AnalyticsMap;
+  questionMap: QuestionMap;
 };
 
 export type DataSet = {
@@ -18,14 +19,14 @@ export type DataSet = {
 export type DataSetMap = {
   [key: string]: DataSet[];
 };
-const ChartSelector = ({ type, analyticsData }: ChartProps) => {
+const ChartSelector = ({ type, analyticsData, questionMap }: ChartProps) => {
   switch (type) {
-    case 'Bar':
-      return <BarChart analyticsData={analyticsData} />;
-    case 'Line':
-      return <LineChart analyticsData={analyticsData} />;
+    case 'bar':
+      return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
+    case 'line':
+      return <LineChart analyticsData={analyticsData} questionMap={questionMap} />;
     default:
-      return <BarChart analyticsData={analyticsData} />;
+      return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
   }
 };
 

@@ -20,7 +20,7 @@ import {
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
 import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
-import { DropDownMultiSelect } from 'components/dropdown/DropDownMultiSelect';
+import { DepartmentDropDown } from 'components/dropdown/DepartmentDropDown';
 import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
 import AnalyticsTotal from 'components/analytics/Total';
 import { defaultFromDate, defaultToDate } from 'utils';
@@ -67,7 +67,7 @@ const Analytics = () => {
 
   const [selectedAggregateBy, setSelectedAggregateBy] = useState<MonthOrYearOption>(MONTH_LITERAL);
 
-  const [selectedChart, setSelectedChart] = useState<ChartType>('Bar');
+  const [selectedChart, setSelectedChart] = useState<ChartType>('bar');
 
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
@@ -145,9 +145,7 @@ const Analytics = () => {
       const selectedQuestions = filterQuestionsSelected(questionMap[department]);
 
       selectedQuestions.forEach((selectedQuestion) => {
-        const question = reformatQuestionPrompt(selectedQuestion.id, selectedQuestion.en);
-
-        const departmentPlusQuestionKey = createAnalyticsKey(department, question);
+        const departmentPlusQuestionKey = createAnalyticsKey(department, selectedQuestion.id);
 
         departmentPlusQuestionKeys.push(departmentPlusQuestionKey);
 
@@ -206,6 +204,11 @@ const Analytics = () => {
       );
 
       delete questionMap[departmentSelected];
+
+      //ensures that when a department is deleted from the question map, the chart component only renders after new analytics data is fetched
+      //this prevents bugs which occur when the analytics data is not in sync with the question map
+
+      setIsLoading(true);
       setQuestionMap({ ...questionMap });
     }
 
@@ -255,21 +258,21 @@ const Analytics = () => {
   };
 
   return (
-    <Layout title={t('Analytics')}>
+    <Layout title={t('headerAnalytics')}>
       {isLoading ? (
         <Spinner text="Loading..." size="30px" />
       ) : (
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
             <div className="d-flex flex-row gap-3">
-              <DropDownMultiSelect
+              <DepartmentDropDown
                 dropDowns={getAllDepartmentsByName(departments!)}
-                title={'Department'}
+                title={t('analyticsDepartment')}
                 selectedDropDowns={selectedDepartmentNames}
                 setSelectedDropDowns={onDepartmentSelected}
               />
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
-                Questions
+                {t('analyticsQuestion')}
               </Button>
 
               <AnalyticsQuestionModal
@@ -282,7 +285,7 @@ const Analytics = () => {
 
             <div className="d-flex flex-row gap-3">
               <Button variant="outline-dark" onClick={handleShowTimeOptionsModal}>
-                Time
+                {t('analyticsTime')}
               </Button>
               <TimeOptionModal
                 showModal={showModalTimeOptions}
@@ -295,7 +298,7 @@ const Analytics = () => {
 
               <DropDown
                 menus={DropDownMenus.aggregateBy}
-                title="Aggregate By"
+                title={t('analyticsAggregateBy')}
                 selectedMenu={selectedAggregateBy}
                 setDropDownMenu={(aggregateBy) =>
                   onAggregateBySelected(aggregateBy as MonthOrYearOption)
@@ -303,15 +306,19 @@ const Analytics = () => {
               />
               <DropDown
                 menus={DropDownMenus.charts}
-                title="Charts"
+                title={t('analyticsCharts')}
                 selectedMenu={selectedChart}
                 setDropDownMenu={(chart) => onChartSelected(chart as ChartType)}
               />
             </div>
           </div>
           <Col className="mt-5">
-            <AnalyticsTotal analyticsData={analyticsMap} />
-            <ChartSelector type={selectedChart} analyticsData={analyticsMap} />
+            <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
+            <ChartSelector
+              type={selectedChart}
+              analyticsData={analyticsMap}
+              questionMap={questionMap}
+            />
           </Col>
         </div>
       )}

@@ -3,6 +3,7 @@ import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import { TimeOptions } from 'pages/analytics/Analytics';
 import { ChangeEvent } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 type TimeOptionModalProp = {
   showModal: boolean;
@@ -21,16 +22,17 @@ export const TimeOptionModal = ({
   onToDateChanged,
   onTimeStepChanged,
 }: TimeOptionModalProp) => {
+  const { t } = useTranslation();
   return (
     <Modal show={showModal} onHide={handleCloseModal} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Time Range</Modal.Title>
+        <Modal.Title>{t('analyticsTimeRange')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         <Form>
           <Form.Group controlId="from" className="mb-3">
-            <Form.Label>From</Form.Label>
+            <Form.Label>{t('analyticsFrom')}</Form.Label>
             <Form.Control
               type="date"
               placeholder="Select Date"
@@ -39,7 +41,7 @@ export const TimeOptionModal = ({
             />
           </Form.Group>
           <Form.Group controlId="to" className="mb-3">
-            <Form.Label>To</Form.Label>
+            <Form.Label>{t('analyticsTo')}</Form.Label>
             <Form.Control
               type="date"
               placeholder="Select Date"
@@ -50,7 +52,7 @@ export const TimeOptionModal = ({
           <Form.Group className="mb-3">
             <DropDown
               menus={DropDownMenus.timeStep}
-              title={'Time Step'}
+              title={t('analyticsTimeStep')}
               selectedMenu={timeOptions.timeStep}
               setDropDownMenu={onTimeStepChanged}
             />
@@ -58,11 +60,8 @@ export const TimeOptionModal = ({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Close
-        </Button>
         <Button variant="primary" onClick={handleCloseModal}>
-          Ok
+          {t('analyticsDone')}
         </Button>
       </Modal.Footer>
     </Modal>

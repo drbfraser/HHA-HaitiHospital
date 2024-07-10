@@ -13,28 +13,37 @@ import { Line } from 'react-chartjs-2';
 import { createDefaultChartOptions } from './options';
 import { ChartProps, DataSet } from './ChartSelector';
 import { reformatQuestionPrompt } from 'utils/string';
-import { prepareDataSetForChart } from 'utils/analytics';
+import {
+  prepareDataSetForChart,
+  translateChartLabel,
+  translateTimeCategory,
+} from 'utils/analytics';
 import GRAPH_COLOR from 'constants/graphColor';
+import { useTranslation } from 'react-i18next';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 type LineChartProps = Omit<ChartProps, 'type'>;
 
-const LineChart = ({ analyticsData }: LineChartProps) => {
+const LineChart = ({ analyticsData, questionMap }: LineChartProps) => {
+  const { t } = useTranslation();
+
   const dataSets = prepareDataSetForChart(analyticsData);
 
   const data: ChartData<'line', DataSet[]> = {
     datasets: Object.keys(dataSets).map((label, index) => {
+      const translatedLabel = translateChartLabel(label, questionMap);
+
       return {
-        label: label,
-        data: dataSets[label],
+        label: translatedLabel,
+        data: translateTimeCategory(dataSets[label]),
         borderColor: GRAPH_COLOR[index % GRAPH_COLOR.length],
       };
     }),
   };
   return (
     <div className="d-flex w-100 flex-row justify-content-center" style={{ height: '450px' }}>
-      <Line options={createDefaultChartOptions('Line Chart')} data={data} />
+      <Line options={createDefaultChartOptions(t('analyticsLineChart'))} data={data} />
     </div>
   );
 };
