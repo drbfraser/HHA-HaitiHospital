@@ -91,9 +91,9 @@ router.get(
       const parsedStartDate = new Date(startDate);
       const parsedEndDate = new Date(endDate);
 
-      const isDepartmentsValid = await Departments.Database.validateDeptId(departmentId);
+      const isDepartmentValid = await Departments.Database.validateDeptId(departmentId);
 
-      if (!isDepartmentsValid) {
+      if (!isDepartmentValid) {
         throw new NotFound(generateWrongDepartmentIdError(departmentId));
       }
 
