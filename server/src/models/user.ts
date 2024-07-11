@@ -11,7 +11,7 @@ const argon2 = require('argon2');
 
 const { Schema } = mongoose;
 
-interface UserWithInstanceMethods extends User {
+export interface UserWithInstanceMethods extends User {
   toJson: () => Promise<UserApiOut.UserGet>;
   generateJWT: () => any;
   registerUser: (newUser: any, callback: Function) => void;

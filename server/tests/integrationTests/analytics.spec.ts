@@ -1,14 +1,22 @@
 import { expect } from 'chai';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { Application } from 'express';
 import http from 'http';
-import { Accounts, closeServer, setUpSession } from './testTools/mochaHooks';
-import { ANALYTICS_ENDPOINT, ANALYTICS_QUESTION_ENDPOINT } from './testTools/endPoints';
+import {
+  Accounts,
+  closeServer,
+  DEP_ID,
+  dropMongo,
+  seedMongo,
+  setUpSession,
+} from 'testTools/mochaHooks';
+import { ANALYTICS_ENDPOINT, ANALYTICS_QUESTION_ENDPOINT } from 'testTools/endPoints';
 import DepartmentCollection from 'models/departments';
 import { HTTP_NOTFOUND_CODE, HTTP_OK_CODE, HTTP_UNAUTHORIZED_CODE } from 'exceptions/httpException';
 import { removeMonthsByTimeStep } from 'utils/analytics';
 import { AnalyticsForMonths } from 'routes/api/analytics';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { seedTemplates } from 'seeders/seed';
 
 chai.use(chaiHttp);
 
@@ -21,26 +29,37 @@ const getDepartmentId = async (departmentName: string) => {
 };
 
 describe('Analytics API test for users with privileges', function () {
-  let agent: ChaiHttp.Agent;
   let httpServer: http.Server;
+  let agent: any;
+  let csrf: String;
+  let mongo: MongoMemoryServer;
 
-  before('Create a working server and login with Admin', async function () {
+  before('Create a Working Server and Login With Admin', async function () {
     const session = await setUpSession(Accounts.AdminUser);
 
-    agent = session.agent;
     httpServer = session.httpServer;
+    agent = session.agent;
+    csrf = session.csrf;
+    mongo = session.mongo;
+  });
 
-    if (session.isError) {
-      throw new Error('Authentication failed');
-    }
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+    await seedTemplates();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('should return a list of questions for rehab template', async function () {
     try {
-      const departmentId = await getDepartmentId('Rehab');
-
       const res = await agent.get(ANALYTICS_QUESTION_ENDPOINT).query({
-        departmentId,
+        departmentId: DEP_ID.REHAB,
       });
 
       expect(res).to.have.status(HTTP_OK_CODE);
@@ -59,10 +78,8 @@ describe('Analytics API test for users with privileges', function () {
 
   it('should return a list of questions for maternity template', async function () {
     try {
-      const departmentId = await getDepartmentId('Maternity');
-
       const res = await agent.get(ANALYTICS_QUESTION_ENDPOINT).query({
-        departmentId,
+        departmentId: DEP_ID.MATERNITY,
       });
 
       expect(res).to.have.status(HTTP_OK_CODE);
@@ -81,10 +98,8 @@ describe('Analytics API test for users with privileges', function () {
 
   it('should return a list of questions for nicu-paeds template', async function () {
     try {
-      const departmentId = await getDepartmentId('NICU/Paeds');
-
       const res = await agent.get(ANALYTICS_QUESTION_ENDPOINT).query({
-        departmentId,
+        departmentId: DEP_ID.NICU_PAEDS,
       });
 
       expect(res).to.have.status(HTTP_OK_CODE);
@@ -103,10 +118,8 @@ describe('Analytics API test for users with privileges', function () {
 
   it('should return a list of questions for community & health template', async function () {
     try {
-      const departmentId = await getDepartmentId('Community & Health');
-
       const res = await agent.get(ANALYTICS_QUESTION_ENDPOINT).query({
-        departmentId,
+        departmentId: DEP_ID.COMMUNITY_HEATH,
       });
 
       expect(res).to.have.status(HTTP_OK_CODE);
@@ -126,7 +139,7 @@ describe('Analytics API test for users with privileges', function () {
   it('should return an error when department id is invalid', async function () {
     try {
       const res = await agent.get(ANALYTICS_QUESTION_ENDPOINT).query({
-        departmentId: '664506c4953ff74f94965e79',
+        departmentId: DEP_ID.INVALID,
       });
 
       expect(res).to.have.status(HTTP_NOTFOUND_CODE);
@@ -149,29 +162,38 @@ describe('Analytics API test for users with privileges', function () {
     expect(res).to.have.status(HTTP_OK_CODE);
     expect(res.body).to.be.an('array');
   });
-
-  after('Closing a working server', function () {
-    closeServer(agent, httpServer);
-  });
 });
 
 describe('Analytics API tests for users without privileges', function () {
-  let agent: ChaiHttp.Agent;
   let httpServer: http.Server;
-  before('Create a working server and login with a user with User role', async function () {
+  let agent: any;
+  let csrf: String;
+  let mongo: MongoMemoryServer;
+
+  before('Create a Working Server and Login With User', async function () {
     const session = await setUpSession(Accounts.NormalUser);
 
-    agent = session.agent;
     httpServer = session.httpServer;
+    agent = session.agent;
+    csrf = session.csrf;
+    mongo = session.mongo;
+  });
 
-    if (session.isError) {
-      throw new Error('Authentication failed');
-    }
+  after('Close a Working Server and delete any added reports', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
   });
 
   it('should return an error when a normal user accesses all questions in any department', async function () {
     const res = await agent.get(ANALYTICS_QUESTION_ENDPOINT).query({
-      departmentId: '664506c4953ff74f94965e79',
+      departmentId: DEP_ID.REHAB,
     });
 
     expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
@@ -179,7 +201,7 @@ describe('Analytics API tests for users without privileges', function () {
 
   it('should return an error when a normal user accesses analytics for any department', async function () {
     const res = await agent.get(ANALYTICS_ENDPOINT).query({
-      departmentIds: '664506c4953ff74f94965e79',
+      departmentIds: DEP_ID.REHAB,
       questionId: '1',
       startDate: '2024-02-30T14:00:00Z',
       endDate: '2025-05-30T14:00:00Z',
@@ -188,10 +210,6 @@ describe('Analytics API tests for users without privileges', function () {
     });
 
     expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
-  });
-
-  after('Closing a working server', function () {
-    closeServer(agent, httpServer);
   });
 });
 

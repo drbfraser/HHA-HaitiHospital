@@ -94,7 +94,7 @@ router.delete(
       .exec()
       .then((data) => {
         if (!data) {
-          return next(new BadRequest(`No biomech post with id ${bioId} available`));
+          return next(new NotFound(`No biomech post with id ${bioId} available`));
         }
 
         deleteUploadedImage(data.imgPath);

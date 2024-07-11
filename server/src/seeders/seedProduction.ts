@@ -20,6 +20,7 @@ import MessageCollection from 'models/messageBoard';
 import EmployeeOfTheMonthCollection from 'models/employeeOfTheMonth';
 import CaseStudy from 'models/caseStudies';
 import BioMechCollection from 'models/bioMech';
+import { connectMongo } from 'utils/mongoDb';
 
 let nameMapper: Map<string, string>;
 
@@ -284,12 +285,7 @@ const pickSeedingOption = async () => {
 const main = async () => {
   try {
     // Connect to Mongo
-    await mongoose.connect(ENV.MONGO_DB, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-    });
+    await connectMongo();
     console.log('MongoDB Connected...');
 
     // Check if running in CI
