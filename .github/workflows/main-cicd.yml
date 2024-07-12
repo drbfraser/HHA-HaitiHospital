@@ -163,7 +163,6 @@ jobs:
           npm -v
           node -v
           npm ci
-          npm install ../common_build.tar.gz
       - name: Prepare for tests server
         working-directory: /isolated_build/repo/server/
         run: |
@@ -171,10 +170,10 @@ jobs:
           npm -v
           node -v
           npm ci
-          npm install ../common_build.tar.gz
       - name: Start Services
         run: |
           cd /isolated_build/repo/server
+          npm run seed
           npm start &
           cd /isolated_build/repo/client
           npm start &
