@@ -137,6 +137,7 @@ jobs:
       MONGO_URI: mongodb://test_postgres:27017/hhahaiti
       JWT_SECRET: just_some_secret
       SERVER_PORT: 8000
+      HOME: /root
 
     services:
       test_postgres:
