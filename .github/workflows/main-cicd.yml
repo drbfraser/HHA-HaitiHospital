@@ -157,6 +157,21 @@ jobs:
           npm ci
           npm run build
           tar -czf ../common_build.tar.gz .
+      - name: Prepare for tests client
+        working-directory: /isolated_build/repo/client/
+        run: |
+          npm -v
+          node -v
+          npm ci
+          npm install ../common_build.tar.gz
+      - name: Prepare for tests server
+        working-directory: /isolated_build/repo/server/
+        run: |
+          set -x  # echo commands names
+          npm -v
+          node -v
+          npm ci
+          npm install ../common_build.tar.gz
       - name: Start Services
         run: |
           cd /isolated_build/repo/server
