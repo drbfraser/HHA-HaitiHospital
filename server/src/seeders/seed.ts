@@ -1,5 +1,4 @@
 import * as ENV from 'utils/processEnv';
-import _ from 'lodash';
 
 import { BiomechStatus, Department, Role, User } from '@hha/common';
 import BioMech from 'models/bioMech';
@@ -19,15 +18,18 @@ import UserCollection from 'models/user';
 import EmployeeOfTheMonth from 'models/employeeOfTheMonth';
 import MessageCollection from 'models/messageBoard';
 import { ReportCollection } from 'models/report';
-import { TemplateCollection } from 'models/template';
+import {
+  TemplateCollection,
+  validateReports,
+  IQuestionItem,
+  IReportTemplate,
+} from 'models/template';
 import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import reports from './data/defaultReports.json';
 import messages from './data/defaultMessages.json';
 import brokenEquipment from './data/defaultBioMech.json';
 import caseStudies from './data/defaultCaseStudies.json';
-type ID = string;
-type ErrorType = string;
 
 let nameMapper: Map<string, string>;
 
@@ -609,24 +611,6 @@ export const seedTemplates = async () => {
   }
 };
 
-export interface IQuestionItem {
-  id: string;
-  prompt: { en: string; fr: string };
-  answer?: number | string;
-}
-
-export interface IReportTemplate {
-  questionItems: IQuestionItem[];
-  prompt: { en: string; fr: string };
-}
-
-export type ReportData = {
-  nicupaeds: IReportTemplate;
-  maternity: IReportTemplate;
-  rehab: IReportTemplate;
-  communityHealth: IReportTemplate;
-};
-
 export const seedReports = async () => {
   console.log(`Seeding reports...`);
   try {
@@ -708,40 +692,6 @@ function scrambleReport(report: IReportTemplate): IReportTemplate {
 
   return scrambledReport;
 }
-
-export const validateReports = (
-  reportsToValidate: ReportData,
-  buildReportTemplateFunctions: (() => QuestionGroup<ID, ErrorType>)[],
-) => {
-  const defaultReports = [
-    { defaultReport: reportsToValidate.nicupaeds, template: buildReportTemplateFunctions[0]() },
-    { defaultReport: reportsToValidate.maternity, template: buildReportTemplateFunctions[1]() },
-    { defaultReport: reportsToValidate.rehab, template: buildReportTemplateFunctions[2]() },
-    {
-      defaultReport: reportsToValidate.communityHealth,
-      template: buildReportTemplateFunctions[3](),
-    },
-  ];
-
-  for (const { defaultReport, template } of defaultReports) {
-    const defaultData = defaultReport.questionItems.map((qi) => {
-      return [qi.id, qi.prompt];
-    });
-    const templateData = template.getQuestionItems().map((qi) => {
-      return [qi.getId(), qi.getPrompt()];
-    });
-
-    if (!_.isEqual(defaultData, templateData)) {
-      console.log(
-        'WARNING - template for',
-        defaultReport.prompt.en,
-        'does not match template. Please review and update either the template or sample data.',
-      );
-      console.log('Sample data:', defaultData);
-      console.log('Template:', templateData);
-    }
-  }
-};
 
 // Checks to only connect to MongoDB if run from the command line
 // to prevent connecting to Mongo when using exported functions.
