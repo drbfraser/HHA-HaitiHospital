@@ -612,6 +612,7 @@ export const seedTemplates = async () => {
 export interface IQuestionItem {
   id: string;
   prompt: { en: string; fr: string };
+  answer?: number | string;
 }
 
 export interface IReportTemplate {
@@ -651,6 +652,14 @@ export const seedReports = async () => {
       { defaultReport: reports.communityHealth, user: users[3] },
     ];
 
+    const defaultDates = [
+      new Date('2022-01-01'),
+      new Date('2023-01-01'),
+      new Date('2024-01-01'),
+      new Date('2024-02-01'),
+      new Date('2024-03-01'),
+    ];
+
     validateReports(reports, [
       () => buildNicuPaedsReport(),
       () => buildMaternityReport(),
@@ -658,23 +667,47 @@ export const seedReports = async () => {
       () => buildCommunityHealthReport(),
     ]);
 
-    for (const { defaultReport, user } of defaultReports) {
-      const serialized = serializer.serialize(defaultReport);
-      let report = new ReportCollection({
-        departmentId: user?.departmentId,
-        submittedUserId: user?._id,
-        submittedBy: user?.username,
-        reportMonth: new Date(new Date().getFullYear(), new Date().getMonth()),
-        reportObject: serialized,
-        isDraft: false,
-      });
-      await report.save();
+    for (const date of defaultDates) {
+      for (const { defaultReport, user } of defaultReports) {
+        const serialized = serializer.serialize(scrambleReport(defaultReport));
+        let report = new ReportCollection({
+          departmentId: user?.departmentId,
+          submittedUserId: user?._id,
+          submittedBy: user?.username,
+          reportMonth: date,
+          reportObject: serialized,
+          isDraft: false,
+        });
+        await report.save();
+      }
     }
     console.log(`Reports seeded`);
   } catch (err) {
     console.log(err);
   }
 };
+
+function scrambleReport(report: IReportTemplate): IReportTemplate {
+  const scrambleNumber = (num: number): number => {
+    const range = 0.5 * num;
+    const min = num - range;
+    const max = num + range;
+    return Math.round(Math.random() * (max - min) + min);
+  };
+
+  const scrambledReport: IReportTemplate = { ...report, questionItems: [] };
+
+  report.questionItems.forEach((item) => {
+    if (typeof item.answer === 'number') {
+      const scrambledItem: IQuestionItem = { ...item, answer: scrambleNumber(item.answer) };
+      scrambledReport.questionItems.push(scrambledItem);
+    } else {
+      scrambledReport.questionItems.push(item);
+    }
+  });
+
+  return scrambledReport;
+}
 
 export const validateReports = (
   reportsToValidate: ReportData,
