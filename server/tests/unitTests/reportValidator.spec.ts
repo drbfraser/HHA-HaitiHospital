@@ -1,4 +1,4 @@
-import { validateReports } from 'seeders/seed';
+import { validateReports } from 'models/template';
 
 import { expect } from 'chai';
 import sinon from 'sinon';
