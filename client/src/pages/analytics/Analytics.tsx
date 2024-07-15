@@ -1,6 +1,6 @@
 import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import Layout from 'components/layout';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Button, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAllDepartments } from 'api/department';
@@ -24,6 +24,8 @@ import { DepartmentDropDown } from 'components/dropdown/DepartmentDropDown';
 import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
 import AnalyticsTotal from 'components/analytics/Total';
 import { defaultFromDate, defaultToDate } from 'utils';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export type TimeOptions = {
   from: string;
@@ -73,6 +75,8 @@ const Analytics = () => {
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
 
   const [analyticsMap, setAnalyticsMap] = useState<AnalyticsMap>({});
+
+  const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -183,6 +187,32 @@ const Analytics = () => {
 
   const handleCloseTimeOptionsModal = () => setShowModalTimeOptions(false);
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
+
+  const handleExportWithComponent = () => {
+    console.log('starting export...');
+    const input = pdfRef.current;
+
+    if (!input) {
+      console.error("PDF reference is invalid or the component hasn't been rendered.");
+      console.log(pdfRef);
+      return;
+    }
+
+    html2canvas(input!).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('landscape', 'mm', 'a4', true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save(`${timeOptions.from} - ${timeOptions.to} - ${selectedChart} analysis.pdf`);
+    });
+    console.log('finished export!');
+  };
 
   const onDepartmentSelected = (event: React.MouseEvent<HTMLElement>) => {
     let updateDepartmentsSelected: string[] = [];
@@ -314,11 +344,16 @@ const Analytics = () => {
           </div>
           <Col className="mt-5">
             <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
-            <ChartSelector
-              type={selectedChart}
-              analyticsData={analyticsMap}
-              questionMap={questionMap}
-            />
+            <div ref={pdfRef}>
+              <ChartSelector
+                type={selectedChart}
+                analyticsData={analyticsMap}
+                questionMap={questionMap}
+              />
+            </div>
+            <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
+              {t('departmentReportDisplayGeneratePDF')}
+            </button>
           </Col>
         </div>
       )}
