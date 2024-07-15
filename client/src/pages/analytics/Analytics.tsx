@@ -192,6 +192,11 @@ const Analytics = () => {
     console.log('starting export...');
     const capturedComponent = pdfRef.current;
 
+    const chartFilenames = {
+      bar: t('analyticsBarChart'),
+      line: t('analyticsLineChart'),
+    };
+
     if (!capturedComponent) {
       console.error("PDF reference is invalid or the component hasn't been rendered.");
       console.log(pdfRef);
@@ -212,7 +217,7 @@ const Analytics = () => {
       const imgY = (pdfHeight - imgHeight * ratio) / 2;
       pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
       pdf.save(
-        `${timeOptions.from} - ${timeOptions.to} - ${selectedChart} ${t('analyticsExportFilename')}.pdf`,
+        `${timeOptions.from} - ${timeOptions.to} - ${chartFilenames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
       );
     });
     console.log('finished export!');
