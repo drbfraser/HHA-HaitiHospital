@@ -1,6 +1,11 @@
+import { AnalyticsResponse } from '@hha/common';
+import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/date';
 import { language, timezone } from 'constants/timezones';
+import moment from 'moment';
+import { AnalyticsMap } from 'pages/analytics/Analytics';
 
 import { DayRange } from 'react-modern-calendar-datepicker';
+import { DateWithFormat } from './analytics';
 
 // Haiti is GMT-5 (EASTERN TIME ET)
 enum Month {
@@ -91,6 +96,62 @@ const formatDateString = (date: Date): string =>
     minute: 'numeric',
   });
 
+const compareDateWithFormat = (
+  dateWithFormat1: DateWithFormat,
+  dateWithFormat2: DateWithFormat,
+) => {
+  if (dateWithFormat1.time < dateWithFormat2.time) {
+    return -1;
+  } else if (dateWithFormat1.time > dateWithFormat2.time) {
+    return 1;
+  }
+
+  return 0;
+};
+const getDateForAnalytics = (analyticsData: AnalyticsResponse) => {
+  let { month, year } = analyticsData;
+  let dateFormat = MONTH_AND_YEAR_DATE_FORMAT;
+
+  // when the API returns month = 0, this means that only year should be used as time value
+
+  if (month === 0) {
+    // set month to 1 so it can be parsed correctly in the Date class
+
+    month = 1;
+    dateFormat = YEAR_ONLY_DATE_FORMAT;
+  }
+
+  const date = new Date(year, month - 1);
+
+  const dateWithFormat: DateWithFormat = {
+    time: date,
+    format: dateFormat,
+  };
+
+  return dateWithFormat;
+};
+const formatDateForChart = (dateWithFormat: DateWithFormat) => {
+  const formattedDate = moment(dateWithFormat.time).format(dateWithFormat.format);
+
+  return formattedDate;
+};
+
+const defaultFromDate = () => {
+  const now = new Date();
+
+  now.setFullYear(now.getFullYear() - 1);
+
+  return now.toISOString().split('T')[0];
+};
+
+const defaultToDate = () => {
+  const now = new Date();
+
+  now.setFullYear(now.getFullYear() + 1);
+
+  return now.toISOString().split('T')[0];
+};
+
 export {
   Month,
   currDate,
@@ -106,4 +167,9 @@ export {
   currentYearAndMonth,
   translateMonth,
   formatDateString,
+  formatDateForChart,
+  getDateForAnalytics,
+  compareDateWithFormat,
+  defaultFromDate,
+  defaultToDate,
 };

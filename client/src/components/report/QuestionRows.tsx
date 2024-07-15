@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { QuestionRow } from 'constants/interfaces';
 import { useTranslation } from 'react-i18next';
 import { underscoreAmount } from './utils';
+import { QUESTION_FOR_REGEX } from 'constants/strings';
 
 export const processCompositionOrSpecializedQuestion = (
   specialQuestionItem: any,
@@ -35,7 +36,7 @@ export const processTableQuestion = (tableItem: any, language: string): Question
       const questionItem = tableCell.question;
       const element: QuestionRow = {
         id: questionItem.id,
-        prompt: questionItem.prompt[language].replace(/^(Question for|Question pour)\s*/i, ''),
+        prompt: questionItem.prompt[language].replace(QUESTION_FOR_REGEX, ''),
         answer: questionItem?.answer,
       };
       array.push(element);

@@ -18,6 +18,7 @@
   "signInPasswordValidationRequired": "Password is required to login",
   "signInContactAdmin": "Contact Admin",
   "sidebarHome": "Home",
+  "sidebarAnalytics": "Analytics",
   "sidebarMessageBoard": "Message Board",
   "sidebarLeaderBoard": "Leaderboard",
   "sidebarCaseStudy": "Case Study",
@@ -32,6 +33,7 @@
   "sidebarEnglish": "English",
   "sidebarFrench": "Français",
   "headerOverview": "Overview",
+  "headerAnalytics": "Analytics",
   "headerMessageBoard": "Message Board",
   "headerMessageComments": "Comments",
   "headerLeaderBoard": "Leaderboard",
@@ -247,6 +249,21 @@
   "reportsOptions": "Options",
   "reportDraft": "Draft",
   "reportSaveAsDraft": "Save as Draft",
+  "analyticsDepartment": "Department",
+  "analyticsQuestion": "Questions",
+  "analyticsTime": "Time",
+  "analyticsTimeRange": "Time Range",
+  "analyticsFrom": "From",
+  "analyticsTo": "To",
+  "analyticsDone": "Done",
+  "analyticsTimeStep": "Time Step",
+  "analyticsAggregateBy": "Aggregate By",
+  "analyticsCharts": "Charts",
+  "analyticsTotal": "Total",
+  "analyticsBarChart": "Bar Chart",
+  "analyticsLineChart": "Line Chart",
+  "analyticsFor": "for",
+  "analyticsInvalidChart": "Warning Unknown chart type selected",
   "employeeOfTheMonthAdd": "Add New Employee of the Month",
   "employeeOfTheMonthEdit": "Update",
   "employeeOfTheMonthList": "See Past Employees of the Month",
@@ -453,5 +470,27 @@
     "submitReportHeader": "Confirm Submission",
     "discardSubmitReportHeader": "Discard Submission?",
     "submitReportConfirmBody": "Please click <strong>Confirm</strong> to proceed with your submission. You'll be redirected to the main list of reports."
+  },
+
+  "dropdown": {
+    "month": "Month",
+    "year": "Year",
+    "bar": "Bar",
+    "line": "Line"
+  },
+
+  "months": {
+    "Jan": "Jan",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Apr": "Apr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Aug": "Aug",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dec": "Dec"
   }
 }

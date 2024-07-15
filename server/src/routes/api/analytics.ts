@@ -1,4 +1,4 @@
-import { AnalyticsQuery, IReport, Role } from '@hha/common';
+import { AnalyticsQuery, AnalyticsResponse, IReport, QuestionPrompt, Role } from '@hha/common';
 import { BadRequest, HTTP_OK_CODE, NotFound } from 'exceptions/httpException';
 import { NextFunction, Request, Response, Router } from 'express';
 import requireJwtAuth from 'middleware/requireJwtAuth';
@@ -18,6 +18,7 @@ import {
   removeMonthsByTimeStep,
 } from 'utils/analytics';
 import Departments from 'utils/departments';
+import { generateWrongDepartmentIdError } from 'utils/errorUtils';
 
 const router = Router();
 
@@ -25,18 +26,13 @@ type AnalyticsQuestionQuery = {
   departmentId: string;
 };
 
-export type AnalyticsQuestionsResponse = {
-  id: string;
-  en: string;
-  fr: string;
-};
 router.get(
   '/questions',
   requireJwtAuth,
   roleAuth(Role.Admin, Role.MedicalDirector),
   async (
-    req: Request<{}, AnalyticsQuestionsResponse[], {}, AnalyticsQuestionQuery>,
-    res: Response<AnalyticsQuestionsResponse[]>,
+    req: Request<{}, QuestionPrompt[], {}, AnalyticsQuestionQuery>,
+    res: Response<QuestionPrompt[]>,
     next: NextFunction,
   ) => {
     try {
@@ -45,7 +41,7 @@ router.get(
       const isDepartmentValid = await Departments.Database.validateDeptId(departmentId);
 
       if (!isDepartmentValid) {
-        throw new NotFound(`No department with id: ${departmentId} found`);
+        throw new NotFound(generateWrongDepartmentIdError(departmentId));
       }
 
       const template: ITemplate = await TemplateCollection.findOne({
@@ -65,13 +61,6 @@ router.get(
   },
 );
 
-export type AnalyticsResponse = {
-  month: number;
-  year: number;
-  departmentId: string;
-  answer: number;
-};
-
 export type AnalyticsForMonths = {
   _id: string;
   reports: IReport[];
@@ -87,13 +76,13 @@ router.get(
     next: NextFunction,
   ) => {
     try {
-      const { departmentIds, questionId, startDate, endDate, timeStep, aggregateBy } = req.query;
+      const { departmentId, questionId, startDate, endDate, timeStep, aggregateBy } = req.query;
 
       let dateFormat = '';
 
-      if (aggregateBy === MONTH_AGGREGATE_BY) {
+      if (aggregateBy.toLowerCase() === MONTH_AGGREGATE_BY) {
         dateFormat = MONTH_DATE_FORMAT;
-      } else if (aggregateBy === YEAR_AGGREGATE_BY) {
+      } else if (aggregateBy.toLowerCase() === YEAR_AGGREGATE_BY) {
         dateFormat = YEAR_DATE_FORMAT;
       } else {
         throw new BadRequest('Aggregateby field has to be of type month or year');
@@ -102,18 +91,15 @@ router.get(
       const parsedStartDate = new Date(startDate);
       const parsedEndDate = new Date(endDate);
 
-      const departmentIdArray = departmentIds.split(',');
+      const isDepartmentValid = await Departments.Database.validateDeptId(departmentId);
 
-      const areDepartmentsValid =
-        await Departments.Database.validateDepartmentIds(departmentIdArray);
-
-      if (!areDepartmentsValid) {
-        throw new NotFound(`There exist a department id that was not found`);
+      if (!isDepartmentValid) {
+        throw new NotFound(generateWrongDepartmentIdError(departmentId));
       }
 
       let analytics: AnalyticsForMonths[] = await ReportCollection.aggregate(
         createAnalyticsPipeline({
-          departmentIdArray,
+          departmentId,
           startDate: parsedStartDate,
           endDate: parsedEndDate,
           dateFormat,
