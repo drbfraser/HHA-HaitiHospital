@@ -170,17 +170,7 @@ export const CaseStudyList = () => {
         onModalClose={resetModals}
         onModalDelete={onModalDeleteConfirm}
       />
-      <div className="w-100">
-        <Link to="/case-study/form">
-          <button
-            className="btn btn-outline-dark"
-            data-testid="add-case-study-button"
-            type="button"
-          >
-            {t('CaseStudy.Main.AddCaseStudy')}
-          </button>
-        </Link>
-      </div>
+
       <div data-testid="case-study-table">
         <FilterableTable
           columns={columns}
