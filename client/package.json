@@ -47,7 +47,6 @@
     "test": "ts-mocha -p testconfig.json ./src/tests/**/*.spec.tsx",
     "eject": "react-scripts eject",
     "e2e": "npx cypress open",
-    "e2e:ci": "npx cypress run --headless --browser chrome",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "eslintConfig": {
