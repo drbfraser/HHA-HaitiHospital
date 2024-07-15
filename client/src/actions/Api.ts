@@ -26,9 +26,10 @@ const Get = async (
   errorMsg: string,
   history: History,
   signal: AbortSignal = new AbortController().signal,
+  queryParams = {},
 ): Promise<any> => {
   try {
-    const response: any = await axios.get(url, { signal: signal });
+    const response: any = await axios.get(url, { signal: signal, params: queryParams });
     return response.data;
   } catch (error: any) {
     DbErrorHandler(error, history, errorMsg);
