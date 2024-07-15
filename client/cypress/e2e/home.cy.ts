@@ -28,18 +28,19 @@ describe('Admin Home Page Tests', function () {
     // Check that the sidebar links correspond to the User role
     cy.get('@Sidebar Items').eq(1).should('include.text', en.sidebarHome);
     cy.get('@Sidebar Items').eq(2).should('include.text', en.sidebarReports);
-    cy.get('@Sidebar Items').eq(3).should('include.text', en.sidebarMessageBoard);
-    cy.get('@Sidebar Items').eq(4).should('include.text', en.sidebarLeaderBoard);
-    cy.get('@Sidebar Items').eq(5).should('include.text', en.sidebarCaseStudy);
-    cy.get('@Sidebar Items').eq(6).should('include.text', en.sidebarBioSupport);
-    cy.get('@Sidebar Items').eq(7).should('include.text', en.sidebarEmployeeOfTheMonth);
-    // 8th item is a divider
-    cy.get('@Sidebar Items').eq(9).should('include.text', en.sidebarAdmin);
-    // 10th item is a divider
-    cy.get('@Sidebar Items').eq(11).should('include.text', en.sidebarUsers);
-    // 12th item is a divider
-    cy.get('@Sidebar Items').eq(13).should('include.text', en.sidebarEnglish);
-    cy.get('@Sidebar Items').eq(14).should('include.text', en.sidebarFrench);
+    cy.get('@Sidebar Items').eq(3).should('include.text', en.sidebarAnalytics);
+    cy.get('@Sidebar Items').eq(4).should('include.text', en.sidebarMessageBoard);
+    cy.get('@Sidebar Items').eq(5).should('include.text', en.sidebarLeaderBoard);
+    cy.get('@Sidebar Items').eq(6).should('include.text', en.sidebarCaseStudy);
+    cy.get('@Sidebar Items').eq(7).should('include.text', en.sidebarBioSupport);
+    cy.get('@Sidebar Items').eq(8).should('include.text', en.sidebarEmployeeOfTheMonth);
+    // 9th item is a divider
+    cy.get('@Sidebar Items').eq(10).should('include.text', en.sidebarAdmin);
+    // 11th item is a divider
+    cy.get('@Sidebar Items').eq(12).should('include.text', en.sidebarUsers);
+    // 13th item is a divider
+    cy.get('@Sidebar Items').eq(14).should('include.text', en.sidebarEnglish);
+    cy.get('@Sidebar Items').eq(15).should('include.text', en.sidebarFrench);
   });
 
   it('Should Navigate to the Leaderboard Page', function () {
