@@ -190,26 +190,30 @@ const Analytics = () => {
 
   const handleExportWithComponent = () => {
     console.log('starting export...');
-    const input = pdfRef.current;
+    const capturedComponent = pdfRef.current;
 
-    if (!input) {
+    if (!capturedComponent) {
       console.error("PDF reference is invalid or the component hasn't been rendered.");
       console.log(pdfRef);
       return;
     }
 
-    html2canvas(input!).then((canvas) => {
+    html2canvas(capturedComponent!).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('landscape', 'mm', 'a4', true);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
+      // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      // find points to center image horizontally and vertically
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 30;
+      const imgY = (pdfHeight - imgHeight * ratio) / 2;
       pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-      pdf.save(`${timeOptions.from} - ${timeOptions.to} - ${selectedChart} analysis.pdf`);
+      pdf.save(
+        `${timeOptions.from} - ${timeOptions.to} - ${selectedChart} ${t('analyticsExportFilename')}.pdf`,
+      );
     });
     console.log('finished export!');
   };
@@ -352,7 +356,7 @@ const Analytics = () => {
               />
             </div>
             <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
-              {t('departmentReportDisplayGeneratePDF')}
+              {t('analysisDisplayGeneratePDF')}
             </button>
           </Col>
         </div>

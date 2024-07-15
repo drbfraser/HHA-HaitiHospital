@@ -23,19 +23,17 @@ export type DataSetMap = {
   [key: string]: DataSet[];
 };
 
-const ChartSelector = forwardRef<HTMLDivElement, ChartProps>(
-  ({ type, analyticsData, questionMap }, ref): JSX.Element => {
-    const { t } = useTranslation();
-    switch (type) {
-      case 'bar':
-        return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
-      case 'line':
-        return <LineChart analyticsData={analyticsData} questionMap={questionMap} />;
-      default:
-        toast.warning(t('analyticsInvalidChart'));
-        return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
-    }
-  },
-);
+const ChartSelector = ({ type, analyticsData, questionMap }: ChartProps) => {
+  const { t } = useTranslation();
+  switch (type) {
+    case 'bar':
+      return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
+    case 'line':
+      return <LineChart analyticsData={analyticsData} questionMap={questionMap} />;
+    default:
+      toast.warning(t('analyticsInvalidChart'));
+      return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
+  }
+};
 
 export default ChartSelector;
