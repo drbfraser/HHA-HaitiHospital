@@ -8,7 +8,7 @@ services:
     working_dir: /code/server
     command: bash -c "npm install && npm start"
     ports:
-      - '8000:8000'4
+      - '8000:8000'
     environment:
       - NODE_ENV=dev
       - LOKI_URL=https://${LOKI_HOST}
