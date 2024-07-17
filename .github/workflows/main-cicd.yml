@@ -186,6 +186,14 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x24 &
           service dbus start
           cypress run --headless --browser chrome
+      - name: Run build
+        working-directory: /isolated_build/repo/client/
+        run: |
+          # TODO: remove "CI=false", temporarily required because the project has warnings during the build
+          CI=false GENERATE_SOURCEMAP=false npm run build
+          cd build/
+          tar -czf ../../client_build.tar.gz .
+
       - uses: actions/upload-artifact@v3
         if: success()
         with:
