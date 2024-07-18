@@ -14,14 +14,14 @@ export default defineConfig({
           HeadOfDepartment: { username: 'user2', password: 'C@td0g' },
           User: { username: 'user3', password: 'C@td0g' },
         },
-        reporter: 'mochawesome',
-        reporterOptions: {
-          reportDir: 'cypress/reports',
-          overwrite: false,
-          html: true,
-          json: true,
-        },
       };
     },
+  },
+  reporter: 'mochawesome',
+  reporterOptions: {
+    reportDir: 'cypress/reports',
+    overwrite: false,
+    html: true,
+    json: true,
   },
 });
