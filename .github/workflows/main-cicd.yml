@@ -190,10 +190,10 @@ jobs:
           npx mochawesome-report-generator cypress/reports/report.json -o cypress/reports/report.html
 
       - name: Upload Cypress Test Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: cypress-test-results
-          path: cypress/reports/report.html
+          path: /isolated_build/repo/client/cypress/reports/report.html/report.html
 
       - name: Run build
         working-directory: /isolated_build/repo/client/
