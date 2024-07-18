@@ -194,7 +194,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: cypress-test-results
-          path: /isolated_build/repo/client/cypress/reports/report.html/report.html
+          path: /isolated_build/repo/client/cypress/reports/mochareports/report.html
 
       - name: Run build
         working-directory: /isolated_build/repo/client/
