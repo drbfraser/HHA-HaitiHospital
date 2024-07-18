@@ -17,11 +17,16 @@ export default defineConfig({
       };
     },
   },
-  reporter: 'mochawesome',
+  experimentalInteractiveRunEvents: true,
+  reporter: 'cypress-multi-reporters',
   reporterOptions: {
-    reportDir: 'cypress/reports',
-    overwrite: false,
-    html: true,
-    json: true,
+    reporterEnabled: 'mochawesome',
+    mochawesomeReporterOptions: {
+      reportDir: 'cypress/reports/mocha',
+      quite: true,
+      overwrite: false,
+      html: false,
+      json: true,
+    },
   },
 });
