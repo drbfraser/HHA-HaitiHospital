@@ -186,6 +186,15 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x24 &
           service dbus start
           cypress run --headless --browser chrome
+          npx mochawesome-merge cypress/reports/*.json > cypress/reports/report.json
+          npx mochawesome-report-generator cypress/reports/report.json -o cypress/reports/report.html
+
+      - name: Upload Cypress Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-test-results
+          path: cypress/reports/report.html
+
       - name: Run build
         working-directory: /isolated_build/repo/client/
         run: |
