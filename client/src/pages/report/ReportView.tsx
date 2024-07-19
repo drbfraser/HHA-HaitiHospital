@@ -193,50 +193,50 @@ const ReportView = () => {
           />
 
           <header>
-            {/* <div> */}
-            {(user.userDetails.role === Role.Admin ||
-              user.userDetails.role === Role.MedicalDirector ||
-              (user.userDetails.role === Role.HeadOfDepartment &&
-                user.userDetails.department.name === department)) &&
-              !editMonth && (
-                <button className="btn btn-primary mr-3" onClick={editBtnHandler}>
-                  {readOnly
-                    ? t('departmentReportDisplayEditForm')
-                    : t('departmentReportDisplayViewForm')}
+            <div>
+              {(user.userDetails.role === Role.Admin ||
+                user.userDetails.role === Role.MedicalDirector ||
+                (user.userDetails.role === Role.HeadOfDepartment &&
+                  user.userDetails.department.name === department)) &&
+                !editMonth && (
+                  <button className="btn btn-primary mr-3" onClick={editBtnHandler}>
+                    {readOnly
+                      ? t('departmentReportDisplayEditForm')
+                      : t('departmentReportDisplayViewForm')}
+                  </button>
+                )}
+              {(user.userDetails.role === Role.Admin ||
+                user.userDetails.role === Role.MedicalDirector ||
+                (user.userDetails.role === Role.HeadOfDepartment &&
+                  user.userDetails.department.name === department)) &&
+                readOnly && (
+                  <button className="btn btn-primary mr-3" onClick={editMonthBtnHandler}>
+                    {readOnly && !editMonth
+                      ? t('departmentReportDisplayEditMonth')
+                      : t('departmentReportDisplayViewForm')}
+                  </button>
+                )}
+              {/* Other buttons */}
+              {readOnly && !editMonth && (
+                <span>
+                  <XlsxGenerator questionItems={questionItems} metaData={metaData} />
+                </span>
+              )}
+              {readOnly && !editMonth && (
+                <button className="btn bgtn-outline-dark" onClick={toggleTable}>
+                  {isUsingTable
+                    ? t('departmentReportDisplayHideTable')
+                    : t('departmentReportDisplayShowTable')}
                 </button>
               )}
-            {(user.userDetails.role === Role.Admin ||
-              user.userDetails.role === Role.MedicalDirector ||
-              (user.userDetails.role === Role.HeadOfDepartment &&
-                user.userDetails.department.name === department)) &&
-              readOnly && (
-                <button className="btn btn-primary mr-3" onClick={editMonthBtnHandler}>
-                  {readOnly && !editMonth
-                    ? t('departmentReportDisplayEditMonth')
-                    : t('departmentReportDisplayViewForm')}
+              {readOnly && !editMonth && !isUsingTable && (
+                <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
+                  {isUsingPagination
+                    ? t('departmentReportDisplayHidePagination')
+                    : t('departmentReportDisplayShowPagination')}
                 </button>
               )}
-            {/* Other buttons */}
-            {readOnly && !editMonth && (
-              <span>
-                <XlsxGenerator questionItems={questionItems} metaData={metaData} />
-              </span>
-            )}
-            {readOnly && !editMonth && (
-              <button className="btn bgtn-outline-dark" onClick={toggleTable}>
-                {isUsingTable
-                  ? t('departmentReportDisplayHideTable')
-                  : t('departmentReportDisplayShowTable')}
-              </button>
-            )}
-            {readOnly && !editMonth && !isUsingTable && (
-              <button className="btn btn-outline-dark ml-3" onClick={togglePagination}>
-                {isUsingPagination
-                  ? t('departmentReportDisplayHidePagination')
-                  : t('departmentReportDisplayShowPagination')}
-              </button>
-            )}
-            {/* </div> */}
+            </div>
           </header>
 
           {readOnly && !editMonth && (
