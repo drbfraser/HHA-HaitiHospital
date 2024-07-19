@@ -303,7 +303,7 @@ const Analytics = () => {
       ) : (
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
-            <div className="d-flex flex-row gap-3">
+            <div className="d-flex flex-row gap-3" data-testid="select-department-question-button">
               <DepartmentDropDown
                 dropDowns={getAllDepartmentsByName(departments!)}
                 title={t('analyticsDepartment')}
