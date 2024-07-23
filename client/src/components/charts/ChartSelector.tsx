@@ -4,6 +4,7 @@ import LineChart from './Line';
 import { AnalyticsMap, QuestionMap } from 'pages/analytics/Analytics';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { forwardRef } from 'react';
 
 export type ChartType = 'bar' | 'line';
 
@@ -21,6 +22,7 @@ export type DataSet = {
 export type DataSetMap = {
   [key: string]: DataSet[];
 };
+
 const ChartSelector = ({ type, analyticsData, questionMap }: ChartProps) => {
   const { t } = useTranslation();
   switch (type) {

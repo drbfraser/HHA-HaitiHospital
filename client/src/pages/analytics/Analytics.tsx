@@ -1,6 +1,6 @@
 import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import Layout from 'components/layout';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Button, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAllDepartments } from 'api/department';
@@ -24,6 +24,8 @@ import { DepartmentDropDown } from 'components/dropdown/DepartmentDropDown';
 import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
 import AnalyticsTotal from 'components/analytics/Total';
 import { defaultFromDate, defaultToDate } from 'utils';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export type TimeOptions = {
   from: string;
@@ -73,6 +75,8 @@ const Analytics = () => {
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
 
   const [analyticsMap, setAnalyticsMap] = useState<AnalyticsMap>({});
+
+  const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -184,6 +188,41 @@ const Analytics = () => {
   const handleCloseTimeOptionsModal = () => setShowModalTimeOptions(false);
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
 
+  const handleExportWithComponent = () => {
+    console.log('starting export...');
+    const capturedComponent = pdfRef.current;
+
+    const chartFilenames = {
+      bar: t('analyticsBarChart'),
+      line: t('analyticsLineChart'),
+    };
+
+    if (!capturedComponent) {
+      console.error("PDF reference is invalid or the component hasn't been rendered.");
+      console.log(pdfRef);
+      return;
+    }
+
+    html2canvas(capturedComponent!).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('landscape', 'mm', 'a4', true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      // find points to center image horizontally and vertically
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = (pdfHeight - imgHeight * ratio) / 2;
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save(
+        `${timeOptions.from} - ${timeOptions.to} - ${chartFilenames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+      );
+    });
+    console.log('finished export!');
+  };
+
   const onDepartmentSelected = (event: React.MouseEvent<HTMLElement>) => {
     let updateDepartmentsSelected: string[] = [];
 
@@ -264,7 +303,7 @@ const Analytics = () => {
       ) : (
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
-            <div className="d-flex flex-row gap-3">
+            <div className="d-flex flex-row gap-3" data-testid="select-department-question-button">
               <DepartmentDropDown
                 dropDowns={getAllDepartmentsByName(departments!)}
                 title={t('analyticsDepartment')}
@@ -314,11 +353,16 @@ const Analytics = () => {
           </div>
           <Col className="mt-5">
             <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
-            <ChartSelector
-              type={selectedChart}
-              analyticsData={analyticsMap}
-              questionMap={questionMap}
-            />
+            <div ref={pdfRef}>
+              <ChartSelector
+                type={selectedChart}
+                analyticsData={analyticsMap}
+                questionMap={questionMap}
+              />
+            </div>
+            <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
+              {t('analysisDisplayGeneratePDF')}
+            </button>
           </Col>
         </div>
       )}
