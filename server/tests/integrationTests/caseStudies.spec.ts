@@ -1,22 +1,26 @@
 import http from 'http';
-import { Accounts, closeServer, setUpSession, seedMongo, dropMongo } from 'testTools/mochaHooks';
+import {
+  Accounts,
+  closeServer,
+  setUpSession,
+  seedMongo,
+  dropMongo,
+  USER_ID,
+  DEP_ID,
+} from 'testTools/mochaHooks';
 import { CASE_STUDIES_ENDPOINT, CASE_STUDIES_FEATURED_ENDPOINT } from 'testTools/endPoints';
 import { Done } from 'mocha';
 import { formatDateString } from 'utils/utils';
 import {
-  HTTP_CREATED_CODE,
   HTTP_INTERNALERROR_CODE,
   HTTP_NOCONTENT_CODE,
   HTTP_NOTFOUND_CODE,
   HTTP_OK_CODE,
 } from 'exceptions/httpException';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { seedCaseStudies } from 'seeders/seed';
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
-import CaseStudy from 'models/caseStudies';
-import { castArray } from 'lodash';
-import exp from 'constants';
+import CaseStudy, { CaseStudyOptions } from 'models/caseStudies';
 
 chai.use(chaiHttp);
 
@@ -24,25 +28,45 @@ let httpServer: http.Server;
 let agent: any;
 let csrf: string;
 
-function postCaseStudy(
-  document: string,
-  imgPath: string,
-  done: Done,
-  expectedStatus: number,
-  next?: Function,
+async function createEmptyCaseStudy(
+  featured = false,
+  userId: string = USER_ID.ADMIN,
+  departmentId: string = DEP_ID.GENERAL,
 ) {
-  agent
-    .post(CASE_STUDIES_ENDPOINT)
-    .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-    .field('document', document)
-    .attach('file', imgPath)
-    .end(function (error: Error, response: any) {
-      if (error) done(error);
-      expect(error).to.be.null;
-      expect(response).to.have.status(expectedStatus);
-      if (!next) done();
-      else next();
-    });
+  let caseStudy = new CaseStudy({
+    caseStudyType: CaseStudyOptions.PatientStory,
+    userId: userId,
+    departmentId: departmentId,
+    imgPath: 'public/images/case1.jpg',
+    featured: featured,
+  });
+  await caseStudy.save();
+  return caseStudy.toObject();
+}
+
+async function createPatientStory(
+  featured = false,
+  userId: string = USER_ID.ADMIN,
+  departmentId: string = DEP_ID.GENERAL,
+) {
+  const caseStudy = new CaseStudy({
+    caseStudyType: CaseStudyOptions.PatientStory,
+    userId: userId,
+    departmentId: departmentId,
+    imgPath: 'public/images/case1.jpg',
+    featured: featured,
+    patientStory: {
+      patientsName: 'Jamie Doe',
+      patientsAge: 24,
+      whereIsThePatientFrom: 'Vancouver',
+      whyComeToHcbh: 'Illness',
+      howLongWereTheyAtHcbh: '1 week',
+      diagnosis: 'Ill',
+      caseStudyStory: 'Was ill but got better',
+    },
+  });
+  await caseStudy.save();
+  return caseStudy.toObject();
 }
 
 describe('Case Study Tests', function () {
@@ -63,47 +87,47 @@ describe('Case Study Tests', function () {
 
   beforeEach('start with clean mongoDB', async function () {
     await seedMongo();
-    await seedCaseStudies();
   });
 
   afterEach('clean up test data', async () => {
     await dropMongo();
   });
 
-  it('Should Get Featured Case Study', function (done: Done) {
-    agent.get(CASE_STUDIES_FEATURED_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      done();
-    });
+  it('Should Get Featured Case Study', async function () {
+    const featureId = await createEmptyCaseStudy(true);
+    createEmptyCaseStudy();
+
+    const res = await agent.get(CASE_STUDIES_FEATURED_ENDPOINT);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body).to.have.property('id');
+    expect(res.body).to.have.property('featured');
+    expect(res.body.id!).to.be.equal(featureId._id.toString());
+    expect(res.body.featured!).to.be.equal(true);
   });
 
-  it('Should Get All Case Studies', function (done: Done) {
-    agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      done();
-    });
+  it('Should get all Case Studies, returning the featured one first', async function () {
+    await createEmptyCaseStudy();
+    const featureId = await createEmptyCaseStudy(true);
+    await createEmptyCaseStudy(false, USER_ID.REGULAR, DEP_ID.MATERNITY);
+
+    const res = await agent.get(CASE_STUDIES_ENDPOINT);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body).to.be.an('array');
+    expect(res.body).to.have.lengthOf(3);
+    expect(res.body[0].id!).to.be.equal(featureId._id.toString());
   });
 
-  it('Should Successfully GET a case study via ID', function (done: Done) {
-    // Need to perform a GET to get a case Study's ID
-    agent.get(CASE_STUDIES_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
+  it('Should Successfully GET a case study via ID', async function () {
+    const patientStory = await createPatientStory();
+    await createEmptyCaseStudy();
 
-      const caseStudy = response.body[0];
-      const id: string = caseStudy?.id;
+    const res = await agent.get(`${CASE_STUDIES_ENDPOINT}/${patientStory._id}`);
 
-      agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: any, response: any) {
-        if (error) done(error);
-        expect(response).to.have.status(HTTP_OK_CODE);
-
-        const fetchedCaseStudy = response.body;
-        expect(fetchedCaseStudy).to.deep.equal(caseStudy);
-        done();
-      });
-    });
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body.id).to.equal(patientStory._id.toString());
+    expect(res.body.patientStory).to.deep.equal(patientStory.patientStory);
   });
 
   it('Should Unsuccesfully GET a case study via ID Due to Invalid Id', function (done: Done) {
@@ -267,31 +291,17 @@ describe('Case Study Tests', function () {
     );
   });
 
-  it('Should Successfully Delete a Case Study', function (done) {
-    // Need to perform a GET to get a case Study's ID
-    agent.get(CASE_STUDIES_ENDPOINT).end(function (error: Error, response: any) {
-      if (error) done(error);
+  it('Should Successfully Delete a Case Study', async function () {
+    const caseStudy = await createEmptyCaseStudy();
+    const keepStudy = await createEmptyCaseStudy();
 
-      const caseStudy = response.body[1];
-      const id: string = caseStudy?.id;
+    const res = await agent
+      .delete(`${CASE_STUDIES_ENDPOINT}/${caseStudy._id}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
 
-      agent
-        .delete(`${CASE_STUDIES_ENDPOINT}/${id}`)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .end(function (error: Error, response: any) {
-          if (error) done(error);
-          expect(response).to.have.status(HTTP_NOCONTENT_CODE);
-          // caseStudyIds = caseStudyIds.filter((caseStudyId) => caseStudyId !== id);
-
-          // Check that the case study is no longer in the database
-          agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`).end(function (error: Error, response: any) {
-            if (error) done(error);
-
-            expect(response).to.have.status(HTTP_NOTFOUND_CODE);
-            done();
-          });
-        });
-    });
+    expect(res).to.have.status(HTTP_NOCONTENT_CODE);
+    expect(await CaseStudy.findById(caseStudy._id)).is.null;
+    expect(await CaseStudy.findById(keepStudy._id)).is.not.empty;
   });
 
   it('Should Unsuccessfully Delete a Case Study due to Invalid ID', function (done) {
@@ -306,50 +316,44 @@ describe('Case Study Tests', function () {
   });
 
   it('Should Successfully Change the Featured Case Study', async function () {
-    const getResponse = await agent.get(CASE_STUDIES_ENDPOINT);
+    const caseStudy = await createEmptyCaseStudy();
+    const wasFeatured = await createEmptyCaseStudy(true);
 
-    // Selecting the last one because new case studies created for the sake of testing are discarded after
-    // If the first one was used, then running the test suite a second time would fail previous tests because the featured case study was deleted
-    const caseStudy = getResponse.body[getResponse.body.length - 1];
-    const id: string = caseStudy?.id;
-
-    const putResponse = await agent
-      .patch(`${CASE_STUDIES_ENDPOINT}/${id}`)
+    const res = await agent
+      .patch(`${CASE_STUDIES_ENDPOINT}/${caseStudy._id}`)
       .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
-    caseStudy.featured
-      ? expect(putResponse).to.have.status(HTTP_NOCONTENT_CODE)
-      : expect(putResponse).to.have.status(HTTP_OK_CODE);
 
-    // Check that the featured case study is updated
-    const checkResponse = await agent.get(`${CASE_STUDIES_ENDPOINT}/${id}`);
-    expect(checkResponse).to.have.status(HTTP_OK_CODE);
-    expect(checkResponse.body.featured).to.be.true;
+    const newFeatured = await CaseStudy.findById(caseStudy._id);
+    const oldFeatured = await CaseStudy.findById(wasFeatured._id);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(newFeatured?.featured).to.be.true;
+    expect(oldFeatured?.featured).to.be.false;
   });
 
-  it('Should Successfully Retain the Featured Case Study (Changing it to the Same One)', function (done: Done) {
-    agent.get(CASE_STUDIES_FEATURED_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
-      const id: string = response.body.id;
+  it('Should Successfully Retain the Featured Case Study (Changing it to the Same One)', async function () {
+    const caseStudy = await createEmptyCaseStudy();
+    const wasFeatured = await createEmptyCaseStudy(true);
 
-      agent
-        .patch(`${CASE_STUDIES_ENDPOINT}/${id}`)
-        .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-        .end(function (error: Error, response: any) {
-          if (error) done(error);
-          expect(response).to.have.status(HTTP_NOCONTENT_CODE);
-          done();
-        });
-    });
+    const res = await agent
+      .patch(`${CASE_STUDIES_ENDPOINT}/${wasFeatured._id}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    const newFeatured = await CaseStudy.findById(caseStudy._id);
+    const oldFeatured = await CaseStudy.findById(wasFeatured._id);
+
+    expect(res).to.have.status(HTTP_NOCONTENT_CODE);
+    expect(newFeatured?.featured).to.be.false;
+    expect(oldFeatured?.featured).to.be.true;
   });
 
-  it('Should Unsuccessfully Change the Featured Case Study Due To Invalid Id', function (done: Done) {
-    agent
-      .patch(`${CASE_STUDIES_ENDPOINT}/${'Invalid Id'}`)
-      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-      .end(function (error: Error, response: any) {
-        if (error) done(error);
-        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-        done();
-      });
+  it('Should Unsuccessfully Change the Featured Case Study Due To Invalid Id', async function () {
+    const invalidId = '668c32807ab60b5a049a7adc';
+
+    const res = await agent
+      .patch(`${CASE_STUDIES_ENDPOINT}/${invalidId}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    expect(res).to.have.status(HTTP_NOTFOUND_CODE);
   });
 });
