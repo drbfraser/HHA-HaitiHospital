@@ -19,8 +19,8 @@ import {
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
-import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
-import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
+import { MONTH_LITERAL } from 'constants/date';
+import { createAnalyticsKey } from 'utils/string';
 import AnalyticsTotal from 'components/analytics/Total';
 import { defaultFromDate, defaultToDate } from 'utils';
 import html2canvas from 'html2canvas';
@@ -93,7 +93,10 @@ const Analytics = () => {
     fetchDepartments();
   }, [history]);
 
-  const fetchQuestionPrompts = async (departmentName: string, firstQuestionByDefault: boolean) => {
+  const fetchQuestionPrompts = async (
+    departmentName: string,
+    shouldCheckFirstQuestion: boolean,
+  ) => {
     const selectedDepartmentId = findDepartmentIdByName(departments, departmentName)!;
 
     const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
@@ -106,7 +109,7 @@ const Analytics = () => {
       //this ensures the analytics page at the beginning does not have blank data
       //A checked state is maintained to keep track of user selected questions
 
-      if (index === 0 && firstQuestionByDefault) {
+      if (index === 0 && shouldCheckFirstQuestion) {
         checked = true;
       }
 
@@ -117,20 +120,13 @@ const Analytics = () => {
   };
 
   useEffect(() => {
-    // should show a pop up communicating that there is no department with report
-    //As of current, this line of code is a technical debt and maybe changed in the future
-
-    if (departments.length === 0) {
-      return;
-    }
-
-    const fetchAllDepartmentQuestions = async () => {
-      //When the page is loaded, the first department's question is loaded
-      //This is an intentional design choice because we want the user to view an analytic data before selecting filters
-
+    const updateQuestionMap = async () => {
       const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
 
       departments.forEach((department, index) => {
+        //When the page is loaded, the first department's question is analyzed
+        //This is an intentional design choice because we want the user to view an analytic data before selecting filters
+
         const shouldCheckFirstQuestion = index === 0;
         const questionPromise = fetchQuestionPrompts(department.name, shouldCheckFirstQuestion);
         fetchQuestionPromises.push(questionPromise);
@@ -138,16 +134,16 @@ const Analytics = () => {
 
       const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
 
-      const newQuestionMap: QuestionMap = {};
+      const updatedQuestionMap: QuestionMap = {};
 
       allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
-        newQuestionMap[departments[index].name] = questionPrompstUI;
+        updatedQuestionMap[departments[index].name] = questionPrompstUI;
       });
 
-      setQuestionMap(newQuestionMap);
+      setQuestionMap(updatedQuestionMap);
     };
 
-    fetchAllDepartmentQuestions();
+    updateQuestionMap();
   }, [departments, history]);
 
   const fetchAnalytics = async () => {
