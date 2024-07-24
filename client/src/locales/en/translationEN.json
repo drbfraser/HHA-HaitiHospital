@@ -261,6 +261,7 @@
   "analyticsTotal": "Total",
   "analyticsBarChart": "Bar Chart",
   "analyticsLineChart": "Line Chart",
+  "analyticsPieChart": "Pie Chart",
   "analyticsFor": "for",
   "analyticsInvalidChart": "Warning Unknown chart type selected",
   "analysisDisplayGeneratePDF": "Download PDF",

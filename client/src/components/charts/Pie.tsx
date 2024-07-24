@@ -38,13 +38,14 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
       {
         data: questionDataPointTotals,
         backgroundColor: GRAPH_COLOR,
+        borderWidth: 0,
       },
     ],
   };
 
   return (
     <div className="d-flex w-100 flex-row justify-content-center" style={{ height: '450px' }}>
-      <Pie options={createDefaultChartOptions(t('analyticsBarChart'))} data={data} />
+      <Pie options={createDefaultChartOptions(t('analyticsPieChart'))} data={data} />
     </div>
   );
 };

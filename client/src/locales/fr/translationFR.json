@@ -262,6 +262,7 @@
   "analyticsCharts": "Graphiques",
   "analyticsTotal": "Totale",
   "analyticsBarChart": "Diagramme à bandes",
+  "analyticsPieChart": "Diagramme circulaire",
   "analyticsLineChart": "Graphique en ligne",
   "analyticsFor": "pour",
   "analyticsInvalidChart": "Avertissement Type de graphique inconnu sélectionné",
