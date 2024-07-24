@@ -224,3 +224,13 @@ export const translateTimeCategory = (dataSets: DataSet[]) => {
     return translatedDataSet;
   });
 };
+
+export const prepareDataForPieChart = (analyticsData: AnalyticsMap) => {
+  return Object.keys(analyticsData).map((departmentQuestionKey) =>
+    sumUpAnalyticsData(analyticsData[departmentQuestionKey]),
+  );
+};
+
+export const prepareLabelsForPieChart = (analyticsData: AnalyticsMap, questionMap: QuestionMap) => {
+  return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
+};

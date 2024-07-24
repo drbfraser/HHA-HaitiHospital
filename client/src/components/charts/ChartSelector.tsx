@@ -5,8 +5,9 @@ import { AnalyticsMap, QuestionMap } from 'pages/analytics/Analytics';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { forwardRef } from 'react';
+import PieChart from './Pie';
 
-export type ChartType = 'bar' | 'line';
+export type ChartType = 'bar' | 'line' | 'pie';
 
 export type ChartProps = {
   type: ChartType;
@@ -30,6 +31,8 @@ const ChartSelector = ({ type, analyticsData, questionMap }: ChartProps) => {
       return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
     case 'line':
       return <LineChart analyticsData={analyticsData} questionMap={questionMap} />;
+    case 'pie':
+      return <PieChart analyticsData={analyticsData} questionMap={questionMap} />;
     default:
       toast.warning(t('analyticsInvalidChart'));
       return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;

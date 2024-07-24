@@ -477,7 +477,8 @@
     "month": "Month",
     "year": "Year",
     "bar": "Bar",
-    "line": "Line"
+    "line": "Line",
+    "pie": "Pie"
   },
 
   "months": {
