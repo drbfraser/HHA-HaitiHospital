@@ -186,9 +186,9 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x24 &
           service dbus start
           cypress run --headless --browser chrome
-          npm run cypresspretest
-          npm run cypresstest
-          npm run cypressposttest
+          npm run cypress:pretest
+          npm run cypress:test
+          npm run cypress:posttest
 
       - name: Upload Cypress Test Report
         uses: actions/upload-artifact@v3
