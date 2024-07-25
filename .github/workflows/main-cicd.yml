@@ -196,6 +196,9 @@ jobs:
           name: cypress-test-results
           path: /isolated_build/repo/client/cypress/reports/mochareports/report.html
 
+      - name: Notify about Test Results
+        run: echo "Dear developer, the test results can be accessed in the 'Artifacts' section of this run."
+
       - name: Run build
         working-directory: /isolated_build/repo/client/
         run: |
