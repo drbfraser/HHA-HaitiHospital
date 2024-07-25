@@ -23,7 +23,6 @@ env:
   # otherwise, NPM gives EACCES error trying to mkdir /github/home/.npm
   # Using the /isolated_build/ folder (inside the container) keeps permissions straight
   npm_config_cache: /isolated_build/.npm-cache
-  CYPRESS_CACHE_FOLDER: /isolated_build/.cypress-cache
 
   PASSWORD_SEED: 'C@td0g'
   RAND_PASSWORD_SEED: 'C@td0g'
@@ -120,6 +119,7 @@ jobs:
           node -v
           npm ci
           npm install ../common_build.tar.gz
+          npm run seed
       - name: Run tests & build
         working-directory: /isolated_build/repo/server/
         run: |
@@ -134,9 +134,21 @@ jobs:
           path: /isolated_build/repo/server_build.tar.gz
 
   test-build-client:
+    env:
+      # Connection string: mongodb://<hostname service name>:<port>/<db name>
+      MONGO_URI: mongodb://test_postgres:27017/hhahaiti
+      JWT_SECRET: just_some_secret
+      SERVER_PORT: 8000
+      HOME: /root
+
+    services:
+      test_postgres:
+        image: mongo:5.0.14-focal
+        ports:
+          - 27017:27017
     runs-on: [self-hosted, docker]
     container:
-      image: node:18
+      image: cypress/included
     timeout-minutes: 60
     steps:
       - name: Checkout code into container
@@ -149,21 +161,39 @@ jobs:
           npm ci
           npm run build
           tar -czf ../common_build.tar.gz .
-      - name: Prepare for tests
+      - name: Prepare for tests client
         working-directory: /isolated_build/repo/client/
         run: |
           npm -v
           node -v
           npm ci
-          npm install ../common_build.tar.gz
-      - name: Run tests & build
+      - name: Prepare for tests server
+        working-directory: /isolated_build/repo/server/
+        run: |
+          set -x  # echo commands names
+          npm -v
+          node -v
+          npm ci
+      - name: Run Cypress tests
         working-directory: /isolated_build/repo/client/
         run: |
-          ! npm run test && exit 1
+          cd /isolated_build/repo/server
+          npm run seed
+          npm start &
+          cd /isolated_build/repo/client
+          npm start &
+          sleep 100  # wait for services to start
+          Xvfb :99 -screen 0 1920x1080x24 &
+          service dbus start
+          cypress run --headless --browser chrome
+      - name: Run build
+        working-directory: /isolated_build/repo/client/
+        run: |
           # TODO: remove "CI=false", temporarily required because the project has warnings during the build
           CI=false GENERATE_SOURCEMAP=false npm run build
           cd build/
           tar -czf ../../client_build.tar.gz .
+
       - uses: actions/upload-artifact@v3
         if: success()
         with:

@@ -9,7 +9,7 @@ export const getAllDepartments = async (history: History): Promise<DepartmentJso
   try {
     const departments: DepartmentJson[] = await Api.Get(
       ENDPOINT_DEPARTMENTS_GET,
-      ResponseMessage.getMsgFetchReportsFailed(),
+      ResponseMessage.getMsgFetchDepartmentsFailed(),
       history,
       controller.signal,
     );

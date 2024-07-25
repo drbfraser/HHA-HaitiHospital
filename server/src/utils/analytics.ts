@@ -8,22 +8,18 @@ import {
   NUMERIC_QUESTION_IDENTIFIER,
   QUESTION_IDENTIFIER,
 } from './constants';
-import {
-  AnalyticsForMonths,
-  AnalyticsQuestionsResponse,
-  AnalyticsResponse,
-} from 'routes/api/analytics';
-import { IReport } from '@hha/common';
+import { AnalyticsForMonths } from 'routes/api/analytics';
+import { AnalyticsResponse, IReport, QuestionPrompt } from '@hha/common';
 
 type AggregatePiplelineParams = {
-  departmentIdArray: string[];
+  departmentId: string;
   startDate: Date;
   endDate: Date;
   dateFormat: string;
 };
 
 export const createAnalyticsPipeline = ({
-  departmentIdArray,
+  departmentId,
   startDate,
   endDate,
   dateFormat,
@@ -34,7 +30,7 @@ export const createAnalyticsPipeline = ({
         $and: [
           {
             departmentId: {
-              $in: departmentIdArray,
+              $eq: departmentId,
             },
           },
           {
@@ -97,7 +93,7 @@ export const getAnswerInReport = (report: IReport, questionId: string) => {
 
   return answer[0];
 };
-const recursivelyParseQuestions = (template: any, result: AnalyticsQuestionsResponse[]) => {
+const recursivelyParseQuestions = (template: any, result: QuestionPrompt[]) => {
   /***
    * This function extracts all the questions (both nested and not nested) for the analytics feature
    * We want to flatten the questions since questions are nested. This will make it easier to analyze
@@ -135,7 +131,7 @@ const recursivelyParseQuestions = (template: any, result: AnalyticsQuestionsResp
 };
 
 export const parseQuestions = (template: ITemplate) => {
-  const result: AnalyticsQuestionsResponse[] = [];
+  const result: QuestionPrompt[] = [];
 
   recursivelyParseQuestions(template, result);
 
@@ -200,7 +196,6 @@ export const processAnalytics = (analyticsForMonths: AnalyticsForMonths[], quest
       const analyticsResponseForDepartment: AnalyticsResponse = {
         month,
         year,
-        departmentId,
         answer: departmentMap[departmentId]!,
       };
 

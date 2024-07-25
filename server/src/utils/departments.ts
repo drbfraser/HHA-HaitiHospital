@@ -85,14 +85,6 @@ const validateDeptId = async (deptId: string): Promise<boolean> => {
   return department !== null;
 };
 
-const validateDepartmentIds = async (departmentIds: string[]): Promise<boolean> => {
-  const departments = await DepartmentCollection.find({
-    _id: { $in: departmentIds },
-  }).lean();
-
-  return departmentIds.length == departments.length;
-};
-
 // ****************************************************************************************************************************************************
 
 // Util functions using a hashtable data structure
@@ -105,7 +97,7 @@ const Hashtable = {
 };
 
 // Util functions from database calls
-const Database = { getDeptNameById, getDeptIdByName, validateDeptId, validateDepartmentIds };
+const Database = { getDeptNameById, getDeptIdByName, validateDeptId };
 
 /**
  * @param Hashtable
