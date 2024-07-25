@@ -242,6 +242,16 @@ const ReportForm = ({
             suffixName=""
           />
         </Group>
+        <div className="mt-2 w-50">
+          <Pagination
+            className="pagination-bar"
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+            pageSize={pageSize}
+            totalCount={reportData.getPagination().length * pageSize}
+          />
+        </div>
+
         <div className="d-flex gap-2">
           <SubmitButton
             buttonText={t(`button.${btnText.toLowerCase()}`)}
@@ -257,30 +267,11 @@ const ReportForm = ({
               value={t('reportSaveAsDraft')}
             />
           </div>
-          {currentPage == numberOfPages || (
-            <div className="position-sticky py-3">
-              <input
-                className="btn btn-primary"
-                name="next"
-                type="button"
-                onClick={() => setCurrentPage(currentPage + 1)}
-                value={t(`reportNextPage`)}
-              />
-            </div>
-          )}
         </div>
         <div className="text-danger">
           <p>{submitTooltipText}</p>
         </div>
       </form>
-
-      <Pagination
-        className="pagination-bar"
-        currentPage={currentPage}
-        onPageChange={(page) => setCurrentPage(page)}
-        pageSize={pageSize}
-        totalCount={reportData.getPagination().length * pageSize}
-      />
     </div>
   );
 };
