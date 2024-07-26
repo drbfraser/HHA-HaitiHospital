@@ -17,9 +17,9 @@ import {
   translateChartLabel,
   translateTimeCategory,
 } from 'utils/analytics';
-import GRAPH_COLOR from 'constants/graphColor';
 import { useTranslation } from 'react-i18next';
 import { formatQuestion, separateDepartmentAndQuestion } from 'utils/string';
+import { ALPHA_VALUE_MEDIUM, getGraphColors } from 'constants/graphColor';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -29,6 +29,7 @@ const BarChart = ({ analyticsData, questionMap }: BarChartProps) => {
   const { t } = useTranslation();
 
   const dataSets = prepareDataSetForChart(analyticsData);
+  const graphColors = getGraphColors(ALPHA_VALUE_MEDIUM);
 
   const data: ChartData<'bar', DataSet[]> = {
     datasets: Object.keys(dataSets).map((label, index) => {
@@ -37,7 +38,7 @@ const BarChart = ({ analyticsData, questionMap }: BarChartProps) => {
         label: translatedLabel,
         data: translateTimeCategory(dataSets[label]),
         // round robin within graph colors
-        backgroundColor: GRAPH_COLOR[index % GRAPH_COLOR.length],
+        backgroundColor: graphColors[index % graphColors.length],
         maxBarThickness: 150,
       };
     }),

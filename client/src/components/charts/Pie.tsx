@@ -21,7 +21,7 @@ import {
   translateChartLabel,
 } from 'utils/analytics';
 import { AnalyticsResponse } from '@hha/common';
-import GRAPH_COLOR from 'constants/graphColor';
+import { ALPHA_VALUE_HIGH, duplicateColor, getGraphColors } from 'constants/graphColor';
 import { createDefaultChartOptions } from './options';
 import { useTranslation } from 'react-i18next';
 
@@ -36,18 +36,19 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
   const responsesData = prepareAnalyticsResponses(analyticsData);
   const aggregateLabels = prepareAggregateLabels(analyticsData, questionMap);
   const responseLabels = prepareResponseLabels(responsesData);
+  const colors = duplicateColor(analyticsData);
 
   const data = {
     datasets: [
       {
         data: responsesData.map((responseData) => responseData.answer),
-        backgroundColor: GRAPH_COLOR,
+        backgroundColor: colors,
         borderWidth: 1,
         labels: responseLabels,
       },
       {
         data: aggregateData,
-        backgroundColor: GRAPH_COLOR,
+        backgroundColor: getGraphColors(ALPHA_VALUE_HIGH),
         borderWidth: 1,
         labels: aggregateLabels,
       },
@@ -66,6 +67,14 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
             return `${label}: ${value}`;
           },
         },
+      },
+
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Pie Chart',
       },
     },
   };
