@@ -1,3 +1,5 @@
+import { TooltipItem, TooltipModel } from 'chart.js';
+
 export const createDefaultChartOptions = (chartTitle: string) => {
   return {
     responsive: true,

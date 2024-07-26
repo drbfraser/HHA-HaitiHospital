@@ -130,6 +130,16 @@ const getDateForAnalytics = (analyticsData: AnalyticsResponse) => {
 
   return dateWithFormat;
 };
+
+const compareDate = (
+  analyticsResponse1: AnalyticsResponse,
+  analyticsResponse2: AnalyticsResponse,
+) => {
+  const dateWithFormat1 = getDateForAnalytics(analyticsResponse1);
+  const dateWithFormat2 = getDateForAnalytics(analyticsResponse2);
+
+  return compareDateWithFormat(dateWithFormat1, dateWithFormat2);
+};
 const formatDateForChart = (dateWithFormat: DateWithFormat) => {
   const formattedDate = moment(dateWithFormat.time).format(dateWithFormat.format);
 
@@ -172,4 +182,5 @@ export {
   compareDateWithFormat,
   defaultFromDate,
   defaultToDate,
+  compareDate,
 };

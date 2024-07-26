@@ -19,7 +19,12 @@ import {
   TimeOptions,
 } from 'pages/analytics/Analytics';
 import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
-import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
+import {
+  compareDate,
+  compareDateWithFormat,
+  formatDateForChart,
+  getDateForAnalytics,
+} from './dateUtils';
 import i18next from 'i18next';
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
@@ -225,12 +230,49 @@ export const translateTimeCategory = (dataSets: DataSet[]) => {
   });
 };
 
-export const prepareDataForPieChart = (analyticsData: AnalyticsMap) => {
+export const prepareAggregateData = (analyticsData: AnalyticsMap) => {
   return Object.keys(analyticsData).map((departmentQuestionKey) =>
     sumUpAnalyticsData(analyticsData[departmentQuestionKey]),
   );
 };
 
-export const prepareLabelsForPieChart = (analyticsData: AnalyticsMap, questionMap: QuestionMap) => {
+export const prepareAggregateLabels = (analyticsData: AnalyticsMap, questionMap: QuestionMap) => {
   return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
+};
+
+export const prepareResponseLabels = (analyticsResponses: AnalyticsResponse[]) => {
+  const labels: string[] = [];
+  analyticsResponses.forEach((analyticsResponse) => {
+    const dateWithFormat = getDateForAnalytics(analyticsResponse);
+    const formattedDate = formatDateForChart(dateWithFormat);
+
+    if (isTimeInYearOnlyFormat(formattedDate)) {
+      labels.push(formattedDate);
+    } else {
+      const [month, year] = formattedDate.split(' ');
+
+      const translatedMonth = i18next.t(`months.${month}`);
+
+      labels.push(`${translatedMonth} ${year}`);
+    }
+  });
+
+  return labels;
+};
+
+export const prepareAnalyticsAnswers = (analyticsData: AnalyticsMap) => {
+  let analyticResponses: AnalyticsResponse[] = [];
+
+  Object.keys(analyticsData).forEach((departmentQuestionKey) => {
+    const analyticsResponse = analyticsData[departmentQuestionKey].map(
+      (analyticResponse) => analyticResponse,
+    );
+
+    analyticsResponse.sort((analyticsResponse1, analyticsResponse2) =>
+      compareDate(analyticsResponse1, analyticsResponse2),
+    );
+    analyticResponses = analyticResponses.concat(analyticsResponse);
+  });
+
+  return analyticResponses;
 };
