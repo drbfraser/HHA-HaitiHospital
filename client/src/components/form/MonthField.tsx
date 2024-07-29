@@ -49,7 +49,7 @@ export const MonthField = ({
     ];
 
     if (!canSelectFuture && year === currYear) {
-      // it's 2 to account for currMonth starting at 0 + the sentinel value
+      // it's +2 to account for currMonth starting at 0 + the sentinel value
       months = months.slice(0, currMonth + 2);
     }
 
