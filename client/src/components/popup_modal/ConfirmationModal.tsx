@@ -32,10 +32,18 @@ const ConfirmationModal = (props: ComfirmationModalProps) => {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-dark" onClick={props.onModalCancel}>
+        <Button
+          variant="outline-dark"
+          onClick={props.onModalCancel}
+          data-testid="confirmation-modal-cancel-button"
+        >
           {t('button.cancel')}
         </Button>
-        <Button variant="primary" onClick={props.onModalProceed}>
+        <Button
+          variant="primary"
+          onClick={props.onModalProceed}
+          data-testid="confirmation-modal-confirm-button"
+        >
           {t('button.confirm')}
         </Button>
       </Modal.Footer>

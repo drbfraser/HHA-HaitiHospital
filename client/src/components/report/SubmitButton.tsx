@@ -6,7 +6,7 @@ type SubmitButtonProps = {
 };
 
 const SubmitButton = ({ buttonText, disabled, readOnly, tooltipText }: SubmitButtonProps) => (
-  <div className="position-sticky bottom-0 py-3">
+  <div className="position-sticky bottom-0 py-3" data-testid="report-submit-button">
     {!readOnly && (
       <div title={tooltipText ? tooltipText : undefined}>
         <input
