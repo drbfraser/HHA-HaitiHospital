@@ -75,7 +75,6 @@ const GeneralReports = () => {
   };
 
   const departments = useDepartmentData();
-
   let departmentsCheckBoxes = [];
   departments.departmentIdKeyMap.forEach((value: string, key: string) => {
     departmentsCheckBoxes.push({ departmentId: key, departmentName: value });
@@ -149,6 +148,7 @@ const GeneralReports = () => {
                   className="text-decoration-none link-secondary"
                   to={Paths.getGeneralReportId(row.getValue()._id)}
                   onClick={(event) => event.stopPropagation()}
+                  data-testid="edit-report-button"
                 >
                   <i className="bi bi-pencil"></i>
                 </Link>
@@ -168,17 +168,27 @@ const GeneralReports = () => {
   };
 
   //TODO: Add interface for item
-  const gridData = reports.map((item) => ({
-    item,
-    _id: item._id,
-    reportName: getReportName(item),
-    departmentName: departments.departmentIdKeyMap.get(item.departmentId),
-    submittedDate: getDate(item, i18n.resolvedLanguage),
-    submittedBy: item.submittedBy,
-    reportMonth: getMonthYear(item, i18n.resolvedLanguage),
-    isDraft: item.isDraft,
-  }));
+  const gridData = reports.map((item) => {
+    const reportName = getReportName(item);
+    const departmentName = departments.departmentIdKeyMap.get(item.departmentId);
+    const submittedDate = getDate(item, i18n.resolvedLanguage);
+    const submittedBy = item.submittedBy;
+    const reportMonth = getMonthYear(item, i18n.resolvedLanguage);
+    const isDraft = item.isDraft;
 
+    return {
+      item,
+      _id: item._id,
+      reportName,
+      departmentName,
+      submittedDate,
+      submittedBy,
+      reportMonth,
+      isDraft,
+    };
+  });
+
+  console.log(departments.departmentIdKeyMap);
   return (
     <Layout title={t('headerReports')}>
       <DeleteModal
@@ -196,7 +206,11 @@ const GeneralReports = () => {
       ]) && (
         <div>
           <Link to="report">
-            <button className="btn btn-outline-dark" type="button">
+            <button
+              className="btn btn-outline-dark"
+              type="button"
+              data-testid="create-report-button"
+            >
               {t('createNewReport')}
             </button>
           </Link>
