@@ -187,7 +187,6 @@ jobs:
           service dbus start
           cypress run --headless --browser chrome
           npm run cypress:pretest
-#         true is appended to make sure cypress:posttest command still runs
           npm run cypress:test || true
           npm run cypress:posttest
 
