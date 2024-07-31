@@ -106,15 +106,15 @@ describe('Messageboard Tests', function () {
   });
 
   it('Should Fail to Get Message Due to Invalid Message ID', async function () {
-    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/${'Invalid Id'}`);
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/${INVALID_ID}`);
 
-    expect(res).to.have.status(HTTP_INTERNALERROR_CODE);
+    expect(res).to.have.status(HTTP_NOTFOUND_CODE);
   });
 
   it('Should Fail to Get Messages Due To Invalid Department', async function () {
-    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`);
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${INVALID_ID}`);
 
-    expect(res).to.have.status(HTTP_INTERNALERROR_CODE);
+    expect(res).to.have.status(HTTP_BADREQUEST_CODE);
   });
 
   it('Should Get Messages From General Department', async function () {
