@@ -18,6 +18,7 @@ import {
   HTTP_NOCONTENT_CODE,
   HTTP_NOTFOUND_CODE,
   HTTP_OK_CODE,
+  HTTP_UNAUTHORIZED_CODE,
 } from 'exceptions/httpException';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import chai, { expect } from 'chai';
@@ -49,7 +50,7 @@ async function createMessage(
   return message.toJson();
 }
 
-describe('Messageboard Tests', function () {
+describe('Messageboard Tests as Admin', function () {
   let httpServer: http.Server;
   let agent: any;
   let csrf: string;
@@ -210,5 +211,108 @@ describe('Messageboard Tests', function () {
     const updatedMessage = await MessageCollection.findOne({ _id: msg.id });
     expect(updatedMessage?.messageHeader).to.equal(updatedHeader);
     expect(updatedMessage?.messageBody).to.equal(updatedBody);
+  });
+
+  it('Should fail to update a message because it does not exist', async function () {
+    const newMessage: MessageObject = {
+      department: { id: DEP_ID.GENERAL },
+      messageHeader: 'header',
+      messageBody: 'body',
+    };
+
+    const res = await agent
+      .put(`${MESSAGEBOARD_ENDPOINT}/${INVALID_ID}`)
+      .send(newMessage)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    expect(res).to.have.status(HTTP_NOTFOUND_CODE);
+  });
+});
+
+describe('Messageboard Tests as User', function () {
+  let httpServer: http.Server;
+  let agent: any;
+  let csrf: string;
+  let mongo: MongoMemoryServer;
+
+  before('Create a Working Server and Login as User', async function () {
+    const session = await setUpSession(Accounts.NormalUser);
+
+    httpServer = session.httpServer;
+    agent = session.agent;
+    mongo = session.mongo;
+    csrf = session.csrf;
+  });
+
+  after('Close a Working Server', async function () {
+    closeServer(agent, httpServer, mongo);
+  });
+
+  beforeEach('start with clean mongoDB', async function () {
+    await seedMongo();
+  });
+
+  afterEach('clean up test data', async () => {
+    await dropMongo();
+  });
+
+  it('should only retrieve messages from the general department', async function () {
+    await createMessage(DEP_ID.NICU_PAEDS);
+    await createMessage(DEP_ID.COMMUNITY_HEATH);
+    await createMessage(DEP_ID.GENERAL);
+    await createMessage(DEP_ID.GENERAL);
+
+    const res = await agent.get(MESSAGEBOARD_ENDPOINT);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body).to.be.an('array');
+    expect(res.body).to.have.lengthOf(2);
+  });
+
+  it('should fail to get messages from a department they are not part of', async function () {
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${DEP_ID.MATERNITY}`);
+
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+  });
+
+  it('should fail to get a message that is from a department they are not part of', async function () {
+    const msg = await createMessage(DEP_ID.COMMUNITY_HEATH);
+
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/${msg.id}`);
+
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+  });
+
+  it('should fail to update a message due to lack of authorization', async function () {
+    const msg = await createMessage(DEP_ID.COMMUNITY_HEATH);
+    const newMessage: MessageObject = {
+      department: { id: DEP_ID.GENERAL },
+      messageHeader: 'header',
+      messageBody: 'body',
+    };
+
+    const res = await agent
+      .put(`${MESSAGEBOARD_ENDPOINT}/${INVALID_ID}`)
+      .send(newMessage)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+    expect(await MessageCollection.findOne({ _id: msg.id })).is.not.null;
+  });
+
+  it('should fail to delete a message due to lack of authorization', async function () {
+    const msg = await createMessage(DEP_ID.COMMUNITY_HEATH);
+    const newMessage: MessageObject = {
+      department: { id: DEP_ID.GENERAL },
+      messageHeader: 'header',
+      messageBody: 'body',
+    };
+
+    const res = await agent
+      .delete(`${MESSAGEBOARD_ENDPOINT}/${msg.id}`)
+      .send(newMessage)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+    expect(res).to.have.status(HTTP_UNAUTHORIZED_CODE);
+    expect(await MessageCollection.findOne({ _id: msg.id })).is.not.null;
   });
 });
