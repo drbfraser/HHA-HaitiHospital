@@ -46,4 +46,10 @@ export class GeneralReportPage {
   clickDownloadExcelButton() {
     cy.get('[data-testid=report-download-excel-button]').click();
   }
+  clickDeleteReportButton() {
+    cy.get('[data-testid=delete-report-button]').first().click();
+  }
+  clickConfirmDeleteReportButton() {
+    cy.get('[data-testid="confirm-delete-general-reports-button"]').click();
+  }
 }

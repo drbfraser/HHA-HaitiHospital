@@ -2,7 +2,6 @@
 
 import { LoginPage } from '../support/pages/LoginPage';
 import { GeneralReportPage } from '../support/pages/GeneralReportPage';
-import * as process from 'node:process';
 import { Interception } from 'cypress/types/net-stubbing';
 
 describe('General Report Page Tests', function () {
@@ -102,6 +101,19 @@ describe('General Report Page Tests', function () {
       if (downloadedFileName) {
         cy.task('deleteFile', `cypress/downloads/${downloadedFileName}`);
       }
+    });
+  });
+
+  describe('Delete Report Tests', function () {
+    it('Should Successfully Delete Report', function () {
+      cy.intercept('DELETE', `${serverUrl}/api/report/*`, {
+        statusCode: 204,
+      }).as('deleteReport');
+      generalReportPage.clickDeleteReportButton();
+      generalReportPage.clickConfirmDeleteReportButton();
+      cy.wait('@deleteReport').then((intercept: Interception) => {
+        expect(intercept.response?.statusCode).to.equal(204);
+      });
     });
   });
 });

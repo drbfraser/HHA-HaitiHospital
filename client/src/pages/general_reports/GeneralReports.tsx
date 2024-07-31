@@ -140,6 +140,7 @@ const GeneralReports = () => {
                   variant="link"
                   title={t('button.delete')}
                   className="text-decoration-none link-secondary"
+                  data-testid="delete-report-button"
                 >
                   <i className="bi bi-trash"></i>
                 </Button>
@@ -168,27 +169,17 @@ const GeneralReports = () => {
   };
 
   //TODO: Add interface for item
-  const gridData = reports.map((item) => {
-    const reportName = getReportName(item);
-    const departmentName = departments.departmentIdKeyMap.get(item.departmentId);
-    const submittedDate = getDate(item, i18n.resolvedLanguage);
-    const submittedBy = item.submittedBy;
-    const reportMonth = getMonthYear(item, i18n.resolvedLanguage);
-    const isDraft = item.isDraft;
+  const gridData = reports.map((item) => ({
+    item,
+    _id: item._id,
+    reportName: getReportName(item),
+    departmentName: departments.departmentIdKeyMap.get(item.departmentId),
+    submittedDate: getDate(item, i18n.resolvedLanguage),
+    submittedBy: item.submittedBy,
+    reportMonth: getMonthYear(item, i18n.resolvedLanguage),
+    isDraft: item.isDraft,
+  }));
 
-    return {
-      item,
-      _id: item._id,
-      reportName,
-      departmentName,
-      submittedDate,
-      submittedBy,
-      reportMonth,
-      isDraft,
-    };
-  });
-
-  console.log(departments.departmentIdKeyMap);
   return (
     <Layout title={t('headerReports')}>
       <DeleteModal
