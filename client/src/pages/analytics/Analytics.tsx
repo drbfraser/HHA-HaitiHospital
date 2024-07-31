@@ -45,6 +45,19 @@ export type AnalyticsMap = {
   [key: string]: AnalyticsResponse[];
 };
 
+function useSessionStorage<T>(key: string, initialValue: T) {
+  const storedValue = sessionStorage.getItem(key);
+  const initial: T = storedValue ? JSON.parse(storedValue) : initialValue;
+
+  const [value, setValue] = useState<T>(initial);
+
+  useEffect(() => {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue] as const;
+}
+
 const Analytics = () => {
   const { t } = useTranslation();
 
@@ -59,17 +72,23 @@ const Analytics = () => {
 
   const [questionMap, setQuestionMap] = useState<QuestionMap>({});
 
-  const [selectedDepartmentNames, setSelectedDepartmentNames] = useState<string[]>([]);
+  const [selectedDepartmentNames, setSelectedDepartmentNames] = useSessionStorage<string[]>(
+    'selectedDepartmentNames',
+    [],
+  );
 
-  const [timeOptions, setTimeOptions] = useState<TimeOptions>({
+  const [timeOptions, setTimeOptions] = useSessionStorage<TimeOptions>('timeOptions', {
     from: defaultFromDate(),
     to: defaultToDate(),
     timeStep: MONTH_LITERAL,
   });
 
-  const [selectedAggregateBy, setSelectedAggregateBy] = useState<MonthOrYearOption>(MONTH_LITERAL);
+  const [selectedAggregateBy, setSelectedAggregateBy] = useSessionStorage<MonthOrYearOption>(
+    'selectedAggregateBy',
+    MONTH_LITERAL,
+  );
 
-  const [selectedChart, setSelectedChart] = useState<ChartType>('bar');
+  const [selectedChart, setSelectedChart] = useSessionStorage<ChartType>('selectedChart', 'bar');
 
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
@@ -235,11 +254,10 @@ const Analytics = () => {
 
     if (!selectedDepartmentNames.includes(departmentSelected)) {
       updateDepartmentsSelected = [...selectedDepartmentNames, departmentSelected];
-
       fetchQuestionPrompts(departmentSelected, false);
     } else {
       updateDepartmentsSelected = selectedDepartmentNames.filter(
-        (department) => department !== departmentSelected,
+        (department: string) => department !== departmentSelected,
       );
 
       delete questionMap[departmentSelected];
