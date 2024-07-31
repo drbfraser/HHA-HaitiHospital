@@ -191,6 +191,7 @@ jobs:
           npm run cypress:posttest
 
       - name: Upload Cypress Test Report
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: cypress-test-results
