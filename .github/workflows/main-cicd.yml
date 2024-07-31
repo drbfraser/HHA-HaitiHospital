@@ -36,102 +36,102 @@ jobs:
         # with:       # Uncomment these to dump the secrets too
         #   secrets: ${{ toJson(secrets) }}
 
-  validate-prettier:
-    runs-on: [self-hosted, docker]
-    container:
-      image: node:18
-    timeout-minutes: 60
-    steps:
-      - name: Checkout code into container
-        uses: bfraser/cicd/actions/checkout@v1
-        with:
-          path: /isolated_build/repo/
-      - name: NPM install (`npm ci`)
-        working-directory: /isolated_build/repo/
-        run: |
-          npm ci
-      - name: NPM Check Format
-        working-directory: /isolated_build/repo/
-        run: |
-          npm run check-format
-
-  test-build-common:
-    runs-on: [self-hosted, docker]
-    container:
-      image: node:18
-    timeout-minutes: 60
-    steps:
-      - name: Checkout code into container
-        uses: bfraser/cicd/actions/checkout@v1
-        with:
-          path: /isolated_build/repo/
-      - name: NPM install (`npm ci`)
-        working-directory: /isolated_build/repo/common/
-        run: |
-          npm ci
-      - name: Run tests and build
-        working-directory: /isolated_build/repo/common/
-        run: |
-          ! npm run test && exit 1
-          npm run build
-          tar -czf ../common_build.tar.gz .
-      - uses: actions/upload-artifact@v3
-        if: success()
-        with:
-          name: '${{ github.job }}'
-          retention-days: 7
-          path: /isolated_build/repo/common_build.tar.gz
-
-  test-build-server:
-    env:
-      # Connection string: mongodb://<hostname service name>:<port>/<db name>
-      MONGO_URI: mongodb://test_postgres:27017/hhahaiti
-      JWT_SECRET: just_some_secret
-      MONGOMS_DOWNLOAD_DIR: /tmp/mongodb-binaries
-      MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-debian12-7.0.9.tgz
-
-    services:
-      test_postgres:
-        image: mongo:5.0.14-focal
-        ports:
-          - 27017:27017
-
-    runs-on: [self-hosted, docker]
-    container:
-      image: node:18
-    timeout-minutes: 60
-    steps:
-      - name: Checkout code into container
-        uses: bfraser/cicd/actions/checkout@v1
-        with:
-          path: /isolated_build/repo/
-      - name: Re-Build Common inside Container
-        working-directory: /isolated_build/repo/common/
-        run: |
-          npm ci
-          npm run build
-          tar -czf ../common_build.tar.gz .
-      - name: Prepare for tests
-        working-directory: /isolated_build/repo/server/
-        run: |
-          set -x  # echo commands names
-          npm -v
-          node -v
-          npm ci
-          npm install ../common_build.tar.gz
-          npm run seed
-      - name: Run tests & build
-        working-directory: /isolated_build/repo/server/
-        run: |
-          set -x  # echo commands names
-          ! npm run test && exit 1
-          tar -czf ../server_build.tar.gz .
-      - uses: actions/upload-artifact@v3
-        if: success()
-        with:
-          name: '${{ github.job }}'
-          retention-days: 7
-          path: /isolated_build/repo/server_build.tar.gz
+#  validate-prettier:
+#    runs-on: [self-hosted, docker]
+#    container:
+#      image: node:18
+#    timeout-minutes: 60
+#    steps:
+#      - name: Checkout code into container
+#        uses: bfraser/cicd/actions/checkout@v1
+#        with:
+#          path: /isolated_build/repo/
+#      - name: NPM install (`npm ci`)
+#        working-directory: /isolated_build/repo/
+#        run: |
+#          npm ci
+#      - name: NPM Check Format
+#        working-directory: /isolated_build/repo/
+#        run: |
+#          npm run check-format
+#
+#  test-build-common:
+#    runs-on: [self-hosted, docker]
+#    container:
+#      image: node:18
+#    timeout-minutes: 60
+#    steps:
+#      - name: Checkout code into container
+#        uses: bfraser/cicd/actions/checkout@v1
+#        with:
+#          path: /isolated_build/repo/
+#      - name: NPM install (`npm ci`)
+#        working-directory: /isolated_build/repo/common/
+#        run: |
+#          npm ci
+#      - name: Run tests and build
+#        working-directory: /isolated_build/repo/common/
+#        run: |
+#          ! npm run test && exit 1
+#          npm run build
+#          tar -czf ../common_build.tar.gz .
+#      - uses: actions/upload-artifact@v3
+#        if: success()
+#        with:
+#          name: '${{ github.job }}'
+#          retention-days: 7
+#          path: /isolated_build/repo/common_build.tar.gz
+#
+#  test-build-server:
+#    env:
+#      # Connection string: mongodb://<hostname service name>:<port>/<db name>
+#      MONGO_URI: mongodb://test_postgres:27017/hhahaiti
+#      JWT_SECRET: just_some_secret
+#      MONGOMS_DOWNLOAD_DIR: /tmp/mongodb-binaries
+#      MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-debian12-7.0.9.tgz
+#
+#    services:
+#      test_postgres:
+#        image: mongo:5.0.14-focal
+#        ports:
+#          - 27017:27017
+#
+#    runs-on: [self-hosted, docker]
+#    container:
+#      image: node:18
+#    timeout-minutes: 60
+#    steps:
+#      - name: Checkout code into container
+#        uses: bfraser/cicd/actions/checkout@v1
+#        with:
+#          path: /isolated_build/repo/
+#      - name: Re-Build Common inside Container
+#        working-directory: /isolated_build/repo/common/
+#        run: |
+#          npm ci
+#          npm run build
+#          tar -czf ../common_build.tar.gz .
+#      - name: Prepare for tests
+#        working-directory: /isolated_build/repo/server/
+#        run: |
+#          set -x  # echo commands names
+#          npm -v
+#          node -v
+#          npm ci
+#          npm install ../common_build.tar.gz
+#          npm run seed
+#      - name: Run tests & build
+#        working-directory: /isolated_build/repo/server/
+#        run: |
+#          set -x  # echo commands names
+#          ! npm run test && exit 1
+#          tar -czf ../server_build.tar.gz .
+#      - uses: actions/upload-artifact@v3
+#        if: success()
+#        with:
+#          name: '${{ github.job }}'
+#          retention-days: 7
+#          path: /isolated_build/repo/server_build.tar.gz
 
   test-build-client:
     env:

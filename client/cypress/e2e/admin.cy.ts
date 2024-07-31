@@ -132,7 +132,7 @@ describe('Admin Tests', function () {
     adminPage.selectUserDepartment(Departments.REHAB);
     adminPage.clickSubmitUserButton();
 
-    cy.url().should('equal', `${baseUrl}/admin`);
+    cy.url().should('equal', `${baseUrl}/adminn`);
 
     const toast: Cypress.Chainable<JQuery<HTMLElement>> = cy.get('div.Toastify__toast');
     toast.should('include.text', ResponseMessage.getMsgUpdateUserOk());
