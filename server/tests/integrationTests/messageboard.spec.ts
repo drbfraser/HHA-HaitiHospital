@@ -4,12 +4,15 @@ import {
   closeServer,
   DEP_ID,
   dropMongo,
+  INVALID_ID,
   seedMongo,
   setUpSession,
+  USER_ID,
 } from 'testTools/mochaHooks';
-import { MESSAGEBOARD_ENDPOINT, DEPARTMENT_ENDPOINT } from 'testTools/endPoints';
+import { MESSAGEBOARD_ENDPOINT } from 'testTools/endPoints';
 import { Done } from 'mocha';
 import {
+  HTTP_BADREQUEST_CODE,
   HTTP_CREATED_CODE,
   HTTP_INTERNALERROR_CODE,
   HTTP_NOCONTENT_CODE,
@@ -17,16 +20,11 @@ import {
   HTTP_OK_CODE,
 } from 'exceptions/httpException';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { seedMessageBoard } from 'seeders/seed';
+import chai, { expect } from 'chai';
+import chaiHttp from 'chai-http';
+import MessageCollection from 'models/messageBoard';
 
-const expect = require('chai').expect;
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-
-let httpServer: http.Server;
-let agent: any;
-let csrf: string;
 
 interface MessageObject {
   department: { id: string };
@@ -34,29 +32,29 @@ interface MessageObject {
   messageBody: string;
 }
 
-function postMessage(message: MessageObject, done: Done, expectedStatus: Number, next?: Function) {
-  agent
-    .post(MESSAGEBOARD_ENDPOINT)
-    .send(message)
-    .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-    .end(function (error: any, response: any) {
-      if (error) done(error);
-      expect(error).to.be.null;
-      expect(response).to.have.status(expectedStatus);
-      if (!next) done();
-      else next(done);
-    });
-}
-
-function updatePostedMessageIds(done: Done) {
-  agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-    if (error) done(error);
-    done();
+async function createMessage(
+  departmentId = DEP_ID.GENERAL,
+  userId = USER_ID.ADMIN,
+  body = 'Message Body',
+  header = 'Message Header',
+) {
+  const message = new MessageCollection({
+    departmentId: departmentId,
+    userId: userId,
+    date: new Date(),
+    messageBody: body,
+    messageHeader: header,
   });
+  message.save();
+  return message.toJson();
 }
 
 describe('Messageboard Tests', function () {
+  let httpServer: http.Server;
+  let agent: any;
+  let csrf: string;
   let mongo: MongoMemoryServer;
+
   before('Create a Working Server and Login With Admin', async function () {
     const session = await setUpSession(Accounts.AdminUser);
 
@@ -66,200 +64,151 @@ describe('Messageboard Tests', function () {
     csrf = session.csrf;
   });
 
-  after('Close a Working Server and delete any added reports', async function () {
+  after('Close a Working Server', async function () {
     closeServer(agent, httpServer, mongo);
   });
 
   beforeEach('start with clean mongoDB', async function () {
     await seedMongo();
-    await seedMessageBoard();
   });
 
   afterEach('clean up test data', async () => {
     await dropMongo();
   });
 
-  it('Should Get All Messages from the Messageboard', function (done: Done) {
-    agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      done();
-    });
+  it('Should Get All Messages from the Messageboard', async function () {
+    await createMessage();
+    await createMessage();
+    await createMessage();
+
+    const res = await agent.get(MESSAGEBOARD_ENDPOINT);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body).to.be.an('array');
+    expect(res.body).to.have.lengthOf(3);
   });
 
-  it('Should Get a Message Via Message ID', function (done: Done) {
-    agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-      if (error) done(error);
-      const message = response.body[0];
-      const id: string = message.id;
-      agent.get(`${MESSAGEBOARD_ENDPOINT}/${id}`).end(function (error: any, response: any) {
-        if (error) done(error);
-        expect(response).to.have.status(HTTP_OK_CODE);
-        expect(response.body).to.deep.equal(message);
-        done();
-      });
-    });
+  it('Should Get a Message Via Message ID', async function () {
+    const message = await createMessage(
+      DEP_ID.GENERAL,
+      USER_ID.ADMIN,
+      'New message body!',
+      'New message header!',
+    );
+    await createMessage();
+
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/${message.id}`);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body.id).to.equal(message.id.toString());
+    expect(res.body.messageBody).to.equal(message.messageBody);
+    expect(res.body.messageHeader).to.equal(message.messageHeader);
   });
 
-  it('Should Fail to Get Message Due to Invalid Message ID', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/${'Invalid Id'}`).end(function (error: any, response: any) {
-      if (error) done(error);
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-      done();
-    });
+  it('Should Fail to Get Message Due to Invalid Message ID', async function () {
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/${'Invalid Id'}`);
+
+    expect(res).to.have.status(HTTP_INTERNALERROR_CODE);
   });
 
-  it('Should Fail to Get Messages Due To Invalid Department', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`).end(function (
-      error: any,
-      response: any,
-    ) {
-      expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-      done();
-    });
+  it('Should Fail to Get Messages Due To Invalid Department', async function () {
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/department/invalid`);
+
+    expect(res).to.have.status(HTTP_INTERNALERROR_CODE);
   });
 
-  it('Should Get Messages From General Department', function (done: Done) {
-    agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${DEP_ID.GENERAL}`).end(function (
-      error: any,
-      response: any,
-    ) {
-      expect(error).to.be.null;
-      expect(response).to.have.status(HTTP_OK_CODE);
-      const entries: Array<Object> = Object.entries(response.body);
-      const results: boolean = entries.every(
-        (element: any) => element[1].department.id === DEP_ID.GENERAL,
-      );
-      expect(results).to.be.true;
+  it('Should Get Messages From General Department', async function () {
+    await createMessage(DEP_ID.MATERNITY);
+    await createMessage(DEP_ID.MATERNITY);
+    await createMessage();
+    await createMessage();
 
-      done();
-    });
+    const res = await agent.get(`${MESSAGEBOARD_ENDPOINT}/department/${DEP_ID.GENERAL}`);
+
+    expect(res).to.have.status(HTTP_OK_CODE);
+    expect(res.body).to.be.an('array');
+    expect(res.body.every((msg: any) => msg.department.id == DEP_ID.GENERAL)).to.be.true;
   });
 
-  it('Should Fail Posting a New Message due to Invalid Department ID', function (done: Done) {
+  it('Should Successfully Post a New Message', async function () {
+    const header = 'test header';
+    const body = 'test body';
     const newMessage: MessageObject = {
-      department: { id: 'invalid department id' },
+      department: { id: DEP_ID.GENERAL },
+      messageHeader: header,
+      messageBody: body,
+    };
+
+    const res = await agent
+      .post(MESSAGEBOARD_ENDPOINT)
+      .send(newMessage)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    const newMsg = await MessageCollection.findOne({ userId: USER_ID.ADMIN });
+    expect(res).to.have.status(HTTP_CREATED_CODE);
+    expect(newMsg).is.not.null;
+    expect(newMsg?.messageBody).is.equal(body);
+    expect(newMsg?.messageHeader).is.equal(header);
+    expect(newMsg?.departmentId).is.equal(DEP_ID.GENERAL);
+  });
+
+  it('Should Fail Posting a New Message due to Invalid Department ID', async function () {
+    const newMessage: MessageObject = {
+      department: { id: INVALID_ID },
       messageHeader: 'test header',
       messageBody: 'test body',
     };
 
-    postMessage(newMessage, done, HTTP_INTERNALERROR_CODE);
+    const res = await agent
+      .post(MESSAGEBOARD_ENDPOINT)
+      .send(newMessage)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    const newMsg = await MessageCollection.findOne({ userId: USER_ID.ADMIN });
+    expect(res).to.have.status(HTTP_BADREQUEST_CODE);
+    expect(newMsg).is.null;
   });
 
-  it('Should Successfully Post a New Message', function (done: Done) {
-    const departmentId: string = DEP_ID.GENERAL; // Get department id for the General Department
+  it('Should Successfully Delete an existing message', async function () {
+    const msg = await createMessage();
+    const keepMsg = await createMessage();
+
+    const res = await agent
+      .delete(`${MESSAGEBOARD_ENDPOINT}/${msg.id}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    expect(res).to.have.status(HTTP_NOCONTENT_CODE);
+    expect(await MessageCollection.findOne({ _id: msg.id })).is.null;
+    expect(await MessageCollection.findOne({ _id: keepMsg.id })).is.not.null;
+  });
+
+  it('Should Fail to Delete a Message Because It Does Not Exist', async function () {
+    const res = await agent
+      .delete(`${MESSAGEBOARD_ENDPOINT}/${INVALID_ID}`)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
+
+    expect(res).to.have.status(HTTP_NOTFOUND_CODE);
+  });
+
+  it('Should succesfully update a message', async function () {
+    const msg = await createMessage();
+    const updatedBody = 'test header msg UPDATED';
+    const updatedHeader = 'test body msg UPDATED';
+
     const newMessage: MessageObject = {
-      department: { id: departmentId },
-      messageHeader: 'test header',
-      messageBody: 'test body',
+      department: { id: DEP_ID.GENERAL },
+      messageHeader: updatedHeader,
+      messageBody: updatedBody,
     };
 
-    postMessage(newMessage, done, HTTP_CREATED_CODE, updatePostedMessageIds);
-  });
+    const res = await agent
+      .put(`${MESSAGEBOARD_ENDPOINT}/${msg.id}`)
+      .send(newMessage)
+      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf });
 
-  it('Should Successfully Post a New Message and Get it', function (done: Done) {
-    const departmentId: string = DEP_ID.GENERAL;
-    const newMessage: MessageObject = {
-      department: { id: departmentId },
-      messageHeader: 'test header',
-      messageBody: 'test body',
-    };
-
-    postMessage(newMessage, done, HTTP_CREATED_CODE, function () {
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-        if (error) done(error);
-
-        // Check that the most recent message uploaded is the one sent
-        // Note that there is no way to set the message ID during the POST request, so it is unknown
-        const message = response.body[0]; // Server sorts messages in descending order during GET, so grab the first one
-
-        expect(response).to.have.status(HTTP_OK_CODE);
-        expect(message.department.id).to.equal(departmentId);
-        expect(message.messageHeader).to.equal('test header');
-        expect(message.messageBody).to.equal('test body');
-
-        updatePostedMessageIds(done);
-      });
-    });
-  });
-
-  it('Should Fail to Delete a Message Because It Does Not Exist', function (done: Done) {
-    agent
-      .delete(`${MESSAGEBOARD_ENDPOINT}/${'invalidId'}`)
-      .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-      .end(function (error: Error, response: any) {
-        // Cannot check if a particular type of error has been thrown: https://stackoverflow.com/questions/53140856/how-to-throw-error-in-node-js-and-catch-it-mocha
-        expect(response).to.have.status(HTTP_INTERNALERROR_CODE);
-        done();
-      });
-  });
-
-  it('Should Successfully Post a New Message and Delete it', function (done: Done) {
-    const departmentId: string = DEP_ID.GENERAL;
-    const newMessage: MessageObject = {
-      department: { id: departmentId },
-      messageHeader: 'test header msg',
-      messageBody: 'test body msg',
-    };
-
-    postMessage(newMessage, done, HTTP_CREATED_CODE, function () {
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-        if (error) done(error);
-        const message = response.body[0];
-        const messageId: string = message.id; // Server sorts messages in descending order during GET, so grab the first one
-
-        agent
-          .delete(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
-          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-          .end(function (error: Error, response: any) {
-            if (error) done(error);
-            expect(response).to.have.status(HTTP_NOCONTENT_CODE);
-
-            // Check that the message does not exist anymore
-            agent.get(`${MESSAGEBOARD_ENDPOINT}/${messageId}`).end(function (
-              error: any,
-              response: any,
-            ) {
-              if (error) done(error);
-              expect(response).to.have.status(HTTP_NOTFOUND_CODE);
-              done();
-            });
-          });
-      });
-    });
-  });
-
-  it('Should Successfully Post a New Message and Update It', function (done: Done) {
-    const departmentId: string = DEP_ID.GENERAL;
-    const message: MessageObject = {
-      department: { id: departmentId },
-      messageHeader: 'test header msg',
-      messageBody: 'test body msg',
-    };
-
-    postMessage(message, done, HTTP_CREATED_CODE, function () {
-      // Retrieve the ID of the message in order to upate it
-      agent.get(MESSAGEBOARD_ENDPOINT).end(function (error: any, response: any) {
-        if (error) done(error);
-        const oldMessage = response.body[0];
-        const messageId = oldMessage.id;
-
-        const newMessage: MessageObject = {
-          department: { id: departmentId },
-          messageHeader: 'test header msg UPDATED',
-          messageBody: 'test body msg UPDATED',
-        };
-
-        agent
-          .put(`${MESSAGEBOARD_ENDPOINT}/${messageId}`)
-          .send(newMessage)
-          .set({ 'Content-Type': 'application/json', 'CSRF-Token': csrf })
-          .end(function (error: Error, response: any) {
-            if (error) done(error);
-            expect(response).to.have.status(HTTP_OK_CODE);
-            updatePostedMessageIds(done);
-          });
-      });
-    });
+    expect(res).to.have.status(HTTP_OK_CODE);
+    const updatedMessage = await MessageCollection.findOne({ _id: msg.id });
+    expect(updatedMessage?.messageHeader).to.equal(updatedHeader);
+    expect(updatedMessage?.messageBody).to.equal(updatedBody);
   });
 });
