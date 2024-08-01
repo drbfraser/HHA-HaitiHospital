@@ -23,6 +23,7 @@ env:
   # otherwise, NPM gives EACCES error trying to mkdir /github/home/.npm
   # Using the /isolated_build/ folder (inside the container) keeps permissions straight
   npm_config_cache: /isolated_build/.npm-cache
+  CYPRESS_CACHE_FOLDER: /isolated_build/.cypress-cache
 
   PASSWORD_SEED: 'C@td0g'
   RAND_PASSWORD_SEED: 'C@td0g'
@@ -142,23 +143,9 @@ jobs:
         uses: bfraser/cicd/actions/checkout@v1
         with:
           path: /isolated_build/repo/
-      - name: Re-Build Common inside Container
-        working-directory: /isolated_build/repo/common/
-        run: |
-          npm ci
-          npm run build
-          tar -czf ../common_build.tar.gz .
-      - name: Prepare for tests
+      - name: Run build
         working-directory: /isolated_build/repo/client/
         run: |
-          npm -v
-          node -v
-          npm ci
-          npm install ../common_build.tar.gz
-      - name: Run tests & build
-        working-directory: /isolated_build/repo/client/
-        run: |
-          ! npm run test && exit 1
           # TODO: remove "CI=false", temporarily required because the project has warnings during the build
           CI=false GENERATE_SOURCEMAP=false npm run build
           cd build/
@@ -192,6 +179,13 @@ jobs:
         uses: bfraser/cicd/actions/checkout@v1
         with:
           path: /isolated_build/repo/
+
+      - name: Re-Build Common inside Container
+        working-directory: /isolated_build/repo/common/
+        run: |
+          npm ci
+          npm run build
+          tar -czf ../common_build.tar.gz .
 
       - name: Prepare for tests client
         working-directory: /isolated_build/repo/client/
