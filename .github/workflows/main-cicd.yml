@@ -187,11 +187,10 @@ jobs:
           service dbus start
           cypress run --headless --browser chrome
           npm run cypress:pretest
-          npm run cypress:test || true
+          npm run cypress:test
           npm run cypress:posttest
 
       - name: Upload Cypress Test Report
-        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: cypress-test-results
