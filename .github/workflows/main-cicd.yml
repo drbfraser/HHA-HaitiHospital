@@ -132,8 +132,45 @@ jobs:
 #          name: '${{ github.job }}'
 #          retention-days: 7
 #          path: /isolated_build/repo/server_build.tar.gz
-
   test-build-client:
+    runs-on: [self-hosted, docker]
+    container:
+      image: node:18
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code into container
+        uses: bfraser/cicd/actions/checkout@v1
+        with:
+          path: /isolated_build/repo/
+      - name: Re-Build Common inside Container
+        working-directory: /isolated_build/repo/common/
+        run: |
+          npm ci
+          npm run build
+          tar -czf ../common_build.tar.gz .
+      - name: Prepare for tests
+        working-directory: /isolated_build/repo/client/
+        run: |
+          npm -v
+          node -v
+          npm ci
+          npm install ../common_build.tar.gz
+      - name: Run tests & build
+        working-directory: /isolated_build/repo/client/
+        run: |
+          ! npm run test && exit 1
+          # TODO: remove "CI=false", temporarily required because the project has warnings during the build
+          CI=false GENERATE_SOURCEMAP=false npm run build
+          cd build/
+          tar -czf ../../client_build.tar.gz .
+      - uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: '${{ github.job }}'
+          retention-days: 7
+          path: /isolated_build/repo/client_build.tar.gz
+
+  cypress-test:
     env:
       # Connection string: mongodb://<hostname service name>:<port>/<db name>
       MONGO_URI: mongodb://test_postgres:27017/hhahaiti
@@ -155,26 +192,6 @@ jobs:
         uses: bfraser/cicd/actions/checkout@v1
         with:
           path: /isolated_build/repo/
-      - name: Re-Build Common inside Container
-        working-directory: /isolated_build/repo/common/
-        run: |
-          npm ci
-          npm run build
-          tar -czf ../common_build.tar.gz .
-      - name: Run build
-        working-directory: /isolated_build/repo/client/
-        run: |
-          # TODO: remove "CI=false", temporarily required because the project has warnings during the build
-          CI=false GENERATE_SOURCEMAP=false npm run build
-          cd build/
-          tar -czf ../../client_build.tar.gz .
-
-      - uses: actions/upload-artifact@v3
-        if: success()
-        with:
-          name: '${{ github.job }}'
-          retention-days: 7
-          path: /isolated_build/repo/client_build.tar.gz
 
       - name: Prepare for tests client
         working-directory: /isolated_build/repo/client/
@@ -220,6 +237,7 @@ jobs:
           path: /isolated_build/repo/client/cypress/reports/mochareports/report.html
 
       - name: Notify about Test Results
+        if: always()
         run: echo "Dear developer, the test results can be accessed in the 'Artifacts' section of this run."
 
 
