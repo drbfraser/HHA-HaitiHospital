@@ -213,6 +213,10 @@ jobs:
           npm -v
           node -v
           npm ci
+      - name: Make Cypress Report directory
+        working-directory: /isolated_build/repo/client/
+        run: |
+          npm run cypress:pretest
 
       - name: Run Cypress tests
         working-directory: /isolated_build/repo/client/
@@ -222,7 +226,7 @@ jobs:
           npm start &
           cd /isolated_build/repo/client
           npm start &
-          sleep 100  # wait for services to start
+          sleep 50  # wait for services to start
           Xvfb :99 -screen 0 1920x1080x24 &
           service dbus start
           cypress run --headless --browser chrome
