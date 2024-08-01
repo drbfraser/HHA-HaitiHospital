@@ -186,6 +186,19 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x24 &
           service dbus start
           cypress run --headless --browser chrome
+          npm run cypress:pretest
+          npm run cypress:test
+          npm run cypress:posttest
+
+      - name: Upload Cypress Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-test-results
+          path: /isolated_build/repo/client/cypress/reports/mochareports/report.html
+
+      - name: Notify about Test Results
+        run: echo "Dear developer, the test results can be accessed in the 'Artifacts' section of this run."
+
       - name: Run build
         working-directory: /isolated_build/repo/client/
         run: |
