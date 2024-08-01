@@ -23,7 +23,6 @@ env:
   # otherwise, NPM gives EACCES error trying to mkdir /github/home/.npm
   # Using the /isolated_build/ folder (inside the container) keeps permissions straight
   npm_config_cache: /isolated_build/.npm-cache
-  CYPRESS_CACHE_FOLDER: /isolated_build/.cypress-cache
 
   PASSWORD_SEED: 'C@td0g'
   RAND_PASSWORD_SEED: 'C@td0g'
@@ -136,13 +135,26 @@ jobs:
   test-build-client:
     runs-on: [self-hosted, docker]
     container:
-      image: node:18
+      image: cypress/base
     timeout-minutes: 60
     steps:
       - name: Checkout code into container
         uses: bfraser/cicd/actions/checkout@v1
         with:
           path: /isolated_build/repo/
+      - name: Re-Build Common inside Container
+        working-directory: /isolated_build/repo/common/
+        run: |
+          npm ci
+          npm run build
+          tar -czf ../common_build.tar.gz .
+      - name: Prepare for tests
+        working-directory: /isolated_build/repo/client/
+        run: |
+          npm -v
+          node -v
+          npm ci
+          npm install ../common_build.tar.gz
       - name: Run build
         working-directory: /isolated_build/repo/client/
         run: |
