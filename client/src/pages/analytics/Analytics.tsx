@@ -119,30 +119,30 @@ const Analytics = () => {
     return questionPromptsUI;
   };
 
+  const updateQuestionMap = async () => {
+    const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
+
+    departments.forEach((department, index) => {
+      //When the page is loaded, the first department's question is analyzed
+      //This is an intentional design choice because we want the user to view an analytic data before selecting filters
+
+      const shouldCheckFirstQuestion = index === 0;
+      const questionPromise = fetchQuestionPrompts(department.name, shouldCheckFirstQuestion);
+      fetchQuestionPromises.push(questionPromise);
+    });
+
+    const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
+
+    const updatedQuestionMap: QuestionMap = {};
+
+    allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
+      updatedQuestionMap[departments[index].name] = questionPrompstUI;
+    });
+
+    setQuestionMap(updatedQuestionMap);
+  };
+
   useEffect(() => {
-    const updateQuestionMap = async () => {
-      const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
-
-      departments.forEach((department, index) => {
-        //When the page is loaded, the first department's question is analyzed
-        //This is an intentional design choice because we want the user to view an analytic data before selecting filters
-
-        const shouldCheckFirstQuestion = index === 0;
-        const questionPromise = fetchQuestionPrompts(department.name, shouldCheckFirstQuestion);
-        fetchQuestionPromises.push(questionPromise);
-      });
-
-      const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
-
-      const updatedQuestionMap: QuestionMap = {};
-
-      allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
-        updatedQuestionMap[departments[index].name] = questionPrompstUI;
-      });
-
-      setQuestionMap(updatedQuestionMap);
-    };
-
     updateQuestionMap();
   }, [departments, history]);
 
