@@ -33,7 +33,7 @@ interface MessageObject {
   messageBody: string;
 }
 
-async function createMessage(
+export async function createMessage(
   departmentId = DEP_ID.GENERAL,
   userId = USER_ID.ADMIN,
   body = 'Message Body',
