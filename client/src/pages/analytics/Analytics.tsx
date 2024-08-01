@@ -75,21 +75,21 @@ const Analytics = () => {
 
   const pdfRef = useRef<HTMLDivElement>(null);
 
+  const fetchDepartments = async () => {
+    const departments = await getAllDepartments(history);
+    const departmentsWithReport = filterDepartmentsByReport(departments);
+
+    setDepartments(departmentsWithReport);
+
+    // should show a pop up communicating that there is no department with report
+    //As of current, this line of code is a technical debt and maybe changed in the future
+
+    if (departmentsWithReport.length === 0) {
+      return;
+    }
+  };
+
   useEffect(() => {
-    const fetchDepartments = async () => {
-      const departments = await getAllDepartments(history);
-      const departmentsWithReport = filterDepartmentsByReport(departments);
-
-      setDepartments(departmentsWithReport);
-
-      // should show a pop up communicating that there is no department with report
-      //As of current, this line of code is a technical debt and maybe changed in the future
-
-      if (departmentsWithReport.length === 0) {
-        return;
-      }
-    };
-
     fetchDepartments();
   }, [history]);
 
