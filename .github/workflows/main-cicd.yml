@@ -126,6 +126,14 @@ jobs:
           set -x  # echo commands names
           ! npm run test && exit 1
           tar -czf ../server_build.tar.gz .
+      - name: Create Instanbul test coverage report
+        run: |
+          nyc report --reporter=html
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: instanbul-test-coverage-report
+          path: /isolated_build/repo/server/coverage
       - uses: actions/upload-artifact@v3
         if: success()
         with:
@@ -197,7 +205,9 @@ jobs:
           path: /isolated_build/repo/client/cypress/reports/mochareports/report.html
 
       - name: Notify about Test Results
-        run: echo "Dear developer, the test results can be accessed in the 'Artifacts' section of this run."
+        run:
+          echo "Dear developer, the test results can be accessed in the 'Artifacts' section of this
+          run."
 
       - name: Run build
         working-directory: /isolated_build/repo/client/
