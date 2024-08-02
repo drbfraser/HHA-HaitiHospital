@@ -37,6 +37,7 @@ export const ReportAndTemplateForm = ({
           }
           value={currentDepartment?.id || ''}
           required
+          data-testid="department-type-dropdown"
         >
           <option value="">{t('headerReportChooseDepartment')}</option>
           {departments &&

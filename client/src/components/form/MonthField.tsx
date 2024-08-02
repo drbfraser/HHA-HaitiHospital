@@ -85,6 +85,7 @@ export const MonthField = ({
               name="month"
               value={month}
               onChange={(e) => setMonth(parseInt(e.target.value))}
+              data-testid="month-select-dropdown"
             >
               {visibleMonths}
             </Form.Select>
@@ -104,6 +105,7 @@ export const MonthField = ({
               step="1"
               isInvalid={year !== undefined && (year < minYear || year > maxYear)}
               placeholder={t('yearPlaceholder')}
+              data-testid="year-select-dropdown"
             />
           </Form.Group>
         </Col>
