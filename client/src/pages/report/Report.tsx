@@ -184,6 +184,7 @@ export const Report = () => {
             disabled={!isMonthAndDepartmentSelected}
             type="submit"
             onClick={() => setIsTemplateSelected(true)}
+            data-testid="report-next-button"
           >
             {t('departmentFormNext')}
           </button>
@@ -201,6 +202,7 @@ export const Report = () => {
                 clearCurrentReport();
               }
             }}
+            data-testid="choose-different-department-button"
           >
             <i className="bi bi-chevron-left me-2" />
             {t('headerReportChooseDifferentDepartment')}
