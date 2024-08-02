@@ -245,6 +245,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: cypress-test-results
+          retention-days: 7
           path: /isolated_build/repo/client/cypress/reports/mochareports/report.html
 
       - name: Notify about Test Results
