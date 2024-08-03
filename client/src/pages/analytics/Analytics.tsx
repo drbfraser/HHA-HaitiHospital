@@ -19,9 +19,8 @@ import {
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
-import { MONTH_LITERAL, YEAR_DASH_MONTH_FORMAT } from 'constants/date';
-import { DepartmentDropDown } from 'components/dropdown/DepartmentDropDown';
-import { createAnalyticsKey, reformatQuestionPrompt } from 'utils/string';
+import { MONTH_LITERAL } from 'constants/date';
+import { createAnalyticsKey } from 'utils/string';
 import AnalyticsTotal from 'components/analytics/Total';
 import { defaultFromDate, defaultToDate } from 'utils';
 import html2canvas from 'html2canvas';
@@ -110,14 +109,15 @@ const Analytics = () => {
       if (departmentsWithReport.length === 0) {
         return;
       }
-
-      setSelectedDepartmentNames([departmentsWithReport[0].name]);
     };
 
     fetchDepartments();
   }, [history]);
 
-  const fetchQuestionPrompts = async (departmentName: string, firstQuestionByDefault: boolean) => {
+  const fetchQuestionPrompts = async (
+    departmentName: string,
+    shouldCheckFirstQuestion: boolean,
+  ) => {
     const selectedDepartmentId = findDepartmentIdByName(departments, departmentName)!;
 
     const questionPrompts = await getAllQuestionPrompts(history, selectedDepartmentId);
@@ -130,28 +130,41 @@ const Analytics = () => {
       //this ensures the analytics page at the beginning does not have blank data
       //A checked state is maintained to keep track of user selected questions
 
-      if (index === 0 && firstQuestionByDefault) {
+      if (index === 0 && shouldCheckFirstQuestion) {
         checked = true;
       }
 
       return { ...questionPrompt, checked };
     });
 
-    setQuestionMap({ ...questionMap, [departmentName]: questionPromptsUI });
+    return questionPromptsUI;
   };
 
   useEffect(() => {
-    // should show a pop up communicating that there is no department with report
-    //As of current, this line of code is a technical debt and maybe changed in the future
+    const updateQuestionMap = async () => {
+      const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
 
-    if (departments.length === 0) {
-      return;
-    }
+      departments.forEach((department, index) => {
+        //When the page is loaded, the first department's question is analyzed
+        //This is an intentional design choice because we want the user to view an analytic data before selecting filters
 
-    //When the page is loaded, the first department's question is loaded
-    //This is an intentional design choice because we want the user to view an analytic data before selecting filters
+        const shouldCheckFirstQuestion = index === 0;
+        const questionPromise = fetchQuestionPrompts(department.name, shouldCheckFirstQuestion);
+        fetchQuestionPromises.push(questionPromise);
+      });
 
-    fetchQuestionPrompts(departments[0].name, true);
+      const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
+
+      const updatedQuestionMap: QuestionMap = {};
+
+      allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
+        updatedQuestionMap[departments[index].name] = questionPrompstUI;
+      });
+
+      setQuestionMap(updatedQuestionMap);
+    };
+
+    updateQuestionMap();
   }, [departments, history]);
 
   const fetchAnalytics = async () => {
@@ -322,12 +335,6 @@ const Analytics = () => {
         <div className="w-100 d-flex flex-column mr-auto">
           <div className="w-100 d-flex flex-row justify-content-between">
             <div className="d-flex flex-row gap-3" data-testid="select-department-question-button">
-              <DepartmentDropDown
-                dropDowns={getAllDepartmentsByName(departments!)}
-                title={t('analyticsDepartment')}
-                selectedDropDowns={selectedDepartmentNames}
-                setSelectedDropDowns={onDepartmentSelected}
-              />
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
                 {t('analyticsQuestion')}
               </Button>
