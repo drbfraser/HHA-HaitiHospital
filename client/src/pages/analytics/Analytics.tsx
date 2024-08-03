@@ -51,6 +51,19 @@ const Analytics = () => {
 
   const [departments, setDepartments] = useState<DepartmentJson[]>([]);
 
+  function useSessionStorage<T>(key: string, initialValue: T) {
+    const storedValue = localStorage.getItem(key);
+    const initial: T = storedValue ? JSON.parse(storedValue) : initialValue;
+
+    const [value, setValue] = useState<T>(initial);
+
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
+
+    return [value, setValue] as const;
+  }
+
   //state to keep track of ongoing API requests in fetching departments or questions
   //it controls the loading spinner
 
@@ -58,15 +71,18 @@ const Analytics = () => {
 
   const [questionMap, setQuestionMap] = useState<QuestionMap>({});
 
-  const [timeOptions, setTimeOptions] = useState<TimeOptions>({
+  const [timeOptions, setTimeOptions] = useSessionStorage<TimeOptions>('timeOptions', {
     from: defaultFromDate(),
     to: defaultToDate(),
     timeStep: MONTH_LITERAL,
   });
 
-  const [selectedAggregateBy, setSelectedAggregateBy] = useState<MonthOrYearOption>(MONTH_LITERAL);
+  const [selectedAggregateBy, setSelectedAggregateBy] = useSessionStorage<MonthOrYearOption>(
+    'selectedAggregateBy',
+    MONTH_LITERAL,
+  );
 
-  const [selectedChart, setSelectedChart] = useState<ChartType>('bar');
+  const [selectedChart, setSelectedChart] = useSessionStorage<ChartType>('selectedChart', 'bar');
 
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
@@ -74,6 +90,17 @@ const Analytics = () => {
   const [analyticsMap, setAnalyticsMap] = useState<AnalyticsMap>({});
 
   const pdfRef = useRef<HTMLDivElement>(null);
+
+  const resetAnalysis = () => {
+    updateQuestionMap();
+    setTimeOptions({
+      from: defaultFromDate(),
+      to: defaultToDate(),
+      timeStep: MONTH_LITERAL,
+    });
+    setSelectedAggregateBy(MONTH_LITERAL);
+    setSelectedChart('bar');
+  };
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -119,30 +146,30 @@ const Analytics = () => {
     return questionPromptsUI;
   };
 
+  const updateQuestionMap = async () => {
+    const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
+
+    departments.forEach((department, index) => {
+      //When the page is loaded, the first department's question is analyzed
+      //This is an intentional design choice because we want the user to view an analytic data before selecting filters
+
+      const shouldCheckFirstQuestion = index === 0;
+      const questionPromise = fetchQuestionPrompts(department.name, shouldCheckFirstQuestion);
+      fetchQuestionPromises.push(questionPromise);
+    });
+
+    const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
+
+    const updatedQuestionMap: QuestionMap = {};
+
+    allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
+      updatedQuestionMap[departments[index].name] = questionPrompstUI;
+    });
+
+    setQuestionMap(updatedQuestionMap);
+  };
+
   useEffect(() => {
-    const updateQuestionMap = async () => {
-      const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
-
-      departments.forEach((department, index) => {
-        //When the page is loaded, the first department's question is analyzed
-        //This is an intentional design choice because we want the user to view an analytic data before selecting filters
-
-        const shouldCheckFirstQuestion = index === 0;
-        const questionPromise = fetchQuestionPrompts(department.name, shouldCheckFirstQuestion);
-        fetchQuestionPromises.push(questionPromise);
-      });
-
-      const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
-
-      const updatedQuestionMap: QuestionMap = {};
-
-      allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
-        updatedQuestionMap[departments[index].name] = questionPrompstUI;
-      });
-
-      setQuestionMap(updatedQuestionMap);
-    };
-
     updateQuestionMap();
   }, [departments, history]);
 
@@ -336,6 +363,9 @@ const Analytics = () => {
             </div>
             <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
               {t('analysisDisplayGeneratePDF')}
+            </button>
+            <button className="btn btn-outline-dark mr-3" onClick={resetAnalysis}>
+              {t('resetAnalysisButton')}
             </button>
           </Col>
         </div>

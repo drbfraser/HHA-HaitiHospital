@@ -266,6 +266,7 @@
   "analyticsInvalidChart": "Avertissement Type de graphique inconnu sélectionné",
   "analysisDisplayGeneratePDF": "Télécharger PDF",
   "analyticsExportFilename": "Analytique",
+  "resetAnalysisButton": "Réinitialiser l'analyse",
   "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthList": "Voir les anciens employés du mois",
