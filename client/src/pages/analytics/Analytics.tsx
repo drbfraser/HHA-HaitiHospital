@@ -14,7 +14,6 @@ import {
   filterDepartmentsByReport,
   filterQuestionsSelected,
   findDepartmentIdByName,
-  getAllDepartmentsByName,
   prepareAnalyticsQuery,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
@@ -51,6 +50,8 @@ const Analytics = () => {
 
   const [departments, setDepartments] = useState<DepartmentJson[]>([]);
 
+  let defaultQuestionMap = {};
+
   function useSessionStorage<T>(key: string, initialValue: T) {
     const storedValue = localStorage.getItem(key);
     const initial: T = storedValue ? JSON.parse(storedValue) : initialValue;
@@ -69,7 +70,14 @@ const Analytics = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [questionMap, setQuestionMap] = useState<QuestionMap>({});
+  // state to make sure that analytics are performed only after department list has been fully loaded
+  const [departmentsLoaded, setDepartmentsLoaded] = useState(false);
+
+  // const [questionMap, setQuestionMap] = useState<QuestionMap>({});
+  const [questionMap, setQuestionMap] = useSessionStorage<QuestionMap>(
+    'questionMap',
+    defaultQuestionMap,
+  );
 
   const [timeOptions, setTimeOptions] = useSessionStorage<TimeOptions>('timeOptions', {
     from: defaultFromDate(),
@@ -92,33 +100,28 @@ const Analytics = () => {
   const pdfRef = useRef<HTMLDivElement>(null);
 
   const resetAnalysis = () => {
-    updateQuestionMap();
-    setTimeOptions({
-      from: defaultFromDate(),
-      to: defaultToDate(),
-      timeStep: MONTH_LITERAL,
-    });
-    setSelectedAggregateBy(MONTH_LITERAL);
-    setSelectedChart('bar');
+    fetchDepartments();
+    localStorage.clear();
+  };
+
+  const fetchDepartments = async () => {
+    const departments = await getAllDepartments(history);
+    const departmentsWithReport = filterDepartmentsByReport(departments);
+
+    setDepartments(departmentsWithReport);
+    setDepartmentsLoaded(true);
+
+    // should show a pop up communicating that there is no department with report
+    //As of current, this line of code is a technical debt and maybe changed in the future
+
+    if (departmentsWithReport.length === 0) {
+      return;
+    }
   };
 
   useEffect(() => {
-    const fetchDepartments = async () => {
-      const departments = await getAllDepartments(history);
-      const departmentsWithReport = filterDepartmentsByReport(departments);
-
-      setDepartments(departmentsWithReport);
-
-      // should show a pop up communicating that there is no department with report
-      //As of current, this line of code is a technical debt and maybe changed in the future
-
-      if (departmentsWithReport.length === 0) {
-        return;
-      }
-    };
-
     fetchDepartments();
-  }, [history]);
+  }, []);
 
   const fetchQuestionPrompts = async (
     departmentName: string,
@@ -147,6 +150,14 @@ const Analytics = () => {
   };
 
   const updateQuestionMap = async () => {
+    const storedQuestionMap = localStorage.getItem('questionMap');
+
+    if (storedQuestionMap) {
+      // parse the stored value and set it directly, instead of giving it a default state
+      setQuestionMap(JSON.parse(storedQuestionMap));
+      return;
+    }
+
     const fetchQuestionPromises: Promise<QuestionPromptUI[]>[] = [];
 
     departments.forEach((department, index) => {
@@ -161,6 +172,7 @@ const Analytics = () => {
     const allQuestionPromptsUI = await Promise.all(fetchQuestionPromises);
 
     const updatedQuestionMap: QuestionMap = {};
+    defaultQuestionMap = updateQuestionMap;
 
     allQuestionPromptsUI.forEach((questionPrompstUI, index) => {
       updatedQuestionMap[departments[index].name] = questionPrompstUI;
@@ -174,6 +186,9 @@ const Analytics = () => {
   }, [departments, history]);
 
   const fetchAnalytics = async () => {
+    // halt immediately if departments have not yet been loaded
+    if (!departmentsLoaded) return;
+
     // department name + question (question id - question text) is used as an identifier (key) for a question
     // this quarantees uniqueness of the same question in different department
     // this list keeps track of all the identifier for the questions to be used later in creating a map
@@ -216,7 +231,7 @@ const Analytics = () => {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [questionMap, timeOptions, selectedAggregateBy, history]);
+  }, [departmentsLoaded, questionMap, timeOptions, selectedAggregateBy, history]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => {
