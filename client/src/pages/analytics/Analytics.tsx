@@ -185,8 +185,6 @@ const Analytics = () => {
 
         departmentPlusQuestionKeys.push(departmentPlusQuestionKey);
 
-        const departmentId = findDepartmentIdByName(departments, department)!;
-
         const analyticsQuery = prepareAnalyticsQuery(
           departmentId,
           selectedQuestion.id,
