@@ -52,7 +52,8 @@ const Analytics = () => {
 
   let defaultQuestionMap = {};
 
-  function useSessionStorage<T>(key: string, initialValue: T) {
+  // indicates elements of analytics where the state should use the browser's storage rather than just "useState"
+  function useLocalStorage<T>(key: string, initialValue: T) {
     const storedValue = localStorage.getItem(key);
     const initial: T = storedValue ? JSON.parse(storedValue) : initialValue;
 
@@ -74,23 +75,23 @@ const Analytics = () => {
   const [departmentsLoaded, setDepartmentsLoaded] = useState(false);
 
   // const [questionMap, setQuestionMap] = useState<QuestionMap>({});
-  const [questionMap, setQuestionMap] = useSessionStorage<QuestionMap>(
+  const [questionMap, setQuestionMap] = useLocalStorage<QuestionMap>(
     'questionMap',
     defaultQuestionMap,
   );
 
-  const [timeOptions, setTimeOptions] = useSessionStorage<TimeOptions>('timeOptions', {
+  const [timeOptions, setTimeOptions] = useLocalStorage<TimeOptions>('timeOptions', {
     from: defaultFromDate(),
     to: defaultToDate(),
     timeStep: MONTH_LITERAL,
   });
 
-  const [selectedAggregateBy, setSelectedAggregateBy] = useSessionStorage<MonthOrYearOption>(
+  const [selectedAggregateBy, setSelectedAggregateBy] = useLocalStorage<MonthOrYearOption>(
     'selectedAggregateBy',
     MONTH_LITERAL,
   );
 
-  const [selectedChart, setSelectedChart] = useSessionStorage<ChartType>('selectedChart', 'bar');
+  const [selectedChart, setSelectedChart] = useLocalStorage<ChartType>('selectedChart', 'bar');
 
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
