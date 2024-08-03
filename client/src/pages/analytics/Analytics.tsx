@@ -14,7 +14,6 @@ import {
   filterDepartmentsByReport,
   filterQuestionsSelected,
   findDepartmentIdByName,
-  getAllDepartmentsByName,
   prepareAnalyticsQuery,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
@@ -62,14 +61,16 @@ const Analytics = () => {
 
   const history = useHistory<History>();
 
-  const [departments, setDepartments] = useState<DepartmentJson[]>([]);
+  const [departments, setDepartments] = useSessionStorage<DepartmentJson[]>('departments', []);
 
   //state to keep track of ongoing API requests in fetching departments or questions
   //it controls the loading spinner
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [questionMap, setQuestionMap] = useState<QuestionMap>({});
+  // const [questionMap, setQuestionMap] = useState<QuestionMap>({});
+
+  const [questionMap, setQuestionMap] = useSessionStorage<QuestionMap>('questionMap', {});
 
   const [selectedDepartmentNames, setSelectedDepartmentNames] = useSessionStorage<string[]>(
     'selectedDepartmentNames',
@@ -90,7 +91,10 @@ const Analytics = () => {
   const [selectedChart, setSelectedChart] = useSessionStorage<ChartType>('selectedChart', 'bar');
 
   const [showModalQuestions, setShowModalQuestions] = useState(false);
-  const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
+  const [showModalTimeOptions, setShowModalTimeOptions] = useSessionStorage(
+    'showModelTimeOptions',
+    false,
+  );
 
   const [analyticsMap, setAnalyticsMap] = useState<AnalyticsMap>({});
 
@@ -185,6 +189,8 @@ const Analytics = () => {
 
         departmentPlusQuestionKeys.push(departmentPlusQuestionKey);
 
+        const departmentId = findDepartmentIdByName(departments, department)!;
+
         const analyticsQuery = prepareAnalyticsQuery(
           departmentId,
           selectedQuestion.id,
@@ -253,6 +259,18 @@ const Analytics = () => {
     console.log('finished export!');
   };
 
+  const resetAnalysis = () => {
+    setQuestionMap({});
+    setSelectedDepartmentNames([]);
+    setTimeOptions({
+      from: defaultFromDate(),
+      to: defaultToDate(),
+      timeStep: MONTH_LITERAL,
+    });
+    setSelectedAggregateBy(MONTH_LITERAL);
+    setSelectedChart('bar');
+  };
+
   const onDepartmentSelected = (event: React.MouseEvent<HTMLElement>) => {
     let updateDepartmentsSelected: string[] = [];
 
@@ -288,6 +306,9 @@ const Analytics = () => {
 
     // the <department name> - <question prompt> is used to identify a question (key)
     // this differentiates the same questions but in different departments
+    if (departmentDashQuestion == undefined) {
+      return;
+    }
 
     const [department, questionId] = departmentDashQuestion.split('-');
 
@@ -385,6 +406,9 @@ const Analytics = () => {
             </div>
             <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
               {t('analysisDisplayGeneratePDF')}
+            </button>
+            <button className="btn btn-outline-dark mr-3" onClick={resetAnalysis}>
+              {t('resetAnalysisButton')}
             </button>
           </Col>
         </div>
