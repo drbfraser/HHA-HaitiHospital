@@ -103,6 +103,13 @@ const Analytics = () => {
   const resetAnalysis = () => {
     fetchDepartments();
     localStorage.clear();
+    setTimeOptions({
+      from: defaultFromDate(),
+      to: defaultToDate(),
+      timeStep: MONTH_LITERAL,
+    });
+    setSelectedAggregateBy(MONTH_LITERAL);
+    setSelectedChart('bar');
   };
 
   const fetchDepartments = async () => {
