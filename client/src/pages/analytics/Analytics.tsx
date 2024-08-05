@@ -134,6 +134,13 @@ const Analytics = () => {
     setChartTitle('Default text');
     setIsUserModified(false);
     localStorage.clear();
+    setTimeOptions({
+      from: defaultFromDate(),
+      to: defaultToDate(),
+      timeStep: MONTH_LITERAL,
+    });
+    setSelectedAggregateBy(MONTH_LITERAL);
+    setSelectedChart('bar');
   };
 
   const fetchDepartments = async () => {
