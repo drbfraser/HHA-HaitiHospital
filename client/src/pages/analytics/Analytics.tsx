@@ -452,6 +452,7 @@ const Analytics = () => {
                 type={selectedChart}
                 analyticsData={analyticsMap}
                 questionMap={questionMap}
+                title={chartTitle}
               />
             </div>
             <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>

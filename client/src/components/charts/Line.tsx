@@ -25,7 +25,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 type LineChartProps = Omit<ChartProps, 'type'>;
 
-const LineChart = ({ analyticsData, questionMap }: LineChartProps) => {
+const LineChart = ({ analyticsData, questionMap, title }: LineChartProps) => {
   const { t } = useTranslation();
 
   const dataSets = prepareDataSetForChart(analyticsData);
@@ -43,7 +43,7 @@ const LineChart = ({ analyticsData, questionMap }: LineChartProps) => {
   };
   return (
     <div className="d-flex w-100 flex-row justify-content-center" style={{ height: '450px' }}>
-      <Line options={createDefaultChartOptions(t('analyticsLineChart'))} data={data} />
+      <Line options={createDefaultChartOptions(title)} data={data} />
     </div>
   );
 };
