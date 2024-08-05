@@ -267,6 +267,7 @@
   "analysisDisplayGeneratePDF": "Télécharger PDF",
   "analyticsExportFilename": "Analytique",
   "resetAnalysisButton": "Réinitialiser l'analyse",
+  "chartTitleTemplate": "${chartType} montrant ${questions} de ${dateFrom} à ${dateTo} chaque ${aggregateBy}",
   "employeeOfTheMonthAdd": "Ajouter un nouvel employé du mois",
   "employeeOfTheMonthEdit": "Mise à jour",
   "employeeOfTheMonthList": "Voir les anciens employés du mois",

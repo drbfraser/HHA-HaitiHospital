@@ -264,6 +264,7 @@
   "analyticsInvalidChart": "Warning Unknown chart type selected",
   "analysisDisplayGeneratePDF": "Download PDF",
   "resetAnalysisButton": "Reset analytics",
+  "chartTitleTemplate": "${chartType} showing ${questions} from ${dateFrom} to ${dateTo} every ${aggregateBy}",
   "analyticsExportFilename": "Analytics",
   "employeeOfTheMonthAdd": "Add New Employee of the Month",
   "employeeOfTheMonthEdit": "Update",

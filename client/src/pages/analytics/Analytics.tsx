@@ -43,8 +43,16 @@ export type AnalyticsMap = {
   [key: string]: AnalyticsResponse[];
 };
 
+type ChartTitleParams = {
+  chartType: string;
+  questions: string;
+  dateFrom: string;
+  dateTo: string;
+  aggregateBy: string;
+};
+
 const Analytics = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const history = useHistory<History>();
 
@@ -93,6 +101,10 @@ const Analytics = () => {
 
   const [selectedChart, setSelectedChart] = useLocalStorage<ChartType>('selectedChart', 'bar');
 
+  const [chartTitle, setChartTitle] = useLocalStorage<string>('chartTitle', 'Default text');
+
+  const [isUserModified, setIsUserModified] = useLocalStorage<boolean>('isUserModified', false);
+
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
 
@@ -100,8 +112,27 @@ const Analytics = () => {
 
   const pdfRef = useRef<HTMLDivElement>(null);
 
+  const chartTypeNames = {
+    bar: t('analyticsBarChart'),
+    line: t('analyticsLineChart'),
+  };
+
+  const chartAggregationNames = {
+    month: t('month'),
+    year: t('year'),
+  };
+
   const resetAnalysis = () => {
     fetchDepartments();
+    setTimeOptions({
+      from: defaultFromDate(),
+      to: defaultToDate(),
+      timeStep: MONTH_LITERAL,
+    });
+    setSelectedAggregateBy(MONTH_LITERAL);
+    setSelectedChart('bar');
+    setChartTitle('Default text');
+    setIsUserModified(false);
     localStorage.clear();
   };
 
@@ -230,9 +261,53 @@ const Analytics = () => {
     setIsLoading(false);
   };
 
+  const handleManualTitleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setChartTitle(event.target.value);
+    setIsUserModified(true);
+  };
+
+  const getActiveQuestionsString = (): string => {
+    const language = i18n.language;
+    if (language == 'en') {
+      return Object.values(questionMap)
+        .flat()
+        .filter((question) => question.checked)
+        .map((question) => question.en)
+        .join(', ');
+    } else {
+      return Object.values(questionMap)
+        .flat()
+        .filter((question) => question.checked)
+        .map((question) => question.fr)
+        .join(', ');
+    }
+  };
+
+  const generateChartTitle = (params: ChartTitleParams): string => {
+    const template = t('chartTitleTemplate');
+    return template.replace(/\$\{(.*?)\}/g, (_, key) => params[key as keyof ChartTitleParams]);
+  };
+
+  const automaticUpdateChartTitle = () => {
+    if (isUserModified) return;
+    setChartTitle(
+      generateChartTitle({
+        chartType: chartTypeNames[selectedChart],
+        questions: getActiveQuestionsString(),
+        dateFrom: timeOptions.from,
+        dateTo: timeOptions.to,
+        aggregateBy: chartAggregationNames[selectedAggregateBy],
+      }),
+    );
+  };
+
   useEffect(() => {
     fetchAnalytics();
   }, [departmentsLoaded, questionMap, timeOptions, selectedAggregateBy, history]);
+
+  useEffect(() => {
+    automaticUpdateChartTitle();
+  }, [questionMap, timeOptions, selectedAggregateBy, selectedChart, i18n.language]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => {
@@ -245,11 +320,6 @@ const Analytics = () => {
   const handleExportWithComponent = () => {
     console.log('starting export...');
     const capturedComponent = pdfRef.current;
-
-    const chartFilenames = {
-      bar: t('analyticsBarChart'),
-      line: t('analyticsLineChart'),
-    };
 
     if (!capturedComponent) {
       console.error("PDF reference is invalid or the component hasn't been rendered.");
@@ -271,7 +341,7 @@ const Analytics = () => {
       const imgY = (pdfHeight - imgHeight * ratio) / 2;
       pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
       pdf.save(
-        `${timeOptions.from} - ${timeOptions.to} - ${chartFilenames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+        `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
       );
     });
     console.log('finished export!');
@@ -368,7 +438,14 @@ const Analytics = () => {
               />
             </div>
           </div>
+
           <Col className="mt-5">
+            <textarea
+              value={chartTitle}
+              onChange={(e) => handleManualTitleChange(e)}
+              className="form-control mb-4"
+              style={{ width: '100%', fontSize: '1.5rem', height: '1.5em', resize: 'none' }}
+            />
             <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
             <div ref={pdfRef}>
               <ChartSelector
