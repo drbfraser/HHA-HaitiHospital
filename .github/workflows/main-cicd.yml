@@ -127,6 +127,7 @@ jobs:
           ! npm run test && exit 1
           tar -czf ../server_build.tar.gz .
       - name: Create Instanbul test coverage report
+        working-directory: /isolated_build/repo/server/
         run: |
           npm run coverage-report
           tar -czvf coverage-report.tar.gz /isolated_build/repo/server/coverage
