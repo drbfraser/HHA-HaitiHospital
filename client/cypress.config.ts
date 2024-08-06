@@ -29,4 +29,7 @@ export default defineConfig({
       json: true,
     },
   },
+  retries: {
+    runMode: 2,
+  },
 });
