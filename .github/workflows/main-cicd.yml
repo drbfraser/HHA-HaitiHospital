@@ -128,12 +128,14 @@ jobs:
           tar -czf ../server_build.tar.gz .
       - name: Create Instanbul test coverage report
         run: |
-          nyc report --reporter=html
+          npm run coverage-report
+          tar -czvf coverage-report.tar.gz /isolated_build/repo/server/coverage
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
           name: instanbul-test-coverage-report
-          path: /isolated_build/repo/server/coverage
+          path: /isolated_build/repo/server/coverage-report.tar.gz
+          retention-days: 7
       - uses: actions/upload-artifact@v3
         if: success()
         with:
