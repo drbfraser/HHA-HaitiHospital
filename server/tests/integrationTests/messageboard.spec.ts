@@ -46,7 +46,7 @@ export async function createMessage(
     messageBody: body,
     messageHeader: header,
   });
-  message.save();
+  await message.save();
   return message.toJson();
 }
 

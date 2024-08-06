@@ -24,7 +24,7 @@ async function createComment(userId = USER_ID.ADMIN, parentId: string, text = 'a
     messageComment: text,
     parentMessageId: parentId,
   });
-  comment.save();
+  await comment.save();
   return comment.toJson();
 }
 

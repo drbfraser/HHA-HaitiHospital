@@ -57,16 +57,16 @@ describe('Leaderboard Tests', function () {
 
   it('should get all leaderboard points ordered from highest first', async function () {
     // Rehab should have 20 points for 2 case studies
-    createEmptyCaseStudy(DEP_ID.REHAB);
-    createEmptyCaseStudy(DEP_ID.REHAB);
+    await createEmptyCaseStudy(DEP_ID.REHAB);
+    await createEmptyCaseStudy(DEP_ID.REHAB);
 
     // NICU will have 10 points for one cast study
-    createEmptyCaseStudy(DEP_ID.NICU_PAEDS);
+    await createEmptyCaseStudy(DEP_ID.NICU_PAEDS);
 
     // Maternity will have 0 points because its case studies were not this month
     const currentMonth = new Date().getMonth();
     const lastMonth = new Date(new Date().setMonth(currentMonth - 1));
-    createEmptyCaseStudy(DEP_ID.MATERNITY, lastMonth);
+    await createEmptyCaseStudy(DEP_ID.MATERNITY, lastMonth);
 
     const res = await agent.get(LEADERBOARD_ENDPOINT);
     expect(res).to.have.status(HTTP_OK_CODE);
