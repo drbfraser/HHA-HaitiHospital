@@ -50,13 +50,13 @@ describe('Report Creation Tests', function () {
         .invoke('val')
         .should('not.be.empty');
     });
-    //
-    //   it('Should Input a Valid Year', function () {
-    //     const validyear = '2020';
-    //     reportCreationPage.selectYearDropdown(validyear);
-    //     cy.get('[data-testid="year-select-dropdown"]').should('have.value', validyear);
-    //     cy.get('[data-testid="year-select-dropdown"]').should('not.have.class', 'is-invalid');
-    //   });
+
+    it('Should Input a Valid Year', function () {
+      const validyear = '2020';
+      reportCreationPage.selectYearDropdown(validyear);
+      cy.get('[data-testid="year-select-dropdown"]').should('have.value', validyear);
+      cy.get('[data-testid="year-select-dropdown"]').should('not.have.class', 'is-invalid');
+    });
   });
 
   describe('Report Form Tests', function () {
