@@ -130,12 +130,11 @@ jobs:
         working-directory: /isolated_build/repo/server/
         run: |
           npm run coverage-report
-          tar -czvf coverage-report.tar.gz /isolated_build/repo/server/coverage
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
           name: instanbul-test-coverage-report
-          path: /isolated_build/repo/server/coverage-report.tar.gz
+          path: /isolated_build/repo/server/coverage
           retention-days: 7
       - uses: actions/upload-artifact@v3
         if: success()
