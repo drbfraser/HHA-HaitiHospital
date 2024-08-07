@@ -9,6 +9,13 @@ import {
   ChartData,
   ArcElement,
   TooltipItem,
+  LegendOptions,
+  Chart,
+  LegendItem,
+  Color,
+  ChartEvent,
+  ActiveElement,
+  LegendElement,
 } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { ChartProps } from './ChartSelector';
@@ -35,10 +42,11 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
   const aggregateData = prepareAggregateData(analyticsData);
   const responsesData = prepareAnalyticsResponses(analyticsData);
   const aggregateLabels = prepareAggregateLabels(analyticsData, questionMap);
-  const responseLabels = prepareResponseLabels(responsesData);
+  const responseLabels = prepareResponseLabels(responsesData, analyticsData, questionMap);
   const colors = duplicateColor(analyticsData);
 
   const data = {
+    labels: responseLabels.concat(aggregateLabels),
     datasets: [
       {
         data: responsesData.map((responseData) => responseData.answer),
@@ -57,6 +65,7 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       tooltip: {
         callbacks: {
@@ -66,12 +75,55 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
 
             return `${label}: ${value}`;
           },
+
+          title: function (tooltipItems: TooltipItem<'pie'>[]) {
+            return '';
+          },
         },
       },
 
       legend: {
+        labels: {
+          generateLabels: function (chart: Chart): LegendItem[] {
+            const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
+
+            const labelsOriginal = original.call(this, chart);
+
+            let datasetColors = chart.data.datasets.map(function (chartData) {
+              return chartData.backgroundColor;
+            });
+
+            datasetColors = datasetColors.flat();
+
+            labelsOriginal.forEach((label) => {
+              label.datasetIndex = 0;
+
+              if (label.index! >= chart.data.datasets[0].data.length) {
+                label.datasetIndex = 1;
+              }
+
+              label.hidden = !chart.isDatasetVisible(label.datasetIndex);
+
+              label.fillStyle = datasetColors[label.index!] as Color;
+            });
+
+            return labelsOriginal;
+          },
+        },
         position: 'top' as const,
+        onClick: function (
+          mouseEvent: ChartEvent,
+          legendItem: LegendItem,
+          legend: LegendElement<'pie'>,
+        ) {
+          const metaData = legend.chart.getDatasetMeta(legendItem.datasetIndex!);
+
+          metaData.hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex!);
+
+          legend.chart.update();
+        },
       },
+
       title: {
         display: true,
         text: 'Pie Chart',
@@ -80,8 +132,8 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
   };
 
   return (
-    <div className="d-flex w-100 flex-row justify-content-center" style={{ height: '450px' }}>
-      <Pie options={options} data={data} />
+    <div className="d-flex flex-row justify-content-center w-100" style={{ height: '550px' }}>
+      <Pie options={options} data={data} style={{ width: '100%', height: '550px' }} />
     </div>
   );
 };

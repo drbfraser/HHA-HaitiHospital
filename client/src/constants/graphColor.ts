@@ -1,7 +1,7 @@
 import { AnalyticsMap } from 'pages/analytics/Analytics';
 
 export const ALPHA_VALUE_MEDIUM = 0.5;
-export const ALPHA_VALUE_HIGH = 0.7;
+export const ALPHA_VALUE_HIGH = 0.8;
 
 export const duplicateColor = (analyticsData: AnalyticsMap) => {
   let colors: string[] = [];

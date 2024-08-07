@@ -27,6 +27,7 @@
     "i18next-browser-languagedetector": "^7.2.0",
     "jspdf": "^2.5.1",
     "lodash": "^4.17.21",
+    "mern-boilerplate": "file:",
     "moment": "2.24.0",
     "react": "^16.14.0",
     "react-bootstrap": "^2.0.2",

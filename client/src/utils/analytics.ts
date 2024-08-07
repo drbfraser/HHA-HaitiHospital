@@ -240,21 +240,35 @@ export const prepareAggregateLabels = (analyticsData: AnalyticsMap, questionMap:
   return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
 };
 
-export const prepareResponseLabels = (analyticsResponses: AnalyticsResponse[]) => {
+export const prepareResponseLabels = (
+  analyticsResponses: AnalyticsResponse[],
+  analyticsMap: AnalyticsMap,
+  questionMap: QuestionMap,
+) => {
   const labels: string[] = [];
-  analyticsResponses.forEach((analyticsResponse) => {
-    const dateWithFormat = getDateForAnalytics(analyticsResponse);
-    const formattedDate = formatDateForChart(dateWithFormat);
 
-    if (isTimeInYearOnlyFormat(formattedDate)) {
-      labels.push(formattedDate);
-    } else {
-      const [month, year] = formattedDate.split(' ');
+  Object.keys(analyticsMap).forEach((departmentQuestionKey) => {
+    analyticsResponses.forEach((analyticsResponse, responseIndex) => {
+      if (responseIndex >= analyticsMap[departmentQuestionKey].length) {
+        return;
+      }
+      const dateWithFormat = getDateForAnalytics(analyticsResponse);
+      const formattedDate = formatDateForChart(dateWithFormat);
 
-      const translatedMonth = i18next.t(`months.${month}`);
+      if (isTimeInYearOnlyFormat(formattedDate)) {
+        labels.push(formattedDate);
+      } else {
+        const [month, year] = formattedDate.split(' ');
 
-      labels.push(`${translatedMonth} ${year}`);
-    }
+        const translatedMonth = i18next.t(`months.${month}`);
+
+        const translatedQuestion = translateChartLabel(departmentQuestionKey, questionMap);
+
+        const translatedIn = i18next.t(`analyticsIn`);
+
+        labels.push(`${translatedQuestion} ${translatedIn} ${translatedMonth} ${year}`);
+      }
+    });
   });
 
   return labels;
