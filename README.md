@@ -342,15 +342,6 @@ To do so:
 5. run: `cd server`
 6. run: `npm run seed`
 
-## Accessing Cypress Test Results
-
-The Cypress test results are automatically uploaded as an artifact in each CI/CD run. You can access them by:
-
-1. Navigating to the "Actions" tab 
-2. Finding the relevant workflow run
-3. Going to the "Artifacts" section.
-4. Downloading "cypress-test-results" locally as an html file
-
 ## License
 
 GNU GPL

@@ -1,4 +1,4 @@
-import { QUESTION_FOR_REGEX, QUESTION_IDENTIFIER_PREFIX } from 'constants/strings';
+import { QUESTION_FOR_REGEX } from 'constants/strings';
 import { QuestionPromptUI } from 'pages/analytics/Analytics';
 
 export const toSnakeCase = (str: string) => str.toLowerCase().replaceAll(' ', '_');
@@ -14,9 +14,7 @@ export const reformatQuestionPrompt = (questionId: string, questionPrompt: strin
 
   questionPrompt = questionPrompt.replace(questionForRegex, '');
 
-  // represent question display string in the format (Q <question id>)-<question prompt>
-
-  return `(${QUESTION_IDENTIFIER_PREFIX} ${formattedQuestionId})-${questionPrompt}`;
+  return formattedQuestionId + '-' + questionPrompt;
 };
 
 export const createAnalyticsKey = (department: string, questionId: string) => {

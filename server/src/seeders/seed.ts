@@ -631,8 +631,8 @@ export const seedReports = async () => {
 
     const defaultReports = [
       { defaultReport: reports.rehab, user: users[0] },
-      { defaultReport: reports.nicupaeds, user: users[1] },
-      { defaultReport: reports.maternity, user: users[2] },
+      { defaultReport: reports.maternity, user: users[1] },
+      { defaultReport: reports.nicupaeds, user: users[2] },
       { defaultReport: reports.communityHealth, user: users[3] },
     ];
 

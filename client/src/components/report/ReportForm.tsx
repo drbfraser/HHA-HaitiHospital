@@ -242,16 +242,6 @@ const ReportForm = ({
             suffixName=""
           />
         </Group>
-        <div className="mt-2 w-50">
-          <Pagination
-            className="pagination-bar"
-            currentPage={currentPage}
-            onPageChange={(page) => setCurrentPage(page)}
-            pageSize={pageSize}
-            totalCount={reportData.getPagination().length * pageSize}
-          />
-        </div>
-
         <div className="d-flex gap-2">
           <SubmitButton
             buttonText={t(`button.${btnText.toLowerCase()}`)}
@@ -272,6 +262,14 @@ const ReportForm = ({
           <p>{submitTooltipText}</p>
         </div>
       </form>
+
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        onPageChange={(page) => setCurrentPage(page)}
+        pageSize={pageSize}
+        totalCount={reportData.getPagination().length * pageSize}
+      />
     </div>
   );
 };
