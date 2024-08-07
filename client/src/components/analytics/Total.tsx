@@ -14,10 +14,10 @@ const AnalyticsTotal = ({ analyticsData, questionMap }: AnalyticsOverviewProps) 
   const { t } = useTranslation();
 
   return (
-    <Container>
+    <Container className="mx-0" fluid>
       <Col>
         <h4 className="text-secondary">{t('analyticsTotal')}</h4>
-        <div className="d-flex flex-row" style={{ gap: '15px', overflowX: 'auto' }}>
+        <div className="d-flex flex-wrap w-100 " style={{ gap: '15px' }}>
           {Object.keys(analyticsData).map((departmentPlusQuestion, index) => {
             const [department, questionId] = separateDepartmentAndQuestion(departmentPlusQuestion);
 

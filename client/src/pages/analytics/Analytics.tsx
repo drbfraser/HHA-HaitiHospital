@@ -339,13 +339,17 @@ const Analytics = () => {
       return;
     }
 
-    html2canvas(capturedComponent!).then((canvas) => {
+    html2canvas(capturedComponent!, { scale: window.devicePixelRatio }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('landscape', 'mm', 'a4', true);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
+      // make the pdf landscape or portrait depending on dimensions of capture
+      const pdf =
+        imgWidth >= imgHeight
+          ? new jsPDF('landscape', 'mm', 'a4', true)
+          : new jsPDF('portrait', 'mm', 'a4', true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
       // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
       // find points to center image horizontally and vertically
@@ -499,7 +503,7 @@ const Analytics = () => {
 
             <Modal show={isModalOpen} onHide={handleClose}>
               <Modal.Header closeButton>
-                <Modal.Title>Edit Chart Title</Modal.Title>
+                <Modal.Title>{t('editChartTitle')}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <textarea
@@ -514,13 +518,13 @@ const Analytics = () => {
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="primary" onClick={handleReset}>
-                  Reset
+                  {t('editChartTitleReset')}
                 </Button>
                 <Button variant="primary" onClick={handleSave}>
-                  Save
+                  {t('editChartTitleSave')}
                 </Button>
                 <Button variant="secondary" onClick={handleClose}>
-                  Cancel
+                  {t('editChartTitleCancel')}
                 </Button>
               </Modal.Footer>
             </Modal>
