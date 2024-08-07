@@ -131,12 +131,9 @@ const getDateForAnalytics = (analyticsData: AnalyticsResponse) => {
   return dateWithFormat;
 };
 
-const compareDate = (
-  analyticsResponse1: AnalyticsResponse,
-  analyticsResponse2: AnalyticsResponse,
-) => {
-  const dateWithFormat1 = getDateForAnalytics(analyticsResponse1);
-  const dateWithFormat2 = getDateForAnalytics(analyticsResponse2);
+const compareDate = (timeData1: AnalyticsResponse, timeData2: AnalyticsResponse) => {
+  const dateWithFormat1 = getDateForAnalytics(timeData1);
+  const dateWithFormat2 = getDateForAnalytics(timeData2);
 
   return compareDateWithFormat(dateWithFormat1, dateWithFormat2);
 };

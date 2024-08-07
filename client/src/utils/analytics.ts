@@ -240,53 +240,83 @@ export const prepareAggregateLabels = (analyticsData: AnalyticsMap, questionMap:
   return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
 };
 
-export const prepareResponseLabels = (
-  analyticsResponses: AnalyticsResponse[],
-  analyticsMap: AnalyticsMap,
+const prepareTimeLabelsHelper = (
+  timeDataForQuestion: AnalyticsResponse[],
   questionMap: QuestionMap,
+  departmentQuestionKey: string,
 ) => {
   const labels: string[] = [];
+  timeDataForQuestion.forEach((timeData) => {
+    const dateWithFormat = getDateForAnalytics(timeData);
+    const formattedDate = formatDateForChart(dateWithFormat);
 
-  Object.keys(analyticsMap).forEach((departmentQuestionKey) => {
-    analyticsResponses.forEach((analyticsResponse, responseIndex) => {
-      if (responseIndex >= analyticsMap[departmentQuestionKey].length) {
-        return;
-      }
-      const dateWithFormat = getDateForAnalytics(analyticsResponse);
-      const formattedDate = formatDateForChart(dateWithFormat);
+    if (isTimeInYearOnlyFormat(formattedDate)) {
+      labels.push(formattedDate);
+    } else {
+      const [month, year] = formattedDate.split(' ');
 
-      if (isTimeInYearOnlyFormat(formattedDate)) {
-        labels.push(formattedDate);
-      } else {
-        const [month, year] = formattedDate.split(' ');
+      const translatedMonth = i18next.t(`months.${month}`);
 
-        const translatedMonth = i18next.t(`months.${month}`);
+      const translatedQuestion = translateChartLabel(departmentQuestionKey, questionMap);
 
-        const translatedQuestion = translateChartLabel(departmentQuestionKey, questionMap);
+      const translatedIn = i18next.t(`analyticsIn`);
 
-        const translatedIn = i18next.t(`analyticsIn`);
+      // template for label is, e.g, 1-Beds-Available for Rehab in May 2024
 
-        labels.push(`${translatedQuestion} ${translatedIn} ${translatedMonth} ${year}`);
-      }
-    });
+      labels.push(`${translatedQuestion} ${translatedIn} ${translatedMonth} ${year}`);
+    }
   });
 
   return labels;
 };
 
-export const prepareAnalyticsAnswers = (analyticsData: AnalyticsMap) => {
-  let analyticResponses: AnalyticsResponse[] = [];
+export const prepareTimeLabels = (
+  analyticsTimeData: AnalyticsResponse[],
+  analyticsMap: AnalyticsMap,
+  questionMap: QuestionMap,
+) => {
+  let labels: string[] = [];
 
-  Object.keys(analyticsData).forEach((departmentQuestionKey) => {
-    const analyticsResponse = analyticsData[departmentQuestionKey].map(
-      (analyticResponse) => analyticResponse,
+  // algorithm:
+  // - time data is sorted, but time data in question map is not sorted
+  // - the goal is to create labels in a sorted fashion by following the time data's order
+  // - loop through each question
+  //  - slice the time data from the previous index to the previous index + current time data length (contains the current question's time data)
+  //  - gather the labels generated
+
+  let timeDataIndex = 0;
+
+  Object.keys(analyticsMap).forEach((departmentQuestionKey) => {
+    const timeDataLength = analyticsMap[departmentQuestionKey].length;
+    const timeDataForQuestion = analyticsTimeData.slice(
+      timeDataIndex,
+      timeDataIndex + timeDataLength,
+    );
+    timeDataIndex += timeDataLength;
+    const labelsForQuestion = prepareTimeLabelsHelper(
+      timeDataForQuestion,
+      questionMap,
+      departmentQuestionKey,
     );
 
-    analyticsResponse.sort((analyticsResponse1, analyticsResponse2) =>
-      compareDate(analyticsResponse1, analyticsResponse2),
-    );
-    analyticResponses = analyticResponses.concat(analyticsResponse);
+    labels = labels.concat(labelsForQuestion);
   });
 
-  return analyticResponses;
+  return labels;
+};
+
+export const prepareTimeData = (analyticsData: AnalyticsMap) => {
+  // time data has to be sorted so the pie chart displays the data by month or year in ascending order
+  // note that only time data in a question will be sorted and not the entire time data across all questions
+
+  let analyticsTimeData: AnalyticsResponse[] = [];
+
+  Object.keys(analyticsData).forEach((departmentQuestionKey) => {
+    const timeData = analyticsData[departmentQuestionKey];
+
+    timeData.sort((timeData1, timeData2) => compareDate(timeData1, timeData2));
+    analyticsTimeData = analyticsTimeData.concat(timeData);
+  });
+
+  return analyticsTimeData;
 };

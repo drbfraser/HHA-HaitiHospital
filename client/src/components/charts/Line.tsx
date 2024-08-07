@@ -10,7 +10,7 @@ import {
   ChartData,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { createDefaultChartOptions } from './options';
+import { createDefaultChartOptions } from './Options';
 import { ChartProps, DataSet } from './ChartSelector';
 import { reformatQuestionPrompt } from 'utils/string';
 import {

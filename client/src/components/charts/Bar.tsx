@@ -9,7 +9,7 @@ import {
   ChartData,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { createDefaultChartOptions } from './options';
+import { createDefaultChartOptions } from './Options';
 import { ChartProps, DataSet } from './ChartSelector';
 import {
   findQuestion,

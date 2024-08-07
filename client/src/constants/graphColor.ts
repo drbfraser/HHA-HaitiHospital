@@ -3,15 +3,17 @@ import { AnalyticsMap } from 'pages/analytics/Analytics';
 export const ALPHA_VALUE_MEDIUM = 0.5;
 export const ALPHA_VALUE_HIGH = 0.8;
 
-export const duplicateColor = (analyticsData: AnalyticsMap) => {
+export const duplicateColors = (analyticsData: AnalyticsMap) => {
   let colors: string[] = [];
 
   const graphColorTint = getGraphTintColors(ALPHA_VALUE_HIGH);
 
   Object.keys(analyticsData).forEach((departmentQuestionKey, index) => {
-    const analyticsResponseLength = analyticsData[departmentQuestionKey].length;
+    const timeDataLength = analyticsData[departmentQuestionKey].length;
 
-    const duplicateColors = Array(analyticsResponseLength).fill(
+    // each time data set that belongs to a specific question should have the same color
+    const duplicateColors = Array<string>(timeDataLength).fill(
+      //round robin through colors
       graphColorTint[index % graphColorTint.length],
     );
 
