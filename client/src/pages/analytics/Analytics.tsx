@@ -440,6 +440,9 @@ const Analytics = () => {
               <Button variant="outline-dark" onClick={handleShowQuestionsModal}>
                 {t('analyticsQuestion')}
               </Button>
+              <Button variant="outline-dark" onClick={handleTitleClick}>
+                {t('editChartTitle')}
+              </Button>
 
               <AnalyticsQuestionModal
                 showModal={showModalQuestions}
@@ -482,17 +485,6 @@ const Analytics = () => {
           <Col className="mt-5">
             <div ref={pdfRef}>
               <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
-              <div
-                onClick={handleTitleClick}
-                className="form-control mb-4 w-100 fs-3 text-center fw-bold text-truncate overflow-hidden m-3"
-                style={{
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'blue')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'black')}
-              >
-                {chartTitle}
-              </div>
               <ChartSelector
                 type={selectedChart}
                 analyticsData={analyticsMap}

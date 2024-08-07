@@ -7,7 +7,11 @@ export const createDefaultChartOptions = (chartTitle: string) => {
         position: 'top' as const,
       },
       title: {
-        display: false,
+        display: true,
+        text: chartTitle,
+        font: {
+          size: 30,
+        },
       },
     },
   };
