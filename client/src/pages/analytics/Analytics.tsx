@@ -1,7 +1,7 @@
 import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import Layout from 'components/layout';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Button, Col } from 'react-bootstrap';
+import { Button, Col, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAllDepartments } from 'api/department';
 import { useHistory } from 'react-router-dom';
@@ -109,6 +109,9 @@ const Analytics = () => {
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
 
   const [analyticsMap, setAnalyticsMap] = useState<AnalyticsMap>({});
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tempTitle, setTempTitle] = useState(chartTitle);
 
   const pdfRef = useRef<HTMLDivElement>(null);
 
@@ -313,8 +316,10 @@ const Analytics = () => {
   }, [departmentsLoaded, questionMap, timeOptions, selectedAggregateBy, history]);
 
   useEffect(() => {
-    automaticUpdateChartTitle();
-  }, [questionMap, timeOptions, selectedAggregateBy, selectedChart, i18n.language]);
+    if (!isUserModified) {
+      automaticUpdateChartTitle();
+    }
+  }, [questionMap, timeOptions, selectedAggregateBy, selectedChart, i18n.language, isUserModified]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => {
@@ -396,6 +401,30 @@ const Analytics = () => {
     setSelectedChart(chart);
   };
 
+  const handleTitleClick = () => {
+    setTempTitle(chartTitle);
+    setIsModalOpen(true);
+  };
+
+  const handleTitleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setTempTitle(e.target.value);
+  };
+
+  const handleSave = () => {
+    setChartTitle(tempTitle);
+    setIsUserModified(true);
+    setIsModalOpen(false);
+  };
+
+  const handleReset = () => {
+    setIsUserModified(false);
+    setIsModalOpen(false);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Layout title={t('headerAnalytics')}>
       {isLoading ? (
@@ -447,14 +476,19 @@ const Analytics = () => {
           </div>
 
           <Col className="mt-5">
-            <textarea
-              value={chartTitle}
-              onChange={(e) => handleManualTitleChange(e)}
-              className="form-control mb-4"
-              style={{ width: '100%', fontSize: '1.5rem', height: '1.5em', resize: 'none' }}
-            />
-            <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
             <div ref={pdfRef}>
+              <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
+              <div
+                onClick={handleTitleClick}
+                className="form-control mb-4 w-100 fs-3 text-center fw-bold text-truncate overflow-hidden m-3"
+                style={{
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'blue')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'black')}
+              >
+                {chartTitle}
+              </div>
               <ChartSelector
                 type={selectedChart}
                 analyticsData={analyticsMap}
@@ -462,6 +496,35 @@ const Analytics = () => {
                 title={chartTitle}
               />
             </div>
+
+            <Modal show={isModalOpen} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Chart Title</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <textarea
+                  value={tempTitle}
+                  onChange={handleTitleChange}
+                  className="w-100 form-control fs-3 text-center fw-bold"
+                  style={{
+                    minHeight: '10rem',
+                    resize: 'none',
+                  }}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="primary" onClick={handleReset}>
+                  Reset
+                </Button>
+                <Button variant="primary" onClick={handleSave}>
+                  Save
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  Cancel
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
             <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
               {t('analysisDisplayGeneratePDF')}
             </button>

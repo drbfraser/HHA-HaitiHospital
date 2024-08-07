@@ -7,8 +7,7 @@ export const createDefaultChartOptions = (chartTitle: string) => {
         position: 'top' as const,
       },
       title: {
-        display: true,
-        text: chartTitle,
+        display: false,
       },
     },
   };
