@@ -11,6 +11,7 @@ import employeeOfTheMonthRoutes from './employeeOfTheMonth';
 import templateRoutes from './template';
 import departmentRoutes from './departments';
 import messageBoardCommentRoutes from './messageBoardComment';
+import analysisRoutes from './analytics';
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/employee-of-the-month', employeeOfTheMonthRoutes);
 router.use('/template', templateRoutes);
 router.use('/department', departmentRoutes);
 router.use('/message-board/comments/', messageBoardCommentRoutes);
+router.use('/analytics', analysisRoutes);
 
 export default router;

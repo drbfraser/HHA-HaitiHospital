@@ -1,9 +1,9 @@
 {
   "info": {
-    "_postman_id": "299525cb-8394-4260-8db5-90e34c202a84",
+    "_postman_id": "fbec0fd7-4c68-4cab-865c-8e673e1a5cf5",
     "name": "hha",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "30678287"
+    "_exporter_id": "33437056"
   },
   "item": [
     {
@@ -876,11 +876,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8000/api/report/department/4",
+              "raw": "http://localhost:8000/api/report/department/66623f46a596535e40d39bdd",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8000",
-              "path": ["api", "report", "department", "4"]
+              "path": ["api", "report", "department", "66623f46a596535e40d39bdd"]
             }
           },
           "response": []
@@ -913,7 +913,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"month\": \"6\",\r\n    \"year\": \"2022\"\r\n}",
+              "raw": "{\r\n    \"departmentId\": \"66623f46a596535e40d39bdd\",\r\n    \"reportMonth\": \"2024-01-01T08:00:00.000Z\",\r\n    \"serializedReport\": {},\r\n    \"submittedUserId\": \"66623f46a596535e40d39be8\",\r\n    \"submittedBy\": \"Ronald Hyatt\",\r\n    \"isDraft\": true\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -921,11 +921,11 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8000/api/report/generate/2",
+              "raw": "http://localhost:8000/api/report/",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8000",
-              "path": ["api", "report", "generate", "2"]
+              "path": ["api", "report", ""]
             }
           },
           "response": []
@@ -964,7 +964,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"meta\": {\r\n        \"id\": \"0708c27b746638607aba06578040270a\",\r\n        \"department\": {\r\n            \"id\": \"1\",\r\n            \"name\": \"Maternity\"\r\n        },\r\n        \"submittedDate\": \"April 9, 2022, 5:13:12 PM\",\r\n        \"submittedUserId\": \"624a6e2cbae332370ccd329f\"\r\n    },\r\n    \"items\": [\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 1\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        },\r\n        {\r\n            \"type\": \"numeric\",\r\n            \"description\": \"item 2\",\r\n            \"answer\": [\r\n                [\r\n                    \"0\"\r\n                ]\r\n            ]\r\n        }\r\n    ]\r\n}",
+              "raw": "{\r\n    \"id\": \"666757ab7e9e11769488a487\",\r\n    \"serializedReport\": {},\r\n    \"submittedBy\": \"Ronald Hyatt\",\r\n    \"isDraft\": true\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -972,11 +972,11 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8000/api/report/2a5c293a4d18a189ae3216d0ca5af349",
+              "raw": "http://localhost:8000/api/report/",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8000",
-              "path": ["api", "report", "2a5c293a4d18a189ae3216d0ca5af349"]
+              "path": ["api", "report", ""]
             }
           },
           "response": []
@@ -1044,6 +1044,73 @@
                 {
                   "key": "XSRF-Token",
                   "value": "{{xsrf_token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analysis",
+      "item": [
+        {
+          "name": "Get analysis for a department",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/analytics?departmentIds=666aaa9eb972f064b492ddea&questionId=1&endDate=2025-05-30T14:00:00Z&startDate=2024-02-30T14:00:00Z&timeStep=month&aggregateBy=month",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "analytics"],
+              "query": [
+                {
+                  "key": "departmentIds",
+                  "value": "666aaa9eb972f064b492ddea"
+                },
+                {
+                  "key": "questionId",
+                  "value": "1"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-05-30T14:00:00Z"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2024-02-30T14:00:00Z"
+                },
+                {
+                  "key": "timeStep",
+                  "value": "month"
+                },
+                {
+                  "key": "aggregateBy",
+                  "value": "month"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get questions for a department",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/analytics/questions?departmentId=666aaa9eb972f064b492ddea",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "analytics", "questions"],
+              "query": [
+                {
+                  "key": "departmentId",
+                  "value": "666aaa9eb972f064b492ddea"
                 }
               ]
             }

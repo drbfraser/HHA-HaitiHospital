@@ -19,22 +19,31 @@ describe('French Translation Tests', function () {
     cy.url().should('include', '/home');
 
     cy.get('.sidebarDiv').find('ul li').as('Sidebar Items');
-    cy.get('@Sidebar Items').eq(14).click();
+    cy.get('@Sidebar Items').eq(15).click();
+  });
+
+  it('Should Check That Analytics Is In French', function () {
+    cy.get('@Sidebar Items').eq(3).click();
+    cy.get('[data-testid="header"]').should('include.text', fr.sidebarAnalytics);
+    cy.get('[data-testid="select-department-question-button"]').should(
+      'include.text',
+      fr.analyticsQuestion,
+    );
   });
 
   it('Should Check That Messageboard Is In French', function () {
-    cy.get('@Sidebar Items').eq(3).click();
+    cy.get('@Sidebar Items').eq(4).click();
     cy.get('[data-testid="header"]').should('include.text', fr.headerMessageBoard);
     cy.get('[data-testid="add-message-button"]').should('include.text', fr.messageBoardAddMessage);
   });
 
   it('Should Check That Leaderboard Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(4).click();
+    cy.get('@Sidebar Items').eq(5).click();
     cy.get('[data-testid="header"]').should('include.text', fr.headerLeaderBoard);
   });
 
   it('Should Check That Case Study Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(5).click();
+    cy.get('@Sidebar Items').eq(6).click();
     cy.get('[data-testid="header"]').should('include.text', fr.headerCaseStudy);
     cy.get('[data-testid="add-case-study-button"]').should(
       'include.text',
@@ -46,12 +55,12 @@ describe('French Translation Tests', function () {
   });
 
   it('Should Check That Bio Support Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(6).click();
+    cy.get('@Sidebar Items').eq(7).click();
     cy.get('[data-testid="header"]').should('include.text', fr.headerBiomechanicalSupport);
   });
 
   it('Should Check That EOTM Page Is In French', function () {
-    cy.get('@Sidebar Items').eq(7).click();
+    cy.get('@Sidebar Items').eq(8).click();
     cy.get('[data-testid="header"]').should('include.text', fr.headerEmployeeOfTheMonth);
     cy.get('[data-testid="add-eotm-button"]').should('include.text', fr.employeeOfTheMonthAdd);
   });

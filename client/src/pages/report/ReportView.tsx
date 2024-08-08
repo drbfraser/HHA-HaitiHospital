@@ -44,7 +44,9 @@ const ReportView = () => {
   const report_id = useLocation().pathname.split('/')[2];
 
   const getReportMonthString = () =>
-    reportMonth?.toLocaleDateString(userLocale, monthYearOptions) || '';
+    reportMonth
+      ? `${reportMonth.getFullYear()}-${String(reportMonth.getMonth() + 1).padStart(2, '0')}`
+      : '';
 
   const confirmEdit = (event: FormEvent<HTMLFormElement>, isDraft?: boolean) => {
     event.preventDefault();
@@ -63,10 +65,6 @@ const ReportView = () => {
     setAreChangesMade(true);
     setReportMonth(reportMonth);
     setMetaData((prev) => ({ ...prev!, reportMonth: reportMonth }));
-  };
-
-  const handleExportWithComponent = () => {
-    pdfExportComponent.current?.save();
   };
 
   const editBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -147,12 +145,14 @@ const ReportView = () => {
       window.onbeforeunload = () => false;
     };
   }, [areChangesMade, readOnly]);
+
   if (!isLoading && !report)
     return (
       <Layout showBackButton>
         <h1>{t('reportNotFound')}</h1>
       </Layout>
     );
+
   return (
     <>
       {!!report && (
@@ -219,9 +219,6 @@ const ReportView = () => {
               {/* Other buttons */}
               {readOnly && !editMonth && (
                 <span>
-                  <button className="btn btn-outline-dark mr-3" onClick={handleExportWithComponent}>
-                    {t('departmentReportDisplayGeneratePDF')}
-                  </button>
                   <XlsxGenerator questionItems={questionItems} metaData={metaData} />
                 </span>
               )}
@@ -245,7 +242,7 @@ const ReportView = () => {
           {readOnly && !editMonth && (
             <div className="visually-hidden">
               <PDFExport
-                fileName={`${department}_${getReportMonthString().replace(/\s/g, '')}__${metaData?.submittedBy}`}
+                fileName={`${getReportMonthString()} ${department} - Report`}
                 paperSize="A4"
                 ref={pdfExportComponent}
                 scale={0.75}

@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { ReportMetaData } from '@hha/common';
 import { processCompositionOrSpecializedQuestion, processTableQuestion } from './QuestionRows';
 import { monthYearOptions, userLocale } from 'constants/date';
+import { useDepartmentData } from 'hooks';
+import { useState } from 'react';
 
 interface ReportType {
   questionItems: any[];
@@ -17,7 +19,13 @@ interface ExpandableQuestionList {
 }
 
 export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
+  const { departmentIdKeyMap } = useDepartmentData();
   const { t } = useTranslation();
+  const getReportMonthString = () =>
+    metaData?.reportMonth
+      ? `${metaData?.reportMonth.getFullYear()}-${String(metaData?.reportMonth.getMonth() + 1).padStart(2, '0')}`
+      : '';
+
   const generateQuestionRows = (language: string): any => {
     const processSelectionQuestion = (selectionItem: any): QuestionRow[] => {
       const array: QuestionRow[] = [];
@@ -240,7 +248,7 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
     };
   };
 
-  const generateExcel = () => {
+  const generateExcel = (metaData: ReportMetaData | null) => {
     // Create a new Excel Workbook
     const workbook = new ExcelJS.Workbook();
     const languages = ['en', 'fr'];
@@ -262,15 +270,20 @@ export const XlsxGenerator = ({ questionItems, metaData }: ReportType) => {
     }
 
     workbook.xlsx.writeBuffer().then((data) => {
+      const department = metaData?.departmentId
+        ? departmentIdKeyMap.get(metaData.departmentId)
+        : null;
+      const filename = `${getReportMonthString()} ${department} - Data.xlsx`;
+
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'data.xlsx');
+      saveAs(blob, filename);
     });
   };
 
   return (
-    <button className="btn btn-outline-dark mr-3" onClick={generateExcel}>
+    <button className="btn btn-outline-dark mr-3" onClick={() => generateExcel(metaData)}>
       {t('departmentReportDisplayDownloadExcel')}
     </button>
   );

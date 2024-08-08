@@ -10,8 +10,13 @@ const storage = multer.diskStorage({
     cb(null, 'public/images');
   },
   filename: function (req, file, cb) {
-    const fileName = file.originalname.toLowerCase().split(' ').join('-');
-    cb(null, `case-study-${Date.now()}-${fileName}`);
+    // in the testing environment, skip the step of saving a new file so it doesn't clutter the project.
+    if (process.env.NODE_ENV === 'test') {
+      cb(null, file.originalname);
+    } else {
+      const fileName = file.originalname.toLowerCase().split(' ').join('-');
+      cb(null, `case-study-${Date.now()}-${fileName}`);
+    }
   },
 });
 
@@ -37,6 +42,7 @@ const upload = multer({
  * @param inputField - is a field of a multipart form with which multer parses the media
  */
 export const ImageUploader = (inputField: string, required = true) => {
+  //TODO: figure out how to prevent files to be created when testing
   return (req: Request, res: Response, next: NextFunction) => {
     const uploadSingleFile = upload.single(inputField);
 
