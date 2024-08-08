@@ -20,7 +20,6 @@ describe('General Report Page Tests', function () {
 
     generalReportPage.visit();
   });
-
   describe('Navigation Tests', function () {
     it('Should Successfully Navigate to the Report Page', function () {
       generalReportPage.clickCreateNewReport();
@@ -46,9 +45,7 @@ describe('General Report Page Tests', function () {
 
   describe('Update Report Tests', function () {
     beforeEach(() => {
-      cy.intercept('PUT', `${serverUrl}/api/report`, {
-        statusCode: 200,
-      }).as('updateReport');
+      cy.intercept('PUT', `${serverUrl}/api/report`).as('updateReport');
     });
 
     it('Should Successfully Update Report Form', function () {
@@ -60,7 +57,9 @@ describe('General Report Page Tests', function () {
       generalReportPage.clickConfirmationModalConfirmButton();
 
       cy.wait('@updateReport').then((intercept: Interception) => {
+        expect(intercept.request.body).to.have.property('isDraft', false);
         expect(intercept.response?.statusCode).to.equal(200);
+        expect(intercept.response?.body.message).to.equal('Report updated');
       });
     });
 
@@ -71,7 +70,9 @@ describe('General Report Page Tests', function () {
       generalReportPage.clickConfirmationModalConfirmButton();
 
       cy.wait('@updateReport').then((intercept: Interception) => {
+        expect(intercept.request.body).to.have.property('isDraft', true);
         expect(intercept.response?.statusCode).to.equal(200);
+        expect(intercept.response?.body.message).to.equal('Report updated');
       });
     });
 
@@ -82,7 +83,9 @@ describe('General Report Page Tests', function () {
       generalReportPage.clickConfirmationModalConfirmButton();
 
       cy.wait('@updateReport').then((intercept: Interception) => {
+        expect(intercept.request.body).to.have.property('isDraft', false);
         expect(intercept.response?.statusCode).to.equal(200);
+        expect(intercept.response?.body.message).to.equal('Report updated');
       });
     });
   });
