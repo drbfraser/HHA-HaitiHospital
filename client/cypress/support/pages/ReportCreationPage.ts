@@ -4,7 +4,7 @@ export class ReportCreationPage {
     return this;
   }
   chooseDepartmentTypeDropdown() {
-    cy.get('[data-testid="department-type-dropdown"]').select(1);
+    cy.get('[data-testid="department-type-dropdown"]').select('Rehab');
   }
   selectMonthDropdown() {
     cy.get('[data-testid="month-select-dropdown"]').select(1);
