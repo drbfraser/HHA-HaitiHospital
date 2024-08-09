@@ -36,10 +36,6 @@ export const Report = () => {
       (department) => department.id === user.userDetails.department.id,
     );
   }
-  const reportableDepartments = new Set(['NICU/Paeds', 'Maternity', 'Community & Health', 'Rehab']);
-  const isReportableDepartment = (department: Department) => {
-    return reportableDepartments.has(department.name);
-  };
   const isMonthAndDepartmentSelected = !!reportMonth && !!currentDepartment;
 
   const { t, i18n } = useTranslation();
@@ -176,7 +172,7 @@ export const Report = () => {
           <ReportAndTemplateForm
             departmentLabel={t('headerReportDepartmentType')}
             monthLabel={t('headerReportMonth')}
-            departments={departments.filter(isReportableDepartment)}
+            departments={departments.filter((dep) => dep.hasReport)}
             currentDepartment={currentDepartment!}
             setCurrentDepartment={setCurrentDepartment}
             reportMonth={reportMonth!}

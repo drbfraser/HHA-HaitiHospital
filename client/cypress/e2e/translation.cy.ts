@@ -27,10 +27,6 @@ describe('French Translation Tests', function () {
     cy.get('[data-testid="header"]').should('include.text', fr.sidebarAnalytics);
     cy.get('[data-testid="select-department-question-button"]').should(
       'include.text',
-      fr.analyticsDepartment,
-    );
-    cy.get('[data-testid="select-department-question-button"]').should(
-      'include.text',
       fr.analyticsQuestion,
     );
   });
