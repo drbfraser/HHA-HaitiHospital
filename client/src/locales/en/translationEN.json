@@ -477,7 +477,7 @@
   "dropdown": {
     "month": "Month",
     "year": "Year",
-    "bar": "Bar",
+    "bar": "Column",
     "line": "Line",
     "pie": "Pie"
   },

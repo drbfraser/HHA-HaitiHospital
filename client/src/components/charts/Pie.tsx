@@ -44,6 +44,8 @@ export type Data = {
 };
 
 const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
+  const { t } = useTranslation();
+
   const aggregateData = prepareAggregateData(analyticsData);
   const analyticsTimeData = prepareTimeData(analyticsData);
   const aggregateLabels = prepareAggregateLabels(analyticsData, questionMap);
@@ -77,7 +79,7 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
   return (
     <div className="d-flex flex-row justify-content-center w-100" style={{ height: '550px' }}>
       <Pie
-        options={createPieChartOptions('Pie Chart', data)}
+        options={createPieChartOptions(t('analyticsPieChart'), data)}
         data={data}
         style={{ width: '100%', height: '550px' }}
       />

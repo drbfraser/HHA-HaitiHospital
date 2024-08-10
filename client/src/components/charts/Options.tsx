@@ -28,7 +28,8 @@ export const createDefaultChartOptions = (chartTitle: string) => {
 
 export const createPieChartOptions = (chartTitle: string, data: Data) => {
   const options = {
-    ...createDefaultChartOptions(chartTitle),
+    responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       tooltip: {
         callbacks: {
@@ -98,6 +99,11 @@ export const createPieChartOptions = (chartTitle: string, data: Data) => {
 
           legend.chart.update();
         },
+      },
+
+      title: {
+        display: true,
+        text: chartTitle,
       },
     },
   };
