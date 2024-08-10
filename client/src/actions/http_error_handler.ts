@@ -16,7 +16,6 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
     console.log(e.message);
     return;
   }
-
   switch (err.response?.status) {
     case UNAUTHORIZED_CODE: {
       history.push('/unauthorized');
@@ -35,7 +34,7 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
       const regex = /Username.*exists/i;
       const responseData = err.response?.data;
 
-      if (responseData && regex.test(responseData)) {
+      if (responseData && regex.test(responseData.toString())) {
         toast.error(`${toastMsg}: Username exists`);
       } else {
         toast.error(`${toastMsg}: Invalid input`);
@@ -44,7 +43,7 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
       break;
     }
     case UNPROCCESABLENTITY_CODE: {
-      toast.error(ErrorListToast(toastMsg, err.response.data.errors), {
+      toast.error(ErrorListToast(toastMsg, err.message), {
         autoClose: false,
         progress: 1,
       });
@@ -54,7 +53,7 @@ const DbErrorHandler = (e: Error | AxiosError, history: History, toastMsg: strin
       console.error('Error Needs a Handler');
       throw new Error('Error Needs a Handler');
   }
-  throw new Error(err.response?.data);
+  throw new Error(err.message);
 };
 
 export default DbErrorHandler;
