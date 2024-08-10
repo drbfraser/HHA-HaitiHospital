@@ -109,9 +109,7 @@ describe('General Report Page Tests', function () {
 
   describe('Delete Report Tests', function () {
     it('Should Successfully Delete Report', function () {
-      cy.intercept('DELETE', `${serverUrl}/api/report/*`, {
-        statusCode: 204,
-      }).as('deleteReport');
+      cy.intercept('DELETE', `${serverUrl}/api/report/*`).as('deleteReport');
       generalReportPage.clickDeleteReportButton();
       generalReportPage.clickConfirmDeleteReportButton();
       cy.wait('@deleteReport').then((intercept: Interception) => {
