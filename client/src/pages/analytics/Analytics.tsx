@@ -206,7 +206,7 @@ const Analytics = () => {
     const chartFilenames = {
       bar: t('analyticsBarChart'),
       line: t('analyticsLineChart'),
-      pie: '',
+      pie: t('analyticsPieChart'),
     };
 
     if (!capturedComponent) {
