@@ -246,10 +246,16 @@ export const translateTimeCategory = (dataSets: DataSet[]) => {
 };
 
 export const getActiveQuestionsString = (questionMap: QuestionMap): string => {
-  return Object.values(questionMap)
+  return Object.entries(questionMap)
+    .map(([key, questions]) =>
+      questions
+        .filter((question) => question.checked)
+        .map((question) => {
+          const questionText = i18n.language === 'en' ? question.en : question.fr;
+          return `[${key}] ${questionText}`;
+        }),
+    )
     .flat()
-    .filter((question) => question.checked)
-    .map((question) => (i18n.language === 'en' ? question.en : question.fr))
     .join(', ');
 };
 
