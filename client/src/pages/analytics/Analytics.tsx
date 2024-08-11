@@ -1,6 +1,6 @@
 import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import Layout from 'components/layout';
-import { CanvasHTMLAttributes, ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Button, Col, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAllDepartments } from 'api/department';
@@ -19,6 +19,7 @@ import {
   generateChartTitle,
   chartTypeNames,
   chartAggregationNames,
+  constructExport,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
@@ -291,52 +292,6 @@ const Analytics = () => {
   const handleCloseTimeOptionsModal = () => setShowModalTimeOptions(false);
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
 
-  const constructExport = (canvas: HTMLCanvasElement) => {
-    const imgData = canvas.toDataURL('image/png');
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
-    // make the pdf landscape or portrait depending on dimensions of capture
-    const pdf =
-      imgWidth >= imgHeight
-        ? new jsPDF('landscape', 'mm', 'a4', true)
-        : new jsPDF('portrait', 'mm', 'a4', true);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
-    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-    // find points to center image horizontally and vertically
-    const imgX = (pdfWidth - imgWidth * ratio) / 2;
-    const imgY = (pdfHeight - imgHeight * ratio) / 2;
-    // add chart components to the pdf
-    pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-
-    // add HHA logo as watermark
-    const logoUrl = '/hha-logo.png';
-    const logoImage = new Image();
-    logoImage.src = logoUrl;
-
-    logoImage.onload = function () {
-      // add logoImage to the pdf in the top right
-      const logoWidth = 30;
-      const logoHeight = 30;
-      // add 10mm padding on top right corner
-      const logoX = pdfWidth - logoWidth - 10;
-      const logoY = 10;
-
-      // Add the logo image to the PDF
-      pdf.addImage(logoImage, 'PNG', logoX, logoY, logoWidth, logoHeight);
-      pdf.save(
-        `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
-      );
-    };
-    logoImage.onerror = function () {
-      // if failing to load logo, save the pdf without it anyways
-      pdf.save(
-        `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
-      );
-    };
-  };
-
   const handleExportWithComponent = () => {
     console.log('Starting PDF export...');
     const capturedComponent = pdfRef.current;
@@ -347,7 +302,7 @@ const Analytics = () => {
     }
 
     html2canvas(capturedComponent!, { scale: window.devicePixelRatio }).then((canvas) => {
-      constructExport(canvas);
+      constructExport(canvas, timeOptions, selectedChart);
     });
     console.log('finished export!');
   };
