@@ -18,9 +18,29 @@ import {
   QuestionPromptUI,
   TimeOptions,
 } from 'pages/analytics/Analytics';
-import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
+import { DataSet, DataSetMap, ChartType } from 'components/charts/ChartSelector';
 import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
-import i18next from 'i18next';
+import i18next, { t } from 'i18next';
+import i18n from 'i18n';
+import jsPDF from 'jspdf';
+
+type ChartTitleParams = {
+  chartType: string;
+  questions: string;
+  dateFrom: string;
+  dateTo: string;
+  aggregateBy: string;
+};
+
+export const chartTypeNames = {
+  bar: t('analyticsBarChart'),
+  line: t('analyticsLineChart'),
+};
+
+export const chartAggregationNames = {
+  month: t('month'),
+  year: t('year'),
+};
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
   return departments.find((department) => department.name === departmentName)?.id;
@@ -223,4 +243,67 @@ export const translateTimeCategory = (dataSets: DataSet[]) => {
 
     return translatedDataSet;
   });
+};
+
+export const getActiveQuestionsString = (questionMap: QuestionMap): string => {
+  return Object.values(questionMap)
+    .flat()
+    .filter((question) => question.checked)
+    .map((question) => (i18n.language === 'en' ? question.en : question.fr))
+    .join(', ');
+};
+
+export const generateChartTitle = (params: ChartTitleParams): string => {
+  const template = t('chartTitleTemplate');
+  return template.replace(/\$\{(.*?)\}/g, (_, key) => params[key as keyof ChartTitleParams]);
+};
+
+export const constructExport = (
+  canvas: HTMLCanvasElement,
+  timeOptions: TimeOptions,
+  selectedChart: ChartType,
+) => {
+  const imgData = canvas.toDataURL('image/png');
+  const imgWidth = canvas.width;
+  const imgHeight = canvas.height;
+  // make the pdf landscape or portrait depending on dimensions of capture
+  const pdf =
+    imgWidth >= imgHeight
+      ? new jsPDF('landscape', 'mm', 'a4', true)
+      : new jsPDF('portrait', 'mm', 'a4', true);
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
+  // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
+  const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+  // find points to center image horizontally and vertically
+  const imgX = (pdfWidth - imgWidth * ratio) / 2;
+  const imgY = (pdfHeight - imgHeight * ratio) / 2;
+  // add chart components to the pdf
+  pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+  // add HHA logo as watermark
+  const logoUrl = '/hha-logo.png';
+  const logoImage = new Image();
+  logoImage.src = logoUrl;
+
+  logoImage.onload = function () {
+    // add logoImage to the pdf in the top right
+    const logoWidth = 30;
+    const logoHeight = 30;
+    // add 10mm padding on top right corner
+    const logoX = pdfWidth - logoWidth - 10;
+    const logoY = 10;
+
+    // Add the logo image to the PDF
+    pdf.addImage(logoImage, 'PNG', logoX, logoY, logoWidth, logoHeight);
+    pdf.save(
+      `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+    );
+  };
+  logoImage.onerror = function () {
+    // if failing to load logo, save the pdf without it anyways
+    pdf.save(
+      `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+    );
+  };
 };

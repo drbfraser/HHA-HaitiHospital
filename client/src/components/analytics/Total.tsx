@@ -17,7 +17,7 @@ const AnalyticsTotal = ({ analyticsData, questionMap }: AnalyticsOverviewProps) 
     <Container className="mx-0" fluid>
       <Col>
         <h4 className="text-secondary">{t('analyticsTotal')}</h4>
-        <div className="d-flex flex-wrap w-100 " style={{ gap: '15px' }}>
+        <div className="d-flex flex-wrap w-100 mb-3" style={{ gap: '15px' }}>
           {Object.keys(analyticsData).map((departmentPlusQuestion, index) => {
             const [department, questionId] = separateDepartmentAndQuestion(departmentPlusQuestion);
 

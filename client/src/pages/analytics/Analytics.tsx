@@ -1,6 +1,6 @@
 import { DropDown, DropDownMenus } from 'components/dropdown/DropdownMenu';
 import Layout from 'components/layout';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { CanvasHTMLAttributes, ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Button, Col, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAllDepartments } from 'api/department';
@@ -15,6 +15,10 @@ import {
   filterQuestionsSelected,
   findDepartmentIdByName,
   prepareAnalyticsQuery,
+  getActiveQuestionsString,
+  generateChartTitle,
+  chartTypeNames,
+  chartAggregationNames,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
 import ChartSelector, { ChartType } from 'components/charts/ChartSelector';
@@ -43,14 +47,6 @@ export type AnalyticsMap = {
   [key: string]: AnalyticsResponse[];
 };
 
-type ChartTitleParams = {
-  chartType: string;
-  questions: string;
-  dateFrom: string;
-  dateTo: string;
-  aggregateBy: string;
-};
-
 const Analytics = () => {
   const { t, i18n } = useTranslation();
 
@@ -69,7 +65,7 @@ const Analytics = () => {
 
     useEffect(() => {
       localStorage.setItem(key, JSON.stringify(value));
-    }, [key, value]);
+    }, [value]);
 
     return [value, setValue] as const;
   }
@@ -103,7 +99,10 @@ const Analytics = () => {
 
   const [chartTitle, setChartTitle] = useLocalStorage<string>('chartTitle', 'Default text');
 
-  const [isUserModified, setIsUserModified] = useLocalStorage<boolean>('isUserModified', false);
+  const [hasUserChangedTitle, setHasUserChangedTitle] = useLocalStorage<boolean>(
+    'hasUserChangedTitle',
+    false,
+  );
 
   const [showModalQuestions, setShowModalQuestions] = useState(false);
   const [showModalTimeOptions, setShowModalTimeOptions] = useState(false);
@@ -115,16 +114,6 @@ const Analytics = () => {
 
   const pdfRef = useRef<HTMLDivElement>(null);
 
-  const chartTypeNames = {
-    bar: t('analyticsBarChart'),
-    line: t('analyticsLineChart'),
-  };
-
-  const chartAggregationNames = {
-    month: t('month'),
-    year: t('year'),
-  };
-
   const resetAnalysis = () => {
     fetchDepartments();
     setTimeOptions({
@@ -135,15 +124,8 @@ const Analytics = () => {
     setSelectedAggregateBy(MONTH_LITERAL);
     setSelectedChart('bar');
     setChartTitle('Default text');
-    setIsUserModified(false);
+    setHasUserChangedTitle(false);
     localStorage.clear();
-    setTimeOptions({
-      from: defaultFromDate(),
-      to: defaultToDate(),
-      timeStep: MONTH_LITERAL,
-    });
-    setSelectedAggregateBy(MONTH_LITERAL);
-    setSelectedChart('bar');
   };
 
   const fetchDepartments = async () => {
@@ -271,39 +253,12 @@ const Analytics = () => {
     setIsLoading(false);
   };
 
-  const handleManualTitleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setChartTitle(event.target.value);
-    setIsUserModified(true);
-  };
-
-  const getActiveQuestionsString = (): string => {
-    const language = i18n.language;
-    if (language == 'en') {
-      return Object.values(questionMap)
-        .flat()
-        .filter((question) => question.checked)
-        .map((question) => question.en)
-        .join(', ');
-    } else {
-      return Object.values(questionMap)
-        .flat()
-        .filter((question) => question.checked)
-        .map((question) => question.fr)
-        .join(', ');
-    }
-  };
-
-  const generateChartTitle = (params: ChartTitleParams): string => {
-    const template = t('chartTitleTemplate');
-    return template.replace(/\$\{(.*?)\}/g, (_, key) => params[key as keyof ChartTitleParams]);
-  };
-
   const automaticUpdateChartTitle = () => {
-    if (isUserModified) return;
+    if (hasUserChangedTitle) return;
     setChartTitle(
       generateChartTitle({
         chartType: chartTypeNames[selectedChart],
-        questions: getActiveQuestionsString(),
+        questions: getActiveQuestionsString(questionMap),
         dateFrom: timeOptions.from,
         dateTo: timeOptions.to,
         aggregateBy: chartAggregationNames[selectedAggregateBy],
@@ -316,10 +271,17 @@ const Analytics = () => {
   }, [departmentsLoaded, questionMap, timeOptions, selectedAggregateBy, history]);
 
   useEffect(() => {
-    if (!isUserModified) {
+    if (!hasUserChangedTitle) {
       automaticUpdateChartTitle();
     }
-  }, [questionMap, timeOptions, selectedAggregateBy, selectedChart, i18n.language, isUserModified]);
+  }, [
+    questionMap,
+    timeOptions,
+    selectedAggregateBy,
+    selectedChart,
+    i18n.language,
+    hasUserChangedTitle,
+  ]);
 
   const handleCloseQuestionsModal = () => setShowModalQuestions(false);
   const handleShowQuestionsModal = () => {
@@ -328,6 +290,52 @@ const Analytics = () => {
 
   const handleCloseTimeOptionsModal = () => setShowModalTimeOptions(false);
   const handleShowTimeOptionsModal = () => setShowModalTimeOptions(true);
+
+  const constructExport = (canvas: HTMLCanvasElement) => {
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+    // make the pdf landscape or portrait depending on dimensions of capture
+    const pdf =
+      imgWidth >= imgHeight
+        ? new jsPDF('landscape', 'mm', 'a4', true)
+        : new jsPDF('portrait', 'mm', 'a4', true);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
+    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+    // find points to center image horizontally and vertically
+    const imgX = (pdfWidth - imgWidth * ratio) / 2;
+    const imgY = (pdfHeight - imgHeight * ratio) / 2;
+    // add chart components to the pdf
+    pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+    // add HHA logo as watermark
+    const logoUrl = '/hha-logo.png';
+    const logoImage = new Image();
+    logoImage.src = logoUrl;
+
+    logoImage.onload = function () {
+      // add logoImage to the pdf in the top right
+      const logoWidth = 30;
+      const logoHeight = 30;
+      // add 10mm padding on top right corner
+      const logoX = pdfWidth - logoWidth - 10;
+      const logoY = 10;
+
+      // Add the logo image to the PDF
+      pdf.addImage(logoImage, 'PNG', logoX, logoY, logoWidth, logoHeight);
+      pdf.save(
+        `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+      );
+    };
+    logoImage.onerror = function () {
+      // if failing to load logo, save the pdf without it anyways
+      pdf.save(
+        `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
+      );
+    };
+  };
 
   const handleExportWithComponent = () => {
     console.log('Starting PDF export...');
@@ -339,49 +347,7 @@ const Analytics = () => {
     }
 
     html2canvas(capturedComponent!, { scale: window.devicePixelRatio }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      // make the pdf landscape or portrait depending on dimensions of capture
-      const pdf =
-        imgWidth >= imgHeight
-          ? new jsPDF('landscape', 'mm', 'a4', true)
-          : new jsPDF('portrait', 'mm', 'a4', true);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      // ratio is used to scale the image so that it fits into the more restrictive dimension, to avoid visual cutoff at the edges
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      // find points to center image horizontally and vertically
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = (pdfHeight - imgHeight * ratio) / 2;
-      // add chart components to the pdf
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-
-      // add HHA logo as watermark
-      const logoUrl = '/hha-logo.png';
-      const logoImage = new Image();
-      logoImage.src = logoUrl;
-
-      logoImage.onload = function () {
-        // add logoImage to the pdf in the top right
-        const logoWidth = 30;
-        const logoHeight = 30;
-        // add 10mm padding on top right corner
-        const logoX = pdfWidth - logoWidth - 10;
-        const logoY = 10;
-
-        // Add the logo image to the PDF
-        pdf.addImage(logoImage, 'PNG', logoX, logoY, logoWidth, logoHeight);
-        pdf.save(
-          `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
-        );
-      };
-      logoImage.onerror = function () {
-        // if failing to load logo, save the pdf without it anyways
-        pdf.save(
-          `${timeOptions.from} - ${timeOptions.to} - ${chartTypeNames[selectedChart]} ${t('analyticsExportFilename')}.pdf`,
-        );
-      };
+      constructExport(canvas);
     });
     console.log('finished export!');
   };
@@ -439,12 +405,12 @@ const Analytics = () => {
 
   const handleSave = () => {
     setChartTitle(tempTitle);
-    setIsUserModified(true);
+    setHasUserChangedTitle(true);
     setIsModalOpen(false);
   };
 
   const handleReset = () => {
-    setIsUserModified(false);
+    setHasUserChangedTitle(false);
     setIsModalOpen(false);
   };
 
