@@ -2,7 +2,6 @@ import { AnalyticsResponse } from '@hha/common';
 import { MONTH_AND_YEAR_DATE_FORMAT, YEAR_ONLY_DATE_FORMAT } from 'constants/date';
 import { language, timezone } from 'constants/timezones';
 import moment from 'moment';
-import { AnalyticsMap } from 'pages/analytics/Analytics';
 
 import { DayRange } from 'react-modern-calendar-datepicker';
 import { DateWithFormat } from './analytics';

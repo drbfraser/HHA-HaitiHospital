@@ -12,7 +12,6 @@ import {
 import { Line } from 'react-chartjs-2';
 import { createDefaultChartOptions } from './Options';
 import { ChartProps, DataSet } from './ChartSelector';
-import { reformatQuestionPrompt } from 'utils/string';
 import {
   prepareDataSetForChart,
   translateChartLabel,

@@ -1,13 +1,4 @@
-import {
-  Chart,
-  ChartData,
-  ChartEvent,
-  Color,
-  LegendElement,
-  LegendItem,
-  TooltipItem,
-  TooltipModel,
-} from 'chart.js';
+import { Chart, ChartEvent, Color, LegendElement, LegendItem, TooltipItem } from 'chart.js';
 import { Data } from './Pie';
 
 export const createDefaultChartOptions = (chartTitle: string) => {

@@ -6,16 +6,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartData,
   ArcElement,
-  TooltipItem,
-  LegendOptions,
-  Chart,
-  LegendItem,
-  Color,
-  ChartEvent,
-  ActiveElement,
-  LegendElement,
 } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { ChartProps } from './ChartSelector';
