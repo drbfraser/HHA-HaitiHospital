@@ -12,7 +12,6 @@ export type ChartProps = {
   type: ChartType;
   analyticsData: AnalyticsMap;
   questionMap: QuestionMap;
-  title: string;
 };
 
 export type DataSet = {
@@ -24,16 +23,16 @@ export type DataSetMap = {
   [key: string]: DataSet[];
 };
 
-const ChartSelector = ({ type, analyticsData, questionMap, title }: ChartProps) => {
+const ChartSelector = ({ type, analyticsData, questionMap }: ChartProps) => {
   const { t } = useTranslation();
   switch (type) {
     case 'bar':
-      return <BarChart analyticsData={analyticsData} questionMap={questionMap} title={title} />;
+      return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
     case 'line':
-      return <LineChart analyticsData={analyticsData} questionMap={questionMap} title={title} />;
+      return <LineChart analyticsData={analyticsData} questionMap={questionMap} />;
     default:
       toast.warning(t('analyticsInvalidChart'));
-      return <BarChart analyticsData={analyticsData} questionMap={questionMap} title={title} />;
+      return <BarChart analyticsData={analyticsData} questionMap={questionMap} />;
   }
 };
 

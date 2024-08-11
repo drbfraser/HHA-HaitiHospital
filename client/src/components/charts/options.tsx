@@ -1,4 +1,4 @@
-export const createDefaultChartOptions = (chartTitle: string) => {
+export const createDefaultChartOptions = () => {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -7,11 +7,7 @@ export const createDefaultChartOptions = (chartTitle: string) => {
         position: 'top' as const,
       },
       title: {
-        display: true,
-        text: chartTitle,
-        font: {
-          size: 30,
-        },
+        display: false,
       },
     },
   };

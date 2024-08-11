@@ -25,7 +25,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 type BarChartProps = Omit<ChartProps, 'type'>;
 
-const BarChart = ({ analyticsData, questionMap, title }: BarChartProps) => {
+const BarChart = ({ analyticsData, questionMap }: BarChartProps) => {
   const { t } = useTranslation();
 
   const dataSets = prepareDataSetForChart(analyticsData);
@@ -44,7 +44,7 @@ const BarChart = ({ analyticsData, questionMap, title }: BarChartProps) => {
   };
   return (
     <div className="d-flex w-100 flex-row justify-content-center" style={{ height: '450px' }}>
-      <Bar options={createDefaultChartOptions(title)} data={data} />
+      <Bar options={createDefaultChartOptions()} data={data} />
     </div>
   );
 };

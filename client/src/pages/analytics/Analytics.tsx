@@ -474,11 +474,16 @@ const Analytics = () => {
           <Col className="mt-5">
             <div ref={pdfRef}>
               <AnalyticsTotal analyticsData={analyticsMap} questionMap={questionMap} />
+              <div
+                className="text-center fw-bold"
+                style={{ fontSize: '30px', wordWrap: 'break-word' }}
+              >
+                {chartTitle}
+              </div>
               <ChartSelector
                 type={selectedChart}
                 analyticsData={analyticsMap}
                 questionMap={questionMap}
-                title={chartTitle}
               />
             </div>
 
