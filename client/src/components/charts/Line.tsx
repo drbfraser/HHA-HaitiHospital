@@ -10,15 +10,16 @@ import {
   ChartData,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { createDefaultChartOptions } from './options';
+import { createDefaultChartOptions } from './Options';
 import { ChartProps, DataSet } from './ChartSelector';
 import {
   prepareDataSetForChart,
   translateChartLabel,
   translateTimeCategory,
 } from 'utils/analytics';
-import GRAPH_COLOR from 'constants/graphColor';
 import { useTranslation } from 'react-i18next';
+import { OPACITY_VALUE_MEDIUM } from 'constants/graphColor';
+import { getGraphColors } from 'utils/graphColors';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -28,6 +29,7 @@ const LineChart = ({ analyticsData, questionMap }: LineChartProps) => {
   const { t } = useTranslation();
 
   const dataSets = prepareDataSetForChart(analyticsData);
+  const graphColors = getGraphColors(OPACITY_VALUE_MEDIUM);
 
   const data: ChartData<'line', DataSet[]> = {
     datasets: Object.keys(dataSets).map((label, index) => {
@@ -36,7 +38,7 @@ const LineChart = ({ analyticsData, questionMap }: LineChartProps) => {
       return {
         label: translatedLabel,
         data: translateTimeCategory(dataSets[label]),
-        borderColor: GRAPH_COLOR[index % GRAPH_COLOR.length],
+        borderColor: graphColors[index % graphColors.length],
       };
     }),
   };

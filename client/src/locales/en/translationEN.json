@@ -260,6 +260,7 @@
   "analyticsTotal": "Total",
   "analyticsBarChart": "Bar Chart",
   "analyticsLineChart": "Line Chart",
+  "analyticsPieChart": "Pie Chart",
   "analyticsFor": "for",
   "analyticsInvalidChart": "Warning Unknown chart type selected",
   "analysisDisplayGeneratePDF": "Download PDF",
@@ -481,8 +482,9 @@
   "dropdown": {
     "month": "Month",
     "year": "Year",
-    "bar": "Bar",
-    "line": "Line"
+    "bar": "Column",
+    "line": "Line",
+    "pie": "Pie"
   },
 
   "months": {
