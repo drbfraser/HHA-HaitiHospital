@@ -262,7 +262,6 @@
   "analyticsLineChart": "Line Chart",
   "analyticsPieChart": "Pie Chart",
   "analyticsFor": "for",
-  "analyticsIn": "in",
   "analyticsInvalidChart": "Warning Unknown chart type selected",
   "analysisDisplayGeneratePDF": "Download PDF",
   "analyticsExportFilename": "Analytics",
