@@ -71,6 +71,7 @@ export const StringFilter = ({
           }}
           value={value}
           placeholder={placeholder}
+          data-testid="filter-input-group"
         />
         <ClearFilterButton
           setFilterValue={setFilterValue}
