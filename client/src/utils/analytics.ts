@@ -195,6 +195,14 @@ const isTimeInYearOnlyFormat = (time: string) => {
   //there are two time formats: Jan 2024 or 2024 (MMM YYYY or YYYY)
   return time.split(' ').length <= 1;
 };
+
+const translateTime = (formattedTime: string) => {
+  const [month, year] = formattedTime.split(' ');
+
+  const translatedMonth = i18next.t(`months.${month}`);
+
+  return `${translatedMonth} ${year}`;
+};
 export const translateTimeCategory = (dataSets: DataSet[]) => {
   if (dataSets.length === 0) {
     return dataSets;
@@ -207,12 +215,10 @@ export const translateTimeCategory = (dataSets: DataSet[]) => {
   return dataSets.map((dataSet) => {
     const time = dataSet.x;
 
-    const [month, year] = time.split(' ');
-
-    const translatedMonth = i18next.t(`months.${month}`);
+    const translatedTime = translateTime(time);
 
     const translatedDataSet: DataSet = {
-      x: `${translatedMonth} ${year}`,
+      x: translatedTime,
       y: dataSet.y,
     };
 
@@ -230,69 +236,19 @@ export const prepareAggregateLabels = (analyticsData: AnalyticsMap, questionMap:
   return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
 };
 
-const prepareTimeLabelsHelper = (
-  timeDataForQuestion: AnalyticsResponse[],
-  questionMap: QuestionMap,
-  departmentQuestionKey: string,
-) => {
-  const labels: string[] = [];
-  timeDataForQuestion.forEach((timeData) => {
-    const dateWithFormat = getDateForAnalytics(timeData);
-    const formattedDate = formatDateForChart(dateWithFormat);
+const prepareTimeLabelsHelper = (timeData: AnalyticsResponse) => {
+  const dateWithFormat = getDateForAnalytics(timeData);
+  const formattedTime = formatDateForChart(dateWithFormat);
 
-    if (isTimeInYearOnlyFormat(formattedDate)) {
-      labels.push(formattedDate);
-    } else {
-      const [month, year] = formattedDate.split(' ');
-
-      const translatedMonth = i18next.t(`months.${month}`);
-
-      const translatedQuestion = translateChartLabel(departmentQuestionKey, questionMap);
-
-      const translatedIn = i18next.t(`analyticsIn`);
-
-      // template for label is, e.g, 1-Beds-Available for Rehab in May 2024
-
-      labels.push(`${translatedQuestion} ${translatedIn} ${translatedMonth} ${year}`);
-    }
-  });
-
-  return labels;
+  if (isTimeInYearOnlyFormat(formattedTime)) {
+    return formattedTime;
+  } else {
+    return translateTime(formattedTime);
+  }
 };
 
-export const prepareTimeLabels = (
-  analyticsTimeData: AnalyticsResponse[],
-  analyticsMap: AnalyticsMap,
-  questionMap: QuestionMap,
-) => {
-  let labels: string[] = [];
-
-  // algorithm:
-  // - time data is sorted, but time data in question map is not sorted
-  // - the goal is to create labels in a sorted fashion by following the time data's order
-  // - loop through each question
-  //  - slice the time data from the previous index to the previous index + current time data length (contains the current question's time data)
-  //  - gather the labels generated
-
-  let timeDataIndex = 0;
-
-  Object.keys(analyticsMap).forEach((departmentQuestionKey) => {
-    const timeDataLength = analyticsMap[departmentQuestionKey].length;
-    const timeDataForQuestion = analyticsTimeData.slice(
-      timeDataIndex,
-      timeDataIndex + timeDataLength,
-    );
-    timeDataIndex += timeDataLength;
-    const labelsForQuestion = prepareTimeLabelsHelper(
-      timeDataForQuestion,
-      questionMap,
-      departmentQuestionKey,
-    );
-
-    labels = labels.concat(labelsForQuestion);
-  });
-
-  return labels;
+export const prepareTimeLabels = (analyticsTimeData: AnalyticsResponse[]) => {
+  return analyticsTimeData.map((timeData) => prepareTimeLabelsHelper(timeData));
 };
 
 export const prepareTimeData = (analyticsData: AnalyticsMap) => {

@@ -40,7 +40,7 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
   const aggregateData = prepareAggregateData(analyticsData);
   const analyticsTimeData = prepareTimeData(analyticsData);
   const aggregateLabels = prepareAggregateLabels(analyticsData, questionMap);
-  const timeLabels = prepareTimeLabels(analyticsTimeData, analyticsData, questionMap);
+  const timeLabels = prepareTimeLabels(analyticsTimeData);
   const colors = duplicateColors(analyticsData);
 
   const data: Data = {
