@@ -16,9 +16,10 @@ import {
   prepareTimeData,
   prepareTimeLabels,
 } from 'utils/analytics';
-import { ALPHA_VALUE_HIGH, duplicateColors, getGraphColors } from 'constants/graphColor';
+import { OPACITY_VALUE_HIGH } from 'constants/graphColor';
 import { useTranslation } from 'react-i18next';
 import { createPieChartOptions } from './Options';
+import { duplicateColors, getGraphColors } from 'utils/graphColors';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
@@ -60,7 +61,7 @@ const PieChart = ({ analyticsData, questionMap }: PieChartProps) => {
       },
       {
         data: aggregateData,
-        backgroundColor: getGraphColors(ALPHA_VALUE_HIGH),
+        backgroundColor: getGraphColors(OPACITY_VALUE_HIGH),
         borderWidth: 1,
         labels: aggregateLabels,
       },
