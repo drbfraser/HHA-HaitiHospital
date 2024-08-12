@@ -136,6 +136,13 @@ jobs:
           name: instanbul-test-coverage-report
           path: /isolated_build/repo/server/coverage
           retention-days: 7
+      - name: Upload Mocha test report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: mocha-test-report
+          path: /isolated_build/repo/server/mochawesome-report
+          retention-days: 7
       - uses: actions/upload-artifact@v3
         if: success()
         with:

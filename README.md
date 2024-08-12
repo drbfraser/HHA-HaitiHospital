@@ -191,8 +191,11 @@ The initial run may take longer due to the in-memory MongoDB package installing 
 running, however subsequent tests will be faster as this installation only happens once.
 
 Running `npm coverage-report` in the server directory will generate an HTML report in a folder
-called `coverage` where you can easily view test coverage and see where tests are needed. This
-coverage report is uploaded as an artifact as part of the CI/CD pipeline as well.
+called `coverage` where you can easily view test coverage and see where tests are needed.
+
+After each test an HTML test report in the `mochawesome-report` folder will also be generated.
+
+Both of these reports are uploaded as an artifact as part of the CI/CD pipeline.
 
 ## Logging
 
