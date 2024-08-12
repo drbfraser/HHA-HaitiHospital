@@ -14,7 +14,6 @@ import {
   filterDepartmentsByReport,
   filterQuestionsSelected,
   findDepartmentIdByName,
-  getAllDepartmentsByName,
   prepareAnalyticsQuery,
 } from 'utils/analytics';
 import { Spinner } from 'components/spinner/Spinner';
@@ -206,6 +205,7 @@ const Analytics = () => {
     const chartFilenames = {
       bar: t('analyticsBarChart'),
       line: t('analyticsLineChart'),
+      pie: t('analyticsPieChart'),
     };
 
     if (!capturedComponent) {

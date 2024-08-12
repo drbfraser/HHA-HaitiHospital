@@ -1,16 +1,6 @@
-import {
-  AnalyticsQuery,
-  AnalyticsResponse,
-  DepartmentJson,
-  MonthOrYearOption,
-  QuestionPrompt,
-} from '@hha/common';
-import { formatQuestion, reformatQuestionPrompt, separateDepartmentAndQuestion } from './string';
-import {
-  MONTH_AND_YEAR_DATE_FORMAT,
-  YEAR_DASH_MONTH_FORMAT,
-  YEAR_ONLY_DATE_FORMAT,
-} from 'constants/date';
+import { AnalyticsQuery, AnalyticsResponse, DepartmentJson, MonthOrYearOption } from '@hha/common';
+import { formatQuestion, separateDepartmentAndQuestion } from './string';
+import { YEAR_DASH_MONTH_FORMAT } from 'constants/date';
 import moment from 'moment';
 import {
   AnalyticsMap,
@@ -19,7 +9,12 @@ import {
   TimeOptions,
 } from 'pages/analytics/Analytics';
 import { DataSet, DataSetMap } from 'components/charts/ChartSelector';
-import { compareDateWithFormat, formatDateForChart, getDateForAnalytics } from './dateUtils';
+import {
+  compareDate,
+  compareDateWithFormat,
+  formatDateForChart,
+  getDateForAnalytics,
+} from './dateUtils';
 import i18next from 'i18next';
 
 export const findDepartmentIdByName = (departments: DepartmentJson[], departmentName: string) => {
@@ -200,6 +195,14 @@ const isTimeInYearOnlyFormat = (time: string) => {
   //there are two time formats: Jan 2024 or 2024 (MMM YYYY or YYYY)
   return time.split(' ').length <= 1;
 };
+
+const translateTime = (formattedTime: string) => {
+  const [month, year] = formattedTime.split(' ');
+
+  const translatedMonth = i18next.t(`months.${month}`);
+
+  return `${translatedMonth} ${year}`;
+};
 export const translateTimeCategory = (dataSets: DataSet[]) => {
   if (dataSets.length === 0) {
     return dataSets;
@@ -212,15 +215,54 @@ export const translateTimeCategory = (dataSets: DataSet[]) => {
   return dataSets.map((dataSet) => {
     const time = dataSet.x;
 
-    const [month, year] = time.split(' ');
-
-    const translatedMonth = i18next.t(`months.${month}`);
+    const translatedTime = translateTime(time);
 
     const translatedDataSet: DataSet = {
-      x: `${translatedMonth} ${year}`,
+      x: translatedTime,
       y: dataSet.y,
     };
 
     return translatedDataSet;
   });
+};
+
+export const prepareAggregateData = (analyticsData: AnalyticsMap) => {
+  return Object.keys(analyticsData).map((departmentQuestionKey) =>
+    sumUpAnalyticsData(analyticsData[departmentQuestionKey]),
+  );
+};
+
+export const prepareAggregateLabels = (analyticsData: AnalyticsMap, questionMap: QuestionMap) => {
+  return Object.keys(analyticsData).map((label) => translateChartLabel(label, questionMap));
+};
+
+export const prepareTimeLabel = (timeData: AnalyticsResponse) => {
+  const dateWithFormat = getDateForAnalytics(timeData);
+  const formattedTime = formatDateForChart(dateWithFormat);
+
+  if (isTimeInYearOnlyFormat(formattedTime)) {
+    return formattedTime;
+  } else {
+    return translateTime(formattedTime);
+  }
+};
+
+export const prepareTimeLabels = (analyticsTimeData: AnalyticsResponse[]) => {
+  return analyticsTimeData.map((timeData) => prepareTimeLabel(timeData));
+};
+
+export const prepareTimeData = (analyticsData: AnalyticsMap) => {
+  // time data has to be sorted so the pie chart displays the data by month or year in ascending order
+  // note that only time data in a question will be sorted and not the entire time data across all questions
+
+  let analyticsTimeData: AnalyticsResponse[] = [];
+
+  Object.keys(analyticsData).forEach((departmentQuestionKey) => {
+    const timeData = analyticsData[departmentQuestionKey];
+
+    timeData.sort((timeData1, timeData2) => compareDate(timeData1, timeData2));
+    analyticsTimeData = analyticsTimeData.concat(timeData);
+  });
+
+  return analyticsTimeData;
 };

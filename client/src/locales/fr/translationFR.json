@@ -260,8 +260,9 @@
   "analyticsAggregateBy": "Agréger par",
   "analyticsCharts": "Graphiques",
   "analyticsTotal": "Totale",
-  "analyticsBarChart": "Diagramme à bandes",
-  "analyticsLineChart": "Graphique en ligne",
+  "analyticsBarChart": "Diagramme à colonnes",
+  "analyticsPieChart": "Diagramme circulaire",
+  "analyticsLineChart": "Graphique linéaire",
   "analyticsFor": "pour",
   "analyticsInvalidChart": "Avertissement Type de graphique inconnu sélectionné",
   "analysisDisplayGeneratePDF": "Télécharger PDF",
@@ -477,8 +478,9 @@
   "dropdown": {
     "month": "Mois",
     "year": "Année",
-    "bar": "Bar",
-    "line": "Doubler"
+    "bar": "À colonnes",
+    "line": "Linéaire",
+    "pie": "Circulaire"
   },
 
   "months": {
